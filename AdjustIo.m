@@ -7,11 +7,8 @@
 //
 
 #import "AdjustIo.h"
+#import "AIApiClient.h"
 #import "UIDevice+AIAdditions.h"
-#import "ASIFormDataRequest.h"
-
-
-static NSString * const kBaseUrl = @"http://app.adjust.io"; 
 
 static AdjustIo *defaultInstance;
 
@@ -24,13 +21,11 @@ static AdjustIo *defaultInstance;
 - (void)appWillTerminate;
 - (void)trackSessionStart;
 
-// generic request handlers
-- (void)requestFinished:(ASIHTTPRequest *)reqest;
-- (void)requestFailed:(ASIHTTPRequest *)request;
-
 @property (copy) NSString *appId;
 @property (copy) NSString *macAddress;
 @property (copy) NSString *deviceId;
+
+@property (retain) AIApiClient *apiClient;
 
 @end
 
@@ -51,6 +46,15 @@ static AdjustIo *defaultInstance;
 
 
 // instance methods do the 'heavy' lifting
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+	
+	self.apiClient = [AIApiClient apiClient];
+	
+    return self;
+}
 
 - (void)appDidLaunch:(NSString *)theAppId {
 	if (theAppId.length == 0) {
@@ -91,30 +95,30 @@ static AdjustIo *defaultInstance;
 }
 
 - (void)trackSessionStart {
-	NSString *url = [NSString stringWithFormat:@"%@/startup", kBaseUrl];
-	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+	NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+									   self.appId,		@"app_id",
+									   self.macAddress, @"mac",
+									   nil];
 	
-	[request addPostValue:self.appId forKey:@"app_id"];
-	[request addPostValue:self.macAddress forKey:@"mac"];
-	
-	// track deviceId only if enabled by calling trackDeviceId
 	if (self.deviceId != nil) {
-		[request addPostValue:self.deviceId forKey:@"udid"];
+		[parameters setValue:self.deviceId forKey:@"udid"];
 	}
 	
-	[request startAsynchronous];
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request {
-	NSLog(@"request finished %d: %@\n%@", request.responseStatusCode, request.url.absoluteString, request.responseString);
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
-	NSLog(@"request failed: %@", request.url.absoluteString);
+	[self.apiClient postPath:@"startup"
+				  parameters:parameters
+					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
+					 }
+					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
+					 }];
+	
+	[parameters release];
 }
 
 @synthesize appId;
 @synthesize macAddress;
 @synthesize deviceId;
+@synthesize apiClient;
 
 @end
