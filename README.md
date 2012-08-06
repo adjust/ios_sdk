@@ -1,5 +1,5 @@
 ## 1. Get this SDK
-by downloading the most recent version here: `https://github.com/adeven/adjust_sdk/tags`
+by downloading the most recent version here: https://github.com/adeven/adjust_sdk/tags
 
 ## 2. Add it to your project
 by dragging the AdjustIo directory into the "Supporting Files" group in your Xcode project navigator (or any other group of your choice). A dialog box appears for you to "choose options for adding these files". Make sure the checkbox is checked and the upper radio button is selected before you finish.
