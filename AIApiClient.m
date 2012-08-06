@@ -1,9 +1,9 @@
 //
-//  AdjustIoApiClient.m
-//  Rotate
+//  AIApiClient.m
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 06.08.12.
-//
+//  Copyright (c) 2012 adeven. All rights reserved.
 //
 
 #import "AIApiClient.h"
