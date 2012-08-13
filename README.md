@@ -5,7 +5,11 @@ by downloading the most recent version here: https://github.com/adeven/adjust_sd
 by dragging the AdjustIo directory into the "Supporting Files" group in your Xcode project navigator (or any other group of your choice). A dialog box appears for you to "choose options for adding these files". Make sure the checkbox is checked and the upper radio button is selected before you finish.
 
 ## 3. Integrate AdjustIo into your app
-by adding some code to your AppDelegate.m file. Import the SDK by adding the line `#import "AdjustIo.h"` at the top of the file. Start AdjustIo by adding the line `[AdjustIo appDidLaunch:@"<appId>"];` to your `application:didFinishLaunchingWithOptions:` or your `applicationDidFinishLaunching:` method's body. (replace `<appId>` with your appId). If you want to track the deviceId, add the line `[AdjustIo trackDeviceId];` as well.
+by adding some code to your AppDelegate.m file. 
+* Import the SDK by adding the line `#import "AdjustIo.h"` at the top of the file. 
+* Start AdjustIo by adding the line `[AdjustIo appDidLaunch:@"<appId>"];` to your `application:didFinishLaunchingWithOptions:` or your `applicationDidFinishLaunching:` method's body. 
+* replace `<appId>` with the Apple ID that is provided by iTunes Connect for your app (Log into iTunes Connect, select "Manage Your Applications", select your app, see the "Apple ID" entry in the App Infomration tab).
+* If you want to track the deviceId, add the line `[AdjustIo trackDeviceId];` as well.
 
 ## 4. Build your app
 * If the build succeeds, you successfully integrated AjdustIo into your app.
