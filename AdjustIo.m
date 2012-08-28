@@ -40,6 +40,10 @@ static AdjustIo *defaultInstance;
 	[self.defaultInstance appDidLaunch:appId];
 }
 
++ (void)userGeneratedRevenue:(float)amountInCents {
+	[self.defaultInstance userGeneratedRevenue:amountInCents];
+}
+
 + (void)trackDeviceId {
 	[self.defaultInstance trackDeviceId];
 }
@@ -69,6 +73,26 @@ static AdjustIo *defaultInstance;
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(appWillTerminate) name:UIApplicationWillTerminateNotification object:nil];
 }
 
+- (void)userGeneratedRevenue:(float)amountInCents {
+	// amount in deci cents
+	NSNumber *amount = [NSNumber numberWithInt:roundf(10 * amountInCents)];
+	
+	NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								self.appId,			@"app_id",
+								self.macAddress,	@"mac",
+								amount,				@"amount",
+								nil];
+	
+	[self.apiClient postPath:@"revenue"
+				  parameters:parameters
+					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
+					 }
+					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
+					 }];
+}
+
 - (void)trackDeviceId {
 	// uniqueIdentifier is deprecated at the time of writing (July 2012)
 	// this code will still work and set the udid to nil when it won't be available anymore
@@ -95,9 +119,9 @@ static AdjustIo *defaultInstance;
 }
 
 - (void)trackSessionStart {
-	NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 									   self.appId,		@"app_id",
-									   self.macAddress, @"mac",
+									   self.macAddress,	@"mac",
 									   nil];
 	
 	if (self.deviceId != nil) {
@@ -112,8 +136,6 @@ static AdjustIo *defaultInstance;
 					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
 					 }];
-	
-	[parameters release];
 }
 
 @synthesize appId;
