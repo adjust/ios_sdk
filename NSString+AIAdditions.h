@@ -11,5 +11,6 @@
 @interface NSString(AIAdditions)
 
 - (NSString *)aiMd5;
+- (NSData *)aiDecodeBase64;
 
 @end

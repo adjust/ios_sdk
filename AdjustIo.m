@@ -8,7 +8,9 @@
 
 #import "AdjustIo.h"
 #import "AIApiClient.h"
+
 #import "UIDevice+AIAdditions.h"
+#import "NSData+AIAdditions.h"
 
 static AdjustIo *defaultInstance;
 
@@ -17,6 +19,11 @@ static AdjustIo *defaultInstance;
 @interface AdjustIo()
 
 + (AdjustIo *)defaultInstance;
+
+- (void)appDidLaunch:(NSString *)appId;
+- (void)trackDeviceId;
+- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
+- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 
 - (void)appWillTerminate;
 - (void)trackSessionStart;
@@ -35,21 +42,41 @@ static AdjustIo *defaultInstance;
 
 #pragma mark public
 
-// static methods get forwarded to defaultInstance
+// class methods get forwarded to defaultInstance
 + (void)appDidLaunch:(NSString *)appId {
 	[self.defaultInstance appDidLaunch:appId];
-}
-
-+ (void)userGeneratedRevenue:(float)amountInCents {
-	[self.defaultInstance userGeneratedRevenue:amountInCents];
 }
 
 + (void)trackDeviceId {
 	[self.defaultInstance trackDeviceId];
 }
 
++ (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
+	[self.defaultInstance trackEvent:eventId withParameters:parameters];
+}
 
-// instance methods do the 'heavy' lifting
++ (void)trackEvent:(NSString *)eventId {
+	[self trackEvent:eventId withParameters:nil];
+}
+
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
+	[self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventId withParameters:parameters];
+}
+
++ (void)userGeneratedRevenue:(float)amountInCents {
+	[self userGeneratedRevenue:amountInCents forEvent:nil withParameters:nil];
+}
+
+
+#pragma mark private
+
++ (AdjustIo *)defaultInstance {
+	if (defaultInstance == nil) {
+		defaultInstance = [[AdjustIo alloc] init];
+	}
+	
+	return defaultInstance;
+}
 
 - (id)init {
     self = [super init];
@@ -73,26 +100,6 @@ static AdjustIo *defaultInstance;
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(appWillTerminate) name:UIApplicationWillTerminateNotification object:nil];
 }
 
-- (void)userGeneratedRevenue:(float)amountInCents {
-	// amount in deci cents
-	NSNumber *amount = [NSNumber numberWithInt:roundf(10 * amountInCents)];
-	
-	NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.appId,			@"app_id",
-								self.macAddress,	@"mac",
-								amount,				@"amount",
-								nil];
-	
-	[self.apiClient postPath:@"revenue"
-				  parameters:parameters
-					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
-					 }
-					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
-					 }];
-}
-
 - (void)trackDeviceId {
 	// uniqueIdentifier is deprecated at the time of writing (July 2012)
 	// this code will still work and set the udid to nil when it won't be available anymore
@@ -103,15 +110,42 @@ static AdjustIo *defaultInstance;
 	}
 }
 
-
-#pragma mark private
-
-+ (AdjustIo *)defaultInstance {
-	if (defaultInstance == nil) {
-		defaultInstance = [[AdjustIo alloc] init];
+- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+	NSDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								eventId,			@"id",
+								self.appId,			@"app_id",
+								self.macAddress,	@"mac",
+								nil];
+	
+	if (callbackParameters != nil) {
+		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParameters options:0 error:nil];
+		NSString *paramString = [jsonData aiEncodeBase64];
+		[parameters setValue:paramString forKey:@"params"];
 	}
 	
-	return defaultInstance;
+	[self.apiClient postPath:@"event"
+				  parameters:parameters
+					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
+					 }
+					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
+					 }];
+}
+
+- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+	NSNumber *amountInDeciCents = [NSNumber numberWithInt:roundf(10 * amountInCents)];
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:amountInDeciCents forKey:@"amount"];
+	
+	if (eventId == nil) {
+		eventId = @"1";
+	}
+	
+	if (callbackParameters != nil) {
+		[parameters addEntriesFromDictionary:callbackParameters];
+	}
+	
+	[self trackEvent:eventId withParameters:parameters];
 }
 
 - (void)appWillTerminate {
