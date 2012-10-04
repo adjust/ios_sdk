@@ -17,7 +17,7 @@
 @implementation UIDevice(AIAdditions)
 
 - (NSString *)aiMacAddress {
-	int                 mib[6];
+    int                 mib[6];
     size_t              len;
     char                *buf;
     unsigned char       *ptr;
@@ -54,9 +54,9 @@
     ifm = (struct if_msghdr *)buf;
     sdl = (struct sockaddr_dl *)(ifm + 1);
     ptr = (unsigned char *)LLADDR(sdl);
-	
-    NSString *outstring = [[NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X", 
-							*ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)] aiMd5];
+    
+    NSString *outstring = [[NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X",
+                            *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)] aiMd5];
     free(buf);
     
     return outstring;
