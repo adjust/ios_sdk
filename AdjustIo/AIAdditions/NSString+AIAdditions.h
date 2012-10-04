@@ -10,6 +10,7 @@
 
 @interface NSString(AIAdditions)
 
+- (NSString *)aiTrim;
 - (NSString *)aiMd5;
 - (NSData *)aiDecodeBase64;
 

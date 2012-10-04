@@ -12,6 +12,10 @@
 
 @implementation NSString(AIAdditions)
 
+- (NSString *)aiTrim {
+	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 - (NSString *)aiMd5 {
 	const char *cStr = [self UTF8String];
 	unsigned char result[16];

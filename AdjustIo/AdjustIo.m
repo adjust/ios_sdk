@@ -1,4 +1,4 @@
-//
+
 //  AdjustIo.m
 //  AdjustIo
 //
@@ -11,6 +11,7 @@
 
 #import "UIDevice+AIAdditions.h"
 #import "NSData+AIAdditions.h"
+#import "NSString+AIAdditions.h"
 
 static AdjustIo *defaultInstance;
 
@@ -21,16 +22,19 @@ static AdjustIo *defaultInstance;
 + (AdjustIo *)defaultInstance;
 
 - (void)appDidLaunch:(NSString *)appId;
+- (void)appWillTerminate;
 - (void)trackDeviceId;
+
+- (void)trackSessionStart;
 - (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 - (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 
-- (void)appWillTerminate;
-- (void)trackSessionStart;
+- (void)log:(NSString *)format, ...;
 
 @property (copy) NSString *appId;
 @property (copy) NSString *macAddress;
 @property (copy) NSString *deviceId;
+@property (assign) BOOL loggingEnabled;
 
 @property (retain) AIApiClient *apiClient;
 
@@ -43,6 +47,7 @@ static AdjustIo *defaultInstance;
 #pragma mark public
 
 // class methods get forwarded to defaultInstance
+
 + (void)appDidLaunch:(NSString *)appId {
 	[self.defaultInstance appDidLaunch:appId];
 }
@@ -67,6 +72,9 @@ static AdjustIo *defaultInstance;
 	[self userGeneratedRevenue:amountInCents forEvent:nil withParameters:nil];
 }
 
++ (void)setLoggingEnabled:(BOOL)loggingEnabled {
+	self.defaultInstance.loggingEnabled = loggingEnabled;
+}
 
 #pragma mark private
 
@@ -89,7 +97,7 @@ static AdjustIo *defaultInstance;
 
 - (void)appDidLaunch:(NSString *)theAppId {
 	if (theAppId.length == 0) {
-		NSLog(@"appId missing");
+		[self log:@"Error: Missing appId"];
 		return;
 	}
 	
@@ -100,56 +108,18 @@ static AdjustIo *defaultInstance;
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(appWillTerminate) name:UIApplicationWillTerminateNotification object:nil];
 }
 
+- (void)appWillTerminate {
+	[NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
 - (void)trackDeviceId {
 	// uniqueIdentifier is deprecated at the time of writing (July 2012)
-	// this code will still work and set the udid to nil when it won't be available anymore
+	// this code will still work and set the deviceId to nil when it won't be available anymore
 	@try {
 		self.deviceId = [UIDevice.currentDevice performSelector:@selector(uniqueIdentifier)];
 	} @catch (NSException *e) {
 		self.deviceId = nil;
 	}
-}
-
-- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
-	NSDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								eventId,			@"id",
-								self.appId,			@"app_id",
-								self.macAddress,	@"mac",
-								nil];
-	
-	if (callbackParameters != nil) {
-		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParameters options:0 error:nil];
-		NSString *paramString = [jsonData aiEncodeBase64];
-		[parameters setValue:paramString forKey:@"params"];
-	}
-	
-	[self.apiClient postPath:@"event"
-				  parameters:parameters
-					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
-					 }
-					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
-					 }];
-}
-
-- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
-	NSNumber *amountInDeciCents = [NSNumber numberWithInt:roundf(10 * amountInCents)];
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:amountInDeciCents forKey:@"amount"];
-	
-	if (eventId == nil) {
-		eventId = @"1";
-	}
-	
-	if (callbackParameters != nil) {
-		[parameters addEntriesFromDictionary:callbackParameters];
-	}
-	
-	[self trackEvent:eventId withParameters:parameters];
-}
-
-- (void)appWillTerminate {
-	[NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 - (void)trackSessionStart {
@@ -165,16 +135,79 @@ static AdjustIo *defaultInstance;
 	[self.apiClient postPath:@"startup"
 				  parameters:parameters
 					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//						 NSLog(@"request finished: %@", operation.request.URL.absoluteString);
+						 [self log:@"Tracked session start"];
 					 }
 					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//						 NSLog(@"request failed: %@ (%@)", operation.request.URL.absoluteString, operation.responseString);
+						 [self log:@"Failed to track session start. (%@)", operation.responseString.aiTrim];
 					 }];
+}
+
+- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+	NSDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								eventId,			@"id",
+								self.appId,			@"app_id",
+								self.macAddress,	@"mac",
+								nil];
+	
+	if (callbackParameters != nil) {
+		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParameters options:0 error:nil];
+		NSString *paramString = jsonData.aiEncodeBase64;
+		[parameters setValue:paramString forKey:@"params"];
+	}
+	
+	[self.apiClient postPath:@"event"
+				  parameters:parameters
+					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						 [self log:@"Tracked event %@", eventId];
+					 }
+					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						 [self log:@"Failed to track event %@. (%@)", eventId, operation.responseString.aiTrim];
+					 }];
+}
+
+- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+	NSString *amountInMillis = [NSNumber numberWithInt:roundf(10 * amountInCents)].stringValue;
+	
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									   self.appId,		@"app_id",
+									   self.macAddress,	@"mac",
+									   amountInMillis,	@"amount",
+									   nil];
+	
+	if (eventId != nil) {
+		[parameters setObject:eventId forKey:@"id"];
+	}
+	
+
+	if (callbackParameters != nil) {
+		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParameters options:0 error:nil];
+		NSString *paramString = jsonData.aiEncodeBase64;
+		[parameters setValue:paramString forKey:@"params"];
+	}
+	
+	[self.apiClient postPath:@"revenue"
+				  parameters:parameters
+					 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						 [self log:@"Tracked revenue"];
+					 }
+					 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						 [self log:@"Failed to tracke revenue. (%@)", operation.responseString.aiTrim];
+					 }];
+}
+
+- (void)log:(NSString *)format, ... {
+	if (loggingEnabled) {
+		va_list ap;
+		va_start(ap,format);
+		NSLog(@"[AdjustIo] %@", [[NSString alloc] initWithFormat:format arguments:ap]);
+		va_end(ap);
+	}
 }
 
 @synthesize appId;
 @synthesize macAddress;
 @synthesize deviceId;
+@synthesize loggingEnabled;
 @synthesize apiClient;
 
 @end

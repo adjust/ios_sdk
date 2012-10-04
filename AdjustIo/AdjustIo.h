@@ -32,4 +32,8 @@
 + (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 + (void)userGeneratedRevenue:(float)amountInCents;
 
+// If you want to see debug logs while you integrate some features, call setLoggingEnabled:YES.
+// Turn it off again by calling setLoggingEnabled:NO, which is the default.
++ (void)setLoggingEnabled:(BOOL)loggingEnabled;
+
 @end
