@@ -56,20 +56,24 @@ static AdjustIo *defaultInstance;
     [self.defaultInstance trackDeviceId];
 }
 
-+ (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
-    [self.defaultInstance trackEvent:eventId withParameters:parameters];
-}
-
 + (void)trackEvent:(NSString *)eventId {
     [self trackEvent:eventId withParameters:nil];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
-    [self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventId withParameters:parameters];
++ (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
+    [self.defaultInstance trackEvent:eventId withParameters:parameters];
 }
 
 + (void)userGeneratedRevenue:(float)amountInCents {
-    [self userGeneratedRevenue:amountInCents forEvent:nil withParameters:nil];
+    [self userGeneratedRevenue:amountInCents forEvent:nil];
+}
+
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId {
+    [self userGeneratedRevenue:amountInCents forEvent:eventId withParameters:nil];
+}
+
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
+    [self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventId withParameters:parameters];
 }
 
 + (void)setLoggingEnabled:(BOOL)loggingEnabled {

@@ -18,6 +18,7 @@ by adding some code to your AppDelegate.m file.
 * Start AdjustIo by adding the line `[AdjustIo appDidLaunch:@"<appId>"];` to your `application:didFinishLaunchingWithOptions:` or your `applicationDidFinishLaunching:` method's body. 
 * replace `<appId>` with the Apple ID that is provided by iTunes Connect for your app (Log into iTunes Connect, select "Manage Your Applications", select your app, see the "Apple ID" entry in the App Infomration tab).
 * If you want to track the deviceId, add the line `[AdjustIo trackDeviceId];` as well.
+* If you want to see debug logs, call `[AdjustIo setLoggingEnabled:YES]`.
 
 ### 4. Build your app
 * If the build succeeds, you successfully integrated AjdustIo into your app.
@@ -26,10 +27,21 @@ by adding some code to your AppDelegate.m file.
 
 ## Additional features
 
-Once you integrated the AdjustIo SDK into your project, you can use the following 
+Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features wherever you see fit.
+
+### Add tracking of custom events
+by adding some code to the methods that get called when something interesting happens. If you want to track how many users press a certain button or reach a particular view, you would ask us for an eventId, like "abc123". In your `buttonDown` or `viewDidAppear` method you would then add the line `[AdjustIo trackEvent:@"abc123"];`. If you register a callback URL for that eventId, like `http://www.adeven.com/callback`, we will send a request there every time the event gets triggered. Additionally, you can provide arbitrary parameters that we will send back to your callback.
+
+For example, if you call `[AdjustIo trackEvent:@"abc123" withParameters:@{@"key":@"value",@"foo":@"bar"}];`, we will track the event and call `http://www.adeven/com/callback?key=value&foo=bar`. If you're using Xcode 4.3 or earlier, literal dictionaries won't work and you will have to go with the following version to achieve the same effect:
+`[AdjustIo trackEvent:@"abc123" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"value",@"key",@"bar",@"foo",nil]]`
+
+Again, you have to import `AdjustIo` to make it work by adding the line `#import "AdjustIo.h"` at the top of the file.
 
 ### Add tracking of revenue
-by adding some code to the methods that get called after some revenue has been generated. Suppose you want to track an $0.99 In-App Purchase in your app. Every time a purchase gets completed, the `paymentQueue:updatedTransactions:` method of your `SKPaymentTransactionObserver` gets called where the transaction's `transactionState` changed to `SKPaymentTransactionStatePurchased`. In that case you would add `[AdjustIo userGeneratedRevenue:99.0]` to track the generated revenue of 99 cents. Note that the parameter gets rounded to one decimal point. Within that limitation you're free to interpret the value in any currency you like. Again, you have to import `AdjustIo` to make it work by adding the line `#import "AdjustIo.h"` at the top of the file.
+by adding some code to the methods that get called after some revenue has been generated. Suppose you want to track an $0.99 In-App Purchase in your app. Every time a purchase gets completed, the `paymentQueue:updatedTransactions:` method of your `SKPaymentTransactionObserver` gets called where the transaction's `transactionState` changed to `SKPaymentTransactionStatePurchased`. In that case you would add `[AdjustIo userGeneratedRevenue:99.0]` to track the generated revenue of 99 cents. Note that the parameter gets rounded to one decimal point. Within that limitation you're free to interpret the value in any currency you like. Again, don't forget to `#include "AdjustIo.h"`.
+
+If you want to differentiate between different kinds of revenue, you can provide an eventId: `[AdjustIo userGeneratedRevenue:99.0 forEvent:@"abc123"];` If that eventId is associated with a callback URL, you can also provide parameters to be forwarded again:
+`[AdjustIo userGeneratedRevenue:99.0 forEvent:@"abc123" withParameters:@{@"key":@"value",@"foo":@"bar"}];`
 
 ## License
 
