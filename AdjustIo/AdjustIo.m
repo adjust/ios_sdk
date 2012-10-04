@@ -179,7 +179,7 @@ static AdjustIo *defaultInstance;
                                        nil];
     
     if (eventId != nil) {
-        [parameters setObject:eventId forKey:@"id"];
+        [parameters setObject:eventId forKey:@"event_id"];
     }
     
     
