@@ -20,7 +20,7 @@
     const char *cStr = [self UTF8String];
     unsigned char result[16];
     CC_MD5 (cStr, strlen(cStr), result);
-    
+
     return [[NSString stringWithFormat: @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
              result[0], result[1], result[2],  result[3],  result[4],  result[5],  result[6],  result[7],
              result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]] lowercaseString];
@@ -51,9 +51,9 @@ static const short _base64DecodingTable[256] = {
     size_t intLength = strlen(objPointer);
     int intCurrent;
     int i = 0, j = 0, k;
-    
+
     unsigned char *objResult = calloc(intLength, sizeof(unsigned char));
-    
+
     // Run through the whole string, converting as we go
     while ( ((intCurrent = *objPointer++) != '\0') && (intLength-- > 0) ) {
         if (intCurrent == '=') {
@@ -64,7 +64,7 @@ static const short _base64DecodingTable[256] = {
             }
             continue;
         }
-        
+
         intCurrent = _base64DecodingTable[intCurrent];
         if (intCurrent == -1) {
             // we're at a whitespace -- simply skip over
@@ -74,29 +74,29 @@ static const short _base64DecodingTable[256] = {
             free(objResult);
             return nil;
         }
-        
+
         switch (i % 4) {
             case 0:
                 objResult[j] = intCurrent << 2;
                 break;
-                
+
             case 1:
                 objResult[j++] |= intCurrent >> 4;
                 objResult[j] = (intCurrent & 0x0f) << 4;
                 break;
-                
+
             case 2:
                 objResult[j++] |= intCurrent >>2;
                 objResult[j] = (intCurrent & 0x03) << 6;
                 break;
-                
+
             case 3:
                 objResult[j++] |= intCurrent;
                 break;
         }
         i++;
     }
-    
+
     // mop things up if we ended on a boundary
     k = j;
     if (intCurrent == '=') {
@@ -105,7 +105,7 @@ static const short _base64DecodingTable[256] = {
                 // Invalid state
                 free(objResult);
                 return nil;
-                
+
             case 2:
                 k++;
                 // flow through
@@ -113,7 +113,7 @@ static const short _base64DecodingTable[256] = {
                 objResult[k] = 0;
         }
     }
-    
+
     // Cleanup and setup the return NSData
     NSData * objData = [[[NSData alloc] initWithBytes:objResult length:j] autorelease];
     free(objResult);

@@ -10,6 +10,9 @@
 
 @interface UIDevice(AIAdditions)
 
+- (NSString *)aiIdForAdvertisers;
 - (NSString *)aiMacAddress;
+- (NSString *)aiDeviceType;
+- (NSString *)aiDeviceName;
 
 @end

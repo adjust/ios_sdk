@@ -18,7 +18,13 @@ In the dialog `Choose options for adding these files` make sure to check the che
 
 ![][add]
 
-### 3. Integrate AdjustIo into your app
+### 3. Add the AdSupport framework
+
+In the Project Navigator select your project. In the left hand side of the main view select your target. In the tab `Build Phases` expand the group `Link Binary with Libraries`. On the bottom of that group click on the `+` button. Select the `AdSupport.framework` and click the `Add` button. In the list of frameworks select the newly added `AdSupport.framework` and change the attribute `Required` to `Optional`.
+
+![][framework]
+
+### 4. Integrate AdjustIo into your app
 
 In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppID>` with your AppId.
 
@@ -33,7 +39,7 @@ If you want to see debug logs, call `setLoggingEnabled`.
 
 ![][delegate]
 
-### 4. Build your app
+### 5. Build your app
 
 Build and run your app. If the build succeeds, you successfully integrated AdjustIo into your app. After the app launched, you should see the debug log `Tracked session start`.
 
@@ -63,11 +69,10 @@ In that case we would track the event and send a request to `http://www.adeven.c
 
     NSDictionary *parameters = @{ @"key": @"value", @"foo": @"bar" };
 
-In any case you need to import AdjustIo in any source file that makes use of the SDK. Please note that we don't store your custom parameters. If you haven't registered a callback URL for an event, there is no point in sendung us parameters.
+In any case you need to import AdjustIo in any source file that makes use of the SDK. Please note that we don't store your custom parameters. If you haven't registered a callback URL for an event, there is no point in sending us parameters.
 
 ### Add tracking of revenue
-
-If your users can make revenue by clicking on advertisements you can track those revenues. If the click is worth one cent, you could make the following call to track that revenue:
+If your users can generate revenue by clicking on advertisements you can track those revenues. If the click is worth one Cent, you could make the following call to track that revenue:
 
     [AdjustIo userGeneratedRevenue:1.0];
 
@@ -88,9 +93,10 @@ In any case, don't forget to import AdjustIo. Again, there is no point in sendin
 [tags]: https://github.com/adeven/adjust_ios_sdk/tags
 [drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
 [add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add.png
-[itunes.apple.com]: https://itunes.apple.com
+[framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework.png
 [delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate.png
 [run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run.png
+[itunes.apple.com]: https://itunes.apple.com
 
 ## License
 

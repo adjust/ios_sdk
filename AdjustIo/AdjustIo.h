@@ -11,13 +11,10 @@
 @interface AdjustIo : NSObject
 
 // Tell AdjustIo that the application did finish launching. This is required 
-// to initialize AdjustIo.
+// to initialize AdjustIo. Call this in the didFinishLaunching method of your AppDelegate.
 + (void)appDidLaunch:(NSString *)appId;
 
-// Enable tracking of the UDID (which is discouraged by Apple and disabled by default).
-+ (void)trackDeviceId;
-
-// Track any kind of event. You can assign a callback url to the event which 
+// Track any kind of event. You can assign a callback url to the event which
 // will get called every time the event is reported. You can also provide
 // parameters that will be forwarded to these callbacks.
 + (void)trackEvent:(NSString *)eventId;
@@ -27,7 +24,7 @@
 // measured in cents and rounded to on digit after the decimal point. If you 
 // want to differentiate between various types of revenues you can do so by 
 // providing different eventIds. If your revenue events have callbacks, you
-// can also pass in parameters to be forwarded to your server.
+// can also pass in parameters that will be forwarded to your server.
 + (void)userGeneratedRevenue:(float)amountInCents;
 + (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId;
 + (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
@@ -35,5 +32,9 @@
 // If you want to see debug logs while you integrate some features, call setLoggingEnabled:YES.
 // Turn it off again by calling setLoggingEnabled:NO, which is the default.
 + (void)setLoggingEnabled:(BOOL)loggingEnabled;
+
+#pragma mark deprecated
+// Deprecated methods. Don't use them anymore.
++ (void)trackDeviceId __attribute__((deprecated));
 
 @end
