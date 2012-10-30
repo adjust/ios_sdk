@@ -7,7 +7,7 @@ This is the iOS SDK of AdjustIo. You can read more about it at [adjust.io](http:
 These are the minimal steps required to integrate the AdjustIo SDK into your iOS project.
 
 ### 1. Get the SDK
-by downloading the most recent version from our [tags page](https://github.com/adeven/adjust_sdk/tags).
+by downloading the most recent version from our [tags page](https://github.com/adeven/adjust_ios_sdk/tags).
 
 ### 2. Add it to your project
 by dragging the AdjustIo subdirectory into the "Supporting Files" group in your Xcode project navigator (or any other group of your choice). A dialog box appears for you to "choose options for adding these files". Make sure the checkbox is checked and the upper radio button is selected before you finish.
@@ -30,7 +30,7 @@ by adding some code to your AppDelegate.m file.
 Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features wherever you see fit.
 
 ### Add tracking of custom events
-by adding some code to the methods that get called when something interesting happens. If you want to track how many users press a certain button or reach a particular view, you would ask us for an eventId, like "abc123". In your `buttonDown` or `viewDidAppear` method you would then add the line `[AdjustIo trackEvent:@"abc123"];`. If you register a callback URL for that eventId, like `http://www.adeven.com/callback`, we will send a request there every time the event gets triggered. Additionally, you can provide a dictionary of parameters that we will send back to your callback. All keys and values are expected to be strings.
+by adding some code to the methods that get called when something interesting happens. If you want to track how many users press a certain button or reach a particular view, you would ask us for an eventId, like `abc123`. In your `buttonDown` or `viewDidAppear` method you would then add the line `[AdjustIo trackEvent:@"abc123"];`. If you register a callback URL for that eventId, like `http://www.adeven.com/callback`, we will send a request there every time the event gets triggered. Additionally, you can provide a dictionary of parameters that we will send back to your callback. All keys and values are expected to be strings.
 
 For example, if you call `[AdjustIo trackEvent:@"abc123" withParameters:@{@"key":@"value",@"foo":@"bar"}];`, we will track the event and call `http://www.adeven/com/callback?key=value&foo=bar`. If you're using Xcode 4.3 or earlier, literal dictionaries won't work and you will have to go with the following version to achieve the same effect:
 `[AdjustIo trackEvent:@"abc123" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"value",@"key",@"bar",@"foo",nil]]`
