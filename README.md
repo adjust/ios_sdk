@@ -22,9 +22,9 @@ In the dialog `Choose options for adding these files` make sure to check the che
 
 In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppID>` with your AppId.
 
-* If you don't know your AppID, go [find](https://www.google.com/search?q=site:itunes.apple.com+%3CYourAppName%3E) your app on [itunes.apple.com][] and extract your AppID from the URL. If this was your app `https://itunes.apple.com/us/app/id315215396`, your AppID would be `315215396`.
+If you don't know your AppID, go [find](https://www.google.com/search?q=site:itunes.apple.com+%3CYourAppName%3E) your app on [itunes.apple.com][] and extract your AppID from the URL. If this was your app `https://itunes.apple.com/us/app/id315215396`, your AppID would be `315215396`.
 
-* If you want to see debug logs, call `setLoggingEnabled`.
+If you want to see debug logs, call `setLoggingEnabled`.
 
     #import "AdjustIo.h"
     // ...
