@@ -1,53 +1,102 @@
 ## Summary
 
-This is the iOS SDK of AdjustIo. You can read more about it at [adjust.io](http://www.adjust.io).
+This is the iOS SDK of AdjustIo. You can read more about it at [adjust.io][].
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the AdjustIo SDK into your iOS project.
+These are the minimal steps required to integrate the AdjustIo SDK into your iOS project. We are going to assume that you use Xcode for your iOS development.
 
 ### 1. Get the SDK
-by downloading the most recent version from our [tags page](https://github.com/adeven/adjust_ios_sdk/tags).
+Download the latest version from our [tasg page][tags]. Extract the archive in a folder of your liking.
 
 ### 2. Add it to your project
-by dragging the AdjustIo subdirectory into the "Supporting Files" group in your Xcode project navigator (or any other group of your choice). A dialog box appears for you to "choose options for adding these files". Make sure the checkbox is checked and the upper radio button is selected before you finish.
+In Xcode's Project Navigator locate the `Supporting Files` group (or any other group of your choice). From Finder drag the `AdjustIo` subdirectory into Xcode's `Supporting Files` group.
+
+![][drag]
+
+In the dialog `Choose options for adding these files` make sure to check the checkbox to `Copy items into destination group's folder` and select the upper radio button to `Create groups for any added folders`.
+
+![][add]
 
 ### 3. Integrate AdjustIo into your app
-by adding some code to your AppDelegate.m file. 
-* Import the SDK by adding the line `#import "AdjustIo.h"` at the top of the file. 
-* Start AdjustIo by adding the line `[AdjustIo appDidLaunch:@"<appId>"];` to your `application:didFinishLaunchingWithOptions:` or your `applicationDidFinishLaunching:` method's body. 
-* replace `<appId>` with the Apple ID that is provided by iTunes Connect for your app (Log into iTunes Connect, select "Manage Your Applications", select your app, see the "Apple ID" entry in the App Infomration tab).
-* If you want to track the deviceId, add the line `[AdjustIo trackDeviceId];` as well.
-* If you want to see debug logs, call `[AdjustIo setLoggingEnabled:YES]`.
+
+In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppID>` with your AppId.
+
+* If you don't know your AppID, go [find](https://www.google.com/search?q=site:itunes.apple.com+%3CYourAppName%3E) your app on [itunes.apple.com][] and extract your AppID from the URL. If this was your app `https://itunes.apple.com/us/app/id315215396`, your AppID would be `315215396`.
+
+* If you want to see debug logs, call `setLoggingEnabled`.
+
+    #import "AdjustIo.h"
+    // ...
+    [AdjustIo appDidLaunch:@"<YourAppID>"];
+    [AdjustIo setLoggingEnabled:YES];
+
+![][delegate]
 
 ### 4. Build your app
-* If the build succeeds, you successfully integrated AjdustIo into your app.
-* If your project was already using AFNetworking, your build failed because of many duplicate symbols. Just remove the AdjustIO/AFNetworking group to fix this issue.
-* If your project uses automatic reference counting, your build failed because of many ARC restriction errors. Fix this by disabling ARC on all AdjustIo files in the target's Build Phases: Expand the "Compile Sources" group, select all AdjustIo files (AjustIo, AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the "Compilec Flags" to `-fno-objc-arc` (press the return key to change all at once).
+
+Build and run your app. If the build succeeds, you successfully integrated AdjustIo into your app. After the app launched, you should see the debug log `Tracked session start`.
+
+![][run]
+
+* If your build failed because of many duplicate symbols, you were probably already using AFNetwork before integrating AdjustIo. Just remove the `AdjustIo/AFNetworking` group from your Project Navigator to resolve this issue.
+
+* If your project uses automatic reference counting, your build failed because of many ARC restriction errors. Fix this by disabling ARC on all AdjustIo files in the target's Build Phases: Expand the "Compile Sources" group, select all AdjustIo files (AjustIo, AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the "Compilec Flags" to `-fno-objc-arc` (Select all and press the `Return` key to change all at once).
 
 ## Additional features
 
 Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features wherever you see fit.
 
-### Add tracking of custom events
-by adding some code to the methods that get called when something interesting happens. If you want to track how many users press a certain button or reach a particular view, you would ask us for an eventId, like `abc123`. In your `buttonDown` or `viewDidAppear` method you would then add the line `[AdjustIo trackEvent:@"abc123"];`. If you register a callback URL for that eventId, like `http://www.adeven.com/callback`, we will send a request there every time the event gets triggered. Additionally, you can provide a dictionary of parameters that we will send back to your callback. All keys and values are expected to be strings.
+### Add tracking of custom events.
+You can tell AdjustIo about every event you consider to be of your interest. Suppose you want to track every tap on a button. We would give you an eventId, like `abc123`. In your button's `buttonDown` method you could then add the following code to track the click:
 
-For example, if you call `[AdjustIo trackEvent:@"abc123" withParameters:@{@"key":@"value",@"foo":@"bar"}];`, we will track the event and call `http://www.adeven/com/callback?key=value&foo=bar`. If you're using Xcode 4.3 or earlier, literal dictionaries won't work and you will have to go with the following version to achieve the same effect:
-`[AdjustIo trackEvent:@"abc123" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"value",@"key",@"bar",@"foo",nil]]`
+    [AdjustIo trackEvent:@"abc123"];
 
-Again, you have to import `AdjustIo` to make it work by adding the line `#import "AdjustIo.h"` at the top of the file.
+You can also register a callback URL for that event and we will send a request to that URL whenever the event happens. Additianally you can put some key-value-pairs in a Dictionary and pass it to the trackEvent method. In that case we will forward these named parameters to your callback URL. Suppose you registered the URL `http://www.adeven.com/callback` for your event and execute the following lines:
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:@"value" forKey:@"key"];
+    [parameters setObject:@"bar"   forKey:@"foo"];
+    [AdjustIo trackEvent:@"abc123" withParameters:parameters];
+
+In that case we would track the event and send a request to `http://www.adeven.com/callback?key=value&foo=bar`. If you're running Xcode 4.4 or later, you can use NSDictionary literals.
+
+    NSDictionary *parameters = @{ @"key": @"value", @"foo": @"bar" };
+
+In any case you need to import AdjustIo in any source file that makes use of the SDK.
 
 ### Add tracking of revenue
-by adding some code to the methods that get called after some revenue has been generated. Suppose you want to track an $0.99 In-App Purchase in your app. Every time a purchase gets completed, the `paymentQueue:updatedTransactions:` method of your `SKPaymentTransactionObserver` gets called where the transaction's `transactionState` changed to `SKPaymentTransactionStatePurchased`. In that case you would add `[AdjustIo userGeneratedRevenue:99.0]` to track the generated revenue of 99 cents. Note that the parameter gets rounded to one decimal point. Within that limitation you're free to interpret the value in any currency you like. Again, don't forget to `#include "AdjustIo.h"`.
 
-If you want to differentiate between different kinds of revenue, you can provide an eventId: `[AdjustIo userGeneratedRevenue:99.0 forEvent:@"abc123"];` If that eventId is associated with a callback URL, you can also provide parameters to be forwarded again:
-`[AdjustIo userGeneratedRevenue:99.0 forEvent:@"abc123" withParameters:@{@"key":@"value",@"foo":@"bar"}];`
+If your users can make revenue by clicking on advertisements you can track those revenues. If the click is worth one cent, you could make the following call to track that revenue:
+
+    [AdjustIo userGeneratedRevenue:1.0];
+
+The parameter is supposed to be in Cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different eventIds for each kind. In that case you would make a call like this:
+
+    [AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123"];
+
+You can also register a callback URL again and provide a dictionary of named parameters, just like it worked with normal events.
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:@"value" forKey:@"key"];
+    [parameters setObject:@"bar"   forKey:@"foo"];
+    [AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
+
+In any case, don't forget to import AdjustIo.
+
+[adjust.io]: http://www.adjust.io
+[tags]: https://github.com/adeven/adjust_ios_sdk/tags
+[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
+[add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add.png
+[itunes.apple.com]: https://itunes.apple.com
+[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate.png
+[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run.png
 
 ## License
 
 The adjust-sdk is licensed under the MIT License.
 
-Copyright (c) 2012 adeven GmbH, 
+Copyright (c) 2012 adeven GmbH,
 http://www.adeven.com
 
 Permission is hereby granted, free of charge, to any person obtaining
