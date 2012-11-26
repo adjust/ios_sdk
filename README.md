@@ -7,7 +7,7 @@ This is the iOS SDK of AdjustIo. You can read more about it at [adjust.io][].
 These are the minimal steps required to integrate the AdjustIo SDK into your iOS project. We are going to assume that you use Xcode for your iOS development.
 
 ### 1. Get the SDK
-Download the latest version from our [tasg page][tags]. Extract the archive in a folder of your liking.
+Download the latest version from our [tags page][tags]. Extract the archive in a folder of your liking.
 
 ### 2. Add it to your project
 In Xcode's Project Navigator locate the `Supporting Files` group (or any other group of your choice). From Finder drag the `AdjustIo` subdirectory into Xcode's `Supporting Files` group.
