@@ -9,8 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 
+@class AELogger;
+
 @interface AIApiClient : AFHTTPClient
 
-+ (AIApiClient *)apiClient;
++ (AIApiClient *)apiClientWithLogger:(AELogger *)logger;
+
+- (void)postPath:(NSString *)path
+         success:(NSString *)successMessage
+         failure:(NSString *)failureMessage
+      parameters:(NSDictionary *)parameters;
 
 @end
