@@ -14,6 +14,9 @@
 #import "NSData+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
+static NSString * const kKeySessionDate = @"AdjustIo.sessionDate";
+static NSString * const kKeySessionId   = @"AdjustIo.sessionId";
+
 static AdjustIo *defaultInstance;
 
 
@@ -30,9 +33,14 @@ static AdjustIo *defaultInstance;
 - (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 - (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
 
+- (NSNumber *)nextSessionId;
+- (NSNumber *)lastSessionId;
+- (NSNumber *)lastInterval;
+
 @property (copy) NSString *appId;
 @property (copy) NSString *macAddress;
 @property (copy) NSString *idForAdvertisers;
+@property (copy) NSString *fbAttributionId;
 
 @property (retain) AELogger *logger;
 @property (retain) AIApiClient *apiClient;
@@ -111,6 +119,7 @@ static AdjustIo *defaultInstance;
     self.appId = theAppId;
     self.macAddress = UIDevice.currentDevice.aiMacAddress;
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
+    self.fbAttributionId = UIDevice.currentDevice.aiFbAttributionId;
 
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(trackSessionStart) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(trackSessionEnd) name:UIApplicationWillResignActiveNotification object:nil];
@@ -126,6 +135,9 @@ static AdjustIo *defaultInstance;
                                        self.appId,            @"app_id",
                                        self.macAddress,       @"mac",
                                        self.idForAdvertisers, @"idfa",
+                                       self.nextSessionId,    @"session_id",
+                                       self.lastInterval,     @"last_interval",
+                                       self.fbAttributionId,  @"fb_id",
                                        nil];
 
     [self.apiClient postPath:@"/startup"
@@ -139,6 +151,8 @@ static AdjustIo *defaultInstance;
                                        self.appId,            @"app_id",
                                        self.macAddress,       @"mac",
                                        self.idForAdvertisers, @"idfa",
+                                       self.lastSessionId,    @"session_id",
+                                       self.lastInterval,     @"last_interval",
                                        nil];
 
     [self.apiClient postPath:@"/shutdown"
@@ -193,9 +207,30 @@ static AdjustIo *defaultInstance;
                   parameters:parameters];
 }
 
+- (NSNumber *)nextSessionId {
+    int sessionId = [NSUserDefaults.standardUserDefaults integerForKey:kKeySessionId] + 1;
+    [NSUserDefaults.standardUserDefaults setInteger:sessionId forKey:kKeySessionId];
+    return [NSNumber numberWithInt:sessionId];
+}
+
+- (NSNumber *)lastSessionId {
+    int sessionId = [NSUserDefaults.standardUserDefaults integerForKey:kKeySessionId];
+    return [NSNumber numberWithInt:sessionId];
+}
+
+- (NSNumber *)lastInterval {
+    NSDate *now = [NSDate date];
+    NSDate *last = [NSUserDefaults.standardUserDefaults objectForKey:kKeySessionDate];
+    [NSUserDefaults.standardUserDefaults setObject:now forKey:kKeySessionDate];
+
+    NSTimeInterval interval = [now timeIntervalSinceDate:last];
+    return [NSNumber numberWithInt:roundf(interval)];
+}
+
 @synthesize appId;
 @synthesize macAddress;
 @synthesize idForAdvertisers;
+@synthesize fbAttributionId;
 @synthesize apiClient;
 @synthesize logger;
 
