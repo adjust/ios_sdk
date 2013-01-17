@@ -13,7 +13,7 @@
 #import "NSString+AIAdditions.h"
 
 static NSString * const kBaseUrl = @"http://app.adjust.io";
-static NSString * const kClientSdk = @"ios1.3";
+static NSString * const kClientSdk = @"ios1.4";
 
 
 #pragma mark private interface

@@ -19,10 +19,15 @@
 
 - (NSString *)aiIdForAdvertisers {
     if (NSClassFromString(@"ASIdentifierManager")) {
-        return [ASIdentifierManager sharedManager].advertisingIdentifier.UUIDString;
+        return ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString;
     } else {
         return @"";
     }
+}
+
+- (NSString *)aiFbAttributionId {
+    UIPasteboard *pb = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO];
+    return pb.string;
 }
 
 - (NSString *)aiMacAddress {
