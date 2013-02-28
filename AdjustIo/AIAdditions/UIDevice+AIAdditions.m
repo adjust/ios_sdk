@@ -26,8 +26,9 @@
 }
 
 - (NSString *)aiFbAttributionId {
-    UIPasteboard *pb = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO];
-    return pb.string;
+    NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
+    if (result == nil) return @"";
+    return result;
 }
 
 - (NSString *)aiMacAddress {

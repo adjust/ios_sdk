@@ -30,7 +30,7 @@
     }
 
     va_list ap;
-    va_start(ap,format);
+    va_start(ap, format);
     NSLog(@"\t[%@] %@", self.logTag, [[NSString alloc] initWithFormat:format arguments:ap]);
     va_end(ap);
 }
