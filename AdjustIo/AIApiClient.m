@@ -12,8 +12,8 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString * const kBaseUrl = @"http://app.adjust.io";
-static NSString * const kClientSdk = @"ios1.4";
+static NSString * const kBaseUrl = @"https://app.adjust.io";
+static NSString * const kClientSdk = @"ios1.5";
 
 
 #pragma mark private interface
@@ -60,19 +60,31 @@ static NSString * const kClientSdk = @"ios1.4";
     return self;
 }
 
-- (void)postPath:(NSString *)path success:(NSString *)successMessage failure:(NSString *)failureMessage parameters:(NSDictionary *)parameters {
+- (void)postPath:(NSString *)path
+      parameters:(NSDictionary *)parameters
+  successMessage:(NSString *)successMessage
+  failureMessage:(NSString *)failureMessage
+{
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               [self.logger log:successMessage];
+               [self logSuccess:successMessage];
            }
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               NSString *errorString = operation.responseString.aiTrim;
-               if (errorString == nil) {
-                   errorString = error.localizedDescription;
-               }
-               [self.logger log:@"%@ (%@)", failureMessage, errorString];
+               [self logFailure:failureMessage response:operation.responseString error:error];
            }];
+}
+
+- (void)logSuccess:(NSString *)message {
+    [self.logger log:message];
+}
+
+- (void)logFailure:(NSString *)message response:(NSString *)response error:(NSError *)error {
+     NSString *errorString = response.aiTrim;
+     if (errorString == nil) {
+         errorString = error.localizedDescription;
+     }
+     [self.logger log:@"%@ (%@)", message, errorString];
 }
 
 @end

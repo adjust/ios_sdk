@@ -16,8 +16,11 @@
 + (AIApiClient *)apiClientWithLogger:(AELogger *)logger;
 
 - (void)postPath:(NSString *)path
-         success:(NSString *)successMessage
-         failure:(NSString *)failureMessage
-      parameters:(NSDictionary *)parameters;
+      parameters:(NSDictionary *)parameters
+  successMessage:(NSString *)successMessage
+  failureMessage:(NSString *)failureMessage;
+
+- (void)logSuccess:(NSString *)string;
+- (void)logFailure:(NSString *)string response:(NSString *)response error:(NSError *)error;
 
 @end
