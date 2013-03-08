@@ -11,6 +11,7 @@
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
+#import "NSString+AIAdditions.h"
 #import "NSData+AIAdditions.h"
 
 // We currently only track online sessions: If the server couldn't be reached when a session starts,
@@ -88,7 +89,8 @@ static AdjustIo *defaultInstance;
 - (NSNumber *)lastSessionLength;
 
 @property (copy) NSString *appId;
-@property (copy) NSString *macAddress;
+@property (copy) NSString *macSha1;
+@property (copy) NSString *macShortMd5;
 @property (copy) NSString *idForAdvertisers;
 @property (copy) NSString *fbAttributionId;
 
@@ -165,9 +167,12 @@ static AdjustIo *defaultInstance;
         return;
     }
 
+    NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
+
     // these must not be nil
     self.appId = theAppId;
-    self.macAddress = UIDevice.currentDevice.aiMacAddress;
+    self.macSha1 = [macAddress aiSha1];
+    self.macShortMd5 = [[macAddress aiRemoveColons] aiMd5];
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId = UIDevice.currentDevice.aiFbAttributionId;
 
@@ -183,7 +188,8 @@ static AdjustIo *defaultInstance;
 - (void)trackSessionStart {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        self.appId,               @"app_id",
-                                       self.macAddress,          @"mac",
+                                       self.macShortMd5,         @"mac",
+                                       self.macSha1,             @"mac_sha1",
                                        self.idForAdvertisers,    @"idfa",
                                        self.fbAttributionId,     @"fb_id",
                                        self.nextSessionId,       @"session_id",
@@ -219,7 +225,7 @@ static AdjustIo *defaultInstance;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        eventId,               @"id",
                                        self.appId,            @"app_id",
-                                       self.macAddress,       @"mac",
+                                       self.macShortMd5,      @"mac",
                                        self.idForAdvertisers, @"idfa",
                                        nil];
 
@@ -239,7 +245,7 @@ static AdjustIo *defaultInstance;
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        self.appId,            @"app_id",
-                                       self.macAddress,       @"mac",
+                                       self.macShortMd5,      @"mac",
                                        self.idForAdvertisers, @"idfa",
                                        amountInMillis,        @"amount",
                                        nil];
@@ -327,7 +333,8 @@ static AdjustIo *defaultInstance;
 }
 
 @synthesize appId;
-@synthesize macAddress;
+@synthesize macSha1;
+@synthesize macShortMd5;
 @synthesize idForAdvertisers;
 @synthesize fbAttributionId;
 @synthesize apiClient;

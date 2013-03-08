@@ -12,6 +12,8 @@
 
 - (NSString *)aiTrim;
 - (NSString *)aiMd5;
+- (NSString *)aiSha1;
+- (NSString *)aiRemoveColons;
 - (NSData *)aiDecodeBase64;
 
 @end
