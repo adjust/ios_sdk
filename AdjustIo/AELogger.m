@@ -9,6 +9,7 @@
 #import "AELogger.h"
 
 @implementation AELogger
+@synthesize logTag = _logTag;
 
 - (id)initWithTag:(NSString *)tag enabled:(BOOL)enabled {
     self = [super init];
@@ -31,8 +32,15 @@
 
     va_list ap;
     va_start(ap, format);
-    NSLog(@"\t[%@] %@", self.logTag, [[NSString alloc] initWithFormat:format arguments:ap]);
+    NSString *logString = [[NSString alloc] initWithFormat:format arguments:ap];
+    NSLog(@"\t[%@] %@", self.logTag, logString);
+    [logString release];
     va_end(ap);
+}
+
+- (void)dealloc {
+    [super dealloc];
+    [_logTag release];
 }
 
 @end
