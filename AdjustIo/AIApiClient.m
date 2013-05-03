@@ -46,7 +46,7 @@ static NSString * const kClientSdk = @"ios1.6";
 
     NSString *userAgent = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@ %@ %@",
                            [bundle.infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey],
-                           [bundle.infoDictionary objectForKey:(NSString *)kCFBundleVersionKey],
+                           [bundle.infoDictionary objectForKey:(NSString *)kCFBundleVersionKey], // TODO: remove whitespace!
                            device.aiDeviceType,
                            device.aiDeviceName,
                            @"ios",
