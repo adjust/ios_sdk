@@ -25,10 +25,11 @@
 // want to differentiate between various types of revenues you can do so by
 // providing different event tokens. If your revenue events have callbacks, you
 // can also pass in parameters that will be forwarded to your server.
-+ (void)userGeneratedRevenue:(float)amountInCents;
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken;
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
++ (void)trackRevenue:(float)amountInCents;
++ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken;
++ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
+// TODO: add logLevels like on Android for version 2.0
 // If you want to see debug logs while you integrate some features, call setLoggingEnabled:YES.
 // Turn it off again by calling setLoggingEnabled:NO, which is the default.
 + (void)setLoggingEnabled:(BOOL)loggingEnabled;

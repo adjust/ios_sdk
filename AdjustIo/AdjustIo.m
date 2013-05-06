@@ -52,7 +52,7 @@ static AdjustIo *defaultInstance;
 - (void)trackSessionStart;
 - (void)trackSessionEnd;
 - (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
-- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
+- (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 // save a new sessionState to sessionState
 - (void)setSessionState:(SessionState)sessionState;
@@ -119,16 +119,16 @@ static AdjustIo *defaultInstance;
     [self.defaultInstance trackEvent:eventToken withParameters:parameters];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents {
-    [self userGeneratedRevenue:amountInCents forEvent:nil];
++ (void)trackRevenue:(float)amountInCents {
+    [self trackRevenue:amountInCents forEvent:nil];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken {
-    [self userGeneratedRevenue:amountInCents forEvent:eventToken withParameters:nil];
++ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken {
+    [self trackRevenue:amountInCents forEvent:eventToken withParameters:nil];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
-    [self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventToken withParameters:parameters];
++ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    [self.defaultInstance trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
 }
 
 + (void)setLoggingEnabled:(BOOL)loggingEnabled {
@@ -234,7 +234,7 @@ static AdjustIo *defaultInstance;
                      failureMessage:[NSString stringWithFormat:@"Failed to track event %@.", eventToken]];
 }
 
-- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
+- (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
     NSString *amountInMillis = [NSNumber numberWithInt:roundf(10 * amountInCents)].stringValue;
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
