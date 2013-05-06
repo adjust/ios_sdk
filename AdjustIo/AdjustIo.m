@@ -46,7 +46,7 @@ static AdjustIo *defaultInstance;
 
 + (AdjustIo *)defaultInstance;
 
-- (void)appDidLaunch:(NSString *)appId;
+- (void)appDidLaunch:(NSString *)appToken;
 - (void)appWillTerminate;
 
 - (void)trackSessionStart;
@@ -88,7 +88,7 @@ static AdjustIo *defaultInstance;
 // or -1 if we don't know when the last online session ended
 - (NSNumber *)lastSessionLength;
 
-@property (copy) NSString *appId;
+@property (copy) NSString *appToken;
 @property (copy) NSString *macSha1;
 @property (copy) NSString *macShortMd5;
 @property (copy) NSString *idForAdvertisers;
@@ -107,8 +107,8 @@ static AdjustIo *defaultInstance;
 
 // class methods get forwarded to defaultInstance
 
-+ (void)appDidLaunch:(NSString *)appId {
-    [self.defaultInstance appDidLaunch:appId];
++ (void)appDidLaunch:(NSString *)appToken {
+    [self.defaultInstance appDidLaunch:appToken];
 }
 
 + (void)trackEvent:(NSString *)eventToken {
@@ -155,16 +155,16 @@ static AdjustIo *defaultInstance;
     return self;
 }
 
-- (void)appDidLaunch:(NSString *)theAppId {
-    if (theAppId.length == 0) {
-        [self.logger log:@"Error: Missing appId"];
+- (void)appDidLaunch:(NSString *)theAppToken {
+    if (theAppToken.length == 0) {
+        [self.logger log:@"Error: Missing appToken"];
         return;
     }
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
     // these must not be nil
-    self.appId = theAppId;
+    self.appToken = theAppToken;
     self.macSha1 = [macAddress aiSha1];
     self.macShortMd5 = [[macAddress aiRemoveColons] aiMd5];
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
@@ -181,7 +181,7 @@ static AdjustIo *defaultInstance;
 
 - (void)trackSessionStart {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       self.appId,               @"app_id",
+                                       self.appToken,            @"app_token",
                                        self.macShortMd5,         @"mac",
                                        self.macSha1,             @"mac_sha1",
                                        self.idForAdvertisers,    @"idfa",
@@ -217,10 +217,10 @@ static AdjustIo *defaultInstance;
 
 - (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       eventToken,            @"id",
-                                       self.appId,            @"app_id",
+                                       self.appToken,         @"app_token",
                                        self.macShortMd5,      @"mac",
                                        self.idForAdvertisers, @"idfa",
+                                       eventToken,            @"event_id",
                                        nil];
 
     if (callbackParameters != nil) {
@@ -238,7 +238,7 @@ static AdjustIo *defaultInstance;
     NSString *amountInMillis = [NSNumber numberWithInt:roundf(10 * amountInCents)].stringValue;
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       self.appId,            @"app_id",
+                                       self.appToken,         @"app_token",
                                        self.macShortMd5,      @"mac",
                                        self.idForAdvertisers, @"idfa",
                                        amountInMillis,        @"amount",
@@ -326,7 +326,7 @@ static AdjustIo *defaultInstance;
     return [NSNumber numberWithInt:length];
 }
 
-@synthesize appId;
+@synthesize appToken;
 @synthesize macSha1;
 @synthesize macShortMd5;
 @synthesize idForAdvertisers;

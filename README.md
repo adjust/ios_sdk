@@ -26,16 +26,14 @@ In the Project Navigator select your project. In the left hand side of the main 
 
 ### 4. Integrate AdjustIo into your app
 
-In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppID>` with your AppId.
-
-If you don't know your AppID, go [find](https://www.google.com/search?q=site:itunes.apple.com+%3CYourAppName%3E) your app on [itunes.apple.com][] and extract your AppID from the URL. If this was your app `https://itunes.apple.com/us/app/id315215396`, your AppID would be `315215396`.
+In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppToken>` with the App Token that you can find in your dashboard at [adjust.io][].
 
 If you want to see debug logs, call `setLoggingEnabled`.
 
 ```objc
 #import "AdjustIo.h"
 // ...
-[AdjustIo appDidLaunch:@"<YourAppID>"];
+[AdjustIo appDidLaunch:@"<YourAppToken>"];
 [AdjustIo setLoggingEnabled:YES];
 ```
 
@@ -56,7 +54,7 @@ Build and run your app. If the build succeeds, you successfully integrated Adjus
 Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features wherever you see fit.
 
 ### Add tracking of custom events.
-You can tell AdjustIo about every event you consider to be of your interest. Suppose you want to track every tap on a button. Currently you would have to ask us for an event token and we would give you one, like `abc123`. In your button's `buttonDown` method you could then add the following code to track the click:
+You can tell AdjustIo about every event you consider to be of your interest. Suppose you want to track every tap on a button. You would have to create a new Event Token in your dashboard at [adjust.io][]. Suppose that Event Token was `abc123`. In your button's `buttonDown` method you could then add the following line to track the click:
 
 ```objc
 [AdjustIo trackEvent:@"abc123"];
@@ -86,7 +84,7 @@ If your users can generate revenue by clicking on advertisements you can track t
 [AdjustIo userGeneratedRevenue:1.0];
 ```
 
-The parameter is supposed to be in Cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different event tokens for each kind. Again, you need to ask us for event tokens that you can then use. In that case you would make a call like this:
+The parameter is supposed to be in Cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different Event Tokens for each kind. Again, you need to create those Event Tokens in your dashboard at [adjust.io][]. In that case you would make a call like this:
 
 ```objc
 [AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123"];
@@ -126,7 +124,6 @@ In any case, don't forget to import AdjustIo. Again, there is no point in sendin
 [framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework.png
 [delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate.png
 [run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run.png
-[itunes.apple.com]: https://itunes.apple.com
 
 ## License
 

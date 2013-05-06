@@ -25,9 +25,10 @@
  * This is required to initialize AdjustIo.
  * Call this in the didFinishLaunching method of your AppDelegate.
  *
- * @param appId The appId of your app
+ * @param appToken The app token of your app
+ *     You can find it in your dashboard at http://www.adjust.io
  */
-+ (void)appDidLaunch:(NSString *)appId;
++ (void)appDidLaunch:(NSString *)appToken;
 
 /**
  * Track any kind of event.
