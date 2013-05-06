@@ -33,8 +33,4 @@
 // Turn it off again by calling setLoggingEnabled:NO, which is the default.
 + (void)setLoggingEnabled:(BOOL)loggingEnabled;
 
-#pragma mark deprecated
-// Deprecated methods. Don't use them anymore.
-+ (void)trackDeviceId __attribute__((deprecated));
-
 @end

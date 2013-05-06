@@ -135,12 +135,6 @@ static AdjustIo *defaultInstance;
     self.defaultInstance.logger.loggingEnabled = loggingEnabled;
 }
 
-#pragma mark deprecated
-
-+ (void)trackDeviceId __attribute__((deprecated)) {
-    NSLog(@"[AdjustIo trackDeviceId] is deprecated.");
-}
-
 #pragma mark private
 
 + (AdjustIo *)defaultInstance {
