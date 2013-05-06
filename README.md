@@ -32,10 +32,12 @@ If you don't know your AppID, go [find](https://www.google.com/search?q=site:itu
 
 If you want to see debug logs, call `setLoggingEnabled`.
 
-    #import "AdjustIo.h"
-    // ...
-    [AdjustIo appDidLaunch:@"<YourAppID>"];
-    [AdjustIo setLoggingEnabled:YES];
+```objc
+#import "AdjustIo.h"
+// ...
+[AdjustIo appDidLaunch:@"<YourAppID>"];
+[AdjustIo setLoggingEnabled:YES];
+```
 
 ![][delegate]
 
@@ -56,36 +58,64 @@ Once you integrated the AdjustIo SDK into your project, you can take advantage o
 ### Add tracking of custom events.
 You can tell AdjustIo about every event you consider to be of your interest. Suppose you want to track every tap on a button. Currently you would have to ask us for an event token and we would give you one, like `abc123`. In your button's `buttonDown` method you could then add the following code to track the click:
 
-    [AdjustIo trackEvent:@"abc123"];
+```objc
+[AdjustIo trackEvent:@"abc123"];
+```
 
 You can also register a callback URL for that event and we will send a request to that URL whenever the event happens. In that case you can also put some key-value-pairs in a Dictionary and pass it to the trackEvent method. We will then forward these named parameters to your callback URL. Suppose you registered the URL `http://www.adeven.com/callback` for your event and execute the following lines:
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@"value" forKey:@"key"];
-    [parameters setObject:@"bar"   forKey:@"foo"];
-    [AdjustIo trackEvent:@"abc123" withParameters:parameters];
+```objc
+NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+[parameters setObject:@"value" forKey:@"key"];
+[parameters setObject:@"bar"   forKey:@"foo"];
+[AdjustIo trackEvent:@"abc123" withParameters:parameters];
+```
 
 In that case we would track the event and send a request to `http://www.adeven.com/callback?key=value&foo=bar`. If you're running Xcode 4.4 or later, you can use NSDictionary literals.
 
-    NSDictionary *parameters = @{ @"key": @"value", @"foo": @"bar" };
+```objc
+NSDictionary *parameters = @{ @"key": @"value", @"foo": @"bar" };
+```
 
 In any case you need to import AdjustIo in any source file that makes use of the SDK. Please note that we don't store your custom parameters. If you haven't registered a callback URL for an event, there is no point in sending us parameters.
 
 ### Add tracking of revenue
 If your users can generate revenue by clicking on advertisements you can track those revenues. If the click is worth one Cent, you could make the following call to track that revenue:
 
-    [AdjustIo userGeneratedRevenue:1.0];
+```objc
+[AdjustIo userGeneratedRevenue:1.0];
+```
 
 The parameter is supposed to be in Cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different event tokens for each kind. Again, you need to ask us for event tokens that you can then use. In that case you would make a call like this:
 
-    [AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123"];
+```objc
+[AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123"];
+```
 
 You can also register a callback URL again and provide a dictionary of named parameters, just like it worked with normal events.
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@"value" forKey:@"key"];
-    [parameters setObject:@"bar"   forKey:@"foo"];
-    [AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
+```objc
+NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+[parameters setObject:@"value" forKey:@"key"];
+[parameters setObject:@"bar"   forKey:@"foo"];
+[AdjustIo userGeneratedRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
+```
+
+If you want to track In-App Purchases, please make sure to call `userGeneratedRevenue` after `finishTransaction` in `paymentQueue:updatedTransaction` only if the state changed to `SKPaymentTransactionStatePurchased`:
+
+```objc
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+    for (SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStatePurchased:
+                [self completeTransaction:transaction];
+                [AdjustIo userGeneratedRevenue:...];
+                break;
+            // more cases
+        }
+    }
+}
+```
 
 In any case, don't forget to import AdjustIo. Again, there is no point in sending parameters if you haven't registered a callback URL for that revenue event.
 
