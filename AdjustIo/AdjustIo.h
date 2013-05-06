@@ -17,17 +17,17 @@
 // Track any kind of event. You can assign a callback url to the event which
 // will get called every time the event is reported. You can also provide
 // parameters that will be forwarded to these callbacks.
-+ (void)trackEvent:(NSString *)eventId;
-+ (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
++ (void)trackEvent:(NSString *)eventToken;
++ (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 // Tell AdjustIo that the current user generated some revenue. The amount is
 // measured in cents and rounded to on digit after the decimal point. If you
 // want to differentiate between various types of revenues you can do so by
-// providing different eventIds. If your revenue events have callbacks, you
+// providing different event tokens. If your revenue events have callbacks, you
 // can also pass in parameters that will be forwarded to your server.
 + (void)userGeneratedRevenue:(float)amountInCents;
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId;
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken;
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 // If you want to see debug logs while you integrate some features, call setLoggingEnabled:YES.
 // Turn it off again by calling setLoggingEnabled:NO, which is the default.

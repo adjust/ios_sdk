@@ -51,8 +51,8 @@ static AdjustIo *defaultInstance;
 
 - (void)trackSessionStart;
 - (void)trackSessionEnd;
-- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
-- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters;
+- (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
+- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 // save a new sessionState to sessionState
 - (void)setSessionState:(SessionState)sessionState;
@@ -111,24 +111,24 @@ static AdjustIo *defaultInstance;
     [self.defaultInstance appDidLaunch:appId];
 }
 
-+ (void)trackEvent:(NSString *)eventId {
-    [self trackEvent:eventId withParameters:nil];
++ (void)trackEvent:(NSString *)eventToken {
+    [self trackEvent:eventToken withParameters:nil];
 }
 
-+ (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
-    [self.defaultInstance trackEvent:eventId withParameters:parameters];
++ (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    [self.defaultInstance trackEvent:eventToken withParameters:parameters];
 }
 
 + (void)userGeneratedRevenue:(float)amountInCents {
     [self userGeneratedRevenue:amountInCents forEvent:nil];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId {
-    [self userGeneratedRevenue:amountInCents forEvent:eventId withParameters:nil];
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken {
+    [self userGeneratedRevenue:amountInCents forEvent:eventToken withParameters:nil];
 }
 
-+ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)parameters {
-    [self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventId withParameters:parameters];
++ (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    [self.defaultInstance userGeneratedRevenue:amountInCents forEvent:eventToken withParameters:parameters];
 }
 
 + (void)setLoggingEnabled:(BOOL)loggingEnabled {
@@ -221,9 +221,9 @@ static AdjustIo *defaultInstance;
     }
 }
 
-- (void)trackEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+- (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       eventId,               @"id",
+                                       eventToken,            @"id",
                                        self.appId,            @"app_id",
                                        self.macShortMd5,      @"mac",
                                        self.idForAdvertisers, @"idfa",
@@ -236,11 +236,11 @@ static AdjustIo *defaultInstance;
     }
 
     [self.apiClient postPath:@"/event" parameters:parameters
-                     successMessage:[NSString stringWithFormat:@"Tracked event %@.", eventId]
-                     failureMessage:[NSString stringWithFormat:@"Failed to track event %@.", eventId]];
+                     successMessage:[NSString stringWithFormat:@"Tracked event %@.", eventToken]
+                     failureMessage:[NSString stringWithFormat:@"Failed to track event %@.", eventToken]];
 }
 
-- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventId withParameters:(NSDictionary *)callbackParameters {
+- (void)userGeneratedRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
     NSString *amountInMillis = [NSNumber numberWithInt:roundf(10 * amountInCents)].stringValue;
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -250,8 +250,8 @@ static AdjustIo *defaultInstance;
                                        amountInMillis,        @"amount",
                                        nil];
 
-    if (eventId != nil) {
-        [parameters setObject:eventId forKey:@"event_id"];
+    if (eventToken != nil) {
+        [parameters setObject:eventToken forKey:@"event_id"];
     }
 
     if (callbackParameters != nil) {
