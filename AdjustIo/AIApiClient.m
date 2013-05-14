@@ -31,7 +31,7 @@ static NSString * const kClientSdk = @"ios1.6";
 #pragma mark public
 
 + (AIApiClient *)apiClientWithLogger:(AELogger *)logger {
-    AIApiClient *apiClient = [[[AIApiClient alloc] init] autorelease];
+    AIApiClient *apiClient = [[AIApiClient alloc] init];
     apiClient.logger = logger;
     return apiClient;
 }

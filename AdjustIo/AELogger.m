@@ -22,7 +22,7 @@
 }
 
 + (AELogger *)loggerWithTag:(NSString *)logTag enabled:(BOOL)enabled {
-    return [[[AELogger alloc] initWithTag:logTag enabled:enabled] autorelease];
+    return [[AELogger alloc] initWithTag:logTag enabled:enabled];
 }
 
 - (void)log:(NSString *)format, ... {
@@ -34,13 +34,7 @@
     va_start(ap, format);
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:ap];
     NSLog(@"\t[%@] %@", self.logTag, logString);
-    [logString release];
     va_end(ap);
-}
-
-- (void)dealloc {
-    [super dealloc];
-    [_logTag release];
 }
 
 @end
