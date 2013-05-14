@@ -19,7 +19,6 @@ static NSString * const kClientSdk = @"ios1.6";
 #pragma mark private interface
 @interface AIApiClient()
 
-@property (assign) BOOL loggingEnabled;
 @property (retain) AELogger *logger;
 
 @end
@@ -76,7 +75,7 @@ static NSString * const kClientSdk = @"ios1.6";
 }
 
 - (void)logSuccess:(NSString *)message {
-    [self.logger log:message];
+    [self.logger info:message];
 }
 
 - (void)logFailure:(NSString *)message response:(NSString *)response error:(NSError *)error {
@@ -84,7 +83,7 @@ static NSString * const kClientSdk = @"ios1.6";
      if (errorString == nil) {
          errorString = error.localizedDescription;
      }
-     [self.logger log:@"%@ (%@)", message, errorString];
+     [self.logger warn:@"%@ (%@)", message, errorString];
 }
 
 @end

@@ -8,15 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    AELogLevelVerbose = 1,
+    AELogLevelDebug   = 2,
+    AELogLevelInfo    = 3,
+    AELogLevelWarn    = 4,
+    AELogLevelError   = 5,
+    AELogLevelAssert  = 6
+} AELogLevel;
+
 // A simple logger with one log level.
 @interface AELogger : NSObject
 
 @property (copy) NSString *logTag;
-@property (assign) BOOL loggingEnabled;
+@property (assign) AELogLevel logLevel;
 
-- (id)initWithTag:(NSString *)logTag enabled:(BOOL)enabled;
-+ (AELogger *)loggerWithTag:(NSString *)logTag enabled:(BOOL)enabled;
+- (id)initWithTag:(NSString *)logTag;
++ (AELogger *)loggerWithTag:(NSString *)logTag;
 
-- (void)log:(NSString *)message, ...;
+- (void)verbose:(NSString *)message, ...;
+- (void)debug:  (NSString *)message, ...;
+- (void)info:   (NSString *)message, ...;
+- (void)warn:   (NSString *)message, ...;
+- (void)error:  (NSString *)message, ...;
 
 @end

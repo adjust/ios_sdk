@@ -7,7 +7,6 @@
 //
 
 #import "AdjustIo.h"
-#import "AELogger.h"
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
@@ -131,8 +130,8 @@ static AdjustIo *defaultInstance;
     [self.defaultInstance trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
 }
 
-+ (void)setLoggingEnabled:(BOOL)loggingEnabled {
-    self.defaultInstance.logger.loggingEnabled = loggingEnabled;
++ (void)setLogLevel:(AELogLevel)logLevel {
+    self.defaultInstance.logger.logLevel = logLevel;
 }
 
 #pragma mark private
@@ -149,26 +148,26 @@ static AdjustIo *defaultInstance;
     self = [super init];
     if (self == nil) return nil;
 
-    self.logger = [AELogger loggerWithTag:@"AdjustIo" enabled:NO];
+    self.logger = [AELogger loggerWithTag:@"AdjustIo"];
     self.apiClient = [AIApiClient apiClientWithLogger:self.logger];
 
     return self;
 }
 
-- (void)appDidLaunch:(NSString *)theAppToken {
-    if (theAppToken.length == 0) {
-        [self.logger log:@"Error: Missing appToken"];
+- (void)appDidLaunch:(NSString *)yourAppToken {
+    if (yourAppToken.length == 0) {
+        [self.logger error:@"Missing App Token."];
         return;
     }
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
     // these must not be nil
-    self.appToken = theAppToken;
-    self.macSha1 = [macAddress aiSha1];
-    self.macShortMd5 = [[macAddress aiRemoveColons] aiMd5];
-    self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
-    self.fbAttributionId = UIDevice.currentDevice.aiFbAttributionId;
+    appToken = yourAppToken;
+    macSha1 = [macAddress aiSha1];
+    macShortMd5 = [[macAddress aiRemoveColons] aiMd5];
+    idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
+    fbAttributionId = UIDevice.currentDevice.aiFbAttributionId;
 
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(trackSessionStart) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(trackSessionEnd) name:UIApplicationWillResignActiveNotification object:nil];

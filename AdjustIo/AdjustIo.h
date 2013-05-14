@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "AELogger.h"
+
 /**
  * The main interface to AdjustIo.
  *
@@ -62,11 +64,18 @@
 + (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
-// TODO: add logLevels like on Android for version 2.0
 /**
- * If you want to see debug logs while you integrate some features, call setLoggingEnabled:YES.
- * Turn it off again by calling setLoggingEnabled:NO, which is the default.
+ * Change the verbosity of AdjustIo's logs
+ *
+ * @param logLevel The desired minimum log level (default: info)
+ *     Must be one of the following:
+ *      - AELogLevelVerbose (enable all logging)
+ *      - AELogLevelDebug
+ *      - AELogLevelInfo    (the default)
+ *      - AELogLevelWarn    (disable info logging)
+ *      - AELogLevelError   (disable warnings as well)
+ *      - AELogLevelAssert  (disable errors as well)
  */
-+ (void)setLoggingEnabled:(BOOL)loggingEnabled;
++ (void)setLogLevel:(AELogLevel)logLevel;
 
 @end
