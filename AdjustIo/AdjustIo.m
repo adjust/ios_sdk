@@ -229,8 +229,8 @@ static AdjustIo *defaultInstance;
     }
 
     [self.apiClient postPath:@"/event" parameters:parameters
-                     successMessage:[NSString stringWithFormat:@"Tracked event %@.", eventToken]
-                     failureMessage:[NSString stringWithFormat:@"Failed to track event %@.", eventToken]];
+              successMessage:[NSString stringWithFormat:@"Tracked event %@.", eventToken]
+              failureMessage:[NSString stringWithFormat:@"Failed to track event %@.", eventToken]];
 }
 
 - (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)callbackParameters {
@@ -254,8 +254,8 @@ static AdjustIo *defaultInstance;
     }
 
     [self.apiClient postPath:@"/revenue" parameters:parameters
-                     successMessage:[NSString stringWithFormat:@"Tracked revenue (%.1f Cents).", amountInCents]
-                     failureMessage:[NSString stringWithFormat:@"Failed to track revenue (%.1f Cents).", amountInCents]];
+              successMessage:[NSString stringWithFormat:@"Tracked revenue (%.1f Cents).", amountInCents]
+              failureMessage:[NSString stringWithFormat:@"Failed to track revenue (%.1f Cents).", amountInCents]];
 }
 
 #pragma mark NSUserDefault interface

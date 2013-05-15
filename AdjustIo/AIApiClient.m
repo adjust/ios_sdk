@@ -92,11 +92,11 @@ static NSString * const kClientSdk = @"ios1.6";
 }
 
 - (void)logFailure:(NSString *)message response:(NSString *)response error:(NSError *)error {
-     NSString *errorString = response.aiTrim;
-     if (errorString == nil) {
-         errorString = error.localizedDescription;
-     }
-     [self.logger warn:@"%@ (%@)", message, errorString];
+    NSString *errorString = response.aiTrim;
+    if (errorString == nil) {
+        errorString = error.localizedDescription;
+    }
+    [self.logger warn:@"%@ (%@)", message, errorString];
 }
 
 

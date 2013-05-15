@@ -17,7 +17,7 @@ typedef enum {
     AELogLevelAssert  = 6
 } AELogLevel;
 
-// A simple logger with one log level.
+// A simple logger with multiple log levels.
 @interface AELogger : NSObject
 
 @property (copy) NSString *logTag;
