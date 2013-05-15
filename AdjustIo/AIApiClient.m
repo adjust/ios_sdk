@@ -19,6 +19,10 @@ static NSString * const kClientSdk = @"ios1.6";
 #pragma mark private interface
 @interface AIApiClient()
 
+- (NSString *)sanitizeU:(NSString *)string;
+- (NSString *)sanitizeZ:(NSString *)string;
+- (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString;;
+
 @property (retain) AELogger *logger;
 
 @end
@@ -39,19 +43,28 @@ static NSString * const kClientSdk = @"ios1.6";
     self = [super initWithBaseURL:[NSURL URLWithString:kBaseUrl]];
     if (self == nil) return nil;
 
-    NSBundle *bundle = NSBundle.mainBundle;
     UIDevice *device = UIDevice.currentDevice;
     NSLocale *locale = NSLocale.currentLocale;
+    NSBundle *bundle = NSBundle.mainBundle;
+    NSDictionary *infoDictionary = bundle.infoDictionary;
+
+    NSString *bundeIdentifier = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];
+    NSString *bundleVersion   = [infoDictionary objectForKey:(NSString *)kCFBundleVersionKey];
+    NSString *languageCode    = [locale objectForKey:NSLocaleLanguageCode];
+    NSString *countryCode     = [locale objectForKey:NSLocaleCountryCode];
+    NSString *osName          = @"ios";
 
     NSString *userAgent = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@ %@ %@",
-                           [bundle.infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey],
-                           [bundle.infoDictionary objectForKey:(NSString *)kCFBundleVersionKey], // TODO: remove whitespace!
-                           device.aiDeviceType,
-                           device.aiDeviceName,
-                           @"ios",
-                           device.systemVersion,
-                           [locale objectForKey:NSLocaleLanguageCode],
-                           [locale objectForKey:NSLocaleCountryCode]];
+                           [self sanitizeU:bundeIdentifier],
+                           [self sanitizeU:bundleVersion],
+                           [self sanitizeU:device.aiDeviceType],
+                           [self sanitizeU:device.aiDeviceName],
+                           [self sanitizeU:osName],
+                           [self sanitizeU:device.systemVersion],
+                           [self sanitizeZ:languageCode],
+                           [self sanitizeZ:countryCode]];
+
+    NSLog(@"%@", userAgent);
 
     [self setDefaultHeader:@"User-Agent" value:userAgent];
     [self setDefaultHeader:@"Client-SDK" value:kClientSdk];
@@ -84,6 +97,30 @@ static NSString * const kClientSdk = @"ios1.6";
          errorString = error.localizedDescription;
      }
      [self.logger warn:@"%@ (%@)", message, errorString];
+}
+
+
+#pragma mark private
+
+- (NSString *)sanitizeU:(NSString *)string {
+    return [self sanitize:string defaultString:@"unknown"];
+}
+
+- (NSString *)sanitizeZ:(NSString *)string {
+    return [self sanitize:string defaultString:@"zz"];
+}
+
+- (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString; {
+    if (string == nil) {
+        return defaultString;
+    }
+
+    NSString *result = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (result.length == 0) {
+        return defaultString;
+    }
+
+    return result;
 }
 
 @end
