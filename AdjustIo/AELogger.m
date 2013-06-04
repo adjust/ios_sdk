@@ -28,36 +28,36 @@
 - (void)verbose:(NSString *)format, ... {
     if (self.logLevel > AELogLevelVerbose) return;
     va_list parameters; va_start(parameters, format);
-    [self logLevel:@"Verbose" format:format parameters:parameters];
+    [self logLevel:@"v" format:format parameters:parameters];
 }
 
 - (void)debug:(NSString *)format, ... {
     if (self.logLevel > AELogLevelDebug) return;
     va_list parameters; va_start(parameters, format);
-    [self logLevel:@"Debug" format:format parameters:parameters];
+    [self logLevel:@"d" format:format parameters:parameters];
 }
 
 - (void)info:(NSString *)format, ... {
     if (self.logLevel > AELogLevelInfo) return;
     va_list parameters; va_start(parameters, format);
-    [self logLevel:@"Info" format:format parameters:parameters];
+    [self logLevel:@"i" format:format parameters:parameters];
 }
 
 - (void)warn:(NSString *)format, ... {
     if (self.logLevel > AELogLevelWarn) return;
     va_list parameters; va_start(parameters, format);
-    [self logLevel:@"Warn" format:format parameters:parameters];
+    [self logLevel:@"w" format:format parameters:parameters];
 }
 
 - (void)error:(NSString *)format, ... {
     if (self.logLevel > AELogLevelError) return;
     va_list parameters; va_start(parameters, format);
-    [self logLevel:@"Error" format:format parameters:parameters];
+    [self logLevel:@"e" format:format parameters:parameters];
 }
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:parameters];
-    NSLog(@"\t[%@] %@: %@", self.logTag, logLevel, logString);
+    NSLog(@"[%@]%@: %@", self.logTag, logLevel, logString);
     va_end(parameters);
 }
 
