@@ -64,8 +64,6 @@ static NSString * const kClientSdk = @"ios1.6";
                            [self sanitizeZ:languageCode],
                            [self sanitizeZ:countryCode]];
 
-    NSLog(@"%@", userAgent);
-
     [self setDefaultHeader:@"User-Agent" value:userAgent];
     [self setDefaultHeader:@"Client-SDK" value:kClientSdk];
 
