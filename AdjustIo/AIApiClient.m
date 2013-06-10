@@ -12,9 +12,10 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
+static const double kRequestTimeout = 2.0; // TODO: 60
+
 static NSString * const kBaseUrl = @"https://app.adjust.io";
 static NSString * const kClientSdk = @"ios1.6";
-
 
 #pragma mark private interface
 @interface AIApiClient()
@@ -75,14 +76,29 @@ static NSString * const kClientSdk = @"ios1.6";
   successMessage:(NSString *)successMessage
   failureMessage:(NSString *)failureMessage
 {
-    [self postPath:path
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               [self logSuccess:successMessage];
-           }
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               [self logFailure:failureMessage response:operation.responseString error:error];
-           }];
+    void (^success)(AFHTTPRequestOperation *operation, id responseObject) =
+    ^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self logSuccess:successMessage];
+    };
+
+    void (^failure)(AFHTTPRequestOperation *operation, NSError *error) =
+    ^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self logFailure:failureMessage response:operation.responseString error:error];
+    };
+
+    [self postPath:path parameters:parameters success:success failure:failure];
+}
+
+
+- (void)postPath:(NSString *)path
+      parameters:(NSDictionary *)parameters
+         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    request.timeoutInterval = kRequestTimeout;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)logSuccess:(NSString *)message {
