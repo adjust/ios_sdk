@@ -68,6 +68,11 @@ static NSString *aiFbAttributionId  = nil;
 + (NSMutableDictionary *)eventPackageWithToken:(NSString *)eventToken parameters:(NSDictionary *)parameters;
 + (NSMutableDictionary *)revenuePackageWithToken:(NSString *)eventToken parameters:(NSDictionary *)parameters amount:(float)amount;
 
++ (BOOL)checkAppToken;
++ (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
++ (BOOL)checkEventTokenLength:(NSString *)eventToken;
++ (BOOL)checkAmount:(float)amount;
+
 @end
 
 
@@ -97,9 +102,11 @@ static NSString *aiFbAttributionId  = nil;
     [self trackEvent:eventToken withParameters:nil];
 }
 
-// TODO: check eventToken format
-// TODO: check appToken (is nil if appDidLaunch not called)
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    if (![self checkEventTokenNotNil:eventToken]) return;
+    if (![self checkEventTokenLength:eventToken]) return;
+    if (![self checkAppToken]) return;
+
     NSMutableDictionary *eventPackage = [self eventPackageWithToken:eventToken parameters:parameters];
     [self trackEventPackage:eventPackage];
 }
@@ -112,8 +119,11 @@ static NSString *aiFbAttributionId  = nil;
     [self trackRevenue:amountInCents forEvent:eventToken withParameters:nil];
 }
 
-// TODO: don't allow zero amount
 + (void)trackRevenue:(float)amount forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    if (![self checkEventTokenLength:eventToken]) return;
+    if (![self checkAmount:amount]) return;
+    if (![self checkAppToken]) return;
+
     NSMutableDictionary *revenueEvent = [self revenuePackageWithToken:eventToken parameters:parameters amount:amount];
     [self trackEventPackage:revenueEvent];
 }
@@ -210,6 +220,8 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackSessionStart {
+    if (![self checkAppToken]) return;
+
     [self startTimer];
 
     [defaultsLock lock];
@@ -358,7 +370,7 @@ static NSString *aiFbAttributionId  = nil;
     NSString *kind = [package objectForKey:@"kind"];
     int packageCount = mutableQueue.count;
     if (packageCount > 1) {
-        [aiLogger debug:@"Added %@ package to tracking queue at position %d.", kind, packageCount];
+        [aiLogger info:@"Added %@ package to tracking queue at position %d.", kind, packageCount];
     } else {
         [aiLogger debug:@"Added %@ package to tracking queue.", kind];
     }
@@ -414,6 +426,11 @@ static NSString *aiFbAttributionId  = nil;
 
     [self removeFirstPackage:package];
     [trackingLock unlock];
+
+    if (!aiTimer.isValid) {
+        return; // stop tracking after session end
+    }
+
     [self trackFirstPackage];
 }
 
@@ -440,7 +457,7 @@ static NSString *aiFbAttributionId  = nil;
 + (NSMutableDictionary *)sessionPackage {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:aiAppToken         forKey:@"app_token"];
-    [params setObject:aiMacShortMd5      forKey:@"mac"]; // TODO: rename to mac_md5?
+    [params setObject:aiMacShortMd5      forKey:@"mac"];
     [params setObject:aiIdForAdvertisers forKey:@"idfa"];
     [params setObject:aiMacSha1          forKey:@"mac_sha1"];
     [params setObject:aiFbAttributionId  forKey:@"fb_id"];
@@ -506,6 +523,44 @@ static NSString *aiFbAttributionId  = nil;
     [eventPackage setObject:params      forKey:@"params"];
 
     return eventPackage;
+}
+
++ (BOOL)checkAppToken {
+    if (aiAppToken == nil) {
+        [aiLogger error:@"Missing App Token."];
+        return NO;
+    } else if (aiAppToken.length != 12) {
+        [aiLogger error:@"Malformed App Token %@", aiAppToken];
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)checkEventTokenNotNil:(NSString *)eventToken {
+    if (eventToken == nil) {
+        [aiLogger error:@"Missing Event Token"];
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)checkEventTokenLength:(NSString *)eventToken {
+    if (eventToken == nil) {
+        return YES;
+    }
+    if (eventToken.length != 6) {
+        [aiLogger error:@"Malformed Event Token '%@'", eventToken];
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)checkAmount:(float)amount {
+    if (amount <= 0.0f) {
+        [aiLogger error:@"Invalid amount %.1f", amount];
+        return NO;
+    }
+    return YES;
 }
 
 @end
