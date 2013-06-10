@@ -18,19 +18,19 @@
 static const double kTimerInterval   = 5.0; // TODO: 60 seconds
 static const double kSessionInterval = 1.0; // TODO: 30 minutes
 
-static NSString * const kDefaultsKeyLastActivity        = @"lastactivity"; // TODO: rename
-static NSString * const kDefaultsKeyLastSessionStart    = @"lastsessionstart";
-static NSString * const kDefaultsKeyLastSubsessionStart = @"lastsubsessionstart";
-static NSString * const kDefaultsKeySessionCount        = @"sessioncount";
-static NSString * const kDefaultsKeySubsessionCount     = @"subsessioncount";
-static NSString * const kDefaultsKeyTimeSpent           = @"timespent";
-static NSString * const kDefaultsKeyEventCount          = @"eventcount";
-static NSString * const kDefaultsKeyPackageQueue        = @"packagequeue";
+static NSString * const kDefaultsKeyLastActivity        = @"AdjustIo.LastActivity";
+static NSString * const kDefaultsKeyLastSessionStart    = @"AdjustIo.LastSessionStart";
+static NSString * const kDefaultsKeyLastSubsessionStart = @"AdjustIo.LastSubsessionStart";
+static NSString * const kDefaultsKeySessionCount        = @"AdjustIo.SessionCount";
+static NSString * const kDefaultsKeySubsessionCount     = @"AdjustIo.SubsessionCount";
+static NSString * const kDefaultsKeyTimeSpent           = @"AdjustIo.TimeSpent";
+static NSString * const kDefaultsKeyEventCount          = @"AdjustIo.EventCount";
+static NSString * const kDefaultsKeyPackageQueue        = @"AdjustIo.PackageQueue";
 
 static NSString * const kPackageKeyPath       = @"path";
 static NSString * const kPackageKeyKind       = @"kind";
 static NSString * const kPackageKeySuffix     = @"suffix";
-static NSString * const kPackageKeyParameters = @"parameters";
+static NSString * const kPackageKeyParameters = @"params";
 
 static NSString * const kFieldAppToken        = @"app_token";
 static NSString * const kFieldMacShortMd5     = @"mac";
@@ -430,6 +430,12 @@ static NSString *aiFbAttributionId  = nil;
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSArray *packageQueue = [defaults objectForKey:kDefaultsKeyPackageQueue];
+
+    if (packageQueue == nil || packageQueue.count == 0) {
+        [defaultsLock unlock];
+        return;
+    }
+
     NSMutableArray *mutableQueue = [NSMutableArray arrayWithArray:packageQueue];
     [mutableQueue removeObjectAtIndex:0];
     [defaults setObject:mutableQueue forKey:kDefaultsKeyPackageQueue];
