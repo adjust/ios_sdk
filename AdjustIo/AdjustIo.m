@@ -18,14 +18,35 @@
 static const double kTimerInterval   = 5.0; // TODO: 60 seconds
 static const double kSessionInterval = 1.0; // TODO: 30 minutes
 
-static NSString * const kKeyLastActivity        = @"lastactivity"; // TODO: rename
-static NSString * const kKeyLastSessionStart    = @"lastsessionstart";
-static NSString * const kKeyLastSubsessionStart = @"lastsubsessionstart";
-static NSString * const kKeySessionCount        = @"sessioncount";
-static NSString * const kKeySubsessionCount     = @"subsessioncount";
-static NSString * const kKeyTimeSpent           = @"timespent";
-static NSString * const kKeyEventCount          = @"eventcount";
-static NSString * const kKeyPackageQueue        = @"packagequeue";
+static NSString * const kDefaultsKeyLastActivity        = @"lastactivity"; // TODO: rename
+static NSString * const kDefaultsKeyLastSessionStart    = @"lastsessionstart";
+static NSString * const kDefaultsKeyLastSubsessionStart = @"lastsubsessionstart";
+static NSString * const kDefaultsKeySessionCount        = @"sessioncount";
+static NSString * const kDefaultsKeySubsessionCount     = @"subsessioncount";
+static NSString * const kDefaultsKeyTimeSpent           = @"timespent";
+static NSString * const kDefaultsKeyEventCount          = @"eventcount";
+static NSString * const kDefaultsKeyPackageQueue        = @"packagequeue";
+
+static NSString * const kPackageKeyPath       = @"path";
+static NSString * const kPackageKeyKind       = @"kind";
+static NSString * const kPackageKeySuffix     = @"suffix";
+static NSString * const kPackageKeyParameters = @"parameters";
+
+static NSString * const kFieldAppToken        = @"app_token";
+static NSString * const kFieldMacShortMd5     = @"mac";
+static NSString * const kFieldMacSha1         = @"mac_sha1";
+static NSString * const kFieldIdfa            = @"idfa";
+static NSString * const kFieldFbAttributionId = @"fb_id";
+static NSString * const kFieldCreatedAt       = @"created_at";
+static NSString * const kFieldSessionLength   = @"session_length";
+static NSString * const kFieldSessionCount    = @"session_id";
+static NSString * const kFieldSubsessionCount = @"subsession_count";
+static NSString * const kFieldLastInterval    = @"last_interval";
+static NSString * const kFieldTimeSpent       = @"time_spent";
+static NSString * const kFieldEventToken      = @"event_id";
+static NSString * const kFieldEventCount      = @"event_count";
+static NSString * const kFieldAmount          = @"amount";
+
 
 static AIApiClient *aiApiClient  = nil;
 static AELogger    *aiLogger     = nil;
@@ -202,7 +223,7 @@ static NSString *aiFbAttributionId  = nil;
 
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    [defaults setObject:NSDate.date forKey:kKeyLastActivity];
+    [defaults setObject:NSDate.date forKey:kDefaultsKeyLastActivity];
     [defaults synchronize];
     [defaultsLock unlock];
     [self trackFirstPackage];
@@ -213,7 +234,7 @@ static NSString *aiFbAttributionId  = nil;
 
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    [defaults setObject:NSDate.date forKey:kKeyLastActivity];
+    [defaults setObject:NSDate.date forKey:kDefaultsKeyLastActivity];
     [defaults synchronize];
     [defaultsLock unlock];
     [self stopTimer];
@@ -226,7 +247,7 @@ static NSString *aiFbAttributionId  = nil;
 
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    NSDate *lastActivity     = [defaults objectForKey:kKeyLastActivity];
+    NSDate *lastActivity     = [defaults objectForKey:kDefaultsKeyLastActivity];
 
     if (lastActivity == nil) {
         [self handleFirstSession];
@@ -259,21 +280,21 @@ static NSString *aiFbAttributionId  = nil;
 
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    NSDate *lastSessionStart = [defaults objectForKey:kKeyLastSessionStart];
+    NSDate *lastSessionStart = [defaults objectForKey:kDefaultsKeyLastSessionStart];
+    int     sessionCount     = [defaults integerForKey:kDefaultsKeySessionCount];
+    int     eventCount       = [defaults integerForKey:kDefaultsKeyEventCount];
     double  sessionLength    = [now timeIntervalSinceDate:lastSessionStart];
-    int     sessionCount     = [defaults integerForKey:kKeySessionCount];
-    int     eventCount       = [defaults integerForKey:kKeyEventCount];
 
     eventCount++;
 
-    NSMutableDictionary *eventParameters = [eventPackage objectForKey:@"params"];
-    [eventParameters setInteger:eventCount    forKey:@"event_count"];
-    [eventParameters setInteger:sessionCount  forKey:@"session_count"];
-    [eventParameters setInteger:sessionLength forKey:@"session_length"];
+    NSMutableDictionary *eventParameters = [eventPackage objectForKey:kPackageKeyParameters];
+    [eventParameters setInteger:eventCount    forKey:kFieldEventCount];
+    [eventParameters setInteger:sessionCount  forKey:kFieldSessionCount];
+    [eventParameters setInteger:sessionLength forKey:kFieldSessionLength];
     [self enqueueTrackingPackage:eventPackage];
 
-    [defaults setInteger:eventCount forKey:kKeyEventCount];
-    [defaults setObject:now         forKey:kKeyLastActivity];
+    [defaults setInteger:eventCount forKey:kDefaultsKeyEventCount];
+    [defaults setObject:now         forKey:kDefaultsKeyLastActivity];
     [defaults synchronize];
     [defaultsLock unlock];
 
@@ -285,29 +306,29 @@ static NSString *aiFbAttributionId  = nil;
     NSDate *now = NSDate.date;
 
     NSMutableDictionary *sessionPackage    = [self sessionPackage];
-    NSMutableDictionary *sessionParameters = [sessionPackage objectForKey:@"params"];
-    [sessionParameters setObject:now forKey:@"created_at"];
-    [sessionParameters setInteger:1  forKey:@"session_count"];
+    NSMutableDictionary *sessionParameters = [sessionPackage objectForKey:kPackageKeyParameters];
+    [sessionParameters setObject:now forKey:kFieldCreatedAt];
+    [sessionParameters setInteger:1  forKey:kFieldSessionCount];
     [self enqueueTrackingPackage:sessionPackage];
 
-    [defaults setInteger:1  forKey:kKeySessionCount];
-    [defaults setInteger:1  forKey:kKeySubsessionCount];
-    [defaults setObject:now forKey:kKeyLastSessionStart];
-    [defaults setObject:now forKey:kKeyLastSubsessionStart];
-    [defaults setObject:now forKey:kKeyLastActivity];
-    [defaults setDouble:0   forKey:kKeyTimeSpent];
+    [defaults setInteger:1  forKey:kDefaultsKeySessionCount];
+    [defaults setInteger:1  forKey:kDefaultsKeySubsessionCount];
+    [defaults setObject:now forKey:kDefaultsKeyLastSessionStart];
+    [defaults setObject:now forKey:kDefaultsKeyLastSubsessionStart];
+    [defaults setObject:now forKey:kDefaultsKeyLastActivity];
+    [defaults setDouble:0   forKey:kDefaultsKeyTimeSpent];
 }
 
 + (void)handleNewSession {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSDate *now = NSDate.date;
 
-    int     sessionCount        = [defaults integerForKey:kKeySessionCount] + 1;
-    int     subsessionCount     = [defaults integerForKey:kKeySubsessionCount];
-    NSDate *lastSessionStart    = [defaults objectForKey:kKeyLastSessionStart];
-    NSDate *lastSubsessionStart = [defaults objectForKey:kKeyLastSubsessionStart];
-    NSDate *lastActivity        = [defaults objectForKey:kKeyLastActivity];
-    double  timeSpent           = [defaults doubleForKey:kKeyTimeSpent];
+    int     sessionCount        = [defaults integerForKey:kDefaultsKeySessionCount] + 1;
+    int     subsessionCount     = [defaults integerForKey:kDefaultsKeySubsessionCount];
+    NSDate *lastSessionStart    = [defaults objectForKey:kDefaultsKeyLastSessionStart];
+    NSDate *lastSubsessionStart = [defaults objectForKey:kDefaultsKeyLastSubsessionStart];
+    NSDate *lastActivity        = [defaults objectForKey:kDefaultsKeyLastActivity];
+    double  timeSpent           = [defaults doubleForKey:kDefaultsKeyTimeSpent];
     double  sessionLength       = [lastActivity timeIntervalSinceDate:lastSessionStart];
     double  lastTimeSpent       = [lastActivity timeIntervalSinceDate:lastSubsessionStart];
     double  lastInterval        = [now timeIntervalSinceDate:lastActivity];
@@ -315,39 +336,39 @@ static NSString *aiFbAttributionId  = nil;
     timeSpent += lastTimeSpent;
 
     NSMutableDictionary *sessionPackage    = [self sessionPackage];
-    NSMutableDictionary *sessionParameters = [sessionPackage objectForKey:@"params"];
-    [sessionParameters setDate:now                     forKey:@"created_at"];
-    [sessionParameters setInteger:sessionCount         forKey:@"session_id"];
-    [sessionParameters setInteger:subsessionCount      forKey:@"subsession_count"];
-    [sessionParameters setInteger:round(lastInterval)  forKey:@"last_interval"];
-    [sessionParameters setInteger:round(sessionLength) forKey:@"session_length"];
-    [sessionParameters setInteger:round(timeSpent)     forKey:@"time_spent"];
+    NSMutableDictionary *sessionParameters = [sessionPackage objectForKey:kPackageKeyParameters];
+    [sessionParameters setDate:now                     forKey:kFieldCreatedAt];
+    [sessionParameters setInteger:sessionCount         forKey:kFieldSessionCount];
+    [sessionParameters setInteger:subsessionCount      forKey:kFieldSubsessionCount];
+    [sessionParameters setInteger:round(lastInterval)  forKey:kFieldLastInterval];
+    [sessionParameters setInteger:round(sessionLength) forKey:kFieldSessionLength];
+    [sessionParameters setInteger:round(timeSpent)     forKey:kFieldTimeSpent];
     [self enqueueTrackingPackage:sessionPackage];
 
-    [defaults setInteger:sessionCount forKey:kKeySessionCount];
-    [defaults setInteger:1            forKey:kKeySubsessionCount];
-    [defaults setObject:now           forKey:kKeyLastSessionStart];
-    [defaults setObject:now           forKey:kKeyLastSubsessionStart];
-    [defaults setObject:now           forKey:kKeyLastActivity];
-    [defaults setDouble:0             forKey:kKeyTimeSpent];
+    [defaults setInteger:sessionCount forKey:kDefaultsKeySessionCount];
+    [defaults setInteger:1            forKey:kDefaultsKeySubsessionCount];
+    [defaults setObject:now           forKey:kDefaultsKeyLastSessionStart];
+    [defaults setObject:now           forKey:kDefaultsKeyLastSubsessionStart];
+    [defaults setObject:now           forKey:kDefaultsKeyLastActivity];
+    [defaults setDouble:0             forKey:kDefaultsKeyTimeSpent];
 }
 
 + (void)handleNewSubsession {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSDate *now = NSDate.date;
 
-    int     subsessionCount     = [defaults integerForKey:kKeySubsessionCount] + 1;
-    NSDate *lastSubsessionStart = [defaults objectForKey:kKeyLastSubsessionStart];
-    NSDate *lastActivity        = [defaults objectForKey:kKeyLastActivity];
-    double  timeSpent           = [defaults doubleForKey:kKeyTimeSpent];
+    int     subsessionCount     = [defaults integerForKey:kDefaultsKeySubsessionCount] + 1;
+    NSDate *lastSubsessionStart = [defaults objectForKey:kDefaultsKeyLastSubsessionStart];
+    NSDate *lastActivity        = [defaults objectForKey:kDefaultsKeyLastActivity];
+    double  timeSpent           = [defaults doubleForKey:kDefaultsKeyTimeSpent];
 
     double lastTimeSpent = [lastActivity timeIntervalSinceDate:lastSubsessionStart];
     timeSpent += lastTimeSpent;
 
-    [defaults setInteger:subsessionCount forKey:kKeySubsessionCount];
-    [defaults setObject:now              forKey:kKeyLastSubsessionStart];
-    [defaults setObject:now              forKey:kKeyLastActivity];
-    [defaults setDouble:timeSpent        forKey:kKeyTimeSpent];
+    [defaults setInteger:subsessionCount forKey:kDefaultsKeySubsessionCount];
+    [defaults setObject:now              forKey:kDefaultsKeyLastSubsessionStart];
+    [defaults setObject:now              forKey:kDefaultsKeyLastActivity];
+    [defaults setDouble:timeSpent        forKey:kDefaultsKeyTimeSpent];
 
     [aiLogger verbose:@"Subsession %d adds time spent %f.", subsessionCount, lastTimeSpent];
 }
@@ -355,7 +376,7 @@ static NSString *aiFbAttributionId  = nil;
 // TODO: in background?
 + (void)enqueueTrackingPackage:(NSDictionary *)package {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    NSArray *packageQueue = [defaults objectForKey:kKeyPackageQueue];
+    NSArray *packageQueue = [defaults objectForKey:kDefaultsKeyPackageQueue];
 
     NSMutableArray *mutableQueue;
     if (packageQueue != nil) {
@@ -365,9 +386,9 @@ static NSString *aiFbAttributionId  = nil;
     }
 
     [mutableQueue addObject:package];
-    [defaults setObject:mutableQueue forKey:kKeyPackageQueue];
+    [defaults setObject:mutableQueue forKey:kDefaultsKeyPackageQueue];
 
-    NSString *kind = [package objectForKey:@"kind"];
+    NSString *kind = [package objectForKey:kPackageKeyKind];
     int packageCount = mutableQueue.count;
     if (packageCount > 1) {
         [aiLogger info:@"Added %@ package to tracking queue at position %d.", kind, packageCount];
@@ -378,7 +399,7 @@ static NSString *aiFbAttributionId  = nil;
 
 + (void)trackFirstPackage {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    NSArray *packageQueue = [defaults objectForKey:kKeyPackageQueue];
+    NSArray *packageQueue = [defaults objectForKey:kDefaultsKeyPackageQueue];
     if (packageQueue == nil || packageQueue.count == 0) {
         return;
     }
@@ -388,8 +409,8 @@ static NSString *aiFbAttributionId  = nil;
     }
 
     NSDictionary *package = [packageQueue objectAtIndex:0];
-    NSString     *path    = [package objectForKey:@"path"];
-    NSDictionary *params  = [package objectForKey:@"params"];
+    NSString     *path    = [package objectForKey:kPackageKeyPath];
+    NSDictionary *params  = [package objectForKey:kPackageKeyParameters];
 
     void (^success)(AFHTTPRequestOperation *operation, id responseObject) =
     ^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -408,18 +429,18 @@ static NSString *aiFbAttributionId  = nil;
 + (void)removeFirstPackage:(NSDictionary *)package {
     [defaultsLock lock];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    NSArray *packageQueue = [defaults objectForKey:kKeyPackageQueue];
+    NSArray *packageQueue = [defaults objectForKey:kDefaultsKeyPackageQueue];
     NSMutableArray *mutableQueue = [NSMutableArray arrayWithArray:packageQueue];
     [mutableQueue removeObjectAtIndex:0];
-    [defaults setObject:mutableQueue forKey:kKeyPackageQueue];
+    [defaults setObject:mutableQueue forKey:kDefaultsKeyPackageQueue];
     [defaults synchronize];
     [defaultsLock unlock];
 }
 
 + (void)trackingPackageSucceeded:(NSDictionary *)package {
-    NSString     *kind   = [package objectForKey:@"kind"];
-    NSString     *suffix = [package objectForKey:@"suffix"];
-    NSDictionary *params = [package objectForKey:@"params"];
+    NSString     *kind   = [package objectForKey:kPackageKeyKind];
+    NSString     *suffix = [package objectForKey:kPackageKeySuffix];
+    NSDictionary *params = [package objectForKey:kPackageKeyParameters];
 
     [aiLogger info:@"Tracked %@%@", kind, suffix];
     [aiLogger verbose:@"Request parameters: %@", params];
@@ -435,8 +456,8 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackingPackageFailed:(NSDictionary *)package response:(NSString *)response error:(NSError *)error {
-    NSString *kind    = [package objectForKey:@"kind"];
-    NSString *suffix  = [package objectForKey:@"suffix"];
+    NSString *kind    = [package objectForKey:kPackageKeyKind];
+    NSString *suffix  = [package objectForKey:kPackageKeySuffix];
     NSString *message = [NSString stringWithFormat:@"Failed to track %@%@", kind, suffix];
 
     if (response == nil || response.length == 0) {
@@ -445,7 +466,7 @@ static NSString *aiFbAttributionId  = nil;
         return;
     }
 
-    NSDictionary *params = [package objectForKey:@"params"];
+    NSDictionary *params = [package objectForKey:kPackageKeyParameters];
     [aiLogger warn:@"%@ (%@)", message, response.aiTrim];
     [aiLogger verbose:@"Request parameters: %@", params];
 
@@ -456,40 +477,40 @@ static NSString *aiFbAttributionId  = nil;
 
 + (NSMutableDictionary *)sessionPackage {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:aiAppToken         forKey:@"app_token"];
-    [params setObject:aiMacShortMd5      forKey:@"mac"];
-    [params setObject:aiIdForAdvertisers forKey:@"idfa"];
-    [params setObject:aiMacSha1          forKey:@"mac_sha1"];
-    [params setObject:aiFbAttributionId  forKey:@"fb_id"];
+    [params setObject:aiAppToken         forKey:kFieldAppToken];
+    [params setObject:aiMacShortMd5      forKey:kFieldMacShortMd5];
+    [params setObject:aiIdForAdvertisers forKey:kFieldIdfa];
+    [params setObject:aiMacSha1          forKey:kFieldMacSha1];
+    [params setObject:aiFbAttributionId  forKey:kFieldFbAttributionId];
 
     NSMutableDictionary *sessionPackage = [NSMutableDictionary dictionary];
-    [sessionPackage setObject:@"/startup" forKey:@"path"];
-    [sessionPackage setObject:@"session"  forKey:@"kind"];
-    [sessionPackage setObject:@"."        forKey:@"suffix"];
-    [sessionPackage setObject:params      forKey:@"params"];
+    [sessionPackage setObject:@"/startup" forKey:kPackageKeyPath];
+    [sessionPackage setObject:@"session"  forKey:kPackageKeyKind];
+    [sessionPackage setObject:@"."        forKey:kPackageKeySuffix];
+    [sessionPackage setObject:params      forKey:kPackageKeyParameters];
 
     return sessionPackage;
 }
 
 + (NSMutableDictionary *)eventPackageWithToken:(NSString *)eventToken parameters:(NSDictionary *)callbackParams {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:aiAppToken         forKey:@"app_token"];
-    [params setObject:aiMacShortMd5      forKey:@"mac"];
-    [params setObject:aiIdForAdvertisers forKey:@"idfa"];
-    [params setObject:eventToken         forKey:@"event_id"];
+    [params setObject:aiAppToken         forKey:kFieldAppToken];
+    [params setObject:aiMacShortMd5      forKey:kFieldMacShortMd5];
+    [params setObject:aiIdForAdvertisers forKey:kFieldIdfa];
+    [params setObject:eventToken         forKey:kFieldEventToken];
 
     if (callbackParams != nil) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParams options:0 error:nil];
         NSString *paramString = jsonData.aiEncodeBase64;
-        [params setValue:paramString forKey:@"params"];
+        [params setValue:paramString forKey:kPackageKeyParameters];
     }
 
     NSString *suffix = [NSString stringWithFormat:@" '%@'.", eventToken];
     NSMutableDictionary *eventPackage = [NSMutableDictionary dictionary];
-    [eventPackage setObject:@"/event"  forKey:@"path"];
-    [eventPackage setObject:@"event"   forKey:@"kind"];
-    [eventPackage setObject:suffix     forKey:@"suffix"];
-    [eventPackage setObject:params     forKey:@"params"];
+    [eventPackage setObject:@"/event"  forKey:kPackageKeyPath];
+    [eventPackage setObject:@"event"   forKey:kPackageKeyKind];
+    [eventPackage setObject:suffix     forKey:kPackageKeySuffix];
+    [eventPackage setObject:params     forKey:kPackageKeyParameters];
 
     return eventPackage;
 }
@@ -498,16 +519,16 @@ static NSString *aiFbAttributionId  = nil;
     NSString *amountInMillis = [NSNumber numberWithInt:roundf(10 * amount)].stringValue;
 
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:aiAppToken         forKey:@"app_token"];
-    [params setObject:aiMacShortMd5      forKey:@"mac"];
-    [params setObject:aiIdForAdvertisers forKey:@"idfa"];
-    [params setObject:amountInMillis     forKey:@"amount"];
-    [params trySetObject:eventToken      forKey:@"event_id"];
+    [params setObject:aiAppToken         forKey:kFieldAppToken];
+    [params setObject:aiMacShortMd5      forKey:kFieldMacShortMd5];
+    [params setObject:aiIdForAdvertisers forKey:kFieldIdfa];
+    [params setObject:amountInMillis     forKey:kFieldAmount];
+    [params trySetObject:eventToken      forKey:kFieldEventToken];
 
     if (callbackParams != nil) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:callbackParams options:0 error:nil];
         NSString *paramString = jsonData.aiEncodeBase64;
-        [params setValue:paramString forKey:@"params"];
+        [params setValue:paramString forKey:kPackageKeyParameters];
     }
 
     NSString *suffix = [NSString stringWithFormat:@": %.1f Cent", amount];
@@ -517,10 +538,10 @@ static NSString *aiFbAttributionId  = nil;
     }
 
     NSMutableDictionary *eventPackage = [NSMutableDictionary dictionary];
-    [eventPackage setObject:@"/revenue" forKey:@"path"];
-    [eventPackage setObject:@"revenue"  forKey:@"kind"];
-    [eventPackage setObject:suffix      forKey:@"suffix"];
-    [eventPackage setObject:params      forKey:@"params"];
+    [eventPackage setObject:@"/revenue" forKey:kPackageKeyPath];
+    [eventPackage setObject:@"revenue"  forKey:kPackageKeyKind];
+    [eventPackage setObject:suffix      forKey:kPackageKeySuffix];
+    [eventPackage setObject:params      forKey:kPackageKeyParameters];
 
     return eventPackage;
 }
