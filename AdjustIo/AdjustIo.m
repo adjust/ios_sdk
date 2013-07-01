@@ -14,12 +14,19 @@
 #import "NSData+AIAdditions.h"
 #import "NSMutableDictionary+AIAdditions.h"
 
+// TODO: use proper classes like AITrackingPackage, AISessionState and AIPackageQueue
+// use NSKeyedArchiver and write to a file instead
+// refactor and extract
+// http://nshipster.com/nscoding/
+// TODO: don't lock on main thread!
+// avoid locks? http://developer.apple.com/library/ios/#documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html
+// TODO: save macMd5 to user defaults for upcoming migration
 
 static const double kTimerInterval   = 5.0; // TODO: 60 seconds
 static const double kSessionInterval = 1.0; // TODO: 30 minutes
 
 static NSString * const kDefaultsKeyLastActivity        = @"AdjustIo.LastActivity";
-static NSString * const kDefaultsKeyLastSessionStart    = @"AdjustIo.LastSessionStart";
+static NSString * const kDefaultsKeyLastSessionStart    = @"AdjustIo.LastSessionStart"; // TODO: remove and update sessionLength incrementally
 static NSString * const kDefaultsKeyLastSubsessionStart = @"AdjustIo.LastSubsessionStart";
 static NSString * const kDefaultsKeySessionCount        = @"AdjustIo.SessionCount";
 static NSString * const kDefaultsKeySubsessionCount     = @"AdjustIo.SubsessionCount";
@@ -39,7 +46,7 @@ static NSString * const kFieldIdfa            = @"idfa";
 static NSString * const kFieldFbAttributionId = @"fb_id";
 static NSString * const kFieldCreatedAt       = @"created_at";
 static NSString * const kFieldSessionLength   = @"session_length";
-static NSString * const kFieldSessionCount    = @"session_id";
+static NSString * const kFieldSessionCount    = @"session_id"; // TODO: rename parameters
 static NSString * const kFieldSubsessionCount = @"subsession_count";
 static NSString * const kFieldLastInterval    = @"last_interval";
 static NSString * const kFieldTimeSpent       = @"time_spent";
@@ -71,7 +78,7 @@ static NSString *aiFbAttributionId  = nil;
 + (void)stopTimer;
 + (void)timerFired:(NSTimer *)timer;
 
-+ (void)trackSessionStart;
++ (void)trackSessionStart; // TODO: rename to trackSubsessionStart and trackSubsessionEnd?
 + (void)trackSessionEnd;
 + (void)trackEventPackage:(NSMutableDictionary *)event;
 
@@ -89,7 +96,7 @@ static NSString *aiFbAttributionId  = nil;
 + (NSMutableDictionary *)eventPackageWithToken:(NSString *)eventToken parameters:(NSDictionary *)parameters;
 + (NSMutableDictionary *)revenuePackageWithToken:(NSString *)eventToken parameters:(NSDictionary *)parameters amount:(float)amount;
 
-+ (BOOL)checkAppToken;
++ (BOOL)checkAppToken:(NSString *)appToken;
 + (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
 + (BOOL)checkEventTokenLength:(NSString *)eventToken;
 + (BOOL)checkAmount:(float)amount;
@@ -103,10 +110,7 @@ static NSString *aiFbAttributionId  = nil;
 #pragma mark public
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    if (yourAppToken.length == 0) {
-        [aiLogger error:@"Missing App Token."];
-        return;
-    }
+    if (![self checkAppToken:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
@@ -126,7 +130,7 @@ static NSString *aiFbAttributionId  = nil;
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
     if (![self checkEventTokenNotNil:eventToken]) return;
     if (![self checkEventTokenLength:eventToken]) return;
-    if (![self checkAppToken]) return;
+    if (![self checkAppToken:aiAppToken]) return;
 
     NSMutableDictionary *eventPackage = [self eventPackageWithToken:eventToken parameters:parameters];
     [self trackEventPackage:eventPackage];
@@ -143,7 +147,7 @@ static NSString *aiFbAttributionId  = nil;
 + (void)trackRevenue:(float)amount forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
     if (![self checkEventTokenLength:eventToken]) return;
     if (![self checkAmount:amount]) return;
-    if (![self checkAppToken]) return;
+    if (![self checkAppToken:aiAppToken]) return;
 
     NSMutableDictionary *revenueEvent = [self revenuePackageWithToken:eventToken parameters:parameters amount:amount];
     [self trackEventPackage:revenueEvent];
@@ -171,6 +175,7 @@ static NSString *aiFbAttributionId  = nil;
     [self startTimer];
 }
 
+// TODO: remove observer first to avoid double notifications!
 + (void)addNotificationObserver {
     NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
 
@@ -241,7 +246,7 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackSessionStart {
-    if (![self checkAppToken]) return;
+    if (![self checkAppToken:aiAppToken]) return;
 
     [self startTimer];
 
@@ -552,12 +557,12 @@ static NSString *aiFbAttributionId  = nil;
     return eventPackage;
 }
 
-+ (BOOL)checkAppToken {
-    if (aiAppToken == nil) {
++ (BOOL)checkAppToken:(NSString *)appToken {
+    if (appToken == nil) {
         [aiLogger error:@"Missing App Token."];
         return NO;
-    } else if (aiAppToken.length != 12) {
-        [aiLogger error:@"Malformed App Token %@", aiAppToken];
+    } else if (appToken.length != 12) {
+        [aiLogger error:@"Malformed App Token %@", appToken];
         return NO;
     }
     return YES;
