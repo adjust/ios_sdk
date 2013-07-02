@@ -23,8 +23,17 @@ typedef enum {
 @property (copy) NSString *logTag;
 @property (assign) AELogLevel logLevel;
 
-- (id)initWithTag:(NSString *)logTag;
+// convenience methods
++ (void)setLogTag:(NSString *)logTag;
++ (void)setLogLevel:(AELogLevel)logLevel;
++ (void)verbose:(NSString *)message, ...;
++ (void)debug:  (NSString *)message, ...;
++ (void)info:   (NSString *)message, ...;
++ (void)warn:   (NSString *)message, ...;
++ (void)error:  (NSString *)message, ...;
+
 + (AELogger *)loggerWithTag:(NSString *)logTag;
+- (id)initWithTag:(NSString *)logTag;
 
 - (void)verbose:(NSString *)message, ...;
 - (void)debug:  (NSString *)message, ...;

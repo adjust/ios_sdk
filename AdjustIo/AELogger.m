@@ -8,8 +8,23 @@
 
 #import "AELogger.h"
 
+
+static AELogger *defaultLogger;
+
 @implementation AELogger
 @synthesize logTag = _logTag;
+
++ (void)setLogTag:(NSString *)logTag {
+    defaultLogger.logTag = logTag;
+}
+
++ (void)setLogLevel:(AELogLevel)logLevel {
+    defaultLogger.logLevel = logLevel;
+}
+
++ (AELogger *)loggerWithTag:(NSString *)logTag {
+    return [[AELogger alloc] initWithTag:logTag];
+}
 
 - (id)initWithTag:(NSString *)tag {
     self = [super init];
@@ -19,10 +34,6 @@
     self.logLevel = AELogLevelInfo;
 
     return self;
-}
-
-+ (AELogger *)loggerWithTag:(NSString *)logTag {
-    return [[AELogger alloc] initWithTag:logTag];
 }
 
 - (void)verbose:(NSString *)format, ... {
@@ -53,6 +64,36 @@
     if (self.logLevel > AELogLevelError) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"e" format:format parameters:parameters];
+}
+
++ (void)verbose:(NSString *)format, ... {
+    if (defaultLogger.logLevel > AELogLevelVerbose) return;
+    va_list parameters; va_start(parameters, format);
+    [defaultLogger logLevel:@"v" format:format parameters:parameters];
+}
+
++ (void)debug:(NSString *)format, ... {
+    if (defaultLogger.logLevel > AELogLevelDebug) return;
+    va_list parameters; va_start(parameters, format);
+    [defaultLogger logLevel:@"d" format:format parameters:parameters];
+}
+
++ (void)info:(NSString *)format, ... {
+    if (defaultLogger.logLevel > AELogLevelInfo) return;
+    va_list parameters; va_start(parameters, format);
+    [defaultLogger logLevel:@"i" format:format parameters:parameters];
+}
+
++ (void)warn:(NSString *)format, ... {
+    if (defaultLogger.logLevel > AELogLevelWarn) return;
+    va_list parameters; va_start(parameters, format);
+    [defaultLogger logLevel:@"w" format:format parameters:parameters];
+}
+
++ (void)error:(NSString *)format, ... {
+    if (defaultLogger.logLevel > AELogLevelError) return;
+    va_list parameters; va_start(parameters, format);
+    [defaultLogger logLevel:@"e" format:format parameters:parameters];
 }
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
