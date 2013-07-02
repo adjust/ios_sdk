@@ -7,6 +7,7 @@
 //
 
 #import "AdjustIo.h"
+#import "AESessionContext.h"
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
@@ -67,6 +68,7 @@ static NSString *aiMacShortMd5      = nil;
 static NSString *aiIdForAdvertisers = nil;
 static NSString *aiFbAttributionId  = nil;
 
+static AESessionContext *sessionContext;
 
 #pragma mark private interface
 @interface AdjustIo()
@@ -107,9 +109,17 @@ static NSString *aiFbAttributionId  = nil;
 #pragma mark AdjustIo
 @implementation AdjustIo
 
-#pragma mark public
+#pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
+    if (sessionContext == nil) {
+        sessionContext = [AESessionContext contextWithAppToken:yourAppToken];
+    }
+
+    // TODO: not call this here, but only in didGetActive?
+    [sessionContext trackSubsessionStart];
+    // return;
+
     if (![self checkAppToken:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
@@ -128,6 +138,9 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
+    [sessionContext trackEvent:eventToken withParameters:parameters];
+    // return;
+
     if (![self checkEventTokenNotNil:eventToken]) return;
     if (![self checkEventTokenLength:eventToken]) return;
     if (![self checkAppToken:aiAppToken]) return;
@@ -144,12 +157,18 @@ static NSString *aiFbAttributionId  = nil;
     [self trackRevenue:amountInCents forEvent:eventToken withParameters:nil];
 }
 
-+ (void)trackRevenue:(float)amount forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
++ (void)trackRevenue:(float)amountInCents
+            forEvent:(NSString *)eventToken
+      withParameters:(NSDictionary *)parameters
+{
+    [sessionContext trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
+    // return;
+
     if (![self checkEventTokenLength:eventToken]) return;
-    if (![self checkAmount:amount]) return;
+    if (![self checkAmount:amountInCents]) return;
     if (![self checkAppToken:aiAppToken]) return;
 
-    NSMutableDictionary *revenueEvent = [self revenuePackageWithToken:eventToken parameters:parameters amount:amount];
+    NSMutableDictionary *revenueEvent = [self revenuePackageWithToken:eventToken parameters:parameters amount:amountInCents];
     [self trackEventPackage:revenueEvent];
 }
 
@@ -157,7 +176,7 @@ static NSString *aiFbAttributionId  = nil;
     aiLogger.logLevel = logLevel;
 }
 
-#pragma mark private
+#pragma mark private implementation
 
 + (void)initialize {
     if (aiLogger == nil) {
@@ -224,6 +243,7 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)timerFired:(NSTimer *)timer {
+    // return;
     [aiLogger verbose:@"Timer updating last activity."];
 
     [defaultsLock lock];
@@ -235,6 +255,8 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackSessionEnd {
+    [sessionContext trackSubsessionEnd];
+    // return;
     [aiLogger verbose:@"Session end updating last activity."];
 
     [defaultsLock lock];
@@ -246,6 +268,9 @@ static NSString *aiFbAttributionId  = nil;
 }
 
 + (void)trackSessionStart {
+    [sessionContext trackSubsessionStart];
+    // return;
+
     if (![self checkAppToken:aiAppToken]) return;
 
     [self startTimer];
@@ -284,6 +309,7 @@ static NSString *aiFbAttributionId  = nil;
     NSDate *now = NSDate.date;
 
     [defaultsLock lock];
+    // [NSThread sleepForTimeInterval:0.5]; // TODO: remove
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSDate *lastSessionStart = [defaults objectForKey:kDefaultsKeyLastSessionStart];
     int     sessionCount     = [defaults integerForKey:kDefaultsKeySessionCount];
