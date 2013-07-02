@@ -8,14 +8,20 @@
 
 #import "AESessionContext.h"
 #import "AELogger.h"
+#import "AETimer.h"
 
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
 
+static const uint64_t kTimerInterval = 1ull * NSEC_PER_SEC; // TODO: 60 seconds
+static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
+
 #pragma mark private interface
+
 @interface AESessionContext() {
-    dispatch_queue_t sessionQueue;
+    dispatch_queue_t  sessionQueue;
+    AETimer *timer;
 
     NSString *appToken;
     NSString *macSha1;
@@ -25,7 +31,6 @@
     NSString *userAgent;
 }
 
-- (id)initWithAppToken:(NSString *)appToken;
 - (void)startInternal;
 - (void)endInternal;
 - (void)eventInternal;
@@ -35,6 +40,7 @@
 
 @end
 
+
 @implementation AESessionContext
 
 #pragma mark public implementation
@@ -43,9 +49,26 @@
     return [[AESessionContext alloc] initWithAppToken:appToken];
 }
 
+- (id)initWithAppToken:(NSString *)yourAppToken {
+    self = [super init];
+    if (self == nil) return nil;
+
+    sessionQueue = dispatch_queue_create("io.adjust.sessiontest", DISPATCH_QUEUE_SERIAL);
+
+    dispatch_async(sessionQueue, ^{
+        [self initInternal:yourAppToken];
+    });
+
+    return self;
+}
+
 - (void)trackSubsessionStart {
     dispatch_async(sessionQueue, ^{
-        [self startInternal];
+        @try {
+            [self startInternal];
+        } @catch (NSException *e) {
+            NSLog(@"exception");
+        }
     });
 }
 
@@ -75,11 +98,10 @@
 
 #pragma mark private implementation
 
-- (id)initWithAppToken:(NSString *)yourAppToken {
-    self = [super init];
-    if (self == nil) return nil;
+// internal methods run asynchronously
 
-    if (![self.class checkAppToken:yourAppToken]) return self;
+- (void)initInternal:(NSString *)yourAppToken {
+    if (![self.class checkAppToken:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
@@ -89,29 +111,71 @@
     self->idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self->fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
 
-    // [self addNotificationObserver]; // TODO: move here
+    timer = [AETimer timerWithInterval:kTimerInterval
+                                leeway:kTimerLeeway
+                                 queue:sessionQueue
+                                 block:^{ [self updateInternal]; }];
 
-    sessionQueue = dispatch_queue_create("io.adjust.sessiontest", NULL);
-
-    return self;
+    [self addNotificationObserver];
 }
 
-// internal methods run asynchronously
-
 - (void)startInternal {
+    if (![self.class checkAppToken:appToken]) return;
+
+    [timer resume];
+
     NSLog(@"start %@", appToken);
 }
 
 - (void)endInternal {
+    if (![self.class checkAppToken:appToken]) return;
+
+    [timer suspend];
+
     NSLog(@"end %@", appToken);
 }
 
 - (void)eventInternal {
+    if (![self.class checkAppToken:appToken]) return;
+
+    [NSThread sleepForTimeInterval:0.5];
     NSLog(@"event %@", appToken);
 }
 
 - (void)revenueInternal {
+    if (![self.class checkAppToken:appToken]) return;
+
     NSLog(@"revenue %@", appToken);
+}
+
+- (void)updateInternal {
+    if (![self.class checkAppToken:appToken]) return;
+
+    NSLog(@"update");
+}
+
+- (void)addNotificationObserver {
+    NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+
+    [center removeObserver:self];
+    [center addObserver:self
+               selector:@selector(trackSubsessionStart)
+                   name:UIApplicationDidBecomeActiveNotification
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(trackSubsessionEnd)
+                   name:UIApplicationWillResignActiveNotification
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(removeNotificationObserver)
+                   name:UIApplicationWillTerminateNotification
+                 object:nil];
+}
+
++ (void)removeNotificationObserver {
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 + (BOOL)checkAppToken:(NSString *)appToken {
@@ -119,7 +183,7 @@
         [AELogger error:@"Missing App Token."];
         return NO;
     } else if (appToken.length != 12) {
-        [AELogger error:@"Malformed App Token %@", appToken];
+        [AELogger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
     return YES;

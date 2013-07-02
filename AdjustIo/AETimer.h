@@ -1,0 +1,26 @@
+//
+//  AETimer.h
+//  AdjustIosApp
+//
+//  Created by Christian Wellenbrock on 02.07.13.
+//  Copyright (c) 2013 adeven. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface AETimer : NSObject
+
++ (AETimer *)timerWithInterval:(uint64_t)interval
+                        leeway:(uint64_t)leeway
+                         queue:(dispatch_queue_t)queue
+                         block:(dispatch_block_t)block;
+
+- (id)initWithInterval:(uint64_t)interval
+                leeway:(uint64_t)leeway
+                 queue:(dispatch_queue_t)queue
+                 block:(dispatch_block_t)block;
+
+- (void)resume;
+- (void)suspend;
+
+@end

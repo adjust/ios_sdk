@@ -112,13 +112,8 @@ static AESessionContext *sessionContext;
 #pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    if (sessionContext == nil) {
-        sessionContext = [AESessionContext contextWithAppToken:yourAppToken];
-    }
-
-    // TODO: not call this here, but only in didGetActive?
-    [sessionContext trackSubsessionStart];
-    // return;
+    sessionContext = [AESessionContext contextWithAppToken:yourAppToken];
+    return;
 
     if (![self checkAppToken:yourAppToken]) return;
 
@@ -139,7 +134,7 @@ static AESessionContext *sessionContext;
 
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
     [sessionContext trackEvent:eventToken withParameters:parameters];
-    // return;
+    return;
 
     if (![self checkEventTokenNotNil:eventToken]) return;
     if (![self checkEventTokenLength:eventToken]) return;
@@ -162,7 +157,7 @@ static AESessionContext *sessionContext;
       withParameters:(NSDictionary *)parameters
 {
     [sessionContext trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
-    // return;
+    return;
 
     if (![self checkEventTokenLength:eventToken]) return;
     if (![self checkAmount:amountInCents]) return;
@@ -243,7 +238,7 @@ static AESessionContext *sessionContext;
 }
 
 + (void)timerFired:(NSTimer *)timer {
-    // return;
+    return;
     [aiLogger verbose:@"Timer updating last activity."];
 
     [defaultsLock lock];
@@ -256,7 +251,7 @@ static AESessionContext *sessionContext;
 
 + (void)trackSessionEnd {
     [sessionContext trackSubsessionEnd];
-    // return;
+    return;
     [aiLogger verbose:@"Session end updating last activity."];
 
     [defaultsLock lock];
@@ -269,7 +264,7 @@ static AESessionContext *sessionContext;
 
 + (void)trackSessionStart {
     [sessionContext trackSubsessionStart];
-    // return;
+    return;
 
     if (![self checkAppToken:aiAppToken]) return;
 

@@ -14,7 +14,7 @@
 
 static const double kRequestTimeout = 2.0; // TODO: 60
 
-static NSString * const kBaseUrl = @"https://app.adjust.io";
+static NSString * const kBaseUrl = @"http://192.168.178.117:8509";
 static NSString * const kClientSdk = @"ios1.6";
 
 #pragma mark private interface

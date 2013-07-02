@@ -12,6 +12,7 @@
 @interface AESessionContext : NSObject
 
 + (AESessionContext *)contextWithAppToken:(NSString *)appToken;
+- (id)initWithAppToken:(NSString *)appToken;
 
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
