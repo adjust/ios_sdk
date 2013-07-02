@@ -11,15 +11,21 @@
 
 static AELogger *defaultLogger;
 
+@interface AELogger()
+
++ (AELogger *)getDefaultLogger;
+
+@end
+
 @implementation AELogger
 @synthesize logTag = _logTag;
 
 + (void)setLogTag:(NSString *)logTag {
-    defaultLogger.logTag = logTag;
+    AELogger.getDefaultLogger.logTag = logTag;
 }
 
 + (void)setLogLevel:(AELogLevel)logLevel {
-    defaultLogger.logLevel = logLevel;
+    AELogger.getDefaultLogger.logLevel = logLevel;
 }
 
 + (AELogger *)loggerWithTag:(NSString *)logTag {
@@ -67,39 +73,48 @@ static AELogger *defaultLogger;
 }
 
 + (void)verbose:(NSString *)format, ... {
-    if (defaultLogger.logLevel > AELogLevelVerbose) return;
+    if (AELogger.getDefaultLogger.logLevel > AELogLevelVerbose) return;
     va_list parameters; va_start(parameters, format);
-    [defaultLogger logLevel:@"v" format:format parameters:parameters];
+    [AELogger.getDefaultLogger logLevel:@"v" format:format parameters:parameters];
 }
 
 + (void)debug:(NSString *)format, ... {
-    if (defaultLogger.logLevel > AELogLevelDebug) return;
+    if (AELogger.getDefaultLogger.logLevel > AELogLevelDebug) return;
     va_list parameters; va_start(parameters, format);
-    [defaultLogger logLevel:@"d" format:format parameters:parameters];
+    [AELogger.getDefaultLogger logLevel:@"d" format:format parameters:parameters];
 }
 
 + (void)info:(NSString *)format, ... {
-    if (defaultLogger.logLevel > AELogLevelInfo) return;
+    if (AELogger.getDefaultLogger.logLevel > AELogLevelInfo) return;
     va_list parameters; va_start(parameters, format);
-    [defaultLogger logLevel:@"i" format:format parameters:parameters];
+    [AELogger.getDefaultLogger logLevel:@"i" format:format parameters:parameters];
 }
 
 + (void)warn:(NSString *)format, ... {
-    if (defaultLogger.logLevel > AELogLevelWarn) return;
+    if (AELogger.getDefaultLogger.logLevel > AELogLevelWarn) return;
     va_list parameters; va_start(parameters, format);
-    [defaultLogger logLevel:@"w" format:format parameters:parameters];
+    [AELogger.getDefaultLogger logLevel:@"w" format:format parameters:parameters];
 }
 
 + (void)error:(NSString *)format, ... {
-    if (defaultLogger.logLevel > AELogLevelError) return;
+    if (AELogger.getDefaultLogger.logLevel > AELogLevelError) return;
     va_list parameters; va_start(parameters, format);
-    [defaultLogger logLevel:@"e" format:format parameters:parameters];
+    [AELogger.getDefaultLogger logLevel:@"e" format:format parameters:parameters];
 }
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:parameters];
     NSLog(@"[%@]%@: %@", self.logTag, logLevel, logString);
     va_end(parameters);
+}
+
+#pragma mark private
+
++ (AELogger *)getDefaultLogger {
+    if (defaultLogger == nil) {
+        defaultLogger = [AELogger loggerWithTag:@"AdjustIo"];
+    }
+    return defaultLogger;
 }
 
 @end
