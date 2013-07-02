@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AESessionContext : NSMutableDictionary
+// TODO: rename?
+@interface AESessionContext : NSObject
+
++ (AESessionContext *)contextWithAppToken:(NSString *)appToken;
+
+- (void)trackSubsessionStart;
+- (void)trackSubsessionEnd;
+
+- (void)trackEvent:(NSString *)eventToken
+    withParameters:(NSDictionary *)parameters;
+
+- (void)trackRevenue:(float)amountInCents
+            forEvent:(NSString *)eventToken
+      withParameters:(NSDictionary *)parameters;
 
 @end
