@@ -15,8 +15,8 @@
 // general
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *macSha1;
-@property (nonatomic, copy) NSString *macShort; // TODO: md5!
-@property (nonatomic, copy) NSString *androidId;
+@property (nonatomic, copy) NSString *macShortMd5;
+@property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *attributionId;
 @property (nonatomic, copy) NSString *userAgent;
 

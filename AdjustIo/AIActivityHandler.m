@@ -8,6 +8,8 @@
 
 #import "AIActivityHandler.h"
 #import "AIActivityState.h"
+#import "AIPackageBuilder.h"
+#import "AIPackageHandler.h"
 #import "AILogger.h"
 #import "AITimer.h"
 
@@ -16,8 +18,8 @@
 
 static NSString * const kActivityStateFilename = @"activitystate1"; // TODO: rename
 
-static const uint64_t kTimerInterval     = 3 * NSEC_PER_SEC; // TODO: 60 seconds
-static const uint64_t kTimerLeeway       = 0 * NSEC_PER_SEC; // TODO: 1 second
+static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
+static const uint64_t kTimerLeeway        = 0 * NSEC_PER_SEC; // TODO: 1 second
 static const double   kSessionInterval    = 5; // 5 seconds, TODO: 30 minutes
 static const double   kSubsessionInterval = 1; // 1 second
 
@@ -25,9 +27,11 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 @interface AIActivityHandler() {
     dispatch_queue_t  sessionQueue;
+    AIPackageHandler *packageHandler;
     AIActivityState *activityState;
     AITimer *timer;
 
+    // TODO: should these be properties?
     NSString *appToken;
     NSString *macSha1;
     NSString *macShortMd5;
@@ -49,7 +53,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)updateActivityState;
 - (void)readActivityState;
 - (void)writeActivityState;
-- (void)enqueueSessionPackage;
+- (void)transferSessionPackage;
 
 - (void)startTimer;
 - (void)stopTimer;
@@ -137,6 +141,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
 
+    packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
 }
 
@@ -153,7 +158,7 @@ static const double   kSubsessionInterval = 1; // 1 second
         activityState.sessionCount = 1; // this is the first session
         activityState.createdAt = now;  // starting now
 
-        [self enqueueSessionPackage];
+        [self transferSessionPackage];
         [self writeActivityState];
         return;
     }
@@ -169,7 +174,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     // new session
     if (lastInterval > kSessionInterval) {
         activityState.lastInterval = lastInterval;
-        [self enqueueSessionPackage];
+        [self transferSessionPackage];
         [activityState startNextSession:now];
         [self writeActivityState];
         return;
@@ -256,8 +261,21 @@ static const double   kSubsessionInterval = 1; // 1 second
     }
 }
 
-- (void)enqueueSessionPackage {
-    // TODO:
+- (void)transferSessionPackage {
+    AIPackageBuilder *builder = [[AIPackageBuilder alloc] init];
+    [self injectGeneralAttributes:builder];
+    [activityState injectSessionAttributes:builder];
+    AIActivityPackage *sessionPackage = [builder buildSessionPackage];
+    [packageHandler addPackage:sessionPackage];
+}
+
+- (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
+    builder.userAgent = userAgent;
+    builder.appToken = appToken;
+    builder.macShortMd5 = macShortMd5;
+    builder.macSha1 = macSha1;
+    builder.idForAdvertisers = idForAdvertisers;
+    builder.attributionId = fbAttributionId;
 }
 
 - (void)startTimer {

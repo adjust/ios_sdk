@@ -19,4 +19,6 @@
 @property (nonatomic, copy) NSString *kind;
 @property (nonatomic, copy) NSString *suffix;
 
+- (NSString *)parameterString;
+
 @end

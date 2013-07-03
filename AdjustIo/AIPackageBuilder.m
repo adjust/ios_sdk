@@ -63,8 +63,8 @@
     [self parameters:parameters setDate:self.createdAt forKey:@"created_at"];
     [self parameters:parameters setString:self.appToken forKey:@"app_token"];
     [self parameters:parameters setString:self.macSha1 forKey:@"mac_sha1"];
-    [self parameters:parameters setString:self.macShort forKey:@"mac"];
-    [self parameters:parameters setString:self.androidId forKey:@"android_id"];
+    [self parameters:parameters setString:self.macShortMd5 forKey:@"mac"]; // TODO: rename parameter
+    [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
     [self parameters:parameters setString:self.attributionId forKey:@"fb_id"];
 
     // session related (used for events as well)

@@ -10,6 +10,24 @@
 
 @implementation AIActivityPackage
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@%@ %@",
+            self.kind, self.suffix, self.path];
+}
+
+- (NSString *)parameterString {
+    if (self.parameters == nil) return @"Parameters: nil";
+
+    NSMutableString *builder = [NSMutableString stringWithString:@"Parameters:"];
+    for (NSString *key in self.parameters) {
+        NSString *value = [self.parameters objectForKey:key];
+        [builder appendFormat:@"\n\t%-16s %@", [key UTF8String], value];
+    }
+    return builder;
+}
+
+#pragma mark NSCoding
+
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self == nil) return self;
