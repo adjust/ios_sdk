@@ -1,5 +1,5 @@
 //
-//  AESessionContext.h
+//  AESessionHandler.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 01.07.13.
@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-// TODO: rename?
-@interface AESessionContext : NSObject
+// TODO: rename to AEStateHandler
+@interface AESessionHandler : NSObject
 
-+ (AESessionContext *)contextWithAppToken:(NSString *)appToken;
++ (AESessionHandler *)contextWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
 
 - (void)trackSubsessionStart;
@@ -20,7 +20,7 @@
 - (void)trackEvent:(NSString *)eventToken
     withParameters:(NSDictionary *)parameters;
 
-- (void)trackRevenue:(float)amountInCents
+- (void)trackRevenue:(float)amount
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 

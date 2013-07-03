@@ -1,26 +1,31 @@
 //
-//  AESessionContext.m
+//  AESessionHandler.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 01.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AESessionContext.h"
+#import "AESessionHandler.h"
+#import "AESessionState.h"
 #import "AELogger.h"
 #import "AETimer.h"
 
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
+static NSString * const kSessionStateFilename = @"sessionstate7"; // TODO: rename
 
-static const uint64_t kTimerInterval = 1ull * NSEC_PER_SEC; // TODO: 60 seconds
-static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
+static const uint64_t kTimerInterval     = 3 * NSEC_PER_SEC; // TODO: 60 seconds
+static const uint64_t kTimerLeeway       = 0 * NSEC_PER_SEC; // TODO: 1 second
+static const double   kSessionInterval    = 5; // 5 seconds, TODO: 30 minutes
+static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark private interface
 
-@interface AESessionContext() {
+@interface AESessionHandler() {
     dispatch_queue_t  sessionQueue;
+    AESessionState *sessionState;
     AETimer *timer;
 
     NSString *appToken;
@@ -33,26 +38,50 @@ static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
 
 - (void)startInternal;
 - (void)endInternal;
-- (void)eventInternal;
-- (void)revenueInternal;
 
-+ (BOOL)checkAppToken:(NSString *)appToken;
+- (void)eventInternal:(NSString *)eventToken
+           parameters:(NSDictionary *)parameters;
+
+- (void)revenueInternal:(float)amount
+                  event:(NSString *)eventToken
+             parameters:(NSDictionary *)parameters;
+
+- (void)updateSessionState;
+- (void)readSessionState;
+- (void)writeSessionState;
+- (void)enqueueSessionPackage;
+
+- (void)startTimer;
+- (void)stopTimer;
+- (void)timerFired;
+
+- (void)addNotificationObserver;
+- (void)removeNotificationObserver;
+
+- (NSString *)sessionStateFilename;
+
++ (BOOL)checkSessionState:(AESessionState *)sessionState;
++ (BOOL)checkAppTokenNotNil:(NSString *)appToken;
++ (BOOL)checkAppTokenLength:(NSString *)appToken;
++ (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
++ (BOOL)checkAmount:(float)amount;
 
 @end
 
 
-@implementation AESessionContext
+@implementation AESessionHandler
 
 #pragma mark public implementation
 
-+ (AESessionContext *)contextWithAppToken:(NSString *)appToken {
-    return [[AESessionContext alloc] initWithAppToken:appToken];
++ (AESessionHandler *)contextWithAppToken:(NSString *)appToken {
+    return [[AESessionHandler alloc] initWithAppToken:appToken];
 }
 
 - (id)initWithAppToken:(NSString *)yourAppToken {
     self = [super init];
     if (self == nil) return nil;
 
+    [self addNotificationObserver];
     sessionQueue = dispatch_queue_create("io.adjust.sessiontest", DISPATCH_QUEUE_SERIAL);
 
     dispatch_async(sessionQueue, ^{
@@ -64,11 +93,7 @@ static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
 
 - (void)trackSubsessionStart {
     dispatch_async(sessionQueue, ^{
-        @try {
-            [self startInternal];
-        } @catch (NSException *e) {
-            NSLog(@"exception");
-        }
+        [self startInternal];
     });
 }
 
@@ -82,16 +107,16 @@ static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
     withParameters:(NSDictionary *)parameters
 {
     dispatch_async(sessionQueue, ^{
-        [self eventInternal];
+        [self eventInternal:eventToken parameters:parameters];
     });
 }
 
-- (void)trackRevenue:(float)amountInCents
+- (void)trackRevenue:(float)amount
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {
     dispatch_async(sessionQueue, ^{
-        [self revenueInternal];
+        [self revenueInternal:amount event:eventToken parameters:parameters];
     });
 }
 
@@ -101,57 +126,155 @@ static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
 // internal methods run asynchronously
 
 - (void)initInternal:(NSString *)yourAppToken {
-    if (![self.class checkAppToken:yourAppToken]) return;
+    if (![self.class checkAppTokenNotNil:yourAppToken]) return;
+    if (![self.class checkAppTokenLength:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
-    self->appToken         = yourAppToken;
-    self->macSha1          = macAddress.aiSha1;
-    self->macShortMd5      = macAddress.aiRemoveColons.aiMd5;
-    self->idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
-    self->fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
+    appToken         = yourAppToken;
+    macSha1          = macAddress.aiSha1;
+    macShortMd5      = macAddress.aiRemoveColons.aiMd5;
+    idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
+    fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
 
-    timer = [AETimer timerWithInterval:kTimerInterval
-                                leeway:kTimerLeeway
-                                 queue:sessionQueue
-                                 block:^{ [self updateInternal]; }];
-
-    [self addNotificationObserver];
+    [self readSessionState];
 }
 
 - (void)startInternal {
-    if (![self.class checkAppToken:appToken]) return;
+    if (![self.class checkAppTokenNotNil:appToken]) return;
 
-    [timer resume];
+    [self startTimer];
 
-    NSLog(@"start %@", appToken);
+    double now = [NSDate.date timeIntervalSince1970];
+
+    if (sessionState == nil) {
+        [AELogger info:@"First session"];
+        sessionState = [[AESessionState alloc] init];
+        sessionState.sessionCount = 1; // this is the first session
+        sessionState.createdAt = now;  // starting now
+
+        [self enqueueSessionPackage];
+        [self writeSessionState];
+        return;
+    }
+
+    double lastInterval = now - sessionState.lastActivity;
+    if (lastInterval < 0) {
+        [AELogger error:@"Time travel!"];
+        sessionState.lastActivity = now;
+        [self writeSessionState];
+        return;
+    }
+
+    // new session
+    if (lastInterval > kSessionInterval) {
+        sessionState.lastInterval = lastInterval;
+        [self enqueueSessionPackage];
+        [sessionState startNextSession:now];
+        [self writeSessionState];
+        return;
+    }
+
+    // new subsession
+    if (lastInterval > kSubsessionInterval) {
+        sessionState.subsessionCount++;
+    }
+    sessionState.sessionLength += lastInterval;
+    sessionState.lastActivity = now;
+    [self writeSessionState];
 }
 
 - (void)endInternal {
-    if (![self.class checkAppToken:appToken]) return;
+    if (![self.class checkAppTokenNotNil:appToken]) return;
 
-    [timer suspend];
-
-    NSLog(@"end %@", appToken);
+    [self stopTimer];
+    [self updateSessionState];
+    [self writeSessionState];
 }
 
-- (void)eventInternal {
-    if (![self.class checkAppToken:appToken]) return;
+- (void)eventInternal:(NSString *)eventToken
+           parameters:(NSDictionary *)parameters
+{
+    if (![self.class checkAppTokenNotNil:appToken]) return;
+    if (![self.class checkSessionState:sessionState]) return;
 
     [NSThread sleepForTimeInterval:0.5];
-    NSLog(@"event %@", appToken);
+    NSLog(@"event");
 }
 
-- (void)revenueInternal {
-    if (![self.class checkAppToken:appToken]) return;
+- (void)revenueInternal:(float)amount
+                  event:(NSString *)eventToken
+             parameters:(NSDictionary *)parameters
+{
+    if (![self.class checkAppTokenNotNil:appToken]) return;
+    if (![self.class checkSessionState:sessionState]) return;
 
-    NSLog(@"revenue %@", appToken);
+    NSLog(@"revenue");
 }
 
-- (void)updateInternal {
-    if (![self.class checkAppToken:appToken]) return;
+- (void)updateSessionState {
+    if (![self.class checkSessionState:sessionState]) return;
 
-    NSLog(@"update");
+    double now = [NSDate.date timeIntervalSince1970];
+    double lastInterval = now - sessionState.lastActivity;
+    if (lastInterval < 0) {
+        [AELogger error:@"Time travel!"];
+        sessionState.lastInterval = now;
+        return;
+    }
+
+    // ignore late updates
+    if (lastInterval > kSessionInterval) return;
+
+    sessionState.sessionLength += lastInterval;
+    sessionState.timeSpent += lastInterval;
+    sessionState.lastActivity = now;
+}
+
+- (void)readSessionState {
+    NSString *filename = [self sessionStateFilename];
+    id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+    if ([object isKindOfClass:[AESessionState class]]) {
+        sessionState = object;
+        NSLog(@"Read session state: %@", sessionState);
+    } else {
+        NSLog(@"Failed to read session state");
+    }
+}
+
+- (void)writeSessionState {
+    NSString *filename = [self sessionStateFilename];
+    BOOL result = [NSKeyedArchiver archiveRootObject:sessionState toFile:filename];
+    if (result == YES) {
+        NSLog(@"Wrote session state: %@", sessionState);
+    } else {
+        NSLog(@"Failed to write session state");
+    }
+}
+
+- (void)enqueueSessionPackage {
+    // TODO:
+}
+
+- (void)startTimer {
+    NSLog(@"startTimer");
+    if (timer == nil) {
+        timer = [AETimer timerWithInterval:kTimerInterval
+                                    leeway:kTimerLeeway
+                                     queue:sessionQueue
+                                     block:^{ [self timerFired]; }];
+    }
+    [timer resume];
+}
+
+- (void)stopTimer {
+    [timer suspend];
+}
+
+- (void)timerFired {
+    // [queueHandler trackFirstPackage]; // TODO: enable
+    [self updateSessionState];
+    [self writeSessionState];
 }
 
 - (void)addNotificationObserver {
@@ -174,15 +297,35 @@ static const uint64_t kTimerLeeway   = 0ull * NSEC_PER_SEC; // TODO: 1 second
                  object:nil];
 }
 
-+ (void)removeNotificationObserver {
+- (void)removeNotificationObserver {
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-+ (BOOL)checkAppToken:(NSString *)appToken {
+- (NSString *)sessionStateFilename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filename = [path stringByAppendingPathComponent:kSessionStateFilename];
+    return filename;
+}
+
++ (BOOL)checkSessionState:(AESessionState *)sessionState {
+    if (sessionState == nil) {
+        [AELogger error:@"Missing session state."];
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
         [AELogger error:@"Missing App Token."];
         return NO;
-    } else if (appToken.length != 12) {
+    }
+    return YES;
+}
+
++ (BOOL)checkAppTokenLength:(NSString *)appToken {
+    if (appToken.length != 12) {
         [AELogger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
