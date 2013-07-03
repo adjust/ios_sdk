@@ -7,7 +7,7 @@
 //
 
 #import "AdjustIo.h"
-#import "AESessionHandler.h"
+#import "AISessionHandler.h"
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
@@ -57,7 +57,7 @@ static NSString * const kFieldAmount          = @"amount";
 
 
 static AIApiClient *aiApiClient  = nil;
-static AELogger    *aiLogger     = nil;
+static AILogger    *aiLogger     = nil;
 static NSTimer     *aiTimer      = nil;
 static NSLock      *trackingLock = nil;
 static NSLock      *defaultsLock = nil;
@@ -68,7 +68,7 @@ static NSString *aiMacShortMd5      = nil;
 static NSString *aiIdForAdvertisers = nil;
 static NSString *aiFbAttributionId  = nil;
 
-static AESessionHandler *sessionContext;
+static AISessionHandler *sessionContext;
 
 #pragma mark private interface
 @interface AdjustIo()
@@ -112,7 +112,7 @@ static AESessionHandler *sessionContext;
 #pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    sessionContext = [AESessionHandler contextWithAppToken:yourAppToken];
+    sessionContext = [AISessionHandler contextWithAppToken:yourAppToken];
     return;
 
     if (![self checkAppToken:yourAppToken]) return;
@@ -167,7 +167,7 @@ static AESessionHandler *sessionContext;
     [self trackEventPackage:revenueEvent];
 }
 
-+ (void)setLogLevel:(AELogLevel)logLevel {
++ (void)setLogLevel:(AILogLevel)logLevel {
     aiLogger.logLevel = logLevel;
 }
 
@@ -175,7 +175,7 @@ static AESessionHandler *sessionContext;
 
 + (void)initialize {
     if (aiLogger == nil) {
-        aiLogger = [AELogger loggerWithTag:@"AdjustIo"];
+        aiLogger = [AILogger loggerWithTag:@"AdjustIo"];
     }
     if (aiApiClient == nil) {
         aiApiClient = [AIApiClient apiClientWithLogger:aiLogger];

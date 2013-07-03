@@ -1,5 +1,5 @@
 //
-//  AETimer.h
+//  AITimer.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 02.07.13.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AETimer : NSObject
+@interface AITimer : NSObject
 
-+ (AETimer *)timerWithInterval:(uint64_t)interval
++ (AITimer *)timerWithInterval:(uint64_t)interval
                         leeway:(uint64_t)leeway
                          queue:(dispatch_queue_t)queue
                          block:(dispatch_block_t)block;

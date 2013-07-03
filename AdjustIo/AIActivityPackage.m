@@ -1,14 +1,14 @@
 //
-//  AEActivityPackage.m
+//  AIActivityPackage.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 03.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AEActivityPackage.h"
+#import "AIActivityPackage.h"
 
-@implementation AEActivityPackage
+@implementation AIActivityPackage
 
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];

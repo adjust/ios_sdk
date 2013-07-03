@@ -1,28 +1,28 @@
 //
-//  AETimer.m
+//  AITimer.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 02.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AETimer.h"
+#import "AITimer.h"
 
-@interface AETimer() {
+@interface AITimer() {
     dispatch_source_t source;
     BOOL suspended;
 }
 
 @end
 
-@implementation AETimer
+@implementation AITimer
 
-+ (AETimer *)timerWithInterval:(uint64_t)interval
++ (AITimer *)timerWithInterval:(uint64_t)interval
                         leeway:(uint64_t)leeway
                          queue:(dispatch_queue_t)queue
                          block:(dispatch_block_t)block
 {
-    return [[AETimer alloc] initWithInterval:interval leeway:leeway queue:queue block:block];
+    return [[AITimer alloc] initWithInterval:interval leeway:leeway queue:queue block:block];
 }
 
 - (id)initWithInterval:(uint64_t)interval

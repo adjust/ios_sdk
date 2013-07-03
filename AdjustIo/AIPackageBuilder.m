@@ -1,21 +1,21 @@
 //
-//  AEPackageBuilder.m
+//  AIPackageBuilder.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 03.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AEPackageBuilder.h"
-#import "AEActivityPackage.h"
+#import "AIPackageBuilder.h"
+#import "AIActivityPackage.h"
 #import "NSData+AIAdditions.h"
 
-@implementation AEPackageBuilder
+@implementation AIPackageBuilder
 
-- (AEActivityPackage *)buildSessionPackage {
+- (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
 
-    AEActivityPackage *sessionPackage = [[AEActivityPackage alloc] init];
+    AIActivityPackage *sessionPackage = [[AIActivityPackage alloc] init];
     sessionPackage.path = @"/startup";
     sessionPackage.kind = @"session start";
     sessionPackage.suffix = @".";
@@ -25,11 +25,11 @@
     return sessionPackage;
 }
 
-- (AEActivityPackage *)buildEventPackage {
+- (AIActivityPackage *)buildEventPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self injectEventParameters:parameters];
 
-    AEActivityPackage *eventPackage = [[AEActivityPackage alloc] init];
+    AIActivityPackage *eventPackage = [[AIActivityPackage alloc] init];
     eventPackage.path = @"/event";
     eventPackage.kind = @"event";
     eventPackage.suffix = self.eventSuffix;
@@ -39,12 +39,12 @@
     return eventPackage;
 }
 
-- (AEActivityPackage *)buildRevenuePackage {
+- (AIActivityPackage *)buildRevenuePackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self injectEventParameters:parameters];
     [self parameters:parameters setString:self.amountString forKey:@"amount"];
 
-    AEActivityPackage *revenuePackage = [[AEActivityPackage alloc] init];
+    AIActivityPackage *revenuePackage = [[AIActivityPackage alloc] init];
     revenuePackage.path = @"/revenue";
     revenuePackage.kind = @"revenue";
     revenuePackage.suffix = self.revenueSuffix;

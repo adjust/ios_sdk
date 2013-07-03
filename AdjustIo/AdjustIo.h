@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AELogger.h"
+#import "AILogger.h"
 
 /**
  * The main interface to AdjustIo.
@@ -69,13 +69,13 @@
  *
  * @param logLevel The desired minimum log level (default: info)
  *     Must be one of the following:
- *      - AELogLevelVerbose (enable all logging)
- *      - AELogLevelDebug
- *      - AELogLevelInfo    (the default)
- *      - AELogLevelWarn    (disable info logging)
- *      - AELogLevelError   (disable warnings as well)
- *      - AELogLevelAssert  (disable errors as well)
+ *      - AILogLevelVerbose (enable all logging)
+ *      - AILogLevelDebug
+ *      - AILogLevelInfo    (the default)
+ *      - AILogLevelWarn    (disable info logging)
+ *      - AILogLevelError   (disable warnings as well)
+ *      - AILogLevelAssert  (disable errors as well)
  */
-+ (void)setLogLevel:(AELogLevel)logLevel;
++ (void)setLogLevel:(AILogLevel)logLevel;
 
 @end

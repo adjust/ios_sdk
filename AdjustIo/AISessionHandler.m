@@ -1,15 +1,15 @@
 //
-//  AESessionHandler.m
+//  AISessionHandler.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 01.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AESessionHandler.h"
-#import "AESessionState.h"
-#import "AELogger.h"
-#import "AETimer.h"
+#import "AISessionHandler.h"
+#import "AISessionState.h"
+#import "AILogger.h"
+#import "AITimer.h"
 
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
@@ -23,10 +23,10 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark private interface
 
-@interface AESessionHandler() {
+@interface AISessionHandler() {
     dispatch_queue_t  sessionQueue;
-    AESessionState *sessionState;
-    AETimer *timer;
+    AISessionState *sessionState;
+    AITimer *timer;
 
     NSString *appToken;
     NSString *macSha1;
@@ -60,7 +60,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 - (NSString *)sessionStateFilename;
 
-+ (BOOL)checkSessionState:(AESessionState *)sessionState;
++ (BOOL)checkSessionState:(AISessionState *)sessionState;
 + (BOOL)checkAppTokenNotNil:(NSString *)appToken;
 + (BOOL)checkAppTokenLength:(NSString *)appToken;
 + (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
@@ -69,12 +69,12 @@ static const double   kSubsessionInterval = 1; // 1 second
 @end
 
 
-@implementation AESessionHandler
+@implementation AISessionHandler
 
 #pragma mark public implementation
 
-+ (AESessionHandler *)contextWithAppToken:(NSString *)appToken {
-    return [[AESessionHandler alloc] initWithAppToken:appToken];
++ (AISessionHandler *)contextWithAppToken:(NSString *)appToken {
+    return [[AISessionHandler alloc] initWithAppToken:appToken];
 }
 
 - (id)initWithAppToken:(NSString *)yourAppToken {
@@ -148,8 +148,8 @@ static const double   kSubsessionInterval = 1; // 1 second
     double now = [NSDate.date timeIntervalSince1970];
 
     if (sessionState == nil) {
-        [AELogger info:@"First session"];
-        sessionState = [[AESessionState alloc] init];
+        [AILogger info:@"First session"];
+        sessionState = [[AISessionState alloc] init];
         sessionState.sessionCount = 1; // this is the first session
         sessionState.createdAt = now;  // starting now
 
@@ -160,7 +160,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     double lastInterval = now - sessionState.lastActivity;
     if (lastInterval < 0) {
-        [AELogger error:@"Time travel!"];
+        [AILogger error:@"Time travel!"];
         sessionState.lastActivity = now;
         [self writeSessionState];
         return;
@@ -218,7 +218,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - sessionState.lastActivity;
     if (lastInterval < 0) {
-        [AELogger error:@"Time travel!"];
+        [AILogger error:@"Time travel!"];
         sessionState.lastInterval = now;
         return;
     }
@@ -232,13 +232,17 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)readSessionState {
-    NSString *filename = [self sessionStateFilename];
-    id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-    if ([object isKindOfClass:[AESessionState class]]) {
-        sessionState = object;
-        NSLog(@"Read session state: %@", sessionState);
-    } else {
-        NSLog(@"Failed to read session state");
+    @try {
+        NSString *filename = [self sessionStateFilename];
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        if ([object isKindOfClass:[AISessionState class]]) {
+            sessionState = object;
+            NSLog(@"Read session state: %@", sessionState);
+        } else {
+            NSLog(@"Failed to read session state");
+        }
+    } @catch (NSException *ex ) {
+        NSLog(@"Failed to read session state (%@)", ex);
     }
 }
 
@@ -259,7 +263,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)startTimer {
     NSLog(@"startTimer");
     if (timer == nil) {
-        timer = [AETimer timerWithInterval:kTimerInterval
+        timer = [AITimer timerWithInterval:kTimerInterval
                                     leeway:kTimerLeeway
                                      queue:sessionQueue
                                      block:^{ [self timerFired]; }];
@@ -308,9 +312,9 @@ static const double   kSubsessionInterval = 1; // 1 second
     return filename;
 }
 
-+ (BOOL)checkSessionState:(AESessionState *)sessionState {
++ (BOOL)checkSessionState:(AISessionState *)sessionState {
     if (sessionState == nil) {
-        [AELogger error:@"Missing session state."];
+        [AILogger error:@"Missing session state."];
         return NO;
     }
     return YES;
@@ -318,7 +322,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 + (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
-        [AELogger error:@"Missing App Token."];
+        [AILogger error:@"Missing App Token."];
         return NO;
     }
     return YES;
@@ -326,7 +330,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 + (BOOL)checkAppTokenLength:(NSString *)appToken {
     if (appToken.length != 12) {
-        [AELogger error:@"Malformed App Token '%@'", appToken];
+        [AILogger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
     return YES;
@@ -334,7 +338,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 + (BOOL)checkEventTokenNotNil:(NSString *)eventToken {
     if (eventToken == nil) {
-        [AELogger error:@"Missing Event Token"];
+        [AILogger error:@"Missing Event Token"];
         return NO;
     }
     return YES;
@@ -345,7 +349,7 @@ static const double   kSubsessionInterval = 1; // 1 second
         return YES;
     }
     if (eventToken.length != 6) {
-        [AELogger error:@"Malformed Event Token '%@'", eventToken];
+        [AILogger error:@"Malformed Event Token '%@'", eventToken];
         return NO;
     }
     return YES;
@@ -353,7 +357,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 + (BOOL)checkAmount:(float)amount {
     if (amount <= 0.0f) {
-        [AELogger error:@"Invalid amount %.1f", amount];
+        [AILogger error:@"Invalid amount %.1f", amount];
         return NO;
     }
     return YES;

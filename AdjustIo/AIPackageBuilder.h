@@ -1,5 +1,5 @@
 //
-//  AEPackageBuilder.h
+//  AIPackageBuilder.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 03.07.13.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class AEActivityPackage;
+@class AIActivityPackage;
 
-@interface AEPackageBuilder : NSObject
+@interface AIPackageBuilder : NSObject
 
 // general
 @property (nonatomic, copy) NSString *appToken;
@@ -34,8 +34,8 @@
 @property (nonatomic, copy) NSDictionary *callbackParameters;
 @property (nonatomic, assign) float amountInCents;
 
-- (AEActivityPackage *)buildSessionPackage;
-- (AEActivityPackage *)buildEventPackage;
-- (AEActivityPackage *)buildRevenuePackage;
+- (AIActivityPackage *)buildSessionPackage;
+- (AIActivityPackage *)buildEventPackage;
+- (AIActivityPackage *)buildRevenuePackage;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "AIApiClient.h"
-#import "AELogger.h"
+#import "AILogger.h"
 
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
@@ -24,7 +24,7 @@ static NSString * const kClientSdk = @"ios1.6";
 - (NSString *)sanitizeZ:(NSString *)string;
 - (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString;;
 
-@property (retain) AELogger *logger;
+@property (retain) AILogger *logger;
 
 @end
 
@@ -34,7 +34,7 @@ static NSString * const kClientSdk = @"ios1.6";
 
 #pragma mark public
 
-+ (AIApiClient *)apiClientWithLogger:(AELogger *)logger {
++ (AIApiClient *)apiClientWithLogger:(AILogger *)logger {
     AIApiClient *apiClient = [[AIApiClient alloc] init];
     apiClient.logger = logger;
     return apiClient;

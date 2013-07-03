@@ -1,14 +1,14 @@
 //
-//  AESessionState.m
+//  AISessionState.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 02.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AESessionState.h"
+#import "AISessionState.h"
 
-@implementation AESessionState
+@implementation AISessionState
 
 - (id)init {
     self = [super init];

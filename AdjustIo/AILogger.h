@@ -1,5 +1,5 @@
 //
-//  AELogger.h
+//  AILogger.h
 //  AdjustIo
 //
 //  Created by Christian Wellenbrock on 15.11.12.
@@ -9,30 +9,30 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    AELogLevelVerbose = 1,
-    AELogLevelDebug   = 2,
-    AELogLevelInfo    = 3,
-    AELogLevelWarn    = 4,
-    AELogLevelError   = 5,
-    AELogLevelAssert  = 6
-} AELogLevel;
+    AILogLevelVerbose = 1,
+    AILogLevelDebug   = 2,
+    AILogLevelInfo    = 3,
+    AILogLevelWarn    = 4,
+    AILogLevelError   = 5,
+    AILogLevelAssert  = 6
+} AILogLevel;
 
 // A simple logger with multiple log levels.
-@interface AELogger : NSObject
+@interface AILogger : NSObject
 
 @property (copy) NSString *logTag;
-@property (assign) AELogLevel logLevel;
+@property (assign) AILogLevel logLevel;
 
 // convenience methods
 + (void)setLogTag:(NSString *)logTag;
-+ (void)setLogLevel:(AELogLevel)logLevel;
++ (void)setLogLevel:(AILogLevel)logLevel;
 + (void)verbose:(NSString *)message, ...;
 + (void)debug:  (NSString *)message, ...;
 + (void)info:   (NSString *)message, ...;
 + (void)warn:   (NSString *)message, ...;
 + (void)error:  (NSString *)message, ...;
 
-+ (AELogger *)loggerWithTag:(NSString *)logTag;
++ (AILogger *)loggerWithTag:(NSString *)logTag;
 - (id)initWithTag:(NSString *)logTag;
 
 - (void)verbose:(NSString *)message, ...;

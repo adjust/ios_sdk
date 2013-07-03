@@ -1,5 +1,5 @@
 //
-//  AESessionState.h
+//  AISessionState.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 02.07.13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AESessionState : NSObject <NSCoding>
+@interface AISessionState : NSObject <NSCoding>
 
 // global counters
 @property (nonatomic, assign) int eventCount;

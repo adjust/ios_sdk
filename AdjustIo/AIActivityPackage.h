@@ -1,5 +1,5 @@
 //
-//  AEActivityPackage.h
+//  AIActivityPackage.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 03.07.13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AEActivityPackage : NSObject <NSCoding>
+@interface AIActivityPackage : NSObject <NSCoding>
 
 // data
 @property (nonatomic, copy) NSString *path;
