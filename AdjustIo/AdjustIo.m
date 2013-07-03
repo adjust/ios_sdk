@@ -7,7 +7,7 @@
 //
 
 #import "AdjustIo.h"
-#import "AESessionContext.h"
+#import "AESessionHandler.h"
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
@@ -68,7 +68,7 @@ static NSString *aiMacShortMd5      = nil;
 static NSString *aiIdForAdvertisers = nil;
 static NSString *aiFbAttributionId  = nil;
 
-static AESessionContext *sessionContext;
+static AESessionHandler *sessionContext;
 
 #pragma mark private interface
 @interface AdjustIo()
@@ -112,7 +112,7 @@ static AESessionContext *sessionContext;
 #pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    sessionContext = [AESessionContext contextWithAppToken:yourAppToken];
+    sessionContext = [AESessionHandler contextWithAppToken:yourAppToken];
     return;
 
     if (![self checkAppToken:yourAppToken]) return;
