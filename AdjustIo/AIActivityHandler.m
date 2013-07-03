@@ -1,20 +1,20 @@
 //
-//  AISessionHandler.m
+//  AIActivityHandler.m
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 01.07.13.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AISessionHandler.h"
-#import "AISessionState.h"
+#import "AIActivityHandler.h"
+#import "AIActivityState.h"
 #import "AILogger.h"
 #import "AITimer.h"
 
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString * const kSessionStateFilename = @"sessionstate7"; // TODO: rename
+static NSString * const kActivityStateFilename = @"activitystate1"; // TODO: rename
 
 static const uint64_t kTimerInterval     = 3 * NSEC_PER_SEC; // TODO: 60 seconds
 static const uint64_t kTimerLeeway       = 0 * NSEC_PER_SEC; // TODO: 1 second
@@ -23,9 +23,9 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark private interface
 
-@interface AISessionHandler() {
+@interface AIActivityHandler() {
     dispatch_queue_t  sessionQueue;
-    AISessionState *sessionState;
+    AIActivityState *activityState;
     AITimer *timer;
 
     NSString *appToken;
@@ -46,9 +46,9 @@ static const double   kSubsessionInterval = 1; // 1 second
                   event:(NSString *)eventToken
              parameters:(NSDictionary *)parameters;
 
-- (void)updateSessionState;
-- (void)readSessionState;
-- (void)writeSessionState;
+- (void)updateActivityState;
+- (void)readActivityState;
+- (void)writeActivityState;
 - (void)enqueueSessionPackage;
 
 - (void)startTimer;
@@ -58,9 +58,9 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)addNotificationObserver;
 - (void)removeNotificationObserver;
 
-- (NSString *)sessionStateFilename;
+- (NSString *)activityStateFilename;
 
-+ (BOOL)checkSessionState:(AISessionState *)sessionState;
++ (BOOL)checkActivityState:(AIActivityState *)activityState;
 + (BOOL)checkAppTokenNotNil:(NSString *)appToken;
 + (BOOL)checkAppTokenLength:(NSString *)appToken;
 + (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
@@ -69,12 +69,12 @@ static const double   kSubsessionInterval = 1; // 1 second
 @end
 
 
-@implementation AISessionHandler
+@implementation AIActivityHandler
 
 #pragma mark public implementation
 
-+ (AISessionHandler *)contextWithAppToken:(NSString *)appToken {
-    return [[AISessionHandler alloc] initWithAppToken:appToken];
++ (AIActivityHandler *)contextWithAppToken:(NSString *)appToken {
+    return [[AIActivityHandler alloc] initWithAppToken:appToken];
 }
 
 - (id)initWithAppToken:(NSString *)yourAppToken {
@@ -137,7 +137,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
 
-    [self readSessionState];
+    [self readActivityState];
 }
 
 - (void)startInternal {
@@ -147,56 +147,56 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     double now = [NSDate.date timeIntervalSince1970];
 
-    if (sessionState == nil) {
+    if (activityState == nil) {
         [AILogger info:@"First session"];
-        sessionState = [[AISessionState alloc] init];
-        sessionState.sessionCount = 1; // this is the first session
-        sessionState.createdAt = now;  // starting now
+        activityState = [[AIActivityState alloc] init];
+        activityState.sessionCount = 1; // this is the first session
+        activityState.createdAt = now;  // starting now
 
         [self enqueueSessionPackage];
-        [self writeSessionState];
+        [self writeActivityState];
         return;
     }
 
-    double lastInterval = now - sessionState.lastActivity;
+    double lastInterval = now - activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
-        sessionState.lastActivity = now;
-        [self writeSessionState];
+        activityState.lastActivity = now;
+        [self writeActivityState];
         return;
     }
 
     // new session
     if (lastInterval > kSessionInterval) {
-        sessionState.lastInterval = lastInterval;
+        activityState.lastInterval = lastInterval;
         [self enqueueSessionPackage];
-        [sessionState startNextSession:now];
-        [self writeSessionState];
+        [activityState startNextSession:now];
+        [self writeActivityState];
         return;
     }
 
     // new subsession
     if (lastInterval > kSubsessionInterval) {
-        sessionState.subsessionCount++;
+        activityState.subsessionCount++;
     }
-    sessionState.sessionLength += lastInterval;
-    sessionState.lastActivity = now;
-    [self writeSessionState];
+    activityState.sessionLength += lastInterval;
+    activityState.lastActivity = now;
+    [self writeActivityState];
 }
 
 - (void)endInternal {
     if (![self.class checkAppTokenNotNil:appToken]) return;
 
     [self stopTimer];
-    [self updateSessionState];
-    [self writeSessionState];
+    [self updateActivityState];
+    [self writeActivityState];
 }
 
 - (void)eventInternal:(NSString *)eventToken
            parameters:(NSDictionary *)parameters
 {
     if (![self.class checkAppTokenNotNil:appToken]) return;
-    if (![self.class checkSessionState:sessionState]) return;
+    if (![self.class checkActivityState:activityState]) return;
 
     [NSThread sleepForTimeInterval:0.5];
     NSLog(@"event");
@@ -207,52 +207,52 @@ static const double   kSubsessionInterval = 1; // 1 second
              parameters:(NSDictionary *)parameters
 {
     if (![self.class checkAppTokenNotNil:appToken]) return;
-    if (![self.class checkSessionState:sessionState]) return;
+    if (![self.class checkActivityState:activityState]) return;
 
     NSLog(@"revenue");
 }
 
-- (void)updateSessionState {
-    if (![self.class checkSessionState:sessionState]) return;
+- (void)updateActivityState {
+    if (![self.class checkActivityState:activityState]) return;
 
     double now = [NSDate.date timeIntervalSince1970];
-    double lastInterval = now - sessionState.lastActivity;
+    double lastInterval = now - activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
-        sessionState.lastInterval = now;
+        activityState.lastInterval = now;
         return;
     }
 
     // ignore late updates
     if (lastInterval > kSessionInterval) return;
 
-    sessionState.sessionLength += lastInterval;
-    sessionState.timeSpent += lastInterval;
-    sessionState.lastActivity = now;
+    activityState.sessionLength += lastInterval;
+    activityState.timeSpent += lastInterval;
+    activityState.lastActivity = now;
 }
 
-- (void)readSessionState {
+- (void)readActivityState {
     @try {
-        NSString *filename = [self sessionStateFilename];
+        NSString *filename = [self activityStateFilename];
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        if ([object isKindOfClass:[AISessionState class]]) {
-            sessionState = object;
-            NSLog(@"Read session state: %@", sessionState);
+        if ([object isKindOfClass:[AIActivityState class]]) {
+            activityState = object;
+            NSLog(@"Read activity state: %@", activityState);
         } else {
-            NSLog(@"Failed to read session state");
+            NSLog(@"Failed to read activity state");
         }
     } @catch (NSException *ex ) {
-        NSLog(@"Failed to read session state (%@)", ex);
+        NSLog(@"Failed to read activity state (%@)", ex);
     }
 }
 
-- (void)writeSessionState {
-    NSString *filename = [self sessionStateFilename];
-    BOOL result = [NSKeyedArchiver archiveRootObject:sessionState toFile:filename];
+- (void)writeActivityState {
+    NSString *filename = [self activityStateFilename];
+    BOOL result = [NSKeyedArchiver archiveRootObject:activityState toFile:filename];
     if (result == YES) {
-        NSLog(@"Wrote session state: %@", sessionState);
+        NSLog(@"Wrote activity state: %@", activityState);
     } else {
-        NSLog(@"Failed to write session state");
+        NSLog(@"Failed to write activity state");
     }
 }
 
@@ -277,8 +277,8 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 - (void)timerFired {
     // [queueHandler trackFirstPackage]; // TODO: enable
-    [self updateSessionState];
-    [self writeSessionState];
+    [self updateActivityState];
+    [self writeActivityState];
 }
 
 - (void)addNotificationObserver {
@@ -305,16 +305,16 @@ static const double   kSubsessionInterval = 1; // 1 second
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-- (NSString *)sessionStateFilename {
+- (NSString *)activityStateFilename {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:kSessionStateFilename];
+    NSString *filename = [path stringByAppendingPathComponent:kActivityStateFilename];
     return filename;
 }
 
-+ (BOOL)checkSessionState:(AISessionState *)sessionState {
-    if (sessionState == nil) {
-        [AILogger error:@"Missing session state."];
++ (BOOL)checkActivityState:(AIActivityState *)activityState {
+    if (activityState == nil) {
+        [AILogger error:@"Missing activity state."];
         return NO;
     }
     return YES;

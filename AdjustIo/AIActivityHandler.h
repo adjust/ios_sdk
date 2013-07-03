@@ -1,5 +1,5 @@
 //
-//  AISessionHandler.h
+//  AIActivityHandler.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 01.07.13.
@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 // TODO: rename to AIStateHandler
-@interface AISessionHandler : NSObject
+@interface AIActivityHandler : NSObject
 
-+ (AISessionHandler *)contextWithAppToken:(NSString *)appToken;
++ (AIActivityHandler *)contextWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
 
 - (void)trackSubsessionStart;

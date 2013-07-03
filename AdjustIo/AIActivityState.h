@@ -1,5 +1,5 @@
 //
-//  AISessionState.h
+//  AIActivityState.h
 //  AdjustIosApp
 //
 //  Created by Christian Wellenbrock on 02.07.13.
@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AISessionState : NSObject <NSCoding>
+@class AIPackageBuilder;
+
+@interface AIActivityState : NSObject <NSCoding>
 
 // global counters
 @property (nonatomic, assign) int eventCount;
@@ -23,6 +25,8 @@
 @property (nonatomic, assign) double lastInterval;  // not persisted because volatile
 
 - (void)startNextSession:(long)now;
-// TODO: injectors
+
+- (void)injectSessionAttributes:(AIPackageBuilder *)packageBilder;
+- (void)injectEventAttributes:(AIPackageBuilder *)packageBilder;
 
 @end

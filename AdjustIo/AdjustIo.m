@@ -7,7 +7,7 @@
 //
 
 #import "AdjustIo.h"
-#import "AISessionHandler.h"
+#import "AIActivityHandler.h"
 #import "AIApiClient.h"
 
 #import "UIDevice+AIAdditions.h"
@@ -15,7 +15,6 @@
 #import "NSData+AIAdditions.h"
 #import "NSMutableDictionary+AIAdditions.h"
 
-// TODO: use proper classes like AITrackingPackage, AISessionState and AIPackageQueue
 // use NSKeyedArchiver and write to a file instead
 // refactor and extract
 // http://nshipster.com/nscoding/
@@ -68,7 +67,7 @@ static NSString *aiMacShortMd5      = nil;
 static NSString *aiIdForAdvertisers = nil;
 static NSString *aiFbAttributionId  = nil;
 
-static AISessionHandler *sessionContext;
+static AIActivityHandler *activityHandler;
 
 #pragma mark private interface
 @interface AdjustIo()
@@ -112,7 +111,7 @@ static AISessionHandler *sessionContext;
 #pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    sessionContext = [AISessionHandler contextWithAppToken:yourAppToken];
+    activityHandler = [AIActivityHandler contextWithAppToken:yourAppToken];
     return;
 
     if (![self checkAppToken:yourAppToken]) return;
@@ -133,7 +132,7 @@ static AISessionHandler *sessionContext;
 }
 
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
-    [sessionContext trackEvent:eventToken withParameters:parameters];
+    [activityHandler trackEvent:eventToken withParameters:parameters];
     return;
 
     if (![self checkEventTokenNotNil:eventToken]) return;
@@ -156,7 +155,7 @@ static AISessionHandler *sessionContext;
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {
-    [sessionContext trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
+    [activityHandler trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
     return;
 
     if (![self checkEventTokenLength:eventToken]) return;
@@ -250,7 +249,7 @@ static AISessionHandler *sessionContext;
 }
 
 + (void)trackSessionEnd {
-    [sessionContext trackSubsessionEnd];
+    [activityHandler trackSubsessionEnd];
     return;
     [aiLogger verbose:@"Session end updating last activity."];
 
@@ -263,7 +262,7 @@ static AISessionHandler *sessionContext;
 }
 
 + (void)trackSessionStart {
-    [sessionContext trackSubsessionStart];
+    [activityHandler trackSubsessionStart];
     return;
 
     if (![self checkAppToken:aiAppToken]) return;
