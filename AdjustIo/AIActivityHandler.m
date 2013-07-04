@@ -284,8 +284,6 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)writeActivityState {
-    [NSThread sleepForTimeInterval:0.3]; // TODO: remove
-
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {

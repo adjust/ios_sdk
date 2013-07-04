@@ -78,4 +78,8 @@
  */
 + (void)setLogLevel:(AILogLevel)logLevel;
 
+// used by request handler
++ (NSString *)baseUrl;
++ (NSString *)clientSdk;
+
 @end

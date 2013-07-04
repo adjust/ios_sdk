@@ -26,6 +26,14 @@
     return builder;
 }
 
+- (NSString *)successMessage {
+    return [NSString stringWithFormat:@"Tracked %@%@", self.kind, self.suffix];
+}
+
+- (NSString *)failureMessage {
+    return [NSString stringWithFormat:@"Failed to track %@%@", self.kind, self.suffix];
+}
+
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)decoder {

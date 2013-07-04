@@ -20,5 +20,7 @@
 @property (nonatomic, copy) NSString *suffix;
 
 - (NSString *)parameterString;
+- (NSString *)successMessage;
+- (NSString *)failureMessage;
 
 @end

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 adeven. All rights reserved.
 //
 
+// TODO: delete this class
+
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 

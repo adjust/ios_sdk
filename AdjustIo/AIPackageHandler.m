@@ -7,6 +7,7 @@
 //
 
 #import "AIPackageHandler.h"
+#import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 
@@ -18,10 +19,16 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
 @interface AIPackageHandler()
 
 @property (nonatomic, retain) dispatch_queue_t internalQueue;
+@property (nonatomic, retain) AIRequestHandler *requestHandler;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
+@property (nonatomic, retain) dispatch_semaphore_t sendingSemaphore;
+@property (nonatomic, assign, getter = isPaused) BOOL paused;
 
 - (void)initInternal;
 - (void)addInternal:(AIActivityPackage *)package;
+- (void)sendFirstInternal;
+- (void)sendNextInternal;
+
 - (void)readPackageQueue;
 - (void)writePackageQueue;
 - (NSString *)packageQueueFilename;
@@ -53,29 +60,35 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
 }
 
 - (void)sendFirstPackage {
-    NSLog(@"sendFirstPackage");
+    dispatch_async(self.internalQueue, ^{
+        [self sendFirstInternal];
+    });
 }
 
 - (void)sendNextPackage {
-    NSLog(@"sendNextPackage");
+    dispatch_async(self.internalQueue, ^{
+        [self sendNextInternal];
+    });
 }
 
 - (void)closeFirstPackage {
-    NSLog(@"closeFirstPackage");
+    dispatch_semaphore_signal(self.sendingSemaphore);
 }
 
 - (void)pauseSending {
-    NSLog(@"pauseSending");
+    self.paused = YES;
 }
 
 - (void)resumeSending {
-    NSLog(@"resumeSending");
+    self.paused = NO;
 }
 
 
 #pragma marke private implementation
 
 - (void)initInternal {
+    self.requestHandler = [AIRequestHandler handlerWithPackageHandler:self];
+    self.sendingSemaphore = dispatch_semaphore_create(1);
     [self readPackageQueue];
 }
 
@@ -85,6 +98,31 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
     [AILogger verbose:@"%@", newPackage.parameterString];
 
     [self writePackageQueue];
+    [self sendFirstInternal];
+}
+
+- (void)sendFirstInternal {
+    if (self.packageQueue.count == 0) return;
+
+    if (self.isPaused) {
+        [AILogger debug:@"Package handler is paused"];
+        return;
+    }
+
+    if (dispatch_semaphore_wait(self.sendingSemaphore, DISPATCH_TIME_NOW) != 0) {
+        [AILogger debug:@"Package handler is already sending"];
+        return;
+    }
+
+    AIActivityPackage *activityPackage = [self.packageQueue objectAtIndex:0];
+    [self.requestHandler sendPackage:activityPackage];
+}
+
+- (void)sendNextInternal {
+    [self.packageQueue removeObjectAtIndex:0];
+    [self writePackageQueue];
+    dispatch_semaphore_signal(self.sendingSemaphore);
+    [self sendFirstInternal];
 }
 
 - (void)readPackageQueue {
@@ -94,13 +132,13 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
         if ([object isKindOfClass:[NSArray class]]) {
             // TODO: check class of packages?
             self.packageQueue = object;
-            NSLog(@"Package handler read %d packages", self.packageQueue.count);
+            [AILogger debug:@"Package handler read %d packages", self.packageQueue.count];
             return;
         } else {
-            NSLog(@"Failed to read package queue");
+            [AILogger error:@"Failed to read package queue"];
         }
-    } @catch (NSException *ex ) {
-        NSLog(@"Failed to read package queue (%@)", ex);
+    } @catch (NSException *exception) {
+        [AILogger error:@"Failed to read package queue (%@)", exception];
     }
 
     // start with a fresh package queue in case of any exception
@@ -111,9 +149,9 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
     NSString *filename = [self packageQueueFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.packageQueue toFile:filename];
     if (result == YES) {
-        NSLog(@"Package handler wrote %d packages", self.packageQueue.count);
+        [AILogger verbose:@"Package handler wrote %d packages", self.packageQueue.count];
     } else {
-        NSLog(@"Failed to write package queue");
+        [AILogger verbose:@"Failed to write package queue"];
     }
 }
 

@@ -18,7 +18,7 @@
     AIActivityPackage *sessionPackage = [[AIActivityPackage alloc] init];
     sessionPackage.path = @"/startup";
     sessionPackage.kind = @"session start";
-    sessionPackage.suffix = @".";
+    sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
     sessionPackage.userAgent = self.userAgent;
 

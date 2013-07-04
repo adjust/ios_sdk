@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class AIPackageHandler;
+@class AIActivityPackage;
+
 @interface AIRequestHandler : NSObject
+
++ (AIRequestHandler *)handlerWithPackageHandler:(AIPackageHandler *)packageHandler;
+- (id)initWithPackageHandler:(AIPackageHandler *)packageHandler;
+
+- (void)sendPackage:(AIActivityPackage *)activityPackage;
 
 @end

@@ -15,6 +15,9 @@
 #import "NSData+AIAdditions.h"
 #import "NSMutableDictionary+AIAdditions.h"
 
+static NSString * const kBaseUrl   = @"http://192.168.178.117:8509"; // TODO: change
+static NSString * const kClientSdk = @"ios1.6"; // TODO: change
+
 // use NSKeyedArchiver and write to a file instead
 // refactor and extract
 // http://nshipster.com/nscoding/
@@ -173,6 +176,14 @@ static AIActivityHandler *activityHandler;
 
 #pragma mark private implementation
 
++ (NSString *)baseUrl {
+    return kBaseUrl;
+}
+
++ (NSString *)clientSdk {
+    return kClientSdk;
+}
+
 + (void)initialize {
     if (aiLogger == nil) {
         aiLogger = [AILogger loggerWithTag:@"AdjustIo"];
@@ -304,7 +315,6 @@ static AIActivityHandler *activityHandler;
     NSDate *now = NSDate.date;
 
     [defaultsLock lock];
-    // [NSThread sleepForTimeInterval:0.5]; // TODO: remove
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSDate *lastSessionStart = [defaults objectForKey:kDefaultsKeyLastSessionStart];
     int     sessionCount     = [defaults integerForKey:kDefaultsKeySessionCount];
