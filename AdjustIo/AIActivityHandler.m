@@ -26,21 +26,19 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark private interface
 
-// TODO: use private properties everywhere!
-@interface AIActivityHandler() {
-    dispatch_queue_t internalQueue;
-    AIPackageHandler *packageHandler;
-    AIActivityState *activityState;
-    AITimer *timer;
+@interface AIActivityHandler()
 
-    // TODO: should these be properties?
-    NSString *appToken;
-    NSString *macSha1;
-    NSString *macShortMd5;
-    NSString *idForAdvertisers;
-    NSString *fbAttributionId;
-    NSString *userAgent;
-}
+@property (nonatomic, retain) dispatch_queue_t internalQueue;
+@property (nonatomic, retain) AIPackageHandler *packageHandler;
+@property (nonatomic, retain) AIActivityState *activityState;
+@property (nonatomic, retain) AITimer *timer;
+
+@property (nonatomic, copy) NSString *appToken;
+@property (nonatomic, copy) NSString *macSha1;
+@property (nonatomic, copy) NSString *macShortMd5;
+@property (nonatomic, copy) NSString *idForAdvertisers;
+@property (nonatomic, copy) NSString *fbAttributionId;
+@property (nonatomic, copy) NSString *userAgent;
 
 - (void)startInternal;
 - (void)endInternal;
@@ -88,9 +86,9 @@ static const double   kSubsessionInterval = 1; // 1 second
     if (self == nil) return nil;
 
     [self addNotificationObserver];
-    internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
-    dispatch_async(internalQueue, ^{
+    dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
     });
 
@@ -98,13 +96,13 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)trackSubsessionStart {
-    dispatch_async(internalQueue, ^{
+    dispatch_async(self.internalQueue, ^{
         [self startInternal];
     });
 }
 
 - (void)trackSubsessionEnd {
-    dispatch_async(internalQueue, ^{
+    dispatch_async(self.internalQueue, ^{
         [self endInternal];
     });
 }
@@ -112,7 +110,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)trackEvent:(NSString *)eventToken
     withParameters:(NSDictionary *)parameters
 {
-    dispatch_async(internalQueue, ^{
+    dispatch_async(self.internalQueue, ^{
         [self eventInternal:eventToken parameters:parameters];
     });
 }
@@ -121,7 +119,7 @@ static const double   kSubsessionInterval = 1; // 1 second
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {
-    dispatch_async(internalQueue, ^{
+    dispatch_async(self.internalQueue, ^{
         [self revenueInternal:amount event:eventToken parameters:parameters];
     });
 }
@@ -137,62 +135,62 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
 
-    appToken         = yourAppToken;
-    macSha1          = macAddress.aiSha1;
-    macShortMd5      = macAddress.aiRemoveColons.aiMd5;
-    idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
-    fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
+    self.appToken         = yourAppToken;
+    self.macSha1          = macAddress.aiSha1;
+    self.macShortMd5      = macAddress.aiRemoveColons.aiMd5;
+    self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
+    self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
 
-    packageHandler = [[AIPackageHandler alloc] init];
+    self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
 }
 
 - (void)startInternal {
-    if (![self.class checkAppTokenNotNil:appToken]) return;
+    if (![self.class checkAppTokenNotNil:self.appToken]) return;
 
     [self startTimer];
 
     double now = [NSDate.date timeIntervalSince1970];
 
-    if (activityState == nil) {
+    if (self.activityState == nil) {
         [AILogger info:@"First session"];
-        activityState = [[AIActivityState alloc] init];
-        activityState.sessionCount = 1; // this is the first session
-        activityState.createdAt = now;  // starting now
+        self.activityState = [[AIActivityState alloc] init];
+        self.activityState.sessionCount = 1; // this is the first session
+        self.activityState.createdAt = now;  // starting now
 
         [self transferSessionPackage];
         [self writeActivityState];
         return;
     }
 
-    double lastInterval = now - activityState.lastActivity;
+    double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
-        activityState.lastActivity = now;
+        self.activityState.lastActivity = now;
         [self writeActivityState];
         return;
     }
 
     // new session
     if (lastInterval > kSessionInterval) {
-        activityState.lastInterval = lastInterval;
+        self.activityState.lastInterval = lastInterval;
         [self transferSessionPackage];
-        [activityState startNextSession:now];
+        [self.activityState startNextSession:now];
         [self writeActivityState];
         return;
     }
 
     // new subsession
     if (lastInterval > kSubsessionInterval) {
-        activityState.subsessionCount++;
+        self.activityState.subsessionCount++;
     }
-    activityState.sessionLength += lastInterval;
-    activityState.lastActivity = now;
+    self.activityState.sessionLength += lastInterval;
+    self.activityState.lastActivity = now;
     [self writeActivityState];
 }
 
 - (void)endInternal {
-    if (![self.class checkAppTokenNotNil:appToken]) return;
+    if (![self.class checkAppTokenNotNil:self.appToken]) return;
 
     [self stopTimer];
     [self updateActivityState];
@@ -202,8 +200,8 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)eventInternal:(NSString *)eventToken
            parameters:(NSDictionary *)parameters
 {
-    if (![self.class checkAppTokenNotNil:appToken]) return;
-    if (![self.class checkActivityState:activityState]) return;
+    if (![self.class checkAppTokenNotNil:self.appToken]) return;
+    if (![self.class checkActivityState:self.activityState]) return;
     if (![self.class checkEventTokenNotNil:eventToken]) return;
     if (![self.class checkEventTokenLength:eventToken]) return;
 
@@ -211,13 +209,13 @@ static const double   kSubsessionInterval = 1; // 1 second
     eventBuilder.eventToken = eventToken;
     eventBuilder.callbackParameters = parameters;
 
-    activityState.eventCount++;
+    self.activityState.eventCount++;
     [self updateActivityState];
     [self injectGeneralAttributes:eventBuilder];
-    [activityState injectEventAttributes:eventBuilder];
+    [self.activityState injectEventAttributes:eventBuilder];
 
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
-    [packageHandler addPackage:eventPackage];
+    [self.packageHandler addPackage:eventPackage];
 
     [self writeActivityState];
 }
@@ -226,8 +224,8 @@ static const double   kSubsessionInterval = 1; // 1 second
                   event:(NSString *)eventToken
              parameters:(NSDictionary *)parameters
 {
-    if (![self.class checkAppTokenNotNil:appToken]) return;
-    if (![self.class checkActivityState:activityState]) return;
+    if (![self.class checkAppTokenNotNil:self.appToken]) return;
+    if (![self.class checkActivityState:self.activityState]) return;
     if (![self.class checkAmount:amount]) return;
     if (![self.class checkEventTokenLength:eventToken]) return;
 
@@ -236,34 +234,34 @@ static const double   kSubsessionInterval = 1; // 1 second
     revenueBuilder.eventToken = eventToken;
     revenueBuilder.callbackParameters = parameters;
 
-    activityState.eventCount++;
+    self.activityState.eventCount++;
     [self updateActivityState];
     [self injectGeneralAttributes:revenueBuilder];
-    [activityState injectEventAttributes:revenueBuilder];
+    [self.activityState injectEventAttributes:revenueBuilder];
 
     AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
-    [packageHandler addPackage:revenuePackage];
+    [self.packageHandler addPackage:revenuePackage];
 
     [self writeActivityState];
 }
 
 - (void)updateActivityState {
-    if (![self.class checkActivityState:activityState]) return;
+    if (![self.class checkActivityState:self.activityState]) return;
 
     double now = [NSDate.date timeIntervalSince1970];
-    double lastInterval = now - activityState.lastActivity;
+    double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
-        activityState.lastInterval = now;
+        self.activityState.lastInterval = now;
         return;
     }
 
     // ignore late updates
     if (lastInterval > kSessionInterval) return;
 
-    activityState.sessionLength += lastInterval;
-    activityState.timeSpent += lastInterval;
-    activityState.lastActivity = now;
+    self.activityState.sessionLength += lastInterval;
+    self.activityState.timeSpent += lastInterval;
+    self.activityState.lastActivity = now;
 }
 
 - (void)readActivityState {
@@ -271,8 +269,8 @@ static const double   kSubsessionInterval = 1; // 1 second
         NSString *filename = [self activityStateFilename];
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
-            activityState = object;
-            NSLog(@"Read activity state: %@", activityState);
+            self.activityState = object;
+            NSLog(@"Read activity state: %@", self.activityState);
             return;
         } else {
             NSLog(@"Failed to read activity state");
@@ -282,16 +280,16 @@ static const double   kSubsessionInterval = 1; // 1 second
     }
 
     // start with a fresh activity state in case of any exception
-    activityState = nil;
+    self.activityState = nil;
 }
 
 - (void)writeActivityState {
     [NSThread sleepForTimeInterval:0.3]; // TODO: remove
 
     NSString *filename = [self activityStateFilename];
-    BOOL result = [NSKeyedArchiver archiveRootObject:activityState toFile:filename];
+    BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
-        NSLog(@"Wrote activity state: %@", activityState);
+        NSLog(@"Wrote activity state: %@", self.activityState);
     } else {
         NSLog(@"Failed to write activity state");
     }
@@ -300,37 +298,37 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
     [self injectGeneralAttributes:sessionBuilder];
-    [activityState injectSessionAttributes:sessionBuilder];
+    [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
-    [packageHandler addPackage:sessionPackage];
+    [self.packageHandler addPackage:sessionPackage];
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
-    builder.userAgent = userAgent;
-    builder.appToken = appToken;
-    builder.macShortMd5 = macShortMd5;
-    builder.macSha1 = macSha1;
-    builder.idForAdvertisers = idForAdvertisers;
-    builder.attributionId = fbAttributionId;
+    builder.userAgent = self.userAgent;
+    builder.appToken = self.appToken;
+    builder.macShortMd5 = self.macShortMd5;
+    builder.macSha1 = self.macSha1;
+    builder.idForAdvertisers = self.idForAdvertisers;
+    builder.attributionId = self.fbAttributionId;
 }
 
 - (void)startTimer {
     NSLog(@"startTimer");
-    if (timer == nil) {
-        timer = [AITimer timerWithInterval:kTimerInterval
+    if (self.timer == nil) {
+        self.timer = [AITimer timerWithInterval:kTimerInterval
                                     leeway:kTimerLeeway
-                                     queue:internalQueue
+                                     queue:self.internalQueue
                                      block:^{ [self timerFired]; }];
     }
-    [timer resume];
+    [self.timer resume];
 }
 
 - (void)stopTimer {
-    [timer suspend];
+    [self.timer suspend];
 }
 
 - (void)timerFired {
-    [packageHandler sendFirstPackage];
+    [self.packageHandler sendFirstPackage];
     [self updateActivityState];
     [self writeActivityState];
 }

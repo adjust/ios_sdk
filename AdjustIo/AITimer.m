@@ -8,10 +8,10 @@
 
 #import "AITimer.h"
 
-@interface AITimer() {
-    dispatch_source_t source;
-    BOOL suspended;
-}
+@interface AITimer()
+
+@property (nonatomic, retain) dispatch_source_t source;
+@property (nonatomic, assign) BOOL suspended;
 
 @end
 
@@ -33,28 +33,28 @@
     self = [super init];
     if (self == nil) return nil;
 
-    source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-    if (source != nil) {
-        dispatch_source_set_timer(source, dispatch_walltime(NULL, 0), interval, leeway);
-        dispatch_source_set_event_handler(source, block);
+    self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (self.source != nil) {
+        dispatch_source_set_timer(self.source, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(self.source, block);
     }
-    suspended = YES;
+    self.suspended = YES;
 
     return self;
 }
 
 - (void)resume {
-    if (!suspended) return;
+    if (!self.suspended) return;
 
-    dispatch_resume(source);
-    suspended = NO;
+    dispatch_resume(self.source);
+    self.suspended = NO;
 }
 
 - (void)suspend {
-    if (suspended) return;
+    if (self.suspended) return;
 
-    dispatch_suspend(source);
-    suspended = YES;
+    dispatch_suspend(self.source);
+    self.suspended = YES;
 }
 
 @end
