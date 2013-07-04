@@ -11,7 +11,7 @@
 // TODO: rename to AIStateHandler
 @interface AIActivityHandler : NSObject
 
-+ (AIActivityHandler *)contextWithAppToken:(NSString *)appToken;
++ (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
 
 - (void)trackSubsessionStart;

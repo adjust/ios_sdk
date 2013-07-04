@@ -111,7 +111,7 @@ static AIActivityHandler *activityHandler;
 #pragma mark public implementation
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    activityHandler = [AIActivityHandler contextWithAppToken:yourAppToken];
+    activityHandler = [AIActivityHandler handlerWithAppToken:yourAppToken];
     return;
 
     if (![self checkAppToken:yourAppToken]) return;
@@ -167,7 +167,8 @@ static AIActivityHandler *activityHandler;
 }
 
 + (void)setLogLevel:(AILogLevel)logLevel {
-    aiLogger.logLevel = logLevel;
+    [AILogger setLogLevel:logLevel];
+    aiLogger.logLevel = logLevel; // TODO: remove
 }
 
 #pragma mark private implementation

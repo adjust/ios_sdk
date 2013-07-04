@@ -16,17 +16,19 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString * const kActivityStateFilename = @"activitystate1"; // TODO: rename
+static NSString * const kActivityStateFilename = @"ActivityState1"; // TODO: rename
+static const char * const kInternalQueueName = "io.adjust.ActivityQueue"; // TODO: rename
 
 static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
-static const uint64_t kTimerLeeway        = 0 * NSEC_PER_SEC; // TODO: 1 second
+static const uint64_t kTimerLeeway        = 1 * NSEC_PER_SEC; // TODO: 1 second
 static const double   kSessionInterval    = 5; // 5 seconds, TODO: 30 minutes
 static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark private interface
 
+// TODO: use private properties everywhere!
 @interface AIActivityHandler() {
-    dispatch_queue_t  sessionQueue;
+    dispatch_queue_t internalQueue;
     AIPackageHandler *packageHandler;
     AIActivityState *activityState;
     AITimer *timer;
@@ -77,7 +79,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 #pragma mark public implementation
 
-+ (AIActivityHandler *)contextWithAppToken:(NSString *)appToken {
++ (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken {
     return [[AIActivityHandler alloc] initWithAppToken:appToken];
 }
 
@@ -86,9 +88,9 @@ static const double   kSubsessionInterval = 1; // 1 second
     if (self == nil) return nil;
 
     [self addNotificationObserver];
-    sessionQueue = dispatch_queue_create("io.adjust.sessiontest", DISPATCH_QUEUE_SERIAL);
+    internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
-    dispatch_async(sessionQueue, ^{
+    dispatch_async(internalQueue, ^{
         [self initInternal:yourAppToken];
     });
 
@@ -96,13 +98,13 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)trackSubsessionStart {
-    dispatch_async(sessionQueue, ^{
+    dispatch_async(internalQueue, ^{
         [self startInternal];
     });
 }
 
 - (void)trackSubsessionEnd {
-    dispatch_async(sessionQueue, ^{
+    dispatch_async(internalQueue, ^{
         [self endInternal];
     });
 }
@@ -110,7 +112,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)trackEvent:(NSString *)eventToken
     withParameters:(NSDictionary *)parameters
 {
-    dispatch_async(sessionQueue, ^{
+    dispatch_async(internalQueue, ^{
         [self eventInternal:eventToken parameters:parameters];
     });
 }
@@ -119,7 +121,7 @@ static const double   kSubsessionInterval = 1; // 1 second
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {
-    dispatch_async(sessionQueue, ^{
+    dispatch_async(internalQueue, ^{
         [self revenueInternal:amount event:eventToken parameters:parameters];
     });
 }
@@ -202,9 +204,22 @@ static const double   kSubsessionInterval = 1; // 1 second
 {
     if (![self.class checkAppTokenNotNil:appToken]) return;
     if (![self.class checkActivityState:activityState]) return;
+    if (![self.class checkEventTokenNotNil:eventToken]) return;
+    if (![self.class checkEventTokenLength:eventToken]) return;
 
-    [NSThread sleepForTimeInterval:0.5];
-    NSLog(@"event");
+    AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
+    eventBuilder.eventToken = eventToken;
+    eventBuilder.callbackParameters = parameters;
+
+    activityState.eventCount++;
+    [self updateActivityState];
+    [self injectGeneralAttributes:eventBuilder];
+    [activityState injectEventAttributes:eventBuilder];
+
+    AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
+    [packageHandler addPackage:eventPackage];
+
+    [self writeActivityState];
 }
 
 - (void)revenueInternal:(float)amount
@@ -213,8 +228,23 @@ static const double   kSubsessionInterval = 1; // 1 second
 {
     if (![self.class checkAppTokenNotNil:appToken]) return;
     if (![self.class checkActivityState:activityState]) return;
+    if (![self.class checkAmount:amount]) return;
+    if (![self.class checkEventTokenLength:eventToken]) return;
 
-    NSLog(@"revenue");
+    AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
+    revenueBuilder.amountInCents = amount;
+    revenueBuilder.eventToken = eventToken;
+    revenueBuilder.callbackParameters = parameters;
+
+    activityState.eventCount++;
+    [self updateActivityState];
+    [self injectGeneralAttributes:revenueBuilder];
+    [activityState injectEventAttributes:revenueBuilder];
+
+    AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
+    [packageHandler addPackage:revenuePackage];
+
+    [self writeActivityState];
 }
 
 - (void)updateActivityState {
@@ -243,15 +273,21 @@ static const double   kSubsessionInterval = 1; // 1 second
         if ([object isKindOfClass:[AIActivityState class]]) {
             activityState = object;
             NSLog(@"Read activity state: %@", activityState);
+            return;
         } else {
             NSLog(@"Failed to read activity state");
         }
     } @catch (NSException *ex ) {
         NSLog(@"Failed to read activity state (%@)", ex);
     }
+
+    // start with a fresh activity state in case of any exception
+    activityState = nil;
 }
 
 - (void)writeActivityState {
+    [NSThread sleepForTimeInterval:0.3]; // TODO: remove
+
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:activityState toFile:filename];
     if (result == YES) {
@@ -262,10 +298,10 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)transferSessionPackage {
-    AIPackageBuilder *builder = [[AIPackageBuilder alloc] init];
-    [self injectGeneralAttributes:builder];
-    [activityState injectSessionAttributes:builder];
-    AIActivityPackage *sessionPackage = [builder buildSessionPackage];
+    AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
+    [self injectGeneralAttributes:sessionBuilder];
+    [activityState injectSessionAttributes:sessionBuilder];
+    AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [packageHandler addPackage:sessionPackage];
 }
 
@@ -283,7 +319,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     if (timer == nil) {
         timer = [AITimer timerWithInterval:kTimerInterval
                                     leeway:kTimerLeeway
-                                     queue:sessionQueue
+                                     queue:internalQueue
                                      block:^{ [self timerFired]; }];
     }
     [timer resume];
@@ -294,7 +330,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 }
 
 - (void)timerFired {
-    // [queueHandler trackFirstPackage]; // TODO: enable
+    [packageHandler sendFirstPackage];
     [self updateActivityState];
     [self writeActivityState];
 }

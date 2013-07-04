@@ -13,5 +13,10 @@
 @interface AIPackageHandler : NSObject
 
 - (void)addPackage:(AIActivityPackage *)package;
+- (void)sendFirstPackage;
+- (void)sendNextPackage;
+- (void)closeFirstPackage;
+- (void)pauseSending;
+- (void)resumeSending;
 
 @end
