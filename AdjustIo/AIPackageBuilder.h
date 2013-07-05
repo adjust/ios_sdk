@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *attributionId;
 @property (nonatomic, copy) NSString *userAgent;
+@property (nonatomic, copy) NSString *clientSdk;
 
 // sessions
 @property (nonatomic, assign) int sessionCount;

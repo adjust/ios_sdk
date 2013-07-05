@@ -84,7 +84,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
 - (void)addInternal:(AIActivityPackage *)newPackage {
     [self.packageQueue addObject:newPackage];
     [AILogger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
-    [AILogger verbose:@"%@", newPackage.parameterString];
+    [AILogger verbose:@"%@", newPackage.extendedString];
 
     [self writePackageQueue];
     [self sendFirstInternal];
@@ -99,7 +99,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
     }
 
     if (dispatch_semaphore_wait(self.sendingSemaphore, DISPATCH_TIME_NOW) != 0) {
-        [AILogger debug:@"Package handler is already sending"];
+        [AILogger verbose:@"Package handler is already sending"];
         return;
     }
 
@@ -124,7 +124,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
             self.packageQueue = object;
             [AILogger debug:@"Package handler read %d packages", self.packageQueue.count];
             return;
-        } else {
+        } else if (object != nil) {
             [AILogger error:@"Failed to read package queue"];
         }
     } @catch (NSException *exception) {
@@ -139,9 +139,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
     NSString *filename = [self packageQueueFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.packageQueue toFile:filename];
     if (result == YES) {
-        [AILogger verbose:@"Package handler wrote %d packages", self.packageQueue.count];
+        [AILogger debug:@"Package handler wrote %d packages", self.packageQueue.count];
     } else {
-        [AILogger verbose:@"Failed to write package queue"];
+        [AILogger error:@"Failed to write package queue"];
     }
 }
 

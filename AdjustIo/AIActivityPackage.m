@@ -16,14 +16,20 @@
             self.kind, self.suffix, self.path];
 }
 
-- (NSString *)parameterString {
-    if (self.parameters == nil) return @"Parameters: nil";
+- (NSString *)extendedString {
+    NSMutableString *builder = [NSMutableString string];
+    [builder appendFormat:@"Path:      %@\n", self.path];
+    [builder appendFormat:@"UserAgent: %@\n", self.userAgent];
+    [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];
 
-    NSMutableString *builder = [NSMutableString stringWithString:@"Parameters:"];
-    for (NSString *key in self.parameters) {
-        NSString *value = [self.parameters objectForKey:key];
-        [builder appendFormat:@"\n\t%-16s %@", [key UTF8String], value];
+    if (self.parameters != nil) {
+        [builder appendFormat:@"Parameters:"];
+        for (NSString *key in self.parameters) {
+            NSString *value = [self.parameters objectForKey:key];
+            [builder appendFormat:@"\n\t\t%-16s %@", [key UTF8String], value];
+        }
     }
+
     return builder;
 }
 
@@ -42,6 +48,7 @@
 
     self.path = [decoder decodeObjectForKey:@"path"];
     self.userAgent = [decoder decodeObjectForKey:@"userAgent"];
+    self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
     self.parameters = [decoder decodeObjectForKey:@"parameters"];
     self.kind = [decoder decodeObjectForKey:@"kind"];
     self.suffix = [decoder decodeObjectForKey:@"suffix"];
@@ -52,6 +59,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:self.path forKey:@"path"];
     [encoder encodeObject:self.userAgent forKey:@"userAgent"];
+    [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
     [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:self.kind forKey:@"kind"];
     [encoder encodeObject:self.suffix forKey:@"suffix"];

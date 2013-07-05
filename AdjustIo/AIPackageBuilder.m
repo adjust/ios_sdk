@@ -16,12 +16,11 @@
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
 
-    AIActivityPackage *sessionPackage = [[AIActivityPackage alloc] init];
+    AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
     sessionPackage.kind = @"session start";
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
-    sessionPackage.userAgent = self.userAgent;
 
     return sessionPackage;
 }
@@ -30,12 +29,11 @@
     NSMutableDictionary *parameters = [self defaultParameters];
     [self injectEventParameters:parameters];
 
-    AIActivityPackage *eventPackage = [[AIActivityPackage alloc] init];
+    AIActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
     eventPackage.kind = @"event";
     eventPackage.suffix = self.eventSuffix;
     eventPackage.parameters = parameters;
-    eventPackage.userAgent = self.userAgent;
 
     return eventPackage;
 }
@@ -45,17 +43,23 @@
     [self injectEventParameters:parameters];
     [self parameters:parameters setString:self.amountString forKey:@"amount"];
 
-    AIActivityPackage *revenuePackage = [[AIActivityPackage alloc] init];
+    AIActivityPackage *revenuePackage = [self defaultActivityPackage];
     revenuePackage.path = @"/revenue";
     revenuePackage.kind = @"revenue";
     revenuePackage.suffix = self.revenueSuffix;
     revenuePackage.parameters = parameters;
-    revenuePackage.userAgent = self.userAgent;
 
     return revenuePackage;
 }
 
 #pragma mark private
+- (AIActivityPackage *)defaultActivityPackage {
+    AIActivityPackage *activityPackage = [[AIActivityPackage alloc] init];
+    activityPackage.userAgent = self.userAgent;
+    activityPackage.clientSdk = self.clientSdk;
+    return activityPackage;
+}
+
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 

@@ -72,13 +72,12 @@ static const double  kRequestTimeout = 2.0; // TODO: 60
 #pragma mark - internal
 - (void)initInternal {
     self.httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:AIUtil.baseUrl]];
-    [self.httpClient setDefaultHeader:@"Client-SDK" value:AIUtil.clientSdk];
 }
 
 - (void)sendInternal:(AIActivityPackage *)package {
     if (self.packageHandler == nil) return;
 
-    [self setUserAgent:package.userAgent];
+    [self setHttpHeaders:package];
     NSMutableURLRequest *request = [self requestForPackage:package];
     AFHTTPRequestOperation *op = [self getOperationForPackage:package request:request];
     [self.httpClient enqueueHTTPRequestOperation:op];
@@ -128,8 +127,9 @@ static const double  kRequestTimeout = 2.0; // TODO: 60
     return [self.httpClient HTTPRequestOperationWithRequest:request success:success failure:failure];
 }
 
-- (void)setUserAgent:(NSString *)userAgent {
-    [self.httpClient setDefaultHeader:@"User-Agent" value:userAgent];
+- (void)setHttpHeaders:(AIActivityPackage *)activityPackage {
+    [self.httpClient setDefaultHeader:@"User-Agent" value:activityPackage.userAgent];
+    [self.httpClient setDefaultHeader:@"Client-SDK" value:activityPackage.clientSdk];
 }
 
 @end

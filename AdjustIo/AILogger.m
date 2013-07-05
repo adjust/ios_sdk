@@ -97,9 +97,13 @@ static AILogger *defaultLogger;
 }
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
-    NSString *logString = [[NSString alloc] initWithFormat:format arguments:parameters];
-    NSLog(@"\t[%@]%@: %@", self.logTag, logLevel, logString);
+    NSString *string = [[NSString alloc] initWithFormat:format arguments:parameters];
     va_end(parameters);
+
+    NSArray *lines = [string componentsSeparatedByString:@"\n"];
+    for (NSString *line in lines) {
+        NSLog(@"\t[%@]%@: %@", self.logTag, logLevel, line);
+    }
 }
 
 #pragma mark private

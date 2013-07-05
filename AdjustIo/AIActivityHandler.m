@@ -39,6 +39,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 @property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, copy) NSString *userAgent;
+@property (nonatomic, copy) NSString *clientSdk;
 
 @end
 
@@ -108,6 +109,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
+    self.clientSdk        = AIUtil.clientSdk;
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
@@ -116,6 +118,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)startInternal {
     if (![self.class checkAppTokenNotNil:self.appToken]) return;
 
+    [self.packageHandler resumeSending];
     [self startTimer];
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -160,6 +163,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 - (void)endInternal {
     if (![self.class checkAppTokenNotNil:self.appToken]) return;
 
+    [self.packageHandler pauseSending];
     [self stopTimer];
     [self updateActivityState];
     [self writeActivityState];
@@ -256,7 +260,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
-        [AILogger debug:@"Wrote activity state: %@", self.activityState];
+        [AILogger verbose:@"Wrote activity state: %@", self.activityState];
     } else {
         [AILogger error:@"Failed to write activity state"];
     }
@@ -279,6 +283,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
     builder.userAgent = self.userAgent;
+    builder.clientSdk = self.clientSdk;
     builder.appToken = self.appToken;
     builder.macShortMd5 = self.macShortMd5;
     builder.macSha1 = self.macSha1;

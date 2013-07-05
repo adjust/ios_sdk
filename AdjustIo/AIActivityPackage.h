@@ -11,13 +11,14 @@
 // data
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSString *userAgent;
+@property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, retain) NSDictionary *parameters;
 
 // logs
 @property (nonatomic, copy) NSString *kind;
 @property (nonatomic, copy) NSString *suffix;
 
-- (NSString *)parameterString;
+- (NSString *)extendedString;
 - (NSString *)successMessage;
 - (NSString *)failureMessage;
 
