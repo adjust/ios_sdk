@@ -8,6 +8,7 @@
 
 #import "AITimer.h"
 
+#pragma mark - private
 @interface AITimer()
 
 @property (nonatomic, retain) dispatch_source_t source;
@@ -15,6 +16,8 @@
 
 @end
 
+
+#pragma mark -
 @implementation AITimer
 
 + (AITimer *)timerWithInterval:(uint64_t)interval

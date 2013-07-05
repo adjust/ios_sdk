@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-// TODO: rename to AIStateHandler
 @interface AIActivityHandler : NSObject
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;

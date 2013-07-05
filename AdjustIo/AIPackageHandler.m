@@ -11,11 +11,11 @@
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 
-static NSString * const kPackageQueueFilename = @"PackageQueue1"; // TODO: rename
-static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TODO: rename
+static NSString   * const kPackageQueueFilename = @"PackageQueue1"; // TODO: rename
+static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // TODO: rename
 
-#pragma mark private interface
 
+#pragma mark - private
 @interface AIPackageHandler()
 
 @property (nonatomic, retain) dispatch_queue_t internalQueue;
@@ -24,21 +24,11 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
 @property (nonatomic, retain) dispatch_semaphore_t sendingSemaphore;
 @property (nonatomic, assign, getter = isPaused) BOOL paused;
 
-- (void)initInternal;
-- (void)addInternal:(AIActivityPackage *)package;
-- (void)sendFirstInternal;
-- (void)sendNextInternal;
-
-- (void)readPackageQueue;
-- (void)writePackageQueue;
-- (NSString *)packageQueueFilename;
-
 @end
 
 
+#pragma mark -
 @implementation AIPackageHandler
-
-#pragma mark public implementation
 
 - (id)init {
     self = [super init];
@@ -84,8 +74,7 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
 }
 
 
-#pragma marke private implementation
-
+#pragma mark - internal
 - (void)initInternal {
     self.requestHandler = [AIRequestHandler handlerWithPackageHandler:self];
     self.sendingSemaphore = dispatch_semaphore_create(1);
@@ -125,6 +114,7 @@ static const char * const kInternalQueueName = "io.adjust.PackageQueue1"; // TOD
     [self sendFirstInternal];
 }
 
+#pragma mark - private
 - (void)readPackageQueue {
     @try {
         NSString *filename = [self packageQueueFilename];

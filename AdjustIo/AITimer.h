@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface AITimer : NSObject
 
 + (AITimer *)timerWithInterval:(uint64_t)interval

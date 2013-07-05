@@ -6,10 +6,7 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@class AIPackageHandler;
-@class AIActivityPackage;
+@class AIPackageHandler, AIActivityPackage;
 
 @interface AIRequestHandler : NSObject
 

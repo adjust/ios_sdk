@@ -8,6 +8,7 @@
 
 #import "AIActivityPackage.h"
 
+#pragma mark -
 @implementation AIActivityPackage
 
 - (NSString *)description {
@@ -35,7 +36,6 @@
 }
 
 #pragma mark NSCoding
-
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self == nil) return self;

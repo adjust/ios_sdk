@@ -6,45 +6,30 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AdjustIo.h"
 #import "AIRequestHandler.h"
 #import "AIPackageHandler.h"
 #import "AIActivityPackage.h"
+#import "AILogger.h"
+#import "AIUtil.h"
 #import "NSString+AIAdditions.h"
-#import "UIDevice+AIAdditions.h"
-
 #import "AFNetworking.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
-static const double kRequestTimeout = 2.0; // TODO: 60
+static const double  kRequestTimeout = 2.0; // TODO: 60
 
-#pragma mark private interface
 
+#pragma mark - private
 @interface AIRequestHandler()
 
 @property (nonatomic, retain) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) AIPackageHandler *packageHandler;
 @property (nonatomic, retain) AFHTTPClient *httpClient;
 
-- (void)packageSucceeded:(AIActivityPackage *)package;
-- (void)packageFailed:(AIActivityPackage *)package response:(NSString *)response error:(NSError *)error;
-
-- (void)initInternal;
-- (void)sendInternal:(AIActivityPackage *)package;
-
-- (void)successInternal:(AIActivityPackage *)package;
-- (void)failureInternal:(AIActivityPackage *)package response:(NSString *)response error:(NSError *)error;
-
-- (NSMutableURLRequest *)requestForPackage:(AIActivityPackage *)activityPackage;
-- (AFHTTPRequestOperation *)getOperationForPackage:(AIActivityPackage *)package request:(NSURLRequest *)request;
-- (void)setUserAgent:(NSString *)userAgent;
-
 @end
 
 
+#pragma mark -
 @implementation AIRequestHandler
-
-#pragma mark public implementation
 
 + (AIRequestHandler *)handlerWithPackageHandler:(AIPackageHandler *)packageHandler {
     return [[AIRequestHandler alloc] initWithPackageHandler:packageHandler];
@@ -71,8 +56,7 @@ static const double kRequestTimeout = 2.0; // TODO: 60
 }
 
 
-#pragma mark private implementation
-
+#pragma mark - private
 - (void)packageSucceeded:(AIActivityPackage *)package {
     dispatch_async(self.internalQueue, ^{
         [self successInternal:package];
@@ -85,16 +69,16 @@ static const double kRequestTimeout = 2.0; // TODO: 60
     });
 }
 
-#pragma mark internal
-
+#pragma mark - internal
 - (void)initInternal {
-    self.httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:AdjustIo.baseUrl]];
-    [self.httpClient setDefaultHeader:@"Client-SDK" value:AdjustIo.clientSdk];
+    self.httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:AIUtil.baseUrl]];
+    [self.httpClient setDefaultHeader:@"Client-SDK" value:AIUtil.clientSdk];
 }
 
 - (void)sendInternal:(AIActivityPackage *)package {
     if (self.packageHandler == nil) return;
 
+    NSLog(@"ua: %@", package.userAgent);
     [self setUserAgent:package.userAgent];
     NSMutableURLRequest *request = [self requestForPackage:package];
     AFHTTPRequestOperation *op = [self getOperationForPackage:package request:request];
@@ -122,6 +106,7 @@ static const double kRequestTimeout = 2.0; // TODO: 60
     [self.packageHandler sendNextPackage];
 }
 
+#pragma mark - private
 - (NSMutableURLRequest *)requestForPackage:(AIActivityPackage *)activityPackage {
     NSString *path = activityPackage.path;
     NSDictionary *parameters = activityPackage.parameters;

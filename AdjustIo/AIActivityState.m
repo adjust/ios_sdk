@@ -9,13 +9,6 @@
 #import "AIActivityState.h"
 #import "AIPackageBuilder.h"
 
-#pragma mark private interface
-@interface AIActivityState()
-
-- (void)injectGeneralAttributes:(AIPackageBuilder *)builder;
-
-@end
-
 
 #pragma mark public implementation
 @implementation AIActivityState

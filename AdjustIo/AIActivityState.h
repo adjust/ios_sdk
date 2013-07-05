@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @class AIPackageBuilder;
 
 @interface AIActivityState : NSObject <NSCoding>

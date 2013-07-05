@@ -10,6 +10,7 @@
 #import "AIActivityPackage.h"
 #import "NSData+AIAdditions.h"
 
+#pragma mark -
 @implementation AIPackageBuilder
 
 - (AIActivityPackage *)buildSessionPackage {
@@ -55,7 +56,6 @@
 }
 
 #pragma mark private
-
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
@@ -120,7 +120,7 @@
     if (value < 0) return;
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
-    NSString *dateString = date.description; // TODO: format
+    NSString *dateString = date.description; // TODO: format, or send unix time stamp? what about time zone?
     [self parameters:parameters setString:dateString forKey:key];
 }
 

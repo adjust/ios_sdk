@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "AILogger.h"
 
 /**
@@ -77,9 +75,5 @@
  *      - AILogLevelAssert  (disable errors as well)
  */
 + (void)setLogLevel:(AILogLevel)logLevel;
-
-// used by request handler
-+ (NSString *)baseUrl;
-+ (NSString *)clientSdk;
 
 @end

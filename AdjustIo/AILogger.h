@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 typedef enum {
     AILogLevelVerbose = 1,
     AILogLevelDebug   = 2,

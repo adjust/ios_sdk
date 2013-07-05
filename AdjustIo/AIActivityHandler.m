@@ -12,12 +12,12 @@
 #import "AIPackageHandler.h"
 #import "AILogger.h"
 #import "AITimer.h"
-
+#import "AIUtil.h"
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString * const kActivityStateFilename = @"ActivityState1"; // TODO: rename
-static const char * const kInternalQueueName = "io.adjust.ActivityQueue"; // TODO: rename
+static NSString   * const kActivityStateFilename = @"ActivityState1"; // TODO: rename
+static const char * const kInternalQueueName     = "io.adjust.ActivityQueue"; // TODO: rename
 
 static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
 static const uint64_t kTimerLeeway        = 1 * NSEC_PER_SEC; // TODO: 1 second
@@ -105,6 +105,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     self.macShortMd5      = macAddress.aiRemoveColons.aiMd5;
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
+    self.userAgent        = AIUtil.userAgent;
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];

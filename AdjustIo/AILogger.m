@@ -8,17 +8,11 @@
 
 #import "AILogger.h"
 
-
 static AILogger *defaultLogger;
 
-@interface AILogger()
 
-+ (AILogger *)getDefaultLogger;
-
-@end
-
+#pragma mark -
 @implementation AILogger
-@synthesize logTag = _logTag;
 
 + (void)setLogTag:(NSString *)logTag {
     AILogger.getDefaultLogger.logTag = logTag;
@@ -109,7 +103,6 @@ static AILogger *defaultLogger;
 }
 
 #pragma mark private
-
 + (AILogger *)getDefaultLogger {
     if (defaultLogger == nil) {
         defaultLogger = [AILogger loggerWithTag:@"AdjustIo"];
