@@ -78,7 +78,6 @@ static const double  kRequestTimeout = 2.0; // TODO: 60
 - (void)sendInternal:(AIActivityPackage *)package {
     if (self.packageHandler == nil) return;
 
-    NSLog(@"ua: %@", package.userAgent);
     [self setUserAgent:package.userAgent];
     NSMutableURLRequest *request = [self requestForPackage:package];
     AFHTTPRequestOperation *op = [self getOperationForPackage:package request:request];

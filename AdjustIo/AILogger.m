@@ -98,7 +98,7 @@ static AILogger *defaultLogger;
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:parameters];
-    NSLog(@"[%@]%@: %@", self.logTag, logLevel, logString);
+    NSLog(@"\t[%@]%@: %@", self.logTag, logLevel, logString);
     va_end(parameters);
 }
 

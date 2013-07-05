@@ -99,10 +99,12 @@ static const double   kSubsessionInterval = 1; // 1 second
     if (![self.class checkAppTokenLength:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
+    NSString *macShort = macAddress.aiRemoveColons;
+    [AILogger verbose:@"macShort: %@", macShort];
 
     self.appToken         = yourAppToken;
     self.macSha1          = macAddress.aiSha1;
-    self.macShortMd5      = macAddress.aiRemoveColons.aiMd5;
+    self.macShortMd5      = macShort.aiMd5;
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
@@ -237,13 +239,13 @@ static const double   kSubsessionInterval = 1; // 1 second
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
             self.activityState = object;
-            NSLog(@"Read activity state: %@", self.activityState);
+            [AILogger debug:@"Read activity state: %@", self.activityState];
             return;
         } else {
-            NSLog(@"Failed to read activity state");
+            [AILogger error:@"Failed to read activity state"];
         }
     } @catch (NSException *ex ) {
-        NSLog(@"Failed to read activity state (%@)", ex);
+        [AILogger error:@"Failed to read activity state (%@)", ex];
     }
 
     // start with a fresh activity state in case of any exception
@@ -254,9 +256,9 @@ static const double   kSubsessionInterval = 1; // 1 second
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
-        NSLog(@"Wrote activity state: %@", self.activityState);
+        [AILogger debug:@"Wrote activity state: %@", self.activityState];
     } else {
-        NSLog(@"Failed to write activity state");
+        [AILogger error:@"Failed to write activity state"];
     }
 }
 
@@ -286,7 +288,6 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 # pragma mark - timer
 - (void)startTimer {
-    NSLog(@"startTimer");
     if (self.timer == nil) {
         self.timer = [AITimer timerWithInterval:kTimerInterval
                                     leeway:kTimerLeeway
