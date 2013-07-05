@@ -24,8 +24,8 @@ static const uint64_t kTimerLeeway        = 1 * NSEC_PER_SEC; // TODO: 1 second
 static const double   kSessionInterval    = 5; // 5 seconds, TODO: 30 minutes
 static const double   kSubsessionInterval = 1; // 1 second
 
-#pragma mark private interface
 
+#pragma mark -
 @interface AIActivityHandler()
 
 @property (nonatomic, retain) dispatch_queue_t internalQueue;
@@ -40,42 +40,11 @@ static const double   kSubsessionInterval = 1; // 1 second
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, copy) NSString *userAgent;
 
-- (void)startInternal;
-- (void)endInternal;
-
-- (void)eventInternal:(NSString *)eventToken
-           parameters:(NSDictionary *)parameters;
-
-- (void)revenueInternal:(float)amount
-                  event:(NSString *)eventToken
-             parameters:(NSDictionary *)parameters;
-
-- (void)updateActivityState;
-- (void)readActivityState;
-- (void)writeActivityState;
-- (void)transferSessionPackage;
-
-- (void)startTimer;
-- (void)stopTimer;
-- (void)timerFired;
-
-- (void)addNotificationObserver;
-- (void)removeNotificationObserver;
-
-- (NSString *)activityStateFilename;
-
-+ (BOOL)checkActivityState:(AIActivityState *)activityState;
-+ (BOOL)checkAppTokenNotNil:(NSString *)appToken;
-+ (BOOL)checkAppTokenLength:(NSString *)appToken;
-+ (BOOL)checkEventTokenNotNil:(NSString *)eventToken;
-+ (BOOL)checkAmount:(float)amount;
-
 @end
 
 
+#pragma mark -
 @implementation AIActivityHandler
-
-#pragma mark public implementation
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken {
     return [[AIActivityHandler alloc] initWithAppToken:appToken];
@@ -124,11 +93,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     });
 }
 
-
-#pragma mark private implementation
-
-// internal methods run asynchronously
-
+#pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self.class checkAppTokenNotNil:yourAppToken]) return;
     if (![self.class checkAppTokenLength:yourAppToken]) return;
@@ -245,6 +210,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self writeActivityState];
 }
 
+#pragma mark - private
 - (void)updateActivityState {
     if (![self.class checkActivityState:self.activityState]) return;
 
@@ -293,6 +259,13 @@ static const double   kSubsessionInterval = 1; // 1 second
     }
 }
 
+- (NSString *)activityStateFilename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filename = [path stringByAppendingPathComponent:kActivityStateFilename];
+    return filename;
+}
+
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
     [self injectGeneralAttributes:sessionBuilder];
@@ -310,6 +283,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     builder.attributionId = self.fbAttributionId;
 }
 
+# pragma mark - timer
 - (void)startTimer {
     NSLog(@"startTimer");
     if (self.timer == nil) {
@@ -331,6 +305,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self writeActivityState];
 }
 
+#pragma mark - notifications
 - (void)addNotificationObserver {
     NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
 
@@ -355,13 +330,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-- (NSString *)activityStateFilename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:kActivityStateFilename];
-    return filename;
-}
-
+#pragma mark - checks
 + (BOOL)checkActivityState:(AIActivityState *)activityState {
     if (activityState == nil) {
         [AILogger error:@"Missing activity state."];
