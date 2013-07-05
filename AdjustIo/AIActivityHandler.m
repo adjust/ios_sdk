@@ -16,7 +16,7 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString   * const kActivityStateFilename = @"ActivityState1"; // TODO: rename
+static NSString   * const kActivityStateFilename = @"ActivityState4"; // TODO: rename
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue"; // TODO: rename
 
 static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
@@ -113,6 +113,8 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
+
+    [self startInternal];
 }
 
 - (void)startInternal {
@@ -123,6 +125,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     double now = [NSDate.date timeIntervalSince1970];
 
+    // very first session
     if (self.activityState == nil) {
         [AILogger info:@"First session"];
         self.activityState = [[AIActivityState alloc] init];
@@ -148,12 +151,14 @@ static const double   kSubsessionInterval = 1; // 1 second
         [self transferSessionPackage];
         [self.activityState startNextSession:now];
         [self writeActivityState];
+        [AILogger debug:@"Session %d", self.activityState.sessionCount];
         return;
     }
 
     // new subsession
     if (lastInterval > kSubsessionInterval) {
         self.activityState.subsessionCount++;
+        [AILogger debug:@"Subsession %d.%d", self.activityState.sessionCount, self.activityState.subsessionCount];
     }
     self.activityState.sessionLength += lastInterval;
     self.activityState.lastActivity = now;
@@ -190,6 +195,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self.packageHandler addPackage:eventPackage];
 
     [self writeActivityState];
+    [AILogger debug:@"Event %d", self.activityState.eventCount];
 }
 
 - (void)revenueInternal:(float)amount
@@ -215,6 +221,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self.packageHandler addPackage:revenuePackage];
 
     [self writeActivityState];
+    [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
 #pragma mark - private
@@ -245,7 +252,7 @@ static const double   kSubsessionInterval = 1; // 1 second
             self.activityState = object;
             [AILogger debug:@"Read activity state: %@", self.activityState];
             return;
-        } else {
+        } else if (object != nil) {
             [AILogger error:@"Failed to read activity state"];
         }
     } @catch (NSException *ex ) {

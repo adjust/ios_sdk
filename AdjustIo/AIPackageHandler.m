@@ -11,7 +11,7 @@
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 
-static NSString   * const kPackageQueueFilename = @"PackageQueue1"; // TODO: rename
+static NSString   * const kPackageQueueFilename = @"PackageQueue4"; // TODO: rename
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // TODO: rename
 
 
