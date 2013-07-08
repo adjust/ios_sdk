@@ -18,9 +18,10 @@
 @property (nonatomic, assign) int subsessionCount;
 @property (nonatomic, assign) double sessionLength; // all durations in seconds
 @property (nonatomic, assign) double timeSpent;
-@property (nonatomic, assign) double createdAt;     // all times in seconds since 1970
-@property (nonatomic, assign) double lastActivity;
-@property (nonatomic, assign) double lastInterval;  // not persisted because volatile
+@property (nonatomic, assign) double lastActivity;  // all times in seconds since 1970
+
+@property (nonatomic, assign) double createdAt;
+@property (nonatomic, assign) double lastInterval;
 
 - (void)startNextSession:(long)now;
 

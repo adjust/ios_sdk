@@ -147,6 +147,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     // new session
     if (lastInterval > kSessionInterval) {
+        self.activityState.createdAt = now;
         self.activityState.lastInterval = lastInterval;
         [self transferSessionPackage];
         [self.activityState startNextSession:now];
@@ -186,13 +187,12 @@ static const double   kSubsessionInterval = 1; // 1 second
     eventBuilder.eventToken = eventToken;
     eventBuilder.callbackParameters = parameters;
 
-    self.activityState.eventCount++;
+    double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState];
-    [self injectGeneralAttributes:eventBuilder];
-    [self.activityState injectEventAttributes:eventBuilder];
+    self.activityState.createdAt = now;
+    self.activityState.eventCount++;
 
-    AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
-    [self.packageHandler addPackage:eventPackage];
+    [self transferEventPackage:eventBuilder];
 
     [self writeActivityState];
     [AILogger debug:@"Event %d", self.activityState.eventCount];
@@ -212,13 +212,12 @@ static const double   kSubsessionInterval = 1; // 1 second
     revenueBuilder.eventToken = eventToken;
     revenueBuilder.callbackParameters = parameters;
 
-    self.activityState.eventCount++;
+    double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState];
-    [self injectGeneralAttributes:revenueBuilder];
-    [self.activityState injectEventAttributes:revenueBuilder];
+    self.activityState.createdAt = now;
+    self.activityState.eventCount++;
 
-    AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
-    [self.packageHandler addPackage:revenuePackage];
+    [self transferEventPackage:revenueBuilder];
 
     [self writeActivityState];
     [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
@@ -286,6 +285,13 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
+}
+
+- (void)transferEventPackage:(AIPackageBuilder *)eventBuilder {
+    [self injectGeneralAttributes:eventBuilder];
+    [self.activityState injectEventAttributes:eventBuilder];
+    AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
+    [self.packageHandler addPackage:eventPackage];
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {

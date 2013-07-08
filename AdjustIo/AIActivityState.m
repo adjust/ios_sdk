@@ -22,8 +22,8 @@
     self.subsessionCount = -1; // -1 means unknown
     self.sessionLength   = -1;
     self.timeSpent       = -1;
-    self.createdAt       = -1;
     self.lastActivity    = -1;
+    self.createdAt       = -1;
     self.lastInterval    = -1;
 
     return self;
@@ -34,9 +34,9 @@
     self.subsessionCount = 1;
     self.sessionLength   = 0;
     self.timeSpent       = 0;
-    self.createdAt       = now;
     self.lastActivity    = now;
-    self.lastInterval    = 0;
+    self.createdAt       = -1;
+    self.lastInterval    = -1;
 }
 
 - (void)injectSessionAttributes:(AIPackageBuilder *)builder {
@@ -50,9 +50,9 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d sl:%.1f ts:%.1f ca:%.1f la:%.1f",
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d sl:%.1f ts:%.1f la:%.1f",
             self.eventCount, self.sessionCount, self.subsessionCount, self.sessionLength,
-            self.timeSpent, self.createdAt, self.lastActivity];
+            self.timeSpent, self.lastActivity];
 }
 
 #pragma mark NSCoding

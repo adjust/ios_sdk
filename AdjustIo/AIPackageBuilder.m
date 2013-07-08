@@ -10,6 +10,9 @@
 #import "AIActivityPackage.h"
 #import "NSData+AIAdditions.h"
 
+static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'ZZZ";
+static NSDateFormatter * dateFormat;
+
 #pragma mark -
 @implementation AIPackageBuilder
 
@@ -124,7 +127,7 @@
     if (value < 0) return;
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
-    NSString *dateString = date.description; // TODO: format, or send unix time stamp? what about time zone?
+    NSString *dateString = [self.dateFormat stringFromDate:date];
     [self parameters:parameters setString:dateString forKey:key];
 }
 
@@ -143,4 +146,13 @@
     [self parameters:parameters setString:dictionaryString forKey:key];
 }
 
+- (NSDateFormatter *)dateFormat {
+    if (dateFormat == nil) {
+        dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:kDateFormat];
+    }
+    return dateFormat;
+}
+
 @end
+
