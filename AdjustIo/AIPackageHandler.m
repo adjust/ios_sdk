@@ -11,7 +11,7 @@
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 
-static NSString   * const kPackageQueueFilename = @"PackageQueue4"; // TODO: rename
+static NSString   * const kPackageQueueFilename = @"PackageQueue5"; // TODO: rename
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // TODO: rename
 
 
@@ -124,7 +124,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
             self.packageQueue = object;
             [AILogger debug:@"Package handler read %d packages", self.packageQueue.count];
             return;
-        } else if (object != nil) {
+        } else if (object == nil) {
+            [AILogger verbose:@"Package queue file not found"];
+        } else {
             [AILogger error:@"Failed to read package queue"];
         }
     } @catch (NSException *exception) {

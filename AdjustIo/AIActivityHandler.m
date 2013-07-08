@@ -16,7 +16,7 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString   * const kActivityStateFilename = @"ActivityState4"; // TODO: rename
+static NSString   * const kActivityStateFilename = @"ActivityState6"; // TODO: rename
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue"; // TODO: rename
 
 static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
@@ -101,7 +101,6 @@ static const double   kSubsessionInterval = 1; // 1 second
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
-    [AILogger verbose:@"macShort: %@", macShort];
 
     self.appToken         = yourAppToken;
     self.macSha1          = macAddress.aiSha1;
@@ -251,7 +250,9 @@ static const double   kSubsessionInterval = 1; // 1 second
             self.activityState = object;
             [AILogger debug:@"Read activity state: %@", self.activityState];
             return;
-        } else if (object != nil) {
+        } else if (object == nil) {
+            [AILogger verbose:@"Activity state file not found"];
+        } else {
             [AILogger error:@"Failed to read activity state"];
         }
     } @catch (NSException *ex ) {
