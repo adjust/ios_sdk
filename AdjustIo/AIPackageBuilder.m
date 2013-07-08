@@ -69,7 +69,7 @@
     [self parameters:parameters setString:self.macSha1 forKey:@"mac_sha1"];
     [self parameters:parameters setString:self.macShortMd5 forKey:@"mac"]; // TODO: rename parameter
     [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
-    [self parameters:parameters setString:self.attributionId forKey:@"fb_id"];
+    [self parameters:parameters setString:self.fbAttributionId forKey:@"fb_id"];
 
     // session related (used for events as well)
     [self parameters:parameters setInt:self.sessionCount forKey:@"session_id"]; // TODO: rename parameters

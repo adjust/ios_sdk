@@ -295,7 +295,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     builder.macShortMd5 = self.macShortMd5;
     builder.macSha1 = self.macSha1;
     builder.idForAdvertisers = self.idForAdvertisers;
-    builder.attributionId = self.fbAttributionId;
+    builder.fbAttributionId = self.fbAttributionId;
 }
 
 # pragma mark - timer
@@ -347,7 +347,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 #pragma mark - checks
 + (BOOL)checkActivityState:(AIActivityState *)activityState {
     if (activityState == nil) {
-        [AILogger error:@"Missing activity state."];
+        [AILogger error:@"Missing activity state"];
         return NO;
     }
     return YES;
@@ -355,7 +355,7 @@ static const double   kSubsessionInterval = 1; // 1 second
 
 + (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
-        [AILogger error:@"Missing App Token."];
+        [AILogger error:@"Missing App Token"];
         return NO;
     }
     return YES;
