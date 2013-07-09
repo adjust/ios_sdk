@@ -17,7 +17,7 @@
 - (void)trackEvent:(NSString *)eventToken
     withParameters:(NSDictionary *)parameters;
 
-- (void)trackRevenue:(float)amount
+- (void)trackRevenue:(double)amount
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 

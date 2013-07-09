@@ -85,7 +85,7 @@ static const double   kSubsessionInterval = 1; // 1 second
     });
 }
 
-- (void)trackRevenue:(float)amount
+- (void)trackRevenue:(double)amount
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {
@@ -191,13 +191,15 @@ static const double   kSubsessionInterval = 1; // 1 second
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
-    [self transferEventPackage:eventBuilder];
+    [self injectGeneralAttributes:eventBuilder];
+    [self.activityState injectEventAttributes:eventBuilder];
+    AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
+    [self.packageHandler addPackage:eventPackage];
 
-    [self writeActivityState];
     [AILogger debug:@"Event %d", self.activityState.eventCount];
 }
 
-- (void)revenueInternal:(float)amount
+- (void)revenueInternal:(double)amount
                   event:(NSString *)eventToken
              parameters:(NSDictionary *)parameters
 {
@@ -216,13 +218,18 @@ static const double   kSubsessionInterval = 1; // 1 second
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
-    [self transferEventPackage:revenueBuilder];
+    [self injectGeneralAttributes:revenueBuilder];
+    [self.activityState injectEventAttributes:revenueBuilder];
+    AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
+    [self.packageHandler addPackage:revenuePackage];
 
     [self writeActivityState];
     [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
+
 #pragma mark - private
+
 - (void)updateActivityState {
     if (![self.class checkActivityState:self.activityState]) return;
 
@@ -286,13 +293,6 @@ static const double   kSubsessionInterval = 1; // 1 second
     [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
-}
-
-- (void)transferEventPackage:(AIPackageBuilder *)eventBuilder {
-    [self injectGeneralAttributes:eventBuilder];
-    [self.activityState injectEventAttributes:eventBuilder];
-    AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
-    [self.packageHandler addPackage:eventPackage];
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
@@ -395,8 +395,8 @@ static const double   kSubsessionInterval = 1; // 1 second
     return YES;
 }
 
-+ (BOOL)checkAmount:(float)amount {
-    if (amount <= 0.0f) {
++ (BOOL)checkAmount:(double)amount {
+    if (amount <= 0.0) {
         [AILogger error:@"Invalid amount %.1f", amount];
         return NO;
     }

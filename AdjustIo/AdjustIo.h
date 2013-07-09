@@ -54,13 +54,13 @@
  * can do so by providing different event tokens. If your revenue events have
  * callbacks, you can pass in parameters that will be forwarded to your server.
  *
- * @param amountInCents The amount in cents (example: 1.5f means one and a half cents)
+ * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
  * @param eventToken The token for this revenue event (see above)
  * @param parameters Parameters for this revenue event (see above)
  */
-+ (void)trackRevenue:(float)amountInCents;
-+ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken;
-+ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
++ (void)trackRevenue:(double)amountInCents;
++ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
++ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
  * Change the verbosity of AdjustIo's logs

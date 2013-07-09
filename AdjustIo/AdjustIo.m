@@ -29,15 +29,15 @@ static AIActivityHandler *activityHandler;
     [activityHandler trackEvent:eventToken withParameters:parameters];
 }
 
-+ (void)trackRevenue:(float)amountInCents {
++ (void)trackRevenue:(double)amountInCents {
     [activityHandler trackRevenue:amountInCents forEvent:nil withParameters:nil];
 }
 
-+ (void)trackRevenue:(float)amountInCents forEvent:(NSString *)eventToken {
++ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken {
     [activityHandler trackRevenue:amountInCents forEvent:eventToken withParameters:nil];
 }
 
-+ (void)trackRevenue:(float)amountInCents
++ (void)trackRevenue:(double)amountInCents
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {

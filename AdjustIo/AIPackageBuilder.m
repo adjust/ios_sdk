@@ -10,7 +10,7 @@
 #import "AIActivityPackage.h"
 #import "NSData+AIAdditions.h"
 
-static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'ZZZ";
+static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'Z";
 static NSDateFormatter * dateFormat;
 
 #pragma mark -
@@ -18,6 +18,7 @@ static NSDateFormatter * dateFormat;
 
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
+    [self parameters:parameters setDuration:self.lastInterval forKey:@"last_interval"];
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
@@ -43,8 +44,8 @@ static NSDateFormatter * dateFormat;
 
 - (AIActivityPackage *)buildRevenuePackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self injectEventParameters:parameters];
     [self parameters:parameters setString:self.amountString forKey:@"amount"];
+    [self injectEventParameters:parameters];
 
     AIActivityPackage *revenuePackage = [self defaultActivityPackage];
     revenuePackage.path = @"/revenue";
@@ -67,33 +68,32 @@ static NSDateFormatter * dateFormat;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     // general
-    [self parameters:parameters setDate:self.createdAt forKey:@"created_at"];
-    [self parameters:parameters setString:self.appToken forKey:@"app_token"];
-    [self parameters:parameters setString:self.macSha1 forKey:@"mac_sha1"];
-    [self parameters:parameters setString:self.macShortMd5 forKey:@"mac"]; // TODO: rename parameter
+    [self parameters:parameters setDate:self.createdAt          forKey:@"created_at"];
+    [self parameters:parameters setString:self.appToken         forKey:@"app_token"];
+    [self parameters:parameters setString:self.macSha1          forKey:@"mac_sha1"];
+    [self parameters:parameters setString:self.macShortMd5      forKey:@"mac"];         // TODO: rename parameter
     [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
-    [self parameters:parameters setString:self.fbAttributionId forKey:@"fb_id"];
+    [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
 
     // session related (used for events as well)
-    [self parameters:parameters setInt:self.sessionCount forKey:@"session_id"]; // TODO: rename parameters
-    [self parameters:parameters setInt:self.subsessionCount forKey:@"subsession_count"];
-    [self parameters:parameters setDuration:self.sessionLength forKey:@"session_length"];
-    [self parameters:parameters setDuration:self.timeSpent forKey:@"time_spent"];
-    [self parameters:parameters setDuration:self.lastInterval forKey:@"last_interval"];
+    [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];
+    [self parameters:parameters setInt:self.subsessionCount      forKey:@"subsession_count"];
+    [self parameters:parameters setDuration:self.sessionLength   forKey:@"session_length"];
+    [self parameters:parameters setDuration:self.timeSpent       forKey:@"time_spent"];
 
     return parameters;
 }
 
 - (void)injectEventParameters:(NSMutableDictionary *)parameters {
     // event specific
-    [self parameters:parameters setInt:self.eventCount forKey:@"event_count"];
-    [self parameters:parameters setString:self.eventToken forKey:@"event_id"]; // TODO: rename parameters
+    [self parameters:parameters setInt:self.eventCount                forKey:@"event_count"];
+    [self parameters:parameters setString:self.eventToken             forKey:@"event_id"]; // TODO: rename parameters
     [self parameters:parameters setDictionary:self.callbackParameters forKey:@"params"];
 }
 
 - (NSString *)amountString {
-    int amountInMillis = roundf(10 * self.amountInCents);
-    self.amountInCents = amountInMillis / 10.0f; // now rounded to one decimal point
+    int amountInMillis = round(10 * self.amountInCents);
+    self.amountInCents = amountInMillis / 10.0; // now rounded to one decimal point
     NSString *amountString = [NSNumber numberWithInt:amountInMillis].stringValue;
     return amountString;
 }

@@ -29,9 +29,9 @@
 
 // events
 @property (nonatomic, assign) int eventCount;
-@property (nonatomic, copy) NSString *eventToken;
-@property (nonatomic, copy) NSDictionary *callbackParameters;
-@property (nonatomic, assign) float amountInCents;
+@property (nonatomic, copy)   NSString *eventToken;
+@property (nonatomic, copy)   NSDictionary *callbackParameters;
+@property (nonatomic, assign) double amountInCents;
 
 - (AIActivityPackage *)buildSessionPackage;
 - (AIActivityPackage *)buildEventPackage;
