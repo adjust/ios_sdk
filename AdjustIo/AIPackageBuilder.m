@@ -134,7 +134,7 @@ static NSDateFormatter * dateFormat;
 - (void)parameters:(NSMutableDictionary *)parameters setDuration:(double)value forKey:(NSString *)key {
     if (value < 0) return;
 
-    int intValue = (int)round(value);   // TODO: test rounding
+    int intValue = round(value);
     [self parameters:parameters setInt:intValue forKey:key];
 }
 

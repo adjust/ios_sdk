@@ -22,10 +22,10 @@
 // sessions
 @property (nonatomic, assign) int sessionCount;
 @property (nonatomic, assign) int subsessionCount;
-@property (nonatomic, assign) long createdAt;
-@property (nonatomic, assign) long sessionLength;
-@property (nonatomic, assign) long timeSpent;
-@property (nonatomic, assign) long lastInterval;
+@property (nonatomic, assign) double createdAt;
+@property (nonatomic, assign) double sessionLength;
+@property (nonatomic, assign) double timeSpent;
+@property (nonatomic, assign) double lastInterval;
 
 // events
 @property (nonatomic, assign) int eventCount;
