@@ -15,7 +15,7 @@
 @property (nonatomic, copy) NSString *macSha1;
 @property (nonatomic, copy) NSString *macShortMd5;
 @property (nonatomic, copy) NSString *idForAdvertisers;
-@property (nonatomic, copy) NSString *fbAttributionId; // TODO: remove?
+@property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 

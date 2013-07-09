@@ -9,8 +9,6 @@
 #import "AdjustIo.h"
 #import "AIActivityHandler.h"
 
-// TODO: save macMd5 to user defaults for upcoming migration
-
 static AIActivityHandler *activityHandler;
 
 

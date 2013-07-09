@@ -71,7 +71,7 @@ static NSDateFormatter * dateFormat;
     [self parameters:parameters setDate:self.createdAt          forKey:@"created_at"];
     [self parameters:parameters setString:self.appToken         forKey:@"app_token"];
     [self parameters:parameters setString:self.macSha1          forKey:@"mac_sha1"];
-    [self parameters:parameters setString:self.macShortMd5      forKey:@"mac"];         // TODO: rename parameter
+    [self parameters:parameters setString:self.macShortMd5      forKey:@"mac_md5"];
     [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
     [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
 
@@ -87,7 +87,7 @@ static NSDateFormatter * dateFormat;
 - (void)injectEventParameters:(NSMutableDictionary *)parameters {
     // event specific
     [self parameters:parameters setInt:self.eventCount                forKey:@"event_count"];
-    [self parameters:parameters setString:self.eventToken             forKey:@"event_id"]; // TODO: rename parameters
+    [self parameters:parameters setString:self.eventToken             forKey:@"event_token"];
     [self parameters:parameters setDictionary:self.callbackParameters forKey:@"params"];
 }
 

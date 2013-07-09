@@ -16,13 +16,13 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-static NSString   * const kActivityStateFilename = @"ActivityState6"; // TODO: rename
-static const char * const kInternalQueueName     = "io.adjust.ActivityQueue"; // TODO: rename
+static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
+static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
-static const uint64_t kTimerInterval      = 3 * NSEC_PER_SEC; // TODO: 60 seconds
-static const uint64_t kTimerLeeway        = 1 * NSEC_PER_SEC; // TODO: 1 second
-static const double   kSessionInterval    = 5; // 5 seconds, TODO: 30 minutes
-static const double   kSubsessionInterval = 1; // 1 second
+static const uint64_t kTimerInterval      = 60 * NSEC_PER_SEC; // 1 minute
+static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
+static const double   kSessionInterval    = 30 * 60;           // 30 minutes
+static const double   kSubsessionInterval =  1;                // 1 second
 
 
 #pragma mark -

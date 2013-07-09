@@ -11,8 +11,8 @@
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 
-static NSString   * const kPackageQueueFilename = @"PackageQueue5"; // TODO: rename
-static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // TODO: rename
+static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
+static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 
 #pragma mark - private
@@ -104,6 +104,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue1"; // 
     }
 
     AIActivityPackage *activityPackage = [self.packageQueue objectAtIndex:0];
+    if (![activityPackage isKindOfClass:[AIActivityPackage class]]) {
+        [AILogger error:@"Failed to read activity package"];
+        [self sendNextInternal];
+        return;
+    }
+
     [self.requestHandler sendPackage:activityPackage];
 }
 
