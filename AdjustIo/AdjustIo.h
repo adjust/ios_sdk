@@ -13,62 +13,64 @@
  *
  * Use the methods of this class to tell AdjustIo about the usage of your app.
  * See the README for details.
- *
- * @author wellle
- * @since 2012-07-23
  */
 @interface AdjustIo : NSObject
 
 /**
- * Tell AdjustIo that the application did finish launching.
+ * Tell AdjustIo that the application did launch.
  *
- * This is required to initialize AdjustIo.
- * Call this in the didFinishLaunching method of your AppDelegate.
+ * This is required to initialize AdjustIo. Call this in the didFinishLaunching
+ * method of your AppDelegate.
  *
- * @param appToken The app token of your app
- *     You can find it in your dashboard at http://www.adjust.io
+ * @param appToken The App Token of your app. This unique identifier can
+ *     be found it in your dashboard at http://adjust.io and should always
+ *     be 12 characters long.
  */
 + (void)appDidLaunch:(NSString *)appToken;
 
 /**
- * Track any kind of event.
+ * Tell AdjustIo that a particular event has happened.
  *
- * You can assign a callback url to the event which will get called every time
- * the event is reported. You can provide parameters that will be forwarded
- * to these callbacks.
+ * In your dashboard at http://adjust.io you can assign a callback URL to each
+ * event type. That URL will get called every time the event is triggered. On
+ * top of that you can pass a set of parameters to the following method that
+ * will be forwarded to these callbacks.
  *
- * @param eventToken The token for this kind of event
- *     It must be exactly six characters long
- *     You create them in your dashboard at http://www.adjust.io
- * @param parameters An optional dictionary containing callback parameters
- *     Provide key-value-pairs to be forwarded to your callbacks
+ * @param eventToken The Event Token for this kind of event. They are created
+ *     in the dashboard at http://adjust.io and should be six characters long.
+ * @param parameters An optional dictionary containing the callback parameters.
+ *     Provide key-value-pairs to be forwarded to your callbacks.
  */
 + (void)trackEvent:(NSString *)eventToken;
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
- * Tell AdjustIo that the current user generated some revenue.
+ * Tell AdjustIo that a user generated some revenue.
  *
- * The amount is measured in cents and rounded to on digit after the decimal
- * point. If you want to differentiate between various types of revenues you
- * can do so by providing different event tokens. If your revenue events have
- * callbacks, you can pass in parameters that will be forwarded to your server.
+ * The amount is measured in cents and rounded to on digit after the
+ * decimal point. If you want to differentiate between several revenue
+ * types, you can do so by using different event tokens. If your revenue
+ * events have callbacks, you can also pass in parameters that will be
+ * forwarded to your end point.
  *
  * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
- * @param eventToken The token for this revenue event (see above)
- * @param parameters Parameters for this revenue event (see above)
+ * @param eventToken The token for this revenue event (optional, see above)
+ * @param parameters Parameters for this revenue event (optional, see above)
  */
 + (void)trackRevenue:(double)amountInCents;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
- * Change the verbosity of AdjustIo's logs
+ * Change the verbosity of AdjustIo's logs.
+ *
+ * You can increase or reduce the amount of logs from AdjustIo by passing
+ * one of the following parameters. Use Log.ASSERT to disable all logging.
  *
  * @param logLevel The desired minimum log level (default: info)
  *     Must be one of the following:
  *      - AILogLevelVerbose (enable all logging)
- *      - AILogLevelDebug
+ *      - AILogLevelDebug   (enable more logging)
  *      - AILogLevelInfo    (the default)
  *      - AILogLevelWarn    (disable info logging)
  *      - AILogLevelError   (disable warnings as well)
