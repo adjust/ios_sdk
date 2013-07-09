@@ -2,7 +2,7 @@
 //  AIPackageBuilder.h
 //  AdjustIosApp
 //
-//  Created by Christian Wellenbrock on 03.07.13.
+//  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 

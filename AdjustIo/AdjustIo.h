@@ -2,7 +2,7 @@
 //  AdjustIo.h
 //  AdjustIo
 //
-//  Created by Christian Wellenbrock on 23.07.12.
+//  Created by Christian Wellenbrock on 2012-07-23.
 //  Copyright (c) 2012 adeven. All rights reserved.
 //
 
@@ -15,7 +15,7 @@
  * See the README for details.
  *
  * @author wellle
- * @since 23.07.12
+ * @since 2012-07-23
  */
 @interface AdjustIo : NSObject
 

@@ -2,7 +2,7 @@
 //  AITimer.m
 //  AdjustIosApp
 //
-//  Created by Christian Wellenbrock on 02.07.13.
+//  Created by Christian Wellenbrock on 2013-07-02.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  AIUtil.m
 //  AdjustIosApp
 //
-//  Created by Christian Wellenbrock on 05.07.13.
+//  Created by Christian Wellenbrock on 2013-07-05.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 

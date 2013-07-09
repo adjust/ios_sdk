@@ -2,7 +2,7 @@
 //  AILogger.h
 //  AdjustIo
 //
-//  Created by Christian Wellenbrock on 15.11.12.
+//  Created by Christian Wellenbrock on 2012-11-15.
 //  Copyright (c) 2012 adeven. All rights reserved.
 //
 
