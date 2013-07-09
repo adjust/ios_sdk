@@ -15,7 +15,7 @@
 #import "AFNetworking.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
-static const double  kRequestTimeout = 2.0; // TODO: 60
+static const double kRequestTimeout = 60; // 60 seconds
 
 
 #pragma mark - private
@@ -83,7 +83,6 @@ static const double  kRequestTimeout = 2.0; // TODO: 60
     [self.httpClient enqueueHTTPRequestOperation:op];
 }
 
-// TODO: test status response codes other than 200 (should retry later)
 - (void)successInternal:(AIActivityPackage *)package {
     if (self.packageHandler == nil) return;
 
@@ -94,7 +93,7 @@ static const double  kRequestTimeout = 2.0; // TODO: 60
 - (void)failureInternal:(AIActivityPackage *)package response:(NSString *)response error:(NSError *)error {
     if (self.packageHandler == nil) return;
 
-    if (response == nil || response.length == 0) {
+    if (response == nil) {
         [AILogger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler closeFirstPackage];
         return;

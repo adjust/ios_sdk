@@ -159,10 +159,10 @@ static const double   kSubsessionInterval =  1;                // 1 second
     if (lastInterval > kSubsessionInterval) {
         self.activityState.subsessionCount++;
         [AILogger debug:@"Subsession %d.%d", self.activityState.sessionCount, self.activityState.subsessionCount];
+        self.activityState.sessionLength += lastInterval;
+        self.activityState.lastActivity = now;
+        [self writeActivityState];
     }
-    self.activityState.sessionLength += lastInterval;
-    self.activityState.lastActivity = now;
-    [self writeActivityState];
 }
 
 - (void)endInternal {
@@ -196,6 +196,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
 
+    [self writeActivityState];
     [AILogger debug:@"Event %d", self.activityState.eventCount];
 }
 
@@ -230,23 +231,26 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 #pragma mark - private
 
-- (void)updateActivityState {
-    if (![self.class checkActivityState:self.activityState]) return;
+// returns whether or not the activity state should be written
+- (BOOL)updateActivityState {
+    if (![self.class checkActivityState:self.activityState]) return NO;
 
     double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
         self.activityState.lastInterval = now;
-        return;
+        return YES;
     }
 
     // ignore late updates
-    if (lastInterval > kSessionInterval) return;
+    if (lastInterval > kSessionInterval) return NO;
 
     self.activityState.sessionLength += lastInterval;
     self.activityState.timeSpent += lastInterval;
     self.activityState.lastActivity = now;
+
+    return (lastInterval > kSubsessionInterval);
 }
 
 - (void)readActivityState {
@@ -322,8 +326,9 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 - (void)timerFired {
     [self.packageHandler sendFirstPackage];
-    [self updateActivityState];
-    [self writeActivityState];
+    if ([self updateActivityState]) {
+        [self writeActivityState];
+    }
 }
 
 #pragma mark - notifications

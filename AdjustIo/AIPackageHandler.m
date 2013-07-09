@@ -126,7 +126,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         NSString *filename = [self packageQueueFilename];
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[NSArray class]]) {
-            // TODO: check class of packages?
             self.packageQueue = object;
             [AILogger debug:@"Package handler read %d packages", self.packageQueue.count];
             return;
