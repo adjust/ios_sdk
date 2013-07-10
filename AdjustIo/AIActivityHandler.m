@@ -126,13 +126,14 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     // very first session
     if (self.activityState == nil) {
-        [AILogger info:@"First session"];
         self.activityState = [[AIActivityState alloc] init];
         self.activityState.sessionCount = 1; // this is the first session
         self.activityState.createdAt = now;  // starting now
 
         [self transferSessionPackage];
+        [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
+        [AILogger info:@"First session"];
         return;
     }
 
@@ -146,10 +147,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     // new session
     if (lastInterval > kSessionInterval) {
+        self.activityState.sessionCount++;
         self.activityState.createdAt = now;
         self.activityState.lastInterval = lastInterval;
+
         [self transferSessionPackage];
-        [self.activityState startNextSession:now];
+        [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
         [AILogger debug:@"Session %d", self.activityState.sessionCount];
         return;

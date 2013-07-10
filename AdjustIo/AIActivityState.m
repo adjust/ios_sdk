@@ -29,8 +29,7 @@
     return self;
 }
 
-- (void)startNextSession:(long)now {
-    self.sessionCount++;
+- (void)resetSessionAttributes:(long)now {
     self.subsessionCount = 1;
     self.sessionLength   = 0;
     self.timeSpent       = 0;

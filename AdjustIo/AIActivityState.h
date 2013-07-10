@@ -23,7 +23,7 @@
 @property (nonatomic, assign) double createdAt;
 @property (nonatomic, assign) double lastInterval;
 
-- (void)startNextSession:(long)now;
+- (void)resetSessionAttributes:(long)now;
 
 - (void)injectSessionAttributes:(AIPackageBuilder *)packageBilder;
 - (void)injectEventAttributes:(AIPackageBuilder *)packageBilder;
