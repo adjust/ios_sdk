@@ -161,10 +161,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     // new subsession
     if (lastInterval > kSubsessionInterval) {
         self.activityState.subsessionCount++;
-        [AILogger debug:@"Subsession %d.%d", self.activityState.sessionCount, self.activityState.subsessionCount];
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
         [self writeActivityState];
+        [AILogger info:@"Processed Subsession %d of Session %d",
+            self.activityState.subsessionCount,
+            self.activityState.sessionCount];
     }
 }
 

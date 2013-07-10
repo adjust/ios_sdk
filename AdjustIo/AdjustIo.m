@@ -9,6 +9,11 @@
 #import "AdjustIo.h"
 #import "AIActivityHandler.h"
 
+#if !__has_feature(objc_arc)
+#error AdjustIo requires ARC
+// see README for details
+#endif
+
 static AIActivityHandler *activityHandler;
 
 
