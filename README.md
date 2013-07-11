@@ -2,8 +2,7 @@
 
 ## Summary
 
-This is the iOS SDK of AdjustIo. You can read more about AdjustIo at
-[adjust.io][].
+This is the iOS SDK of AdjustIo. You can read more about AdjustIo at [adjust.io].
 
 ## Basic Installation
 
@@ -31,12 +30,12 @@ In the Project Navigator select your project. In the left hand side of the main 
 
 ### 4. Integrate AdjustIo into your app
 
-In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `<YourAppToken>` with the App Token that you can find in your dashboard at [adjust.io][].
+In the Project Navigator open the source file your Application Delegate. Add the `import` statement at the top of the file. In the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your App Delegate call the method `appDidLaunch`. Replace `{YourAppToken}` with the App Token that you can find in your [dashboard].
 
 ```objc
 #import "AdjustIo.h"
 // ...
-[AdjustIo appDidLaunch:@"<YourAppToken>"];
+[AdjustIo appDidLaunch:@"{YourAppToken}"];
 ```
 
 <!--- TODO: update the following image -->
@@ -67,19 +66,19 @@ You can increase or decrease the amount of logs you see by calling `setLogLevel:
 
 ## Additional features
 
-Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features wherever you see fit.
+Once you integrated the AdjustIo SDK into your project, you can take advantage of the following features.
 
 ### Add tracking of custom events.
 
-You can tell AdjustIo about every event you want. Suppose you want to track every tap on a button. You would have to create a new Event Token in your dashboard at [adjust.io][]. Let's say that Event Token is `abc123`. In your button's `buttonDown` method you could then add the following line to track the click:
+You can tell AdjustIo about every event you want. Suppose you want to track every tap on a button. You would have to create a new Event Token in your [dashboard]. Let's say that Event Token is `abc123`. In your button's `buttonDown` method you could then add the following line to track the click:
 
 ```objc
 [AdjustIo trackEvent:@"abc123"];
 ```
 
-You can also register a callback URL for that event in your dashboard at [adjust.io] and we will send a GET request to that URL whenever the event gets tracked. In that case you can also put some key-value-pairs in a dictionary and pass it to the `trackEvent` method. We will then forward these named parameters to your callback URL.
+You can also register a callback URL for that event in your [dashboard] and we will send a GET request to that URL whenever the event gets tracked. In that case you can also put some key-value-pairs in a dictionary and pass it to the `trackEvent` method. We will then append these named parameters to your callback URL.
 
-For example suppose you registered the URL `http://www.adeven.com/callback` for your event with Event Token `abc123` and execute the following lines:
+For example, suppose you have registered the URL `http://www.adeven.com/callback` for your event with Event Token `abc123` and execute the following lines:
 
 ```objc
 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -92,9 +91,7 @@ In that case we would track the event and send a request to:
 
     http://www.adeven.com/callback?key=value&foo=bar
 
-In any case you need to import AdjustIo in any source file that makes use of the SDK. Please note that we don't store your custom parameters. If you haven't registered a callback URL for an event, there is no point in sending us parameters.
-
-<!--- TODO: mention placeholders -->
+It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for an event, these parameters won't even be read.
 
 ### Add tracking of revenue
 
@@ -104,13 +101,13 @@ If your users can generate revenue by clicking on advertisements or making in-ap
 [AdjustIo trackRevenue:1.0];
 ```
 
-The parameter is supposed to be in Cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different Event Tokens for each kind. Again, you need to create those Event Tokens in your dashboard at [adjust.io][]. In that case you would make a call like this:
+The parameter is supposed to be in cents and will get rounded to one decimal point. If you want to differentiate between different kinds of revenue you can get different Event Tokens for each kind. Again, you need to create those Event Tokens in your [dashboard]. In that case you would make a call like this:
 
 ```objc
 [AdjustIo trackRevenue:1.0 forEvent:@"abc123"];
 ```
 
-You can also register a callback URL again and provide a dictionary of named parameters, just like it worked with normal events.
+Again, you can register a callback and provide a dictionary of named parameters, just like it worked with normal events.
 
 ```objc
 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -126,7 +123,7 @@ If you want to track In-App Purchases, please make sure to call `trackRevenue` a
     for (SKPaymentTransaction *transaction in transactions) {
         switch (transaction.transactionState) {
             case SKPaymentTransactionStatePurchased:
-                [self completeTransaction:transaction];
+                [self finishTransaction:transaction];
                 [AdjustIo trackRevenue:...];
                 break;
             // more cases
@@ -135,9 +132,8 @@ If you want to track In-App Purchases, please make sure to call `trackRevenue` a
 }
 ```
 
-In any case, don't forget to import AdjustIo. Again, there is no point in sending parameters if you haven't registered a callback URL for that revenue event.
-
-[adjust.io]: http://www.adjust.io
+[adjust.io]: http://adjust.io
+[dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
