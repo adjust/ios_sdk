@@ -63,16 +63,23 @@ AdjustIo into your app. After the app launched, you should see the debug log
 
 ![][run]
 
+#### Troubleshooting
+
 - If your build failed because of many duplicate symbols, you were probably
   already using AFNetwork before integrating AdjustIo. Just remove the
   `AdjustIo/AFNetworking` group from your Project Navigator to resolve this
   issue.
+
 - If your build failed with the error `AdjustIo requires ARC`, it looks like
   your project is not using [ARC][arc]. In that case you have to enable ARC for
   all source files of AdjustIo in the target's Build Phases: Expand the
   `Compile Sources` group, select all AdjustIo files (AjustIo, AI...,
   ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler Flags` to
   `-fobjc-arc` (Select all and press the `Return` key to change all at once).
+
+- If you get errors about `automated __weak references`, you need to update
+  your deployment target. In your target's `Summary` tab set the `Deployment
+  Target` to `5.0`.
 
 ### 6. Adjust Logging
 
