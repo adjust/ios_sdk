@@ -28,7 +28,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 #pragma mark -
 @interface AIActivityHandler()
 
-@property (nonatomic, retain) dispatch_queue_t internalQueue;
+@property (nonatomic, assign) dispatch_queue_t internalQueue;
 @property (nonatomic, retain) AIPackageHandler *packageHandler;
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;

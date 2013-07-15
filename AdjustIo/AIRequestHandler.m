@@ -21,7 +21,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 #pragma mark - private
 @interface AIRequestHandler()
 
-@property (nonatomic, retain) dispatch_queue_t internalQueue;
+@property (nonatomic, assign) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) AIPackageHandler *packageHandler;
 @property (nonatomic, retain) AFHTTPClient *httpClient;
 
