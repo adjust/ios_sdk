@@ -53,7 +53,6 @@ in your [dashboard].
 [AdjustIo appDidLaunch:@"{YourAppToken}"];
 ```
 
-<!--- TODO: update the following image -->
 ![][delegate]
 
 ### 5. Build your app
@@ -187,8 +186,8 @@ state changed to `SKPaymentTransactionStatePurchased`:
 [drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
 [add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add.png
 [framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework.png
-[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate.png
-[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run.png
+[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate2.png
+[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run2.png
 
 ## License
 
