@@ -9,8 +9,8 @@
 #import "AIUtil.h"
 #import "UIDevice+AIAdditions.h"
 
-static NSString * const kBaseUrl   = @"http://localhost:8509"; // TODO: change
-static NSString * const kClientSdk = @"ios1.6";                // TODO: change
+static NSString * const kBaseUrl   = @"https://app.adjust.io";
+static NSString * const kClientSdk = @"ios2.0";
 
 
 #pragma mark -
