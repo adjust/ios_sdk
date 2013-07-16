@@ -71,11 +71,15 @@ AdjustIo into your app. After the app launched, you should see the debug log
   issue.
 
 - If your build failed with the error `AdjustIo requires ARC`, it looks like
-  your project is not using [ARC][arc]. In that case you have to enable ARC for
-  all source files of AdjustIo in the target's Build Phases: Expand the
-  `Compile Sources` group, select all AdjustIo files (AjustIo, AI...,
-  ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler Flags` to
-  `-fobjc-arc` (Select all and press the `Return` key to change all at once).
+  your project is not using [ARC][arc]. In that case we recommend
+  [transitioning your project to use ARC][transition]. If you don't want to
+  use ARC, you have to enable ARC for all source files of AdjustIo in the
+  target's Build Phases:
+
+    Expand the `Compile Sources` group, select all AdjustIo files (AjustIo,
+    AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler
+    Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
+    all at once).
 
 - If you get errors about `automated __weak references`, you need to update
   your deployment target. In your target's `Summary` tab set the `Deployment
@@ -190,6 +194,7 @@ state changed to `SKPaymentTransactionStatePurchased`:
 [dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
+[transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 [drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
 [add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add.png
 [framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework.png
