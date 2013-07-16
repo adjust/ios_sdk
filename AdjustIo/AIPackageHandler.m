@@ -18,10 +18,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 #pragma mark - private
 @interface AIPackageHandler()
 
-@property (nonatomic, assign) dispatch_queue_t internalQueue;
+@property (nonatomic) dispatch_queue_t internalQueue;
+@property (nonatomic) dispatch_semaphore_t sendingSemaphore;
 @property (nonatomic, retain) AIRequestHandler *requestHandler;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
-@property (nonatomic, assign) dispatch_semaphore_t sendingSemaphore;
 @property (nonatomic, assign, getter = isPaused) BOOL paused;
 
 @end

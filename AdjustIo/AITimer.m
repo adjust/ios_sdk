@@ -11,7 +11,7 @@
 #pragma mark - private
 @interface AITimer()
 
-@property (nonatomic, assign) dispatch_source_t source;
+@property (nonatomic) dispatch_source_t source;
 @property (nonatomic, assign) BOOL suspended;
 
 @end
