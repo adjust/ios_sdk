@@ -3,23 +3,18 @@
 This is the iOS SDK of AdjustIo. You can read more about AdjustIo at
 [adjust.io].
 
-## Installation using cocoapods
-
-### 1. Get Cocoapods
-If you're not already using cocoapods, go to [cocoapods.org][cocoapods] and set up your podfile. They have a really nice [cocoapods installation guide][cocoapods installation guide] available as well.
-
-### 2. Add AdjustIo to your podfile. 
-```ruby
-pod 'AdjustIO', '2.0'
-```
-
-### 3. Continue with step 3 of the basic installation.
-
 ## Basic Installation
 
 These are the minimal steps required to integrate the AdjustIo SDK into your
 iOS project. We are going to assume that you use Xcode for your iOS
 development.
+
+If you're using [CocoaPods][cocoapods], you can add the following line to your
+`Podfile` and continue with [step 3](#step3):
+
+```ruby
+pod 'AdjustIO', '2.0'
+```
 
 ### 1. Get the SDK
 
@@ -40,7 +35,7 @@ radio button to `Create groups for any added folders`.
 
 ![][add]
 
-### 3. Add the AdSupport framework
+### <a id="step3"></a>3. Add the AdSupport framework
 
 In the Project Navigator select your project. In the left hand side of the main
 view select your target. In the tab `Build Phases` expand the group `Link
@@ -200,7 +195,6 @@ state changed to `SKPaymentTransactionStatePurchased`:
 
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
-[cocoapods installation guide]: http://docs.cocoapods.org/guides/installing_cocoapods.html
 [dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
