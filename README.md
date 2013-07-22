@@ -3,6 +3,18 @@
 This is the iOS SDK of AdjustIo. You can read more about AdjustIo at
 [adjust.io].
 
+## Installation using cocoapods
+
+### 1. Get Cocoapods
+If you're not already using cocoapods, go to [cocoapods.org] and set up your podfile. They have a really nice [howto|http://docs.cocoapods.org/guides/installing_cocoapods.html] available as well.
+
+### 2. Add AdjustIo to your podfile. 
+```ruby
+pod 'AdjustIO', '2.0'
+```
+
+### 3. Continue with step 3 of the basic installation.
+
 ## Basic Installation
 
 These are the minimal steps required to integrate the AdjustIo SDK into your
