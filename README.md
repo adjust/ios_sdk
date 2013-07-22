@@ -9,6 +9,13 @@ These are the minimal steps required to integrate the AdjustIo SDK into your
 iOS project. We are going to assume that you use Xcode for your iOS
 development.
 
+If you're using [CocoaPods][cocoapods], you can add the following line to your
+`Podfile` and continue with [step 3](#step3):
+
+```ruby
+pod 'AdjustIO', '2.0'
+```
+
 ### 1. Get the SDK
 
 Download the latest version from our [releases page][releases]. Extract the
@@ -28,7 +35,7 @@ radio button to `Create groups for any added folders`.
 
 ![][add]
 
-### 3. Add the AdSupport framework
+### <a id="step3"></a>3. Add the AdSupport framework
 
 In the Project Navigator select your project. In the left hand side of the main
 view select your target. In the tab `Build Phases` expand the group `Link
@@ -191,6 +198,7 @@ state changed to `SKPaymentTransactionStatePurchased`:
 ```
 
 [adjust.io]: http://adjust.io
+[cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
