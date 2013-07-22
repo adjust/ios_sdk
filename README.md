@@ -6,7 +6,7 @@ This is the iOS SDK of AdjustIo. You can read more about AdjustIo at
 ## Installation using cocoapods
 
 ### 1. Get Cocoapods
-If you're not already using cocoapods, go to [cocoapods.org] and set up your podfile. They have a really nice [howto|http://docs.cocoapods.org/guides/installing_cocoapods.html] available as well.
+If you're not already using cocoapods, go to [cocoapods.org][cocoapods] and set up your podfile. They have a really nice [cocoapods installation guide][cocoapods installation guide] available as well.
 
 ### 2. Add AdjustIo to your podfile. 
 ```ruby
@@ -203,6 +203,8 @@ state changed to `SKPaymentTransactionStatePurchased`:
 ```
 
 [adjust.io]: http://adjust.io
+[cocoapods]: http://cocoapods.org
+[cocoapods installation guide]: http://docs.cocoapods.org/guides/installing_cocoapods.html
 [dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
