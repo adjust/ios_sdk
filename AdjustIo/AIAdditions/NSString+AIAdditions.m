@@ -41,6 +41,15 @@
     return output;
 }
 
+-(NSString *)aiUrlEncode {
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                NULL,
+                (CFStringRef)self,
+                NULL,
+                (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+                CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
+}
+
 - (NSString *)aiRemoveColons {
     return [self stringByReplacingOccurrencesOfString:@":" withString:@""];
 }

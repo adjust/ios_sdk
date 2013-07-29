@@ -13,6 +13,7 @@
 - (NSString *)aiTrim;
 - (NSString *)aiMd5;
 - (NSString *)aiSha1;
+- (NSString *)aiUrlEncode;
 - (NSString *)aiRemoveColons;
 - (NSData *)aiDecodeBase64;
 
