@@ -13,7 +13,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'AdjustIO', '2.0.1'
+pod 'AdjustIO', :git => 'git://github.com/adeven/adjust_ios_sdk.git', :tag => 'v2.0.1'
 ```
 
 ### 1. Get the SDK
