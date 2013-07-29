@@ -12,7 +12,6 @@
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "NSString+AIAdditions.h"
-#import "AFNetworking.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 static const double kRequestTimeout = 60; // 60 seconds
@@ -23,7 +22,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) AIPackageHandler *packageHandler;
-@property (nonatomic, retain) AFHTTPClient *httpClient;
+@property (nonatomic, retain) NSURL *baseUrl;
 
 @end
 
@@ -41,10 +40,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
-
-    dispatch_async(self.internalQueue, ^{
-        [self initInternal];
-    });
+    self.baseUrl = [NSURL URLWithString:AIUtil.baseUrl];
 
     return self;
 }
@@ -56,79 +52,64 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 
-#pragma mark - private
-- (void)packageSucceeded:(AIActivityPackage *)package {
-    dispatch_async(self.internalQueue, ^{
-        [self successInternal:package];
-    });
-}
-
-- (void)packageFailed:(AIActivityPackage *)package response:(NSString *)response error:(NSError *)error {
-    dispatch_async(self.internalQueue, ^{
-        [self failureInternal:package response:response error:error];
-    });
-}
-
 #pragma mark - internal
-- (void)initInternal {
-    self.httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:AIUtil.baseUrl]];
-}
-
 - (void)sendInternal:(AIActivityPackage *)package {
     if (self.packageHandler == nil) return;
 
-    [self setHttpHeaders:package];
     NSMutableURLRequest *request = [self requestForPackage:package];
-    AFHTTPRequestOperation *op = [self getOperationForPackage:package request:request];
-    [self.httpClient enqueueHTTPRequestOperation:op];
-}
+    NSHTTPURLResponse *response = nil;
+    NSError *error = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                         returningResponse:&response
+                                                     error:&error];
 
-- (void)successInternal:(AIActivityPackage *)package {
-    if (self.packageHandler == nil) return;
-
-    [AILogger info:@"%@", package.successMessage];
-    [self.packageHandler sendNextPackage];
-}
-
-- (void)failureInternal:(AIActivityPackage *)package response:(NSString *)response error:(NSError *)error {
-    if (self.packageHandler == nil) return;
-
-    if (response == nil) {
+    // connection error
+    if (error != nil) {
         [AILogger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler closeFirstPackage];
         return;
     }
 
-    [AILogger error:@"%@. (%@)", package.failureMessage, response.aiTrim];
+    // wrong status code
+    if (response.statusCode != 200) {
+        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [AILogger error:@"%@. (%@)", package.failureMessage, responseString.aiTrim];
+        [self.packageHandler sendNextPackage];
+        return;
+    }
+
+    // success
+    [AILogger info:@"%@", package.successMessage];
     [self.packageHandler sendNextPackage];
 }
 
 #pragma mark - private
-- (NSMutableURLRequest *)requestForPackage:(AIActivityPackage *)activityPackage {
-    NSString *path = activityPackage.path;
-    NSDictionary *parameters = activityPackage.parameters;
-    NSMutableURLRequest *request = [self.httpClient requestWithMethod:@"POST" path:path parameters:parameters];
+- (NSMutableURLRequest *)requestForPackage:(AIActivityPackage *)package {
+    NSURL *url = [NSURL URLWithString:package.path relativeToURL:self.baseUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
+    request.HTTPMethod = @"POST";
+
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:package.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+    [request setValue:package.userAgent forHTTPHeaderField:@"User-Agent"];
+    [request setHTTPBody:[self bodyForParameters:package.parameters]];
 
     return request;
 }
 
-- (AFHTTPRequestOperation *)getOperationForPackage:(AIActivityPackage *)package request:(NSURLRequest *)request {
-    // note: these blocks will get executed on the main thread
-    void (^success)(AFHTTPRequestOperation *op, id resp) = ^(AFHTTPRequestOperation *op, id resp) {
-        [self packageSucceeded:package];
-    };
+- (NSData *)bodyForParameters:(NSDictionary *)parameters {
+    NSMutableArray *pairs = [NSMutableArray array];
+    for (NSString *key in parameters) {
+        NSString *value = [parameters objectForKey:key];
+        NSString *escapedValue = [value aiUrlEncode];
+        NSString *pair = [NSString stringWithFormat:@"%@=%@", key, escapedValue];
+        [pairs addObject:pair];
+    }
 
-    void (^failure)(AFHTTPRequestOperation *op, NSError *err) = ^(AFHTTPRequestOperation *op, NSError *err) {
-        [self packageFailed:package response:op.responseString error:err];
-    };
-
-    return [self.httpClient HTTPRequestOperationWithRequest:request success:success failure:failure];
-}
-
-- (void)setHttpHeaders:(AIActivityPackage *)activityPackage {
-    [self.httpClient setDefaultHeader:@"User-Agent" value:activityPackage.userAgent];
-    [self.httpClient setDefaultHeader:@"Client-SDK" value:activityPackage.clientSdk];
+    NSString *bodyString = [pairs componentsJoinedByString:@"&"];
+    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
+    return body;
 }
 
 @end
