@@ -81,10 +81,6 @@ AdjustIo into your app. After the app launched, you should see the debug log
     Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
     all at once).
 
-- If you get errors about `automated __weak references`, you need to update
-  your deployment target. In your target's `Summary` tab set the `Deployment
-  Target` to `5.0`.
-
 ### 6. Adjust Logging
 
 You can increase or decrease the amount of logs you see by calling

@@ -19,10 +19,6 @@
    consistent. The amount parameter is now of type `double`, so you can drop
    the `f` suffixes in number literals (`12.3f` becomes `12.3`).
 
-5. If you get errors about `automated __weak references`, you need to update
-   your deployment target. In your target's `Summary` tab set the `Deployment
-   Target` to `5.0`.
-
 [README]: ../README.md
 [drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
