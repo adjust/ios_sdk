@@ -58,7 +58,7 @@ static NSString * const kClientSdk = @"ios2.0.1";
     return [self.class sanitize:string defaultString:@"zz"];
 }
 
-+ (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString; {
++ (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString {
     if (string == nil) {
         return defaultString;
     }
