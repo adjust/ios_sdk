@@ -21,4 +21,6 @@
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 
+- (void)setEventBufferingEnabled:(BOOL)enabled;
+
 @end

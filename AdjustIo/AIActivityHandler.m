@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
+#import "AIActivityPackage.h"
 #import "AIActivityHandler.h"
 #import "AIActivityState.h"
 #import "AIPackageBuilder.h"
@@ -32,6 +33,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @property (nonatomic, retain) AIPackageHandler *packageHandler;
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
+@property (nonatomic, assign) BOOL bufferEvents;
 
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *macSha1;
@@ -92,6 +94,10 @@ static const double   kSubsessionInterval =  1;                // 1 second
     dispatch_async(self.internalQueue, ^{
         [self revenueInternal:amount event:eventToken parameters:parameters];
     });
+}
+
+- (void)setEventBufferingEnabled:(BOOL)enabled {
+    self.bufferEvents = enabled;
 }
 
 #pragma mark - internal
@@ -201,6 +207,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
 
+    if (self.bufferEvents) {
+        [AILogger info:@"Buffered event%@", eventPackage.suffix];
+    } else {
+        [self.packageHandler sendFirstPackage];
+    }
+
     [self writeActivityState];
     [AILogger debug:@"Event %d", self.activityState.eventCount];
 }
@@ -228,6 +240,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.activityState injectEventAttributes:revenueBuilder];
     AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
     [self.packageHandler addPackage:revenuePackage];
+
+    if (self.bufferEvents) {
+        [AILogger info:@"Buffered revenue%@", revenuePackage.suffix];
+    } else {
+        [self.packageHandler sendFirstPackage];
+    }
 
     [self writeActivityState];
     [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
@@ -302,6 +320,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {

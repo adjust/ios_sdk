@@ -87,7 +87,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [AILogger verbose:@"%@", newPackage.extendedString];
 
     [self writePackageQueue];
-    [self sendFirstInternal];
 }
 
 - (void)sendFirstInternal {

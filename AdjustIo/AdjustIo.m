@@ -51,4 +51,8 @@ static AIActivityHandler *activityHandler;
     [AILogger setLogLevel:logLevel];
 }
 
++ (void)setEventBufferingEnabled:(BOOL)enabled {
+    [activityHandler setEventBufferingEnabled:enabled];
+}
+
 @end

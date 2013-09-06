@@ -78,4 +78,7 @@
  */
 + (void)setLogLevel:(AILogLevel)logLevel;
 
+// TODO: add comment
++ (void)setEventBufferingEnabled:(BOOL)enabled;
+
 @end
