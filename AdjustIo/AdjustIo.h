@@ -8,6 +8,10 @@
 
 #import "AILogger.h"
 
+// TODO: add comment
+static NSString * const AIEnvironmentSandbox    = @"sandbox";
+static NSString * const AIEnvironmentProduction = @"production";
+
 /**
  * The main interface to AdjustIo.
  *
@@ -61,6 +65,15 @@
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
+// TODO: add comment
+// sets logLevel to Assert
+// should be called after appDidLaunch and setLogLevel
++ (void)setEnvironment:(NSString *)environment;
+
+// TODO: add comment
+// should be called after appDidLaunch
++ (void)setEventBufferingEnabled:(BOOL)enabled;
+
 /**
  * Change the verbosity of AdjustIo's logs.
  *
@@ -77,8 +90,5 @@
  *      - AILogLevelAssert  (disable errors as well)
  */
 + (void)setLogLevel:(AILogLevel)logLevel;
-
-// TODO: add comment
-+ (void)setEventBufferingEnabled:(BOOL)enabled;
 
 @end

@@ -29,6 +29,7 @@ typedef enum {
 + (void)info:   (NSString *)message, ...;
 + (void)warn:   (NSString *)message, ...;
 + (void)error:  (NSString *)message, ...;
++ (void)assert: (NSString *)message, ...;
 
 + (AILogger *)loggerWithTag:(NSString *)logTag;
 - (id)initWithTag:(NSString *)logTag;
@@ -38,5 +39,6 @@ typedef enum {
 - (void)info:   (NSString *)message, ...;
 - (void)warn:   (NSString *)message, ...;
 - (void)error:  (NSString *)message, ...;
+- (void)assert: (NSString *)message, ...;
 
 @end

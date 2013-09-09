@@ -66,6 +66,12 @@ static AILogger *defaultLogger;
     [self logLevel:@"e" format:format parameters:parameters];
 }
 
+- (void)assert: (NSString *)format, ... {
+    if (self.logLevel > AILogLevelAssert) return;
+    va_list parameters; va_start(parameters, format);
+    [self logLevel:@"a" format:format parameters:parameters];
+}
+
 + (void)verbose:(NSString *)format, ... {
     if (AILogger.getDefaultLogger.logLevel > AILogLevelVerbose) return;
     va_list parameters; va_start(parameters, format);
@@ -92,6 +98,12 @@ static AILogger *defaultLogger;
 
 + (void)error:(NSString *)format, ... {
     if (AILogger.getDefaultLogger.logLevel > AILogLevelError) return;
+    va_list parameters; va_start(parameters, format);
+    [AILogger.getDefaultLogger logLevel:@"e" format:format parameters:parameters];
+}
+
++ (void)assert:(NSString *)format, ... {
+    if (AILogger.getDefaultLogger.logLevel > AILogLevelAssert) return;
     va_list parameters; va_start(parameters, format);
     [AILogger.getDefaultLogger logLevel:@"e" format:format parameters:parameters];
 }

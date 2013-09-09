@@ -33,7 +33,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @property (nonatomic, retain) AIPackageHandler *packageHandler;
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
-@property (nonatomic, assign) BOOL bufferEvents;
 
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *macSha1;
@@ -96,10 +95,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
     });
 }
 
-- (void)setEventBufferingEnabled:(BOOL)enabled {
-    self.bufferEvents = enabled;
-}
-
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self.class checkAppTokenNotNil:yourAppToken]) return;
@@ -115,6 +110,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
     self.clientSdk        = AIUtil.clientSdk;
+    self.environment      = AIEnvironmentProduction; // TODO: use third value as default?
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
@@ -331,6 +327,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     builder.macSha1 = self.macSha1;
     builder.idForAdvertisers = self.idForAdvertisers;
     builder.fbAttributionId = self.fbAttributionId;
+    builder.environment = self.environment;
 }
 
 # pragma mark - timer
