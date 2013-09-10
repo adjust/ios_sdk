@@ -58,6 +58,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.environment   = @"unknown"; // default value
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -110,7 +111,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
     self.clientSdk        = AIUtil.clientSdk;
-    self.environment      = AIEnvironmentProduction; // TODO: use third value as default?
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];

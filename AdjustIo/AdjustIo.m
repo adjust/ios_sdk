@@ -58,6 +58,7 @@ static AIActivityHandler *activityHandler;
         [AILogger assert:@"PRODUCTION: AdjustIo is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
         [AILogger setLogLevel:AILogLevelAssert];
     } else {
+        [activityHandler setEnvironment:@"malformed"];
         [AILogger error:@"Malformed environment '%@'", environment];
     }
 }
