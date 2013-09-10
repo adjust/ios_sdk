@@ -51,14 +51,14 @@ static AIActivityHandler *activityHandler;
     if (activityHandler == nil) {
         [AILogger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
     } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
-        [activityHandler setEnvironment:environment];
+        activityHandler.environment = environment;
         [AILogger assert:@"SANDBOX: AdjustIo is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
     } else if ([environment isEqualToString:AIEnvironmentProduction]) {
-        [activityHandler setEnvironment:environment];
+        activityHandler.environment = environment;
         [AILogger assert:@"PRODUCTION: AdjustIo is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
         [AILogger setLogLevel:AILogLevelAssert];
     } else {
-        [activityHandler setEnvironment:@"malformed"];
+        activityHandler.environment = @"malformed";
         [AILogger error:@"Malformed environment '%@'", environment];
     }
 }
@@ -69,8 +69,8 @@ static AIActivityHandler *activityHandler;
         return;
     }
 
-    [activityHandler setBufferEvents:enabled];
-    if (enabled) [AILogger info:@"Event buffering: enabled"];
+    activityHandler.bufferEvents = enabled;
+    if (enabled) [AILogger info:@"Event buffering is enabled"];
 }
 
 + (void)setLogLevel:(AILogLevel)logLevel {
