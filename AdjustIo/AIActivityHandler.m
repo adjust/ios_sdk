@@ -41,6 +41,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
+@property (nonatomic, assign) BOOL trackingEnabled;
 
 @end
 
@@ -107,6 +108,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.appToken         = yourAppToken;
     self.macSha1          = macAddress.aiSha1;
     self.macShortMd5      = macShort.aiMd5;
+    self.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
@@ -320,23 +322,24 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
-    builder.userAgent = self.userAgent;
-    builder.clientSdk = self.clientSdk;
-    builder.appToken = self.appToken;
-    builder.macShortMd5 = self.macShortMd5;
-    builder.macSha1 = self.macSha1;
+    builder.userAgent        = self.userAgent;
+    builder.clientSdk        = self.clientSdk;
+    builder.appToken         = self.appToken;
+    builder.macShortMd5      = self.macShortMd5;
+    builder.macSha1          = self.macSha1;
+    builder.trackingEnabled  = self.trackingEnabled;
     builder.idForAdvertisers = self.idForAdvertisers;
-    builder.fbAttributionId = self.fbAttributionId;
-    builder.environment = self.environment;
+    builder.fbAttributionId  = self.fbAttributionId;
+    builder.environment      = self.environment;
 }
 
 # pragma mark - timer
 - (void)startTimer {
     if (self.timer == nil) {
         self.timer = [AITimer timerWithInterval:kTimerInterval
-                                    leeway:kTimerLeeway
-                                     queue:self.internalQueue
-                                     block:^{ [self timerFired]; }];
+                                         leeway:kTimerLeeway
+                                          queue:self.internalQueue
+                                          block:^{ [self timerFired]; }];
     }
     [self.timer resume];
 }

@@ -75,6 +75,7 @@ static NSDateFormatter * dateFormat;
     [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
     [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
     [self parameters:parameters setString:self.environment      forKey:@"environment"];
+    [self parameters:parameters setInt:self.trackingEnabled     forKey:@"tracking_enabled"];
 
     // session related (used for events as well)
     [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];

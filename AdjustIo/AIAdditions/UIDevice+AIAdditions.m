@@ -17,6 +17,14 @@
 
 @implementation UIDevice(AIAdditions)
 
+- (BOOL)aiTrackingEnabled {
+    if (NSClassFromString(@"ASIdentifierManager")) {
+        return ASIdentifierManager.sharedManager.advertisingTrackingEnabled;
+    } else {
+        return NO;
+    }
+}
+
 - (NSString *)aiIdForAdvertisers {
     if (NSClassFromString(@"ASIdentifierManager")) {
         return ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString;

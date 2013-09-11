@@ -10,6 +10,7 @@
 
 @interface UIDevice(AIAdditions)
 
+- (BOOL)aiTrackingEnabled;
 - (NSString *)aiIdForAdvertisers;
 - (NSString *)aiFbAttributionId;
 - (NSString *)aiMacAddress;
