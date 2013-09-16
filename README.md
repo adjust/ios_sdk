@@ -50,17 +50,49 @@ attribute `Required` to `Optional`.
 
 In the Project Navigator open the source file your Application Delegate. Add
 the `import` statement at the top of the file. In the `didFinishLaunching` or
-`didFinishLaunchingWithOptions` method of your App Delegate call the method
-`appDidLaunch`. Replace `{YourAppToken}` with the App Token that you can find
-in your [dashboard].
+`didFinishLaunchingWithOptions` method of your App Delegate add the following
+calls to `AdjustIo`:
 
 ```objc
 #import "AdjustIo.h"
 // ...
 [AdjustIo appDidLaunch:@"{YourAppToken}"];
+[AdjustIo setLogLevel:AILogLevelInfo];
+[AdjustIo setEnvironment:AIEnvironmentSandbox];
+```
+![][delegate]
+
+Replace `{YourAppToken}` with your App Token. You can find in your [dashboard].
+
+You can increase or decrease the amount of logs you see by calling
+`setLogLevel:` with one of the following parameters:
+
+```objc
+[AdjustIo setLogLevel:AILogLevelVerbose]; // enable all logging
+[AdjustIo setLogLevel:AILogLevelDebug];   // enable more logging
+[AdjustIo setLogLevel:AILogLevelInfo];    // the default
+[AdjustIo setLogLevel:AILogLevelWarn];    // disable info logging
+[AdjustIo setLogLevel:AILogLevelError];   // disable warnings as well
+[AdjustIo setLogLevel:AILogLevelAssert];  // disable errors as well
 ```
 
-![][delegate]
+Depending on whether or not you build your app for testing or for production
+you must call `setEnvironment:` with one of these parameters:
+
+```objc
+[AdjustIo setEnvironment:AIEnvironmentSandbox];
+[AdjustIo setEnvironment:AIEnvironmentProduction];
+```
+
+**Important:** This value should be set to `AIEnvironmentSandbox` if and only
+if you or someone else is testing your app. Make sure to set the environment to
+`AIEnvironmentProduction` just before you publish the app. Set it back to
+`AIEnvironmentSandbox` when you start testing it again.
+
+We use this environment to distinguish between real traffic and artificial
+traffic from test devices. It is very important that you keep this value
+meaningful at all times! Especially if you are tracking revenue.
+
 
 ### 5. Build your app
 
@@ -87,20 +119,6 @@ AdjustIo into your app. After the app launched, you should see the debug log
     AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler
     Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
     all at once).
-
-### 6. Adjust Logging
-
-You can increase or decrease the amount of logs you see by calling
-`setLogLevel:` with one of the following parameters:
-
-```objc
-[AdjustIo setLogLevel:AILogLevelVerbose]; // enable all logging
-[AdjustIo setLogLevel:AILogLevelDebug];   // enable more logging
-[AdjustIo setLogLevel:AILogLevelInfo];    // the default
-[AdjustIo setLogLevel:AILogLevelWarn];    // disable info logging
-[AdjustIo setLogLevel:AILogLevelError];   // disable warnings as well
-[AdjustIo setLogLevel:AILogLevelAssert];  // disable errors as well
-```
 
 ## Additional features
 
@@ -193,17 +211,28 @@ state changed to `SKPaymentTransactionStatePurchased`:
 }
 ```
 
+### Enable event buffering
+
+If your app makes heavy use of event tracking, you might want to delay some
+HTTP requests in order to send them in one batch every minute. You can enable
+event buffering by adding the following line after your `setEnvironment:` call
+in the `didFinishLaunching` method of your Application Delegate:
+
+```objc
+[AdjustIo setEventBufferingEnabled:YES];
+```
+
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.io
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
-[add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add.png
-[framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework.png
-[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate2.png
-[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run2.png
+[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag2.png
+[add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add2.png
+[framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework2.png
+[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
+[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run3.png
 
 ## License
 
