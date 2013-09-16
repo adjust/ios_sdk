@@ -5,6 +5,53 @@
 
     ![][drag]
 
+2. In the Project Navigator open the source file your Application Delegate. Add
+    the `import` statement at the top of the file. In the `didFinishLaunching` or
+    `didFinishLaunchingWithOptions` method of your App Delegate add the following
+    calls to `AdjustIo`:
+
+    ```objc
+    #import "AdjustIo.h"
+    // ...
+    [AdjustIo appDidLaunch:@"{YourAppToken}"];
+    [AdjustIo setLogLevel:AILogLevelInfo];
+    [AdjustIo setEnvironment:AIEnvironmentSandbox];
+    ```
+    ![][delegate]
+
+    Replace `{YourAppToken}` with your App Token. You can find in your [dashboard].
+
+    You can increase or decrease the amount of logs you see by calling
+    `setLogLevel:` with one of the following parameters:
+
+    ```objc
+    [AdjustIo setLogLevel:AILogLevelVerbose]; // enable all logging
+    [AdjustIo setLogLevel:AILogLevelDebug];   // enable more logging
+    [AdjustIo setLogLevel:AILogLevelInfo];    // the default
+    [AdjustIo setLogLevel:AILogLevelWarn];    // disable info logging
+    [AdjustIo setLogLevel:AILogLevelError];   // disable warnings as well
+    [AdjustIo setLogLevel:AILogLevelAssert];  // disable errors as well
+    ```
+
+    Depending on whether or not you build your app for testing or for production
+    you must call `setEnvironment:` with one of these parameters:
+
+    ```objc
+    [AdjustIo setEnvironment:AIEnvironmentSandbox];
+    [AdjustIo setEnvironment:AIEnvironmentProduction];
+    ```
+
+    **Important:** This value should be set to `AIEnvironmentSandbox` if and only
+    if you or someone else is testing your app. Make sure to set the environment to
+    `AIEnvironmentProduction` just before you publish the app. Set it back to
+    `AIEnvironmentSandbox` when you start testing it again.
+
+    We use this environment to distinguish between real traffic and artificial
+    traffic from test devices. It is very important that you keep this value
+    meaningful at all times! Especially if you are tracking revenue.
+
+## Additional steps if you come from v1.x
+
 2. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
