@@ -3,10 +3,14 @@
 //  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2012-07-23.
-//  Copyright (c) 2012 adeven. All rights reserved.
+//  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
 #import "AILogger.h"
+
+// TODO: add comment
+static NSString * const AIEnvironmentSandbox    = @"sandbox";
+static NSString * const AIEnvironmentProduction = @"production";
 
 /**
  * The main interface to AdjustIo.
@@ -60,6 +64,15 @@
 + (void)trackRevenue:(double)amountInCents;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
+
+// TODO: add comment
+// sets logLevel to Assert
+// should be called after appDidLaunch and setLogLevel
++ (void)setEnvironment:(NSString *)environment;
+
+// TODO: add comment
+// should be called after appDidLaunch
++ (void)setEventBufferingEnabled:(BOOL)enabled;
 
 /**
  * Change the verbosity of AdjustIo's logs.
