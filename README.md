@@ -238,7 +238,7 @@ in the `didFinishLaunching` method of your Application Delegate:
 
 The adjust-sdk is licensed under the MIT License.
 
-Copyright (c) 2012 adeven GmbH,
+Copyright (c) 2012-2013 adeven GmbH,
 http://www.adeven.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
