@@ -6,7 +6,12 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
+#import "AdjustIo.h"
+
 @interface AIActivityHandler : NSObject
+
+@property (nonatomic, copy) NSString *environment;
+@property (nonatomic, assign) BOOL bufferEvents;
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;

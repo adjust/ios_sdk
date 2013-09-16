@@ -3,7 +3,7 @@
 //  AdjustIo
 //
 //  Created by Christian Wellenbrock on 23.07.12.
-//  Copyright (c) 2012 adeven. All rights reserved.
+//  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
 #import "UIDevice+AIAdditions.h"
@@ -16,6 +16,14 @@
 #import <net/if_dl.h>
 
 @implementation UIDevice(AIAdditions)
+
+- (BOOL)aiTrackingEnabled {
+    if (NSClassFromString(@"ASIdentifierManager")) {
+        return ASIdentifierManager.sharedManager.advertisingTrackingEnabled;
+    } else {
+        return NO;
+    }
+}
 
 - (NSString *)aiIdForAdvertisers {
     if (NSClassFromString(@"ASIdentifierManager")) {

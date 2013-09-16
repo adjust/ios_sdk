@@ -3,7 +3,7 @@
 //  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2012-11-15.
-//  Copyright (c) 2012 adeven. All rights reserved.
+//  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
 typedef enum {
@@ -29,6 +29,7 @@ typedef enum {
 + (void)info:   (NSString *)message, ...;
 + (void)warn:   (NSString *)message, ...;
 + (void)error:  (NSString *)message, ...;
++ (void)assert: (NSString *)message, ...;
 
 + (AILogger *)loggerWithTag:(NSString *)logTag;
 - (id)initWithTag:(NSString *)logTag;
@@ -38,5 +39,6 @@ typedef enum {
 - (void)info:   (NSString *)message, ...;
 - (void)warn:   (NSString *)message, ...;
 - (void)error:  (NSString *)message, ...;
+- (void)assert: (NSString *)message, ...;
 
 @end

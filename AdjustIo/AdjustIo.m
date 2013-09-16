@@ -3,7 +3,7 @@
 //  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2012-07-23.
-//  Copyright (c) 2012 adeven. All rights reserved.
+//  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
 #import "AdjustIo.h"
@@ -45,6 +45,32 @@ static AIActivityHandler *activityHandler;
       withParameters:(NSDictionary *)parameters
 {
     [activityHandler trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
+}
+
++ (void)setEnvironment:(NSString *)environment {
+    if (activityHandler == nil) {
+        [AILogger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
+    } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
+        activityHandler.environment = environment;
+        [AILogger assert:@"SANDBOX: AdjustIo is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
+    } else if ([environment isEqualToString:AIEnvironmentProduction]) {
+        activityHandler.environment = environment;
+        [AILogger assert:@"PRODUCTION: AdjustIo is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
+        [AILogger setLogLevel:AILogLevelAssert];
+    } else {
+        activityHandler.environment = @"malformed";
+        [AILogger error:@"Malformed environment '%@'", environment];
+    }
+}
+
++ (void)setEventBufferingEnabled:(BOOL)enabled {
+    if (activityHandler == nil) {
+        [AILogger error:@"Please call `setEventBufferingEnabled` after `appDidLaunch`!"];
+        return;
+    }
+
+    activityHandler.bufferEvents = enabled;
+    if (enabled) [AILogger info:@"Event buffering is enabled"];
 }
 
 + (void)setLogLevel:(AILogLevel)logLevel {

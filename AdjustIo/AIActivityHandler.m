@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
+#import "AIActivityPackage.h"
 #import "AIActivityHandler.h"
 #import "AIActivityState.h"
 #import "AIPackageBuilder.h"
@@ -40,6 +41,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
+@property (nonatomic, assign) BOOL trackingEnabled;
 
 @end
 
@@ -57,6 +59,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.environment   = @"unknown"; // default value
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -105,6 +108,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.appToken         = yourAppToken;
     self.macSha1          = macAddress.aiSha1;
     self.macShortMd5      = macShort.aiMd5;
+    self.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
@@ -201,6 +205,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
 
+    if (self.bufferEvents) {
+        [AILogger info:@"Buffered event%@", eventPackage.suffix];
+    } else {
+        [self.packageHandler sendFirstPackage];
+    }
+
     [self writeActivityState];
     [AILogger debug:@"Event %d", self.activityState.eventCount];
 }
@@ -228,6 +238,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.activityState injectEventAttributes:revenueBuilder];
     AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
     [self.packageHandler addPackage:revenuePackage];
+
+    if (self.bufferEvents) {
+        [AILogger info:@"Buffered revenue%@", revenuePackage.suffix];
+    } else {
+        [self.packageHandler sendFirstPackage];
+    }
 
     [self writeActivityState];
     [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
@@ -302,25 +318,28 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
-    builder.userAgent = self.userAgent;
-    builder.clientSdk = self.clientSdk;
-    builder.appToken = self.appToken;
-    builder.macShortMd5 = self.macShortMd5;
-    builder.macSha1 = self.macSha1;
+    builder.userAgent        = self.userAgent;
+    builder.clientSdk        = self.clientSdk;
+    builder.appToken         = self.appToken;
+    builder.macShortMd5      = self.macShortMd5;
+    builder.macSha1          = self.macSha1;
+    builder.trackingEnabled  = self.trackingEnabled;
     builder.idForAdvertisers = self.idForAdvertisers;
-    builder.fbAttributionId = self.fbAttributionId;
+    builder.fbAttributionId  = self.fbAttributionId;
+    builder.environment      = self.environment;
 }
 
 # pragma mark - timer
 - (void)startTimer {
     if (self.timer == nil) {
         self.timer = [AITimer timerWithInterval:kTimerInterval
-                                    leeway:kTimerLeeway
-                                     queue:self.internalQueue
-                                     block:^{ [self timerFired]; }];
+                                         leeway:kTimerLeeway
+                                          queue:self.internalQueue
+                                          block:^{ [self timerFired]; }];
     }
     [self.timer resume];
 }
