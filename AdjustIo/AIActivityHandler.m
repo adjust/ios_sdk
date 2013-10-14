@@ -16,6 +16,7 @@
 #import "AIUtil.h"
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
+#import "NSURL+AIAdditions.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
@@ -299,6 +300,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
+        [NSURL ai_addSkipBackupAttributeToItemAtFilePath:filename];
         [AILogger verbose:@"Wrote activity state: %@", self.activityState];
     } else {
         [AILogger error:@"Failed to write activity state"];
