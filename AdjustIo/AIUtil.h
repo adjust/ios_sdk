@@ -12,4 +12,6 @@
 + (NSString *)clientSdk;
 + (NSString *)userAgent;
 
++ (void)excludeFromBackup:(NSString *)filename;
+
 @end

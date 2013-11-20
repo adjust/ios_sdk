@@ -303,6 +303,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
+        [AIUtil excludeFromBackup:filename];
         [AILogger verbose:@"Wrote activity state: %@", self.activityState];
     } else {
         [AILogger error:@"Failed to write activity state"];

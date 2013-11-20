@@ -10,6 +10,7 @@
 #import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
 #import "AILogger.h"
+#import "AIUtil.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -145,6 +146,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     NSString *filename = [self packageQueueFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.packageQueue toFile:filename];
     if (result == YES) {
+        [AIUtil excludeFromBackup:filename];
         [AILogger debug:@"Package handler wrote %d packages", self.packageQueue.count];
     } else {
         [AILogger error:@"Failed to write package queue"];
