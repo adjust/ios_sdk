@@ -8,7 +8,9 @@
 
 #import "AILogger.h"
 
-// TODO: add comment
+/**
+ * Constants for our supported tracking environments.
+ */
 static NSString * const AIEnvironmentSandbox    = @"sandbox";
 static NSString * const AIEnvironmentProduction = @"production";
 
@@ -65,13 +67,24 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
-// TODO: add comment
-// sets logLevel to Assert
-// should be called after appDidLaunch and setLogLevel
+/**
+ * Set the tracking environment to sandbox or production.
+ *
+ * Use sandbox for testing and production for the final build that you release.
+ *
+ * @param environment The new environment. Supported values:
+ *     - AIEnvironmentSandbox
+ *     - AIEnvironmentProduction
+ */
 + (void)setEnvironment:(NSString *)environment;
 
-// TODO: add comment
-// should be called after appDidLaunch
+/**
+ * Enable or disable event buffering.
+ *
+ * Enable event buffering if your app triggers a lot of events.
+ * When enabled, events get buffered and only get tracked each
+ * minute. Buffered events are still persisted, of course.
+ */
 + (void)setEventBufferingEnabled:(BOOL)enabled;
 
 /**
@@ -90,5 +103,8 @@ static NSString * const AIEnvironmentProduction = @"production";
  *      - AILogLevelAssert  (disable errors as well)
  */
 + (void)setLogLevel:(AILogLevel)logLevel;
+
+// Special method used by SDK wrappers such as Adobe Air SDK.
++ (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
 
 @end

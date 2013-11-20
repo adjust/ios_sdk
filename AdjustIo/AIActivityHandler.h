@@ -15,6 +15,7 @@
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
+- (void)setSdkPrefix:(NSString *)sdkPrefix;
 
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
