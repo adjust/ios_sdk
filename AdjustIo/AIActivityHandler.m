@@ -60,12 +60,17 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.environment   = @"unknown"; // default value
+    self.clientSdk     = AIUtil.clientSdk;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
     });
 
     return self;
+}
+
+- (void)setSdkPrefix:(NSString *)sdkPrefix {
+    self.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, self.clientSdk];
 }
 
 - (void)trackSubsessionStart {
@@ -112,7 +117,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
-    self.clientSdk        = AIUtil.clientSdk;
 
     self.packageHandler = [[AIPackageHandler alloc] init];
     [self readActivityState];
@@ -299,6 +303,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     NSString *filename = [self activityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
+        [AIUtil excludeFromBackup:filename];
         [AILogger verbose:@"Wrote activity state: %@", self.activityState];
     } else {
         [AILogger error:@"Failed to write activity state"];

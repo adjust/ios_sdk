@@ -7,6 +7,7 @@
 //
 
 #import "AIUtil.h"
+#import "AILogger.h"
 #import "UIDevice+AIAdditions.h"
 
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
@@ -58,7 +59,7 @@ static NSString * const kClientSdk = @"ios2.1.0";
     return [self.class sanitize:string defaultString:@"zz"];
 }
 
-+ (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString; {
++ (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString {
     if (string == nil) {
         return defaultString;
     }
@@ -69,6 +70,18 @@ static NSString * const kClientSdk = @"ios2.1.0";
     }
 
     return result;
+}
+
++ (void)excludeFromBackup:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    NSError *error = nil;
+    BOOL success = [url setResourceValue:[NSNumber numberWithBool:YES]
+                                  forKey:NSURLIsExcludedFromBackupKey
+                                   error:&error];
+
+    if (!success) {
+        [AILogger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
+    }
 }
 
 @end

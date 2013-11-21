@@ -15,6 +15,5 @@
 - (NSString *)aiSha1;
 - (NSString *)aiUrlEncode;
 - (NSString *)aiRemoveColons;
-- (NSData *)aiDecodeBase64;
 
 @end

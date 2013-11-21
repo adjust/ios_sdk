@@ -24,6 +24,10 @@ static AIActivityHandler *activityHandler;
     activityHandler = [AIActivityHandler handlerWithAppToken:yourAppToken];
 }
 
++ (void)setSdkPrefix:(NSString *)sdkPrefix {
+    [activityHandler setSdkPrefix:sdkPrefix];
+}
+
 + (void)trackEvent:(NSString *)eventToken {
     [activityHandler trackEvent:eventToken withParameters:nil];
 }
