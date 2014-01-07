@@ -11,7 +11,7 @@
 #import "UIDevice+AIAdditions.h"
 
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
-static NSString * const kClientSdk = @"ios2.1.1";
+static NSString * const kClientSdk = @"ios2.1.2";
 
 
 #pragma mark -
