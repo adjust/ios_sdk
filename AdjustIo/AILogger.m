@@ -105,7 +105,7 @@ static AILogger *defaultLogger;
 + (void)assert:(NSString *)format, ... {
     if (AILogger.getDefaultLogger.logLevel > AILogLevelAssert) return;
     va_list parameters; va_start(parameters, format);
-    [AILogger.getDefaultLogger logLevel:@"e" format:format parameters:parameters];
+    [AILogger.getDefaultLogger logLevel:@"a" format:format parameters:parameters];
 }
 
 - (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list) parameters {
