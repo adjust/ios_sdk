@@ -1,7 +1,7 @@
-## Migrate your AdjustIo SDK for iOS from v1.x to v2.1.1
+## Migrate your AdjustIo SDK for iOS from v1.x to v2.1.2
 
 1. Delete the old `AdjustIo` source folder from your Xcode project. Download
-   version v2.1.1 and drag the new folder into your Xcode project.
+   version v2.1.2 and drag the new folder into your Xcode project.
 
     ![][drag]
 
@@ -55,7 +55,7 @@
 2. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
-2. The AdjustIo SDK for iOS 2.1.1 uses [ARC][arc]. If you haven't done already,
+2. The AdjustIo SDK for iOS 2.1.2 uses [ARC][arc]. If you haven't done already,
    we recommend [transitioning your project to use ARC][transition] as well. If
    you don't want to use ARC, you have to enable ARC for all files of the
    AdjustIo SDK. Please consult the [README] for details.
