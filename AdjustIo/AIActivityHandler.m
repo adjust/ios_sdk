@@ -264,7 +264,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [AILogger error:@"Time travel!"];
-        self.activityState.lastInterval = now;
+        self.activityState.lastActivity = now;
         return YES;
     }
 
