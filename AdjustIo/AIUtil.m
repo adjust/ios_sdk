@@ -10,6 +10,8 @@
 #import "AILogger.h"
 #import "UIDevice+AIAdditions.h"
 
+#include <sys/xattr.h>
+
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
 static NSString * const kClientSdk = @"ios2.1.2";
 
@@ -72,15 +74,37 @@ static NSString * const kClientSdk = @"ios2.1.2";
     return result;
 }
 
+// inspired by https://gist.github.com/kevinbarrett/2002382
 + (void)excludeFromBackup:(NSString *)path {
     NSURL *url = [NSURL fileURLWithPath:path];
-    NSError *error = nil;
-    BOOL success = [url setResourceValue:[NSNumber numberWithBool:YES]
-                                  forKey:NSURLIsExcludedFromBackupKey
-                                   error:&error];
+    const char* filePath = [[url path] fileSystemRepresentation];
+    const char* attrName = "com.apple.MobileBackup";
 
-    if (!success) {
-        [AILogger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
+    if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
+        u_int8_t attrValue = 1;
+        int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+        if (result != 0) {
+            [AILogger debug:@"Failed to exclude '%@' from backup", url.lastPathComponent];
+        }
+    } else { // iOS 5.0 and higher
+        // First try and remove the extended attribute if it is present
+        int result = getxattr(filePath, attrName, NULL, sizeof(u_int8_t), 0, 0);
+        if (result != -1) {
+            // The attribute exists, we need to remove it
+            int removeResult = removexattr(filePath, attrName, 0);
+            if (removeResult == 0) {
+                [AILogger debug:@"Removed extended attribute on file '%@'", url];
+            }
+        }
+
+        // Set the new key
+        NSError *error = nil;
+        BOOL success = [url setResourceValue:[NSNumber numberWithBool:YES]
+                                      forKey:NSURLIsExcludedFromBackupKey
+                                       error:&error];
+        if (!success) {
+            [AILogger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
+        }
     }
 }
 
