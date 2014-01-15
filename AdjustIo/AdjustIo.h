@@ -68,6 +68,23 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
+ * Change the verbosity of AdjustIo's logs.
+ *
+ * You can increase or reduce the amount of logs from AdjustIo by passing
+ * one of the following parameters. Use Log.ASSERT to disable all logging.
+ *
+ * @param logLevel The desired minimum log level (default: info)
+ *     Must be one of the following:
+ *      - AILogLevelVerbose (enable all logging)
+ *      - AILogLevelDebug   (enable more logging)
+ *      - AILogLevelInfo    (the default)
+ *      - AILogLevelWarn    (disable info logging)
+ *      - AILogLevelError   (disable warnings as well)
+ *      - AILogLevelAssert  (disable errors as well)
+ */
++ (void)setLogLevel:(AILogLevel)logLevel;
+
+/**
  * Set the tracking environment to sandbox or production.
  *
  * Use sandbox for testing and production for the final build that you release.
@@ -88,26 +105,6 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)setEventBufferingEnabled:(BOOL)enabled;
 
 /**
- * Change the verbosity of AdjustIo's logs.
- *
- * You can increase or reduce the amount of logs from AdjustIo by passing
- * one of the following parameters. Use Log.ASSERT to disable all logging.
- *
- * @param logLevel The desired minimum log level (default: info)
- *     Must be one of the following:
- *      - AILogLevelVerbose (enable all logging)
- *      - AILogLevelDebug   (enable more logging)
- *      - AILogLevelInfo    (the default)
- *      - AILogLevelWarn    (disable info logging)
- *      - AILogLevelError   (disable warnings as well)
- *      - AILogLevelAssert  (disable errors as well)
- */
-+ (void)setLogLevel:(AILogLevel)logLevel;
-
-// Special method used by SDK wrappers such as Adobe Air SDK.
-+ (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
-
-/**
  * Enable or disable MAC Address tracking as MD5
  *
  * For security reasons, it might be useful for you to deactivate MD5 Tracking.
@@ -115,5 +112,8 @@ static NSString * const AIEnvironmentProduction = @"production";
  * to overcome an issue with the hard-coded IDFA.
  */
 + (void)setMacMd5TrackingEnabled:(BOOL)enabled;
+
+// Special method used by SDK wrappers such as Adobe Air SDK.
++ (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
 
 @end
