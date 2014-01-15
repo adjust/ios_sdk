@@ -80,5 +80,14 @@ static AIActivityHandler *activityHandler;
 + (void)setLogLevel:(AILogLevel)logLevel {
     [AILogger setLogLevel:logLevel];
 }
++ (void)setMacAddressMd5TrackingEnabled:(BOOL)enabled {
+    if (activityHandler == nil) {
+        [AILogger error:@"Please call `setMacAddressMd5TrackingEnabled` after `appDidLaunch`!"];
+        return;
+    }
+    
+    activityHandler.macAddressMd5TrackingEnabled = enabled;
+    [AILogger info:[NSString stringWithFormat:@"Event buffering is %@", enabled?@"enabled" :@"disabled"]];
+}
 
 @end

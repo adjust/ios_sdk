@@ -107,4 +107,13 @@ static NSString * const AIEnvironmentProduction = @"production";
 // Special method used by SDK wrappers such as Adobe Air SDK.
 + (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
 
+/**
+ * Enable or disable MAC Address tracking as MD5
+ *
+ * For security reasons, it might be useful for you to deactivate MD5 Tracking.
+ * The MD5 is only used for devices that are still using iOS 6 first version
+ * to overcome an issue with the hard-coded IDFA.
+ */
++ (void)setMacAddressMd5TrackingEnabled:(BOOL)enabled;
+
 @end
