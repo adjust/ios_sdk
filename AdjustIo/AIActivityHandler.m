@@ -59,8 +59,11 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.environment   = @"unknown"; // default value
     self.clientSdk     = AIUtil.clientSdk;
+
+    // default values
+    self.environment = @"unknown";
+    self.trackMacMd5 = YES;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
