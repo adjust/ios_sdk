@@ -59,8 +59,11 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.environment   = @"unknown"; // default value
     self.clientSdk     = AIUtil.clientSdk;
+
+    // default values
+    self.environment = @"unknown";
+    self.trackMacMd5 = YES;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -330,12 +333,15 @@ static const double   kSubsessionInterval =  1;                // 1 second
     builder.userAgent        = self.userAgent;
     builder.clientSdk        = self.clientSdk;
     builder.appToken         = self.appToken;
-    builder.macShortMd5      = self.macShortMd5;
     builder.macSha1          = self.macSha1;
     builder.trackingEnabled  = self.trackingEnabled;
     builder.idForAdvertisers = self.idForAdvertisers;
     builder.fbAttributionId  = self.fbAttributionId;
     builder.environment      = self.environment;
+
+    if (self.trackMacMd5) {
+        builder.macShortMd5 = self.macShortMd5;
+    }
 }
 
 # pragma mark - timer

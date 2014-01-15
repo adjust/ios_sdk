@@ -68,6 +68,23 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
+ * Change the verbosity of AdjustIo's logs.
+ *
+ * You can increase or reduce the amount of logs from AdjustIo by passing
+ * one of the following parameters. Use Log.ASSERT to disable all logging.
+ *
+ * @param logLevel The desired minimum log level (default: info)
+ *     Must be one of the following:
+ *      - AILogLevelVerbose (enable all logging)
+ *      - AILogLevelDebug   (enable more logging)
+ *      - AILogLevelInfo    (the default)
+ *      - AILogLevelWarn    (disable info logging)
+ *      - AILogLevelError   (disable warnings as well)
+ *      - AILogLevelAssert  (disable errors as well)
+ */
++ (void)setLogLevel:(AILogLevel)logLevel;
+
+/**
  * Set the tracking environment to sandbox or production.
  *
  * Use sandbox for testing and production for the final build that you release.
@@ -88,21 +105,11 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)setEventBufferingEnabled:(BOOL)enabled;
 
 /**
- * Change the verbosity of AdjustIo's logs.
+ * Enable or disable tracking of the MD5 hash of the MAC address
  *
- * You can increase or reduce the amount of logs from AdjustIo by passing
- * one of the following parameters. Use Log.ASSERT to disable all logging.
- *
- * @param logLevel The desired minimum log level (default: info)
- *     Must be one of the following:
- *      - AILogLevelVerbose (enable all logging)
- *      - AILogLevelDebug   (enable more logging)
- *      - AILogLevelInfo    (the default)
- *      - AILogLevelWarn    (disable info logging)
- *      - AILogLevelError   (disable warnings as well)
- *      - AILogLevelAssert  (disable errors as well)
+ * Disable macMd5 tracking if your privacy constraints require it.
  */
-+ (void)setLogLevel:(AILogLevel)logLevel;
++ (void)setMacMd5TrackingEnabled:(BOOL)enabled;
 
 // Special method used by SDK wrappers such as Adobe Air SDK.
 + (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));

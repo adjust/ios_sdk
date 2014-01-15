@@ -51,6 +51,10 @@ static AIActivityHandler *activityHandler;
     [activityHandler trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
 }
 
++ (void)setLogLevel:(AILogLevel)logLevel {
+    [AILogger setLogLevel:logLevel];
+}
+
 + (void)setEnvironment:(NSString *)environment {
     if (activityHandler == nil) {
         [AILogger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
@@ -77,8 +81,14 @@ static AIActivityHandler *activityHandler;
     if (enabled) [AILogger info:@"Event buffering is enabled"];
 }
 
-+ (void)setLogLevel:(AILogLevel)logLevel {
-    [AILogger setLogLevel:logLevel];
++ (void)setMacMd5TrackingEnabled:(BOOL)enabled {
+    if (activityHandler == nil) {
+        [AILogger error:@"Please call `setMacMd5TrackingEnabled` after `appDidLaunch`!"];
+        return;
+    }
+
+    activityHandler.trackMacMd5 = enabled;
+    [AILogger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
 }
 
 @end

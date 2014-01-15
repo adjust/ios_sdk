@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, assign) BOOL bufferEvents;
+@property (nonatomic, assign) BOOL trackMacMd5;
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
