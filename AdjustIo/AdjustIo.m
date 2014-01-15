@@ -80,9 +80,10 @@ static AIActivityHandler *activityHandler;
 + (void)setLogLevel:(AILogLevel)logLevel {
     [AILogger setLogLevel:logLevel];
 }
-+ (void)setMacAddressMd5TrackingEnabled:(BOOL)enabled {
+
++ (void)setMacMd5TrackingEnabled:(BOOL)enabled {
     if (activityHandler == nil) {
-        [AILogger error:@"Please call `setMacAddressMd5TrackingEnabled` after `appDidLaunch`!"];
+        [AILogger error:@"Please call `setMacMd5TrackingEnabled` after `appDidLaunch`!"];
         return;
     }
     

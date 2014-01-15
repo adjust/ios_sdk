@@ -114,6 +114,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  * The MD5 is only used for devices that are still using iOS 6 first version
  * to overcome an issue with the hard-coded IDFA.
  */
-+ (void)setMacAddressMd5TrackingEnabled:(BOOL)enabled;
++ (void)setMacMd5TrackingEnabled:(BOOL)enabled;
 
 @end
