@@ -330,7 +330,9 @@ static const double   kSubsessionInterval =  1;                // 1 second
     builder.userAgent        = self.userAgent;
     builder.clientSdk        = self.clientSdk;
     builder.appToken         = self.appToken;
-    builder.macShortMd5      = self.macShortMd5;
+    if (self.macAddressMd5TrackingEnabled) {
+        builder.macShortMd5      = self.macShortMd5;
+    }
     builder.macSha1          = self.macSha1;
     builder.trackingEnabled  = self.trackingEnabled;
     builder.idForAdvertisers = self.idForAdvertisers;
