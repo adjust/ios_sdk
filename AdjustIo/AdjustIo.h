@@ -105,11 +105,9 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)setEventBufferingEnabled:(BOOL)enabled;
 
 /**
- * Enable or disable MAC Address tracking as MD5
+ * Enable or disable tracking of the MD5 hash of the MAC address
  *
- * For security reasons, it might be useful for you to deactivate MD5 Tracking.
- * The MD5 is only used for devices that are still using iOS 6 first version
- * to overcome an issue with the hard-coded IDFA.
+ * Disable macMd5 tracking if your privacy constraints require it.
  */
 + (void)setMacMd5TrackingEnabled:(BOOL)enabled;
 
