@@ -88,7 +88,7 @@ static AIActivityHandler *activityHandler;
     }
 
     activityHandler.trackMacMd5 = enabled;
-    [AILogger info:[NSString stringWithFormat:@"Event buffering is %@", enabled?@"enabled" :@"disabled"]];
+    [AILogger info:[NSString stringWithFormat:@"Tracking of macMd5 is %@", enabled?@"enabled" :@"disabled"]];
 }
 
 @end
