@@ -8,6 +8,7 @@
 
 #import "AIActivityState.h"
 #import "AIPackageBuilder.h"
+#import "UIDevice+AIAdditions.h"
 
 
 #pragma mark public implementation
@@ -16,6 +17,9 @@
 - (id)init {
     self = [super init];
     if (self == nil) return nil;
+
+    // create UUID for new devices
+    self.uuid = [UIDevice.currentDevice aiCreateUuid];
 
     self.eventCount      = 0;
     self.sessionCount    = 0;
@@ -67,6 +71,12 @@
     self.timeSpent       = [decoder decodeDoubleForKey:@"timeSpent"];
     self.createdAt       = [decoder decodeDoubleForKey:@"createdAt"];
     self.lastActivity    = [decoder decodeDoubleForKey:@"lastActivity"];
+    self.uuid            = [decoder decodeObjectForKey:@"uuid"];
+
+    // create UUID for migrating devices
+    if (self.uuid == nil) {
+        self.uuid = [UIDevice.currentDevice aiCreateUuid];
+    }
 
     self.lastInterval = -1;
 
@@ -81,6 +91,7 @@
     [encoder encodeDouble:self.timeSpent     forKey:@"timeSpent"];
     [encoder encodeDouble:self.createdAt     forKey:@"createdAt"];
     [encoder encodeDouble:self.lastActivity  forKey:@"lastActivity"];
+    [encoder encodeObject:self.uuid          forKey:@"uuid"];
 }
 
 

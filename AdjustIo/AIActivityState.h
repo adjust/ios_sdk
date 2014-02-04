@@ -10,6 +10,9 @@
 
 @interface AIActivityState : NSObject <NSCoding>
 
+// persistent data
+@property (nonatomic, copy) NSString *uuid;
+
 // global counters
 @property (nonatomic, assign) int eventCount;
 @property (nonatomic, assign) int sessionCount;
@@ -19,8 +22,9 @@
 @property (nonatomic, assign) double sessionLength; // all durations in seconds
 @property (nonatomic, assign) double timeSpent;
 @property (nonatomic, assign) double lastActivity;  // all times in seconds since 1970
-
 @property (nonatomic, assign) double createdAt;
+
+// not persisted, only injected
 @property (nonatomic, assign) double lastInterval;
 
 - (void)resetSessionAttributes:(double)now;
