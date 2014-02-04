@@ -101,4 +101,13 @@
     return machine;
 }
 
+- (NSString *)aiCreateUuid {
+    CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef stringRef = CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+    NSString *uuidString = (__bridge_transfer NSString*)stringRef;
+    NSString *lowerUuid = [uuidString lowercaseString];
+    CFRelease(newUniqueId);
+    return lowerUuid;
+}
+
 @end
