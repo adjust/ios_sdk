@@ -103,6 +103,7 @@
     builder.sessionLength   = self.sessionLength;
     builder.timeSpent       = self.timeSpent;
     builder.createdAt       = self.createdAt;
+    builder.uuid            = self.uuid;
 }
 
 @end

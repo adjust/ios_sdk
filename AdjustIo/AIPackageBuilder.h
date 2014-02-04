@@ -19,6 +19,7 @@
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
+@property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, assign) BOOL trackingEnabled;
 
 // sessions
