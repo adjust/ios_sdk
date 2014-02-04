@@ -9,26 +9,35 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-#import <AdSupport/ASIdentifierManager.h>
 #import <sys/socket.h>
 #import <sys/sysctl.h>
 #import <net/if.h>
 #import <net/if_dl.h>
 
+#if !ADJUST_NO_IDFA
+#import <AdSupport/ASIdentifierManager.h>
+#endif
+
 @implementation UIDevice(AIAdditions)
 
 - (BOOL)aiTrackingEnabled {
+#if !ADJUST_NO_IDFA
     if (NSClassFromString(@"ASIdentifierManager")) {
         return ASIdentifierManager.sharedManager.advertisingTrackingEnabled;
-    } else {
+    } else
+#endif
+    {
         return NO;
     }
 }
 
 - (NSString *)aiIdForAdvertisers {
+#if !ADJUST_NO_IDFA
     if (NSClassFromString(@"ASIdentifierManager")) {
         return ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString;
-    } else {
+    } else
+#endif
+    {
         return @"";
     }
 }
