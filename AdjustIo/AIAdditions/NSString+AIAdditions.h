@@ -16,4 +16,6 @@
 - (NSString *)aiUrlEncode;
 - (NSString *)aiRemoveColons;
 
++ (NSString *)aiJoin:(NSString *)strings, ...;
+
 @end

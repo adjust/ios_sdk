@@ -54,4 +54,18 @@
     return [self stringByReplacingOccurrencesOfString:@":" withString:@""];
 }
 
++ (NSString *)aiJoin:(NSString *)first, ... {
+    NSString *iter, *result = first;
+    va_list strings;
+    va_start(strings, first);
+
+    while ((iter = va_arg(strings, NSString*))) {
+        NSString *capitalized = iter.capitalizedString;
+        result = [result stringByAppendingString:capitalized];
+    }
+
+    va_end(strings);
+    return result;
+}
+
 @end
