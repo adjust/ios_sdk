@@ -16,5 +16,6 @@
 - (NSString *)aiMacAddress;
 - (NSString *)aiDeviceType;
 - (NSString *)aiDeviceName;
+- (NSString *)aiCreateUuid;
 
 @end

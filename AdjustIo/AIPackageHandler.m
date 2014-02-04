@@ -123,7 +123,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 #pragma mark - private
 - (void)readPackageQueue {
     @try {
-        NSString *filename = [self packageQueueFilename];
+        NSString *filename = self.packageQueueFilename;
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[NSArray class]]) {
             self.packageQueue = object;
@@ -143,7 +143,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)writePackageQueue {
-    NSString *filename = [self packageQueueFilename];
+    NSString *filename = self.packageQueueFilename;
     BOOL result = [NSKeyedArchiver archiveRootObject:self.packageQueue toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];

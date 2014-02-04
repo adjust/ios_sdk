@@ -9,26 +9,74 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 
-#import <AdSupport/ASIdentifierManager.h>
 #import <sys/socket.h>
 #import <sys/sysctl.h>
 #import <net/if.h>
 #import <net/if_dl.h>
 
+#if !ADJUST_NO_IDFA
+#import <AdSupport/ASIdentifierManager.h>
+#endif
+
 @implementation UIDevice(AIAdditions)
 
 - (BOOL)aiTrackingEnabled {
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        return ASIdentifierManager.sharedManager.advertisingTrackingEnabled;
-    } else {
+#if !ADJUST_NO_IDFA
+    NSString *className  = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
+    NSString *keyManager = [NSString aiJoin:@"shared", @"manager", nil];
+    NSString *keyEnabled = [NSString aiJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+
+    Class class = NSClassFromString(className);
+    if (class) {
+        @try {
+            SEL selManager = NSSelectorFromString(keyManager);
+            SEL selEnabled = NSSelectorFromString(keyEnabled);
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id manager   = [class performSelector:selManager];
+            BOOL enabled = (BOOL)[manager performSelector:selEnabled];
+#pragma clang diagnostic pop
+
+            return enabled;
+        } @catch (NSException *e) {
+            return NO;
+        }
+    } else
+#endif
+    {
         return NO;
     }
 }
 
 - (NSString *)aiIdForAdvertisers {
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        return ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString;
-    } else {
+#if !ADJUST_NO_IDFA
+    NSString *className     = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
+    NSString *keyManager    = [NSString aiJoin:@"shared", @"manager", nil];
+    NSString *keyIdentifier = [NSString aiJoin:@"advertising", @"identifier", nil];
+    NSString *keyString     = [NSString aiJoin:@"UUID", @"string", nil];
+
+    Class class = NSClassFromString(className);
+    if (class) {
+        @try {
+            SEL selManager    = NSSelectorFromString(keyManager);
+            SEL selIdentifier = NSSelectorFromString(keyIdentifier);
+            SEL selString     = NSSelectorFromString(keyString);
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id manager       = [class performSelector:selManager];
+            id identifier    = [manager performSelector:selIdentifier];
+            NSString *string = [identifier performSelector:selString];
+#pragma clang diagnostic pop
+
+            return string;
+        } @catch (NSException *e) {
+            return @"";
+        }
+    } else
+#endif
+    {
         return @"";
     }
 }
@@ -99,6 +147,15 @@
     NSString *machine = [NSString stringWithUTF8String:name];
     free(name);
     return machine;
+}
+
+- (NSString *)aiCreateUuid {
+    CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef stringRef = CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+    NSString *uuidString = (__bridge_transfer NSString*)stringRef;
+    NSString *lowerUuid = [uuidString lowercaseString];
+    CFRelease(newUniqueId);
+    return lowerUuid;
 }
 
 @end

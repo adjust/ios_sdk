@@ -72,6 +72,7 @@ static NSDateFormatter * dateFormat;
     [self parameters:parameters setString:self.appToken         forKey:@"app_token"];
     [self parameters:parameters setString:self.macSha1          forKey:@"mac_sha1"];
     [self parameters:parameters setString:self.macShortMd5      forKey:@"mac_md5"];
+    [self parameters:parameters setString:self.uuid             forKey:@"ios_uuid"];
     [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
     [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
     [self parameters:parameters setString:self.environment      forKey:@"environment"];
