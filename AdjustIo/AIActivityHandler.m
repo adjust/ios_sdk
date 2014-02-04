@@ -287,7 +287,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
             self.activityState = object;
-            [AILogger debug:@"Read activity state: %@", self.activityState];
+            [AILogger debug:@"Read activity state:  %@ uuid:%@", self.activityState, self.activityState.uuid];
             return;
         } else if (object == nil) {
             [AILogger verbose:@"Activity state file not found"];
