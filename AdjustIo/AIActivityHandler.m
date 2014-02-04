@@ -283,7 +283,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 - (void)readActivityState {
     @try {
-        NSString *filename = [self activityStateFilename];
+        NSString *filename = self.activityStateFilename;
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
             self.activityState = object;
@@ -303,7 +303,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)writeActivityState {
-    NSString *filename = [self activityStateFilename];
+    NSString *filename = self.activityStateFilename;
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
