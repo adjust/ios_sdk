@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "AIActivityHandler.h"
 
 @interface AdjustIoTests : XCTestCase
 
@@ -28,7 +29,9 @@
 
 - (void)testExample
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    AIActivityHandler* activityHandler = [AIActivityHandler handlerWithAppToken:@"3g6x5plnaqd8"];
+
+    //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
 @end

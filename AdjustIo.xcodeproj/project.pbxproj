@@ -28,6 +28,9 @@
 		96E9141818A4F13000F01294 /* NSData+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141318A4F13000F01294 /* NSData+AIAdditions.m */; };
 		96E9141918A4F13000F01294 /* NSString+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141518A4F13000F01294 /* NSString+AIAdditions.m */; };
 		96E9141A18A4F13000F01294 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
+		96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */; };
+		96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */; };
+		96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144918A5126100F01294 /* AIRequestHandlerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +92,9 @@
 		96E9141518A4F13000F01294 /* NSString+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AIAdditions.m"; sourceTree = "<group>"; };
 		96E9141618A4F13000F01294 /* UIDevice+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+AIAdditions.h"; sourceTree = "<group>"; };
 		96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+AIAdditions.m"; sourceTree = "<group>"; };
+		96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerTests.m; sourceTree = "<group>"; };
+		96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerTests.m; sourceTree = "<group>"; };
+		96E9144918A5126100F01294 /* AIRequestHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +191,9 @@
 			children = (
 				96E913EC18A4F06B00F01294 /* AdjustIoTests.m */,
 				96E913E718A4F06B00F01294 /* Supporting Files */,
+				96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */,
+				96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */,
+				96E9144918A5126100F01294 /* AIRequestHandlerTests.m */,
 			);
 			path = AdjustIoTests;
 			sourceTree = "<group>";
@@ -313,6 +322,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E913ED18A4F06B00F01294 /* AdjustIoTests.m in Sources */,
+				96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */,
+				96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */,
+				96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +501,7 @@
 				96E913F218A4F06B00F01294 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96E913F318A4F06B00F01294 /* Build configuration list for PBXNativeTarget "AdjustIoTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +510,7 @@
 				96E913F518A4F06B00F01294 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
