@@ -16,15 +16,18 @@ typedef enum {
 } AILogLevel;
 
 // A simple logger with multiple log levels.
-@interface AILogger : NSObject
+@protocol AILogger
 
-+ (void)setLogLevel:(AILogLevel)logLevel;
+- (void)setLogLevel:(AILogLevel)logLevel;
 
-+ (void)verbose:(NSString *)message, ...;
-+ (void)debug:  (NSString *)message, ...;
-+ (void)info:   (NSString *)message, ...;
-+ (void)warn:   (NSString *)message, ...;
-+ (void)error:  (NSString *)message, ...;
-+ (void)assert: (NSString *)message, ...;
+- (void)verbose:(NSString *)message, ...;
+- (void)debug:  (NSString *)message, ...;
+- (void)info:   (NSString *)message, ...;
+- (void)warn:   (NSString *)message, ...;
+- (void)error:  (NSString *)message, ...;
+- (void)assert: (NSString *)message, ...;
 
+@end
+
+@interface AILogger : NSObject <AILogger>
 @end

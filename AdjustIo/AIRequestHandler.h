@@ -6,13 +6,18 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
+#include "AIPackageHandler.h"
 @class AIPackageHandler, AIActivityPackage;
 
-@interface AIRequestHandler : NSObject
+@protocol AIRequestHandler
 
-+ (AIRequestHandler *)handlerWithPackageHandler:(AIPackageHandler *)packageHandler;
-- (id)initWithPackageHandler:(AIPackageHandler *)packageHandler;
++ (id<AIRequestHandler>) handlerWithPackageHandler:(id<AIPackageHandler>)packageHandler;
+- (id)initWithPackageHandler:(id<AIPackageHandler>) packageHandler;
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage;
 
+@end
+
+
+@interface AIRequestHandler : NSObject <AIRequestHandler>
 @end

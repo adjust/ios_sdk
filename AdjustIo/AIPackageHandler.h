@@ -8,7 +8,7 @@
 
 @class AIActivityPackage;
 
-@interface AIPackageHandler : NSObject
+@protocol AIPackageHandler
 
 - (void)addPackage:(AIActivityPackage *)package;
 - (void)sendFirstPackage;
@@ -17,4 +17,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 
+@end
+
+@interface AIPackageHandler : NSObject <AIPackageHandler>
 @end

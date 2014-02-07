@@ -16,6 +16,7 @@
 #import "AIUtil.h"
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
+#import "AIAdjustIoFactory.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
@@ -30,9 +31,10 @@ static const double   kSubsessionInterval =  1;                // 1 second
 @interface AIActivityHandler()
 
 @property (nonatomic) dispatch_queue_t internalQueue;
-@property (nonatomic, retain) AIPackageHandler *packageHandler;
+@property (nonatomic, retain) id<AIPackageHandler> packageHandler;
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
+@property (nonatomic, retain) id<AILogger> logger;
 
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *macSha1;
@@ -107,8 +109,8 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
-    if (![self.class checkAppTokenNotNil:yourAppToken]) return;
-    if (![self.class checkAppTokenLength:yourAppToken]) return;
+    if (![self checkAppTokenNotNil:yourAppToken]) return;
+    if (![self checkAppTokenLength:yourAppToken]) return;
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
@@ -121,14 +123,15 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
 
-    self.packageHandler = [[AIPackageHandler alloc] init];
+    self.packageHandler = [AIAdjustIoFactory getPackageHandler];
+    self.logger         = [AIAdjustIoFactory getLogger];
     [self readActivityState];
 
     [self startInternal];
 }
 
 - (void)startInternal {
-    if (![self.class checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkAppTokenNotNil:self.appToken]) return;
 
     [self.packageHandler resumeSending];
     [self startTimer];
@@ -144,13 +147,13 @@ static const double   kSubsessionInterval =  1;                // 1 second
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
-        [AILogger info:@"First session"];
+        [self.logger info:@"First session"];
         return;
     }
 
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
-        [AILogger error:@"Time travel!"];
+        [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
         [self writeActivityState];
         return;
@@ -165,7 +168,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
-        [AILogger debug:@"Session %d", self.activityState.sessionCount];
+        [self.logger debug:@"Session %d", self.activityState.sessionCount];
         return;
     }
 
@@ -175,14 +178,14 @@ static const double   kSubsessionInterval =  1;                // 1 second
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
         [self writeActivityState];
-        [AILogger info:@"Processed Subsession %d of Session %d",
+        [self.logger info:@"Processed Subsession %d of Session %d",
             self.activityState.subsessionCount,
             self.activityState.sessionCount];
     }
 }
 
 - (void)endInternal {
-    if (![self.class checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkAppTokenNotNil:self.appToken]) return;
 
     [self.packageHandler pauseSending];
     [self stopTimer];
@@ -193,10 +196,10 @@ static const double   kSubsessionInterval =  1;                // 1 second
 - (void)eventInternal:(NSString *)eventToken
            parameters:(NSDictionary *)parameters
 {
-    if (![self.class checkAppTokenNotNil:self.appToken]) return;
-    if (![self.class checkActivityState:self.activityState]) return;
-    if (![self.class checkEventTokenNotNil:eventToken]) return;
-    if (![self.class checkEventTokenLength:eventToken]) return;
+    if (![self checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkActivityState:self.activityState]) return;
+    if (![self checkEventTokenNotNil:eventToken]) return;
+    if (![self checkEventTokenLength:eventToken]) return;
 
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.eventToken = eventToken;
@@ -213,23 +216,23 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.packageHandler addPackage:eventPackage];
 
     if (self.bufferEvents) {
-        [AILogger info:@"Buffered event%@", eventPackage.suffix];
+        [self.logger info:@"Buffered event%@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
     }
 
     [self writeActivityState];
-    [AILogger debug:@"Event %d", self.activityState.eventCount];
+    [self.logger debug:@"Event %d", self.activityState.eventCount];
 }
 
 - (void)revenueInternal:(double)amount
                   event:(NSString *)eventToken
              parameters:(NSDictionary *)parameters
 {
-    if (![self.class checkAppTokenNotNil:self.appToken]) return;
-    if (![self.class checkActivityState:self.activityState]) return;
-    if (![self.class checkAmount:amount]) return;
-    if (![self.class checkEventTokenLength:eventToken]) return;
+    if (![self checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkActivityState:self.activityState]) return;
+    if (![self checkAmount:amount]) return;
+    if (![self checkEventTokenLength:eventToken]) return;
 
     AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
     revenueBuilder.amountInCents = amount;
@@ -247,13 +250,13 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.packageHandler addPackage:revenuePackage];
 
     if (self.bufferEvents) {
-        [AILogger info:@"Buffered revenue%@", revenuePackage.suffix];
+        [self.logger info:@"Buffered revenue%@", revenuePackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
     }
 
     [self writeActivityState];
-    [AILogger debug:@"Event %d (revenue)", self.activityState.eventCount];
+    [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
 
@@ -261,12 +264,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityState {
-    if (![self.class checkActivityState:self.activityState]) return NO;
+    if (![self checkActivityState:self.activityState]) return NO;
 
     double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
-        [AILogger error:@"Time travel!"];
+        [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
         return YES;
     }
@@ -287,15 +290,15 @@ static const double   kSubsessionInterval =  1;                // 1 second
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
             self.activityState = object;
-            [AILogger debug:@"Read activity state:  %@ uuid:%@", self.activityState, self.activityState.uuid];
+            [self.logger debug:@"Read activity state:  %@ uuid:%@", self.activityState, self.activityState.uuid];
             return;
         } else if (object == nil) {
-            [AILogger verbose:@"Activity state file not found"];
+            [self.logger verbose:@"Activity state file not found"];
         } else {
-            [AILogger error:@"Failed to read activity state"];
+            [self.logger error:@"Failed to read activity state"];
         }
     } @catch (NSException *ex ) {
-        [AILogger error:@"Failed to read activity state (%@)", ex];
+        [self.logger error:@"Failed to read activity state (%@)", ex];
     }
 
     // start with a fresh activity state in case of any exception
@@ -307,9 +310,9 @@ static const double   kSubsessionInterval =  1;                // 1 second
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
-        [AILogger verbose:@"Wrote activity state: %@", self.activityState];
+        [self.logger verbose:@"Wrote activity state: %@", self.activityState];
     } else {
-        [AILogger error:@"Failed to write activity state"];
+        [self.logger error:@"Failed to write activity state"];
     }
 }
 
@@ -392,52 +395,52 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 #pragma mark - checks
-+ (BOOL)checkActivityState:(AIActivityState *)activityState {
+- (BOOL)checkActivityState:(AIActivityState *)activityState {
     if (activityState == nil) {
-        [AILogger error:@"Missing activity state"];
+        [self.logger error:@"Missing activity state"];
         return NO;
     }
     return YES;
 }
 
-+ (BOOL)checkAppTokenNotNil:(NSString *)appToken {
+- (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
-        [AILogger error:@"Missing App Token"];
+        [self.logger error:@"Missing App Token"];
         return NO;
     }
     return YES;
 }
 
-+ (BOOL)checkAppTokenLength:(NSString *)appToken {
+- (BOOL)checkAppTokenLength:(NSString *)appToken {
     if (appToken.length != 12) {
-        [AILogger error:@"Malformed App Token '%@'", appToken];
+        [self.logger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
     return YES;
 }
 
-+ (BOOL)checkEventTokenNotNil:(NSString *)eventToken {
+- (BOOL)checkEventTokenNotNil:(NSString *)eventToken {
     if (eventToken == nil) {
-        [AILogger error:@"Missing Event Token"];
+        [self.logger error:@"Missing Event Token"];
         return NO;
     }
     return YES;
 }
 
-+ (BOOL)checkEventTokenLength:(NSString *)eventToken {
+- (BOOL)checkEventTokenLength:(NSString *)eventToken {
     if (eventToken == nil) {
         return YES;
     }
     if (eventToken.length != 6) {
-        [AILogger error:@"Malformed Event Token '%@'", eventToken];
+        [self.logger error:@"Malformed Event Token '%@'", eventToken];
         return NO;
     }
     return YES;
 }
 
-+ (BOOL)checkAmount:(double)amount {
+- (BOOL)checkAmount:(double)amount {
     if (amount <= 0.0) {
-        [AILogger error:@"Invalid amount %.1f", amount];
+        [self.logger error:@"Invalid amount %.1f", amount];
         return NO;
     }
     return YES;

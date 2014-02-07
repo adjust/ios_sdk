@@ -12,6 +12,7 @@
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "NSString+AIAdditions.h"
+#import "AIAdjustIoFactory.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 static const double kRequestTimeout = 60; // 60 seconds
@@ -21,7 +22,8 @@ static const double kRequestTimeout = 60; // 60 seconds
 @interface AIRequestHandler()
 
 @property (nonatomic) dispatch_queue_t internalQueue;
-@property (nonatomic, assign) AIPackageHandler *packageHandler;
+@property (nonatomic, assign) id<AIPackageHandler> packageHandler;
+@property (nonatomic, assign) id<AILogger> logger;
 @property (nonatomic, retain) NSURL *baseUrl;
 
 @end
@@ -30,16 +32,17 @@ static const double kRequestTimeout = 60; // 60 seconds
 #pragma mark -
 @implementation AIRequestHandler
 
-+ (AIRequestHandler *)handlerWithPackageHandler:(AIPackageHandler *)packageHandler {
++ (AIRequestHandler *)handlerWithPackageHandler:(id<AIPackageHandler>)packageHandler {
     return [[AIRequestHandler alloc] initWithPackageHandler:packageHandler];
 }
 
-- (id)initWithPackageHandler:(AIPackageHandler *)packageHandler {
+- (id)initWithPackageHandler:(id<AIPackageHandler>) packageHandler {
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
+    self.logger = [AIAdjustIoFactory getLogger];
     self.baseUrl = [NSURL URLWithString:AIUtil.baseUrl];
 
     return self;
@@ -65,7 +68,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     // connection error
     if (error != nil) {
-        [AILogger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
+        [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler closeFirstPackage];
         return;
     }
@@ -73,13 +76,13 @@ static const double kRequestTimeout = 60; // 60 seconds
     // wrong status code
     if (response.statusCode != 200) {
         NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        [AILogger error:@"%@. (%@)", package.failureMessage, responseString.aiTrim];
+        [self.logger error:@"%@. (%@)", package.failureMessage, responseString.aiTrim];
         [self.packageHandler sendNextPackage];
         return;
     }
 
     // success
-    [AILogger info:@"%@", package.successMessage];
+    [self.logger info:@"%@", package.successMessage];
     [self.packageHandler sendNextPackage];
 }
 

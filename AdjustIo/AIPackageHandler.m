@@ -11,6 +11,7 @@
 #import "AIActivityPackage.h"
 #import "AILogger.h"
 #import "AIUtil.h"
+#import "AIAdjustIoFactory.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -21,7 +22,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic) dispatch_semaphore_t sendingSemaphore;
-@property (nonatomic, retain) AIRequestHandler *requestHandler;
+@property (nonatomic, retain) id<AIRequestHandler> requestHandler;
+@property (nonatomic, retain) id<AILogger> logger;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
 @property (nonatomic, assign, getter = isPaused) BOOL paused;
 
@@ -77,15 +79,16 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 #pragma mark - internal
 - (void)initInternal {
-    self.requestHandler = [AIRequestHandler handlerWithPackageHandler:self];
+    self.requestHandler = [AIAdjustIoFactory getRequestHandler:self];
+    self.logger = [AIAdjustIoFactory getLogger];
     self.sendingSemaphore = dispatch_semaphore_create(1);
     [self readPackageQueue];
 }
 
 - (void)addInternal:(AIActivityPackage *)newPackage {
     [self.packageQueue addObject:newPackage];
-    [AILogger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
-    [AILogger verbose:@"%@", newPackage.extendedString];
+    [self.logger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
+    [self.logger verbose:@"%@", newPackage.extendedString];
 
     [self writePackageQueue];
 }
@@ -94,18 +97,18 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (self.packageQueue.count == 0) return;
 
     if (self.isPaused) {
-        [AILogger debug:@"Package handler is paused"];
+        [self.logger debug:@"Package handler is paused"];
         return;
     }
 
     if (dispatch_semaphore_wait(self.sendingSemaphore, DISPATCH_TIME_NOW) != 0) {
-        [AILogger verbose:@"Package handler is already sending"];
+        [self.logger verbose:@"Package handler is already sending"];
         return;
     }
 
     AIActivityPackage *activityPackage = [self.packageQueue objectAtIndex:0];
     if (![activityPackage isKindOfClass:[AIActivityPackage class]]) {
-        [AILogger error:@"Failed to read activity package"];
+        [self.logger error:@"Failed to read activity package"];
         [self sendNextInternal];
         return;
     }
@@ -127,15 +130,15 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[NSArray class]]) {
             self.packageQueue = object;
-            [AILogger debug:@"Package handler read %d packages", self.packageQueue.count];
+            [self.logger debug:@"Package handler read %d packages", self.packageQueue.count];
             return;
         } else if (object == nil) {
-            [AILogger verbose:@"Package queue file not found"];
+            [self.logger verbose:@"Package queue file not found"];
         } else {
-            [AILogger error:@"Failed to read package queue"];
+            [self.logger error:@"Failed to read package queue"];
         }
     } @catch (NSException *exception) {
-        [AILogger error:@"Failed to read package queue (%@)", exception];
+        [self.logger error:@"Failed to read package queue (%@)", exception];
     }
 
     // start with a fresh package queue in case of any exception
@@ -147,9 +150,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     BOOL result = [NSKeyedArchiver archiveRootObject:self.packageQueue toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
-        [AILogger debug:@"Package handler wrote %d packages", self.packageQueue.count];
+        [self.logger debug:@"Package handler wrote %d packages", self.packageQueue.count];
     } else {
-        [AILogger error:@"Failed to write package queue"];
+        [self.logger error:@"Failed to write package queue"];
     }
 }
 

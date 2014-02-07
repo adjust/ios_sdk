@@ -9,6 +9,7 @@
 #import "AIUtil.h"
 #import "AILogger.h"
 #import "UIDevice+AIAdditions.h"
+#import "AIAdjustIoFactory.h"
 
 #include <sys/xattr.h>
 
@@ -79,12 +80,13 @@ static NSString * const kClientSdk = @"ios2.2.0";
     NSURL *url = [NSURL fileURLWithPath:path];
     const char* filePath = [[url path] fileSystemRepresentation];
     const char* attrName = "com.apple.MobileBackup";
+    id<AILogger> logger = [AIAdjustIoFactory getLogger];
 
     if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
         u_int8_t attrValue = 1;
         int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
         if (result != 0) {
-            [AILogger debug:@"Failed to exclude '%@' from backup", url.lastPathComponent];
+            [logger debug:@"Failed to exclude '%@' from backup", url.lastPathComponent];
         }
     } else { // iOS 5.0 and higher
         // First try and remove the extended attribute if it is present
@@ -93,7 +95,7 @@ static NSString * const kClientSdk = @"ios2.2.0";
             // The attribute exists, we need to remove it
             int removeResult = removexattr(filePath, attrName, 0);
             if (removeResult == 0) {
-                [AILogger debug:@"Removed extended attribute on file '%@'", url];
+                [logger debug:@"Removed extended attribute on file '%@'", url];
             }
         }
 
@@ -103,7 +105,7 @@ static NSString * const kClientSdk = @"ios2.2.0";
                                       forKey:NSURLIsExcludedFromBackupKey
                                        error:&error];
         if (!success) {
-            [AILogger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
+            [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
 }

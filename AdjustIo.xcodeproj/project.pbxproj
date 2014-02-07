@@ -31,6 +31,7 @@
 		96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */; };
 		96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */; };
 		96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144918A5126100F01294 /* AIRequestHandlerTests.m */; };
+		96E9144D18A5211D00F01294 /* AIAdjustIoFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144C18A5211D00F01294 /* AIAdjustIoFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,8 @@
 		96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerTests.m; sourceTree = "<group>"; };
 		96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerTests.m; sourceTree = "<group>"; };
 		96E9144918A5126100F01294 /* AIRequestHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerTests.m; sourceTree = "<group>"; };
+		96E9144B18A5211D00F01294 /* AIAdjustIoFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIAdjustIoFactory.h; sourceTree = "<group>"; };
+		96E9144C18A5211D00F01294 /* AIAdjustIoFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIAdjustIoFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +175,8 @@
 				96E9140718A4F11B00F01294 /* AIUtil.m */,
 				96E913D518A4F06B00F01294 /* AdjustIo.h */,
 				96E913D718A4F06B00F01294 /* AdjustIo.m */,
+				96E9144B18A5211D00F01294 /* AIAdjustIoFactory.h */,
+				96E9144C18A5211D00F01294 /* AIAdjustIoFactory.m */,
 				96E9141118A4F13000F01294 /* AIAdditions */,
 				96E913D318A4F06B00F01294 /* Supporting Files */,
 			);
@@ -304,6 +309,7 @@
 				96E9140A18A4F11B00F01294 /* AIActivityState.m in Sources */,
 				96E9141A18A4F13000F01294 /* UIDevice+AIAdditions.m in Sources */,
 				96E9141818A4F13000F01294 /* NSData+AIAdditions.m in Sources */,
+				96E9144D18A5211D00F01294 /* AIAdjustIoFactory.m in Sources */,
 				96E9140D18A4F11B00F01294 /* AIPackageHandler.m in Sources */,
 				96E913D818A4F06B00F01294 /* AdjustIo.m in Sources */,
 				96E9140B18A4F11B00F01294 /* AILogger.m in Sources */,

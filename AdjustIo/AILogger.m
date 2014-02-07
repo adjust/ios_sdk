@@ -10,54 +10,58 @@
 
 static NSString * const kLogTag = @"AdjustIo";
 
-static AILogLevel staticLogLevel = AILogLevelInfo;
+@interface AILogger()
 
+@property (nonatomic, assign) AILogLevel loglevel;
+
+@end
 
 #pragma mark -
 @implementation AILogger
 
-+ (void)setLogLevel:(AILogLevel)logLevel {
-    staticLogLevel = logLevel;
+
+- (void)setLogLevel:(AILogLevel)logLevel {
+    self.loglevel = logLevel;
 }
 
-+ (void)verbose:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelVerbose) return;
+- (void)verbose:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelVerbose) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"v" format:format parameters:parameters];
 }
 
-+ (void)debug:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelDebug) return;
+- (void)debug:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelDebug) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"d" format:format parameters:parameters];
 }
 
-+ (void)info:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelInfo) return;
+- (void)info:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelInfo) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"i" format:format parameters:parameters];
 }
 
-+ (void)warn:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelWarn) return;
+- (void)warn:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelWarn) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"w" format:format parameters:parameters];
 }
 
-+ (void)error:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelError) return;
+- (void)error:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelError) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"e" format:format parameters:parameters];
 }
 
-+ (void)assert:(NSString *)format, ... {
-    if (staticLogLevel > AILogLevelAssert) return;
+- (void)assert:(NSString *)format, ... {
+    if (self.loglevel > AILogLevelAssert) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"a" format:format parameters:parameters];
 }
 
 // private implementation
-+ (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list)parameters {
+- (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list)parameters {
     NSString *string = [[NSString alloc] initWithFormat:format arguments:parameters];
     va_end(parameters);
 
