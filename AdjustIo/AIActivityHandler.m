@@ -1,6 +1,6 @@
 //
 //  AIActivityHandler.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-01.
 //  Copyright (c) 2013 adeven. All rights reserved.
