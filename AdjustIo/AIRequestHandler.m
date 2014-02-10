@@ -42,7 +42,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
-    self.logger = [AIAdjustIoFactory getLogger];
+    self.logger = AIAdjustIoFactory.logger;
     self.baseUrl = [NSURL URLWithString:AIUtil.baseUrl];
 
     return self;
