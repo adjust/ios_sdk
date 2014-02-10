@@ -79,8 +79,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 #pragma mark - internal
 - (void)initInternal {
-    self.requestHandler = [AIAdjustIoFactory getRequestHandler:self];
-    self.logger = [AIAdjustIoFactory getLogger];
+    self.requestHandler = [AIAdjustIoFactory requestHandlerForPackageHandler:self];
+    self.logger = [AIAdjustIoFactory logger];
     self.sendingSemaphore = dispatch_semaphore_create(1);
     [self readPackageQueue];
 }

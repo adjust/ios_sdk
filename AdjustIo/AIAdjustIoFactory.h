@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
+
 #import "AdjustIo.h"
 #import "AIPackageHandler.h"
 #import "AIRequestHandler.h"
@@ -13,12 +14,12 @@
 
 @interface AIAdjustIoFactory : NSObject
 
-+ (id<AIPackageHandler>) getPackageHandler;
-+ (id<AIRequestHandler>) getRequestHandler: (id<AIPackageHandler>)packageHandler;
-+ (id<AILogger>) getLogger;
++ (id<AIPackageHandler>)packageHandler;
++ (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
++ (id<AILogger>)logger;
 
-+ (void)setPackageHandler: (id<AIPackageHandler>) packageHandler;
-+ (void)setRequestHandler: (id<AIRequestHandler>) requestHandler;
-+ (void)setLogger: (id<AILogger>) logger;
++ (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
++ (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;
++ (void)setLogger:(id<AILogger>)logger;
 
 @end
