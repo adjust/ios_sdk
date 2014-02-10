@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
+@class AdjustIo;
 
-#import "AdjustIo.h"
-#import "AIPackageHandler.h"
-#import "AIRequestHandler.h"
-#import "AILogger.h"
+@protocol AIPackageHandler;
+@protocol AIRequestHandler;
+@protocol AILogger;
 
 @interface AIAdjustIoFactory : NSObject
 

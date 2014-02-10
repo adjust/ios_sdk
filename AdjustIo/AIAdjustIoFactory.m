@@ -7,6 +7,8 @@
 //
 
 #import "AIAdjustIoFactory.h"
+#import "AIRequestHandler.h"
+#import "AILogger.h"
 
 static id<AIPackageHandler> packageHandler = NULL;
 static id<AIRequestHandler> requestHandler = NULL;
