@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9649D79F18A9053F0026AA0E /* AIPackageHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D79E18A9053F0026AA0E /* AIPackageHandlerMock.m */; };
+		9649D7A218A907280026AA0E /* AILoggerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D7A118A907280026AA0E /* AILoggerMock.m */; };
+		9649D7A518A91FA20026AA0E /* AIRequestHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */; };
 		96E913D118A4F06B00F01294 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913D018A4F06B00F01294 /* Foundation.framework */; };
 		96E913D618A4F06B00F01294 /* AdjustIo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 96E913D518A4F06B00F01294 /* AdjustIo.h */; };
 		96E913D818A4F06B00F01294 /* AdjustIo.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913D718A4F06B00F01294 /* AdjustIo.m */; };
@@ -15,7 +18,6 @@
 		96E913E218A4F06B00F01294 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913E118A4F06B00F01294 /* UIKit.framework */; };
 		96E913E518A4F06B00F01294 /* libAdjustIo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913CD18A4F06B00F01294 /* libAdjustIo.a */; };
 		96E913EB18A4F06B00F01294 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96E913E918A4F06B00F01294 /* InfoPlist.strings */; };
-		96E913ED18A4F06B00F01294 /* AdjustIoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913EC18A4F06B00F01294 /* AdjustIoTests.m */; };
 		96E9140818A4F11B00F01294 /* AIActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913F718A4F11B00F01294 /* AIActivityHandler.m */; };
 		96E9140918A4F11B00F01294 /* AIActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913F918A4F11B00F01294 /* AIActivityPackage.m */; };
 		96E9140A18A4F11B00F01294 /* AIActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913FB18A4F11B00F01294 /* AIActivityState.m */; };
@@ -58,6 +60,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9649D79D18A9053F0026AA0E /* AIPackageHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageHandlerMock.h; sourceTree = "<group>"; };
+		9649D79E18A9053F0026AA0E /* AIPackageHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerMock.m; sourceTree = "<group>"; };
+		9649D7A018A907280026AA0E /* AILoggerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AILoggerMock.h; sourceTree = "<group>"; };
+		9649D7A118A907280026AA0E /* AILoggerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AILoggerMock.m; sourceTree = "<group>"; };
+		9649D7A318A91FA20026AA0E /* AIRequestHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandlerMock.h; sourceTree = "<group>"; };
+		9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerMock.m; sourceTree = "<group>"; };
 		96E913CD18A4F06B00F01294 /* libAdjustIo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustIo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E913D018A4F06B00F01294 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		96E913D518A4F06B00F01294 /* AdjustIo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustIo.h; sourceTree = "<group>"; };
@@ -67,7 +75,6 @@
 		96E913E118A4F06B00F01294 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		96E913E818A4F06B00F01294 /* AdjustIoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AdjustIoTests-Info.plist"; sourceTree = "<group>"; };
 		96E913EA18A4F06B00F01294 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		96E913EC18A4F06B00F01294 /* AdjustIoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustIoTests.m; sourceTree = "<group>"; };
 		96E913F618A4F11B00F01294 /* AIActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandler.h; sourceTree = "<group>"; };
 		96E913F718A4F11B00F01294 /* AIActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandler.m; sourceTree = "<group>"; };
 		96E913F818A4F11B00F01294 /* AIActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityPackage.h; sourceTree = "<group>"; };
@@ -192,11 +199,16 @@
 		96E913E618A4F06B00F01294 /* AdjustIoTests */ = {
 			isa = PBXGroup;
 			children = (
-				96E913EC18A4F06B00F01294 /* AdjustIoTests.m */,
 				96E913E718A4F06B00F01294 /* Supporting Files */,
 				96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */,
 				96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */,
 				96E9144918A5126100F01294 /* AIRequestHandlerTests.m */,
+				9649D79D18A9053F0026AA0E /* AIPackageHandlerMock.h */,
+				9649D79E18A9053F0026AA0E /* AIPackageHandlerMock.m */,
+				9649D7A018A907280026AA0E /* AILoggerMock.h */,
+				9649D7A118A907280026AA0E /* AILoggerMock.m */,
+				9649D7A318A91FA20026AA0E /* AIRequestHandlerMock.h */,
+				9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */,
 			);
 			path = AdjustIoTests;
 			sourceTree = "<group>";
@@ -325,9 +337,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E913ED18A4F06B00F01294 /* AdjustIoTests.m in Sources */,
 				96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */,
+				9649D7A218A907280026AA0E /* AILoggerMock.m in Sources */,
 				96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */,
+				9649D79F18A9053F0026AA0E /* AIPackageHandlerMock.m in Sources */,
+				9649D7A518A91FA20026AA0E /* AIRequestHandlerMock.m in Sources */,
 				96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
