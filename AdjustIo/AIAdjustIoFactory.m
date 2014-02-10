@@ -11,28 +11,28 @@
 #import "AIRequestHandler.h"
 #import "AILogger.h"
 
-static id<AIPackageHandler> packageHandler = NULL;
-static id<AIRequestHandler> requestHandler = NULL;
-static id<AILogger> logger = NULL;
+static id<AIPackageHandler> packageHandler = nil;
+static id<AIRequestHandler> requestHandler = nil;
+static id<AILogger> logger = nil;
 
 @implementation AIAdjustIoFactory
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(AIActivityHandler *)activityHandler {
-    if (packageHandler == NULL) {
+    if (packageHandler == nil) {
         return [AIPackageHandler handlerWithActivityHandler:activityHandler];
     }
     return packageHandler;
 }
 
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler {
-    if (requestHandler == NULL) {
+    if (requestHandler == nil) {
         return [AIRequestHandler handlerWithPackageHandler:packageHandler];
     }
     return requestHandler;
 }
 
 + (id<AILogger>)logger {
-    if (logger == NULL) {
+    if (logger == nil) {
         //  same instance of logger
         logger = [[AILogger alloc] init];
     }
