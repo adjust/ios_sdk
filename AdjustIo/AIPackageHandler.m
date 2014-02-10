@@ -7,6 +7,7 @@
 //
 
 #import "AIPackageHandler.h"
+#import "AIActivityHandler.h"
 #import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
 #import "AILogger.h"
@@ -22,6 +23,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic) dispatch_semaphore_t sendingSemaphore;
+@property (nonatomic, assign) AIActivityHandler *activityHandler;
 @property (nonatomic, retain) id<AIRequestHandler> requestHandler;
 @property (nonatomic, retain) id<AILogger> logger;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
@@ -33,11 +35,16 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 #pragma mark -
 @implementation AIPackageHandler
 
-- (id)init {
++ (AIPackageHandler *)handlerWithActivityHandler:(AIActivityHandler *)activityHandler {
+    return [[AIPackageHandler alloc] initWithActivityHandler:activityHandler];
+}
+
+- (id)initWithActivityHandler:(AIActivityHandler *)activityHandler {
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.activityHandler = activityHandler;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal];

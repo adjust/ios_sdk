@@ -7,6 +7,7 @@
 //
 
 #import "AIAdjustIoFactory.h"
+#import "AIPackageHandler.h"
 #import "AIRequestHandler.h"
 #import "AILogger.h"
 
@@ -16,9 +17,9 @@ static id<AILogger> logger = NULL;
 
 @implementation AIAdjustIoFactory
 
-+ (id<AIPackageHandler>)packageHandler {
++ (id<AIPackageHandler>)packageHandlerForActivityHandler:(AIActivityHandler *)activityHandler {
     if (packageHandler == NULL) {
-        return [[AIPackageHandler alloc] init];
+        return [AIPackageHandler handlerWithActivityHandler:activityHandler];
     }
     return packageHandler;
 }

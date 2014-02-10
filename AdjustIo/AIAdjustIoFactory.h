@@ -7,6 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 @class AdjustIo;
+@class AIActivityHandler;
 
 @protocol AIPackageHandler;
 @protocol AIRequestHandler;
@@ -14,7 +15,7 @@
 
 @interface AIAdjustIoFactory : NSObject
 
-+ (id<AIPackageHandler>)packageHandler;
++ (id<AIPackageHandler>)packageHandlerForActivityHandler:(AIActivityHandler *)activityHandler;
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (id<AILogger>)logger;
 
