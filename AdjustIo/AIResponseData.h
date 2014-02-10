@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface AIResponseData : NSObject
 
 @property (nonatomic, copy) NSString *trackerToken;

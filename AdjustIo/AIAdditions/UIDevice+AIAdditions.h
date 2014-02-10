@@ -6,9 +6,6 @@
 //  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
 @interface UIDevice(AIAdditions)
 
 - (BOOL)aiTrackingEnabled;

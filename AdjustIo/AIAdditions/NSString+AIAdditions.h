@@ -6,8 +6,6 @@
 //  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface NSString(AIAdditions)
 
 - (NSString *)aiTrim;

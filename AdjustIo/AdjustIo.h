@@ -7,7 +7,6 @@
 //
 
 #import "AILogger.h"
-#import <Foundation/Foundation.h>
 
 /**
  * Constants for our supported tracking environments.
