@@ -1,0 +1,43 @@
+//
+//  AIResponseData.m
+//  AdjustIo
+//
+//  Created by Christian Wellenbrock on 07.02.14.
+//  Copyright (c) 2014 adeven. All rights reserved.
+//
+
+#import "AIResponseData.h"
+
+@implementation AIResponseData
+
++ (AIResponseData *)dataWithJsonString:(NSString *)string {
+    return [[AIResponseData alloc] initWithJsonString:string];
+}
+
+- (id)initWithJsonString:(NSString *)jsonString {
+    self = [super init];
+    if (self == nil) return nil;
+
+    NSError *error = nil;
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    if (error != nil) {
+        self.error = [NSString stringWithFormat:@"Failed to parse json response: %@", jsonString];
+        return self;
+    }
+
+    self.trackerToken = [jsonDict objectForKey:@"tracker_token"];
+    self.trackerName  = [jsonDict objectForKey:@"tracker_name"];
+    self.error        = [jsonDict objectForKey:@"error"];
+
+    return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[trackerToken:%@ trackerName:%@ error:%@]",
+            self.trackerToken,
+            self.trackerName,
+            self.error];
+}
+
+@end
