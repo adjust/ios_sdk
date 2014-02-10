@@ -5,7 +5,7 @@
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
-
+#import <Foundation/Foundation.h>
 @class AdjustIo;
 
 @protocol AIPackageHandler;
