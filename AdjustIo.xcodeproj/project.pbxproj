@@ -60,7 +60,6 @@
 /* Begin PBXFileReference section */
 		96E913CD18A4F06B00F01294 /* libAdjustIo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustIo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E913D018A4F06B00F01294 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		96E913D418A4F06B00F01294 /* AdjustIo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AdjustIo-Prefix.pch"; sourceTree = "<group>"; };
 		96E913D518A4F06B00F01294 /* AdjustIo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustIo.h; sourceTree = "<group>"; };
 		96E913D718A4F06B00F01294 /* AdjustIo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustIo.m; sourceTree = "<group>"; };
 		96E913DD18A4F06B00F01294 /* AdjustIoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustIoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -186,7 +185,6 @@
 		96E913D318A4F06B00F01294 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				96E913D418A4F06B00F01294 /* AdjustIo-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -430,8 +428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/AdjustIo.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustIo/AdjustIo-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -442,8 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/AdjustIo.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustIo/AdjustIo-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
