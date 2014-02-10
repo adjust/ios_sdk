@@ -80,7 +80,7 @@ static NSString * const kClientSdk = @"ios2.2.0";
     NSURL *url = [NSURL fileURLWithPath:path];
     const char* filePath = [[url path] fileSystemRepresentation];
     const char* attrName = "com.apple.MobileBackup";
-    id<AILogger> logger = [AIAdjustIoFactory logger];
+    id<AILogger> logger = AIAdjustIoFactory.logger;
 
     if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
         u_int8_t attrValue = 1;

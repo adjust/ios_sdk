@@ -123,8 +123,8 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
 
-    self.packageHandler = [AIAdjustIoFactory packageHandler];
-    self.logger         = [AIAdjustIoFactory logger];
+    self.packageHandler = AIAdjustIoFactory.packageHandler;
+    self.logger         = AIAdjustIoFactory.logger;
     [self readActivityState];
 
     [self startInternal];
