@@ -7,15 +7,9 @@
 //
 
 typedef enum {
-    AIActivityKindUnknown = 0,
     AIActivityKindSession = 1,
     AIActivityKindEvent   = 2,
     AIActivityKindRevenue = 3,
-
-    // only possible when server could be reached because the SDK can't know
-    // whether or not a session might be an install or reattribution
-    AIActivityKindInstall       = 4,
-    AIActivityKindReattribution = 5,
 } AIActivityKind;
 
 
@@ -28,7 +22,9 @@ typedef enum {
  */
 @interface AIResponseData : NSObject
 
-// the kind of activity (install, session, event, etc.)
+#pragma mark set by SDK
+
+// the kind of activity (AIActivityKindSession etc.)
 // see the AIActivity definition above
 @property (nonatomic, assign) AIActivityKind activityKind;
 
@@ -39,10 +35,12 @@ typedef enum {
 // true if the server was not reachable and the request will be tried again later
 @property (nonatomic, assign) BOOL willRetry;
 
+#pragma mark set by server or SDK
 // nil if activity was tracked successfully and response could be parsed
 // might be not nil even when activity was tracked successfully
 @property (nonatomic, copy) NSString *error;
 
+#pragma mark returned by server
 // the following attributes are only set when error is nil
 // (when activity was tracked successfully and response could be parsed)
 
@@ -57,5 +55,11 @@ typedef enum {
 
 - (id)initWithJsonString:(NSString *)string;
 - (id)initWithError:(NSString *)error;
+
+// returns human readable version of activityKind
+// (session, event, revenue), see above
+- (NSString *)activityKindString;
+
+
 
 @end

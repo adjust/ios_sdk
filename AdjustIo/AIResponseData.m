@@ -14,6 +14,10 @@
     return [[AIResponseData alloc] initWithJsonString:string];
 }
 
++ (AIResponseData *)dataWithError:(NSString *)error {
+    return [[AIResponseData alloc] initWithError:error];
+}
+
 - (id)initWithJsonString:(NSString *)jsonString {
     self = [super init];
     if (self == nil) return nil;
@@ -26,15 +30,31 @@
         return self;
     }
 
+    self.error        = [jsonDict objectForKey:@"error"];
     self.trackerToken = [jsonDict objectForKey:@"tracker_token"];
     self.trackerName  = [jsonDict objectForKey:@"tracker_name"];
-    self.error        = [jsonDict objectForKey:@"error"];
 
     return self;
 }
 
+- (id)initWithError:(NSString *)error {
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.success = NO;
+    self.error   = error;
+
+    return self;
+}
+
+- (NSString *)activityKindString {
+    return @"XXX";
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[trackerToken:%@ trackerName:%@ error:%@]",
+    return [NSString stringWithFormat:@"[success:%d kind:%@ trackerToken:%@ trackerName:%@ error:%@]",
+            self.success,
+            self.activityKindString,
             self.trackerToken,
             self.trackerName,
             self.error];
