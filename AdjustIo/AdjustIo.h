@@ -143,8 +143,8 @@ static NSString * const AIEnvironmentProduction = @"production";
 /**
  * Optional delegate method that will get called when a tracking attempt finished
  *
- * @param responseData The response data containing a flag `success` indicating whether or
- *     not the attemp was successful, an `activityPackage`
+ * @param responseData The response data containing information about the activity
+ *     and it's server response. See AIResponseData for details.
  */
 - (void)adjustIoFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
