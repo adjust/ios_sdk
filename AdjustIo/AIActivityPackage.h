@@ -18,7 +18,6 @@
 
 // logs
 @property (nonatomic, assign) AIActivityKind activityKind;
-@property (nonatomic, copy) NSString *kindString;
 @property (nonatomic, copy) NSString *suffix;
 
 - (NSString *)extendedString;
