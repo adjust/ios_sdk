@@ -22,7 +22,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
-    sessionPackage.kind = @"session start";
+    sessionPackage.kindString = @"session start";
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
 
@@ -35,7 +35,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
-    eventPackage.kind = @"event";
+    eventPackage.kindString = @"event";
     eventPackage.suffix = self.eventSuffix;
     eventPackage.parameters = parameters;
 
@@ -49,7 +49,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *revenuePackage = [self defaultActivityPackage];
     revenuePackage.path = @"/revenue";
-    revenuePackage.kind = @"revenue";
+    revenuePackage.kindString = @"revenue";
     revenuePackage.suffix = self.revenueSuffix;
     revenuePackage.parameters = parameters;
 

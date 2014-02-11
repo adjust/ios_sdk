@@ -13,7 +13,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@%@ %@",
-            self.kind, self.suffix, self.path];
+            self.kindString, self.suffix, self.path];
 }
 
 - (NSString *)extendedString {
@@ -34,11 +34,11 @@
 }
 
 - (NSString *)successMessage {
-    return [NSString stringWithFormat:@"Tracked %@%@", self.kind, self.suffix];
+    return [NSString stringWithFormat:@"Tracked %@%@", self.kindString, self.suffix];
 }
 
 - (NSString *)failureMessage {
-    return [NSString stringWithFormat:@"Failed to track %@%@", self.kind, self.suffix];
+    return [NSString stringWithFormat:@"Failed to track %@%@", self.kindString, self.suffix];
 }
 
 #pragma mark NSCoding
@@ -50,7 +50,7 @@
     self.userAgent = [decoder decodeObjectForKey:@"userAgent"];
     self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
     self.parameters = [decoder decodeObjectForKey:@"parameters"];
-    self.kind = [decoder decodeObjectForKey:@"kind"];
+    self.kindString = [decoder decodeObjectForKey:@"kind"];
     self.suffix = [decoder decodeObjectForKey:@"suffix"];
 
     return self;
@@ -61,7 +61,7 @@
     [encoder encodeObject:self.userAgent forKey:@"userAgent"];
     [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
     [encoder encodeObject:self.parameters forKey:@"parameters"];
-    [encoder encodeObject:self.kind forKey:@"kind"];
+    [encoder encodeObject:self.kindString forKey:@"kind"];
     [encoder encodeObject:self.suffix forKey:@"suffix"];
 }
 

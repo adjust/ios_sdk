@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSDictionary *parameters;
 
 // logs
-@property (nonatomic, copy) NSString *kind;
+@property (nonatomic, copy) NSString *kindString;
 @property (nonatomic, copy) NSString *suffix;
 
 - (NSString *)extendedString;
