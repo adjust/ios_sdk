@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
+#import "AIResponseData.h"
+
 @interface AIActivityPackage : NSObject <NSCoding>
 
 // data
@@ -15,6 +17,7 @@
 @property (nonatomic, retain) NSDictionary *parameters;
 
 // logs
+@property (nonatomic, assign) AIActivityKind activityKind;
 @property (nonatomic, copy) NSString *kindString;
 @property (nonatomic, copy) NSString *suffix;
 
