@@ -25,6 +25,10 @@ static id<AILogger> logger;
     activityHandler = [AIActivityHandler handlerWithAppToken:yourAppToken];
 }
 
++ (void)setDelegate:(NSObject<AdjustIoDelegate> *)delegate {
+    [activityHandler setDelegate:delegate];
+}
+
 + (void)setSdkPrefix:(NSString *)sdkPrefix {
     [activityHandler setSdkPrefix:sdkPrefix];
 }

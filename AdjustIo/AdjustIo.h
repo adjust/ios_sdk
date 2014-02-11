@@ -8,6 +8,8 @@
 
 #import "AILogger.h"
 
+@protocol AdjustIoDelegate;
+
 /**
  * Constants for our supported tracking environments.
  */
@@ -33,6 +35,16 @@ static NSString * const AIEnvironmentProduction = @"production";
  *     be 12 characters long.
  */
 + (void)appDidLaunch:(NSString *)appToken;
+
+/**
+ * Set the optional delegate that will get informed about tracking results
+ *
+ * See the AdjustIoDelegate declaration below for details
+ *
+ * @param delegate The delegate that might implement the optional delegate
+ *     methods like adjustIoFinishedTrackingWithResult:
+ */
++ (void)setDelegate:(id<AdjustIoDelegate>)delegate;
 
 /**
  * Tell AdjustIo that a particular event has happened.
@@ -113,5 +125,26 @@ static NSString * const AIEnvironmentProduction = @"production";
 
 // Special method used by SDK wrappers such as Adobe Air SDK.
 + (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
+
+@end
+
+
+@class AIActivityPackage;
+@class AIResponseData;
+
+#pragma mark -
+/**
+ * Optional delegate that will get informed about tracking results
+ */
+@protocol  AdjustIoDelegate
+@optional
+
+/**
+ * Optional delegate method that will get called when a tracking attempt finished
+ *
+ * @param responseData The response data containing a flag `success` indicating whether or
+ *     not the attemp was successful, an `activityPackage`
+ */
+- (void)adjustIoFinishedTrackingWithResult:(AIResponseData *)responseData;
 
 @end

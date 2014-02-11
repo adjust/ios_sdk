@@ -8,6 +8,7 @@
 
 @class AIActivityHandler;
 @class AIActivityPackage;
+@class AIResponseData;
 
 @protocol AIPackageHandler
 
@@ -20,6 +21,8 @@
 - (void)closeFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
+
+- (void)trackedActivityWithResponse:(AIResponseData *)response;
 
 @end
 

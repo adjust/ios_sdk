@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
+@property (nonatomic, assign) NSObject<AdjustIoDelegate> *delegate;
 
 + (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
@@ -27,5 +28,7 @@
 - (void)trackRevenue:(double)amount
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
+
+- (void)trackedActivityWithResponse:(AIResponseData *)response;
 
 @end

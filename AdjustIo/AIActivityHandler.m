@@ -259,6 +259,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
+- (void)trackedActivityWithResponse:(AIResponseData *)response {
+    if ([self.delegate respondsToSelector:@selector(adjustIoFinishedTrackingWithResult:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(adjustIoFinishedTrackingWithResult:)
+                                        withObject:response waitUntilDone:NO];
+    }
+}
 
 #pragma mark - private
 
