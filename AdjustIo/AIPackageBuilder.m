@@ -1,6 +1,6 @@
 //
 //  AIPackageBuilder.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -22,7 +22,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
-    sessionPackage.kind = @"session start";
+    sessionPackage.activityKind = AIActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
 
@@ -35,7 +35,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
-    eventPackage.kind = @"event";
+    eventPackage.activityKind = AIActivityKindEvent;
     eventPackage.suffix = self.eventSuffix;
     eventPackage.parameters = parameters;
 
@@ -49,7 +49,7 @@ static NSDateFormatter * dateFormat;
 
     AIActivityPackage *revenuePackage = [self defaultActivityPackage];
     revenuePackage.path = @"/revenue";
-    revenuePackage.kind = @"revenue";
+    revenuePackage.activityKind = AIActivityKindRevenue;
     revenuePackage.suffix = self.revenueSuffix;
     revenuePackage.parameters = parameters;
 

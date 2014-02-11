@@ -1,19 +1,21 @@
 //
 //  AIActivityPackage.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
 #import "AIActivityPackage.h"
+#import "AIActivityKind.h"
 
 #pragma mark -
 @implementation AIActivityPackage
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@%@ %@",
-            self.kind, self.suffix, self.path];
+            AIActivityKindToString(self.activityKind),
+            self.suffix, self.path];
 }
 
 - (NSString *)extendedString {
@@ -34,11 +36,15 @@
 }
 
 - (NSString *)successMessage {
-    return [NSString stringWithFormat:@"Tracked %@%@", self.kind, self.suffix];
+    return [NSString stringWithFormat:@"Tracked %@%@",
+            AIActivityKindToString(self.activityKind),
+            self.suffix];
 }
 
 - (NSString *)failureMessage {
-    return [NSString stringWithFormat:@"Failed to track %@%@", self.kind, self.suffix];
+    return [NSString stringWithFormat:@"Failed to track %@%@",
+            AIActivityKindToString(self.activityKind),
+            self.suffix];
 }
 
 #pragma mark NSCoding
@@ -50,18 +56,22 @@
     self.userAgent = [decoder decodeObjectForKey:@"userAgent"];
     self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
     self.parameters = [decoder decodeObjectForKey:@"parameters"];
-    self.kind = [decoder decodeObjectForKey:@"kind"];
+    NSString *kindString = [decoder decodeObjectForKey:@"kind"];
     self.suffix = [decoder decodeObjectForKey:@"suffix"];
+
+    self.activityKind = AIActivityKindFromString(kindString);
 
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
+    NSString *kindString = AIActivityKindToString(self.activityKind);
+
     [encoder encodeObject:self.path forKey:@"path"];
     [encoder encodeObject:self.userAgent forKey:@"userAgent"];
     [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
     [encoder encodeObject:self.parameters forKey:@"parameters"];
-    [encoder encodeObject:self.kind forKey:@"kind"];
+    [encoder encodeObject:kindString forKey:@"kind"];
     [encoder encodeObject:self.suffix forKey:@"suffix"];
 }
 

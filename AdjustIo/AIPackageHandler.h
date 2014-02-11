@@ -1,14 +1,14 @@
 //
 //  AIPackageHandler.h
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
-#import <Foundation/Foundation.h>
 
 @class AIActivityHandler;
 @class AIActivityPackage;
+@class AIResponseData;
 
 @protocol AIPackageHandler
 
@@ -21,6 +21,8 @@
 - (void)closeFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
+
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response;
 
 @end
 

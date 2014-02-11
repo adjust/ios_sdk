@@ -1,6 +1,6 @@
 //
 //  AIActivityHandler.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-01.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -259,6 +259,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
+- (void)finishedTrackingWithResponse:(AIResponseData *)response {
+    if ([self.delegate respondsToSelector:@selector(adjustIoFinishedTrackingWithResponse:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(adjustIoFinishedTrackingWithResponse:)
+                                        withObject:response waitUntilDone:NO];
+    }
+}
 
 #pragma mark - private
 

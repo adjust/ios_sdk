@@ -1,6 +1,6 @@
 //
 //  AIPackageHandler.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -10,6 +10,7 @@
 #import "AIActivityHandler.h"
 #import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
+#import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "AIAdjustIoFactory.h"
@@ -81,6 +82,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (void)resumeSending {
     self.paused = NO;
+}
+
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+    response.activityKind = activityPackage.activityKind;
+    [self.activityHandler finishedTrackingWithResponse:response];
 }
 
 

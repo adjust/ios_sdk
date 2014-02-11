@@ -1,11 +1,12 @@
 //
 //  AIActivityPackage.h
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
-#import <Foundation/Foundation.h>
+
+#import "AIActivityKind.h"
 
 @interface AIActivityPackage : NSObject <NSCoding>
 
@@ -16,7 +17,7 @@
 @property (nonatomic, retain) NSDictionary *parameters;
 
 // logs
-@property (nonatomic, copy) NSString *kind;
+@property (nonatomic, assign) AIActivityKind activityKind;
 @property (nonatomic, copy) NSString *suffix;
 
 - (NSString *)extendedString;

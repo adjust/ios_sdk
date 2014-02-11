@@ -1,6 +1,6 @@
 //
 //  AIRequestHandler.m
-//  AdjustIosApp
+//  AdjustIo
 //
 //  Created by Christian Wellenbrock on 2013-07-04.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -9,6 +9,7 @@
 #import "AIRequestHandler.h"
 #import "AIPackageHandler.h"
 #import "AIActivityPackage.h"
+#import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "NSString+AIAdditions.h"
@@ -68,20 +69,28 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     // connection error
     if (error != nil) {
+        AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
+        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler closeFirstPackage];
         return;
     }
 
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
     // wrong status code
     if (response.statusCode != 200) {
-        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
+        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@)", package.failureMessage, responseString.aiTrim];
         [self.packageHandler sendNextPackage];
         return;
     }
 
     // success
+    AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
+    responseData.success = YES;
+    [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
     [self.logger info:@"%@", package.successMessage];
     [self.packageHandler sendNextPackage];
 }
