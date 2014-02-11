@@ -7,9 +7,13 @@
 //
 #import <Foundation/Foundation.h>
 
+@class AIActivityHandler;
 @class AIActivityPackage;
 
 @protocol AIPackageHandler
+
++ (id<AIPackageHandler>)handlerWithActivityHandler:(AIActivityHandler *)activityHandler;
+- (id)initWithActivityHandler:(AIActivityHandler *)activityHandler;
 
 - (void)addPackage:(AIActivityPackage *)package;
 - (void)sendFirstPackage;
