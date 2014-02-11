@@ -70,7 +70,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     // connection error
     if (error != nil) {
         AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
-        [self.packageHandler trackedActivityWithResponse:responseData];
+        [self.packageHandler trackedActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler closeFirstPackage];
         return;
@@ -81,7 +81,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     // wrong status code
     if (response.statusCode != 200) {
         AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
-        [self.packageHandler trackedActivityWithResponse:responseData];
+        [self.packageHandler trackedActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@)", package.failureMessage, responseString.aiTrim];
         [self.packageHandler sendNextPackage];
         return;
@@ -90,7 +90,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     // success
     AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
     responseData.success = YES;
-    [self.packageHandler trackedActivityWithResponse:responseData];
+    [self.packageHandler trackedActivity:package withResponse:responseData];
     [self.logger info:@"%@", package.successMessage];
     [self.packageHandler sendNextPackage];
 }

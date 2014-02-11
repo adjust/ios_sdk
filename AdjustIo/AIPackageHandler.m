@@ -10,6 +10,7 @@
 #import "AIActivityHandler.h"
 #import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
+#import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "AIAdjustIoFactory.h"
@@ -83,7 +84,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)trackedActivityWithResponse:(AIResponseData *)response {
+- (void)trackedActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+    response.activityKind = activityPackage.activityKind;
     [self.activityHandler trackedActivityWithResponse:response];
 }
 
