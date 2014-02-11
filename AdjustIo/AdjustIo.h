@@ -42,7 +42,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  * See the AdjustIoDelegate declaration below for details
  *
  * @param delegate The delegate that might implement the optional delegate
- *     methods like adjustIoFinishedTrackingWithResult:
+ *     methods like adjustIoFinishedTrackingWithResponse:
  */
 + (void)setDelegate:(id<AdjustIoDelegate>)delegate;
 
@@ -145,6 +145,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  * @param responseData The response data containing a flag `success` indicating whether or
  *     not the attemp was successful, an `activityPackage`
  */
-- (void)adjustIoFinishedTrackingWithResult:(AIResponseData *)responseData;
+- (void)adjustIoFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
 @end

@@ -22,7 +22,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 
-- (void)trackedActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response;
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response;
 
 @end
 

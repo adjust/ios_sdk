@@ -84,9 +84,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)trackedActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
     response.activityKind = activityPackage.activityKind;
-    [self.activityHandler trackedActivityWithResponse:response];
+    [self.activityHandler finishedTrackingWithResponse:response];
 }
 
 

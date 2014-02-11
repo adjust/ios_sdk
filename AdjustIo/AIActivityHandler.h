@@ -29,6 +29,6 @@
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 
-- (void)trackedActivityWithResponse:(AIResponseData *)response;
+- (void)finishedTrackingWithResponse:(AIResponseData *)response;
 
 @end
