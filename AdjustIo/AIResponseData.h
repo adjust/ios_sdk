@@ -19,16 +19,43 @@ typedef enum {
 } AIActivityKind;
 
 
+@class AIActivityPackage;
+
+/*
+ * Information about the result of a tracking attempt
+ *
+ * Will be passed to the delegate function adjustIoTrackedActivityWithResponse
+ */
 @interface AIResponseData : NSObject
 
+// the kind of activity (install, session, event, etc.)
+// see the AIActivity definition above
 @property (nonatomic, assign) AIActivityKind activityKind;
 
-@property (nonatomic, copy) NSString *trackerToken;
-@property (nonatomic, copy) NSString *trackerName;
+// true when the activity was tracked successfully
+// might be true even if response could not be parsed
+@property (nonatomic, assign) BOOL success;
+
+// true if the server was not reachable and the request will be tried again later
+@property (nonatomic, assign) BOOL willRetry;
+
+// nil if activity was tracked successfully and response could be parsed
+// might be not nil even when activity was tracked successfully
 @property (nonatomic, copy) NSString *error;
 
+// the following attributes are only set when error is nil
+// (when activity was tracked successfully and response could be parsed)
+
+// tracker token of current device
+@property (nonatomic, copy) NSString *trackerToken;
+
+// tracker name of current device
+@property (nonatomic, copy) NSString *trackerName;
+
 + (AIResponseData *)dataWithJsonString:(NSString *)string;
++ (AIResponseData *)dataWithError:(NSString *)error;
 
 - (id)initWithJsonString:(NSString *)string;
+- (id)initWithError:(NSString *)error;
 
 @end
