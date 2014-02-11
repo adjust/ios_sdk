@@ -8,13 +8,11 @@
 
 #import "AILoggerMock.h"
 
-static const int AILogLevelTest = 0;
-
 static NSString * const kLogTag = @"AdjustIoTests";
 
 @interface AILoggerMock()
 
-@property (nonatomic, copy) NSMutableString *logBuffer;
+@property (nonatomic, strong) NSMutableString *logBuffer;
 @property (nonatomic, assign) NSDictionary *logMap;
 
 @end
@@ -39,9 +37,26 @@ static NSString * const kLogTag = @"AdjustIoTests";
     return self;
 }
 
+- (NSString *)description {
+    return self.logBuffer;
+}
+
+- (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith {
+    NSMutableArray  *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
+    for (int i = 0; i < [logArray count]; i++) {
+        NSString *logMessage = logArray[i];
+        if ([logMessage hasPrefix:beginsWith]) {
+            [self test:[beginsWith stringByAppendingString:@" found"]];
+            [logArray removeObjectsInRange:NSMakeRange(0, i)];
+            return YES;
+        }
+    }
+    [self test:[beginsWith stringByAppendingFormat:@" not in (%@)", [logArray componentsJoinedByString:@","]]];
+    return NO;
+}
 
 - (void)setLogLevel:(AILogLevel)logLevel {
-    
+    [self test:@"AILogger setLogLevel:(%@)", logLevel];
 }
 
 - (void)test:(NSString *)format, ... {
@@ -90,7 +105,7 @@ static NSString * const kLogTag = @"AdjustIoTests";
     [self.logBuffer appendString:logMessage];
     
     NSMutableArray *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
-    [logArray addObject:logMessage];
+    [logArray addObject:formatedMessage];
     
     NSArray *lines = [formatedMessage componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {

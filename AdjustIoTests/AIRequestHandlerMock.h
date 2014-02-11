@@ -10,5 +10,4 @@
 #import "AIRequestHandler.h"
 
 @interface AIRequestHandlerMock : NSObject <AIRequestHandler>
-
 @end

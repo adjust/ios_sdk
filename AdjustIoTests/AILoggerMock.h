@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "AILogger.h"
 
+static const int AILogLevelTest = 0;
+
 @interface AILoggerMock : NSObject <AILogger>
     - (void)test:(NSString *)message, ...;
+    - (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
 @end

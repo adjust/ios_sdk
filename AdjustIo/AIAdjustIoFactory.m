@@ -10,44 +10,44 @@
 #import "AIRequestHandler.h"
 #import "AILogger.h"
 
-static id<AIPackageHandler> packageHandler = NULL;
-static id<AIRequestHandler> requestHandler = NULL;
-static id<AILogger> logger = NULL;
+static id<AIPackageHandler> internalPackageHandler = NULL;
+static id<AIRequestHandler> internalRequestHandler = NULL;
+static id<AILogger> internalLogger = NULL;
 
 @implementation AIAdjustIoFactory
 
 + (id<AIPackageHandler>)packageHandler {
-    if (packageHandler == NULL) {
+    if (internalPackageHandler == NULL) {
         return [[AIPackageHandler alloc] init];
     }
-    return packageHandler;
+    return internalPackageHandler;
 }
 
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler {
-    if (requestHandler == NULL) {
+    if (internalRequestHandler == NULL) {
         return [AIRequestHandler handlerWithPackageHandler:packageHandler];
     }
-    return requestHandler;
+    return internalRequestHandler;
 }
 
 + (id<AILogger>)logger {
-    if (logger == NULL) {
+    if (internalLogger == NULL) {
         //  same instance of logger
-        logger = [[AILogger alloc] init];
+        internalLogger = [[AILogger alloc] init];
     }
-    return logger;
+    return internalLogger;
 }
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler {
-    AIAdjustIoFactory.packageHandler = packageHandler;
+    internalPackageHandler = packageHandler;
 }
 
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler {
-    AIAdjustIoFactory.requestHandler = requestHandler;
+    internalRequestHandler = requestHandler;
 }
 
 + (void)setLogger:(id<AILogger>)logger {
-    AIAdjustIoFactory.logger = logger;
+    internalLogger = logger;
 }
 
 

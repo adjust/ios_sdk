@@ -8,6 +8,7 @@
 
 #import "AIRequestHandlerMock.h"
 #import "AILoggerMock.h"
+#import "AIAdjustIoFactory.h"
 
 static NSString * const prefix = @"AIRequestHandler ";
 
@@ -29,7 +30,7 @@ static NSString * const prefix = @"AIRequestHandler ";
     if (self == nil) return nil;
     
     self.packageHandler = packageHandler;
-    self.mockLogger = [[AILoggerMock alloc] init];
+    self.mockLogger = (AILoggerMock *) [AIAdjustIoFactory logger];
     
     return self;
 }
