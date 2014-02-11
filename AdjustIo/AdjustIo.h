@@ -7,6 +7,7 @@
 //
 
 #import "AILogger.h"
+#import "AIResponseData.h"
 
 @protocol AdjustIoDelegate;
 
