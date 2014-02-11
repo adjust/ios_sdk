@@ -21,3 +21,6 @@ DerivedData
 
 # CocoaPods
 Pods
+
+# git files
+*.orig
