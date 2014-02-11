@@ -48,11 +48,11 @@
 }
 
 - (NSString *)activityKindString {
-    return @"XXX";
+    return AIActivityKindToString(self.activityKind);
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[success:%d kind:%@ trackerToken:%@ trackerName:%@ error:%@]",
+    return [NSString stringWithFormat:@"[success:%d kind:%@ trackerToken:%@ trackerName:'%@' error:%@]",
             self.success,
             self.activityKindString,
             self.trackerToken,
