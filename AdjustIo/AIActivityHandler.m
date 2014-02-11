@@ -51,7 +51,12 @@ static const double   kSubsessionInterval =  1;                // 1 second
 #pragma mark -
 @implementation AIActivityHandler
 
-+ (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken {
+@synthesize environment;
+@synthesize bufferEvents;
+@synthesize trackMacMd5;
+@synthesize delegate;
+
++ (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken {
     return [[AIActivityHandler alloc] initWithAppToken:appToken];
 }
 

@@ -8,14 +8,13 @@
 
 #import "AdjustIo.h"
 
-@interface AIActivityHandler : NSObject
+@protocol AIActivityHandler
 
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
 @property (nonatomic, assign) NSObject<AdjustIoDelegate> *delegate;
 
-+ (AIActivityHandler *)handlerWithAppToken:(NSString *)appToken;
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;
 
@@ -30,5 +29,11 @@
       withParameters:(NSDictionary *)parameters;
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response;
+
+@end
+
+@interface AIActivityHandler : NSObject <AIActivityHandler>
+
++ (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken;
 
 @end

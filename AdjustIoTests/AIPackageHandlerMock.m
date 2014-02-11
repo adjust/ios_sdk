@@ -5,8 +5,9 @@
 //  Created by Pedro Filipe on 10/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
-#import "AILoggerMock.h"
+
 #import "AIPackageHandlerMock.h"
+#import "AILoggerMock.h"
 #import "AIAdjustIoFactory.h"
 
 static NSString * const prefix = @"AIPackageHandler ";
@@ -15,17 +16,22 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 @property (nonatomic, strong) AILoggerMock *loggerMock;
 @property (nonatomic, copy) NSMutableArray *packageQueue;
+@property (nonatomic, assign) id<AIActivityHandler> activityHandler;
 
 @end
 
 @implementation AIPackageHandlerMock
 
-- (id)init {
+- (id)initWithActivityHandler:(id<AIActivityHandler>)activityHandler {
     self = [super init];
     if (self == nil) return nil;
     
+    self.activityHandler = activityHandler;
+    
     self.loggerMock = (AILoggerMock *) [AIAdjustIoFactory logger];
     self.packageQueue = [NSMutableArray array];
+    
+    [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
     
     return self;
 }
@@ -53,6 +59,10 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 - (void)resumeSending {
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
+}
+
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+    [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
 }
 
 @end

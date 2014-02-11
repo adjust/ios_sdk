@@ -29,25 +29,52 @@
     self.loggerMock = [[AILoggerMock alloc] init];
     [AIAdjustIoFactory setLogger:self.loggerMock];
     
-    self.packageHandlerMock = [[AIPackageHandlerMock alloc] init];
+    self.packageHandlerMock = [AIPackageHandlerMock alloc];
     [AIAdjustIoFactory setPackageHandler:self.packageHandlerMock];
 }
 
 - (void)tearDown
 {
-    [AIAdjustIoFactory setPackageHandler:NULL];
-    [AIAdjustIoFactory setLogger:NULL];
+    [AIAdjustIoFactory setPackageHandler:nil];
+    [AIAdjustIoFactory setLogger:nil];
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
 }
 
 - (void)testExample
 {
-    //AIActivityHandler *activityHandler = [AIActivityHandler handlerWithAppToken:@"123456789012"];
-    [self.packageHandlerMock pauseSending];
+    XCTAssert([AIActivityHandlerTests deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
     
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
 }
+
++ (NSString *)getFilename:(NSString *)filename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filepath = [path stringByAppendingPathComponent:filename];
+    return filepath;
+}
+
++ (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock {
+    NSString *filepath = [AIActivityHandlerTests getFilename:filename];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error = nil;
+    BOOL exists = [fileManager fileExistsAtPath:filepath];
+    if (!exists) {
+        [loggerMock test:@"file %@ does not exist at path %@", filename, filepath];
+        return  YES;
+    }
+    BOOL deleted = [fileManager removeItemAtPath:filepath error:&error];
+    
+    if (!deleted) {
+        [loggerMock test:@"unable to delete file %@ at path %@", filename, filepath];
+    }
+    
+    if (error) {
+        [loggerMock test:@"error (%@) deleting file %@", [error localizedDescription], filename];
+    }
+    
+    return deleted;
+}
+
 
 @end

@@ -15,14 +15,14 @@
 // see README for details
 #endif
 
-static AIActivityHandler *activityHandler;
+static id<AIActivityHandler> activityHandler;
 static id<AILogger> logger;
 
 #pragma mark -
 @implementation AdjustIo
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    activityHandler = [AIActivityHandler handlerWithAppToken:yourAppToken];
+    activityHandler = [AIAdjustIoFactory activityHandlerWithAppToken:yourAppToken];
 }
 
 + (void)setDelegate:(NSObject<AdjustIoDelegate> *)delegate {

@@ -5,15 +5,15 @@
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
+#import <Foundation/Foundation.h>
 
-@class AIActivityHandler;
 @class AIActivityPackage;
 @class AIResponseData;
+@protocol AIActivityHandler;
 
 @protocol AIPackageHandler
 
-+ (id<AIPackageHandler>)handlerWithActivityHandler:(AIActivityHandler *)activityHandler;
-- (id)initWithActivityHandler:(AIActivityHandler *)activityHandler;
+- (id)initWithActivityHandler:(id<AIActivityHandler>)activityHandler;
 
 - (void)addPackage:(AIActivityPackage *)package;
 - (void)sendFirstPackage;
@@ -27,4 +27,7 @@
 @end
 
 @interface AIPackageHandler : NSObject <AIPackageHandler>
+
++ (id<AIPackageHandler>)handlerWithActivityHandler:(id<AIActivityHandler>)activityHandler;
+
 @end

@@ -15,28 +15,26 @@ static NSString * const prefix = @"AIRequestHandler ";
 @interface AIRequestHandlerMock()
 
 @property (nonatomic, assign) id<AIPackageHandler> packageHandler;
-@property (nonatomic, assign) AILoggerMock *mockLogger;
+@property (nonatomic, assign) AILoggerMock *loggerMock;
 
 @end
 
 @implementation AIRequestHandlerMock
-
-+ (id<AIRequestHandler>) handlerWithPackageHandler:(id<AIPackageHandler>)packageHandler {
-    return [[AIRequestHandlerMock alloc] initWithPackageHandler:packageHandler];
-}
 
 - (id)initWithPackageHandler:(id<AIPackageHandler>) packageHandler {
     self = [super init];
     if (self == nil) return nil;
     
     self.packageHandler = packageHandler;
-    self.mockLogger = (AILoggerMock *) [AIAdjustIoFactory logger];
+    self.loggerMock = (AILoggerMock *) [AIAdjustIoFactory logger];
+    
+    [self.loggerMock test:[prefix stringByAppendingString:@"initWithPackageHandler"]];
     
     return self;
 }
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage {
-    [self.mockLogger test:[prefix stringByAppendingString:@"sendPackage"]];
+    [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
 }
 
 @end
