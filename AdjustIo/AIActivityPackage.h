@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 adeven. All rights reserved.
 //
 
-#import "AIResponseData.h"
+#import "AIActivityKind.h"
 
 @interface AIActivityPackage : NSObject <NSCoding>
 

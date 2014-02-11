@@ -6,12 +6,7 @@
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
-typedef enum {
-    AIActivityKindSession = 1,
-    AIActivityKindEvent   = 2,
-    AIActivityKindRevenue = 3,
-} AIActivityKind;
-
+#import "AIActivityKind.h"
 
 @class AIActivityPackage;
 
