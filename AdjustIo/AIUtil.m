@@ -14,7 +14,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
-static NSString * const kClientSdk = @"ios2.2.0";
+static NSString * const kClientSdk = @"ios3.0.0";
 
 
 #pragma mark -
