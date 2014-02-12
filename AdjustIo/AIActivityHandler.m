@@ -114,6 +114,9 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
+    // create logger before executing the checks that might use it
+    self.logger = AIAdjustIoFactory.logger;
+
     if (![self checkAppTokenNotNil:yourAppToken]) return;
     if (![self checkAppTokenLength:yourAppToken]) return;
 
@@ -129,7 +132,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.userAgent        = AIUtil.userAgent;
 
     self.packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:self];
-    self.logger         = AIAdjustIoFactory.logger;
     [self readActivityState];
 
     [self startInternal];
