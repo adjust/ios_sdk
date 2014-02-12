@@ -40,6 +40,7 @@
 		96F0018818ABADFD00612200 /* NSData+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141318A4F13000F01294 /* NSData+AIAdditions.m */; };
 		96F0018918ABAE0300612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
 		96F0018A18ABAE0400612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
+		96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0018C18ABC0C800612200 /* AITestsUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,8 @@
 		96E9144918A5126100F01294 /* AIRequestHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerTests.m; sourceTree = "<group>"; };
 		96E9144B18A5211D00F01294 /* AIAdjustIoFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIAdjustIoFactory.h; sourceTree = "<group>"; };
 		96E9144C18A5211D00F01294 /* AIAdjustIoFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIAdjustIoFactory.m; sourceTree = "<group>"; };
+		96F0018B18ABC0C800612200 /* AITestsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITestsUtil.h; sourceTree = "<group>"; };
+		96F0018C18ABC0C800612200 /* AITestsUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITestsUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +232,8 @@
 				9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */,
 				9695104E18AA770C0072B6D7 /* AIActivityHandlerMock.h */,
 				9695104F18AA770C0072B6D7 /* AIActivityHandlerMock.m */,
+				96F0018B18ABC0C800612200 /* AITestsUtil.h */,
+				96F0018C18ABC0C800612200 /* AITestsUtil.m */,
 			);
 			path = AdjustIoTests;
 			sourceTree = "<group>";
@@ -365,6 +370,7 @@
 				96F0018718ABADC200612200 /* NSString+AIAdditions.m in Sources */,
 				96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */,
 				9695105018AA770C0072B6D7 /* AIActivityHandlerMock.m in Sources */,
+				96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */,
 				96F0018818ABADFD00612200 /* NSData+AIAdditions.m in Sources */,
 				9649D79F18A9053F0026AA0E /* AIPackageHandlerMock.m in Sources */,
 				9649D7A518A91FA20026AA0E /* AIRequestHandlerMock.m in Sources */,

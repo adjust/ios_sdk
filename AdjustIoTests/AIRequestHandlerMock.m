@@ -35,6 +35,7 @@ static NSString * const prefix = @"AIRequestHandler ";
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
+    [self.packageHandler sendNextPackage];
 }
 
 @end

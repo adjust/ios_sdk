@@ -12,6 +12,7 @@
 #import "AIAdjustIoFactory.h"
 #import "AIActivityHandler.h"
 #import "AIActivityPackage.h"
+#import "AITestsUtil.h"
 
 @interface AIActivityHandlerTests : XCTestCase
 
@@ -45,11 +46,13 @@
 - (void)testFirstRun
 {
     //  deleting the activity state file to simulate a first session
-    XCTAssert([AIActivityHandlerTests deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
     
     //  create handler and start the first session
     id<AIActivityHandler> activityHandler = [AIAdjustIoFactory activityHandlerWithAppToken:@"123456789012"];
-    
+
+    // it's necessary to sleep the activity for a while after each handler call
+    //  to let the internal queue act
     [NSThread sleepForTimeInterval:1.0];
     
     //  test that the file did not exist in the first run of the application
@@ -102,34 +105,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 }
 
-+ (NSString *)getFilename:(NSString *)filename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filepath = [path stringByAppendingPathComponent:filename];
-    return filepath;
-}
 
-+ (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock {
-    NSString *filepath = [AIActivityHandlerTests getFilename:filename];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error = nil;
-    BOOL exists = [fileManager fileExistsAtPath:filepath];
-    if (!exists) {
-        [loggerMock test:@"file %@ does not exist at path %@", filename, filepath];
-        return  YES;
-    }
-    BOOL deleted = [fileManager removeItemAtPath:filepath error:&error];
-    
-    if (!deleted) {
-        [loggerMock test:@"unable to delete file %@ at path %@", filename, filepath];
-    }
-    
-    if (error) {
-        [loggerMock test:@"error (%@) deleting file %@", [error localizedDescription], filename];
-    }
-    
-    return deleted;
-}
 
 
 @end
