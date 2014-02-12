@@ -15,7 +15,6 @@ static NSString * const prefix = @"AIPackageHandler ";
 @interface AIPackageHandlerMock()
 
 @property (nonatomic, strong) AILoggerMock *loggerMock;
-@property (nonatomic, copy) NSMutableArray *packageQueue;
 @property (nonatomic, assign) id<AIActivityHandler> activityHandler;
 
 @end

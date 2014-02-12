@@ -10,4 +10,6 @@
 
 @interface AIPackageHandlerMock : NSObject <AIPackageHandler>
 
+@property (nonatomic, strong) NSMutableArray *packageQueue;
+
 @end

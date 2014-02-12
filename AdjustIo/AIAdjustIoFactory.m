@@ -34,19 +34,19 @@ static id<AILogger> internalLogger = nil;
     return [internalRequestHandler initWithPackageHandler:packageHandler];
 }
 
++ (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken {
+    if (internalActivityHandler == nil) {
+        return [AIActivityHandler handlerWithAppToken:appToken];
+    }
+    return [internalActivityHandler initWithAppToken:appToken];
+}
+
 + (id<AILogger>)logger {
     if (internalLogger == nil) {
         //  same instance of logger
         internalLogger = [[AILogger alloc] init];
     }
     return internalLogger;
-}
-
-+ (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken {
-    if (internalActivityHandler == nil) {
-        return [AIActivityHandler handlerWithAppToken:appToken];
-    }
-    return [internalActivityHandler initWithAppToken:appToken];
 }
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler {

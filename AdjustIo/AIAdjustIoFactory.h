@@ -18,11 +18,12 @@
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler;
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
-+ (id<AILogger>)logger;
 + (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken;
++ (id<AILogger>)logger;
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;
++ (void)setActivityHandler:(id<AIActivityHandler>)activityHandler;
 + (void)setLogger:(id<AILogger>)logger;
 
 @end

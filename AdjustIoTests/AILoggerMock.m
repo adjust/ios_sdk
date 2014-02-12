@@ -56,7 +56,7 @@ static NSString * const kLogTag = @"AdjustIoTests";
 }
 
 - (void)setLogLevel:(AILogLevel)logLevel {
-    [self test:@"AILogger setLogLevel:(%@)", logLevel];
+    [self test:@"AILogger setLogLevel logLevel:%@", logLevel];
 }
 
 - (void)test:(NSString *)format, ... {

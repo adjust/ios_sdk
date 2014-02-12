@@ -7,8 +7,15 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "AIAdjustIoFactory.h"
+#import "AILoggerMock.h"
+#import "AIActivityHandlerMock.h"
+#import "AIRequestHandlerMock.h"
 
 @interface AIPackageHandlerTests : XCTestCase
+
+@property (atomic,strong) AILoggerMock *loggerMock;
+@property (atomic,strong) AIRequestHandlerMock *requestHandlerMock;
 
 @end
 
@@ -18,6 +25,13 @@
 {
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
+
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustIoFactory setLogger:self.loggerMock];
+
+    [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
+    self.requestHandlerMock = [AIRequestHandlerMock alloc];
+    [AIAdjustIoFactory setRequestHandler:self.requestHandlerMock];
 }
 
 - (void)tearDown
