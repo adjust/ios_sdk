@@ -59,6 +59,7 @@ calls to `AdjustIo`:
 [AdjustIo appDidLaunch:@"{YourAppToken}"];
 [AdjustIo setLogLevel:AILogLevelInfo];
 [AdjustIo setEnvironment:AIEnvironmentSandbox];
+[AdjustIo setDelegate:self];
 ```
 ![][delegate]
 
