@@ -70,6 +70,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     // connection error
     if (error != nil) {
         AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
+        responseData.willRetry = YES;
         [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, responseData.error];
         [self.packageHandler closeFirstPackage];
