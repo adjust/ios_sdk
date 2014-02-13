@@ -1,6 +1,6 @@
 //
 //  AIActivityHandlerTests.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "AILoggerMock.h"
 #import "AIPackageHandlerMock.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AIActivityHandler.h"
 #import "AIActivityPackage.h"
 #import "AITestsUtil.h"
@@ -29,16 +29,16 @@
     // Put setup code here; it will be run once, before the first test case.
     
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
     
     self.packageHandlerMock = [AIPackageHandlerMock alloc];
-    [AIAdjustIoFactory setPackageHandler:self.packageHandlerMock];
+    [AIAdjustFactory setPackageHandler:self.packageHandlerMock];
 }
 
 - (void)tearDown
 {
-    [AIAdjustIoFactory setPackageHandler:nil];
-    [AIAdjustIoFactory setLogger:nil];
+    [AIAdjustFactory setPackageHandler:nil];
+    [AIAdjustFactory setLogger:nil];
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
 }
@@ -49,7 +49,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
     
     //  create handler and start the first session
-    id<AIActivityHandler> activityHandler = [AIAdjustIoFactory activityHandlerWithAppToken:@"123456789012"];
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     // it's necessary to sleep the activity for a while after each handler call
     //  to let the internal queue act

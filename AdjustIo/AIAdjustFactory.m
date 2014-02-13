@@ -1,12 +1,12 @@
 //
-//  AIAdjustIoFactory.m
-//  AdjustIo
+//  AIAdjustFactory.m
+//  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AIActivityHandler.h"
 #import "AIPackageHandler.h"
 #import "AIRequestHandler.h"
@@ -17,7 +17,7 @@ static id<AIRequestHandler> internalRequestHandler = nil;
 static id<AIActivityHandler> internalActivityHandler = nil;
 static id<AILogger> internalLogger = nil;
 
-@implementation AIAdjustIoFactory
+@implementation AIAdjustFactory
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler {
     if (internalPackageHandler == nil) {

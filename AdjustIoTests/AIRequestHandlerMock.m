@@ -1,6 +1,6 @@
 //
 //  AIRequestHandlerMock.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "AIRequestHandlerMock.h"
 #import "AILoggerMock.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AIResponseData.h"
 
 static NSString * const prefix = @"AIRequestHandler ";
@@ -27,7 +27,7 @@ static NSString * const prefix = @"AIRequestHandler ";
     if (self == nil) return nil;
     
     self.packageHandler = packageHandler;
-    self.loggerMock = (AILoggerMock *) [AIAdjustIoFactory logger];
+    self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
     
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithPackageHandler"]];
 

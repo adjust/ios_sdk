@@ -1,14 +1,14 @@
 //
-//  AdjustIo.m
-//  AdjustIo
+//  Adjust.m
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2012-07-23.
 //  Copyright (c) 2012-2013 adeven. All rights reserved.
 //
 
-#import "AdjustIo.h"
+#import "Adjust.h"
 #import "AIActivityHandler.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 #if !__has_feature(objc_arc)
 #error AdjustIo requires ARC
@@ -19,10 +19,10 @@ static id<AIActivityHandler> activityHandler;
 static id<AILogger> logger;
 
 #pragma mark -
-@implementation AdjustIo
+@implementation Adjust
 
 + (void)appDidLaunch:(NSString *)yourAppToken {
-    activityHandler = [AIAdjustIoFactory activityHandlerWithAppToken:yourAppToken];
+    activityHandler = [AIAdjustFactory activityHandlerWithAppToken:yourAppToken];
 }
 
 + (void)setDelegate:(NSObject<AdjustIoDelegate> *)delegate {
@@ -57,11 +57,11 @@ static id<AILogger> logger;
 }
 
 + (void)setLogLevel:(AILogLevel)logLevel {
-    [AIAdjustIoFactory.logger setLogLevel:logLevel];
+    [AIAdjustFactory.logger setLogLevel:logLevel];
 }
 
 + (void)setEnvironment:(NSString *)environment {
-    id<AILogger> logger = AIAdjustIoFactory.logger;
+    id<AILogger> logger = AIAdjustFactory.logger;
     if (activityHandler == nil) {
         [logger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
     } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
@@ -79,22 +79,22 @@ static id<AILogger> logger;
 
 + (void)setEventBufferingEnabled:(BOOL)enabled {
     if (activityHandler == nil) {
-        [AIAdjustIoFactory.logger error:@"Please call `setEventBufferingEnabled` after `appDidLaunch`!"];
+        [AIAdjustFactory.logger error:@"Please call `setEventBufferingEnabled` after `appDidLaunch`!"];
         return;
     }
 
     activityHandler.bufferEvents = enabled;
-    if (enabled) [AIAdjustIoFactory.logger info:@"Event buffering is enabled"];
+    if (enabled) [AIAdjustFactory.logger info:@"Event buffering is enabled"];
 }
 
 + (void)setMacMd5TrackingEnabled:(BOOL)enabled {
     if (activityHandler == nil) {
-        [AIAdjustIoFactory.logger error:@"Please call `setMacMd5TrackingEnabled` after `appDidLaunch`!"];
+        [AIAdjustFactory.logger error:@"Please call `setMacMd5TrackingEnabled` after `appDidLaunch`!"];
         return;
     }
 
     activityHandler.trackMacMd5 = enabled;
-    [AIAdjustIoFactory.logger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
+    [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
 }
 
 @end

@@ -1,6 +1,6 @@
 //
 //  AIPackageHandlerMock.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "AIPackageHandlerMock.h"
 #import "AILoggerMock.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 static NSString * const prefix = @"AIPackageHandler ";
 
@@ -31,7 +31,7 @@ static NSString * const prefix = @"AIPackageHandler ";
     
     self.activityHandler = activityHandler;
     
-    self.loggerMock = (AILoggerMock *) [AIAdjustIoFactory logger];
+    self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
     self.packageQueue = [NSMutableArray array];
     
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];

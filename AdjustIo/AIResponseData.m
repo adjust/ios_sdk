@@ -1,6 +1,6 @@
 //
 //  AIResponseData.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 07.02.14.
 //  Copyright (c) 2014 adeven. All rights reserved.

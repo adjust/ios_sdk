@@ -1,6 +1,6 @@
 //
 //  AIActivityKind.h
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 11.02.14.
 //  Copyright (c) 2014 adeven. All rights reserved.

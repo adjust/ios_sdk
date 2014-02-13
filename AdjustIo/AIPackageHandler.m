@@ -1,6 +1,6 @@
 //
 //  AIPackageHandler.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2013-07-03.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -13,7 +13,7 @@
 #import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -92,8 +92,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 #pragma mark - internal
 - (void)initInternal {
-    self.requestHandler = [AIAdjustIoFactory requestHandlerForPackageHandler:self];
-    self.logger = AIAdjustIoFactory.logger;
+    self.requestHandler = [AIAdjustFactory requestHandlerForPackageHandler:self];
+    self.logger = AIAdjustFactory.logger;
     self.sendingSemaphore = dispatch_semaphore_create(1);
     [self readPackageQueue];
 }

@@ -1,13 +1,13 @@
 //
 //  AIRequestHandlerTests.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AILoggerMock.h"
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
 #import "AIPackageHandlerMock.h"
@@ -32,16 +32,16 @@
     // Put setup code here; it will be run once, before the first test case.
 
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     self.packageHandlerMock = [[AIPackageHandlerMock alloc] init];
-    self.requestHandler =[AIAdjustIoFactory requestHandlerForPackageHandler:self.packageHandlerMock];
+    self.requestHandler =[AIAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
 
 }
 
 - (void)tearDown
 {
-    [AIAdjustIoFactory setLogger:nil];
+    [AIAdjustFactory setLogger:nil];
 
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
@@ -51,7 +51,7 @@
 {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     //  set the connection to respond OK
     [NSURLConnection setConnectionError:NO];
@@ -87,7 +87,7 @@
 - (void)testConnectionError {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     //  set the connection to return error on the connection
     [NSURLConnection setConnectionError:YES];
@@ -121,7 +121,7 @@
 - (void)testResponseError {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     //  set the response to return an error
     [NSURLConnection setConnectionError:NO];

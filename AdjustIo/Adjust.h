@@ -1,6 +1,6 @@
 //
-//  AdjustIo.h
-//  AdjustIo
+//  Adjust.h
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2012-07-23.
 //  Copyright (c) 2012-2013 adeven. All rights reserved.
@@ -23,7 +23,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  * Use the methods of this class to tell AdjustIo about the usage of your app.
  * See the README for details.
  */
-@interface AdjustIo : NSObject
+@interface Adjust : NSObject
 
 /**
  * Tell AdjustIo that the application did launch.

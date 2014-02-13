@@ -1,6 +1,6 @@
 //
 //  AIRequestHandler.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2013-07-04.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -13,7 +13,7 @@
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "NSString+AIAdditions.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 static const double kRequestTimeout = 60; // 60 seconds
@@ -43,7 +43,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
-    self.logger = AIAdjustIoFactory.logger;
+    self.logger = AIAdjustFactory.logger;
     self.baseUrl = [NSURL URLWithString:AIUtil.baseUrl];
 
     return self;

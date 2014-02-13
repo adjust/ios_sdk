@@ -1,20 +1,20 @@
 //
-//  AIAdjustIoFactory.h
-//  AdjustIo
+//  AIAdjustFactory.h
+//  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 #import <Foundation/Foundation.h>
 
-@class AdjustIo;
+@class Adjust;
 
 @protocol AIPackageHandler;
 @protocol AIRequestHandler;
 @protocol AIActivityHandler;
 @protocol AILogger;
 
-@interface AIAdjustIoFactory : NSObject
+@interface AIAdjustFactory : NSObject
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler;
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;

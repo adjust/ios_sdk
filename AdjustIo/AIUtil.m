@@ -1,6 +1,6 @@
 //
 //  AIUtil.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2013-07-05.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -9,7 +9,7 @@
 #import "AIUtil.h"
 #import "AILogger.h"
 #import "UIDevice+AIAdditions.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 #include <sys/xattr.h>
 
@@ -80,7 +80,7 @@ static NSString * const kClientSdk = @"ios3.0.0";
     NSURL *url = [NSURL fileURLWithPath:path];
     const char* filePath = [[url path] fileSystemRepresentation];
     const char* attrName = "com.apple.MobileBackup";
-    id<AILogger> logger = AIAdjustIoFactory.logger;
+    id<AILogger> logger = AIAdjustFactory.logger;
 
     if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
         u_int8_t attrValue = 1;

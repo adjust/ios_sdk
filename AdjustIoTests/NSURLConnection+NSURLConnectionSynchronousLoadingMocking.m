@@ -1,12 +1,12 @@
 //
 //  NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 12/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AILoggerMock.h"
 
 static BOOL triggerConnectionError = NO;
@@ -15,7 +15,7 @@ static BOOL triggerResponseError = NO;
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock) 
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error {
-    AILoggerMock *loggerMock =(AILoggerMock *)[AIAdjustIoFactory logger];
+    AILoggerMock *loggerMock =(AILoggerMock *)[AIAdjustFactory logger];
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
     if (triggerConnectionError) {

@@ -1,13 +1,13 @@
 //
 //  AIPackageHandlerTests.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 #import "AILoggerMock.h"
 #import "AIActivityHandlerMock.h"
 #import "AIRequestHandlerMock.h"
@@ -28,16 +28,16 @@
     // Put setup code here; it will be run once, before the first test case.
 
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustIoFactory setRequestHandler:self.requestHandlerMock];
+    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
 }
 
 - (void)tearDown
 {
-    [AIAdjustIoFactory setRequestHandler:nil];
-    [AIAdjustIoFactory setLogger:nil];
+    [AIAdjustFactory setRequestHandler:nil];
+    [AIAdjustFactory setLogger:nil];
 
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
@@ -47,17 +47,17 @@
 {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustIoFactory setRequestHandler:self.requestHandlerMock];
+    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:activityHandler];
+    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  enable sending packages to Request Handler
     [packageHandler resumeSending];
@@ -100,14 +100,14 @@
 - (void) testPaused {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustIoFactory setRequestHandler:self.requestHandlerMock];
+    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:activityHandler];
+    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  disable sending packages to Request Handler
     [packageHandler pauseSending];
@@ -136,17 +136,17 @@
 - (void) testMultiplePackages {
     //  reseting to make the test order independent
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustIoFactory setLogger:self.loggerMock];
+    [AIAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustIoFactory setRequestHandler:self.requestHandlerMock];
+    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:activityHandler];
+    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  enable sending packages to Request Handler
     [packageHandler resumeSending];
@@ -158,7 +158,7 @@
 
     //  create a new package handler to simulate a new launch
     [NSThread sleepForTimeInterval:1.0];
-    packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:activityHandler];
+    packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  try to send two packages without closing the first
     [packageHandler sendFirstPackage];

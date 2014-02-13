@@ -1,6 +1,6 @@
 //
 //  AIActivityHandler.m
-//  AdjustIo
+//  Adjust
 //
 //  Created by Christian Wellenbrock on 2013-07-01.
 //  Copyright (c) 2013 adeven. All rights reserved.
@@ -16,7 +16,7 @@
 #import "AIUtil.h"
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
-#import "AIAdjustIoFactory.h"
+#import "AIAdjustFactory.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
@@ -67,7 +67,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.clientSdk     = AIUtil.clientSdk;
-    self.logger        = AIAdjustIoFactory.logger;
+    self.logger        = AIAdjustFactory.logger;
 
     // default values
     self.environment = @"unknown";
@@ -129,7 +129,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
 
-    self.packageHandler = [AIAdjustIoFactory packageHandlerForActivityHandler:self];
+    self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
     [self readActivityState];
 
     [self startInternal];

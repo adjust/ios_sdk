@@ -1,6 +1,6 @@
 //
 //  AITestsUtil.h
-//  AdjustIo
+//  Adjust
 //
 //  Created by Pedro Filipe on 12/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
