@@ -7,6 +7,7 @@
 //
 
 #import "AIResponseData.h"
+#import "NSString+AIAdditions.h"
 
 @implementation AIResponseData
 
@@ -26,7 +27,7 @@
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     if (error != nil) {
-        self.error = [NSString stringWithFormat:@"Failed to parse json response: %@", jsonString];
+        self.error = [NSString stringWithFormat:@"Failed to parse json response: %@", jsonString.aiTrim];
         return self;
     }
 
@@ -52,14 +53,14 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:'%@']",
+    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:%@]",
             self.activityKindString,
             self.success,
             //  TODO, ask welle where willRetry is set
             self.willRetry,
-            self.error,
+            self.error.aiQuote,
             self.trackerToken,
-            self.trackerName];
+            self.trackerName.aiQuote];
 }
 
 @end

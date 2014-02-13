@@ -55,6 +55,4 @@
 // (session, event, revenue), see above
 - (NSString *)activityKindString;
 
-
-
 @end

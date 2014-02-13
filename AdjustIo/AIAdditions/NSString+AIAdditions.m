@@ -16,6 +16,17 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (NSString *)aiQuote {
+    if (self == nil) {
+        return self;
+    }
+
+    if ([self rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location != NSNotFound) {
+        return [NSString stringWithFormat:@"'%@'", self];
+    }
+    return self;
+}
+
 - (NSString *)aiMd5 {
     const char *cStr = [self UTF8String];
     unsigned char digest[16];
