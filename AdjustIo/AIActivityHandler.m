@@ -67,6 +67,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.clientSdk     = AIUtil.clientSdk;
+    self.logger        = AIAdjustIoFactory.logger;
 
     // default values
     self.environment = @"unknown";
@@ -114,9 +115,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
-    // create logger before executing the checks that might use it
-    self.logger = AIAdjustIoFactory.logger;
-
     if (![self checkAppTokenNotNil:yourAppToken]) return;
     if (![self checkAppTokenLength:yourAppToken]) return;
 
