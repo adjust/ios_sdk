@@ -12,4 +12,7 @@
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
++ (void)setConnectionError:(BOOL)connection;
++ (void)setResponseError:(BOOL)response;
+
 @end

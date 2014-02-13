@@ -55,6 +55,7 @@
     return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:'%@']",
             self.activityKindString,
             self.success,
+            //  TODO, ask welle where willRetry is set
             self.willRetry,
             self.error,
             self.trackerToken,

@@ -41,8 +41,6 @@
 		96F0018918ABAE0300612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
 		96F0018A18ABAE0400612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
 		96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0018C18ABC0C800612200 /* AITestsUtil.m */; };
-		96F0018F18ABD47800612200 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F0018E18ABD47800612200 /* OCMock.framework */; };
-		96F0019018ABD47800612200 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F0018E18ABD47800612200 /* OCMock.framework */; };
 		96F0019618ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0019518ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
 /* End PBXBuildFile section */
 
@@ -123,7 +121,6 @@
 		96E9144C18A5211D00F01294 /* AIAdjustIoFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIAdjustIoFactory.m; sourceTree = "<group>"; };
 		96F0018B18ABC0C800612200 /* AITestsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITestsUtil.h; sourceTree = "<group>"; };
 		96F0018C18ABC0C800612200 /* AITestsUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITestsUtil.m; sourceTree = "<group>"; };
-		96F0018E18ABD47800612200 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
 		96F0019418ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"; sourceTree = "<group>"; };
 		96F0019518ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,7 +130,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96F0018F18ABD47800612200 /* OCMock.framework in Frameworks */,
 				96E913D118A4F06B00F01294 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,7 +139,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E913DF18A4F06B00F01294 /* XCTest.framework in Frameworks */,
-				96F0019018ABD47800612200 /* OCMock.framework in Frameworks */,
 				96E913E218A4F06B00F01294 /* UIKit.framework in Frameworks */,
 				96E913E518A4F06B00F01294 /* libAdjustIo.a in Frameworks */,
 				96E913E018A4F06B00F01294 /* Foundation.framework in Frameworks */,
@@ -175,7 +170,6 @@
 		96E913CF18A4F06B00F01294 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				96F0018E18ABD47800612200 /* OCMock.framework */,
 				96E913D018A4F06B00F01294 /* Foundation.framework */,
 				96E913DE18A4F06B00F01294 /* XCTest.framework */,
 				96E913E118A4F06B00F01294 /* UIKit.framework */,

@@ -5,11 +5,12 @@
 //  Created by Pedro Filipe on 12/02/14.
 //  Copyright (c) 2014 adeven. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
 #import "AIAdjustIoFactory.h"
 #import "AILoggerMock.h"
+
+static BOOL triggerConnectionError = NO;
+static BOOL triggerResponseError = NO;
 
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock) 
 
@@ -17,15 +18,40 @@
     AILoggerMock *loggerMock =(AILoggerMock *)[AIAdjustIoFactory logger];
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
+    if (triggerConnectionError) {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Connection error", nil) };
+        (*error) = [NSError errorWithDomain:@"AIAdjustIO"
+                                             code:-57 
+                                         userInfo:userInfo];
+        return nil;
+    }
+    NSInteger statusCode;
+    NSString * sResponseBase64;
+    if (triggerResponseError) {
+        statusCode = 0;
+        //  encoded from "{"error":"response error","tracker_token":"token","tracker_name":"name"}"
+        sResponseBase64 = @"eyJlcnJvciI6InJlc3BvbnNlIGVycm9yIiwidHJhY2tlcl90b2tlbiI6InRva2VuIiwidHJhY2tlcl9uYW1lIjoibmFtZSJ9";
+    } else {
+        statusCode = 200;
+        //  encoded from "{"tracker_token":"token","tracker_name":"name"}"
+        sResponseBase64 = @"eyJ0cmFja2VyX3Rva2VuIjoidG9rZW4iLCJ0cmFja2VyX25hbWUiOiJuYW1lIn0=";
+    }
     //  build response
-    (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:200 HTTPVersion:@"" headerFields:nil];
+    (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
 
-    //  encoded message reads "{"tracker_token":"token","tracker_name":"name"}"
     NSData *responseData = [[NSData alloc]
-        initWithBase64EncodedString:@"eyJ0cmFja2VyX3Rva2VuIjoidG9rZW4iLCJ0cmFja2VyX25hbWUiOiJuYW1lIn0="
+        initWithBase64EncodedString:sResponseBase64
         options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
     return responseData;
+}
+
++ (void)setConnectionError:(BOOL)connection {
+    triggerConnectionError = connection;
+}
+
++ (void)setResponseError:(BOOL)response {
+    triggerResponseError = response;
 }
 
 @end

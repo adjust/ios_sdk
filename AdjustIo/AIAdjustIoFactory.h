@@ -20,7 +20,6 @@
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken;
 + (id<AILogger>)logger;
-+ (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;

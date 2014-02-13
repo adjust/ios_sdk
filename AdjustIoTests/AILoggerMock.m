@@ -46,12 +46,12 @@ static NSString * const kLogTag = @"AdjustIoTests";
     for (int i = 0; i < [logArray count]; i++) {
         NSString *logMessage = logArray[i];
         if ([logMessage hasPrefix:beginsWith]) {
-            [self test:[beginsWith stringByAppendingString:@" found"]];
-            [logArray removeObjectsInRange:NSMakeRange(0, i)];
+            [logArray removeObjectsInRange:NSMakeRange(0, i + 1)];
+            NSLog(@"%@ found", beginsWith);
             return YES;
         }
     }
-    [self test:[beginsWith stringByAppendingFormat:@" not in (%@)", [logArray componentsJoinedByString:@","]]];
+    NSLog(@"%@ not in (%@)", beginsWith, [logArray componentsJoinedByString:@","]);
     return NO;
 }
 
