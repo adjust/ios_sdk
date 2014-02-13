@@ -9,6 +9,7 @@
 #import "AIRequestHandlerMock.h"
 #import "AILoggerMock.h"
 #import "AIAdjustIoFactory.h"
+#import "AIResponseData.h"
 
 static NSString * const prefix = @"AIRequestHandler ";
 
@@ -29,13 +30,31 @@ static NSString * const prefix = @"AIRequestHandler ";
     self.loggerMock = (AILoggerMock *) [AIAdjustIoFactory logger];
     
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithPackageHandler"]];
+
+    self.connectionError = NO;
     
     return self;
 }
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
-    [self.packageHandler sendNextPackage];
+
+    AIResponseData *responseData;
+    
+    if (self.connectionError) {
+        responseData = [[AIResponseData alloc] initWithError:@"connection error"];
+    } else {
+        responseData = [[AIResponseData alloc] initWithJsonString:@"{\"tracker_token\":\"token\",\"tracker_name\":\"name\"}"];
+    }
+
+    [self.packageHandler finishedTrackingActivity:activityPackage withResponse:responseData];
+
+    if (self.connectionError) {
+        [self.packageHandler closeFirstPackage];
+    } else {
+        [self.packageHandler sendNextPackage];
+    }
 }
+
 
 @end

@@ -19,7 +19,7 @@ static BOOL triggerResponseError = NO;
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
     if (triggerConnectionError) {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Connection error", nil) };
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"connection error", nil) };
         (*error) = [NSError errorWithDomain:@"AIAdjustIO"
                                              code:-57 
                                          userInfo:userInfo];

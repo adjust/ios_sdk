@@ -10,4 +10,7 @@
 #import "AIRequestHandler.h"
 
 @interface AIRequestHandlerMock : NSObject <AIRequestHandler>
+
+@property (nonatomic, assign) BOOL connectionError;
+
 @end

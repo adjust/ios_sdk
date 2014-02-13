@@ -49,6 +49,10 @@
 
 - (void)testSendPackage
 {
+    //  reseting to make the test order independent
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustIoFactory setLogger:self.loggerMock];
+
     //  set the connection to respond OK
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:NO];
@@ -67,8 +71,8 @@
 
     //  check the response data, the kind is unknown because is set by the package handler
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:1 willRetry:0 error:(null) trackerToken:token trackerName:'name']"],
-                   @"%@", self.loggerMock);
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:1 willRetry:0 error:(null) trackerToken:token trackerName:name]"],
+                   @"%@", sresponseData);
 
     //  check that the package was successfully sent
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Tracked session"],
@@ -81,6 +85,10 @@
 }
 
 - (void)testConnectionError {
+    //  reseting to make the test order independent
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustIoFactory setLogger:self.loggerMock];
+
     //  set the connection to return error on the connection
     [NSURLConnection setConnectionError:YES];
     [NSURLConnection setResponseError:NO];
@@ -98,10 +106,10 @@
 
     //  check the response data,
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:1 error:Connection error trackerToken:(null) trackerName:'(null)']"],
-              @"%@", self.loggerMock);
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:1 error:'connection error' trackerToken:(null) trackerName:(null)]"], @"%@", sresponseData);
+
     //  check that the package was successfully sent
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. (Connection error) Will retry later."],
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. (connection error) Will retry later."],
               @"%@", self.loggerMock);
 
     //  check that the package handler was called to close the package to retry later
@@ -111,6 +119,10 @@
 }
 
 - (void)testResponseError {
+    //  reseting to make the test order independent
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustIoFactory setLogger:self.loggerMock];
+
     //  set the response to return an error
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:YES];
@@ -126,12 +138,13 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler finishedTrackingActivity"],
               @"%@", self.loggerMock);
 
+    //  check the response data,
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    [self.loggerMock test:sresponseData];
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:0 error:'response error' trackerToken:token trackerName:name]"], @"%@", sresponseData);
 
     //  check that the package was successfully sent
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. ({\"error\":\"response error\",\"tracker_token\":\"token\",\"tracker_name\":\"name\"})"],
-              @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. (response error)"],
+              @"%@", sresponseData);
 
     //  check that the package handler was called to send the next package
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendNextPackage"],
