@@ -53,13 +53,13 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:'%@']",
+    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:%@]",
             self.activityKindString,
             self.success,
             self.willRetry,
-            self.error,
+            self.error.aiQuote,
             self.trackerToken,
-            self.trackerName];
+            self.trackerName.aiQuote];
 }
 
 @end
