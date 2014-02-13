@@ -65,5 +65,4 @@ static id<AILogger> internalLogger = nil;
     internalLogger = logger;
 }
 
-
 @end

@@ -21,6 +21,10 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 @implementation AIPackageHandlerMock
 
+- (id)init {
+    return [self initWithActivityHandler:nil];
+}
+
 - (id)initWithActivityHandler:(id<AIActivityHandler>)activityHandler {
     self = [super init];
     if (self == nil) return nil;
@@ -62,6 +66,7 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 - (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
     [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
+    self.responseData = response;
 }
 
 @end

@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 
+@property (nonatomic, strong) AIResponseData *responseData;
+
 @end
