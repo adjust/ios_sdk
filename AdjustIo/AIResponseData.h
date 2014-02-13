@@ -13,7 +13,7 @@
 /*
  * Information about the result of a tracking attempt
  *
- * Will be passed to the delegate function adjustIoFinishedTrackingWithResponse:
+ * Will be passed to the delegate function adjustFinishedTrackingWithResponse:
  */
 @interface AIResponseData : NSObject
 

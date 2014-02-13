@@ -9,7 +9,7 @@
 #import "AILogger.h"
 #import "AIResponseData.h"
 
-@protocol AdjustIoDelegate;
+@protocol AdjustDelegate;
 
 /**
  * Constants for our supported tracking environments.
@@ -18,17 +18,17 @@ static NSString * const AIEnvironmentSandbox    = @"sandbox";
 static NSString * const AIEnvironmentProduction = @"production";
 
 /**
- * The main interface to AdjustIo.
+ * The main interface to Adjust.
  *
- * Use the methods of this class to tell AdjustIo about the usage of your app.
+ * Use the methods of this class to tell Adjust about the usage of your app.
  * See the README for details.
  */
 @interface Adjust : NSObject
 
 /**
- * Tell AdjustIo that the application did launch.
+ * Tell Adjust that the application did launch.
  *
- * This is required to initialize AdjustIo. Call this in the didFinishLaunching
+ * This is required to initialize Adjust. Call this in the didFinishLaunching
  * method of your AppDelegate.
  *
  * @param appToken The App Token of your app. This unique identifier can
@@ -40,15 +40,15 @@ static NSString * const AIEnvironmentProduction = @"production";
 /**
  * Set the optional delegate that will get informed about tracking results
  *
- * See the AdjustIoDelegate declaration below for details
+ * See the AdjustDelegate declaration below for details
  *
  * @param delegate The delegate that might implement the optional delegate
- *     methods like adjustIoFinishedTrackingWithResponse:
+ *     methods like adjustFinishedTrackingWithResponse:
  */
-+ (void)setDelegate:(id<AdjustIoDelegate>)delegate;
++ (void)setDelegate:(id<AdjustDelegate>)delegate;
 
 /**
- * Tell AdjustIo that a particular event has happened.
+ * Tell Adjust that a particular event has happened.
  *
  * In your dashboard at http://adjust.io you can assign a callback URL to each
  * event type. That URL will get called every time the event is triggered. On
@@ -64,7 +64,7 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
- * Tell AdjustIo that a user generated some revenue.
+ * Tell Adjust that a user generated some revenue.
  *
  * The amount is measured in cents and rounded to on digit after the
  * decimal point. If you want to differentiate between several revenue
@@ -81,9 +81,9 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
 
 /**
- * Change the verbosity of AdjustIo's logs.
+ * Change the verbosity of Adjust's logs.
  *
- * You can increase or reduce the amount of logs from AdjustIo by passing
+ * You can increase or reduce the amount of logs from Adjust by passing
  * one of the following parameters. Use Log.ASSERT to disable all logging.
  *
  * @param logLevel The desired minimum log level (default: info)
@@ -137,7 +137,7 @@ static NSString * const AIEnvironmentProduction = @"production";
 /**
  * Optional delegate that will get informed about tracking results
  */
-@protocol  AdjustIoDelegate
+@protocol  AdjustDelegate
 @optional
 
 /**
@@ -146,6 +146,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  * @param responseData The response data containing information about the activity
  *     and it's server response. See AIResponseData for details.
  */
-- (void)adjustIoFinishedTrackingWithResponse:(AIResponseData *)responseData;
+- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
 @end

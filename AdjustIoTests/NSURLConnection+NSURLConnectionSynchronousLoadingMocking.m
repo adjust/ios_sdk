@@ -20,7 +20,7 @@ static BOOL triggerResponseError = NO;
 
     if (triggerConnectionError) {
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"connection error", nil) };
-        (*error) = [NSError errorWithDomain:@"AIAdjustIO"
+        (*error) = [NSError errorWithDomain:@"Adjust"
                                              code:-57 
                                          userInfo:userInfo];
         return nil;

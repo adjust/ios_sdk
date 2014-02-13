@@ -8,7 +8,7 @@
 
 #import "AILoggerMock.h"
 
-static NSString * const kLogTag = @"AdjustIoTests";
+static NSString * const kLogTag = @"AdjustTests";
 
 @interface AILoggerMock()
 

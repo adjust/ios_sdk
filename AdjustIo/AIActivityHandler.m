@@ -265,8 +265,8 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response {
-    if ([self.delegate respondsToSelector:@selector(adjustIoFinishedTrackingWithResponse:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(adjustIoFinishedTrackingWithResponse:)
+    if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
                                         withObject:response waitUntilDone:NO];
     }
 }

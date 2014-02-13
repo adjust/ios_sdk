@@ -11,7 +11,7 @@
 #import "AIAdjustFactory.h"
 
 #if !__has_feature(objc_arc)
-#error AdjustIo requires ARC
+#error Adjust requires ARC
 // see README for details
 #endif
 
@@ -25,7 +25,7 @@ static id<AILogger> logger;
     activityHandler = [AIAdjustFactory activityHandlerWithAppToken:yourAppToken];
 }
 
-+ (void)setDelegate:(NSObject<AdjustIoDelegate> *)delegate {
++ (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     [activityHandler setDelegate:delegate];
 }
 
@@ -66,10 +66,10 @@ static id<AILogger> logger;
         [logger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
     } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
         activityHandler.environment = environment;
-        [logger assert:@"SANDBOX: AdjustIo is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
+        [logger assert:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
     } else if ([environment isEqualToString:AIEnvironmentProduction]) {
         activityHandler.environment = environment;
-        [logger assert:@"PRODUCTION: AdjustIo is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
+        [logger assert:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
         [logger setLogLevel:AILogLevelAssert];
     } else {
         activityHandler.environment = @"malformed";

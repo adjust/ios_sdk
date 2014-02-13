@@ -8,7 +8,7 @@
 
 #import "AILogger.h"
 
-static NSString * const kLogTag = @"AdjustIo";
+static NSString * const kLogTag = @"Adjust";
 
 @interface AILogger()
 

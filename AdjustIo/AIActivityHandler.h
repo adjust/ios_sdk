@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
-@property (nonatomic, assign) NSObject<AdjustIoDelegate> *delegate;
+@property (nonatomic, assign) NSObject<AdjustDelegate> *delegate;
 
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;
