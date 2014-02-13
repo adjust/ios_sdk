@@ -7,39 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FF8AC9C18AD54870065977B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC7C18AD54870065977B /* Adjust.m */; };
+		7FF8AC9D18AD54870065977B /* AIActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC7E18AD54870065977B /* AIActivityHandler.m */; };
+		7FF8AC9E18AD54870065977B /* AIActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8018AD54870065977B /* AIActivityKind.m */; };
+		7FF8AC9F18AD54870065977B /* AIActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8218AD54870065977B /* AIActivityPackage.m */; };
+		7FF8ACA018AD54870065977B /* AIActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8418AD54870065977B /* AIActivityState.m */; };
+		7FF8ACA118AD54870065977B /* NSData+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8718AD54870065977B /* NSData+AIAdditions.m */; };
+		7FF8ACA218AD54870065977B /* NSString+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8918AD54870065977B /* NSString+AIAdditions.m */; };
+		7FF8ACA318AD54870065977B /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8B18AD54870065977B /* UIDevice+AIAdditions.m */; };
+		7FF8ACA418AD54870065977B /* AIAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8D18AD54870065977B /* AIAdjustFactory.m */; };
+		7FF8ACA518AD54870065977B /* AILogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC8F18AD54870065977B /* AILogger.m */; };
+		7FF8ACA618AD54870065977B /* AIPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9118AD54870065977B /* AIPackageBuilder.m */; };
+		7FF8ACA718AD54870065977B /* AIPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9318AD54870065977B /* AIPackageHandler.m */; };
+		7FF8ACA818AD54870065977B /* AIRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9518AD54870065977B /* AIRequestHandler.m */; };
+		7FF8ACA918AD54870065977B /* AIResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9718AD54870065977B /* AIResponseData.m */; };
+		7FF8ACAA18AD54870065977B /* AITimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9918AD54870065977B /* AITimer.m */; };
+		7FF8ACAB18AD54870065977B /* AIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8AC9B18AD54870065977B /* AIUtil.m */; };
 		9649D79F18A9053F0026AA0E /* AIPackageHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D79E18A9053F0026AA0E /* AIPackageHandlerMock.m */; };
 		9649D7A218A907280026AA0E /* AILoggerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D7A118A907280026AA0E /* AILoggerMock.m */; };
 		9649D7A518A91FA20026AA0E /* AIRequestHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */; };
 		9695105018AA770C0072B6D7 /* AIActivityHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9695104F18AA770C0072B6D7 /* AIActivityHandlerMock.m */; };
-		9695105318AA820D0072B6D7 /* AIActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9695105218AA820D0072B6D7 /* AIActivityKind.m */; };
-		9695105618AA82460072B6D7 /* AIResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9695105518AA82460072B6D7 /* AIResponseData.m */; };
 		96E913D118A4F06B00F01294 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913D018A4F06B00F01294 /* Foundation.framework */; };
-		96E913D618A4F06B00F01294 /* Adjust.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 96E913D518A4F06B00F01294 /* Adjust.h */; };
-		96E913D818A4F06B00F01294 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913D718A4F06B00F01294 /* Adjust.m */; };
 		96E913DF18A4F06B00F01294 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913DE18A4F06B00F01294 /* XCTest.framework */; };
 		96E913E018A4F06B00F01294 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913D018A4F06B00F01294 /* Foundation.framework */; };
 		96E913E218A4F06B00F01294 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913E118A4F06B00F01294 /* UIKit.framework */; };
 		96E913E518A4F06B00F01294 /* libAdjustIo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E913CD18A4F06B00F01294 /* libAdjustIo.a */; };
 		96E913EB18A4F06B00F01294 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96E913E918A4F06B00F01294 /* InfoPlist.strings */; };
-		96E9140818A4F11B00F01294 /* AIActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913F718A4F11B00F01294 /* AIActivityHandler.m */; };
-		96E9140918A4F11B00F01294 /* AIActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913F918A4F11B00F01294 /* AIActivityPackage.m */; };
-		96E9140A18A4F11B00F01294 /* AIActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913FB18A4F11B00F01294 /* AIActivityState.m */; };
-		96E9140B18A4F11B00F01294 /* AILogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913FD18A4F11B00F01294 /* AILogger.m */; };
-		96E9140C18A4F11B00F01294 /* AIPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E913FF18A4F11B00F01294 /* AIPackageBuilder.m */; };
-		96E9140D18A4F11B00F01294 /* AIPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9140118A4F11B00F01294 /* AIPackageHandler.m */; };
-		96E9140E18A4F11B00F01294 /* AIRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9140318A4F11B00F01294 /* AIRequestHandler.m */; };
-		96E9140F18A4F11B00F01294 /* AITimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9140518A4F11B00F01294 /* AITimer.m */; };
-		96E9141018A4F11B00F01294 /* AIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9140718A4F11B00F01294 /* AIUtil.m */; };
-		96E9141818A4F13000F01294 /* NSData+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141318A4F13000F01294 /* NSData+AIAdditions.m */; };
-		96E9141918A4F13000F01294 /* NSString+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141518A4F13000F01294 /* NSString+AIAdditions.m */; };
 		96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */; };
 		96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */; };
 		96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144918A5126100F01294 /* AIRequestHandlerTests.m */; };
-		96E9144D18A5211D00F01294 /* AIAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144C18A5211D00F01294 /* AIAdjustFactory.m */; };
-		96F0018718ABADC200612200 /* NSString+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141518A4F13000F01294 /* NSString+AIAdditions.m */; };
-		96F0018818ABADFD00612200 /* NSData+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141318A4F13000F01294 /* NSData+AIAdditions.m */; };
-		96F0018918ABAE0300612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
-		96F0018A18ABAE0400612200 /* UIDevice+AIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */; };
 		96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0018C18ABC0C800612200 /* AITestsUtil.m */; };
 		96F0019618ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0019518ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
 /* End PBXBuildFile section */
@@ -61,64 +57,63 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				96E913D618A4F06B00F01294 /* Adjust.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7FF8AC7A18AD54870065977B /* Adjust-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Adjust-Prefix.pch"; sourceTree = "<group>"; };
+		7FF8AC7B18AD54870065977B /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
+		7FF8AC7C18AD54870065977B /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
+		7FF8AC7D18AD54870065977B /* AIActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandler.h; sourceTree = "<group>"; };
+		7FF8AC7E18AD54870065977B /* AIActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandler.m; sourceTree = "<group>"; };
+		7FF8AC7F18AD54870065977B /* AIActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityKind.h; sourceTree = "<group>"; };
+		7FF8AC8018AD54870065977B /* AIActivityKind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityKind.m; sourceTree = "<group>"; };
+		7FF8AC8118AD54870065977B /* AIActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityPackage.h; sourceTree = "<group>"; };
+		7FF8AC8218AD54870065977B /* AIActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityPackage.m; sourceTree = "<group>"; };
+		7FF8AC8318AD54870065977B /* AIActivityState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityState.h; sourceTree = "<group>"; };
+		7FF8AC8418AD54870065977B /* AIActivityState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityState.m; sourceTree = "<group>"; };
+		7FF8AC8618AD54870065977B /* NSData+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AIAdditions.h"; sourceTree = "<group>"; };
+		7FF8AC8718AD54870065977B /* NSData+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AIAdditions.m"; sourceTree = "<group>"; };
+		7FF8AC8818AD54870065977B /* NSString+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AIAdditions.h"; sourceTree = "<group>"; };
+		7FF8AC8918AD54870065977B /* NSString+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AIAdditions.m"; sourceTree = "<group>"; };
+		7FF8AC8A18AD54870065977B /* UIDevice+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+AIAdditions.h"; sourceTree = "<group>"; };
+		7FF8AC8B18AD54870065977B /* UIDevice+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+AIAdditions.m"; sourceTree = "<group>"; };
+		7FF8AC8C18AD54870065977B /* AIAdjustFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIAdjustFactory.h; sourceTree = "<group>"; };
+		7FF8AC8D18AD54870065977B /* AIAdjustFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIAdjustFactory.m; sourceTree = "<group>"; };
+		7FF8AC8E18AD54870065977B /* AILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AILogger.h; sourceTree = "<group>"; };
+		7FF8AC8F18AD54870065977B /* AILogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AILogger.m; sourceTree = "<group>"; };
+		7FF8AC9018AD54870065977B /* AIPackageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageBuilder.h; sourceTree = "<group>"; };
+		7FF8AC9118AD54870065977B /* AIPackageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageBuilder.m; sourceTree = "<group>"; };
+		7FF8AC9218AD54870065977B /* AIPackageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageHandler.h; sourceTree = "<group>"; };
+		7FF8AC9318AD54870065977B /* AIPackageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandler.m; sourceTree = "<group>"; };
+		7FF8AC9418AD54870065977B /* AIRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandler.h; sourceTree = "<group>"; };
+		7FF8AC9518AD54870065977B /* AIRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandler.m; sourceTree = "<group>"; };
+		7FF8AC9618AD54870065977B /* AIResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIResponseData.h; sourceTree = "<group>"; };
+		7FF8AC9718AD54870065977B /* AIResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIResponseData.m; sourceTree = "<group>"; };
+		7FF8AC9818AD54870065977B /* AITimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITimer.h; sourceTree = "<group>"; };
+		7FF8AC9918AD54870065977B /* AITimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITimer.m; sourceTree = "<group>"; };
+		7FF8AC9A18AD54870065977B /* AIUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIUtil.h; sourceTree = "<group>"; };
+		7FF8AC9B18AD54870065977B /* AIUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIUtil.m; sourceTree = "<group>"; };
 		9649D79D18A9053F0026AA0E /* AIPackageHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageHandlerMock.h; sourceTree = "<group>"; };
 		9649D79E18A9053F0026AA0E /* AIPackageHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerMock.m; sourceTree = "<group>"; };
 		9649D7A018A907280026AA0E /* AILoggerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AILoggerMock.h; sourceTree = "<group>"; };
 		9649D7A118A907280026AA0E /* AILoggerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AILoggerMock.m; sourceTree = "<group>"; };
 		9649D7A318A91FA20026AA0E /* AIRequestHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandlerMock.h; sourceTree = "<group>"; };
 		9649D7A418A91FA20026AA0E /* AIRequestHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerMock.m; sourceTree = "<group>"; };
-		9695104A18AA69160072B6D7 /* AdjustIo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AdjustIo-Prefix.pch"; sourceTree = "<group>"; };
 		9695104E18AA770C0072B6D7 /* AIActivityHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandlerMock.h; sourceTree = "<group>"; };
 		9695104F18AA770C0072B6D7 /* AIActivityHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerMock.m; sourceTree = "<group>"; };
-		9695105118AA820D0072B6D7 /* AIActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityKind.h; sourceTree = "<group>"; };
-		9695105218AA820D0072B6D7 /* AIActivityKind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityKind.m; sourceTree = "<group>"; };
-		9695105418AA82460072B6D7 /* AIResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIResponseData.h; sourceTree = "<group>"; };
-		9695105518AA82460072B6D7 /* AIResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIResponseData.m; sourceTree = "<group>"; };
 		96E913CD18A4F06B00F01294 /* libAdjustIo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustIo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E913D018A4F06B00F01294 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		96E913D518A4F06B00F01294 /* Adjust.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
-		96E913D718A4F06B00F01294 /* Adjust.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		96E913DD18A4F06B00F01294 /* AdjustIoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustIoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E913DE18A4F06B00F01294 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		96E913E118A4F06B00F01294 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		96E913E818A4F06B00F01294 /* AdjustIoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AdjustIoTests-Info.plist"; sourceTree = "<group>"; };
 		96E913EA18A4F06B00F01294 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		96E913F618A4F11B00F01294 /* AIActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandler.h; sourceTree = "<group>"; };
-		96E913F718A4F11B00F01294 /* AIActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandler.m; sourceTree = "<group>"; };
-		96E913F818A4F11B00F01294 /* AIActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityPackage.h; sourceTree = "<group>"; };
-		96E913F918A4F11B00F01294 /* AIActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityPackage.m; sourceTree = "<group>"; };
-		96E913FA18A4F11B00F01294 /* AIActivityState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityState.h; sourceTree = "<group>"; };
-		96E913FB18A4F11B00F01294 /* AIActivityState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityState.m; sourceTree = "<group>"; };
-		96E913FC18A4F11B00F01294 /* AILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AILogger.h; sourceTree = "<group>"; };
-		96E913FD18A4F11B00F01294 /* AILogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AILogger.m; sourceTree = "<group>"; };
-		96E913FE18A4F11B00F01294 /* AIPackageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageBuilder.h; sourceTree = "<group>"; };
-		96E913FF18A4F11B00F01294 /* AIPackageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageBuilder.m; sourceTree = "<group>"; };
-		96E9140018A4F11B00F01294 /* AIPackageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageHandler.h; sourceTree = "<group>"; };
-		96E9140118A4F11B00F01294 /* AIPackageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandler.m; sourceTree = "<group>"; };
-		96E9140218A4F11B00F01294 /* AIRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandler.h; sourceTree = "<group>"; };
-		96E9140318A4F11B00F01294 /* AIRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandler.m; sourceTree = "<group>"; };
-		96E9140418A4F11B00F01294 /* AITimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITimer.h; sourceTree = "<group>"; };
-		96E9140518A4F11B00F01294 /* AITimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITimer.m; sourceTree = "<group>"; };
-		96E9140618A4F11B00F01294 /* AIUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIUtil.h; sourceTree = "<group>"; };
-		96E9140718A4F11B00F01294 /* AIUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIUtil.m; sourceTree = "<group>"; };
-		96E9141218A4F13000F01294 /* NSData+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AIAdditions.h"; sourceTree = "<group>"; };
-		96E9141318A4F13000F01294 /* NSData+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AIAdditions.m"; sourceTree = "<group>"; };
-		96E9141418A4F13000F01294 /* NSString+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AIAdditions.h"; sourceTree = "<group>"; };
-		96E9141518A4F13000F01294 /* NSString+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AIAdditions.m"; sourceTree = "<group>"; };
-		96E9141618A4F13000F01294 /* UIDevice+AIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+AIAdditions.h"; sourceTree = "<group>"; };
-		96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+AIAdditions.m"; sourceTree = "<group>"; };
 		96E9144518A5122A00F01294 /* AIActivityHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerTests.m; sourceTree = "<group>"; };
 		96E9144718A5124C00F01294 /* AIPackageHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerTests.m; sourceTree = "<group>"; };
 		96E9144918A5126100F01294 /* AIRequestHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerTests.m; sourceTree = "<group>"; };
-		96E9144B18A5211D00F01294 /* AIAdjustFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIAdjustFactory.h; sourceTree = "<group>"; };
-		96E9144C18A5211D00F01294 /* AIAdjustFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIAdjustFactory.m; sourceTree = "<group>"; };
 		96F0018B18ABC0C800612200 /* AITestsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITestsUtil.h; sourceTree = "<group>"; };
 		96F0018C18ABC0C800612200 /* AITestsUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITestsUtil.m; sourceTree = "<group>"; };
 		96F0019418ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"; sourceTree = "<group>"; };
@@ -148,10 +143,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7FF8AC7918AD54870065977B /* Adjust */ = {
+			isa = PBXGroup;
+			children = (
+				7FF8AC7A18AD54870065977B /* Adjust-Prefix.pch */,
+				7FF8AC7B18AD54870065977B /* Adjust.h */,
+				7FF8AC7C18AD54870065977B /* Adjust.m */,
+				7FF8AC7D18AD54870065977B /* AIActivityHandler.h */,
+				7FF8AC7E18AD54870065977B /* AIActivityHandler.m */,
+				7FF8AC7F18AD54870065977B /* AIActivityKind.h */,
+				7FF8AC8018AD54870065977B /* AIActivityKind.m */,
+				7FF8AC8118AD54870065977B /* AIActivityPackage.h */,
+				7FF8AC8218AD54870065977B /* AIActivityPackage.m */,
+				7FF8AC8318AD54870065977B /* AIActivityState.h */,
+				7FF8AC8418AD54870065977B /* AIActivityState.m */,
+				7FF8AC8518AD54870065977B /* AIAdditions */,
+				7FF8AC8C18AD54870065977B /* AIAdjustFactory.h */,
+				7FF8AC8D18AD54870065977B /* AIAdjustFactory.m */,
+				7FF8AC8E18AD54870065977B /* AILogger.h */,
+				7FF8AC8F18AD54870065977B /* AILogger.m */,
+				7FF8AC9018AD54870065977B /* AIPackageBuilder.h */,
+				7FF8AC9118AD54870065977B /* AIPackageBuilder.m */,
+				7FF8AC9218AD54870065977B /* AIPackageHandler.h */,
+				7FF8AC9318AD54870065977B /* AIPackageHandler.m */,
+				7FF8AC9418AD54870065977B /* AIRequestHandler.h */,
+				7FF8AC9518AD54870065977B /* AIRequestHandler.m */,
+				7FF8AC9618AD54870065977B /* AIResponseData.h */,
+				7FF8AC9718AD54870065977B /* AIResponseData.m */,
+				7FF8AC9818AD54870065977B /* AITimer.h */,
+				7FF8AC9918AD54870065977B /* AITimer.m */,
+				7FF8AC9A18AD54870065977B /* AIUtil.h */,
+				7FF8AC9B18AD54870065977B /* AIUtil.m */,
+			);
+			path = Adjust;
+			sourceTree = "<group>";
+		};
+		7FF8AC8518AD54870065977B /* AIAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				7FF8AC8618AD54870065977B /* NSData+AIAdditions.h */,
+				7FF8AC8718AD54870065977B /* NSData+AIAdditions.m */,
+				7FF8AC8818AD54870065977B /* NSString+AIAdditions.h */,
+				7FF8AC8918AD54870065977B /* NSString+AIAdditions.m */,
+				7FF8AC8A18AD54870065977B /* UIDevice+AIAdditions.h */,
+				7FF8AC8B18AD54870065977B /* UIDevice+AIAdditions.m */,
+			);
+			path = AIAdditions;
+			sourceTree = "<group>";
+		};
 		96E913C418A4F06B00F01294 = {
 			isa = PBXGroup;
 			children = (
-				96E913D218A4F06B00F01294 /* AdjustIo */,
+				7FF8AC7918AD54870065977B /* Adjust */,
 				96E913E618A4F06B00F01294 /* AdjustIoTests */,
 				96E913CF18A4F06B00F01294 /* Frameworks */,
 				96E913CE18A4F06B00F01294 /* Products */,
@@ -175,49 +218,6 @@
 				96E913E118A4F06B00F01294 /* UIKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		96E913D218A4F06B00F01294 /* AdjustIo */ = {
-			isa = PBXGroup;
-			children = (
-				96E913D518A4F06B00F01294 /* Adjust.h */,
-				96E913D718A4F06B00F01294 /* Adjust.m */,
-				96E913F618A4F11B00F01294 /* AIActivityHandler.h */,
-				96E913F718A4F11B00F01294 /* AIActivityHandler.m */,
-				9695105118AA820D0072B6D7 /* AIActivityKind.h */,
-				9695105218AA820D0072B6D7 /* AIActivityKind.m */,
-				96E913F818A4F11B00F01294 /* AIActivityPackage.h */,
-				96E913F918A4F11B00F01294 /* AIActivityPackage.m */,
-				96E913FA18A4F11B00F01294 /* AIActivityState.h */,
-				96E913FB18A4F11B00F01294 /* AIActivityState.m */,
-				96E9141118A4F13000F01294 /* AIAdditions */,
-				96E9144B18A5211D00F01294 /* AIAdjustFactory.h */,
-				96E9144C18A5211D00F01294 /* AIAdjustFactory.m */,
-				96E913FC18A4F11B00F01294 /* AILogger.h */,
-				96E913FD18A4F11B00F01294 /* AILogger.m */,
-				96E913FE18A4F11B00F01294 /* AIPackageBuilder.h */,
-				96E913FF18A4F11B00F01294 /* AIPackageBuilder.m */,
-				96E9140018A4F11B00F01294 /* AIPackageHandler.h */,
-				96E9140118A4F11B00F01294 /* AIPackageHandler.m */,
-				96E9140218A4F11B00F01294 /* AIRequestHandler.h */,
-				96E9140318A4F11B00F01294 /* AIRequestHandler.m */,
-				9695105418AA82460072B6D7 /* AIResponseData.h */,
-				9695105518AA82460072B6D7 /* AIResponseData.m */,
-				96E9140418A4F11B00F01294 /* AITimer.h */,
-				96E9140518A4F11B00F01294 /* AITimer.m */,
-				96E9140618A4F11B00F01294 /* AIUtil.h */,
-				96E9140718A4F11B00F01294 /* AIUtil.m */,
-				96E913D318A4F06B00F01294 /* Supporting Files */,
-			);
-			path = AdjustIo;
-			sourceTree = "<group>";
-		};
-		96E913D318A4F06B00F01294 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9695104A18AA69160072B6D7 /* AdjustIo-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		96E913E618A4F06B00F01294 /* AdjustIoTests */ = {
@@ -250,19 +250,6 @@
 				96E913E918A4F06B00F01294 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		96E9141118A4F13000F01294 /* AIAdditions */ = {
-			isa = PBXGroup;
-			children = (
-				96E9141218A4F13000F01294 /* NSData+AIAdditions.h */,
-				96E9141318A4F13000F01294 /* NSData+AIAdditions.m */,
-				96E9141418A4F13000F01294 /* NSString+AIAdditions.h */,
-				96E9141518A4F13000F01294 /* NSString+AIAdditions.m */,
-				96E9141618A4F13000F01294 /* UIDevice+AIAdditions.h */,
-				96E9141718A4F13000F01294 /* UIDevice+AIAdditions.m */,
-			);
-			path = AIAdditions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,22 +333,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E9140A18A4F11B00F01294 /* AIActivityState.m in Sources */,
-				96E9141818A4F13000F01294 /* NSData+AIAdditions.m in Sources */,
-				96E9144D18A5211D00F01294 /* AIAdjustFactory.m in Sources */,
-				96F0018A18ABAE0400612200 /* UIDevice+AIAdditions.m in Sources */,
-				96E9140D18A4F11B00F01294 /* AIPackageHandler.m in Sources */,
-				9695105318AA820D0072B6D7 /* AIActivityKind.m in Sources */,
-				96E913D818A4F06B00F01294 /* Adjust.m in Sources */,
-				96E9140B18A4F11B00F01294 /* AILogger.m in Sources */,
-				96E9140918A4F11B00F01294 /* AIActivityPackage.m in Sources */,
-				96E9141018A4F11B00F01294 /* AIUtil.m in Sources */,
-				96E9140C18A4F11B00F01294 /* AIPackageBuilder.m in Sources */,
-				96E9140E18A4F11B00F01294 /* AIRequestHandler.m in Sources */,
-				96E9141918A4F13000F01294 /* NSString+AIAdditions.m in Sources */,
-				96E9140F18A4F11B00F01294 /* AITimer.m in Sources */,
-				9695105618AA82460072B6D7 /* AIResponseData.m in Sources */,
-				96E9140818A4F11B00F01294 /* AIActivityHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,17 +341,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E9144818A5124C00F01294 /* AIPackageHandlerTests.m in Sources */,
-				96F0018918ABAE0300612200 /* UIDevice+AIAdditions.m in Sources */,
 				9649D7A218A907280026AA0E /* AILoggerMock.m in Sources */,
-				96F0018718ABADC200612200 /* NSString+AIAdditions.m in Sources */,
+				7FF8AC9D18AD54870065977B /* AIActivityHandler.m in Sources */,
 				96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */,
+				7FF8ACA818AD54870065977B /* AIRequestHandler.m in Sources */,
+				7FF8ACAB18AD54870065977B /* AIUtil.m in Sources */,
 				96F0019618ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */,
+				7FF8AC9C18AD54870065977B /* Adjust.m in Sources */,
+				7FF8ACAA18AD54870065977B /* AITimer.m in Sources */,
+				7FF8ACA918AD54870065977B /* AIResponseData.m in Sources */,
 				9695105018AA770C0072B6D7 /* AIActivityHandlerMock.m in Sources */,
 				96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */,
-				96F0018818ABADFD00612200 /* NSData+AIAdditions.m in Sources */,
+				7FF8ACA118AD54870065977B /* NSData+AIAdditions.m in Sources */,
+				7FF8ACA318AD54870065977B /* UIDevice+AIAdditions.m in Sources */,
+				7FF8AC9E18AD54870065977B /* AIActivityKind.m in Sources */,
+				7FF8AC9F18AD54870065977B /* AIActivityPackage.m in Sources */,
+				7FF8ACA018AD54870065977B /* AIActivityState.m in Sources */,
 				9649D79F18A9053F0026AA0E /* AIPackageHandlerMock.m in Sources */,
+				7FF8ACA218AD54870065977B /* NSString+AIAdditions.m in Sources */,
+				7FF8ACA718AD54870065977B /* AIPackageHandler.m in Sources */,
 				9649D7A518A91FA20026AA0E /* AIRequestHandlerMock.m in Sources */,
 				96E9144618A5122A00F01294 /* AIActivityHandlerTests.m in Sources */,
+				7FF8ACA518AD54870065977B /* AILogger.m in Sources */,
+				7FF8ACA618AD54870065977B /* AIPackageBuilder.m in Sources */,
+				7FF8ACA418AD54870065977B /* AIAdjustFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +505,7 @@
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustIo/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "Adjust/Adjust-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -543,7 +527,7 @@
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustIo/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "Adjust/Adjust-Prefix.pch";
 				INFOPLIST_FILE = "AdjustIoTests/AdjustIoTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
