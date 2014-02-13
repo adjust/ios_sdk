@@ -1,6 +1,6 @@
-## Migrate your AdjustIo SDK for iOS from v1.x to v2.2.0
+## Migrate your Adjust SDK for iOS from v1.x to v2.2.0
 
-1. Delete the old `AdjustIo` source folder from your Xcode project. Download
+1. Delete the old `Adjust` source folder from your Xcode project. Download
    version v2.2.0 and drag the new folder into your Xcode project.
 
     ![][drag]
@@ -8,14 +8,14 @@
 2. In the Project Navigator open the source file your Application Delegate. Add
     the `import` statement at the top of the file. In the `didFinishLaunching` or
     `didFinishLaunchingWithOptions` method of your App Delegate add the following
-    calls to `AdjustIo`:
+    calls to `Adjust`:
 
     ```objc
-    #import "AdjustIo.h"
+    #import "Adjust.h"
     // ...
-    [AdjustIo appDidLaunch:@"{YourAppToken}"];
-    [AdjustIo setLogLevel:AILogLevelInfo];
-    [AdjustIo setEnvironment:AIEnvironmentSandbox];
+    [Adjust appDidLaunch:@"{YourAppToken}"];
+    [Adjust setLogLevel:AILogLevelInfo];
+    [Adjust setEnvironment:AIEnvironmentSandbox];
     ```
     ![][delegate]
 
@@ -25,20 +25,20 @@
     `setLogLevel:` with one of the following parameters:
 
     ```objc
-    [AdjustIo setLogLevel:AILogLevelVerbose]; // enable all logging
-    [AdjustIo setLogLevel:AILogLevelDebug];   // enable more logging
-    [AdjustIo setLogLevel:AILogLevelInfo];    // the default
-    [AdjustIo setLogLevel:AILogLevelWarn];    // disable info logging
-    [AdjustIo setLogLevel:AILogLevelError];   // disable warnings as well
-    [AdjustIo setLogLevel:AILogLevelAssert];  // disable errors as well
+    [Adjust setLogLevel:AILogLevelVerbose]; // enable all logging
+    [Adjust setLogLevel:AILogLevelDebug];   // enable more logging
+    [Adjust setLogLevel:AILogLevelInfo];    // the default
+    [Adjust setLogLevel:AILogLevelWarn];    // disable info logging
+    [Adjust setLogLevel:AILogLevelError];   // disable warnings as well
+    [Adjust setLogLevel:AILogLevelAssert];  // disable errors as well
     ```
 
     Depending on whether or not you build your app for testing or for production
     you must call `setEnvironment:` with one of these parameters:
 
     ```objc
-    [AdjustIo setEnvironment:AIEnvironmentSandbox];
-    [AdjustIo setEnvironment:AIEnvironmentProduction];
+    [Adjust setEnvironment:AIEnvironmentSandbox];
+    [Adjust setEnvironment:AIEnvironmentProduction];
     ```
 
     **Important:** This value should be set to `AIEnvironmentSandbox` if and only
@@ -55,16 +55,16 @@
 2. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
-2. The AdjustIo SDK for iOS 2.2.0 uses [ARC][arc]. If you haven't done already,
+2. The Adjust SDK for iOS 2.2.0 uses [ARC][arc]. If you haven't done already,
    we recommend [transitioning your project to use ARC][transition] as well. If
    you don't want to use ARC, you have to enable ARC for all files of the
-   AdjustIo SDK. Please consult the [README] for details.
+   Adjust SDK. Please consult the [README] for details.
 
-3. Remove all calls to `[+AdjustIo setLoggingEnabled:]`. Logging is now enabled
-   by default and its verbosity can be changed with the new `[AdjustIo
+3. Remove all calls to `[+Adjust setLoggingEnabled:]`. Logging is now enabled
+   by default and its verbosity can be changed with the new `[Adjust
    setLogLevel:]` method. See the [README] for details.
 
-4. Rename all calls to `[+AdjustIo userGeneratedRevenue:...]` to `[+AdjustIo
+4. Rename all calls to `[+Adjust userGeneratedRevenue:...]` to `[+Adjust
    trackRevenue:...]`. We renamed these methods to make the names more
    consistent. The amount parameter is now of type `double`, so you can drop
    the `f` suffixes in number literals (`12.3f` becomes `12.3`).

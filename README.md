@@ -1,11 +1,11 @@
 ## Summary
 
-This is the iOS SDK of AdjustIo. You can read more about AdjustIo at
+This is the iOS SDK of Adjust. You can read more about Adjust at
 [adjust.io].
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the AdjustIo SDK into your
+These are the minimal steps required to integrate the Adjust SDK into your
 iOS project. We are going to assume that you use Xcode for your iOS
 development.
 
@@ -13,7 +13,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'AdjustIO', :git => 'git://github.com/adeven/adjust_ios_sdk.git', :tag => 'v2.2.0'
+pod 'Adjust', :git => 'git://github.com/adeven/adjust_ios_sdk.git', :tag => 'v2.2.0'
 ```
 
 ### 1. Get the SDK
@@ -24,7 +24,7 @@ archive in a folder of your choice.
 ### 2. Add it to your project
 
 In Xcode's Project Navigator locate the `Supporting Files` group (or any other
-group of your choice). From Finder drag the `AdjustIo` subdirectory into
+group of your choice). From Finder drag the `Adjust` subdirectory into
 Xcode's `Supporting Files` group.
 
 ![][drag]
@@ -46,20 +46,20 @@ attribute `Required` to `Optional`.
 
 ![][framework]
 
-### 4. Integrate AdjustIo into your app
+### 4. Integrate Adjust into your app
 
 In the Project Navigator open the source file your Application Delegate. Add
 the `import` statement at the top of the file. In the `didFinishLaunching` or
 `didFinishLaunchingWithOptions` method of your App Delegate add the following
-calls to `AdjustIo`:
+calls to `Adjust`:
 
 ```objc
-#import "AdjustIo.h"
+#import "Adjust.h"
 // ...
-[AdjustIo appDidLaunch:@"{YourAppToken}"];
-[AdjustIo setLogLevel:AILogLevelInfo];
-[AdjustIo setEnvironment:AIEnvironmentSandbox];
-[AdjustIo setDelegate:self];
+[Adjust appDidLaunch:@"{YourAppToken}"];
+[Adjust setLogLevel:AILogLevelInfo];
+[Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setDelegate:self];
 ```
 ![][delegate]
 
@@ -69,20 +69,20 @@ You can increase or decrease the amount of logs you see by calling
 `setLogLevel:` with one of the following parameters:
 
 ```objc
-[AdjustIo setLogLevel:AILogLevelVerbose]; // enable all logging
-[AdjustIo setLogLevel:AILogLevelDebug];   // enable more logging
-[AdjustIo setLogLevel:AILogLevelInfo];    // the default
-[AdjustIo setLogLevel:AILogLevelWarn];    // disable info logging
-[AdjustIo setLogLevel:AILogLevelError];   // disable warnings as well
-[AdjustIo setLogLevel:AILogLevelAssert];  // disable errors as well
+[Adjust setLogLevel:AILogLevelVerbose]; // enable all logging
+[Adjust setLogLevel:AILogLevelDebug];   // enable more logging
+[Adjust setLogLevel:AILogLevelInfo];    // the default
+[Adjust setLogLevel:AILogLevelWarn];    // disable info logging
+[Adjust setLogLevel:AILogLevelError];   // disable warnings as well
+[Adjust setLogLevel:AILogLevelAssert];  // disable errors as well
 ```
 
 Depending on whether or not you build your app for testing or for production
 you must call `setEnvironment:` with one of these parameters:
 
 ```objc
-[AdjustIo setEnvironment:AIEnvironmentSandbox];
-[AdjustIo setEnvironment:AIEnvironmentProduction];
+[Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setEnvironment:AIEnvironmentProduction];
 ```
 
 **Important:** This value should be set to `AIEnvironmentSandbox` if and only
@@ -98,7 +98,7 @@ meaningful at all times! Especially if you are tracking revenue.
 ### 5. Build your app
 
 Build and run your app. If the build succeeds, you successfully integrated
-AdjustIo into your app. After the app launched, you should see the debug log
+Adjust into your app. After the app launched, you should see the debug log
 `Tracked session start`.
 
 ![][run]
@@ -106,35 +106,35 @@ AdjustIo into your app. After the app launched, you should see the debug log
 #### Troubleshooting
 
 - If your build failed because of many duplicate symbols, you were probably
-  already using AFNetwork before integrating AdjustIo. Just remove the
-  `AdjustIo/AFNetworking` group from your Project Navigator to resolve this
+  already using AFNetwork before integrating Adjust. Just remove the
+  `Adjust/AFNetworking` group from your Project Navigator to resolve this
   issue.
 
-- If your build failed with the error `AdjustIo requires ARC`, it looks like
+- If your build failed with the error `Adjust requires ARC`, it looks like
   your project is not using [ARC][arc]. In that case we recommend
   [transitioning your project to use ARC][transition]. If you don't want to
-  use ARC, you have to enable ARC for all source files of AdjustIo in the
+  use ARC, you have to enable ARC for all source files of Adjust in the
   target's Build Phases:
 
-    Expand the `Compile Sources` group, select all AdjustIo files (AjustIo,
+    Expand the `Compile Sources` group, select all Adjust files (AjustIo,
     AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler
     Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
     all at once).
 
 ## Additional features
 
-Once you integrated the AdjustIo SDK into your project, you can take advantage
+Once you integrated the Adjust SDK into your project, you can take advantage
 of the following features.
 
 ### Add tracking of custom events.
 
-You can tell AdjustIo about every event you want. Suppose you want to track
+You can tell Adjust about every event you want. Suppose you want to track
 every tap on a button. You would have to create a new Event Token in your
 [dashboard]. Let's say that Event Token is `abc123`. In your button's
 `buttonDown` method you could then add the following line to track the click:
 
 ```objc
-[AdjustIo trackEvent:@"abc123"];
+[Adjust trackEvent:@"abc123"];
 ```
 
 You can also register a callback URL for that event in your [dashboard] and we
@@ -151,7 +151,7 @@ execute the following lines:
 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 [parameters setObject:@"value" forKey:@"key"];
 [parameters setObject:@"bar"   forKey:@"foo"];
-[AdjustIo trackEvent:@"abc123" withParameters:parameters];
+[Adjust trackEvent:@"abc123" withParameters:parameters];
 ```
 
 In that case we would track the event and send a request to:
@@ -172,7 +172,7 @@ in-app purchases you can track those revenues. If, for example, a click is
 worth one cent, you could make the following call to track that revenue:
 
 ```objc
-[AdjustIo trackRevenue:1.0];
+[Adjust trackRevenue:1.0];
 ```
 
 The parameter is supposed to be in cents and will get rounded to one decimal
@@ -181,7 +181,7 @@ get different Event Tokens for each kind. Again, you need to create those Event
 Tokens in your [dashboard]. In that case you would make a call like this:
 
 ```objc
-[AdjustIo trackRevenue:1.0 forEvent:@"abc123"];
+[Adjust trackRevenue:1.0 forEvent:@"abc123"];
 ```
 
 Again, you can register a callback and provide a dictionary of named
@@ -191,7 +191,7 @@ parameters, just like it worked with normal events.
 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 [parameters setObject:@"value" forKey:@"key"];
 [parameters setObject:@"bar"   forKey:@"foo"];
-[AdjustIo trackRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
+[Adjust trackRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
 ```
 
 If you want to track In-App Purchases, please make sure to call `trackRevenue`
@@ -204,7 +204,7 @@ state changed to `SKPaymentTransactionStatePurchased`:
         switch (transaction.transactionState) {
             case SKPaymentTransactionStatePurchased:
                 [self finishTransaction:transaction];
-                [AdjustIo trackRevenue:...];
+                [Adjust trackRevenue:...];
                 break;
             // more cases
         }
@@ -220,7 +220,7 @@ event buffering by adding the following line after your `setEnvironment:` call
 in the `didFinishLaunching` method of your Application Delegate:
 
 ```objc
-[AdjustIo setEventBufferingEnabled:YES];
+[Adjust setEventBufferingEnabled:YES];
 ```
 
 [adjust.io]: http://adjust.io
