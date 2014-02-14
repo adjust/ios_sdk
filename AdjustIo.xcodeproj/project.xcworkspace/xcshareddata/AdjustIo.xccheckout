@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>13E048FD-E792-464F-AD3C-78F6DBFCB0DB</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AdjustIo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>721308F3-3749-4DBE-A630-4BE178874714</key>
+		<string>https://github.com/adeven/adjust_ios_sdk.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AdjustIo.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>721308F3-3749-4DBE-A630-4BE178874714</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/adeven/adjust_ios_sdk.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>721308F3-3749-4DBE-A630-4BE178874714</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>721308F3-3749-4DBE-A630-4BE178874714</string>
+			<key>IDESourceControlWCCName</key>
+			<string>adjust_ios_sdk</string>
+		</dict>
+	</array>
+</dict>
+</plist>
