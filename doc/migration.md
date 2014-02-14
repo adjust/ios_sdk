@@ -76,7 +76,7 @@ meaningful at all times! Especially if you are tracking revenue.
 1. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
-2. The Adjust SDK for iOS 2.2.0 uses [ARC][arc]. If you haven't done already,
+2. The Adjust SDK for iOS 3.0.0 uses [ARC][arc]. If you haven't done already,
    we recommend [transitioning your project to use ARC][transition] as well. If
    you don't want to use ARC, you have to enable ARC for all files of the
    Adjust SDK. Please consult the [README] for details.
