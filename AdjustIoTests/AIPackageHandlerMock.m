@@ -9,6 +9,8 @@
 #import "AIPackageHandlerMock.h"
 #import "AILoggerMock.h"
 #import "AIAdjustFactory.h"
+#import "AIActivityHandler.h"
+#import "AIResponseData.h"
 
 static NSString * const prefix = @"AIPackageHandler ";
 
@@ -31,7 +33,7 @@ static NSString * const prefix = @"AIPackageHandler ";
     
     self.activityHandler = activityHandler;
     
-    self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
+    self.loggerMock = (AILoggerMock *) AIAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
     
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
@@ -46,6 +48,7 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 - (void)sendFirstPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendFirstPackage"]];
+    [self.activityHandler finishedTrackingWithResponse:[[AIResponseData alloc] init]];
 }
 
 - (void)sendNextPackage {

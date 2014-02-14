@@ -20,10 +20,14 @@
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken;
 + (id<AILogger>)logger;
++ (double)sessionInterval;
++ (double)subsessionInterval;
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;
 + (void)setActivityHandler:(id<AIActivityHandler>)activityHandler;
 + (void)setLogger:(id<AILogger>)logger;
++ (void)setSessionInterval:(double)sessionInterval;
++ (void)setSubsessionInterval:(double)subsessionInterval;
 
 @end

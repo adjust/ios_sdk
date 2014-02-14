@@ -13,7 +13,7 @@ static NSString * const kLogTag = @"AdjustTests";
 @interface AILoggerMock()
 
 @property (nonatomic, strong) NSMutableString *logBuffer;
-@property (nonatomic, assign) NSDictionary *logMap;
+@property (nonatomic, strong) NSDictionary *logMap;
 
 @end
 
@@ -33,7 +33,7 @@ static NSString * const kLogTag = @"AdjustTests";
         @5 : [NSMutableArray array],
         @6 : [NSMutableArray array],
     };
-    
+
     return self;
 }
 
@@ -106,7 +106,7 @@ static NSString * const kLogTag = @"AdjustTests";
     
     NSMutableArray *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     [logArray addObject:formatedMessage];
-    
+
     NSArray *lines = [formatedMessage componentsSeparatedByString:@"\n"];
     for (NSString *line in lines) {
         NSLog(@"\t[%@]%@: %@", kLogTag, logPrefix, line);

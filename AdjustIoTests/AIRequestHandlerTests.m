@@ -31,11 +31,7 @@
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
 
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-
-    self.packageHandlerMock = [[AIPackageHandlerMock alloc] init];
-    self.requestHandler =[AIAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
+    [self reset];
 
 }
 
@@ -47,11 +43,18 @@
     [super tearDown];
 }
 
+- (void)reset {
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustFactory setLogger:self.loggerMock];
+
+    self.packageHandlerMock = [[AIPackageHandlerMock alloc] init];
+    self.requestHandler =[AIAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
+}
+
 - (void)testSendPackage
 {
     //  reseting to make the test order independent
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
+    [self reset];
 
     //  set the connection to respond OK
     [NSURLConnection setConnectionError:NO];
@@ -60,6 +63,8 @@
     [self.requestHandler sendPackage:[AITestsUtil buildEmptyPackage]];
 
     [NSThread sleepForTimeInterval:1.0];
+
+    NSLog(@"%@", self.loggerMock);
 
     //  check the URL Connection was called
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
@@ -86,8 +91,7 @@
 
 - (void)testConnectionError {
     //  reseting to make the test order independent
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
+    [self reset];
 
     //  set the connection to return error on the connection
     [NSURLConnection setConnectionError:YES];
@@ -120,9 +124,8 @@
 
 - (void)testResponseError {
     //  reseting to make the test order independent
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-
+    [self reset];
+    
     //  set the response to return an error
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:YES];

@@ -17,6 +17,9 @@ static id<AIRequestHandler> internalRequestHandler = nil;
 static id<AIActivityHandler> internalActivityHandler = nil;
 static id<AILogger> internalLogger = nil;
 
+static double internalSessionInterval    = -1;
+static double intervalSubsessionInterval = -1;
+
 @implementation AIAdjustFactory
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler {
@@ -49,6 +52,20 @@ static id<AILogger> internalLogger = nil;
     return internalLogger;
 }
 
++ (double)sessionInterval {
+    if (internalSessionInterval == -1) {
+        return 30 * 60;           // 30 minutes
+    }
+    return internalSessionInterval;
+}
+
++ (double)subsessionInterval {
+    if (intervalSubsessionInterval == -1) {
+        return 1;                // 1 second
+    }
+    return intervalSubsessionInterval;
+}
+
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -63,6 +80,14 @@ static id<AILogger> internalLogger = nil;
 
 + (void)setLogger:(id<AILogger>)logger {
     internalLogger = logger;
+}
+
++ (void)setSessionInterval:(double)sessionInterval {
+    internalSessionInterval = sessionInterval;
+}
+
++ (void)setSubsessionInterval:(double)subsessionInterval {
+    intervalSubsessionInterval = subsessionInterval;
 }
 
 @end

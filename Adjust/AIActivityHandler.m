@@ -23,7 +23,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 static const uint64_t kTimerInterval      = 60 * NSEC_PER_SEC; // 1 minute
 static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
-static const double   kSessionInterval    = 30 * 60;           // 30 minutes
 static const double   kSubsessionInterval =  1;                // 1 second
 
 
@@ -165,7 +164,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     }
 
     // new session
-    if (lastInterval > kSessionInterval) {
+    if (lastInterval > AIAdjustFactory.sessionInterval) {
         self.activityState.sessionCount++;
         self.activityState.createdAt = now;
         self.activityState.lastInterval = lastInterval;
@@ -178,7 +177,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     }
 
     // new subsession
-    if (lastInterval > kSubsessionInterval) {
+    if (lastInterval > AIAdjustFactory.subsessionInterval) {
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
@@ -265,7 +264,9 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response {
+    //TODO remove
     if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
+        [self.logger debug:@"respondsToSelector"];
         [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
                                         withObject:response waitUntilDone:NO];
     }
@@ -286,13 +287,13 @@ static const double   kSubsessionInterval =  1;                // 1 second
     }
 
     // ignore late updates
-    if (lastInterval > kSessionInterval) return NO;
+    if (lastInterval > AIAdjustFactory.sessionInterval) return NO;
 
     self.activityState.sessionLength += lastInterval;
     self.activityState.timeSpent += lastInterval;
     self.activityState.lastActivity = now;
 
-    return (lastInterval > kSubsessionInterval);
+    return (lastInterval > AIAdjustFactory.subsessionInterval);
 }
 
 - (void)readActivityState {

@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "AILoggerMock.h"
 #import "AIActivityPackage.h"
+#import "Adjust.h"
 
-@interface AITestsUtil : NSObject
+@interface AITestsUtil : NSObject <AdjustDelegate>
 
 + (NSString *)getFilename:(NSString *)filename;
 + (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock;
 + (AIActivityPackage *)buildEmptyPackage;
+
+- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
 @end

@@ -28,28 +28,43 @@
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
     
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-    
-    self.packageHandlerMock = [AIPackageHandlerMock alloc];
-    [AIAdjustFactory setPackageHandler:self.packageHandlerMock];
 }
 
 - (void)tearDown
 {
     [AIAdjustFactory setPackageHandler:nil];
     [AIAdjustFactory setLogger:nil];
+    [AIAdjustFactory setSessionInterval:-1];
+    [AIAdjustFactory setSubsessionInterval:-1];
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
 }
 
+- (void)reset {
+    self.loggerMock = [[AILoggerMock alloc] init];
+    [AIAdjustFactory setLogger:self.loggerMock];
+
+    self.packageHandlerMock = [AIPackageHandlerMock alloc];
+    [AIAdjustFactory setPackageHandler:self.packageHandlerMock];
+
+    [AIAdjustFactory setSessionInterval:-1];
+    [AIAdjustFactory setSubsessionInterval:-1];
+}
+
 - (void)testFirstRun
 {
+    //  reseting to make the test order independent
+    [self reset];
+    
     //  deleting the activity state file to simulate a first session
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
     
     //  create handler and start the first session
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    //  set the delegate to be called at after sending the package
+    AITestsUtil * testsUtil = [[AITestsUtil alloc] init];
+    [activityHandler setDelegate:testsUtil];
 
     // it's necessary to sleep the activity for a while after each handler call
     //  to let the internal queue act
@@ -71,7 +86,7 @@
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios2.2.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios3.0.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
@@ -98,6 +113,10 @@
     //  after adding, the activity handler ping the Package handler to send the package
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
 
+    //  check that the package handler calls back with the delegate
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AdjustDelegate adjustFinishedTrackingWithResponse"],
+              @"%@", self.loggerMock);
+
     // check that the activity state is written by the first session or timer
     XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: "], @"%@", self.loggerMock);
 
@@ -105,6 +124,93 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 }
 
+- (void)testSessions {
+    //  reseting to make the test order independent
+    [self reset];
+
+    //  starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    //  adjust the intervals for testing
+    [AIAdjustFactory setSessionInterval:(2)]; // 2 seconds
+    [AIAdjustFactory setSubsessionInterval:(0.1)]; // 0.1 second
+
+    //  create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    //  wait enough to be a new subsession, but not a new session
+    [NSThread sleepForTimeInterval:1.5];
+    [activityHandler trackSubsessionStart];
+
+    //  wait enough to be a new session
+    [NSThread sleepForTimeInterval:4];
+    [activityHandler trackSubsessionStart];
+
+    //  test the subsession end
+    [activityHandler trackSubsessionEnd];
+    [NSThread sleepForTimeInterval:1];
+
+    //  check that a new subsession was created
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],  @"%@", self.loggerMock);
+
+    // check that it's now on the 2nd session
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Session 2"],  @"%@", self.loggerMock);
+
+    //  check that 2 packages were added to the package handler
+    XCTAssertEqual(2, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+
+    //  get the second session package and its parameters
+    AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    NSDictionary *parameters = activityPackage.parameters;
+
+    //  the session and subsession count should be 2
+    //   session_count
+    XCTAssertEqual(2, [(NSString *)parameters[@"session_count"] intValue], @"%@", activityPackage.extendedString);
+
+    //   subsession_count
+    XCTAssertEqual(2, [(NSString *)parameters[@"subsession_count"] intValue], @"%@", activityPackage.extendedString);
+
+    //  check that the package handler was paused
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+}
+
+- (void)testEventsBuffered {
+    //  reseting to make the test order independent
+    [self reset];
+
+    //  starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    //  create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    [activityHandler setBufferEvents:YES];
+
+    //  construct the parameters of the the event
+    NSDictionary *eventParameters = @{@"key": @"value", @"foo": @"bar" };
+
+    //  the first is a normal event has parameters, the second a revenue
+    [activityHandler trackEvent:@"abc123" withParameters:eventParameters];
+    [activityHandler trackRevenue:4.45 forEvent:@"abc123" withParameters:eventParameters];
+
+    [NSThread sleepForTimeInterval:2];
+
+    //  check that event buffering is enabled
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Event buffering is enabled"],  @"%@", self.loggerMock);
+
+    //  check that the package builder added the session, event and revenue package
+    XCTAssertEqual(3, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+
+    //  check the first event
+    AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    NSDictionary *packageParameters = activityPackage.parameters;
+
+}
+
+- (void)testEventsNotBuffered {
+    //  reseting to make the test order independent
+    [self reset];
+
+}
 
 
 

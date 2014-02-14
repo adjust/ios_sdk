@@ -15,7 +15,7 @@ static BOOL triggerResponseError = NO;
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock) 
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error {
-    AILoggerMock *loggerMock =(AILoggerMock *)[AIAdjustFactory logger];
+    AILoggerMock *loggerMock =(AILoggerMock *)AIAdjustFactory.logger;
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
     if (triggerConnectionError) {

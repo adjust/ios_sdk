@@ -26,12 +26,6 @@
 {
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
-
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-
-    self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
 }
 
 - (void)tearDown
@@ -43,14 +37,19 @@
     [super tearDown];
 }
 
-- (void)testFirstPackage
-{
-    //  reseting to make the test order independent
+- (void)reset {
     self.loggerMock = [[AILoggerMock alloc] init];
     [AIAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
     [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
+
+}
+
+- (void)testFirstPackage
+{
+    //  reseting to make the test order independent
+    [self reset];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
@@ -99,11 +98,7 @@
 
 - (void) testPaused {
     //  reseting to make the test order independent
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-
-    self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
+    [self reset];
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
@@ -135,11 +130,7 @@
 
 - (void) testMultiplePackages {
     //  reseting to make the test order independent
-    self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
-
-    self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
+    [self reset];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
