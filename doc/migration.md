@@ -1,7 +1,7 @@
-## Migrate your Adjust SDK for iOS to v3.0.0 from v2.1.x or 2.2.x
+## Migrate your adjust SDK for iOS to v3.0.0 from v2.1.x or 2.2.x
 
 We renamed the main class `AdjustIo` to `Adjust`. Follow these steps to update
-all Adjust SDK calls.
+all adjust SDK calls.
 
 1. Right click on the old `AdjustIo` source folder and select `Delete`. Confirm
    `Move to Trash`.
@@ -20,7 +20,7 @@ all Adjust SDK calls.
 
 4. Build your project to confirm that everything is properly connected again.
 
-The Adjust SDK v3.0.0 added delegate callbacks. Check out the [README] for
+The adjust SDK v3.0.0 added delegate callbacks. Check out the [README] for
 details.
 
 
@@ -76,10 +76,10 @@ meaningful at all times! Especially if you are tracking revenue.
 1. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
-2. The Adjust SDK for iOS 3.0.0 uses [ARC][arc]. If you haven't done already,
+2. The adjust SDK for iOS 3.0.0 uses [ARC][arc]. If you haven't done already,
    we recommend [transitioning your project to use ARC][transition] as well. If
    you don't want to use ARC, you have to enable ARC for all files of the
-   Adjust SDK. Please consult the [README] for details.
+   adjust SDK. Please consult the [README] for details.
 
 3. Remove all calls to `[+Adjust setLoggingEnabled:]`. Logging is now enabled
    by default and its verbosity can be changed with the new `[Adjust

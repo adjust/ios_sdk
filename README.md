@@ -1,11 +1,11 @@
 ## Summary
 
-This is the iOS SDK of Adjust. You can read more about Adjust at
+This is the iOS SDK of adjust™. You can read more about adjust at
 [adjust.io].
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the Adjust SDK into your
+These are the minimal steps required to integrate the adjust SDK into your
 iOS project. We are going to assume that you use Xcode for your iOS
 development.
 
@@ -13,8 +13,6 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adeven/adjust_ios_sdk.git', :tag => 'v3.0.0'
-```
 
 ### 1. Get the SDK
 
@@ -97,7 +95,7 @@ meaningful at all times! Especially if you are tracking revenue.
 ### 5. Build your app
 
 Build and run your app. If the build succeeds, you successfully integrated
-Adjust into your app. After the app launched, you should see the debug log
+adjust into your app. After the app launched, you should see the debug log
 `Tracked session start`.
 
 ![][run]
@@ -107,22 +105,22 @@ Adjust into your app. After the app launched, you should see the debug log
 - If your build failed with the error `Adjust requires ARC`, it looks like
   your project is not using [ARC][arc]. In that case we recommend
   [transitioning your project to use ARC][transition]. If you don't want to
-  use ARC, you have to enable ARC for all source files of Adjust in the
+  use ARC, you have to enable ARC for all source files of adjust in the
   target's Build Phases:
 
-    Expand the `Compile Sources` group, select all Adjust files (AjustIo,
+    Expand the `Compile Sources` group, select all adjust files (AjustIo,
     AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler
     Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
     all at once).
 
 ## Additional features
 
-Once you integrated the Adjust SDK into your project, you can take advantage
+Once you integrated the adjust SDK into your project, you can take advantage
 of the following features.
 
 ### 6. Add tracking of custom events.
 
-You can tell Adjust about every event you want. Suppose you want to track
+You can tell adjust about every event you want. Suppose you want to track
 every tap on a button. You would have to create a new Event Token in your
 [dashboard]. Let's say that Event Token is `abc123`. In your button's
 `buttonDown` method you could then add the following line to track the click:
@@ -222,8 +220,8 @@ optional delegate protocol in your app delegate.
     @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
     ```
 
-2. Open `AppDelegate.m` and set the Adjust delegate in `didFinishLaunching`
-   where you already set the Adjust environment.
+2. Open `AppDelegate.m` and set the adjust delegate in `didFinishLaunching`
+   where you already set the adjust environment.
 
     ```objc
     [Adjust setEnvironment:AIEnvironmentSandbox];
