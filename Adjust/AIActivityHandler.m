@@ -264,11 +264,14 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response {
-    //TODO remove
+    //TODO remove one of the delegate call
     if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
-        [self.logger debug:@"respondsToSelector"];
-        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
-                                        withObject:response waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate adjustFinishedTrackingWithResponse:response];
+        });
+
+        //[self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
+        //                                withObject:response waitUntilDone:NO];
     }
 }
 

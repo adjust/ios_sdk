@@ -38,6 +38,7 @@
 		96E9144A18A5126100F01294 /* AIRequestHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E9144918A5126100F01294 /* AIRequestHandlerTests.m */; };
 		96F0018D18ABC0C800612200 /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0018C18ABC0C800612200 /* AITestsUtil.m */; };
 		96F0019618ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0019518ABD9F000612200 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
+		96F9050C18AE776F00DBEF2F /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F0018C18ABC0C800612200 /* AITestsUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -333,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96F9050C18AE776F00DBEF2F /* AITestsUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
