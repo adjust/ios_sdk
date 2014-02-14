@@ -1,58 +1,79 @@
-## Migrate your Adjust SDK for iOS from v1.x to v2.2.0
+## Migrate your Adjust SDK for iOS to v3.0.0 from v2.1.x or 2.2.x
 
-1. Delete the old `Adjust` source folder from your Xcode project. Download
-   version v2.2.0 and drag the new folder into your Xcode project.
+We renamed the main class `AdjustIo` to `Adjust`. Follow these steps to update
+all Adjust SDK calls.
 
-    ![][drag]
+1. Right click on the old `AdjustIo` source folder and select `Delete`. Confirm
+   `Move to Trash`.
+2. From the Xcode menu select `Find → Find and Replace in Project...` to bring
+   up the project wide search and replace. Enter `AdjustIo` into the search
+   field and `Adjust` into the replace field. Press enter to start the search.
+   Press the preview button and deselect all matches you don't want to replace.
+   Press the replace button to replace all `Adjust` imports and calls.
 
-2. In the Project Navigator open the source file your Application Delegate. Add
-    the `import` statement at the top of the file. In the `didFinishLaunching` or
-    `didFinishLaunchingWithOptions` method of your App Delegate add the following
-    calls to `Adjust`:
+       ![][rename]
 
-    ```objc
-    #import "Adjust.h"
-    // ...
-    [Adjust appDidLaunch:@"{YourAppToken}"];
-    [Adjust setLogLevel:AILogLevelInfo];
-    [Adjust setEnvironment:AIEnvironmentSandbox];
-    ```
-    ![][delegate]
+3. Download version v3.0.0 and drag the new folder `Adjust` into your Xcode
+   Project Navigator.
 
-    Replace `{YourAppToken}` with your App Token. You can find in your [dashboard].
+       ![][drag]
 
-    You can increase or decrease the amount of logs you see by calling
-    `setLogLevel:` with one of the following parameters:
+4. Build your project to confirm that everything is properly connected again.
 
-    ```objc
-    [Adjust setLogLevel:AILogLevelVerbose]; // enable all logging
-    [Adjust setLogLevel:AILogLevelDebug];   // enable more logging
-    [Adjust setLogLevel:AILogLevelInfo];    // the default
-    [Adjust setLogLevel:AILogLevelWarn];    // disable info logging
-    [Adjust setLogLevel:AILogLevelError];   // disable warnings as well
-    [Adjust setLogLevel:AILogLevelAssert];  // disable errors as well
-    ```
+The Adjust SDK v3.0.0 added delegate callbacks. Check out the [README] for
+details.
 
-    Depending on whether or not you build your app for testing or for production
-    you must call `setEnvironment:` with one of these parameters:
 
-    ```objc
-    [Adjust setEnvironment:AIEnvironmentSandbox];
-    [Adjust setEnvironment:AIEnvironmentProduction];
-    ```
+## Additional steps if you come from v2.0.x
 
-    **Important:** This value should be set to `AIEnvironmentSandbox` if and only
-    if you or someone else is testing your app. Make sure to set the environment to
-    `AIEnvironmentProduction` just before you publish the app. Set it back to
-    `AIEnvironmentSandbox` when you start testing it again.
+In the Project Navigator open the source file your Application Delegate. Add
+the `import` statement at the top of the file. In the `didFinishLaunching` or
+`didFinishLaunchingWithOptions` method of your App Delegate add the following
+calls to `Adjust`:
 
-    We use this environment to distinguish between real traffic and artificial
-    traffic from test devices. It is very important that you keep this value
-    meaningful at all times! Especially if you are tracking revenue.
+```objc
+#import "Adjust.h"
+// ...
+[Adjust appDidLaunch:@"{YourAppToken}"];
+[Adjust setLogLevel:AILogLevelInfo];
+[Adjust setEnvironment:AIEnvironmentSandbox];
+```
+![][delegate]
+
+Replace `{YourAppToken}` with your App Token. You can find in your [dashboard].
+
+You can increase or decrease the amount of logs you see by calling
+`setLogLevel:` with one of the following parameters:
+
+```objc
+[Adjust setLogLevel:AILogLevelVerbose]; // enable all logging
+[Adjust setLogLevel:AILogLevelDebug];   // enable more logging
+[Adjust setLogLevel:AILogLevelInfo];    // the default
+[Adjust setLogLevel:AILogLevelWarn];    // disable info logging
+[Adjust setLogLevel:AILogLevelError];   // disable warnings as well
+[Adjust setLogLevel:AILogLevelAssert];  // disable errors as well
+```
+
+Depending on whether or not you build your app for testing or for production
+you must call `setEnvironment:` with one of these parameters:
+
+```objc
+[Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setEnvironment:AIEnvironmentProduction];
+```
+
+**Important:** This value should be set to `AIEnvironmentSandbox` if and only
+if you or someone else is testing your app. Make sure to set the environment to
+`AIEnvironmentProduction` just before you publish the app. Set it back to
+`AIEnvironmentSandbox` when you start testing it again.
+
+We use this environment to distinguish between real traffic and artificial
+traffic from test devices. It is very important that you keep this value
+meaningful at all times! Especially if you are tracking revenue.
 
 ## Additional steps if you come from v1.x
 
-2. The `appDidLaunch` method now expects your App Token instead of your App ID.
+1. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
 2. The Adjust SDK for iOS 2.2.0 uses [ARC][arc]. If you haven't done already,
@@ -70,7 +91,9 @@
    the `f` suffixes in number literals (`12.3f` becomes `12.3`).
 
 [README]: ../README.md
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
+[rename]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/rename.png
+[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag3.png
+[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 [dashboard]: http://adjust.io
