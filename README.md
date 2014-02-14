@@ -121,7 +121,7 @@ Adjust into your app. After the app launched, you should see the debug log
 Once you integrated the Adjust SDK into your project, you can take advantage
 of the following features.
 
-### Add tracking of custom events.
+### 6. Add tracking of custom events.
 
 You can tell Adjust about every event you want. Suppose you want to track
 every tap on a button. You would have to create a new Event Token in your
@@ -160,7 +160,7 @@ device. Also note that we don't store any of your custom parameters, but only
 append them to your callbacks. If you haven't registered a callback for an
 event, these parameters won't even be read.
 
-### Add tracking of revenue
+### 7. Add tracking of revenue
 
 If your users can generate revenue by clicking on advertisements or making
 in-app purchases you can track those revenues. If, for example, a click is
@@ -207,7 +207,7 @@ state changed to `SKPaymentTransactionStatePurchased`:
 }
 ```
 
-### Enable event buffering
+### 8. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
