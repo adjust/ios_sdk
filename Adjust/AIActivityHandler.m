@@ -454,7 +454,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (BOOL)checkAmount:(double)amount {
-    if (amount <= 0.0) {
+    if (amount < 0.0) {
         [self.logger error:@"Invalid amount %.1f", amount];
         return NO;
     }
