@@ -59,7 +59,6 @@ calls to `Adjust`:
 [Adjust appDidLaunch:@"{YourAppToken}"];
 [Adjust setLogLevel:AILogLevelInfo];
 [Adjust setEnvironment:AIEnvironmentSandbox];
-[Adjust setDelegate:self];
 ```
 ![][delegate]
 
@@ -207,7 +206,73 @@ state changed to `SKPaymentTransactionStatePurchased`:
 }
 ```
 
-### 8. Enable event buffering
+### 8. Receive delegate callbacks
+
+Every time your app tries to track a session, an event or some revenue, you can
+be notified about the success of that operation and receive additional
+information about the current install. Follow these steps to implement the
+optional delegate protocol in your app delegate.
+
+1. Open `AppDelegate.h` and add the `Adjust.h` import and the `AdjustDelegate`
+   declaration.
+
+    ```objc
+    #import "Adjust.h"
+
+    @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
+    ```
+
+2. Open `AppDelegate.m` and set the Adjust delegate in `didFinishLaunching`
+   where you already set the Adjust environment.
+
+    ```objc
+    [Adjust setEnvironment:AIEnvironmentSandbox];
+    [Adjust setDelegate:self];
+    ```
+
+3. Still in `AppDelegate.m` add the following delegate callback function to
+   your app delegate implementation.
+
+    ```objc
+    - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
+    }
+    ```
+
+4. Implement the delegate function.
+
+The delegate function will get called every time any activity was tracked or
+failed to track. Within the delegate function you have access to the
+`responseData` parameter. Here is a quick summary of its attributes:
+
+- `AIActivityKind activityKind` indicates what kind of activity
+  was tracked. It has one of these values:
+
+    ```
+    AIActivityKindSession
+    AIActivityKindEvent
+    AIActivityKindRevenue
+    ```
+
+- `NSString activityKindString` human readable version of the activity kind. Possible values:
+
+    ```
+    session
+    event
+    revenue
+    ```
+
+- `BOOL success` indicates whether or not the tracking attempt was
+  successful.
+- `BOOL willRetry` is true when the request failed, but will be
+  retried
+- `NSString error` an error message when the activity failed to track or
+  the response could not be parsed. Is `nil` otherwise.
+- `NSString trackerToken` the tracker token of the current install. Is `nil` if
+  request failed or response could not be parsed.
+- `NSString trackerName` the tracker name of the current install. Is `nil` if
+  request failed or response could not be parsed.
+
+### 9. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
