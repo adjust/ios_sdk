@@ -270,8 +270,90 @@
     //  reseting to make the test order independent
     [self reset];
 
+    //  starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    //  create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    [activityHandler setBufferEvents:NO];
+
+    //  the first is a normal event has parameters, the second a revenue
+    [activityHandler trackEvent:@"abc123" withParameters:nil];
+    [activityHandler trackRevenue:0 forEvent:nil withParameters:nil];
+
+    [NSThread sleepForTimeInterval:2];
+
+    //  check that the package added the session, event and revenue package
+    XCTAssertEqual(3, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+
+    //  check the first event
+    AIActivityPackage *eventPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+
+    //   check the event path
+    XCTAssert([eventPackage.path isEqualToString:@"/event"], @"%@", eventPackage.extendedString);
+
+    //   check the event suffix
+    XCTAssert([eventPackage.suffix isEqualToString:@" 'abc123'"], @"%@", eventPackage.extendedString);
+
+    NSDictionary *eventPackageParameters = eventPackage.parameters;
+
+    //   check the event count in the package parameters
+    XCTAssertEqual(1, [(NSString *)eventPackageParameters[@"event_count"] intValue], @"%@", eventPackage.extendedString);
+
+    //   check the event token
+    XCTAssert([(NSString *)eventPackageParameters[@"event_token"] isEqualToString:@"abc123"], @"%@", eventPackage.extendedString);
+
+    //   check the that the parameters were not injected
+    XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
+
+    //   check that the package handler was called
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+
+    //   check the event count in the written activity state
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"], @"%@", self.loggerMock);
+
+    //   check the event count in the logger
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+
+    //  check the second event/ first revenue
+    AIActivityPackage *revenuePackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[2];
+
+    //   check the revenue path
+    XCTAssert([revenuePackage.path isEqualToString:@"/revenue"], @"%@", revenuePackage.extendedString);
+
+    //   check the revenue suffix
+    //    note that the amount was rounded to the decimal cents
+    XCTAssert([revenuePackage.suffix isEqualToString:@" (0.0 cent, 'abc123')"], @"%@", revenuePackage.extendedString);
+
+    NSDictionary *revenuePackageParameters = revenuePackage.parameters;
+
+    //   check the event count in the package parameters
+    XCTAssertEqual(2, [(NSString *)revenuePackageParameters[@"event_count"] intValue], @"%@", revenuePackage.extendedString);
+
+    //   check the amount, transforming cents into rounded decimal cents
+    //    note that the 4.45 cents ~> 45 decimal cents
+    XCTAssertEqual(0, [(NSString *)revenuePackageParameters[@"amount"] intValue], @"%@", revenuePackage.extendedString);
+
+    //   check that the event token is nil
+    XCTAssertNil(revenuePackageParameters[@"event_token"], @"%@", revenuePackage.extendedString);
+
+    //   check the that the parameters were not injected
+    XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
+
+    //   check that the package handler was called
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+
+    //   check the event count in the written activity state
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"], @"%@", self.loggerMock);
+
+    //   check the event count in the logger
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
+
 }
 
-
+- (void)testChecks {
+    //  reseting to make the test order independent
+    [self reset];
+}
 
 @end
