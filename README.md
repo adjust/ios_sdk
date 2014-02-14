@@ -289,7 +289,7 @@ in the `didFinishLaunching` method of your Application Delegate:
 [releases]: https://github.com/adeven/adjust_ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag2.png
+[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag3.png
 [add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add2.png
 [framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework2.png
 [delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png

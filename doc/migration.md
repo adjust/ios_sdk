@@ -1,4 +1,4 @@
-## Migrate your Adjust SDK for iOS from v2.x to v3.0.0
+## Migrate your Adjust SDK for iOS to v3.0.0 from v2.1.x or 2.2.x
 
 We renamed the main class `AdjustIo` to `Adjust`. Follow these steps to update
 all Adjust SDK calls.
@@ -10,6 +10,9 @@ all Adjust SDK calls.
    field and `Adjust` into the replace field. Press enter to start the search.
    Press the preview button and deselect all matches you don't want to replace.
    Press the replace button to replace all `Adjust` imports and calls.
+
+       ![][rename]
+
 3. Download version v3.0.0 and drag the new folder `Adjust` into your Xcode
    Project Navigator.
 
@@ -17,8 +20,11 @@ all Adjust SDK calls.
 
 4. Build your project to confirm that everything is properly connected again.
 
+The Adjust SDK v3.0.0 added delegate callbacks. Check out the [README] for
+details.
 
-## Additional steps if you come from v2.x
+
+## Additional steps if you come from v2.0.x
 
 In the Project Navigator open the source file your Application Delegate. Add
 the `import` statement at the top of the file. In the `didFinishLaunching` or
@@ -85,7 +91,8 @@ meaningful at all times! Especially if you are tracking revenue.
    the `f` suffixes in number literals (`12.3f` becomes `12.3`).
 
 [README]: ../README.md
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag.png
+[rename]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/rename.png
+[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag3.png
 [delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
