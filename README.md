@@ -105,11 +105,6 @@ Adjust into your app. After the app launched, you should see the debug log
 
 #### Troubleshooting
 
-- If your build failed because of many duplicate symbols, you were probably
-  already using AFNetwork before integrating Adjust. Just remove the
-  `Adjust/AFNetworking` group from your Project Navigator to resolve this
-  issue.
-
 - If your build failed with the error `Adjust requires ARC`, it looks like
   your project is not using [ARC][arc]. In that case we recommend
   [transitioning your project to use ARC][transition]. If you don't want to
