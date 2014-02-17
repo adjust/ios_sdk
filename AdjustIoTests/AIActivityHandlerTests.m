@@ -81,7 +81,7 @@
 
     // checking the default values of the first session package
     //  should only have one package
-    XCTAssertEqual(1, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+    XCTAssertEqual((NSUInteger)1, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
@@ -157,7 +157,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Session 2"],  @"%@", self.loggerMock);
 
     //  check that 2 packages were added to the package handler
-    XCTAssertEqual(2, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+    XCTAssertEqual((NSUInteger)2, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  get the second session package and its parameters
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
@@ -198,7 +198,7 @@
     //XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Event buffering is enabled"], @"%@", self.loggerMock);
 
     //  check that the package builder added the session, event and revenue package
-    XCTAssertEqual(3, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+    XCTAssertEqual((NSUInteger)3, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  check the first event
     AIActivityPackage *eventPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
@@ -284,7 +284,7 @@
     [NSThread sleepForTimeInterval:2];
 
     //  check that the package added the session, event and revenue package
-    XCTAssertEqual(3, (NSInteger)[self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
+    XCTAssertEqual((NSUInteger)3, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  check the first event
     AIActivityPackage *eventPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
