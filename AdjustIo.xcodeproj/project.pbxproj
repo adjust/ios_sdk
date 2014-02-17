@@ -509,7 +509,7 @@
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Adjust/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "AdjustIoTests/Adjust-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -531,7 +531,7 @@
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Adjust/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "AdjustIoTests/Adjust-Prefix.pch";
 				INFOPLIST_FILE = "AdjustIoTests/AdjustIoTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
