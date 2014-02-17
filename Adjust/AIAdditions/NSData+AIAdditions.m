@@ -19,7 +19,7 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
     char * strResult;
 
     // Get the Raw Data length and ensure we actually have data
-    int intLength = self.length;
+    NSUInteger intLength = self.length;
     if (intLength == 0) return nil;
 
     // Setup the String-based Result placeholder and pointer within that placeholder
