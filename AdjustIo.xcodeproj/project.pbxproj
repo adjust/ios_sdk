@@ -64,7 +64,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7FF8AC7A18AD54870065977B /* Adjust-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Adjust-Prefix.pch"; sourceTree = "<group>"; };
 		7FF8AC7B18AD54870065977B /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
 		7FF8AC7C18AD54870065977B /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		7FF8AC7D18AD54870065977B /* AIActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandler.h; sourceTree = "<group>"; };
@@ -147,7 +146,6 @@
 		7FF8AC7918AD54870065977B /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
-				7FF8AC7A18AD54870065977B /* Adjust-Prefix.pch */,
 				7FF8AC7B18AD54870065977B /* Adjust.h */,
 				7FF8AC7C18AD54870065977B /* Adjust.m */,
 				7FF8AC7D18AD54870065977B /* AIActivityHandler.h */,
@@ -471,7 +469,9 @@
 					"$(inherited)",
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -488,7 +488,9 @@
 					"$(inherited)",
 					/Users/pfms/GitHub/adjust_ios_sdk,
 				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";

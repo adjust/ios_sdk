@@ -323,7 +323,7 @@
 
     //   check the revenue suffix
     //    note that the amount was rounded to the decimal cents
-    XCTAssert([revenuePackage.suffix isEqualToString:@" (0.0 cent, 'abc123')"], @"%@", revenuePackage.extendedString);
+    XCTAssert([revenuePackage.suffix isEqualToString:@" (0.0 cent)"], @"%@", revenuePackage.extendedString);
 
     NSDictionary *revenuePackageParameters = revenuePackage.parameters;
 
@@ -354,6 +354,67 @@
 - (void)testChecks {
     //  reseting to make the test order independent
     [self reset];
+
+    //  activity handler without app token
+    id<AIActivityHandler> nilActivityHandler = [AIAdjustFactory activityHandlerWithAppToken:nil];
+
+    // trigger the nil app token a 2nd time for a subsession start
+    [nilActivityHandler trackSubsessionStart];
+
+    //  trigger the nil app token a 3rd time for a subsession end
+    [nilActivityHandler trackSubsessionStart];
+
+    //  trigger the nil app token a 4th time for a event
+    [nilActivityHandler trackEvent:@"ab123" withParameters:nil];
+
+    //  trigger the nil app token a 5th time for a revenue
+    [nilActivityHandler trackRevenue:0 forEvent:@"abc123" withParameters:nil];
+
+    [NSThread sleepForTimeInterval:1];
+    //  activity with invalid app token
+    id<AIActivityHandler> invalidActivityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"12345678901"];
+
+    [NSThread sleepForTimeInterval:1];
+    //  activity with valid app token
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    //  track event with nil token
+    [activityHandler trackEvent:nil withParameters:nil];
+
+    //  track event with invalid token
+    [activityHandler trackEvent:@"abc1234" withParameters:nil];
+
+    //  track revenue with nil token
+    [activityHandler trackEvent:nil withParameters:nil];
+
+    //  track revenue with invalid token
+    [activityHandler trackEvent:@"abc12" withParameters:nil];
+
+    [NSThread sleepForTimeInterval:1];
+
+    //  check missing app token messages
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+
+    //  check the invalid app token message
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed App Token '12345678901'"],  @"%@", self.loggerMock);
+
+    //  check the nil event token
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
+
+    //  check the invalid event token
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],  @"%@", self.loggerMock);
+
+    //  check the nil revenue token
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
+
+    //  check the invalid revenue token
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],  @"%@", self.loggerMock);
+
+
 }
 
 @end
