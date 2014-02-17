@@ -384,11 +384,11 @@
     //  track event with invalid token
     [activityHandler trackEvent:@"abc1234" withParameters:nil];
 
-    //  track revenue with nil token
-    [activityHandler trackEvent:nil withParameters:nil];
+    //  track revenue with invalid amount token
+    [activityHandler trackRevenue:-0.1 forEvent:nil withParameters:nil];
 
     //  track revenue with invalid token
-    [activityHandler trackEvent:@"abc12" withParameters:nil];
+    [activityHandler trackRevenue:0 forEvent:@"abc12" withParameters:nil];
 
     [NSThread sleepForTimeInterval:1];
 
@@ -408,12 +408,11 @@
     //  check the invalid event token
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],  @"%@", self.loggerMock);
 
-    //  check the nil revenue token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
+    //  check the invalid revenue amount token
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Invalid amount -0.1"],  @"%@", self.loggerMock);
 
     //  check the invalid revenue token
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],  @"%@", self.loggerMock);
-
 
 }
 
