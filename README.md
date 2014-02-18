@@ -1,6 +1,6 @@
 ## Summary
 
-This is the iOS SDK of adjust™. You can read more about adjust at
+This is the iOS SDK of adjust.io™. You can read more about adjust.io™ at
 [adjust.io].
 
 ## Basic Installation
