@@ -71,28 +71,27 @@ static const double kRequestTimeout = 60; // 60 seconds
     if (error != nil) {
         AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
         responseData.willRetry = YES;
-        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, responseData.error];
+        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.packageHandler closeFirstPackage];
         return;
     }
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
 
     // wrong status code
     if (response.statusCode != 200) {
-        AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
-        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.logger error:@"%@. (%@)", package.failureMessage, responseData.error];
+        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
         [self.packageHandler sendNextPackage];
         return;
     }
 
     // success
-    AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
     responseData.success = YES;
-    [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
     [self.logger info:@"%@", package.successMessage];
+    [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
     [self.packageHandler sendNextPackage];
 }
 
