@@ -80,17 +80,15 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
 
-    // wrong status code
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+        // success
+        responseData.success = YES;
+        [self.logger info:@"%@", package.successMessage];
+    } else {
+        // wrong status code
         [self.logger error:@"%@. (%@)", package.failureMessage, responseData.error];
-        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
-        [self.packageHandler sendNextPackage];
-        return;
     }
 
-    // success
-    responseData.success = YES;
-    [self.logger info:@"%@", package.successMessage];
     [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
     [self.packageHandler sendNextPackage];
 }
