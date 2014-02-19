@@ -264,7 +264,7 @@ failed to track. Within the delegate function you have access to the
 - `BOOL success` indicates whether or not the tracking attempt was
   successful.
 - `BOOL willRetry` is true when the request failed, but will be
-  retried
+  retried.
 - `NSString error` an error message when the activity failed to track or
   the response could not be parsed. Is `nil` otherwise.
 - `NSString trackerToken` the tracker token of the current install. Is `nil` if
