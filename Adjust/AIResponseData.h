@@ -20,7 +20,7 @@
 #pragma mark set by SDK
 
 // the kind of activity (AIActivityKindSession etc.)
-// see the AIActivity definition above
+// see the AIActivityKind definition
 @property (nonatomic, assign) AIActivityKind activityKind;
 
 // true when the activity was tracked successfully
@@ -45,14 +45,15 @@
 // tracker name of current device
 @property (nonatomic, copy) NSString *trackerName;
 
+// returns human readable version of activityKind
+// (session, event, revenue), see above
+- (NSString *)activityKindString;
+
+#pragma mark internals
 + (AIResponseData *)dataWithJsonString:(NSString *)string;
 + (AIResponseData *)dataWithError:(NSString *)error;
 
 - (id)initWithJsonString:(NSString *)string;
 - (id)initWithError:(NSString *)error;
-
-// returns human readable version of activityKind
-// (session, event, revenue), see above
-- (NSString *)activityKindString;
 
 @end
