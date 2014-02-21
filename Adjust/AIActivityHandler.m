@@ -112,6 +112,13 @@ static const double   kSubsessionInterval =  1;                // 1 second
     });
 }
 
+- (void)finishedTrackingWithResponse:(AIResponseData *)response {
+    if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
+                                        withObject:response waitUntilDone:NO];
+    }
+}
+
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self checkAppTokenNotNil:yourAppToken]) return;
@@ -261,13 +268,6 @@ static const double   kSubsessionInterval =  1;                // 1 second
 
     [self writeActivityState];
     [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
-}
-
-- (void)finishedTrackingWithResponse:(AIResponseData *)response {
-    if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
-                                        withObject:response waitUntilDone:NO];
-    }
 }
 
 #pragma mark - private
