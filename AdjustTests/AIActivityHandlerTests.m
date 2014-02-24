@@ -372,7 +372,7 @@
 
     [NSThread sleepForTimeInterval:1];
     //  activity with invalid app token
-    id<AIActivityHandler> invalidActivityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"12345678901"];
+    [AIAdjustFactory activityHandlerWithAppToken:@"12345678901"];
 
     [NSThread sleepForTimeInterval:1];
     //  activity with valid app token
