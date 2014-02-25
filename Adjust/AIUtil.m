@@ -90,7 +90,7 @@ static NSString * const kClientSdk = @"ios3.0.0";
         }
     } else { // iOS 5.0 and higher
         // First try and remove the extended attribute if it is present
-        int result = getxattr(filePath, attrName, NULL, sizeof(u_int8_t), 0, 0);
+        ssize_t result = getxattr(filePath, attrName, NULL, sizeof(u_int8_t), 0, 0);
         if (result != -1) {
             // The attribute exists, we need to remove it
             int removeResult = removexattr(filePath, attrName, 0);
