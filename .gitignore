@@ -18,7 +18,6 @@ profile
 DerivedData
 *.hmap
 *.ipa
-*-Prefix.pch
 
 # CocoaPods
 Pods

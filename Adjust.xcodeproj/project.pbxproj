@@ -13,15 +13,6 @@
 		9679922218BBAE2800394606 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679922118BBAE2800394606 /* UIKit.framework */; };
 		9679922518BBAE2800394606 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E34D18BBB48A008E7B30 /* Adjust.m */; };
-		96E5E38218BBB48A008E7B30 /* AIActivityHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35218BBB48A008E7B30 /* AIActivityHandlerMock.m */; };
-		96E5E38318BBB48A008E7B30 /* AIActivityHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35318BBB48A008E7B30 /* AIActivityHandlerTests.m */; };
-		96E5E38418BBB48A008E7B30 /* AILoggerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35518BBB48A008E7B30 /* AILoggerMock.m */; };
-		96E5E38518BBB48A008E7B30 /* AIPackageHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35718BBB48A008E7B30 /* AIPackageHandlerMock.m */; };
-		96E5E38618BBB48A008E7B30 /* AIPackageHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35818BBB48A008E7B30 /* AIPackageHandlerTests.m */; };
-		96E5E38718BBB48A008E7B30 /* AIRequestHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35A18BBB48A008E7B30 /* AIRequestHandlerMock.m */; };
-		96E5E38818BBB48A008E7B30 /* AIRequestHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35B18BBB48A008E7B30 /* AIRequestHandlerTests.m */; };
-		96E5E38918BBB48A008E7B30 /* AITestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E35D18BBB48A008E7B30 /* AITestsUtil.m */; };
-		96E5E38A18BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36118BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
 		96E5E38B18BBB48A008E7B30 /* AIActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36318BBB48A008E7B30 /* AIActivityHandler.m */; };
 		96E5E38C18BBB48A008E7B30 /* AIActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36518BBB48A008E7B30 /* AIActivityKind.m */; };
 		96E5E38D18BBB48A008E7B30 /* AIActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36718BBB48A008E7B30 /* AIActivityPackage.m */; };
@@ -84,24 +75,6 @@
 		9679922118BBAE2800394606 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		96E5E34C18BBB48A008E7B30 /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
 		96E5E34D18BBB48A008E7B30 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
-		96E5E34F18BBB48A008E7B30 /* Adjust-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Adjust-Prefix.pch"; sourceTree = "<group>"; };
-		96E5E35018BBB48A008E7B30 /* AdjustTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AdjustTests-Info.plist"; sourceTree = "<group>"; };
-		96E5E35118BBB48A008E7B30 /* AIActivityHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandlerMock.h; sourceTree = "<group>"; };
-		96E5E35218BBB48A008E7B30 /* AIActivityHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerMock.m; sourceTree = "<group>"; };
-		96E5E35318BBB48A008E7B30 /* AIActivityHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandlerTests.m; sourceTree = "<group>"; };
-		96E5E35418BBB48A008E7B30 /* AILoggerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AILoggerMock.h; sourceTree = "<group>"; };
-		96E5E35518BBB48A008E7B30 /* AILoggerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AILoggerMock.m; sourceTree = "<group>"; };
-		96E5E35618BBB48A008E7B30 /* AIPackageHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPackageHandlerMock.h; sourceTree = "<group>"; };
-		96E5E35718BBB48A008E7B30 /* AIPackageHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerMock.m; sourceTree = "<group>"; };
-		96E5E35818BBB48A008E7B30 /* AIPackageHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandlerTests.m; sourceTree = "<group>"; };
-		96E5E35918BBB48A008E7B30 /* AIRequestHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandlerMock.h; sourceTree = "<group>"; };
-		96E5E35A18BBB48A008E7B30 /* AIRequestHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerMock.m; sourceTree = "<group>"; };
-		96E5E35B18BBB48A008E7B30 /* AIRequestHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandlerTests.m; sourceTree = "<group>"; };
-		96E5E35C18BBB48A008E7B30 /* AITestsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITestsUtil.h; sourceTree = "<group>"; };
-		96E5E35D18BBB48A008E7B30 /* AITestsUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITestsUtil.m; sourceTree = "<group>"; };
-		96E5E35F18BBB48A008E7B30 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		96E5E36018BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"; sourceTree = "<group>"; };
-		96E5E36118BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m"; sourceTree = "<group>"; };
 		96E5E36218BBB48A008E7B30 /* AIActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityHandler.h; sourceTree = "<group>"; };
 		96E5E36318BBB48A008E7B30 /* AIActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIActivityHandler.m; sourceTree = "<group>"; };
 		96E5E36418BBB48A008E7B30 /* AIActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIActivityKind.h; sourceTree = "<group>"; };
@@ -210,7 +183,6 @@
 			children = (
 				96E5E34C18BBB48A008E7B30 /* Adjust.h */,
 				96E5E34D18BBB48A008E7B30 /* Adjust.m */,
-				96E5E34E18BBB48A008E7B30 /* AdjustTests */,
 				96E5E36218BBB48A008E7B30 /* AIActivityHandler.h */,
 				96E5E36318BBB48A008E7B30 /* AIActivityHandler.m */,
 				96E5E36418BBB48A008E7B30 /* AIActivityKind.h */,
@@ -238,31 +210,6 @@
 				96E5E38018BBB48A008E7B30 /* AIUtil.m */,
 			);
 			path = Adjust;
-			sourceTree = "<group>";
-		};
-		96E5E34E18BBB48A008E7B30 /* AdjustTests */ = {
-			isa = PBXGroup;
-			children = (
-				96E5E34F18BBB48A008E7B30 /* Adjust-Prefix.pch */,
-				96E5E35018BBB48A008E7B30 /* AdjustTests-Info.plist */,
-				96E5E35118BBB48A008E7B30 /* AIActivityHandlerMock.h */,
-				96E5E35218BBB48A008E7B30 /* AIActivityHandlerMock.m */,
-				96E5E35318BBB48A008E7B30 /* AIActivityHandlerTests.m */,
-				96E5E35418BBB48A008E7B30 /* AILoggerMock.h */,
-				96E5E35518BBB48A008E7B30 /* AILoggerMock.m */,
-				96E5E35618BBB48A008E7B30 /* AIPackageHandlerMock.h */,
-				96E5E35718BBB48A008E7B30 /* AIPackageHandlerMock.m */,
-				96E5E35818BBB48A008E7B30 /* AIPackageHandlerTests.m */,
-				96E5E35918BBB48A008E7B30 /* AIRequestHandlerMock.h */,
-				96E5E35A18BBB48A008E7B30 /* AIRequestHandlerMock.m */,
-				96E5E35B18BBB48A008E7B30 /* AIRequestHandlerTests.m */,
-				96E5E35C18BBB48A008E7B30 /* AITestsUtil.h */,
-				96E5E35D18BBB48A008E7B30 /* AITestsUtil.m */,
-				96E5E35E18BBB48A008E7B30 /* InfoPlist.strings */,
-				96E5E36018BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */,
-				96E5E36118BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */,
-			);
-			path = AdjustTests;
 			sourceTree = "<group>";
 		};
 		96E5E36A18BBB48A008E7B30 /* AIAdditions */ = {
@@ -386,27 +333,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */,
-				96E5E38618BBB48A008E7B30 /* AIPackageHandlerTests.m in Sources */,
 				96E5E38B18BBB48A008E7B30 /* AIActivityHandler.m in Sources */,
-				96E5E38718BBB48A008E7B30 /* AIRequestHandlerMock.m in Sources */,
 				96E5E39618BBB48A008E7B30 /* AIRequestHandler.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* AIUtil.m in Sources */,
-				96E5E38418BBB48A008E7B30 /* AILoggerMock.m in Sources */,
-				96E5E38218BBB48A008E7B30 /* AIActivityHandlerMock.m in Sources */,
 				96E5E39818BBB48A008E7B30 /* AITimer.m in Sources */,
 				96E5E39718BBB48A008E7B30 /* AIResponseData.m in Sources */,
-				96E5E38518BBB48A008E7B30 /* AIPackageHandlerMock.m in Sources */,
-				96E5E38818BBB48A008E7B30 /* AIRequestHandlerTests.m in Sources */,
 				96E5E38F18BBB48A008E7B30 /* NSData+AIAdditions.m in Sources */,
 				96E5E39118BBB48A008E7B30 /* UIDevice+AIAdditions.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* AIActivityKind.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* AIActivityPackage.m in Sources */,
 				96E5E38E18BBB48A008E7B30 /* AIActivityState.m in Sources */,
-				96E5E38318BBB48A008E7B30 /* AIActivityHandlerTests.m in Sources */,
 				96E5E39018BBB48A008E7B30 /* NSString+AIAdditions.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* AIPackageHandler.m in Sources */,
-				96E5E38918BBB48A008E7B30 /* AITestsUtil.m in Sources */,
-				96E5E38A18BBB48A008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */,
 				96E5E39318BBB48A008E7B30 /* AILogger.m in Sources */,
 				96E5E39418BBB48A008E7B30 /* AIPackageBuilder.m in Sources */,
 				96E5E39218BBB48A008E7B30 /* AIAdjustFactory.m in Sources */,
@@ -443,14 +381,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		96E5E35E18BBB48A008E7B30 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				96E5E35F18BBB48A008E7B30 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
