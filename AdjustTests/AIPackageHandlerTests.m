@@ -78,7 +78,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
 
     //  check that added first package to a previous empty queue
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 1 "], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 1 (session)"], @"%@", self.loggerMock);
 
     //TODO add the verbose message
 
@@ -119,7 +119,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
 
     //  check that a package was added
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package "], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package"], @"%@", self.loggerMock);
 
     //  check that the mock request handler was NOT called to send the package
     XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler sendPackage"], @"%@", self.loggerMock);
@@ -164,7 +164,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
 
     //  check that added the third package to the queue and wrote to a file
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 3 "], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 3 (session)"], @"%@", self.loggerMock);
 
     //  check that it reads the same 3 packages in the file
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Package handler read 3 packages"], @"%@", self.loggerMock);
