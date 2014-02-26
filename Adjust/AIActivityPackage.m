@@ -13,9 +13,9 @@
 @implementation AIActivityPackage
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@%@ %@",
+    return [NSString stringWithFormat:@"%@%@",
             AIActivityKindToString(self.activityKind),
-            self.suffix, self.path];
+            self.suffix];
 }
 
 - (NSString *)extendedString {
