@@ -25,6 +25,9 @@
 @property (nonatomic, assign) double lastActivity;  // all times in seconds since 1970
 @property (nonatomic, assign) double createdAt;
 
+// last ten transaction identifiers
+@property (nonatomic, retain) NSMutableArray *transactionIds;
+
 // not persisted, only injected
 @property (nonatomic, assign) double lastInterval;
 

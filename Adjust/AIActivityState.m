@@ -11,6 +11,8 @@
 #import "UIDevice+AIAdditions.h"
 
 
+static const int kTransactionIdCount = 10;
+
 #pragma mark public implementation
 @implementation AIActivityState
 
@@ -29,6 +31,7 @@
     self.lastActivity    = -1;
     self.createdAt       = -1;
     self.lastInterval    = -1;
+    self.transactionIds  = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
 
     return self;
 }
@@ -72,10 +75,15 @@
     self.createdAt       = [decoder decodeDoubleForKey:@"createdAt"];
     self.lastActivity    = [decoder decodeDoubleForKey:@"lastActivity"];
     self.uuid            = [decoder decodeObjectForKey:@"uuid"];
+    self.transactionIds  = [decoder decodeObjectForKey:@"transactionIds"];
 
     // create UUID for migrating devices
     if (self.uuid == nil) {
         self.uuid = [UIDevice.currentDevice aiCreateUuid];
+    }
+
+    if (self.transactionIds == nil) {
+        self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     }
 
     self.lastInterval = -1;
@@ -84,14 +92,15 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeInt:self.eventCount       forKey:@"eventCount"];
-    [encoder encodeInt:self.sessionCount     forKey:@"sessionCount"];
-    [encoder encodeInt:self.subsessionCount  forKey:@"subsessionCount"];
-    [encoder encodeDouble:self.sessionLength forKey:@"sessionLength"];
-    [encoder encodeDouble:self.timeSpent     forKey:@"timeSpent"];
-    [encoder encodeDouble:self.createdAt     forKey:@"createdAt"];
-    [encoder encodeDouble:self.lastActivity  forKey:@"lastActivity"];
-    [encoder encodeObject:self.uuid          forKey:@"uuid"];
+    [encoder encodeInt:self.eventCount        forKey:@"eventCount"];
+    [encoder encodeInt:self.sessionCount      forKey:@"sessionCount"];
+    [encoder encodeInt:self.subsessionCount   forKey:@"subsessionCount"];
+    [encoder encodeDouble:self.sessionLength  forKey:@"sessionLength"];
+    [encoder encodeDouble:self.timeSpent      forKey:@"timeSpent"];
+    [encoder encodeDouble:self.createdAt      forKey:@"createdAt"];
+    [encoder encodeDouble:self.lastActivity   forKey:@"lastActivity"];
+    [encoder encodeObject:self.uuid           forKey:@"uuid"];
+    [encoder encodeObject:self.transactionIds forKey:@"transactionIds"];
 }
 
 
