@@ -72,13 +72,24 @@ static NSString * const AIEnvironmentProduction = @"production";
  * events have callbacks, you can also pass in parameters that will be
  * forwarded to your end point.
  *
+ * A transaction ID can be used to avoid duplicate revenue events. The last ten transaction identifiers are remembered.
+ * This is useful for in-app purchase tracking where you can pass in the identifier of the reported transaction.
+ *
  * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
+ * @param transactionIdentifier The identifier used to avoid duplicate revenue events (optional, see above)
  * @param eventToken The token for this revenue event (optional, see above)
  * @param parameters Parameters for this revenue event (optional, see above)
  */
 + (void)trackRevenue:(double)amountInCents;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
 + (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
+
++ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId;
++ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId forEvent:(NSString *)eventToken;
++ (void)trackRevenue:(double)amountInCents
+       transactionId:(NSString *)transactionId
+            forEvent:(NSString *)eventToken
+      withParameters:(NSDictionary *)parameters;
 
 /**
  * Change the verbosity of Adjust's logs.

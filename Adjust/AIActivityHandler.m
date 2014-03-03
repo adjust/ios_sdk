@@ -104,6 +104,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)trackRevenue:(double)amount
+       transactionId:(NSString *)transactionId
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters
 {

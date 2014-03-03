@@ -25,6 +25,7 @@
     withParameters:(NSDictionary *)parameters;
 
 - (void)trackRevenue:(double)amount
+       transactionId:(NSString *)transactionId
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 
