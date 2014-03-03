@@ -109,7 +109,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
       withParameters:(NSDictionary *)parameters
 {
     dispatch_async(self.internalQueue, ^{
-        [self revenueInternal:amount event:eventToken parameters:parameters];
+        [self revenueInternal:amount transactionId:transactionId event:eventToken parameters:parameters];
     });
 }
 
@@ -238,6 +238,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
 }
 
 - (void)revenueInternal:(double)amount
+          transactionId:(NSString *)transactionId
                   event:(NSString *)eventToken
              parameters:(NSDictionary *)parameters
 {
