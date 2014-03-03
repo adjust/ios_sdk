@@ -53,6 +53,7 @@ static NSString * const prefix = @"AIActivityHandler ";
 }
 
 - (void)trackRevenue:(double)amount
+       transactionId:(NSString *)transactionId
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"trackRevenue amount:%f eventToken:%@ parameters:%@", amount, eventToken, parameters]];

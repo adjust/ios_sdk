@@ -190,7 +190,7 @@
 
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:eventParameters];
-    [activityHandler trackRevenue:4.45 forEvent:@"abc123" withParameters:eventParameters];
+    [activityHandler trackRevenue:4.45 transactionId:nil forEvent:@"abc123" withParameters:eventParameters];
 
     [NSThread sleepForTimeInterval:2];
 
@@ -279,7 +279,7 @@
 
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:nil];
-    [activityHandler trackRevenue:0 forEvent:nil withParameters:nil];
+    [activityHandler trackRevenue:0 transactionId:nil forEvent:nil withParameters:nil];
 
     [NSThread sleepForTimeInterval:2];
 
@@ -368,7 +368,7 @@
     [nilActivityHandler trackEvent:@"ab123" withParameters:nil];
 
     //  trigger the nil app token a 5th time for a revenue
-    [nilActivityHandler trackRevenue:0 forEvent:@"abc123" withParameters:nil];
+    [nilActivityHandler trackRevenue:0 transactionId:nil forEvent:@"abc123" withParameters:nil];
 
     [NSThread sleepForTimeInterval:1];
     //  activity with invalid app token
@@ -385,10 +385,10 @@
     [activityHandler trackEvent:@"abc1234" withParameters:nil];
 
     //  track revenue with invalid amount token
-    [activityHandler trackRevenue:-0.1 forEvent:nil withParameters:nil];
+    [activityHandler trackRevenue:-0.1 transactionId:nil forEvent:nil withParameters:nil];
 
     //  track revenue with invalid token
-    [activityHandler trackRevenue:0 forEvent:@"abc12" withParameters:nil];
+    [activityHandler trackRevenue:0 transactionId:nil forEvent:@"abc12" withParameters:nil];
 
     [NSThread sleepForTimeInterval:1];
 
