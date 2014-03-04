@@ -18,13 +18,13 @@
 
 - (NSString *)aiQuote {
     if (self == nil) {
-        return self;
+        return nil;
     }
 
-    if ([self rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location != NSNotFound) {
-        return [NSString stringWithFormat:@"'%@'", self];
+    if ([self rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound) {
+        return self;
     }
-    return self;
+    return [NSString stringWithFormat:@"'%@'", self];
 }
 
 - (NSString *)aiMd5 {

@@ -26,7 +26,7 @@ static double intervalSubsessionInterval = -1;
     if (internalPackageHandler == nil) {
         return [AIPackageHandler handlerWithActivityHandler:activityHandler];
     }
-    
+
     return [internalPackageHandler initWithActivityHandler:activityHandler];
 }
 

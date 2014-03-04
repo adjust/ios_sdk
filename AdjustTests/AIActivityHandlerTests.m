@@ -27,7 +27,7 @@
 {
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
-    
+
 }
 
 - (void)tearDown
@@ -55,10 +55,10 @@
 {
     //  reseting to make the test order independent
     [self reset];
-    
+
     //  deleting the activity state file to simulate a first session
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
-    
+
     //  create handler and start the first session
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
@@ -69,10 +69,10 @@
     // it's necessary to sleep the activity for a while after each handler call
     //  to let the internal queue act
     [NSThread sleepForTimeInterval:10.0];
-    
+
     //  test that the file did not exist in the first run of the application
     XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Activity state file not found"], @"%@", self.loggerMock);
-    
+
     //  when a session package is being sent the package handler should resume sending
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
 
@@ -86,7 +86,7 @@
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios3.0.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios3.1.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
@@ -190,7 +190,7 @@
 
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:eventParameters];
-    [activityHandler trackRevenue:4.45 forEvent:@"abc123" withParameters:eventParameters];
+    [activityHandler trackRevenue:4.45 transactionId:nil forEvent:@"abc123" withParameters:eventParameters];
 
     [NSThread sleepForTimeInterval:2];
 
@@ -279,7 +279,7 @@
 
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:nil];
-    [activityHandler trackRevenue:0 forEvent:nil withParameters:nil];
+    [activityHandler trackRevenue:0 transactionId:nil forEvent:nil withParameters:nil];
 
     [NSThread sleepForTimeInterval:2];
 
@@ -368,7 +368,7 @@
     [nilActivityHandler trackEvent:@"ab123" withParameters:nil];
 
     //  trigger the nil app token a 5th time for a revenue
-    [nilActivityHandler trackRevenue:0 forEvent:@"abc123" withParameters:nil];
+    [nilActivityHandler trackRevenue:0 transactionId:nil forEvent:@"abc123" withParameters:nil];
 
     [NSThread sleepForTimeInterval:1];
     //  activity with invalid app token
@@ -385,10 +385,10 @@
     [activityHandler trackEvent:@"abc1234" withParameters:nil];
 
     //  track revenue with invalid amount token
-    [activityHandler trackRevenue:-0.1 forEvent:nil withParameters:nil];
+    [activityHandler trackRevenue:-0.1 transactionId:nil forEvent:nil withParameters:nil];
 
     //  track revenue with invalid token
-    [activityHandler trackRevenue:0 forEvent:@"abc12" withParameters:nil];
+    [activityHandler trackRevenue:0 transactionId:nil forEvent:@"abc12" withParameters:nil];
 
     [NSThread sleepForTimeInterval:1];
 

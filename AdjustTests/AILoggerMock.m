@@ -22,7 +22,7 @@ static NSString * const kLogTag = @"AdjustTests";
 - (id)init {
     self = [super init];
     if (self == nil) return nil;
-    
+
     self.logBuffer = [[NSMutableString alloc] init];
     self.logMap = @{
         @0 : [NSMutableArray array],
@@ -99,11 +99,11 @@ static NSString * const kLogTag = @"AdjustTests";
 - (void)logLevel:(NSInteger)logLevel  logPrefix:(NSString *)logPrefix format:(NSString *)format parameters:(va_list)parameters {
     NSString *formatedMessage = [[NSString alloc] initWithFormat:format arguments:parameters];
     va_end(parameters);
-    
+
     NSString *logMessage = [NSString stringWithFormat:@"\t[%@]%@: %@", kLogTag, logPrefix, formatedMessage];
-    
+
     [self.logBuffer appendString:logMessage];
-    
+
     NSMutableArray *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     [logArray addObject:formatedMessage];
 

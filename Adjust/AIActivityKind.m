@@ -22,9 +22,9 @@ AIActivityKind AIActivityKindFromString(NSString *string) {
 
 NSString* AIActivityKindToString(AIActivityKind activityKind) {
     switch (activityKind) {
-        case AIActivityKindSession: return @"session"; break;
-        case AIActivityKindEvent:   return @"event";   break;
-        case AIActivityKindRevenue: return @"revenue"; break;
-        case AIActivityKindUnknown: return @"unknown"; break;
+        case AIActivityKindSession: return @"session";
+        case AIActivityKindEvent:   return @"event";
+        case AIActivityKindRevenue: return @"revenue";
+        case AIActivityKindUnknown: return @"unknown";
     }
 }

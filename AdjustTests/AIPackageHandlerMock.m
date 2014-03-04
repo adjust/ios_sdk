@@ -30,14 +30,14 @@ static NSString * const prefix = @"AIPackageHandler ";
 - (id)initWithActivityHandler:(id<AIActivityHandler>)activityHandler {
     self = [super init];
     if (self == nil) return nil;
-    
+
     self.activityHandler = activityHandler;
-    
+
     self.loggerMock = (AILoggerMock *) AIAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
-    
+
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
-    
+
     return self;
 }
 
