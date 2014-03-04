@@ -125,7 +125,7 @@
 - (void)testResponseError {
     //  reseting to make the test order independent
     [self reset];
-    
+
     //  set the response to return an error
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:YES];

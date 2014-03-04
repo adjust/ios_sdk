@@ -27,7 +27,7 @@
 {
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
-    
+
 }
 
 - (void)tearDown
@@ -55,10 +55,10 @@
 {
     //  reseting to make the test order independent
     [self reset];
-    
+
     //  deleting the activity state file to simulate a first session
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
-    
+
     //  create handler and start the first session
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
@@ -69,10 +69,10 @@
     // it's necessary to sleep the activity for a while after each handler call
     //  to let the internal queue act
     [NSThread sleepForTimeInterval:10.0];
-    
+
     //  test that the file did not exist in the first run of the application
     XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Activity state file not found"], @"%@", self.loggerMock);
-    
+
     //  when a session package is being sent the package handler should resume sending
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
 

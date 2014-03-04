@@ -25,14 +25,14 @@ static NSString * const prefix = @"AIRequestHandler ";
 - (id)initWithPackageHandler:(id<AIPackageHandler>) packageHandler {
     self = [super init];
     if (self == nil) return nil;
-    
+
     self.packageHandler = packageHandler;
     self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
-    
+
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithPackageHandler"]];
 
     self.connectionError = NO;
-    
+
     return self;
 }
 
@@ -40,7 +40,7 @@ static NSString * const prefix = @"AIRequestHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
 
     AIResponseData *responseData;
-    
+
     if (self.connectionError) {
         responseData = [[AIResponseData alloc] initWithError:@"connection error"];
     } else {

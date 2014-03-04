@@ -12,7 +12,7 @@
 static BOOL triggerConnectionError = NO;
 static BOOL triggerResponseError = NO;
 
-@implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock) 
+@implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error {
     AILoggerMock *loggerMock =(AILoggerMock *)AIAdjustFactory.logger;
@@ -21,7 +21,7 @@ static BOOL triggerResponseError = NO;
     if (triggerConnectionError) {
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"connection error", nil) };
         (*error) = [NSError errorWithDomain:@"Adjust"
-                                             code:-57 
+                                             code:-57
                                          userInfo:userInfo];
         return nil;
     }

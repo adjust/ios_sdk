@@ -28,9 +28,9 @@ static NSString * const prefix = @"AIActivityHandler ";
 - (id)initWithAppToken:(NSString *)yourAppToken {
     self = [super init];
     if (self == nil) return nil;
-    
+
     self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
-    
+
     [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithAppToken yourAppToken:%@", yourAppToken]];
 
     return self;
