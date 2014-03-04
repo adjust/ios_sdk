@@ -188,6 +188,11 @@ NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 [Adjust trackRevenue:1.0 forEvent:@"abc123" withParameters:parameters];
 ```
 
+You can also pass in an optional transaction ID to avoid tracking duplicate
+revenues. The last ten transaction IDs are remembered and revenue events with
+duplicate transaction IDs are skipped. This is especially useful for In-App
+Purchase tracking. See an example below.
+
 If you want to track In-App Purchases, please make sure to call `trackRevenue`
 after `finishTransaction` in `paymentQueue:updatedTransaction` only if the
 state changed to `SKPaymentTransactionStatePurchased`:
@@ -198,7 +203,12 @@ state changed to `SKPaymentTransactionStatePurchased`:
         switch (transaction.transactionState) {
             case SKPaymentTransactionStatePurchased:
                 [self finishTransaction:transaction];
-                [Adjust trackRevenue:...];
+
+                [Adjust trackRevenue:...
+                       transactionId:transaction.transactionIdentifier // avoid duplicates
+                            forEvent:...
+                      withParameters:...];
+
                 break;
             // more cases
         }
