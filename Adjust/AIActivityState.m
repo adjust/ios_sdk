@@ -55,6 +55,18 @@ static const int kTransactionIdCount = 10;
     builder.eventCount = self.eventCount;
 }
 
+- (void)addTransactionId:(NSString *)transactionId {
+    if (self.transactionIds == nil) { // create array
+        self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+    }
+
+    if (self.transactionIds.count == kTransactionIdCount) {
+        [self.transactionIds removeObjectAtIndex:0]; // make space
+    }
+
+    [self.transactionIds addObject:transactionId]; // add new ID
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d sl:%.1f ts:%.1f la:%.1f",
             self.eventCount, self.sessionCount, self.subsessionCount, self.sessionLength,

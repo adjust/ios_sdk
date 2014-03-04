@@ -36,4 +36,6 @@
 - (void)injectSessionAttributes:(AIPackageBuilder *)packageBilder;
 - (void)injectEventAttributes:(AIPackageBuilder *)packageBilder;
 
+- (void)addTransactionId:(NSString *)transactionId;
+
 @end
