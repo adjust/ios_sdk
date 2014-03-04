@@ -67,6 +67,10 @@ static const int kTransactionIdCount = 10;
     [self.transactionIds addObject:transactionId]; // add new ID
 }
 
+- (BOOL)findTransactionId:(NSString *)transactionId {
+    return [self.transactionIds containsObject:transactionId];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d sl:%.1f ts:%.1f la:%.1f",
             self.eventCount, self.sessionCount, self.subsessionCount, self.sessionLength,

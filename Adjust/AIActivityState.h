@@ -36,6 +36,8 @@
 - (void)injectSessionAttributes:(AIPackageBuilder *)packageBilder;
 - (void)injectEventAttributes:(AIPackageBuilder *)packageBilder;
 
+// transaction ID management
 - (void)addTransactionId:(NSString *)transactionId;
+- (BOOL)findTransactionId:(NSString *)transactionId;
 
 @end
