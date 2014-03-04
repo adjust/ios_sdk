@@ -246,6 +246,7 @@ static const double   kSubsessionInterval =  1;                // 1 second
     if (![self checkActivityState:self.activityState]) return;
     if (![self checkAmount:amount]) return;
     if (![self checkEventTokenLength:eventToken]) return;
+    if (![self checkTransactionId:transactionId]) return;
 
     AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
     revenueBuilder.amountInCents = amount;
@@ -455,6 +456,23 @@ static const double   kSubsessionInterval =  1;                // 1 second
         [self.logger error:@"Invalid amount %.1f", amount];
         return NO;
     }
+    return YES;
+}
+
+- (BOOL) checkTransactionId:(NSString *)transactionId {
+    if (transactionId.length == 0) {
+        return YES; // no transaction ID given
+    }
+
+    if ([self.activityState findTransactionId:transactionId]) {
+        [self.logger info:@"Skipping duplicate transaction ID '%@'", transactionId];
+        [self.logger verbose:@"Found transaction ID in %@", self.activityState.transactionIds];
+        return NO; // transaction ID found -> used already
+    }
+
+    [self.activityState addTransactionId:transactionId];
+    [self.logger verbose:@"Added transaction ID %@", self.activityState.transactionIds];
+    // activity state will get written by caller
     return YES;
 }
 
