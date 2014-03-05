@@ -114,9 +114,9 @@ meaningful at all times! Especially if you are tracking revenue.
    the `f` suffixes in number literals (`12.3f` becomes `12.3`).
 
 [README]: ../README.md
-[rename]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/rename.png
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag3.png
-[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
+[rename]: https://raw.github.com/adjust/sdks/master/Resources/ios/rename.png
+[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag3.png
+[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 [dashboard]: http://adjust.io

@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary      = "This is the iOS SDK of Adjust. You can read more about it at http://adjust.io."
   s.homepage     = "http://adjust.io"
   s.license      = { :type => 'MIT', :file => 'MIT-LICENSE' }
-  s.author       = { "Christian Wellenbrock" => "welle@adeven.com" }
+  s.author       = { "Christian Wellenbrock" => "welle@adjust.com" }
   s.source       = { :git => "https://github.com/adeven/adjust_ios_sdk.git", :tag => "v3.1.0" }
   s.platform     = :ios, '4.3'
   s.framework    = 'AdSupport', 'SystemConfiguration'

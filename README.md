@@ -13,7 +13,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adeven/adjust_ios_sdk.git', :tag => 'v3.1.0'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v3.1.0'
 ```
 
 ### 1. Get the SDK
@@ -138,7 +138,7 @@ case you can also put some key-value-pairs in a dictionary and pass it to the
 callback URL.
 
 For example, suppose you have registered the URL
-`http://www.adeven.com/callback` for your event with Event Token `abc123` and
+`http://www.adjust.com/callback` for your event with Event Token `abc123` and
 execute the following lines:
 
 ```objc
@@ -150,7 +150,7 @@ NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
 In that case we would track the event and send a request to:
 
-    http://www.adeven.com/callback?key=value&foo=bar
+    http://www.adjust.com/callback?key=value&foo=bar
 
 It should be mentioned that we support a variety of placeholders like `{idfa}`
 that can be used as parameter values. In the resulting callback this
@@ -215,6 +215,9 @@ state changed to `SKPaymentTransactionStatePurchased`:
     }
 }
 ```
+
+If you want to track all revenues in the same currency you might want to use
+[AEPriceMatrix][AEPriceMatrix] to do simple tier based currency conversion.
 
 ### 8. Receive delegate callbacks
 
@@ -296,14 +299,15 @@ in the `didFinishLaunching` method of your Application Delegate:
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.io
-[releases]: https://github.com/adeven/adjust_ios_sdk/releases
+[releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[drag]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/drag3.png
-[add]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/add2.png
-[framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework2.png
-[delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
-[run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run3.png
+[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag3.png
+[add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add2.png
+[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework2.png
+[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
+[run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
+[AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 
 ## License
 
