@@ -216,6 +216,9 @@ state changed to `SKPaymentTransactionStatePurchased`:
 }
 ```
 
+If you want to track all revenues in the same currency you might want to use
+[AEPriceMatrix][AEPriceMatrix] to do simple tier based currency conversion.
+
 ### 8. Receive delegate callbacks
 
 Every time your app tries to track a session, an event or some revenue, you can
@@ -304,6 +307,7 @@ in the `didFinishLaunching` method of your Application Delegate:
 [framework]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/framework2.png
 [delegate]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/delegate3.png
 [run]: https://raw.github.com/adeven/adjust_sdk/master/Resources/ios/run3.png
+[AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 
 ## License
 
