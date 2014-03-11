@@ -62,4 +62,26 @@
             self.trackerName.aiQuote];
 }
 
+- (NSDictionary *)dictionary {
+    NSMutableDictionary * responseDataDic = [NSMutableDictionary dictionaryWithDictionary:@{
+        @"activityKind" : self.activityKindString,
+        @"success" : (self.success ? @"true" : @"false"),
+        @"willRetry" : (self.willRetry ? @"true" : @"false"),
+    }];
+
+    if (self.error != nil) {
+        [responseDataDic setObject:self.error forKey:@"error"];
+    }
+
+    if (self.trackerToken != nil) {
+        [responseDataDic setObject:self.trackerToken forKey:@"trackerToken"];
+    }
+
+    if (self.trackerName != nil) {
+        [responseDataDic setObject:self.trackerName forKey:@"trackerName"];
+    }
+
+    return responseDataDic;
+}
+
 @end

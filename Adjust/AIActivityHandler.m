@@ -23,7 +23,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 static const uint64_t kTimerInterval      = 60 * NSEC_PER_SEC; // 1 minute
 static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
-static const double   kSubsessionInterval =  1;                // 1 second
 
 
 #pragma mark -

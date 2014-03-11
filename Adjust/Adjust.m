@@ -116,4 +116,12 @@ static id<AILogger> logger;
     [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
 }
 
++ (void)trackSubsessionStart {
+    [activityHandler trackSubsessionStart];
+}
+
++ (void)trackSubsessionEnd {
+    [activityHandler trackSubsessionEnd];
+}
+
 @end
