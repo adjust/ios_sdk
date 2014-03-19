@@ -138,6 +138,20 @@ static NSString * const AIEnvironmentProduction = @"production";
 // Special method used by SDK wrappers such as Adobe Air SDK.
 + (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
 
+/**
+ * Tell adjust that the application resumed.
+ *
+ * Only necessary if the native notifications can't be used
+ */
++ (void)trackSubsessionStart;
+
+/**
+ * Tell adjust that the application paused.
+ *
+ * Only necessary if the native notifications can't be used
+ */
++ (void)trackSubsessionEnd;
+
 @end
 
 

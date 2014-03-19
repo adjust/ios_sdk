@@ -49,7 +49,12 @@
 // (session, event, revenue), see above
 - (NSString *)activityKindString;
 
+// returns a NSDictonary representation
+- (NSDictionary *)dictionary;
+
+
 #pragma mark internals
+
 + (AIResponseData *)dataWithJsonString:(NSString *)string;
 + (AIResponseData *)dataWithError:(NSString *)error;
 

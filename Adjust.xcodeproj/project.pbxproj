@@ -28,7 +28,6 @@
 		96E5E39718BBB48A008E7B30 /* AIResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37C18BBB48A008E7B30 /* AIResponseData.m */; };
 		96E5E39818BBB48A008E7B30 /* AITimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37E18BBB48A008E7B30 /* AITimer.m */; };
 		96E5E39918BBB48A008E7B30 /* AIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* AIUtil.m */; };
-		96E5E3AE18BBB49E008E7B30 /* AdjustTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 96E5E39C18BBB49E008E7B30 /* AdjustTests-Info.plist */; };
 		96E5E3AF18BBB49E008E7B30 /* AIActivityHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E39E18BBB49E008E7B30 /* AIActivityHandlerMock.m */; };
 		96E5E3B018BBB49E008E7B30 /* AIActivityHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E39F18BBB49E008E7B30 /* AIActivityHandlerTests.m */; };
 		96E5E3B118BBB49E008E7B30 /* AILoggerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E3A118BBB49E008E7B30 /* AILoggerMock.m */; };
@@ -294,7 +293,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = adjust;
 			};
 			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
@@ -320,7 +319,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E5E3AE18BBB49E008E7B30 /* AdjustTests-Info.plist in Resources */,
 				96E5E3B718BBB49E008E7B30 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,7 +394,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -434,7 +431,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -497,7 +493,6 @@
 		9679923418BBAE2800394606 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -518,7 +513,6 @@
 		9679923518BBAE2800394606 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
