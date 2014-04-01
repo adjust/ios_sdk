@@ -42,7 +42,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
-@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL internalEnabled;
 
 @end
 
@@ -71,6 +71,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     // default values
     self.environment = @"unknown";
     self.trackMacMd5 = YES;
+    self.internalEnabled = YES;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -121,7 +122,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    self.enabled = enabled;
+    self.internalEnabled = enabled;
     if ([self checkActivityState:self.activityState]) {
         self.activityState.enabled = enabled;
     }
@@ -136,7 +137,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     if ([self checkActivityState:self.activityState]) {
         return self.activityState.enabled;
     } else {
-        return self.enabled;
+        return self.internalEnabled;
     }
 }
 
@@ -183,7 +184,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
-        self.activityState.enabled = self.enabled;
+        self.activityState.enabled = self.internalEnabled;
         [self writeActivityState];
         [self.logger info:@"First session"];
         return;
