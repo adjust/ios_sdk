@@ -9,9 +9,7 @@
 #import "AIPackageBuilder.h"
 #import "AIActivityPackage.h"
 #import "NSData+AIAdditions.h"
-
-static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'Z";
-static NSDateFormatter * dateFormat;
+#import "AIUtil.h"
 
 #pragma mark -
 @implementation AIPackageBuilder
@@ -129,8 +127,7 @@ static NSDateFormatter * dateFormat;
 - (void)parameters:(NSMutableDictionary *)parameters setDate:(double)value forKey:(NSString *)key {
     if (value < 0) return;
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
-    NSString *dateString = [self.dateFormat stringFromDate:date];
+    NSString *dateString = [AIUtil dateFormat:value];
     [self parameters:parameters setString:dateString forKey:key];
 }
 
@@ -147,14 +144,6 @@ static NSDateFormatter * dateFormat;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
     NSString *dictionaryString = jsonData.aiEncodeBase64;
     [self parameters:parameters setString:dictionaryString forKey:key];
-}
-
-- (NSDateFormatter *)dateFormat {
-    if (dateFormat == nil) {
-        dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:kDateFormat];
-    }
-    return dateFormat;
 }
 
 @end
