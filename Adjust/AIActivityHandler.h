@@ -30,6 +30,8 @@
       withParameters:(NSDictionary *)parameters;
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response;
+- (void)setEnabled:(BOOL)enabled;
+- (BOOL)isEnabled;
 
 @end
 

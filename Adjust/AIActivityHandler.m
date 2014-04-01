@@ -42,6 +42,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
+@property (nonatomic, assign) BOOL enabled;
 
 @end
 
@@ -119,6 +120,26 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
+- (void)setEnabled:(BOOL)enabled {
+    self.enabled = enabled;
+    if ([self checkActivityState:self.activityState]) {
+        self.activityState.enabled = enabled;
+    }
+    if (enabled) {
+        [self trackSubsessionStart];
+    } else {
+        [self trackSubsessionEnd];
+    }
+}
+
+- (BOOL)isEnabled {
+    if ([self checkActivityState:self.activityState]) {
+        return self.activityState.enabled;
+    } else {
+        return self.enabled;
+    }
+}
+
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self checkAppTokenNotNil:yourAppToken]) return;
@@ -144,6 +165,11 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 - (void)startInternal {
     if (![self checkAppTokenNotNil:self.appToken]) return;
 
+    if (self.activityState != nil
+        && !self.activityState.enabled) {
+        return;
+    }
+
     [self.packageHandler resumeSending];
     [self startTimer];
 
@@ -157,6 +183,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
+        self.activityState.enabled = self.enabled;
         [self writeActivityState];
         [self.logger info:@"First session"];
         return;
@@ -212,6 +239,10 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     if (![self checkEventTokenNotNil:eventToken]) return;
     if (![self checkEventTokenLength:eventToken]) return;
 
+    if (!self.activityState.enabled) {
+        return;
+    }
+
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.eventToken = eventToken;
     eventBuilder.callbackParameters = parameters;
@@ -246,6 +277,10 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     if (![self checkAmount:amount]) return;
     if (![self checkEventTokenLength:eventToken]) return;
     if (![self checkTransactionId:transactionId]) return;
+
+    if (!self.activityState.enabled) {
+        return;
+    }
 
     AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
     revenueBuilder.amountInCents = amount;
@@ -375,6 +410,10 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)timerFired {
+    if (self.activityState != nil
+        && !self.activityState.enabled) {
+        return;
+    }
     [self.packageHandler sendFirstPackage];
     if ([self updateActivityState]) {
         [self writeActivityState];

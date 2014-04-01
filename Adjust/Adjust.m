@@ -124,4 +124,12 @@ static id<AILogger> logger;
     [activityHandler trackSubsessionEnd];
 }
 
++ (void)setEnabled:(BOOL)enabled {
+    [activityHandler setEnabled:enabled];
+}
+
++ (BOOL)isEnabled {
+    return [activityHandler isEnabled];
+}
+
 @end
