@@ -16,6 +16,9 @@
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
 static NSString * const kClientSdk = @"ios3.1.0";
 
+static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'Z";
+static NSDateFormatter * dateFormat;
+
 
 #pragma mark -
 @implementation AIUtil
@@ -108,6 +111,17 @@ static NSString * const kClientSdk = @"ios3.1.0";
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
+}
+
++ (NSString *)dateFormat:(double) value {
+    if (dateFormat == nil) {
+        dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:kDateFormat];
+    }
+
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
+
+    return [dateFormat stringFromDate:date];
 }
 
 @end
