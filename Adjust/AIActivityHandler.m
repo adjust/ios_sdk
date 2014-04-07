@@ -228,7 +228,8 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
     [self.packageHandler pauseSending];
     [self stopTimer];
-    [self updateActivityState];
+    double now = [NSDate.date timeIntervalSince1970];
+    [self updateActivityState:now];
     [self writeActivityState];
 }
 
@@ -249,7 +250,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     eventBuilder.callbackParameters = parameters;
 
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState];
+    [self updateActivityState:now];
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
@@ -289,7 +290,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     revenueBuilder.callbackParameters = parameters;
 
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState];
+    [self updateActivityState:now];
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
@@ -311,10 +312,9 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark - private
 
 // returns whether or not the activity state should be written
-- (BOOL)updateActivityState {
+- (BOOL)updateActivityState:(double)now {
     if (![self checkActivityState:self.activityState]) return NO;
 
-    double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
@@ -416,7 +416,8 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
     [self.packageHandler sendFirstPackage];
-    if ([self updateActivityState]) {
+    double now = [NSDate.date timeIntervalSince1970];
+    if ([self updateActivityState:now]) {
         [self writeActivityState];
     }
 }
