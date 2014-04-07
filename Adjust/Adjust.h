@@ -152,6 +152,18 @@ static NSString * const AIEnvironmentProduction = @"production";
  */
 + (void)trackSubsessionEnd;
 
+/**
+ * Enable or disable the adjust SDK
+ *
+ * @param enabled The flag to enable or disable the adjust SDK
+ */
++ (void)setEnabled:(BOOL)enabled;
+
+/**
+ * Check if the SDK is enabled or disabled
+ */
++ (BOOL)isEnabled;
+
 @end
 
 

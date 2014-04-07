@@ -117,6 +117,12 @@ static const double kRequestTimeout = 60; // 60 seconds
         [pairs addObject:pair];
     }
 
+    double now = [NSDate.date timeIntervalSince1970];
+    NSString *dateString = [AIUtil dateFormat:now];
+    NSString *escapedDate = [dateString aiUrlEncode];
+    NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
+    [pairs addObject:sentAtPair];
+
     NSString *bodyString = [pairs componentsJoinedByString:@"&"];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;

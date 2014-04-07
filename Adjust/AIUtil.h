@@ -14,5 +14,6 @@
 + (NSString *)userAgent;
 
 + (void)excludeFromBackup:(NSString *)filename;
++ (NSString *)dateFormat:(double)value;
 
 @end
