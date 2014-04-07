@@ -296,6 +296,20 @@ in the `didFinishLaunching` method of your Application Delegate:
 [Adjust setEventBufferingEnabled:YES];
 ```
 
+### 10. Disable tracking
+
+You can disable the adjust SDK from tracking by invoking the method `setEnabled` 
+with the enabled parameter as `NO`. This setting is remembered between sessions, but it can only
+be activated after the first session.
+
+```objc
+[Adjust setEnabled:NO];
+```
+
+You can verify if the adjust SDK is currently active with the method `isEnabled`. It is always possible
+to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `YES`.
+
+
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.io
