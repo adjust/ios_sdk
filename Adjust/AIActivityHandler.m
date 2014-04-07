@@ -42,6 +42,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
+@property (nonatomic, assign) BOOL internalEnabled;
 
 @end
 
@@ -70,6 +71,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     // default values
     self.environment = @"unknown";
     self.trackMacMd5 = YES;
+    self.internalEnabled = YES;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -119,6 +121,26 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
+- (void)setEnabled:(BOOL)enabled {
+    self.internalEnabled = enabled;
+    if ([self checkActivityState:self.activityState]) {
+        self.activityState.enabled = enabled;
+    }
+    if (enabled) {
+        [self trackSubsessionStart];
+    } else {
+        [self trackSubsessionEnd];
+    }
+}
+
+- (BOOL)isEnabled {
+    if ([self checkActivityState:self.activityState]) {
+        return self.activityState.enabled;
+    } else {
+        return self.internalEnabled;
+    }
+}
+
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self checkAppTokenNotNil:yourAppToken]) return;
@@ -144,6 +166,11 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 - (void)startInternal {
     if (![self checkAppTokenNotNil:self.appToken]) return;
 
+    if (self.activityState != nil
+        && !self.activityState.enabled) {
+        return;
+    }
+
     [self.packageHandler resumeSending];
     [self startTimer];
 
@@ -157,6 +184,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
+        self.activityState.enabled = self.internalEnabled;
         [self writeActivityState];
         [self.logger info:@"First session"];
         return;
@@ -200,7 +228,8 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
     [self.packageHandler pauseSending];
     [self stopTimer];
-    [self updateActivityState];
+    double now = [NSDate.date timeIntervalSince1970];
+    [self updateActivityState:now];
     [self writeActivityState];
 }
 
@@ -212,12 +241,16 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     if (![self checkEventTokenNotNil:eventToken]) return;
     if (![self checkEventTokenLength:eventToken]) return;
 
+    if (!self.activityState.enabled) {
+        return;
+    }
+
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.eventToken = eventToken;
     eventBuilder.callbackParameters = parameters;
 
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState];
+    [self updateActivityState:now];
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
@@ -247,13 +280,17 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     if (![self checkEventTokenLength:eventToken]) return;
     if (![self checkTransactionId:transactionId]) return;
 
+    if (!self.activityState.enabled) {
+        return;
+    }
+
     AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
     revenueBuilder.amountInCents = amount;
     revenueBuilder.eventToken = eventToken;
     revenueBuilder.callbackParameters = parameters;
 
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState];
+    [self updateActivityState:now];
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
@@ -275,10 +312,9 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark - private
 
 // returns whether or not the activity state should be written
-- (BOOL)updateActivityState {
+- (BOOL)updateActivityState:(double)now {
     if (![self checkActivityState:self.activityState]) return NO;
 
-    double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - self.activityState.lastActivity;
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
@@ -375,8 +411,13 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)timerFired {
+    if (self.activityState != nil
+        && !self.activityState.enabled) {
+        return;
+    }
     [self.packageHandler sendFirstPackage];
-    if ([self updateActivityState]) {
+    double now = [NSDate.date timeIntervalSince1970];
+    if ([self updateActivityState:now]) {
         [self writeActivityState];
     }
 }

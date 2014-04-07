@@ -13,7 +13,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v3.1.0'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v3.2.0'
 ```
 
 ### 1. Get the SDK
@@ -295,6 +295,20 @@ in the `didFinishLaunching` method of your Application Delegate:
 ```objc
 [Adjust setEventBufferingEnabled:YES];
 ```
+
+### 10. Disable tracking
+
+You can disable the adjust SDK from tracking by invoking the method `setEnabled` 
+with the enabled parameter as `NO`. This setting is remembered between sessions, but it can only
+be activated after the first session.
+
+```objc
+[Adjust setEnabled:NO];
+```
+
+You can verify if the adjust SDK is currently active with the method `isEnabled`. It is always possible
+to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `YES`.
+
 
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org

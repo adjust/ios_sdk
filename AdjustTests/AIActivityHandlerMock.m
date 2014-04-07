@@ -63,6 +63,13 @@ static NSString * const prefix = @"AIActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTrackingWithResponse response:%@", response]];
 }
 
+- (void)setEnabled:(BOOL)enabled {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setEnabled enabled:%d", enabled]];
+}
 
+- (BOOL)isEnabled {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"isEnabled"]];
+    return YES;
+}
 
 @end

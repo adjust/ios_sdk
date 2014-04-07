@@ -86,7 +86,7 @@
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios3.1.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios3.2.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
@@ -413,6 +413,82 @@
 
     //  check the invalid revenue token
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],  @"%@", self.loggerMock);
+
+}
+
+- (void)testDisable {
+    //  reseting to make the test order independent
+    [self reset];
+
+    //  starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    //  create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    // verify the default value
+    XCTAssert([activityHandler isEnabled], @"%@", self.loggerMock);
+
+    [activityHandler setEnabled:NO];
+
+    // check that the value is changed
+    XCTAssertFalse([activityHandler isEnabled], @"%@", self.loggerMock);
+
+    [activityHandler trackEvent:@"123456" withParameters:nil];
+    [activityHandler trackRevenue:0.1 transactionId:nil forEvent:nil withParameters:nil];
+    [activityHandler trackSubsessionEnd];
+    [activityHandler trackSubsessionStart];
+
+    [NSThread sleepForTimeInterval:2];
+
+    // verify the changed value after the activity handler is started
+    XCTAssertFalse([activityHandler isEnabled], @"%@", self.loggerMock);
+
+    // making sure the first session was sent
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
+
+    // delete the first session package from the log
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+
+    // making sure the timer fired did not call the package handler
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+
+    // test if the event was not triggered
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+
+    // test if the revenue was not triggered
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1 (revenue)"], @"%@", self.loggerMock);
+
+    // verify that the application was paused
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+
+    // verify that it was not resumed
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
+
+    // enable again
+    [activityHandler setEnabled:YES];
+
+    [activityHandler trackEvent:@"123456" withParameters:nil];
+    [activityHandler trackRevenue:0.1 transactionId:nil forEvent:nil withParameters:nil];
+    [activityHandler trackSubsessionEnd];
+    [activityHandler trackSubsessionStart];
+
+    [NSThread sleepForTimeInterval:2];
+
+    // verify the changed value, when the activity state is started
+    XCTAssert([activityHandler isEnabled], @"%@", self.loggerMock);
+
+    // test that the event was triggered
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+
+    // test that the revenue was triggered
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
+
+    // verify that the application was paused
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+
+    // verify that it was also resumed
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
 
 }
 

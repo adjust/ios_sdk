@@ -32,6 +32,7 @@ static const int kTransactionIdCount = 10;
     self.createdAt       = -1;
     self.lastInterval    = -1;
     self.transactionIds  = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+    self.enabled         = YES;
 
     return self;
 }
@@ -92,6 +93,7 @@ static const int kTransactionIdCount = 10;
     self.lastActivity    = [decoder decodeDoubleForKey:@"lastActivity"];
     self.uuid            = [decoder decodeObjectForKey:@"uuid"];
     self.transactionIds  = [decoder decodeObjectForKey:@"transactionIds"];
+    self.enabled         = [decoder decodeBoolForKey:@"enabled"];
 
     // create UUID for migrating devices
     if (self.uuid == nil) {
@@ -100,6 +102,10 @@ static const int kTransactionIdCount = 10;
 
     if (self.transactionIds == nil) {
         self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+    }
+
+    if (![decoder containsValueForKey:@"enabled"]) {
+        self.enabled = YES;
     }
 
     self.lastInterval = -1;
@@ -117,6 +123,7 @@ static const int kTransactionIdCount = 10;
     [encoder encodeDouble:self.lastActivity   forKey:@"lastActivity"];
     [encoder encodeObject:self.uuid           forKey:@"uuid"];
     [encoder encodeObject:self.transactionIds forKey:@"transactionIds"];
+    [encoder encodeBool:self.enabled          forKey:@"enabled"];
 }
 
 
