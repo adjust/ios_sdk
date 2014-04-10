@@ -37,8 +37,13 @@
 @property (nonatomic, copy)   NSDictionary *callbackParameters;
 @property (nonatomic, assign) double amountInCents;
 
+// reattributions
+@property (nonatomic, copy) NSDictionary* deeplinkParameters;
+
+
 - (AIActivityPackage *)buildSessionPackage;
 - (AIActivityPackage *)buildEventPackage;
 - (AIActivityPackage *)buildRevenuePackage;
+- (AIActivityPackage *)buildReattributionPackage;
 
 @end

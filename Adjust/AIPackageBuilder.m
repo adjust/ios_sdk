@@ -54,6 +54,19 @@
     return revenuePackage;
 }
 
+- (AIActivityPackage *)buildReattributionPackage {
+    NSMutableDictionary *parameters = [self defaultParameters];
+    [self parameters:parameters setDictionary:self.deeplinkParameters forKey:@"deeplink_parameters"];
+
+    AIActivityPackage *reattributionPackage = [self defaultActivityPackage];
+    reattributionPackage.path = @"/reattribute";
+    reattributionPackage.activityKind = AIActivityKindReattribution;
+    reattributionPackage.suffix = @"";
+    reattributionPackage.parameters = parameters;
+
+    return reattributionPackage;
+}
+
 #pragma mark private
 - (AIActivityPackage *)defaultActivityPackage {
     AIActivityPackage *activityPackage = [[AIActivityPackage alloc] init];

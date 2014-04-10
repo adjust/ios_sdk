@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    AIActivityKindUnknown = 0,
-    AIActivityKindSession = 1,
-    AIActivityKindEvent   = 2,
-    AIActivityKindRevenue = 3,
+    AIActivityKindUnknown       = 0,
+    AIActivityKindSession       = 1,
+    AIActivityKindEvent         = 2,
+    AIActivityKindRevenue       = 3,
+    AIActivityKindReattribution = 4,
 } AIActivityKind;
 
 AIActivityKind AIActivityKindFromString(NSString *string);

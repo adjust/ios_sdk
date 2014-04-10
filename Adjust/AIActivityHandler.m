@@ -141,6 +141,12 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
+- (void)readOpenUrl:(NSURL*)url {
+    dispatch_async(self.internalQueue, ^{
+        [self readOpenUrlInternal:url];
+    });
+}
+
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self checkAppTokenNotNil:yourAppToken]) return;
@@ -307,6 +313,21 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 
     [self writeActivityState];
     [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
+}
+
+- (void) readOpenUrlInternal:(NSURL *)url {
+    NSString* queryString = [url query];
+    NSArray* queryArray = [queryString componentsSeparatedByString:@"&"];
+
+    for (NSString* fieldValuePair in queryArray) {
+        NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
+        NSString* field = [pairComponents objectAtIndex:0];
+        if ([field hasPrefix:@"adjust_"]) {
+            NSString* value = [pairComponents objectAtIndex:1];
+            [self.logger debug:@"deep link found %@=%@", field, value];
+            
+        }
+    }
 }
 
 #pragma mark - private

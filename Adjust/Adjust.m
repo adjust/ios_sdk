@@ -132,4 +132,8 @@ static id<AILogger> logger;
     return [activityHandler isEnabled];
 }
 
++ (void)appWillOpenUrl:(NSURL *)url {
+    [activityHandler readOpenUrl:url];
+}
+
 @end
