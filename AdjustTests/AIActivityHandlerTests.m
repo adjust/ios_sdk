@@ -71,10 +71,12 @@
     [NSThread sleepForTimeInterval:10.0];
 
     //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Activity state file not found"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Activity state file not found"],
+        @"%@", self.loggerMock);
 
     //  when a session package is being sent the package handler should resume sending
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+        @"%@", self.loggerMock);
 
     //  if the package was build, it was sent to the Package Handler
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler addPackage"], @"%@", self.loggerMock);
@@ -111,7 +113,8 @@
     XCTAssertNil(parameters[@"last_interval"], @"%@", activityPackage.extendedString);
 
     //  after adding, the activity handler ping the Package handler to send the package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+        @"%@", self.loggerMock);
 
     //  check that the package handler calls back with the delegate
     //XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AdjustDelegate adjustFinishedTrackingWithResponse"],
@@ -151,7 +154,8 @@
     [NSThread sleepForTimeInterval:1];
 
     //  check that a new subsession was created
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],
+        @"%@", self.loggerMock);
 
     // check that it's now on the 2nd session
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Session 2"],  @"%@", self.loggerMock);
@@ -171,7 +175,8 @@
     XCTAssertEqual(2, [(NSString *)parameters[@"subsession_count"] intValue], @"%@", activityPackage.extendedString);
 
     //  check that the package handler was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+        @"%@", self.loggerMock);
 }
 
 - (void)testEventsBuffered {
@@ -219,13 +224,14 @@
 
     //   check the injected parameters
     XCTAssert([(NSString *)eventPackageParameters[@"params"] isEqualToString:@"eyJrZXkiOiJ2YWx1ZSIsImZvbyI6ImJhciJ9"],
-              @"%@", eventPackage.extendedString);
+        @"%@", eventPackage.extendedString);
 
     //   check that the event was buffered
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered event 'abc123'"], @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the logger
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
@@ -250,17 +256,20 @@
     XCTAssertEqual(45, [(NSString *)revenuePackageParameters[@"amount"] intValue], @"%@", revenuePackage.extendedString);
 
     //   check the event token
-    XCTAssert([(NSString *)revenuePackageParameters[@"event_token"] isEqualToString:@"abc123"], @"%@", revenuePackage.extendedString);
+    XCTAssert([(NSString *)revenuePackageParameters[@"event_token"] isEqualToString:@"abc123"],
+        @"%@", revenuePackage.extendedString);
 
     //   check the injected parameters
     XCTAssert([(NSString *)revenuePackageParameters[@"params"] isEqualToString:@"eyJrZXkiOiJ2YWx1ZSIsImZvbyI6ImJhciJ9"],
-              @"%@", eventPackage.extendedString);
+        @"%@", eventPackage.extendedString);
 
     //   check that the revenue was buffered
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered revenue (4.5 cent, 'abc123')"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered revenue (4.5 cent, 'abc123')"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the logger
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
@@ -307,10 +316,12 @@
     XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the logger
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
@@ -341,10 +352,12 @@
     XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"],
+        @"%@", self.loggerMock);
 
     //   check the event count in the logger
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
@@ -400,19 +413,22 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
 
     //  check the invalid app token message
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed App Token '12345678901'"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed App Token '12345678901'"],
+        @"%@", self.loggerMock);
 
     //  check the nil event token
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
 
     //  check the invalid event token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],
+        @"%@", self.loggerMock);
 
     //  check the invalid revenue amount token
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Invalid amount -0.1"],  @"%@", self.loggerMock);
 
     //  check the invalid revenue token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],
+        @"%@", self.loggerMock);
 
 }
 
@@ -448,10 +464,12 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 
     // delete the first session package from the log
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+        @"%@", self.loggerMock);
 
     // making sure the timer fired did not call the package handler
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"], @"%@", self.loggerMock);
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+        @"%@", self.loggerMock);
 
     // test if the event was not triggered
     XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
@@ -460,10 +478,12 @@
     XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+        @"%@", self.loggerMock);
 
     // verify that it was not resumed
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
+    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+        @"%@", self.loggerMock);
 
     // enable again
     [activityHandler setEnabled:YES];
@@ -485,11 +505,12 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+        @"%@", self.loggerMock);
 
     // verify that it was also resumed
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"], @"%@", self.loggerMock);
-
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+        @"%@", self.loggerMock);
 }
 
 @end
