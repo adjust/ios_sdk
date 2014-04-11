@@ -20,6 +20,7 @@
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
+static NSString * const kAdjustPrefix            = @"adjust_";
 
 static const uint64_t kTimerInterval      = 60 * NSEC_PER_SEC; // 1 minute
 static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
@@ -318,15 +319,26 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
 - (void) readOpenUrlInternal:(NSURL *)url {
     NSString* queryString = [url query];
     NSArray* queryArray = [queryString componentsSeparatedByString:@"&"];
+    NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
 
     for (NSString* fieldValuePair in queryArray) {
         NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
-        NSString* field = [pairComponents objectAtIndex:0];
-        if ([field hasPrefix:@"adjust_"]) {
+        NSString* key = [pairComponents objectAtIndex:0];
+        if ([key hasPrefix:kAdjustPrefix] && [pairComponents count] == 2) {
             NSString* value = [pairComponents objectAtIndex:1];
-            [self.logger debug:@"deep link found %@=%@", field, value];
-            
+            [self.logger debug:@"deep link found %@=%@", key, value];
+            NSString* keyWOutPrefix = [key substringFromIndex:[kAdjustPrefix length]];
+            [adjustDeepLinks setObject:keyWOutPrefix forKey:value];
         }
+    }
+
+    if ([adjustDeepLinks count] != 0) {
+        AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
+        reattributionBuilder.deeplinkParameters = adjustDeepLinks;
+        [self injectGeneralAttributes:reattributionBuilder];
+        AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
+        [self.packageHandler addPackage:reattributionPackage];
+        [self.packageHandler sendFirstPackage];
     }
 }
 
