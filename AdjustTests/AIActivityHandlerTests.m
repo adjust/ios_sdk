@@ -513,4 +513,62 @@
         @"%@", self.loggerMock);
 }
 
+- (void)testOpenUrl {
+    // reseting to make the test order independent
+    [self reset];
+
+    // starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    // create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    NSString* normal = @"AdjustTests://example.com/path/inApp?adjust_foo=bar&other=stuff&adjust_key=value";
+    NSString* emptyQueryString = @"AdjustTests://";
+    NSString* emptyString = @"";
+    NSString* single = @"AdjustTests://example.com/path/inApp?adjust_foo";
+    NSString* prefix = @"AdjustTests://example.com/path/inApp?adjust_=bar";
+    NSString* incomplete = @"AdjustTests://example.com/path/inApp?adjust_foo=";
+
+    [activityHandler readOpenUrl:[NSURL URLWithString:normal]];
+    [activityHandler readOpenUrl:[NSURL URLWithString:emptyQueryString]];
+    [activityHandler readOpenUrl:[NSURL URLWithString:emptyString]];
+    [activityHandler readOpenUrl:[NSURL URLWithString:single]];
+    [activityHandler readOpenUrl:[NSURL URLWithString:prefix]];
+    [activityHandler readOpenUrl:[NSURL URLWithString:incomplete]];
+
+    [NSThread sleepForTimeInterval:2];
+
+    NSDictionary *parameters;
+    // check that all supposed packages were sent
+    // 1 session + x reattributions
+
+
+    // check that the normal url was parsed and sent
+    AIActivityPackage *normalPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+
+    // testing the activity kind is the correct one
+    AIActivityKind activityKind = normalPackage.activityKind;
+    XCTAssertEqual(AIActivityKindReattribution, activityKind, @"%@", normalPackage.extendedString);
+
+    // testing the conversion from activity kind to string
+    NSString* activityKindString = AIActivityKindToString(activityKind);
+    XCTAssertEqual(@"reattribution", activityKindString);
+
+    // testing the conversion from string to activity kind
+    activityKind = AIActivityKindFromString(activityKindString);
+    XCTAssertEqual(AIActivityKindReattribution, activityKind);
+
+    // packageType should be reattribute
+    XCTAssertEqual(@"/reattribute", normalPackage.path, @"%@", normalPackage.extendedString);
+
+    // suffix should be empty
+    XCTAssertEqual(@"/reattribute", normalPackage.path, @"%@", normalPackage.extendedString);
+
+    parameters = normalPackage.parameters;
+
+
+    [self.loggerMock test:@"packages: %@",self.packageHandlerMock.packageQueue.description];
+}
+
 @end
