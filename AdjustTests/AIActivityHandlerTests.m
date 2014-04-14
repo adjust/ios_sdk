@@ -539,17 +539,16 @@
 
     [NSThread sleepForTimeInterval:2];
 
-    NSDictionary *parameters;
     // check that all supposed packages were sent
-    // 1 session + x reattributions
-
+    // 1 session + 1 reattributions
+    XCTAssertEqual((NSUInteger)2, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     // check that the normal url was parsed and sent
-    AIActivityPackage *normalPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    AIActivityPackage *package = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
 
     // testing the activity kind is the correct one
-    AIActivityKind activityKind = normalPackage.activityKind;
-    XCTAssertEqual(AIActivityKindReattribution, activityKind, @"%@", normalPackage.extendedString);
+    AIActivityKind activityKind = package.activityKind;
+    XCTAssertEqual(AIActivityKindReattribution, activityKind, @"%@", package.extendedString);
 
     // testing the conversion from activity kind to string
     NSString* activityKindString = AIActivityKindToString(activityKind);
@@ -560,15 +559,16 @@
     XCTAssertEqual(AIActivityKindReattribution, activityKind);
 
     // packageType should be reattribute
-    XCTAssertEqual(@"/reattribute", normalPackage.path, @"%@", normalPackage.extendedString);
+    XCTAssertEqual(@"/reattribute", package.path, @"%@", package.extendedString);
 
     // suffix should be empty
-    XCTAssertEqual(@"/reattribute", normalPackage.path, @"%@", normalPackage.extendedString);
+    XCTAssertEqual(@"", package.suffix, @"%@", package.extendedString);
 
-    parameters = normalPackage.parameters;
+    NSDictionary *parameters = package.parameters;
 
-
-    [self.loggerMock test:@"packages: %@",self.packageHandlerMock.packageQueue.description];
+    // check that deep link parameters contains the base64 with the 2 keys
+    XCTAssert([(NSString *)parameters[@"deeplink_parameters"] isEqualToString:@"eyJiYXIiOiJmb28iLCJ2YWx1ZSI6ImtleSJ9"],
+        @"%@", parameters.description);
 }
 
 @end
