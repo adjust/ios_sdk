@@ -326,9 +326,10 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
         NSString* key = [pairComponents objectAtIndex:0];
         if ([key hasPrefix:kAdjustPrefix] && [pairComponents count] == 2) {
             NSString* value = [pairComponents objectAtIndex:1];
-            [self.logger debug:@"deep link found %@=%@", key, value];
             NSString* keyWOutPrefix = [key substringFromIndex:[kAdjustPrefix length]];
-            [adjustDeepLinks setObject:keyWOutPrefix forKey:value];
+            if ([keyWOutPrefix length] > 0 && [value length] > 0) {
+                [adjustDeepLinks setObject:keyWOutPrefix forKey:value];
+            }
         }
     }
 
