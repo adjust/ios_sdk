@@ -340,6 +340,8 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
         AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
         [self.packageHandler addPackage:reattributionPackage];
         [self.packageHandler sendFirstPackage];
+
+        [self.logger debug:@"Reattribution %@", adjustDeepLinks.description];
     }
 }
 

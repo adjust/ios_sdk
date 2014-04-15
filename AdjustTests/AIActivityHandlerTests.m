@@ -569,6 +569,10 @@
     // check that deep link parameters contains the base64 with the 2 keys
     XCTAssert([(NSString *)parameters[@"deeplink_parameters"] isEqualToString:@"eyJiYXIiOiJmb28iLCJ2YWx1ZSI6ImtleSJ9"],
         @"%@", parameters.description);
+
+    // ending of first session
+    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
+
 }
 
 @end
