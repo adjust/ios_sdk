@@ -121,7 +121,7 @@
     //          @"%@", self.loggerMock);
 
     // check that the activity state is written by the first session or timer
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: "], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: "], @"%@", self.loggerMock);
 
     // ending of first session
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
@@ -230,7 +230,7 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered event 'abc123'"], @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"],
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
@@ -268,7 +268,7 @@
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"],
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
@@ -320,7 +320,7 @@
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:1"],
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
@@ -356,7 +356,7 @@
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Wrote activity state: ec:2"],
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger

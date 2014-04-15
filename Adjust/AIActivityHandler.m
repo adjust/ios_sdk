@@ -394,7 +394,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
-        [self.logger verbose:@"Wrote activity state: %@", self.activityState];
+        [self.logger debug:@"Wrote activity state: %@", self.activityState];
     } else {
         [self.logger error:@"Failed to write activity state"];
     }
