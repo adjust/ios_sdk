@@ -318,8 +318,8 @@ retargeting campaigns from a deep link.
 In the Project Navigator open the source file your Application Delegate, the same file where you integrated the adjust sdk. Create the method `openURL` to your App Delegate if don't already have it, and add the following calls to Adjust:
 
 ```objc
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication 
-annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url 
+    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     [Adjust appWillOpenUrl:url];
 }
 ```
