@@ -309,22 +309,19 @@ be activated after the first session.
 You can verify if the adjust SDK is currently active with the method `isEnabled`. It is always possible
 to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Deep linking
+### 11. Handle deep linking
 
-You can also set up the adjust sdk to read deep links that come to your app, 
-also known as custom URL schemes in iOS. We will read only custom adjust injected information, such as,
-retargeting campaigns from a deep link.
+You can also set up the adjust sdk to read deep links that come to your app, also known as custom URL schemes in iOS. We will read only the data that is injected by adjust when you use deep links with adjust tracker URLs. This is a core feature if you are planning to run retargeting or re-engagement campaigns with deep links.
 
-In the Project Navigator open the source file your Application Delegate, the same file where you integrated the adjust sdk. Create the method `openURL` to your App Delegate if don't already have it, and add the following calls to Adjust:
+In the Project Navigator open the source file your Application Delegate. Find or add the method `openURL` and add the following call to adjust:
 
 ```objc
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url 
-    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url 
+    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation 
+{
     [Adjust appWillOpenUrl:url];
 }
 ```
-
-
 
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
