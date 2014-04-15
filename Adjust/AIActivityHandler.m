@@ -328,7 +328,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
             NSString* value = [pairComponents objectAtIndex:1];
             NSString* keyWOutPrefix = [key substringFromIndex:[kAdjustPrefix length]];
             if ([keyWOutPrefix length] > 0 && [value length] > 0) {
-                [adjustDeepLinks setObject:keyWOutPrefix forKey:value];
+                [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
             }
         }
     }
@@ -341,7 +341,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
         [self.packageHandler addPackage:reattributionPackage];
         [self.packageHandler sendFirstPackage];
 
-        [self.logger debug:@"Reattribution %@", adjustDeepLinks.description];
+        [self.logger info:@"Reattribution %@", adjustDeepLinks];
     }
 }
 
