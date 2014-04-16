@@ -165,7 +165,7 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (BOOL)isEnabled;
 
 /**
- * Read the url that opened the application in search of 
+ * Read the URL that opened the application to search for
  * an adjust deep link
  */
 + (void)appWillOpenUrl:(NSURL *)url;

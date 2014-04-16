@@ -567,11 +567,11 @@
     NSDictionary *parameters = package.parameters;
 
     // check that deep link parameters contains the base64 with the 2 keys
-    XCTAssert([(NSString *)parameters[@"deeplink_parameters"] isEqualToString:@"eyJmb28iOiJiYXIiLCJrZXkiOiJ2YWx1ZSJ9"],
+    XCTAssert([(NSString *)parameters[@"deeplink_parameters"] isEqualToString:@"{\"foo\":\"bar\",\"key\":\"value\"}"],
         @"%@", parameters.description);
 
     // check that sent the reattribution package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
 }
 
 @end

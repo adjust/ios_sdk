@@ -56,7 +56,7 @@
 
 - (AIActivityPackage *)buildReattributionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDictionary:self.deeplinkParameters forKey:@"deeplink_parameters"];
+    [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"deeplink_parameters"];
 
     AIActivityPackage *reattributionPackage = [self defaultActivityPackage];
     reattributionPackage.path = @"/reattribute";
@@ -100,9 +100,9 @@
 
 - (void)injectEventParameters:(NSMutableDictionary *)parameters {
     // event specific
-    [self parameters:parameters setInt:self.eventCount                forKey:@"event_count"];
-    [self parameters:parameters setString:self.eventToken             forKey:@"event_token"];
-    [self parameters:parameters setDictionary:self.callbackParameters forKey:@"params"];
+    [self parameters:parameters setInt:self.eventCount                      forKey:@"event_count"];
+    [self parameters:parameters setString:self.eventToken                   forKey:@"event_token"];
+    [self parameters:parameters setDictionaryBase64:self.callbackParameters forKey:@"params"];
 }
 
 - (NSString *)amountString {
@@ -151,11 +151,19 @@
     [self parameters:parameters setInt:intValue forKey:key];
 }
 
-- (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key {
+- (void)parameters:(NSMutableDictionary *)parameters setDictionaryBase64:(NSDictionary *)dictionary forKey:(NSString *)key {
     if (dictionary == nil) return;
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
     NSString *dictionaryString = jsonData.aiEncodeBase64;
+    [self parameters:parameters setString:dictionaryString forKey:key];
+}
+
+- (void)parameters:(NSMutableDictionary *)parameters setDictionaryJson:(NSDictionary *)dictionary forKey:(NSString *)key {
+    if (dictionary == nil) return;
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
+    NSString *dictionaryString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     [self parameters:parameters setString:dictionaryString forKey:key];
 }
 
