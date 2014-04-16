@@ -257,8 +257,8 @@ The delegate function will get called every time any activity was tracked or
 failed to track. Within the delegate function you have access to the
 `responseData` parameter. Here is a quick summary of its attributes:
 
-- `AIActivityKind activityKind` indicates what kind of activity
-  was tracked. It has one of these values:
+- `AIActivityKind activityKind` indicates what kind of activity was tracked. It
+  has one of these values:
 
     ```
     AIActivityKindSession
@@ -266,7 +266,8 @@ failed to track. Within the delegate function you have access to the
     AIActivityKindRevenue
     ```
 
-- `NSString activityKindString` human readable version of the activity kind. Possible values:
+- `NSString activityKindString` human readable version of the activity kind.
+  Possible values:
 
     ```
     session
@@ -298,26 +299,31 @@ in the `didFinishLaunching` method of your Application Delegate:
 
 ### 10. Disable tracking
 
-You can disable the adjust SDK from tracking by invoking the method `setEnabled` 
-with the enabled parameter as `NO`. This setting is remembered between sessions, but it can only
-be activated after the first session.
+You can disable the adjust SDK from tracking by invoking the method
+`setEnabled` with the enabled parameter as `NO`. This setting is remembered
+between sessions, but it can only be activated after the first session.
 
 ```objc
 [Adjust setEnabled:NO];
 ```
 
-You can verify if the adjust SDK is currently active with the method `isEnabled`. It is always possible
-to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `YES`.
+You can verify if the adjust SDK is currently active with the method
+`isEnabled`. It is always possible to activate the adjust SDK by invoking
+`setEnabled` with the enabled parameter as `YES`.
 
 ### 11. Handle deep linking
 
-You can also set up the adjust sdk to read deep links that come to your app, also known as custom URL schemes in iOS. We will read only the data that is injected by adjust when you use deep links with adjust tracker URLs. This is a core feature if you are planning to run retargeting or re-engagement campaigns with deep links.
+You can also set up the adjust SDK to read deep links that come to your app,
+also known as custom URL schemes in iOS. We will only read the data that is
+injected by adjust tracker URLs. This is essential if you are planning to run
+retargeting or re-engagement campaigns with deep links.
 
-In the Project Navigator open the source file your Application Delegate. Find or add the method `openURL` and add the following call to adjust:
+In the Project Navigator open the source file your Application Delegate. Find
+or add the method `openURL` and add the following call to adjust:
 
 ```objc
-- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url 
-    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation 
+- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url
+    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     [Adjust appWillOpenUrl:url];
 }
@@ -338,7 +344,7 @@ In the Project Navigator open the source file your Application Delegate. Find or
 
 ## License
 
-The adjust-sdk is licensed under the MIT License.
+The adjust-SDK is licensed under the MIT License.
 
 Copyright (c) 2012-2013 adeven GmbH,
 http://www.adeven.com
