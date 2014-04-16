@@ -19,10 +19,11 @@
 #import "AIAdjustFactory.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
+static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
-static const uint64_t kTimerInterval      = 60 * NSEC_PER_SEC; // 1 minute
-static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
+static const uint64_t kTimerInterval = 60 * NSEC_PER_SEC; // 1 minute
+static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 
 #pragma mark -
@@ -139,6 +140,12 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     } else {
         return self.internalEnabled;
     }
+}
+
+- (void)readOpenUrl:(NSURL*)url {
+    dispatch_async(self.internalQueue, ^{
+        [self readOpenUrlInternal:url];
+    });
 }
 
 #pragma mark - internal
@@ -309,6 +316,40 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
+- (void) readOpenUrlInternal:(NSURL *)url {
+    NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
+    NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
+
+    for (NSString* fieldValuePair in queryArray) {
+        NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
+        if (pairComponents.count != 2) continue;
+
+        NSString* key = [pairComponents objectAtIndex:0];
+        if (![key hasPrefix:kAdjustPrefix]) continue;
+
+        NSString* value = [pairComponents objectAtIndex:1];
+        if (value.length == 0) continue;
+
+        NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
+        if (keyWOutPrefix.length == 0) continue;
+
+        [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+    }
+
+    if (adjustDeepLinks.count == 0) {
+        return;
+    }
+
+    AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
+    reattributionBuilder.deeplinkParameters = adjustDeepLinks;
+    [self injectGeneralAttributes:reattributionBuilder];
+    AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
+    [self.packageHandler addPackage:reattributionPackage];
+    [self.packageHandler sendFirstPackage];
+
+    [self.logger debug:@"Reattribution %@", adjustDeepLinks];
+}
+
 #pragma mark - private
 
 // returns whether or not the activity state should be written
@@ -358,7 +399,7 @@ static const uint64_t kTimerLeeway        =  1 * NSEC_PER_SEC; // 1 second
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
-        [self.logger verbose:@"Wrote activity state: %@", self.activityState];
+        [self.logger debug:@"Wrote activity state: %@", self.activityState];
     } else {
         [self.logger error:@"Failed to write activity state"];
     }

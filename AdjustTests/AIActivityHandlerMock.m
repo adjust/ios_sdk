@@ -72,4 +72,8 @@ static NSString * const prefix = @"AIActivityHandler ";
     return YES;
 }
 
+- (void)readOpenUrl:(NSURL *)url {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"readOpenUrl"]];
+}
+
 @end

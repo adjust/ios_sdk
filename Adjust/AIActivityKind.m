@@ -15,6 +15,8 @@ AIActivityKind AIActivityKindFromString(NSString *string) {
         return AIActivityKindEvent;
     } else if ([@"revenue" isEqualToString:string]) {
         return AIActivityKindRevenue;
+    } else if ([@"reattribution" isEqualToString:string]) {
+        return AIActivityKindReattribution;
     } else {
         return AIActivityKindUnknown;
     }
@@ -22,9 +24,10 @@ AIActivityKind AIActivityKindFromString(NSString *string) {
 
 NSString* AIActivityKindToString(AIActivityKind activityKind) {
     switch (activityKind) {
-        case AIActivityKindSession: return @"session";
-        case AIActivityKindEvent:   return @"event";
-        case AIActivityKindRevenue: return @"revenue";
-        case AIActivityKindUnknown: return @"unknown";
+        case AIActivityKindSession:       return @"session";
+        case AIActivityKindEvent:         return @"event";
+        case AIActivityKindRevenue:       return @"revenue";
+        case AIActivityKindReattribution: return @"reattribution";
+        case AIActivityKindUnknown:       return @"unknown";
     }
 }

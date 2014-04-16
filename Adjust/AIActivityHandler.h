@@ -32,6 +32,7 @@
 - (void)finishedTrackingWithResponse:(AIResponseData *)response;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
+- (void)readOpenUrl:(NSURL*)url;
 
 @end
 
