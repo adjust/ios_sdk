@@ -89,6 +89,7 @@
     [self parameters:parameters setString:self.environment      forKey:@"environment"];
     [self parameters:parameters setInt:self.trackingEnabled     forKey:@"tracking_enabled"];
     [self parameters:parameters setBool:self.isIad              forKey:@"is_iad"];
+    [self parameters:parameters setString:self.vendorId         forKey:@"idfv"];
 
     // session related (used for events as well)
     [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];

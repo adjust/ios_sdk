@@ -48,6 +48,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, assign) BOOL internalEnabled;
 @property (nonatomic, assign) BOOL isIad;
+@property (nonatomic, copy) NSString *vendorId;
 
 @end
 
@@ -167,6 +168,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
+    self.vendorId         = UIDevice.currentDevice.aiVendorId;
 
 #if !ADJUST_NO_IDA
     if (NSClassFromString(@"ADClient")) {
@@ -443,6 +445,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     builder.fbAttributionId  = self.fbAttributionId;
     builder.environment      = self.environment;
     builder.isIad            = self.isIad;
+    builder.vendorId         = self.vendorId;
 
     if (self.trackMacMd5) {
         builder.macShortMd5 = self.macShortMd5;
