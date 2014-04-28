@@ -88,6 +88,7 @@
     [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
     [self parameters:parameters setString:self.environment      forKey:@"environment"];
     [self parameters:parameters setInt:self.trackingEnabled     forKey:@"tracking_enabled"];
+    [self parameters:parameters setBool:self.isIad              forKey:@"is_iad"];
 
     // session related (used for events as well)
     [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];
@@ -167,5 +168,12 @@
     [self parameters:parameters setString:dictionaryString forKey:key];
 }
 
+- (void)parameters:(NSMutableDictionary *)parameters setBool:(BOOL)value forKey:(NSString *)key {
+    if (value < 0) return;
+
+    int valueInt = [[NSNumber numberWithBool:value] intValue];
+
+    [self parameters:parameters setInt:valueInt forKey:key];
+}
 @end
 

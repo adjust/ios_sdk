@@ -22,6 +22,7 @@
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, assign) BOOL trackingEnabled;
+@property (nonatomic, assign) BOOL isIad;
 
 // sessions
 @property (nonatomic, assign) int sessionCount;

@@ -112,6 +112,12 @@
     //   lastInterval -1, same as before
     XCTAssertNil(parameters[@"last_interval"], @"%@", activityPackage.extendedString);
 
+    //   is_iad should be false
+    XCTAssertEqual(NO, [(NSString *)parameters[@"is_iad"] boolValue], @"%@", activityPackage.extendedString);
+
+    //   vendorId of the simulator
+    XCTAssertNotNil((NSString *)parameters[@"idfv"], @"%@", activityPackage.extendedString);
+
     //  after adding, the activity handler ping the Package handler to send the package
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
