@@ -158,4 +158,9 @@
     return lowerUuid;
 }
 
+- (NSString *)aiVendorId {
+    NSString * vendorId = [UIDevice.currentDevice.identifierForVendor UUIDString];
+    return vendorId;
+}
+
 @end

@@ -17,5 +17,6 @@
 - (NSString *)aiDeviceType;
 - (NSString *)aiDeviceName;
 - (NSString *)aiCreateUuid;
+- (NSString *)aiVendorId;
 
 @end

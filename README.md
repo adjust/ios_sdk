@@ -13,7 +13,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v3.3.0'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v3.3.1'
 ```
 
 ### 1. Get the SDK
@@ -35,14 +35,14 @@ radio button to `Create groups for any added folders`.
 
 ![][add]
 
-### <a id="step3"></a>3. Add the AdSupport framework
+### <a id="step3"></a>3. Add the AdSupport and iAd framework
 
 In the Project Navigator select your project. In the left hand side of the main
 view select your target. In the tab `Build Phases` expand the group `Link
 Binary with Libraries`. On the bottom of that group click on the `+` button.
-Select the `AdSupport.framework` and click the `Add` button. In the list of
-frameworks select the newly added `AdSupport.framework` and change the
-attribute `Required` to `Optional`.
+Select the `AdSupport.framework` and click the `Add` button. Repeat the same step to
+add the `iAd.framework`. In the list of frameworks select the newly added `AdSupport.framework` 
+and `iAd.framework`. Change the attribute `Required` to `Optional`.
 
 ![][framework]
 
@@ -337,7 +337,7 @@ or add the method `openURL` and add the following call to adjust:
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 [drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag3.png
 [add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add2.png
-[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework2.png
+[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework3.png
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix

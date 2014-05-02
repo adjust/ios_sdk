@@ -17,6 +17,9 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 #import "AIAdjustFactory.h"
+#if !ADJUST_NO_IDA
+#import <iAd/iAd.h>
+#endif
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -44,6 +47,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, assign) BOOL internalEnabled;
+@property (nonatomic, assign) BOOL isIad;
+@property (nonatomic, copy) NSString *vendorId;
 
 @end
 
@@ -163,6 +168,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.userAgent        = AIUtil.userAgent;
+    self.vendorId         = UIDevice.currentDevice.aiVendorId;
+
+#if !ADJUST_NO_IDA
+    if (NSClassFromString(@"ADClient")) {
+        [ADClient.sharedClient determineAppInstallationAttributionWithCompletionHandler:^(BOOL appInstallationWasAttributedToiAd) {
+            self.isIad = appInstallationWasAttributedToiAd;
+        }];
+    }
+#endif
 
     self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
     [self readActivityState];
@@ -430,6 +444,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     builder.idForAdvertisers = self.idForAdvertisers;
     builder.fbAttributionId  = self.fbAttributionId;
     builder.environment      = self.environment;
+    builder.isIad            = self.isIad;
+    builder.vendorId         = self.vendorId;
 
     if (self.trackMacMd5) {
         builder.macShortMd5 = self.macShortMd5;
