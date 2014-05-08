@@ -13,6 +13,7 @@
 #import "AIActivityHandler.h"
 #import "AIActivityPackage.h"
 #import "AITestsUtil.h"
+#import "AIUtil.h"
 
 @interface AIActivityHandlerTests : XCTestCase
 
@@ -89,6 +90,9 @@
 
     //  check the Sdk version is being tested
     XCTAssertEqual(@"ios3.3.1", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+
+    // check the server url
+    XCTAssertEqual(@"https://app.adjust.io", AIUtil.baseUrl);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
