@@ -1,0 +1,55 @@
+window.AdjustBridge = (function () {
+
+    var bridge = {};
+    
+    var adjustPrefix = 'adjust_';
+
+    function setBridgePrivate(bridgeParam) {
+        bridge = bridgeParam;
+        bridge.init(function(message, callback) { });
+    }
+
+    function trackEventPrivate (eventToken, parameters) {
+        bridge.callHandler(adjustPrefix + 'trackEvent',
+            {'eventToken': eventToken, 'parameters': parameters}, 
+            function(response) {})
+    };
+
+    function trackRevenuePrivate (amountInCents, eventToken, parameters) {
+        bridge.callHandler(adjustPrefix + 'trackRevenue',
+            {'amountInCents': amountInCents, 'eventToken': eventToken, 'parameters': parameters}, 
+            function(response) {})
+    };
+    
+    function setResponseDelegatePrivate(responseDelegate) {
+        bridge.callHandler(adjustPrefix + 'setResponseDelegate', {}, function(response) {});
+        
+        bridge.registerHandler('responseDelegate', function(data, responseCallback) {
+            responseDelegate(data)
+        });
+    };
+
+    function setEnabledPrivate(enabled) {
+        bridge.callHandler(adjustPrefix + 'setEnabled', {'enabled': enabled}, function(response) { });
+    };
+    
+    function isEnabledPrivate(isEnabledReturnCallBack) {
+        bridge.callHandler(adjustPrefix + 'isEnabled', {}, function(isEnabledString) {
+            isEnabledReturnCallBack(isEnabledString)
+        });
+    };
+
+    function openUrlPrivate(url) {
+        bridge.callHandler(adjustPrefix + 'openUrl', {'url': url}, function(response) { });
+    };
+
+    return {
+        setBridge: setBridgePrivate,
+        trackEvent: trackEventPrivate,
+        trackRevenue: trackRevenuePrivate,
+        setResponseDelegate: setResponseDelegatePrivate,
+        setEnabled: setEnabledPrivate,
+        isEnabled: isEnabledPrivate,
+        openUrl: openUrlPrivate
+    };
+})();
