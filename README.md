@@ -1,7 +1,7 @@
 ## Summary
 
 This is the iOS SDK of adjust.io™. You can read more about adjust.io™ at
-[adjust.io].
+[adjust.io]. If your app is a iOS Web App, consult our [iOS Web App][webApp] guide. 
 
 ## Basic Installation
 
@@ -219,7 +219,25 @@ state changed to `SKPaymentTransactionStatePurchased`:
 If you want to track all revenues in the same currency you might want to use
 [AEPriceMatrix][AEPriceMatrix] to do simple tier based currency conversion.
 
-### 8. Receive delegate callbacks
+### 8. Handle reattributions with deep linking
+
+You can also set up the adjust SDK to read deep links that come to your app,
+also known as custom URL schemes in iOS. We will only read the data that is
+injected by adjust tracker URLs. This is essential if you are planning to run
+retargeting or re-engagement campaigns with deep links.
+
+In the Project Navigator open the source file your Application Delegate. Find
+or add the method `openURL` and add the following call to adjust:
+
+```objc
+- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url
+    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [Adjust appWillOpenUrl:url];
+}
+```
+
+### 9. Receive delegate callbacks
 
 Every time your app tries to track a session, an event or some revenue, you can
 be notified about the success of that operation and receive additional
@@ -264,6 +282,7 @@ failed to track. Within the delegate function you have access to the
     AIActivityKindSession
     AIActivityKindEvent
     AIActivityKindRevenue
+    AIActivityKindReattribution
     ```
 
 - `NSString activityKindString` human readable version of the activity kind.
@@ -273,6 +292,7 @@ failed to track. Within the delegate function you have access to the
     session
     event
     revenue
+    reattribution
     ```
 
 - `BOOL success` indicates whether or not the tracking attempt was
@@ -286,7 +306,7 @@ failed to track. Within the delegate function you have access to the
 - `NSString trackerName` the tracker name of the current install. Is `nil` if
   request failed or response could not be parsed.
 
-### 9. Enable event buffering
+### 10. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
 HTTP requests in order to send them in one batch every minute. You can enable
@@ -297,7 +317,7 @@ in the `didFinishLaunching` method of your Application Delegate:
 [Adjust setEventBufferingEnabled:YES];
 ```
 
-### 10. Disable tracking
+### 11. Disable tracking
 
 You can disable the adjust SDK from tracking by invoking the method
 `setEnabled` with the enabled parameter as `NO`. This setting is remembered
@@ -311,24 +331,6 @@ You can verify if the adjust SDK is currently active with the method
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Handle deep linking
-
-You can also set up the adjust SDK to read deep links that come to your app,
-also known as custom URL schemes in iOS. We will only read the data that is
-injected by adjust tracker URLs. This is essential if you are planning to run
-retargeting or re-engagement campaigns with deep links.
-
-In the Project Navigator open the source file your Application Delegate. Find
-or add the method `openURL` and add the following call to adjust:
-
-```objc
-- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url
-    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    [Adjust appWillOpenUrl:url];
-}
-```
-
 [adjust.io]: http://adjust.io
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.io
@@ -341,6 +343,7 @@ or add the method `openURL` and add the following call to adjust:
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
+[webApp]: https://github.com/adjust/ios_sdk/blob/master/doc/webApp.md
 
 ## License
 

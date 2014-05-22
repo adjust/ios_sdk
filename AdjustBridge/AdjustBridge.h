@@ -14,7 +14,7 @@
 
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
 
-+ (void) loadBridge:(NSObject<UIWebViewDelegate> *) webViewDelegate
++ (void)loadBridge:(NSObject<UIWebViewDelegate> *) webViewDelegate
             webView:(UIWebView *) webView;
 
 @end
