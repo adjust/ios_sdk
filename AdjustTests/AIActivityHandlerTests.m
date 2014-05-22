@@ -14,6 +14,7 @@
 #import "AIActivityPackage.h"
 #import "AITestsUtil.h"
 #import "AIUtil.h"
+#import "AILogger.h"
 
 @interface AIActivityHandlerTests : XCTestCase
 
@@ -584,4 +585,13 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
 }
 
+- (void)testConversions {
+    // check the logLevel conversions
+    XCTAssertEqual(AILogLevelVerbose, [AILogger LogLevelFromString:@"verbose"]);
+    XCTAssertEqual(AILogLevelDebug, [AILogger LogLevelFromString:@"debug"]);
+    XCTAssertEqual(AILogLevelInfo, [AILogger LogLevelFromString:@"info"]);
+    XCTAssertEqual(AILogLevelWarn, [AILogger LogLevelFromString:@"warn"]);
+    XCTAssertEqual(AILogLevelError, [AILogger LogLevelFromString:@"error"]);
+    XCTAssertEqual(AILogLevelAssert, [AILogger LogLevelFromString:@"assert"]);
+}
 @end
