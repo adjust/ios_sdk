@@ -71,4 +71,27 @@ static NSString * const kLogTag = @"Adjust";
     }
 }
 
++ (AILogLevel)LogLevelFromString:(NSString *)logLevelString {
+    if ([logLevelString isEqualToString:@"verbose"])
+        return AILogLevelVerbose;
+
+    if ([logLevelString isEqualToString:@"debug"])
+        return AILogLevelDebug;
+
+    if ([logLevelString isEqualToString:@"info"])
+        return AILogLevelInfo;
+
+    if ([logLevelString isEqualToString:@"warn"])
+        return AILogLevelWarn;
+
+    if ([logLevelString isEqualToString:@"error"])
+        return AILogLevelError;
+
+    if ([logLevelString isEqualToString:@"assert"])
+        return AILogLevelAssert;
+
+    // default value if string does not match
+    return AILogLevelInfo;
+}
+
 @end

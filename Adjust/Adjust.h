@@ -135,8 +135,8 @@ static NSString * const AIEnvironmentProduction = @"production";
  */
 + (void)setMacMd5TrackingEnabled:(BOOL)enabled;
 
-// Special method used by SDK wrappers such as Adobe Air SDK.
-+ (void)setSdkPrefix:(NSString *)sdkPrefix __attribute__((deprecated));
+// Special method used by wrapper JS bridge. Do not call directly.
++ (void)setSdkPrefix:(NSString *)sdkPrefix;
 
 /**
  * Tell adjust that the application resumed.

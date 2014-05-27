@@ -13,6 +13,8 @@
 #import "AIActivityHandler.h"
 #import "AIActivityPackage.h"
 #import "AITestsUtil.h"
+#import "AIUtil.h"
+#import "AILogger.h"
 
 @interface AIActivityHandlerTests : XCTestCase
 
@@ -88,7 +90,10 @@
     AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios3.3.1", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios3.3.2", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+
+    // check the server url
+    XCTAssertEqual(@"https://app.adjust.io", AIUtil.baseUrl);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
@@ -580,4 +585,13 @@
     XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
 }
 
+- (void)testConversions {
+    // check the logLevel conversions
+    XCTAssertEqual(AILogLevelVerbose, [AILogger LogLevelFromString:@"verbose"]);
+    XCTAssertEqual(AILogLevelDebug, [AILogger LogLevelFromString:@"debug"]);
+    XCTAssertEqual(AILogLevelInfo, [AILogger LogLevelFromString:@"info"]);
+    XCTAssertEqual(AILogLevelWarn, [AILogger LogLevelFromString:@"warn"]);
+    XCTAssertEqual(AILogLevelError, [AILogger LogLevelFromString:@"error"]);
+    XCTAssertEqual(AILogLevelAssert, [AILogger LogLevelFromString:@"assert"]);
+}
 @end

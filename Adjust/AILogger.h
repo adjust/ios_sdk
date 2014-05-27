@@ -31,4 +31,7 @@ typedef enum {
 @end
 
 @interface AILogger : NSObject <AILogger>
+
++ (AILogLevel) LogLevelFromString: (NSString *) logLevelString;
+
 @end
