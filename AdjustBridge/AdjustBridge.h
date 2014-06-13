@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Pedro Filipe on 19/05/14.
-//  Copyright (c) 2014 adjust. All rights reserved.
+//  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

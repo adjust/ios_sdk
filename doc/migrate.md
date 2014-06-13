@@ -119,4 +119,4 @@ meaningful at all times! Especially if you are tracking revenue.
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[dashboard]: http://adjust.io
+[dashboard]: http://adjust.com

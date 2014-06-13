@@ -1,7 +1,7 @@
 ## Summary
 
-This is the iOS SDK of adjust.io™. You can read more about adjust.io™ at
-[adjust.io]. If your app is a iOS Web App, consult our [iOS Web App][webApp] guide. 
+This is the iOS SDK of adjust™. You can read more about adjust™ at
+[adjust.com]. If your app is a iOS Web App, consult our [iOS Web App][webApp] guide. 
 
 ## Basic Installation
 
@@ -333,9 +333,9 @@ You can verify if the adjust SDK is currently active with the method
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-[adjust.io]: http://adjust.io
+[adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
-[dashboard]: http://adjust.io
+[dashboard]: http://adjust.com
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
@@ -352,8 +352,8 @@ You can verify if the adjust SDK is currently active with the method
 
 The adjust-SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2013 adeven GmbH,
-http://www.adeven.com
+Copyright (c) 2012-2014 adjust GmbH,
+http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
