@@ -34,6 +34,10 @@
     self.error        = [jsonDict objectForKey:@"error"];
     self.trackerToken = [jsonDict objectForKey:@"tracker_token"];
     self.trackerName  = [jsonDict objectForKey:@"tracker_name"];
+    self.network      = [jsonDict objectForKey:@"network"];
+    self.campaign     = [jsonDict objectForKey:@"campaign"];
+    self.adgroup      = [jsonDict objectForKey:@"adgroup"];
+    self.creative     = [jsonDict objectForKey:@"creative"];
 
     return self;
 }
@@ -53,13 +57,19 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d error:%@ trackerToken:%@ trackerName:%@]",
+    return [NSString stringWithFormat:@"[kind:%@ success:%d willRetry:%d "
+                                        "error:%@ trackerToken:%@ trackerName:%@ "
+                                        "network:%@ campaign:%@ adgroup:%@ creative:%@]",
             self.activityKindString,
             self.success,
             self.willRetry,
             self.error.aiQuote,
             self.trackerToken,
-            self.trackerName.aiQuote];
+            self.trackerName.aiQuote,
+            self.network.aiQuote,
+            self.campaign.aiQuote,
+            self.adgroup.aiQuote,
+            self.creative.aiQuote];
 }
 
 - (NSDictionary *)dictionary {
@@ -79,6 +89,22 @@
 
     if (self.trackerName != nil) {
         [responseDataDic setObject:self.trackerName forKey:@"trackerName"];
+    }
+
+    if (self.network != nil) {
+        [responseDataDic setObject:self.network forKey:@"network"];
+    }
+
+    if (self.campaign != nil) {
+        [responseDataDic setObject:self.campaign forKey:@"campaign"];
+    }
+
+    if (self.adgroup != nil) {
+        [responseDataDic setObject:self.adgroup forKey:@"adgroup"];
+    }
+
+    if (self.creative != nil) {
+        [responseDataDic setObject:self.creative forKey:@"creative"];
     }
 
     return responseDataDic;

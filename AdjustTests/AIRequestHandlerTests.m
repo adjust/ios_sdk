@@ -76,7 +76,8 @@
 
     //  check the response data, the kind is unknown because is set by the package handler
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:1 willRetry:0 error:(null) trackerToken:token trackerName:name]"],
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:1 willRetry:0 error:(null) "
+               "trackerToken:token trackerName:name network:network campaign:campaign adgroup:adgroup creative:creative]"],
                    @"%@", sresponseData);
 
     //  check that the package was successfully sent
@@ -110,7 +111,8 @@
 
     //  check the response data,
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:1 error:'connection error' trackerToken:(null) trackerName:(null)]"], @"%@", sresponseData);
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:1 error:'connection error' "
+               "trackerToken:(null) trackerName:(null) network:(null) campaign:(null) adgroup:(null) creative:(null)]"], @"%@", sresponseData);
 
     //  check that the package was successfully sent
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. (connection error) Will retry later."],
@@ -136,14 +138,15 @@
     //  check the URL Connection was called
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
               @"%@", self.loggerMock);
-
     //  check that the package handler was pinged after sending
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler finishedTrackingActivity"],
               @"%@", self.loggerMock);
 
     //  check the response data,
     NSString *sresponseData= [NSString stringWithFormat:@"%@", self.packageHandlerMock.responseData];
-    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:0 error:'response error' trackerToken:token trackerName:name]"], @"%@", sresponseData);
+
+    XCTAssert([sresponseData isEqualToString:@"[kind:unknown success:0 willRetry:0 error:'response error' "
+               "trackerToken:(null) trackerName:(null) network:(null) campaign:(null) adgroup:(null) creative:(null)]"], @"%@", sresponseData);
 
     //  check that the package was successfully sent
     XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Failed to track session. (response error)"],
