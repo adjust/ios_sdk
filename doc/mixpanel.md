@@ -7,7 +7,7 @@ The delegate function can be set as the following, to use the Mixpanel API:
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
 
-    // The adjust properties properties will be sent
+    // The adjust properties will be sent
     // with all future track calls.
     if (responseData.network != nil)
         [mixpanel registerSuperProperties:@{@"[Adjust]Network":  responseData.network}];
