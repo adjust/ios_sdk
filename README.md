@@ -244,6 +244,8 @@ be notified about the success of that operation and receive additional
 information about the current install. Follow these steps to implement the
 optional delegate protocol in your app delegate.
 
+Please make sure to consider [applicable attribution data policies.][attribution-data]
+
 1. Open `AppDelegate.h` and add the `Adjust.h` import and the `AdjustDelegate`
    declaration.
 
@@ -344,6 +346,7 @@ You can verify if the adjust SDK is currently active with the method
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 [webApp]: https://github.com/adjust/ios_sdk/blob/master/doc/webApp.md
+[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 
 ## License
 
