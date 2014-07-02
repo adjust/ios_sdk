@@ -23,5 +23,5 @@ The delegate function can be set as the following, to use the Mixpanel API:
 Before you implement this interface, please take care to consider [possible conditions for usage of some of your data][attribution_data].
 
 [mixpanel_ios]: https://mixpanel.com/help/reference/ios#super-properties
-[attribution_data]: https://github.com/adjust/sdk/blob/master/doc/attribution-data.md
+[attribution_data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [response_callbacks]: https://github.com/adjust/ios_sdk#9-receive-delegate-callbacks
