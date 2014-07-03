@@ -3,7 +3,7 @@
 If your app got rejected by Apple because your app is using the advertising
 identifier, this document is for you.
 
-1. Contact us at [support@adjust.io](mailto:support@adjust.io). We would like
+1. Contact us at [support@adjust.com](mailto:support@adjust.com). We would like
    to make sure that you are aware of the consequences of removing IDFA
    support.
 

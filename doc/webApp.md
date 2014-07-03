@@ -1,7 +1,7 @@
 ## Summary
 
-This is the guide to the iOS SDK of adjust.io™ for Web Apps. You can read more about adjust.io™ at
-[adjust.io].
+This is the guide to the iOS SDK of adjust.com™ for Web Apps. You can read more about adjust.com™ at
+[adjust.com].
 
 It provides a bridge from Javascript to native Objective-C calls using the [WebViewJavascriptBridge] plugin. 
 This plugin is a thin layer that allows to make calls from and to Javascript and Objective-C in iOS simple and easy.
@@ -222,8 +222,8 @@ AdjustBridge.isEnabled(function (isEnabledBool) {
 It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `true`.
 
-[adjust.io]: http://adjust.io
-[dashboard]: http://adjust.io
+[adjust.com]: http://adjust.com
+[dashboard]: http://adjust.com
 [WebViewJavascriptBridge]: https://github.com/marcuswestin/WebViewJavascriptBridge
 [ios_installation]: https://github.com/adjust/ios_sdk#basic-installation
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix

@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Christian Wellenbrock on 2012-07-23.
-//  Copyright (c) 2012-2013 adeven. All rights reserved.
+//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
 
 #import "AILogger.h"
@@ -32,7 +32,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  * method of your AppDelegate.
  *
  * @param appToken The App Token of your app. This unique identifier can
- *     be found it in your dashboard at http://adjust.io and should always
+ *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
  */
 + (void)appDidLaunch:(NSString *)appToken;
@@ -50,13 +50,13 @@ static NSString * const AIEnvironmentProduction = @"production";
 /**
  * Tell Adjust that a particular event has happened.
  *
- * In your dashboard at http://adjust.io you can assign a callback URL to each
+ * In your dashboard at http://adjust.com you can assign a callback URL to each
  * event type. That URL will get called every time the event is triggered. On
  * top of that you can pass a set of parameters to the following method that
  * will be forwarded to these callbacks.
  *
  * @param eventToken The Event Token for this kind of event. They are created
- *     in the dashboard at http://adjust.io and should be six characters long.
+ *     in the dashboard at http://adjust.com and should be six characters long.
  * @param parameters An optional dictionary containing the callback parameters.
  *     Provide key-value-pairs to be forwarded to your callbacks.
  */

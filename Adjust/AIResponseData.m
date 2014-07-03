@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Christian Wellenbrock on 07.02.14.
-//  Copyright (c) 2014 adeven. All rights reserved.
+//  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
 #import "AIResponseData.h"
