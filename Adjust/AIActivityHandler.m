@@ -49,6 +49,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, assign) BOOL internalEnabled;
 @property (nonatomic, assign) BOOL isIad;
 @property (nonatomic, copy) NSString *vendorId;
+@property (nonatomic, copy) NSString *pushToken;
 
 @end
 
@@ -150,6 +151,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)readOpenUrl:(NSURL*)url {
     dispatch_async(self.internalQueue, ^{
         [self readOpenUrlInternal:url];
+    });
+}
+
+- (void)savePushToken:(NSData *)pushToken {
+    dispatch_async(self.internalQueue, ^{
+        [self savePushTokenInternal:pushToken];
     });
 }
 
@@ -364,6 +371,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.logger debug:@"Reattribution %@", adjustDeepLinks];
 }
 
+- (void) savePushTokenInternal:(NSData *)pushToken {
+    if (pushToken == nil) {
+        return;
+    }
+
+    NSString *token = [pushToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    self.pushToken = token;
+}
+
 #pragma mark - private
 
 // returns whether or not the activity state should be written
@@ -446,6 +464,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     builder.environment      = self.environment;
     builder.isIad            = self.isIad;
     builder.vendorId         = self.vendorId;
+    builder.pushToken        = self.pushToken;
 
     if (self.trackMacMd5) {
         builder.macShortMd5 = self.macShortMd5;

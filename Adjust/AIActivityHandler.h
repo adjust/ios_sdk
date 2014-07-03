@@ -33,6 +33,7 @@
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)readOpenUrl:(NSURL*)url;
+- (void)savePushToken:(NSData *)pushToken;
 
 @end
 

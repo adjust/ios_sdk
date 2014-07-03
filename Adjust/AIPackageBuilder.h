@@ -24,6 +24,7 @@
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, assign) BOOL isIad;
 @property (nonatomic, copy) NSString *vendorId;
+@property (nonatomic, copy) NSString *pushToken;
 
 // sessions
 @property (nonatomic, assign) int sessionCount;

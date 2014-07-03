@@ -169,6 +169,11 @@ static NSString * const AIEnvironmentProduction = @"production";
  * an adjust deep link
  */
 + (void)appWillOpenUrl:(NSURL *)url;
+
+/**
+ * Set the device token used by push notifications
+ */
++ (void)setDeviceToken:(NSData *)deviceToken;
 @end
 
 

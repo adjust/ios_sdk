@@ -201,6 +201,8 @@
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
     [activityHandler setBufferEvents:YES];
 
+    [activityHandler savePushToken:nil];
+
     //  construct the parameters of the the event
     NSDictionary *eventParameters = @{@"key": @"value", @"foo": @"bar" };
 
@@ -236,6 +238,8 @@
     //   check the injected parameters
     XCTAssert([(NSString *)eventPackageParameters[@"params"] isEqualToString:@"eyJrZXkiOiJ2YWx1ZSIsImZvbyI6ImJhciJ9"],
         @"%@", eventPackage.extendedString);
+
+    XCTAssertNil(eventPackageParameters[@"push_token"], @"%@", eventPackage.extendedString);
 
     //   check that the event was buffered
     XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered event 'abc123'"], @"%@", self.loggerMock);
@@ -297,6 +301,10 @@
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
     [activityHandler setBufferEvents:NO];
 
+    // test push token
+    const char bytes[] = "\xFC\x07\x21\xB6\xDF\xAD\x5E\xE1\x10\x97\x5B\xB2\xA2\x63\xDE\x00\x61\xCC\x70\x5B\x4A\x85\xA8\xAE\x3C\xCF\xBE\x7A\x66\x2F\xB1\xAB";
+    [activityHandler savePushToken:[NSData dataWithBytes:bytes length:(sizeof(bytes) - 1)]];
+
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:nil];
     [activityHandler trackRevenue:0 transactionId:nil forEvent:nil withParameters:nil];
@@ -325,6 +333,9 @@
 
     //   check the that the parameters were not injected
     XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
+
+    //   check push token was correctly parsed
+    XCTAssert([@"fc0721b6dfad5ee110975bb2a263de0061cc705b4a85a8ae3ccfbe7a662fb1ab" isEqualToString:eventPackageParameters[@"push_token"]], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
     XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
