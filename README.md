@@ -333,6 +333,19 @@ You can verify if the adjust SDK is currently active with the method
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
+### 12. Push token
+
+If your app receives notifications you can save the push token in the adjust SDK.
+In the Project Navigator open the source file your Application Delegate. Find
+or add the method `didRegisterForRemoteNotificationsWithDeviceToken` and add the following call to adjust:
+
+```objc
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [Adjust setDeviceToken:deviceToken];
+}
+```
+
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.com

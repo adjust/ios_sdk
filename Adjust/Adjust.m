@@ -136,4 +136,8 @@ static id<AILogger> logger;
     [activityHandler readOpenUrl:url];
 }
 
++ (void)setDeviceToken:(NSData *)deviceToken {
+    [activityHandler savePushToken:deviceToken];
+}
+
 @end
