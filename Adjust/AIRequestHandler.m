@@ -72,7 +72,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
         responseData.willRetry = YES;
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, responseData.error];
-        [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
+        [self.packageHandler finishedTrackingActivity:package withResponse:responseData jsonDict:nil];
         [self.packageHandler closeFirstPackage];
         return;
     }
@@ -90,7 +90,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         [self.logger error:@"%@. (%@)", package.failureMessage, responseData.error];
     }
 
-    [self.packageHandler finishedTrackingActivity:package withResponse:responseData];
+    [self.packageHandler finishedTrackingActivity:package withResponse:responseData jsonDict:jsonDict];
     [self.packageHandler sendNextPackage];
 }
 
@@ -128,5 +128,4 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
 }
-
 @end

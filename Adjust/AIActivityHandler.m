@@ -121,11 +121,37 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response {
-    if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
-                                        withObject:response waitUntilDone:NO];
+- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
+    [self runDelegate:response];
+    [self launchDeepLink:deepLink];
+}
+
+- (void)runDelegate:(AIResponseData *)response {
+    if (![self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
+        return;
     }
+    if (response == nil) {
+        return;
+    }
+    [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
+                                    withObject:response waitUntilDone:NO];
+
+}
+
+- (void)launchDeepLink:(NSString *) deepLink{
+    if (deepLink == nil) return;
+
+    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
+
+    if (![[UIApplication sharedApplication]
+          canOpenURL:deepLinkUrl]) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLink];
+        return;
+    }
+
+    [self.logger info:@"Open deep link (%@)", deepLink];
+
+    [[UIApplication sharedApplication] openURL:deepLinkUrl];
 }
 
 - (void)setEnabled:(BOOL)enabled {

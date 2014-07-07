@@ -29,7 +29,7 @@
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response;
+- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)readOpenUrl:(NSURL*)url;

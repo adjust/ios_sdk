@@ -48,7 +48,7 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 - (void)sendFirstPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendFirstPackage"]];
-    [self.activityHandler finishedTrackingWithResponse:[[AIResponseData alloc] init]];
+    [self.activityHandler finishedTrackingWithResponse:[[AIResponseData alloc] init] deepLink:nil];
 }
 
 - (void)sendNextPackage {
@@ -67,7 +67,7 @@ static NSString * const prefix = @"AIPackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
 }
 
-- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict {
     [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
     self.responseData = response;
 }

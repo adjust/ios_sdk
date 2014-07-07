@@ -59,7 +59,7 @@ static NSString * const prefix = @"AIActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"trackRevenue amount:%f eventToken:%@ parameters:%@", amount, eventToken, parameters]];
 }
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response {
+- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
     [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTrackingWithResponse response:%@", response]];
 }
 

@@ -84,9 +84,19 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response {
+- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict{
+
     response.activityKind = activityPackage.activityKind;
-    [self.activityHandler finishedTrackingWithResponse:response];
+
+    NSString * deepLink = nil;
+
+    if (jsonDict != nil) {
+        deepLink = [jsonDict objectForKey:@"deeplink"];
+    }
+
+    deepLink = @"adjustSampleApp://";
+
+    [self.activityHandler finishedTrackingWithResponse:response deepLink:deepLink];
 }
 
 
