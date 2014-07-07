@@ -15,5 +15,6 @@
 
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)dateFormat:(double)value;
++ (NSDictionary *) buildJsonDict:(NSString *)jsonString;
 
 @end

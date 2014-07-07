@@ -68,10 +68,10 @@
 
 #pragma mark internals
 
-+ (AIResponseData *)dataWithJsonString:(NSString *)string;
++ (AIResponseData *)dataWithJsonDict:(NSDictionary *)jsonDict jsonString:(NSString *)jsonString;
 + (AIResponseData *)dataWithError:(NSString *)error;
 
-- (id)initWithJsonString:(NSString *)string;
+- (id)initWithJsonDict:(NSDictionary *)jsonDict jsonString:(NSString *)jsonString;
 - (id)initWithError:(NSString *)error;
 
 @end

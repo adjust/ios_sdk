@@ -78,7 +78,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    AIResponseData *responseData = [AIResponseData dataWithJsonString:responseString];
+    NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
+    AIResponseData *responseData = [AIResponseData dataWithJsonDict:jsonDict jsonString:responseString];
 
     if (response.statusCode == 200) {
         // success

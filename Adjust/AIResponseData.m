@@ -11,22 +11,19 @@
 
 @implementation AIResponseData
 
-+ (AIResponseData *)dataWithJsonString:(NSString *)string {
-    return [[AIResponseData alloc] initWithJsonString:string];
++ (AIResponseData *)dataWithJsonDict:(NSDictionary *)jsonDict jsonString:(NSString *)jsonString {
+    return [[AIResponseData alloc] initWithJsonDict:jsonDict jsonString:jsonString];
 }
 
 + (AIResponseData *)dataWithError:(NSString *)error {
     return [[AIResponseData alloc] initWithError:error];
 }
 
-- (id)initWithJsonString:(NSString *)jsonString {
+- (id)initWithJsonDict:(NSDictionary *)jsonDict jsonString:(NSString *)jsonString {
     self = [super init];
     if (self == nil) return nil;
 
-    NSError *error = nil;
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-    if (error != nil) {
+    if (jsonDict == nil) {
         self.error = [NSString stringWithFormat:@"Failed to parse json response: %@", jsonString.aiTrim];
         return self;
     }
