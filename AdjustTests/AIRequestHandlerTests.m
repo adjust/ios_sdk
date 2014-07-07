@@ -85,9 +85,7 @@
               @"%@", self.loggerMock);
 
     //  check that the package handler was called to send the next package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendNextPackage"],
-              @"%@", self.loggerMock);
-
+    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendNextPackage"], @"%@", self.loggerMock);
 }
 
 - (void)testConnectionError {

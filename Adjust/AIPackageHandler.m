@@ -94,8 +94,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         deepLink = [jsonDict objectForKey:@"deeplink"];
     }
 
-    deepLink = @"adjustSampleApp://";
-
     [self.activityHandler finishedTrackingWithResponse:response deepLink:deepLink];
 }
 

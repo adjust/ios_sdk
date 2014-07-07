@@ -605,4 +605,21 @@
     XCTAssertEqual(AILogLevelError, [AILogger LogLevelFromString:@"error"]);
     XCTAssertEqual(AILogLevelAssert, [AILogger LogLevelFromString:@"assert"]);
 }
+
+- (void)testfinishedTrackingWithResponse {
+    // reseting to make the test order independent
+    [self reset];
+
+    // starting from a clean slate
+    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+
+    // create handler to start the session
+    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+
+    [activityHandler finishedTrackingWithResponse:nil deepLink:@"testfinishedTrackingWithResponse://"];
+
+    //  check the deep link from the response
+    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Unable to open deep link (testfinishedTrackingWithResponse://)"],
+              @"%@", self.loggerMock);
+}
 @end
