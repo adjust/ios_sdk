@@ -1,4 +1,4 @@
-## Migrate your adjust SDK for iOS to v3.3.5 from v3.0.0
+## Migrate your adjust SDK for iOS to v3.4.0 from v3.0.0
 
 We added an optional parameter `transactionId` to our `trackRevenue` methods. If you are tracking In-App Purchases you might want to pass in the transaction identifier provided by Apple to avoid duplicate revenue tracking. It should look roughly like this:
 
@@ -36,14 +36,14 @@ all adjust SDK calls.
 
        ![][rename]
 
-3. Download version v3.3.5 and drag the new folder `Adjust` into your Xcode
+3. Download version v3.4.0 and drag the new folder `Adjust` into your Xcode
    Project Navigator.
 
        ![][drag]
 
 4. Build your project to confirm that everything is properly connected again.
 
-The adjust SDK v3.3.5 added delegate callbacks. Check out the [README] for
+The adjust SDK v3.4.0 added delegate callbacks. Check out the [README] for
 details.
 
 
@@ -99,7 +99,7 @@ meaningful at all times! Especially if you are tracking revenue.
 1. The `appDidLaunch` method now expects your App Token instead of your App ID.
    You can find your App Token in your [dashboard].
 
-2. The adjust SDK for iOS 3.3.5 uses [ARC][arc]. If you haven't done already,
+2. The adjust SDK for iOS 3.4.0 uses [ARC][arc]. If you haven't done already,
    we recommend [transitioning your project to use ARC][transition] as well. If
    you don't want to use ARC, you have to enable ARC for all files of the
    adjust SDK. Please consult the [README] for details.
