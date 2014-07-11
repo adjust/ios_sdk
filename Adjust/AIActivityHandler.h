@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
 @property (nonatomic, assign) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, assign) BOOL isIad;
 
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;

@@ -7,6 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AIActivityHandler.h"
 
 @interface UIDevice(AIAdditions)
 
@@ -18,5 +19,5 @@
 - (NSString *)aiDeviceName;
 - (NSString *)aiCreateUuid;
 - (NSString *)aiVendorId;
-
+- (void)aiSetIad:(AIActivityHandler *)activityHandler;
 @end

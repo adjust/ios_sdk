@@ -24,6 +24,7 @@ static NSString * const prefix = @"AIActivityHandler ";
 @synthesize bufferEvents;
 @synthesize trackMacMd5;
 @synthesize delegate;
+@synthesize isIad;
 
 - (id)initWithAppToken:(NSString *)yourAppToken {
     self = [super init];
