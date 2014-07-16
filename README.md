@@ -307,6 +307,14 @@ failed to track. Within the delegate function you have access to the
   request failed or response could not be parsed.
 - `NSString trackerName` the tracker name of the current install. Is `nil` if
   request failed or response could not be parsed.
+- `NSString network` the network grouping level of the current install. Is `nil` if
+  request failed, unavailable or response could not be parsed.
+- `NSString campaign` the campaign grouping level of the current install. Is `nil` if
+  request failed, unavailable or response could not be parsed.
+- `NSString adgroup` the ad group grouping level of the current install. Is `nil` if
+  request failed, unavailable or response could not be parsed.
+- `NSString creative` the creative grouping level of the current install. Is `nil` if
+  request failed, unavailable or response could not be parsed.
 
 ### 10. Enable event buffering
 
