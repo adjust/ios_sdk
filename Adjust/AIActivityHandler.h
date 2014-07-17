@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
 @property (nonatomic, assign) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, assign) BOOL isIad;
 
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;
@@ -29,7 +30,7 @@
             forEvent:(NSString *)eventToken
       withParameters:(NSDictionary *)parameters;
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response;
+- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)readOpenUrl:(NSURL*)url;

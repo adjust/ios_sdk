@@ -18,6 +18,10 @@
 #import <AdSupport/ASIdentifierManager.h>
 #endif
 
+#if !ADJUST_NO_IDA
+#import <iAd/iAd.h>
+#endif
+
 @implementation UIDevice(AIAdditions)
 
 - (BOOL)aiTrackingEnabled {
@@ -165,4 +169,25 @@
     return @"";
 }
 
+- (void) aiSetIad:(AIActivityHandler *) activityHandler{
+#if !ADJUST_NO_IDA
+    Class ADClientClass = NSClassFromString(@"ADClient");
+    if (ADClientClass) {
+        @try {
+            SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
+            SEL iadSelector = NSSelectorFromString(@"determineAppInstallationAttributionWithCompletionHandler:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+
+            [ADClientSharedClientInstance performSelector:iadSelector withObject:^(BOOL appInstallationWasAttributedToiAd) {
+                activityHandler.isIad = appInstallationWasAttributedToiAd;
+            }];
+#pragma clang diagnostic pop
+        }
+        @catch (NSException *exception) {
+        }
+    }
+#endif
+}
 @end

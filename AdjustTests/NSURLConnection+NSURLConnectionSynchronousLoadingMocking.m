@@ -26,22 +26,18 @@ static BOOL triggerResponseError = NO;
         return nil;
     }
     NSInteger statusCode;
-    NSString * sResponseBase64;
+    NSString * sResponse;
     if (triggerResponseError) {
         statusCode = 0;
-        //  encoded from "{"error":"response error"}"
-        sResponseBase64 = @"eyJlcnJvciI6InJlc3BvbnNlIGVycm9yIn0=";
+        sResponse = @"{\"error\":\"response error\"}";
     } else {
         statusCode = 200;
-        //  encoded from "{"tracker_token":"token","tracker_name":"name", "network":"network", "campaign":"campaign", "adgroup":"adgroup", "creative":"creative"}"
-        sResponseBase64 = @"eyJ0cmFja2VyX3Rva2VuIjoidG9rZW4iLCJ0cmFja2VyX25hbWUiOiJuYW1lIiwgIm5ldHdvcmsiOiJuZXR3b3JrIiwgImNhbXBhaWduIjoiY2FtcGFpZ24iLCAiYWRncm91cCI6ImFkZ3JvdXAiLCAiY3JlYXRpdmUiOiJjcmVhdGl2ZSJ9";
+        sResponse = @"{\"tracker_token\":\"token\",\"tracker_name\":\"name\", \"network\":\"network\",\"campaign\":\"campaign\", \"adgroup\":\"adgroup\",\"creative\":\"creative\",\"deeplink\":\"testApp://\"}";
     }
     //  build response
     (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
 
-    NSData *responseData = [[NSData alloc]
-        initWithBase64EncodedString:sResponseBase64
-        options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSData *responseData = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
 
     return responseData;
 }

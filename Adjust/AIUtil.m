@@ -10,11 +10,12 @@
 #import "AILogger.h"
 #import "UIDevice+AIAdditions.h"
 #import "AIAdjustFactory.h"
+#import "NSString+AIAdditions.h"
 
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.io";
-static NSString * const kClientSdk = @"ios3.3.5";
+static NSString * const kClientSdk = @"ios3.4.0";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'Z";
 static NSDateFormatter * dateFormat;
@@ -122,6 +123,18 @@ static NSDateFormatter * dateFormat;
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
 
     return [dateFormat stringFromDate:date];
+}
+
++ (NSDictionary *)buildJsonDict:(NSString *)jsonString {
+    NSError *error = nil;
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+
+    if (error != nil) {
+        return nil;
+    }
+
+    return jsonDict;
 }
 
 @end

@@ -17,9 +17,6 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 #import "AIAdjustFactory.h"
-#if !ADJUST_NO_IDA
-#import <iAd/iAd.h>
-#endif
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -47,7 +44,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, assign) BOOL internalEnabled;
-@property (nonatomic, assign) BOOL isIad;
 @property (nonatomic, copy) NSString *vendorId;
 @property (nonatomic, copy) NSString *pushToken;
 
@@ -61,6 +57,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @synthesize bufferEvents;
 @synthesize trackMacMd5;
 @synthesize delegate;
+@synthesize isIad;
 
 + (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken {
     return [[AIActivityHandler alloc] initWithAppToken:appToken];
@@ -121,11 +118,37 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response {
-    if ([self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
-                                        withObject:response waitUntilDone:NO];
+- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
+    [self runDelegate:response];
+    [self launchDeepLink:deepLink];
+}
+
+- (void)runDelegate:(AIResponseData *)response {
+    if (![self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
+        return;
     }
+    if (response == nil) {
+        return;
+    }
+    [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
+                                    withObject:response waitUntilDone:NO];
+
+}
+
+- (void)launchDeepLink:(NSString *) deepLink{
+    if (deepLink == nil) return;
+
+    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
+
+    if (![[UIApplication sharedApplication]
+          canOpenURL:deepLinkUrl]) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLink];
+        return;
+    }
+
+    [self.logger info:@"Open deep link (%@)", deepLink];
+
+    [[UIApplication sharedApplication] openURL:deepLinkUrl];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -177,13 +200,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.userAgent        = AIUtil.userAgent;
     self.vendorId         = UIDevice.currentDevice.aiVendorId;
 
-#if !ADJUST_NO_IDA
-    if (NSClassFromString(@"ADClient")) {
-        [ADClient.sharedClient determineAppInstallationAttributionWithCompletionHandler:^(BOOL appInstallationWasAttributedToiAd) {
-            self.isIad = appInstallationWasAttributedToiAd;
-        }];
-    }
-#endif
+    [[UIDevice currentDevice] aiSetIad:self];
 
     self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
     [self readActivityState];

@@ -39,15 +39,17 @@ static NSString * const prefix = @"AIRequestHandler ";
 - (void)sendPackage:(AIActivityPackage *)activityPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
 
+    NSDictionary *jsonDict;
     AIResponseData *responseData;
-
     if (self.connectionError) {
+        jsonDict = nil;
         responseData = [[AIResponseData alloc] initWithError:@"connection error"];
     } else {
-        responseData = [[AIResponseData alloc] initWithJsonString:@"{\"tracker_token\":\"token\",\"tracker_name\":\"name\"}"];
+        jsonDict = @{@"tracker_token": @"token",@"tracker_name":@"name"};
+        responseData = [[AIResponseData alloc] initWithJsonDict:jsonDict jsonString:@"{\"tracker_token\":\"token\",\"tracker_name\":\"name\"}"];
     }
 
-    [self.packageHandler finishedTrackingActivity:activityPackage withResponse:responseData];
+    [self.packageHandler finishedTrackingActivity:activityPackage withResponse:responseData jsonDict:jsonDict];
 
     if (self.connectionError) {
         [self.packageHandler closeFirstPackage];
