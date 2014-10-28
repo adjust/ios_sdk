@@ -14,19 +14,8 @@
 @interface AIPackageBuilder : NSObject
 
 // general
-@property (nonatomic, copy) NSString *appToken;
-@property (nonatomic, copy) NSString *macSha1;
-@property (nonatomic, copy) NSString *macShortMd5;
-@property (nonatomic, copy) NSString *idForAdvertisers;
-@property (nonatomic, copy) NSString *fbAttributionId;
-@property (nonatomic, copy) NSString *environment;
-@property (nonatomic, copy) NSString *userAgent;
-@property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, copy) NSString *uuid;
-@property (nonatomic, assign) BOOL trackingEnabled;
-@property (nonatomic, assign) BOOL isIad;
-@property (nonatomic, copy) NSString *vendorId;
-@property (nonatomic, copy) NSString *pushToken;
+@property (nonatomic, copy) AIDeviceInfo* deviceInfo;
+@property (nonatomic, assign) BOOL trackMd5;
 
 // sessions
 @property (nonatomic, assign) int sessionCount;
@@ -38,7 +27,7 @@
 
 // events
 @property (nonatomic, assign) int eventCount;
-@property (nonatomic, retain) AIEvent* event;
+@property (nonatomic, copy) AIEvent* event;
 
 // reattributions
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;

@@ -49,4 +49,19 @@
     _transactionId = transactionId;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+    AIEvent* copy = [[[self class] allocWithZone:zone] init];
+    if (copy) {
+        copy.eventToken = [self.eventToken copyWithZone:zone];
+        copy.revenue = [self.revenue copyWithZone:zone];
+        copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
+        copy.partnerParameters = [self.partnerParameters copyWithZone:zone];
+        copy.transactionId = [self.transactionId copyWithZone:zone];
+        copy.currency = [self.currency copyWithZone:zone];
+    }
+    return copy;
+
+}
+
 @end

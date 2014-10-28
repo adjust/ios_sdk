@@ -46,14 +46,14 @@ static id<AILogger> logger;
     if (activityHandler == nil) {
         [logger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
     } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
-        activityHandler.environment = environment;
+        [activityHandler setEnvironment:environment];
         [logger assert:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
     } else if ([environment isEqualToString:AIEnvironmentProduction]) {
-        activityHandler.environment = environment;
+        [activityHandler setEnvironment:environment];
         [logger assert:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
         [logger setLogLevel:AILogLevelAssert];
     } else {
-        activityHandler.environment = @"malformed";
+        [activityHandler setEnvironment:@"malformed"];
         [logger error:@"Malformed environment '%@'", environment];
     }
 }
@@ -64,7 +64,7 @@ static id<AILogger> logger;
         return;
     }
 
-    activityHandler.bufferEvents = enabled;
+    [activityHandler setBufferEvents:enabled];
     if (enabled) [AIAdjustFactory.logger info:@"Event buffering is enabled"];
 }
 
@@ -74,7 +74,7 @@ static id<AILogger> logger;
         return;
     }
 
-    activityHandler.trackMacMd5 = enabled;
+    [activityHandler setTrackMacMd5:enabled];
     [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
 }
 

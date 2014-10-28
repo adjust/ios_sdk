@@ -10,4 +10,26 @@
 
 @implementation AIDeviceInfo
 
+-(id)copyWithZone:(NSZone *)zone
+{
+    AIDeviceInfo* copy = [[[self class] allocWithZone:zone] init];
+    if (copy) {
+        copy.macSha1 = [self.macSha1 copyWithZone:zone];
+        copy.macShortMd5 = [self.macShortMd5 copyWithZone:zone];
+        copy.idForAdvertisers = [self.idForAdvertisers copyWithZone:zone];
+        copy.fbAttributionId = [self.fbAttributionId copyWithZone:zone];
+        copy.trackingEnabled = self.trackingEnabled;
+        copy.isIad = self.isIad;
+        copy.vendorId = [self.vendorId copyWithZone:zone];
+        copy.pushToken = [self.pushToken copyWithZone:zone];
+        copy.userAgent = [self.userAgent copyWithZone:zone];
+        copy.appToken = [self.appToken copyWithZone:zone];
+        copy.environment = [self.environment copyWithZone:zone];
+        copy.clientSdk = [self.clientSdk copyWithZone:zone];
+        copy.uuid = [self.uuid copyWithZone:zone];
+    }
+
+    return copy;
+}
+
 @end

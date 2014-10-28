@@ -6,12 +6,13 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "AIUserAgent.h"
 
 @interface AIUtil : NSObject
 
 + (NSString *)baseUrl;
 + (NSString *)clientSdk;
-+ (NSString *)userAgent;
++ (AIUserAgent *)userAgent;
 
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)dateFormat:(double)value;

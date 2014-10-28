@@ -135,7 +135,7 @@ static const int kTransactionIdCount = 10;
     builder.sessionLength   = self.sessionLength;
     builder.timeSpent       = self.timeSpent;
     builder.createdAt       = self.createdAt;
-    builder.uuid            = self.uuid;
+    builder.deviceInfo.uuid = self.uuid;
 }
 
 @end

@@ -103,7 +103,6 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setValue:package.clientSdk forHTTPHeaderField:@"Client-Sdk"];
-    [request setValue:package.userAgent forHTTPHeaderField:@"User-Agent"];
     [request setHTTPBody:[self bodyForParameters:package.parameters]];
 
     return request;

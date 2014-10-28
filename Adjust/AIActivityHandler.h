@@ -10,12 +10,6 @@
 
 @protocol AIActivityHandler
 
-@property (nonatomic, copy) NSString *environment;
-@property (nonatomic, assign) BOOL bufferEvents;
-@property (nonatomic, assign) BOOL trackMacMd5;
-@property (nonatomic, assign) NSObject<AdjustDelegate> *delegate;
-@property (nonatomic, assign) BOOL isIad;
-
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;
 
@@ -29,6 +23,12 @@
 - (BOOL)isEnabled;
 - (void)readOpenUrl:(NSURL*)url;
 - (void)savePushToken:(NSData *)pushToken;
+
+- (void)setEnvironment:(NSString *)environment;
+- (void)setBufferEvents:(BOOL)bufferEvents;
+- (void)setTrackMacMd5:(BOOL)trackMacMd5;
+- (void)setDelegate:(NSObject<AdjustDelegate> *) delegate;
+- (void)setIsIad:(BOOL)isIad;
 
 @end
 

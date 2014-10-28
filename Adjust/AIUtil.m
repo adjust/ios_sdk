@@ -32,27 +32,24 @@ static NSDateFormatter * dateFormat;
     return kClientSdk;
 }
 
-+ (NSString *)userAgent {
++ (AIUserAgent *)userAgent {
+
+    AIUserAgent * userAgent = [[AIUserAgent alloc] init];
+
     UIDevice *device = UIDevice.currentDevice;
     NSLocale *locale = NSLocale.currentLocale;
     NSBundle *bundle = NSBundle.mainBundle;
     NSDictionary *infoDictionary = bundle.infoDictionary;
 
-    NSString *bundeIdentifier = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];
-    NSString *bundleVersion   = [infoDictionary objectForKey:(NSString *)kCFBundleVersionKey];
-    NSString *languageCode    = [locale objectForKey:NSLocaleLanguageCode];
-    NSString *countryCode     = [locale objectForKey:NSLocaleCountryCode];
-    NSString *osName          = @"ios";
+    userAgent.bundeIdentifier = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];
+    userAgent.bundleVersion   = [infoDictionary objectForKey:(NSString *)kCFBundleVersionKey];
+    userAgent.languageCode    = [locale objectForKey:NSLocaleLanguageCode];
+    userAgent.countryCode     = [locale objectForKey:NSLocaleCountryCode];
+    userAgent.osName          = @"ios";
 
-    NSString *userAgent = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@ %@ %@",
-                           [self.class sanitizeU:bundeIdentifier],
-                           [self.class sanitizeU:bundleVersion],
-                           [self.class sanitizeU:device.aiDeviceType],
-                           [self.class sanitizeU:device.aiDeviceName],
-                           [self.class sanitizeU:osName],
-                           [self.class sanitizeU:device.systemVersion],
-                           [self.class sanitizeZ:languageCode],
-                           [self.class sanitizeZ:countryCode]];
+    userAgent.deviceType      = device.aiDeviceType;
+    userAgent.deviceName      = device.aiDeviceName;
+    userAgent.systemVersion   = device.systemVersion;
 
     return userAgent;
 }

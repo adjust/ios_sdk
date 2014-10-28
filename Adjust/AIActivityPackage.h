@@ -12,7 +12,6 @@
 
 // data
 @property (nonatomic, copy) NSString *path;
-@property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, retain) NSDictionary *parameters;
 

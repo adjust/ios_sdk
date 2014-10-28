@@ -19,13 +19,13 @@ static NSString * const prefix = @"AIActivityHandler ";
 @end
 
 @implementation AIActivityHandlerMock
-
+/*
 @synthesize environment;
 @synthesize bufferEvents;
 @synthesize trackMacMd5;
 @synthesize delegate;
 @synthesize isIad;
-
+*/
 - (id)initWithAppToken:(NSString *)yourAppToken {
     self = [super init];
     if (self == nil) return nil;

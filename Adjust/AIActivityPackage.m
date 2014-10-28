@@ -21,7 +21,6 @@
 - (NSString *)extendedString {
     NSMutableString *builder = [NSMutableString string];
     [builder appendFormat:@"Path:      %@\n", self.path];
-    [builder appendFormat:@"UserAgent: %@\n", self.userAgent];
     [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];
 
     if (self.parameters != nil) {
@@ -53,7 +52,6 @@
     if (self == nil) return self;
 
     self.path = [decoder decodeObjectForKey:@"path"];
-    self.userAgent = [decoder decodeObjectForKey:@"userAgent"];
     self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
     self.parameters = [decoder decodeObjectForKey:@"parameters"];
     NSString *kindString = [decoder decodeObjectForKey:@"kind"];
@@ -68,7 +66,6 @@
     NSString *kindString = AIActivityKindToString(self.activityKind);
 
     [encoder encodeObject:self.path forKey:@"path"];
-    [encoder encodeObject:self.userAgent forKey:@"userAgent"];
     [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
     [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:kindString forKey:@"kind"];

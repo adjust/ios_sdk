@@ -18,6 +18,7 @@
 #import "NSString+AIAdditions.h"
 #import "AIAdjustFactory.h"
 
+
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
@@ -34,30 +35,18 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
 @property (nonatomic, retain) id<AILogger> logger;
+@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL bufferEvents;
+@property (nonatomic, assign) BOOL trackMacMd5;
+@property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 
-@property (nonatomic, copy) NSString *appToken;
-@property (nonatomic, copy) NSString *macSha1;
-@property (nonatomic, copy) NSString *macShortMd5;
-@property (nonatomic, copy) NSString *idForAdvertisers;
-@property (nonatomic, copy) NSString *fbAttributionId;
-@property (nonatomic, copy) NSString *userAgent;
-@property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, assign) BOOL trackingEnabled;
-@property (nonatomic, assign) BOOL internalEnabled;
-@property (nonatomic, copy) NSString *vendorId;
-@property (nonatomic, copy) NSString *pushToken;
+@property (nonatomic, copy) AIDeviceInfo* deviceInfo;
 
 @end
 
 
 #pragma mark -
 @implementation AIActivityHandler
-
-@synthesize environment;
-@synthesize bufferEvents;
-@synthesize trackMacMd5;
-@synthesize delegate;
-@synthesize isIad;
 
 + (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken {
     return [[AIActivityHandler alloc] initWithAppToken:appToken];
@@ -69,13 +58,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.clientSdk     = AIUtil.clientSdk;
+    self.deviceInfo = [[AIDeviceInfo alloc] init];
+
+    self.deviceInfo.clientSdk = AIUtil.clientSdk;
     self.logger        = AIAdjustFactory.logger;
 
     // default values
-    self.environment = @"unknown";
-    self.trackMacMd5 = YES;
-    self.internalEnabled = YES;
+    self.deviceInfo.environment = @"unknown";
+    _trackMacMd5 = YES;
+    _enabled = YES;
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -85,7 +76,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setSdkPrefix:(NSString *)sdkPrefix {
-    self.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, self.clientSdk];
+    self.deviceInfo.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, AIUtil.clientSdk];
 }
 
 - (void)trackSubsessionStart {
@@ -141,7 +132,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    self.internalEnabled = enabled;
+    _enabled = enabled;
     if ([self checkActivityState:self.activityState]) {
         self.activityState.enabled = enabled;
     }
@@ -156,7 +147,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if ([self checkActivityState:self.activityState]) {
         return self.activityState.enabled;
     } else {
-        return self.internalEnabled;
+        return _enabled;
     }
 }
 
@@ -172,6 +163,27 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
+- (void)setEnvironment:(NSString *)environment {
+    self.deviceInfo.environment = environment;
+}
+
+- (void)setBufferEvents:(BOOL)bufferEvents {
+    _bufferEvents = bufferEvents;
+}
+
+- (void)setTrackMacMd5:(BOOL)trackMacMd5 {
+    _trackMacMd5 = trackMacMd5;
+}
+
+- (void)setDelegate:(NSObject<AdjustDelegate> *) delegate {
+    _delegate = delegate;
+}
+
+- (void)setIsIad:(BOOL)isIad {
+    self.deviceInfo.isIad = isIad;
+}
+
+
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
     if (![self checkAppTokenNotNil:yourAppToken]) return;
@@ -180,14 +192,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
 
-    self.appToken         = yourAppToken;
-    self.macSha1          = macAddress.aiSha1;
-    self.macShortMd5      = macShort.aiMd5;
-    self.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
-    self.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
-    self.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
-    self.userAgent        = AIUtil.userAgent;
-    self.vendorId         = UIDevice.currentDevice.aiVendorId;
+    self.deviceInfo.appToken         = yourAppToken;
+    self.deviceInfo.macSha1          = macAddress.aiSha1;
+    self.deviceInfo.macShortMd5      = macShort.aiMd5;
+    self.deviceInfo.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
+    self.deviceInfo.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
+    self.deviceInfo.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
+    self.deviceInfo.userAgent        = AIUtil.userAgent;
+    self.deviceInfo.vendorId         = UIDevice.currentDevice.aiVendorId;
 
     [[UIDevice currentDevice] aiSetIad:self];
 
@@ -198,7 +210,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)startInternal {
-    if (![self checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
 
     if (self.activityState != nil
         && !self.activityState.enabled) {
@@ -218,7 +230,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
-        self.activityState.enabled = self.internalEnabled;
+        self.activityState.enabled = _enabled;
         [self writeActivityState];
         [self.logger info:@"First session"];
         return;
@@ -258,7 +270,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)endInternal {
-    if (![self checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
 
     [self.packageHandler pauseSending];
     [self stopTimer];
@@ -270,7 +282,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)eventInternal:(AIEvent *)event
 {
     // check consistency
-    if (![self checkAppTokenNotNil:self.appToken]) return;
+    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
     if (![self checkActivityState:self.activityState]) return;
     if (![self checkEventTokenNotNil:event.eventToken]) return;
     if (![self checkEventTokenLength:event.eventToken]) return;
@@ -291,12 +303,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.event = event;
 
-    [self injectGeneralAttributes:eventBuilder];
+    //[self injectGeneralAttributes:eventBuilder];
+    eventBuilder.deviceInfo = self.deviceInfo;
+    eventBuilder.trackMd5 = _trackMacMd5;
     [self.activityState injectEventAttributes:eventBuilder];
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
 
-    if (self.bufferEvents) {
+    if (_bufferEvents) {
         [self.logger info:@"Buffered event%@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
@@ -332,7 +346,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
     reattributionBuilder.deeplinkParameters = adjustDeepLinks;
-    [self injectGeneralAttributes:reattributionBuilder];
+    //[self injectGeneralAttributes:reattributionBuilder];
+    reattributionBuilder.deviceInfo = self.deviceInfo;
+    reattributionBuilder.trackMd5 = _trackMacMd5;
     AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
     [self.packageHandler addPackage:reattributionPackage];
     [self.packageHandler sendFirstPackage];
@@ -348,7 +364,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     NSString *token = [pushToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
 
-    self.pushToken = token;
+    self.deviceInfo.pushToken = token;
 }
 
 #pragma mark - private
@@ -415,13 +431,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
-    [self injectGeneralAttributes:sessionBuilder];
+    //[self injectGeneralAttributes:sessionBuilder];
+    sessionBuilder.deviceInfo = self.deviceInfo;
+    sessionBuilder.trackMd5 = _trackMacMd5;
     [self.activityState injectSessionAttributes:sessionBuilder];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
 }
 
+/*
 - (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
     builder.userAgent        = self.userAgent;
     builder.clientSdk        = self.clientSdk;
@@ -439,7 +458,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         builder.macShortMd5 = self.macShortMd5;
     }
 }
-
+*/
 # pragma mark - timer
 - (void)startTimer {
     if (self.timer == nil) {

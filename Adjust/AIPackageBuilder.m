@@ -61,29 +61,16 @@
 #pragma mark private
 - (AIActivityPackage *)defaultActivityPackage {
     AIActivityPackage *activityPackage = [[AIActivityPackage alloc] init];
-    activityPackage.userAgent = self.userAgent;
-    activityPackage.clientSdk = self.clientSdk;
+    activityPackage.clientSdk = self.deviceInfo.clientSdk;
     return activityPackage;
 }
 
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    // general
-    [self parameters:parameters setDate:self.createdAt          forKey:@"created_at"];
-    [self parameters:parameters setString:self.appToken         forKey:@"app_token"];
-    [self parameters:parameters setString:self.macSha1          forKey:@"mac_sha1"];
-    [self parameters:parameters setString:self.macShortMd5      forKey:@"mac_md5"];
-    [self parameters:parameters setString:self.uuid             forKey:@"ios_uuid"];
-    [self parameters:parameters setString:self.idForAdvertisers forKey:@"idfa"];
-    [self parameters:parameters setString:self.fbAttributionId  forKey:@"fb_id"];
-    [self parameters:parameters setString:self.environment      forKey:@"environment"];
-    [self parameters:parameters setInt:self.trackingEnabled     forKey:@"tracking_enabled"];
-    [self parameters:parameters setBool:self.isIad              forKey:@"is_iad"];
-    [self parameters:parameters setString:self.vendorId         forKey:@"idfv"];
-    [self parameters:parameters setString:self.pushToken        forKey:@"push_token"];
+    [self constructDeviceInfo:self.deviceInfo toParameters:parameters trackMacMd5:self.trackMd5];
 
-    // session related (used for events as well)
+    [self parameters:parameters setDate:self.createdAt          forKey:@"created_at"];
     [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];
     [self parameters:parameters setInt:self.subsessionCount      forKey:@"subsession_count"];
     [self parameters:parameters setDuration:self.sessionLength   forKey:@"session_length"];
@@ -91,6 +78,43 @@
 
     return parameters;
 }
+
+- (void) constructDeviceInfo: (AIDeviceInfo *) deviceInfo
+                toParameters: (NSMutableDictionary *) parameters
+                 trackMacMd5: (BOOL) trackMacMd5{
+
+    [self constructUserAgent:deviceInfo.userAgent toParameters:parameters];
+
+    [self parameters:parameters setString:deviceInfo.macSha1          forKey:@"mac_sha1"];
+    [self parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
+    [self parameters:parameters setString:deviceInfo.fbAttributionId  forKey:@"fb_id"];
+    [self parameters:parameters setInt:deviceInfo.trackingEnabled     forKey:@"tracking_enabled"];
+    [self parameters:parameters setBool:deviceInfo.isIad              forKey:@"is_iad"];
+    [self parameters:parameters setString:deviceInfo.vendorId         forKey:@"idfv"];
+    [self parameters:parameters setString:deviceInfo.pushToken        forKey:@"push_token"];
+
+    if (trackMacMd5) {
+        [self parameters:parameters setString:deviceInfo.macShortMd5      forKey:@"mac_md5"];
+    }
+
+    [self parameters:parameters setString:deviceInfo.appToken         forKey:@"app_token"];
+    [self parameters:parameters setString:deviceInfo.uuid             forKey:@"ios_uuid"];
+    [self parameters:parameters setString:deviceInfo.environment      forKey:@"environment"];
+
+}
+
+- (void) constructUserAgent: (AIUserAgent *) userAgent
+               toParameters: (NSMutableDictionary *) parameters {
+    [self parameters:parameters setString:userAgent.bundeIdentifier forKey:@"bundle_identifier"];
+    [self parameters:parameters setString:userAgent.bundleVersion   forKey:@"bundle_version"];
+    [self parameters:parameters setString:userAgent.deviceType      forKey:@"device_type"];
+    [self parameters:parameters setString:userAgent.deviceName      forKey:@"device_name"];
+    [self parameters:parameters setString:userAgent.osName          forKey:@"os_name"];
+    [self parameters:parameters setString:userAgent.systemVersion   forKey:@"system_version"];
+    [self parameters:parameters setString:userAgent.languageCode    forKey:@"language_code"];
+    [self parameters:parameters setString:userAgent.countryCode     forKey:@"country_code"];
+}
+
 
 - (NSString *)amountString {
     if (self.event.revenue == nil || [self.event.revenue doubleValue] == 0) {

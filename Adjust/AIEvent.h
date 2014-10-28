@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AIEvent : NSObject
+@interface AIEvent : NSObject<NSCopying>
 
 @property (nonatomic, copy) NSString* eventToken;
 @property (nonatomic, copy) NSNumber* revenue;
