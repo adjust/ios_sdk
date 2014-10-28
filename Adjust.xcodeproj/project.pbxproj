@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9609BC6A19EEA55800E02303 /* AIEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9609BC6919EEA55800E02303 /* AIEvent.m */; };
 		96325E89190E892000A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9644B7EC19F148F3008576FC /* AIDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9644B7EB19F148F3008576FC /* AIDeviceInfo.m */; };
 		9679921118BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
 		9679921F18BBAE2800394606 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921E18BBAE2800394606 /* XCTest.framework */; };
 		9679922018BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
@@ -73,8 +75,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9609BC6819EEA55800E02303 /* AIEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIEvent.h; sourceTree = "<group>"; };
+		9609BC6919EEA55800E02303 /* AIEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIEvent.m; sourceTree = "<group>"; };
 		96325E84190E5CD900A97911 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96325E86190E5CE400A97911 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		9644B7EA19F148F3008576FC /* AIDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIDeviceInfo.h; sourceTree = "<group>"; };
+		9644B7EB19F148F3008576FC /* AIDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIDeviceInfo.m; sourceTree = "<group>"; };
 		9679920D18BBAE2800394606 /* libAdjust.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjust.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679921018BBAE2800394606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9679921D18BBAE2800394606 /* AdjustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +255,10 @@
 				96E5E37E18BBB48A008E7B30 /* AITimer.m */,
 				96E5E37F18BBB48A008E7B30 /* AIUtil.h */,
 				96E5E38018BBB48A008E7B30 /* AIUtil.m */,
+				9609BC6819EEA55800E02303 /* AIEvent.h */,
+				9609BC6919EEA55800E02303 /* AIEvent.m */,
+				9644B7EA19F148F3008576FC /* AIDeviceInfo.h */,
+				9644B7EB19F148F3008576FC /* AIDeviceInfo.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -383,8 +393,10 @@
 				96E5E39118BBB48A008E7B30 /* UIDevice+AIAdditions.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* AIActivityKind.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* AIActivityPackage.m in Sources */,
+				9644B7EC19F148F3008576FC /* AIDeviceInfo.m in Sources */,
 				96E5E38E18BBB48A008E7B30 /* AIActivityState.m in Sources */,
 				96E5E39018BBB48A008E7B30 /* NSString+AIAdditions.m in Sources */,
+				9609BC6A19EEA55800E02303 /* AIEvent.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* AIPackageHandler.m in Sources */,
 				96E5E39318BBB48A008E7B30 /* AILogger.m in Sources */,
 				96E5E39418BBB48A008E7B30 /* AIPackageBuilder.m in Sources */,

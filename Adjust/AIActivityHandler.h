@@ -22,13 +22,7 @@
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
 
-- (void)trackEvent:(NSString *)eventToken
-    withParameters:(NSDictionary *)parameters;
-
-- (void)trackRevenue:(double)amount
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters;
+- (void)trackEvent:(AIEvent *)event;
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink;
 - (void)setEnabled:(BOOL)enabled;

@@ -11,13 +11,7 @@ window.AdjustBridge = (function () {
 
     function trackEventPrivate (eventToken, parameters) {
         bridge.callHandler(adjustPrefix + 'trackEvent',
-            {'eventToken': eventToken, 'parameters': parameters}, 
-            function(response) {})
-    };
-
-    function trackRevenuePrivate (amountInCents, eventToken, parameters) {
-        bridge.callHandler(adjustPrefix + 'trackRevenue',
-            {'amountInCents': amountInCents, 'eventToken': eventToken, 'parameters': parameters}, 
+            {'eventToken': eventToken, 'parameters': parameters, 'revenue': revenue},
             function(response) {})
     };
     
@@ -46,7 +40,6 @@ window.AdjustBridge = (function () {
     return {
         setBridge: setBridgePrivate,
         trackEvent: trackEventPrivate,
-        trackRevenue: trackRevenuePrivate,
         setResponseDelegate: setResponseDelegatePrivate,
         setEnabled: setEnabledPrivate,
         isEnabled: isEnabledPrivate,

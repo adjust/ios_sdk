@@ -100,21 +100,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)trackEvent:(NSString *)eventToken
-    withParameters:(NSDictionary *)parameters
+- (void)trackEvent:(AIEvent *)event
 {
     dispatch_async(self.internalQueue, ^{
-        [self eventInternal:eventToken parameters:parameters];
-    });
-}
-
-- (void)trackRevenue:(double)amount
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters
-{
-    dispatch_async(self.internalQueue, ^{
-        [self revenueInternal:amount transactionId:transactionId event:eventToken parameters:parameters];
+        [self eventInternal:event];
     });
 }
 
@@ -278,26 +267,29 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self writeActivityState];
 }
 
-- (void)eventInternal:(NSString *)eventToken
-           parameters:(NSDictionary *)parameters
+- (void)eventInternal:(AIEvent *)event
 {
+    // check consistency
     if (![self checkAppTokenNotNil:self.appToken]) return;
     if (![self checkActivityState:self.activityState]) return;
-    if (![self checkEventTokenNotNil:eventToken]) return;
-    if (![self checkEventTokenLength:eventToken]) return;
+    if (![self checkEventTokenNotNil:event.eventToken]) return;
+    if (![self checkEventTokenLength:event.eventToken]) return;
+    if (![self checkAmount:event.revenue]) return;
+    if (![self checkTransactionId:event.transactionId]) return;
 
     if (!self.activityState.enabled) {
         return;
     }
 
-    AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
-    eventBuilder.eventToken = eventToken;
-    eventBuilder.callbackParameters = parameters;
-
+    // update activity state
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
     self.activityState.createdAt = now;
     self.activityState.eventCount++;
+
+    // create and populate event package
+    AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
+    eventBuilder.event = event;
 
     [self injectGeneralAttributes:eventBuilder];
     [self.activityState injectEventAttributes:eventBuilder];
@@ -312,46 +304,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [self writeActivityState];
     [self.logger debug:@"Event %d", self.activityState.eventCount];
-}
-
-- (void)revenueInternal:(double)amount
-          transactionId:(NSString *)transactionId
-                  event:(NSString *)eventToken
-             parameters:(NSDictionary *)parameters
-{
-    if (![self checkAppTokenNotNil:self.appToken]) return;
-    if (![self checkActivityState:self.activityState]) return;
-    if (![self checkAmount:amount]) return;
-    if (![self checkEventTokenLength:eventToken]) return;
-    if (![self checkTransactionId:transactionId]) return;
-
-    if (!self.activityState.enabled) {
-        return;
-    }
-
-    AIPackageBuilder *revenueBuilder = [[AIPackageBuilder alloc] init];
-    revenueBuilder.amountInCents = amount;
-    revenueBuilder.eventToken = eventToken;
-    revenueBuilder.callbackParameters = parameters;
-
-    double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState:now];
-    self.activityState.createdAt = now;
-    self.activityState.eventCount++;
-
-    [self injectGeneralAttributes:revenueBuilder];
-    [self.activityState injectEventAttributes:revenueBuilder];
-    AIActivityPackage *revenuePackage = [revenueBuilder buildRevenuePackage];
-    [self.packageHandler addPackage:revenuePackage];
-
-    if (self.bufferEvents) {
-        [self.logger info:@"Buffered revenue%@", revenuePackage.suffix];
-    } else {
-        [self.packageHandler sendFirstPackage];
-    }
-
-    [self writeActivityState];
-    [self.logger debug:@"Event %d (revenue)", self.activityState.eventCount];
 }
 
 - (void) readOpenUrlInternal:(NSURL *)url {
@@ -584,16 +536,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     return YES;
 }
 
-- (BOOL)checkAmount:(double)amount {
-    if (amount < 0.0) {
-        [self.logger error:@"Invalid amount %.1f", amount];
+- (BOOL)checkAmount:(NSNumber *)amount {
+    if (amount != nil && [amount doubleValue] < 0.0) {
+        [self.logger error:@"Invalid amount %.1f", [amount doubleValue]];
         return NO;
     }
     return YES;
 }
 
 - (BOOL) checkTransactionId:(NSString *)transactionId {
-    if (transactionId.length == 0) {
+    if (transactionId == nil || transactionId.length == 0) {
         return YES; // no transaction ID given
     }
 

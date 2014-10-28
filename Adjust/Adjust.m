@@ -33,46 +33,8 @@ static id<AILogger> logger;
     [activityHandler setSdkPrefix:sdkPrefix];
 }
 
-+ (void)trackEvent:(NSString *)eventToken {
-    [activityHandler trackEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
-    [activityHandler trackEvent:eventToken withParameters:parameters];
-}
-
-+ (void)trackRevenue:(double)amountInCents {
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:nil withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken {
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters
-{
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:eventToken withParameters:parameters];
-}
-
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId {
-    [activityHandler trackRevenue:amountInCents transactionId:transactionId forEvent:nil withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId forEvent:(NSString *)eventToken {
-    [activityHandler trackRevenue:amountInCents transactionId:transactionId forEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters
-{
-    [activityHandler trackRevenue:amountInCents
-                    transactionId:transactionId
-                         forEvent:eventToken
-                   withParameters:parameters];
++ (void)trackEvent:(AIEvent *)event {
+    [activityHandler trackEvent:event];
 }
 
 + (void)setLogLevel:(AILogLevel)logLevel {

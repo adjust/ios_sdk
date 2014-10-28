@@ -29,7 +29,11 @@
 
 - (AIActivityPackage *)buildEventPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self injectEventParameters:parameters];
+    [self parameters:parameters setString:self.amountString forKey:@"amount"];
+    [self parameters:parameters setString:self.event.currency forKey:@"currency"];
+    [self parameters:parameters setInt:self.eventCount forKey:@"event_count"];
+    [self parameters:parameters setString:self.event.eventToken forKey:@"event_token"];
+    [self parameters:parameters setDictionaryBase64:self.event.callbackParameters forKey:@"params"];
 
     AIActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
@@ -40,19 +44,6 @@
     return eventPackage;
 }
 
-- (AIActivityPackage *)buildRevenuePackage {
-    NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setString:self.amountString forKey:@"amount"];
-    [self injectEventParameters:parameters];
-
-    AIActivityPackage *revenuePackage = [self defaultActivityPackage];
-    revenuePackage.path = @"/revenue";
-    revenuePackage.activityKind = AIActivityKindRevenue;
-    revenuePackage.suffix = self.revenueSuffix;
-    revenuePackage.parameters = parameters;
-
-    return revenuePackage;
-}
 
 - (AIActivityPackage *)buildReattributionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
@@ -101,29 +92,22 @@
     return parameters;
 }
 
-- (void)injectEventParameters:(NSMutableDictionary *)parameters {
-    // event specific
-    [self parameters:parameters setInt:self.eventCount                      forKey:@"event_count"];
-    [self parameters:parameters setString:self.eventToken                   forKey:@"event_token"];
-    [self parameters:parameters setDictionaryBase64:self.callbackParameters forKey:@"params"];
-}
-
 - (NSString *)amountString {
-    int amountInMillis = round(10 * self.amountInCents);
-    self.amountInCents = amountInMillis / 10.0; // now rounded to one decimal point
+    if (self.event.revenue == nil || [self.event.revenue doubleValue] == 0) {
+        return nil;
+    }
+    double revenue = [self.event.revenue doubleValue];
+    int amountInMillis = round(1000 * revenue);
+    self.event.revenue = [NSNumber  numberWithDouble:(amountInMillis / 1000.0)]; // now rounded to one decimal point
     NSString *amountString = [NSNumber numberWithInt:amountInMillis].stringValue;
     return amountString;
 }
 
 - (NSString *)eventSuffix {
-    return [NSString stringWithFormat:@" '%@'", self.eventToken];
-}
-
-- (NSString *)revenueSuffix {
-    if (self.eventToken != nil) {
-        return [NSString stringWithFormat:@" (%.1f cent, '%@')", self.amountInCents, self.eventToken];
+    if (self.event.revenue == nil) {
+        return [NSString stringWithFormat:@" '%@'", self.event.eventToken];
     } else {
-        return [NSString stringWithFormat:@" (%.1f cent)", self.amountInCents];
+        return [NSString stringWithFormat:@" (%.3f cent, '%@')", [self.event.revenue doubleValue], self.event.eventToken];
     }
 }
 

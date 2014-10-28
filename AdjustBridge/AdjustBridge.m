@@ -32,27 +32,23 @@ static id<AdjustDelegate> adjustBridgeInstance = nil;
 
         NSString* eventToken = [data objectForKey:@"eventToken"];
         NSDictionary* parameters = [data objectForKey:@"parameters"];
+        NSNumber* revenue = [data objectForKey:@"revenue"];
+        NSString* currency = [data objectForKey:@"currency"];
+
+        AIEvent* event = [[AIEvent alloc] initWithEventToken:eventToken];
 
         if (parameters != nil) {
-            [Adjust trackEvent:eventToken withParameters:parameters];
-        }  else {
-            [Adjust trackEvent:eventToken];
+            for (NSString* key in parameters) {
+                NSString* value = [parameters objectForKey:key];
+                [event addCallbackParameter:key andValue:value];
+            }
         }
-    }];
 
-    [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@trackRevenue", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {
-
-        NSString* eventToken = [data objectForKey:@"eventToken"];
-        NSDictionary* parameters = [data objectForKey:@"parameters"];
-        double amountInCents = [[data objectForKey:@"amountInCents"] doubleValue];
-
-        if (parameters != nil) {
-            [Adjust trackRevenue:amountInCents forEvent:eventToken withParameters:parameters];
-        } else if (eventToken != nil) {
-            [Adjust trackRevenue:amountInCents forEvent:eventToken];
-        } else {
-            [Adjust trackRevenue:amountInCents];
+        if (revenue != nil) {
+            [event setRevenue:[revenue doubleValue] currency:currency];
         }
+
+        [Adjust trackEvent:event];
     }];
 
     [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@setResponseDelegate", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {

@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "AIEvent.h"
+#import "AIDeviceInfo.h"
 
 @class AIActivityPackage;
 
@@ -36,17 +38,16 @@
 
 // events
 @property (nonatomic, assign) int eventCount;
-@property (nonatomic, copy)   NSString *eventToken;
-@property (nonatomic, copy)   NSDictionary *callbackParameters;
-@property (nonatomic, assign) double amountInCents;
+@property (nonatomic, retain) AIEvent* event;
 
 // reattributions
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
 
 
+//- (id) initWithDeviceInfo:(AIDeviceInfo *)deviceInfo;
+
 - (AIActivityPackage *)buildSessionPackage;
 - (AIActivityPackage *)buildEventPackage;
-- (AIActivityPackage *)buildRevenuePackage;
 - (AIActivityPackage *)buildReattributionPackage;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "AILogger.h"
 #import "AIResponseData.h"
+#import "AIEvent.h"
 
 @protocol AdjustDelegate;
 
@@ -55,41 +56,17 @@ static NSString * const AIEnvironmentProduction = @"production";
  * top of that you can pass a set of parameters to the following method that
  * will be forwarded to these callbacks.
  *
- * @param eventToken The Event Token for this kind of event. They are created
- *     in the dashboard at http://adjust.com and should be six characters long.
- * @param parameters An optional dictionary containing the callback parameters.
- *     Provide key-value-pairs to be forwarded to your callbacks.
+ * The event can contain some revenue. The amount is measured in units and 
+ * rounded to the decimal cent point.
+ *
+ * A transaction ID can be used to avoid duplicate revenue events. The last ten 
+ * transaction identifiers are remembered.
+ *
+ * @param event The Event object for this kind of event. It needs a event token 
+ * that is  created in the dashboard at http://adjust.com and should be six 
+ * characters long.
  */
-+ (void)trackEvent:(NSString *)eventToken;
-+ (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
-
-/**
- * Tell Adjust that a user generated some revenue.
- *
- * The amount is measured in cents and rounded to on digit after the
- * decimal point. If you want to differentiate between several revenue
- * types, you can do so by using different event tokens. If your revenue
- * events have callbacks, you can also pass in parameters that will be
- * forwarded to your end point.
- *
- * A transaction ID can be used to avoid duplicate revenue events. The last ten transaction identifiers are remembered.
- * This is useful for in-app purchase tracking where you can pass in the identifier of the reported transaction.
- *
- * @param amountInCents The amount in cents (example: 1.5 means one and a half cents)
- * @param transactionIdentifier The identifier used to avoid duplicate revenue events (optional, see above)
- * @param eventToken The token for this revenue event (optional, see above)
- * @param parameters Parameters for this revenue event (optional, see above)
- */
-+ (void)trackRevenue:(double)amountInCents;
-+ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken;
-+ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters;
-
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId;
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId forEvent:(NSString *)eventToken;
-+ (void)trackRevenue:(double)amountInCents
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters;
++ (void)trackEvent:(AIEvent *)event;
 
 /**
  * Change the verbosity of Adjust's logs.
@@ -174,6 +151,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  * Set the device token used by push notifications
  */
 + (void)setDeviceToken:(NSData *)deviceToken;
+
 @end
 
 
