@@ -7,15 +7,12 @@
 //
 
 #import "AIAdjustFactory.h"
-#import "AIActivityHandler.h"
-#import "AIPackageHandler.h"
-#import "AIRequestHandler.h"
-#import "AILogger.h"
 
 static id<AIPackageHandler> internalPackageHandler = nil;
 static id<AIRequestHandler> internalRequestHandler = nil;
 static id<AIActivityHandler> internalActivityHandler = nil;
 static id<AILogger> internalLogger = nil;
+static id<AIAttributionHandler> internalAttributionHandler = nil;
 
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
@@ -66,6 +63,14 @@ static double intervalSubsessionInterval = -1;
     return intervalSubsessionInterval;
 }
 
++ (id<AIAttributionHandler>)attributionHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler {
+    if (internalAttributionHandler == nil) {
+        return [AIAttributionHandler handlerWithActivityHandler:activityHandler];
+    }
+
+    return [internalAttributionHandler initWithActivityHandler:activityHandler];
+}
+
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -90,4 +95,7 @@ static double intervalSubsessionInterval = -1;
     intervalSubsessionInterval = subsessionInterval;
 }
 
++ (void)setAttributionHandler:(id<AIAttributionHandler>)attributionHandler {
+    internalAttributionHandler = attributionHandler;
+}
 @end

@@ -7,8 +7,9 @@
 //
 
 #import "Adjust.h"
+#import "AIAttribution.h"
 
-@protocol AIActivityHandler
+@protocol AIActivityHandler <NSObject>
 
 - (id)initWithAppToken:(NSString *)appToken;
 - (void)setSdkPrefix:(NSString *)sdkPrefix;
@@ -29,6 +30,11 @@
 - (void)setTrackMacMd5:(BOOL)trackMacMd5;
 - (void)setDelegate:(NSObject<AdjustDelegate> *) delegate;
 - (void)setIsIad:(BOOL)isIad;
+
+- (AIAttribution*) attribution;
+- (void) setAttribution:(AIAttribution*)attribution;
+
+- (void) changedAttributionDelegate:(AIAttribution*) attribution;
 
 @end
 

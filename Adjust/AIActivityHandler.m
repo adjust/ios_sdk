@@ -17,6 +17,7 @@
 #import "UIDevice+AIAdditions.h"
 #import "NSString+AIAdditions.h"
 #import "AIAdjustFactory.h"
+#import "AIAttributionHandler.h"
 
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
@@ -35,10 +36,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
 @property (nonatomic, retain) id<AILogger> logger;
+@property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, retain) id<AIAttributionHandler> attributionHandler;
+@property (nonatomic, retain) AIAttribution *attribution;
+
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL bufferEvents;
 @property (nonatomic, assign) BOOL trackMacMd5;
-@property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 
 @property (nonatomic, copy) AIDeviceInfo* deviceInfo;
 
@@ -67,6 +71,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.deviceInfo.environment = @"unknown";
     _trackMacMd5 = YES;
     _enabled = YES;
+
+    //self.attributionInternal = nil;
+    // todo read from file
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:yourAppToken];
@@ -182,7 +189,28 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
 }
+/*
+- (AIAttribution*) attribution {
+    return self.attribution;
+}
 
+- (void) setAttribution:(AIAttribution*)attribution {
+    _attribution = attribution;
+}
+*/
+
+
+- (void)changedAttributionDelegate:(AIAttribution *)attribution {
+    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        return;
+    }
+    if (attribution == nil) {
+        return;
+    }
+    self.attribution = attribution;
+    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
+                                    withObject:attribution waitUntilDone:NO];
+}
 
 #pragma mark - internal
 - (void)initInternal:(NSString *)yourAppToken {
@@ -204,6 +232,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [[UIDevice currentDevice] aiSetIad:self];
 
     self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
+    self.attributionHandler = [AIAdjustFactory attributionHandlerForActivityHandler:self];
+
     [self readActivityState];
 
     [self startInternal];

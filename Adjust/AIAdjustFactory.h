@@ -7,12 +7,11 @@
 //
 #import <Foundation/Foundation.h>
 
-@class Adjust;
-
-@protocol AIPackageHandler;
-@protocol AIRequestHandler;
-@protocol AIActivityHandler;
-@protocol AILogger;
+#import "AIActivityHandler.h"
+#import "AIPackageHandler.h"
+#import "AIRequestHandler.h"
+#import "AILogger.h"
+#import "AIAttributionHandler.h"
 
 @interface AIAdjustFactory : NSObject
 
@@ -22,6 +21,7 @@
 + (id<AILogger>)logger;
 + (double)sessionInterval;
 + (double)subsessionInterval;
++ (id<AIAttributionHandler>)attributionHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler;
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;
@@ -29,5 +29,6 @@
 + (void)setLogger:(id<AILogger>)logger;
 + (void)setSessionInterval:(double)sessionInterval;
 + (void)setSubsessionInterval:(double)subsessionInterval;
++ (void)setAttributionHandler:(id<AIAttributionHandler>)attributionHandler;
 
 @end

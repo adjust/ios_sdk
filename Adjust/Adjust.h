@@ -9,6 +9,7 @@
 #import "AILogger.h"
 #import "AIResponseData.h"
 #import "AIEvent.h"
+#import "AIAttribution.h"
 
 @protocol AdjustDelegate;
 
@@ -172,5 +173,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  *     and it's server response. See AIResponseData for details.
  */
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
+
+- (void)adjustAttributionChanged:(AIAttribution *)attribution;
 
 @end
