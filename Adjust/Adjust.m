@@ -102,4 +102,8 @@ static id<AILogger> logger;
     [activityHandler savePushToken:deviceToken];
 }
 
++ (void)setAttributionMaxTime:(double)seconds {
+    [activityHandler setAttributionMaxTime:seconds];
+}
+
 @end

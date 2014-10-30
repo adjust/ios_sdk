@@ -21,6 +21,7 @@
 
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
+static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
@@ -106,20 +107,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
-    [self runDelegate:response];
+    if (self.attribution == nil) {
+        [self.attributionHandler getAttribution];
+    }
     [self launchDeepLink:deepLink];
-}
-
-- (void)runDelegate:(AIResponseData *)response {
-    if (![self.delegate respondsToSelector:@selector(adjustFinishedTrackingWithResponse:)]) {
-        return;
-    }
-    if (response == nil) {
-        return;
-    }
-    [self.delegate performSelectorOnMainThread:@selector(adjustFinishedTrackingWithResponse:)
-                                    withObject:response waitUntilDone:NO];
-
 }
 
 - (void)launchDeepLink:(NSString *) deepLink{
@@ -189,6 +180,11 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
 }
+
+- (void)setAttributionMaxTime:(double)seconds {
+    [self.attributionHandler setAttributionMaxTime:seconds];
+}
+
 /*
 - (AIAttribution*) attribution {
     return self.attribution;
@@ -422,7 +418,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)readActivityState {
     @try {
-        NSString *filename = self.activityStateFilename;
+        NSString *filename = [AIUtil getFullFilename:kActivityStateFilename];
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[AIActivityState class]]) {
             self.activityState = object;
@@ -442,7 +438,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)writeActivityState {
-    NSString *filename = self.activityStateFilename;
+    NSString *filename = [AIUtil getFullFilename:kActivityStateFilename];
     BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
     if (result == YES) {
         [AIUtil excludeFromBackup:filename];
@@ -452,16 +448,42 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (NSString *)activityStateFilename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:kActivityStateFilename];
-    return filename;
+
+- (void)readAttribution {
+    @try {
+        NSString *filename = [AIUtil getFullFilename:kAttributionFilename];
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        if ([object isKindOfClass:[AIAttribution class]]) {
+            self.activityState = object;
+            [self.logger debug:@"Read attribution: %@", self.attribution];
+            return;
+        } else if (object == nil) {
+            [self.logger verbose:@"Attribution file not found"];
+        } else {
+            [self.logger error:@"Failed to read attribution file"];
+        }
+    } @catch (NSException *ex ) {
+        [self.logger error:@"Failed to read attribution file (%@)", ex];
+    }
+
+    // start with a fresh activity state in case of any exception
+    self.attribution = nil;
 }
+
+- (void)writeAttribution {
+    NSString *filename = [AIUtil getFullFilename:kAttributionFilename];
+    BOOL result = [NSKeyedArchiver archiveRootObject:self.attribution toFile:filename];
+    if (result == YES) {
+        [AIUtil excludeFromBackup:filename];
+        [self.logger debug:@"Wrote attribution: %@", self.attribution];
+    } else {
+        [self.logger error:@"Failed to write attribution file"];
+    }
+}
+
 
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
-    //[self injectGeneralAttributes:sessionBuilder];
     sessionBuilder.deviceInfo = self.deviceInfo;
     sessionBuilder.trackMd5 = _trackMacMd5;
     [self.activityState injectSessionAttributes:sessionBuilder];
@@ -470,25 +492,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.packageHandler sendFirstPackage];
 }
 
-/*
-- (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
-    builder.userAgent        = self.userAgent;
-    builder.clientSdk        = self.clientSdk;
-    builder.appToken         = self.appToken;
-    builder.macSha1          = self.macSha1;
-    builder.trackingEnabled  = self.trackingEnabled;
-    builder.idForAdvertisers = self.idForAdvertisers;
-    builder.fbAttributionId  = self.fbAttributionId;
-    builder.environment      = self.environment;
-    builder.isIad            = self.isIad;
-    builder.vendorId         = self.vendorId;
-    builder.pushToken        = self.pushToken;
-
-    if (self.trackMacMd5) {
-        builder.macShortMd5 = self.macShortMd5;
-    }
-}
-*/
 # pragma mark - timer
 - (void)startTimer {
     if (self.timer == nil) {

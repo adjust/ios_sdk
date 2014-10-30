@@ -11,6 +11,9 @@
 #import "AIUtil.h"
 #import "AIActivityHandler.h"
 #import "NSString+AIAdditions.h"
+#import "AITimer.h"
+
+static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 @interface AIAttributionHandler()
 
@@ -18,6 +21,8 @@
 @property (nonatomic, assign) id<AIActivityHandler> activityHandler;
 @property (nonatomic, assign) id<AILogger> logger;
 @property (nonatomic, retain) NSURL *url;
+@property (nonatomic, retain) AITimer *timer;
+@property (nonatomic, assign) double attributionMaxTime;
 
 @end
 
@@ -42,9 +47,9 @@ static const double kRequestTimeout = 60; // 60 seconds
     return self;
 }
 // comunicate with server
-- (void) checkAttribution {
+- (void) getAttribution {
     dispatch_async(self.internalQueue, ^{
-        [self checkAttribution];
+        [self getAttribution];
     });
 }
 
@@ -72,11 +77,19 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     // check if response contains attribution
-    AIAttribution * attributionResponse = [AIAttribution dataWithJsonDict:jsonDict];
-
-    // if it doesn't set timer
+    NSDictionary *jsonAttribution = [jsonDict objectForKey:@"attribution"];
+    if (jsonAttribution == nil) {
+        // read time to wait and set timer to re-try
+        NSNumber * timer_seconds = [jsonDict objectForKey:@"timer"];
+        uint64_t timer_nano = [timer_seconds intValue] * NSEC_PER_SEC;
+        self.timer = [AITimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self checkAttributionInternal]; }];
+        [self.timer resume];
+        return;
+    }
 
     // check if new attribution is different from previous
+    AIAttribution * attributionResponse = [AIAttribution dataWithJsonDict:jsonAttribution];
+
     if ([attributionResponse isEqual:self.activityHandler.attribution]) {
         // TODO reset?
         return;

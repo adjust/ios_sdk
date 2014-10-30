@@ -30,6 +30,7 @@
 - (void)setTrackMacMd5:(BOOL)trackMacMd5;
 - (void)setDelegate:(NSObject<AdjustDelegate> *) delegate;
 - (void)setIsIad:(BOOL)isIad;
+- (void)setAttributionMaxTime:(double)seconds;
 
 - (AIAttribution*) attribution;
 - (void) setAttribution:(AIAttribution*)attribution;

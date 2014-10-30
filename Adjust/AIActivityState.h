@@ -34,8 +34,8 @@
 
 - (void)resetSessionAttributes:(double)now;
 
-- (void)injectSessionAttributes:(AIPackageBuilder *)packageBilder;
-- (void)injectEventAttributes:(AIPackageBuilder *)packageBilder;
+- (void)injectSessionAttributes:(AIPackageBuilder *)packageBuilder;
+- (void)injectEventAttributes:(AIPackageBuilder *)packageBuilder;
 
 // transaction ID management
 - (void)addTransactionId:(NSString *)transactionId;

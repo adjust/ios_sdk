@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 
-#import "AIRequestHandler.h"
-#import "AIPackageHandler.h"
 #import "AIActivityPackage.h"
 #import "AIResponseData.h"
 #import "AILogger.h"

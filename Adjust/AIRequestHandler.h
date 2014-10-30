@@ -7,8 +7,8 @@
 //
 #import <Foundation/Foundation.h>
 
-#include "AIPackageHandler.h"
-@class AIPackageHandler, AIActivityPackage;
+#import "AIRequestHandler.h"
+#import "AIPackageHandler.h"
 
 @protocol AIRequestHandler
 

@@ -18,4 +18,6 @@
 + (NSString *)dateFormat:(double)value;
 + (NSDictionary *) buildJsonDict:(NSString *)jsonString;
 
++ (NSString *)getFullFilename:(NSString *) baseFilename;
+
 @end

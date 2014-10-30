@@ -28,6 +28,11 @@
     return [[AITimer alloc] initWithInterval:interval leeway:leeway queue:queue block:block];
 }
 
++ (AITimer *)timerWithStart:(uint64_t)start leeway:(uint64_t)leeway queue:(dispatch_queue_t)queue block:(dispatch_block_t)block
+{
+    return [[AITimer alloc] initWithStart:start leeway:leeway queue:queue block:block];
+}
+
 - (id)initWithInterval:(uint64_t)interval
                 leeway:(uint64_t)leeway
                  queue:(dispatch_queue_t)queue
@@ -39,6 +44,21 @@
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     if (self.source != nil) {
         dispatch_source_set_timer(self.source, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(self.source, block);
+    }
+    self.suspended = YES;
+
+    return self;
+}
+
+- (id)initWithStart:(uint64_t)start leeway:(uint64_t)leeway queue:(dispatch_queue_t)queue block:(dispatch_block_t)block
+{
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (self.source != nil) {
+        dispatch_source_set_timer(self.source, dispatch_walltime(NULL, start), DISPATCH_TIME_FOREVER, leeway);
         dispatch_source_set_event_handler(self.source, block);
     }
     self.suspended = YES;

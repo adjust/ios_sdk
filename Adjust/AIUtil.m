@@ -134,4 +134,12 @@ static NSDateFormatter * dateFormat;
     return jsonDict;
 }
 
++ (NSString *)getFullFilename:(NSString *) baseFilename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filename = [path stringByAppendingPathComponent:baseFilename];
+    return filename;
+}
+
+
 @end

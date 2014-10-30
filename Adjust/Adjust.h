@@ -153,6 +153,8 @@ static NSString * const AIEnvironmentProduction = @"production";
  */
 + (void)setDeviceToken:(NSData *)deviceToken;
 
++ (void)setAttributionMaxTime:(double)seconds;
+
 @end
 
 
@@ -172,8 +174,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  * @param responseData The response data containing information about the activity
  *     and it's server response. See AIResponseData for details.
  */
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
-
 - (void)adjustAttributionChanged:(AIAttribution *)attribution;
 
 @end

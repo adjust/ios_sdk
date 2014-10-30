@@ -13,7 +13,9 @@
 
 - (id)initWithActivityHandler:(id<AIActivityHandler>) activityHandler;
 
-- (void)checkAttribution;
+- (void)getAttribution;
+
+- (void)setAttributionMaxTime:(double)seconds;
 
 @end
 

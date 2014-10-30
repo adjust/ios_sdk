@@ -87,6 +87,13 @@
     return responseDataDic;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@",
+            self.trackerToken, self.trackerName, self.network, self.campaign,
+            self.adgroup, self.campaign];
+}
+
+
 #pragma mark - NSObject
 - (BOOL)isEqual:(id)object {
     if (self == object) {
@@ -113,5 +120,31 @@
 
     return result;
 }
+
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.trackerToken = [decoder decodeObjectForKey:@"trackerToken"];
+    self.trackerName  = [decoder decodeObjectForKey:@"trackerName"];
+    self.network      = [decoder decodeObjectForKey:@"network"];
+    self.campaign     = [decoder decodeObjectForKey:@"campaign"];
+    self.adgroup      = [decoder decodeObjectForKey:@"adgroup"];
+    self.creative     = [decoder decodeObjectForKey:@"creative"];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:self.trackerToken forKey:@"trackerToken"];
+    [encoder encodeObject:self.trackerName  forKey:@"trackerName"];
+    [encoder encodeObject:self.network      forKey:@"network"];
+    [encoder encodeObject:self.campaign     forKey:@"campaign"];
+    [encoder encodeObject:self.adgroup      forKey:@"adgroup"];
+    [encoder encodeObject:self.creative     forKey:@"creative"];
+}
+
 
 @end
