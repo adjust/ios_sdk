@@ -10,8 +10,7 @@
 #import "AIResponseData.h"
 #import "AIEvent.h"
 #import "AIAttribution.h"
-
-@protocol AdjustDelegate;
+#import "AdjustConfig.h"
 
 /**
  * Constants for our supported tracking environments.
@@ -37,17 +36,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
  */
-+ (void)appDidLaunch:(NSString *)appToken;
-
-/**
- * Set the optional delegate that will get informed about tracking results
- *
- * See the AdjustDelegate declaration below for details
- *
- * @param delegate The delegate that might implement the optional delegate
- *     methods like adjustFinishedTrackingWithResponse:
- */
-+ (void)setDelegate:(id<AdjustDelegate>)delegate;
++ (void)appDidLaunch:(AdjustConfig *)adjustConfig;
 
 /**
  * Tell Adjust that a particular event has happened.
@@ -68,53 +57,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  * characters long.
  */
 + (void)trackEvent:(AIEvent *)event;
-
-/**
- * Change the verbosity of Adjust's logs.
- *
- * You can increase or reduce the amount of logs from Adjust by passing
- * one of the following parameters. Use Log.ASSERT to disable all logging.
- *
- * @param logLevel The desired minimum log level (default: info)
- *     Must be one of the following:
- *      - AILogLevelVerbose (enable all logging)
- *      - AILogLevelDebug   (enable more logging)
- *      - AILogLevelInfo    (the default)
- *      - AILogLevelWarn    (disable info logging)
- *      - AILogLevelError   (disable warnings as well)
- *      - AILogLevelAssert  (disable errors as well)
- */
-+ (void)setLogLevel:(AILogLevel)logLevel;
-
-/**
- * Set the tracking environment to sandbox or production.
- *
- * Use sandbox for testing and production for the final build that you release.
- *
- * @param environment The new environment. Supported values:
- *     - AIEnvironmentSandbox
- *     - AIEnvironmentProduction
- */
-+ (void)setEnvironment:(NSString *)environment;
-
-/**
- * Enable or disable event buffering.
- *
- * Enable event buffering if your app triggers a lot of events.
- * When enabled, events get buffered and only get tracked each
- * minute. Buffered events are still persisted, of course.
- */
-+ (void)setEventBufferingEnabled:(BOOL)enabled;
-
-/**
- * Enable or disable tracking of the MD5 hash of the MAC address
- *
- * Disable macMd5 tracking if your privacy constraints require it.
- */
-+ (void)setMacMd5TrackingEnabled:(BOOL)enabled;
-
-// Special method used by wrapper JS bridge. Do not call directly.
-+ (void)setSdkPrefix:(NSString *)sdkPrefix;
 
 /**
  * Tell adjust that the application resumed.
@@ -153,27 +95,6 @@ static NSString * const AIEnvironmentProduction = @"production";
  */
 + (void)setDeviceToken:(NSData *)deviceToken;
 
-+ (void)setAttributionMaxTime:(double)seconds;
 
 @end
 
-
-@class AIActivityPackage;
-@class AIResponseData;
-
-#pragma mark -
-/**
- * Optional delegate that will get informed about tracking results
- */
-@protocol  AdjustDelegate
-@optional
-
-/**
- * Optional delegate method that will get called when a tracking attempt finished
- *
- * @param responseData The response data containing information about the activity
- *     and it's server response. See AIResponseData for details.
- */
-- (void)adjustAttributionChanged:(AIAttribution *)attribution;
-
-@end

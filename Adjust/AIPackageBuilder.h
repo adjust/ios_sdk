@@ -8,30 +8,17 @@
 #import <Foundation/Foundation.h>
 #import "AIEvent.h"
 #import "AIDeviceInfo.h"
-
-@class AIActivityPackage;
+#import "AIActivityState.h"
+#import "AIActivityPackage.h"
 
 @interface AIPackageBuilder : NSObject
 
-// general
 @property (nonatomic, copy) AIDeviceInfo* deviceInfo;
-@property (nonatomic, assign) BOOL trackMd5;
-
-// sessions
-@property (nonatomic, assign) int sessionCount;
-@property (nonatomic, assign) int subsessionCount;
-@property (nonatomic, assign) double createdAt;
-@property (nonatomic, assign) double sessionLength;
-@property (nonatomic, assign) double timeSpent;
-@property (nonatomic, assign) double lastInterval;
-
-// events
-@property (nonatomic, assign) int eventCount;
 @property (nonatomic, copy) AIEvent* event;
+@property (nonatomic, copy) AIActivityState *activityState;
 
 // reattributions
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
-
 
 //- (id) initWithDeviceInfo:(AIDeviceInfo *)deviceInfo;
 

@@ -34,11 +34,11 @@ static double intervalSubsessionInterval = -1;
     return [internalRequestHandler initWithPackageHandler:packageHandler];
 }
 
-+ (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken {
++ (id<AIActivityHandler>)activityHandlerWithConfig:(AdjustConfig *)adjustConfig {
     if (internalActivityHandler == nil) {
-        return [AIActivityHandler handlerWithAppToken:appToken];
+        return [AIActivityHandler handlerWithConfig:adjustConfig];
     }
-    return [internalActivityHandler initWithAppToken:appToken];
+    return [internalActivityHandler initWithConfig:adjustConfig];
 }
 
 + (id<AILogger>)logger {

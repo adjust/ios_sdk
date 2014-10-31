@@ -11,8 +11,7 @@
 
 @protocol AIActivityHandler <NSObject>
 
-- (id)initWithAppToken:(NSString *)appToken;
-- (void)setSdkPrefix:(NSString *)sdkPrefix;
+- (id)initWithConfig:(AdjustConfig *)adjustConfig;
 
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
@@ -25,13 +24,6 @@
 - (void)readOpenUrl:(NSURL*)url;
 - (void)savePushToken:(NSData *)pushToken;
 
-- (void)setEnvironment:(NSString *)environment;
-- (void)setBufferEvents:(BOOL)bufferEvents;
-- (void)setTrackMacMd5:(BOOL)trackMacMd5;
-- (void)setDelegate:(NSObject<AdjustDelegate> *) delegate;
-- (void)setIsIad:(BOOL)isIad;
-- (void)setAttributionMaxTime:(double)seconds;
-
 - (AIAttribution*) attribution;
 - (void) setAttribution:(AIAttribution*)attribution;
 
@@ -41,6 +33,6 @@
 
 @interface AIActivityHandler : NSObject <AIActivityHandler>
 
-+ (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken;
++ (id<AIActivityHandler>)handlerWithConfig:(AdjustConfig *)adjustConfig;
 
 @end

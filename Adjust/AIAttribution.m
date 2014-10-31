@@ -146,5 +146,4 @@
     [encoder encodeObject:self.creative     forKey:@"creative"];
 }
 
-
 @end

@@ -9,7 +9,7 @@
 
 @class AIPackageBuilder;
 
-@interface AIActivityState : NSObject <NSCoding>
+@interface AIActivityState : NSObject <NSCoding, NSCopying>
 
 // persistent data
 @property (nonatomic, copy) NSString *uuid;
@@ -33,9 +33,6 @@
 @property (nonatomic, assign) double lastInterval;
 
 - (void)resetSessionAttributes:(double)now;
-
-- (void)injectSessionAttributes:(AIPackageBuilder *)packageBuilder;
-- (void)injectEventAttributes:(AIPackageBuilder *)packageBuilder;
 
 // transaction ID management
 - (void)addTransactionId:(NSString *)transactionId;

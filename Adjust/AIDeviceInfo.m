@@ -22,11 +22,9 @@
         copy.isIad = self.isIad;
         copy.vendorId = [self.vendorId copyWithZone:zone];
         copy.pushToken = [self.pushToken copyWithZone:zone];
-        copy.userAgent = [self.userAgent copyWithZone:zone];
-        copy.appToken = [self.appToken copyWithZone:zone];
-        copy.environment = [self.environment copyWithZone:zone];
         copy.clientSdk = [self.clientSdk copyWithZone:zone];
-        copy.uuid = [self.uuid copyWithZone:zone];
+        copy.userAgent = [self.userAgent copyWithZone:zone];
+        copy.adjustConfig = [self.adjustConfig copyWithZone:zone];
     }
 
     return copy;

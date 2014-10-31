@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "AIUserAgent.h"
+#import "AdjustConfig.h"
+#import "AIActivityState.h"
 
 @interface AIDeviceInfo : NSObject<NSCopying>
 
@@ -19,11 +21,8 @@
 @property (nonatomic, assign) BOOL isIad;
 @property (nonatomic, copy) NSString *vendorId;
 @property (nonatomic, copy) NSString *pushToken;
-@property (nonatomic, copy) AIUserAgent *userAgent;
-
-@property (nonatomic, copy) NSString *appToken;
-@property (nonatomic, copy) NSString *environment;
 @property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, copy) NSString *uuid;
+@property (nonatomic, copy) AIUserAgent *userAgent;
+@property (nonatomic, copy) AdjustConfig *adjustConfig;
 
 @end

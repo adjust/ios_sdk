@@ -37,7 +37,6 @@
     }
 
     [_partnerParameters setObject:value forKey:key];
-
 }
 
 - (void) setRevenue:(double) amount currency:(NSString *)currency{

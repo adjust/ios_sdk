@@ -46,6 +46,7 @@ static const int kTransactionIdCount = 10;
     self.lastInterval    = -1;
 }
 
+/*
 - (void)injectSessionAttributes:(AIPackageBuilder *)builder {
     [self injectGeneralAttributes:builder];
     builder.lastInterval = self.lastInterval;
@@ -55,7 +56,7 @@ static const int kTransactionIdCount = 10;
     [self injectGeneralAttributes:builder];
     builder.eventCount = self.eventCount;
 }
-
+*/
 - (void)addTransactionId:(NSString *)transactionId {
     if (self.transactionIds == nil) { // create array
         self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
@@ -126,16 +127,24 @@ static const int kTransactionIdCount = 10;
     [encoder encodeBool:self.enabled          forKey:@"enabled"];
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+    AIActivityState* copy = [[[self class] allocWithZone:zone] init];
+    if (copy) {
+        copy.sessionCount    = self.sessionCount;
+        copy.subsessionCount = self.subsessionCount;
+        copy.sessionLength   = self.sessionLength;
+        copy.timeSpent       = self.timeSpent;
+        copy.createdAt       = self.createdAt;
+        copy.uuid            = [self.uuid copyWithZone:zone];
+        copy.lastInterval    = self.lastInterval;
+        copy.eventCount      = self.eventCount;
+        copy.enabled         = self.enabled;
+        copy.lastActivity    = self.lastActivity;
+        // transactionIds not copied
+    }
 
-#pragma mark private implementation
-
-- (void)injectGeneralAttributes:(AIPackageBuilder *)builder {
-    builder.sessionCount    = self.sessionCount;
-    builder.subsessionCount = self.subsessionCount;
-    builder.sessionLength   = self.sessionLength;
-    builder.timeSpent       = self.timeSpent;
-    builder.createdAt       = self.createdAt;
-    builder.deviceInfo.uuid = self.uuid;
+    return copy;
 }
 
 @end

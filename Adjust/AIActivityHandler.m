@@ -19,7 +19,6 @@
 #import "AIAdjustFactory.h"
 #import "AIAttributionHandler.h"
 
-
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -40,10 +39,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, retain) id<AIAttributionHandler> attributionHandler;
 @property (nonatomic, retain) AIAttribution *attribution;
+@property (nonatomic, retain) AdjustConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL bufferEvents;
-@property (nonatomic, assign) BOOL trackMacMd5;
 
 @property (nonatomic, copy) AIDeviceInfo* deviceInfo;
 
@@ -53,38 +51,30 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark -
 @implementation AIActivityHandler
 
-+ (id<AIActivityHandler>)handlerWithAppToken:(NSString *)appToken {
-    return [[AIActivityHandler alloc] initWithAppToken:appToken];
++ (id<AIActivityHandler>)handlerWithConfig:(AdjustConfig *)adjustConfig {
+    return [[AIActivityHandler alloc] initWithConfig:adjustConfig];
 }
 
-- (id)initWithAppToken:(NSString *)yourAppToken {
+
+- (id)initWithConfig:(AdjustConfig *)adjustConfig {
     self = [super init];
     if (self == nil) return nil;
 
+    if (adjustConfig == nil) {
+        [AIAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
+        return nil;
+    }
+
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.deviceInfo = [[AIDeviceInfo alloc] init];
-
-    self.deviceInfo.clientSdk = AIUtil.clientSdk;
     self.logger        = AIAdjustFactory.logger;
-
-    // default values
-    self.deviceInfo.environment = @"unknown";
-    _trackMacMd5 = YES;
     _enabled = YES;
 
-    //self.attributionInternal = nil;
-    // todo read from file
-
     dispatch_async(self.internalQueue, ^{
-        [self initInternal:yourAppToken];
+        [self initInternal:adjustConfig];
     });
 
     return self;
-}
-
-- (void)setSdkPrefix:(NSString *)sdkPrefix {
-    self.deviceInfo.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, AIUtil.clientSdk];
 }
 
 - (void)trackSubsessionStart {
@@ -161,22 +151,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)setEnvironment:(NSString *)environment {
-    self.deviceInfo.environment = environment;
-}
-
-- (void)setBufferEvents:(BOOL)bufferEvents {
-    _bufferEvents = bufferEvents;
-}
-
-- (void)setTrackMacMd5:(BOOL)trackMacMd5 {
-    _trackMacMd5 = trackMacMd5;
-}
-
-- (void)setDelegate:(NSObject<AdjustDelegate> *) delegate {
-    _delegate = delegate;
-}
-
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
 }
@@ -209,14 +183,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 #pragma mark - internal
-- (void)initInternal:(NSString *)yourAppToken {
-    if (![self checkAppTokenNotNil:yourAppToken]) return;
-    if (![self checkAppTokenLength:yourAppToken]) return;
+- (void)initInternal:(AdjustConfig *)adjustConfig {
+    self.adjustConfig = adjustConfig;
+    self.deviceInfo = [[AIDeviceInfo alloc] init];
 
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
 
-    self.deviceInfo.appToken         = yourAppToken;
     self.deviceInfo.macSha1          = macAddress.aiSha1;
     self.deviceInfo.macShortMd5      = macShort.aiMd5;
     self.deviceInfo.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
@@ -224,6 +197,25 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.deviceInfo.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
     self.deviceInfo.userAgent        = AIUtil.userAgent;
     self.deviceInfo.vendorId         = UIDevice.currentDevice.aiVendorId;
+
+    if (adjustConfig.sdkPrefix == nil) {
+        self.deviceInfo.clientSdk        = AIUtil.clientSdk;
+    } else {
+        self.deviceInfo.clientSdk = [NSString stringWithFormat:@"%@@%@", adjustConfig.sdkPrefix, AIUtil.clientSdk];
+    }
+
+    [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", adjustConfig.macMd5TrackingEnabled ? @"enabled" : @"disabled"];
+
+    if (adjustConfig.eventBufferingEnabled)  {
+        [self.logger info:@"Event buffering is enabled"];
+    }
+
+    if ([adjustConfig.environment isEqualToString:AIEnvironmentProduction]) {
+        [self.logger setLogLevel:AILogLevelAssert];
+    } else {
+        [self.logger setLogLevel:adjustConfig.logLevel];
+    }
+
 
     [[UIDevice currentDevice] aiSetIad:self];
 
@@ -236,7 +228,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)startInternal {
-    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
+    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
 
     if (self.activityState != nil
         && !self.activityState.enabled) {
@@ -296,7 +288,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)endInternal {
-    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
+    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
 
     [self.packageHandler pauseSending];
     [self stopTimer];
@@ -308,7 +300,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)eventInternal:(AIEvent *)event
 {
     // check consistency
-    if (![self checkAppTokenNotNil:self.deviceInfo.appToken]) return;
+    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
     if (![self checkActivityState:self.activityState]) return;
     if (![self checkEventTokenNotNil:event.eventToken]) return;
     if (![self checkEventTokenLength:event.eventToken]) return;
@@ -328,15 +320,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     // create and populate event package
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.event = event;
-
-    //[self injectGeneralAttributes:eventBuilder];
     eventBuilder.deviceInfo = self.deviceInfo;
-    eventBuilder.trackMd5 = _trackMacMd5;
-    [self.activityState injectEventAttributes:eventBuilder];
+    eventBuilder.activityState = self.activityState;
+
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
 
-    if (_bufferEvents) {
+    if (self.adjustConfig.eventBufferingEnabled) {
         [self.logger info:@"Buffered event%@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
@@ -372,9 +362,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
     reattributionBuilder.deeplinkParameters = adjustDeepLinks;
-    //[self injectGeneralAttributes:reattributionBuilder];
     reattributionBuilder.deviceInfo = self.deviceInfo;
-    reattributionBuilder.trackMd5 = _trackMacMd5;
+    reattributionBuilder.activityState = self.activityState;
+    
     AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
     [self.packageHandler addPackage:reattributionPackage];
     [self.packageHandler sendFirstPackage];
@@ -485,8 +475,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
     sessionBuilder.deviceInfo = self.deviceInfo;
-    sessionBuilder.trackMd5 = _trackMacMd5;
-    [self.activityState injectSessionAttributes:sessionBuilder];
+    sessionBuilder.activityState = self.activityState;
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
@@ -556,14 +545,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
         [self.logger error:@"Missing App Token"];
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)checkAppTokenLength:(NSString *)appToken {
-    if (appToken.length != 12) {
-        [self.logger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
     return YES;

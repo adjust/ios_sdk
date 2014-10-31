@@ -8,7 +8,6 @@
 
 #import "AIPackageBuilder.h"
 #import "AIActivityPackage.h"
-#import "NSData+AIAdditions.h"
 #import "AIUtil.h"
 
 #pragma mark -
@@ -16,7 +15,9 @@
 
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDuration:self.lastInterval forKey:@"last_interval"];
+    [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
+    [self parameters:parameters setDictionaryJson:self.deviceInfo.adjustConfig.callbackPermanentParameters forKey:@"callback_params"];
+    [self parameters:parameters setDictionaryJson:self.deviceInfo.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
@@ -29,11 +30,17 @@
 
 - (AIActivityPackage *)buildEventPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
+    [self parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
     [self parameters:parameters setString:self.amountString forKey:@"amount"];
     [self parameters:parameters setString:self.event.currency forKey:@"currency"];
-    [self parameters:parameters setInt:self.eventCount forKey:@"event_count"];
     [self parameters:parameters setString:self.event.eventToken forKey:@"event_token"];
-    [self parameters:parameters setDictionaryBase64:self.event.callbackParameters forKey:@"params"];
+
+    // join the permanent parameters with the ones from the event
+    NSMutableDictionary * callbackParameters = [self joinParamters:self.deviceInfo.adjustConfig.callbackPermanentParameters parameters:self.event.callbackParameters];
+    [self parameters:parameters setDictionaryJson:callbackParameters forKey:@"callback_params"];
+
+    NSMutableDictionary * partnerParamters = [self joinParamters:self.deviceInfo.adjustConfig.partnerPermanentParameters parameters:self.event.partnerParameters];
+    [self parameters:parameters setDictionaryJson:partnerParamters forKey:@"partner_params"];
 
     AIActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
@@ -43,7 +50,6 @@
 
     return eventPackage;
 }
-
 
 - (AIActivityPackage *)buildReattributionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
@@ -68,22 +74,16 @@
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self constructDeviceInfo:self.deviceInfo toParameters:parameters trackMacMd5:self.trackMd5];
-
-    [self parameters:parameters setDate:self.createdAt          forKey:@"created_at"];
-    [self parameters:parameters setInt:self.sessionCount         forKey:@"session_count"];
-    [self parameters:parameters setInt:self.subsessionCount      forKey:@"subsession_count"];
-    [self parameters:parameters setDuration:self.sessionLength   forKey:@"session_length"];
-    [self parameters:parameters setDuration:self.timeSpent       forKey:@"time_spent"];
+    [self constructDeviceInfo:self.deviceInfo withParameter:parameters];
+    [self constructActivityState:self.activityState withParamters:parameters];
 
     return parameters;
 }
 
-- (void) constructDeviceInfo: (AIDeviceInfo *) deviceInfo
-                toParameters: (NSMutableDictionary *) parameters
-                 trackMacMd5: (BOOL) trackMacMd5{
+- (void) constructDeviceInfo:(AIDeviceInfo *)deviceInfo
+               withParameter:(NSMutableDictionary *) parameters{
 
-    [self constructUserAgent:deviceInfo.userAgent toParameters:parameters];
+    [self constructUserAgent:deviceInfo.userAgent withParameters:parameters];
 
     [self parameters:parameters setString:deviceInfo.macSha1          forKey:@"mac_sha1"];
     [self parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
@@ -93,18 +93,27 @@
     [self parameters:parameters setString:deviceInfo.vendorId         forKey:@"idfv"];
     [self parameters:parameters setString:deviceInfo.pushToken        forKey:@"push_token"];
 
-    if (trackMacMd5) {
-        [self parameters:parameters setString:deviceInfo.macShortMd5      forKey:@"mac_md5"];
+    if (deviceInfo.adjustConfig.macMd5TrackingEnabled) {
+        [self parameters:parameters setString:deviceInfo.macShortMd5          forKey:@"mac_md5"];
     }
 
-    [self parameters:parameters setString:deviceInfo.appToken         forKey:@"app_token"];
-    [self parameters:parameters setString:deviceInfo.uuid             forKey:@"ios_uuid"];
-    [self parameters:parameters setString:deviceInfo.environment      forKey:@"environment"];
+    [self parameters:parameters setString:deviceInfo.adjustConfig.appToken    forKey:@"app_token"];
+    [self parameters:parameters setString:deviceInfo.adjustConfig.environment forKey:@"environment"];
+}
+
+- (void) constructActivityState:(AIActivityState *)activityState
+                  withParamters:(NSMutableDictionary *)parameters {
+    [self parameters:parameters setDate:activityState.createdAt            forKey:@"created_at"];
+    [self parameters:parameters setInt:activityState.sessionCount          forKey:@"session_count"];
+    [self parameters:parameters setInt:activityState.subsessionCount       forKey:@"subsession_count"];
+    [self parameters:parameters setDuration:activityState.sessionLength    forKey:@"session_length"];
+    [self parameters:parameters setDuration:activityState.timeSpent        forKey:@"time_spent"];
+    [self parameters:parameters setString:activityState.uuid               forKey:@"ios_uuid"];
 
 }
 
-- (void) constructUserAgent: (AIUserAgent *) userAgent
-               toParameters: (NSMutableDictionary *) parameters {
+- (void) constructUserAgent:(AIUserAgent *)userAgent
+             withParameters:(NSMutableDictionary *) parameters {
     [self parameters:parameters setString:userAgent.bundeIdentifier forKey:@"bundle_identifier"];
     [self parameters:parameters setString:userAgent.bundleVersion   forKey:@"bundle_version"];
     [self parameters:parameters setString:userAgent.deviceType      forKey:@"device_type"];
@@ -162,14 +171,6 @@
     [self parameters:parameters setInt:intValue forKey:key];
 }
 
-- (void)parameters:(NSMutableDictionary *)parameters setDictionaryBase64:(NSDictionary *)dictionary forKey:(NSString *)key {
-    if (dictionary == nil) return;
-
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
-    NSString *dictionaryString = jsonData.aiEncodeBase64;
-    [self parameters:parameters setString:dictionaryString forKey:key];
-}
-
 - (void)parameters:(NSMutableDictionary *)parameters setDictionaryJson:(NSDictionary *)dictionary forKey:(NSString *)key {
     if (dictionary == nil) return;
 
@@ -184,6 +185,19 @@
     int valueInt = [[NSNumber numberWithBool:value] intValue];
 
     [self parameters:parameters setInt:valueInt forKey:key];
+}
+
+- (NSMutableDictionary *) joinParamters:(NSMutableDictionary *)permanentParameters
+                             parameters:(NSMutableDictionary *)parameters {
+    if (permanentParameters == nil) {
+        return parameters;
+    }
+    if (parameters == nil) {
+        return permanentParameters;
+    }
+    [permanentParameters addEntriesFromDictionary:parameters];
+
+    return permanentParameters;
 }
 @end
 

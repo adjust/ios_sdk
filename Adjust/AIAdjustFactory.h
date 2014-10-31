@@ -17,7 +17,7 @@
 
 + (id<AIPackageHandler>)packageHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler;
 + (id<AIRequestHandler>)requestHandlerForPackageHandler:(id<AIPackageHandler>)packageHandler;
-+ (id<AIActivityHandler>)activityHandlerWithAppToken:(NSString *)appToken;
++ (id<AIActivityHandler>)activityHandlerWithConfig:(AdjustConfig *)adjustConfig;
 + (id<AILogger>)logger;
 + (double)sessionInterval;
 + (double)subsessionInterval;
