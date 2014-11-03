@@ -191,6 +191,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                     withObject:attribution waitUntilDone:NO];
 }
 
+- (void)setOfflineMode:(BOOL)enabled {
+    if (enabled) {
+        [self endInternal];
+    } else {
+        [self.packageHandler resumeSending];
+        [self startTimer];
+    }
+}
+
 #pragma mark - internal
 - (void)initInternal:(AdjustConfig *)adjustConfig {
     self.adjustConfig = adjustConfig;

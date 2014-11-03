@@ -52,4 +52,8 @@ static id<AIActivityHandler> activityHandler;
     [activityHandler savePushToken:deviceToken];
 }
 
++ (void)setOfflineMode:(BOOL)enabled {
+    [activityHandler setOfflineMode:enabled];
+}
+
 @end

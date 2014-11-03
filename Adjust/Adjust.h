@@ -96,5 +96,7 @@ static NSString * const AIEnvironmentProduction = @"production";
 + (void)setDeviceToken:(NSData *)deviceToken;
 
 
++ (void)setOfflineMode:(BOOL)enabled;
+
 @end
 

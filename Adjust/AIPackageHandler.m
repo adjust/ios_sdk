@@ -88,7 +88,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTrackingWithResponse:deepLink];
 }
 
-
 #pragma mark - internal
 - (void)initInternal {
     self.requestHandler = [AIAdjustFactory requestHandlerForPackageHandler:self];

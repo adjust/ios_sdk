@@ -29,6 +29,8 @@
 
 - (void) changedAttributionDelegate:(AIAttribution*) attribution;
 
+- (void) setOfflineMode:(BOOL)enabled;
+
 @end
 
 @interface AIActivityHandler : NSObject <AIActivityHandler>
