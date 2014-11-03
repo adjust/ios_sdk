@@ -96,7 +96,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
+- (void)finishedTrackingWithResponse:(NSString *)deepLink{
     if (self.attribution == nil) {
         [self.attributionHandler getAttribution];
     }
@@ -153,6 +153,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
+    if (isIad) {
+        AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
+        reattributionBuilder.deviceInfo = self.deviceInfo;
+        reattributionBuilder.activityState = self.activityState;
+
+        AIActivityPackage *reattributionPackage = [reattributionBuilder buildClickPackage];
+        [self.packageHandler addPackage:reattributionPackage];
+        [self.packageHandler sendFirstPackage];
+    }
 }
 
 - (void)setAttributionMaxTime:(double)seconds {
@@ -364,8 +373,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     reattributionBuilder.deeplinkParameters = adjustDeepLinks;
     reattributionBuilder.deviceInfo = self.deviceInfo;
     reattributionBuilder.activityState = self.activityState;
+    reattributionBuilder.deeplinkParameters = adjustDeepLinks;
     
-    AIActivityPackage *reattributionPackage = [reattributionBuilder buildReattributionPackage];
+    AIActivityPackage *reattributionPackage = [reattributionBuilder buildClickPackage];
     [self.packageHandler addPackage:reattributionPackage];
     [self.packageHandler sendFirstPackage];
 

@@ -18,7 +18,7 @@
 
 - (void)trackEvent:(AIEvent *)event;
 
-- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink;
+- (void)finishedTrackingWithResponse:(NSString *)deepLink;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)readOpenUrl:(NSURL*)url;

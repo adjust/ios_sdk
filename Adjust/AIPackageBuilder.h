@@ -24,6 +24,6 @@
 
 - (AIActivityPackage *)buildSessionPackage;
 - (AIActivityPackage *)buildEventPackage;
-- (AIActivityPackage *)buildReattributionPackage;
+- (AIActivityPackage *)buildClickPackage;
 
 @end

@@ -51,9 +51,10 @@
     return eventPackage;
 }
 
-- (AIActivityPackage *)buildReattributionPackage {
+- (AIActivityPackage *)buildClickPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"deeplink_parameters"];
+    [self parameters:parameters setBool:self.deviceInfo.isIad             forKey:@"is_iad"];
 
     AIActivityPackage *reattributionPackage = [self defaultActivityPackage];
     reattributionPackage.path = @"/reattribute";
@@ -89,7 +90,6 @@
     [self parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
     [self parameters:parameters setString:deviceInfo.fbAttributionId  forKey:@"fb_id"];
     [self parameters:parameters setInt:deviceInfo.trackingEnabled     forKey:@"tracking_enabled"];
-    [self parameters:parameters setBool:deviceInfo.isIad              forKey:@"is_iad"];
     [self parameters:parameters setString:deviceInfo.vendorId         forKey:@"idfv"];
     [self parameters:parameters setString:deviceInfo.pushToken        forKey:@"push_token"];
 

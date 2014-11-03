@@ -22,7 +22,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 
-- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict;
+- (void)finishedTrackingActivity:(NSString *) deepLink;
 
 @end
 
