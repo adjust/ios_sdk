@@ -10,6 +10,31 @@
 
 @implementation AIAttribution
 
++ (AIAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict {
+    return [[AIAttribution alloc] initWithJsonDict:jsonDict];
+}
+
+- (id)initWithJsonDict:(NSDictionary *)jsonDict {
+    self = [super init];
+    if (self == nil) return nil;
+
+    if (jsonDict == nil) {
+        return nil;
+    }
+
+    self.trackerToken = [jsonDict objectForKey:@"tracker_token"];
+    self.trackerName  = [jsonDict objectForKey:@"tracker_name"];
+    self.network      = [jsonDict objectForKey:@"network"];
+    self.campaign     = [jsonDict objectForKey:@"campaign"];
+    self.adgroup      = [jsonDict objectForKey:@"adgroup"];
+    self.creative     = [jsonDict objectForKey:@"creative"];
+    if ([[jsonDict objectForKey:@"final"] isEqualToString:@"true"]) {
+        self.finalAttribution = YES;
+    }
+
+    return self;
+}
+
 - (BOOL)isEqualToAttribution:(AIAttribution *)attribution {
     if (attribution == nil) {
         return NO;
@@ -32,29 +57,10 @@
     if (![self.creative isEqualToString:attribution.creative]) {
         return NO;
     }
-    return YES;
-}
-
-+ (AIAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict {
-    return [[AIAttribution alloc] initWithJsonDict:jsonDict];
-}
-
-- (id)initWithJsonDict:(NSDictionary *)jsonDict {
-    self = [super init];
-    if (self == nil) return nil;
-
-    if (jsonDict == nil) {
-        return nil;
+    if (self.finalAttribution != attribution.finalAttribution) {
+        return NO;
     }
-
-    self.trackerToken = [jsonDict objectForKey:@"tracker_token"];
-    self.trackerName  = [jsonDict objectForKey:@"tracker_name"];
-    self.network      = [jsonDict objectForKey:@"network"];
-    self.campaign     = [jsonDict objectForKey:@"campaign"];
-    self.adgroup      = [jsonDict objectForKey:@"adgroup"];
-    self.creative     = [jsonDict objectForKey:@"creative"];
-
-    return self;
+    return YES;
 }
 
 - (NSDictionary *)dictionary {
@@ -83,7 +89,10 @@
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }
-    
+
+    [responseDataDic setObject:(self.finalAttribution? @"true" : @"false") forKey:@"final"];
+
+
     return responseDataDic;
 }
 
@@ -117,6 +126,7 @@
     result = prime * result + [self.campaign hash];
     result = prime * result + [self.adgroup hash];
     result = prime * result + [self.creative hash];
+    result = prime * result + self.finalAttribution;
 
     return result;
 }
@@ -133,6 +143,9 @@
     self.campaign     = [decoder decodeObjectForKey:@"campaign"];
     self.adgroup      = [decoder decodeObjectForKey:@"adgroup"];
     self.creative     = [decoder decodeObjectForKey:@"creative"];
+    if ([[decoder decodeObjectForKey:@"final"] isEqualToString:@"true"]) {
+        self.finalAttribution = YES;
+    }
 
     return self;
 }
@@ -144,6 +157,7 @@
     [encoder encodeObject:self.campaign     forKey:@"campaign"];
     [encoder encodeObject:self.adgroup      forKey:@"adgroup"];
     [encoder encodeObject:self.creative     forKey:@"creative"];
+    [encoder encodeObject:(self.finalAttribution? @"true" : @"false")     forKey:@"final"];
 }
 
 @end

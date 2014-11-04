@@ -96,14 +96,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)finishedTrackingWithResponse:(NSString *)deepLink{
-    [self launchDeepLink:deepLink];
-    if (self.attribution == nil) {
-        [self.attributionHandler getAttribution];
-    }
+- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
+    [self launchDeepLink:jsonDict];
+    [self.attributionHandler checkAttribution:jsonDict];
 }
 
-- (void)launchDeepLink:(NSString *) deepLink{
+- (void)launchDeepLink:(NSDictionary *)jsonDict{
+    if (jsonDict == nil) return;
+
+    NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
@@ -187,7 +188,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
     self.attribution = attribution;
     [self writeAttribution];
-    // TODO write attribution to file
     if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return;
     }
@@ -390,6 +390,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
         [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
     }
+
+    [self.attributionHandler getAttribution];
 
     if (adjustDeepLinks.count == 0) {
         return;

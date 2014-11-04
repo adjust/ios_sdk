@@ -31,6 +31,8 @@
 // tracker creative
 @property (nonatomic, copy) NSString *creative;
 
+@property (nonatomic, assign) BOOL finalAttribution;
+
 - (BOOL)isEqualToAttribution:(AIAttribution *)attribution;
 
 + (AIAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict;

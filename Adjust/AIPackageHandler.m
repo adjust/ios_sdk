@@ -10,7 +10,6 @@
 #import "AIActivityHandler.h"
 #import "AIRequestHandler.h"
 #import "AIActivityPackage.h"
-#import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "AIAdjustFactory.h"
@@ -84,8 +83,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)finishedTrackingActivity:(NSString *) deepLink{
-    [self.activityHandler finishedTrackingWithResponse:deepLink];
+- (void)finishedTrackingActivity:(NSDictionary *)jsonDict{
+    [self.activityHandler finishedTrackingWithResponse:jsonDict];
 }
 
 #pragma mark - internal

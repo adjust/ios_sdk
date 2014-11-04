@@ -36,7 +36,6 @@
 		96E5E39418BBB48A008E7B30 /* AIPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37618BBB48A008E7B30 /* AIPackageBuilder.m */; };
 		96E5E39518BBB48A008E7B30 /* AIPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37818BBB48A008E7B30 /* AIPackageHandler.m */; };
 		96E5E39618BBB48A008E7B30 /* AIRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37A18BBB48A008E7B30 /* AIRequestHandler.m */; };
-		96E5E39718BBB48A008E7B30 /* AIResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37C18BBB48A008E7B30 /* AIResponseData.m */; };
 		96E5E39818BBB48A008E7B30 /* AITimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37E18BBB48A008E7B30 /* AITimer.m */; };
 		96E5E39918BBB48A008E7B30 /* AIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* AIUtil.m */; };
 		96E5E3AF18BBB49E008E7B30 /* AIActivityHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E39E18BBB49E008E7B30 /* AIActivityHandlerMock.m */; };
@@ -126,8 +125,6 @@
 		96E5E37818BBB48A008E7B30 /* AIPackageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPackageHandler.m; sourceTree = "<group>"; };
 		96E5E37918BBB48A008E7B30 /* AIRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRequestHandler.h; sourceTree = "<group>"; };
 		96E5E37A18BBB48A008E7B30 /* AIRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRequestHandler.m; sourceTree = "<group>"; };
-		96E5E37B18BBB48A008E7B30 /* AIResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIResponseData.h; sourceTree = "<group>"; };
-		96E5E37C18BBB48A008E7B30 /* AIResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIResponseData.m; sourceTree = "<group>"; };
 		96E5E37D18BBB48A008E7B30 /* AITimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AITimer.h; sourceTree = "<group>"; };
 		96E5E37E18BBB48A008E7B30 /* AITimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AITimer.m; sourceTree = "<group>"; };
 		96E5E37F18BBB48A008E7B30 /* AIUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIUtil.h; sourceTree = "<group>"; };
@@ -257,8 +254,6 @@
 				96E5E37818BBB48A008E7B30 /* AIPackageHandler.m */,
 				96E5E37918BBB48A008E7B30 /* AIRequestHandler.h */,
 				96E5E37A18BBB48A008E7B30 /* AIRequestHandler.m */,
-				96E5E37B18BBB48A008E7B30 /* AIResponseData.h */,
-				96E5E37C18BBB48A008E7B30 /* AIResponseData.m */,
 				96E5E37D18BBB48A008E7B30 /* AITimer.h */,
 				96E5E37E18BBB48A008E7B30 /* AITimer.m */,
 				96E5E37F18BBB48A008E7B30 /* AIUtil.h */,
@@ -402,7 +397,6 @@
 				96E5E39618BBB48A008E7B30 /* AIRequestHandler.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* AIUtil.m in Sources */,
 				96E5E39818BBB48A008E7B30 /* AITimer.m in Sources */,
-				96E5E39718BBB48A008E7B30 /* AIResponseData.m in Sources */,
 				96E5E39118BBB48A008E7B30 /* UIDevice+AIAdditions.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* AIActivityKind.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* AIActivityPackage.m in Sources */,

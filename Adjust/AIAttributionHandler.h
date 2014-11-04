@@ -13,9 +13,12 @@
 
 - (id)initWithActivityHandler:(id<AIActivityHandler>) activityHandler;
 
+- (void)checkAttribution:(NSDictionary *)jsonDict;
+
 - (void)getAttribution;
 
 - (void)setAttributionMaxTime:(double)seconds;
+// TODO
 
 @end
 

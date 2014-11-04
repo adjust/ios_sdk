@@ -38,7 +38,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     self = [super init];
     if (self == nil) return nil;
 
-    self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     self.activityHandler = activityHandler;
     self.logger = AIAdjustFactory.logger;
     self.url = [NSURL URLWithString:AIUtil.baseUrl];
@@ -46,15 +46,35 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     return self;
 }
-// comunicate with server
-- (void) getAttribution {
+
+- (void) checkAttribution:(NSDictionary *)jsonDict {
     dispatch_async(self.internalQueue, ^{
-        [self checkAttributionInternal];
+        [self checkAttributionInternal:jsonDict];
     });
 }
 
+- (void) getAttribution {
+    dispatch_async(self.internalQueue, ^{
+        [self getAttributionInternal];
+    });
+
+}
+
 #pragma mark - internal
--(void) checkAttributionInternal {
+-(void) checkAttributionInternal:(NSDictionary *)jsonDict {
+    // compare if there is difference from current attribution at activity handler to launch the delegate
+    [self compareAttribution:jsonDict];
+
+    // check if response json contains instrunction to retry after some time
+    NSNumber * timer_seconds = [jsonDict objectForKey:@"timer"];
+    if (timer_seconds == nil) return;
+
+    uint64_t timer_nano = [timer_seconds intValue] * NSEC_PER_SEC;
+    self.timer = [AITimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];
+    [self.timer resume];
+}
+
+-(void) getAttributionInternal {
     NSMutableURLRequest *request = [self request];
     NSError *requestError;
     NSURLResponse *urlResponse = nil;
@@ -69,6 +89,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     NSString *responseString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+    [self.logger verbose:@"attribution response: %@", responseString];
+
     NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
 
     if (jsonDict == nil) {
@@ -76,28 +98,22 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    // check if response contains attribution
-    NSDictionary *jsonAttribution = [jsonDict objectForKey:@"attribution"];
-    if (jsonAttribution == nil) {
-        // read time to wait and set timer to re-try
-        NSNumber * timer_seconds = [jsonDict objectForKey:@"timer"];
-        uint64_t timer_nano = [timer_seconds intValue] * NSEC_PER_SEC;
-        self.timer = [AITimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self checkAttributionInternal]; }];
-        [self.timer resume];
-        return;
-    }
-
-    // check if new attribution is different from previous
-    AIAttribution * attributionResponse = [AIAttribution dataWithJsonDict:jsonAttribution];
-
-    if ([attributionResponse isEqual:self.activityHandler.attribution]) {
-        // TODO reset?
-        return;
-    }
-
-    // if so, launch response delegate
-    [self.activityHandler changedAttributionDelegate:attributionResponse];
+    [self checkAttributionInternal:jsonDict];
 }
+
+-(void)compareAttribution:(NSDictionary *)jsonDict {
+    NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
+    if (jsonAttribution == nil) return;
+
+    AIAttribution * attribution = [AIAttribution dataWithJsonDict:jsonAttribution];
+
+    if ([attribution isEqual:self.activityHandler.attribution]) {
+        return;
+    }
+
+    [self.activityHandler changedAttributionDelegate:attribution];
+}
+
 
 #pragma mark - private
 

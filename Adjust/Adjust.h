@@ -7,7 +7,6 @@
 //
 
 #import "AILogger.h"
-#import "AIResponseData.h"
 #import "AIEvent.h"
 #import "AIAttribution.h"
 #import "AdjustConfig.h"

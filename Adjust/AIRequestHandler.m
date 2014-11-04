@@ -7,7 +7,6 @@
 //
 
 #import "AIActivityPackage.h"
-#import "AIResponseData.h"
 #import "AILogger.h"
 #import "AIUtil.h"
 #import "NSString+AIAdditions.h"
@@ -67,30 +66,27 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     // connection error
     if (error != nil) {
-        AIResponseData *responseData = [AIResponseData dataWithError:error.localizedDescription];
-        responseData.willRetry = YES;
-        [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, responseData.error];
+        [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler finishedTrackingActivity:nil];
         [self.packageHandler closeFirstPackage];
         return;
     }
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
-    AIResponseData *responseData = [AIResponseData dataWithJsonDict:jsonDict jsonString:responseString];
+    [self.logger verbose:@"package response: %@", responseString];
 
+    NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
     if (response.statusCode == 200) {
-        // success
-        responseData.success = YES;
         [self.logger info:@"%@", package.successMessage];
     } else {
         // wrong status code
-        [self.logger error:@"%@. (%@)", package.failureMessage, responseData.error];
+        NSString * errorServerMessage = [jsonDict objectForKey:@"error"];
+        [self.logger error:@"%@. (%@)", package.failureMessage, errorServerMessage];
     }
 
-    NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
+    //NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
 
-    [self.packageHandler finishedTrackingActivity:deepLink];
+    [self.packageHandler finishedTrackingActivity:jsonDict];
     [self.packageHandler sendNextPackage];
 }
 
@@ -127,4 +123,5 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
 }
+
 @end
