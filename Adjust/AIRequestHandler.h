@@ -16,6 +16,7 @@
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage;
 
+- (void)sendClickPackage:(AIActivityPackage *)clickPackage;
 @end
 
 

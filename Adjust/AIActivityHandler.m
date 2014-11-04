@@ -156,14 +156,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
     if (isIad) {
-        AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
-        reattributionBuilder.deviceInfo = self.deviceInfo;
-        reattributionBuilder.adjustConfig = self.adjustConfig;
-        reattributionBuilder.activityState = self.activityState;
+        AIPackageBuilder *clickBuilder = [[AIPackageBuilder alloc] init];
+        clickBuilder.deviceInfo = self.deviceInfo;
+        clickBuilder.adjustConfig = self.adjustConfig;
+        clickBuilder.activityState = self.activityState;
 
-        AIActivityPackage *reattributionPackage = [reattributionBuilder buildClickPackage];
-        [self.packageHandler addPackage:reattributionPackage];
-        [self.packageHandler sendFirstPackage];
+        AIActivityPackage *reattributionPackage = [clickBuilder buildClickPackage];
+        [self.packageHandler sendClickPackage:reattributionPackage];
     }
 }
 
@@ -397,18 +396,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
-    reattributionBuilder.deeplinkParameters = adjustDeepLinks;
-    reattributionBuilder.adjustConfig = self.adjustConfig;
-    reattributionBuilder.deviceInfo = self.deviceInfo;
-    reattributionBuilder.activityState = self.activityState;
-    reattributionBuilder.deeplinkParameters = adjustDeepLinks;
+    AIPackageBuilder *ClickBuilder = [[AIPackageBuilder alloc] init];
+    ClickBuilder.deeplinkParameters = adjustDeepLinks;
+    ClickBuilder.adjustConfig = self.adjustConfig;
+    ClickBuilder.deviceInfo = self.deviceInfo;
+    ClickBuilder.activityState = self.activityState;
+    ClickBuilder.deeplinkParameters = adjustDeepLinks;
     
-    AIActivityPackage *reattributionPackage = [reattributionBuilder buildClickPackage];
-    [self.packageHandler addPackage:reattributionPackage];
-    [self.packageHandler sendFirstPackage];
+    AIActivityPackage *reattributionPackage = [ClickBuilder buildClickPackage];
+    [self.packageHandler sendClickPackage:reattributionPackage];
 
-    [self.logger debug:@"Reattribution %@", adjustDeepLinks];
+    [self.logger debug:@"ClickPackage %@", adjustDeepLinks];
 }
 
 - (void) setDeviceTokenInternal:(NSData *)deviceToken {

@@ -62,6 +62,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
+    if (jsonDict == nil) return;
     // compare if there is difference from current attribution at activity handler to launch the delegate
     [self compareAttribution:jsonDict];
 

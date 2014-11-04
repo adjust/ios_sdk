@@ -21,8 +21,8 @@
 - (void)closeFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-
 - (void)finishedTrackingActivity:(NSDictionary *)jsonDict;
+- (void)sendClickPackage:(AIActivityPackage *) clickPackage;
 
 @end
 

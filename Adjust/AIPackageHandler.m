@@ -87,6 +87,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTrackingWithResponse:jsonDict];
 }
 
+- (void)sendClickPackage:(AIActivityPackage *)clickPackage {
+    [self.requestHandler sendClickPackage:clickPackage];
+}
+
 #pragma mark - internal
 - (void)initInternal {
     self.requestHandler = [AIAdjustFactory requestHandlerForPackageHandler:self];

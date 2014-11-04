@@ -15,7 +15,7 @@
 
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
+    [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"callback_params"];
     [self parameters:parameters setDictionaryJson:self.adjustConfig.callbackPermanentParameters forKey:@"callback_params"];
     [self parameters:parameters setDictionaryJson:self.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 

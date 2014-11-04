@@ -48,13 +48,19 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 - (void)sendPackage:(AIActivityPackage *)activityPackage {
     dispatch_async(self.internalQueue, ^{
-        [self sendInternal:activityPackage];
+        [self sendInternal:activityPackage sendToPackageHandler:YES];
+    });
+}
+
+- (void)sendClickPackage:(AIActivityPackage *)clickPackage {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self sendInternal:clickPackage sendToPackageHandler:NO];
     });
 }
 
 
 #pragma mark - internal
-- (void)sendInternal:(AIActivityPackage *)package {
+- (void)sendInternal:(AIActivityPackage *)package sendToPackageHandler:(BOOL)sendToPackageHandler{
     if (self.packageHandler == nil) return;
 
     NSMutableURLRequest *request = [self requestForPackage:package];
@@ -68,7 +74,9 @@ static const double kRequestTimeout = 60; // 60 seconds
     if (error != nil) {
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler finishedTrackingActivity:nil];
-        [self.packageHandler closeFirstPackage];
+        if (sendToPackageHandler) {
+            [self.packageHandler closeFirstPackage];
+        }
         return;
     }
 
@@ -84,10 +92,10 @@ static const double kRequestTimeout = 60; // 60 seconds
         [self.logger error:@"%@. (%@)", package.failureMessage, errorServerMessage];
     }
 
-    //NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
-
     [self.packageHandler finishedTrackingActivity:jsonDict];
-    [self.packageHandler sendNextPackage];
+    if (sendToPackageHandler) {
+        [self.packageHandler sendNextPackage];
+    }
 }
 
 #pragma mark - private
