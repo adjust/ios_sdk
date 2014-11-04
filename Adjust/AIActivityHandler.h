@@ -21,8 +21,8 @@
 - (void)finishedTrackingWithResponse:(NSString *)deepLink;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
-- (void)readOpenUrl:(NSURL*)url;
-- (void)savePushToken:(NSData *)pushToken;
+- (void)appWillOpenUrl:(NSURL*)url;
+- (void)setDeviceToken:(NSData *)deviceToken;
 
 - (AIAttribution*) attribution;
 - (void) setAttribution:(AIAttribution*)attribution;
@@ -30,6 +30,14 @@
 - (void) changedAttributionDelegate:(AIAttribution*) attribution;
 
 - (void) setOfflineMode:(BOOL)enabled;
+
+- (void)setDelegate:(NSObject<AdjustDelegate> *)delegate;
+
+- (void)addPermanentCallbackParameter:(NSString *)key
+                             andValue:(NSString *)value;
+
+- (void)addPermanentPartnerParameter:(NSString *)key
+                            andValue:(NSString *)value;
 
 @end
 

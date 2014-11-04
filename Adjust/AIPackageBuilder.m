@@ -16,8 +16,8 @@
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-    [self parameters:parameters setDictionaryJson:self.deviceInfo.adjustConfig.callbackPermanentParameters forKey:@"callback_params"];
-    [self parameters:parameters setDictionaryJson:self.deviceInfo.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
+    [self parameters:parameters setDictionaryJson:self.adjustConfig.callbackPermanentParameters forKey:@"callback_params"];
+    [self parameters:parameters setDictionaryJson:self.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
@@ -36,10 +36,10 @@
     [self parameters:parameters setString:self.event.eventToken forKey:@"event_token"];
 
     // join the permanent parameters with the ones from the event
-    NSMutableDictionary * callbackParameters = [self joinParamters:self.deviceInfo.adjustConfig.callbackPermanentParameters parameters:self.event.callbackParameters];
+    NSMutableDictionary * callbackParameters = [self joinParamters:self.adjustConfig.callbackPermanentParameters parameters:self.event.callbackParameters];
     [self parameters:parameters setDictionaryJson:callbackParameters forKey:@"callback_params"];
 
-    NSMutableDictionary * partnerParamters = [self joinParamters:self.deviceInfo.adjustConfig.partnerPermanentParameters parameters:self.event.partnerParameters];
+    NSMutableDictionary * partnerParamters = [self joinParamters:self.adjustConfig.partnerPermanentParameters parameters:self.event.partnerParameters];
     [self parameters:parameters setDictionaryJson:partnerParamters forKey:@"partner_params"];
 
     AIActivityPackage *eventPackage = [self defaultActivityPackage];
@@ -53,7 +53,7 @@
 
 - (AIActivityPackage *)buildClickPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"deeplink_parameters"];
+    [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"deeplink_params"];
     [self parameters:parameters setBool:self.deviceInfo.isIad             forKey:@"is_iad"];
 
     AIActivityPackage *reattributionPackage = [self defaultActivityPackage];
@@ -75,14 +75,15 @@
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self constructDeviceInfo:self.deviceInfo withParameter:parameters];
+    [self constructDeviceInfo:self.deviceInfo withParameter:parameters andConfig:self.adjustConfig];
     [self constructActivityState:self.activityState withParamters:parameters];
 
     return parameters;
 }
 
 - (void) constructDeviceInfo:(AIDeviceInfo *)deviceInfo
-               withParameter:(NSMutableDictionary *) parameters{
+               withParameter:(NSMutableDictionary *) parameters
+                   andConfig:(AdjustConfig*) adjustConfig{
 
     [self constructUserAgent:deviceInfo.userAgent withParameters:parameters];
 
@@ -93,12 +94,12 @@
     [self parameters:parameters setString:deviceInfo.vendorId         forKey:@"idfv"];
     [self parameters:parameters setString:deviceInfo.pushToken        forKey:@"push_token"];
 
-    if (deviceInfo.adjustConfig.macMd5TrackingEnabled) {
-        [self parameters:parameters setString:deviceInfo.macShortMd5          forKey:@"mac_md5"];
+    if (adjustConfig.macMd5TrackingEnabled) {
+        [self parameters:parameters setString:deviceInfo.macShortMd5  forKey:@"mac_md5"];
     }
 
-    [self parameters:parameters setString:deviceInfo.adjustConfig.appToken    forKey:@"app_token"];
-    [self parameters:parameters setString:deviceInfo.adjustConfig.environment forKey:@"environment"];
+    [self parameters:parameters setString:adjustConfig.appToken    forKey:@"app_token"];
+    [self parameters:parameters setString:adjustConfig.environment forKey:@"environment"];
 }
 
 - (void) constructActivityState:(AIActivityState *)activityState

@@ -33,13 +33,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, retain) id<AIPackageHandler> packageHandler;
+@property (nonatomic, retain) id<AIAttributionHandler> attributionHandler;
 @property (nonatomic, retain) AIActivityState *activityState;
 @property (nonatomic, retain) AITimer *timer;
 @property (nonatomic, retain) id<AILogger> logger;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
-@property (nonatomic, retain) id<AIAttributionHandler> attributionHandler;
 @property (nonatomic, retain) AIAttribution *attribution;
-@property (nonatomic, retain) AdjustConfig *adjustConfig;
+@property (nonatomic, copy) AdjustConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
 
@@ -97,10 +97,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)finishedTrackingWithResponse:(NSString *)deepLink{
+    [self launchDeepLink:deepLink];
     if (self.attribution == nil) {
         [self.attributionHandler getAttribution];
     }
-    [self launchDeepLink:deepLink];
 }
 
 - (void)launchDeepLink:(NSString *) deepLink{
@@ -123,6 +123,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     _enabled = enabled;
     if ([self checkActivityState:self.activityState]) {
         self.activityState.enabled = enabled;
+        [self writeActivityState];
     }
     if (enabled) {
         [self trackSubsessionStart];
@@ -139,15 +140,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (void)readOpenUrl:(NSURL*)url {
+- (void)appWillOpenUrl:(NSURL*)url {
     dispatch_async(self.internalQueue, ^{
-        [self readOpenUrlInternal:url];
+        [self appWillOpenUrlInternal:url];
     });
 }
 
-- (void)savePushToken:(NSData *)pushToken {
+- (void)setDeviceToken:(NSData *)deviceToken {
     dispatch_async(self.internalQueue, ^{
-        [self savePushTokenInternal:pushToken];
+        [self setDeviceTokenInternal:deviceToken];
     });
 }
 
@@ -156,6 +157,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (isIad) {
         AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
         reattributionBuilder.deviceInfo = self.deviceInfo;
+        reattributionBuilder.adjustConfig = self.adjustConfig;
         reattributionBuilder.activityState = self.activityState;
 
         AIActivityPackage *reattributionPackage = [reattributionBuilder buildClickPackage];
@@ -180,13 +182,15 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 
 - (void)changedAttributionDelegate:(AIAttribution *)attribution {
-    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
-        return;
-    }
     if (attribution == nil) {
         return;
     }
     self.attribution = attribution;
+    [self writeAttribution];
+    // TODO write attribution to file
+    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        return;
+    }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:attribution waitUntilDone:NO];
 }
@@ -198,6 +202,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.packageHandler resumeSending];
         [self startTimer];
     }
+}
+
+- (void) addPermanentCallbackParameter:(NSString *)key
+                              andValue:(NSString *)value {
+    [self.adjustConfig addPermanentCallbackParameter:key andValue:value];
+}
+
+- (void) addPermanentPartnerParameter:(NSString *)key
+                             andValue:(NSString *)value {
+    [self.adjustConfig addPermanentPartnerParameter:key andValue:value];
 }
 
 #pragma mark - internal
@@ -234,6 +248,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger setLogLevel:adjustConfig.logLevel];
     }
 
+    self.delegate = adjustConfig.delegate;
 
     [[UIDevice currentDevice] aiSetIad:self];
 
@@ -241,6 +256,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.attributionHandler = [AIAdjustFactory attributionHandlerForActivityHandler:self];
 
     [self readActivityState];
+    [self readAttribution];
 
     [self startInternal];
 }
@@ -338,6 +354,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     // create and populate event package
     AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
     eventBuilder.event = event;
+    eventBuilder.adjustConfig = self.adjustConfig;
     eventBuilder.deviceInfo = self.deviceInfo;
     eventBuilder.activityState = self.activityState;
 
@@ -354,7 +371,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.logger debug:@"Event %d", self.activityState.eventCount];
 }
 
-- (void) readOpenUrlInternal:(NSURL *)url {
+- (void) appWillOpenUrlInternal:(NSURL *)url {
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
 
@@ -380,6 +397,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     AIPackageBuilder *reattributionBuilder = [[AIPackageBuilder alloc] init];
     reattributionBuilder.deeplinkParameters = adjustDeepLinks;
+    reattributionBuilder.adjustConfig = self.adjustConfig;
     reattributionBuilder.deviceInfo = self.deviceInfo;
     reattributionBuilder.activityState = self.activityState;
     reattributionBuilder.deeplinkParameters = adjustDeepLinks;
@@ -391,12 +409,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.logger debug:@"Reattribution %@", adjustDeepLinks];
 }
 
-- (void) savePushTokenInternal:(NSData *)pushToken {
-    if (pushToken == nil) {
+- (void) setDeviceTokenInternal:(NSData *)deviceToken {
+    if (deviceToken == nil) {
         return;
     }
 
-    NSString *token = [pushToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     self.deviceInfo.pushToken = token;
@@ -493,6 +511,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
+    sessionBuilder.adjustConfig = self.adjustConfig;
     sessionBuilder.deviceInfo = self.deviceInfo;
     sessionBuilder.activityState = self.activityState;
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];

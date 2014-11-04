@@ -24,7 +24,6 @@
         copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.clientSdk = [self.clientSdk copyWithZone:zone];
         copy.userAgent = [self.userAgent copyWithZone:zone];
-        copy.adjustConfig = [self.adjustConfig copyWithZone:zone];
     }
 
     return copy;

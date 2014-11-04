@@ -98,5 +98,33 @@ static NSString * const AIEnvironmentProduction = @"production";
 
 + (void)setOfflineMode:(BOOL)enabled;
 
++ (void)setDelegate:(NSObject<AdjustDelegate> *)delegate;
+
++ (void)addPermanentCallbackParameter:(NSString *)key
+                             andValue:(NSString *)value;
+
++ (void)addPermanentPartnerParameter:(NSString *)key
+                            andValue:(NSString *)value;
+
++ (id)getInstance;
+
+- (void)appDidLaunch:(AdjustConfig *)adjustConfig;
+
+- (void)trackEvent:(AIEvent *)event;
+- (void)trackSubsessionStart;
+- (void)trackSubsessionEnd;
+- (void)setEnabled:(BOOL)enabled;
+- (BOOL)isEnabled;
+- (void)appWillOpenUrl:(NSURL *)url;
+- (void)setDeviceToken:(NSData *)deviceToken;
+- (void)setOfflineMode:(BOOL)enabled;
+- (void)setDelegate:(NSObject<AdjustDelegate> *)delegate;
+
+- (void)addPermanentCallbackParameter:(NSString *)key
+                             andValue:(NSString *)value;
+
+- (void)addPermanentPartnerParameter:(NSString *)key
+                            andValue:(NSString *)value;
+
 @end
 

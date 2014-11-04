@@ -49,7 +49,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 // comunicate with server
 - (void) getAttribution {
     dispatch_async(self.internalQueue, ^{
-        [self getAttribution];
+        [self checkAttributionInternal];
     });
 }
 

@@ -16,6 +16,7 @@
 @property (nonatomic, copy) AIDeviceInfo* deviceInfo;
 @property (nonatomic, copy) AIEvent* event;
 @property (nonatomic, copy) AIActivityState *activityState;
+@property (nonatomic, copy) AdjustConfig *adjustConfig;
 
 // reattributions
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;

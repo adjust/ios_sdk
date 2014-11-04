@@ -23,6 +23,5 @@
 @property (nonatomic, copy) NSString *pushToken;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) AIUserAgent *userAgent;
-@property (nonatomic, copy) AdjustConfig *adjustConfig;
 
 @end

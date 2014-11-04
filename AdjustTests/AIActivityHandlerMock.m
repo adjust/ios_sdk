@@ -73,11 +73,11 @@ static NSString * const prefix = @"AIActivityHandler ";
     return YES;
 }
 
-- (void)readOpenUrl:(NSURL *)url {
+- (void)appWillOpenUrl:(NSURL *)url {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"readOpenUrl"]];
 }
 
-- (void)savePushToken:(NSData *)pushToken {
+- (void)setDeviceToken:(NSData *)pushToken {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"savePushToken"]];
 }
 

@@ -201,7 +201,7 @@
     id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
     [activityHandler setBufferEvents:YES];
 
-    [activityHandler savePushToken:nil];
+    [activityHandler setDeviceToken:nil];
 
     //  construct the parameters of the the event
     NSDictionary *eventParameters = @{@"key": @"value", @"foo": @"bar" };
@@ -303,7 +303,7 @@
 
     // test push token
     const char bytes[] = "\xFC\x07\x21\xB6\xDF\xAD\x5E\xE1\x10\x97\x5B\xB2\xA2\x63\xDE\x00\x61\xCC\x70\x5B\x4A\x85\xA8\xAE\x3C\xCF\xBE\x7A\x66\x2F\xB1\xAB";
-    [activityHandler savePushToken:[NSData dataWithBytes:bytes length:(sizeof(bytes) - 1)]];
+    [activityHandler setDeviceToken:[NSData dataWithBytes:bytes length:(sizeof(bytes) - 1)]];
 
     //  the first is a normal event has parameters, the second a revenue
     [activityHandler trackEvent:@"abc123" withParameters:nil];
@@ -552,12 +552,12 @@
     NSString* prefix = @"AdjustTests://example.com/path/inApp?adjust_=bar";
     NSString* incomplete = @"AdjustTests://example.com/path/inApp?adjust_foo=";
 
-    [activityHandler readOpenUrl:[NSURL URLWithString:normal]];
-    [activityHandler readOpenUrl:[NSURL URLWithString:emptyQueryString]];
-    [activityHandler readOpenUrl:[NSURL URLWithString:emptyString]];
-    [activityHandler readOpenUrl:[NSURL URLWithString:single]];
-    [activityHandler readOpenUrl:[NSURL URLWithString:prefix]];
-    [activityHandler readOpenUrl:[NSURL URLWithString:incomplete]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:normal]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:emptyQueryString]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:emptyString]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:single]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:prefix]];
+    [activityHandler appWillOpenUrl:[NSURL URLWithString:incomplete]];
 
     [NSThread sleepForTimeInterval:2];
 
