@@ -10,6 +10,7 @@
 #import "AIDeviceInfo.h"
 #import "AIActivityState.h"
 #import "AIActivityPackage.h"
+#import "AdjustConfig.h"
 
 @interface AIPackageBuilder : NSObject
 
@@ -17,11 +18,14 @@
 @property (nonatomic, copy) AIEvent* event;
 @property (nonatomic, copy) AIActivityState *activityState;
 @property (nonatomic, copy) AdjustConfig *adjustConfig;
+@property (nonatomic, assign) BOOL hasDelegate;
 
 // reattributions
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
 
-//- (id) initWithDeviceInfo:(AIDeviceInfo *)deviceInfo;
+- (id) initWithDeviceInfo:(AIDeviceInfo *)deviceInfo
+         andActivityState:(AIActivityState *)activityState
+                andConfig:(AdjustConfig *)adjustConfig;
 
 - (AIActivityPackage *)buildSessionPackage;
 - (AIActivityPackage *)buildEventPackage;

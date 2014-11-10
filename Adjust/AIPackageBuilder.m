@@ -13,6 +13,26 @@
 #pragma mark -
 @implementation AIPackageBuilder
 
+- (id)initWithDeviceInfo:(AIDeviceInfo *)deviceInfo
+        andActivityState:(AIActivityState *)activityState
+               andConfig:(AdjustConfig *)adjustConfig
+{
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.deviceInfo = deviceInfo;
+    self.activityState = activityState;
+    self.adjustConfig = adjustConfig;
+
+    if (adjustConfig.delegate) {
+        self.hasDelegate = YES;
+    } else {
+        self.hasDelegate = NO;
+    }
+
+    return self;
+}
+
 - (AIActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"callback_params"];
@@ -20,7 +40,7 @@
     [self parameters:parameters setDictionaryJson:self.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 
     AIActivityPackage *sessionPackage = [self defaultActivityPackage];
-    sessionPackage.path = @"/startup";
+    sessionPackage.path = @"/session";
     sessionPackage.activityKind = AIActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
@@ -77,6 +97,7 @@
 
     [self constructDeviceInfo:self.deviceInfo withParameter:parameters andConfig:self.adjustConfig];
     [self constructActivityState:self.activityState withParamters:parameters];
+    [self parameters:parameters setBool:self.hasDelegate forKey:@"has_delegate"];
 
     return parameters;
 }

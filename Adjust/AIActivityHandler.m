@@ -65,6 +65,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return nil;
     }
 
+    self.logger        = AIAdjustFactory.logger;
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.logger        = AIAdjustFactory.logger;
@@ -156,10 +157,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)setIsIad:(BOOL)isIad {
     self.deviceInfo.isIad = isIad;
     if (isIad) {
-        AIPackageBuilder *clickBuilder = [[AIPackageBuilder alloc] init];
-        clickBuilder.deviceInfo = self.deviceInfo;
-        clickBuilder.adjustConfig = self.adjustConfig;
-        clickBuilder.activityState = self.activityState;
+        AIPackageBuilder *clickBuilder = [[AIPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                     andActivityState:self.activityState
+                                                                            andConfig:self.adjustConfig];
 
         AIActivityPackage *reattributionPackage = [clickBuilder buildClickPackage];
         [self.packageHandler sendClickPackage:reattributionPackage];
@@ -169,17 +169,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)setAttributionMaxTime:(double)seconds {
     [self.attributionHandler setAttributionMaxTime:seconds];
 }
-
-/*
-- (AIAttribution*) attribution {
-    return self.attribution;
-}
-
-- (void) setAttribution:(AIAttribution*)attribution {
-    _attribution = attribution;
-}
-*/
-
 
 - (void)changedAttributionDelegate:(AIAttribution *)attribution {
     if (attribution == nil) {
@@ -218,6 +207,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.adjustConfig = adjustConfig;
     self.deviceInfo = [[AIDeviceInfo alloc] init];
 
+    if ([adjustConfig.environment isEqualToString:AIEnvironmentProduction]) {
+        [self.logger setLogLevel:AILogLevelAssert];
+    } else {
+        [self.logger setLogLevel:adjustConfig.logLevel];
+    }
+
     NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
 
@@ -235,16 +230,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.deviceInfo.clientSdk = [NSString stringWithFormat:@"%@@%@", adjustConfig.sdkPrefix, AIUtil.clientSdk];
     }
 
-    [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", adjustConfig.macMd5TrackingEnabled ? @"enabled" : @"disabled"];
+    [self.logger info:@"Tracking of macMd5 is %@", adjustConfig.macMd5TrackingEnabled ? @"enabled" : @"disabled"];
 
     if (adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
-    }
-
-    if ([adjustConfig.environment isEqualToString:AIEnvironmentProduction]) {
-        [self.logger setLogLevel:AILogLevelAssert];
-    } else {
-        [self.logger setLogLevel:adjustConfig.logLevel];
     }
 
     self.delegate = adjustConfig.delegate;
@@ -351,11 +340,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.activityState.eventCount++;
 
     // create and populate event package
-    AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] init];
+    AIPackageBuilder *eventBuilder = [[AIPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                 andActivityState:self.activityState
+                                                                        andConfig:self.adjustConfig];
     eventBuilder.event = event;
-    eventBuilder.adjustConfig = self.adjustConfig;
-    eventBuilder.deviceInfo = self.deviceInfo;
-    eventBuilder.activityState = self.activityState;
 
     AIActivityPackage *eventPackage = [eventBuilder buildEventPackage];
     [self.packageHandler addPackage:eventPackage];
@@ -396,13 +384,11 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    AIPackageBuilder *ClickBuilder = [[AIPackageBuilder alloc] init];
+    AIPackageBuilder *ClickBuilder = [[AIPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                 andActivityState:self.activityState
+                                                                        andConfig:self.adjustConfig];
     ClickBuilder.deeplinkParameters = adjustDeepLinks;
-    ClickBuilder.adjustConfig = self.adjustConfig;
-    ClickBuilder.deviceInfo = self.deviceInfo;
-    ClickBuilder.activityState = self.activityState;
-    ClickBuilder.deeplinkParameters = adjustDeepLinks;
-    
+
     AIActivityPackage *reattributionPackage = [ClickBuilder buildClickPackage];
     [self.packageHandler sendClickPackage:reattributionPackage];
 
@@ -510,10 +496,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 
 - (void)transferSessionPackage {
-    AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
-    sessionBuilder.adjustConfig = self.adjustConfig;
-    sessionBuilder.deviceInfo = self.deviceInfo;
-    sessionBuilder.activityState = self.activityState;
+    AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                   andActivityState:self.activityState
+                                                                          andConfig:self.adjustConfig];
     AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];

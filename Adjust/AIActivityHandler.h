@@ -31,8 +31,6 @@
 
 - (void) setOfflineMode:(BOOL)enabled;
 
-- (void)setDelegate:(NSObject<AdjustDelegate> *)delegate;
-
 - (void)addPermanentCallbackParameter:(NSString *)key
                              andValue:(NSString *)value;
 

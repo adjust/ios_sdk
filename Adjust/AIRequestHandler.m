@@ -82,15 +82,9 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     [self.logger verbose:@"package response: %@", responseString];
+    [self.logger verbose:@"status code: %d", response.statusCode];
 
     NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
-    if (response.statusCode == 200) {
-        [self.logger info:@"%@", package.successMessage];
-    } else {
-        // wrong status code
-        NSString * errorServerMessage = [jsonDict objectForKey:@"error"];
-        [self.logger error:@"%@. (%@)", package.failureMessage, errorServerMessage];
-    }
 
     [self.packageHandler finishedTrackingActivity:jsonDict];
     if (sendToPackageHandler) {
@@ -130,6 +124,24 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *bodyString = [pairs componentsJoinedByString:@"&"];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
+}
+
+- (void) checkMessageResponse:(NSDictionary *)jsonDict {
+    if (jsonDict == nil) return;
+
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+    if (messageResponse != nil) {
+        [self.logger info:messageResponse];
+    }
+}
+
+- (void)checkErrorResponse:(NSDictionary *)jsonDict {
+    if (jsonDict == nil) return;
+
+    NSString* errorResponse = [jsonDict objectForKey:@"error"];
+    if (errorResponse != nil) {
+        [self.logger error:errorResponse];
+    }
 }
 
 @end
