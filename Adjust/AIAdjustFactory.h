@@ -21,7 +21,7 @@
 + (id<AILogger>)logger;
 + (double)sessionInterval;
 + (double)subsessionInterval;
-+ (id<AIAttributionHandler>)attributionHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler;
++ (id<AIAttributionHandler>)attributionHandlerForActivityHandler:(id<AIActivityHandler>)activityHandler withMaxDelay:(NSNumber *)milliseconds;
 
 + (void)setPackageHandler:(id<AIPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<AIRequestHandler>)requestHandler;

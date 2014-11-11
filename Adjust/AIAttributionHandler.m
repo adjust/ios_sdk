@@ -30,8 +30,8 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 @implementation AIAttributionHandler
 
-+ (id<AIAttributionHandler>)handlerWithActivityHandler:(id<AIActivityHandler>)activityHandler {
-    return [[AIAttributionHandler alloc] initWithActivityHandler:activityHandler];
++ (id<AIAttributionHandler>)handlerWithActivityHandler:(id<AIActivityHandler>)activityHandler withMaxDelay:(NSNumber *)milliseconds{
+    return [[AIAttributionHandler alloc] initWithActivityHandler:activityHandler withMaxDelay:milliseconds];
 }
 
 - (id)initWithActivityHandler:(id<AIActivityHandler>) activityHandler
@@ -64,7 +64,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     dispatch_async(self.internalQueue, ^{
         [self getAttributionInternal];
     });
-
 }
 
 #pragma mark - internal
@@ -72,10 +71,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     if (jsonDict == nil) return;
 
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
-    AIAttribution * attribution;
-    if (jsonAttribution != nil) {
-        attribution = [AIAttribution dataWithJsonDict:jsonAttribution];
-    }
+    AIAttribution * attribution = [AIAttribution dataWithJsonDict:jsonAttribution];
 
     NSNumber * timer_milliseconds = [jsonDict objectForKey:@"ask_in"];
 
@@ -83,7 +79,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         attribution.finalAttribution = YES;
     }
 
-    [self.activityHandler tryUpdateAttribution:attribution];
+    [self.activityHandler updateAttribution:attribution];
 
     if (timer_milliseconds == nil) {
         [self.activityHandler launchAttributionDelegate];

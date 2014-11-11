@@ -166,11 +166,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (void)setAttributionMaxTime:(double)seconds {
-    [self.attributionHandler setAttributionMaxTime:seconds];
-}
-
-- (void)tryUpdateAttribution:(AIAttribution *)attribution {
+- (void)updateAttribution:(AIAttribution *)attribution {
     if (attribution == nil) {
         return;
     }
@@ -247,7 +243,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [[UIDevice currentDevice] aiSetIad:self];
 
     self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
-    self.attributionHandler = [AIAdjustFactory attributionHandlerForActivityHandler:self];
+    self.attributionHandler = [AIAdjustFactory attributionHandlerForActivityHandler:self withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds];
 
     [self readActivityState];
     [self readAttribution];

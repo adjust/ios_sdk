@@ -11,19 +11,17 @@
 
 @protocol AIAttributionHandler
 
-- (id)initWithActivityHandler:(id<AIActivityHandler>) activityHandler;
+- (id)initWithActivityHandler:(id<AIActivityHandler>) activityHandler withMaxDelay:(NSNumber* )milliseconds;
 
 - (void)checkAttribution:(NSDictionary *)jsonDict;
 
 - (void)getAttribution;
 
-- (void)setAttributionMaxTime:(double)seconds;
-// TODO
-
 @end
 
 @interface AIAttributionHandler : NSObject <AIAttributionHandler>
 
-+ (id<AIAttributionHandler>)handlerWithActivityHandler:(id<AIActivityHandler>)activityHandler;
++ (id<AIAttributionHandler>)handlerWithActivityHandler:(id<AIActivityHandler>)activityHandler
+                                          withMaxDelay:(NSNumber* )milliseconds;
 
 @end

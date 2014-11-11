@@ -27,7 +27,7 @@
 - (AIAttribution*) attribution;
 - (void) setAttribution:(AIAttribution*)attribution;
 
-- (void) tryUpdateAttribution:(AIAttribution*) attribution;
+- (void) updateAttribution:(AIAttribution*) attribution;
 - (void) launchAttributionDelegate;
 
 - (void) setOfflineMode:(BOOL)enabled;
