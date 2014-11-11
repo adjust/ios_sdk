@@ -37,6 +37,7 @@
 @property (nonatomic, copy) NSMutableDictionary* callbackPermanentParameters;
 @property (nonatomic, copy) NSMutableDictionary* partnerPermanentParameters;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, copy) NSNumber* attributionMaxTimeMilliseconds;
 
 - (id)initWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
 
@@ -45,5 +46,7 @@
 
 - (void)addPermanentPartnerParameter:(NSString *)key
                              andValue:(NSString *)value;
+
+- (void)setAttributionMaxTime:(double)milliseconds;
 
 @end

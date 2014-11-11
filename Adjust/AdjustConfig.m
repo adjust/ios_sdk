@@ -49,6 +49,10 @@
     [_partnerPermanentParameters setObject:value forKey:key];
 }
 
+- (void) setAttributionMaxTime:(int)milliseconds {
+    self.attributionMaxTimeMilliseconds = [NSNumber numberWithInt:milliseconds];
+}
+
 - (BOOL) checkEnvironment:(NSString *)environment
 {
     id<AILogger> logger = AIAdjustFactory.logger;
@@ -84,7 +88,7 @@
         copy.callbackPermanentParameters = [self.callbackPermanentParameters copyWithZone:zone];
         copy.partnerPermanentParameters = [self.partnerPermanentParameters copyWithZone:zone];
         // adjust delegate not copied
-        copy.attributionMaxTime = self.attributionMaxTime;
+        copy.attributionMaxTimeMilliseconds = [self.attributionMaxTimeMilliseconds copyWithZone:zone];
     }
 
     return copy;

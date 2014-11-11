@@ -69,11 +69,6 @@
     [defaultInstance setOfflineMode:enabled];
 }
 
-+ (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance setDelegate:delegate];
-}
-
 + (void)addPermanentCallbackParameter:(NSString *)key
                              andValue:(NSString *)value {
     Adjust * defaultInstance = [Adjust getInstance];
@@ -155,11 +150,6 @@
 - (void)setOfflineMode:(BOOL)enabled {
     if (![self checkActivityHandler]) return;
     [self.activityHandler setOfflineMode:enabled];
-}
-
-- (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    if (![self checkActivityHandler]) return;
-    [self.activityHandler setDelegate:delegate];
 }
 
 - (void)addPermanentCallbackParameter:(NSString *)key

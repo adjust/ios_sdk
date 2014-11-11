@@ -170,17 +170,23 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.attributionHandler setAttributionMaxTime:seconds];
 }
 
-- (void)changedAttributionDelegate:(AIAttribution *)attribution {
+- (void)tryUpdateAttribution:(AIAttribution *)attribution {
     if (attribution == nil) {
+        return;
+    }
+    if ([attribution isEqual:self.attribution]) {
         return;
     }
     self.attribution = attribution;
     [self writeAttribution];
+}
+
+- (void)launchAttributionDelegate{
     if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return;
     }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                    withObject:attribution waitUntilDone:NO];
+                                    withObject:self.attribution waitUntilDone:NO];
 }
 
 - (void)setOfflineMode:(BOOL)enabled {
