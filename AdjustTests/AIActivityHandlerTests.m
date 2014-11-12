@@ -570,7 +570,7 @@
 
     // testing the activity kind is the correct one
     ADJActivityKind activityKind = package.activityKind;
-    XCTAssertEqual(ADJActivityKindReattribution, activityKind, @"%@", package.extendedString);
+    XCTAssertEqual(ADJActivityKindClick, activityKind, @"%@", package.extendedString);
 
     // testing the conversion from activity kind to string
     NSString* activityKindString = ADJActivityKindToString(activityKind);
@@ -578,7 +578,7 @@
 
     // testing the conversion from string to activity kind
     activityKind = ADJActivityKindFromString(activityKindString);
-    XCTAssertEqual(ADJActivityKindReattribution, activityKind);
+    XCTAssertEqual(ADJActivityKindClick, activityKind);
 
     // packageType should be reattribute
     XCTAssertEqual(@"/reattribute", package.path, @"%@", package.extendedString);

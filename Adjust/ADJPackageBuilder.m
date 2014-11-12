@@ -77,8 +77,8 @@
     [self parameters:parameters setBool:self.deviceInfo.isIad             forKey:@"is_iad"];
 
     ADJActivityPackage *reattributionPackage = [self defaultActivityPackage];
-    reattributionPackage.path = @"/reattribute";
-    reattributionPackage.activityKind = ADJActivityKindReattribution;
+    reattributionPackage.path = @"/sdk_click";
+    reattributionPackage.activityKind = ADJActivityKindClick;
     reattributionPackage.suffix = @"";
     reattributionPackage.parameters = parameters;
 
