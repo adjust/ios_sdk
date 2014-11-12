@@ -82,9 +82,17 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     [self.logger verbose:@"package response: %@", responseString];
-    [self.logger verbose:@"status code: %d", response.statusCode];
 
     NSDictionary *jsonDict = [AIUtil buildJsonDict:responseString];
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+
+    NSInteger statusCode = response.statusCode;
+    if (statusCode == 200) {
+        [self.logger info:@"status code %d with message %@", statusCode, messageResponse];
+    } else {
+        [self.logger error:@"status code %d with message %@", statusCode, messageResponse];
+    }
+
 
     [self.packageHandler finishedTrackingActivity:jsonDict];
     if (sendToPackageHandler) {

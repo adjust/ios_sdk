@@ -21,6 +21,8 @@
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
+static NSString   * const kActivityStateName     = @"activity state";
+static NSString   * const kAttributionName       = @"attributionlo";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
@@ -125,7 +127,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     _enabled = enabled;
     if ([self checkActivityState:self.activityState]) {
         self.activityState.enabled = enabled;
-        [self writeActivityState];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
     }
     if (enabled) {
         [self trackSubsessionStart];
@@ -174,14 +176,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
     self.attribution = attribution;
-    [self writeAttribution];
+    [AIUtil writeObject:self.attribution filename:kAttributionFilename objectName:kAttributionName];
 }
 
 - (void)launchAttributionDelegate{
-    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+    if (![self.delegate respondsToSelector:@selector(adjustAttributionCallback:)]) {
         return;
     }
-    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
+    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionCallback:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
@@ -245,8 +247,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:self];
     self.attributionHandler = [AIAdjustFactory attributionHandlerForActivityHandler:self withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds];
 
-    [self readActivityState];
-    [self readAttribution];
+    self.activityState = [AIUtil readObject:kActivityStateFilename objectName:kActivityStateName];
+    self.attribution = [AIUtil readObject:kAttributionFilename objectName:kAttributionName];
 
     [self startInternal];
 }
@@ -273,8 +275,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
         self.activityState.enabled = _enabled;
-        [self writeActivityState];
-        [self.logger info:@"First session"];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
         return;
     }
 
@@ -282,7 +283,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
-        [self writeActivityState];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
         return;
     }
 
@@ -294,8 +295,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
-        [self writeActivityState];
-        [self.logger debug:@"Session %d", self.activityState.sessionCount];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
         return;
     }
 
@@ -304,7 +304,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
-        [self writeActivityState];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
         [self.logger info:@"Processed Subsession %d of Session %d",
             self.activityState.subsessionCount,
             self.activityState.sessionCount];
@@ -318,7 +318,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self stopTimer];
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
-    [self writeActivityState];
+    [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
 }
 
 - (void)eventInternal:(AIEvent *)event
@@ -356,8 +356,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.packageHandler sendFirstPackage];
     }
 
-    [self writeActivityState];
-    [self.logger debug:@"Event %d", self.activityState.eventCount];
+    [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
 }
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
@@ -393,8 +392,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     AIActivityPackage *reattributionPackage = [ClickBuilder buildClickPackage];
     [self.packageHandler sendClickPackage:reattributionPackage];
-
-    [self.logger debug:@"ClickPackage %@", adjustDeepLinks];
 }
 
 - (void) setDeviceTokenInternal:(NSData *)deviceToken {
@@ -431,72 +428,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     return (lastInterval > AIAdjustFactory.subsessionInterval);
 }
 
-- (void)readActivityState {
-    @try {
-        NSString *filename = [AIUtil getFullFilename:kActivityStateFilename];
-        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        if ([object isKindOfClass:[AIActivityState class]]) {
-            self.activityState = object;
-            [self.logger debug:@"Read activity state:  %@ uuid:%@", self.activityState, self.activityState.uuid];
-            return;
-        } else if (object == nil) {
-            [self.logger verbose:@"Activity state file not found"];
-        } else {
-            [self.logger error:@"Failed to read activity state"];
-        }
-    } @catch (NSException *ex ) {
-        [self.logger error:@"Failed to read activity state (%@)", ex];
-    }
-
-    // start with a fresh activity state in case of any exception
-    self.activityState = nil;
-}
-
-- (void)writeActivityState {
-    NSString *filename = [AIUtil getFullFilename:kActivityStateFilename];
-    BOOL result = [NSKeyedArchiver archiveRootObject:self.activityState toFile:filename];
-    if (result == YES) {
-        [AIUtil excludeFromBackup:filename];
-        [self.logger debug:@"Wrote activity state: %@", self.activityState];
-    } else {
-        [self.logger error:@"Failed to write activity state"];
-    }
-}
-
-
-- (void)readAttribution {
-    @try {
-        NSString *filename = [AIUtil getFullFilename:kAttributionFilename];
-        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        if ([object isKindOfClass:[AIAttribution class]]) {
-            self.activityState = object;
-            [self.logger debug:@"Read attribution: %@", self.attribution];
-            return;
-        } else if (object == nil) {
-            [self.logger verbose:@"Attribution file not found"];
-        } else {
-            [self.logger error:@"Failed to read attribution file"];
-        }
-    } @catch (NSException *ex ) {
-        [self.logger error:@"Failed to read attribution file (%@)", ex];
-    }
-
-    // start with a fresh activity state in case of any exception
-    self.attribution = nil;
-}
-
-- (void)writeAttribution {
-    NSString *filename = [AIUtil getFullFilename:kAttributionFilename];
-    BOOL result = [NSKeyedArchiver archiveRootObject:self.attribution toFile:filename];
-    if (result == YES) {
-        [AIUtil excludeFromBackup:filename];
-        [self.logger debug:@"Wrote attribution: %@", self.attribution];
-    } else {
-        [self.logger error:@"Failed to write attribution file"];
-    }
-}
-
-
 - (void)transferSessionPackage {
     AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                    andActivityState:self.activityState
@@ -529,7 +460,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {
-        [self writeActivityState];
+        [AIUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
     }
 }
 

@@ -22,7 +22,7 @@
  * @param responseData The response data containing information about the activity
  *     and it's server response. See AIResponseData for details.
  */
-- (void)adjustAttributionChanged:(AIAttribution *)attribution;
+- (void)adjustAttributionCallback:(AIAttribution *)attribution;
 
 @end
 

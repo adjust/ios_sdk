@@ -7,12 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Adjust.h"
 #import <UIKit/UIKit.h>
 
-@interface AdjustBridge : NSObject<AdjustDelegate>
-
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
+@interface AdjustBridge : NSObject
 
 + (void)loadBridge:(NSObject<UIWebViewDelegate> *) webViewDelegate
             webView:(UIWebView *) webView;

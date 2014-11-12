@@ -20,4 +20,11 @@
 
 + (NSString *)getFullFilename:(NSString *) baseFilename;
 
++ (id)readObject:(NSString *)filename
+      objectName:(NSString *)objectName;
+
++ (void)writeObject:(id)object
+           filename:(NSString *)filename
+         objectName:(NSString *)objectName;
+
 @end

@@ -9,18 +9,10 @@ window.AdjustBridge = (function () {
         bridge.init(function(message, callback) { });
     }
 
-    function trackEventPrivate (eventToken, parameters) {
+    function trackEventPrivate (event) {
         bridge.callHandler(adjustPrefix + 'trackEvent',
-            {'eventToken': eventToken, 'parameters': parameters, 'revenue': revenue},
+            {'event': event},
             function(response) {})
-    };
-    
-    function setResponseDelegatePrivate(responseDelegate) {
-        bridge.callHandler(adjustPrefix + 'setResponseDelegate', {}, function(response) {});
-        
-        bridge.registerHandler('responseDelegate', function(data, responseCallback) {
-            responseDelegate(data)
-        });
     };
 
     function setEnabledPrivate(enabled) {
@@ -40,7 +32,6 @@ window.AdjustBridge = (function () {
     return {
         setBridge: setBridgePrivate,
         trackEvent: trackEventPrivate,
-        setResponseDelegate: setResponseDelegatePrivate,
         setEnabled: setEnabledPrivate,
         isEnabled: isEnabledPrivate,
         openUrl: openUrlPrivate

@@ -8,6 +8,8 @@
 
 #import "AdjustBridge.h"
 #import "WebViewJavascriptBridge.h"
+#import "AIEvent.h"
+#import "Adjust.h"
 
 static NSString   * const kAdjustJsPrefix          = @"adjust_";
 
@@ -30,6 +32,9 @@ static id<AdjustDelegate> adjustBridgeInstance = nil;
 
     [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@trackEvent", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {
 
+        // TODO, test
+        AIEvent * event= [data objectForKey:@"event"];
+        /*
         NSString* eventToken = [data objectForKey:@"eventToken"];
         NSDictionary* parameters = [data objectForKey:@"parameters"];
         NSNumber* revenue = [data objectForKey:@"revenue"];
@@ -47,14 +52,8 @@ static id<AdjustDelegate> adjustBridgeInstance = nil;
         if (revenue != nil) {
             [event setRevenue:[revenue doubleValue] currency:currency];
         }
-
+         */
         [Adjust trackEvent:event];
-    }];
-
-    [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@setResponseDelegate", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {
-
-        adjustBridgeInstance = [[AdjustBridge alloc] init];
-        [Adjust setDelegate:adjustBridgeInstance];
     }];
 
     [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@setEnabled", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -82,19 +81,5 @@ static id<AdjustDelegate> adjustBridgeInstance = nil;
         NSString *js = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
         [webView stringByEvaluatingJavaScriptFromString:js];
     }
-
-    [Adjust setSdkPrefix:@"bridge"];
-}
-
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
-    NSMutableDictionary* dicResponseData = (NSMutableDictionary*) [responseData dictionary];
-
-    [dicResponseData removeObjectForKey:@"success"];
-    [dicResponseData setObject:[NSNumber numberWithBool:responseData.success] forKey:@"success"];
-
-    [dicResponseData removeObjectForKey:@"willRetry"];
-    [dicResponseData setObject:[NSNumber numberWithBool:responseData.willRetry] forKey:@"willRetry"];
-
-    [_AdjustBridge callHandler:@"responseDelegate" data:dicResponseData responseCallback:^(id response) {}];
 }
 @end

@@ -141,5 +141,41 @@ static NSDateFormatter * dateFormat;
     return filename;
 }
 
++ (id)readObject:(NSString *)filename
+      objectName:(NSString *)objectName{
+    id<AILogger> logger = [AIAdjustFactory logger];
+    @try {
+        NSString *fullFilename = [AIUtil getFullFilename:filename];
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:fullFilename];
+        if ([object isKindOfClass:[AIAttribution class]]) {
+            [logger debug:@"Read %@: %@", objectName, object];
+            return object;
+        } else if (object == nil) {
+            [logger verbose:@"%@ not found", objectName];
+        } else {
+            [logger error:@"Failed to read %@ file", objectName];
+        }
+    } @catch (NSException *ex ) {
+        [logger error:@"Failed to read %@ file (%@)", objectName, ex];
+    }
+
+    return nil;
+}
+
++ (void)writeObject:(id)object
+           filename:(NSString *)filename
+         objectName:(NSString *)objectName {
+    id<AILogger> logger = [AIAdjustFactory logger];
+    NSString *fullFilename = [AIUtil getFullFilename:filename];
+    BOOL result = [NSKeyedArchiver archiveRootObject:object toFile:fullFilename];
+    if (result == YES) {
+        [AIUtil excludeFromBackup:fullFilename];
+        [logger debug:@"Wrote %@: %@", objectName, object];
+    } else {
+        [logger error:@"Failed to write %@ file", objectName];
+    }
+
+}
+
 
 @end
