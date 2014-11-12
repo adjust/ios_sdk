@@ -8,7 +8,7 @@
 
 #import "AIActivityHandlerMock.h"
 #import "AILoggerMock.h"
-#import "AIAdjustFactory.h"
+#import "ADJAdjustFactory.h"
 
 static NSString * const prefix = @"AIActivityHandler ";
 
@@ -30,7 +30,7 @@ static NSString * const prefix = @"AIActivityHandler ";
     self = [super init];
     if (self == nil) return nil;
 
-    self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
+    self.loggerMock = (AILoggerMock *) [ADJAdjustFactory logger];
 
     [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithAppToken yourAppToken:%@", yourAppToken]];
 

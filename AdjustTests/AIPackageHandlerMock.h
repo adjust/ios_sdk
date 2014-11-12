@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "AIPackageHandler.h"
+#import "ADJPackageHandler.h"
 
-@interface AIPackageHandlerMock : NSObject <AIPackageHandler>
+@interface AIPackageHandlerMock : NSObject <ADJPackageHandler>
 
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 
 @property (nonatomic, strong) AIResponseData *responseData;
-@property (nonatomic, strong) AIActivityPackage * activityPackage;
+@property (nonatomic, strong) ADJActivityPackage * activityPackage;
 
 @end

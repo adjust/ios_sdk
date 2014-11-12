@@ -55,44 +55,44 @@ static NSString * const kLogTag = @"AdjustTests";
     return NO;
 }
 
-- (void)setLogLevel:(AILogLevel)logLevel {
+- (void)setLogLevel:(ADJLogLevel)logLevel {
     [self test:@"AILogger setLogLevel logLevel:%@", logLevel];
 }
 
 - (void)test:(NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelTest logPrefix:@"t" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelTest logPrefix:@"t" format:format parameters:parameters];
 }
 
 
 - (void)verbose:(NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelVerbose logPrefix:@"v" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelVerbose logPrefix:@"v" format:format parameters:parameters];
 }
 
 - (void)debug:  (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelDebug logPrefix:@"d" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelDebug logPrefix:@"d" format:format parameters:parameters];
 }
 
 - (void)info:   (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelInfo logPrefix:@"i" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelInfo logPrefix:@"i" format:format parameters:parameters];
 }
 
 - (void)warn:   (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelWarn logPrefix:@"w" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelWarn logPrefix:@"w" format:format parameters:parameters];
 }
 
 - (void)error:  (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelError logPrefix:@"e" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelError logPrefix:@"e" format:format parameters:parameters];
 }
 
 - (void)assert: (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
-    [self logLevel:AILogLevelAssert logPrefix:@"a" format:format parameters:parameters];
+    [self logLevel:ADJLogLevelAssert logPrefix:@"a" format:format parameters:parameters];
 }
 
 // private implementation

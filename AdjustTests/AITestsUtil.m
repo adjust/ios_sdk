@@ -7,9 +7,9 @@
 //
 
 #import "AITestsUtil.h"
-#import "AIPackageBuilder.h"
+#import "ADJPackageBuilder.h"
 #import "AILoggerMock.h"
-#import "AIAdjustFactory.h"
+#import "ADJAdjustFactory.h"
 
 @implementation AITestsUtil
 
@@ -42,14 +42,14 @@
     return deleted;
 }
 
-+ (AIActivityPackage *)buildEmptyPackage {
-    AIPackageBuilder *sessionBuilder = [[AIPackageBuilder alloc] init];
-    AIActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
++ (ADJActivityPackage *)buildEmptyPackage {
+    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] init];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     return sessionPackage;
 }
 
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
-    AILoggerMock *loggerMock = (AILoggerMock *)AIAdjustFactory.logger;
+    AILoggerMock *loggerMock = (AILoggerMock *)ADJAdjustFactory.logger;
 
     [loggerMock test:@"AdjustDelegate adjustFinishedTrackingWithResponse"];
 }

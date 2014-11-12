@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AILogger.h"
+#import "ADJLogger.h"
 
-static const int AILogLevelTest = 0;
+static const int ADJLogLevelTest = 0;
 
-@interface AILoggerMock : NSObject <AILogger>
+@interface AILoggerMock : NSObject <ADJLogger>
     - (void)test:(NSString *)message, ...;
     - (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
 @end

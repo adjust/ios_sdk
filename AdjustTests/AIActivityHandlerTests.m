@@ -9,12 +9,12 @@
 #import <XCTest/XCTest.h>
 #import "AILoggerMock.h"
 #import "AIPackageHandlerMock.h"
-#import "AIAdjustFactory.h"
-#import "AIActivityHandler.h"
-#import "AIActivityPackage.h"
+#import "ADJAdjustFactory.h"
+#import "ADJActivityHandler.h"
+#import "ADJActivityPackage.h"
 #import "AITestsUtil.h"
-#import "AIUtil.h"
-#import "AILogger.h"
+#import "ADJUtil.h"
+#import "ADJLogger.h"
 
 @interface AIActivityHandlerTests : XCTestCase
 
@@ -34,23 +34,23 @@
 
 - (void)tearDown
 {
-    [AIAdjustFactory setPackageHandler:nil];
-    [AIAdjustFactory setLogger:nil];
-    [AIAdjustFactory setSessionInterval:-1];
-    [AIAdjustFactory setSubsessionInterval:-1];
+    [ADJAdjustFactory setPackageHandler:nil];
+    [ADJAdjustFactory setLogger:nil];
+    [ADJAdjustFactory setSessionInterval:-1];
+    [ADJAdjustFactory setSubsessionInterval:-1];
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
 }
 
 - (void)reset {
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
+    [ADJAdjustFactory setLogger:self.loggerMock];
 
     self.packageHandlerMock = [AIPackageHandlerMock alloc];
-    [AIAdjustFactory setPackageHandler:self.packageHandlerMock];
+    [ADJAdjustFactory setPackageHandler:self.packageHandlerMock];
 
-    [AIAdjustFactory setSessionInterval:-1];
-    [AIAdjustFactory setSubsessionInterval:-1];
+    [ADJAdjustFactory setSessionInterval:-1];
+    [ADJAdjustFactory setSubsessionInterval:-1];
 }
 
 - (void)testFirstRun
@@ -62,7 +62,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler and start the first session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     //  set the delegate to be called at after sending the package
     AITestsUtil * testsUtil = [[AITestsUtil alloc] init];
@@ -73,27 +73,27 @@
     [NSThread sleepForTimeInterval:10.0];
 
     //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Activity state file not found"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Activity state file not found"],
         @"%@", self.loggerMock);
 
     //  when a session package is being sent the package handler should resume sending
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
         @"%@", self.loggerMock);
 
     //  if the package was build, it was sent to the Package Handler
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler addPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler addPackage"], @"%@", self.loggerMock);
 
     // checking the default values of the first session package
     //  should only have one package
     XCTAssertEqual((NSUInteger)1, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
-    AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[0];
+    ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
     XCTAssertEqual(@"ios3.4.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
-    XCTAssertEqual(@"https://app.adjust.io", AIUtil.baseUrl);
+    XCTAssertEqual(@"https://app.adjust.io", ADJUtil.baseUrl);
 
     //   packageType should be SESSION_START
     XCTAssertEqual(@"/startup", activityPackage.path, @"%@", activityPackage.extendedString);
@@ -124,18 +124,18 @@
     XCTAssertNotNil((NSString *)parameters[@"idfv"], @"%@", activityPackage.extendedString);
 
     //  after adding, the activity handler ping the Package handler to send the package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //  check that the package handler calls back with the delegate
-    //XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AdjustDelegate adjustFinishedTrackingWithResponse"],
+    //XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AdjustDelegate adjustFinishedTrackingWithResponse"],
     //          @"%@", self.loggerMock);
 
     // check that the activity state is written by the first session or timer
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: "], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Wrote activity state: "], @"%@", self.loggerMock);
 
     // ending of first session
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 }
 
 - (void)testSessions {
@@ -146,11 +146,11 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  adjust the intervals for testing
-    [AIAdjustFactory setSessionInterval:(2)]; // 2 seconds
-    [AIAdjustFactory setSubsessionInterval:(0.1)]; // 0.1 second
+    [ADJAdjustFactory setSessionInterval:(2)]; // 2 seconds
+    [ADJAdjustFactory setSubsessionInterval:(0.1)]; // 0.1 second
 
     //  create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     //  wait enough to be a new subsession, but not a new session
     [NSThread sleepForTimeInterval:1.5];
@@ -165,17 +165,17 @@
     [NSThread sleepForTimeInterval:1];
 
     //  check that a new subsession was created
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],
         @"%@", self.loggerMock);
 
     // check that it's now on the 2nd session
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Session 2"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Session 2"],  @"%@", self.loggerMock);
 
     //  check that 2 packages were added to the package handler
     XCTAssertEqual((NSUInteger)2, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  get the second session package and its parameters
-    AIActivityPackage *activityPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];
     NSDictionary *parameters = activityPackage.parameters;
 
     //  the session and subsession count should be 2
@@ -186,7 +186,7 @@
     XCTAssertEqual(2, [(NSString *)parameters[@"subsession_count"] intValue], @"%@", activityPackage.extendedString);
 
     //  check that the package handler was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
         @"%@", self.loggerMock);
 }
 
@@ -198,7 +198,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
     [activityHandler setBufferEvents:YES];
 
     [activityHandler setDeviceToken:nil];
@@ -213,13 +213,13 @@
     [NSThread sleepForTimeInterval:2];
 
     //  check that event buffering is enabled
-    //XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Event buffering is enabled"], @"%@", self.loggerMock);
+    //XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Event buffering is enabled"], @"%@", self.loggerMock);
 
     //  check that the package builder added the session, event and revenue package
     XCTAssertEqual((NSUInteger)3, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  check the first event
-    AIActivityPackage *eventPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    ADJActivityPackage *eventPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];
 
     //   check the event path
     XCTAssert([eventPackage.path isEqualToString:@"/event"], @"%@", eventPackage.extendedString);
@@ -242,17 +242,17 @@
     XCTAssertNil(eventPackageParameters[@"push_token"], @"%@", eventPackage.extendedString);
 
     //   check that the event was buffered
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered event 'abc123'"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Buffered event 'abc123'"], @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
 
     //  check the second event/ first revenue
-    AIActivityPackage *revenuePackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[2];
+    ADJActivityPackage *revenuePackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[2];
 
     //   check the revenue path
     XCTAssert([revenuePackage.path isEqualToString:@"/revenue"], @"%@", revenuePackage.extendedString);
@@ -279,15 +279,15 @@
         @"%@", eventPackage.extendedString);
 
     //   check that the revenue was buffered
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"Buffered revenue (4.5 cent, 'abc123')"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Buffered revenue (4.5 cent, 'abc123')"],
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
 }
 
 - (void)testEventsNotBuffered {
@@ -298,7 +298,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
     [activityHandler setBufferEvents:NO];
 
     // test push token
@@ -315,7 +315,7 @@
     XCTAssertEqual((NSUInteger)3, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     //  check the first event
-    AIActivityPackage *eventPackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    ADJActivityPackage *eventPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];
 
     //   check the event path
     XCTAssert([eventPackage.path isEqualToString:@"/event"], @"%@", eventPackage.extendedString);
@@ -338,18 +338,18 @@
     XCTAssert([@"fc0721b6dfad5ee110975bb2a263de0061cc705b4a85a8ae3ccfbe7a662fb1ab" isEqualToString:eventPackageParameters[@"push_token"]], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Wrote activity state: ec:1"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
 
     //  check the second event/ first revenue
-    AIActivityPackage *revenuePackage = (AIActivityPackage *) self.packageHandlerMock.packageQueue[2];
+    ADJActivityPackage *revenuePackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[2];
 
     //   check the revenue path
     XCTAssert([revenuePackage.path isEqualToString:@"/revenue"], @"%@", revenuePackage.extendedString);
@@ -374,15 +374,15 @@
     XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Wrote activity state: ec:2"],
         @"%@", self.loggerMock);
 
     //   check the event count in the logger
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
 
 }
 
@@ -391,7 +391,7 @@
     [self reset];
 
     //  activity handler without app token
-    id<AIActivityHandler> nilActivityHandler = [AIAdjustFactory activityHandlerWithAppToken:nil];
+    id<ADJActivityHandler> nilActivityHandler = [ADJAdjustFactory activityHandlerWithAppToken:nil];
 
     // trigger the nil app token a 2nd time for a subsession start
     [nilActivityHandler trackSubsessionStart];
@@ -407,11 +407,11 @@
 
     [NSThread sleepForTimeInterval:1];
     //  activity with invalid app token
-    [AIAdjustFactory activityHandlerWithAppToken:@"12345678901"];
+    [ADJAdjustFactory activityHandlerWithAppToken:@"12345678901"];
 
     [NSThread sleepForTimeInterval:1];
     //  activity with valid app token
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     //  track event with nil token
     [activityHandler trackEvent:nil withParameters:nil];
@@ -428,28 +428,28 @@
     [NSThread sleepForTimeInterval:1];
 
     //  check missing app token messages
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing App Token"],  @"%@", self.loggerMock);
 
     //  check the invalid app token message
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed App Token '12345678901'"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Malformed App Token '12345678901'"],
         @"%@", self.loggerMock);
 
     //  check the nil event token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing Event Token"],  @"%@", self.loggerMock);
 
     //  check the invalid event token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Malformed Event Token 'abc1234'"],
         @"%@", self.loggerMock);
 
     //  check the invalid revenue amount token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Invalid amount -0.1"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Invalid amount -0.1"],  @"%@", self.loggerMock);
 
     //  check the invalid revenue token
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Malformed Event Token 'abc12'"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Malformed Event Token 'abc12'"],
         @"%@", self.loggerMock);
 
 }
@@ -462,7 +462,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     // verify the default value
     XCTAssert([activityHandler isEnabled], @"%@", self.loggerMock);
@@ -483,28 +483,28 @@
     XCTAssertFalse([activityHandler isEnabled], @"%@", self.loggerMock);
 
     // making sure the first session was sent
-    XCTAssert([self.loggerMock containsMessage:AILogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 
     // delete the first session package from the log
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     // making sure the timer fired did not call the package handler
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     // test if the event was not triggered
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
 
     // test if the revenue was not triggered
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1 (revenue)"], @"%@", self.loggerMock);
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
         @"%@", self.loggerMock);
 
     // verify that it was not resumed
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
         @"%@", self.loggerMock);
 
     // enable again
@@ -521,17 +521,17 @@
     XCTAssert([activityHandler isEnabled], @"%@", self.loggerMock);
 
     // test that the event was triggered
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1"], @"%@", self.loggerMock);
 
     // test that the revenue was triggered
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
         @"%@", self.loggerMock);
 
     // verify that it was also resumed
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
         @"%@", self.loggerMock);
 }
 
@@ -543,7 +543,7 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     // create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     NSString* normal = @"AdjustTests://example.com/path/inApp?adjust_foo=bar&other=stuff&adjust_key=value";
     NSString* emptyQueryString = @"AdjustTests://";
@@ -566,19 +566,19 @@
     XCTAssertEqual((NSUInteger)2, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
 
     // check that the normal url was parsed and sent
-    AIActivityPackage *package = (AIActivityPackage *) self.packageHandlerMock.packageQueue[1];
+    ADJActivityPackage *package = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];
 
     // testing the activity kind is the correct one
-    AIActivityKind activityKind = package.activityKind;
-    XCTAssertEqual(AIActivityKindReattribution, activityKind, @"%@", package.extendedString);
+    ADJActivityKind activityKind = package.activityKind;
+    XCTAssertEqual(ADJActivityKindReattribution, activityKind, @"%@", package.extendedString);
 
     // testing the conversion from activity kind to string
-    NSString* activityKindString = AIActivityKindToString(activityKind);
+    NSString* activityKindString = ADJActivityKindToString(activityKind);
     XCTAssertEqual(@"reattribution", activityKindString);
 
     // testing the conversion from string to activity kind
-    activityKind = AIActivityKindFromString(activityKindString);
-    XCTAssertEqual(AIActivityKindReattribution, activityKind);
+    activityKind = ADJActivityKindFromString(activityKindString);
+    XCTAssertEqual(ADJActivityKindReattribution, activityKind);
 
     // packageType should be reattribute
     XCTAssertEqual(@"/reattribute", package.path, @"%@", package.extendedString);
@@ -593,17 +593,17 @@
         @"%@", parameters.description);
 
     // check that sent the reattribution package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Reattribution {\n    foo = bar;\n    key = value;\n}"], @"%@", self.loggerMock);
 }
 
 - (void)testConversions {
     // check the logLevel conversions
-    XCTAssertEqual(AILogLevelVerbose, [AILogger LogLevelFromString:@"verbose"]);
-    XCTAssertEqual(AILogLevelDebug, [AILogger LogLevelFromString:@"debug"]);
-    XCTAssertEqual(AILogLevelInfo, [AILogger LogLevelFromString:@"info"]);
-    XCTAssertEqual(AILogLevelWarn, [AILogger LogLevelFromString:@"warn"]);
-    XCTAssertEqual(AILogLevelError, [AILogger LogLevelFromString:@"error"]);
-    XCTAssertEqual(AILogLevelAssert, [AILogger LogLevelFromString:@"assert"]);
+    XCTAssertEqual(ADJLogLevelVerbose, [ADJLogger LogLevelFromString:@"verbose"]);
+    XCTAssertEqual(ADJLogLevelDebug, [ADJLogger LogLevelFromString:@"debug"]);
+    XCTAssertEqual(ADJLogLevelInfo, [ADJLogger LogLevelFromString:@"info"]);
+    XCTAssertEqual(ADJLogLevelWarn, [ADJLogger LogLevelFromString:@"warn"]);
+    XCTAssertEqual(ADJLogLevelError, [ADJLogger LogLevelFromString:@"error"]);
+    XCTAssertEqual(ADJLogLevelAssert, [ADJLogger LogLevelFromString:@"assert"]);
 }
 
 - (void)testfinishedTrackingWithResponse {
@@ -614,12 +614,12 @@
     XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     // create handler to start the session
-    id<AIActivityHandler> activityHandler = [AIAdjustFactory activityHandlerWithAppToken:@"123456789012"];
+    id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     [activityHandler finishedTrackingWithResponse:nil deepLink:@"testfinishedTrackingWithResponse://"];
 
     //  check the deep link from the response
-    XCTAssert([self.loggerMock containsMessage:AILogLevelError beginsWith:@"Unable to open deep link (testfinishedTrackingWithResponse://)"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Unable to open deep link (testfinishedTrackingWithResponse://)"],
               @"%@", self.loggerMock);
 }
 @end

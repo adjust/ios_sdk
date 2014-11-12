@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AIAdjustFactory.h"
+#import "ADJAdjustFactory.h"
 #import "AILoggerMock.h"
 #import "AIActivityHandlerMock.h"
 #import "AIRequestHandlerMock.h"
@@ -30,8 +30,8 @@
 
 - (void)tearDown
 {
-    [AIAdjustFactory setRequestHandler:nil];
-    [AIAdjustFactory setLogger:nil];
+    [ADJAdjustFactory setRequestHandler:nil];
+    [ADJAdjustFactory setLogger:nil];
 
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
@@ -39,10 +39,10 @@
 
 - (void)reset {
     self.loggerMock = [[AILoggerMock alloc] init];
-    [AIAdjustFactory setLogger:self.loggerMock];
+    [ADJAdjustFactory setLogger:self.loggerMock];
 
     self.requestHandlerMock = [AIRequestHandlerMock alloc];
-    [AIAdjustFactory setRequestHandler:self.requestHandlerMock];
+    [ADJAdjustFactory setRequestHandler:self.requestHandlerMock];
 
 }
 
@@ -56,7 +56,7 @@
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
+    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  enable sending packages to Request Handler
     [packageHandler resumeSending];
@@ -72,28 +72,28 @@
     [NSThread sleepForTimeInterval:1.0];
 
     //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
 
     //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
 
     //  check that added first package to a previous empty queue
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 1 (session)"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package 1 (session)"], @"%@", self.loggerMock);
 
     //TODO add the verbose message
 
     //  it should write the package queue with the first session package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Package handler wrote 1 packages"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler wrote 1 packages"], @"%@", self.loggerMock);
 
     //  check that the Request Handler was called to send the package
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler sendPackage"],  @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIRequestHandler sendPackage"],  @"%@", self.loggerMock);
 
     //  check that the the request handler called the package callback, that foward it to the activity handler
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIActivityHandler finishedTrackingWithResponse"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIActivityHandler finishedTrackingWithResponse"],
             @"%@", self.loggerMock);
 
     //  check that the package was removed from the queue and 0 packages were written
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Package handler wrote 0 packages"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler wrote 0 packages"], @"%@", self.loggerMock);
 }
 
 - (void) testPaused {
@@ -102,7 +102,7 @@
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
+    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  disable sending packages to Request Handler
     [packageHandler pauseSending];
@@ -116,16 +116,16 @@
     [NSThread sleepForTimeInterval:1.0];
 
     //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
 
     //  check that a package was added
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package"], @"%@", self.loggerMock);
 
     //  check that the mock request handler was NOT called to send the package
-    XCTAssertFalse([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler sendPackage"], @"%@", self.loggerMock);
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIRequestHandler sendPackage"], @"%@", self.loggerMock);
 
     //  check that the package handler is paused
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Package handler is paused"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler is paused"], @"%@", self.loggerMock);
 }
 
 - (void) testMultiplePackages {
@@ -137,7 +137,7 @@
 
     //  initialize Package Handler
     AIActivityHandlerMock *activityHandler = [[AIActivityHandlerMock alloc] initWithAppToken:@"123456789012"];
-    id<AIPackageHandler> packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
+    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  enable sending packages to Request Handler
     [packageHandler resumeSending];
@@ -149,7 +149,7 @@
 
     //  create a new package handler to simulate a new launch
     [NSThread sleepForTimeInterval:1.0];
-    packageHandler = [AIAdjustFactory packageHandlerForActivityHandler:activityHandler];
+    packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:activityHandler];
 
     //  try to send two packages without closing the first
     [packageHandler sendFirstPackage];
@@ -158,19 +158,19 @@
     [NSThread sleepForTimeInterval:1.0];
 
     //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:AILogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
 
     //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
 
     //  check that added the third package to the queue and wrote to a file
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Added package 3 (session)"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package 3 (session)"], @"%@", self.loggerMock);
 
     //  check that it reads the same 3 packages in the file
-    XCTAssert([self.loggerMock containsMessage:AILogLevelDebug beginsWith:@"Package handler read 3 packages"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler read 3 packages"], @"%@", self.loggerMock);
 
     //  check that the package handler was already sending one package before
-    XCTAssert([self.loggerMock containsMessage:AILogLevelVerbose beginsWith:@"Package handler is already sending"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package handler is already sending"], @"%@", self.loggerMock);
 
 }
 

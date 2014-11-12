@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AIRequestHandler.h"
+#import "ADJRequestHandler.h"
 
-@interface AIRequestHandlerMock : NSObject <AIRequestHandler>
+@interface AIRequestHandlerMock : NSObject <ADJRequestHandler>
 
 @property (nonatomic, assign) BOOL connectionError;
 

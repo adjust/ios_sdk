@@ -8,8 +8,8 @@
 
 #import "AIPackageHandlerMock.h"
 #import "AILoggerMock.h"
-#import "AIAdjustFactory.h"
-#import "AIActivityHandler.h"
+#import "ADJAdjustFactory.h"
+#import "ADJActivityHandler.h"
 #import "AIResponseData.h"
 
 static NSString * const prefix = @"AIPackageHandler ";
@@ -17,7 +17,7 @@ static NSString * const prefix = @"AIPackageHandler ";
 @interface AIPackageHandlerMock()
 
 @property (nonatomic, strong) AILoggerMock *loggerMock;
-@property (nonatomic, assign) id<AIActivityHandler> activityHandler;
+@property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 
 @end
 
@@ -27,13 +27,13 @@ static NSString * const prefix = @"AIPackageHandler ";
     return [self initWithActivityHandler:nil];
 }
 
-- (id)initWithActivityHandler:(id<AIActivityHandler>)activityHandler {
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];
     if (self == nil) return nil;
 
     self.activityHandler = activityHandler;
 
-    self.loggerMock = (AILoggerMock *) AIAdjustFactory.logger;
+    self.loggerMock = (AILoggerMock *) ADJAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
 
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
@@ -41,7 +41,7 @@ static NSString * const prefix = @"AIPackageHandler ";
     return self;
 }
 
-- (void)addPackage:(AIActivityPackage *)package {
+- (void)addPackage:(ADJActivityPackage *)package {
     [self.loggerMock test:[prefix stringByAppendingString:@"addPackage"]];
     [self.packageQueue addObject:package];
 }
@@ -67,7 +67,7 @@ static NSString * const prefix = @"AIPackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
 }
 
-- (void)finishedTrackingActivity:(AIActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict {
+- (void)finishedTrackingActivity:(ADJActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict {
     [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
     self.responseData = response;
 }

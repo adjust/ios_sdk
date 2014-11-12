@@ -8,7 +8,7 @@
 
 #import "AdjustBridge.h"
 #import "WebViewJavascriptBridge.h"
-#import "AIEvent.h"
+#import "ADJEvent.h"
 #import "Adjust.h"
 
 static NSString   * const kAdjustJsPrefix          = @"adjust_";
@@ -33,7 +33,7 @@ static id<AdjustDelegate> adjustBridgeInstance = nil;
     [_AdjustBridge registerHandler:[NSString stringWithFormat:@"%@trackEvent", kAdjustJsPrefix] handler:^(id data, WVJBResponseCallback responseCallback) {
 
         // TODO, test
-        AIEvent * event= [data objectForKey:@"event"];
+        ADJEvent * event= [data objectForKey:@"event"];
         /*
         NSString* eventToken = [data objectForKey:@"eventToken"];
         NSDictionary* parameters = [data objectForKey:@"parameters"];

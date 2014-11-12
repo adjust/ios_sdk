@@ -8,26 +8,26 @@
 
 #import "AIRequestHandlerMock.h"
 #import "AILoggerMock.h"
-#import "AIAdjustFactory.h"
+#import "ADJAdjustFactory.h"
 #import "AIResponseData.h"
 
 static NSString * const prefix = @"AIRequestHandler ";
 
 @interface AIRequestHandlerMock()
 
-@property (nonatomic, assign) id<AIPackageHandler> packageHandler;
+@property (nonatomic, assign) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, assign) AILoggerMock *loggerMock;
 
 @end
 
 @implementation AIRequestHandlerMock
 
-- (id)initWithPackageHandler:(id<AIPackageHandler>) packageHandler {
+- (id)initWithPackageHandler:(id<ADJPackageHandler>) packageHandler {
     self = [super init];
     if (self == nil) return nil;
 
     self.packageHandler = packageHandler;
-    self.loggerMock = (AILoggerMock *) [AIAdjustFactory logger];
+    self.loggerMock = (AILoggerMock *) [ADJAdjustFactory logger];
 
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithPackageHandler"]];
 
@@ -36,7 +36,7 @@ static NSString * const prefix = @"AIRequestHandler ";
     return self;
 }
 
-- (void)sendPackage:(AIActivityPackage *)activityPackage {
+- (void)sendPackage:(ADJActivityPackage *)activityPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
 
     NSDictionary *jsonDict;

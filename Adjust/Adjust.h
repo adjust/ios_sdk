@@ -6,10 +6,10 @@
 //  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
 
-#import "AILogger.h"
-#import "AIEvent.h"
-#import "AIAttribution.h"
-#import "AdjustConfig.h"
+#import "ADJLogger.h"
+#import "ADJEvent.h"
+#import "ADJAttribution.h"
+#import "ADJConfig.h"
 
 /**
  * Constants for our supported tracking environments.
@@ -35,7 +35,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
  */
-+ (void)appDidLaunch:(AdjustConfig *)adjustConfig;
++ (void)appDidLaunch:(ADJConfig *)adjustConfig;
 
 /**
  * Tell Adjust that a particular event has happened.
@@ -55,7 +55,7 @@ static NSString * const AIEnvironmentProduction = @"production";
  * that is  created in the dashboard at http://adjust.com and should be six 
  * characters long.
  */
-+ (void)trackEvent:(AIEvent *)event;
++ (void)trackEvent:(ADJEvent *)event;
 
 /**
  * Tell adjust that the application resumed.
@@ -105,9 +105,9 @@ static NSString * const AIEnvironmentProduction = @"production";
 
 + (id)getInstance;
 
-- (void)appDidLaunch:(AdjustConfig *)adjustConfig;
+- (void)appDidLaunch:(ADJConfig *)adjustConfig;
 
-- (void)trackEvent:(AIEvent *)event;
+- (void)trackEvent:(ADJEvent *)event;
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
 - (void)setEnabled:(BOOL)enabled;

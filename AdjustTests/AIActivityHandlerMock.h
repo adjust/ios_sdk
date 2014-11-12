@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "AIActivityHandler.h"
+#import "ADJActivityHandler.h"
 
-@interface AIActivityHandlerMock : NSObject <AIActivityHandler>
+@interface AIActivityHandlerMock : NSObject <ADJActivityHandler>
 
 @end

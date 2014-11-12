@@ -7,9 +7,9 @@
 //
 
 #import "Adjust.h"
-#import "AIActivityHandler.h"
-#import "AIAdjustFactory.h"
-#import "AILogger.h"
+#import "ADJActivityHandler.h"
+#import "ADJAdjustFactory.h"
+#import "ADJLogger.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -17,19 +17,19 @@
 #endif
 @interface Adjust()
 
-@property (nonatomic, retain) id<AIActivityHandler> activityHandler;
-@property (nonatomic, retain) id<AILogger> logger;
+@property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, retain) id<ADJLogger> logger;
 @end
 
 #pragma mark -
 @implementation Adjust
 
-+ (void)appDidLaunch:(AdjustConfig *)adjustConfig {
++ (void)appDidLaunch:(ADJConfig *)adjustConfig {
     Adjust * defaultInstance = [Adjust getInstance];
     [defaultInstance appDidLaunch:adjustConfig];
 }
 
-+ (void)trackEvent:(AIEvent *)event {
++ (void)trackEvent:(ADJEvent *)event {
     Adjust * defaultInstance = [Adjust getInstance];
     [defaultInstance trackEvent:event];
 }
@@ -98,21 +98,21 @@
     if (self == nil) return nil;
 
     self.activityHandler = nil;
-    self.logger = [AIAdjustFactory logger];
+    self.logger = [ADJAdjustFactory logger];
 
     return self;
 }
 
-- (void)appDidLaunch:(AdjustConfig *)adjustConfig {
+- (void)appDidLaunch:(ADJConfig *)adjustConfig {
     if (self.activityHandler != nil) {
         [self.logger error:@"Adjust already initialized"];
         return;
     }
 
-    self.activityHandler = [AIAdjustFactory activityHandlerWithConfig:adjustConfig];
+    self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig];
 }
 
-- (void)trackEvent:(AIEvent *)event {
+- (void)trackEvent:(ADJEvent *)event {
     if (![self checkActivityHandler]) return;
     [self.activityHandler trackEvent:event];
 }
