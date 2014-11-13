@@ -6,13 +6,11 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "ADJUserAgent.h"
 
 @interface ADJUtil : NSObject
 
 + (NSString *)baseUrl;
 + (NSString *)clientSdk;
-+ (ADJUserAgent *)userAgent;
 
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)dateFormat:(double)value;

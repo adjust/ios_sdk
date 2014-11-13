@@ -18,6 +18,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
+#include "ADJUserAgent.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -217,16 +218,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger setLogLevel:adjustConfig.logLevel];
     }
 
-    NSString *macAddress = UIDevice.currentDevice.aiMacAddress;
+    NSString *macAddress = UIDevice.currentDevice.adjMacAddress;
     NSString *macShort = macAddress.aiRemoveColons;
 
     self.deviceInfo.macSha1          = macAddress.aiSha1;
     self.deviceInfo.macShortMd5      = macShort.aiMd5;
-    self.deviceInfo.trackingEnabled  = UIDevice.currentDevice.aiTrackingEnabled;
-    self.deviceInfo.idForAdvertisers = UIDevice.currentDevice.aiIdForAdvertisers;
-    self.deviceInfo.fbAttributionId  = UIDevice.currentDevice.aiFbAttributionId;
-    self.deviceInfo.userAgent        = ADJUtil.userAgent;
-    self.deviceInfo.vendorId         = UIDevice.currentDevice.aiVendorId;
+    self.deviceInfo.trackingEnabled  = UIDevice.currentDevice.adjTrackingEnabled;
+    self.deviceInfo.idForAdvertisers = UIDevice.currentDevice.adjIdForAdvertisers;
+    self.deviceInfo.fbAttributionId  = UIDevice.currentDevice.adjFbAttributionId;
+    self.deviceInfo.userAgent        = ADJUserAgent.userAgent;
+    self.deviceInfo.vendorId         = UIDevice.currentDevice.adjVendorId;
 
     if (adjustConfig.sdkPrefix == nil) {
         self.deviceInfo.clientSdk        = ADJUtil.clientSdk;
@@ -242,7 +243,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.delegate = adjustConfig.delegate;
 
-    [[UIDevice currentDevice] aiSetIad:self];
+    [[UIDevice currentDevice] adjSetIad:self];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds];

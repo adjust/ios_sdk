@@ -19,7 +19,7 @@ static const int kTransactionIdCount = 10;
     if (self == nil) return nil;
 
     // create UUID for new devices
-    self.uuid = [UIDevice.currentDevice aiCreateUuid];
+    self.uuid = [UIDevice.currentDevice adjCreateUuid];
 
     self.eventCount      = 0;
     self.sessionCount    = 0;
@@ -85,7 +85,7 @@ static const int kTransactionIdCount = 10;
 
     // create UUID for migrating devices
     if (self.uuid == nil) {
-        self.uuid = [UIDevice.currentDevice aiCreateUuid];
+        self.uuid = [UIDevice.currentDevice adjCreateUuid];
     }
 
     if (self.transactionIds == nil) {

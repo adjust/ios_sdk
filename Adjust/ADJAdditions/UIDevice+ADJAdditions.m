@@ -24,7 +24,7 @@
 
 @implementation UIDevice(ADJAdditions)
 
-- (BOOL)aiTrackingEnabled {
+- (BOOL)adjTrackingEnabled {
 #if !ADJUST_NO_IDFA
     NSString *className  = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
     NSString *keyManager = [NSString aiJoin:@"shared", @"manager", nil];
@@ -53,7 +53,7 @@
     }
 }
 
-- (NSString *)aiIdForAdvertisers {
+- (NSString *)adjIdForAdvertisers {
 #if !ADJUST_NO_IDFA
     NSString *className     = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
     NSString *keyManager    = [NSString aiJoin:@"shared", @"manager", nil];
@@ -85,13 +85,13 @@
     }
 }
 
-- (NSString *)aiFbAttributionId {
+- (NSString *)adjFbAttributionId {
     NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
     if (result == nil) return @"";
     return result;
 }
 
-- (NSString *)aiMacAddress {
+- (NSString *)adjMacAddress {
     int                 mib[6];
     size_t              len;
     char                *buf;
@@ -138,12 +138,12 @@
     return macAddress;
 }
 
-- (NSString *)aiDeviceType {
+- (NSString *)adjDeviceType {
     NSString *type = [self.model stringByReplacingOccurrencesOfString:@" " withString:@""];
     return type;
 }
 
-- (NSString *)aiDeviceName {
+- (NSString *)adjDeviceName {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *name = malloc(size);
@@ -153,7 +153,7 @@
     return machine;
 }
 
-- (NSString *)aiCreateUuid {
+- (NSString *)adjCreateUuid {
     CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
     CFStringRef stringRef = CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
     NSString *uuidString = (__bridge_transfer NSString*)stringRef;
@@ -162,14 +162,14 @@
     return lowerUuid;
 }
 
-- (NSString *)aiVendorId {
+- (NSString *)adjVendorId {
     if ([UIDevice.currentDevice respondsToSelector:@selector(identifierForVendor)]) {
         return [UIDevice.currentDevice.identifierForVendor UUIDString];
     }
     return @"";
 }
 
-- (void) aiSetIad:(ADJActivityHandler *) activityHandler{
+- (void) adjSetIad:(ADJActivityHandler *) activityHandler{
 #if !ADJUST_NO_IDA
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass) {

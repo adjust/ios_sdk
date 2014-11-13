@@ -11,13 +11,13 @@
 
 @interface UIDevice(ADJAdditions)
 
-- (BOOL)aiTrackingEnabled;
-- (NSString *)aiIdForAdvertisers;
-- (NSString *)aiFbAttributionId;
-- (NSString *)aiMacAddress;
-- (NSString *)aiDeviceType;
-- (NSString *)aiDeviceName;
-- (NSString *)aiCreateUuid;
-- (NSString *)aiVendorId;
-- (void)aiSetIad:(ADJActivityHandler *)activityHandler;
+- (BOOL)adjTrackingEnabled;
+- (NSString *)adjIdForAdvertisers;
+- (NSString *)adjFbAttributionId;
+- (NSString *)adjMacAddress;
+- (NSString *)adjDeviceType;
+- (NSString *)adjDeviceName;
+- (NSString *)adjCreateUuid;
+- (NSString *)adjVendorId;
+- (void)adjSetIad:(ADJActivityHandler *)activityHandler;
 @end

@@ -136,14 +136,17 @@
 
 - (void) constructUserAgent:(ADJUserAgent *)userAgent
              withParameters:(NSMutableDictionary *) parameters {
-    [self parameters:parameters setString:userAgent.bundeIdentifier forKey:@"bundle_identifier"];
-    [self parameters:parameters setString:userAgent.bundleVersion   forKey:@"bundle_version"];
+    [self parameters:parameters setString:userAgent.bundeIdentifier forKey:@"bundle_id"];
+    [self parameters:parameters setString:userAgent.bundleVersion   forKey:@"app_version"];
     [self parameters:parameters setString:userAgent.deviceType      forKey:@"device_type"];
     [self parameters:parameters setString:userAgent.deviceName      forKey:@"device_name"];
     [self parameters:parameters setString:userAgent.osName          forKey:@"os_name"];
-    [self parameters:parameters setString:userAgent.systemVersion   forKey:@"system_version"];
-    [self parameters:parameters setString:userAgent.languageCode    forKey:@"language_code"];
-    [self parameters:parameters setString:userAgent.countryCode     forKey:@"country_code"];
+    [self parameters:parameters setString:userAgent.systemVersion   forKey:@"os_version"];
+    [self parameters:parameters setString:userAgent.languageCode    forKey:@"language"];
+    [self parameters:parameters setString:userAgent.countryCode     forKey:@"country"];
+    [self parameters:parameters setString:userAgent.networkType     forKey:@"network_type"];
+    [self parameters:parameters setString:userAgent.mobileCountryCode forKey:@"mobile_country_code"];
+    [self parameters:parameters setString:userAgent.mobileNetworkCode forKey:@"mobile_network_code"];
 }
 
 

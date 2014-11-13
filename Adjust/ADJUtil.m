@@ -32,28 +32,6 @@ static NSDateFormatter * dateFormat;
     return kClientSdk;
 }
 
-+ (ADJUserAgent *)userAgent {
-
-    ADJUserAgent * userAgent = [[ADJUserAgent alloc] init];
-
-    UIDevice *device = UIDevice.currentDevice;
-    NSLocale *locale = NSLocale.currentLocale;
-    NSBundle *bundle = NSBundle.mainBundle;
-    NSDictionary *infoDictionary = bundle.infoDictionary;
-
-    userAgent.bundeIdentifier = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];
-    userAgent.bundleVersion   = [infoDictionary objectForKey:(NSString *)kCFBundleVersionKey];
-    userAgent.languageCode    = [locale objectForKey:NSLocaleLanguageCode];
-    userAgent.countryCode     = [locale objectForKey:NSLocaleCountryCode];
-    userAgent.osName          = @"ios";
-
-    userAgent.deviceType      = device.aiDeviceType;
-    userAgent.deviceName      = device.aiDeviceName;
-    userAgent.systemVersion   = device.systemVersion;
-
-    return userAgent;
-}
-
 #pragma mark - sanitization
 + (NSString *)sanitizeU:(NSString *)string {
     return [self.class sanitize:string defaultString:@"unknown"];

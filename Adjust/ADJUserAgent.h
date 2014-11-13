@@ -18,5 +18,10 @@
 @property (nonatomic, copy) NSString *systemVersion;
 @property (nonatomic, copy) NSString *languageCode;
 @property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *networkType;
+@property (nonatomic, copy) NSString *mobileCountryCode;
+@property (nonatomic, copy) NSString *mobileNetworkCode;
+
++ (ADJUserAgent *)userAgent;
 
 @end
