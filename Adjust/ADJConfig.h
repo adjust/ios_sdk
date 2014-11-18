@@ -40,6 +40,7 @@
 @property (nonatomic, copy) NSNumber* attributionMaxTimeMilliseconds;
 
 - (id)initWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
++ (ADJConfig*)configWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
 
 - (void)addPermanentCallbackParameter:(NSString *)key
                             andValue:(NSString *)value;

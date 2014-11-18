@@ -126,19 +126,4 @@ static NSString * const kWWAN   = @"WWAN";
     return nil;
 }
 
-+ (NSString *) x{
-
-
-    // Get mobile country code
-    NSString *mcc = [carrier mobileCountryCode];
-    if (mcc != nil)
-        NSLog(@"Mobile Country Code (MCC): %@", mcc);
-
-    // Get mobile network code
-    NSString *mnc = [carrier mobileNetworkCode];
-    if (mnc != nil)
-        NSLog(@"Mobile Network Code (MNC): %@", mnc);
-
-}
-
 @end

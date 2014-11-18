@@ -40,7 +40,7 @@
     [self parameters:parameters setDictionaryJson:self.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
-    sessionPackage.path = @"/session";
+    sessionPackage.path = @"/startup";
     sessionPackage.activityKind = ADJActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;

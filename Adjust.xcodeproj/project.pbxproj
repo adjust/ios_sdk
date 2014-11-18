@@ -52,6 +52,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		960FCF4E1A1B9ACF00282BD4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 960FCF201A1B9ACE00282BD4;
+			remoteInfo = example;
+		};
+		960FCF501A1B9ACF00282BD4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 960FCF391A1B9ACE00282BD4;
+			remoteInfo = exampleTests;
+		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -78,6 +92,7 @@
 		9609BC6919EEA55800E02303 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
 		960A8BB71A029A8000F2BB95 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960A8BB81A029A8000F2BB95 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
+		960FCF491A1B9ACE00282BD4 /* example.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = example.xcodeproj; path = example/example.xcodeproj; sourceTree = "<group>"; };
 		96325E84190E5CD900A97911 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96325E86190E5CE400A97911 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9644B7EA19F148F3008576FC /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
@@ -175,9 +190,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		960FCF4A1A1B9ACE00282BD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				960FCF4F1A1B9ACF00282BD4 /* example.app */,
+				960FCF511A1B9ACF00282BD4 /* exampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
+				960FCF491A1B9ACE00282BD4 /* example.xcodeproj */,
 				96CD4471192A546F0029A1AA /* AdjustBridge */,
 				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
 				96E5E34B18BBB48A008E7B30 /* Adjust */,
@@ -365,6 +390,12 @@
 			mainGroup = 9679920418BBAE2800394606;
 			productRefGroup = 9679920E18BBAE2800394606 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 960FCF4A1A1B9ACE00282BD4 /* Products */;
+					ProjectRef = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9679920C18BBAE2800394606 /* Adjust */,
@@ -372,6 +403,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		960FCF4F1A1B9ACF00282BD4 /* example.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = example.app;
+			remoteRef = 960FCF4E1A1B9ACF00282BD4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		960FCF511A1B9ACF00282BD4 /* exampleTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = exampleTests.xctest;
+			remoteRef = 960FCF501A1B9ACF00282BD4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9679921B18BBAE2800394606 /* Resources */ = {
