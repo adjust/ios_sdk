@@ -13,7 +13,8 @@
 + (NSString *)clientSdk;
 
 + (void)excludeFromBackup:(NSString *)filename;
-+ (NSString *)dateFormat:(double)value;
++ (NSString *)formatSeconds1970:(double)value;
++ (NSString *)formatDate:(NSDate *)value;
 + (NSDictionary *) buildJsonDict:(NSString *)jsonString;
 
 + (NSString *)getFullFilename:(NSString *) baseFilename;

@@ -89,16 +89,22 @@ static NSDateFormatter * dateFormat;
     }
 }
 
-+ (NSString *)dateFormat:(double) value {
++ (NSString *)formatSeconds1970:(double) value {
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
+
+    return [self formatDate:date];
+}
+
+
++ (NSString *)formatDate:(NSDate *) value {
     if (dateFormat == nil) {
         dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:kDateFormat];
     }
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:value];
-
-    return [dateFormat stringFromDate:date];
+    return [dateFormat stringFromDate:value];
 }
+
 
 + (NSDictionary *)buildJsonDict:(NSString *)jsonString {
     NSError *error = nil;

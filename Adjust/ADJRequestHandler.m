@@ -124,7 +124,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    NSString *dateString = [ADJUtil dateFormat:now];
+    NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString aiUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
     [pairs addObject:sentAtPair];

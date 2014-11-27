@@ -28,6 +28,8 @@
 - (void) setAttribution:(ADJAttribution*)attribution;
 
 - (void) updateAttribution:(ADJAttribution*) attribution;
+- (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
+
 - (void) launchAttributionDelegate;
 
 - (void) setOfflineMode:(BOOL)enabled;

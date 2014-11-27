@@ -172,16 +172,18 @@
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
 #if !ADJUST_NO_IDA
     Class ADClientClass = NSClassFromString(@"ADClient");
+
     if (ADClientClass) {
         @try {
             SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
-            SEL iadSelector = NSSelectorFromString(@"determineAppInstallationAttributionWithCompletionHandler:");
+            SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
 
-            [ADClientSharedClientInstance performSelector:iadSelector withObject:^(BOOL appInstallationWasAttributedToiAd) {
-                activityHandler.isIad = appInstallationWasAttributedToiAd;
+            [ADClientSharedClientInstance performSelector:iadDateSelector
+                withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
+                    [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
             }];
 #pragma clang diagnostic pop
         }

@@ -19,7 +19,6 @@
         copy.idForAdvertisers = [self.idForAdvertisers copyWithZone:zone];
         copy.fbAttributionId = [self.fbAttributionId copyWithZone:zone];
         copy.trackingEnabled = self.trackingEnabled;
-        copy.isIad = self.isIad;
         copy.vendorId = [self.vendorId copyWithZone:zone];
         copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.clientSdk = [self.clientSdk copyWithZone:zone];

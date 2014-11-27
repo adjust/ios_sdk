@@ -157,15 +157,18 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)setIsIad:(BOOL)isIad {
-    self.deviceInfo.isIad = isIad;
-    if (isIad) {
-        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                     andActivityState:self.activityState
-                                                                            andConfig:self.adjustConfig];
+- (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
+    if (iAdImpressionDate != nil || appPurchaseDate != nil) {
+        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                           initWithDeviceInfo:self.deviceInfo
+                                           andActivityState:self.activityState
+                                           andConfig:self.adjustConfig];
 
-        ADJActivityPackage *reattributionPackage = [clickBuilder buildClickPackage];
-        [self.packageHandler sendClickPackage:reattributionPackage];
+        [clickBuilder setIAdImpressionDate:iAdImpressionDate];
+        [clickBuilder setAppPurchaseDate:appPurchaseDate];
+
+        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
+        [self.packageHandler sendClickPackage:clickPackage];
     }
 }
 
@@ -346,9 +349,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                  andActivityState:self.activityState
                                                                         andConfig:self.adjustConfig];
-    eventBuilder.event = event;
 
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
 
     if (self.adjustConfig.eventBufferingEnabled) {
@@ -363,6 +365,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
+    ADJAttribution * attribution = [[ADJAttribution alloc] init];
+    BOOL adjustParamsFound = NO;
 
     for (NSString* fieldValuePair in queryArray) {
         NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
@@ -377,22 +381,53 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
         if (keyWOutPrefix.length == 0) continue;
 
-        [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+        adjustParamsFound = YES;
+        if (![self trySetAttributionDeeplink:attribution withKey:keyWOutPrefix withValue:value]) {
+            [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+        }
     }
 
     [self.attributionHandler getAttribution];
 
-    if (adjustDeepLinks.count == 0) {
+    if (!adjustParamsFound) {
         return;
     }
 
-    ADJPackageBuilder *ClickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+    ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                  andActivityState:self.activityState
                                                                         andConfig:self.adjustConfig];
-    ClickBuilder.deeplinkParameters = adjustDeepLinks;
+    clickBuilder.deeplinkParameters = adjustDeepLinks;
+    clickBuilder.attribution = attribution;
 
-    ADJActivityPackage *reattributionPackage = [ClickBuilder buildClickPackage];
-    [self.packageHandler sendClickPackage:reattributionPackage];
+    ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    [self.packageHandler sendClickPackage:clickPackage];
+}
+
+- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)attribution
+                            withKey:(NSString *)key
+                          withValue:(NSString*)value {
+
+    if ([key isEqualToString:@"tracker"]) {
+        attribution.trackerName = value;
+        return YES;
+    }
+
+    if ([key isEqualToString:@"campaign"]) {
+        attribution.campaign = value;
+        return YES;
+    }
+
+    if ([key isEqualToString:@"adgroup"]) {
+        attribution.adgroup = value;
+        return YES;
+    }
+
+    if ([key isEqualToString:@"creative"]) {
+        attribution.creative = value;
+        return YES;
+    }
+
+    return NO;
 }
 
 - (void) setDeviceTokenInternal:(NSData *)deviceToken {

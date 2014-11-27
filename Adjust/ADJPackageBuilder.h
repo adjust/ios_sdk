@@ -15,12 +15,12 @@
 @interface ADJPackageBuilder : NSObject
 
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
-@property (nonatomic, copy) ADJEvent* event;
 @property (nonatomic, copy) ADJActivityState *activityState;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, assign) BOOL hasDelegate;
-
-// reattributions
+@property (nonatomic, copy) ADJAttribution * attribution;
+@property (nonatomic, copy) NSDate * iAdImpressionDate;
+@property (nonatomic, copy) NSDate * appPurchaseDate;
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
@@ -28,7 +28,6 @@
                 andConfig:(ADJConfig *)adjustConfig;
 
 - (ADJActivityPackage *)buildSessionPackage;
-- (ADJActivityPackage *)buildEventPackage;
-- (ADJActivityPackage *)buildClickPackage;
-
+- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 @end

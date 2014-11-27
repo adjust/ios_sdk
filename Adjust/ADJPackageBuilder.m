@@ -9,6 +9,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "ADJUtil.h"
+#import "ADJAttribution.h"
 
 #pragma mark -
 @implementation ADJPackageBuilder
@@ -48,41 +49,51 @@
     return sessionPackage;
 }
 
-- (ADJActivityPackage *)buildEventPackage {
+- (ADJActivityPackage *)buildEventPackage:(ADJEvent *) event{
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
-    [self parameters:parameters setString:self.amountString forKey:@"amount"];
-    [self parameters:parameters setString:self.event.currency forKey:@"currency"];
-    [self parameters:parameters setString:self.event.eventToken forKey:@"event_token"];
+    NSString * amountString = [self amountString:event];
+    [self parameters:parameters setString:amountString forKey:@"amount"];
+    [self parameters:parameters setString:event.currency forKey:@"currency"];
+    [self parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
     // join the permanent parameters with the ones from the event
-    NSMutableDictionary * callbackParameters = [self joinParamters:self.adjustConfig.callbackPermanentParameters parameters:self.event.callbackParameters];
+    NSMutableDictionary * callbackParameters = [self joinParamters:self.adjustConfig.callbackPermanentParameters parameters:event.callbackParameters];
     [self parameters:parameters setDictionaryJson:callbackParameters forKey:@"callback_params"];
 
-    NSMutableDictionary * partnerParamters = [self joinParamters:self.adjustConfig.partnerPermanentParameters parameters:self.event.partnerParameters];
+    NSMutableDictionary * partnerParamters = [self joinParamters:self.adjustConfig.partnerPermanentParameters parameters:event.partnerParameters];
     [self parameters:parameters setDictionaryJson:partnerParamters forKey:@"partner_params"];
 
     ADJActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
     eventPackage.activityKind = ADJActivityKindEvent;
-    eventPackage.suffix = self.eventSuffix;
+    eventPackage.suffix = [self eventSuffix:event];
     eventPackage.parameters = parameters;
 
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildClickPackage {
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource{
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"deeplink_params"];
-    [self parameters:parameters setBool:self.deviceInfo.isIad             forKey:@"is_iad"];
+    [self parameters:parameters setString:@"source" forKey:clickSource];
+    [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"params"];
+    [self parameters:parameters setDate:self.iAdImpressionDate            forKey:@"click_time"];
+    [self parameters:parameters setDate:self.appPurchaseDate              forKey:@"purchase_time"];
 
-    ADJActivityPackage *reattributionPackage = [self defaultActivityPackage];
-    reattributionPackage.path = @"/sdk_click";
-    reattributionPackage.activityKind = ADJActivityKindClick;
-    reattributionPackage.suffix = @"";
-    reattributionPackage.parameters = parameters;
+    if (self.attribution != nil) {
+        [self parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
+        [self parameters:parameters setString:self.attribution.campaign forKey:@"campaign"];
+        [self parameters:parameters setString:self.attribution.adgroup forKey:@"adgroup"];
+        [self parameters:parameters setString:self.attribution.creative forKey:@"creative"];
+    }
 
-    return reattributionPackage;
+    ADJActivityPackage *clickPackage = [self defaultActivityPackage];
+    clickPackage.path = @"/sdk_click";
+    clickPackage.activityKind = ADJActivityKindClick;
+    clickPackage.suffix = @"";
+    clickPackage.parameters = parameters;
+
+    return clickPackage;
 }
 
 #pragma mark private
@@ -125,7 +136,7 @@
 
 - (void) constructActivityState:(ADJActivityState *)activityState
                   withParamters:(NSMutableDictionary *)parameters {
-    [self parameters:parameters setDate:activityState.createdAt            forKey:@"created_at"];
+    [self parameters:parameters setDate1970:activityState.createdAt        forKey:@"created_at"];
     [self parameters:parameters setInt:activityState.sessionCount          forKey:@"session_count"];
     [self parameters:parameters setInt:activityState.subsessionCount       forKey:@"subsession_count"];
     [self parameters:parameters setDuration:activityState.sessionLength    forKey:@"session_length"];
@@ -150,22 +161,22 @@
 }
 
 
-- (NSString *)amountString {
-    if (self.event.revenue == nil || [self.event.revenue doubleValue] == 0) {
+- (NSString *)amountString:(ADJEvent*)event {
+    if (event.revenue == nil || [event.revenue doubleValue] == 0) {
         return nil;
     }
-    double revenue = [self.event.revenue doubleValue];
+    double revenue = [event.revenue doubleValue];
     int amountInMillis = round(1000 * revenue);
-    self.event.revenue = [NSNumber  numberWithDouble:(amountInMillis / 1000.0)]; // now rounded to one decimal point
+    event.revenue = [NSNumber  numberWithDouble:(amountInMillis / 1000.0)]; // now rounded to one decimal point
     NSString *amountString = [NSNumber numberWithInt:amountInMillis].stringValue;
     return amountString;
 }
 
-- (NSString *)eventSuffix {
-    if (self.event.revenue == nil) {
-        return [NSString stringWithFormat:@" '%@'", self.event.eventToken];
+- (NSString *)eventSuffix:(ADJEvent*)event {
+    if (event.revenue == nil) {
+        return [NSString stringWithFormat:@" '%@'", event.eventToken];
     } else {
-        return [NSString stringWithFormat:@" (%.3f cent, '%@')", [self.event.revenue doubleValue], self.event.eventToken];
+        return [NSString stringWithFormat:@" (%.3f cent, '%@')", [event.revenue doubleValue], event.eventToken];
     }
 }
 
@@ -182,10 +193,17 @@
     [self parameters:parameters setString:valueString forKey:key];
 }
 
-- (void)parameters:(NSMutableDictionary *)parameters setDate:(double)value forKey:(NSString *)key {
+- (void)parameters:(NSMutableDictionary *)parameters setDate1970:(double)value forKey:(NSString *)key {
     if (value < 0) return;
 
-    NSString *dateString = [ADJUtil dateFormat:value];
+    NSString *dateString = [ADJUtil formatSeconds1970:value];
+    [self parameters:parameters setString:dateString forKey:key];
+}
+
+- (void)parameters:(NSMutableDictionary *)parameters setDate:(NSDate *)value forKey:(NSString *)key {
+    if (value == nil) return;
+
+    NSString *dateString = [ADJUtil formatDate:value];
     [self parameters:parameters setString:dateString forKey:key];
 }
 
@@ -210,6 +228,14 @@
     int valueInt = [[NSNumber numberWithBool:value] intValue];
 
     [self parameters:parameters setInt:valueInt forKey:key];
+}
+
+- (void)parameters:(NSMutableDictionary *)parameters setNumberBool:(NSNumber *)value forKey:(NSString *)key {
+    if (value == nil);
+
+    BOOL boolValue = [value boolValue];
+
+    [self parameters:parameters setBool:boolValue forKey:key];
 }
 
 - (NSMutableDictionary *) joinParamters:(NSMutableDictionary *)permanentParameters
