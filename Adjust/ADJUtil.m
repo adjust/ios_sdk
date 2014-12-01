@@ -161,5 +161,24 @@ static NSDateFormatter * dateFormat;
 
 }
 
++ (NSString *) queryString:(NSDictionary *)parameters {
+    NSMutableArray *pairs = [NSMutableArray array];
+    for (NSString *key in parameters) {
+        NSString *value = [parameters objectForKey:key];
+        NSString *escapedValue = [value aiUrlEncode];
+        NSString *pair = [NSString stringWithFormat:@"%@=%@", key, escapedValue];
+        [pairs addObject:pair];
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+    NSString *dateString = [ADJUtil formatSeconds1970:now];
+    NSString *escapedDate = [dateString aiUrlEncode];
+    NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
+    [pairs addObject:sentAtPair];
+
+    NSString *queryString = [pairs componentsJoinedByString:@"&"];
+
+    return queryString;
+}
 
 @end

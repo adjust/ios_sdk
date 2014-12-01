@@ -96,6 +96,25 @@
     return clickPackage;
 }
 
+- (ADJActivityPackage *)buildAttributionPackage {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    [self parameters:parameters setString:self.deviceInfo.macSha1          forKey:@"mac_sha1"];
+    [self parameters:parameters setString:self.deviceInfo.idForAdvertisers forKey:@"idfa"];
+    [self parameters:parameters setString:self.deviceInfo.vendorId         forKey:@"idfv"];
+    [self parameters:parameters setString:self.deviceInfo.macShortMd5      forKey:@"mac_md5"];
+    [self parameters:parameters setString:self.adjustConfig.appToken       forKey:@"app_token"];
+    [self parameters:parameters setString:self.adjustConfig.environment    forKey:@"environment"];
+    [self parameters:parameters setString:self.activityState.uuid          forKey:@"ios_uuid"];
+    [self parameters:parameters setBool:!self.hasDelegate                  forKey:@"needs_attribution_data"];
+
+    ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
+    attributionPackage.path = @"/attribution";
+    attributionPackage.parameters = parameters;
+
+    return attributionPackage;
+}
+
 #pragma mark private
 - (ADJActivityPackage *)defaultActivityPackage {
     ADJActivityPackage *activityPackage = [[ADJActivityPackage alloc] init];

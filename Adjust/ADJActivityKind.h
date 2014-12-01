@@ -13,7 +13,7 @@ typedef enum {
     ADJActivityKindSession       = 1,
     ADJActivityKindEvent         = 2,
     ADJActivityKindRevenue       = 3,
-    ADJActivityKindClick = 4,
+    ADJActivityKindClick         = 4,
 } ADJActivityKind;
 
 ADJActivityKind ADJActivityKindFromString(NSString *string);

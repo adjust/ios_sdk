@@ -20,9 +20,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) NSURL *url;
 @property (nonatomic, retain) ADJTimer *askInTimer;
 @property (nonatomic, retain) ADJTimer *maxDelayTimer;
+@property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 
 @end
 
@@ -30,20 +30,26 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 @implementation ADJAttributionHandler
 
-+ (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler withMaxDelay:(NSNumber *)milliseconds{
-    return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler withMaxDelay:milliseconds];
++ (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                           withMaxDelay:(NSNumber *)milliseconds
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+{
+    return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
+                                                     withMaxDelay:milliseconds
+                                                     withAttributionPackage:attributionPackage];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                 withMaxDelay:(NSNumber* )milliseconds{
+                 withMaxDelay:(NSNumber*) milliseconds
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+{
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
-    self.url = [NSURL URLWithString:ADJUtil.baseUrl];
-    //TODO change baseURL
+    self.attributionPackage = attributionPackage;
 
     if (milliseconds != nil) {
         uint64_t timer_nano = [milliseconds intValue] * NSEC_PER_MSEC;
@@ -68,7 +74,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
-    if (jsonDict == nil) return;
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
     ADJAttribution * attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
@@ -86,12 +92,16 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     };
 
+    [self.logger debug:@"waiting to query attribution in %d milliseconds", [timer_milliseconds intValue]];
+
     uint64_t timer_nano = [timer_milliseconds intValue] * NSEC_PER_MSEC;
     self.askInTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];
     [self.askInTimer resume];
 }
 
 -(void) getAttributionInternal {
+    [self.logger verbose:@"%@", self.attributionPackage.extendedString];
+
     NSMutableURLRequest *request = [self request];
     NSError *requestError;
     NSURLResponse *urlResponse = nil;
@@ -106,13 +116,22 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     NSString *responseString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-    [self.logger verbose:@"attribution response: %@", responseString];
+    NSInteger statusCode = ((NSHTTPURLResponse*)urlResponse).statusCode;
+    [self.logger verbose:@"status code %d for attribution response: %@", statusCode, responseString];
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
 
-    if (jsonDict == nil) {
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
         [self.logger error:@"Failed to parse json attribution response: %@", responseString.aiTrim];
         return;
+    }
+
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+
+    if (statusCode == 200) {
+        [self.logger info:@"%@", messageResponse];
+    } else {
+        [self.logger error:@"%@", messageResponse];
     }
 
     [self checkAttributionInternal:jsonDict];
@@ -121,11 +140,22 @@ static const double kRequestTimeout = 60; // 60 seconds
 #pragma mark - private
 
 - (NSMutableURLRequest *)request {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self url]];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"GET";
 
+    [request setValue:self.attributionPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+
     return request;
+}
+
+- (NSURL *)url {
+    NSString * parameters = [ADJUtil queryString:self.attributionPackage.parameters];
+    NSString * relativePath = [NSString stringWithFormat:@"%@?%@", self.attributionPackage.path, parameters];
+    NSURL * baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
+    NSURL * url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
+
+    return url;
 }
 
 @end

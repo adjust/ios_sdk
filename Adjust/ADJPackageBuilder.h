@@ -30,4 +30,6 @@
 - (ADJActivityPackage *)buildSessionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage *)buildAttributionPackage;
+
 @end

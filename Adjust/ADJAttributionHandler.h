@@ -8,10 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "ADJActivityHandler.h"
+#import "ADJActivityPackage.h"
 
 @protocol ADJAttributionHandler
 
-- (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler withMaxDelay:(NSNumber* )milliseconds;
+- (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
+                 withMaxDelay:(NSNumber*) milliseconds
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
 
 - (void)checkAttribution:(NSDictionary *)jsonDict;
 
@@ -22,6 +25,8 @@
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                          withMaxDelay:(NSNumber* )milliseconds;
+                                           withMaxDelay:(NSNumber *)milliseconds
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+
 
 @end

@@ -63,12 +63,19 @@ static double intervalSubsessionInterval = -1;
     return intervalSubsessionInterval;
 }
 
-+ (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler withMaxDelay:(NSNumber *)milliseconds{
++ (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                                     withMaxDelay:(NSNumber *)milliseconds
+                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage
+{
     if (internalAttributionHandler == nil) {
-        return [ADJAttributionHandler handlerWithActivityHandler:activityHandler withMaxDelay:milliseconds];
+        return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
+                                                    withMaxDelay:milliseconds
+                                          withAttributionPackage:attributionPackage];
     }
 
-    return [internalAttributionHandler initWithActivityHandler:activityHandler withMaxDelay:milliseconds];
+    return [internalAttributionHandler initWithActivityHandler:activityHandler
+                                                  withMaxDelay:milliseconds
+                                        withAttributionPackage:attributionPackage];
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {

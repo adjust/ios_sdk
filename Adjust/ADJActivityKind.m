@@ -28,6 +28,6 @@ NSString* ADJActivityKindToString(ADJActivityKind activityKind) {
         case ADJActivityKindEvent:         return @"event";
         case ADJActivityKindRevenue:       return @"revenue";
         case ADJActivityKindClick:         return @"click";
-        case ADJActivityKindUnknown:       return @"unknown";
+        default:                           return @"unknown";
     }
 }

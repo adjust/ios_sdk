@@ -13,13 +13,13 @@
 
 @implementation ExampleAdjustHelper
 
-+ (void) initAdjust: (id<AdjustDelegate>)adjustDelegate {
-    NSString * yourAppToken = @"{YourAppToken}";
++ (void) initAdjust: (NSObject<AdjustDelegate> *) adjustDelegate {
+    NSString * yourAppToken = @"dgau42x652ul";
     NSString * enviroment = AIEnvironmentSandbox;
     ADJConfig * adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
 
     // change the log level
-    //[adjustConfig setLogLevel:ADJLogLevelVerbose];
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];
 
     // enable event buffering
     //[adjustConfig setEventBufferingEnabled:YES];
@@ -28,7 +28,7 @@
     //[adjustConfig setMacMd5TrackingEnabled:NO];
 
     // set an attribution delegate
-    //[adjustConfig setDelegate:adjustDelegate];
+    [adjustConfig setDelegate:adjustDelegate];
 
     // set maximum waited to get the attribution
     //[adjustConfig setAttributionMaxTimeMilliseconds:10000];

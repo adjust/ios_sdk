@@ -23,7 +23,7 @@
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kActivityStateName     = @"activity state";
-static NSString   * const kAttributionName       = @"attributionlo";
+static NSString   * const kAttributionName       = @"attribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
@@ -106,7 +106,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
-    if (jsonDict == nil) return;
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
     NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
@@ -248,10 +248,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [[UIDevice currentDevice] adjSetIad:self];
 
-    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
-    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds];
-
     self.activityState = [ADJUtil readObject:kActivityStateFilename objectName:kActivityStateName];
+
+    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
+    ADJPackageBuilder * attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                           andActivityState:self.activityState
+                                                                                  andConfig:self.adjustConfig];
+    ADJActivityPackage * attributionPackage = [attributionBuilder buildAttributionPackage];
+    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                                        withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds
+                                                                        withAttributionPackage:attributionPackage];
+
     self.attribution = [ADJUtil readObject:kAttributionFilename objectName:kAttributionName];
 
     [self startInternal];

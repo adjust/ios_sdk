@@ -11,7 +11,7 @@
 
 @interface ExampleAdjustHelper : NSObject
 
-+ (void) initAdjust: (id<AdjustDelegate>)adjustDelegate;
++ (void) initAdjust: (NSObject<AdjustDelegate> *)adjustDelegate;
 
 + (void) triggerEvent: (NSString*) eventToken;
 @end

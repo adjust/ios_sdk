@@ -26,4 +26,5 @@
            filename:(NSString *)filename
          objectName:(NSString *)objectName;
 
++ (NSString *) queryString:(NSDictionary *)parameters;
 @end

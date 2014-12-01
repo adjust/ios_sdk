@@ -11,6 +11,7 @@
 #import "ADJUtil.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
+#import "ADJActivityKind.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 static const double kRequestTimeout = 60; // 60 seconds
@@ -81,18 +82,28 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    [self.logger verbose:@"package response: %@", responseString];
+    NSInteger statusCode = response.statusCode;
+
+    [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
 
-    NSInteger statusCode = response.statusCode;
-    if (statusCode == 200) {
-        [self.logger info:@"status code %d with message %@", statusCode, messageResponse];
-    } else {
-        [self.logger error:@"status code %d with message %@", statusCode, messageResponse];
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
+        NSString * activityKindString = ADJActivityKindToString(package.activityKind);
+        [self.logger error:@"Failed to parse json %@ response: %@", activityKindString, responseString.aiTrim];
+        if (sendToPackageHandler) {
+            [self.packageHandler closeFirstPackage];
+        }
+        return;
     }
 
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+
+    if (statusCode == 200) {
+        [self.logger info:@"%@", messageResponse];
+    } else {
+        [self.logger error:@"%@", messageResponse];
+    }
 
     [self.packageHandler finishedTrackingActivity:jsonDict];
     if (sendToPackageHandler) {
@@ -115,27 +126,13 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (NSData *)bodyForParameters:(NSDictionary *)parameters {
-    NSMutableArray *pairs = [NSMutableArray array];
-    for (NSString *key in parameters) {
-        NSString *value = [parameters objectForKey:key];
-        NSString *escapedValue = [value aiUrlEncode];
-        NSString *pair = [NSString stringWithFormat:@"%@=%@", key, escapedValue];
-        [pairs addObject:pair];
-    }
-
-    double now = [NSDate.date timeIntervalSince1970];
-    NSString *dateString = [ADJUtil formatSeconds1970:now];
-    NSString *escapedDate = [dateString aiUrlEncode];
-    NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-    [pairs addObject:sentAtPair];
-
-    NSString *bodyString = [pairs componentsJoinedByString:@"&"];
+    NSString *bodyString = [ADJUtil queryString:parameters];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
 }
 
 - (void) checkMessageResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil) return;
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
     NSString* messageResponse = [jsonDict objectForKey:@"message"];
     if (messageResponse != nil) {
@@ -144,7 +141,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (void)checkErrorResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil) return;
+    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
     NSString* errorResponse = [jsonDict objectForKey:@"error"];
     if (errorResponse != nil) {

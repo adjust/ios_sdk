@@ -12,6 +12,7 @@
 #import "ADJRequestHandler.h"
 #import "ADJLogger.h"
 #import "ADJAttributionHandler.h"
+#import "ADJActivityPackage.h"
 
 @interface ADJAdjustFactory : NSObject
 
@@ -21,7 +22,9 @@
 + (id<ADJLogger>)logger;
 + (double)sessionInterval;
 + (double)subsessionInterval;
-+ (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler withMaxDelay:(NSNumber *)milliseconds;
++ (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                                     withMaxDelay:(NSNumber *)milliseconds
+                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;

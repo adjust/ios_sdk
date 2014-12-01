@@ -20,7 +20,7 @@
     // Override point for customization after application launch.
     [ExampleAdjustHelper initAdjust:self];
 
-    [ExampleAdjustHelper triggerEvent:@"{your event token}"];
+    [ExampleAdjustHelper triggerEvent:@"gd6a8u"];
     return YES;
 }
 
