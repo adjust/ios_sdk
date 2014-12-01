@@ -108,7 +108,7 @@
 
     [self constructDeviceInfo:self.deviceInfo withParameter:parameters andConfig:self.adjustConfig];
     [self constructActivityState:self.activityState withParamters:parameters];
-    [self parameters:parameters setBool:self.hasDelegate forKey:@"has_delegate"];
+    [self parameters:parameters setBool:!self.hasDelegate forKey:@"needs_attribution_data"];
 
     return parameters;
 }

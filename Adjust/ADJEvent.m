@@ -12,6 +12,10 @@
 
 @implementation ADJEvent
 
++ (ADJEvent *)eventWithEventToken:(NSString *)eventToken {
+    return [[ADJEvent alloc] initWithEventToken:eventToken];
+}
+
 - (id) initWithEventToken:(NSString *)eventToken {
     self = [super init];
     if (self == nil) return nil;

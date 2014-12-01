@@ -19,6 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [ExampleAdjustHelper initAdjust:self];
+
+    [ExampleAdjustHelper triggerEvent:@"{your event token}"];
     return YES;
 }
 
@@ -45,7 +47,7 @@
 }
 
 - (void)adjustAttributionCallback:(ADJAttribution *)attribution {
-
+    NSLog(@"adjust attribution %@", attribution);
 }
 
 @end

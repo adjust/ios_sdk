@@ -13,4 +13,5 @@
 
 + (void) initAdjust: (id<AdjustDelegate>)adjustDelegate;
 
++ (void) triggerEvent: (NSString*) eventToken;
 @end

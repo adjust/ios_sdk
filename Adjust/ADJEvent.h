@@ -18,6 +18,7 @@
 @property (nonatomic, copy) NSString* currency;
 
 - (id) initWithEventToken:(NSString *)eventToken;
++ (ADJEvent *)eventWithEventToken:(NSString *)eventToken;
 
 - (void) addCallbackParameter:(NSString *)key
                      andValue:(NSString *)value;

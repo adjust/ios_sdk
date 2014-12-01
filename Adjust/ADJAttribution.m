@@ -92,7 +92,6 @@
 
     [responseDataDic setObject:(self.finalAttribution? @"true" : @"false") forKey:@"final"];
 
-
     return responseDataDic;
 }
 

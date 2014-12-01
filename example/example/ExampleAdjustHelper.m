@@ -9,6 +9,7 @@
 #import "ExampleAdjustHelper.h"
 #import "Adjust.h"
 #import "ADJLogger.h"
+#import "ADJEvent.h"
 
 @implementation ExampleAdjustHelper
 
@@ -36,10 +37,27 @@
     //[adjustConfig addPermanentCallbackParameter:@"key" andValue:@"value"];
 
     // add partner parameteres to all events and sessions
-    //[adjustConfig addPermanentPartnerParameter:@"key" andValue:@"value"];
+    //[adjustConfig addPermanentPartnerParameter:@"foo" andValue:@"bar"];
 
     Adjust * adjust = [Adjust getInstance];
     [adjust appDidLaunch:adjustConfig];
+}
+
++ (void) triggerEvent: (NSString*) eventToken {
+
+    ADJEvent * event = [ADJEvent eventWithEventToken:eventToken];
+
+    // add revenue 1 cent of an euro
+    //[event setRevenue:0.01 currency:@"EUR"];
+
+    // add callback parameters to this parameter
+    //[event addCallbackParameter:@"key" andValue:@"value"];
+
+    // add partner parameteres to all events and sessions
+    //[event addPartnerParameter:@"foo" andValue:@"bar"];
+
+    Adjust * adjust = [Adjust getInstance];
+    [adjust trackEvent:event];
 }
 
 @end
