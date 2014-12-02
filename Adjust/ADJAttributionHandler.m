@@ -72,6 +72,10 @@ static const double kRequestTimeout = 60; // 60 seconds
     });
 }
 
+- (BOOL) isWaitingInAskIn {
+    return self.askInTimer != nil;
+}
+
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
     if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
@@ -107,6 +111,10 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 -(void) getAttributionInternal {
     [self.logger verbose:@"%@", self.attributionPackage.extendedString];
+    if (self.askInTimer != nil) {
+        [self.askInTimer cancel];
+        self.askInTimer = nil;
+    }
 
     NSMutableURLRequest *request = [self request];
     NSError *requestError;

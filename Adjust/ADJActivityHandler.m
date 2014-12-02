@@ -324,8 +324,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
             self.activityState.sessionCount];
     }
 
-    if (self.activityState.askIn) {
-        [self.attributionHandler getAttribution];
+    if (self.attribution == nil || self.activityState.askIn) {
+        if (![self.attributionHandler isWaitingInAskIn]) {
+            [self.attributionHandler getAttribution];
+        }
     }
 }
 
