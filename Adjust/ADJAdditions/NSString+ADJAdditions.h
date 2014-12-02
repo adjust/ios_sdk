@@ -17,5 +17,6 @@
 - (NSString *)aiRemoveColons;
 
 + (NSString *)aiJoin:(NSString *)strings, ...;
++ (BOOL) adjIsEqual:(NSString *)first toString:(NSString *)second;
 
 @end

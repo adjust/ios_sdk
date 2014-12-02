@@ -43,7 +43,10 @@
 
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     if (self.source != nil) {
-        dispatch_source_set_timer(self.source, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_timer(self.source,
+                                  dispatch_time(DISPATCH_TIME_NOW, interval),
+                                  interval,
+                                  leeway);
         dispatch_source_set_event_handler(self.source, block);
     }
     self.suspended = YES;
@@ -58,7 +61,10 @@
 
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     if (self.source != nil) {
-        dispatch_source_set_timer(self.source, dispatch_walltime(NULL, start), DISPATCH_TIME_FOREVER, leeway);
+        dispatch_source_set_timer(self.source,
+                                  dispatch_time(DISPATCH_TIME_NOW, start),
+                                  DISPATCH_TIME_FOREVER,
+                                  leeway);
         dispatch_source_set_event_handler(self.source, block);
     }
     self.suspended = YES;

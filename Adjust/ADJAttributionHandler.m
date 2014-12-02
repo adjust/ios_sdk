@@ -81,16 +81,22 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSNumber * timer_milliseconds = [jsonDict objectForKey:@"ask_in"];
 
-    if (attribution != nil && timer_milliseconds == nil) {
-        attribution.finalAttribution = YES;
-    }
-
-    [self.activityHandler updateAttribution:attribution];
-
     if (timer_milliseconds == nil) {
-        [self.activityHandler launchAttributionDelegate];
+        BOOL updated = [self.activityHandler updateAttribution:attribution];
+
+        if (updated) {
+            [self.activityHandler launchAttributionDelegate];
+        }
+
+        [self.activityHandler setAskIn:NO];
+
         return;
     };
+
+    [self.activityHandler setAskIn:YES];
+    if (self.askInTimer != nil) {
+        [self.askInTimer suspend];
+    }
 
     [self.logger debug:@"waiting to query attribution in %d milliseconds", [timer_milliseconds intValue]];
 

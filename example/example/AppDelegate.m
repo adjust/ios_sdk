@@ -19,8 +19,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [ExampleAdjustHelper initAdjust:self];
-
-    [ExampleAdjustHelper triggerEvent:@"gd6a8u"];
     return YES;
 }
 

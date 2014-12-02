@@ -26,8 +26,9 @@
 
 - (ADJAttribution*) attribution;
 - (void) setAttribution:(ADJAttribution*)attribution;
+- (void) setAskIn:(BOOL)askIn;
 
-- (void) updateAttribution:(ADJAttribution*) attribution;
+- (BOOL) updateAttribution:(ADJAttribution*) attribution;
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 
 - (void) launchAttributionDelegate;

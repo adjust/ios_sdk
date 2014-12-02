@@ -79,4 +79,12 @@
     return result;
 }
 
++ (BOOL) adjIsEqual:(NSString *)first toString:(NSString *)second {
+    if (first == nil && second == nil) {
+        return YES;
+    }
+
+    return [first isEqualToString:second];
+}
+
 @end

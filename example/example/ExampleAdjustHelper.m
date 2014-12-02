@@ -11,10 +11,12 @@
 #import "ADJLogger.h"
 #import "ADJEvent.h"
 
+static NSString   * const appToken = @"dgau42x652ul";
+
 @implementation ExampleAdjustHelper
 
 + (void) initAdjust: (NSObject<AdjustDelegate> *) adjustDelegate {
-    NSString * yourAppToken = @"dgau42x652ul";
+    NSString * yourAppToken = appToken;
     NSString * enviroment = AIEnvironmentSandbox;
     ADJConfig * adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
 
@@ -43,12 +45,12 @@
     [adjust appDidLaunch:adjustConfig];
 }
 
-+ (void) triggerEvent: (NSString*) eventToken {
++ (void) triggerEvent {
 
-    ADJEvent * event = [ADJEvent eventWithEventToken:eventToken];
+    ADJEvent * event = [ADJEvent eventWithEventToken:@"gd6a8u"];
 
     // add revenue 1 cent of an euro
-    //[event setRevenue:0.01 currency:@"EUR"];
+    [event setRevenue:0.01 currency:@"EUR"];
 
     // add callback parameters to this parameter
     //[event addCallbackParameter:@"key" andValue:@"value"];

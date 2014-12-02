@@ -7,6 +7,7 @@
 //
 
 #import "ADJAttribution.h"
+#import "NSString+ADJAdditions.h"
 
 @implementation ADJAttribution
 
@@ -28,9 +29,6 @@
     self.campaign     = [jsonDict objectForKey:@"campaign"];
     self.adgroup      = [jsonDict objectForKey:@"adgroup"];
     self.creative     = [jsonDict objectForKey:@"creative"];
-    if ([[jsonDict objectForKey:@"final"] isEqualToString:@"true"]) {
-        self.finalAttribution = YES;
-    }
 
     return self;
 }
@@ -39,27 +37,25 @@
     if (attribution == nil) {
         return NO;
     }
-    if (![self.trackerToken isEqualToString:attribution.trackerToken]) {
+    if (![NSString adjIsEqual:self.trackerToken toString:attribution.trackerToken]) {
         return NO;
     }
-    if (![self.trackerName isEqualToString:attribution.trackerName]) {
+    if (![NSString adjIsEqual:self.trackerName toString:attribution.trackerName]) {
         return NO;
     }
-    if (![self.network isEqualToString:attribution.network]) {
+    if (![NSString adjIsEqual:self.network toString:attribution.network]) {
         return NO;
     }
-    if (![self.campaign isEqualToString:attribution.campaign]) {
+    if (![NSString adjIsEqual:self.campaign toString:attribution.campaign]) {
         return NO;
     }
-    if (![self.adgroup isEqualToString:attribution.adgroup]) {
+    if (![NSString adjIsEqual:self.adgroup toString:attribution.adgroup]) {
         return NO;
     }
-    if (![self.creative isEqualToString:attribution.creative]) {
+    if (![NSString adjIsEqual:self.creative toString:attribution.creative]) {
         return NO;
     }
-    if (self.finalAttribution != attribution.finalAttribution) {
-        return NO;
-    }
+
     return YES;
 }
 
@@ -89,8 +85,6 @@
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }
-
-    [responseDataDic setObject:(self.finalAttribution? @"true" : @"false") forKey:@"final"];
 
     return responseDataDic;
 }
@@ -125,7 +119,6 @@
     result = prime * result + [self.campaign hash];
     result = prime * result + [self.adgroup hash];
     result = prime * result + [self.creative hash];
-    result = prime * result + self.finalAttribution;
 
     return result;
 }
@@ -142,9 +135,6 @@
     self.campaign     = [decoder decodeObjectForKey:@"campaign"];
     self.adgroup      = [decoder decodeObjectForKey:@"adgroup"];
     self.creative     = [decoder decodeObjectForKey:@"creative"];
-    if ([[decoder decodeObjectForKey:@"final"] isEqualToString:@"true"]) {
-        self.finalAttribution = YES;
-    }
 
     return self;
 }
@@ -156,7 +146,6 @@
     [encoder encodeObject:self.campaign     forKey:@"campaign"];
     [encoder encodeObject:self.adgroup      forKey:@"adgroup"];
     [encoder encodeObject:self.creative     forKey:@"creative"];
-    [encoder encodeObject:(self.finalAttribution? @"true" : @"false")     forKey:@"final"];
 }
 
 @end

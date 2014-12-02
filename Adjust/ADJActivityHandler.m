@@ -172,15 +172,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (void)updateAttribution:(ADJAttribution *)attribution {
+- (BOOL)updateAttribution:(ADJAttribution *)attribution {
     if (attribution == nil) {
-        return;
+        return NO;
     }
     if ([attribution isEqual:self.attribution]) {
-        return;
+        return NO;
     }
     self.attribution = attribution;
     [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:kAttributionName];
+
+    return YES;
 }
 
 - (void)launchAttributionDelegate{
@@ -208,6 +210,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void) addPermanentPartnerParameter:(NSString *)key
                              andValue:(NSString *)value {
     [self.adjustConfig addPermanentPartnerParameter:key andValue:value];
+}
+
+- (void) setAskIn:(BOOL)askIn {
+    self.activityState.askIn = askIn;
+    [ADJUtil writeObject:self.activityState
+                filename:kActivityStateFilename
+              objectName:kActivityStateName];
 }
 
 #pragma mark - internal
@@ -256,7 +265,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                                   andConfig:self.adjustConfig];
     ADJActivityPackage * attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                        withMaxDelay:adjustConfig.attributionMaxTimeMilliseconds
+                                                                        withMaxDelay:nil
                                                                         withAttributionPackage:attributionPackage];
 
     self.attribution = [ADJUtil readObject:kAttributionFilename objectName:kAttributionName];
@@ -319,6 +328,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger info:@"Processed Subsession %d of Session %d",
             self.activityState.subsessionCount,
             self.activityState.sessionCount];
+    }
+
+    if (self.activityState.askIn) {
+        [self.attributionHandler getAttribution];
     }
 }
 

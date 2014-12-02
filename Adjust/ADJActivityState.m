@@ -31,6 +31,7 @@ static const int kTransactionIdCount = 10;
     self.lastInterval    = -1;
     self.transactionIds  = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.enabled         = YES;
+    self.askIn  = NO;
 
     return self;
 }
@@ -82,6 +83,7 @@ static const int kTransactionIdCount = 10;
     self.uuid            = [decoder decodeObjectForKey:@"uuid"];
     self.transactionIds  = [decoder decodeObjectForKey:@"transactionIds"];
     self.enabled         = [decoder decodeBoolForKey:@"enabled"];
+    self.askIn  = [decoder decodeBoolForKey:@"askAttribution"];
 
     // create UUID for migrating devices
     if (self.uuid == nil) {
@@ -94,6 +96,10 @@ static const int kTransactionIdCount = 10;
 
     if (![decoder containsValueForKey:@"enabled"]) {
         self.enabled = YES;
+    }
+
+    if (![decoder containsValueForKey:@"askAttribution"]) {
+        self.askIn = NO;
     }
 
     self.lastInterval = -1;
@@ -112,6 +118,7 @@ static const int kTransactionIdCount = 10;
     [encoder encodeObject:self.uuid           forKey:@"uuid"];
     [encoder encodeObject:self.transactionIds forKey:@"transactionIds"];
     [encoder encodeBool:self.enabled          forKey:@"enabled"];
+    [encoder encodeBool:self.askIn   forKey:@"askAttribution"];
 }
 
 -(id)copyWithZone:(NSZone *)zone
@@ -128,6 +135,7 @@ static const int kTransactionIdCount = 10;
         copy.eventCount      = self.eventCount;
         copy.enabled         = self.enabled;
         copy.lastActivity    = self.lastActivity;
+        copy.askIn  = self.askIn;
         // transactionIds not copied
     }
 
