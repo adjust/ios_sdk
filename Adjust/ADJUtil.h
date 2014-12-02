@@ -20,7 +20,8 @@
 + (NSString *)getFullFilename:(NSString *) baseFilename;
 
 + (id)readObject:(NSString *)filename
-      objectName:(NSString *)objectName;
+      objectName:(NSString *)objectName
+           class:(Class) classToRead;
 
 + (void)writeObject:(id)object
            filename:(NSString *)filename

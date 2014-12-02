@@ -37,8 +37,6 @@
 - (ADJActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"callback_params"];
-    [self parameters:parameters setDictionaryJson:self.adjustConfig.callbackPermanentParameters forKey:@"callback_params"];
-    [self parameters:parameters setDictionaryJson:self.adjustConfig.partnerPermanentParameters forKey:@"partner_params"];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
@@ -57,12 +55,8 @@
     [self parameters:parameters setString:event.currency forKey:@"currency"];
     [self parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
-    // join the permanent parameters with the ones from the event
-    NSMutableDictionary * callbackParameters = [self joinParamters:self.adjustConfig.callbackPermanentParameters parameters:event.callbackParameters];
-    [self parameters:parameters setDictionaryJson:callbackParameters forKey:@"callback_params"];
-
-    NSMutableDictionary * partnerParamters = [self joinParamters:self.adjustConfig.partnerPermanentParameters parameters:event.partnerParameters];
-    [self parameters:parameters setDictionaryJson:partnerParamters forKey:@"partner_params"];
+    [self parameters:parameters setDictionaryJson:event.callbackParameters forKey:@"callback_params"];
+    [self parameters:parameters setDictionaryJson:event.partnerParameters forKey:@"partner_params"];
 
     ADJActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
@@ -265,9 +259,11 @@
     if (parameters == nil) {
         return permanentParameters;
     }
-    [permanentParameters addEntriesFromDictionary:parameters];
 
-    return permanentParameters;
+    NSMutableDictionary * joinedParameters = [[NSMutableDictionary alloc] initWithDictionary:permanentParameters];
+    [joinedParameters addEntriesFromDictionary:parameters];
+
+    return joinedParameters;
 }
 @end
 

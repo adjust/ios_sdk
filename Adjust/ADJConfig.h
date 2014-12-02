@@ -34,17 +34,9 @@
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 @property (nonatomic, assign) BOOL macMd5TrackingEnabled;
-@property (nonatomic, copy) NSMutableDictionary* callbackPermanentParameters;
-@property (nonatomic, copy) NSMutableDictionary* partnerPermanentParameters;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 
 - (id)initWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
 + (ADJConfig*)configWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
-
-- (void)addPermanentCallbackParameter:(NSString *)key
-                            andValue:(NSString *)value;
-
-- (void)addPermanentPartnerParameter:(NSString *)key
-                             andValue:(NSString *)value;
 
 @end

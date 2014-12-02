@@ -126,12 +126,14 @@ static NSDateFormatter * dateFormat;
 }
 
 + (id)readObject:(NSString *)filename
-      objectName:(NSString *)objectName{
+      objectName:(NSString *)objectName
+           class:(Class) classToRead
+{
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     @try {
         NSString *fullFilename = [ADJUtil getFullFilename:filename];
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:fullFilename];
-        if ([object isKindOfClass:[ADJAttribution class]]) {
+        if ([object isKindOfClass:classToRead]) {
             [logger debug:@"Read %@: %@", objectName, object];
             return object;
         } else if (object == nil) {

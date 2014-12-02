@@ -126,7 +126,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)setEnabled:(BOOL)enabled {
     _enabled = enabled;
-    if ([self checkActivityState:self.activityState]) {
+    if (self.activityState != nil) {
         self.activityState.enabled = enabled;
         [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
     }
@@ -138,7 +138,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (BOOL)isEnabled {
-    if ([self checkActivityState:self.activityState]) {
+    if (self.activityState != nil) {
         return self.activityState.enabled;
     } else {
         return _enabled;
@@ -202,16 +202,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (void) addPermanentCallbackParameter:(NSString *)key
-                              andValue:(NSString *)value {
-    [self.adjustConfig addPermanentCallbackParameter:key andValue:value];
-}
-
-- (void) addPermanentPartnerParameter:(NSString *)key
-                             andValue:(NSString *)value {
-    [self.adjustConfig addPermanentPartnerParameter:key andValue:value];
-}
-
 - (void) setAskIn:(BOOL)askIn {
     self.activityState.askIn = askIn;
     [ADJUtil writeObject:self.activityState
@@ -257,7 +247,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [[UIDevice currentDevice] adjSetIad:self];
 
-    self.activityState = [ADJUtil readObject:kActivityStateFilename objectName:kActivityStateName];
+    self.activityState = [ADJUtil readObject:kActivityStateFilename
+                                  objectName:kActivityStateName
+                                       class:[ADJActivityState class]];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
     ADJPackageBuilder * attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
@@ -268,7 +260,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                         withMaxDelay:nil
                                                                         withAttributionPackage:attributionPackage];
 
-    self.attribution = [ADJUtil readObject:kAttributionFilename objectName:kAttributionName];
+    self.attribution = [ADJUtil readObject:kAttributionFilename
+                                objectName:kAttributionName
+                                     class:[ADJAttribution class]];
 
     [self startInternal];
 }

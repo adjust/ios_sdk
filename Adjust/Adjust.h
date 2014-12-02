@@ -97,12 +97,6 @@ static NSString * const AIEnvironmentProduction = @"production";
 
 + (void)setOfflineMode:(BOOL)enabled;
 
-+ (void)addPermanentCallbackParameter:(NSString *)key
-                             andValue:(NSString *)value;
-
-+ (void)addPermanentPartnerParameter:(NSString *)key
-                            andValue:(NSString *)value;
-
 + (id)getInstance;
 
 - (void)appDidLaunch:(ADJConfig *)adjustConfig;
@@ -115,12 +109,6 @@ static NSString * const AIEnvironmentProduction = @"production";
 - (void)appWillOpenUrl:(NSURL *)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 - (void)setOfflineMode:(BOOL)enabled;
-
-- (void)addPermanentCallbackParameter:(NSString *)key
-                             andValue:(NSString *)value;
-
-- (void)addPermanentPartnerParameter:(NSString *)key
-                            andValue:(NSString *)value;
 
 @end
 

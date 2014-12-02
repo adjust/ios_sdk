@@ -35,12 +35,6 @@ static NSString   * const appToken = @"dgau42x652ul";
     // set maximum waited to get the attribution
     //[adjustConfig setAttributionMaxTimeMilliseconds:10000];
 
-    // add callback parameters to all events and sessions
-    //[adjustConfig addPermanentCallbackParameter:@"key" andValue:@"value"];
-
-    // add partner parameteres to all events and sessions
-    //[adjustConfig addPermanentPartnerParameter:@"foo" andValue:@"bar"];
-
     Adjust * adjust = [Adjust getInstance];
     [adjust appDidLaunch:adjustConfig];
 }
@@ -50,13 +44,13 @@ static NSString   * const appToken = @"dgau42x652ul";
     ADJEvent * event = [ADJEvent eventWithEventToken:@"gd6a8u"];
 
     // add revenue 1 cent of an euro
-    [event setRevenue:0.01 currency:@"EUR"];
+    [event setRevenue:0.015 currency:@"EUR"];
 
     // add callback parameters to this parameter
-    //[event addCallbackParameter:@"key" andValue:@"value"];
+    [event addCallbackParameter:@"keyEvent" andValue:@"value"];
 
     // add partner parameteres to all events and sessions
-    //[event addPartnerParameter:@"foo" andValue:@"bar"];
+    [event addPartnerParameter:@"fooEvent" andValue:@"bar"];
 
     Adjust * adjust = [Adjust getInstance];
     [adjust trackEvent:event];

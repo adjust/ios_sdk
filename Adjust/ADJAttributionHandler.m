@@ -95,7 +95,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     [self.activityHandler setAskIn:YES];
     if (self.askInTimer != nil) {
-        [self.askInTimer suspend];
+        [self.askInTimer cancel];
     }
 
     [self.logger debug:@"waiting to query attribution in %d milliseconds", [timer_milliseconds intValue]];

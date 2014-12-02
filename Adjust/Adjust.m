@@ -69,20 +69,6 @@
     [defaultInstance setOfflineMode:enabled];
 }
 
-+ (void)addPermanentCallbackParameter:(NSString *)key
-                             andValue:(NSString *)value {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance addPermanentCallbackParameter:key andValue:value];
-}
-
-+ (void)addPermanentPartnerParameter:(NSString *)key
-                            andValue:(NSString *)value {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance addPermanentPartnerParameter:key andValue:value];
-
-}
-
-
 + (id)getInstance {
     static Adjust * defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -151,20 +137,6 @@
     if (![self checkActivityHandler]) return;
     [self.activityHandler setOfflineMode:enabled];
 }
-
-- (void)addPermanentCallbackParameter:(NSString *)key
-                             andValue:(NSString *)value {
-    if (![self checkActivityHandler]) return;
-    [self.activityHandler addPermanentCallbackParameter:key andValue:value];
-}
-
-- (void)addPermanentPartnerParameter:(NSString *)key
-                            andValue:(NSString *)value {
-    if (![self checkActivityHandler]) return;
-    [self.activityHandler addPermanentPartnerParameter:key andValue:value];
-
-}
-
 
 #pragma mark - private
 

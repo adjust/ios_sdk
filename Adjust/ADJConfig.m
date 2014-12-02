@@ -36,24 +36,6 @@
     return self;
 }
 
-- (void) addPermanentCallbackParameter:(NSString *)key
-                              andValue:(NSString *)value {
-    if (_callbackPermanentParameters == nil) {
-        _callbackPermanentParameters = [[NSMutableDictionary alloc] init];
-    }
-
-    [_callbackPermanentParameters setObject:value forKey:key];
-}
-
-- (void) addPermanentPartnerParameter:(NSString *)key
-                             andValue:(NSString *)value {
-    if (_partnerPermanentParameters == nil) {
-        _partnerPermanentParameters = [[NSMutableDictionary alloc] init];
-    }
-
-    [_partnerPermanentParameters setObject:value forKey:key];
-}
-
 - (BOOL) checkEnvironment:(NSString *)environment
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
@@ -86,8 +68,6 @@
         copy.sdkPrefix = [self.environment copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.macMd5TrackingEnabled = self.macMd5TrackingEnabled;
-        copy.callbackPermanentParameters = [self.callbackPermanentParameters copyWithZone:zone];
-        copy.partnerPermanentParameters = [self.partnerPermanentParameters copyWithZone:zone];
         // adjust delegate not copied
     }
 

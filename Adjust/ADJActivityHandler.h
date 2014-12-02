@@ -35,12 +35,6 @@
 
 - (void) setOfflineMode:(BOOL)enabled;
 
-- (void)addPermanentCallbackParameter:(NSString *)key
-                             andValue:(NSString *)value;
-
-- (void)addPermanentPartnerParameter:(NSString *)key
-                            andValue:(NSString *)value;
-
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
