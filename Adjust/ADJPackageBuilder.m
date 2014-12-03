@@ -50,8 +50,7 @@
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *) event{
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
-    NSString * amountString = [self amountString:event];
-    [self parameters:parameters setString:amountString forKey:@"amount"];
+    [self parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [self parameters:parameters setString:event.currency forKey:@"currency"];
     [self parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
@@ -173,18 +172,6 @@
     [self parameters:parameters setString:userAgent.mobileNetworkCode forKey:@"mobile_network_code"];
 }
 
-
-- (NSString *)amountString:(ADJEvent*)event {
-    if (event.revenue == nil || [event.revenue doubleValue] == 0) {
-        return nil;
-    }
-    double revenue = [event.revenue doubleValue];
-    int amountInMillis = round(1000 * revenue);
-    event.revenue = [NSNumber  numberWithDouble:(amountInMillis / 1000.0)]; // now rounded to one decimal point
-    NSString *amountString = [NSNumber numberWithInt:amountInMillis].stringValue;
-    return amountString;
-}
-
 - (NSString *)eventSuffix:(ADJEvent*)event {
     if (event.revenue == nil) {
         return [NSString stringWithFormat:@" '%@'", event.eventToken];
@@ -244,12 +231,21 @@
 }
 
 - (void)parameters:(NSMutableDictionary *)parameters setNumberBool:(NSNumber *)value forKey:(NSString *)key {
-    if (value == nil);
+    if (value == nil) return;
 
     BOOL boolValue = [value boolValue];
 
     [self parameters:parameters setBool:boolValue forKey:key];
 }
+
+- (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
+    if (value == nil);
+
+    NSString * numberString = [value stringValue];
+
+    [self parameters:parameters setString:numberString forKey:key];
+}
+
 
 - (NSMutableDictionary *) joinParamters:(NSMutableDictionary *)permanentParameters
                              parameters:(NSMutableDictionary *)parameters {
