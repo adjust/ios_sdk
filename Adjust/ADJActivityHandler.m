@@ -71,7 +71,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.logger        = ADJAdjustFactory.logger;
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.logger        = ADJAdjustFactory.logger;
     _enabled = YES;
 
     dispatch_async(self.internalQueue, ^{
@@ -346,9 +345,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     // check consistency
     if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
     if (![self checkActivityState:self.activityState]) return;
-    if (![self checkEventTokenNotNil:event.eventToken]) return;
-    if (![self checkEventTokenLength:event.eventToken]) return;
-    if (![self checkAmount:event.revenue]) return;
+    if (![event isValid]) return;
     if (![self checkTransactionId:event.transactionId]) return;
 
     if (!self.activityState.enabled) {
@@ -553,33 +550,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (BOOL)checkAppTokenNotNil:(NSString *)appToken {
     if (appToken == nil) {
         [self.logger error:@"Missing App Token"];
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)checkEventTokenNotNil:(NSString *)eventToken {
-    if (eventToken == nil) {
-        [self.logger error:@"Missing Event Token"];
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)checkEventTokenLength:(NSString *)eventToken {
-    if (eventToken == nil) {
-        return YES;
-    }
-    if (eventToken.length != 6) {
-        [self.logger error:@"Malformed Event Token '%@'", eventToken];
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)checkAmount:(NSNumber *)amount {
-    if (amount != nil && [amount doubleValue] < 0.0) {
-        [self.logger error:@"Invalid amount %.1f", [amount doubleValue]];
         return NO;
     }
     return YES;

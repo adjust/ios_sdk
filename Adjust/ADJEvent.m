@@ -7,6 +7,7 @@
 //
 
 #import "ADJEvent.h"
+#import "ADJAdjustFactory.h"
 
 #pragma mark -
 
@@ -50,6 +51,36 @@
 
 - (void) setTransactionId:(NSString *)transactionId {
     _transactionId = transactionId;
+}
+
+- (BOOL) isValid {
+
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    if (self.eventToken == nil) {
+        [logger error:@"Missing Event Token"];
+        return NO;
+    }
+
+    if (self.eventToken.length != 6) {
+        [logger error:@"Malformed Event Token '%@'", self.eventToken];
+        return NO;
+    }
+
+    if (self.revenue != nil) {
+        double amount =  [self.revenue doubleValue];
+        if (amount < 0.0) {
+            [logger error:@"Invalid amount %.1f", amount];
+            return NO;
+        }
+
+        if (self.currency == nil) {
+            [logger error:@"Currency must be set with revenue"];
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 -(id)copyWithZone:(NSZone *)zone

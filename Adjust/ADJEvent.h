@@ -30,4 +30,6 @@
 // check currency correctness, warn if weird
 - (void) setTransactionId:(NSString *)transactionId;
 
+- (BOOL) isValid;
+
 @end
