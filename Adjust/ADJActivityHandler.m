@@ -43,6 +43,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL offline;
 
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
@@ -190,12 +191,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
-- (void)setOfflineMode:(BOOL)enabled {
-    if (enabled) {
+- (void)setOfflineMode:(BOOL)isOffline {
+    if (isOffline) {
+        self.offline = YES;
         [self endInternal];
+        [self.logger info:@"Pausing package handler to put in offline mode"];
     } else {
+        self.offline = NO;
         [self.packageHandler resumeSending];
         [self startTimer];
+        [self.logger info:@"Resuming package handler to put in online mode"];
     }
 }
 
@@ -255,7 +260,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    [self.packageHandler resumeSending];
+    if (!self.offline) {
+        [self.packageHandler resumeSending];
+    }
     [self startTimer];
 
     double now = [NSDate.date timeIntervalSince1970];
