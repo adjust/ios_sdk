@@ -118,58 +118,53 @@
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self constructDeviceInfo:self.deviceInfo withParameter:parameters andConfig:self.adjustConfig];
-    [self constructActivityState:self.activityState withParamters:parameters];
+    [self injectDeviceInfo:self.deviceInfo andConfig:self.adjustConfig intoParameters:parameters];
+    [self injectActivityState:self.activityState intoParamters:parameters];
     [self parameters:parameters setBool:!self.hasDelegate forKey:@"needs_attribution_data"];
 
     return parameters;
 }
 
-- (void) constructDeviceInfo:(ADJDeviceInfo *)deviceInfo
-               withParameter:(NSMutableDictionary *) parameters
-                   andConfig:(ADJConfig*) adjustConfig{
+- (void) injectDeviceInfo:(ADJDeviceInfo *)deviceInfo
+                   andConfig:(ADJConfig*) adjustConfig
+           intoParameters:(NSMutableDictionary *) parameters
+{
+    [self parameters:parameters setString:deviceInfo.macSha1           forKey:@"mac_sha1"];
+    [self parameters:parameters setString:deviceInfo.idForAdvertisers  forKey:@"idfa"];
+    [self parameters:parameters setString:deviceInfo.fbAttributionId   forKey:@"fb_id"];
+    [self parameters:parameters setInt:deviceInfo.trackingEnabled      forKey:@"tracking_enabled"];
+    [self parameters:parameters setString:deviceInfo.vendorId          forKey:@"idfv"];
+    [self parameters:parameters setString:deviceInfo.pushToken         forKey:@"push_token"];
+    [self parameters:parameters setString:deviceInfo.bundeIdentifier   forKey:@"bundle_id"];
+    [self parameters:parameters setString:deviceInfo.bundleVersion     forKey:@"app_version"];
+    [self parameters:parameters setString:deviceInfo.deviceType        forKey:@"device_type"];
+    [self parameters:parameters setString:deviceInfo.deviceName        forKey:@"device_name"];
+    [self parameters:parameters setString:deviceInfo.osName            forKey:@"os_name"];
+    [self parameters:parameters setString:deviceInfo.systemVersion     forKey:@"os_version"];
+    [self parameters:parameters setString:deviceInfo.languageCode      forKey:@"language"];
+    [self parameters:parameters setString:deviceInfo.countryCode       forKey:@"country"];
+    [self parameters:parameters setString:deviceInfo.networkType       forKey:@"network_type"];
+    [self parameters:parameters setString:deviceInfo.mobileCountryCode forKey:@"mobile_country_code"];
+    [self parameters:parameters setString:deviceInfo.mobileNetworkCode forKey:@"mobile_network_code"];
 
-    [self constructUserAgent:deviceInfo.userAgent withParameters:parameters];
-
-    [self parameters:parameters setString:deviceInfo.macSha1          forKey:@"mac_sha1"];
-    [self parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
-    [self parameters:parameters setString:deviceInfo.fbAttributionId  forKey:@"fb_id"];
-    [self parameters:parameters setInt:deviceInfo.trackingEnabled     forKey:@"tracking_enabled"];
-    [self parameters:parameters setString:deviceInfo.vendorId         forKey:@"idfv"];
-    [self parameters:parameters setString:deviceInfo.pushToken        forKey:@"push_token"];
 
     if (adjustConfig.macMd5TrackingEnabled) {
-        [self parameters:parameters setString:deviceInfo.macShortMd5  forKey:@"mac_md5"];
+        [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];
     }
 
-    [self parameters:parameters setString:adjustConfig.appToken    forKey:@"app_token"];
-    [self parameters:parameters setString:adjustConfig.environment forKey:@"environment"];
+    [self parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
+    [self parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
 }
 
-- (void) constructActivityState:(ADJActivityState *)activityState
-                  withParamters:(NSMutableDictionary *)parameters {
-    [self parameters:parameters setDate1970:activityState.createdAt        forKey:@"created_at"];
-    [self parameters:parameters setInt:activityState.sessionCount          forKey:@"session_count"];
-    [self parameters:parameters setInt:activityState.subsessionCount       forKey:@"subsession_count"];
-    [self parameters:parameters setDuration:activityState.sessionLength    forKey:@"session_length"];
-    [self parameters:parameters setDuration:activityState.timeSpent        forKey:@"time_spent"];
-    [self parameters:parameters setString:activityState.uuid               forKey:@"ios_uuid"];
+- (void) injectActivityState:(ADJActivityState *)activityState
+                  intoParamters:(NSMutableDictionary *)parameters {
+    [self parameters:parameters setDate1970:activityState.createdAt     forKey:@"created_at"];
+    [self parameters:parameters setInt:activityState.sessionCount       forKey:@"session_count"];
+    [self parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
+    [self parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
+    [self parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
+    [self parameters:parameters setString:activityState.uuid            forKey:@"ios_uuid"];
 
-}
-
-- (void) constructUserAgent:(ADJUserAgent *)userAgent
-             withParameters:(NSMutableDictionary *) parameters {
-    [self parameters:parameters setString:userAgent.bundeIdentifier forKey:@"bundle_id"];
-    [self parameters:parameters setString:userAgent.bundleVersion   forKey:@"app_version"];
-    [self parameters:parameters setString:userAgent.deviceType      forKey:@"device_type"];
-    [self parameters:parameters setString:userAgent.deviceName      forKey:@"device_name"];
-    [self parameters:parameters setString:userAgent.osName          forKey:@"os_name"];
-    [self parameters:parameters setString:userAgent.systemVersion   forKey:@"os_version"];
-    [self parameters:parameters setString:userAgent.languageCode    forKey:@"language"];
-    [self parameters:parameters setString:userAgent.countryCode     forKey:@"country"];
-    [self parameters:parameters setString:userAgent.networkType     forKey:@"network_type"];
-    [self parameters:parameters setString:userAgent.mobileCountryCode forKey:@"mobile_country_code"];
-    [self parameters:parameters setString:userAgent.mobileNetworkCode forKey:@"mobile_network_code"];
 }
 
 - (NSString *)eventSuffix:(ADJEvent*)event {

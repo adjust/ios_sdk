@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ADJUserAgent.h"
 
 @interface ADJDeviceInfo : NSObject<NSCopying>
 
@@ -19,6 +18,19 @@
 @property (nonatomic, copy) NSString *vendorId;
 @property (nonatomic, copy) NSString *pushToken;
 @property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, copy) ADJUserAgent *userAgent;
+@property (nonatomic, copy) NSString *bundeIdentifier;
+@property (nonatomic, copy) NSString *bundleVersion;
+@property (nonatomic, copy) NSString *deviceType;
+@property (nonatomic, copy) NSString *deviceName;
+@property (nonatomic, copy) NSString *osName;
+@property (nonatomic, copy) NSString *systemVersion;
+@property (nonatomic, copy) NSString *languageCode;
+@property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *networkType;
+@property (nonatomic, copy) NSString *mobileCountryCode;
+@property (nonatomic, copy) NSString *mobileNetworkCode;
+
+- (id) initWithSdkPrefix:(NSString *)sdkPrefix;
++ (ADJDeviceInfo *)deviceInfoWithSdkPrefix:(NSString *)sdkPrefix;
 
 @end

@@ -30,7 +30,6 @@
 		960FCF891A1B9B7D00282BD4 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF6E1A1B9B7D00282BD4 /* ADJUtil.m */; };
 		960FCF8A1A1B9B7D00282BD4 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF701A1B9B7D00282BD4 /* ADJEvent.m */; };
 		960FCF8B1A1B9B7D00282BD4 /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF721A1B9B7D00282BD4 /* ADJDeviceInfo.m */; };
-		960FCF8C1A1B9B7D00282BD4 /* ADJUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF741A1B9B7D00282BD4 /* ADJUserAgent.m */; };
 		960FCF8D1A1B9B7D00282BD4 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */; };
 		960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */; };
 		960FCF8F1A1B9B7D00282BD4 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */; };
@@ -93,8 +92,6 @@
 		960FCF701A1B9B7D00282BD4 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
 		960FCF711A1B9B7D00282BD4 /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
 		960FCF721A1B9B7D00282BD4 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
-		960FCF731A1B9B7D00282BD4 /* ADJUserAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserAgent.h; sourceTree = "<group>"; };
-		960FCF741A1B9B7D00282BD4 /* ADJUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserAgent.m; sourceTree = "<group>"; };
 		960FCF751A1B9B7D00282BD4 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
 		960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
 		960FCF771A1B9B7D00282BD4 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
@@ -228,8 +225,6 @@
 				960FCF701A1B9B7D00282BD4 /* ADJEvent.m */,
 				960FCF711A1B9B7D00282BD4 /* ADJDeviceInfo.h */,
 				960FCF721A1B9B7D00282BD4 /* ADJDeviceInfo.m */,
-				960FCF731A1B9B7D00282BD4 /* ADJUserAgent.h */,
-				960FCF741A1B9B7D00282BD4 /* ADJUserAgent.m */,
 				960FCF751A1B9B7D00282BD4 /* ADJAttributionHandler.h */,
 				960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */,
 				960FCF771A1B9B7D00282BD4 /* ADJAttribution.h */,
@@ -363,7 +358,6 @@
 				960FCF841A1B9B7D00282BD4 /* ADJLogger.m in Sources */,
 				960FCF831A1B9B7D00282BD4 /* ADJAdjustFactory.m in Sources */,
 				960FCF8A1A1B9B7D00282BD4 /* ADJEvent.m in Sources */,
-				960FCF8C1A1B9B7D00282BD4 /* ADJUserAgent.m in Sources */,
 				960FCF7C1A1B9B7D00282BD4 /* NSString+ADJAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -557,6 +551,7 @@
 				960FCF451A1B9ACE00282BD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		960FCF461A1B9ACE00282BD4 /* Build configuration list for PBXNativeTarget "exampleTests" */ = {
 			isa = XCConfigurationList;
@@ -565,6 +560,7 @@
 				960FCF481A1B9ACE00282BD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

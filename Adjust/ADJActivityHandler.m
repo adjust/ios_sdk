@@ -15,10 +15,8 @@
 #import "ADJTimer.h"
 #import "ADJUtil.h"
 #import "UIDevice+ADJAdditions.h"
-#import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
-#include "ADJUserAgent.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -211,29 +209,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark - internal
 - (void)initInternal:(ADJConfig *)adjustConfig {
     self.adjustConfig = adjustConfig;
-    self.deviceInfo = [[ADJDeviceInfo alloc] init];
+    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:adjustConfig.sdkPrefix];
 
     if ([adjustConfig.environment isEqualToString:AIEnvironmentProduction]) {
         [self.logger setLogLevel:ADJLogLevelAssert];
     } else {
         [self.logger setLogLevel:adjustConfig.logLevel];
-    }
-
-    NSString *macAddress = UIDevice.currentDevice.adjMacAddress;
-    NSString *macShort = macAddress.aiRemoveColons;
-
-    self.deviceInfo.macSha1          = macAddress.aiSha1;
-    self.deviceInfo.macShortMd5      = macShort.aiMd5;
-    self.deviceInfo.trackingEnabled  = UIDevice.currentDevice.adjTrackingEnabled;
-    self.deviceInfo.idForAdvertisers = UIDevice.currentDevice.adjIdForAdvertisers;
-    self.deviceInfo.fbAttributionId  = UIDevice.currentDevice.adjFbAttributionId;
-    self.deviceInfo.userAgent        = ADJUserAgent.userAgent;
-    self.deviceInfo.vendorId         = UIDevice.currentDevice.adjVendorId;
-
-    if (adjustConfig.sdkPrefix == nil) {
-        self.deviceInfo.clientSdk        = ADJUtil.clientSdk;
-    } else {
-        self.deviceInfo.clientSdk = [NSString stringWithFormat:@"%@@%@", adjustConfig.sdkPrefix, ADJUtil.clientSdk];
     }
 
     [self.logger info:@"Tracking of macMd5 is %@", adjustConfig.macMd5TrackingEnabled ? @"enabled" : @"disabled"];
