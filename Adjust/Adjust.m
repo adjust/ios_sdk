@@ -25,48 +25,39 @@
 @implementation Adjust
 
 + (void)appDidLaunch:(ADJConfig *)adjustConfig {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance appDidLaunch:adjustConfig];
+    [[Adjust getInstance] appDidLaunch:adjustConfig];
 }
 
 + (void)trackEvent:(ADJEvent *)event {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance trackEvent:event];
+    [[Adjust getInstance] trackEvent:event];
 }
 
 + (void)trackSubsessionStart {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance trackSubsessionStart];
+    [[Adjust getInstance] trackSubsessionStart];
 }
 
 + (void)trackSubsessionEnd {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance trackSubsessionEnd];
+    [[Adjust getInstance] trackSubsessionEnd];
 }
 
 + (void)setEnabled:(BOOL)enabled {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance setEnabled:enabled];
+    [[Adjust getInstance] setEnabled:enabled];
 }
 
 + (BOOL)isEnabled {
-    Adjust * defaultInstance = [Adjust getInstance];
-    return [defaultInstance isEnabled];
+    return [[Adjust getInstance] isEnabled];
 }
 
 + (void)appWillOpenUrl:(NSURL *)url {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance appWillOpenUrl:url];
+    [[Adjust getInstance] appWillOpenUrl:url];
 }
 
 + (void)setDeviceToken:(NSData *)deviceToken {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance setDeviceToken:deviceToken];
+    [[Adjust getInstance] setDeviceToken:deviceToken];
 }
 
 + (void)setOfflineMode:(BOOL)enabled {
-    Adjust * defaultInstance = [Adjust getInstance];
-    [defaultInstance setOfflineMode:enabled];
+    [[Adjust getInstance] setOfflineMode:enabled];
 }
 
 + (id)getInstance {
