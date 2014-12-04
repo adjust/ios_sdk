@@ -17,9 +17,8 @@
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
 static NSString * const kClientSdk = @"ios4.0.0";
 
-static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss:SSS'Z'Z";
+static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter * dateFormat;
-
 
 #pragma mark -
 @implementation ADJUtil
@@ -160,7 +159,6 @@ static NSDateFormatter * dateFormat;
     } else {
         [logger error:@"Failed to write %@ file", objectName];
     }
-
 }
 
 + (NSString *) queryString:(NSDictionary *)parameters {
