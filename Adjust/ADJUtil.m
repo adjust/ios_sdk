@@ -31,28 +31,6 @@ static NSDateFormatter * dateFormat;
     return kClientSdk;
 }
 
-#pragma mark - sanitization
-+ (NSString *)sanitizeU:(NSString *)string {
-    return [self.class sanitize:string defaultString:@"unknown"];
-}
-
-+ (NSString *)sanitizeZ:(NSString *)string {
-    return [self.class sanitize:string defaultString:@"zz"];
-}
-
-+ (NSString *)sanitize:(NSString *)string defaultString:(NSString *)defaultString {
-    if (string == nil) {
-        return defaultString;
-    }
-
-    NSString *result = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (result.length == 0) {
-        return defaultString;
-    }
-
-    return result;
-}
-
 // inspired by https://gist.github.com/kevinbarrett/2002382
 + (void)excludeFromBackup:(NSString *)path {
     NSURL *url = [NSURL fileURLWithPath:path];
