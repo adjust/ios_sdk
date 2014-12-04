@@ -44,7 +44,7 @@
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     if (self.source != nil) {
         dispatch_source_set_timer(self.source,
-                                  dispatch_walltime(NULL, interval),
+                                  dispatch_walltime(NULL, 0),
                                   interval,
                                   leeway);
         dispatch_source_set_event_handler(self.source, block);
