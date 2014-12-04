@@ -110,17 +110,7 @@
 }
 
 - (NSUInteger)hash {
-    NSUInteger prime = 31;
-    NSUInteger result = 1;
-
-    result = prime * result + [self.trackerToken hash];
-    result = prime * result + [self.trackerName hash];
-    result = prime * result + [self.network hash];
-    result = prime * result + [self.campaign hash];
-    result = prime * result + [self.adgroup hash];
-    result = prime * result + [self.creative hash];
-
-    return result;
+    return [self.trackerName hash];
 }
 
 #pragma mark NSCoding
