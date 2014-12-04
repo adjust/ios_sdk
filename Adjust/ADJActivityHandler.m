@@ -237,19 +237,26 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                        class:[ADJActivityState class]];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
-    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                           andActivityState:self.activityState
-                                                                                  andConfig:self.adjustConfig];
-    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                        withMaxDelay:nil
-                                                                        withAttributionPackage:attributionPackage];
+
+    self.attributionHandler = [self buildAttributionHandler];
 
     self.attribution = [ADJUtil readObject:kAttributionFilename
                                 objectName:kAttributionName
                                      class:[ADJAttribution class]];
 
     [self startInternal];
+}
+
+- (id<ADJAttributionHandler>) buildAttributionHandler {
+    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                         andActivityState:self.activityState
+                                                                                andConfig:self.adjustConfig];
+    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
+    id<ADJAttributionHandler> attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                                        withMaxDelay:nil
+                                                              withAttributionPackage:attributionPackage];
+
+    return attributionHandler;
 }
 
 - (void)startInternal {
