@@ -60,7 +60,7 @@
 }
 
 - (NSDictionary *)dictionary {
-    NSMutableDictionary * responseDataDic = [NSMutableDictionary dictionary];
+    NSMutableDictionary *responseDataDic = [NSMutableDictionary dictionary];
 
     if (self.trackerToken != nil) {
         [responseDataDic setObject:self.trackerToken forKey:@"trackerToken"];

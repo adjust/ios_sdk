@@ -39,7 +39,7 @@
     [ExampleAdjustHelper triggerEvent];
 }
 - (IBAction)clickDisableSdk:(UIButton *)sender {
-    NSString * txtDisableSdk = self.btnDisableSdk.titleLabel.text;
+    NSString *txtDisableSdk = self.btnDisableSdk.titleLabel.text;
 
     if ([txtDisableSdk hasPrefix:@"Disable"]) {
         [Adjust setEnabled:NO];

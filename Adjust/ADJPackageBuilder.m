@@ -236,7 +236,7 @@
 - (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
     if (value == nil);
 
-    NSString * numberString = [value stringValue];
+    NSString *numberString = [value stringValue];
 
     [self parameters:parameters setString:numberString forKey:key];
 }
@@ -251,7 +251,7 @@
         return permanentParameters;
     }
 
-    NSMutableDictionary * joinedParameters = [[NSMutableDictionary alloc] initWithDictionary:permanentParameters];
+    NSMutableDictionary *joinedParameters = [[NSMutableDictionary alloc] initWithDictionary:permanentParameters];
     [joinedParameters addEntriesFromDictionary:parameters];
 
     return joinedParameters;

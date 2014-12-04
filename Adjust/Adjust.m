@@ -61,7 +61,7 @@
 }
 
 + (id)getInstance {
-    static Adjust * defaultInstance = nil;
+    static Adjust *defaultInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         defaultInstance = [[self alloc] init];

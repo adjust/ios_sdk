@@ -14,9 +14,9 @@
 @implementation ExampleAdjustHelper
 
 + (void) initAdjust: (NSObject<AdjustDelegate> *) adjustDelegate {
-    NSString * yourAppToken = @"dgau42x652ul";
-    NSString * enviroment = AIEnvironmentSandbox;
-    ADJConfig * adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
+    NSString *yourAppToken = @"dgau42x652ul";
+    NSString *enviroment = AIEnvironmentSandbox;
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
 
     // change the log level
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
@@ -30,13 +30,12 @@
     // set an attribution delegate
     [adjustConfig setDelegate:adjustDelegate];
 
-    Adjust * adjust = [Adjust getInstance];
-    [adjust appDidLaunch:adjustConfig];
+    [Adjust appDidLaunch:adjustConfig];
 }
 
 + (void) triggerEvent {
 
-    ADJEvent * event = [ADJEvent eventWithEventToken:@"gd6a8u"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"gd6a8u"];
 
     // add revenue 1 cent of an euro
     [event setRevenue:0.015 currency:@"EUR"];
@@ -47,8 +46,7 @@
     // add partner parameteres to all events and sessions
     [event addPartnerParameter:@"fooEvent" andValue:@"bar"];
 
-    Adjust * adjust = [Adjust getInstance];
-    [adjust trackEvent:event];
+    [Adjust trackEvent:event];
 }
 
 @end

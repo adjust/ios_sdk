@@ -18,9 +18,9 @@
 @property (nonatomic, copy) ADJActivityState *activityState;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, assign) BOOL hasDelegate;
-@property (nonatomic, copy) ADJAttribution * attribution;
-@property (nonatomic, copy) NSDate * iAdImpressionDate;
-@property (nonatomic, copy) NSDate * appPurchaseDate;
+@property (nonatomic, copy) ADJAttribution *attribution;
+@property (nonatomic, copy) NSDate *iAdImpressionDate;
+@property (nonatomic, copy) NSDate *appPurchaseDate;
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo

@@ -106,7 +106,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
     if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
-    NSString * deepLink = [jsonDict objectForKey:@"deeplink"];
+    NSString *deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
@@ -237,10 +237,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                        class:[ADJActivityState class]];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
-    ADJPackageBuilder * attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                            andActivityState:self.activityState
                                                                                   andConfig:self.adjustConfig];
-    ADJActivityPackage * attributionPackage = [attributionBuilder buildAttributionPackage];
+    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                                         withMaxDelay:nil
                                                                         withAttributionPackage:attributionPackage];
@@ -366,7 +366,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
-    ADJAttribution * attribution = [[ADJAttribution alloc] init];
+    ADJAttribution *attribution = [[ADJAttribution alloc] init];
     BOOL adjustParamsFound = NO;
 
     for (NSString* fieldValuePair in queryArray) {
@@ -394,13 +394,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                  andActivityState:self.activityState
                                                                         andConfig:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = attribution;
 
-    ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler sendClickPackage:clickPackage];
 }
 

@@ -81,9 +81,9 @@ static const double kRequestTimeout = 60; // 60 seconds
     if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
 
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
-    ADJAttribution * attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+    ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
 
-    NSNumber * timer_milliseconds = [jsonDict objectForKey:@"ask_in"];
+    NSNumber *timer_milliseconds = [jsonDict objectForKey:@"ask_in"];
 
     if (timer_milliseconds == nil) {
         BOOL updated = [self.activityHandler updateAttribution:attribution];
@@ -164,10 +164,10 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (NSURL *)url {
-    NSString * parameters = [ADJUtil queryString:self.attributionPackage.parameters];
-    NSString * relativePath = [NSString stringWithFormat:@"%@?%@", self.attributionPackage.path, parameters];
-    NSURL * baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
-    NSURL * url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
+    NSString *parameters = [ADJUtil queryString:self.attributionPackage.parameters];
+    NSString *relativePath = [NSString stringWithFormat:@"%@?%@", self.attributionPackage.path, parameters];
+    NSURL *baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
+    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
 
     return url;
 }

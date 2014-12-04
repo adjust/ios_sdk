@@ -18,7 +18,7 @@ static NSString * const kBaseUrl   = @"https://app.adjust.com";
 static NSString * const kClientSdk = @"ios4.0.0";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
-static NSDateFormatter * dateFormat;
+static NSDateFormatter *dateFormat;
 
 #pragma mark -
 @implementation ADJUtil
