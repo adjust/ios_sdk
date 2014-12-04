@@ -1,4 +1,79 @@
-## Migrate your adjust SDK for iOS to v3.4.0 from v3.0.0
+## Migrate your adjust SDK for iOS to v4.0.0 from v3.4.0
+
+We changed the way to configure the SDK after launching. It should be done before with a new object `ADJConfig`. See an example of how it would look before and after the migration:
+
+```objc
+// before migration
+
+// AppDelegate.h
+#import "Adjust.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
+
+// AppDelegate.m
+
+[Adjust appDidLaunch:@"{YourAppToken}"];
+[Adjust setLogLevel:AILogLevelInfo];
+[Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setDelegate:self];
+
+// ...
+- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
+    // ...
+}
+// after migration
+
+// AppDelegate.h
+#import "ADJConfig.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
+
+// AppDelegate.m
+#import "Adjust.h"
+
+NSString *yourAppToken = @"{YourAppToken}";
+NSString *enviroment = AIEnvironmentSandbox;
+ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
+[adjustConfig setLogLevel:ADJLogLevelVerbose];
+[adjustConfig setDelegate:self];
+[Adjust appDidLaunch:adjustConfig];
+
+// ...
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    // ...
+}
+```
+
+We also changed the way to track events and revenues. Now it is all configured with the `ADJEvent` object. You can follow another example of how an event/revenue would be tracked before and after the migration: 
+
+```objc
+// before the migration
+#import "Adjust.h"
+
+NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+[parameters setObject:@"value" forKey:@"key"];
+[parameters setObject:@"bar" forKey:@"foo"];
+
+[Adjust trackEvent:@"abc123" withParameters:parameters];
+
+//[Adjust trackRevenue:1.0]; not possible in the version. You will have to create an app token
+[Adjust trackRevenue:1.0 transactionId:transaction.transactionIdentifier forEvent:@"xyz987"];
+
+// after the migration
+#import "ADJEvent.h"
+#import "Adjust.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
+[event addCallbackParameter:@"key" andValue:@"value"];
+[event addCallbackParameter:@"foo" andValue:@"bar"];
+[Adjust trackEvent:event];
+
+ADJEvent *revenue = [ADJEvent eventWithEventToken:@"xyz987"];
+[revenue setRevenue:0.01 currency:@"EUR"]; // You have to include the currency
+[revenue setTransactionId:transaction.transactionIdentifier];
+[Adjust trackEvent:revenue];
+
+```
+
+## Additional steps if you come from v3.0.0
 
 We added an optional parameter `transactionId` to our `trackRevenue` methods. If you are tracking In-App Purchases you might want to pass in the transaction identifier provided by Apple to avoid duplicate revenue tracking. It should look roughly like this:
 
