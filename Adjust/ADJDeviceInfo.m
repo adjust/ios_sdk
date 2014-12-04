@@ -30,7 +30,7 @@ static NSString * const kWWAN   = @"WWAN";
     if (self == nil) return nil;
 
     NSString *macAddress = UIDevice.currentDevice.adjMacAddress;
-    NSString *macShort = macAddress.aiRemoveColons;
+    NSString *macShort = macAddress.adjRemoveColons;
     UIDevice *device = UIDevice.currentDevice;
     NSLocale *locale = NSLocale.currentLocale;
     NSBundle *bundle = NSBundle.mainBundle;
@@ -38,8 +38,8 @@ static NSString * const kWWAN   = @"WWAN";
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [networkInfo subscriberCellularProvider];
 
-    self.macSha1          = macAddress.aiSha1;
-    self.macShortMd5      = macShort.aiMd5;
+    self.macSha1          = macAddress.adjSha1;
+    self.macShortMd5      = macShort.adjMd5;
     self.trackingEnabled  = UIDevice.currentDevice.adjTrackingEnabled;
     self.idForAdvertisers = UIDevice.currentDevice.adjIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.adjFbAttributionId;

@@ -136,7 +136,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
 
     if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
-        [self.logger error:@"Failed to parse json attribution response: %@", responseString.aiTrim];
+        [self.logger error:@"Failed to parse json attribution response: %@", responseString.adjTrim];
         return;
     }
 

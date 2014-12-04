@@ -26,9 +26,9 @@
 
 - (BOOL)adjTrackingEnabled {
 #if !ADJUST_NO_IDFA
-    NSString *className  = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
-    NSString *keyManager = [NSString aiJoin:@"shared", @"manager", nil];
-    NSString *keyEnabled = [NSString aiJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+    NSString *className  = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
 
     Class class = NSClassFromString(className);
     if (class) {
@@ -55,10 +55,10 @@
 
 - (NSString *)adjIdForAdvertisers {
 #if !ADJUST_NO_IDFA
-    NSString *className     = [NSString aiJoin:@"A", @"S", @"identifier", @"manager", nil];
-    NSString *keyManager    = [NSString aiJoin:@"shared", @"manager", nil];
-    NSString *keyIdentifier = [NSString aiJoin:@"advertising", @"identifier", nil];
-    NSString *keyString     = [NSString aiJoin:@"UUID", @"string", nil];
+    NSString *className     = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
+    NSString *keyManager    = [NSString adjJoin:@"shared", @"manager", nil];
+    NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
+    NSString *keyString     = [NSString adjJoin:@"UUID", @"string", nil];
 
     Class class = NSClassFromString(className);
     if (class) {

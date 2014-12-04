@@ -9,14 +9,13 @@
 
 @interface NSString(ADJAdditions)
 
-- (NSString *)aiTrim;
-- (NSString *)aiQuote;
-- (NSString *)aiMd5;
-- (NSString *)aiSha1;
-- (NSString *)aiUrlEncode;
-- (NSString *)aiRemoveColons;
+- (NSString *)adjTrim;
+- (NSString *)adjMd5;
+- (NSString *)adjSha1;
+- (NSString *)adjUrlEncode;
+- (NSString *)adjRemoveColons;
 
-+ (NSString *)aiJoin:(NSString *)strings, ...;
++ (NSString *)adjJoin:(NSString *)strings, ...;
 + (BOOL) adjIsEqual:(NSString *)first toString:(NSString *)second;
 
 @end

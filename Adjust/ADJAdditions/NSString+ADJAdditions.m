@@ -12,22 +12,11 @@
 
 @implementation NSString(ADJAdditions)
 
-- (NSString *)aiTrim {
+- (NSString *)adjTrim {
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSString *)aiQuote {
-    if (self == nil) {
-        return nil;
-    }
-
-    if ([self rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound) {
-        return self;
-    }
-    return [NSString stringWithFormat:@"'%@'", self];
-}
-
-- (NSString *)aiMd5 {
+- (NSString *)adjMd5 {
     const char *cStr = [self UTF8String];
     unsigned char digest[16];
     CC_MD5(cStr, (CC_LONG)strlen(cStr), digest);
@@ -39,7 +28,7 @@
     return  output;
 }
 
-- (NSString *)aiSha1 {
+- (NSString *)adjSha1 {
     const char *cstr = [self cStringUsingEncoding:NSUTF8StringEncoding];
     NSData *data = [NSData dataWithBytes:cstr length:self.length];
     uint8_t digest[CC_SHA1_DIGEST_LENGTH];
@@ -52,7 +41,7 @@
     return output;
 }
 
--(NSString *)aiUrlEncode {
+-(NSString *)adjUrlEncode {
     return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
                 NULL,
                 (CFStringRef)self,
@@ -61,11 +50,11 @@
                 CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
 }
 
-- (NSString *)aiRemoveColons {
+- (NSString *)adjRemoveColons {
     return [self stringByReplacingOccurrencesOfString:@":" withString:@""];
 }
 
-+ (NSString *)aiJoin:(NSString *)first, ... {
++ (NSString *)adjJoin:(NSString *)first, ... {
     NSString *iter, *result = first;
     va_list strings;
     va_start(strings, first);
