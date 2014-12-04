@@ -11,12 +11,10 @@
 #import "ADJLogger.h"
 #import "ADJEvent.h"
 
-static NSString   * const appToken = @"dgau42x652ul";
-
 @implementation ExampleAdjustHelper
 
 + (void) initAdjust: (NSObject<AdjustDelegate> *) adjustDelegate {
-    NSString * yourAppToken = appToken;
+    NSString * yourAppToken = @"dgau42x652ul";
     NSString * enviroment = AIEnvironmentSandbox;
     ADJConfig * adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
 
@@ -31,9 +29,6 @@ static NSString   * const appToken = @"dgau42x652ul";
 
     // set an attribution delegate
     [adjustConfig setDelegate:adjustDelegate];
-
-    // set maximum waited to get the attribution
-    //[adjustConfig setAttributionMaxTimeMilliseconds:10000];
 
     Adjust * adjust = [Adjust getInstance];
     [adjust appDidLaunch:adjustConfig];
