@@ -1,7 +1,7 @@
 ## Summary
 
 This is the iOS SDK of adjust™. You can read more about adjust™ at
-[adjust.com]. If your app is a iOS Web App, consult our [iOS Web App][webApp] guide. 
+[adjust.com].
 
 ## Basic Installation
 
@@ -326,7 +326,6 @@ on offline mode, and `NO` to disable it.
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
-[webApp]: https://github.com/adjust/ios_sdk/blob/master/doc/webApp.md
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 
 ## License
