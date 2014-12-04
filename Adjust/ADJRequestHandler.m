@@ -54,7 +54,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self sendInternal:clickPackage sendToPackageHandler:NO];
     });
 }

@@ -46,7 +46,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     self = [super init];
     if (self == nil) return nil;
 
-    self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+    self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
