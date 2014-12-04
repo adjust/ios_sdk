@@ -16,13 +16,7 @@
 @protocol  AdjustDelegate
 @optional
 
-/**
- * Optional delegate method that will get called when a tracking attempt finished
- *
- * @param responseData The response data containing information about the activity
- *     and it's server response. See AIResponseData for details.
- */
-- (void)adjustAttributionCallback:(ADJAttribution *)attribution;
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution;
 
 @end
 

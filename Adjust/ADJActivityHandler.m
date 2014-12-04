@@ -183,10 +183,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)launchAttributionDelegate{
-    if (![self.delegate respondsToSelector:@selector(adjustAttributionCallback:)]) {
+    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return;
     }
-    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionCallback:)
+    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
