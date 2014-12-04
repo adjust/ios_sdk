@@ -36,7 +36,7 @@
 
 - (ADJActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"callback_params"];
+    [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/startup";
