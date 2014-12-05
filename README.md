@@ -272,7 +272,7 @@ policies.][attribution-data]
    your app delegate implementation.
 
     ```objc
-    - (void)adjustAttributionCallback:(ADJAttribution *)attribution {
+    - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
     }
     ```
 
