@@ -20,7 +20,7 @@
 @property (nonatomic, assign) BOOL hasDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) NSDate *clickTime;
-@property (nonatomic, copy) NSDate *purchaseDate;
+@property (nonatomic, copy) NSDate *purchaseTime;
 @property (nonatomic, copy) NSDictionary* deeplinkParameters;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo

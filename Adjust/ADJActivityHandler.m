@@ -161,7 +161,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                            andConfig:self.adjustConfig];
 
         [clickBuilder setClickTime:iAdImpressionDate];
-        [clickBuilder setPurchaseDate:appPurchaseDate];
+        [clickBuilder setPurchaseTime:appPurchaseDate];
 
         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
         [self.packageHandler sendClickPackage:clickPackage];
