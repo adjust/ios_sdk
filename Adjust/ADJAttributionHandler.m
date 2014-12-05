@@ -142,8 +142,8 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSString* messageResponse = [jsonDict objectForKey:@"message"];
 
-    if (statusCode == 200) {
-        [self.logger info:@"%@", messageResponse];
+    if (statusCode != 200) {
+        [self.logger debug:@"%@", messageResponse];
     } else {
         [self.logger error:@"%@", messageResponse];
     }

@@ -218,7 +218,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger setLogLevel:adjustConfig.logLevel];
     }
 
-    [self.logger info:@"Tracking of macMd5 is %@", adjustConfig.macMd5TrackingEnabled ? @"enabled" : @"disabled"];
+    if (!adjustConfig.macMd5TrackingEnabled) {
+        [self.logger info:@"Tracking of macMd5 is disabled"];
+    }
 
     if (adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
