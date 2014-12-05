@@ -51,7 +51,7 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     // add callback parameters to this parameter
-    [event addCallbackParameter:@"key" andValue:@"value"];
+    [event addCallbackParameter:@"key" value:@"value"];
 
     [Adjust trackEvent:event];
 }
@@ -59,7 +59,7 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     // add partner parameteres to all events and sessions
-    [event addPartnerParameter:@"foo" andValue:@"bar"];
+    [event addPartnerParameter:@"foo" value:@"bar"];
 
     [Adjust trackEvent:event];
 }
