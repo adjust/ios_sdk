@@ -88,7 +88,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
 
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
         NSString *activityKindString = ADJActivityKindToString(package.activityKind);
         [self.logger error:@"Failed to parse json %@ response: %@", activityKindString, responseString.adjTrim];
         if (sendToPackageHandler) {
@@ -132,7 +132,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (void) checkMessageResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
 
     NSString* messageResponse = [jsonDict objectForKey:@"message"];
     if (messageResponse != nil) {
@@ -141,7 +141,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (void)checkErrorResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
 
     NSString* errorResponse = [jsonDict objectForKey:@"error"];
     if (errorResponse != nil) {

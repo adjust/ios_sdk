@@ -19,7 +19,7 @@
     self = [super init];
     if (self == nil) return nil;
 
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
         return nil;
     }
 

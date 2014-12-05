@@ -78,7 +78,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
 
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
     ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
@@ -135,7 +135,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
 
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) {
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
         [self.logger error:@"Failed to parse json attribution response: %@", responseString.adjTrim];
         return;
     }

@@ -102,7 +102,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
-    if (jsonDict == nil || jsonDict == (NSDictionary *)[NSNull null]) return;
+    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
 
     NSString *deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
