@@ -212,7 +212,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.adjustConfig = adjustConfig;
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:adjustConfig.sdkPrefix];
 
-    if ([adjustConfig.environment isEqualToString:AIEnvironmentProduction]) {
+    if ([adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
         [self.logger setLogLevel:ADJLogLevelAssert];
     } else {
         [self.logger setLogLevel:adjustConfig.logLevel];

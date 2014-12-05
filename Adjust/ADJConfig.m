@@ -39,10 +39,10 @@
 - (BOOL) checkEnvironment:(NSString *)environment
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
-    if ([environment isEqualToString:AIEnvironmentSandbox]) {
+    if ([environment isEqualToString:ADJEnvironmentSandbox]) {
         [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
         return YES;
-    } else if ([environment isEqualToString:AIEnvironmentProduction]) {
+    } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
         [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
         return YES;
     }
