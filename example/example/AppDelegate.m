@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "ExampleAdjustHelper.h"
 
 @interface AppDelegate ()
 
@@ -38,7 +37,17 @@
 
     [Adjust appDidLaunch:adjustConfig];
 
+    // put the SDK in offline mode
+    //[Adjust setOfflineMode:YES];
+
+    // disable the SDK
+    //[Adjust setEnabled:NO];
+
     return YES;
+}
+
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@"adjust attribution %@", attribution);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -61,10 +70,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@"adjust attribution %@", attribution);
 }
 
 @end
