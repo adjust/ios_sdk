@@ -1,5 +1,5 @@
 //
-//  AITestsUtil.h
+//  ADJTestsUtil.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 12/02/14.
@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AILoggerMock.h"
+#import "ADJLoggerMock.h"
 #import "ADJActivityPackage.h"
 #import "Adjust.h"
 
-@interface AITestsUtil : NSObject <AdjustDelegate>
+@interface ADJTestsUtil : NSObject <AdjustDelegate>
 
 + (NSString *)getFilename:(NSString *)filename;
-+ (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock;
++ (BOOL)deleteFile:(NSString *)filename logger:(ADJLoggerMock *)loggerMock;
 + (ADJActivityPackage *)buildEmptyPackage;
 
 @end

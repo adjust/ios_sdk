@@ -1,5 +1,5 @@
 //
-//  AIActivityHandlerTests.m
+//  ADJActivityHandlerTests.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
@@ -7,23 +7,23 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AILoggerMock.h"
-#import "AIPackageHandlerMock.h"
+#import "ADJLoggerMock.h"
+#import "ADJPackageHandlerMock.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 #import "ADJActivityPackage.h"
-#import "AITestsUtil.h"
+#import "ADJTestsUtil.h"
 #import "ADJUtil.h"
 #import "ADJLogger.h"
 
-@interface AIActivityHandlerTests : XCTestCase
+@interface ADJActivityHandlerTests : XCTestCase
 
-@property (atomic,strong) AILoggerMock *loggerMock;
-@property (atomic,strong) AIPackageHandlerMock *packageHandlerMock;
+@property (atomic,strong) ADJLoggerMock *loggerMock;
+@property (atomic,strong) ADJPackageHandlerMock *packageHandlerMock;
 
 @end
 
-@implementation AIActivityHandlerTests
+@implementation ADJActivityHandlerTests
 
 - (void)setUp
 {
@@ -43,10 +43,10 @@
 }
 
 - (void)reset {
-    self.loggerMock = [[AILoggerMock alloc] init];
+    self.loggerMock = [[ADJLoggerMock alloc] init];
     [ADJAdjustFactory setLogger:self.loggerMock];
 
-    self.packageHandlerMock = [AIPackageHandlerMock alloc];
+    self.packageHandlerMock = [ADJPackageHandlerMock alloc];
     [ADJAdjustFactory setPackageHandler:self.packageHandlerMock];
 
     [ADJAdjustFactory setSessionInterval:-1];
@@ -60,13 +60,13 @@
     [self reset];
 
     //  deleting the activity state file to simulate a first session
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler and start the first session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
 
     //  set the delegate to be called at after sending the package
-    AITestsUtil * testsUtil = [[AITestsUtil alloc] init];
+    ADJTestsUtil * testsUtil = [[ADJTestsUtil alloc] init];
     [activityHandler setDelegate:testsUtil];
 
     // it's necessary to sleep the activity for a while after each handler call
@@ -78,11 +78,11 @@
         @"%@", self.loggerMock);
 
     //  when a session package is being sent the package handler should resume sending
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler resumeSending"],
         @"%@", self.loggerMock);
 
     //  if the package was build, it was sent to the Package Handler
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler addPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler addPackage"], @"%@", self.loggerMock);
 
     // checking the default values of the first session package
     //  should only have one package
@@ -125,7 +125,7 @@
     XCTAssertNotNil((NSString *)parameters[@"idfv"], @"%@", activityPackage.extendedString);
 
     //  after adding, the activity handler ping the Package handler to send the package
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //  check that the package handler calls back with the delegate
@@ -146,7 +146,7 @@
     [self reset];
 
     //  starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  adjust the intervals for testing
     [ADJAdjustFactory setSessionInterval:(2)]; // 2 seconds
@@ -189,7 +189,7 @@
     XCTAssertEqual(2, [(NSString *)parameters[@"subsession_count"] intValue], @"%@", activityPackage.extendedString);
 
     //  check that the package handler was paused
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler pauseSending"],
         @"%@", self.loggerMock);
      */
 }
@@ -200,7 +200,7 @@
     [self reset];
 
     //  starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
@@ -302,7 +302,7 @@
     [self reset];
 
     //  starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
@@ -345,7 +345,7 @@
     XCTAssert([@"fc0721b6dfad5ee110975bb2a263de0061cc705b4a85a8ae3ccfbe7a662fb1ab" isEqualToString:eventPackageParameters[@"push_token"]], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
@@ -381,7 +381,7 @@
     XCTAssertNil(eventPackageParameters[@"params"], @"%@", eventPackage.extendedString);
 
     //   check that the package handler was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     //   check the event count in the written activity state
@@ -470,7 +470,7 @@
     [self reset];
 
     //  starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     //  create handler to start the session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
@@ -497,11 +497,11 @@
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"First session"], @"%@", self.loggerMock);
 
     // delete the first session package from the log
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     // making sure the timer fired did not call the package handler
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendFirstPackage"],
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendFirstPackage"],
         @"%@", self.loggerMock);
 
     // test if the event was not triggered
@@ -511,11 +511,11 @@
     XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 1 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler pauseSending"],
         @"%@", self.loggerMock);
 
     // verify that it was not resumed
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler resumeSending"],
         @"%@", self.loggerMock);
 
     // enable again
@@ -538,11 +538,11 @@
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Event 2 (revenue)"], @"%@", self.loggerMock);
 
     // verify that the application was paused
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler pauseSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler pauseSending"],
         @"%@", self.loggerMock);
 
     // verify that it was also resumed
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler resumeSending"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler resumeSending"],
         @"%@", self.loggerMock);
      */
 }
@@ -553,7 +553,7 @@
     [self reset];
 
     // starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     // create handler to start the session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];
@@ -626,7 +626,7 @@
     [self reset];
 
     // starting from a clean slate
-    XCTAssert([AITestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
+    XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock], @"%@", self.loggerMock);
 
     // create handler to start the session
     id<ADJActivityHandler> activityHandler = [ADJAdjustFactory activityHandlerWithAppToken:@"123456789012"];

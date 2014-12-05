@@ -7,7 +7,7 @@
 //
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
 #import "ADJAdjustFactory.h"
-#import "AILoggerMock.h"
+#import "ADJLoggerMock.h"
 
 static BOOL triggerConnectionError = NO;
 static BOOL triggerResponseError = NO;
@@ -15,7 +15,7 @@ static BOOL triggerResponseError = NO;
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error {
-    AILoggerMock *loggerMock =(AILoggerMock *)ADJAdjustFactory.logger;
+    ADJLoggerMock *loggerMock =(ADJLoggerMock *)ADJAdjustFactory.logger;
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
     if (triggerConnectionError) {

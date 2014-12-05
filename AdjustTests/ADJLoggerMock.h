@@ -11,7 +11,7 @@
 
 static const int ADJLogLevelTest = 0;
 
-@interface AILoggerMock : NSObject <ADJLogger>
+@interface ADJLoggerMock : NSObject <ADJLogger>
     - (void)test:(NSString *)message, ...;
     - (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
 @end

@@ -1,26 +1,26 @@
 //
-//  AIPackageHandlerMock.m
+//  ADJPackageHandlerMock.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "AIPackageHandlerMock.h"
-#import "AILoggerMock.h"
+#import "ADJPackageHandlerMock.h"
+#import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 
-static NSString * const prefix = @"AIPackageHandler ";
+static NSString * const prefix = @"ADJPackageHandler ";
 
-@interface AIPackageHandlerMock()
+@interface ADJPackageHandlerMock()
 
-@property (nonatomic, strong) AILoggerMock *loggerMock;
+@property (nonatomic, strong) ADJLoggerMock *loggerMock;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 
 @end
 
-@implementation AIPackageHandlerMock
+@implementation ADJPackageHandlerMock
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];

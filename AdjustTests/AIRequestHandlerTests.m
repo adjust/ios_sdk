@@ -1,5 +1,5 @@
 //
-//  AIRequestHandlerTests.m
+//  ADJRequestHandlerTests.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 07/02/14.
@@ -8,22 +8,22 @@
 
 #import <XCTest/XCTest.h>
 #import "ADJAdjustFactory.h"
-#import "AILoggerMock.h"
+#import "ADJLoggerMock.h"
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
-#import "AIPackageHandlerMock.h"
-#import "AIRequestHandlerMock.h"
-#import "AITestsUtil.h"
+#import "ADJPackageHandlerMock.h"
+#import "ADJRequestHandlerMock.h"
+#import "ADJTestsUtil.h"
 
-@interface AIRequestHandlerTests : XCTestCase
+@interface ADJRequestHandlerTests : XCTestCase
 
-@property (atomic,strong) AILoggerMock *loggerMock;
-@property (atomic,strong) AIPackageHandlerMock *packageHandlerMock;
+@property (atomic,strong) ADJLoggerMock *loggerMock;
+@property (atomic,strong) ADJPackageHandlerMock *packageHandlerMock;
 @property (atomic,strong) id<ADJRequestHandler> requestHandler;
 
 
 @end
 
-@implementation AIRequestHandlerTests
+@implementation ADJRequestHandlerTests
 
 - (void)setUp
 {
@@ -43,10 +43,10 @@
 }
 
 - (void)reset {
-    self.loggerMock = [[AILoggerMock alloc] init];
+    self.loggerMock = [[ADJLoggerMock alloc] init];
     [ADJAdjustFactory setLogger:self.loggerMock];
 
-    self.packageHandlerMock = [[AIPackageHandlerMock alloc] init];
+    self.packageHandlerMock = [[ADJPackageHandlerMock alloc] init];
     self.requestHandler =[ADJAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
 }
 
@@ -60,7 +60,7 @@
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:NO];
 
-    [self.requestHandler sendPackage:[AITestsUtil buildEmptyPackage]];
+    [self.requestHandler sendPackage:[ADJTestsUtil buildEmptyPackage]];
 
     [NSThread sleepForTimeInterval:1.0];
 
@@ -71,7 +71,7 @@
               @"%@", self.loggerMock);
 
     //  check that the package handler was pinged after sending
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler finishedTrackingActivity"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler finishedTrackingActivity"],
               @"%@", self.loggerMock);
 
     //  check the response data, the kind is unknown because is set by the package handler
@@ -85,7 +85,7 @@
               @"%@", self.loggerMock);
 
     //  check that the package handler was called to send the next package
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendNextPackage"], @"%@", self.loggerMock);
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendNextPackage"], @"%@", self.loggerMock);
      */
 }
 
@@ -98,7 +98,7 @@
     [NSURLConnection setConnectionError:YES];
     [NSURLConnection setResponseError:NO];
 
-    [self.requestHandler sendPackage:[AITestsUtil buildEmptyPackage]];
+    [self.requestHandler sendPackage:[ADJTestsUtil buildEmptyPackage]];
     [NSThread sleepForTimeInterval:1.0];
 
     //  check the URL Connection was called
@@ -106,7 +106,7 @@
               @"%@", self.loggerMock);
 
     //  check that the package handler was pinged after sending
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler finishedTrackingActivity"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler finishedTrackingActivity"],
               @"%@", self.loggerMock);
 
     //  check the response data,
@@ -119,7 +119,7 @@
               @"%@", self.loggerMock);
 
     //  check that the package handler was called to close the package to retry later
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler closeFirstPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler closeFirstPackage"],
               @"%@", self.loggerMock);
      */
 
@@ -134,14 +134,14 @@
     [NSURLConnection setConnectionError:NO];
     [NSURLConnection setResponseError:YES];
 
-    [self.requestHandler sendPackage:[AITestsUtil buildEmptyPackage]];
+    [self.requestHandler sendPackage:[ADJTestsUtil buildEmptyPackage]];
     [NSThread sleepForTimeInterval:1.0];
 
     //  check the URL Connection was called
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
               @"%@", self.loggerMock);
     //  check that the package handler was pinged after sending
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler finishedTrackingActivity"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler finishedTrackingActivity"],
               @"%@", self.loggerMock);
 
     //  check the response data,
@@ -155,7 +155,7 @@
               @"%@", sresponseData);
 
     //  check that the package handler was called to send the next package
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"AIPackageHandler sendNextPackage"],
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendNextPackage"],
               @"%@", self.loggerMock);
      */
 }

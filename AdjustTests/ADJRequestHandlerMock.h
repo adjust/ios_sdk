@@ -1,5 +1,5 @@
 //
-//  AIRequestHandlerMock.h
+//  ADJRequestHandlerMock.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ADJRequestHandler.h"
 
-@interface AIRequestHandlerMock : NSObject <ADJRequestHandler>
+@interface ADJRequestHandlerMock : NSObject <ADJRequestHandler>
 
 @property (nonatomic, assign) BOOL connectionError;
 

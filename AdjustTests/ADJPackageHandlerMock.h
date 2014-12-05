@@ -1,5 +1,5 @@
 //
-//  AIPackageHandlerMock.h
+//  ADJPackageHandlerMock.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
@@ -8,7 +8,7 @@
 
 #import "ADJPackageHandler.h"
 
-@interface AIPackageHandlerMock : NSObject <ADJPackageHandler>
+@interface ADJPackageHandlerMock : NSObject <ADJPackageHandler>
 
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 

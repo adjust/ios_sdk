@@ -1,17 +1,17 @@
 //
-//  AITestsUtil.m
+//  ADJTestsUtil.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 12/02/14.
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "AITestsUtil.h"
+#import "ADJTestsUtil.h"
 #import "ADJPackageBuilder.h"
-#import "AILoggerMock.h"
+#import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
-@implementation AITestsUtil
+@implementation ADJTestsUtil
 
 + (NSString *)getFilename:(NSString *)filename {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -20,8 +20,8 @@
     return filepath;
 }
 
-+ (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock {
-    NSString *filepath = [AITestsUtil getFilename:filename];
++ (BOOL)deleteFile:(NSString *)filename logger:(ADJLoggerMock *)loggerMock {
+    NSString *filepath = [ADJTestsUtil getFilename:filename];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error = nil;
     BOOL exists = [fileManager fileExistsAtPath:filepath];

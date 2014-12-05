@@ -1,5 +1,5 @@
 //
-//  AIActivityHandlerMock.h
+//  ADJActivityHandlerMock.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 11/02/14.
@@ -8,6 +8,6 @@
 
 #import "ADJActivityHandler.h"
 
-@interface AIActivityHandlerMock : NSObject <ADJActivityHandler>
+@interface ADJActivityHandlerMock : NSObject <ADJActivityHandler>
 
 @end

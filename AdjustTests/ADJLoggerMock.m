@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "AILoggerMock.h"
+#import "ADJLoggerMock.h"
 
 static NSString * const kLogTag = @"AdjustTests";
 
-@interface AILoggerMock()
+@interface ADJLoggerMock()
 
 @property (nonatomic, strong) NSMutableString *logBuffer;
 @property (nonatomic, strong) NSDictionary *logMap;
 
 @end
 
-@implementation AILoggerMock
+@implementation ADJLoggerMock
 
 - (id)init {
     self = [super init];
