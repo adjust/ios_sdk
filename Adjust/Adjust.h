@@ -31,7 +31,14 @@ static NSString * const ADJEnvironmentProduction = @"production";
  * This is required to initialize Adjust. Call this in the didFinishLaunching
  * method of your AppDelegate.
  *
- * @param appToken The App Token of your app. This unique identifier can
+ * Enable event buffering if your app triggers a lot of events.
+ * When enabled, events get buffered and only get tracked each
+ * minute. Buffered events are still persisted, of course.
+ *
+ * Disable macMd5 tracking if your privacy constraints require it.
+ *
+ * @param adjustConfig The configuration object that includes the environment 
+ *     and the App Token of your app. This unique identifier can
  *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
  */
@@ -45,8 +52,10 @@ static NSString * const ADJEnvironmentProduction = @"production";
  * top of that you can pass a set of parameters to the following method that
  * will be forwarded to these callbacks.
  *
- * The event can contain some revenue. The amount is measured in units and 
- * rounded to the decimal cent point.
+ * TODO: Partner parameter ...
+ *
+ * The event can contain some revenue. The amount revenue is measured in units. 
+ * It must include a currency in the ISO 4217 format.
  *
  * A transaction ID can be used to avoid duplicate revenue events. The last ten 
  * transaction identifiers are remembered.
@@ -72,7 +81,8 @@ static NSString * const ADJEnvironmentProduction = @"production";
 + (void)trackSubsessionEnd;
 
 /**
- * Enable or disable the adjust SDK
+ * Enable or disable the adjust SDK. This setting is saved
+ * for future sessions
  *
  * @param enabled The flag to enable or disable the adjust SDK
  */
@@ -94,13 +104,19 @@ static NSString * const ADJEnvironmentProduction = @"production";
  */
 + (void)setDeviceToken:(NSData *)deviceToken;
 
-
+/**
+ * Enable or disable offline mode. Activities won't be sent
+ * but they are saved when offline mode is disabled. This 
+ * feature is not saved for future sessions
+ */
 + (void)setOfflineMode:(BOOL)enabled;
 
+/**
+ * Obtain singleton Adjust object
+ */
 + (id)getInstance;
 
 - (void)appDidLaunch:(ADJConfig *)adjustConfig;
-
 - (void)trackEvent:(ADJEvent *)event;
 - (void)trackSubsessionStart;
 - (void)trackSubsessionEnd;
