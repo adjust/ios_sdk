@@ -70,8 +70,8 @@
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setString:@"source" forKey:clickSource];
     [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"params"];
-    [self parameters:parameters setDate:self.iAdImpressionDate            forKey:@"click_time"];
-    [self parameters:parameters setDate:self.appPurchaseDate              forKey:@"purchase_time"];
+    [self parameters:parameters setDate:self.clickTime                    forKey:@"click_time"];
+    [self parameters:parameters setDate:self.purchaseDate                 forKey:@"purchase_time"];
 
     if (self.attribution != nil) {
         [self parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
@@ -234,7 +234,7 @@
 }
 
 - (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
-    if (value == nil);
+    if (value == nil) return;
 
     NSString *numberString = [value stringValue];
 

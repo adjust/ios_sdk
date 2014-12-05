@@ -160,8 +160,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                            andActivityState:self.activityState
                                            andConfig:self.adjustConfig];
 
-        [clickBuilder setIAdImpressionDate:iAdImpressionDate];
-        [clickBuilder setAppPurchaseDate:appPurchaseDate];
+        [clickBuilder setClickTime:iAdImpressionDate];
+        [clickBuilder setPurchaseDate:appPurchaseDate];
 
         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
         [self.packageHandler sendClickPackage:clickPackage];
@@ -483,8 +483,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                 objectName:@"attribution"
                                      class:[ADJAttribution class]];
 }
-
-
 
 - (void)transferSessionPackage {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
