@@ -31,11 +31,7 @@ static NSString * const ADJEnvironmentProduction = @"production";
  * This is required to initialize Adjust. Call this in the didFinishLaunching
  * method of your AppDelegate.
  *
- * Enable event buffering if your app triggers a lot of events.
- * When enabled, events get buffered and only get tracked each
- * minute. Buffered events are still persisted, of course.
- *
- * Disable macMd5 tracking if your privacy constraints require it.
+ * See ADJConfig.h for more configuration options
  *
  * @param adjustConfig The configuration object that includes the environment 
  *     and the App Token of your app. This unique identifier can
@@ -47,18 +43,7 @@ static NSString * const ADJEnvironmentProduction = @"production";
 /**
  * Tell Adjust that a particular event has happened.
  *
- * In your dashboard at http://adjust.com you can assign a callback URL to each
- * event type. That URL will get called every time the event is triggered. On
- * top of that you can pass a set of parameters to the following method that
- * will be forwarded to these callbacks.
- *
- * TODO: Partner parameter ...
- *
- * The event can contain some revenue. The amount revenue is measured in units. 
- * It must include a currency in the ISO 4217 format.
- *
- * A transaction ID can be used to avoid duplicate revenue events. The last ten 
- * transaction identifiers are remembered.
+ * See ADJEvent.h for more event options
  *
  * @param event The Event object for this kind of event. It needs a event token 
  * that is  created in the dashboard at http://adjust.com and should be six 

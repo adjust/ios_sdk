@@ -20,20 +20,6 @@
 /**
  * Create Event object with Event Token.
  *
- * In your dashboard at http://adjust.com you can assign a callback URL to each
- * event type. That URL will get called every time the event is triggered. On
- * top of that you can pass a set of parameters to the following method that
- * will be forwarded to these callbacks.
- *
- * TODO: Parameter parameter
- *
- * The event can contain some revenue. The amount is measured in units and
- * rounded to the decimal cent point. It must include a currency in the
- * ISO 4217 format
- *
- * A transaction ID can be used to avoid duplicate revenue events. The last ten
- * transaction identifiers are remembered.
- *
  * @param event Event token that is  created in the dashboard 
  * at http://adjust.com and should be six characters long.
  */
@@ -41,12 +27,11 @@
 - (id) initWithEventToken:(NSString *)eventToken;
 
 /**
- * Add a key-pair to a callback URL. You must add as many as you want before
- * using tracking the ADJEvent object
+ * Add a key-pair to a callback URL.
  *
  * In your dashboard at http://adjust.com you can assign a callback URL to each
  * event type. That URL will get called every time the event is triggered. On
- * top of that you can pass a set of parameters to the following method that
+ * top of that you can add callback parameters to the following method that
  * will be forwarded to these callbacks.
  *
  * @param key String key in the callback URL.
@@ -57,12 +42,10 @@
                      value:(NSString *)value;
 
 /**
- * Add a key-pair to ...
+ * Add a key-pair to be fowarded to a partner.
  *
- * ...
- *
- * @param key ...
- * @param value ...
+ * @param key String key to be fowarded to the partner
+ * @param value String value of the key to be fowarded to the partner
  *
  */
 - (void) addPartnerParameter:(NSString *)key
@@ -74,9 +57,9 @@
  * The event can contain some revenue. The amount revenue is measured in units.
  * It must include a currency in the ISO 4217 format.
  *
- * @param amount The amount in units (example: 1€50 is 1.5)
+ * @param amount The amount in units (example: for 1.50 EUR is 1.5)
  * @param currency String of the currency with ISO 4217 format.
- * It should be 3 characters long (example: 1€50 is @"EUR")
+ * It should be 3 characters long (example: for 1.50 EUR is @"EUR")
  */
 - (void) setRevenue:(double)amount currency:(NSString *)currency;
 

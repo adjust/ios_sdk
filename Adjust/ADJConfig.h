@@ -17,7 +17,7 @@
 @optional
 
 /**
- * Optional delegate method that will get called when a tracking attempt finished
+ * Optional delegate method that gets called when the attribution information changed
  *
  * @param attribution The attribution information. See ADJAttribution for details.
  */
