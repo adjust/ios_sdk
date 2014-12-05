@@ -18,7 +18,26 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [ExampleAdjustHelper initAdjust:self];
+
+    // configure adjust
+    NSString *yourAppToken = @"{YourAppToken}";
+    NSString *enviroment = ADJEnvironmentSandbox;
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
+
+    // change the log level
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];
+
+    // enable event buffering
+    //[adjustConfig setEventBufferingEnabled:YES];
+
+    // disable MAC MD5 tracking
+    //[adjustConfig setMacMd5TrackingEnabled:NO];
+
+    // set an attribution delegate
+    [adjustConfig setDelegate:self];
+
+    [Adjust appDidLaunch:adjustConfig];
+
     return YES;
 }
 

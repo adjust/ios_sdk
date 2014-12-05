@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "Adjust.h"
-#import "ExampleAdjustHelper.h"
 
 @interface ViewController ()
 
@@ -36,7 +35,18 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickTrackEvent:(UIButton *)sender {
-    [ExampleAdjustHelper triggerEvent];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
+
+    // add revenue 1 cent of an euro
+    [event setRevenue:0.015 currency:@"EUR"];
+
+    // add callback parameters to this parameter
+    [event addCallbackParameter:@"key" andValue:@"value"];
+
+    // add partner parameteres to all events and sessions
+    [event addPartnerParameter:@"foo" andValue:@"bar"];
+
+    [Adjust trackEvent:event];
 }
 - (IBAction)clickDisableSdk:(UIButton *)sender {
     NSString *txtDisableSdk = self.btnDisableSdk.titleLabel.text;

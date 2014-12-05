@@ -33,7 +33,6 @@
 		960FCF8D1A1B9B7D00282BD4 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */; };
 		960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */; };
 		960FCF8F1A1B9B7D00282BD4 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */; };
-		960FCF921A1B9E6800282BD4 /* ExampleAdjustHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF911A1B9E6800282BD4 /* ExampleAdjustHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,8 +97,6 @@
 		960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttribution.m; sourceTree = "<group>"; };
 		960FCF791A1B9B7D00282BD4 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
-		960FCF901A1B9E6800282BD4 /* ExampleAdjustHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleAdjustHelper.h; sourceTree = "<group>"; };
-		960FCF911A1B9E6800282BD4 /* ExampleAdjustHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleAdjustHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,8 +146,6 @@
 				960FCF301A1B9ACE00282BD4 /* Images.xcassets */,
 				960FCF321A1B9ACE00282BD4 /* LaunchScreen.xib */,
 				960FCF231A1B9ACE00282BD4 /* Supporting Files */,
-				960FCF901A1B9E6800282BD4 /* ExampleAdjustHelper.h */,
-				960FCF911A1B9E6800282BD4 /* ExampleAdjustHelper.m */,
 			);
 			path = example;
 			sourceTree = "<group>";
@@ -342,7 +337,6 @@
 				960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */,
 				960FCF821A1B9B7D00282BD4 /* ADJActivityState.m in Sources */,
 				960FCF2C1A1B9ACE00282BD4 /* ViewController.m in Sources */,
-				960FCF921A1B9E6800282BD4 /* ExampleAdjustHelper.m in Sources */,
 				960FCF7D1A1B9B7D00282BD4 /* UIDevice+ADJAdditions.m in Sources */,
 				960FCF291A1B9ACE00282BD4 /* AppDelegate.m in Sources */,
 				960FCF881A1B9B7D00282BD4 /* ADJTimer.m in Sources */,
