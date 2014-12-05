@@ -20,8 +20,6 @@
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
-static NSString   * const kActivityStateName     = @"activity state";
-static NSString   * const kAttributionName       = @"attribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
@@ -126,7 +124,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     _enabled = enabled;
     if (self.activityState != nil) {
         self.activityState.enabled = enabled;
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
     }
     if (enabled) {
         [self trackSubsessionStart];
@@ -178,7 +176,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return NO;
     }
     self.attribution = attribution;
-    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:kAttributionName];
+    [self writeAttribution];
 
     return YES;
 }
@@ -206,9 +204,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void) setAskIn:(BOOL)askIn {
     self.activityState.askIn = askIn;
-    [ADJUtil writeObject:self.activityState
-                filename:kActivityStateFilename
-              objectName:kActivityStateName];
+    [self writeActivityState];
 }
 
 #pragma mark - internal
@@ -232,17 +228,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [[UIDevice currentDevice] adjSetIad:self];
 
-    self.activityState = [ADJUtil readObject:kActivityStateFilename
-                                  objectName:kActivityStateName
-                                       class:[ADJActivityState class]];
+    [self readAttribution];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
 
     self.attributionHandler = [self buildAttributionHandler];
 
-    self.attribution = [ADJUtil readObject:kAttributionFilename
-                                objectName:kAttributionName
-                                     class:[ADJAttribution class]];
+    [self readAttribution];
 
     [self startInternal];
 }
@@ -283,7 +275,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
         self.activityState.enabled = _enabled;
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
         return;
     }
 
@@ -291,7 +283,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
         return;
     }
 
@@ -303,7 +295,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
         return;
     }
 
@@ -312,7 +304,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
         [self.logger info:@"Processed Subsession %d of Session %d",
             self.activityState.subsessionCount,
             self.activityState.sessionCount];
@@ -332,7 +324,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self stopTimer];
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
-    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+    [self writeActivityState];
 }
 
 - (void)eventInternal:(ADJEvent *)event
@@ -367,7 +359,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.packageHandler sendFirstPackage];
     }
 
-    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+    [self writeActivityState];
 }
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
@@ -472,6 +464,28 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     return (lastInterval > ADJAdjustFactory.subsessionInterval);
 }
 
+- (void)writeActivityState {
+    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"activity state"];
+}
+
+- (void)writeAttribution {
+    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"attribution"];
+}
+
+- (void)readActivityState {
+    self.activityState = [ADJUtil readObject:kActivityStateFilename
+                                  objectName:@"activity state"
+                                       class:[ADJActivityState class]];
+}
+
+- (void)readAttribution {
+    self.attribution = [ADJUtil readObject:kAttributionFilename
+                                objectName:@"attribution"
+                                     class:[ADJAttribution class]];
+}
+
+
+
 - (void)transferSessionPackage {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                    andActivityState:self.activityState
@@ -504,7 +518,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {
-        [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:kActivityStateName];
+        [self writeActivityState];
     }
 }
 
