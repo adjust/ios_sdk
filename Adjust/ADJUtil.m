@@ -144,7 +144,8 @@ static NSDateFormatter *dateFormat;
     for (NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
         NSString *escapedValue = [value adjUrlEncode];
-        NSString *pair = [NSString stringWithFormat:@"%@=%@", key, escapedValue];
+        NSString *escapedKey = [key adjUrlEncode];
+        NSString *pair = [NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue];
         [pairs addObject:pair];
     }
 
