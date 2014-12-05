@@ -92,12 +92,12 @@ static const double kRequestTimeout = 60; // 60 seconds
             [self.activityHandler launchAttributionDelegate];
         }
 
-        [self.activityHandler setAskIn:NO];
+        [self.activityHandler setAskingAttribution:NO];
 
         return;
     };
 
-    [self.activityHandler setAskIn:YES];
+    [self.activityHandler setAskingAttribution:YES];
     if (self.askInTimer != nil) {
         [self.askInTimer cancel];
     }

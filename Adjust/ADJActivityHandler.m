@@ -202,8 +202,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 }
 
-- (void) setAskIn:(BOOL)askIn {
-    self.activityState.askIn = askIn;
+- (void) setAskingAttribution:(BOOL)askingAttribution {
+    self.activityState.askingAttribution = askingAttribution;
     [self writeActivityState];
 }
 
@@ -310,7 +310,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
             self.activityState.sessionCount];
     }
 
-    if (self.attribution == nil || self.activityState.askIn) {
+    if (self.attribution == nil || self.activityState.askingAttribution) {
         if (![self.attributionHandler isWaitingInAskIn]) {
             [self.attributionHandler getAttribution];
         }

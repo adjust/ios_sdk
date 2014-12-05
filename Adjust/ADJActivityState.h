@@ -12,7 +12,7 @@
 // persistent data
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL askIn;
+@property (nonatomic, assign) BOOL askingAttribution;
 
 // global counters
 @property (nonatomic, assign) int eventCount;
