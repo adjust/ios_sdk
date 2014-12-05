@@ -10,6 +10,9 @@
 #import "ADJAdjustFactory.h"
 
 #pragma mark -
+@interface ADJEvent()
+@property (nonatomic, retain) id<ADJLogger> logger;
+@end
 
 @implementation ADJEvent
 
@@ -22,26 +25,35 @@
     if (self == nil) return nil;
 
     self.eventToken = eventToken;
+    self.logger        = ADJAdjustFactory.logger;
 
     return self;
 }
 
 - (void) addCallbackParameter:(NSString *)key
                      andValue:(NSString *)value {
-    if (_callbackParameters == nil) {
-        _callbackParameters = [[NSMutableDictionary alloc] init];
+    if (self.callbackParameters == nil) {
+        self.callbackParameters = [[NSMutableDictionary alloc] init];
     }
 
-    [_callbackParameters setObject:value forKey:key];
+    if ([self.callbackParameters objectForKey:key]) {
+        [self.logger warn:@"key %@ will be overwritten", key];
+    }
+
+    [self.callbackParameters setObject:value forKey:key];
 }
 
 - (void) addPartnerParameter:(NSString *)key
                     andValue:(NSString *)value {
-    if (_partnerParameters == nil) {
-        _partnerParameters = [[NSMutableDictionary alloc] init];
+    if (self.partnerParameters == nil) {
+        self.partnerParameters = [[NSMutableDictionary alloc] init];
     }
 
-    [_partnerParameters setObject:value forKey:key];
+    if ([self.partnerParameters objectForKey:key]) {
+        [self.logger warn:@"key %@ will be overwritten", key];
+    }
+
+    [self.partnerParameters setObject:value forKey:key];
 }
 
 - (void) setRevenue:(double) amount currency:(NSString *)currency{
@@ -55,27 +67,25 @@
 
 - (BOOL) isValid {
 
-    id<ADJLogger> logger = ADJAdjustFactory.logger;
-
     if (self.eventToken == nil) {
-        [logger error:@"Missing Event Token"];
+        [self.logger error:@"Missing Event Token"];
         return NO;
     }
 
     if (self.eventToken.length != 6) {
-        [logger error:@"Malformed Event Token '%@'", self.eventToken];
+        [self.logger error:@"Malformed Event Token '%@'", self.eventToken];
         return NO;
     }
 
     if (self.revenue != nil) {
         double amount =  [self.revenue doubleValue];
         if (amount < 0.0) {
-            [logger error:@"Invalid amount %.1f", amount];
+            [self.logger error:@"Invalid amount %.1f", amount];
             return NO;
         }
 
         if (self.currency == nil) {
-            [logger error:@"Currency must be set with revenue"];
+            [self.logger error:@"Currency must be set with revenue"];
             return NO;
         }
     }
