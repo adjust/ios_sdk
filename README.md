@@ -5,9 +5,8 @@ This is the iOS SDK of adjust™. You can read more about adjust™ at
 
 ## Basic Installation
 
-These are the minimal steps required to integrate the adjust SDK into your
-iOS project. We are going to assume that you use Xcode for your iOS
-development.
+These are the minimal steps required to integrate the adjust SDK into your iOS
+project. We are going to assume that you use Xcode for your iOS development.
 
 If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
@@ -18,7 +17,9 @@ pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.0.0'
 
 ## Example app
 
-There is an example app located inside the extracted folder named `example`. In it, you can open the Xcode project and see how the adjust SDK can be integrated.
+There is an example app located inside the extracted folder named `example`. In
+it, you can open the Xcode project and see how the adjust SDK can be
+integrated.
 
 ### 1. Get the SDK
 
@@ -28,8 +29,8 @@ archive in a folder of your choice.
 ### 2. Add it to your project
 
 In Xcode's Project Navigator locate the `Supporting Files` group (or any other
-group of your choice). From Finder drag the `Adjust` subdirectory into
-Xcode's `Supporting Files` group.
+group of your choice). From Finder drag the `Adjust` subdirectory into Xcode's
+`Supporting Files` group.
 
 ![][drag]
 
@@ -44,17 +45,21 @@ radio button to `Create groups for any added folders`.
 In the Project Navigator select your project. In the left hand side of the main
 view select your target. In the tab `Build Phases` expand the group `Link
 Binary with Libraries`. On the bottom of that group click on the `+` button.
-Select the `AdSupport.framework` and click the `Add` button. Repeat the same step to
-add the `iAd.framework`. In the list of frameworks select the newly added `AdSupport.framework` 
-and `iAd.framework`. Change the attribute `Required` to `Optional`.
+Select the `AdSupport.framework` and click the `Add` button. Repeat the same
+step to add the `iAd.framework`. In the list of frameworks select the newly
+added `AdSupport.framework` and `iAd.framework`. Change the attribute
+`Required` to `Optional`.
 
 ![][framework]
 
 ### 4. Integrate Adjust into your app
 
-Inside the example app, you can find the class `ExampleAdjustHelper` with the static method `initAdjust` that contains the minimum configuration and the optional ones commented.
+Inside the example app, you can find the class `ExampleAdjustHelper` with the
+static method `initAdjust` that contains the minimum configuration and the
+optional ones commented.
 
-The `ADJConfig` object is where all optional configurations can be set before calling `appDidLaunch` method in the `Adjust` class.
+The `ADJConfig` object is where all optional configurations can be set before
+calling `appDidLaunch` method in the `Adjust` class.
 
 #### Minimum configuration
 
@@ -109,14 +114,16 @@ You can increase or decrease the amount of logs you see in tests by calling
 
 #### Attribution callback
 
-At install time, you can be notified of tracker attribution information. Due to the nature
-of this information, it is not synchronous and can take some time before is available.
-Follow these steps to implement the optional delegate protocol in your app delegate.
+At install time, you can be notified of tracker attribution information. Due to
+the nature of this information, it is not synchronous and can take some time
+before is available.  Follow these steps to implement the optional delegate
+protocol in your app delegate.
 
-Please make sure to consider [applicable attribution data policies.][attribution-data]
+Please make sure to consider [applicable attribution data
+policies.][attribution-data]
 
-1. Open `AppDelegate.h` and add the `ADJConfig.h` import and the `AdjustDelegate`
-   declaration.
+1. Open `AppDelegate.h` and add the `ADJConfig.h` import and the
+   `AdjustDelegate` declaration.
 
     ```objc
     #import "Adjust.h"
@@ -131,22 +138,25 @@ Please make sure to consider [applicable attribution data policies.][attribution
     - (void)adjustAttributionCallback:(ADJAttribution *)attribution {
     }
     ```
-    
-3. When you are configuring the `ADJConfig` object, set the adjust delegate by calling `setDelegate` with the `AdjustDelegate` instace.
+
+3. When you are configuring the `ADJConfig` object, set the adjust delegate by
+   calling `setDelegate` with the `AdjustDelegate` instace.
 
     ```objc
     [adjustConfig setDelegate:self];           // if configuration is in the `AppDelegate.m`
     [adjustConfig setDelegate:adjustDelegate]; // if configuration is set in another class, see example app
     ```
 
-The delegate function will get called once somewhere after the install. Within the delegate function you have access to the `attribution` parameter. Here is a quick summary of its properties:
+The delegate function will get called once somewhere after the install. Within
+the delegate function you have access to the `attribution` parameter. Here is a
+quick summary of its properties:
 
-- `NSString trackerToken` the tracker token of the current install. 
-- `NSString trackerName` the tracker name of the current install. 
-- `NSString network` the network grouping level of the current install.  
-- `NSString campaign` the campaign grouping level of the current install. 
-- `NSString adgroup` the ad group grouping level of the current install.  
-- `NSString creative` the creative grouping level of the current install.  
+- `NSString trackerToken` the tracker token of the current install.
+- `NSString trackerName` the tracker name of the current install.
+- `NSString network` the network grouping level of the current install.
+- `NSString campaign` the campaign grouping level of the current install.
+- `NSString adgroup` the ad group grouping level of the current install.
+- `NSString creative` the creative grouping level of the current install.
 
 #### Enable event buffering
 
@@ -168,26 +178,25 @@ adjust into your app. After the app launched, you should see the debug log
 
 #### Troubleshooting
 
-- If your build failed with the error `Adjust requires ARC`, it looks like
-  your project is not using [ARC][arc]. In that case we recommend
-  [transitioning your project to use ARC][transition]. If you don't want to
-  use ARC, you have to enable ARC for all source files of adjust in the
-  target's Build Phases:
+- If your build failed with the error `Adjust requires ARC`, it looks like your
+  project is not using [ARC][arc]. In that case we recommend [transitioning
+  your project to use ARC][transition]. If you don't want to use ARC, you have
+  to enable ARC for all source files of adjust in the target's Build Phases:
 
     Expand the `Compile Sources` group, select all adjust files (AjustIo,
     AI..., ...+AIAdditions, AF..., ...+AFNetworking) and change the `Compiler
-    Flags` to `-fobjc-arc` (Select all and press the `Return` key to change
-    all at once).
+    Flags` to `-fobjc-arc` (Select all and press the `Return` key to change all
+    at once).
 
 ## Additional features
 
-Once you integrated the adjust SDK into your project, you can take advantage
-of the following features.
+Once you integrated the adjust SDK into your project, you can take advantage of
+the following features.
 
 ### 6. Add tracking of custom events.
 
-You can tell adjust about every event you want. Suppose you want to track
-every tap on a button. You would have to create a new Event Token in your
+You can tell adjust about every event you want. Suppose you want to track every
+tap on a button. You would have to create a new Event Token in your
 [dashboard]. Let's say that Event Token is `abc123`. In your button's
 `buttonDown` method you could then add the following line to track the click:
 
@@ -196,21 +205,24 @@ ADJEvent * event = [ADJEvent eventWithEventToken:@"abc123"];
 [Adjust trackEvent:event];
 ```
 
-Before calling the `trackEvent` method, you can configure the `ADJEvent` object 
+Before calling the `trackEvent` method, you can configure the `ADJEvent` object
 
-Inside the example app, you can find the class `ExampleAdjustHelper` with the static method `triggerEvent` that contains an example how to trigger an event.
+Inside the example app, you can find the class `ExampleAdjustHelper` with the
+static method `triggerEvent` that contains an example how to trigger an event.
 
-The `ADJEvent` object is where all optional configurations can be set before calling the  `trackEvent` method in the `Adjust` class.
+The `ADJEvent` object is where all optional configurations can be set before
+calling the  `trackEvent` method in the `Adjust` class.
 
 #### Callback URK
 
 You can also register a callback URL for that event in your [dashboard] and we
 will send a GET request to that URL whenever the event gets tracked. In that
-case you can add a key-value-pair to `addCallbackParameter` method of `ADJEvent`. 
-We will then append these named parameters to your callback URL.
+case you can add a key-value-pair to `addCallbackParameter` method of
+`ADJEvent`.  We will then append these named parameters to your callback URL.
 
 For example, suppose you have registered the URL
-`http://www.adjust.com/callback` then add following lines to the `ADJEvent` object:
+`http://www.adjust.com/callback` then add following lines to the `ADJEvent`
+object:
 
 ```objc
 [event addCallbackParameter:@"key" andValue:@"value"];
@@ -232,8 +244,8 @@ event, these parameters won't even be read.
 
 If your users can generate revenue by clicking on advertisements or making
 in-app purchases you can track those revenues. If, for example, a click is
-worth one cent of an Euro, you can add the following calll to the `ADJEvent` object to track
-that revenue:
+worth one cent of an Euro, you can add the following calll to the `ADJEvent`
+object to track that revenue:
 
 ```objc
 [event setRevenue:0.01 currency:@"EUR"];
@@ -304,7 +316,7 @@ You can verify if the adjust SDK is currently active with the method
 
 #### 9. Offline mode
 
-You can put the adjust SDK in offline mode, preventing from tracking while in 
+You can put the adjust SDK in offline mode, preventing from tracking while in
 offline mode. When disabled, the tracking done in offline mode will be sent.
 Call the method `setOfflineMode` with the enabled parameter as `YES` to put it
 on offline mode, and `NO` to disable it.
@@ -312,7 +324,6 @@ on offline mode, and `NO` to disable it.
 ```objc
 [Adjust setOfflineMode:YES];
 ```
-
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
