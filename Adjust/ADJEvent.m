@@ -31,7 +31,7 @@
 }
 
 - (void) addCallbackParameter:(NSString *)key
-                     andValue:(NSString *)value {
+                     value:(NSString *)value {
     if (self.callbackParameters == nil) {
         self.callbackParameters = [[NSMutableDictionary alloc] init];
     }
@@ -44,7 +44,7 @@
 }
 
 - (void) addPartnerParameter:(NSString *)key
-                    andValue:(NSString *)value {
+                    value:(NSString *)value {
     if (self.partnerParameters == nil) {
         self.partnerParameters = [[NSMutableDictionary alloc] init];
     }

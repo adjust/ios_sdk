@@ -21,10 +21,10 @@
 + (ADJEvent *)eventWithEventToken:(NSString *)eventToken;
 
 - (void) addCallbackParameter:(NSString *)key
-                     andValue:(NSString *)value;
+                     value:(NSString *)value;
 
 - (void) addPartnerParameter:(NSString *)key
-                     andValue:(NSString *)value;
+                     value:(NSString *)value;
 
 - (void) setRevenue:(double)amount currency:(NSString *)currency;
 // check currency correctness, warn if weird
