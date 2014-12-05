@@ -38,6 +38,9 @@ static NSDateFormatter *dateFormat;
     const char* attrName = "com.apple.MobileBackup";
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+
     if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
         u_int8_t attrValue = 1;
         int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
@@ -64,6 +67,8 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
+#pragma clang diagnostic pop
+
 }
 
 + (NSString *)formatSeconds1970:(double) value {
