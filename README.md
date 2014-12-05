@@ -331,11 +331,11 @@ on offline mode, and `NO` to disable it.
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag3.png
-[add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add2.png
-[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework3.png
-[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate3.png
-[run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run3.png
+[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag4.png
+[add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add3.png
+[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework4.png
+[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate4.png
+[run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run4.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 
