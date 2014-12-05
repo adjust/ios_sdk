@@ -10,7 +10,6 @@
 #import "AILoggerMock.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
-#import "AIResponseData.h"
 
 static NSString * const prefix = @"AIPackageHandler ";
 
@@ -22,10 +21,6 @@ static NSString * const prefix = @"AIPackageHandler ";
 @end
 
 @implementation AIPackageHandlerMock
-
-- (id)init {
-    return [self initWithActivityHandler:nil];
-}
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];
@@ -48,7 +43,7 @@ static NSString * const prefix = @"AIPackageHandler ";
 
 - (void)sendFirstPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendFirstPackage"]];
-    [self.activityHandler finishedTrackingWithResponse:[[AIResponseData alloc] init] deepLink:nil];
+    [self.activityHandler finishedTrackingWithResponse:self.jsonDict];
 }
 
 - (void)sendNextPackage {
@@ -67,9 +62,13 @@ static NSString * const prefix = @"AIPackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
 }
 
-- (void)finishedTrackingActivity:(ADJActivityPackage *)activityPackage withResponse:(AIResponseData *)response jsonDict:(NSDictionary *)jsonDict {
+- (void)finishedTrackingActivity:(NSDictionary *)jsonDict {
     [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
-    self.responseData = response;
+    self.jsonDict = jsonDict;
+}
+
+- (void)sendClickPackage:(ADJActivityPackage *) clickPackage {
+    [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
 }
 
 @end

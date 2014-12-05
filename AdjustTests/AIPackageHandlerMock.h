@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 
-@property (nonatomic, strong) AIResponseData *responseData;
+@property (nonatomic, strong) NSDictionary *jsonDict;
 @property (nonatomic, strong) ADJActivityPackage * activityPackage;
 
 @end

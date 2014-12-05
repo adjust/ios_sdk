@@ -9,7 +9,6 @@
 #import "AIRequestHandlerMock.h"
 #import "AILoggerMock.h"
 #import "ADJAdjustFactory.h"
-#import "AIResponseData.h"
 
 static NSString * const prefix = @"AIRequestHandler ";
 
@@ -40,22 +39,24 @@ static NSString * const prefix = @"AIRequestHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
 
     NSDictionary *jsonDict;
-    AIResponseData *responseData;
+
     if (self.connectionError) {
         jsonDict = nil;
-        responseData = [[AIResponseData alloc] initWithError:@"connection error"];
     } else {
         jsonDict = @{@"tracker_token": @"token",@"tracker_name":@"name"};
-        responseData = [[AIResponseData alloc] initWithJsonDict:jsonDict jsonString:@"{\"tracker_token\":\"token\",\"tracker_name\":\"name\"}"];
     }
 
-    [self.packageHandler finishedTrackingActivity:activityPackage withResponse:responseData jsonDict:jsonDict];
+    [self.packageHandler finishedTrackingActivity:jsonDict];
 
     if (self.connectionError) {
         [self.packageHandler closeFirstPackage];
     } else {
         [self.packageHandler sendNextPackage];
     }
+}
+
+- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
+    [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
 }
 
 

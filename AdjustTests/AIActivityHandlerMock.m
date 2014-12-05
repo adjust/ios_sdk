@@ -19,26 +19,16 @@ static NSString * const prefix = @"AIActivityHandler ";
 @end
 
 @implementation AIActivityHandlerMock
-/*
-@synthesize environment;
-@synthesize bufferEvents;
-@synthesize trackMacMd5;
-@synthesize delegate;
-@synthesize isIad;
-*/
-- (id)initWithAppToken:(NSString *)yourAppToken {
+
+- (id)initWithConfig:(ADJConfig *)adjustConfig {
     self = [super init];
     if (self == nil) return nil;
 
     self.loggerMock = (AILoggerMock *) [ADJAdjustFactory logger];
 
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithAppToken yourAppToken:%@", yourAppToken]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig"]];
 
     return self;
-}
-
-- (void)setSdkPrefix:(NSString *)sdkPrefix {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"setSdkPrefix sdkPrefix:%@", sdkPrefix]];
 }
 
 - (void)trackSubsessionStart {
@@ -48,20 +38,13 @@ static NSString * const prefix = @"AIActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"trackSubsessionEnd"]];
 }
 
-- (void)trackEvent:(NSString *)eventToken
-    withParameters:(NSDictionary *)parameters {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"trackEvent eventToken:%@ parameters:%@", eventToken, parameters]];
+- (void)trackEvent:(ADJEvent *)event {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"trackEvent"]];
+
 }
 
-- (void)trackRevenue:(double)amount
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"trackRevenue amount:%f eventToken:%@ parameters:%@", amount, eventToken, parameters]];
-}
-
-- (void)finishedTrackingWithResponse:(AIResponseData *)response deepLink:(NSString *)deepLink{
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTrackingWithResponse response:%@", response]];
+- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTrackingWithResponse response:%@", jsonDict]];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -79,6 +62,36 @@ static NSString * const prefix = @"AIActivityHandler ";
 
 - (void)setDeviceToken:(NSData *)pushToken {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"savePushToken"]];
+}
+
+- (ADJAttribution*) attribution {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"attribution"]];
+    return (ADJAttribution *)[NSNull null];
+}
+
+- (void) setAttribution:(ADJAttribution*)attribution {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAttribution"]];
+}
+
+- (void) setAskingAttribution:(BOOL)askingAttribution {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution"]];
+}
+
+- (BOOL) updateAttribution:(ADJAttribution*) attribution {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution"]];
+    return NO;
+}
+
+- (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDate"]];
+}
+
+- (void) launchAttributionDelegate {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionDelegate"]];
+}
+
+- (void) setOfflineMode:(BOOL)enabled {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setOfflineMode"]];
 }
 
 @end

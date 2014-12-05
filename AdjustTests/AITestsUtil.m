@@ -48,10 +48,4 @@
     return sessionPackage;
 }
 
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
-    AILoggerMock *loggerMock = (AILoggerMock *)ADJAdjustFactory.logger;
-
-    [loggerMock test:@"AdjustDelegate adjustFinishedTrackingWithResponse"];
-}
-
 @end

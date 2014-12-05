@@ -17,6 +17,4 @@
 + (BOOL)deleteFile:(NSString *)filename logger:(AILoggerMock *)loggerMock;
 + (ADJActivityPackage *)buildEmptyPackage;
 
-- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData;
-
 @end
