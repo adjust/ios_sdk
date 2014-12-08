@@ -113,6 +113,7 @@ all adjust SDK calls.
 
 1. Right click on the old `AdjustIo` source folder and select `Delete`. Confirm
    `Move to Trash`.
+
 2. From the Xcode menu select `Find → Find and Replace in Project...` to bring
    up the project wide search and replace. Enter `AdjustIo` into the search
    field and `Adjust` into the replace field. Press enter to start the search.
@@ -130,7 +131,6 @@ all adjust SDK calls.
 
 The adjust SDK v3.4.0 added delegate callbacks. Check out the [README] for
 details.
-
 
 ## Additional steps if you come from v2.0.x
 

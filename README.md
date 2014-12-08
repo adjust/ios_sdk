@@ -56,10 +56,10 @@ To start with, we'll set up basic session tracking.
 
 #### Basic Setup
 
-In the Project Navigator, open the source file of your application delegate. Add
-the `import` statement at the top of the file, then add the following call to `Adjust`
-in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app 
-delegate:
+In the Project Navigator, open the source file of your application delegate.
+Add the `import` statement at the top of the file, then add the following call
+to `Adjust` in the `didFinishLaunching` or `didFinishLaunchingWithOptions`
+method of your app delegate:
 
 ```objc
 #import "Adjust.h"
@@ -72,7 +72,8 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ```
 ![][delegate]
 
-Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
+Replace `{YourAppToken}` with your app token. You can find this in your
+[dashboard].
 
 Depending on whether you build your app for testing or for production, you must
 set `environment` with one of these values:
@@ -133,9 +134,10 @@ the following features.
 ### 6. Set up event tracking
 
 You can use adjust to track events. Lets say you want to track every tap on a
-particular button. You would create a new event token in your [dashboard], which
-has an associated event token - looking something like `abc123`. In your button's 
-`buttonDown` method you would then add the following lines to track the tap:
+particular button. You would create a new event token in your [dashboard],
+which has an associated event token - looking something like `abc123`. In your
+button's `buttonDown` method you would then add the following lines to track
+the tap:
 
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
@@ -176,7 +178,7 @@ device. Also note that we don't store any of your custom parameters, but only
 append them to your callbacks. If you haven't registered a callback for an
 event, these parameters won't even be read.
 
-You can read more about using URL callbacks, including a full list of available 
+You can read more about using URL callbacks, including a full list of available
 values, in our [callbacks guide][callbacks-guide].
 
 #### Track revenue
