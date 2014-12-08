@@ -14,6 +14,7 @@
 #import "ADJTimer.h"
 
 static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
+static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 
 @interface ADJAttributionHandler()
 
@@ -46,14 +47,14 @@ static const double kRequestTimeout = 60; // 60 seconds
     self = [super init];
     if (self == nil) return nil;
 
-    self.internalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
 
     if (milliseconds != nil) {
-        uint64_t timer_nano = [milliseconds intValue] * NSEC_PER_MSEC;
-        self.maxDelayTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self.activityHandler launchAttributionDelegate]; }];
+        uint64_t timerNano = [milliseconds intValue] * NSEC_PER_MSEC;
+        self.maxDelayTimer = [ADJTimer timerWithStart:timerNano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self.activityHandler launchAttributionDelegate]; }];
         [self.maxDelayTimer resume];
     }
 
@@ -83,9 +84,9 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
     ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
 
-    NSNumber *timer_milliseconds = [jsonDict objectForKey:@"ask_in"];
+    NSNumber *timerMilliseconds = [jsonDict objectForKey:@"ask_in"];
 
-    if (timer_milliseconds == nil) {
+    if (timerMilliseconds == nil) {
         BOOL updated = [self.activityHandler updateAttribution:attribution];
 
         if (updated) {
@@ -102,9 +103,9 @@ static const double kRequestTimeout = 60; // 60 seconds
         [self.askInTimer cancel];
     }
 
-    [self.logger debug:@"waiting to query attribution in %d milliseconds", [timer_milliseconds intValue]];
+    [self.logger debug:@"waiting to query attribution in %d milliseconds", [timerMilliseconds intValue]];
 
-    uint64_t timer_nano = [timer_milliseconds intValue] * NSEC_PER_MSEC;
+    uint64_t timer_nano = [timerMilliseconds intValue] * NSEC_PER_MSEC;
     self.askInTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];
     [self.askInTimer resume];
 }
