@@ -36,7 +36,7 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 ### Event tracking
 
-We also introduced proper event objects that can be set up before they get
+We also introduced proper event objects that can be set up before they are
 tracked. Again, an example of how it might look like before and after:
 
 ##### Before
@@ -60,8 +60,8 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 ### Revenue tracking
 
 Revenues are now handled like normal events. You just set a revenue and a
-currency to track revenues. Note that it is not possible to track any revenue
-without event token anymore. You might need to create an additional event token
+currency to track revenues. Note that it is no longer possible to track revenues
+without associated event tokens. You might need to create an additional event token
 in your dashboard. The optional transaction ID is now a property of the event
 instance.
 
