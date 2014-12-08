@@ -28,7 +28,7 @@ archive into a directory of your choice.
 ### 2. Add it to your project
 
 In Xcode's Project Navigator locate the `Supporting Files` group (or any other
-group of your choice). From Finder drag the `Adjust` subdirectory into Xcode's
+group of your choice). From Finder, drag the `Adjust` subdirectory into Xcode's
 `Supporting Files` group.
 
 ![][drag]
@@ -41,8 +41,8 @@ groups`.
 
 ### <a id="step3"></a>3. Add the AdSupport and iAd framework
 
-In the Project Navigator select your project. In the left hand side of the main
-view select your target. In the tab `Build Phases` expand the group `Link
+Select your project in the Project Navigator. In the left hand side of the main
+view, select your target. In the tab `Build Phases` expand the group `Link
 Binary with Libraries`. On the bottom of that section click on the `+` button.
 Select the `AdSupport.framework` and click the `Add` button. Repeat the same
 steps to add the `iAd.framework`. Change the `Status` of both frameworks to
@@ -52,14 +52,14 @@ steps to add the `iAd.framework`. Change the `Status` of both frameworks to
 
 ### 4. Integrate Adjust into your app
 
-At first we set up basic session tracking.
+To start with, we'll set up basic session tracking.
 
 #### Basic Setup
 
-In the Project Navigator open the source file your application delegate. Add
-the `import` statement at the top of the file. In the `didFinishLaunching` or
-`didFinishLaunchingWithOptions` method of your app delegate add the following
-call to `Adjust`:
+In the Project Navigator, open the source file of your application delegate. Add
+the `import` statement at the top of the file, then add the following call to `Adjust`
+in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app 
+delegate:
 
 ```objc
 #import "Adjust.h"
@@ -72,10 +72,10 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ```
 ![][delegate]
 
-Replace `{YourAppToken}` with your app token. You can find in your [dashboard].
+Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
 
-Depending on whether you build your app for testing or for production you must
-set `enviroment` with one of these values:
+Depending on whether you build your app for testing or for production, you must
+set `environment` with one of these values:
 
 ```objc
 NSString *enviroment = ADJEnvironmentSandbox;
@@ -89,7 +89,7 @@ if you or someone else is testing your app. Make sure to set the environment to
 
 We use this environment to distinguish between real traffic and test traffic
 from test devices. It is very important that you keep this value meaningful at
-all times! Especially if you are tracking revenue.
+all times! This is especially important if you are tracking revenue.
 
 #### Adjust Logging
 
@@ -127,15 +127,15 @@ and press the `Return` key to change all at once).
 
 ## Additional features
 
-Once you integrated the adjust SDK into your project, you can take advantage of
+Once you integrate the adjust SDK into your project, you can take advantage of
 the following features.
 
 ### 6. Set up event tracking
 
 You can use adjust to track events. Lets say you want to track every tap on a
-particular button. You would create a new event token in your [dashboard]. It
-might look like this: `abc123`. In your button's `buttonDown` method you would
-then add the following lines to track the tap:
+particular button. You would create a new event token in your [dashboard], which
+has an associated event token - looking something like `abc123`. In your button's 
+`buttonDown` method you would then add the following lines to track the tap:
 
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
@@ -176,6 +176,9 @@ device. Also note that we don't store any of your custom parameters, but only
 append them to your callbacks. If you haven't registered a callback for an
 event, these parameters won't even be read.
 
+You can read more about using URL callbacks, including a full list of available 
+values, in our [callbacks guide][callbacks-guide].
+
 #### Track revenue
 
 If your users can generate revenue by tapping on advertisements or making
@@ -194,10 +197,10 @@ This can be combined with callback parameters of course.
 
 You can also pass in an optional transaction ID to avoid tracking duplicate
 revenues. The last ten transaction IDs are remembered and revenue events with
-duplicate transaction IDs are skipped. This is especially useful for In-App
-Purchase tracking. See an example below.
+duplicate transaction IDs are skipped. This is especially useful for in-app
+purchase tracking. See an example below.
 
-If you want to track In-App Purchases, please make sure to call `trackEvent`
+If you want to track in-app purchases, please make sure to call `trackEvent`
 after `finishTransaction` in `paymentQueue:updatedTransaction` only if the
 state changed to `SKPaymentTransactionStatePurchased`. That way you can avoid
 tracking revenue that is not actually being generated.
@@ -321,6 +324,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run4.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[callbacks-guide]: https://docs.adjust.com/en/callbacks
 
 ## License
 
