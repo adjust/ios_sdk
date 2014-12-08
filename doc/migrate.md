@@ -1,80 +1,82 @@
 ## Migrate your adjust SDK for iOS to v4.0.0 from v3.4.0
 
-We changed the way to configure the SDK after launching. It should be done
-before with a new object `ADJConfig`. See an example of how it would look
-before and after the migration:
+### Initial setup
+
+We changed how you configure the adjust SDK. All initial setup is now done with
+a new config object. We also replaced the adjust prefix from `AI` to `ADJ`.
+Here is an example of how the setup in `AppDelegate.m` might look before and
+after the migration:
+
+##### Before
 
 ```objc
-// before migration
-
-// AppDelegate.h
-#import "Adjust.h"
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
-
-// AppDelegate.m
-
 [Adjust appDidLaunch:@"{YourAppToken}"];
-[Adjust setLogLevel:AILogLevelInfo];
 [Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setLogLevel:AILogLevelInfo];
 [Adjust setDelegate:self];
 
-// ...
 - (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
-    // ...
-}
-// after migration
-
-// AppDelegate.h
-#import "ADJConfig.h"
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
-
-// AppDelegate.m
-#import "Adjust.h"
-
-NSString *yourAppToken = @"{YourAppToken}";
-NSString *enviroment = AIEnvironmentSandbox;
-ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
-[adjustConfig setLogLevel:ADJLogLevelVerbose];
-[adjustConfig setDelegate:self];
-[Adjust appDidLaunch:adjustConfig];
-
-// ...
-- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    // ...
 }
 ```
 
-We also changed the way to track events and revenues. Now it is all configured
-with the `ADJEvent` object. You can follow another example of how an
-event/revenue would be tracked before and after the migration:
+##### After
 
 ```objc
-// before the migration
-#import "Adjust.h"
+NSString *yourAppToken = @"{YourAppToken}";
+NSString *enviroment = ADJEnvironmentSandbox;
+ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
+[adjustConfig setLogLevel:ADJLogLevelInfo];
+[adjustConfig setDelegate:self];
+[Adjust appDidLaunch:adjustConfig];
 
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+}
+```
+
+### Event tracking
+
+We also introduced proper event objects that can be set up before they get
+tracked. Again, an example of how it might look like before and after:
+
+##### Before
+
+```objc
 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 [parameters setObject:@"value" forKey:@"key"];
 [parameters setObject:@"bar" forKey:@"foo"];
-
 [Adjust trackEvent:@"abc123" withParameters:parameters];
+```
 
-//[Adjust trackRevenue:1.0]; not possible in the version. You will have to create an app token
-[Adjust trackRevenue:1.0 transactionId:transaction.transactionIdentifier forEvent:@"xyz987"];
+##### After
 
-// after the migration
-#import "ADJEvent.h"
-#import "Adjust.h"
-
+```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 [event addCallbackParameter:@"key" andValue:@"value"];
 [event addCallbackParameter:@"foo" andValue:@"bar"];
 [Adjust trackEvent:event];
+```
 
-ADJEvent *revenue = [ADJEvent eventWithEventToken:@"xyz987"];
-[revenue setRevenue:0.01 currency:@"EUR"]; // You have to include the currency
-[revenue setTransactionId:transaction.transactionIdentifier];
-[Adjust trackEvent:revenue];
+### Revenue tracking
 
+Revenues are now handled like normal events. You just set a revenue and a
+currency to track revenues. Note that it is not possible to track any revenue
+without event token anymore. You might need to create an additional event token
+in your dashboard. The optional transaction ID is now a property of the event
+instance.
+
+##### Before
+
+```objc
+[Adjust trackRevenue:1.0 transactionId:transaction.transactionIdentifier forEvent:@"xyz987"];
+```
+
+##### After
+
+```objc
+ADJEvent *event = [ADJEvent eventWithEventToken:@"xyz987"];
+[event setRevenue:0.01 currency:@"EUR"]; // You have to include the currency
+[event setTransactionId:transaction.transactionIdentifier];
+[Adjust trackEvent:event];
 ```
 
 ## Additional steps if you come from v3.0.0
