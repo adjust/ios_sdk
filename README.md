@@ -67,7 +67,7 @@ delegate:
 NSString *yourAppToken = @"{YourAppToken}";
 NSString *environment = ADJEnvironmentSandbox;
 ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
-                                         andEnvironment:environment];
+                                            environment:environment];
 [Adjust appDidLaunch:adjustConfig];
 ```
 ![][delegate]
