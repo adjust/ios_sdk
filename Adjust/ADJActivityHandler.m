@@ -387,7 +387,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         }
     }
 
-    if ([adjustDeepLinks count] <= 0) {
+    if ([adjustDeepLinks count] == 0) {
         return;
     }
 

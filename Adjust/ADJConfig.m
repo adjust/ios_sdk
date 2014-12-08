@@ -13,12 +13,12 @@
 @implementation ADJConfig
 
 + (ADJConfig *) configWithAppToken:(NSString *)appToken
-                    andEnvironment:(NSString *)environment {
-    return [[ADJConfig alloc] initWithAppToken:appToken andEnvironment:environment];
+                    environment:(NSString *)environment {
+    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
 }
 
 - (id) initWithAppToken:(NSString *)appToken
-         andEnvironment:(NSString *)environment
+         environment:(NSString *)environment
 {
     self = [super init];
     if (self == nil) return nil;

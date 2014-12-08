@@ -43,8 +43,8 @@
  *     It is very important that you keep this value meaningful at all times!
  *     Especially if you are tracking revenue.
  */
-+ (ADJConfig*)configWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
-- (id)initWithAppToken:(NSString *)appToken andEnvironment:(NSString *)environment;
++ (ADJConfig*)configWithAppToken:(NSString *)appToken environment:(NSString *)environment;
+- (id)initWithAppToken:(NSString *)appToken environment:(NSString *)environment;
 
 /**
  * Enable event buffering if your app triggers a lot of events.
