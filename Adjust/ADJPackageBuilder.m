@@ -33,7 +33,7 @@
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
-    sessionPackage.path = @"/startup";
+    sessionPackage.path = @"/session";
     sessionPackage.activityKind = ADJActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;

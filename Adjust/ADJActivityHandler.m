@@ -66,7 +66,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return nil;
     }
 
-    self.logger        = ADJAdjustFactory.logger;
+    self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     _enabled = YES;
