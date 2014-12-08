@@ -65,9 +65,9 @@ delegate:
 #import "Adjust.h"
 // ...
 NSString *yourAppToken = @"{YourAppToken}";
-NSString *enviroment = ADJEnvironmentSandbox;
+NSString *environment = ADJEnvironmentSandbox;
 ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
-                                         andEnvironment:enviroment];
+                                         andEnvironment:environment];
 [Adjust appDidLaunch:adjustConfig];
 ```
 ![][delegate]
@@ -78,8 +78,8 @@ Depending on whether you build your app for testing or for production, you must
 set `environment` with one of these values:
 
 ```objc
-NSString *enviroment = ADJEnvironmentSandbox;
-NSString *enviroment = ADJEnvironmentProduction;
+NSString *environment = ADJEnvironmentSandbox;
+NSString *environment = ADJEnvironmentProduction;
 ```
 
 **Important:** This value should be set to `ADJEnvironmentSandbox` if and only

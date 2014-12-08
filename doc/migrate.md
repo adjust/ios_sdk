@@ -23,8 +23,8 @@ after the migration:
 
 ```objc
 NSString *yourAppToken = @"{YourAppToken}";
-NSString *enviroment = ADJEnvironmentSandbox;
-ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:enviroment];
+NSString *environment = ADJEnvironmentSandbox;
+ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironment:environment];
 [adjustConfig setLogLevel:ADJLogLevelInfo];
 [adjustConfig setDelegate:self];
 [Adjust appDidLaunch:adjustConfig];
