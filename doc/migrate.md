@@ -1,6 +1,8 @@
 ## Migrate your adjust SDK for iOS to v4.0.0 from v3.4.0
 
-We changed the way to configure the SDK after launching. It should be done before with a new object `ADJConfig`. See an example of how it would look before and after the migration:
+We changed the way to configure the SDK after launching. It should be done
+before with a new object `ADJConfig`. See an example of how it would look
+before and after the migration:
 
 ```objc
 // before migration
@@ -42,7 +44,9 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken andEnvironm
 }
 ```
 
-We also changed the way to track events and revenues. Now it is all configured with the `ADJEvent` object. You can follow another example of how an event/revenue would be tracked before and after the migration: 
+We also changed the way to track events and revenues. Now it is all configured
+with the `ADJEvent` object. You can follow another example of how an
+event/revenue would be tracked before and after the migration:
 
 ```objc
 // before the migration
@@ -75,7 +79,10 @@ ADJEvent *revenue = [ADJEvent eventWithEventToken:@"xyz987"];
 
 ## Additional steps if you come from v3.0.0
 
-We added an optional parameter `transactionId` to our `trackRevenue` methods. If you are tracking In-App Purchases you might want to pass in the transaction identifier provided by Apple to avoid duplicate revenue tracking. It should look roughly like this:
+We added an optional parameter `transactionId` to our `trackRevenue` methods.
+If you are tracking In-App Purchases you might want to pass in the transaction
+identifier provided by Apple to avoid duplicate revenue tracking. It should
+look roughly like this:
 
 ```objc
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
