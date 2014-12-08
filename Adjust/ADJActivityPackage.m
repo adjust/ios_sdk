@@ -27,7 +27,7 @@
         [builder appendFormat:@"Parameters:"];
         for (NSString *key in self.parameters) {
             NSString *value = [self.parameters objectForKey:key];
-            [builder appendFormat:@"\n\t\t%-16s %@", [key UTF8String], value];
+            [builder appendFormat:@"\n\t\t%-22s %@", [key UTF8String], value];
         }
     }
 
