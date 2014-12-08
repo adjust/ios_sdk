@@ -42,6 +42,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL offline;
+@property (nonatomic, assign) BOOL shouldGetAttribution;
 
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
@@ -237,6 +238,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.attributionHandler = [self buildAttributionHandler];
 
+    self.shouldGetAttribution = YES;
+
     [self readAttribution];
 
     [self startInternal];
@@ -314,7 +317,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     }
 
     if (self.attribution == nil || self.activityState.askingAttribution) {
-        if (![self.attributionHandler isWaitingInAskIn]) {
+        if (self.shouldGetAttribution) {
             [self.attributionHandler getAttribution];
         }
     }
@@ -493,6 +496,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
+    self.shouldGetAttribution = NO;
 }
 
 # pragma mark - timer

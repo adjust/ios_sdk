@@ -73,10 +73,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     });
 }
 
-- (BOOL) isWaitingInAskIn {
-    return self.askInTimer != nil;
-}
-
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
     if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;

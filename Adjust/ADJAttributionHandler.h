@@ -20,8 +20,6 @@
 
 - (void)getAttribution;
 
-- (BOOL)isWaitingInAskIn;
-
 @end
 
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
