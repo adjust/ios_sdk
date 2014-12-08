@@ -7,137 +7,137 @@
 //
 
 #import "Adjust.h"
-#import "AIActivityHandler.h"
-#import "AIAdjustFactory.h"
+#import "ADJActivityHandler.h"
+#import "ADJAdjustFactory.h"
+#import "ADJLogger.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
 // see README for details
 #endif
+@interface Adjust()
 
-static id<AIActivityHandler> activityHandler;
-static id<AILogger> logger;
+@property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, retain) id<ADJLogger> logger;
+@end
 
 #pragma mark -
 @implementation Adjust
 
-+ (void)appDidLaunch:(NSString *)yourAppToken {
-    activityHandler = [AIAdjustFactory activityHandlerWithAppToken:yourAppToken];
++ (void)appDidLaunch:(ADJConfig *)adjustConfig {
+    [[Adjust getInstance] appDidLaunch:adjustConfig];
 }
 
-+ (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    [activityHandler setDelegate:delegate];
-}
-
-+ (void)setSdkPrefix:(NSString *)sdkPrefix {
-    [activityHandler setSdkPrefix:sdkPrefix];
-}
-
-+ (void)trackEvent:(NSString *)eventToken {
-    [activityHandler trackEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackEvent:(NSString *)eventToken withParameters:(NSDictionary *)parameters {
-    [activityHandler trackEvent:eventToken withParameters:parameters];
-}
-
-+ (void)trackRevenue:(double)amountInCents {
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:nil withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents forEvent:(NSString *)eventToken {
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters
-{
-    [activityHandler trackRevenue:amountInCents transactionId:nil forEvent:eventToken withParameters:parameters];
-}
-
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId {
-    [activityHandler trackRevenue:amountInCents transactionId:transactionId forEvent:nil withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents transactionId:(NSString *)transactionId forEvent:(NSString *)eventToken {
-    [activityHandler trackRevenue:amountInCents transactionId:transactionId forEvent:eventToken withParameters:nil];
-}
-
-+ (void)trackRevenue:(double)amountInCents
-       transactionId:(NSString *)transactionId
-            forEvent:(NSString *)eventToken
-      withParameters:(NSDictionary *)parameters
-{
-    [activityHandler trackRevenue:amountInCents
-                    transactionId:transactionId
-                         forEvent:eventToken
-                   withParameters:parameters];
-}
-
-+ (void)setLogLevel:(AILogLevel)logLevel {
-    [AIAdjustFactory.logger setLogLevel:logLevel];
-}
-
-+ (void)setEnvironment:(NSString *)environment {
-    id<AILogger> logger = AIAdjustFactory.logger;
-    if (activityHandler == nil) {
-        [logger error:@"Please call `setEnvironment` after `appDidLaunch`!"];
-    } else if ([environment isEqualToString:AIEnvironmentSandbox]) {
-        activityHandler.environment = environment;
-        [logger assert:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to AIEnvironmentProduction before publishing!"];
-    } else if ([environment isEqualToString:AIEnvironmentProduction]) {
-        activityHandler.environment = environment;
-        [logger assert:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to AIEnvironmentSandbox if you want to test your app!"];
-        [logger setLogLevel:AILogLevelAssert];
-    } else {
-        activityHandler.environment = @"malformed";
-        [logger error:@"Malformed environment '%@'", environment];
-    }
-}
-
-+ (void)setEventBufferingEnabled:(BOOL)enabled {
-    if (activityHandler == nil) {
-        [AIAdjustFactory.logger error:@"Please call `setEventBufferingEnabled` after `appDidLaunch`!"];
-        return;
-    }
-
-    activityHandler.bufferEvents = enabled;
-    if (enabled) [AIAdjustFactory.logger info:@"Event buffering is enabled"];
-}
-
-+ (void)setMacMd5TrackingEnabled:(BOOL)enabled {
-    if (activityHandler == nil) {
-        [AIAdjustFactory.logger error:@"Please call `setMacMd5TrackingEnabled` after `appDidLaunch`!"];
-        return;
-    }
-
-    activityHandler.trackMacMd5 = enabled;
-    [AIAdjustFactory.logger info:@"Tracking of macMd5 is %@", enabled ? @"enabled" : @"disabled"];
++ (void)trackEvent:(ADJEvent *)event {
+    [[Adjust getInstance] trackEvent:event];
 }
 
 + (void)trackSubsessionStart {
-    [activityHandler trackSubsessionStart];
+    [[Adjust getInstance] trackSubsessionStart];
 }
 
 + (void)trackSubsessionEnd {
-    [activityHandler trackSubsessionEnd];
+    [[Adjust getInstance] trackSubsessionEnd];
 }
 
 + (void)setEnabled:(BOOL)enabled {
-    [activityHandler setEnabled:enabled];
+    [[Adjust getInstance] setEnabled:enabled];
 }
 
 + (BOOL)isEnabled {
-    return [activityHandler isEnabled];
+    return [[Adjust getInstance] isEnabled];
 }
 
 + (void)appWillOpenUrl:(NSURL *)url {
-    [activityHandler readOpenUrl:url];
+    [[Adjust getInstance] appWillOpenUrl:url];
 }
 
 + (void)setDeviceToken:(NSData *)deviceToken {
-    [activityHandler savePushToken:deviceToken];
+    [[Adjust getInstance] setDeviceToken:deviceToken];
+}
+
++ (void)setOfflineMode:(BOOL)enabled {
+    [[Adjust getInstance] setOfflineMode:enabled];
+}
+
++ (id)getInstance {
+    static Adjust *defaultInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultInstance = [[self alloc] init];
+    });
+
+    return defaultInstance;
+}
+
+- (id) init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.activityHandler = nil;
+    self.logger = [ADJAdjustFactory logger];
+
+    return self;
+}
+
+- (void)appDidLaunch:(ADJConfig *)adjustConfig {
+    if (self.activityHandler != nil) {
+        [self.logger error:@"Adjust already initialized"];
+        return;
+    }
+
+    self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig];
+}
+
+- (void)trackEvent:(ADJEvent *)event {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler trackEvent:event];
+}
+
+- (void)trackSubsessionStart {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler trackSubsessionStart];
+}
+
+- (void)trackSubsessionEnd {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler trackSubsessionEnd];
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler setEnabled:enabled];
+}
+
+- (BOOL)isEnabled {
+    if (![self checkActivityHandler]) return NO;
+    return [self.activityHandler isEnabled];
+}
+
+- (void)appWillOpenUrl:(NSURL *)url {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler  appWillOpenUrl:url];
+}
+
+- (void)setDeviceToken:(NSData *)deviceToken {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler setDeviceToken:deviceToken];
+}
+
+- (void)setOfflineMode:(BOOL)enabled {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler setOfflineMode:enabled];
+}
+
+#pragma mark - private
+
+- (BOOL) checkActivityHandler {
+    if (self.activityHandler == nil) {
+        [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end

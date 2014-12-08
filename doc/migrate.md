@@ -1,6 +1,91 @@
-## Migrate your adjust SDK for iOS to v3.4.0 from v3.0.0
+## Migrate your adjust SDK for iOS to v4.0.0 from v3.4.0
 
-We added an optional parameter `transactionId` to our `trackRevenue` methods. If you are tracking In-App Purchases you might want to pass in the transaction identifier provided by Apple to avoid duplicate revenue tracking. It should look roughly like this:
+### Initial setup
+
+We changed how you configure the adjust SDK. All initial setup is now done with
+a new config object. We also replaced the adjust prefix from `AI` to `ADJ`.
+Here is an example of how the setup in `AppDelegate.m` might look before and
+after the migration:
+
+##### Before
+
+```objc
+[Adjust appDidLaunch:@"{YourAppToken}"];
+[Adjust setEnvironment:AIEnvironmentSandbox];
+[Adjust setLogLevel:AILogLevelInfo];
+[Adjust setDelegate:self];
+
+- (void)adjustFinishedTrackingWithResponse:(AIResponseData *)responseData {
+}
+```
+
+##### After
+
+```objc
+NSString *yourAppToken = @"{YourAppToken}";
+NSString *environment = ADJEnvironmentSandbox;
+ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
+                                            environment:environment];
+[adjustConfig setLogLevel:ADJLogLevelInfo];
+[adjustConfig setDelegate:self];
+[Adjust appDidLaunch:adjustConfig];
+
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+}
+```
+
+### Event tracking
+
+We also introduced proper event objects that can be set up before they are
+tracked. Again, an example of how it might look like before and after:
+
+##### Before
+
+```objc
+NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+[parameters setObject:@"value" forKey:@"key"];
+[parameters setObject:@"bar" forKey:@"foo"];
+[Adjust trackEvent:@"abc123" withParameters:parameters];
+```
+
+##### After
+
+```objc
+ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
+[event addCallbackParameter:@"key" andValue:@"value"];
+[event addCallbackParameter:@"foo" andValue:@"bar"];
+[Adjust trackEvent:event];
+```
+
+### Revenue tracking
+
+Revenues are now handled like normal events. You just set a revenue and a
+currency to track revenues. Note that it is no longer possible to track revenues
+without associated event tokens. You might need to create an additional event token
+in your dashboard. The optional transaction ID is now a property of the event
+instance.
+
+##### Before
+
+```objc
+[Adjust trackRevenue:1.0 transactionId:transaction.transactionIdentifier forEvent:@"xyz987"];
+```
+
+##### After
+
+```objc
+ADJEvent *event = [ADJEvent eventWithEventToken:@"xyz987"];
+[event setRevenue:0.01 currency:@"EUR"]; // You have to include the currency
+[event setTransactionId:transaction.transactionIdentifier];
+[Adjust trackEvent:event];
+```
+
+## Additional steps if you come from v3.0.0
+
+We added an optional parameter `transactionId` to our `trackRevenue` methods.
+If you are tracking In-App Purchases you might want to pass in the transaction
+identifier provided by Apple to avoid duplicate revenue tracking. It should
+look roughly like this:
 
 ```objc
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
@@ -28,6 +113,7 @@ all adjust SDK calls.
 
 1. Right click on the old `AdjustIo` source folder and select `Delete`. Confirm
    `Move to Trash`.
+
 2. From the Xcode menu select `Find → Find and Replace in Project...` to bring
    up the project wide search and replace. Enter `AdjustIo` into the search
    field and `Adjust` into the replace field. Press enter to start the search.
@@ -45,7 +131,6 @@ all adjust SDK calls.
 
 The adjust SDK v3.4.0 added delegate callbacks. Check out the [README] for
 details.
-
 
 ## Additional steps if you come from v2.0.x
 

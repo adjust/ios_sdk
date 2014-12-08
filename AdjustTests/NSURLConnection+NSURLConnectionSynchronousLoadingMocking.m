@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
-#import "AIAdjustFactory.h"
-#import "AILoggerMock.h"
+#import "ADJAdjustFactory.h"
+#import "ADJLoggerMock.h"
 
 static BOOL triggerConnectionError = NO;
 static BOOL triggerResponseError = NO;
@@ -15,7 +15,7 @@ static BOOL triggerResponseError = NO;
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error {
-    AILoggerMock *loggerMock =(AILoggerMock *)AIAdjustFactory.logger;
+    ADJLoggerMock *loggerMock =(ADJLoggerMock *)ADJAdjustFactory.logger;
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
     if (triggerConnectionError) {
