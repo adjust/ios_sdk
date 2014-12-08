@@ -368,7 +368,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *attribution = [[ADJAttribution alloc] init];
-    BOOL adjustParamsFound = NO;
 
     for (NSString* fieldValuePair in queryArray) {
         NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
@@ -383,17 +382,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
         if (keyWOutPrefix.length == 0) continue;
 
-        adjustParamsFound = YES;
         if (![self trySetAttributionDeeplink:attribution withKey:keyWOutPrefix withValue:value]) {
             [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
         }
     }
 
-    [self.attributionHandler getAttribution];
-
-    if (!adjustParamsFound) {
+    if ([adjustDeepLinks count] <= 0) {
         return;
     }
+
+    [self.attributionHandler getAttribution];
+
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                  andActivityState:self.activityState
