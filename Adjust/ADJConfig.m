@@ -36,6 +36,15 @@
     return self;
 }
 
+- (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
+    _delegate = delegate;
+    if (![delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        id<ADJLogger> logger = ADJAdjustFactory.logger;
+        [logger warn:@"Delegate configured does not implement AdjustDelegate"];
+    }
+    self.hasDelegate = (delegate != nil);
+}
+
 - (BOOL) checkEnvironment:(NSString *)environment
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
@@ -68,6 +77,7 @@
         copy.sdkPrefix = [self.environment copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.macMd5TrackingEnabled = self.macMd5TrackingEnabled;
+        copy.hasDelegate = self.hasDelegate;
         // adjust delegate not copied
     }
 

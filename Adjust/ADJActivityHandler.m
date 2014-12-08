@@ -183,6 +183,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)launchAttributionDelegate{
     if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        [self.logger warn:@"Delegate can't be launched because it does not implement AdjustDelegate"];
         return;
     }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)

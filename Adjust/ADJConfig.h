@@ -72,5 +72,6 @@
  *     methods like adjustAttributionChanged:
  */
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, assign) BOOL hasDelegate;
 
 @end

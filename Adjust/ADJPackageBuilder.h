@@ -17,7 +17,6 @@
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 @property (nonatomic, copy) ADJActivityState *activityState;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
-@property (nonatomic, assign) BOOL hasDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) NSDate *clickTime;
 @property (nonatomic, copy) NSDate *purchaseTime;

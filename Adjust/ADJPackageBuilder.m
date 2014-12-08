@@ -25,12 +25,6 @@
     self.activityState = activityState;
     self.adjustConfig = adjustConfig;
 
-    if (adjustConfig.delegate != nil) {
-        self.hasDelegate = YES;
-    } else {
-        self.hasDelegate = NO;
-    }
-
     return self;
 }
 
@@ -99,7 +93,7 @@
     [self parameters:parameters setString:self.adjustConfig.appToken       forKey:@"app_token"];
     [self parameters:parameters setString:self.adjustConfig.environment    forKey:@"environment"];
     [self parameters:parameters setString:self.activityState.uuid          forKey:@"ios_uuid"];
-    [self parameters:parameters setBool:self.hasDelegate                  forKey:@"needs_attribution_data"];
+    [self parameters:parameters setBool:self.adjustConfig.hasDelegate                   forKey:@"needs_attribution_data"];
 
     ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
     attributionPackage.path = @"/attribution";
@@ -120,7 +114,7 @@
 
     [self injectDeviceInfo:self.deviceInfo andConfig:self.adjustConfig intoParameters:parameters];
     [self injectActivityState:self.activityState intoParamters:parameters];
-    [self parameters:parameters setBool:self.hasDelegate forKey:@"needs_attribution_data"];
+    [self parameters:parameters setBool:self.adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
 
     return parameters;
 }
