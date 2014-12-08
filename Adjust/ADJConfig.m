@@ -37,12 +37,23 @@
 }
 
 - (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    _delegate = delegate;
+    if (delegate == nil) {
+        _delegate = nil;
+        self.hasDelegate = NO;
+        return;
+    }
+
     if (![delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         id<ADJLogger> logger = ADJAdjustFactory.logger;
-        [logger warn:@"Delegate configured does not implement AdjustDelegate"];
+        [logger error:@"Delegate does not implement AdjustDelegate"];
+
+        _delegate = nil;
+        self.hasDelegate = NO;
+        return;
     }
-    self.hasDelegate = (delegate != nil);
+
+    _delegate = delegate;
+    self.hasDelegate = YES;
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
