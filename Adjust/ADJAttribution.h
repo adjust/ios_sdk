@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJAttribution : NSObject <NSCoding>
+@interface ADJAttribution : NSObject <NSCoding, NSCopying>
 
 // the following attributes are only set when error is nil
 // (when activity was tracked successfully and response could be parsed)
