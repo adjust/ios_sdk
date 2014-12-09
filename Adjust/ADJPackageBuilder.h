@@ -23,8 +23,8 @@
 @property (nonatomic, retain) NSDictionary* deeplinkParameters;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
-         andActivityState:(ADJActivityState *)activityState
-                andConfig:(ADJConfig *)adjustConfig;
+            activityState:(ADJActivityState *)activityState
+                   config:(ADJConfig *)adjustConfig;
 
 - (ADJActivityPackage *)buildSessionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;

@@ -15,8 +15,8 @@
 @implementation ADJPackageBuilder
 
 - (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
-        andActivityState:(ADJActivityState *)activityState
-               andConfig:(ADJConfig *)adjustConfig
+           activityState:(ADJActivityState *)activityState
+                  config:(ADJConfig *)adjustConfig
 {
     self = [super init];
     if (self == nil) return nil;
@@ -112,7 +112,7 @@
 - (NSMutableDictionary *)defaultParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self injectDeviceInfo:self.deviceInfo andConfig:self.adjustConfig intoParameters:parameters];
+    [self injectDeviceInfo:self.deviceInfo config:self.adjustConfig intoParameters:parameters];
     [self injectActivityState:self.activityState intoParamters:parameters];
     [self parameters:parameters setBool:self.adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
 
@@ -120,7 +120,7 @@
 }
 
 - (void) injectDeviceInfo:(ADJDeviceInfo *)deviceInfo
-                   andConfig:(ADJConfig*) adjustConfig
+                   config:(ADJConfig*) adjustConfig
            intoParameters:(NSMutableDictionary *) parameters
 {
     [self parameters:parameters setString:deviceInfo.macSha1           forKey:@"mac_sha1"];

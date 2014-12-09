@@ -158,8 +158,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (iAdImpressionDate != nil || appPurchaseDate != nil) {
         ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                            initWithDeviceInfo:self.deviceInfo
-                                           andActivityState:self.activityState
-                                           andConfig:self.adjustConfig];
+                                           activityState:self.activityState
+                                           config:self.adjustConfig];
 
         [clickBuilder setClickTime:iAdImpressionDate];
         [clickBuilder setPurchaseTime:appPurchaseDate];
@@ -247,8 +247,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (id<ADJAttributionHandler>) buildAttributionHandler {
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                         andActivityState:self.activityState
-                                                                                andConfig:self.adjustConfig];
+                                                                            activityState:self.activityState
+                                                                            config:self.adjustConfig];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     id<ADJAttributionHandler> attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                                         withMaxDelay:nil
@@ -353,8 +353,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                 andActivityState:self.activityState
-                                                                        andConfig:self.adjustConfig];
+                                                                 activityState:self.activityState
+                                                                        config:self.adjustConfig];
 
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
@@ -399,8 +399,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                 andActivityState:self.activityState
-                                                                        andConfig:self.adjustConfig];
+                                                                 activityState:self.activityState
+                                                                        config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = attribution;
 
@@ -491,8 +491,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)transferSessionPackage {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                   andActivityState:self.activityState
-                                                                          andConfig:self.adjustConfig];
+                                                                   activityState:self.activityState
+                                                                          config:self.adjustConfig];
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];

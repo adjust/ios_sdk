@@ -52,8 +52,8 @@ NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
-[event addCallbackParameter:@"key" andValue:@"value"];
-[event addCallbackParameter:@"foo" andValue:@"bar"];
+[event addCallbackParameter:@"key" value:@"value"];
+[event addCallbackParameter:@"foo" value:@"bar"];
 [Adjust trackEvent:event];
 ```
 
