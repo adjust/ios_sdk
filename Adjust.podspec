@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '4.3'
   s.framework      = 'SystemConfiguration'
   s.weak_framework = 'AdSupport', 'iAd'
-  s.source_files   = 'Adjust/*.{h,m}', 'Adjust/AIAdditions/*.{h,m}'
+  s.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
   s.requires_arc   = true
 end
