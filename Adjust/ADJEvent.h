@@ -20,7 +20,7 @@
 /**
  * Create Event object with Event Token.
  *
- * @param event Event token that is  created in the dashboard 
+ * @param event Event token that is  created in the dashboard
  * at http://adjust.com and should be six characters long.
  */
 + (ADJEvent *)eventWithEventToken:(NSString *)eventToken;
@@ -39,7 +39,7 @@
  *
  */
 - (void) addCallbackParameter:(NSString *)key
-                     value:(NSString *)value;
+                        value:(NSString *)value;
 
 /**
  * Add a key-pair to be fowarded to a partner.
@@ -49,7 +49,7 @@
  *
  */
 - (void) addPartnerParameter:(NSString *)key
-                     value:(NSString *)value;
+                       value:(NSString *)value;
 
 /**
  * Set the revenue and associated currency of the event.

@@ -33,7 +33,7 @@ static NSString * const ADJEnvironmentProduction = @"production";
  *
  * See ADJConfig.h for more configuration options
  *
- * @param adjustConfig The configuration object that includes the environment 
+ * @param adjustConfig The configuration object that includes the environment
  *     and the App Token of your app. This unique identifier can
  *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
@@ -45,8 +45,8 @@ static NSString * const ADJEnvironmentProduction = @"production";
  *
  * See ADJEvent.h for more event options
  *
- * @param event The Event object for this kind of event. It needs a event token 
- * that is  created in the dashboard at http://adjust.com and should be six 
+ * @param event The Event object for this kind of event. It needs a event token
+ * that is  created in the dashboard at http://adjust.com and should be six
  * characters long.
  */
 + (void)trackEvent:(ADJEvent *)event;
@@ -91,7 +91,7 @@ static NSString * const ADJEnvironmentProduction = @"production";
 
 /**
  * Enable or disable offline mode. Activities won't be sent
- * but they are saved when offline mode is disabled. This 
+ * but they are saved when offline mode is disabled. This
  * feature is not saved for future sessions
  */
 + (void)setOfflineMode:(BOOL)enabled;

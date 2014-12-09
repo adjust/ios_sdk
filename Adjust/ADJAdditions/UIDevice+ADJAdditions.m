@@ -182,9 +182,9 @@
             id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
 
             [ADClientSharedClientInstance performSelector:iadDateSelector
-                withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
-                    [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
-            }];
+                                               withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
+                                                   [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
+                                               }];
 #pragma clang diagnostic pop
         }
         @catch (NSException *exception) {

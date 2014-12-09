@@ -38,7 +38,7 @@
  * @param appToken The App Token of your app. This unique identifier can
  *     be found it in your dashboard at http://adjust.com and should always
  *     be 12 characters long.
- * @param environment The current environment your app. We use this environment to 
+ * @param environment The current environment your app. We use this environment to
  *     distinguish between real traffic and artificial traffic from test devices.
  *     It is very important that you keep this value meaningful at all times!
  *     Especially if you are tracking revenue.
@@ -58,7 +58,7 @@
 /**
  * Disable macMd5 tracking if your privacy constraints require it.
  *
- * @param macMd5TrackingEnabled Enable or disable tracking of 
+ * @param macMd5TrackingEnabled Enable or disable tracking of
  * the MD5 hash of the MAC address
  */
 @property (nonatomic, assign) BOOL macMd5TrackingEnabled;

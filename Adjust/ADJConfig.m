@@ -13,12 +13,12 @@
 @implementation ADJConfig
 
 + (ADJConfig *) configWithAppToken:(NSString *)appToken
-                    environment:(NSString *)environment {
+                       environment:(NSString *)environment {
     return [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
 }
 
 - (id) initWithAppToken:(NSString *)appToken
-         environment:(NSString *)environment
+            environment:(NSString *)environment
 {
     self = [super init];
     if (self == nil) return nil;
@@ -91,7 +91,7 @@
         copy.hasDelegate = self.hasDelegate;
         // adjust delegate not copied
     }
-
+    
     return copy;
 }
 

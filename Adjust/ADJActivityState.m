@@ -138,7 +138,7 @@ static const int kTransactionIdCount = 10;
         copy.askingAttribution = self.askingAttribution;
         // transactionIds not copied
     }
-
+    
     return copy;
 }
 

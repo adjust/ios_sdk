@@ -73,15 +73,15 @@
     if (self.network != nil) {
         [responseDataDic setObject:self.network forKey:@"network"];
     }
-    
+
     if (self.campaign != nil) {
         [responseDataDic setObject:self.campaign forKey:@"campaign"];
     }
-    
+
     if (self.adgroup != nil) {
         [responseDataDic setObject:self.adgroup forKey:@"adgroup"];
     }
-    
+
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }

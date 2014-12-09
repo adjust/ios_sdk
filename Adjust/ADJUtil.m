@@ -165,7 +165,7 @@ static NSDateFormatter *dateFormat;
     [pairs addObject:sentAtPair];
 
     NSString *queryString = [pairs componentsJoinedByString:@"&"];
-
+    
     return queryString;
 }
 

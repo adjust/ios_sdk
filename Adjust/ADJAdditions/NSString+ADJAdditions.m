@@ -43,11 +43,11 @@
 
 -(NSString *)adjUrlEncode {
     return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                NULL,
-                (CFStringRef)self,
-                NULL,
-                (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-                CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
+                                                                                 NULL,
+                                                                                 (CFStringRef)self,
+                                                                                 NULL,
+                                                                                 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+                                                                                 CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
 }
 
 - (NSString *)adjRemoveColons {
@@ -63,7 +63,7 @@
         NSString *capitalized = iter.capitalizedString;
         result = [result stringByAppendingString:capitalized];
     }
-
+    
     va_end(strings);
     return result;
 }
@@ -72,7 +72,7 @@
     if (first == nil && second == nil) {
         return YES;
     }
-
+    
     return [first isEqualToString:second];
 }
 
