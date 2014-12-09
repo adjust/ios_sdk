@@ -117,7 +117,7 @@ static NSString * const kWWAN   = @"WWAN";
          */
         return kWWAN;
     }
-    
+
     return nil;
 }
 
@@ -146,7 +146,7 @@ static NSString * const kWWAN   = @"WWAN";
         copy.mobileCountryCode = [self.mobileCountryCode copyWithZone:zone];
         copy.mobileNetworkCode = [self.mobileNetworkCode copyWithZone:zone];
     }
-
+    
     return copy;
 }
 

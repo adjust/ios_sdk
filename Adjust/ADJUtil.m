@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.0.0";
+static NSString * const kClientSdk = @"ios4.0.1";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -165,7 +165,7 @@ static NSDateFormatter *dateFormat;
     [pairs addObject:sentAtPair];
 
     NSString *queryString = [pairs componentsJoinedByString:@"&"];
-
+    
     return queryString;
 }
 

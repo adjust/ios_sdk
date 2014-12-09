@@ -10,14 +10,14 @@
 @interface ADJTimer : NSObject
 
 + (ADJTimer *)timerWithInterval:(uint64_t)interval
-                        leeway:(uint64_t)leeway
-                         queue:(dispatch_queue_t)queue
-                         block:(dispatch_block_t)block;
+                         leeway:(uint64_t)leeway
+                          queue:(dispatch_queue_t)queue
+                          block:(dispatch_block_t)block;
 
 + (ADJTimer *)timerWithStart:(uint64_t)start
-                     leeway:(uint64_t)leeway
-                      queue:(dispatch_queue_t)queue
-                      block:(dispatch_block_t)block;
+                      leeway:(uint64_t)leeway
+                       queue:(dispatch_queue_t)queue
+                       block:(dispatch_block_t)block;
 
 - (id)initWithInterval:(uint64_t)interval
                 leeway:(uint64_t)leeway
@@ -25,9 +25,9 @@
                  block:(dispatch_block_t)block;
 
 - (id)initWithStart:(uint64_t)start
-                leeway:(uint64_t)leeway
-                 queue:(dispatch_queue_t)queue
-                 block:(dispatch_block_t)block;
+             leeway:(uint64_t)leeway
+              queue:(dispatch_queue_t)queue
+              block:(dispatch_block_t)block;
 
 - (void)resume;
 - (void)suspend;

@@ -158,8 +158,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (iAdImpressionDate != nil || appPurchaseDate != nil) {
         ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                            initWithDeviceInfo:self.deviceInfo
-                                           andActivityState:self.activityState
-                                           andConfig:self.adjustConfig];
+                                           activityState:self.activityState
+                                           config:self.adjustConfig];
 
         [clickBuilder setClickTime:iAdImpressionDate];
         [clickBuilder setPurchaseTime:appPurchaseDate];
@@ -247,12 +247,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (id<ADJAttributionHandler>) buildAttributionHandler {
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                         andActivityState:self.activityState
-                                                                                andConfig:self.adjustConfig];
+                                                                            activityState:self.activityState
+                                                                                   config:self.adjustConfig];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     id<ADJAttributionHandler> attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                        withMaxDelay:nil
-                                                              withAttributionPackage:attributionPackage];
+                                                                                             withMaxDelay:nil
+                                                                                   withAttributionPackage:attributionPackage];
 
     return attributionHandler;
 }
@@ -312,8 +312,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.activityState.lastActivity = now;
         [self writeActivityState];
         [self.logger info:@"Processed Subsession %d of Session %d",
-            self.activityState.subsessionCount,
-            self.activityState.sessionCount];
+         self.activityState.subsessionCount,
+         self.activityState.sessionCount];
     }
 
     if (self.attribution == nil || self.activityState.askingAttribution) {
@@ -353,8 +353,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                 andActivityState:self.activityState
-                                                                        andConfig:self.adjustConfig];
+                                                                      activityState:self.activityState
+                                                                             config:self.adjustConfig];
 
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
@@ -399,8 +399,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                 andActivityState:self.activityState
-                                                                        andConfig:self.adjustConfig];
+                                                                      activityState:self.activityState
+                                                                             config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = attribution;
 
@@ -409,8 +409,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (BOOL) trySetAttributionDeeplink:(ADJAttribution *)attribution
-                            withKey:(NSString *)key
-                          withValue:(NSString*)value {
+                           withKey:(NSString *)key
+                         withValue:(NSString*)value {
 
     if ([key isEqualToString:@"tracker"]) {
         attribution.trackerName = value;
@@ -491,8 +491,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)transferSessionPackage {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                   andActivityState:self.activityState
-                                                                          andConfig:self.adjustConfig];
+                                                                        activityState:self.activityState
+                                                                               config:self.adjustConfig];
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
@@ -503,9 +503,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)startTimer {
     if (self.timer == nil) {
         self.timer = [ADJTimer timerWithInterval:kTimerInterval
-                                         leeway:kTimerLeeway
-                                          queue:self.internalQueue
-                                          block:^{ [self timerFired]; }];
+                                          leeway:kTimerLeeway
+                                           queue:self.internalQueue
+                                           block:^{ [self timerFired]; }];
     }
     [self.timer resume];
 }
@@ -578,7 +578,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger verbose:@"Found transaction ID in %@", self.activityState.transactionIds];
         return NO; // transaction ID found -> used already
     }
-
+    
     [self.activityState addTransactionId:transactionId];
     [self.logger verbose:@"Added transaction ID %@", self.activityState.transactionIds];
     // activity state will get written by caller

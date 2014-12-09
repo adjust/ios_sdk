@@ -37,7 +37,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                                      withMaxDelay:milliseconds
-                                                     withAttributionPackage:attributionPackage];
+                                           withAttributionPackage:attributionPackage];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
@@ -118,8 +118,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSURLResponse *urlResponse = nil;
 
     NSData *response = [NSURLConnection sendSynchronousRequest:request
-                                        returningResponse:&urlResponse
-                                        error:&requestError];
+                                             returningResponse:&urlResponse
+                                                         error:&requestError];
     // connection error
     if (requestError != nil) {
         [self.logger error:@"Failed to get attribution. (%@)", requestError.localizedDescription];
@@ -169,7 +169,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *relativePath = [NSString stringWithFormat:@"%@?%@", self.attributionPackage.path, parameters];
     NSURL *baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
     NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
-
+    
     return url;
 }
 

@@ -20,11 +20,11 @@
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) NSDate *clickTime;
 @property (nonatomic, copy) NSDate *purchaseTime;
-@property (nonatomic, copy) NSDictionary* deeplinkParameters;
+@property (nonatomic, retain) NSDictionary* deeplinkParameters;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
-         andActivityState:(ADJActivityState *)activityState
-                andConfig:(ADJConfig *)adjustConfig;
+            activityState:(ADJActivityState *)activityState
+                   config:(ADJConfig *)adjustConfig;
 
 - (ADJActivityPackage *)buildSessionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;

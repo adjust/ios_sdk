@@ -21,9 +21,9 @@
 @implementation ADJTimer
 
 + (ADJTimer *)timerWithInterval:(uint64_t)interval
-                        leeway:(uint64_t)leeway
-                         queue:(dispatch_queue_t)queue
-                         block:(dispatch_block_t)block
+                         leeway:(uint64_t)leeway
+                          queue:(dispatch_queue_t)queue
+                          block:(dispatch_block_t)block
 {
     return [[ADJTimer alloc] initWithInterval:interval leeway:leeway queue:queue block:block];
 }

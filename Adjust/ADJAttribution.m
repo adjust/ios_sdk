@@ -73,15 +73,15 @@
     if (self.network != nil) {
         [responseDataDic setObject:self.network forKey:@"network"];
     }
-    
+
     if (self.campaign != nil) {
         [responseDataDic setObject:self.campaign forKey:@"campaign"];
     }
-    
+
     if (self.adgroup != nil) {
         [responseDataDic setObject:self.adgroup forKey:@"adgroup"];
     }
-    
+
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }
@@ -112,6 +112,25 @@
 - (NSUInteger)hash {
     return [self.trackerName hash];
 }
+
+#pragma mark - NSCopying
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    ADJAttribution* copy = [[[self class] allocWithZone:zone] init];
+
+    if (copy) {
+        copy.trackerToken = [self.trackerToken copyWithZone:zone];
+        copy.trackerName = [self.trackerName copyWithZone:zone];
+        copy.network = [self.network copyWithZone:zone];
+        copy.campaign = [self.campaign copyWithZone:zone];
+        copy.adgroup = [self.adgroup copyWithZone:zone];
+        copy.creative = [self.creative copyWithZone:zone];
+    }
+
+    return copy;
+}
+
 
 #pragma mark NSCoding
 
