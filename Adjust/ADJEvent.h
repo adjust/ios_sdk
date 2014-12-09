@@ -12,8 +12,8 @@
 
 @property (nonatomic, copy) NSString* eventToken;
 @property (nonatomic, copy) NSNumber* revenue;
-@property (nonatomic, copy) NSMutableDictionary* callbackParameters;
-@property (nonatomic, copy) NSMutableDictionary* partnerParameters;
+@property (nonatomic, retain) NSMutableDictionary* callbackParameters;
+@property (nonatomic, retain) NSMutableDictionary* partnerParameters;
 @property (nonatomic, copy) NSString* transactionId;
 @property (nonatomic, copy) NSString* currency;
 
