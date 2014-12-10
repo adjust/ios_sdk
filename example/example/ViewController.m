@@ -23,11 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
-    BOOL isEnabled = [Adjust isEnabled];
-    if (!isEnabled) {
-        [self.btnTrackRevenueEvent setTitle:@"Enable SDK" forState:UIControlStateNormal];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
