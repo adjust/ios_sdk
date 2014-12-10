@@ -233,6 +233,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [[UIDevice currentDevice] adjSetIad:self];
 
     [self readAttribution];
+    [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
 
@@ -240,7 +241,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.shouldGetAttribution = YES;
 
-    [self readAttribution];
 
     [self startInternal];
 }
