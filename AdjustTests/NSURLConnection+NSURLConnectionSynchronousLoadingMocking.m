@@ -10,7 +10,7 @@
 #import "ADJLoggerMock.h"
 
 static BOOL triggerConnectionError = NO;
-static BOOL triggerResponseError = NO;
+static int triggerResponse = 0;
 
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
@@ -27,12 +27,25 @@ static BOOL triggerResponseError = NO;
     }
     NSInteger statusCode;
     NSString * sResponse;
-    if (triggerResponseError) {
-        statusCode = 0;
-        sResponse = @"{\"error\":\"response error\"}";
-    } else {
+    if (triggerResponse == 0) {
         statusCode = 200;
-        sResponse = @"{\"tracker_token\":\"token\",\"tracker_name\":\"name\", \"network\":\"network\",\"campaign\":\"campaign\", \"adgroup\":\"adgroup\",\"creative\":\"creative\",\"deeplink\":\"testApp://\"}";
+        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"deeplink\":\"testApp://\"}";
+    } else if (triggerResponse == 1) {
+        statusCode = 0;
+        sResponse = @"{\"message\":\"response error\"}";
+    } else if (triggerResponse == 2) {
+        statusCode = 0;
+        sResponse = @"server response";
+    } else if (triggerResponse == 3) {
+        statusCode = 0;
+        sResponse = @"{}";
+    } else if (triggerResponse == 4) {
+        statusCode = 200;
+        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"ask_in\":\"2000\"}";
+    } else {
+
+        statusCode = 0;
+        sResponse = @"";
     }
     //  build response
     (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
@@ -46,8 +59,10 @@ static BOOL triggerResponseError = NO;
     triggerConnectionError = connection;
 }
 
-+ (void)setResponseError:(BOOL)response {
-    triggerResponseError = response;
++ (void)setResponse:(int)response {
+    triggerResponse = response;
 }
+
+
 
 @end

@@ -1,5 +1,5 @@
 //
-//  AILoggerMock.m
+//  ADJLoggerMock.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
@@ -23,18 +23,24 @@ static NSString * const kLogTag = @"AdjustTests";
     self = [super init];
     if (self == nil) return nil;
 
-    self.logBuffer = [[NSMutableString alloc] init];
-    self.logMap = @{
-        @0 : [NSMutableArray array],
-        @1 : [NSMutableArray array],
-        @2 : [NSMutableArray array],
-        @3 : [NSMutableArray array],
-        @4 : [NSMutableArray array],
-        @5 : [NSMutableArray array],
-        @6 : [NSMutableArray array],
-    };
+    [self reset];
 
     return self;
+}
+
+- (void) reset {
+    self.logBuffer = [[NSMutableString alloc] init];
+    self.logMap = @{
+                    @0 : [NSMutableArray array],
+                    @1 : [NSMutableArray array],
+                    @2 : [NSMutableArray array],
+                    @3 : [NSMutableArray array],
+                    @4 : [NSMutableArray array],
+                    @5 : [NSMutableArray array],
+                    @6 : [NSMutableArray array],
+                    };
+
+    [self test:@"logger reset"];
 }
 
 - (NSString *)description {
@@ -56,7 +62,7 @@ static NSString * const kLogTag = @"AdjustTests";
 }
 
 - (void)setLogLevel:(ADJLogLevel)logLevel {
-    [self test:@"AILogger setLogLevel logLevel:%@", logLevel];
+    [self test:@"ADJLogger setLogLevel: %d", logLevel];
 }
 
 - (void)test:(NSString *)format, ... {

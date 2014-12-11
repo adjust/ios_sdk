@@ -7,7 +7,12 @@
 //
 
 #import "ADJActivityHandler.h"
+#import "ADJAttribution.h"
 
 @interface ADJActivityHandlerMock : NSObject <ADJActivityHandler>
+
+@property (nonatomic, strong) ADJAttribution *attributionUpdated;
+
+- (void) setUpdatedAttribution:(BOOL)updated;
 
 @end
