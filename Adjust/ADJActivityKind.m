@@ -13,8 +13,6 @@ ADJActivityKind ADJActivityKindFromString(NSString *string) {
         return ADJActivityKindSession;
     } else if ([@"event" isEqualToString:string]) {
         return ADJActivityKindEvent;
-    } else if ([@"revenue" isEqualToString:string]) {
-        return ADJActivityKindRevenue;
     } else if ([@"click" isEqualToString:string]) {
         return ADJActivityKindClick;
     } else {
@@ -26,7 +24,6 @@ NSString* ADJActivityKindToString(ADJActivityKind activityKind) {
     switch (activityKind) {
         case ADJActivityKindSession:       return @"session";
         case ADJActivityKindEvent:         return @"event";
-        case ADJActivityKindRevenue:       return @"revenue";
         case ADJActivityKindClick:         return @"click";
         default:                           return @"unknown";
     }

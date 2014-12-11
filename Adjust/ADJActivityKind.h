@@ -12,7 +12,7 @@ typedef enum {
     ADJActivityKindUnknown       = 0,
     ADJActivityKindSession       = 1,
     ADJActivityKindEvent         = 2,
-    ADJActivityKindRevenue       = 3,
+//    ADJActivityKindRevenue       = 3,
     ADJActivityKindClick         = 4,
 } ADJActivityKind;
 
