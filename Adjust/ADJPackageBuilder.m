@@ -165,7 +165,7 @@
     if (event.revenue == nil) {
         return [NSString stringWithFormat:@" '%@'", event.eventToken];
     } else {
-        return [NSString stringWithFormat:@" (%.3f cent, '%@')", [event.revenue doubleValue], event.eventToken];
+        return [NSString stringWithFormat:@" (%.4f %@, '%@')", [event.revenue doubleValue], event.currency, event.eventToken];
     }
 }
 

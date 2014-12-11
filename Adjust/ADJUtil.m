@@ -120,7 +120,7 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Read %@: %@", objectName, object];
             return object;
         } else if (object == nil) {
-            [logger verbose:@"%@ not found", objectName];
+            [logger verbose:@"%@ file not found", objectName];
         } else {
             [logger error:@"Failed to read %@ file", objectName];
         }
