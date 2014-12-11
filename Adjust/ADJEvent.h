@@ -10,12 +10,12 @@
 
 @interface ADJEvent : NSObject<NSCopying>
 
-@property (nonatomic, copy) NSString* eventToken;
-@property (nonatomic, copy) NSNumber* revenue;
-@property (nonatomic, retain) NSMutableDictionary* callbackParameters;
-@property (nonatomic, retain) NSMutableDictionary* partnerParameters;
+@property (nonatomic, copy, readonly) NSString* eventToken;
+@property (nonatomic, copy, readonly) NSNumber* revenue;
+@property (nonatomic, readonly) NSDictionary* callbackParameters;
+@property (nonatomic, readonly) NSDictionary* partnerParameters;
 @property (nonatomic, copy) NSString* transactionId;
-@property (nonatomic, copy) NSString* currency;
+@property (nonatomic, copy, readonly) NSString* currency;
 
 /**
  * Create Event object with Event Token.
