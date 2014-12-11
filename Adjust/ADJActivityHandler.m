@@ -467,22 +467,22 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)writeActivityState {
-    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"activity state"];
+    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"Activity state"];
 }
 
 - (void)writeAttribution {
-    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"attribution"];
+    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"Attribution"];
 }
 
 - (void)readActivityState {
     self.activityState = [ADJUtil readObject:kActivityStateFilename
-                                  objectName:@"activity state"
+                                  objectName:@"Activity state"
                                        class:[ADJActivityState class]];
 }
 
 - (void)readAttribution {
     self.attribution = [ADJUtil readObject:kAttributionFilename
-                                objectName:@"attribution"
+                                objectName:@"Attribution"
                                      class:[ADJAttribution class]];
 }
 
