@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47858B5A1A3A535700471B86 /* UIDevice+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDF1A13BFC600A40AFB /* UIDevice+ADJAdditions.m */; };
+		47858B5D1A3A535B00471B86 /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDD1A13BFC600A40AFB /* NSString+ADJAdditions.m */; };
 		9601C19D1A31DD7F00A9AE21 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9601C1A21A31DE0300A9AE21 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -25,8 +27,6 @@
 		9679922518BBAE2800394606 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952CE1A012F5300928462 /* ADJAttributionHandler.m */; };
 		969952D21A01309200928462 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952D11A01309200928462 /* ADJAttribution.m */; };
-		96CD2BE01A13BFC600A40AFB /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDD1A13BFC600A40AFB /* NSString+ADJAdditions.m */; };
-		96CD2BE11A13BFC600A40AFB /* UIDevice+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDF1A13BFC600A40AFB /* UIDevice+ADJAdditions.m */; };
 		96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E34D18BBB48A008E7B30 /* Adjust.m */; };
 		96E5E38B18BBB48A008E7B30 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36318BBB48A008E7B30 /* ADJActivityHandler.m */; };
 		96E5E38C18BBB48A008E7B30 /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36518BBB48A008E7B30 /* ADJActivityKind.m */; };
@@ -417,6 +417,7 @@
 				96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */,
 				96E5E38B18BBB48A008E7B30 /* ADJActivityHandler.m in Sources */,
 				96E5E39618BBB48A008E7B30 /* ADJRequestHandler.m in Sources */,
+				47858B5A1A3A535700471B86 /* UIDevice+ADJAdditions.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
 				96E5E39818BBB48A008E7B30 /* ADJTimer.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* ADJActivityKind.m in Sources */,
@@ -426,6 +427,7 @@
 				969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */,
 				96E5E38E18BBB48A008E7B30 /* ADJActivityState.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
+				47858B5D1A3A535B00471B86 /* NSString+ADJAdditions.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* ADJPackageHandler.m in Sources */,
 				96E5E39318BBB48A008E7B30 /* ADJLogger.m in Sources */,
 				96E5E39418BBB48A008E7B30 /* ADJPackageBuilder.m in Sources */,
@@ -442,9 +444,7 @@
 				96E5E3AF18BBB49E008E7B30 /* ADJActivityHandlerMock.m in Sources */,
 				96E5E3B318BBB49E008E7B30 /* ADJPackageHandlerTests.m in Sources */,
 				96E5E3B618BBB49E008E7B30 /* ADJTestsUtil.m in Sources */,
-				96CD2BE11A13BFC600A40AFB /* UIDevice+ADJAdditions.m in Sources */,
 				96E5E3B018BBB49E008E7B30 /* ADJActivityHandlerTests.m in Sources */,
-				96CD2BE01A13BFC600A40AFB /* NSString+ADJAdditions.m in Sources */,
 				96E5E3B818BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */,
 				96E5E3B418BBB49E008E7B30 /* ADJRequestHandlerMock.m in Sources */,
 				96E5E3B518BBB49E008E7B30 /* AIRequestHandlerTests.m in Sources */,
