@@ -159,8 +159,6 @@ static NSDateFormatter *dateFormat;
     NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString adjUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    [logger debug:@"sent_at: %@", dateString];
 
     [pairs addObject:sentAtPair];
 

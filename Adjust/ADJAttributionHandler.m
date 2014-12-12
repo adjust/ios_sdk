@@ -99,7 +99,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         [self.askInTimer cancel];
     }
 
-    [self.logger debug:@"waiting to query attribution in %d milliseconds", [timerMilliseconds intValue]];
+    [self.logger debug:@"Waiting to query attribution in %d milliseconds", [timerMilliseconds intValue]];
 
     uint64_t timer_nano = [timerMilliseconds intValue] * NSEC_PER_MSEC;
     self.askInTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];

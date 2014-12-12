@@ -86,6 +86,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
+    [self.logger debug:@"Sending click package (%@)", clickPackage];
+    [self.logger verbose:@"%@", clickPackage.extendedString];
     [self.requestHandler sendClickPackage:clickPackage];
 }
 
