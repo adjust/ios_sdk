@@ -403,6 +403,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                              config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = attribution;
+    [clickBuilder setClickTime:[NSDate date]];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler sendClickPackage:clickPackage];
