@@ -37,7 +37,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJTimer *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
-@property (nonatomic, retain) ADJAttribution *attribution;
+@property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
