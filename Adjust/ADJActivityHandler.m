@@ -162,18 +162,21 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
-    if (iAdImpressionDate != nil || appPurchaseDate != nil) {
-        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                           initWithDeviceInfo:self.deviceInfo
-                                           activityState:self.activityState
-                                           config:self.adjustConfig];
-
-        [clickBuilder setClickTime:iAdImpressionDate];
-        [clickBuilder setPurchaseTime:appPurchaseDate];
-
-        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-        [self.packageHandler sendClickPackage:clickPackage];
+    if (iAdImpressionDate == nil) {
+        [self.logger error:@"iAd click time is missing"];
+        return;
     }
+
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig];
+
+    [clickBuilder setClickTime:iAdImpressionDate];
+    [clickBuilder setPurchaseTime:appPurchaseDate];
+
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
+    [self.packageHandler sendClickPackage:clickPackage];
 }
 
 - (BOOL)updateAttribution:(ADJAttribution *)attribution {
