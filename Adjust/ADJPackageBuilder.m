@@ -62,7 +62,7 @@
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource{
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setString:@"source" forKey:clickSource];
+    [self parameters:parameters setString:clickSource                     forKey:@"source"];
     [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"params"];
     [self parameters:parameters setDate:self.clickTime                    forKey:@"click_time"];
     [self parameters:parameters setDate:self.purchaseTime                 forKey:@"purchase_time"];
