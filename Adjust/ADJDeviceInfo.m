@@ -11,9 +11,6 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJUtil.h"
 
-#import <SystemConfiguration/SystemConfiguration.h>
-#import <netinet/in.h>
-
 static NSString * const kWiFi   = @"WIFI";
 static NSString * const kWWAN   = @"WWAN";
 
@@ -48,7 +45,6 @@ static NSString * const kWWAN   = @"WWAN";
     self.deviceType       = device.adjDeviceType;
     self.deviceName       = device.adjDeviceName;
     self.systemVersion    = device.systemVersion;
-    self.networkType      = [self getNetworkStatus];
 
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
@@ -58,63 +54,6 @@ static NSString * const kWWAN   = @"WWAN";
 
     return self;
 }
-
-// from https://developer.apple.com/library/ios/samplecode/Reachability/
-- (NSString *)getNetworkStatus {
-
-    struct sockaddr_in zeroAddress;
-    bzero(&zeroAddress, sizeof(zeroAddress));
-    zeroAddress.sin_len = sizeof(zeroAddress);
-    zeroAddress.sin_family = AF_INET;
-
-    const struct sockaddr_in * hostAddress = &zeroAddress;
-    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *) hostAddress);
-
-    SCNetworkReachabilityFlags flags;
-    if(!SCNetworkReachabilityGetFlags(reachability, &flags)) {
-        return nil;
-    }
-
-    if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
-    {
-        return nil;
-    }
-
-    if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0)
-    {
-        /*
-         If the target host is reachable and no connection is required then we'll assume (for now) that you're on Wi-Fi...
-         */
-        return kWiFi;
-    }
-
-    if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
-         (flags & kSCNetworkReachabilityFlagsConnectionOnTraffic) != 0))
-    {
-        /*
-         ... and the connection is on-demand (or on-traffic) if the calling application is using the CFSocketStream or higher APIs...
-         */
-
-        if ((flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
-        {
-            /*
-             ... and no [user] intervention is needed...
-             */
-            return kWiFi;
-        }
-    }
-
-    if ((flags & kSCNetworkReachabilityFlagsIsWWAN) == kSCNetworkReachabilityFlagsIsWWAN)
-    {
-        /*
-         ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
-         */
-        return kWWAN;
-    }
-
-    return nil;
-}
-
 
 -(id)copyWithZone:(NSZone *)zone
 {
