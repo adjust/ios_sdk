@@ -13,8 +13,6 @@
 
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <netinet/in.h>
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 static NSString * const kWiFi   = @"WIFI";
 static NSString * const kWWAN   = @"WWAN";
@@ -35,8 +33,6 @@ static NSString * const kWWAN   = @"WWAN";
     NSLocale *locale = NSLocale.currentLocale;
     NSBundle *bundle = NSBundle.mainBundle;
     NSDictionary *infoDictionary = bundle.infoDictionary;
-    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
 
     self.macSha1          = macAddress.adjSha1;
     self.macShortMd5      = macShort.adjMd5;
@@ -53,8 +49,6 @@ static NSString * const kWWAN   = @"WWAN";
     self.deviceName       = device.adjDeviceName;
     self.systemVersion    = device.systemVersion;
     self.networkType      = [self getNetworkStatus];
-    self.mobileCountryCode = [carrier mobileCountryCode];
-    self.mobileNetworkCode = [carrier mobileNetworkCode];
 
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
