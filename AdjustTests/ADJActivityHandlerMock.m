@@ -15,6 +15,7 @@ static NSString * const prefix = @"ADJActivityHandler ";
 @interface ADJActivityHandlerMock()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
+@property (nonatomic, assign) BOOL updated;
 
 @end
 
@@ -25,6 +26,7 @@ static NSString * const prefix = @"ADJActivityHandler ";
     if (self == nil) return nil;
 
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
+    self.updated = NO;
 
     [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig"]];
 
@@ -74,12 +76,13 @@ static NSString * const prefix = @"ADJActivityHandler ";
 }
 
 - (void) setAskingAttribution:(BOOL)askingAttribution {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution: %d", askingAttribution]];
 }
 
 - (BOOL) updateAttribution:(ADJAttribution*) attribution {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution"]];
-    return NO;
+    self.attributionUpdated = attribution;
+    return self.updated;
 }
 
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate {
@@ -92,6 +95,10 @@ static NSString * const prefix = @"ADJActivityHandler ";
 
 - (void) setOfflineMode:(BOOL)enabled {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setOfflineMode"]];
+}
+
+- (void) setUpdatedAttribution:(BOOL)updated {
+    self.updated = updated;
 }
 
 @end

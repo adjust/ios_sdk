@@ -1,5 +1,5 @@
 //
-//  AILoggerMock.h
+//  ADJLoggerMock.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 10/02/14.
@@ -12,6 +12,8 @@
 static const int ADJLogLevelTest = 0;
 
 @interface ADJLoggerMock : NSObject <ADJLogger>
-    - (void)test:(NSString *)message, ...;
-    - (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
+- (void)test:(NSString *)message, ...;
+- (BOOL)containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
+- (void) reset;
+
 @end

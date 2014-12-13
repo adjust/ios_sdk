@@ -27,9 +27,9 @@
 
 @interface ADJConfig : NSObject<NSCopying>
 
-@property (nonatomic, copy) NSString *appToken;
+@property (nonatomic, copy, readonly) NSString *appToken;
 @property (nonatomic, assign) ADJLogLevel logLevel;
-@property (nonatomic, copy) NSString *environment;
+@property (nonatomic, copy, readonly) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
 
 /**
@@ -74,4 +74,5 @@
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, assign) BOOL hasDelegate;
 
+- (BOOL) isValid;
 @end

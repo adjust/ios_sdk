@@ -62,7 +62,7 @@
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource{
     NSMutableDictionary *parameters = [self defaultParameters];
-    [self parameters:parameters setString:@"source" forKey:clickSource];
+    [self parameters:parameters setString:clickSource                     forKey:@"source"];
     [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"params"];
     [self parameters:parameters setDate:self.clickTime                    forKey:@"click_time"];
     [self parameters:parameters setDate:self.purchaseTime                 forKey:@"purchase_time"];
@@ -165,7 +165,7 @@
     if (event.revenue == nil) {
         return [NSString stringWithFormat:@" '%@'", event.eventToken];
     } else {
-        return [NSString stringWithFormat:@" (%.3f cent, '%@')", [event.revenue doubleValue], event.eventToken];
+        return [NSString stringWithFormat:@" (%.4f %@, '%@')", [event.revenue doubleValue], event.currency, event.eventToken];
     }
 }
 

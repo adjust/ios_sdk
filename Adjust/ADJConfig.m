@@ -20,14 +20,20 @@
 - (id) initWithAppToken:(NSString *)appToken
             environment:(NSString *)environment
 {
+    if (![self checkAppToken:appToken]) return nil;
+    if (![self checkEnvironment:environment logAssert:YES]) return nil;
+
+    return [self initWithoutCheckAppToken:appToken environment:environment];
+}
+
+- (id) initWithoutCheckAppToken:(NSString *)appToken
+                    environment:(NSString *)environment
+{
     self = [super init];
     if (self == nil) return nil;
 
-    if (![self checkAppTokenLength:appToken]) return nil;
-    if (![self checkEnvironment:environment]) return nil;
-
-    self.appToken = appToken;
-    self.environment = environment;
+    _appToken = appToken;
+    _environment = environment;
 
     // default values
     self.logLevel = ADJLogLevelInfo;
@@ -57,20 +63,29 @@
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
+                logAssert:(BOOL)logAssert
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
-        [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
+        if (logAssert) {
+            [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
+        }
         return YES;
     } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to ADJEnvironmentSandbox if you want to test your app!"];
+        if (logAssert) {
+            [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to ADJEnvironmentSandbox if you want to test your app!"];
+        }
         return YES;
     }
     [logger error:@"Malformed environment '%@'", environment];
     return NO;
 }
 
-- (BOOL)checkAppTokenLength:(NSString *)appToken {
+- (BOOL)checkAppToken:(NSString *)appToken {
+    if (appToken == nil) {
+        [ADJAdjustFactory.logger error:@"Missing App Token"];
+        return NO;
+    }
     if (appToken == nil || appToken.length != 12) {
         [ADJAdjustFactory.logger error:@"Malformed App Token '%@'", appToken];
         return NO;
@@ -78,14 +93,20 @@
     return YES;
 }
 
+- (BOOL) isValid {
+    if (![self checkAppToken:self.appToken]) return NO;
+    if (![self checkEnvironment:self.environment logAssert:NO]) return NO;
+    return YES;
+}
+
 -(id)copyWithZone:(NSZone *)zone
 {
-    ADJConfig* copy = [[[self class] allocWithZone:zone] init];
+    ADJConfig* copy = [[[self class] allocWithZone:zone]
+                       initWithoutCheckAppToken:[self.appToken copyWithZone:zone]
+                       environment:[self.environment copyWithZone:zone]];
     if (copy) {
-        copy.appToken = [self.appToken copyWithZone:zone];
         copy.logLevel = self.logLevel;
-        copy.environment = [self.environment copyWithZone:zone];
-        copy.sdkPrefix = [self.environment copyWithZone:zone];
+        copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.macMd5TrackingEnabled = self.macMd5TrackingEnabled;
         copy.hasDelegate = self.hasDelegate;

@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.0.2";
+static NSString * const kClientSdk = @"ios4.0.3";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -120,7 +120,7 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Read %@: %@", objectName, object];
             return object;
         } else if (object == nil) {
-            [logger verbose:@"%@ not found", objectName];
+            [logger verbose:@"%@ file not found", objectName];
         } else {
             [logger error:@"Failed to read %@ file", objectName];
         }
@@ -159,8 +159,6 @@ static NSDateFormatter *dateFormat;
     NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString adjUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    [logger debug:@"sent_at: %@", dateString];
 
     [pairs addObject:sentAtPair];
 

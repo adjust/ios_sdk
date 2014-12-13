@@ -22,13 +22,16 @@ static NSString * const prefix = @"ADJPackageHandler ";
 
 @implementation ADJPackageHandlerMock
 
+- (id)init {
+    return [self initWithActivityHandler:nil];
+}
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];
     if (self == nil) return nil;
 
     self.activityHandler = activityHandler;
 
-    self.loggerMock = (AILoggerMock *) ADJAdjustFactory.logger;
+    self.loggerMock = (ADJLoggerMock *) ADJAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
 
     [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
@@ -69,6 +72,7 @@ static NSString * const prefix = @"ADJPackageHandler ";
 
 - (void)sendClickPackage:(ADJActivityPackage *) clickPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
+    [self.packageQueue addObject:clickPackage];
 }
 
 @end

@@ -37,7 +37,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJTimer *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
-@property (nonatomic, retain) ADJAttribution *attribution;
+@property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
@@ -66,13 +66,20 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return nil;
     }
 
+    self.adjustConfig = adjustConfig;
+    self.delegate = adjustConfig.delegate;
+
+    if (![self.adjustConfig isValid]) {
+        return nil;
+    }
+
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     _enabled = YES;
 
     dispatch_async(self.internalQueue, ^{
-        [self initInternal:adjustConfig];
+        [self initInternal];
     });
 
     return self;
@@ -155,18 +162,21 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
-    if (iAdImpressionDate != nil || appPurchaseDate != nil) {
-        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                           initWithDeviceInfo:self.deviceInfo
-                                           activityState:self.activityState
-                                           config:self.adjustConfig];
-
-        [clickBuilder setClickTime:iAdImpressionDate];
-        [clickBuilder setPurchaseTime:appPurchaseDate];
-
-        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-        [self.packageHandler sendClickPackage:clickPackage];
+    if (iAdImpressionDate == nil) {
+        [self.logger error:@"iAd click time is missing"];
+        return;
     }
+
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig];
+
+    [clickBuilder setClickTime:iAdImpressionDate];
+    [clickBuilder setPurchaseTime:appPurchaseDate];
+
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
+    [self.packageHandler sendClickPackage:clickPackage];
 }
 
 - (BOOL)updateAttribution:(ADJAttribution *)attribution {
@@ -210,25 +220,22 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 #pragma mark - internal
-- (void)initInternal:(ADJConfig *)adjustConfig {
-    self.adjustConfig = adjustConfig;
-    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:adjustConfig.sdkPrefix];
+- (void)initInternal {
+    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
 
-    if ([adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
+    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
         [self.logger setLogLevel:ADJLogLevelAssert];
     } else {
-        [self.logger setLogLevel:adjustConfig.logLevel];
+        [self.logger setLogLevel:self.adjustConfig.logLevel];
     }
 
-    if (!adjustConfig.macMd5TrackingEnabled) {
+    if (!self.adjustConfig.macMd5TrackingEnabled) {
         [self.logger info:@"Tracking of macMd5 is disabled"];
     }
 
-    if (adjustConfig.eventBufferingEnabled)  {
+    if (self.adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
     }
-
-    self.delegate = adjustConfig.delegate;
 
     [[UIDevice currentDevice] adjSetIad:self];
 
@@ -240,7 +247,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.attributionHandler = [self buildAttributionHandler];
 
     self.shouldGetAttribution = YES;
-
 
     [self startInternal];
 }
@@ -258,8 +264,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)startInternal {
-    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
-
     if (self.activityState != nil
         && !self.activityState.enabled) {
         return;
@@ -324,8 +328,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)endInternal {
-    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
-
     [self.packageHandler pauseSending];
     [self stopTimer];
     double now = [NSDate.date timeIntervalSince1970];
@@ -336,7 +338,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)eventInternal:(ADJEvent *)event
 {
     // check consistency
-    if (![self checkAppTokenNotNil:self.adjustConfig.appToken]) return;
     if (![self checkActivityState:self.activityState]) return;
     if (![event isValid]) return;
     if (![self checkTransactionId:event.transactionId]) return;
@@ -355,6 +356,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                       activityState:self.activityState
                                                                              config:self.adjustConfig];
+    [self setIadDate:[NSDate date] withPurchaseDate:[NSDate date]];
 
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
@@ -397,12 +399,12 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [self.attributionHandler getAttribution];
 
-
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                       activityState:self.activityState
                                                                              config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = attribution;
+    [clickBuilder setClickTime:[NSDate date]];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler sendClickPackage:clickPackage];
@@ -470,22 +472,22 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)writeActivityState {
-    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"activity state"];
+    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"Activity state"];
 }
 
 - (void)writeAttribution {
-    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"attribution"];
+    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"Attribution"];
 }
 
 - (void)readActivityState {
     self.activityState = [ADJUtil readObject:kActivityStateFilename
-                                  objectName:@"activity state"
+                                  objectName:@"Activity state"
                                        class:[ADJActivityState class]];
 }
 
 - (void)readAttribution {
     self.attribution = [ADJUtil readObject:kAttributionFilename
-                                objectName:@"attribution"
+                                objectName:@"Attribution"
                                      class:[ADJAttribution class]];
 }
 
@@ -555,14 +557,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (BOOL)checkActivityState:(ADJActivityState *)activityState {
     if (activityState == nil) {
         [self.logger error:@"Missing activity state"];
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)checkAppTokenNotNil:(NSString *)appToken {
-    if (appToken == nil) {
-        [self.logger error:@"Missing App Token"];
         return NO;
     }
     return YES;
