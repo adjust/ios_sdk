@@ -84,13 +84,17 @@ static const int kTransactionIdCount = 10;
     // default values for migrating devices
     if ([decoder containsValueForKey:@"uuid"]) {
         self.uuid              = [decoder decodeObjectForKey:@"uuid"];
-    } else {
+    }
+
+    if (self.uuid == nil) {
         self.uuid = [UIDevice.currentDevice adjCreateUuid];
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
         self.transactionIds    = [decoder decodeObjectForKey:@"transactionIds"];
-    } else {
+    }
+
+    if (self.transactionIds == nil) {
         self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     }
 
@@ -104,14 +108,6 @@ static const int kTransactionIdCount = 10;
         self.askingAttribution = [decoder decodeBoolForKey:@"askingAttribution"];
     } else {
         self.askingAttribution = NO;
-    }
-
-    if (self.uuid == nil) {
-        self.uuid = [UIDevice.currentDevice adjCreateUuid];
-    }
-
-    if (self.transactionIds == nil) {
-        self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     }
 
     self.lastInterval = -1;
