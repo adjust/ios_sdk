@@ -481,6 +481,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)readActivityState {
+    [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
     self.activityState = [ADJUtil readObject:kActivityStateFilename
                                   objectName:@"Activity state"
                                        class:[ADJActivityState class]];

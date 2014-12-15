@@ -140,6 +140,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 #pragma mark - private
 - (void)readPackageQueue {
     @try {
+        [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
         NSString *filename = self.packageQueueFilename;
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         if ([object isKindOfClass:[NSArray class]]) {
