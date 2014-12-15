@@ -24,6 +24,11 @@ static NSDateFormatter *dateFormat;
 #pragma mark -
 @implementation ADJUtil
 
++ (void) initialize {
+    dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:kDateFormat];
+}
+
 + (NSString *)baseUrl {
     return kBaseUrl;
 }
@@ -80,11 +85,6 @@ static NSDateFormatter *dateFormat;
 
 
 + (NSString *)formatDate:(NSDate *) value {
-    if (dateFormat == nil) {
-        dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:kDateFormat];
-    }
-
     return [dateFormat stringFromDate:value];
 }
 
