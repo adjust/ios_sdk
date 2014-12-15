@@ -359,8 +359,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                       activityState:self.activityState
                                                                              config:self.adjustConfig];
-    [self setIadDate:[NSDate date] withPurchaseDate:[NSDate date]];
-
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
 
