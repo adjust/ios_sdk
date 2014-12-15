@@ -123,7 +123,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.0.3", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.0.4", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
@@ -176,9 +176,6 @@
 
     //  has delegate
     XCTAssertEqual(1, [(NSString *)parameters[@"needs_attribution_data"] intValue], @"%@", activityPackage.extendedString);
-
-    //  network type
-    XCTAssertNotNil((NSString *)parameters[@"network_type"], @"%@", activityPackage.extendedString);
 
     //  os name
     XCTAssertEqual(@"ios", parameters[@"os_name"], @"%@", activityPackage.extendedString);

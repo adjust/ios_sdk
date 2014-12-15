@@ -16,13 +16,18 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.0.3";
+static NSString * const kClientSdk = @"ios4.0.4";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
 
 #pragma mark -
 @implementation ADJUtil
+
++ (void) initialize {
+    dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:kDateFormat];
+}
 
 + (NSString *)baseUrl {
     return kBaseUrl;
@@ -80,11 +85,6 @@ static NSDateFormatter *dateFormat;
 
 
 + (NSString *)formatDate:(NSDate *) value {
-    if (dateFormat == nil) {
-        dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:kDateFormat];
-    }
-
     return [dateFormat stringFromDate:value];
 }
 
