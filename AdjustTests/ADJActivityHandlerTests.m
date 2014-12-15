@@ -177,9 +177,6 @@
     //  has delegate
     XCTAssertEqual(1, [(NSString *)parameters[@"needs_attribution_data"] intValue], @"%@", activityPackage.extendedString);
 
-    //  network type
-    XCTAssertNotNil((NSString *)parameters[@"network_type"], @"%@", activityPackage.extendedString);
-
     //  os name
     XCTAssertEqual(@"ios", parameters[@"os_name"], @"%@", activityPackage.extendedString);
 
