@@ -195,6 +195,12 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 This can be combined with callback parameters of course.
 
+Please note that while the currency token must be set, adjust will not perform
+a currency conversion. **You should always transmit revenues in the currency
+that you have set in your adjust dashboard.**
+
+You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
+
 #### Revenue deduplication
 
 You can also pass in an optional transaction ID to avoid tracking duplicate
@@ -312,6 +318,24 @@ You can check if the adjust SDK is currently enabled by calling the function
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
+### 11. Partner parameters
+
+You can also add parameters to be transmitted to network partners, for the
+integrations that have been activated in your adjust dashboard.
+
+This works similarly to the callback parameters mentioned above, but can
+be added by calling the `addPartnerParameter` method on your `ADJEvent`
+instance.
+
+```objc
+ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
+[event addPartnerParameter:@"key" value:@"value"];
+[Adjust trackEvent:event];
+```
+
+You can read more about special partners and these integrations in our
+[guide to special partners.][special-partners]
+
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.com
@@ -327,6 +351,8 @@ You can check if the adjust SDK is currently enabled by calling the function
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [callbacks-guide]: https://docs.adjust.com/en/callbacks
+[event-tracking]: https://docs.adjust.com/en/event-tracking
+[special-partners]: https://docs.adjust.com/en/special-partners
 
 ## License
 
