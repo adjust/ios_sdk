@@ -29,6 +29,7 @@
     return NO;
 #else
 
+    // return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
@@ -37,6 +38,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
     NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![class respondsToSelector:selManager]) {
@@ -51,6 +53,7 @@
     }
     BOOL enabled = (BOOL)[manager performSelector:selEnabled];
     return enabled;
+
 #pragma clang diagnostic pop
 #endif
 }
@@ -60,6 +63,7 @@
     return @"";
 #else
 
+    // return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
@@ -68,6 +72,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
     NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![class respondsToSelector:selManager]) {
@@ -89,6 +94,7 @@
     }
     NSString *string = [identifier performSelector:selString];
     return string;
+
 #pragma clang diagnostic pop
 #endif
 }
@@ -182,6 +188,7 @@
     return;
 #else
 
+    // [[ADClient sharedClient] lookupAdConversionDetails:...]
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
         return;
@@ -189,6 +196,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
         return;
@@ -204,6 +212,7 @@
                                        withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
                                            [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
                                        }];
+
 #pragma clang diagnostic pop
 #endif
 }
