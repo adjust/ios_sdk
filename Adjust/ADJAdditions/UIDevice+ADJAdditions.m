@@ -173,22 +173,24 @@
 #if !ADJUST_NO_IDA
     Class ADClientClass = NSClassFromString(@"ADClient");
 
-    if (ADClientClass) {
-        @try {
-            SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
-            SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
+    if (ADClientClass == nil) {
+        return;
+    }
+
+    @try {
+        SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
+        SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+        id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
 
-            [ADClientSharedClientInstance performSelector:iadDateSelector
-                                               withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
-                                                   [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
-                                               }];
+        [ADClientSharedClientInstance performSelector:iadDateSelector
+                                           withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
+                                               [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
+                                           }];
 #pragma clang diagnostic pop
-        }
-        @catch (NSException *exception) {
-        }
+    }
+    @catch (NSException *exception) {
     }
 #endif
 }
