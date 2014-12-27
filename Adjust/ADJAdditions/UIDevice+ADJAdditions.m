@@ -170,9 +170,11 @@
 }
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
-#if !ADJUST_NO_IDA
-    Class ADClientClass = NSClassFromString(@"ADClient");
+#if ADJUST_NO_IDA
+    return
+#endif
 
+    Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
         return;
     }
@@ -199,6 +201,5 @@
     }
     @catch (NSException *exception) {
     }
-#endif
 }
 @end
