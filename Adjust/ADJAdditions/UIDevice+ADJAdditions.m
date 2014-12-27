@@ -44,11 +44,17 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        id manager   = [class performSelector:selManager];
-        BOOL enabled = (BOOL)[manager performSelector:selEnabled];
-#pragma clang diagnostic pop
+        if (![class respondsToSelector:selManager]) {
+            return NO;
+        }
+        id manager = [class performSelector:selManager];
 
+        if (![manager respondsToSelector:selEnabled]) {
+            return NO;
+        }
+        BOOL enabled = (BOOL)[manager performSelector:selEnabled];
         return enabled;
+#pragma clang diagnostic pop
     } @catch (NSException *e) {
         return NO;
     }
@@ -76,12 +82,22 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        id manager       = [class performSelector:selManager];
-        id identifier    = [manager performSelector:selIdentifier];
-        NSString *string = [identifier performSelector:selString];
-#pragma clang diagnostic pop
+        if (![class respondsToSelector:selManager]) {
+            return @"";
+        }
+        id manager = [class performSelector:selManager];
 
+        if (![manager respondsToSelector:selIdentifier]) {
+            return @"";
+        }
+        id identifier = [manager performSelector:selIdentifier];
+
+        if (![identifier respondsToSelector:selString]) {
+            return @"";
+        }
+        NSString *string = [identifier performSelector:selString];
         return string;
+#pragma clang diagnostic pop
     } @catch (NSException *e) {
         return @"";
     }
