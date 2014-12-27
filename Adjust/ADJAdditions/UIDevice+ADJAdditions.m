@@ -34,27 +34,23 @@
         return NO;
     }
 
-    @try {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
-        SEL selManager = NSSelectorFromString(keyManager);
-        if (![class respondsToSelector:selManager]) {
-            return NO;
-        }
-        id manager = [class performSelector:selManager];
-
-        NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
-        SEL selEnabled = NSSelectorFromString(keyEnabled);
-        if (![manager respondsToSelector:selEnabled]) {
-            return NO;
-        }
-        BOOL enabled = (BOOL)[manager performSelector:selEnabled];
-        return enabled;
-#pragma clang diagnostic pop
-    } @catch (NSException *e) {
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    SEL selManager = NSSelectorFromString(keyManager);
+    if (![class respondsToSelector:selManager]) {
         return NO;
     }
+    id manager = [class performSelector:selManager];
+
+    NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+    SEL selEnabled = NSSelectorFromString(keyEnabled);
+    if (![manager respondsToSelector:selEnabled]) {
+        return NO;
+    }
+    BOOL enabled = (BOOL)[manager performSelector:selEnabled];
+    return enabled;
+#pragma clang diagnostic pop
 }
 
 - (NSString *)adjIdForAdvertisers {
@@ -67,34 +63,30 @@
         return @"";
     }
 
-    @try {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
-        SEL selManager = NSSelectorFromString(keyManager);
-        if (![class respondsToSelector:selManager]) {
-            return @"";
-        }
-        id manager = [class performSelector:selManager];
-
-        NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
-        SEL selIdentifier = NSSelectorFromString(keyIdentifier);
-        if (![manager respondsToSelector:selIdentifier]) {
-            return @"";
-        }
-        id identifier = [manager performSelector:selIdentifier];
-
-        NSString *keyString = [NSString adjJoin:@"UUID", @"string", nil];
-        SEL selString = NSSelectorFromString(keyString);
-        if (![identifier respondsToSelector:selString]) {
-            return @"";
-        }
-        NSString *string = [identifier performSelector:selString];
-        return string;
-#pragma clang diagnostic pop
-    } @catch (NSException *e) {
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    SEL selManager = NSSelectorFromString(keyManager);
+    if (![class respondsToSelector:selManager]) {
         return @"";
     }
+    id manager = [class performSelector:selManager];
+
+    NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
+    SEL selIdentifier = NSSelectorFromString(keyIdentifier);
+    if (![manager respondsToSelector:selIdentifier]) {
+        return @"";
+    }
+    id identifier = [manager performSelector:selIdentifier];
+
+    NSString *keyString = [NSString adjJoin:@"UUID", @"string", nil];
+    SEL selString = NSSelectorFromString(keyString);
+    if (![identifier respondsToSelector:selString]) {
+        return @"";
+    }
+    NSString *string = [identifier performSelector:selString];
+    return string;
+#pragma clang diagnostic pop
 }
 
 - (NSString *)adjFbAttributionId {
@@ -191,27 +183,23 @@
         return;
     }
 
-    @try {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
-        if (![ADClientClass respondsToSelector:sharedClientSelector]) {
-            return;
-        }
-        id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+    SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
+    if (![ADClientClass respondsToSelector:sharedClientSelector]) {
+        return;
+    }
+    id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
 
-        SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
-        if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
-            return;
-        }
+    SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
+    if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
+        return;
+    }
 
-        [ADClientSharedClientInstance performSelector:iadDateSelector
-                                           withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
-                                               [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
-                                           }];
+    [ADClientSharedClientInstance performSelector:iadDateSelector
+                                       withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
+                                           [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
+                                       }];
 #pragma clang diagnostic pop
-    }
-    @catch (NSException *exception) {
-    }
 }
 @end
