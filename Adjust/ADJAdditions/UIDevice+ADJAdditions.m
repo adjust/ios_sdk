@@ -183,6 +183,9 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+        if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
+            return;
+        }
 
         [ADClientSharedClientInstance performSelector:iadDateSelector
                                            withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
