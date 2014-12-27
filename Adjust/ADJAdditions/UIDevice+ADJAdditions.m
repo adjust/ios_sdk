@@ -28,27 +28,24 @@
 #if ADJUST_NO_IDFA
     return NO;
 #endif
-
-    NSString *className  = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
-    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
-    NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
-
+    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return NO;
     }
 
     @try {
-        SEL selManager = NSSelectorFromString(keyManager);
-        SEL selEnabled = NSSelectorFromString(keyEnabled);
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+        SEL selManager = NSSelectorFromString(keyManager);
         if (![class respondsToSelector:selManager]) {
             return NO;
         }
         id manager = [class performSelector:selManager];
 
+        NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+        SEL selEnabled = NSSelectorFromString(keyEnabled);
         if (![manager respondsToSelector:selEnabled]) {
             return NO;
         }
@@ -64,34 +61,31 @@
 #if ADJUST_NO_IDFA
     return @"";
 #endif
-
-    NSString *className     = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
-    NSString *keyManager    = [NSString adjJoin:@"shared", @"manager", nil];
-    NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
-    NSString *keyString     = [NSString adjJoin:@"UUID", @"string", nil];
-
+    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return @"";
     }
 
     @try {
-        SEL selManager    = NSSelectorFromString(keyManager);
-        SEL selIdentifier = NSSelectorFromString(keyIdentifier);
-        SEL selString     = NSSelectorFromString(keyString);
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+        SEL selManager = NSSelectorFromString(keyManager);
         if (![class respondsToSelector:selManager]) {
             return @"";
         }
         id manager = [class performSelector:selManager];
 
+        NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
+        SEL selIdentifier = NSSelectorFromString(keyIdentifier);
         if (![manager respondsToSelector:selIdentifier]) {
             return @"";
         }
         id identifier = [manager performSelector:selIdentifier];
 
+        NSString *keyString = [NSString adjJoin:@"UUID", @"string", nil];
+        SEL selString = NSSelectorFromString(keyString);
         if (![identifier respondsToSelector:selString]) {
             return @"";
         }
