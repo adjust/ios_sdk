@@ -27,7 +27,8 @@
 - (BOOL)adjTrackingEnabled {
 #if ADJUST_NO_IDFA
     return NO;
-#endif
+#else
+
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
@@ -51,12 +52,14 @@
     BOOL enabled = (BOOL)[manager performSelector:selEnabled];
     return enabled;
 #pragma clang diagnostic pop
+#endif
 }
 
 - (NSString *)adjIdForAdvertisers {
 #if ADJUST_NO_IDFA
     return @"";
-#endif
+#else
+
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
@@ -87,6 +90,7 @@
     NSString *string = [identifier performSelector:selString];
     return string;
 #pragma clang diagnostic pop
+#endif
 }
 
 - (NSString *)adjFbAttributionId {
@@ -175,8 +179,8 @@
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
 #if ADJUST_NO_IDA
-    return
-#endif
+    return;
+#else
 
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
@@ -201,5 +205,6 @@
                                            [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
                                        }];
 #pragma clang diagnostic pop
+#endif
 }
 @end
