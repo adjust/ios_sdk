@@ -178,11 +178,15 @@
     }
 
     @try {
-        SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
-        SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
+        if (![ADClientClass respondsToSelector:sharedClientSelector]) {
+            return;
+        }
         id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+
+        SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
         if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
             return;
         }
