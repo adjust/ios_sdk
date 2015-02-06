@@ -239,14 +239,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger info:@"Event buffering is enabled"];
     }
 
-    [[UIDevice currentDevice] adjSetIad:self];
-
     [self readAttribution];
     [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
 
     self.shouldGetAttribution = YES;
+
+    [[UIDevice currentDevice] adjSetIad:self];
 
     [self startInternal];
 }
