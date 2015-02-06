@@ -372,28 +372,21 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
+    if (queryArray == nil) {
+        return;
+    }
+
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
-    ADJAttribution *attribution = [[ADJAttribution alloc] init];
+    ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
+    BOOL hasDeepLink = NO;
 
     for (NSString* fieldValuePair in queryArray) {
-        NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
-        if (pairComponents.count != 2) continue;
-
-        NSString* key = [pairComponents objectAtIndex:0];
-        if (![key hasPrefix:kAdjustPrefix]) continue;
-
-        NSString* value = [pairComponents objectAtIndex:1];
-        if (value.length == 0) continue;
-
-        NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
-        if (keyWOutPrefix.length == 0) continue;
-
-        if (![self trySetAttributionDeeplink:attribution withKey:keyWOutPrefix withValue:value]) {
-            [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+        if([self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution]) {
+            hasDeepLink = YES;
         }
     }
 
-    if ([adjustDeepLinks count] == 0) {
+    if (!hasDeepLink) {
         return;
     }
 
@@ -403,34 +396,57 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                       activityState:self.activityState
                                                                              config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
-    clickBuilder.attribution = attribution;
+    clickBuilder.attribution = deeplinkAttribution;
     [clickBuilder setClickTime:[NSDate date]];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler sendClickPackage:clickPackage];
 }
 
-- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)attribution
+- (BOOL) readDeeplinkQueryString:(NSString *)queryString
+                 adjustDeepLinks:(NSMutableDictionary*)adjustDeepLinks
+                     attribution:(ADJAttribution *)deeplinkAttribution
+{
+    NSArray* pairComponents = [queryString componentsSeparatedByString:@"="];
+    if (pairComponents.count != 2) return NO;
+
+    NSString* key = [pairComponents objectAtIndex:0];
+    if (![key hasPrefix:kAdjustPrefix]) return NO;
+
+    NSString* value = [pairComponents objectAtIndex:1];
+    if (value.length == 0) return NO;
+
+    NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
+    if (keyWOutPrefix.length == 0) return NO;
+
+    if (![self trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:value]) {
+        [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+    }
+
+    return YES;
+}
+
+- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)deeplinkAttribution
                            withKey:(NSString *)key
                          withValue:(NSString*)value {
 
     if ([key isEqualToString:@"tracker"]) {
-        attribution.trackerName = value;
+        deeplinkAttribution.trackerName = value;
         return YES;
     }
 
     if ([key isEqualToString:@"campaign"]) {
-        attribution.campaign = value;
+        deeplinkAttribution.campaign = value;
         return YES;
     }
 
     if ([key isEqualToString:@"adgroup"]) {
-        attribution.adgroup = value;
+        deeplinkAttribution.adgroup = value;
         return YES;
     }
 
     if ([key isEqualToString:@"creative"]) {
-        attribution.creative = value;
+        deeplinkAttribution.creative = value;
         return YES;
     }
 
