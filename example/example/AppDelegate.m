@@ -46,6 +46,13 @@
     return YES;
 }
 
+- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [Adjust appWillOpenUrl:url];
+
+    return YES;
+}
+
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
     NSLog(@"adjust attribution %@", attribution);
 }
