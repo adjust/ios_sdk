@@ -106,8 +106,6 @@
     // Handler initializations
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler initWithActivityHandler"],
               @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock initWithActivityHandler"],
-              @"%@", self.loggerMock);
 
     //  when a session package is being sent the package handler should resume sending
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler resumeSending"],
@@ -123,7 +121,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.0.5", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.0.6", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
@@ -210,6 +208,8 @@
         @"%@", self.loggerMock);
 
     //  check that the package handler calls back with the json dict response
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock initWithActivityHandler"],
+              @"%@", self.loggerMock);
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock checkAttribution"],
               @"%@", self.loggerMock);
 

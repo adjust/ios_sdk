@@ -106,7 +106,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
     [self launchDeepLink:jsonDict];
-    [self.attributionHandler checkAttribution:jsonDict];
+    [[self getAttributionHandler] checkAttribution:jsonDict];
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
@@ -205,15 +205,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setOfflineMode:(BOOL)isOffline {
+    self.offline = isOffline;
     if (isOffline) {
-        self.offline = YES;
-        [self endInternal];
         [self.logger info:@"Pausing package handler to put in offline mode"];
+        [self endInternal];
     } else {
-        self.offline = NO;
+        [self.logger info:@"Resuming package handler to put in online mode"];
         [self.packageHandler resumeSending];
         [self startTimer];
-        [self.logger info:@"Resuming package handler to put in online mode"];
     }
 }
 
@@ -240,30 +239,31 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger info:@"Event buffering is enabled"];
     }
 
-    [[UIDevice currentDevice] adjSetIad:self];
-
     [self readAttribution];
     [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
 
-    self.attributionHandler = [self buildAttributionHandler];
-
     self.shouldGetAttribution = YES;
+
+    [[UIDevice currentDevice] adjSetIad:self];
 
     [self startInternal];
 }
 
-- (id<ADJAttributionHandler>) buildAttributionHandler {
-    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                            activityState:self.activityState
-                                                                                   config:self.adjustConfig];
-    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-    id<ADJAttributionHandler> attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                                             withMaxDelay:nil
-                                                                                   withAttributionPackage:attributionPackage];
+- (id<ADJAttributionHandler>) getAttributionHandler {
+    //TODO self.activity state can be null in the first session
+    if (self.attributionHandler == nil) {
+        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                                activityState:self.activityState
+                                                                                       config:self.adjustConfig];
+        ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
+        self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                                            withMaxDelay:nil
+                                                                            withAttributionPackage:attributionPackage];
+    }
 
-    return attributionHandler;
+    return self.attributionHandler;
 }
 
 - (void)startInternal {
@@ -325,7 +325,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     if (self.attribution == nil || self.activityState.askingAttribution) {
         if (self.shouldGetAttribution) {
-            [self.attributionHandler getAttribution];
+            [[self getAttributionHandler] getAttribution];
         }
     }
 }
@@ -373,65 +373,81 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
-    NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
-    ADJAttribution *attribution = [[ADJAttribution alloc] init];
-
-    for (NSString* fieldValuePair in queryArray) {
-        NSArray* pairComponents = [fieldValuePair componentsSeparatedByString:@"="];
-        if (pairComponents.count != 2) continue;
-
-        NSString* key = [pairComponents objectAtIndex:0];
-        if (![key hasPrefix:kAdjustPrefix]) continue;
-
-        NSString* value = [pairComponents objectAtIndex:1];
-        if (value.length == 0) continue;
-
-        NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
-        if (keyWOutPrefix.length == 0) continue;
-
-        if (![self trySetAttributionDeeplink:attribution withKey:keyWOutPrefix withValue:value]) {
-            [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
-        }
-    }
-
-    if ([adjustDeepLinks count] == 0) {
+    if (queryArray == nil) {
         return;
     }
 
-    [self.attributionHandler getAttribution];
+    NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
+    ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
+    BOOL hasDeepLink = NO;
+
+    for (NSString* fieldValuePair in queryArray) {
+        if([self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution]) {
+            hasDeepLink = YES;
+        }
+    }
+
+    if (!hasDeepLink) {
+        return;
+    }
+
+    [[self getAttributionHandler] getAttribution];
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                       activityState:self.activityState
                                                                              config:self.adjustConfig];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
-    clickBuilder.attribution = attribution;
+    clickBuilder.attribution = deeplinkAttribution;
     [clickBuilder setClickTime:[NSDate date]];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler sendClickPackage:clickPackage];
 }
 
-- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)attribution
+- (BOOL) readDeeplinkQueryString:(NSString *)queryString
+                 adjustDeepLinks:(NSMutableDictionary*)adjustDeepLinks
+                     attribution:(ADJAttribution *)deeplinkAttribution
+{
+    NSArray* pairComponents = [queryString componentsSeparatedByString:@"="];
+    if (pairComponents.count != 2) return NO;
+
+    NSString* key = [pairComponents objectAtIndex:0];
+    if (![key hasPrefix:kAdjustPrefix]) return NO;
+
+    NSString* value = [pairComponents objectAtIndex:1];
+    if (value.length == 0) return NO;
+
+    NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
+    if (keyWOutPrefix.length == 0) return NO;
+
+    if (![self trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:value]) {
+        [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+    }
+
+    return YES;
+}
+
+- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)deeplinkAttribution
                            withKey:(NSString *)key
                          withValue:(NSString*)value {
 
     if ([key isEqualToString:@"tracker"]) {
-        attribution.trackerName = value;
+        deeplinkAttribution.trackerName = value;
         return YES;
     }
 
     if ([key isEqualToString:@"campaign"]) {
-        attribution.campaign = value;
+        deeplinkAttribution.campaign = value;
         return YES;
     }
 
     if ([key isEqualToString:@"adgroup"]) {
-        attribution.adgroup = value;
+        deeplinkAttribution.adgroup = value;
         return YES;
     }
 
     if ([key isEqualToString:@"creative"]) {
-        attribution.creative = value;
+        deeplinkAttribution.creative = value;
         return YES;
     }
 
