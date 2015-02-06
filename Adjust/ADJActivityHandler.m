@@ -205,15 +205,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setOfflineMode:(BOOL)isOffline {
+    self.offline = isOffline;
     if (isOffline) {
-        self.offline = YES;
-        [self endInternal];
         [self.logger info:@"Pausing package handler to put in offline mode"];
+        [self endInternal];
     } else {
-        self.offline = NO;
+        [self.logger info:@"Resuming package handler to put in online mode"];
         [self.packageHandler resumeSending];
         [self startTimer];
-        [self.logger info:@"Resuming package handler to put in online mode"];
     }
 }
 
