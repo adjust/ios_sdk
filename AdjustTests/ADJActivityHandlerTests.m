@@ -106,8 +106,6 @@
     // Handler initializations
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler initWithActivityHandler"],
               @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock initWithActivityHandler"],
-              @"%@", self.loggerMock);
 
     //  when a session package is being sent the package handler should resume sending
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler resumeSending"],
@@ -210,6 +208,8 @@
         @"%@", self.loggerMock);
 
     //  check that the package handler calls back with the json dict response
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock initWithActivityHandler"],
+              @"%@", self.loggerMock);
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJAttributionHandlerMock checkAttribution"],
               @"%@", self.loggerMock);
 
