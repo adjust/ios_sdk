@@ -93,7 +93,7 @@
     [self parameters:parameters setString:self.adjustConfig.appToken       forKey:@"app_token"];
     [self parameters:parameters setString:self.adjustConfig.environment    forKey:@"environment"];
     [self parameters:parameters setString:self.activityState.uuid          forKey:@"ios_uuid"];
-    [self parameters:parameters setBool:self.adjustConfig.hasDelegate                   forKey:@"needs_attribution_data"];
+    [self parameters:parameters setBool:self.adjustConfig.hasDelegate      forKey:@"needs_attribution_data"];
 
     ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
     attributionPackage.path = @"/attribution";

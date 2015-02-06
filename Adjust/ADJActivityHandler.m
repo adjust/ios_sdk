@@ -106,7 +106,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
     [self launchDeepLink:jsonDict];
-    [self.attributionHandler checkAttribution:jsonDict];
+    [[self getAttributionHandler] checkAttribution:jsonDict];
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
@@ -246,23 +246,24 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
 
-    self.attributionHandler = [self buildAttributionHandler];
-
     self.shouldGetAttribution = YES;
 
     [self startInternal];
 }
 
-- (id<ADJAttributionHandler>) buildAttributionHandler {
-    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                            activityState:self.activityState
-                                                                                   config:self.adjustConfig];
-    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-    id<ADJAttributionHandler> attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                                             withMaxDelay:nil
-                                                                                   withAttributionPackage:attributionPackage];
+- (id<ADJAttributionHandler>) getAttributionHandler {
+    //TODO self.activity state can be null in the first session
+    if (self.attributionHandler == nil) {
+        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
+                                                                                activityState:self.activityState
+                                                                                       config:self.adjustConfig];
+        ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
+        self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                                            withMaxDelay:nil
+                                                                            withAttributionPackage:attributionPackage];
+    }
 
-    return attributionHandler;
+    return self.attributionHandler;
 }
 
 - (void)startInternal {
@@ -324,7 +325,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     if (self.attribution == nil || self.activityState.askingAttribution) {
         if (self.shouldGetAttribution) {
-            [self.attributionHandler getAttribution];
+            [[self getAttributionHandler] getAttribution];
         }
     }
 }
@@ -390,7 +391,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    [self.attributionHandler getAttribution];
+    [[self getAttributionHandler] getAttribution];
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                       activityState:self.activityState
