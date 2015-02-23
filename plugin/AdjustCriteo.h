@@ -27,9 +27,24 @@
 
 @interface AdjustCriteo : NSObject
 
-+ (void)injectDates:(ADJEvent *)event checkInDate:(NSString *)din checkOutDate:(NSString *)dout;
-+ (void)injectProductListing:(ADJEvent *)event customerId:(NSString *)customerId products:(NSArray *) products;
-+ (void)injectProduct:(ADJEvent *)event customerId:(NSString *)customerId productId:(NSString *) productId;
-+ (void)injectProductCart:(ADJEvent *)event customerId:(NSString *)customerId products:(NSArray *) products;
++ (void)injectViewSearchIntoEvent:(ADJEvent *)event
+                      checkInDate:(NSString *)din
+                     checkOutDate:(NSString *)dout;
+
++ (void)injectViewListingIntoEvent:(ADJEvent *)event
+                          products:(NSArray *)products
+                        customerId:(NSString *)customerId;
+
++ (void)injectViewProductIntoEvent:(ADJEvent *)event
+                         productId:(NSString *)productId
+                        customerId:(NSString *)customerId;
+
++ (void)injectCartIntoEvent:(ADJEvent *)event
+                   products:(NSArray *)products
+                 customerId:(NSString *)customerId;
+
++ (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
+                                   products:(NSArray *)products
+                                 customerId:(NSString *)customerId;
 
 @end

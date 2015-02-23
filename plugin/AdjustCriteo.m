@@ -37,14 +37,17 @@
 @implementation AdjustCriteo
 
 
-+ (void)injectDates:(ADJEvent *)event checkInDate:(NSString *)din checkOutDate:(NSString *)dout
++ (void)injectViewSearchIntoEvent:(ADJEvent *)event
+                      checkInDate:(NSString *)din
+                     checkOutDate:(NSString *)dout
 {
     [event addPartnerParameter:@"din" value:din];
     [event addPartnerParameter:@"dout" value:dout];
 }
 
-
-+ (void)injectProductListing:(ADJEvent *)event customerId:(NSString *)customerId products:(NSArray *) products
++ (void)injectViewListingIntoEvent:(ADJEvent *)event
+                          products:(NSArray *)products
+                        customerId:(NSString *)customerId
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
@@ -52,13 +55,27 @@
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 }
 
-+ (void)injectProduct:(ADJEvent *)event customerId:(NSString *)customerId productId:(NSString *) productId
++ (void)injectViewProductIntoEvent:(ADJEvent *)event
+                         productId:(NSString *)productId
+                        customerId:(NSString *)customerId
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"criteo_p" value:productId];
 }
 
-+ (void)injectProductCart:(ADJEvent *)event customerId:(NSString *)customerId products:(NSArray *) products
++ (void)injectCartIntoEvent:(ADJEvent *)event
+                   products:(NSArray *)products
+                 customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+
+    NSString * jsonProducts = [AdjustCriteo createCriteoVBFromProducts:products];
+    [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+}
+
++ (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
+                                   products:(NSArray *)products
+                                 customerId:(NSString *)customerId
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
