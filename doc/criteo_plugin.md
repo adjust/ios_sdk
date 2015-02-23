@@ -51,6 +51,12 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{cartEventToken}"];
 
+CriteoProduct * product1 = [CriteoProduct productWithPrice:100.0 andQuantity:1 andProductId:@"productId_1"];
+CriteoProduct * product2 = [CriteoProduct productWithPrice:77.7 andQuantity:3 andProductId:@"productId_2"];
+CriteoProduct * product3 = [CriteoProduct productWithPrice:50 andQuantity:2 andProductId:@"productId_3"];
+
+NSArray * productList = @[product1, product2, product3];
+
 [AdjustCriteo injectCartIntoEvent:event products:productList customerId:@"customerId_1"];
 
 [Adjust trackEvent:event];
@@ -58,6 +64,12 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{cartEventToken}"];
 - Transaction confirmation
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{transactionConfirmedEventToken}"];
+
+CriteoProduct * product1 = [CriteoProduct productWithPrice:100.0 andQuantity:1 andProductId:@"productId_1"];
+CriteoProduct * product2 = [CriteoProduct productWithPrice:77.7 andQuantity:3 andProductId:@"productId_2"];
+CriteoProduct * product3 = [CriteoProduct productWithPrice:50 andQuantity:2 andProductId:@"productId_3"];
+
+NSArray * productList = @[product1, product2, product3];
 
 [AdjustCriteo injectTransactionConfirmedIntoEvent:event products:productList customerId:@"customerId_1"];
 
