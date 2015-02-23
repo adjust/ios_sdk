@@ -33,6 +33,8 @@
 		960FCF8D1A1B9B7D00282BD4 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */; };
 		960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */; };
 		960FCF8F1A1B9B7D00282BD4 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */; };
+		96332C8F1A891E1100D38FAF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C8E1A891E1100D38FAF /* AdSupport.framework */; };
+		96332C911A891E1800D38FAF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C901A891E1800D38FAF /* iAd.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttribution.m; sourceTree = "<group>"; };
 		960FCF791A1B9B7D00282BD4 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
+		96332C8E1A891E1100D38FAF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		96332C901A891E1800D38FAF /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96332C911A891E1800D38FAF /* iAd.framework in Frameworks */,
+				96332C8F1A891E1100D38FAF /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +126,8 @@
 		960FCF171A1B9ACE00282BD4 = {
 			isa = PBXGroup;
 			children = (
+				96332C901A891E1800D38FAF /* iAd.framework */,
+				96332C8E1A891E1100D38FAF /* AdSupport.framework */,
 				960FCF221A1B9ACE00282BD4 /* example */,
 				960FCF3C1A1B9ACE00282BD4 /* exampleTests */,
 				960FCF211A1B9ACE00282BD4 /* Products */,
