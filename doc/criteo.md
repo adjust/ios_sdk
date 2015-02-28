@@ -22,9 +22,11 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewHomepageEventToken}"];
 ### View Search
 
 ```objc
+#import "ADJCriteo.h"
+
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 
-[ADJCriteo injectViewSearchIntoEvent:event checkInDate:@"2015-01-01" checkOutDate:@"2015-01-07"]
+[ADJCriteo injectViewSearchIntoEvent:event checkInDate:@"2015-01-01" checkOutDate:@"2015-01-07"];
 
 [Adjust trackEvent:event];
 ```
@@ -32,12 +34,13 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 ### View Listing
 
 ```objc
+#import "ADJCriteo.h"
+
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
 ADJCriteoProduct *product1 = [ADJCriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
 ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
 ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
-
 NSArray *products = @[product1, product2, product3];
 
 [ADJCriteo injectViewListingIntoEvent:event products:products customerId:@"customerId1"];
@@ -48,6 +51,8 @@ NSArray *products = @[product1, product2, product3];
 ### View Product
 
 ```objc
+#import "ADJCriteo.h"
+
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 
 [ADJCriteo injectViewProductIntoEvent:event productId:@"productId1" customerId:@"customerId1"];
@@ -58,12 +63,13 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 ### Cart
 
 ```objc
+#import "ADJCriteo.h"
+
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{cartEventToken}"];
 
 ADJCriteoProduct *product1 = [ADJCriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
 ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
 ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
-
 NSArray *products = @[product1, product2, product3];
 
 [ADJCriteo injectCartIntoEvent:event products:products customerId:@"customerId1"];
@@ -74,12 +80,13 @@ NSArray *products = @[product1, product2, product3];
 ### Transaction confirmation
 
 ```objc
+#import "ADJCriteo.h"
+
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{transactionConfirmedEventToken}"];
 
 ADJCriteoProduct *product1 = [ADJCriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
 ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
 ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
-
 NSArray *products = @[product1, product2, product3];
 
 [ADJCriteo injectTransactionConfirmedIntoEvent:event products:products customerId:@"customerId1"];
