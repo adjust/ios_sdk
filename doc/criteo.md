@@ -4,7 +4,7 @@ Integrate adjust with Criteo events by following these steps:
 
 1. Locate the `plugin` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
-2. Drag the `AdjustCriteo.h` and `AdjustCriteo.m` files into the `Adjust` folder inside your project.
+2. Drag the `ADJCriteo.h` and `ADJCriteo.m` files into the `Adjust` folder inside your project.
 
 3. In the dialog `Choose options for adding these files` make sure to check the checkbox
 to `Copy items if needed` and select the radio button to `Create groups`.
@@ -24,7 +24,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewHomepageEventToken}"];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 
-[AdjustCriteo injectViewSearchIntoEvent:event checkInDate:@"2015-01-01" checkOutDate:@"2015-01-07"]
+[ADJCriteo injectViewSearchIntoEvent:event checkInDate:@"2015-01-01" checkOutDate:@"2015-01-07"]
 
 [Adjust trackEvent:event];
 ```
@@ -40,7 +40,7 @@ CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 qu
 
 NSArray *products = @[product1, product2, product3];
 
-[AdjustCriteo injectViewListingIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectViewListingIntoEvent:event products:products customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -50,7 +50,7 @@ NSArray *products = @[product1, product2, product3];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 
-[AdjustCriteo injectViewProductIntoEvent:event productId:@"productId1" customerId:@"customerId1"];
+[ADJCriteo injectViewProductIntoEvent:event productId:@"productId1" customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -66,7 +66,7 @@ CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 qu
 
 NSArray *products = @[product1, product2, product3];
 
-[AdjustCriteo injectCartIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectCartIntoEvent:event products:products customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -82,7 +82,7 @@ CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 qu
 
 NSArray *products = @[product1, product2, product3];
 
-[AdjustCriteo injectTransactionConfirmedIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectTransactionConfirmedIntoEvent:event products:products customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```

@@ -1,12 +1,12 @@
 //
-//  AdjustCriteoEvents.m
+//  ADJCriteoEvents.m
 //
 //
 //  Created by Pedro Filipe on 06/02/15.
 //
 //
 
-#import "AdjustCriteo.h"
+#import "ADJCriteo.h"
 #import "Adjust.h"
 
 @implementation CriteoProduct
@@ -34,7 +34,7 @@
 
 @end
 
-@implementation AdjustCriteo
+@implementation ADJCriteo
 
 
 + (void)injectViewSearchIntoEvent:(ADJEvent *)event
@@ -51,7 +51,7 @@
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
-    NSString * jsonProducts = [AdjustCriteo createCriteoVLFromProducts:products];
+    NSString * jsonProducts = [ADJCriteo createCriteoVLFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 }
 
@@ -69,7 +69,7 @@
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
-    NSString * jsonProducts = [AdjustCriteo createCriteoVBFromProducts:products];
+    NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 }
 
@@ -79,7 +79,7 @@
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
-    NSString * jsonProducts = [AdjustCriteo createCriteoVBFromProducts:products];
+    NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 }
 

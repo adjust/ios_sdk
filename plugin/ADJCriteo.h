@@ -1,5 +1,5 @@
 //
-//  AdjustCriteoEvents.h
+//  ADJCriteoEvents.h
 //
 //
 //  Created by Pedro Filipe on 06/02/15.
@@ -25,7 +25,7 @@
 
 @end
 
-@interface AdjustCriteo : NSObject
+@interface ADJCriteo : NSObject
 
 + (void)injectViewSearchIntoEvent:(ADJEvent *)event
                       checkInDate:(NSString *)din
