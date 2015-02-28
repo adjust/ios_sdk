@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ADJEvent.h"
 
-@interface CriteoProduct : NSObject
+@interface ADJCriteoProduct : NSObject
 
 @property (nonatomic, assign) float criteoPrice;
 @property (nonatomic, assign) NSUInteger criteoQuantity;
@@ -19,7 +19,7 @@
             price:(float)price
          quantity:(NSUInteger)quantity;
 
-+ (CriteoProduct *)productWithId:(NSString*)productId
++ (ADJCriteoProduct *)productWithId:(NSString*)productId
                            price:(float)price
                         quantity:(NSUInteger)quantity;
 

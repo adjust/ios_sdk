@@ -9,7 +9,7 @@
 #import "ADJCriteo.h"
 #import "Adjust.h"
 
-@implementation CriteoProduct
+@implementation ADJCriteoProduct
 
 - (id) initWithId:(NSString *)productId
             price:(float)price
@@ -25,11 +25,11 @@
     return self;
 }
 
-+ (CriteoProduct *) productWithId:(NSString *)productId
++ (ADJCriteoProduct *) productWithId:(NSString *)productId
                             price:(float)price
                          quantity:(NSUInteger)quantity
 {
-    return [[CriteoProduct alloc] initWithId:productId price:price quantity:quantity];
+    return [[ADJCriteoProduct alloc] initWithId:productId price:price quantity:quantity];
 }
 
 @end
@@ -86,7 +86,7 @@
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
 {
     NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
-    for (CriteoProduct *product in products)
+    for (ADJCriteoProduct *product in products)
     {
         NSString* productString = [NSString stringWithFormat:@"{\"i\":\"%@\",\"pr\":%f,\"q\":%lu}",
                                    [product criteoProductID],
@@ -112,7 +112,7 @@
     NSUInteger numberOfProducts = 0;
     NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
 
-    for (CriteoProduct *product in products)
+    for (ADJCriteoProduct *product in products)
     {
         NSString* productString = [NSString stringWithFormat:@"\"%@\"", [product criteoProductID]];
 
