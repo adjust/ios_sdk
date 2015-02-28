@@ -34,9 +34,9 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
-CriteoProduct *product1 = [CriteoProduct productWithPrice:100.0 andQuantity:1 andProductId:@"productId1"];
-CriteoProduct *product2 = [CriteoProduct productWithPrice:77.7 andQuantity:3 andProductId:@"productId2"];
-CriteoProduct *product3 = [CriteoProduct productWithPrice:50 andQuantity:2 andProductId:@"productId3"];
+CriteoProduct *product1 = [CriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
+CriteoProduct *product2 = [CriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
+CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 quantity:2];
 
 NSArray *products = @[product1, product2, product3];
 
@@ -60,9 +60,9 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{cartEventToken}"];
 
-CriteoProduct *product1 = [CriteoProduct productWithPrice:100.0 andQuantity:1 andProductId:@"productId1"];
-CriteoProduct *product2 = [CriteoProduct productWithPrice:77.7 andQuantity:3 andProductId:@"productId2"];
-CriteoProduct *product3 = [CriteoProduct productWithPrice:50 andQuantity:2 andProductId:@"productId3"];
+CriteoProduct *product1 = [CriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
+CriteoProduct *product2 = [CriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
+CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 quantity:2];
 
 NSArray *products = @[product1, product2, product3];
 
@@ -76,9 +76,9 @@ NSArray *products = @[product1, product2, product3];
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{transactionConfirmedEventToken}"];
 
-CriteoProduct *product1 = [CriteoProduct productWithPrice:100.0 andQuantity:1 andProductId:@"productId1"];
-CriteoProduct *product2 = [CriteoProduct productWithPrice:77.7 andQuantity:3 andProductId:@"productId2"];
-CriteoProduct *product3 = [CriteoProduct productWithPrice:50 andQuantity:2 andProductId:@"productId3"];
+CriteoProduct *product1 = [CriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
+CriteoProduct *product2 = [CriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
+CriteoProduct *product3 = [CriteoProduct productWithId:@"productId3" price:50 quantity:2];
 
 NSArray *products = @[product1, product2, product3];
 

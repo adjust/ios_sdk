@@ -1,6 +1,6 @@
 //
 //  AdjustCriteoEvents.m
-//  
+//
 //
 //  Created by Pedro Filipe on 06/02/15.
 //
@@ -11,25 +11,25 @@
 
 @implementation CriteoProduct
 
-- (id) initWithPrice:(float)price
-         andQuantity:(NSUInteger)quantity
-        andProductId:(NSString *)productId
+- (id) initWithId:(NSString *)productId
+            price:(float)price
+         quantity:(NSUInteger)quantity
 {
     self = [super init];
     if (self == nil) return nil;
 
+    self.criteoProductID = productId;
     self.criteoPrice = price;
     self.criteoQuantity = quantity;
-    self.criteoProductID = productId;
 
     return self;
 }
 
-+ (CriteoProduct *) productWithPrice:(float)price
-                         andQuantity:(NSUInteger)quantity
-                        andProductId:(NSString *)productId
++ (CriteoProduct *) productWithId:(NSString *)productId
+                            price:(float)price
+                         quantity:(NSUInteger)quantity
 {
-    return [[CriteoProduct alloc] initWithPrice:price andQuantity:quantity andProductId:productId];
+    return [[CriteoProduct alloc] initWithId:productId price:price quantity:quantity];
 }
 
 @end
@@ -162,21 +162,20 @@
     for (NSString* product in products)
     {
         NSString* productString = [NSString stringWithFormat:@"\"%@\"", product];
-        
+
         [criteoVBValue appendString:productString];
         ++numberOfProducts;
-        
+
         if (product != [products lastObject] && numberOfProducts < 3)
         {
             [criteoVBValue appendString:@","];
         }
         if (numberOfProducts >= 3)
             break;
-        
+
     }
     [criteoVBValue appendString:@"]"];
     return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
-
 
 @end

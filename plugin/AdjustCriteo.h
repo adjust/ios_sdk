@@ -1,6 +1,6 @@
 //
 //  AdjustCriteoEvents.h
-//  
+//
 //
 //  Created by Pedro Filipe on 06/02/15.
 //
@@ -15,13 +15,13 @@
 @property (nonatomic, assign) NSUInteger criteoQuantity;
 @property (nonatomic, copy) NSString *criteoProductID;
 
-- (id) initWithPrice:(float)price
-         andQuantity:(NSUInteger)quantity
-        andProductId:(NSString*)productId;
+- (id) initWithId:(NSString*)productId
+            price:(float)price
+         quantity:(NSUInteger)quantity;
 
-+ (CriteoProduct *)productWithPrice:(float)price
-                               andQuantity:(NSUInteger)quantity
-                              andProductId:(NSString*)productId;
++ (CriteoProduct *)productWithId:(NSString*)productId
+                           price:(float)price
+                        quantity:(NSUInteger)quantity;
 
 @end
 
