@@ -92,7 +92,7 @@
 - (NSString *)description {
     return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@",
             self.trackerToken, self.trackerName, self.network, self.campaign,
-            self.adgroup, self.campaign];
+            self.adgroup, self.creative];
 }
 
 
