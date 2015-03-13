@@ -292,6 +292,9 @@ policies.][attribution-data]
     ```objc
     [adjustConfig setDelegate:self];
     ```
+    
+As the delegate callback is configured using the `ADJConfig` instance, you
+should call `setDelegate` before calling `[Adjust appDidLaunch:adjustConfig]`.
 
 The delegate function will get when the SDK receives final attribution data.
 Within the delegate function you have access to the `attribution` parameter.
