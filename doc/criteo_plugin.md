@@ -142,3 +142,16 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEvent2EventToken}"];
 
 [Adjust trackEvent:event];
 ```
+
+### Hashed Email
+
+It's possible to attach an hashed email in every Criteo event with the `injectHashedEmailIntoCriteoEvents` method.
+The hashed email will be sent with every Criteo event for the duration of the application lifecycle,
+so it must be set again when the app is re-lauched.
+The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvents` method with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+AdjustCriteo.injectHashedEmailIntoCriteoEvents("8455938a1db5c475a87d76edacb6284e");
+```
