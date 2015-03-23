@@ -24,8 +24,11 @@
     [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];
 
     if (self.parameters != nil) {
+        NSArray * sortedKeys = [[self.parameters allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        NSUInteger keyCount = [sortedKeys count];
         [builder appendFormat:@"Parameters:"];
-        for (NSString *key in self.parameters) {
+        for (int i = 0; i < keyCount; i++) {
+            NSString *key = (NSString*)[sortedKeys objectAtIndex:i];
             NSString *value = [self.parameters objectForKey:key];
             [builder appendFormat:@"\n\t\t%-22s %@", [key UTF8String], value];
         }
