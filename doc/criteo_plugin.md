@@ -82,3 +82,63 @@ NSArray *products = @[product1, product2, product3];
 
 [Adjust trackEvent:event];
 ```
+
+### User Level
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{userLevelEventToken}"];
+
+[ADJCriteo injectUserLevelIntoEvent:event uiLevel:1 customerId:@"customerId1"];
+
+[Adjust trackEvent:event];
+```
+
+### User Status
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{userStatusEventToken}"];
+
+[ADJCriteo injectUserStatusIntoEvent:event uiStatus:@"uiStatusValue" customerId:@"customerId1"];
+
+[Adjust trackEvent:event];
+```
+
+### Achievement Unlocked
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{achievementUnlockedEventToken}"];
+
+[ADJCriteo injectAchievementUnlockedIntoEvent:event uiAchievement:@"uiAchievementValue" customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
+
+### Custom Event
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEventEventToken}"];
+
+[ADJCriteo injectCustomEventIntoEvent:event uiData:@"uiDataValue" customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
+
+### Custom Event 2
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEvent2EventToken}"];
+
+[ADJCriteo injectCustomEvent2IntoEvent:event uiData2:@"uiDataValue2" uiData3:3 customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
