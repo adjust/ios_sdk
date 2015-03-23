@@ -11,14 +11,6 @@ to `Copy items if needed` and select the radio button to `Create groups`.
 
 Now you can integrate each of the different Criteo events, like in the following examples:
 
-### View Homepage
-
-```objc
-ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewHomepageEventToken}"];
-
-[Adjust trackEvent:event];
-```
-
 ### View Search
 
 ```objc
