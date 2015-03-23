@@ -124,6 +124,7 @@ static NSString * hashEmailInternal;
 
     NSString * uiLevelString = [NSString stringWithFormat:@"%lu",(unsigned long)uiLevel];
     [event addPartnerParameter:@"ui_level" value:uiLevelString];
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectUserStatusIntoEvent:(ADJEvent *)event
