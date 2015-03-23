@@ -172,7 +172,7 @@ static NSString * hashEmailInternal;
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
 {
     if (products == nil) {
-        [self.logger warn:@"Criteo Event product list is empty. It will sent as empty."];
+        [self.logger warn:@"Criteo Event product list is nil. It will sent as empty."];
         products = @[];
     }
 
@@ -210,7 +210,7 @@ static NSString * hashEmailInternal;
 + (NSString*) createCriteoVLFromProducts:(NSArray*) productIds
 {
     if (productIds == nil) {
-        [self.logger warn:@"Criteo View Listing product ids list is empty. It will sent as empty."];
+        [self.logger warn:@"Criteo View Listing product ids list is nil. It will sent as empty."];
         productIds = @[];
     }
     NSUInteger productsIdCount = [productIds count];
