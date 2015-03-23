@@ -58,6 +58,7 @@ static NSString * hashEmailInternal;
 {
     [event addPartnerParameter:@"din" value:din];
     [event addPartnerParameter:@"dout" value:dout];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -68,11 +69,8 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
 
     NSString * jsonProductsIds = [ADJCriteo createCriteoVLFromProducts:productIds];
-    if (jsonProductsIds == nil) {
-        [self.logger error:@"Criteo View Listing must contain a product id list."];
-        return;
-    }
     [event addPartnerParameter:@"criteo_p" value:jsonProductsIds];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -82,6 +80,8 @@ static NSString * hashEmailInternal;
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"criteo_p" value:productId];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectCartIntoEvent:(ADJEvent *)event
@@ -91,12 +91,8 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
-    if (jsonProducts == nil) {
-        [self.logger error:@"Criteo Cart must contain a list of products."];
-        return;
-    }
-
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -107,12 +103,8 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
-    if (jsonProducts == nil) {
-        [self.logger error:@"Criteo Transaction Confirmed must contain a list of products."];
-        return;
-    }
-
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -124,6 +116,7 @@ static NSString * hashEmailInternal;
 
     NSString * uiLevelString = [NSString stringWithFormat:@"%lu",(unsigned long)uiLevel];
     [event addPartnerParameter:@"ui_level" value:uiLevelString];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -133,6 +126,7 @@ static NSString * hashEmailInternal;
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_status" value:uiStatus];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -142,6 +136,8 @@ static NSString * hashEmailInternal;
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_achievmnt" value:uiAchievement];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectCustomEventIntoEvent:(ADJEvent *)event
@@ -150,6 +146,7 @@ static NSString * hashEmailInternal;
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_data" value:uiData];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -163,6 +160,7 @@ static NSString * hashEmailInternal;
 
     NSString * uiData3String = [NSString stringWithFormat:@"%lu",(unsigned long)uiData3];
     [event addPartnerParameter:@"ui_data3" value:uiData3String];
+
     [ADJCriteo injectHashEmail:event];
 }
 
@@ -174,7 +172,8 @@ static NSString * hashEmailInternal;
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
 {
     if (products == nil) {
-        return nil;
+        [self.logger warn:@"Criteo Event product list is empty. It will sent as empty."];
+        products = @[];
     }
 
     NSUInteger productsCount = [products count];
@@ -211,7 +210,8 @@ static NSString * hashEmailInternal;
 + (NSString*) createCriteoVLFromProducts:(NSArray*) productIds
 {
     if (productIds == nil) {
-        return nil;
+        [self.logger warn:@"Criteo View Listing product ids list is empty. It will sent as empty."];
+        productIds = @[];
     }
     NSUInteger productsIdCount = [productIds count];
     if (productsIdCount > MAX_VIEW_LISTING_PRODUCTS) {
