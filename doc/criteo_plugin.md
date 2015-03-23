@@ -30,12 +30,9 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
-ADJCriteoProduct *product1 = [ADJCriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
-ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
-ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
-NSArray *products = @[product1, product2, product3];
+NSArray *productIds = @[@"productId1", @"productId2", @"product3"];
 
-[ADJCriteo injectViewListingIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectViewListingIntoEvent:event productIds:productIds customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
