@@ -32,7 +32,7 @@
                      checkOutDate:(NSString *)dout;
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
-                          products:(NSArray *)products
+                        productIds:(NSArray *)productIds
                         customerId:(NSString *)customerId;
 
 + (void)injectViewProductIntoEvent:(ADJEvent *)event
@@ -47,4 +47,26 @@
                                    products:(NSArray *)products
                                  customerId:(NSString *)customerId;
 
++ (void)injectUserLevelIntoEvent:(ADJEvent *)event
+                         uiLevel:(NSUInteger)uiLevel
+                      customerId:(NSString *)customerId;
+
++ (void)injectUserStatusIntoEvent:(ADJEvent *)event
+                         uiStatus:(NSString *)uiStatus
+                       customerId:(NSString *)customerId;
+
++ (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
+                             uiAchievement:(NSString *)uiAchievement
+                                customerId:(NSString *)customerId;
+
++ (void)injectCustomEventIntoEvent:(ADJEvent *)event
+                            uiData:(NSString *)uiData
+                        customerId:(NSString *)customerId;
+
++ (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
+                            uiData2:(NSString *)uiData2
+                            uiData3:(NSUInteger)uiData3
+                         customerId:(NSString *)customerId;
+
++ (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail;
 @end

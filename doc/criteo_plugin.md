@@ -11,14 +11,6 @@ to `Copy items if needed` and select the radio button to `Create groups`.
 
 Now you can integrate each of the different Criteo events, like in the following examples:
 
-### View Homepage
-
-```objc
-ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewHomepageEventToken}"];
-
-[Adjust trackEvent:event];
-```
-
 ### View Search
 
 ```objc
@@ -38,12 +30,9 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
-ADJCriteoProduct *product1 = [ADJCriteoProduct productWithId:@"productId1" price:100.0 quantity:1];
-ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price:77.7 quantity:3];
-ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
-NSArray *products = @[product1, product2, product3];
+NSArray *productIds = @[@"productId1", @"productId2", @"product3"];
 
-[ADJCriteo injectViewListingIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectViewListingIntoEvent:event productIds:productIds customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -92,4 +81,77 @@ NSArray *products = @[product1, product2, product3];
 [ADJCriteo injectTransactionConfirmedIntoEvent:event products:products customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
+```
+
+### User Level
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{userLevelEventToken}"];
+
+[ADJCriteo injectUserLevelIntoEvent:event uiLevel:1 customerId:@"customerId1"];
+
+[Adjust trackEvent:event];
+```
+
+### User Status
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{userStatusEventToken}"];
+
+[ADJCriteo injectUserStatusIntoEvent:event uiStatus:@"uiStatusValue" customerId:@"customerId1"];
+
+[Adjust trackEvent:event];
+```
+
+### Achievement Unlocked
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{achievementUnlockedEventToken}"];
+
+[ADJCriteo injectAchievementUnlockedIntoEvent:event uiAchievement:@"uiAchievementValue" customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
+
+### Custom Event
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEventEventToken}"];
+
+[ADJCriteo injectCustomEventIntoEvent:event uiData:@"uiDataValue" customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
+
+### Custom Event 2
+
+```objc
+#import "ADJCriteo.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEvent2EventToken}"];
+
+[ADJCriteo injectCustomEvent2IntoEvent:event uiData2:@"uiDataValue2" uiData3:3 customerId:@"customerId"];
+
+[Adjust trackEvent:event];
+```
+
+### Hashed Email
+
+It's possible to attach an hashed email in every Criteo event with the `injectHashedEmailIntoCriteoEvents` method.
+The hashed email will be sent with every Criteo event for the duration of the application lifecycle,
+so it must be set again when the app is re-lauched.
+The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvents` method with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+AdjustCriteo.injectHashedEmailIntoCriteoEvents("8455938a1db5c475a87d76edacb6284e");
 ```

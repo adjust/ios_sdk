@@ -8,6 +8,9 @@
 
 #import "ADJCriteo.h"
 #import "Adjust.h"
+#import "ADJAdjustFactory.h"
+
+static const NSUInteger MAX_VIEW_LISTING_PRODUCTS = 3;
 
 @implementation ADJCriteoProduct
 
@@ -36,6 +39,18 @@
 
 @implementation ADJCriteo
 
+static NSString * hashEmailInternal;
+
++ (id<ADJLogger>) logger {
+    return ADJAdjustFactory.logger;
+}
+
++ (void)injectHashEmail:(ADJEvent *)event {
+    if (hashEmailInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"criteo_email_hash" value:hashEmailInternal];
+}
 
 + (void)injectViewSearchIntoEvent:(ADJEvent *)event
                       checkInDate:(NSString *)din
@@ -43,16 +58,20 @@
 {
     [event addPartnerParameter:@"din" value:din];
     [event addPartnerParameter:@"dout" value:dout];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
-                          products:(NSArray *)products
+                        productIds:(NSArray *)productIds
                         customerId:(NSString *)customerId
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
 
-    NSString * jsonProducts = [ADJCriteo createCriteoVLFromProducts:products];
-    [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+    NSString * jsonProductsIds = [ADJCriteo createCriteoVLFromProducts:productIds];
+    [event addPartnerParameter:@"criteo_p" value:jsonProductsIds];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectViewProductIntoEvent:(ADJEvent *)event
@@ -61,6 +80,8 @@
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"criteo_p" value:productId];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectCartIntoEvent:(ADJEvent *)event
@@ -71,6 +92,8 @@
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+
+    [ADJCriteo injectHashEmail:event];
 }
 
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
@@ -81,101 +104,150 @@
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectUserLevelIntoEvent:(ADJEvent *)event
+                         uiLevel:(NSUInteger)uiLevel
+                      customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+
+    NSString * uiLevelString = [NSString stringWithFormat:@"%lu",(unsigned long)uiLevel];
+    [event addPartnerParameter:@"ui_level" value:uiLevelString];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectUserStatusIntoEvent:(ADJEvent *)event
+                         uiStatus:(NSString *)uiStatus
+                       customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+    [event addPartnerParameter:@"ui_status" value:uiStatus];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
+                             uiAchievement:(NSString *)uiAchievement
+                                customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+    [event addPartnerParameter:@"ui_achievmnt" value:uiAchievement];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectCustomEventIntoEvent:(ADJEvent *)event
+                            uiData:(NSString *)uiData
+                        customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+    [event addPartnerParameter:@"ui_data" value:uiData];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
+                            uiData2:(NSString *)uiData2
+                            uiData3:(NSUInteger)uiData3
+                         customerId:(NSString *)customerId
+{
+    [event addPartnerParameter:@"customer_id" value:customerId];
+    [event addPartnerParameter:@"ui_data2" value:uiData2];
+
+    NSString * uiData3String = [NSString stringWithFormat:@"%lu",(unsigned long)uiData3];
+    [event addPartnerParameter:@"ui_data3" value:uiData3String];
+
+    [ADJCriteo injectHashEmail:event];
+}
+
++ (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail
+{
+    hashEmailInternal = hashEmail;
 }
 
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
 {
+    if (products == nil) {
+        [self.logger warn:@"Criteo Event product list is nil. It will sent as empty."];
+        products = @[];
+    }
+
+    NSUInteger productsCount = [products count];
+
     NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
-    for (ADJCriteoProduct *product in products)
+    for (NSUInteger i = 0; i < productsCount;)
     {
+        id productAtIndex = [products objectAtIndex:i];
+        if (![productAtIndex isKindOfClass:[ADJCriteoProduct class]]) {
+            [self.logger error:@"Criteo Event should contain a list of ADJCriteoProduct"];
+            return nil;
+        }
+        ADJCriteoProduct *product = (ADJCriteoProduct *)productAtIndex;
         NSString* productString = [NSString stringWithFormat:@"{\"i\":\"%@\",\"pr\":%f,\"q\":%lu}",
                                    [product criteoProductID],
                                    [product criteoPrice],
                                    (unsigned long)[product criteoQuantity]];
 
         [criteoVBValue appendString:productString];
-        if (product != [products lastObject])
+
+        i++;
+
+        if (i == productsCount)
         {
-            [criteoVBValue appendString:@","];
-        }
-    }
-    [criteoVBValue appendString:@"]"];
-    return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
-
-+ (NSString*) createCriteoVLFromProducts:(NSArray*) products
-{
-#ifdef DEBUG
-    if ([products count] > 3)
-        NSLog(@"Warning : VL Events should only have at most 3 objects, discarding the rest");
-#endif
-    NSUInteger numberOfProducts = 0;
-    NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
-
-    for (ADJCriteoProduct *product in products)
-    {
-        NSString* productString = [NSString stringWithFormat:@"\"%@\"", [product criteoProductID]];
-
-        [criteoVBValue appendString:productString];
-        ++numberOfProducts;
-
-        if (product != [products lastObject] && numberOfProducts < 3)
-        {
-            [criteoVBValue appendString:@","];
-        }
-        if (numberOfProducts >= 3)
             break;
+        }
+
+        [criteoVBValue appendString:@","];
     }
     [criteoVBValue appendString:@"]"];
     return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
-+ (NSString*) createCriteoVBFromProductsDictionary:(NSArray*) products
++ (NSString*) createCriteoVLFromProducts:(NSArray*) productIds
 {
-    NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
-    for (NSDictionary* product in products)
-    {
-        NSString* productString = [NSString stringWithFormat:@"{\"i\":\"%@\",\"pr\":%f,\"q\":%lu}",
-                                   [product objectForKey:@"productID"],
-                                   [[product objectForKey:@"price"] floatValue],
-                                   [[product objectForKey:@"quantity"] integerValue]];
-
-        [criteoVBValue appendString:productString];
-        if (product != [products lastObject])
-        {
-            [criteoVBValue appendString:@","];
-        }
+    if (productIds == nil) {
+        [self.logger warn:@"Criteo View Listing product ids list is nil. It will sent as empty."];
+        productIds = @[];
     }
-    [criteoVBValue appendString:@"]"];
-    return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
+    NSUInteger productsIdCount = [productIds count];
+    if (productsIdCount > MAX_VIEW_LISTING_PRODUCTS) {
+        [self.logger warn:@"Criteo View Listing should only have at most 3 product ids. The rest will be discarded."];
+    }
 
-+ (NSString*) createCriteoVLFromProductsArray:(NSArray*) products
-{
-#ifdef DEBUG
-    if ([products count] > 3)
-        NSLog(@"Warning : VL Events should only have at most 3 objects, discarding the rest");
-#endif
-    NSUInteger numberOfProducts = 0;
+    NSMutableString* criteoVLValue = [NSMutableString stringWithString:@"["];
 
-    NSMutableString* criteoVBValue = [NSMutableString stringWithString:@"["];
-    for (NSString* product in products)
-    {
-        NSString* productString = [NSString stringWithFormat:@"\"%@\"", product];
-
-        [criteoVBValue appendString:productString];
-        ++numberOfProducts;
-
-        if (product != [products lastObject] && numberOfProducts < 3)
-        {
-            [criteoVBValue appendString:@","];
+    for (NSUInteger i = 0; i < productsIdCount;) {
+        id productAtIndex = [productIds objectAtIndex:i];
+        NSString* productId;
+        if ([productAtIndex isKindOfClass:[NSString class]]) {
+            productId = productAtIndex;
+        } else if ([productAtIndex isKindOfClass:[ADJCriteoProduct class]]) {
+            ADJCriteoProduct * criteoProduct = (ADJCriteoProduct *)productAtIndex;
+            productId = [criteoProduct criteoProductID];
+            [self.logger warn:@"Criteo View Listing should contain a list of product ids, not of ADJCriteoProduct. Reading the product id of the ADJCriteoProduct."];
+        } else {
+            return nil;
         }
-        if (numberOfProducts >= 3)
+
+        NSString * productIdEscaped = [NSString stringWithFormat:@"\"%@\"", productId];
+
+        [criteoVLValue appendString:productIdEscaped];
+
+        i++;
+
+        if (i == productsIdCount || i >= MAX_VIEW_LISTING_PRODUCTS) {
             break;
+        }
 
+        [criteoVLValue appendString:@","];
     }
-    [criteoVBValue appendString:@"]"];
-    return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    [criteoVLValue appendString:@"]"];
+    return [criteoVLValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end
