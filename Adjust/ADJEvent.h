@@ -78,6 +78,10 @@
 
 /**
  *
+ * Validate a in-app-purchase receipt.
+ *
+ * @param The receipt to validate
+ * @param The identifier used to validate the receipt and to avoid duplicate revenue events
  */
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId;
 
