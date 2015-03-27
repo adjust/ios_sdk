@@ -33,8 +33,9 @@
 		960FCF8D1A1B9B7D00282BD4 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF761A1B9B7D00282BD4 /* ADJAttributionHandler.m */; };
 		960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF781A1B9B7D00282BD4 /* ADJAttribution.m */; };
 		960FCF8F1A1B9B7D00282BD4 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */; };
-		96332C8F1A891E1100D38FAF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C8E1A891E1100D38FAF /* AdSupport.framework */; };
-		96332C911A891E1800D38FAF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C901A891E1800D38FAF /* iAd.framework */; };
+		96332C8F1A891E1100D38FAF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C8E1A891E1100D38FAF /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		96332C911A891E1800D38FAF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96332C901A891E1800D38FAF /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		96C93DF91AC4828B00B53F56 /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C93DF81AC4828B00B53F56 /* NSData+ADJAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,8 @@
 		960FCF7A1A1B9B7D00282BD4 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
 		96332C8E1A891E1100D38FAF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96332C901A891E1800D38FAF /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		96C93DF71AC4828B00B53F56 /* NSData+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ADJAdditions.h"; sourceTree = "<group>"; };
+		96C93DF81AC4828B00B53F56 /* NSData+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ADJAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +191,8 @@
 		960FCF561A1B9B7D00282BD4 /* ADJAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				96C93DF71AC4828B00B53F56 /* NSData+ADJAdditions.h */,
+				96C93DF81AC4828B00B53F56 /* NSData+ADJAdditions.m */,
 				960FCF521A1B9B7D00282BD4 /* NSString+ADJAdditions.h */,
 				960FCF531A1B9B7D00282BD4 /* NSString+ADJAdditions.m */,
 				960FCF541A1B9B7D00282BD4 /* UIDevice+ADJAdditions.h */,
@@ -288,6 +293,7 @@
 				TargetAttributes = {
 					960FCF1F1A1B9ACE00282BD4 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = QGUGW9AUMK;
 					};
 					960FCF381A1B9ACE00282BD4 = {
 						CreatedOnToolsVersion = 6.1;
@@ -342,6 +348,7 @@
 				960FCF891A1B9B7D00282BD4 /* ADJUtil.m in Sources */,
 				960FCF8B1A1B9B7D00282BD4 /* ADJDeviceInfo.m in Sources */,
 				960FCF851A1B9B7D00282BD4 /* ADJPackageBuilder.m in Sources */,
+				96C93DF91AC4828B00B53F56 /* NSData+ADJAdditions.m in Sources */,
 				960FCF8E1A1B9B7D00282BD4 /* ADJAttribution.m in Sources */,
 				960FCF821A1B9B7D00282BD4 /* ADJActivityState.m in Sources */,
 				960FCF2C1A1B9ACE00282BD4 /* ViewController.m in Sources */,

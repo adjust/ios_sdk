@@ -14,8 +14,9 @@
 @property (nonatomic, copy, readonly) NSNumber* revenue;
 @property (nonatomic, readonly) NSDictionary* callbackParameters;
 @property (nonatomic, readonly) NSDictionary* partnerParameters;
-@property (nonatomic, copy) NSString* transactionId;
+@property (nonatomic, copy, readonly) NSString* transactionId;
 @property (nonatomic, copy, readonly) NSString* currency;
+@property (nonatomic, copy, readonly) NSData* receipt;
 
 /**
  * Create Event object with Event Token.
@@ -74,5 +75,10 @@
 - (void) setTransactionId:(NSString *)transactionId;
 
 - (BOOL) isValid;
+
+/**
+ *
+ */
+- (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId;
 
 @end

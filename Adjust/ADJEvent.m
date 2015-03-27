@@ -146,7 +146,23 @@
 - (BOOL) isValid {
     if (![self checkEventToken:self.eventToken]) return NO;
     if (![self checkRevenue:self.revenue currency:self.currency]) return NO;
+    if (![self checkReceipt:self.receipt transactionId:self.transactionId]) return NO;
 
+    return YES;
+}
+
+- (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
+    if (![self checkReceipt:receipt transactionId:transactionId]) return;
+
+    _receipt = receipt;
+    _transactionId = transactionId;
+}
+
+- (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
+    if (receipt != nil && transactionId == nil) {
+        [self.logger error:@"Missing transactionId"];
+        return NO;
+    }
     return YES;
 }
 
@@ -178,7 +194,13 @@
         }
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        copy.transactionId = [self.transactionId copyWithZone:zone];
+        if (self.transactionId != nil) {
+            if (self.receipt != nil) {
+                [copy setReceipt:self.receipt transactionId:self.transactionId];
+            } else {
+                [copy setTransactionId:self.transactionId];
+            }
+        }
     }
     return copy;
 }
