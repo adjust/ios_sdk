@@ -232,6 +232,25 @@ tracking revenue that is not actually being generated.
 }
 ```
 
+#### Receipt verification
+
+If you track in-app purchases, you can also attach the receipt to the tracked
+event. In that case our servers will verify that receipt with Apple and discard
+the event if the verification failed. To make this work, you also need to send
+us the transaction ID of the purchase. The transaction ID will also be used for
+SDK side deduplication as explained [above](#deduplication):
+
+```objc
+NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+NSData *receipt = [NSData dataWithContentsOfURL:receiptURL];
+
+ADJEvent *event = [ADJEvent eventWithEventToken:...];
+[event setRevenue:... currency:...];
+[event setReceipt:receipt transactionId:transaction.transactionIdentifier];
+
+[Adjust trackEvent:event];
+```
+
 ### 7. Set up deep link reattributions
 
 You can set up the adjust SDK to handle deep links that are used to open your
@@ -338,23 +357,6 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 You can read more about special partners and these integrations in our
 [guide to special partners.][special-partners]
-
-### 12. Receipt validation
-
-You can add the receipt of an in-app-purchase to an event for
-validation and discarded from tracking if it's invalid.
-It will also check for transaction duplication as explained [here](#deduplication):
-
-```objc
-NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-NSData *receipt = [NSData dataWithContentsOfURL:receiptURL];
-
-ADJEvent *event = [ADJEvent eventWithEventToken:...];
-[event setRevenue:... currency:...];
-[event setReceipt:receipt transactionId:transaction.transactionIdentifier];
-
-[Adjust trackEvent:event];
-```
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
