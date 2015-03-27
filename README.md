@@ -201,7 +201,7 @@ that you have set in your adjust dashboard.**
 
 You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
 
-#### Revenue deduplication
+#### <a id="deduplication"></a> Revenue deduplication
 
 You can also pass in an optional transaction ID to avoid tracking duplicate
 revenues. The last ten transaction IDs are remembered and revenue events with
@@ -338,6 +338,23 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 You can read more about special partners and these integrations in our
 [guide to special partners.][special-partners]
+
+### 12. Receipt validation
+
+You can add the receipt of an in-app-purchase to an event for
+validation and discarded from tracking if it's invalid.
+It will also check for transaction duplication as explained [here](#deduplication):
+
+```objc
+NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+NSData *receipt = [NSData dataWithContentsOfURL:receiptURL];
+
+ADJEvent *event = [ADJEvent eventWithEventToken:...];
+[event setRevenue:... currency:...];
+[event setReceipt:receipt transactionId:transaction.transactionIdentifier];
+
+[Adjust trackEvent:event];
+```
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
