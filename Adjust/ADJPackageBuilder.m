@@ -10,6 +10,7 @@
 #import "ADJActivityPackage.h"
 #import "ADJUtil.h"
 #import "ADJAttribution.h"
+#import "NSData+ADJAdditions.h"
 
 #pragma mark -
 @implementation ADJPackageBuilder
@@ -50,6 +51,12 @@
 
     [self parameters:parameters setDictionaryJson:event.callbackParameters forKey:@"callback_params"];
     [self parameters:parameters setDictionaryJson:event.partnerParameters forKey:@"partner_params"];
+
+    if (event.receipt != nil) {
+        NSString *receiptBase64 = [event.receipt adjEncodeBase64];
+        [self parameters:parameters setString:receiptBase64 forKey:@"receipt"];
+        [self parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
+    }
 
     ADJActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";

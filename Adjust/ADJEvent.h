@@ -14,8 +14,9 @@
 @property (nonatomic, copy, readonly) NSNumber* revenue;
 @property (nonatomic, readonly) NSDictionary* callbackParameters;
 @property (nonatomic, readonly) NSDictionary* partnerParameters;
-@property (nonatomic, copy) NSString* transactionId;
+@property (nonatomic, copy, readonly) NSString* transactionId;
 @property (nonatomic, copy, readonly) NSString* currency;
+@property (nonatomic, copy, readonly) NSData* receipt;
 
 /**
  * Create Event object with Event Token.
@@ -69,10 +70,19 @@
  * A transaction ID can be used to avoid duplicate revenue events. The last ten
  * transaction identifiers are remembered.
  *
- * @param The identifier used to avoid duplicate revenue events
+ * @param transactionId The identifier used to avoid duplicate revenue events
  */
 - (void) setTransactionId:(NSString *)transactionId;
 
 - (BOOL) isValid;
+
+/**
+ *
+ * Validate a in-app-purchase receipt.
+ *
+ * @param receipt The receipt to validate
+ * @param transactionId The identifier used to validate the receipt and to avoid duplicate revenue events
+ */
+- (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId;
 
 @end

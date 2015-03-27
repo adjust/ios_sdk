@@ -121,7 +121,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.0.8", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.1.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
@@ -358,6 +358,9 @@
     // add revenue
     [thirdEvent setRevenue:0 currency:@"USD"];
 
+    // add receipt information
+    [thirdEvent setReceipt:[@"{ \"transaction-id\" = \"t_id_2\"; }" dataUsingEncoding:NSUTF8StringEncoding] transactionId:@"t_id_2"];
+
     // track the third event
     [activityHandler trackEvent:thirdEvent];
 
@@ -449,6 +452,9 @@
     XCTAssert([(NSString *)firstEventPackageParameters[@"revenue"] isEqualToString:@"0.0001"], @"%@", firstEventPackage.extendedString);
     XCTAssert([(NSString *)firstEventPackageParameters[@"currency"] isEqualToString:@"EUR"], @"%@", firstEventPackage.extendedString);
 
+    //   check the that the transaction id was not injected
+    XCTAssertNil(firstEventPackageParameters[@"transaction_id"], @"%@", firstEventPackage.extendedString);
+
     //   check the injected parameters
     XCTAssert([(NSString *)firstEventPackageParameters[@"callback_params"] isEqualToString:@"{\"keyCall\":\"valueCall2\",\"fooCall\":\"barCall\"}"],
               @"%@", firstEventPackage.extendedString);
@@ -472,6 +478,10 @@
     //   check the revenue and currency
     XCTAssert([(NSString *)thirdEventPackageParameters[@"revenue"] isEqualToString:@"0"], @"%@", thirdEventPackage.extendedString);
     XCTAssert([(NSString *)thirdEventPackageParameters[@"currency"] isEqualToString:@"USD"], @"%@", thirdEventPackage.extendedString);
+
+    //   check the receipt and transaction_id
+    XCTAssert([(NSString *)thirdEventPackageParameters[@"receipt"] isEqualToString:@"eyAidHJhbnNhY3Rpb24taWQiID0gInRfaWRfMiI7IH0="], @"%@", thirdEventPackage.extendedString);
+    XCTAssert([(NSString *)thirdEventPackageParameters[@"transaction_id"] isEqualToString:@"t_id_2"], @"%@", thirdEventPackage.extendedString);
 
     //   check the that the parameters were not injected
     XCTAssertNil(thirdEventPackageParameters[@"callback_params"], @"%@", thirdEventPackage.extendedString);
@@ -611,6 +621,8 @@
     [firstEvent setRevenue:0 currency:@""];
     [firstEvent setRevenue:-0.0001 currency:@"EUR"];
 
+    [firstEvent setReceipt:@"value" transactionId:nil];
+
     [activityHandler trackEvent:firstEvent];
 
     [NSThread sleepForTimeInterval:2];
@@ -646,6 +658,8 @@
     // check revenue is invalid
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Invalid amount -0.0001"],  @"%@", self.loggerMock);
 
+    // check the receipt had a nil transaction id
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Missing transactionId"],  @"%@", self.loggerMock);
 
     //  check the first parameters
     ADJActivityPackage *firstEventPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];

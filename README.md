@@ -17,7 +17,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.0.8'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.1.0'
 ```
 
 ### 1. Get the SDK
@@ -201,7 +201,7 @@ that you have set in your adjust dashboard.**
 
 You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
 
-#### Revenue deduplication
+#### <a id="deduplication"></a> Revenue deduplication
 
 You can also pass in an optional transaction ID to avoid tracking duplicate
 revenues. The last ten transaction IDs are remembered and revenue events with
@@ -230,6 +230,25 @@ tracking revenue that is not actually being generated.
         }
     }
 }
+```
+
+#### Receipt verification
+
+If you track in-app purchases, you can also attach the receipt to the tracked
+event. In that case our servers will verify that receipt with Apple and discard
+the event if the verification failed. To make this work, you also need to send
+us the transaction ID of the purchase. The transaction ID will also be used for
+SDK side deduplication as explained [above](#deduplication):
+
+```objc
+NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+NSData *receipt = [NSData dataWithContentsOfURL:receiptURL];
+
+ADJEvent *event = [ADJEvent eventWithEventToken:...];
+[event setRevenue:... currency:...];
+[event setReceipt:receipt transactionId:transaction.transactionIdentifier];
+
+[Adjust trackEvent:event];
 ```
 
 ### 7. Set up deep link reattributions
