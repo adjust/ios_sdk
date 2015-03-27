@@ -70,7 +70,7 @@
  * A transaction ID can be used to avoid duplicate revenue events. The last ten
  * transaction identifiers are remembered.
  *
- * @param The identifier used to avoid duplicate revenue events
+ * @param transactionId The identifier used to avoid duplicate revenue events
  */
 - (void) setTransactionId:(NSString *)transactionId;
 
@@ -80,8 +80,8 @@
  *
  * Validate a in-app-purchase receipt.
  *
- * @param The receipt to validate
- * @param The identifier used to validate the receipt and to avoid duplicate revenue events
+ * @param receipt The receipt to validate
+ * @param transactionId The identifier used to validate the receipt and to avoid duplicate revenue events
  */
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId;
 
