@@ -121,7 +121,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.1.0", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.1.1", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
