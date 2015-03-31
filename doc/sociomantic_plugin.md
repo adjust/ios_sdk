@@ -325,7 +325,6 @@ NSDictionary *product6 = @{
     SCMProductID : @"productId_6"
 };
 NSArray * productList = @[product5, product6];
-NS
 
 [ADJSociomantic injectConfirmedTransactionIntoEvent:event transactionId:@"123456" withProducts:productList];
 [Adjust trackEvent:event];
