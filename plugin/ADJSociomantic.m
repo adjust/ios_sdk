@@ -142,7 +142,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
 @implementation ADJSociomantic
 
 + (void)injectCustomerDataIntoEvent:(ADJEvent *)event
-                               withData:(NSDictionary *)data
+                           withData:(NSDictionary *)data
 {
     NSArray *aliases            = [SCMSingleton sharedClient].properties[@"customer"];
     NSMutableDictionary *_data  = [NSMutableDictionary dictionary];
@@ -274,12 +274,19 @@ NSString *const SCMCustomerTargeting = @"targeting";
 }
 
 + (void)injectTransactionIntoEvent:(ADJEvent *)event
-                              transactionId:(NSString *)transactionID
-                               withProducts:(NSArray *)products
+                     transactionId:(NSString *)transactionID
+                      withProducts:(NSArray *)products
 {
     [ADJSociomantic injectTransactionIntoEvent:event transactionId:transactionID withProducts:products withParameters:nil andConfirmed:NO];
 }
 
++ (void)injectTransactionIntoEvent:(ADJEvent *)event
+                     transactionId:(NSString *)transactionID
+                      withProducts:(NSArray *)products
+                    withParameters:(NSDictionary *)parameters
+{
+    [ADJSociomantic injectTransactionIntoEvent:event transactionId:transactionID withProducts:products withParameters:parameters andConfirmed:NO];
+}
 
 + (void)injectTransactionIntoEvent:(ADJEvent *)event
                      transactionId:(NSString *)transactionID
