@@ -336,7 +336,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     to[@"transaction"]  = transactionID;
-    NSString *jsonTo    = [ADJSociomantic stringify:to];
+    NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
     [event addPartnerParameter:@"to" value:jsonTo];
 
 }
