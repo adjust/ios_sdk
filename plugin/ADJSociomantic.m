@@ -8,6 +8,8 @@
 
 #import "ADJSociomantic.h"
 #import "Adjust.h"
+#import "ADJAdjustFactory.h"
+#import "ADJLogger.h"
 
 ///----------------------------
 /// @name Sociomantic Aliases
@@ -145,22 +147,21 @@ NSString *const SCMCustomerTargeting = @"targeting";
                                withData:(NSDictionary *)data
 {
     NSArray *aliases            = [SCMSingleton sharedClient].properties[@"customer"];
-    NSMutableDictionary *_data  = [NSMutableDictionary dictionary];
+    NSMutableDictionary * _data  = [NSMutableDictionary dictionary];
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
 
     [data enumerateKeysAndObjectsUsingBlock:
      ^(NSString *key, id value, BOOL* stop)
      {
-#ifdef DEBUG
-         NSAssert([aliases containsObject:key], @"Key must correspond to a Sociomantic alias => [%@] see SCMAliases.h", key );
-         NSAssert([value isKindOfClass:[NSString class]], @"Customer Data must be NSString=> [%@] [%@]", value, [value class]);
-#endif
-         if ( [aliases containsObject:key] )
-         {
-             if ( [value isKindOfClass:[NSString class]] )
-             {
-                 _data[key] = value;
-             }
+         if (![aliases containsObject:key]) {
+             [logger error:@"Key must correspond to a Sociomantic alias => [%@] see SCMAliases.h", key];
+             return;
          }
+         if (![value isKindOfClass:[NSString class]]) {
+             [logger error:@"Customer Data must be NSString=> [%@] [%@]", value, [value class]];
+         }
+
+         _data[key] = value;
      }];
 
     NSString *dob = [ADJSociomantic stringify:_data];
@@ -339,10 +340,13 @@ NSString *const SCMCustomerTargeting = @"targeting";
     return [categories filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:
     ^BOOL(id category, NSDictionary *bindings)
     {
-#ifdef DEBUG
-     NSAssert([category isKindOfClass:[NSString class]], @"Categories should only contains a string, failed on: [%@] type:[%@]", category, [category class]);
-#endif
-     return [category isKindOfClass:[NSString class]];
+        if (![category isKindOfClass:[NSString class]]) {
+            id<ADJLogger> logger = [ADJAdjustFactory logger];
+            [logger error:@"Categories should only contains a string, failed on: [%@] type:[%@]", category, [category class]];
+            return nil;
+        }
+
+        return [category isKindOfClass:[NSString class]];
     }]];
 }
 
@@ -351,9 +355,12 @@ NSString *const SCMCustomerTargeting = @"targeting";
     [parameters enumerateKeysAndObjectsUsingBlock:
      ^(NSString *key, id value, BOOL* stop)
      {
-#ifdef DEBUG
-         NSAssert( [aliases containsObject:key], @"Key must correspond to a Sociomantic alias => [%@] see SCMAliases.h", key );
-#endif
+         if (![aliases containsObject:key]) {
+             id<ADJLogger> logger = [ADJAdjustFactory logger];
+             [logger error:@"Key must correspond to a Sociomantic alias => [%@] see SCMAliases.h", key];
+             return;
+         }
+
          if ( [aliases containsObject:key])
          {
              if ( [key isEqualToString:SCMCategory] )
@@ -373,7 +380,6 @@ NSString *const SCMCustomerTargeting = @"targeting";
              }
          }
      }];
-
 }
 
 #pragma mark json helper
@@ -390,7 +396,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
     if ( !jsonData || error )
     {
-        NSLog(@"Error: %@", [error debugDescription]);
+        id<ADJLogger> logger = [ADJAdjustFactory logger];
+        [logger error:@"%@", [error debugDescription]];
         return @"{}";
     }
     else
