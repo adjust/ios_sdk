@@ -394,3 +394,24 @@ See cart parameters
 
 </tbody>
 </table>
+
+### Lead Event
+
+```objc
+#import "ADJSociomantic.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:LEAD_TOKEN];
+
+[ADJSociomantic injectLeadIntoEvent:event leadID:@"123456789"];
+[Adjust trackEvent:event];
+```
+
+Or confirmed lead:
+
+```objc
+#import "ADJSociomantic.h"
+
+ADJEvent *event = [ADJEvent eventWithEventToken:LEAD_TOKEN];
+
+[ADJSociomantic injectLeadIntoEvent:event leadID:@"123456789" andConfirmed:YES];
+[Adjust trackEvent:event];
