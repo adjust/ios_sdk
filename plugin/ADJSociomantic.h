@@ -211,4 +211,28 @@ extern NSString *const SCMCustomerTargeting;
                       withProducts:(NSArray *)products
                     withParameters:(NSDictionary *)parameters;
 
+/**
+ * Method injects a lead page into an Adjust event.
+ *
+ * @param   event           `ADJEvent`
+ * @param   leadID          `NSString`
+ *
+ * @return  `void`
+ */
++ (void)injectLeadIntoEvent:(ADJEvent *)event
+                     leadID:(NSString *)transactionID;
+
+/**
+ * Method injects a lead page into an Adjust event.
+ * It can be confirmed or not.
+ *
+ * @param   event           `ADJEvent`
+ * @param   leadID          `NSString`
+ *
+ * @return  `void`
+ */
++ (void)injectLeadIntoEvent:(ADJEvent *)event
+                     leadID:(NSString *)transactionID
+               andConfirmed:(BOOL)confirmed;
+
 @end
