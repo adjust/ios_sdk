@@ -807,6 +807,7 @@
 				96BCFBEA1AC99FBD005A65C5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
