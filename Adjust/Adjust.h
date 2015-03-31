@@ -6,7 +6,6 @@
 //  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
 
-#import "ADJLogger.h"
 #import "ADJEvent.h"
 #import "ADJAttribution.h"
 #import "ADJConfig.h"
