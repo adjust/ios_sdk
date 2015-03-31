@@ -203,14 +203,12 @@ extern NSString *const SCMCustomerTargeting;
  * @param   transactionID   `NSString`
  * @param   products        `NSArray`
  * @param   parameters      `NSDictionary`
- * @param   confirmed       `BOOL`
  *
  * @return  `void`
  */
 + (void)injectTransactionIntoEvent:(ADJEvent *)event
-                              transactionId:(NSString *)transactionID
-                               withProducts:(NSArray *)products
-                             withParameters:(NSDictionary *)parameters
-                               andConfirmed:(BOOL)confirmed;
+                     transactionId:(NSString *)transactionID
+                      withProducts:(NSArray *)products
+                    withParameters:(NSDictionary *)parameters;
 
 @end
