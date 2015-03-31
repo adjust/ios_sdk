@@ -337,9 +337,31 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     to[@"transaction"]  = transactionID;
-    NSString *jsonTo    = [ADJSociomantic stringify:to];
+    NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
     [event addPartnerParameter:@"to" value:jsonTo];
 
+}
+
++ (void)injectLeadIntoEvent:(ADJEvent *)event
+                     leadID:(NSString *)leadId
+{
+    [ADJSociomantic injectLeadIntoEvent:event leadID:leadId andConfirmed:NO];
+}
+
++ (void)injectLeadIntoEvent:(ADJEvent *)event
+                     leadID:(NSString *)leadID
+               andConfirmed:(BOOL)confirmed
+{
+    NSMutableDictionary *to = [NSMutableDictionary dictionary];
+
+    if ( YES == confirmed )
+    {
+        to[SCMActionConfirmed] = @"true";
+    }
+
+    to[@"transaction"]  = leadID;
+    NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
+    [event addPartnerParameter:@"to" value:jsonTo];
 }
 
 + (NSArray*)filterCategories:(NSArray*)categories
