@@ -325,6 +325,7 @@ Here is a quick summary of its properties:
 - `NSString campaign` the campaign grouping level of the current install.
 - `NSString adgroup` the ad group grouping level of the current install.
 - `NSString creative` the creative grouping level of the current install.
+- `NSString clickLabel` the click label of the current install.
 
 ### 10. Disable tracking
 
