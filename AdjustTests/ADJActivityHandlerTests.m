@@ -1084,7 +1084,7 @@
 
     //  check the first attribution is written
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug
-                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValue tn:trackerNameValue net:networkValue cam:campaignValue adg:adgroupValue cre:creativeValue clklbl:clickLabelValue"], @"%@", self.loggerMock);
+                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValue tn:trackerNameValue net:networkValue cam:campaignValue adg:adgroupValue cre:creativeValue lab:clickLabelValue"], @"%@", self.loggerMock);
 
     // change values of the same attribution
     attribution.trackerName  = @"trackerNameValueNew";
@@ -1103,7 +1103,7 @@
 
     //  check the second attribution is written
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug
-                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValueNew tn:trackerNameValueNew net:networkValueNew cam:campaignValueNew adg:adgroupValueNew cre:creativeValueNew clklbl:clickLabelValueNew"], @"%@", self.loggerMock);
+                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValueNew tn:trackerNameValueNew net:networkValueNew cam:campaignValueNew adg:adgroupValueNew cre:creativeValueNew lab:clickLabelValueNew"], @"%@", self.loggerMock);
 
     // build a json dictionary equal to the updated Attribution
     NSMutableDictionary * newJsonDictionary = [[NSMutableDictionary alloc] init];
@@ -1124,7 +1124,7 @@
 
     //  check the same attribution is not written again
     XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelDebug
-                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValueNew tn:trackerNameValueNew net:networkValueNew cam:campaignValueNew adg:adgroupValueNew cre:creativeValueNew clklbl:clickLabelValueNew"], @"%@", self.loggerMock);
+                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValueNew tn:trackerNameValueNew net:networkValueNew cam:campaignValueNew adg:adgroupValueNew cre:creativeValueNew lab:clickLabelValueNew"], @"%@", self.loggerMock);
 
 
     [activityHandler setAskingAttribution:NO];
@@ -1175,7 +1175,7 @@
 
     // check new attribution after restart
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug
-                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValue tn:trackerNameValue net:networkValue cam:campaignValue adg:adgroupValue cre:creativeValue clklbl:clickLabelValue"], @"%@", self.loggerMock);
+                                    beginsWith:@"Wrote Attribution: tt:trackerTokenValue tn:trackerNameValue net:networkValue cam:campaignValue adg:adgroupValue cre:creativeValue lab:clickLabelValue"], @"%@", self.loggerMock);
 
     [newActivityHandler setAskingAttribution:YES];
 
