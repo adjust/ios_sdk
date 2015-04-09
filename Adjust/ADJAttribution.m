@@ -30,7 +30,7 @@
     self.adgroup      = [jsonDict objectForKey:@"adgroup"];
     self.creative     = [jsonDict objectForKey:@"creative"];
     self.clickLabel   = [jsonDict objectForKey:@"click_label"];
-    
+
     return self;
 }
 
@@ -59,7 +59,7 @@
     if (![NSString adjIsEqual:self.clickLabel toString:attribution.clickLabel]) {
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -89,11 +89,11 @@
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }
-    
+
     if (self.clickLabel != nil) {
         [responseDataDic setObject:self.clickLabel forKey:@"click_label"];
     }
-    
+
     return responseDataDic;
 }
 
@@ -154,7 +154,7 @@
     self.adgroup      = [decoder decodeObjectForKey:@"adgroup"];
     self.creative     = [decoder decodeObjectForKey:@"creative"];
     self.clickLabel   = [decoder decodeObjectForKey:@"click_label"];
-    
+
     return self;
 }
 
