@@ -29,7 +29,8 @@
     self.campaign     = [jsonDict objectForKey:@"campaign"];
     self.adgroup      = [jsonDict objectForKey:@"adgroup"];
     self.creative     = [jsonDict objectForKey:@"creative"];
-
+    self.clickLabel   = [jsonDict objectForKey:@"click_label"];
+    
     return self;
 }
 
@@ -55,7 +56,10 @@
     if (![NSString adjIsEqual:self.creative toString:attribution.creative]) {
         return NO;
     }
-
+    if (![NSString adjIsEqual:self.clickLabel toString:attribution.clickLabel]) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -85,14 +89,18 @@
     if (self.creative != nil) {
         [responseDataDic setObject:self.creative forKey:@"creative"];
     }
-
+    
+    if (self.clickLabel != nil) {
+        [responseDataDic setObject:self.clickLabel forKey:@"click_label"];
+    }
+    
     return responseDataDic;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@",
+    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@ lab:%@",
             self.trackerToken, self.trackerName, self.network, self.campaign,
-            self.adgroup, self.creative];
+            self.adgroup, self.creative, self.clickLabel];
 }
 
 
@@ -121,11 +129,12 @@
 
     if (copy) {
         copy.trackerToken = [self.trackerToken copyWithZone:zone];
-        copy.trackerName = [self.trackerName copyWithZone:zone];
-        copy.network = [self.network copyWithZone:zone];
-        copy.campaign = [self.campaign copyWithZone:zone];
-        copy.adgroup = [self.adgroup copyWithZone:zone];
-        copy.creative = [self.creative copyWithZone:zone];
+        copy.trackerName  = [self.trackerName copyWithZone:zone];
+        copy.network      = [self.network copyWithZone:zone];
+        copy.campaign     = [self.campaign copyWithZone:zone];
+        copy.adgroup      = [self.adgroup copyWithZone:zone];
+        copy.creative     = [self.creative copyWithZone:zone];
+        copy.clickLabel   = [self.clickLabel copyWithZone:zone];
     }
 
     return copy;
@@ -144,7 +153,8 @@
     self.campaign     = [decoder decodeObjectForKey:@"campaign"];
     self.adgroup      = [decoder decodeObjectForKey:@"adgroup"];
     self.creative     = [decoder decodeObjectForKey:@"creative"];
-
+    self.clickLabel   = [decoder decodeObjectForKey:@"click_label"];
+    
     return self;
 }
 
@@ -155,6 +165,7 @@
     [encoder encodeObject:self.campaign     forKey:@"campaign"];
     [encoder encodeObject:self.adgroup      forKey:@"adgroup"];
     [encoder encodeObject:self.creative     forKey:@"creative"];
+    [encoder encodeObject:self.clickLabel   forKey:@"click_label"];
 }
 
 @end
