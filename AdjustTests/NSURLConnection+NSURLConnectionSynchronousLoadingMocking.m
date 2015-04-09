@@ -29,7 +29,7 @@ static int triggerResponse = 0;
     NSString * sResponse;
     if (triggerResponse == 0) {
         statusCode = 200;
-        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"deeplink\":\"testApp://\"}";
+        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"deeplink\":\"testApp://\"}";
     } else if (triggerResponse == 1) {
         statusCode = 0;
         sResponse = @"{\"message\":\"response error\"}";
@@ -41,7 +41,7 @@ static int triggerResponse = 0;
         sResponse = @"{}";
     } else if (triggerResponse == 4) {
         statusCode = 200;
-        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"ask_in\":\"2000\"}";
+        sResponse = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"}, \"message\":\"response OK\",\"ask_in\":\"2000\"}";
     } else {
 
         statusCode = 0;
