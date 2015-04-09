@@ -79,7 +79,7 @@
 
     //  check the response was verbosed
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-        beginsWith:@"status code 200 for package response: {\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"deeplink\":\"testApp://\"}"],
+        beginsWith:@"status code 200 for package response: {\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"deeplink\":\"testApp://\"}"],
               @"%@", self.loggerMock);
 
     //  check that the package was successfully sent

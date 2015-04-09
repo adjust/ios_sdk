@@ -110,7 +110,7 @@
 
     //  check the response was verbosed
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-                                    beginsWith:@"status code 200 for attribution response: {\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"deeplink\":\"testApp://\"}"],
+                                    beginsWith:@"status code 200 for attribution response: {\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"deeplink\":\"testApp://\"}"],
               @"%@", self.loggerMock);
 
     //  check that the package was successfully sent
@@ -140,6 +140,7 @@
     [jsonDictionary setObject:@"campaignValue" forKey:@"campaign"];
     [jsonDictionary setObject:@"adgroupValue" forKey:@"adgroup"];
     [jsonDictionary setObject:@"creativeValue" forKey:@"creative"];
+    [jsonDictionary setObject:@"clickLabelValue" forKey:@"click_label"];
 
     ADJAttribution * attribution = [[ADJAttribution alloc] initWithJsonDict:jsonDictionary];
 
@@ -160,7 +161,7 @@
 
     [NSURLConnection setConnectionError:YES];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:@"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"ask_in\":0, \"message\":\"response OK\",\"deeplink\":\"testApp://\"}"];
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:@"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"ask_in\":0,\"message\":\"response OK\",\"deeplink\":\"testApp://\"}"];
 
     [attributionHandler checkAttribution:jsonDict];
 
@@ -294,7 +295,7 @@
 
     [NSURLConnection setConnectionError:YES];
 
-    NSString * jsonString = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\", \"network\":\"networkValue\",\"campaign\":\"campaignValue\", \"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\"}, \"message\":\"response OK\",\"ask_in\":\"5000\"}";
+    NSString * jsonString = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"ask_in\":\"5000\"}";
 
     NSDictionary * jsonDict = [ADJUtil buildJsonDict:jsonString];
 
