@@ -161,7 +161,7 @@
 
     [NSURLConnection setConnectionError:YES];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:@"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"ask_in\":0,\"message\":\"response OK\",\"deeplink\":\"testApp://\"}"];
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:[@"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"ask_in\":0,\"message\":\"response OK\",\"deeplink\":\"testApp://\"}" dataUsingEncoding:NSUTF8StringEncoding]];
 
     [attributionHandler checkAttribution:jsonDict];
 
@@ -297,7 +297,7 @@
 
     NSString * jsonString = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"ask_in\":\"5000\"}";
 
-    NSDictionary * jsonDict = [ADJUtil buildJsonDict:jsonString];
+    NSDictionary * jsonDict = [ADJUtil buildJsonDict:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
 
     [attributionHandler checkAttribution:jsonDict];
 
