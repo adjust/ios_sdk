@@ -90,6 +90,9 @@ static NSDateFormatter *dateFormat;
 
 
 + (NSDictionary *)buildJsonDict:(NSData *)jsonData {
+    if (jsonData == nil) {
+        return nil;
+    }
     NSError *error = nil;
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
 
