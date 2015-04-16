@@ -121,7 +121,7 @@ static const double kRequestTimeout = 60; // 60 seconds
                                              returningResponse:&urlResponse
                                                          error:&requestError];
     // connection error
-    if (requestError != nil) {
+    if (responseData == nil || requestError != nil) {
         [self.logger error:@"Failed to get attribution. (%@)", requestError.localizedDescription];
         return;
     }

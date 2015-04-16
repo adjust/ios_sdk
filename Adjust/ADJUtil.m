@@ -69,7 +69,7 @@ static NSDateFormatter *dateFormat;
         BOOL success = [url setResourceValue:[NSNumber numberWithBool:YES]
                                       forKey:NSURLIsExcludedFromBackupKey
                                        error:&error];
-        if (!success) {
+        if (!success || error != nil) {
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }

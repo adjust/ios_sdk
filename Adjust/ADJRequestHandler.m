@@ -72,7 +72,7 @@ static const double kRequestTimeout = 60; // 60 seconds
                                                      error:&error];
 
     // connection error
-    if (error != nil) {
+    if (responseData == nil || error != nil) {
         [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
         [self.packageHandler finishedTrackingActivity:nil];
         if (sendToPackageHandler) {
