@@ -94,7 +94,12 @@ static NSDateFormatter *dateFormat;
         return nil;
     }
     NSError *error = nil;
-    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    NSDictionary *jsonDict = nil;
+    @try {
+        jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    } @catch (NSException *ex ) {
+        return nil;
+    }
 
     if (error != nil) {
         return nil;
