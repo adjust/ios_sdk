@@ -117,7 +117,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSError *requestError;
     NSURLResponse *urlResponse = nil;
 
-    NSData *response = [NSURLConnection sendSynchronousRequest:request
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                              returningResponse:&urlResponse
                                                          error:&requestError];
     // connection error
@@ -126,7 +126,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    NSString *responseString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSInteger statusCode = ((NSHTTPURLResponse*)urlResponse).statusCode;
     [self.logger verbose:@"status code %d for attribution response: %@", statusCode, responseString];
 

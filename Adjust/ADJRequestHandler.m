@@ -67,7 +67,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSMutableURLRequest *request = [self requestForPackage:package];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                          returningResponse:&response
                                                      error:&error];
 
@@ -81,7 +81,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     NSInteger statusCode = response.statusCode;
 
     [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
