@@ -81,7 +81,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = response.statusCode;
 
     [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
@@ -89,7 +89,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
 
     if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
-        [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString.adjTrim];
+        [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString];
         if (sendToPackageHandler) {
             [self.packageHandler closeFirstPackage];
         }

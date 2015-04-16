@@ -126,14 +126,14 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = ((NSHTTPURLResponse*)urlResponse).statusCode;
     [self.logger verbose:@"status code %d for attribution response: %@", statusCode, responseString];
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
 
     if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
-        [self.logger error:@"Failed to parse json attribution response: %@", responseString.adjTrim];
+        [self.logger error:@"Failed to parse json attribution response: %@", responseString];
         return;
     }
 
