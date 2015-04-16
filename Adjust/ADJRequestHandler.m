@@ -86,7 +86,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseString];
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
 
     if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
         [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString.adjTrim];

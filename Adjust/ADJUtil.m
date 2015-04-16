@@ -89,9 +89,8 @@ static NSDateFormatter *dateFormat;
 }
 
 
-+ (NSDictionary *)buildJsonDict:(NSString *)jsonString {
++ (NSDictionary *)buildJsonDict:(NSData *)jsonData {
     NSError *error = nil;
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
 
     if (error != nil) {
