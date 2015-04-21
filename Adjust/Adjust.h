@@ -13,8 +13,8 @@
 /**
  * Constants for our supported tracking environments.
  */
-static NSString * const ADJEnvironmentSandbox    = @"sandbox";
-static NSString * const ADJEnvironmentProduction = @"production";
+extern NSString * const ADJEnvironmentSandbox;
+extern NSString * const ADJEnvironmentProduction;
 
 /**
  * The main interface to Adjust.

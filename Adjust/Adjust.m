@@ -15,6 +15,10 @@
 #error Adjust requires ARC
 // see README for details
 #endif
+
+NSString * const ADJEnvironmentSandbox      = @"sandbox";
+NSString * const ADJEnvironmentProduction   = @"production";
+
 @interface Adjust()
 
 @property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
