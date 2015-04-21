@@ -32,7 +32,8 @@
 - (ADJActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-
+    [self parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
+    
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
     sessionPackage.activityKind = ADJActivityKindSession;
@@ -147,7 +148,7 @@
     [self parameters:parameters setString:deviceInfo.networkType       forKey:@"network_type"];
     [self parameters:parameters setString:deviceInfo.mobileCountryCode forKey:@"mobile_country_code"];
     [self parameters:parameters setString:deviceInfo.mobileNetworkCode forKey:@"mobile_network_code"];
-
+    
 
     if (adjustConfig.macMd5TrackingEnabled) {
         [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];

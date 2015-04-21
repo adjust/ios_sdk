@@ -236,6 +236,9 @@
     //  set the delegate that doesn't implement the optional selector
     ADJTestsUtil * delegateNotImpl = [[ADJTestsUtil alloc] init];
     [config setDelegate:delegateNotImpl];
+    
+    // set default tracker
+    [config setDefaultTracker:@"default1234tracker"];
 
     // set macMd5 disabled
     [config setMacMd5TrackingEnabled:NO];
@@ -295,7 +298,9 @@
 
     //   mac md5 was never added
     XCTAssertNil((NSString *)parameters[@"mac_md5"], @"%@", activityPackage.extendedString);
-
+    
+    // default_tracker
+    XCTAssertEqual((NSString *)parameters[@"default_tracker"], @"default1234tracker");
 }
 
 - (void)testEventsBuffered {

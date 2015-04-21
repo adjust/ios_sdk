@@ -31,6 +31,7 @@
 @property (nonatomic, assign) ADJLogLevel logLevel;
 @property (nonatomic, copy, readonly) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
+@property (nonatomic, copy) NSString *defaultTracker;
 
 /**
  * Configuration object for the initialization of the Adjust SDK.
