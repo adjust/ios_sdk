@@ -15,8 +15,6 @@
 
 #include <sys/xattr.h>
 
-#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
-
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
 static NSString * const kClientSdk = @"ios4.2.2";
 
@@ -49,7 +47,9 @@ static NSDateFormatter *dateFormat;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
 
-    if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"5.0.1")) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
+    if (&NSURLIsExcludedFromBackupKey == nil) {
         u_int8_t attrValue = 1;
         int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
         if (result != 0) {
@@ -75,6 +75,7 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
+#pragma clang diagnostic pop
 #pragma clang diagnostic pop
 
 }

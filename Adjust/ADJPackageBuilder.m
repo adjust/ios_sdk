@@ -148,7 +148,7 @@
     [self parameters:parameters setString:deviceInfo.networkType       forKey:@"network_type"];
     [self parameters:parameters setString:deviceInfo.mobileCountryCode forKey:@"mobile_country_code"];
     [self parameters:parameters setString:deviceInfo.mobileNetworkCode forKey:@"mobile_network_code"];
-    
+
 
     if (adjustConfig.macMd5TrackingEnabled) {
         [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];
