@@ -18,7 +18,7 @@
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.2.1";
+static NSString * const kClientSdk = @"ios4.2.2";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
