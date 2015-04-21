@@ -273,6 +273,9 @@
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Tracking of macMd5 is disabled"],
               @"%@", self.loggerMock);
 
+    // check default tracker
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Default tracker: default1234tracker"],
+              @"%@", self.loggerMock);
 
     //  check that a new subsession was created
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],
