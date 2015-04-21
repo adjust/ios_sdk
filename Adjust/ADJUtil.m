@@ -15,6 +15,8 @@
 
 #include <sys/xattr.h>
 
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
 static NSString * const kClientSdk = @"ios4.2.1";
 
@@ -47,7 +49,7 @@ static NSDateFormatter *dateFormat;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
 
-    if (&NSURLIsExcludedFromBackupKey == nil) { // iOS 5.0.1 and lower
+    if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"5.0.1")) {
         u_int8_t attrValue = 1;
         int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
         if (result != 0) {
