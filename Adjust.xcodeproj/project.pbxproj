@@ -11,9 +11,10 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 96BCFBE81AC99FBD005A65C5 /* Build configuration list for PBXAggregateTarget "framework" */;
 			buildPhases = (
-				96BCFBEB1AC99FC3005A65C5 /* Build framework */,
+				9DE7C9021AE68FA5001556E5 /* MultiPlatform Build */,
 			);
 			dependencies = (
+				9DE7C9001AE68EF1001556E5 /* PBXTargetDependency */,
 			);
 			name = framework;
 			productName = framework;
@@ -32,9 +33,7 @@
 		965307F61A000DA400107FF9 /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 965307F51A000DA400107FF9 /* ADJDeviceInfo.m */; };
 		9657BF6F1A3B029000CD6853 /* ADJAttributionHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */; };
 		9679921118BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
-		9679921F18BBAE2800394606 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921E18BBAE2800394606 /* XCTest.framework */; };
 		9679922018BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
-		9679922218BBAE2800394606 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679922118BBAE2800394606 /* UIKit.framework */; };
 		9679922518BBAE2800394606 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952CE1A012F5300928462 /* ADJAttributionHandler.m */; };
 		969952D21A01309200928462 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952D11A01309200928462 /* ADJAttribution.m */; };
@@ -86,9 +85,9 @@
 		96E5E3B618BBB49E008E7B30 /* ADJTestsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E3A918BBB49E008E7B30 /* ADJTestsUtil.m */; };
 		96E5E3B718BBB49E008E7B30 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */; };
 		96E5E3B818BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
-		96E5E3B918BBB75F008E7B30 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921E18BBAE2800394606 /* XCTest.framework */; };
 		96ED00391A38A4CD00209110 /* ADJAttributionHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */; };
 		96ED003E1A38A98C00209110 /* ADJDelegateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED003D1A38A98C00209110 /* ADJDelegateTest.m */; };
+		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +106,13 @@
 			remoteInfo = exampleTests;
 		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9679920518BBAE2800394606 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9679920C18BBAE2800394606;
+			remoteInfo = Adjust;
+		};
+		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
 			proxyType = 1;
@@ -144,8 +150,6 @@
 		9679920D18BBAE2800394606 /* libAdjust.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjust.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679921018BBAE2800394606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9679921D18BBAE2800394606 /* AdjustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9679921E18BBAE2800394606 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		9679922118BBAE2800394606 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		969952CD1A012F5300928462 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
 		969952CE1A012F5300928462 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
 		969952D01A01309200928462 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 		96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerMock.m; sourceTree = "<group>"; };
 		96ED003C1A38A98C00209110 /* ADJDelegateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDelegateTest.h; sourceTree = "<group>"; };
 		96ED003D1A38A98C00209110 /* ADJDelegateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDelegateTest.m; sourceTree = "<group>"; };
+		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,10 +214,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */,
 				96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */,
 				96325E89190E892000A97911 /* iAd.framework in Frameworks */,
 				9679921118BBAE2800394606 /* Foundation.framework in Frameworks */,
-				96E5E3B918BBB75F008E7B30 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,8 +230,6 @@
 				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
 				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
 				9679922518BBAE2800394606 /* libAdjust.a in Frameworks */,
-				9679921F18BBAE2800394606 /* XCTest.framework in Frameworks */,
-				9679922218BBAE2800394606 /* UIKit.framework in Frameworks */,
 				9679922018BBAE2800394606 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,13 +269,12 @@
 		9679920F18BBAE2800394606 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9DE7C8FC1AE688DA001556E5 /* UIKit.framework */,
 				9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */,
 				9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */,
 				96325E86190E5CE400A97911 /* iAd.framework */,
 				96325E84190E5CD900A97911 /* AdSupport.framework */,
 				9679921018BBAE2800394606 /* Foundation.framework */,
-				9679921E18BBAE2800394606 /* XCTest.framework */,
-				9679922118BBAE2800394606 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -402,8 +404,8 @@
 				9679920918BBAE2800394606 /* Sources */,
 				9679920A18BBAE2800394606 /* Frameworks */,
 				9679920B18BBAE2800394606 /* Copy Files */,
-				96BCFBC91AC98F81005A65C5 /* Build Framework */,
 				96BCFBCC1AC9920E005A65C5 /* Headers */,
+				9DE7C9011AE68F68001556E5 /* Build Framework */,
 			);
 			buildRules = (
 			);
@@ -446,7 +448,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */;
+			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -500,7 +502,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		96BCFBC91AC98F81005A65C5 /* Build Framework */ = {
+		9DE7C9011AE68F68001556E5 /* Build Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -514,19 +516,19 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"";
 		};
-		96BCFBEB1AC99FC3005A65C5 /* Build framework */ = {
+		9DE7C9021AE68FA5001556E5 /* MultiPlatform Build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Build framework";
+			name = "MultiPlatform Build";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nADJUST_FRAMEWORK_NAME=${PROJECT_NAME}\nADJUST_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nADJUST_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${ADJUST_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nADJUST_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nADJUST_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$ADJUST_SDK_PLATFORM\" == \"iphoneos\" ]; then\nADJUST_OTHER_PLATFORM=iphonesimulator\nelse\nADJUST_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$ADJUST_SDK_PLATFORM$ ]]; then\nADJUST_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${ADJUST_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${ADJUST_OTHER_PLATFORM}${ADJUST_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$ADJUST_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${ADJUST_INPUT_STATIC_LIB}\" \\\n\"${ADJUST_OTHER_BUILT_PRODUCTS_DIR}/${ADJUST_INPUT_STATIC_LIB}\" \\\n\"${ADJUST_FRAMEWORK_LOCATION}/Versions/A/${ADJUST_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${ADJUST_FRAMEWORK_LOCATION}/Versions/A/${ADJUST_FRAMEWORK_NAME}\" \\\n\"${ADJUST_OTHER_BUILT_PRODUCTS_DIR}/${ADJUST_FRAMEWORK_NAME}.framework/Versions/A/${ADJUST_FRAMEWORK_NAME}\"\n\n# Copy the framework to the user's desktop\nditto \"${ADJUST_FRAMEWORK_LOCATION}\" \"${SOURCE_ROOT}/${ADJUST_FRAMEWORK_NAME}.framework\"";
+			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${RW_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_FRAMEWORK_NAME}.framework/Versions/A/${RW_FRAMEWORK_NAME}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -587,6 +589,11 @@
 			isa = PBXTargetDependency;
 			target = 9679920C18BBAE2800394606 /* Adjust */;
 			targetProxy = 9679922318BBAE2800394606 /* PBXContainerItemProxy */;
+		};
+		9DE7C9001AE68EF1001556E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9679920C18BBAE2800394606 /* Adjust */;
+			targetProxy = 9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -683,6 +690,7 @@
 		9679923118BBAE2800394606 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -702,6 +710,7 @@
 		9679923218BBAE2800394606 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -773,7 +782,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */ = {
+		9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9679922E18BBAE2800394606 /* Debug */,
