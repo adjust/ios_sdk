@@ -219,8 +219,6 @@
 }
 
 - (void)parameters:(NSMutableDictionary *)parameters setBool:(BOOL)value forKey:(NSString *)key {
-    if (value < 0) return;
-
     int valueInt = [[NSNumber numberWithBool:value] intValue];
 
     [self parameters:parameters setInt:valueInt forKey:key];
