@@ -17,6 +17,7 @@
 @property (nonatomic, copy, readonly) NSString* transactionId;
 @property (nonatomic, copy, readonly) NSString* currency;
 @property (nonatomic, copy, readonly) NSData* receipt;
+@property (nonatomic, assign, readonly) BOOL emptyReceipt;
 
 /**
  * Create Event object with Event Token.

@@ -154,6 +154,9 @@
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
     if (![self checkReceipt:receipt transactionId:transactionId]) return;
 
+    if (receipt == nil || [receipt length] == 0) {
+        _emptyReceipt = YES;
+    }
     _receipt = receipt;
     _transactionId = transactionId;
 }
