@@ -342,7 +342,7 @@
     [firstEvent setRevenue:0.0001 currency:@"EUR"];
 
     // set transaction id
-    [firstEvent setTransactionId:@"t_id_1"];
+    [firstEvent setReceipt:[[NSData alloc] init] transactionId:@"t_id_1"];
 
     // track the first event
     [activityHandler trackEvent:firstEvent];
@@ -461,7 +461,7 @@
     XCTAssert([(NSString *)firstEventPackageParameters[@"currency"] isEqualToString:@"EUR"], @"%@", firstEventPackage.extendedString);
 
     //   check the that the transaction id was not injected
-    XCTAssertNil(firstEventPackageParameters[@"transaction_id"], @"%@", firstEventPackage.extendedString);
+    XCTAssert([(NSString *)firstEventPackageParameters[@"transaction_id"] isEqualToString:@"t_id_1"], @"%@", firstEventPackage.extendedString);
 
     //   check the injected parameters
     XCTAssert([(NSString *)firstEventPackageParameters[@"callback_params"] isEqualToString:@"{\"keyCall\":\"valueCall2\",\"fooCall\":\"barCall\"}"],
@@ -469,6 +469,8 @@
 
     XCTAssert([(NSString *)firstEventPackageParameters[@"partner_params"] isEqualToString:@"{\"keyPartner\":\"valuePartner2\",\"fooPartner\":\"barPartner\"}"],
               @"%@", firstEventPackage.extendedString);
+
+    XCTAssert([(NSString *)firstEventPackageParameters[@"receipt"] isEqualToString:@"empty"], @"%@", firstEventPackage.extendedString);
 
     //  check the third event
     ADJActivityPackage *thirdEventPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[2];
@@ -898,10 +900,6 @@
 
     // check that the deep link send a click package
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJPackageHandler sendClickPackage"], @"%@", self.loggerMock);
-
-    // check the iAd is missing twice
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"iAd click time is missing"], @"%@", self.loggerMock);
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"iAd click time is missing"], @"%@", self.loggerMock);
 
     // 1 session + 1 deep link
     XCTAssertEqual((NSUInteger)2, [self.packageHandlerMock.packageQueue count], @"%@", self.loggerMock);
