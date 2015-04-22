@@ -165,7 +165,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
      }];
 
     NSString *dob = [ADJSociomantic stringify:_data];
-    [event addPartnerParameter:@"dob" value:dob];
+    [event addPartnerParameter:@"socio_dob" value:dob];
 }
 
 
@@ -196,7 +196,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     NSString *jsonCo = [ADJSociomantic stringify:co];
-    [event addPartnerParameter:@"co" value:jsonCo];
+    [event addPartnerParameter:@"socio_co" value:jsonCo];
 }
 
 
@@ -222,7 +222,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     NSString *jsonPo = [ADJSociomantic stringify:@[product]];
-    [event addPartnerParameter:@"po" value:jsonPo];
+    [event addPartnerParameter:@"socio_po" value:jsonPo];
 }
 
 
@@ -254,7 +254,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
     if ( 0 < po.count )
     {
         NSString *jsonPo = [ADJSociomantic stringify:po];
-        [event addPartnerParameter:@"po" value:jsonPo];
+        [event addPartnerParameter:@"socio_po" value:jsonPo];
     }
 }
 
@@ -323,7 +323,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
         }];
 
         NSString *jsonPo = [ADJSociomantic stringify:po];
-        [event addPartnerParameter:@"po" value:jsonPo];
+        [event addPartnerParameter:@"socio_po" value:jsonPo];
     }
 
     if ( nil != parameters )
@@ -338,7 +338,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
     to[@"transaction"]  = transactionID;
     NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
-    [event addPartnerParameter:@"to" value:jsonTo];
+    [event addPartnerParameter:@"socio_to" value:jsonTo];
 
 }
 
@@ -361,7 +361,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
     to[@"transaction"]  = leadID;
     NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
-    [event addPartnerParameter:@"to" value:jsonTo];
+    [event addPartnerParameter:@"socio_to" value:jsonTo];
 }
 
 + (NSArray*)filterCategories:(NSArray*)categories
