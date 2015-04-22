@@ -107,6 +107,7 @@
     if (copy) {
         copy.logLevel = self.logLevel;
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
+        copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.macMd5TrackingEnabled = self.macMd5TrackingEnabled;
         copy.hasDelegate = self.hasDelegate;

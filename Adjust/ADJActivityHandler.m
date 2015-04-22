@@ -239,6 +239,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger info:@"Event buffering is enabled"];
     }
 
+    if (self.adjustConfig.defaultTracker != nil) {
+        [self.logger info:@"Default tracker: %@", self.adjustConfig.defaultTracker];
+    }
+
     [self readAttribution];
     [self readActivityState];
 

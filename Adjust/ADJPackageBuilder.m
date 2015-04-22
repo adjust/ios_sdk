@@ -32,7 +32,8 @@
 - (ADJActivityPackage *)buildSessionPackage {
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-
+    [self parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
+    
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
     sessionPackage.activityKind = ADJActivityKindSession;
@@ -219,8 +220,6 @@
 }
 
 - (void)parameters:(NSMutableDictionary *)parameters setBool:(BOOL)value forKey:(NSString *)key {
-    if (value < 0) return;
-
     int valueInt = [[NSNumber numberWithBool:value] intValue];
 
     [self parameters:parameters setInt:valueInt forKey:key];

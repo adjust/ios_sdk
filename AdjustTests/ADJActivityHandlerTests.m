@@ -121,7 +121,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.2.1", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.2.2", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
@@ -236,6 +236,9 @@
     //  set the delegate that doesn't implement the optional selector
     ADJTestsUtil * delegateNotImpl = [[ADJTestsUtil alloc] init];
     [config setDelegate:delegateNotImpl];
+    
+    // set default tracker
+    [config setDefaultTracker:@"default1234tracker"];
 
     // set macMd5 disabled
     [config setMacMd5TrackingEnabled:NO];
@@ -270,6 +273,9 @@
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Tracking of macMd5 is disabled"],
               @"%@", self.loggerMock);
 
+    // check default tracker
+    XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Default tracker: default1234tracker"],
+              @"%@", self.loggerMock);
 
     //  check that a new subsession was created
     XCTAssert([self.loggerMock containsMessage:ADJLogLevelInfo beginsWith:@"Processed Subsession 2 of Session 1"],
@@ -295,7 +301,9 @@
 
     //   mac md5 was never added
     XCTAssertNil((NSString *)parameters[@"mac_md5"], @"%@", activityPackage.extendedString);
-
+    
+    // default_tracker
+    XCTAssertEqual((NSString *)parameters[@"default_tracker"], @"default1234tracker");
 }
 
 - (void)testEventsBuffered {

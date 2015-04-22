@@ -32,6 +32,9 @@
     // disable MAC MD5 tracking
     //[adjustConfig setMacMd5TrackingEnabled:NO];
 
+    // set default tracker
+    //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
+
     // set an attribution delegate
     [adjustConfig setDelegate:self];
 
