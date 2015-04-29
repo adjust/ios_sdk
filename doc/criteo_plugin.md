@@ -11,18 +11,6 @@ to `Copy items if needed` and select the radio button to `Create groups`.
 
 Now you can integrate each of the different Criteo events, like in the following examples:
 
-### View Search
-
-```objc
-#import "ADJCriteo.h"
-
-ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewSearchEventToken}"];
-
-[ADJCriteo injectViewSearchIntoEvent:event checkInDate:@"2015-01-01" checkOutDate:@"2015-01-07"];
-
-[Adjust trackEvent:event];
-```
-
 ### View Listing
 
 ```objc
@@ -78,7 +66,8 @@ ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price
 ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
 NSArray *products = @[product1, product2, product3];
 
-[ADJCriteo injectTransactionConfirmedIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectTransactionConfirmedIntoEvent:event products:products 
+  transactionId:@"transactionId1" customerId:@"customerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -153,5 +142,17 @@ The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvent
 ```objc
 #import "ADJCriteo.h"
 
-AdjustCriteo.injectHashedEmailIntoCriteoEvents("8455938a1db5c475a87d76edacb6284e");
+[ADJCriteo injectHashedEmailIntoCriteoEvents:@"8455938a1db5c475a87d76edacb6284e"];
+```
+
+### Search dates
+
+It's possible to attach a check-in and check-out date to every Criteo event with the `injectViewSearchDatesIntoCriteoEvent` method. The dates will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+
+The search dates can be removed by setting the `injectViewSearchDatesIntoCriteoEvents` dates with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+[ADJCriteo injectViewSearchDatesIntoCriteoEvents:@"2015-01-01" checkOutDate:@"2015-01-07"];
 ```
