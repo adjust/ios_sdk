@@ -27,10 +27,6 @@
 
 @interface ADJCriteo : NSObject
 
-+ (void)injectViewSearchIntoEvent:(ADJEvent *)event
-                      checkInDate:(NSString *)din
-                     checkOutDate:(NSString *)dout;
-
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
                         productIds:(NSArray *)productIds
                         customerId:(NSString *)customerId;
@@ -69,4 +65,7 @@
                          customerId:(NSString *)customerId;
 
 + (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail;
+
++ (void)injectViewSearchDatesIntoCriteoEvents:(NSString *)checkInDate
+                                checkOutDate:(NSString *)checkOutDate;
 @end

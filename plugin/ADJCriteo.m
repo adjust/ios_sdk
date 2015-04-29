@@ -40,16 +40,11 @@ static const NSUInteger MAX_VIEW_LISTING_PRODUCTS = 3;
 @implementation ADJCriteo
 
 static NSString * hashEmailInternal;
+static NSString * checkInDateInternal;
+static NSString * checkOutDateInternal;
 
 + (id<ADJLogger>) logger {
     return ADJAdjustFactory.logger;
-}
-
-+ (void)injectHashEmail:(ADJEvent *)event {
-    if (hashEmailInternal == nil) {
-        return;
-    }
-    [event addPartnerParameter:@"criteo_email_hash" value:hashEmailInternal];
 }
 
 + (void)injectViewSearchIntoEvent:(ADJEvent *)event
@@ -59,7 +54,7 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"din" value:din];
     [event addPartnerParameter:@"dout" value:dout];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
@@ -71,7 +66,7 @@ static NSString * hashEmailInternal;
     NSString * jsonProductsIds = [ADJCriteo createCriteoVLFromProducts:productIds];
     [event addPartnerParameter:@"criteo_p" value:jsonProductsIds];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectViewProductIntoEvent:(ADJEvent *)event
@@ -81,7 +76,7 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"criteo_p" value:productId];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectCartIntoEvent:(ADJEvent *)event
@@ -93,7 +88,7 @@ static NSString * hashEmailInternal;
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
@@ -105,7 +100,7 @@ static NSString * hashEmailInternal;
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectUserLevelIntoEvent:(ADJEvent *)event
@@ -117,7 +112,7 @@ static NSString * hashEmailInternal;
     NSString * uiLevelString = [NSString stringWithFormat:@"%lu",(unsigned long)uiLevel];
     [event addPartnerParameter:@"ui_level" value:uiLevelString];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectUserStatusIntoEvent:(ADJEvent *)event
@@ -127,7 +122,7 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_status" value:uiStatus];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
@@ -137,7 +132,7 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_achievmnt" value:uiAchievement];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectCustomEventIntoEvent:(ADJEvent *)event
@@ -147,7 +142,7 @@ static NSString * hashEmailInternal;
     [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_data" value:uiData];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
@@ -161,12 +156,39 @@ static NSString * hashEmailInternal;
     NSString * uiData3String = [NSString stringWithFormat:@"%lu",(unsigned long)uiData3];
     [event addPartnerParameter:@"ui_data3" value:uiData3String];
 
-    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail
 {
     hashEmailInternal = hashEmail;
+}
+
++ (void)injectViewSearchDatesIntoCriteoEvents:(NSString *)checkInDate
+                                checkOutDate:(NSString *)checkOutDate
+{
+    checkInDateInternal = checkInDate;
+    checkOutDateInternal = checkOutDate;
+}
+
++ (void)injectOptionalParams:(ADJEvent *)event {
+    [ADJCriteo injectHashEmail:event];
+    [ADJCriteo injectSearchDates:event];
+}
+
++ (void)injectHashEmail:(ADJEvent *)event {
+    if (hashEmailInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"criteo_email_hash" value:hashEmailInternal];
+}
+
++ (void)injectSearchDates:(ADJEvent *)event {
+    if (checkInDateInternal == nil || checkOutDateInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"din" value:checkInDateInternal];
+    [event addPartnerParameter:@"dout" value:checkOutDateInternal];
 }
 
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
