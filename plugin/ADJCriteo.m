@@ -93,9 +93,11 @@ static NSString * checkOutDateInternal;
 
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
                                    products:(NSArray *)products
+                              transactionId:(NSString *)transactionId
                                  customerId:(NSString *)customerId
 {
     [event addPartnerParameter:@"customer_id" value:customerId];
+    [event addPartnerParameter:@"transaction_id" value:transactionId];
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];

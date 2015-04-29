@@ -41,6 +41,7 @@
 
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
                                    products:(NSArray *)products
+                              transactionId:(NSString *)transactionId
                                  customerId:(NSString *)customerId;
 
 + (void)injectUserLevelIntoEvent:(ADJEvent *)event
