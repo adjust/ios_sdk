@@ -142,7 +142,7 @@ The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvent
 ```objc
 #import "ADJCriteo.h"
 
-AdjustCriteo.injectHashedEmailIntoCriteoEvents("8455938a1db5c475a87d76edacb6284e");
+[ADJCriteo injectHashedEmailIntoCriteoEvents:@"8455938a1db5c475a87d76edacb6284e"];
 ```
 
 ### Search dates
