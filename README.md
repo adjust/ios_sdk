@@ -266,6 +266,8 @@ or add the method `openURL` and add the following call to adjust:
     sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     [Adjust appWillOpenUrl:url];
+    Bool canHandle = [self someLogic:url];
+    return canHandle;
 }
 ```
 
