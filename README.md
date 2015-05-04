@@ -17,7 +17,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.2.3'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.2.4'
 ```
 
 ### 1. Get the SDK
@@ -264,6 +264,8 @@ or add the method `openURL` and add the following call to adjust:
     sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     [Adjust appWillOpenUrl:url];
+    Bool canHandle = [self someLogic:url];
+    return canHandle;
 }
 ```
 

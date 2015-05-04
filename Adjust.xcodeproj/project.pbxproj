@@ -646,7 +646,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DADJUST_NO_IDA";
+				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -681,7 +681,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_CFLAGS = "-DADJUST_NO_IDA";
+				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -742,7 +742,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
-				OTHER_CFLAGS = "-DADJUST_NO_IDA";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -759,7 +759,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
 				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
-				OTHER_CFLAGS = "-DADJUST_NO_IDA";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};

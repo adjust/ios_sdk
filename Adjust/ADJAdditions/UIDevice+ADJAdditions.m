@@ -18,7 +18,7 @@
 #import <AdSupport/ASIdentifierManager.h>
 #endif
 
-#if !ADJUST_NO_IDA
+#if !ADJUST_NO_IAD
 #import <iAd/iAd.h>
 #endif
 
@@ -184,7 +184,7 @@
 }
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
-#if ADJUST_NO_IDA
+#if ADJUST_NO_IAD
     return;
 #else
 
