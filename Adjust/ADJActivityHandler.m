@@ -274,11 +274,11 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     [self updateStatusInternal];
 
-    [self startTimer];
-
     [self processSession];
 
     [self checkAttributionState];
+
+    [self startTimer];
 }
 
 - (void)processSession {
