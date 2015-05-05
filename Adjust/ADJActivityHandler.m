@@ -259,7 +259,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                                        config:self.adjustConfig];
         ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
         self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                            withMaxDelay:nil
                                                                             withAttributionPackage:attributionPackage];
     }
 

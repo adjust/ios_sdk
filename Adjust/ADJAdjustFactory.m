@@ -64,17 +64,14 @@ static double intervalSubsessionInterval = -1;
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                                     withMaxDelay:(NSNumber *)milliseconds
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
-                                                    withMaxDelay:milliseconds
                                           withAttributionPackage:attributionPackage];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
-                                                  withMaxDelay:milliseconds
                                         withAttributionPackage:attributionPackage];
 }
 

@@ -23,7 +23,6 @@
 + (double)sessionInterval;
 + (double)subsessionInterval;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                                     withMaxDelay:(NSNumber *)milliseconds
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;

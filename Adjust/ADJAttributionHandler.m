@@ -22,7 +22,6 @@ static const char * const kInternalQueueName     = "com.adjust.AttributionQueue"
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
 @property (nonatomic, retain) ADJTimer *askInTimer;
-@property (nonatomic, retain) ADJTimer *maxDelayTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 
 @end
@@ -32,16 +31,13 @@ static const double kRequestTimeout = 60; // 60 seconds
 @implementation ADJAttributionHandler
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                           withMaxDelay:(NSNumber *)milliseconds
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
-                                                     withMaxDelay:milliseconds
                                            withAttributionPackage:attributionPackage];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                 withMaxDelay:(NSNumber*) milliseconds
        withAttributionPackage:(ADJActivityPackage *) attributionPackage;
 {
     self = [super init];
@@ -51,12 +47,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
-
-    if (milliseconds != nil) {
-        uint64_t timerNano = [milliseconds intValue] * NSEC_PER_MSEC;
-        self.maxDelayTimer = [ADJTimer timerWithStart:timerNano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self.activityHandler launchAttributionDelegate]; }];
-        [self.maxDelayTimer resume];
-    }
 
     return self;
 }
