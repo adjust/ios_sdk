@@ -272,10 +272,16 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    if (!self.offline) {
-        [self.packageHandler resumeSending];
-    }
+    [self updateStatusInternal];
+
     [self startTimer];
+
+    [self processSession];
+
+    [self checkAttributionState];
+}
+
+- (void)processSession {
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -322,9 +328,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
     }
+}
 
+- (void)checkAttributionState {
     if (self.attribution == nil || self.activityState.askingAttribution) {
         [[self getAttributionHandler] getAttribution];
+    }
+}
+
+- (void)updateStatusInternal {
+    if (!self.offline) {
+        [self.packageHandler resumeSending];
     }
 }
 
