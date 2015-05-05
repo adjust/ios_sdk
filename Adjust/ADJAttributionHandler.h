@@ -13,17 +13,23 @@
 @protocol ADJAttributionHandler
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                 startPaused:(BOOL)startPaused;
 
 - (void)checkAttribution:(NSDictionary *)jsonDict;
 
 - (void)getAttribution;
+
+- (void)pauseSending;
+
+- (void)resumeSending;
 
 @end
 
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                            startPaused:(BOOL)startPaused;
 
 @end

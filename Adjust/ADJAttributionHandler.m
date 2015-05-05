@@ -23,6 +23,7 @@ static const char * const kInternalQueueName     = "com.adjust.AttributionQueue"
 @property (nonatomic, assign) id<ADJLogger> logger;
 @property (nonatomic, retain) ADJTimer *askInTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
+@property (nonatomic, assign) BOOL paused;
 
 @end
 
@@ -31,14 +32,17 @@ static const double kRequestTimeout = 60; // 60 seconds
 @implementation ADJAttributionHandler
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                            startPaused:(BOOL)startPaused;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
-                                           withAttributionPackage:attributionPackage];
+                                           withAttributionPackage:attributionPackage
+                                                      startPaused:startPaused];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                  startPaused:(BOOL)startPaused;
 {
     self = [super init];
     if (self == nil) return nil;
@@ -47,6 +51,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
+    self.paused = startPaused;
 
     return self;
 }
@@ -61,6 +66,14 @@ static const double kRequestTimeout = 60; // 60 seconds
     dispatch_async(self.internalQueue, ^{
         [self getAttributionInternal];
     });
+}
+
+- (void) pauseSending {
+    self.paused = YES;
+}
+
+- (void) resumeSending {
+    self.paused = NO;
 }
 
 #pragma mark - internal

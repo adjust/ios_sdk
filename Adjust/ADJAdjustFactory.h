@@ -23,7 +23,8 @@
 + (double)sessionInterval;
 + (double)subsessionInterval;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                                      startPaused:(BOOL)startPaused;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;

@@ -65,14 +65,17 @@ static double intervalSubsessionInterval = -1;
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                                      startPaused:(BOOL)startPaused
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
-                                          withAttributionPackage:attributionPackage];
+                                          withAttributionPackage:attributionPackage
+                                                     startPaused:startPaused];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
-                                        withAttributionPackage:attributionPackage];
+                                        withAttributionPackage:attributionPackage
+                                                   startPaused:startPaused];
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {

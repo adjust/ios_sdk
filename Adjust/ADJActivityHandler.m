@@ -258,8 +258,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                                                                 activityState:self.activityState
                                                                                        config:self.adjustConfig];
         ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-        self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                            withAttributionPackage:attributionPackage];
+        self.attributionHandler = [ADJAdjustFactory
+                                   attributionHandlerForActivityHandler:self
+                                   withAttributionPackage:attributionPackage
+                                   startPaused:[self toPause]];
     }
 
     return self.attributionHandler;
@@ -527,6 +529,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
+}
+
+- (BOOL)toPause {
+    return self.offline || !self.isEnabled;
 }
 
 # pragma mark - timer
