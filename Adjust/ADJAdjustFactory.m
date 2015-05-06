@@ -19,12 +19,13 @@ static double intervalSubsessionInterval = -1;
 
 @implementation ADJAdjustFactory
 
-+ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler {
++ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startPaused:(BOOL)startPaused {
     if (internalPackageHandler == nil) {
-        return [ADJPackageHandler handlerWithActivityHandler:activityHandler];
+        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startPaused:startPaused];
     }
 
-    return [internalPackageHandler initWithActivityHandler:activityHandler];
+    return [internalPackageHandler initWithActivityHandler:activityHandler startPaused:startPaused];
 }
 
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {

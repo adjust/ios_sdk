@@ -16,7 +16,8 @@
 
 @interface ADJAdjustFactory : NSObject
 
-+ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler;
++ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startPaused:(BOOL)startPaused;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig;
 + (id<ADJLogger>)logger;

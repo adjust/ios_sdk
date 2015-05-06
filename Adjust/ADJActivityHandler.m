@@ -128,14 +128,27 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)setEnabled:(BOOL)enabled {
+    if (enabled == _enabled) {
+        if (enabled) {
+            [self.logger debug:@"Adjust already enabled"];
+        } else {
+            [self.logger debug:@"Adjust already disabled"];
+        }
+    }
     _enabled = enabled;
     if (self.activityState != nil) {
         self.activityState.enabled = enabled;
         [self writeActivityState];
     }
     if (enabled) {
+        if ([self toPause]) {
+            [self.logger info:@"Package and attribution handler remain paused due to the SDK is offline"];
+        } else {
+            [self.logger info:@"Resuming package handler and attribution handler to enabled the SDK"];
+        }
         [self trackSubsessionStart];
     } else {
+        [self.logger info:@"Pausing package handler and attribution handler to disable the SDK"];
         [self trackSubsessionEnd];
     }
 }
@@ -202,21 +215,36 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
-- (void)setOfflineMode:(BOOL)isOffline {
-    self.offline = isOffline;
-    if (isOffline) {
-        [self.logger info:@"Pausing package handler to put in offline mode"];
-        [self endInternal];
-    } else {
-        [self.logger info:@"Resuming package handler to put in online mode"];
-        [self.packageHandler resumeSending];
-        [self startTimer];
+- (void)setOfflineMode:(BOOL)offline {
+    if (self.offline == offline) {
+        if (offline) {
+            [self.logger debug:@"Adjust already in offline mode"];
+        } else {
+            [self.logger debug:@"Adjust already in online mode"];
+        }
     }
+    self.offline = offline;
+    if (offline) {
+        [self.logger info:@"Pausing package and attribution handler to put in offline mode"];
+    } else {
+        if ([self toPause]) {
+            [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
+        } else {
+            [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
+        }
+    }
+    [self updateStatus];
 }
 
-- (void) setAskingAttribution:(BOOL)askingAttribution {
+- (void)setAskingAttribution:(BOOL)askingAttribution {
     self.activityState.askingAttribution = askingAttribution;
     [self writeActivityState];
+}
+
+- (void)updateStatus {
+    dispatch_async(self.internalQueue, ^{
+        [self updateStatusInternal];
+    });
 }
 
 #pragma mark - internal
@@ -244,7 +272,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self readAttribution];
     [self readActivityState];
 
-    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
+    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
+                                                                 startPaused:[self toPause]];
 
     [[UIDevice currentDevice] adjSetIad:self];
 
@@ -334,12 +363,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)checkAttributionState {
     if (self.attribution == nil || self.activityState.askingAttribution) {
         [[self getAttributionHandler] getAttribution];
-    }
-}
-
-- (void)updateStatusInternal {
-    if (!self.offline) {
-        [self.packageHandler resumeSending];
     }
 }
 
@@ -529,6 +552,36 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
+}
+
+# pragma mark - handlers status
+- (void)updateStatusInternal {
+    [self updateAttributionHandlerStatus];
+    [self updatePackageHandlerStatus];
+}
+
+- (void)updateAttributionHandlerStatus {
+    if (self.attributionHandler == nil) {
+        return;
+    }
+
+    if ([self toPause]) {
+        [self.attributionHandler pauseSending];
+    } else {
+        [self.attributionHandler resumeSending];
+    }
+}
+
+- (void)updatePackageHandlerStatus {
+    if (self.packageHandler == nil) {
+        return;
+    }
+
+    if ([self toPause]) {
+        [self.packageHandler pauseSending];
+    } else {
+        [self.packageHandler resumeSending];
+    }
 }
 
 - (BOOL)toPause {

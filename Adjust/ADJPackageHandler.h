@@ -13,7 +13,8 @@
 
 @protocol ADJPackageHandler
 
-- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler;
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                  startPaused:(BOOL)startPaused;
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
@@ -28,6 +29,7 @@
 
 @interface ADJPackageHandler : NSObject <ADJPackageHandler>
 
-+ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler;
++ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                        startPaused:(BOOL)startPaused;
 
 @end

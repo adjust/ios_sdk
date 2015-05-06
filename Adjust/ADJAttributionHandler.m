@@ -110,6 +110,10 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 -(void) getAttributionInternal {
+    if (self.paused) {
+        [self.logger debug:@"Attribution handler is paused"];
+        return;
+    }
     [self.logger verbose:@"%@", self.attributionPackage.extendedString];
     if (self.askInTimer != nil) {
         [self.askInTimer cancel];

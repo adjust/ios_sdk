@@ -33,7 +33,7 @@
 
 - (void) launchAttributionDelegate;
 
-- (void) setOfflineMode:(BOOL)enabled;
+- (void) setOfflineMode:(BOOL)offline;
 
 @end
 
