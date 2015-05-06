@@ -24,6 +24,7 @@ static const char * const kInternalQueueName     = "com.adjust.AttributionQueue"
 @property (nonatomic, retain) ADJTimer *askInTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
+@property (nonatomic, assign) BOOL hasDelegate;
 
 @end
 
@@ -33,16 +34,19 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                            startPaused:(BOOL)startPaused;
+                                            startPaused:(BOOL)startPaused
+                                            hasDelegate:(BOOL)hasDelegate;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                            withAttributionPackage:attributionPackage
-                                                      startPaused:startPaused];
+                                                      startPaused:startPaused
+                                                      hasDelegate:hasDelegate];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                  startPaused:(BOOL)startPaused;
+                  startPaused:(BOOL)startPaused
+                  hasDelegate:(BOOL)hasDelegate;
 {
     self = [super init];
     if (self == nil) return nil;
@@ -52,6 +56,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
     self.paused = startPaused;
+    self.hasDelegate = hasDelegate;
 
     return self;
 }
@@ -110,6 +115,9 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 -(void) getAttributionInternal {
+    if (!self.hasDelegate) {
+        return;
+    }
     if (self.paused) {
         [self.logger debug:@"Attribution handler is paused"];
         return;

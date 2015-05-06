@@ -68,6 +68,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.adjustConfig = adjustConfig;
     self.delegate = adjustConfig.delegate;
 
+    if (self.delegate != nil &&
+        ![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)])
+    {
+        self.delegate = nil;
+        [self.logger warn:@"Delegate can't be launched because it does not implement AdjustDelegate"];
+    }
+
+
     if (![self.adjustConfig isValid]) {
         return nil;
     }
@@ -207,10 +215,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (self.delegate == nil) {
         return;
     }
-    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
-        [self.logger warn:@"Delegate can't be launched because it does not implement AdjustDelegate"];
-        return;
-    }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
@@ -290,7 +294,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.attributionHandler = [ADJAdjustFactory
                                    attributionHandlerForActivityHandler:self
                                    withAttributionPackage:attributionPackage
-                                   startPaused:[self toPause]];
+                                   startPaused:[self toPause]
+                                   hasDelegate:(self.delegate != nil)];
     }
 
     return self.attributionHandler;
