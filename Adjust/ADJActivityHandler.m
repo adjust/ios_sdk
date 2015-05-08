@@ -298,6 +298,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 }
 
 - (void)startInternal {
+    // it shouldn't start if it was disabled after a first session
     if (self.activityState != nil
         && !self.activityState.enabled) {
         return;
@@ -313,14 +314,12 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 }
 
 - (void)processSession {
-
     double now = [NSDate.date timeIntervalSince1970];
 
     // very first session
     if (self.activityState == nil) {
         self.activityState = [[ADJActivityState alloc] init];
         self.activityState.sessionCount = 1; // this is the first session
-        self.activityState.createdAt = now;  // starting now
 
         [self transferSessionPackage];
         [self.activityState resetSessionAttributes:now];
@@ -340,7 +339,6 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     // new session
     if (lastInterval > ADJAdjustFactory.sessionInterval) {
         self.activityState.sessionCount++;
-        self.activityState.createdAt = now;
         self.activityState.lastInterval = lastInterval;
 
         [self transferSessionPackage];
@@ -396,7 +394,6 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     // update activity state
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
-    self.activityState.createdAt = now;
     self.activityState.eventCount++;
 
     // create and populate event package

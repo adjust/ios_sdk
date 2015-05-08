@@ -165,7 +165,6 @@
 
 - (void) injectActivityState:(ADJActivityState *)activityState
                intoParamters:(NSMutableDictionary *)parameters {
-    [self parameters:parameters setDate1970:activityState.createdAt     forKey:@"created_at"];
     [self parameters:parameters setInt:activityState.sessionCount       forKey:@"session_count"];
     [self parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [self parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
