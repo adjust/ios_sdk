@@ -370,9 +370,16 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 }
 
 - (void)checkAttributionState {
-    if (self.attribution == nil || self.activityState.askingAttribution) {
-        [[self getAttributionHandler] getAttribution];
+    // if it' a new session
+    if (self.activityState.subsessionCount <= 1) {
+        return;
     }
+
+    if (self.attribution != nil && !self.activityState.askingAttribution) {
+        return;
+    }
+
+    [[self getAttributionHandler] getAttribution];
 }
 
 - (void)endInternal {
