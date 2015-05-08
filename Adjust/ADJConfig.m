@@ -43,6 +43,8 @@
     // default values
     self.logLevel = ADJLogLevelInfo;
     self.macMd5TrackingEnabled = YES;
+    self.hasDelegate = NO;
+    self.eventBufferingEnabled = NO;
 
     return self;
 }
