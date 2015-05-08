@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FA5B937D1AFCD3E600402C5A"
-               BuildableName = "AdjustFramework.framework"
+               BlueprintIdentifier = "FA9217911AFCD6ED0033001B"
+               BuildableName = "Adjust.framework"
                BlueprintName = "AdjustFramework"
                ReferencedContainer = "container:Adjust.xcodeproj">
             </BuildableReference>
@@ -56,8 +56,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA5B937D1AFCD3E600402C5A"
-            BuildableName = "AdjustFramework.framework"
+            BlueprintIdentifier = "FA9217911AFCD6ED0033001B"
+            BuildableName = "Adjust.framework"
             BlueprintName = "AdjustFramework"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
@@ -75,8 +75,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA5B937D1AFCD3E600402C5A"
-            BuildableName = "AdjustFramework.framework"
+            BlueprintIdentifier = "FA9217911AFCD6ED0033001B"
+            BuildableName = "Adjust.framework"
             BlueprintName = "AdjustFramework"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
@@ -93,8 +93,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA5B937D1AFCD3E600402C5A"
-            BuildableName = "AdjustFramework.framework"
+            BlueprintIdentifier = "FA9217911AFCD6ED0033001B"
+            BuildableName = "Adjust.framework"
             BlueprintName = "AdjustFramework"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
