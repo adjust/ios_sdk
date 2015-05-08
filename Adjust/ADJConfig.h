@@ -28,7 +28,6 @@
 @interface ADJConfig : NSObject<NSCopying>
 
 @property (nonatomic, copy, readonly) NSString *appToken;
-@property (nonatomic, assign) ADJLogLevel logLevel;
 @property (nonatomic, copy, readonly) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, copy) NSString *defaultTracker;
@@ -46,6 +45,23 @@
  */
 + (ADJConfig*)configWithAppToken:(NSString *)appToken environment:(NSString *)environment;
 - (id)initWithAppToken:(NSString *)appToken environment:(NSString *)environment;
+
+/**
+ * Change the verbosity of Adjust's logs.
+ *
+ * You can increase or reduce the amount of logs from Adjust by passing
+ * one of the following parameters. Use Log.ASSERT to disable all logging.
+ *
+ * @param logLevel The desired minimum log level (default: info)
+ *     Must be one of the following:
+ *      - ADJLogLevelVerbose (enable all logging)
+ *      - ADJLogLevelDebug   (enable more logging)
+ *      - ADJLogLevelInfo    (the default)
+ *      - ADJLogLevelWarn    (disable info logging)
+ *      - ADJLogLevelError   (disable warnings as well)
+ *      - ADJLogLevelAssert  (disable errors as well)
+ */
+@property (nonatomic, assign) ADJLogLevel logLevel;
 
 /**
  * Enable event buffering if your app triggers a lot of events.
