@@ -193,7 +193,9 @@
         }
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        if (self.transactionId != nil) {
+        if (self.emptyReceipt) {
+            [copy setReceipt:self.receipt transactionId:self.transactionId];
+        } else if (self.transactionId != nil) {
             if (self.receipt != nil) {
                 [copy setReceipt:self.receipt transactionId:self.transactionId];
             } else {
