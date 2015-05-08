@@ -118,7 +118,7 @@
 		FA9217C71AFCD7630033001B /* ADJActivityPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E36618BBB48A008E7B30 /* ADJActivityPackage.h */; };
 		FA9217C81AFCD7630033001B /* ADJActivityState.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E36818BBB48A008E7B30 /* ADJActivityState.h */; };
 		FA9217C91AFCD7630033001B /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37118BBB48A008E7B30 /* ADJAdjustFactory.h */; };
-		FA9217CA1AFCD7630033001B /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; };
+		FA9217CA1AFCD7630033001B /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA9217CB1AFCD7630033001B /* ADJPackageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37518BBB48A008E7B30 /* ADJPackageBuilder.h */; };
 		FA9217CC1AFCD7630033001B /* ADJPackageHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37718BBB48A008E7B30 /* ADJPackageHandler.h */; };
 		FA9217CD1AFCD7630033001B /* ADJRequestHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37918BBB48A008E7B30 /* ADJRequestHandler.h */; };
@@ -481,6 +481,7 @@
 				FA9217D31AFCD7630033001B /* ADJAttribution.h in Headers */,
 				FA9217D41AFCD7630033001B /* ADJConfig.h in Headers */,
 				FA9217D01AFCD7630033001B /* ADJEvent.h in Headers */,
+				FA9217CA1AFCD7630033001B /* ADJLogger.h in Headers */,
 				FA9217C11AFCD7630033001B /* NSString+ADJAdditions.h in Headers */,
 				FA9217C21AFCD7630033001B /* UIDevice+ADJAdditions.h in Headers */,
 				FA9217C31AFCD7630033001B /* NSData+ADJAdditions.h in Headers */,
@@ -489,7 +490,6 @@
 				FA9217C71AFCD7630033001B /* ADJActivityPackage.h in Headers */,
 				FA9217C81AFCD7630033001B /* ADJActivityState.h in Headers */,
 				FA9217C91AFCD7630033001B /* ADJAdjustFactory.h in Headers */,
-				FA9217CA1AFCD7630033001B /* ADJLogger.h in Headers */,
 				FA9217CB1AFCD7630033001B /* ADJPackageBuilder.h in Headers */,
 				FA9217CC1AFCD7630033001B /* ADJPackageHandler.h in Headers */,
 				FA9217CD1AFCD7630033001B /* ADJRequestHandler.h in Headers */,
@@ -1045,6 +1045,7 @@
 				FA9217A61AFCD6ED0033001B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
