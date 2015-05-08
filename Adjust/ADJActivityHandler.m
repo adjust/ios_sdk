@@ -64,20 +64,12 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         return nil;
     }
 
-    self.adjustConfig = adjustConfig;
-    self.delegate = adjustConfig.delegate;
-
-    if (self.delegate != nil &&
-        ![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)])
-    {
-        self.delegate = nil;
-        [self.logger warn:@"Delegate can't be launched because it does not implement AdjustDelegate"];
-    }
-
-
-    if (![self.adjustConfig isValid]) {
+    if (![adjustConfig isValid]) {
         return nil;
     }
+
+    self.adjustConfig = adjustConfig;
+    self.delegate = adjustConfig.delegate;
 
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];

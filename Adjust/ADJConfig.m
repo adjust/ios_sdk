@@ -91,7 +91,7 @@
         [ADJAdjustFactory.logger error:@"Missing App Token"];
         return NO;
     }
-    if (appToken == nil || appToken.length != 12) {
+    if (appToken.length != 12) {
         [ADJAdjustFactory.logger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
