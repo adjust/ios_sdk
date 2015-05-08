@@ -23,8 +23,7 @@ static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
-static const uint64_t kTimerInterval = 60 * NSEC_PER_SEC; // 1 minute
-static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
+static const NSTimeInterval kTimerInterval = 60; // 1 minute
 
 
 #pragma mark -
@@ -278,6 +277,11 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
                                                                  startPaused:[self toPause]];
+
+    self.timer = [ADJTimer timerWithBlock:^{ [self timerFired]; }
+                                    queue:self.internalQueue
+                                startTime:0
+                             intervalTime:kTimerInterval];
 
     [[UIDevice currentDevice] adjSetIad:self];
 
@@ -595,12 +599,6 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 # pragma mark - timer
 - (void)startTimer {
-    if (self.timer == nil) {
-        self.timer = [ADJTimer timerWithInterval:kTimerInterval
-                                          leeway:kTimerLeeway
-                                           queue:self.internalQueue
-                                           block:^{ [self timerFired]; }];
-    }
     [self.timer resume];
 }
 

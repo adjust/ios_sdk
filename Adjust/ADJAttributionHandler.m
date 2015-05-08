@@ -13,7 +13,6 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJTimer.h"
 
-static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 
 @interface ADJAttributionHandler()
@@ -57,6 +56,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.attributionPackage = attributionPackage;
     self.paused = startPaused;
     self.hasDelegate = hasDelegate;
+    self.askInTimer = [ADJTimer timerWithBlock:^{ [self getAttributionInternal]; }
+                                         queue:self.internalQueue];
 
     return self;
 }
@@ -67,10 +68,27 @@ static const double kRequestTimeout = 60; // 60 seconds
     });
 }
 
+- (void) getAttributionWithDelay:(int)milliSecondsDelay {
+    NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
+    NSTimeInterval nextAskIn = [self.askInTimer fireIn];
+    if (nextAskIn > secondsDelay) {
+        return;
+    }
+
+    if (milliSecondsDelay > 0) {
+        [self.logger debug:@"Waiting to query attribution in %d milliseconds", milliSecondsDelay];
+    }
+
+    // cancel if any previous timers were running
+    [self.askInTimer cancel];
+    // set the new time the timer will fire in
+    [self.askInTimer setStartTime:secondsDelay];
+    // start the timer
+    [self.askInTimer resume];
+}
+
 - (void) getAttribution {
-    dispatch_async(self.internalQueue, ^{
-        [self getAttributionInternal];
-    });
+    [self getAttributionWithDelay:0];
 }
 
 - (void) pauseSending {
@@ -103,15 +121,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     };
 
     [self.activityHandler setAskingAttribution:YES];
-    if (self.askInTimer != nil) {
-        [self.askInTimer cancel];
-    }
 
-    [self.logger debug:@"Waiting to query attribution in %d milliseconds", [timerMilliseconds intValue]];
-
-    uint64_t timer_nano = [timerMilliseconds intValue] * NSEC_PER_MSEC;
-    self.askInTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];
-    [self.askInTimer resume];
+    [self getAttributionWithDelay:[timerMilliseconds intValue]];
 }
 
 -(void) getAttributionInternal {

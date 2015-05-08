@@ -9,28 +9,26 @@
 
 @interface ADJTimer : NSObject
 
-+ (ADJTimer *)timerWithInterval:(uint64_t)interval
-                         leeway:(uint64_t)leeway
-                          queue:(dispatch_queue_t)queue
-                          block:(dispatch_block_t)block;
+@property (nonatomic, assign) NSTimeInterval startTime;
 
-+ (ADJTimer *)timerWithStart:(uint64_t)start
-                      leeway:(uint64_t)leeway
++ (ADJTimer *)timerWithBlock:(dispatch_block_t)block
                        queue:(dispatch_queue_t)queue
-                       block:(dispatch_block_t)block;
+                   startTime:(NSTimeInterval)startTime
+                intervalTime:(NSTimeInterval)intervalTime;
 
-- (id)initWithInterval:(uint64_t)interval
-                leeway:(uint64_t)leeway
-                 queue:(dispatch_queue_t)queue
-                 block:(dispatch_block_t)block;
++ (ADJTimer *)timerWithBlock:(dispatch_block_t)block
+                       queue:(dispatch_queue_t)queue;
 
-- (id)initWithStart:(uint64_t)start
-             leeway:(uint64_t)leeway
-              queue:(dispatch_queue_t)queue
-              block:(dispatch_block_t)block;
+- (id)initBlock:(dispatch_block_t)block
+          queue:(dispatch_queue_t)queue
+      startTime:(NSTimeInterval)startTime
+   intervalTime:(NSTimeInterval)intervalTime;
+
+- (id)initBlock:(dispatch_block_t)block
+          queue:(dispatch_queue_t)queue;
 
 - (void)resume;
 - (void)suspend;
 - (void)cancel;
-
+- (NSTimeInterval)fireIn;
 @end
