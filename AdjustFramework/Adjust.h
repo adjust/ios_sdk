@@ -14,7 +14,7 @@ FOUNDATION_EXPORT double AdjustVersionNumber;
 //! Project version string for AdjustFramework.
 FOUNDATION_EXPORT const unsigned char AdjustVersionString[];
 
-#import <Adjust/Adjust.h>
+#import <Adjust/AdjustMain.h>
 #import <Adjust/ADJAttribution.h>
 #import <Adjust/ADJConfig.h>
 #import <Adjust/ADJEvent.h>

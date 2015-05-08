@@ -1,5 +1,5 @@
 //
-//  Adjust.h
+//  AdjustMain.h
 //  Adjust
 //
 //  Created by Christian Wellenbrock on 2012-07-23.

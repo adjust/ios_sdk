@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ADJLoggerMock.h"
 #import "ADJActivityPackage.h"
-#import "Adjust.h"
+#import "AdjustMain.h"
 
 @interface ADJTestsUtil : NSObject <AdjustDelegate>
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+#import "AdjustMain.h"
 #import "ADJAttribution.h"
 
 @protocol ADJActivityHandler <NSObject>

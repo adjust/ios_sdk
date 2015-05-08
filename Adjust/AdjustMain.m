@@ -6,7 +6,7 @@
 //  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+#import "AdjustMain.h"
 #import "ADJActivityHandler.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"

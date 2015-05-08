@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Adjust.h"
+#import "AdjustMain.h"
 
 @interface ADJDelegateTest : NSObject <AdjustDelegate>
 

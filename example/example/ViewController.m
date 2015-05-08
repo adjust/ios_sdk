@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "Adjust.h"
+#import "AdjustMain.h"
 
 @interface ViewController ()
 
