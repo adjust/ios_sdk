@@ -72,6 +72,10 @@
 - (BOOL) checkEnvironment:(NSString *)environment
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
+    if (environment == nil) {
+        [logger error:@"Missing environment"];
+        return NO;
+    }
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
         [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
         return YES;
