@@ -353,7 +353,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
         [self writeActivityState];
-        [self.logger info:@"Processed Subsession %d of Session %d",
+        [self.logger info:@"Processed subsession %d of session %d",
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
     }
