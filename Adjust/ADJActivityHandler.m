@@ -595,6 +595,11 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 
 # pragma mark - timer
 - (void)startTimer {
+    // don't start the timer if it's disabled/offline
+    if ([self toPause]) {
+        return;
+    }
+
     [self.timer resume];
 }
 
@@ -603,8 +608,9 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 }
 
 - (void)timerFired {
-    if (self.activityState != nil
-        && !self.activityState.enabled) {
+    if ([self toPause]) {
+        // stop the timer cycle if it's disabled/offline
+        [self stopTimer];
         return;
     }
     [self.packageHandler sendFirstPackage];
