@@ -140,7 +140,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         [self writeActivityState];
     }
     if (enabled) {
-        if ([self toPause]) {
+        if ([self paused]) {
             [self.logger info:@"Package and attribution handler remain paused due to the SDK is offline"];
         } else {
             [self.logger info:@"Resuming package handler and attribution handler to enabled the SDK"];
@@ -222,7 +222,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     if (offline) {
         [self.logger info:@"Pausing package and attribution handler to put in offline mode"];
     } else {
-        if ([self toPause]) {
+        if ([self paused]) {
             [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
         } else {
             [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
@@ -268,7 +268,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                                 startPaused:[self toPause]];
+                                                                 startPaused:[self paused]];
 
     self.timer = [ADJTimer timerWithBlock:^{ [self timerFired]; }
                                     queue:self.internalQueue
@@ -290,7 +290,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         self.attributionHandler = [ADJAdjustFactory
                                    attributionHandlerForActivityHandler:self
                                    withAttributionPackage:attributionPackage
-                                   startPaused:[self toPause]
+                                   startPaused:[self paused]
                                    hasDelegate:(self.delegate != nil)];
     }
 
@@ -570,7 +570,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         return;
     }
 
-    if ([self toPause]) {
+    if ([self paused]) {
         [self.attributionHandler pauseSending];
     } else {
         [self.attributionHandler resumeSending];
@@ -582,21 +582,21 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
         return;
     }
 
-    if ([self toPause]) {
+    if ([self paused]) {
         [self.packageHandler pauseSending];
     } else {
         [self.packageHandler resumeSending];
     }
 }
 
-- (BOOL)toPause {
+- (BOOL)paused {
     return self.offline || !self.isEnabled;
 }
 
 # pragma mark - timer
 - (void)startTimer {
     // don't start the timer if it's disabled/offline
-    if ([self toPause]) {
+    if ([self paused]) {
         return;
     }
 
@@ -608,7 +608,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 }
 
 - (void)timerFired {
-    if ([self toPause]) {
+    if ([self paused]) {
         // stop the timer cycle if it's disabled/offline
         [self stopTimer];
         return;
