@@ -121,7 +121,7 @@
     ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
 
     //  check the Sdk version is being tested
-    XCTAssertEqual(@"ios4.2.3", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
+    XCTAssertEqual(@"ios4.2.4", activityPackage.clientSdk, @"%@", activityPackage.extendedString);
 
     // check the server url
     XCTAssertEqual(@"https://app.adjust.com", ADJUtil.baseUrl);
@@ -583,15 +583,16 @@
 
     // create the config with null app token
     ADJConfig * nilAppTokenConfig = [ADJConfig configWithAppToken:nil environment:ADJEnvironmentSandbox];
-    XCTAssertNil(nilAppTokenConfig, @"%@", self.loggerMock);
+    XCTAssertFalse(nilAppTokenConfig.isValid, @"%@", self.loggerMock);
+
 
     // create the config with size diferent than 12
     ADJConfig * sizeAppTokenConfig = [ADJConfig configWithAppToken:@"1234567890123" environment:ADJEnvironmentSandbox];
-    XCTAssertNil(sizeAppTokenConfig, @"%@", self.loggerMock);
+    XCTAssertFalse(sizeAppTokenConfig.isValid, @"%@", self.loggerMock);
 
     // create the config with environment not standart
     ADJConfig * environmentConfig = [ADJConfig configWithAppToken:@"123456789012" environment:@"other"];
-    XCTAssertNil(environmentConfig, @"%@", self.loggerMock);
+    XCTAssertFalse(environmentConfig.isValid, @"%@", self.loggerMock);
 
     // activity handler created with a nil config
     id<ADJActivityHandler> nilConfigActivityHandler = [ADJActivityHandler handlerWithConfig:nil];
@@ -607,11 +608,11 @@
 
     // event with nil token
     ADJEvent * nilTokenEvent = [ADJEvent eventWithEventToken:nil];
-    XCTAssertNil(nilTokenEvent, @"%@", self.loggerMock);
+    XCTAssertFalse(nilTokenEvent.isValid, @"%@", self.loggerMock);
 
     // event with malformed token
     ADJEvent * malformedTokenEvent = [ADJEvent eventWithEventToken:@"event1x"];
-    XCTAssertNil(malformedTokenEvent, @"%@", self.loggerMock);
+    XCTAssertFalse(malformedTokenEvent.isValid, @"%@", self.loggerMock);
 
     // create the first Event object
     ADJEvent * firstEvent = [ADJEvent eventWithEventToken:@"event1"];

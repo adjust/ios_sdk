@@ -20,10 +20,10 @@
 - (id) initWithAppToken:(NSString *)appToken
             environment:(NSString *)environment
 {
-    if (![self checkAppToken:appToken]) return nil;
-    if (![self checkEnvironment:environment logAssert:YES]) return nil;
+    if (![self checkAppToken:appToken]) return self;
+    if (![self checkEnvironment:environment logAssert:YES]) return self;
 
-    return [self initWithoutCheckAppToken:appToken environment:environment];
+    return [self initSelfWithAppToken:appToken environment:environment];
 }
 
 - (id) initWithoutCheckAppToken:(NSString *)appToken
@@ -32,6 +32,11 @@
     self = [super init];
     if (self == nil) return nil;
 
+    return [self initSelfWithAppToken:appToken environment:environment];
+}
+
+- (id) initSelfWithAppToken:(NSString *)appToken
+                environment:(NSString *)environment {
     _appToken = appToken;
     _environment = environment;
 

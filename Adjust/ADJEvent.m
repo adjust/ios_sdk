@@ -28,7 +28,7 @@
 
     self.logger     = ADJAdjustFactory.logger;
 
-    if (![self checkEventToken:eventToken]) return nil;
+    if (![self checkEventToken:eventToken]) return self;
 
     _eventToken = eventToken;
 
