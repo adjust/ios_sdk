@@ -270,7 +270,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
                                                                  startPaused:[self paused]];
 
-    self.timer = [ADJTimer timerWithBlock:^{ [self timerFired]; }
+    self.timer = [ADJTimer timerWithBlock:^{ [self timerFiredInternal]; }
                                     queue:self.internalQueue
                                 startTime:0
                              intervalTime:kTimerInterval];
@@ -607,7 +607,7 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
     [self.timer suspend];
 }
 
-- (void)timerFired {
+- (void)timerFiredInternal {
     if ([self paused]) {
         // stop the timer cycle if it's disabled/offline
         [self stopTimer];
