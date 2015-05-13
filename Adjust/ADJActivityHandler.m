@@ -379,18 +379,14 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 - (void)eventInternal:(ADJEvent *)event
 {
-    // check consistency
-    if (![event isValid]) return;
+    if (![self isEnabled]) return;
+    if (![self checkEvent:event]) return;
     if (![self checkTransactionId:event.transactionId]) return;
 
-    if (!self.activityState.enabled) {
-        return;
-    }
-
-    // update activity state
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState:now];
+
     self.activityState.eventCount++;
+    [self updateActivityState:now];
 
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
@@ -400,7 +396,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     [self.packageHandler addPackage:eventPackage];
 
     if (self.adjustConfig.eventBufferingEnabled) {
-        [self.logger info:@"Buffered event%@", eventPackage.suffix];
+        [self.logger info:@"Buffered event %@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
     }
@@ -643,7 +639,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 #pragma mark - checks
 
-- (BOOL) checkTransactionId:(NSString *)transactionId {
+- (BOOL)checkTransactionId:(NSString *)transactionId {
     if (transactionId == nil || transactionId.length == 0) {
         return YES; // no transaction ID given
     }
@@ -657,6 +653,20 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     [self.activityState addTransactionId:transactionId];
     [self.logger verbose:@"Added transaction ID %@", self.activityState.transactionIds];
     // activity state will get written by caller
+    return YES;
+}
+
+- (BOOL)checkEvent:(ADJEvent *)event {
+    if (event == nil) {
+        [self.logger error:@"Event missing"];
+        return NO;
+    }
+
+    if (![event isValid]) {
+        [self.logger error:@"Event not initialized correctly"];
+        return NO;
+    }
+
     return YES;
 }
 
