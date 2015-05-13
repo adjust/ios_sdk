@@ -8,6 +8,7 @@
 
 #import "ADJEvent.h"
 #import "ADJAdjustFactory.h"
+#import "ADJUtil.h"
 
 #pragma mark -
 @interface ADJEvent()
@@ -101,7 +102,7 @@
 }
 
 - (BOOL) checkEventToken:(NSString *)eventToken {
-    if (eventToken == nil) {
+    if ([ADJUtil isNull:eventToken]) {
         [self.logger error:@"Missing Event Token"];
         return NO;
     }
@@ -117,14 +118,14 @@
 - (BOOL) checkRevenue:(NSNumber*) revenue
              currency:(NSString*) currency
 {
-    if (revenue != nil) {
+    if (![ADJUtil isNull:revenue]) {
         double amount =  [revenue doubleValue];
         if (amount < 0.0) {
             [self.logger error:@"Invalid amount %.4f", amount];
             return NO;
         }
 
-        if (currency == nil) {
+        if ([ADJUtil isNull:currency]) {
             [self.logger error:@"Currency must be set with revenue"];
             return NO;
         }
@@ -134,7 +135,7 @@
             return NO;
         }
     } else {
-        if (currency != nil) {
+        if (![ADJUtil isNull:currency]) {
             [self.logger error:@"Revenue must be set with currency"];
             return NO;
         }
@@ -150,7 +151,7 @@
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
     if (![self checkReceipt:receipt transactionId:transactionId]) return;
 
-    if (receipt == nil || [receipt length] == 0) {
+    if ([ADJUtil isNull:receipt] || [receipt length] == 0) {
         _emptyReceipt = YES;
     }
     _receipt = receipt;
@@ -158,7 +159,7 @@
 }
 
 - (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if (receipt != nil && transactionId == nil) {
+    if (![ADJUtil isNull:receipt] && [ADJUtil isNull:transactionId]) {
         [self.logger error:@"Missing transactionId"];
         return NO;
     }
@@ -169,7 +170,7 @@
             attributeType:(NSString *)attributeType
             parameterName:(NSString *)parameterName
 {
-    if (attribute == nil) {
+    if ([ADJUtil isNull:attribute]) {
         [self.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
         return NO;
     }
