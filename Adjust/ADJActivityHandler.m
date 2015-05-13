@@ -278,7 +278,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (id<ADJAttributionHandler>) getAttributionHandler {
-    //TODO self.activity state can be null in the first session
     if (self.attributionHandler == nil) {
         ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
                                                                                 activityState:self.activityState
@@ -362,6 +361,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         return;
     }
 
+    // if there is already an attribution saved and there was no attribution being asked
     if (self.attribution != nil && !self.activityState.askingAttribution) {
         return;
     }
@@ -497,7 +497,8 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         return;
     }
 
-    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:
+                       [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     self.deviceInfo.pushToken = token;
