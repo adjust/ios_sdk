@@ -8,6 +8,7 @@
 
 #import "ADJAttribution.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJUtil.h"
 
 @implementation ADJAttribution
 
@@ -19,7 +20,7 @@
     self = [super init];
     if (self == nil) return nil;
 
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
+    if ([ADJUtil isNull:jsonDict]) {
         return nil;
     }
 

@@ -177,4 +177,7 @@ static NSDateFormatter *dateFormat;
     return queryString;
 }
 
++ (BOOL)isNull:(id)value {
+    return value == nil || value == (id)[NSNull null];
+}
 @end

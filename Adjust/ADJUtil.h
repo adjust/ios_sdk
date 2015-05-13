@@ -28,4 +28,5 @@
          objectName:(NSString *)objectName;
 
 + (NSString *) queryString:(NSDictionary *)parameters;
++ (BOOL)isNull:(id)value;
 @end

@@ -100,12 +100,14 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
+    if ([ADJUtil isNull:jsonDict]) return;
+
     [self launchDeepLink:jsonDict];
     [[self getAttributionHandler] checkAttribution:jsonDict];
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
+    if ([ADJUtil isNull:jsonDict]) return;
 
     NSString *deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
@@ -405,6 +407,10 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
+    if ([ADJUtil isNull:url]) {
+        return;
+    }
+
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
         return;

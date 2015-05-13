@@ -92,7 +92,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
 
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
+    if ([ADJUtil isNull:jsonDict]) {
         [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString];
         if (sendToPackageHandler) {
             [self.packageHandler closeFirstPackage];
@@ -148,7 +148,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 - (void)checkErrorResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
+    if ([ADJUtil isNull:jsonDict]) return;
 
     NSString* errorResponse = [jsonDict objectForKey:@"error"];
     if (errorResponse != nil) {
