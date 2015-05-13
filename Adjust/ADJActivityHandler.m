@@ -380,7 +380,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 - (void)eventInternal:(ADJEvent *)event
 {
     // check consistency
-    if (![self checkActivityState:self.activityState]) return;
     if (![event isValid]) return;
     if (![self checkTransactionId:event.transactionId]) return;
 
@@ -508,9 +507,8 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityState:(double)now {
-    if (![self checkActivityState:self.activityState]) return NO;
-
     double lastInterval = now - self.activityState.lastActivity;
+
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
@@ -644,13 +642,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 #pragma mark - checks
-- (BOOL)checkActivityState:(ADJActivityState *)activityState {
-    if (activityState == nil) {
-        [self.logger error:@"Missing activity state"];
-        return NO;
-    }
-    return YES;
-}
 
 - (BOOL) checkTransactionId:(NSString *)transactionId {
     if (transactionId == nil || transactionId.length == 0) {
