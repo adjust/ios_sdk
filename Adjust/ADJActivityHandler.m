@@ -176,10 +176,12 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         return;
     }
 
+    double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:self.deviceInfo
                                        activityState:self.activityState
-                                       config:self.adjustConfig];
+                                       config:self.adjustConfig
+                                       createdAt:now];
 
     [clickBuilder setClickTime:iAdImpressionDate];
     [clickBuilder setPurchaseTime:appPurchaseDate];
@@ -281,9 +283,12 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 - (id<ADJAttributionHandler>) getAttributionHandler {
     if (self.attributionHandler == nil) {
-        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                                activityState:self.activityState
-                                                                                       config:self.adjustConfig];
+        double now = [NSDate.date timeIntervalSince1970];
+        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
+                                                 initWithDeviceInfo:self.deviceInfo
+                                                 activityState:self.activityState
+                                                 config:self.adjustConfig
+                                                 createdAt:now];
         ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
         self.attributionHandler = [ADJAdjustFactory
                                    attributionHandlerForActivityHandler:self
@@ -319,7 +324,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         self.activityState = [[ADJActivityState alloc] init];
         self.activityState.sessionCount = 1; // this is the first session
 
-        [self transferSessionPackage];
+        [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
         self.activityState.enabled = _enabled;
         [self writeActivityState];
@@ -339,7 +344,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         self.activityState.sessionCount++;
         self.activityState.lastInterval = lastInterval;
 
-        [self transferSessionPackage];
+        [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
         return;
@@ -391,9 +396,11 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     [self updateActivityState:now];
 
     // create and populate event package
-    ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                      activityState:self.activityState
-                                                                             config:self.adjustConfig];
+    ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig
+                                       createdAt:now];
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
 
@@ -432,9 +439,12 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
     [[self getAttributionHandler] getAttribution];
 
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                      activityState:self.activityState
-                                                                             config:self.adjustConfig];
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig
+                                       createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     [clickBuilder setClickTime:[NSDate date]];
@@ -548,10 +558,12 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
                                      class:[ADJAttribution class]];
 }
 
-- (void)transferSessionPackage {
-    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                        activityState:self.activityState
-                                                                               config:self.adjustConfig];
+- (void)transferSessionPackage:(double)now {
+    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
+                                         initWithDeviceInfo:self.deviceInfo
+                                         activityState:self.activityState
+                                         config:self.adjustConfig
+                                         createdAt:now];
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];

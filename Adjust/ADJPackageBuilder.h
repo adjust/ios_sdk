@@ -14,9 +14,6 @@
 
 @interface ADJPackageBuilder : NSObject
 
-@property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
-@property (nonatomic, copy) ADJActivityState *activityState;
-@property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) NSDate *clickTime;
 @property (nonatomic, copy) NSDate *purchaseTime;
@@ -24,7 +21,8 @@
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
             activityState:(ADJActivityState *)activityState
-                   config:(ADJConfig *)adjustConfig;
+                   config:(ADJConfig *)adjustConfig
+                createdAt:(double)createdAt;
 
 - (ADJActivityPackage *)buildSessionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;

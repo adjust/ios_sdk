@@ -12,12 +12,22 @@
 #import "ADJAttribution.h"
 #import "NSData+ADJAdditions.h"
 
+@interface ADJPackageBuilder()
+
+@property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
+@property (nonatomic, copy) ADJActivityState *activityState;
+@property (nonatomic, copy) ADJConfig *adjustConfig;
+@property (nonatomic, assign) double createdAt;
+
+@end
+
 #pragma mark -
 @implementation ADJPackageBuilder
 
 - (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
+               createdAt:(double)createdAt
 {
     self = [super init];
     if (self == nil) return nil;
@@ -25,6 +35,7 @@
     self.deviceInfo = deviceInfo;
     self.activityState = activityState;
     self.adjustConfig = adjustConfig;
+    self.createdAt = createdAt;
 
     return self;
 }
@@ -128,6 +139,7 @@
     [self injectDeviceInfo:self.deviceInfo config:self.adjustConfig intoParameters:parameters];
     [self injectActivityState:self.activityState intoParamters:parameters];
     [self parameters:parameters setBool:self.adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
+    [self parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
 
     return parameters;
 }
