@@ -23,9 +23,6 @@ static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
-static const NSTimeInterval kTimerInterval = 60; // 1 minute
-
-
 #pragma mark -
 @interface ADJActivityHandler()
 
@@ -272,8 +269,8 @@ static const NSTimeInterval kTimerInterval = 60; // 1 minute
 
     self.timer = [ADJTimer timerWithBlock:^{ [self timerFiredInternal]; }
                                     queue:self.internalQueue
-                                startTime:0
-                             intervalTime:kTimerInterval];
+                                startTime:ADJAdjustFactory.timerStart
+                             intervalTime:ADJAdjustFactory.timerInterval];
 
     [[UIDevice currentDevice] adjSetIad:self];
 

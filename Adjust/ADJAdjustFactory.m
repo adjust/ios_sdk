@@ -16,6 +16,9 @@ static id<ADJAttributionHandler> internalAttributionHandler = nil;
 
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
+static NSTimeInterval internalTimerInterval = -1;
+static NSTimeInterval intervalTimerStart = -1;
+
 
 @implementation ADJAdjustFactory
 
@@ -59,9 +62,23 @@ static double intervalSubsessionInterval = -1;
 
 + (double)subsessionInterval {
     if (intervalSubsessionInterval == -1) {
-        return 1;                // 1 second
+        return 1;                 // 1 second
     }
     return intervalSubsessionInterval;
+}
+
++ (NSTimeInterval)timerInterval {
+    if (internalTimerInterval == -1) {
+        return 60;                // 1 minute
+    }
+    return internalTimerInterval;
+}
+
++ (NSTimeInterval)timerStart {
+    if (intervalTimerStart == -1) {
+        return 0;                 // 0 seconds
+    }
+    return intervalTimerStart;
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
@@ -104,6 +121,14 @@ static double intervalSubsessionInterval = -1;
 
 + (void)setSubsessionInterval:(double)subsessionInterval {
     intervalSubsessionInterval = subsessionInterval;
+}
+
++ (void)setTimerInterval:(NSTimeInterval)timerInterval {
+    internalTimerInterval = timerInterval;
+}
+
++ (void)setTimerStart:(NSTimeInterval)timerStart {
+    intervalTimerStart = timerStart;
 }
 
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler {
