@@ -101,10 +101,12 @@ static NSDateFormatter *dateFormat;
     @try {
         jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     } @catch (NSException *ex) {
+        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", ex.description];
         return nil;
     }
 
     if (error != nil) {
+        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", error.localizedDescription];
         return nil;
     }
 
@@ -179,5 +181,53 @@ static NSDateFormatter *dateFormat;
 
 + (BOOL)isNull:(id)value {
     return value == nil || value == (id)[NSNull null];
+}
+
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+                  activityKind:(ADJActivityKind) activityKind;
+{
+    NSError *responseError = nil;
+    NSHTTPURLResponse *urlResponse = nil;
+
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:&urlResponse
+                                                             error:&responseError];
+
+    NSString * activityKindString = [ADJActivityKindUtil activityKindToString:activityKind];
+
+    // connection error
+    if (responseError != nil) {
+        [ADJAdjustFactory.logger error:@"Failed to get %@. (%@)", activityKindString, responseError.localizedDescription];
+        return nil;
+    }
+    if ([ADJUtil isNull:responseData]) {
+        [ADJAdjustFactory.logger error:@"Failed to get %@. (empty error)", activityKindString];
+        return nil;
+    }
+
+    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
+    NSInteger statusCode = urlResponse.statusCode;
+
+    [ADJAdjustFactory.logger verbose:@"status code %d for %@ response: %@", statusCode, activityKindString, responseString];
+
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
+
+    if ([ADJUtil isNull:jsonDict]) {
+        return nil;
+    }
+
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+
+    if (messageResponse == nil) {
+        messageResponse = @"No message found";
+    }
+
+    if (statusCode == 200) {
+        [ADJAdjustFactory.logger debug:@"%@", messageResponse];
+    } else {
+        [ADJAdjustFactory.logger error:@"%@", messageResponse];
+    }
+
+    return jsonDict;
 }
 @end

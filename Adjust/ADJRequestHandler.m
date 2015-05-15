@@ -62,54 +62,17 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark - internal
 - (void)sendInternal:(ADJActivityPackage *)package sendToPackageHandler:(BOOL)sendToPackageHandler{
-    if (self.packageHandler == nil) return;
 
-    NSMutableURLRequest *request = [self requestForPackage:package];
-    NSHTTPURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&response
-                                                     error:&error];
+    NSDictionary *jsonDict = [ADJUtil sendRequest:[self requestForPackage:package]
+                                     activityKind:package.activityKind];
 
-    // connection error
-    if (error != nil || responseData == nil) {
-        if (error != nil) {
-            [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
-        } else {
-            [self.logger error:@"%@. (empty error) Will retry later.", package.failureMessage];
-        }
-        [self.packageHandler finishedTrackingActivity:nil];
+    [self.packageHandler finishedTrackingActivity:jsonDict];
+
+    if (jsonDict == nil) {
         if (sendToPackageHandler) {
             [self.packageHandler closeFirstPackage];
         }
         return;
-    }
-
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
-    NSInteger statusCode = response.statusCode;
-
-    [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
-
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
-
-    if ([ADJUtil isNull:jsonDict]) {
-        [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString];
-        if (sendToPackageHandler) {
-            [self.packageHandler closeFirstPackage];
-        }
-        return;
-    }
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-
-    if (messageResponse == nil) {
-        messageResponse = @"No message found";
-    }
-
-    if (statusCode == 200) {
-        [self.logger info:@"%@", messageResponse];
-    } else {
-        [self.logger error:@"%@", messageResponse];
     }
 
     [self.packageHandler finishedTrackingActivity:jsonDict];
@@ -136,24 +99,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *bodyString = [ADJUtil queryString:parameters];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
-}
-
-- (void) checkMessageResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-    if (messageResponse != nil) {
-        [self.logger info:messageResponse];
-    }
-}
-
-- (void)checkErrorResponse:(NSDictionary *)jsonDict {
-    if ([ADJUtil isNull:jsonDict]) return;
-
-    NSString* errorResponse = [jsonDict objectForKey:@"error"];
-    if (errorResponse != nil) {
-        [self.logger error:errorResponse];
-    }
 }
 
 @end

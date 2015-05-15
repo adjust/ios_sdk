@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "ADJActivityKind.h"
 
 @interface ADJUtil : NSObject
 
@@ -29,4 +30,6 @@
 
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+                 activityKind:(ADJActivityKind) activityKind;
 @end

@@ -134,50 +134,8 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
     [self.logger verbose:@"%@", self.attributionPackage.extendedString];
-    if (self.askInTimer != nil) {
-        [self.askInTimer cancel];
-        self.askInTimer = nil;
-    }
 
-    NSMutableURLRequest *request = [self request];
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                             returningResponse:&urlResponse
-                                                         error:&requestError];
-    // connection error
-    if (requestError != nil) {
-        [self.logger error:@"Failed to get attribution. (%@)", requestError.localizedDescription];
-        return;
-    }
-    if (responseData == nil) {
-        [self.logger error:@"Failed to get attribution. (empty error)"];
-        return;
-    }
-
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
-    NSInteger statusCode = ((NSHTTPURLResponse*)urlResponse).statusCode;
-    [self.logger verbose:@"status code %d for attribution response: %@", statusCode, responseString];
-
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
-
-    if ([ADJUtil isNull:jsonDict]) {
-        [self.logger error:@"Failed to parse json attribution response: %@", responseString];
-        return;
-    }
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-
-    if (messageResponse == nil) {
-        messageResponse = @"No message found";
-    }
-
-    if (statusCode == 200) {
-        [self.logger debug:@"%@", messageResponse];
-    } else {
-        [self.logger error:@"%@", messageResponse];
-    }
+    NSDictionary * jsonDict = [ADJUtil sendRequest:[self request] activityKind:self.attributionPackage.activityKind];
 
     [self checkAttributionInternal:jsonDict];
 }
