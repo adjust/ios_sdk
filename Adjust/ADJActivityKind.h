@@ -8,13 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+#ifndef NS_ENUM
+#define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
+#endif
+
+typedef NS_ENUM(NSInteger, ADJActivityKind) {
     ADJActivityKindUnknown       = 0,
     ADJActivityKindSession       = 1,
     ADJActivityKindEvent         = 2,
 //    ADJActivityKindRevenue       = 3,
     ADJActivityKindClick         = 4,
-} ADJActivityKind;
+};
 
-ADJActivityKind ADJActivityKindFromString(NSString *string);
-NSString* ADJActivityKindToString(ADJActivityKind activityKind);
+@interface ADJActivityKindUtil : NSObject
+
++ (ADJActivityKind)activityKindFromString:(NSString *)activityKindString;
++ (NSString*)activityKindToString:(ADJActivityKind)activityKind;
+
+@end

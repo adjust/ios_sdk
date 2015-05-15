@@ -14,7 +14,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@%@",
-            ADJActivityKindToString(self.activityKind),
+            [ADJActivityKindUtil activityKindToString:self.activityKind],
             self.suffix];
 }
 
@@ -39,13 +39,13 @@
 
 - (NSString *)successMessage {
     return [NSString stringWithFormat:@"Tracked %@%@",
-            ADJActivityKindToString(self.activityKind),
+            [ADJActivityKindUtil activityKindToString:self.activityKind],
             self.suffix];
 }
 
 - (NSString *)failureMessage {
     return [NSString stringWithFormat:@"Failed to track %@%@",
-            ADJActivityKindToString(self.activityKind),
+            [ADJActivityKindUtil activityKindToString:self.activityKind],
             self.suffix];
 }
 
@@ -60,13 +60,13 @@
     NSString *kindString = [decoder decodeObjectForKey:@"kind"];
     self.suffix = [decoder decodeObjectForKey:@"suffix"];
 
-    self.activityKind = ADJActivityKindFromString(kindString);
+    self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    NSString *kindString = ADJActivityKindToString(self.activityKind);
+    NSString *kindString = [ADJActivityKindUtil activityKindToString:self.activityKind];
 
     [encoder encodeObject:self.path forKey:@"path"];
     [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];

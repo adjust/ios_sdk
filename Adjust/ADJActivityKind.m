@@ -8,19 +8,21 @@
 
 #import "ADJActivityKind.h"
 
-ADJActivityKind ADJActivityKindFromString(NSString *string) {
-    if ([@"session" isEqualToString:string]) {
+@implementation ADJActivityKindUtil
+
++ (ADJActivityKind)activityKindFromString:(NSString *)activityKindString {
+    if ([@"session" isEqualToString:activityKindString]) {
         return ADJActivityKindSession;
-    } else if ([@"event" isEqualToString:string]) {
+    } else if ([@"event" isEqualToString:activityKindString]) {
         return ADJActivityKindEvent;
-    } else if ([@"click" isEqualToString:string]) {
+    } else if ([@"click" isEqualToString:activityKindString]) {
         return ADJActivityKindClick;
     } else {
         return ADJActivityKindUnknown;
     }
 }
 
-NSString* ADJActivityKindToString(ADJActivityKind activityKind) {
++ (NSString*)activityKindToString:(ADJActivityKind)activityKind {
     switch (activityKind) {
         case ADJActivityKindSession:       return @"session";
         case ADJActivityKindEvent:         return @"event";
@@ -28,3 +30,5 @@ NSString* ADJActivityKindToString(ADJActivityKind activityKind) {
         default:                           return @"unknown";
     }
 }
+
+@end
