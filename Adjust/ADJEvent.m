@@ -144,11 +144,7 @@
 }
 
 - (BOOL) isValid {
-    if (![self checkEventToken:self.eventToken]) return NO;
-    if (![self checkRevenue:self.revenue currency:self.currency]) return NO;
-    if (![self checkReceipt:self.receipt transactionId:self.transactionId]) return NO;
-
-    return YES;
+    return self.eventToken != nil;
 }
 
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {

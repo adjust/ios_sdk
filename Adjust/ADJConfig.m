@@ -21,7 +21,7 @@
             environment:(NSString *)environment
 {
     if (![self checkAppToken:appToken]) return self;
-    if (![self checkEnvironment:environment logAssert:YES]) return self;
+    if (![self checkEnvironment:environment]) return self;
 
     return [self initSelfWithAppToken:appToken environment:environment];
 }
@@ -68,18 +68,13 @@
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
-                logAssert:(BOOL)logAssert
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
-        if (logAssert) {
-            [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
-        }
+        [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
         return YES;
     } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        if (logAssert) {
-            [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to ADJEnvironmentSandbox if you want to test your app!"];
-        }
+        [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to ADJEnvironmentSandbox if you want to test your app!"];
         return YES;
     }
     [logger error:@"Malformed environment '%@'", environment];
@@ -99,9 +94,7 @@
 }
 
 - (BOOL) isValid {
-    if (![self checkAppToken:self.appToken]) return NO;
-    if (![self checkEnvironment:self.environment logAssert:NO]) return NO;
-    return YES;
+    return self.appToken != nil;
 }
 
 -(id)copyWithZone:(NSZone *)zone
