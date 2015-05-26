@@ -165,7 +165,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
      }];
 
     NSString *dob = [ADJSociomantic stringifyAndEncode:_data];
-    [event addPartnerParameter:@"socio_dob" value:dob];
+    [event addPartnerParameter:@"socio_do" value:dob];
 }
 
 
@@ -195,7 +195,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
         co[SCMTimestamp] = date;
     }
 
-    NSString *jsonCo = [ADJSociomantic stringifyAndEncode:co];
+    NSString *jsonCo = [ADJSociomantic stringifyAndEncode:@{@"category":co}];
     [event addPartnerParameter:@"socio_co" value:jsonCo];
 }
 
@@ -221,7 +221,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
         [ADJSociomantic filter:parameters withAliases:aliases modifies:product ];
     }
 
-    NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@[product]];
+    NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products": @[product]}];
     [event addPartnerParameter:@"socio_po" value:jsonPo];
 }
 
@@ -253,7 +253,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
     if ( 0 < po.count )
     {
-        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:po];
+        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products":po}];
         [event addPartnerParameter:@"socio_po" value:jsonPo];
     }
 }
@@ -322,7 +322,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
             }
         }];
 
-        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:po];
+        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products":po}];
         [event addPartnerParameter:@"socio_po" value:jsonPo];
     }
 
@@ -437,13 +437,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
 + (NSString*) encode:(NSString*) unencodedString
 {
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-        NULL,
-        (CFStringRef)unencodedString,
-        NULL,
-        (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-        kCFStringEncodingUTF8
-    ));
+    NSString *encoded = [unencodedString stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+    return encoded;
 }
 
 + (NSString*) stringifyAndEncode:(NSObject*) object
