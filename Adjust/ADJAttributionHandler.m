@@ -109,11 +109,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSNumber *timerMilliseconds = [jsonDict objectForKey:@"ask_in"];
 
     if (timerMilliseconds == nil) {
-        BOOL updated = [self.activityHandler updateAttribution:attribution];
-
-        if (updated) {
-            [self.activityHandler launchAttributionDelegate];
-        }
+        [self.activityHandler updateAttribution:attribution];
 
         [self.activityHandler setAskingAttribution:NO];
 

@@ -199,6 +199,8 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     self.attribution = attribution;
     [self writeAttribution];
 
+    [self launchAttributionDelegate];
+
     return YES;
 }
 
