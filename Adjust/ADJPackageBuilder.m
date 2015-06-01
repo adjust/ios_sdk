@@ -269,11 +269,10 @@
 - (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
     if (value == nil) return;
 
-    NSString *numberString = [value stringValue];
+    NSString *numberString = [NSString stringWithFormat:@"%.5f", [value doubleValue]];
 
     [self parameters:parameters setString:numberString forKey:key];
 }
-
 
 - (NSMutableDictionary *) joinParamters:(NSMutableDictionary *)permanentParameters
                              parameters:(NSMutableDictionary *)parameters {
