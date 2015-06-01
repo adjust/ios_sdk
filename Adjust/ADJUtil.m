@@ -184,7 +184,26 @@ static NSDateFormatter *dateFormat;
 }
 
 + (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-                  activityKind:(ADJActivityKind) activityKind;
+                 prefixErrorMessage:(NSString *)prefixErrorMessage
+{
+    return [ADJUtil sendRequest:request prefixErrorMessage:prefixErrorMessage suffixErrorMessage:nil];
+}
+
++ (NSString *)formatErrorMessage:(NSString *)prefixErrorMessage
+              systemErrorMessage:(NSString *)systemErrorMessage
+              suffixErrorMessage:(NSString *)suffixErrorMessage
+{
+    NSString * errorMessage = [NSString stringWithFormat:@"%@ (%@)", prefixErrorMessage, systemErrorMessage];
+    if (suffixErrorMessage == nil) {
+        return errorMessage;
+    } else {
+        return [errorMessage stringByAppendingFormat:@" %@", suffixErrorMessage];
+    }
+}
+
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+                 prefixErrorMessage:(NSString *)prefixErrorMessage
+           suffixErrorMessage:(NSString *)suffixErrorMessage
 {
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
@@ -193,22 +212,24 @@ static NSDateFormatter *dateFormat;
                                                  returningResponse:&urlResponse
                                                              error:&responseError];
 
-    NSString * activityKindString = [ADJActivityKindUtil activityKindToString:activityKind];
-
     // connection error
     if (responseError != nil) {
-        [ADJAdjustFactory.logger error:@"Failed to get %@. (%@)", activityKindString, responseError.localizedDescription];
+        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
+                                                systemErrorMessage:responseError.localizedDescription
+                                                suffixErrorMessage:suffixErrorMessage]];
         return nil;
     }
     if ([ADJUtil isNull:responseData]) {
-        [ADJAdjustFactory.logger error:@"Failed to get %@. (empty error)", activityKindString];
+        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
+                                                systemErrorMessage:@"empty error"
+                                                suffixErrorMessage:suffixErrorMessage]];
         return nil;
     }
 
     NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = urlResponse.statusCode;
 
-    [ADJAdjustFactory.logger verbose:@"status code %d for %@ response: %@", statusCode, activityKindString, responseString];
+    [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
 

@@ -64,7 +64,8 @@ static const double kRequestTimeout = 60; // 60 seconds
 - (void)sendInternal:(ADJActivityPackage *)package sendToPackageHandler:(BOOL)sendToPackageHandler{
 
     NSDictionary *jsonDict = [ADJUtil sendRequest:[self requestForPackage:package]
-                                     activityKind:package.activityKind];
+                              prefixErrorMessage:package.failureMessage
+                              suffixErrorMessage:@"Will retry later"];
 
     if (jsonDict == nil) {
         if (sendToPackageHandler) {

@@ -131,7 +131,8 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
     [self.logger verbose:@"%@", self.attributionPackage.extendedString];
 
-    NSDictionary * jsonDict = [ADJUtil sendRequest:[self request] activityKind:self.attributionPackage.activityKind];
+    NSDictionary * jsonDict = [ADJUtil sendRequest:[self request]
+                                      prefixErrorMessage:@"Failed to get attribution"];
 
     [self checkAttributionInternal:jsonDict];
 }

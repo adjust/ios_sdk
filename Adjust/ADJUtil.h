@@ -31,5 +31,10 @@
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
 + (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-                 activityKind:(ADJActivityKind) activityKind;
+           prefixErrorMessage:(NSString *)prefixErrorMessage;
+
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+           prefixErrorMessage:(NSString *)prefixErrorMessage
+           suffixErrorMessage:(NSString *)suffixErrorMessage;
+
 @end
