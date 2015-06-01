@@ -266,14 +266,6 @@
     [self parameters:parameters setInt:valueInt forKey:key];
 }
 
-- (void)parameters:(NSMutableDictionary *)parameters setNumberBool:(NSNumber *)value forKey:(NSString *)key {
-    if (value == nil) return;
-
-    BOOL boolValue = [value boolValue];
-
-    [self parameters:parameters setBool:boolValue forKey:key];
-}
-
 - (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
     if (value == nil) return;
 
