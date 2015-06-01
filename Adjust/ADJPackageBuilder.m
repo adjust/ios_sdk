@@ -112,6 +112,8 @@
 
     ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
     attributionPackage.path = @"/attribution";
+    attributionPackage.activityKind = ADJActivityKindAttribution;
+    attributionPackage.suffix = @"";
     attributionPackage.parameters = parameters;
 
     return attributionPackage;

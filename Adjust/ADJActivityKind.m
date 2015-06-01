@@ -17,6 +17,8 @@
         return ADJActivityKindEvent;
     } else if ([@"click" isEqualToString:activityKindString]) {
         return ADJActivityKindClick;
+    } else if ([@"attribution" isEqualToString:activityKindString]) {
+        return ADJActivityKindAttribution;
     } else {
         return ADJActivityKindUnknown;
     }
@@ -27,6 +29,7 @@
         case ADJActivityKindSession:       return @"session";
         case ADJActivityKindEvent:         return @"event";
         case ADJActivityKindClick:         return @"click";
+        case ADJActivityKindAttribution:   return @"attribution";
         default:                           return @"unknown";
     }
 }
