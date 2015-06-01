@@ -52,7 +52,7 @@
     }
 
     if ([self.callbackMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"key %@ was overwritten", key];
     }
 
     [self.callbackMutableParameters setObject:value forKey:key];
@@ -74,7 +74,7 @@
     }
 
     if ([self.partnerMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"key %@ was overwritten", key];
     }
 
     [self.partnerMutableParameters setObject:value forKey:key];

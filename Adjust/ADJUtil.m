@@ -223,7 +223,7 @@ static NSDateFormatter *dateFormat;
     }
 
     if (statusCode == 200) {
-        [ADJAdjustFactory.logger debug:@"%@", messageResponse];
+        [ADJAdjustFactory.logger info:@"%@", messageResponse];
     } else {
         [ADJAdjustFactory.logger error:@"%@", messageResponse];
     }

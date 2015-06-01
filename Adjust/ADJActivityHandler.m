@@ -56,11 +56,12 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     if (self == nil) return nil;
 
     if (adjustConfig == nil) {
-        [ADJAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
+        [ADJAdjustFactory.logger error:@"AdjustConfig missing"];
         return nil;
     }
 
     if (![adjustConfig isValid]) {
+        [ADJAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
         return nil;
     }
 
@@ -348,7 +349,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
         [self writeActivityState];
-        [self.logger info:@"Processed subsession %d of session %d",
+        [self.logger info:@"Started subsession %d of session %d",
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
     }
@@ -613,6 +614,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         [self stopTimer];
         return;
     }
+    [self.logger debug:@"Session timer fired"];
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {

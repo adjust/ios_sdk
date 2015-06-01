@@ -208,9 +208,9 @@
 }
 - (NSString *)eventSuffix:(ADJEvent*)event {
     if (event.revenue == nil) {
-        return [NSString stringWithFormat:@" '%@'", event.eventToken];
+        return [NSString stringWithFormat:@"'%@'", event.eventToken];
     } else {
-        return [NSString stringWithFormat:@" (%.4f %@, '%@')", [event.revenue doubleValue], event.currency, event.eventToken];
+        return [NSString stringWithFormat:@"(%.4f %@, '%@')", [event.revenue doubleValue], event.currency, event.eventToken];
     }
 }
 
