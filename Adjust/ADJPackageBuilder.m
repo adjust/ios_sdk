@@ -108,16 +108,7 @@
 }
 
 - (ADJActivityPackage *)buildAttributionPackage {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [self parameters:parameters setString:self.deviceInfo.macSha1          forKey:@"mac_sha1"];
-    [self parameters:parameters setString:self.deviceInfo.idForAdvertisers forKey:@"idfa"];
-    [self parameters:parameters setString:self.deviceInfo.vendorId         forKey:@"idfv"];
-    [self parameters:parameters setString:self.deviceInfo.macShortMd5      forKey:@"mac_md5"];
-    [self parameters:parameters setString:self.adjustConfig.appToken       forKey:@"app_token"];
-    [self parameters:parameters setString:self.adjustConfig.environment    forKey:@"environment"];
-    [self parameters:parameters setString:self.activityState.uuid          forKey:@"ios_uuid"];
-    [self parameters:parameters setBool:self.adjustConfig.hasDelegate      forKey:@"needs_attribution_data"];
+    NSMutableDictionary *parameters = [self idsParameters];
 
     ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
     attributionPackage.path = @"/attribution";
@@ -133,26 +124,53 @@
     return activityPackage;
 }
 
-- (NSMutableDictionary *)defaultParameters {
+- (NSMutableDictionary *)idsParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self injectDeviceInfo:self.deviceInfo config:self.adjustConfig intoParameters:parameters];
-    [self injectActivityState:self.activityState intoParamters:parameters];
-    [self parameters:parameters setBool:self.adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
-    [self parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
+    [self injectDeviceInfoIds:self.deviceInfo
+        macMd5TrackingEnabled:self.adjustConfig.macMd5TrackingEnabled
+               intoParameters:parameters];
+    [self injectConfig:self.adjustConfig intoParameters:parameters];
+    [self injectCreatedAt:self.createdAt intoParameters:parameters];
 
     return parameters;
 }
 
-- (void) injectDeviceInfo:(ADJDeviceInfo *)deviceInfo
-                   config:(ADJConfig*) adjustConfig
+- (NSMutableDictionary *)defaultParameters {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    [self injectDeviceInfo:self.deviceInfo
+     macMd5TrackingEnabled:self.adjustConfig.macMd5TrackingEnabled
+            intoParameters:parameters];
+    [self injectConfig:self.adjustConfig intoParameters:parameters];
+    [self injectActivityState:self.activityState intoParamters:parameters];
+    [self injectCreatedAt:self.createdAt intoParameters:parameters];
+
+    return parameters;
+}
+
+- (void) injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo
+    macMd5TrackingEnabled:(BOOL) macMd5TrackingEnabled
            intoParameters:(NSMutableDictionary *) parameters
 {
     [self parameters:parameters setString:deviceInfo.macSha1           forKey:@"mac_sha1"];
     [self parameters:parameters setString:deviceInfo.idForAdvertisers  forKey:@"idfa"];
+    [self parameters:parameters setString:deviceInfo.vendorId          forKey:@"idfv"];
+
+    if (macMd5TrackingEnabled) {
+        [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];
+    }
+}
+
+- (void) injectDeviceInfo:(ADJDeviceInfo *)deviceInfo
+    macMd5TrackingEnabled:(BOOL) macMd5TrackingEnabled
+           intoParameters:(NSMutableDictionary *) parameters
+{
+    [self injectDeviceInfoIds:deviceInfo
+        macMd5TrackingEnabled:macMd5TrackingEnabled
+               intoParameters:parameters];
     [self parameters:parameters setString:deviceInfo.fbAttributionId   forKey:@"fb_id"];
     [self parameters:parameters setInt:deviceInfo.trackingEnabled      forKey:@"tracking_enabled"];
-    [self parameters:parameters setString:deviceInfo.vendorId          forKey:@"idfv"];
     [self parameters:parameters setString:deviceInfo.pushToken         forKey:@"push_token"];
     [self parameters:parameters setString:deviceInfo.bundeIdentifier   forKey:@"bundle_id"];
     [self parameters:parameters setString:deviceInfo.bundleVersion     forKey:@"app_version"];
@@ -162,17 +180,14 @@
     [self parameters:parameters setString:deviceInfo.systemVersion     forKey:@"os_version"];
     [self parameters:parameters setString:deviceInfo.languageCode      forKey:@"language"];
     [self parameters:parameters setString:deviceInfo.countryCode       forKey:@"country"];
-    [self parameters:parameters setString:deviceInfo.networkType       forKey:@"network_type"];
-    [self parameters:parameters setString:deviceInfo.mobileCountryCode forKey:@"mobile_country_code"];
-    [self parameters:parameters setString:deviceInfo.mobileNetworkCode forKey:@"mobile_network_code"];
+}
 
-
-    if (adjustConfig.macMd5TrackingEnabled) {
-        [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];
-    }
-
+- (void)injectConfig:(ADJConfig*) adjustConfig
+       intoParameters:(NSMutableDictionary *) parameters
+{
     [self parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [self parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
+    [self parameters:parameters setBool:adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
 }
 
 - (void) injectActivityState:(ADJActivityState *)activityState
@@ -184,7 +199,11 @@
     [self parameters:parameters setString:activityState.uuid            forKey:@"ios_uuid"];
 
 }
-
+- (void)injectCreatedAt:(double) createdAt
+      intoParameters:(NSMutableDictionary *) parameters
+{
+    [self parameters:parameters setDate1970:createdAt forKey:@"created_at"];
+}
 - (NSString *)eventSuffix:(ADJEvent*)event {
     if (event.revenue == nil) {
         return [NSString stringWithFormat:@" '%@'", event.eventToken];

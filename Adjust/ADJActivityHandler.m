@@ -102,7 +102,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     if ([ADJUtil isNull:jsonDict]) return;
 
     [self launchDeepLink:jsonDict];
-    [[self getAttributionHandler] checkAttribution:jsonDict];
+    [self.attributionHandler checkAttribution:jsonDict];
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
@@ -270,6 +270,18 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
                                                                  startPaused:[self paused]];
 
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
+                                             initWithDeviceInfo:self.deviceInfo
+                                             activityState:self.activityState
+                                             config:self.adjustConfig
+                                             createdAt:now];
+    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
+    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                              withAttributionPackage:attributionPackage
+                                                                         startPaused:[self paused]
+                                                                         hasDelegate:(self.delegate != nil)];
+
     self.timer = [ADJTimer timerWithBlock:^{ [self timerFiredInternal]; }
                                     queue:self.internalQueue
                                 startTime:ADJAdjustFactory.timerStart
@@ -278,25 +290,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     [[UIDevice currentDevice] adjSetIad:self];
 
     [self startInternal];
-}
-
-- (id<ADJAttributionHandler>) getAttributionHandler {
-    if (self.attributionHandler == nil) {
-        double now = [NSDate.date timeIntervalSince1970];
-        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                                 initWithDeviceInfo:self.deviceInfo
-                                                 activityState:self.activityState
-                                                 config:self.adjustConfig
-                                                 createdAt:now];
-        ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-        self.attributionHandler = [ADJAdjustFactory
-                                   attributionHandlerForActivityHandler:self
-                                   withAttributionPackage:attributionPackage
-                                   startPaused:[self paused]
-                                   hasDelegate:(self.delegate != nil)];
-    }
-
-    return self.attributionHandler;
 }
 
 - (void)startInternal {
@@ -372,7 +365,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         return;
     }
 
-    [[self getAttributionHandler] getAttribution];
+    [self.attributionHandler getAttribution];
 }
 
 - (void)endInternal {
