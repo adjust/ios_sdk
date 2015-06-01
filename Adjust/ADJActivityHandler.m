@@ -372,6 +372,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 - (void)endInternal {
     [self.packageHandler pauseSending];
+    [self.attributionHandler pauseSending];
     [self stopTimer];
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
