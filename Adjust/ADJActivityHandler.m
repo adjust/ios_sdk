@@ -183,10 +183,9 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
                                        config:self.adjustConfig
                                        createdAt:now];
 
-    [clickBuilder setClickTime:iAdImpressionDate];
     [clickBuilder setPurchaseTime:appPurchaseDate];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" clickTime:iAdImpressionDate];
     [self.packageHandler sendClickPackage:clickPackage];
 }
 
@@ -438,9 +437,8 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
-    [clickBuilder setClickTime:[NSDate date]];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" clickTime:[NSDate date]];
     [self.packageHandler sendClickPackage:clickPackage];
 }
 

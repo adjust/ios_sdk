@@ -84,11 +84,14 @@
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource{
-    NSMutableDictionary *parameters = [self defaultParameters];
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                clickTime:(NSDate *)clickTime
+{
+    NSMutableDictionary *parameters = [self idsParameters];
+
     [self parameters:parameters setString:clickSource                     forKey:@"source"];
     [self parameters:parameters setDictionaryJson:self.deeplinkParameters forKey:@"params"];
-    [self parameters:parameters setDate:self.clickTime                    forKey:@"click_time"];
+    [self parameters:parameters setDate:clickTime                         forKey:@"click_time"];
     [self parameters:parameters setDate:self.purchaseTime                 forKey:@"purchase_time"];
 
     if (self.attribution != nil) {

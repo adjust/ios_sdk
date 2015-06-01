@@ -15,7 +15,6 @@
 @interface ADJPackageBuilder : NSObject
 
 @property (nonatomic, copy) ADJAttribution *attribution;
-@property (nonatomic, copy) NSDate *clickTime;
 @property (nonatomic, copy) NSDate *purchaseTime;
 @property (nonatomic, retain) NSDictionary* deeplinkParameters;
 
@@ -26,7 +25,8 @@
 
 - (ADJActivityPackage *)buildSessionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                clickTime:(NSDate *)clickTime;
 - (ADJActivityPackage *)buildAttributionPackage;
 
 @end
