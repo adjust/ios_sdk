@@ -11,4 +11,12 @@ Pod::Spec.new do |s|
   s.weak_framework = 'AdSupport', 'iAd'
   s.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
   s.requires_arc   = true
+
+  s.subspec 'Sociomantic' do |sm|
+    sm.source_files = 'plugin/Sociomantic/*.{h,m}'
+  end
+
+  s.subspec 'Criteo' do |cr|
+    cr.source_files = 'plugin/Criteo/*.{h,m}'
+  end
 end
