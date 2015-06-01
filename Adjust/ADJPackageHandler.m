@@ -82,8 +82,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)finishedTrackingActivity:(NSDictionary *)jsonDict{
-    [self.activityHandler finishedTrackingWithResponse:jsonDict];
+- (void)finishedTracking:(NSDictionary *)jsonDict{
+    [self.activityHandler finishedTracking:jsonDict];
 }
 
 - (void)sendClickPackage:(ADJActivityPackage *)clickPackage {

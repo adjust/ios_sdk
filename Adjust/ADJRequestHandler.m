@@ -66,8 +66,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSDictionary *jsonDict = [ADJUtil sendRequest:[self requestForPackage:package]
                                      activityKind:package.activityKind];
 
-    [self.packageHandler finishedTrackingActivity:jsonDict];
-
     if (jsonDict == nil) {
         if (sendToPackageHandler) {
             [self.packageHandler closeFirstPackage];
@@ -75,7 +73,7 @@ static const double kRequestTimeout = 60; // 60 seconds
         return;
     }
 
-    [self.packageHandler finishedTrackingActivity:jsonDict];
+    [self.packageHandler finishedTracking:jsonDict];
     if (sendToPackageHandler) {
         [self.packageHandler sendNextPackage];
     }

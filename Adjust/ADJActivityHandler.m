@@ -98,7 +98,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     });
 }
 
-- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
+- (void)finishedTracking:(NSDictionary *)jsonDict{
     if ([ADJUtil isNull:jsonDict]) return;
 
     [self launchDeepLink:jsonDict];
