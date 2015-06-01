@@ -43,7 +43,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
 @end
 
-
 #pragma mark -
 @implementation ADJActivityHandler
 
@@ -436,8 +435,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     if (!hasDeepLink) {
         return;
     }
-
-    [[self getAttributionHandler] getAttribution];
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
