@@ -11,7 +11,7 @@
 #import "ADJUtil.h"
 #import "ADJActivityHandler.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJTimer.h"
+#import "ADJTimerOnce.h"
 
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 
@@ -20,7 +20,7 @@ static const char * const kInternalQueueName     = "com.adjust.AttributionQueue"
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) ADJTimer *askInTimer;
+@property (nonatomic, retain) ADJTimerOnce *timer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, assign) BOOL hasDelegate;
@@ -56,7 +56,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.attributionPackage = attributionPackage;
     self.paused = startPaused;
     self.hasDelegate = hasDelegate;
-    self.askInTimer = [ADJTimer timerWithBlock:^{ [self getAttributionInternal]; }
+    self.timer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
                                          queue:self.internalQueue];
 
     return self;
@@ -70,7 +70,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 - (void) getAttributionWithDelay:(int)milliSecondsDelay {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
-    NSTimeInterval nextAskIn = [self.askInTimer fireIn];
+    NSTimeInterval nextAskIn = [self.timer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
     }
@@ -79,12 +79,8 @@ static const double kRequestTimeout = 60; // 60 seconds
         [self.logger debug:@"Waiting to query attribution in %d milliseconds", milliSecondsDelay];
     }
 
-    // cancel if any previous timers were running
-    [self.askInTimer cancel];
     // set the new time the timer will fire in
-    [self.askInTimer setStartTime:secondsDelay];
-    // start the timer
-    [self.askInTimer resume];
+    [self.timer startIn:secondsDelay];
 }
 
 - (void) getAttribution {

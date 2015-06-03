@@ -12,7 +12,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
-#import "ADJTimer.h"
+#import "ADJTimerCycle.h"
 #import "ADJUtil.h"
 #import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
@@ -30,7 +30,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 @property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
-@property (nonatomic, retain) ADJTimer *timer;
+@property (nonatomic, retain) ADJTimerCycle *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
@@ -284,7 +284,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
                                                                          startPaused:[self paused]
                                                                          hasDelegate:(self.delegate != nil)];
 
-    self.timer = [ADJTimer timerWithBlock:^{ [self timerFiredInternal]; }
+    self.timer = [ADJTimerCycle timerWithBlock:^{ [self timerFiredInternal]; }
                                     queue:self.internalQueue
                                 startTime:ADJAdjustFactory.timerStart
                              intervalTime:ADJAdjustFactory.timerInterval];
