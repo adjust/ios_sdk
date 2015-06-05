@@ -2,7 +2,7 @@
 
 Integrate adjust with Sociomantic events by following these steps:
 
-1. Locate the `plugin` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
+1. Locate the `plugin/Sociomantic` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
 2. Drag the `ADJSociomantic.h` and `ADJSociomantic.m` files into the `Adjust` folder inside your project.
 
