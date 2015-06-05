@@ -11,6 +11,10 @@ Pod::Spec.new do |s|
   s.weak_framework = 'AdSupport', 'iAd'
   s.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
   s.requires_arc   = true
+  s.default_subspec = 'Standard'
+
+  s.subspec 'Standard' do |standard|
+  end
 
   s.subspec 'Sociomantic' do |sm|
     sm.source_files = 'plugin/Sociomantic/*.{h,m}'
