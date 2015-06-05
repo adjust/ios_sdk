@@ -2,7 +2,7 @@
 
 Integrate adjust with Criteo events by following these steps:
 
-1. Locate the `plugin` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
+1. Locate the `plugin/Criteo` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
 2. Drag the `ADJCriteo.h` and `ADJCriteo.m` files into the `Adjust` folder inside your project.
 
@@ -137,7 +137,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEvent2EventToken}"];
 It's possible to attach an hashed email in every Criteo event with the `injectHashedEmailIntoCriteoEvents` method.
 The hashed email will be sent with every Criteo event for the duration of the application lifecycle,
 so it must be set again when the app is re-lauched.
-The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvents` method with `nil`.
+The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvents` value with `nil`.
 
 ```objc
 #import "ADJCriteo.h"
@@ -149,10 +149,22 @@ The hashed email can be removed by setting the `injectHashedEmailIntoCriteoEvent
 
 It's possible to attach a check-in and check-out date to every Criteo event with the `injectViewSearchDatesIntoCriteoEvent` method. The dates will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
 
-The search dates can be removed by setting the `injectViewSearchDatesIntoCriteoEvents` dates with `nil`.
+The search dates can be removed by setting the `injectViewSearchDatesIntoCriteoEvents` values with `nil`.
 
 ```objc
 #import "ADJCriteo.h"
 
 [ADJCriteo injectViewSearchDatesIntoCriteoEvents:@"2015-01-01" checkOutDate:@"2015-01-07"];
+```
+
+### Partner id
+
+It's possible to attach a partner id to every Criteo event with the `injectPartnerIdIntoCriteoEvent` method. The partner id will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+
+The search dates can be removed by setting the `injectPartnerIdIntoCriteoEvent` value with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+[ADJCriteo injectPartnerIdIntoCriteoEvents:@"{criteoPartnerId}"];
 ```
