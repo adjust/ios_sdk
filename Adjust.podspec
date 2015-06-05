@@ -9,18 +9,20 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '4.3'
   s.framework      = 'SystemConfiguration'
   s.weak_framework = 'AdSupport', 'iAd'
-  s.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
   s.requires_arc   = true
-  s.default_subspec = 'Standard'
+  s.default_subspec = 'Core'
 
-  s.subspec 'Standard' do |standard|
+  s.subspec 'Core' do |co|
+    co.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
   end
 
   s.subspec 'Sociomantic' do |sm|
     sm.source_files = 'plugin/Sociomantic/*.{h,m}'
+    sm.dependency 'Adjust/Core'
   end
 
   s.subspec 'Criteo' do |cr|
     cr.source_files = 'plugin/Criteo/*.{h,m}'
+    cr.dependency 'Adjust/Core'
   end
 end
