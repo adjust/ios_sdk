@@ -42,6 +42,7 @@ static const NSUInteger MAX_VIEW_LISTING_PRODUCTS = 3;
 static NSString * hashEmailInternal;
 static NSString * checkInDateInternal;
 static NSString * checkOutDateInternal;
+static NSString * partnerIdInternal;
 
 + (id<ADJLogger>) logger {
     return ADJAdjustFactory.logger;
@@ -173,9 +174,15 @@ static NSString * checkOutDateInternal;
     checkOutDateInternal = checkOutDate;
 }
 
++ (void)injectPartnerIdIntoCriteoEvents:(NSString *)partnerId
+{
+    partnerIdInternal = partnerId;
+}
+
 + (void)injectOptionalParams:(ADJEvent *)event {
     [ADJCriteo injectHashEmail:event];
     [ADJCriteo injectSearchDates:event];
+    [ADJCriteo injectPartnerId:event];
 }
 
 + (void)injectHashEmail:(ADJEvent *)event {
@@ -191,6 +198,13 @@ static NSString * checkOutDateInternal;
     }
     [event addPartnerParameter:@"din" value:checkInDateInternal];
     [event addPartnerParameter:@"dout" value:checkOutDateInternal];
+}
+
++ (void)injectPartnerId:(ADJEvent *)event {
+    if (partnerIdInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"criteo_partner_id" value:partnerIdInternal];
 }
 
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products
