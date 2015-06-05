@@ -372,7 +372,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
         if (![category isKindOfClass:[NSString class]]) {
             id<ADJLogger> logger = [ADJAdjustFactory logger];
             [logger error:@"Categories should only contains a string, failed on: [%@] type:[%@]", category, [category class]];
-            return nil;
+            return NO;
         }
 
         return [category isKindOfClass:[NSString class]];
