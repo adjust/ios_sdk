@@ -10,11 +10,13 @@
 #import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const prefix = @"ADJAttributionHandlerMock ";
+static NSString * const prefix = @"AttributionHandler ";
 
 @interface ADJAttributionHandlerMock()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
+@property (nonatomic, assign) BOOL startPaused;
+@property (nonatomic, assign) BOOL hasDelegate;
 
 @end
 
@@ -22,12 +24,15 @@ static NSString * const prefix = @"ADJAttributionHandlerMock ";
 @implementation ADJAttributionHandlerMock
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                 withMaxDelay:(NSNumber*) milliseconds
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                  startPaused:(BOOL)startPaused
+                  hasDelegate:(BOOL)hasDelegate
 {
     self = [super init];
     if (self == nil) return nil;
 
+    self.startPaused = startPaused;
+    self.hasDelegate = hasDelegate;
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
     self.attributionPackage = attributionPackage;
@@ -42,6 +47,14 @@ static NSString * const prefix = @"ADJAttributionHandlerMock ";
 
 - (void)getAttribution {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"getAttribution"]];
+}
+
+- (void)pauseSending {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"pauseSending"]];
+}
+
+- (void)resumeSending {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"resumeSending"]];
 }
 
 @end

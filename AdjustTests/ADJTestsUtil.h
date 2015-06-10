@@ -13,8 +13,11 @@
 
 @interface ADJTestsUtil : NSObject <AdjustDelegate>
 
+- (id)initWithLoggerMock:(ADJLoggerMock *)loggerMock;
+- (void)asdf:(NSString *)message;
+
 + (NSString *)getFilename:(NSString *)filename;
 + (BOOL)deleteFile:(NSString *)filename logger:(ADJLoggerMock *)loggerMock;
-+ (ADJActivityPackage *)buildEmptyPackage;
++ (ADJActivityPackage *)getUnknowPackage:(NSString*)suffix;
 
 @end

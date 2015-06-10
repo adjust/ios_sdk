@@ -8,11 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    ADJResponseTypeNil = 0,
+    ADJResponseTypeConnError = 1,
+    ADJResponseTypeWrongJson = 2,
+    ADJResponseTypeEmptyJson = 3,
+    ADJResponseTypeServerError = 4,
+    ADJResponseTypeMessage = 5,
+} ADJResponseType;
+
 @interface NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
-+ (void)setConnectionError:(BOOL)connection;
-+ (void)setResponse:(int)response;
++ (void)setResponseType:(ADJResponseType)responseType;
++ (NSURLRequest *)getLastRequest;
++ (void)reset;
 
 @end

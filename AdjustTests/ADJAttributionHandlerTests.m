@@ -17,10 +17,10 @@
 #import "ADJAttributionHandler.h"
 #import "ADJPackageHandlerMock.h"
 #import "ADJUtil.h"
+#import "ADJTestActivityPackage.h"
 
-@interface ADJAttributionHandlerTests : XCTestCase
+@interface ADJAttributionHandlerTests : ADJTestActivityPackage
 
-@property (atomic,strong) ADJLoggerMock *loggerMock;
 @property (atomic,strong) ADJActivityHandlerMock *activityHandlerMock;
 @property (atomic,strong) ADJActivityPackage * attributionPackage;
 
@@ -39,9 +39,9 @@
     [ADJAdjustFactory setLogger:nil];
 
     // Put teardown code here; it will be run once, after the last test case.
-    [NSURLConnection setConnectionError:NO];
     [ADJAdjustFactory setPackageHandler:nil];
     [ADJAdjustFactory setAttributionHandler:nil];
+    [NSURLConnection reset];
 
     [super tearDown];
 }
@@ -54,308 +54,280 @@
 
     self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config];
     self.attributionPackage = [self getAttributionPackage:config];
+    [NSURLConnection reset];
 }
 
 - (ADJActivityPackage *)getAttributionPackage:(ADJConfig *)config {
     ADJAttributionHandlerMock * attributionHandlerMock = [ADJAttributionHandlerMock alloc];
+    [ADJAdjustFactory setAttributionHandler:attributionHandlerMock];
 
     ADJPackageHandlerMock * packageHandlerMock = [ADJPackageHandlerMock alloc];
     [ADJAdjustFactory setPackageHandler:packageHandlerMock];
 
     [ADJAdjustFactory setSessionInterval:-1];
     [ADJAdjustFactory setSubsessionInterval:-1];
-
-    [ADJAdjustFactory setAttributionHandler:attributionHandlerMock];
+    [ADJAdjustFactory setTimerInterval:-1];
+    [ADJAdjustFactory setTimerStart:-1];
 
     [ADJActivityHandler handlerWithConfig:config];
     [NSThread sleepForTimeInterval:2.0];
 
+    ADJActivityPackage * attributionPackage = attributionHandlerMock.attributionPackage;
+
+    ADJPackageFields * fields = [ADJPackageFields fields];
+
+    [self testAttributionPackage:attributionPackage fields:fields];
+
     [self.loggerMock reset];
 
-    return attributionHandlerMock.attributionPackage;
+    return attributionPackage;
 }
 
-
-- (void) testGetCheckAttributionNoAskInUpdate {
-    [self checkGetCheckAttributionNoAskIn:YES];
-}
-
-- (void) testGetCheckAttributionNoAskInNoUpdate {
-    [self checkGetCheckAttributionNoAskIn:NO];
-}
-
-- (void) checkGetCheckAttributionNoAskIn:(BOOL)update {
-
+- (void)testGetAttribution
+{
     //  reseting to make the test order independent
     [self reset];
 
-    if (update) {
-        [self.activityHandlerMock setUpdatedAttribution:YES];
-    }
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startPaused:NO hasDelegate:YES];
 
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
+    // test null response without error
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeNil];
 
-    [NSURLConnection setResponse:0];
+    // check empty error
+    aError(@"Failed to get attribution (empty error)");
 
-    [attributionHandler getAttribution];
+    // check response was not logged
+    anVerbose(@"Response");
 
-    [NSThread sleepForTimeInterval:3.0];
+    // test client exception
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeConnError];
 
-    // TODO check attribution package
+    // check the client error
+    aError(@"Failed to get attribution (connection error)");
 
-    //  check the URL Connection was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
+    // test wrong json response
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeWrongJson];
 
-    //  check the response was verbosed
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-                                    beginsWith:@"status code 200 for attribution response: {\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"deeplink\":\"testApp://\"}"],
-              @"%@", self.loggerMock);
+    aVerbose(@"Response: not a json response");
 
-    //  check that the package was successfully sent
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"response OK"],
-              @"%@", self.loggerMock);
+    aError(@"Failed to parse json response. (The operation couldn’t be completed. (Cocoa error 3840.))");
 
-    // check that called updateAttribution with Attribution
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler updateAttribution"],
-              @"%@", self.loggerMock);
+    // test empty response
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeEmptyJson];
 
-    if (update) {
-        // check that did launch delegate
-        XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler launchAttributionDelegate"],
-                       @"%@", self.loggerMock);
+    aVerbose(@"Response: { }");
 
-    } else {
-        // check that did not launch delegate
-        XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler launchAttributionDelegate"],
-                       @"%@", self.loggerMock);
-    }
+    aInfo(@"No message found");
 
-    // check the attribution sent to activity handler
+    // check attribution was called without ask_in
+    aTest(@"ActivityHandler updateAttribution, (null)");
+
+    aTest(@"ActivityHandler setAskingAttribution, 0");
+
+    // test server error
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeServerError];
+
+    // the response logged
+    aVerbose(@"Response: { \"message\": \"testResponseError\"}");
+
+    // the message in the response
+    aError(@"testResponseError");
+
+    // check attribution was called without ask_in
+    aTest(@"ActivityHandler updateAttribution, (null)");
+
+    aTest(@"ActivityHandler setAskingAttribution, 0");
+
+    // test ok response with message
+    [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeMessage];
+
+    [self checkOkMessageGetAttributionResponse];
+}
+
+- (void)testCheckAttribution
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startPaused:NO hasDelegate:YES];
+
+    NSMutableDictionary * attributionDictionary = [[NSMutableDictionary alloc] init];
+    [attributionDictionary setObject:@"ttValue" forKey:@"tracker_token"];
+    [attributionDictionary setObject:@"tnValue" forKey:@"tracker_name"];
+    [attributionDictionary setObject:@"nValue" forKey:@"network"];
+    [attributionDictionary setObject:@"cpValue" forKey:@"campaign"];
+    [attributionDictionary setObject:@"aValue" forKey:@"adgroup"];
+    [attributionDictionary setObject:@"ctValue" forKey:@"creative"];
+    [attributionDictionary setObject:@"clValue" forKey:@"click_label"];
+
     NSMutableDictionary * jsonDictionary = [[NSMutableDictionary alloc] init];
-    [jsonDictionary setObject:@"trackerNameValue" forKey:@"tracker_name"];
-    [jsonDictionary setObject:@"trackerTokenValue" forKey:@"tracker_token"];
-    [jsonDictionary setObject:@"networkValue" forKey:@"network"];
-    [jsonDictionary setObject:@"campaignValue" forKey:@"campaign"];
-    [jsonDictionary setObject:@"adgroupValue" forKey:@"adgroup"];
-    [jsonDictionary setObject:@"creativeValue" forKey:@"creative"];
-    [jsonDictionary setObject:@"clickLabelValue" forKey:@"click_label"];
+    [jsonDictionary setObject:attributionDictionary forKey:@"attribution"];
 
-    ADJAttribution * attribution = [[ADJAttribution alloc] initWithJsonDict:jsonDictionary];
+    [attributionHandler checkAttribution:jsonDictionary];
+    [NSThread sleepForTimeInterval:1.0];
 
-    XCTAssert([attribution isEqual:self.activityHandlerMock.attributionUpdated], @"%@", self.activityHandlerMock.attributionUpdated);
+    // check attribution was called without ask_in
+    aTest(@"ActivityHandler updateAttribution, tt:ttValue tn:tnValue net:nValue cam:cpValue adg:aValue cre:ctValue cl:clValue");
 
+    // updated set askingAttribution to false
+    aTest(@"ActivityHandler setAskingAttribution, 0");
 
-    // check that set asking attribution NO
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler setAskingAttribution: 0"],
-              @"%@", self.loggerMock);
+    // it did not update to true
+    anTest(@"ActivityHandler setAskingAttribution, 1");
+
+    // and waiting for query
+    anDebug(@"Waiting to query attribution");
 }
 
--(void) testAskInConnectionError {
+- (void)testAskIn
+{
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startPaused:NO hasDelegate:YES];
 
-    [NSURLConnection setConnectionError:YES];
+    NSMutableDictionary * askIn4sDictionary = [[NSMutableDictionary alloc] init];
+    [askIn4sDictionary setObject:@"4000" forKey:@"ask_in"];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:[@"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"ask_in\":0,\"message\":\"response OK\",\"deeplink\":\"testApp://\"}" dataUsingEncoding:NSUTF8StringEncoding]];
+    // set null response to avoid a cycle;
+    [NSURLConnection setResponseType:ADJResponseTypeMessage];
 
-    [attributionHandler checkAttribution:jsonDict];
+    [attributionHandler checkAttribution:askIn4sDictionary];
 
-    [NSThread sleepForTimeInterval:2.0];
+    // sleep enough not to trigger the timer
+    [NSThread sleepForTimeInterval:1.0];
 
-    // check that did not call updateAttribution with Attribution
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler updateAttribution"],
-              @"%@", self.loggerMock);
+    // check attribution was called with ask_in
+    anTest(@"ActivityHandler updateAttribution");
 
+    // it did update to true
+    aTest(@"ActivityHandler setAskingAttribution, 1");
 
-    // check that set asking attribution YES
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler setAskingAttribution: 1"],
-              @"%@", self.loggerMock);
+    // and waited to for query
+    aDebug(@"Waiting to query attribution in 4000 milliseconds");
 
-    // check to see it's going to wait
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Waiting to query attribution in 0 milliseconds"],
-              @"%@", self.loggerMock);
+    // sleep enough not to trigger the timer
+    [NSThread sleepForTimeInterval:1.0];
 
-    //  check the URL Connection was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
+    NSMutableDictionary * askIn5sDictionary = [[NSMutableDictionary alloc] init];
+    [askIn5sDictionary setObject:@"5000" forKey:@"ask_in"];
 
-    //  check that the package was successfully sent
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Failed to get attribution. (connection error)"],
-              @"%@", self.loggerMock);
+    [attributionHandler checkAttribution:askIn5sDictionary];
+
+    // sleep enough not to trigger the old timer
+    [NSThread sleepForTimeInterval:3.0];
+
+    // it did update to true
+    aTest(@"ActivityHandler setAskingAttribution, 1");
+
+    // and waited to for query
+    aDebug(@"Waiting to query attribution in 5000 milliseconds");
+
+    // it was been waiting for 1000 + 2000 + 3000 = 6 seconds
+    // check that the mock http client was not called because the original clock was reseted
+    anTest(@"NSURLConnection sendSynchronousRequest");
+
+    // check that it was finally called after 7 seconds after the second ask_in
+    [NSThread sleepForTimeInterval:4.0];
+
+    // test ok response with message
+    aTest(@"NSURLConnection sendSynchronousRequest");
+
+    [self checkOkMessageGetAttributionResponse];
+
+    [self checkRequest:[NSURLConnection getLastRequest]];
 }
 
--(void) testGetResponseError {
+- (void)testPause
+{
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startPaused:YES hasDelegate:YES];
 
-    [NSURLConnection setResponse:1];
-
-    [attributionHandler getAttribution];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    //  check the URL Connection was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
-
-    //  check the response was verbosed
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-                                    beginsWith:@"status code 0 for attribution response: {\"message\":\"response error\"}"],
-              @"%@", self.loggerMock);
-
-    //  check that the error message
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"response error"],
-              @"%@", self.loggerMock);
-
-    // check that called updateAttribution with Attribution
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler updateAttribution"],
-              @"%@", self.loggerMock);
-
-    // check that set asking attribution NO
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler setAskingAttribution: 0"],
-              @"%@", self.loggerMock);
-}
-
--(void) testCheckUpdatedAskInResponseNil {
-
-    [self reset];
-
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
-
-    [NSURLConnection setResponse:2];
+    [NSURLConnection setResponseType:ADJResponseTypeMessage];
 
     [attributionHandler getAttribution];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    //  check the URL Connection was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
-
-    //  check the response was verbosed
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-                                    beginsWith:@"status code 0 for attribution response: server response"],
-              @"%@", self.loggerMock);
-
-    //  check the error message
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"Failed to parse json attribution response: server response"],
-              @"%@", self.loggerMock);
-}
-
-// get with response empty
--(void) testGetResponseEmpty {
-    [self reset];
-
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
-
-    [NSURLConnection setResponse:3];
-
-    [attributionHandler getAttribution];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    //  check the URL Connection was called
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
-
-    //  check the response was verbosed
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose
-                                    beginsWith:@"status code 0 for attribution response: {}"],
-              @"%@", self.loggerMock);
-
-    //  check the error message
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelError beginsWith:@"No message found"],
-              @"%@", self.loggerMock);
-
-    // check that called updateAttribution with Attribution
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler updateAttribution"],
-              @"%@", self.loggerMock);
-
-    // check that set asking attribution NO
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler setAskingAttribution: 0"],
-              @"%@", self.loggerMock);
-}
-
--(void) testCancelTimer {
-
-    [self reset];
-
-    id<ADJAttributionHandler> attributionHandler =
-    [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withMaxDelay:nil withAttributionPackage:self.attributionPackage];
-
-    [NSURLConnection setConnectionError:YES];
-
-    NSString * jsonString = @"{\"attribution\":{\"tracker_token\":\"trackerTokenValue\",\"tracker_name\":\"trackerNameValue\",\"network\":\"networkValue\",\"campaign\":\"campaignValue\",\"adgroup\":\"adgroupValue\",\"creative\":\"creativeValue\",\"click_label\":\"clickLabelValue\"},\"message\":\"response OK\",\"ask_in\":\"5000\"}";
-
-    NSDictionary * jsonDict = [ADJUtil buildJsonDict:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
-
-    [attributionHandler checkAttribution:jsonDict];
 
     [NSThread sleepForTimeInterval:1.0];
 
-    // check that set asking attribution YES
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler setAskingAttribution: 1"],
-              @"%@", self.loggerMock);
+    // check that the activity handler is paused
+    aDebug(@"Attribution handler is paused");
 
-    // check to see it's going to wait
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Waiting to query attribution in 5000 milliseconds"],
-              @"%@", self.loggerMock);
+    // and it did not call the http client
+    aNil([NSURLConnection getLastRequest]);
 
-    //  check the URL Connection not was called
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
-
-    // getAttribution
-    [attributionHandler getAttribution];
-
-    [NSThread sleepForTimeInterval:5.0];
-
-    //  check the URL Connection was called only once
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-                   @"%@", self.loggerMock);
-
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-                   @"%@", self.loggerMock);
-
-    // check another attribution and get in 5 seconds
-    [attributionHandler checkAttribution:jsonDict];
-
-    [NSThread sleepForTimeInterval:4.0];
-
-    //  check the URL Connection was not called after 4 seconds
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-                   @"%@", self.loggerMock);
-
-    // process another attribution and reset to wait 5 more seconds
-    [attributionHandler checkAttribution:jsonDict];
-
-    [NSThread sleepForTimeInterval:4.0];
-
-    //  check the URL Connection was not called after 8 seconds
-    //  from the first, but only 4 from the second
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-                   @"%@", self.loggerMock);
-
-    [NSThread sleepForTimeInterval:2.0];
-
-    //  check the URL Connection was called for the last check
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"NSURLConnection sendSynchronousRequest"],
-              @"%@", self.loggerMock);
-
-
+    anTest(@"NSURLConnection sendSynchronousRequest");
 
 }
 
+- (void)testWithoutListener
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startPaused:NO hasDelegate:NO];
+
+    [NSURLConnection setResponseType:ADJResponseTypeMessage];
+
+    [attributionHandler getAttribution];
+
+    [NSThread sleepForTimeInterval:1.0];
+
+    // check that the activity handler is not paused
+    anDebug(@"Attribution handler is paused");
+
+    // but it did not call the http client
+    aNil([NSURLConnection getLastRequest]);
+
+    anTest(@"NSURLConnection sendSynchronousRequest");
+}
+
+- (void)checkOkMessageGetAttributionResponse
+{
+    // the response logged
+    aVerbose(@"Response: { \"message\" : \"response OK\"}");
+
+    // the message in the response
+    aInfo(@"response OK");
+
+    // check attribution was called without ask_in
+    aTest(@"ActivityHandler updateAttribution, (null)");
+
+    aTest(@"ActivityHandler setAskingAttribution, 0");
+}
+
+- (void)checkGetAttributionResponse:(id<ADJAttributionHandler>) attributionHandler
+                       responseType:(ADJResponseType)responseType
+{
+    [NSURLConnection setResponseType:responseType];
+
+    [attributionHandler getAttribution];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // delay time is 0
+    anDebug(@"Waiting to query attribution");
+
+    // it tried to send the request
+    aTest(@"NSURLConnection sendSynchronousRequest");
+
+    [self checkRequest:[NSURLConnection getLastRequest]];
+}
+
+- (void)checkRequest:(NSURLRequest *)request
+{
+    if (request == nil) {
+        return;
+    }
+
+    NSURL * url = [request URL];
+
+    aslEquals(@"https", url.scheme, request.description);
+
+    aslEquals(@"app.adjust.com", url.host, request.description);
+
+    aslEquals(@"GET", [request HTTPMethod], request.description);
+}
 
 @end
 

@@ -108,7 +108,7 @@ static NSString * const kLogTag = @"AdjustTests";
 
     NSString *logMessage = [NSString stringWithFormat:@"\t[%@]%@: %@", kLogTag, logPrefix, formatedMessage];
 
-    [self.logBuffer appendString:logMessage];
+    [self.logBuffer appendFormat:@"%@\n",logMessage];
 
     NSMutableArray *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     [logArray addObject:formatedMessage];

@@ -10,7 +10,7 @@
 #import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const prefix = @"ADJActivityHandler ";
+static NSString * const prefix = @"ActivityHandler ";
 
 @interface ADJActivityHandlerMock()
 
@@ -45,8 +45,8 @@ static NSString * const prefix = @"ADJActivityHandler ";
 
 }
 
-- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTrackingWithResponse response:%@", jsonDict]];
+- (void)finishedTracking:(NSDictionary *)jsonDict {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", jsonDict]];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -76,11 +76,11 @@ static NSString * const prefix = @"ADJActivityHandler ";
 }
 
 - (void) setAskingAttribution:(BOOL)askingAttribution {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution: %d", askingAttribution]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution, %d", askingAttribution]];
 }
 
 - (BOOL) updateAttribution:(ADJAttribution*) attribution {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution, %@", attribution]];
     self.attributionUpdated = attribution;
     return self.updated;
 }

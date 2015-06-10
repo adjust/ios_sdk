@@ -26,6 +26,9 @@
 		9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9609BC6919EEA55800E02303 /* ADJEvent.m */; };
 		960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960A8BB81A029A8000F2BB95 /* ADJConfig.m */; };
+		9620EA451B062D6F009673F1 /* ADJTestActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */; };
+		9620EA4E1B06401B009673F1 /* ADJTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA4D1B06401B009673F1 /* ADJTest.m */; };
+		9620EA511B065177009673F1 /* ADJPackageFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA501B065177009673F1 /* ADJPackageFields.m */; };
 		96325E89190E892000A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -142,6 +145,12 @@
 		960A8BB71A029A8000F2BB95 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960A8BB81A029A8000F2BB95 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
 		960FCF491A1B9ACE00282BD4 /* example.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = example.xcodeproj; path = example/example.xcodeproj; sourceTree = "<group>"; };
+		9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTestActivityPackage.h; sourceTree = "<group>"; };
+		9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTestActivityPackage.m; sourceTree = "<group>"; };
+		9620EA4C1B06401B009673F1 /* ADJTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTest.h; sourceTree = "<group>"; };
+		9620EA4D1B06401B009673F1 /* ADJTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTest.m; sourceTree = "<group>"; };
+		9620EA4F1B065177009673F1 /* ADJPackageFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPackageFields.h; sourceTree = "<group>"; };
+		9620EA501B065177009673F1 /* ADJPackageFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPackageFields.m; sourceTree = "<group>"; };
 		96325E84190E5CD900A97911 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96325E86190E5CE400A97911 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9644B7EA19F148F3008576FC /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
@@ -360,6 +369,12 @@
 				96ED003C1A38A98C00209110 /* ADJDelegateTest.h */,
 				96ED003D1A38A98C00209110 /* ADJDelegateTest.m */,
 				9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */,
+				9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */,
+				9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */,
+				9620EA4C1B06401B009673F1 /* ADJTest.h */,
+				9620EA4D1B06401B009673F1 /* ADJTest.m */,
+				9620EA4F1B065177009673F1 /* ADJPackageFields.h */,
+				9620EA501B065177009673F1 /* ADJPackageFields.m */,
 			);
 			path = AdjustTests;
 			sourceTree = "<group>";
@@ -448,7 +463,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
+			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -568,8 +583,11 @@
 				96E5E3B118BBB49E008E7B30 /* ADJLoggerMock.m in Sources */,
 				96E5E3AF18BBB49E008E7B30 /* ADJActivityHandlerMock.m in Sources */,
 				96E5E3B318BBB49E008E7B30 /* ADJPackageHandlerTests.m in Sources */,
+				9620EA451B062D6F009673F1 /* ADJTestActivityPackage.m in Sources */,
 				96E5E3B618BBB49E008E7B30 /* ADJTestsUtil.m in Sources */,
 				96CD2BE11A13BFC600A40AFB /* UIDevice+ADJAdditions.m in Sources */,
+				9620EA511B065177009673F1 /* ADJPackageFields.m in Sources */,
+				9620EA4E1B06401B009673F1 /* ADJTest.m in Sources */,
 				96E5E3B018BBB49E008E7B30 /* ADJActivityHandlerTests.m in Sources */,
 				96ED003E1A38A98C00209110 /* ADJDelegateTest.m in Sources */,
 				96CD2BE01A13BFC600A40AFB /* NSString+ADJAdditions.m in Sources */,
@@ -782,7 +800,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */ = {
+		9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9679922E18BBAE2800394606 /* Debug */,
