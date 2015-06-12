@@ -23,7 +23,6 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)finishedTracking:(NSDictionary *)jsonDict;
-- (void)sendClickPackage:(ADJActivityPackage *) clickPackage;
 
 @end
 

@@ -86,12 +86,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTracking:jsonDict];
 }
 
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    [self.logger debug:@"Sending click package (%@)", clickPackage];
-    [self.logger verbose:@"%@", clickPackage.extendedString];
-    [self.requestHandler sendClickPackage:clickPackage];
-}
-
 #pragma mark - internal
 - (void)initInternal:(id<ADJActivityHandler>)activityHandler
          startPaused:(BOOL)startPaused
@@ -105,7 +99,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)addInternal:(ADJActivityPackage *)newPackage {
-    [self.packageQueue addObject:newPackage];
+    if (newPackage.activityKind == ADJActivityKindClick && [self.packageQueue count] > 0) {
+        [self.packageQueue insertObject:newPackage atIndex:1];
+    } else {
+        [self.packageQueue addObject:newPackage];
+    }
     [self.logger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
     [self.logger verbose:@"%@", newPackage.extendedString];
 
