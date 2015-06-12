@@ -568,10 +568,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void)updateAttributionHandlerStatus {
-    if (self.attributionHandler == nil) {
-        return;
-    }
-
     if ([self paused]) {
         [self.attributionHandler pauseSending];
     } else {
@@ -580,10 +576,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void)updatePackageHandlerStatus {
-    if (self.packageHandler == nil) {
-        return;
-    }
-
     if ([self paused]) {
         [self.packageHandler pauseSending];
     } else {
