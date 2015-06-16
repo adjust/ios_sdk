@@ -70,5 +70,12 @@
     return activityPackage;
 }
 
++ (ADJActivityPackage *)getClickPackage:(NSString*)suffix
+{
+    ADJActivityPackage *activityPackage = [[ADJActivityPackage alloc] init];
+    activityPackage.activityKind = ADJActivityKindClick;
+    activityPackage.suffix = suffix;
+    return activityPackage;
+}
 
 @end

@@ -817,12 +817,8 @@
 
     // three click packages: attributions, extraParams and mixed
     for (int i = 3; i > 0; i--) {
-        aTest(@"PackageHandler sendClickPackage");
+        aTest(@"PackageHandler addPackage");
     }
-
-    // check that it did not send any other click package
-    anTest(@"AttributionHandler getAttribution");
-    anTest(@"PackageHandler sendClickPackage");
 
     // checking the default values of the first session package
     // 1 session + 3 click
@@ -912,7 +908,7 @@
     [NSThread sleepForTimeInterval:2];
 
     // didn't send click package
-    anTest(@"PackageHandler sendClickPackage");
+    anTest(@"PackageHandler addPackage");
 
     // 1 session
     aiEquals(1, (int)[self.packageHandlerMock.packageQueue count]);
@@ -933,8 +929,8 @@
     [NSThread sleepForTimeInterval:2];
 
     // first and second iad packages
-    aTest(@"PackageHandler sendClickPackage");
-    aTest(@"PackageHandler sendClickPackage");
+    aTest(@"PackageHandler addPackage");
+    aTest(@"PackageHandler addPackage");
 
     // 1 session + 2 click packages
     aiEquals(3, (int)[self.packageHandlerMock.packageQueue count]);

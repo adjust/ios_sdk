@@ -19,5 +19,6 @@
 + (NSString *)getFilename:(NSString *)filename;
 + (BOOL)deleteFile:(NSString *)filename logger:(ADJLoggerMock *)loggerMock;
 + (ADJActivityPackage *)getUnknowPackage:(NSString*)suffix;
++ (ADJActivityPackage *)getClickPackage:(NSString*)suffix;
 
 @end

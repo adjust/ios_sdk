@@ -54,33 +54,26 @@
 
 - (void)testSend
 {
-    [self testSendPackage:NO];
-
-    [self testSendPackage:YES];
-}
-
-- (void)testSendPackage:(BOOL)isClickPackage
-{
     // null response
     [NSURLConnection setResponseType:ADJResponseTypeNil];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
-    [self checkCloseFirstPackage:isClickPackage];
+    aTest(@"PackageHandler closeFirstPackage");
 
     // client exception
     [NSURLConnection setResponseType:ADJResponseTypeConnError];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
     aError(@"Failed to track unknown (connection error) Will retry later");
 
-    [self checkCloseFirstPackage:isClickPackage];
+    aTest(@"PackageHandler closeFirstPackage");
 
     // server error
     [NSURLConnection setResponseType:ADJResponseTypeServerError];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
     aVerbose(@"Response: { \"message\": \"testResponseError\"}");
 
@@ -88,23 +81,23 @@
 
     aTest(@"PackageHandler finishedTracking, \"message\" = \"testResponseError\";");
 
-    [self checkSendNext:isClickPackage];
+    aTest(@"PackageHandler sendNextPackage");
 
     // wrong json
     [NSURLConnection setResponseType:ADJResponseTypeWrongJson];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
     aVerbose(@"Response: not a json response");
 
-    aError(@"Failed to parse json response. (The operation couldn’t be completed. (Cocoa error 3840.))");
+    aError(@"Failed to parse json response. (The data couldn’t be read because it isn’t in the correct format.)");
 
-    [self checkCloseFirstPackage:isClickPackage];
+    aTest(@"PackageHandler closeFirstPackage");
 
     // empty json
     [NSURLConnection setResponseType:ADJResponseTypeEmptyJson];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
     aVerbose(@"Response: { }");
 
@@ -112,12 +105,12 @@
 
     aTest(@"PackageHandler finishedTracking, ");
 
-    [self checkSendNext:isClickPackage];
+    aTest(@"PackageHandler sendNextPackage");
 
     // message response
     [NSURLConnection setResponseType:ADJResponseTypeMessage];
 
-    [self checkSendPackage:isClickPackage];
+    [self checkSendPackage];
 
     aVerbose(@"Response: { \"message\" : \"response OK\"}");
 
@@ -125,38 +118,16 @@
 
     aTest(@"PackageHandler finishedTracking, \"message\" = \"response OK\";");
 
-    [self checkSendNext:isClickPackage];
+    aTest(@"PackageHandler sendNextPackage");
 }
 
-- (void)checkSendNext:(BOOL)isClickPackage
+- (void)checkSendPackage
 {
-    if (isClickPackage) {
-        anTest(@"PackageHandler sendNextPackage");
-    } else {
-        aTest(@"PackageHandler sendNextPackage");
-    }
-}
-
-- (void)checkSendPackage:(BOOL)isClickPackage
-{
-    if (isClickPackage) {
-        [self.requestHandler sendClickPackage:[ADJTestsUtil getUnknowPackage:@""]];
-    } else {
-        [self.requestHandler sendPackage:[ADJTestsUtil getUnknowPackage:@""]];
-    }
+    [self.requestHandler sendPackage:[ADJTestsUtil getUnknowPackage:@""]];
 
     [NSThread sleepForTimeInterval:1.0];
 
     aTest(@"NSURLConnection sendSynchronousRequest");
-}
-
-- (void)checkCloseFirstPackage:(BOOL)isClickPackage
-{
-    if (isClickPackage) {
-        anTest(@"PackageHandler closeFirstPackage");
-    } else {
-        aTest(@"PackageHandler closeFirstPackage");
-    }
 }
 
 @end

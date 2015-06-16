@@ -57,9 +57,4 @@ static NSString * const prefix = @"RequestHandler ";
      */
 }
 
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"sendClickPackage, %@", clickPackage.description]];
-}
-
-
 @end

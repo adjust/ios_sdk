@@ -110,7 +110,7 @@
 
     aVerbose(@"Response: not a json response");
 
-    aError(@"Failed to parse json response. (The operation couldn’t be completed. (Cocoa error 3840.))");
+    aError(@"Failed to parse json response. (The data couldn’t be read because it isn’t in the correct format.)");
 
     // test empty response
     [self checkGetAttributionResponse:attributionHandler responseType:ADJResponseTypeEmptyJson];

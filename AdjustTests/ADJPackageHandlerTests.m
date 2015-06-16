@@ -67,14 +67,39 @@ typedef enum {
     //  initialize Package Handler
     id<ADJPackageHandler> packageHandler = [self createPackageHandler];
 
-    ADJActivityPackage *firstActivityPackage = [ADJTestsUtil getUnknowPackage:@"FirstPackage"];
+    ADJActivityPackage *firstClickPackage = [ADJTestsUtil getClickPackage:@"FirstPackage"];
 
-    [packageHandler addPackage:firstActivityPackage];
+    [packageHandler addPackage:firstClickPackage];
     [NSThread sleepForTimeInterval:1.0];
 
-    [self checkAddPackage:1 packageString:@"unknownFirstPackage"];
+    [self checkAddPackage:1 packageString:@"clickFirstPackage"];
 
-    [self checkAddSecondPackage:nil];
+    id<ADJPackageHandler> secondPackageHandler = [self checkAddSecondPackage:nil];
+
+    ADJActivityPackage *secondClickPackage = [ADJTestsUtil getClickPackage:@"ThirdPackage"];
+
+    [secondPackageHandler addPackage:secondClickPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    [self checkAddPackage:3 packageString:@"clickThirdPackage"];
+
+    // send the first click package/ first package
+    [secondPackageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"RequestHandler sendPackage, clickFirstPackage");
+
+    // send the second click package/ third package
+    [secondPackageHandler sendNextPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"RequestHandler sendPackage, clickThirdPackage");
+
+    // send the unknow package/ second package
+    [secondPackageHandler sendNextPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"RequestHandler sendPackage, unknownSecondPackage");
 }
 
 - (void)testSendFirst
@@ -200,10 +225,6 @@ typedef enum {
     [packageHandler finishedTracking:nil];
 
     aTest(@"ActivityHandler finishedTracking, (null)");
-
-    [packageHandler sendClickPackage:[ADJTestsUtil getUnknowPackage:@""]];
-
-    aTest(@"RequestHandler sendClickPackage, unknown");
 }
 
 - (id<ADJPackageHandler>)createPackageHandler

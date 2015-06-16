@@ -73,9 +73,4 @@ static NSString * const prefix = @"PackageHandler ";
     self.jsonDict = jsonDict;
 }
 
-- (void)sendClickPackage:(ADJActivityPackage *) clickPackage {
-    [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
-    [self.packageQueue addObject:clickPackage];
-}
-
 @end
