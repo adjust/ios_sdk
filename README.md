@@ -267,15 +267,15 @@ or add the method `openURL` and add the following call to adjust:
 }
 ```
 
-Since iOs 9, for an app to open deep links, it needs to register them, even for its own deeplinks.
-The adjust SDK opens the deeplink from the own app, so to add the deeplink that your app uses, follow the steps:
+Since iOS 9, for an app to open deep links, it needs to register them, even for its own deep links.
+The adjust SDK may open deep links from within your app (deferred deeplinking), so to add the deep link that your app uses, follow these steps:
 
 1. Edit the `info.plist` file of your app.
 2. Add a new row of type `Array`.
 3. Set the key name as `LSApplicationQueriesSchemes`.
 4. Add the schemas of your deeplinks to this newly created list.
 
-In our example app, the custom url schema used for deeplinks is `adjustExample`, 
+In our example app, the custom URL schema used for deep links is `adjustExample`, 
 so the change in the `info.plist` file looks like:
 
 ```XML
