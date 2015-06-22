@@ -118,7 +118,7 @@
         copy.hasDelegate = self.hasDelegate;
         // adjust delegate not copied
     }
-    
+
     return copy;
 }
 

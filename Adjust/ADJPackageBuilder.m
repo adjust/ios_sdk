@@ -44,7 +44,7 @@
     NSMutableDictionary *parameters = [self defaultParameters];
     [self parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [self parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
-    
+
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
     sessionPackage.activityKind = ADJActivityKindSession;
@@ -204,11 +204,13 @@
     [self parameters:parameters setString:activityState.uuid            forKey:@"ios_uuid"];
 
 }
+
 - (void)injectCreatedAt:(double) createdAt
       intoParameters:(NSMutableDictionary *) parameters
 {
     [self parameters:parameters setDate1970:createdAt forKey:@"created_at"];
 }
+
 - (NSString *)eventSuffix:(ADJEvent*)event {
     if (event.revenue == nil) {
         return [NSString stringWithFormat:@"'%@'", event.eventToken];
@@ -285,7 +287,7 @@
 
     NSMutableDictionary *joinedParameters = [[NSMutableDictionary alloc] initWithDictionary:permanentParameters];
     [joinedParameters addEntriesFromDictionary:parameters];
-    
+
     return joinedParameters;
 }
 @end

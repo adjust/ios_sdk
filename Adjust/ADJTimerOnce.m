@@ -42,6 +42,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     return self;
 }
+
 - (NSTimeInterval)fireIn {
     if (self.fireDate == nil) {
         return 0;
