@@ -51,7 +51,17 @@ extern NSString *const SCMCustomerTargeting;
 @interface ADJSociomantic : NSObject
 
 /**
- * Methods uses the the given dictionary, filters it and injects it into the event.
+ * Methods uses the given string, stores it into a singleton, it'll be injected into every
+ * further sociomantic event.
+ *
+ * @param   event           `NSString`
+ *
+ * @return  `void`
+ */
++ (void)injectPartnerIdIntoSociomanticEvents:(NSString *)adpanId;
+
+/**
+ * Methods uses the given dictionary, filters it and injects it into the event.
  *
  * @param   event           `ADJEvent`
  * @param   data            `NSDictionary`
@@ -60,6 +70,29 @@ extern NSString *const SCMCustomerTargeting;
  */
 + (void)injectCustomerDataIntoEvent:(ADJEvent *)event
                            withData:(NSDictionary *)data;
+
+
+/**
+ * Method makes sure the event has the adpanId into the event.
+ *
+ * @param   event           `ADJEvent`
+ *
+ * @return  `void`
+ */
++ (void)addPartnerParameter:(ADJEvent *)event;
+
+
+/**
+ * Method makes sure the event has the adpanId into the event and injects the json 
+ * value into the partner parameter.
+ *
+ * @param   event           `ADJEvent`
+ *
+ * @return  `void`
+ */
++ (void)addPartnerParameter:(ADJEvent *)event
+                  parameter:(NSString *)parameterName
+                      value:(NSString *)jsonValue;
 
 /**
  * Method injects a home page view into an Adjust event.
