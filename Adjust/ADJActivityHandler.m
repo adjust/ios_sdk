@@ -143,8 +143,8 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
             [self.logger info:@"Package and attribution handler remain paused due to the SDK is offline"];
         } else {
             [self.logger info:@"Resuming package handler and attribution handler to enabled the SDK"];
+            [self trackSubsessionStart];
         }
-        [self trackSubsessionStart];
     } else {
         [self.logger info:@"Pausing package handler and attribution handler to disable the SDK"];
         [self trackSubsessionEnd];
@@ -228,9 +228,9 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
             [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
         } else {
             [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
+            [self trackSubsessionStart];
         }
     }
-    [self updateStatus];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
