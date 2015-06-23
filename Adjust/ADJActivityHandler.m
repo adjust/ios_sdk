@@ -126,12 +126,13 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    if (enabled == _enabled) {
+    if (enabled == [self isEnabled]) {
         if (enabled) {
             [self.logger debug:@"Adjust already enabled"];
         } else {
             [self.logger debug:@"Adjust already disabled"];
         }
+        return;
     }
     _enabled = enabled;
     if (self.activityState != nil) {
@@ -148,6 +149,29 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     } else {
         [self.logger info:@"Pausing package handler and attribution handler to disable the SDK"];
         [self trackSubsessionEnd];
+    }
+}
+
+- (void)setOfflineMode:(BOOL)offline {
+    if (self.offline == offline) {
+        if (offline) {
+            [self.logger debug:@"Adjust already in offline mode"];
+        } else {
+            [self.logger debug:@"Adjust already in online mode"];
+        }
+        return;
+    }
+    self.offline = offline;
+    if (offline) {
+        [self.logger info:@"Pausing package and attribution handler to put in offline mode"];
+        [self trackSubsessionEnd];
+    } else {
+        if ([self paused]) {
+            [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
+        } else {
+            [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
+            [self trackSubsessionStart];
+        }
     }
 }
 
@@ -210,27 +234,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
     }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
-}
-
-- (void)setOfflineMode:(BOOL)offline {
-    if (self.offline == offline) {
-        if (offline) {
-            [self.logger debug:@"Adjust already in offline mode"];
-        } else {
-            [self.logger debug:@"Adjust already in online mode"];
-        }
-    }
-    self.offline = offline;
-    if (offline) {
-        [self.logger info:@"Pausing package and attribution handler to put in offline mode"];
-    } else {
-        if ([self paused]) {
-            [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
-        } else {
-            [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
-            [self trackSubsessionStart];
-        }
-    }
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
