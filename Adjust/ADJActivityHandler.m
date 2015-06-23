@@ -126,53 +126,41 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    if (enabled == [self isEnabled]) {
-        if (enabled) {
-            [self.logger debug:@"Adjust already enabled"];
-        } else {
-            [self.logger debug:@"Adjust already disabled"];
-        }
+    if (![self hasChangedState:[self isEnabled]
+                     nextState:enabled
+                   trueMessage:@"Adjust already enabled"
+                  falseMessage:@"Adjust already disabled"])
+    {
         return;
     }
+
     _enabled = enabled;
     if (self.activityState != nil) {
         self.activityState.enabled = enabled;
         [self writeActivityState];
     }
-    if (enabled) {
-        if ([self paused]) {
-            [self.logger info:@"Package and attribution handler remain paused due to the SDK is offline"];
-        } else {
-            [self.logger info:@"Resuming package handler and attribution handler to enabled the SDK"];
-            [self trackSubsessionStart];
-        }
-    } else {
-        [self.logger info:@"Pausing package handler and attribution handler to disable the SDK"];
-        [self trackSubsessionEnd];
-    }
+
+    [self updateState:!enabled
+       pausingMessage:@"Pausing package handler and attribution handler to disable the SDK"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to the SDK is offline"
+     unPausingMessage:@"Resuming package handler and attribution handler to enabled the SDK"];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    if (self.offline == offline) {
-        if (offline) {
-            [self.logger debug:@"Adjust already in offline mode"];
-        } else {
-            [self.logger debug:@"Adjust already in online mode"];
-        }
+    if (![self hasChangedState:self.offline
+                     nextState:offline
+                   trueMessage:@"Adjust already in offline mode"
+                  falseMessage:@"Adjust already in online mode"])
+    {
         return;
     }
+
     self.offline = offline;
-    if (offline) {
-        [self.logger info:@"Pausing package and attribution handler to put in offline mode"];
-        [self trackSubsessionEnd];
-    } else {
-        if ([self paused]) {
-            [self.logger info:@"Package and attribution handler remain paused because the SDK is disabled"];
-        } else {
-            [self.logger info:@"Resuming package handler and attribution handler to put in online mode"];
-            [self trackSubsessionStart];
-        }
-    }
+
+    [self updateState:offline
+       pausingMessage:@"Pausing package and attribution handler to put in offline mode"
+ remainsPausedMessage:@"Package and attribution handler remain paused because the SDK is disabled"
+     unPausingMessage:@"Resuming package handler and attribution handler to put in online mode"];
 }
 
 - (BOOL)isEnabled {
@@ -180,6 +168,43 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
         return self.activityState.enabled;
     } else {
         return _enabled;
+    }
+}
+
+- (BOOL)hasChangedState:(BOOL)previousState
+              nextState:(BOOL)nextState
+            trueMessage:(NSString *)trueMessage
+           falseMessage:(NSString *)falseMessage
+{
+    if (previousState != nextState) {
+        return YES;
+    }
+
+    if (previousState) {
+        [self.logger debug:trueMessage];
+    } else {
+        [self.logger debug:falseMessage];
+    }
+
+    return NO;
+}
+
+- (void)updateState:(BOOL)pausingState
+     pausingMessage:(NSString *)pausingMessage
+remainsPausedMessage:(NSString *)remainsPausedMessage
+   unPausingMessage:(NSString *)unPausingMessage
+{
+    if (pausingState) {
+        [self.logger info:pausingMessage];
+        [self trackSubsessionEnd];
+        return;
+    }
+
+    if ([self paused]) {
+        [self.logger info:remainsPausedMessage];
+    } else {
+        [self.logger info:unPausingMessage];
+        [self trackSubsessionStart];
     }
 }
 
