@@ -28,12 +28,6 @@
     return self;
 }
 
-- (void)asdf:(NSString *)message {
-    //XCTAssert(YES);
-    //XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:message],
-    //          @"%@", self.loggerMock);
-}
-
 + (NSString *)getFilename:(NSString *)filename {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];

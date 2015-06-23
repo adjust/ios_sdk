@@ -13,7 +13,7 @@
 // assert level
 #define aLevel(message, logLevel) \
     XCTAssert([self.loggerMock \
-            containsMessage:logLevel \
+            deleteUntil:logLevel \
             beginsWith:message], \
           @"%@", self.loggerMock)
 
@@ -41,7 +41,7 @@
 // assert not level
 #define anLevel(message, logLevel) \
     XCTAssertFalse([self.loggerMock \
-            containsMessage:logLevel \
+            deleteUntil:logLevel \
             beginsWith:message], \
         @"%@", self.loggerMock)
 

@@ -650,6 +650,9 @@
     // test first session start without attribution handler
     [self checkFirstSession:YES];
 
+    // test end session of disable
+    [self checkEndSession];
+
     // try to do activities while SDK disabled
     [activityHandler trackSubsessionStart];
     [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"event1"]];
@@ -658,9 +661,6 @@
 
     // check that timer was not executed
     anDebug(@"Session timer fired");
-
-    // but that it was paused
-    aDebug(@"Wrote Activity state: ec:0 sc:1 ssc:1");
 
     // check that it did not resume
     anTest(@"PackageHandler resumeSending");
@@ -683,11 +683,8 @@
     // wait to update status
     [NSThread sleepForTimeInterval:6.0];
 
-    // update attribution handler to paused
-    aTest(@"AttributionHandler pauseSending");
-
-    // update package handler to paused
-    aTest(@"PackageHandler pauseSending");
+    // test end session of offline
+    [self checkEndSession];
 
     // re-enable the SDK
     [activityHandler setEnabled:YES];
@@ -703,8 +700,8 @@
 
     [self checkNewSession:YES sessionCount:2 eventCount:0 timerAlreadyStarted:NO];
 
-    // and that it fired the timer
-    //anDebug(@"Session timer fired");
+    // and that the timer is not fired
+    anDebug(@"Session timer fired");
     
     // track an event
     [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"event1"]];
@@ -758,13 +755,7 @@
     [NSThread sleepForTimeInterval:1.0];
 
     // test sub session not paused
-    [self checkNewSession:NO sessionCount:3 eventCount:1];
-
-    // after sending the first package saves the activity state
-    //aDebug(@"Wrote Activity state: ec:1 sc:3 ssc:1");
-
-    // and that it fired the timer
-    //aDebug(@"Session timer fired");
+    [self checkNewSession:NO sessionCount:3 eventCount:1 timerAlreadyStarted:YES];
 }
 
 - (void)testAppWillOpenUrl
@@ -1222,17 +1213,6 @@
     // test first session start
     [self checkFirstSession:YES];
 
-    // check that the update status from set offline mode was triggered after the first session
-    aTest(@"PackageHandler pauseSending");
-
-    // it didn't pause attribution handler because it wasn't lazily init
-    anTest(@"AttributionHandler pauseSending");
-
-    // start the attribution handler by ending the session
-    [activityHandler trackSubsessionEnd];
-
-    [NSThread sleepForTimeInterval:1];
-
     // test end session logs
     [self checkEndSession];
 
@@ -1260,9 +1240,9 @@
 
     [NSThread sleepForTimeInterval:1];
 
-    // test the update status, still paused
-    aTest(@"AttributionHandler pauseSending");
-    aTest(@"PackageHandler pauseSending");
+    // doesn't pause if it was already paused
+    anTest(@"AttributionHandler pauseSending");
+    anTest(@"PackageHandler pauseSending");
 
     // try to do activities while SDK disabled
     [activityHandler trackSubsessionStart];
