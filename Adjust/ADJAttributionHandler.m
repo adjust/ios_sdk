@@ -11,9 +11,8 @@
 #import "ADJUtil.h"
 #import "ADJActivityHandler.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJTimer.h"
+#import "ADJTimerOnce.h"
 
-static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 
 @interface ADJAttributionHandler()
@@ -21,9 +20,10 @@ static const char * const kInternalQueueName     = "com.adjust.AttributionQueue"
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) ADJTimer *askInTimer;
-@property (nonatomic, retain) ADJTimer *maxDelayTimer;
+@property (nonatomic, retain) ADJTimerOnce *timer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
+@property (nonatomic, assign) BOOL paused;
+@property (nonatomic, assign) BOOL hasDelegate;
 
 @end
 
@@ -32,17 +32,20 @@ static const double kRequestTimeout = 60; // 60 seconds
 @implementation ADJAttributionHandler
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                           withMaxDelay:(NSNumber *)milliseconds
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                            startPaused:(BOOL)startPaused
+                                            hasDelegate:(BOOL)hasDelegate;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
-                                                     withMaxDelay:milliseconds
-                                           withAttributionPackage:attributionPackage];
+                                           withAttributionPackage:attributionPackage
+                                                      startPaused:startPaused
+                                                      hasDelegate:hasDelegate];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                 withMaxDelay:(NSNumber*) milliseconds
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                  startPaused:(BOOL)startPaused
+                  hasDelegate:(BOOL)hasDelegate;
 {
     self = [super init];
     if (self == nil) return nil;
@@ -51,12 +54,10 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
-
-    if (milliseconds != nil) {
-        uint64_t timerNano = [milliseconds intValue] * NSEC_PER_MSEC;
-        self.maxDelayTimer = [ADJTimer timerWithStart:timerNano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self.activityHandler launchAttributionDelegate]; }];
-        [self.maxDelayTimer resume];
-    }
+    self.paused = startPaused;
+    self.hasDelegate = hasDelegate;
+    self.timer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
+                                         queue:self.internalQueue];
 
     return self;
 }
@@ -67,15 +68,36 @@ static const double kRequestTimeout = 60; // 60 seconds
     });
 }
 
+- (void) getAttributionWithDelay:(int)milliSecondsDelay {
+    NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
+    NSTimeInterval nextAskIn = [self.timer fireIn];
+    if (nextAskIn > secondsDelay) {
+        return;
+    }
+
+    if (milliSecondsDelay > 0) {
+        [self.logger debug:@"Waiting to query attribution in %d milliseconds", milliSecondsDelay];
+    }
+
+    // set the new time the timer will fire in
+    [self.timer startIn:secondsDelay];
+}
+
 - (void) getAttribution {
-    dispatch_async(self.internalQueue, ^{
-        [self getAttributionInternal];
-    });
+    [self getAttributionWithDelay:0];
+}
+
+- (void) pauseSending {
+    self.paused = YES;
+}
+
+- (void) resumeSending {
+    self.paused = NO;
 }
 
 #pragma mark - internal
 -(void) checkAttributionInternal:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
+    if ([ADJUtil isNull:jsonDict]) return;
 
     NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
     ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
@@ -83,11 +105,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSNumber *timerMilliseconds = [jsonDict objectForKey:@"ask_in"];
 
     if (timerMilliseconds == nil) {
-        BOOL updated = [self.activityHandler updateAttribution:attribution];
-
-        if (updated) {
-            [self.activityHandler launchAttributionDelegate];
-        }
+        [self.activityHandler updateAttribution:attribution];
 
         [self.activityHandler setAskingAttribution:NO];
 
@@ -95,63 +113,22 @@ static const double kRequestTimeout = 60; // 60 seconds
     };
 
     [self.activityHandler setAskingAttribution:YES];
-    if (self.askInTimer != nil) {
-        [self.askInTimer cancel];
-    }
 
-    [self.logger debug:@"Waiting to query attribution in %d milliseconds", [timerMilliseconds intValue]];
-
-    uint64_t timer_nano = [timerMilliseconds intValue] * NSEC_PER_MSEC;
-    self.askInTimer = [ADJTimer timerWithStart:timer_nano leeway:kTimerLeeway queue:self.internalQueue block:^{ [self getAttributionInternal]; }];
-    [self.askInTimer resume];
+    [self getAttributionWithDelay:[timerMilliseconds intValue]];
 }
 
 -(void) getAttributionInternal {
+    if (!self.hasDelegate) {
+        return;
+    }
+    if (self.paused) {
+        [self.logger debug:@"Attribution handler is paused"];
+        return;
+    }
     [self.logger verbose:@"%@", self.attributionPackage.extendedString];
-    if (self.askInTimer != nil) {
-        [self.askInTimer cancel];
-        self.askInTimer = nil;
-    }
 
-    NSMutableURLRequest *request = [self request];
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                             returningResponse:&urlResponse
-                                                         error:&requestError];
-    // connection error
-    if (requestError != nil) {
-        [self.logger error:@"Failed to get attribution. (%@)", requestError.localizedDescription];
-        return;
-    }
-    if (responseData == nil) {
-        [self.logger error:@"Failed to get attribution. (empty error)"];
-        return;
-    }
-
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
-    NSInteger statusCode = ((NSHTTPURLResponse*)urlResponse).statusCode;
-    [self.logger verbose:@"status code %d for attribution response: %@", statusCode, responseString];
-
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
-
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
-        [self.logger error:@"Failed to parse json attribution response: %@", responseString];
-        return;
-    }
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-
-    if (messageResponse == nil) {
-        messageResponse = @"No message found";
-    }
-
-    if (statusCode == 200) {
-        [self.logger debug:@"%@", messageResponse];
-    } else {
-        [self.logger error:@"%@", messageResponse];
-    }
+    NSDictionary * jsonDict = [ADJUtil sendRequest:[self request]
+                                      prefixErrorMessage:@"Failed to get attribution"];
 
     [self checkAttributionInternal:jsonDict];
 }

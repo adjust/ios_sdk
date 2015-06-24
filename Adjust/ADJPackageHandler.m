@@ -25,7 +25,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, retain) id<ADJRequestHandler> requestHandler;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
-@property (nonatomic, assign, getter = isPaused) BOOL paused;
+@property (nonatomic, assign) BOOL paused;
 
 @end
 
@@ -33,19 +33,20 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 #pragma mark -
 @implementation ADJPackageHandler
 
-+ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
-    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler];
++ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                        startPaused:(BOOL)startPaused {
+    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler startPaused:startPaused];
 }
 
-- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                  startPaused:(BOOL)startPaused {
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.activityHandler = activityHandler;
 
     dispatch_async(self.internalQueue, ^{
-        [self initInternal];
+        [self initInternal:activityHandler startPaused:startPaused];
     });
 
     return self;
@@ -81,18 +82,16 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)finishedTrackingActivity:(NSDictionary *)jsonDict{
-    [self.activityHandler finishedTrackingWithResponse:jsonDict];
-}
-
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    [self.logger debug:@"Sending click package (%@)", clickPackage];
-    [self.logger verbose:@"%@", clickPackage.extendedString];
-    [self.requestHandler sendClickPackage:clickPackage];
+- (void)finishedTracking:(NSDictionary *)jsonDict{
+    [self.activityHandler finishedTracking:jsonDict];
 }
 
 #pragma mark - internal
-- (void)initInternal {
+- (void)initInternal:(id<ADJActivityHandler>)activityHandler
+         startPaused:(BOOL)startPaused
+{
+    self.activityHandler = activityHandler;
+    self.paused = startPaused;
     self.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:self];
     self.logger = ADJAdjustFactory.logger;
     self.sendingSemaphore = dispatch_semaphore_create(1);
@@ -100,7 +99,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)addInternal:(ADJActivityPackage *)newPackage {
-    [self.packageQueue addObject:newPackage];
+    if (newPackage.activityKind == ADJActivityKindClick && [self.packageQueue count] > 0) {
+        [self.packageQueue insertObject:newPackage atIndex:1];
+    } else {
+        [self.packageQueue addObject:newPackage];
+    }
     [self.logger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
     [self.logger verbose:@"%@", newPackage.extendedString];
 
@@ -110,7 +113,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 - (void)sendFirstInternal {
     if (self.packageQueue.count == 0) return;
 
-    if (self.isPaused) {
+    if (self.paused) {
         [self.logger debug:@"Package handler is paused"];
         return;
     }

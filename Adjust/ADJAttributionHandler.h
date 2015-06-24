@@ -13,20 +13,25 @@
 @protocol ADJAttributionHandler
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                 withMaxDelay:(NSNumber*) milliseconds
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+       withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                 startPaused:(BOOL)startPaused
+                  hasDelegate:(BOOL)hasDelegate;
 
 - (void)checkAttribution:(NSDictionary *)jsonDict;
 
 - (void)getAttribution;
+
+- (void)pauseSending;
+
+- (void)resumeSending;
 
 @end
 
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                           withMaxDelay:(NSNumber *)milliseconds
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage;
-
+                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                            startPaused:(BOOL)startPaused
+                                            hasDelegate:(BOOL)hasDelegate;
 
 @end

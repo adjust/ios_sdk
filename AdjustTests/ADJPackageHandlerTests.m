@@ -12,10 +12,17 @@
 #import "ADJActivityHandlerMock.h"
 #import "ADJRequestHandlerMock.h"
 #import "ADJTestsUtil.h"
+#import "ADJTestActivityPackage.h"
 
-@interface ADJPackageHandlerTests : XCTestCase
+typedef enum {
+    ADJSendFirstEmptyQueue = 0,
+    ADJSendFirstPaused = 1,
+    ADJSendFirstIsSending = 2,
+    ADJSendFirstSend = 3,
+} ADJSendFirst;
 
-@property (atomic,strong) ADJLoggerMock *loggerMock;
+@interface ADJPackageHandlerTests : ADJTestActivityPackage
+
 @property (atomic,strong) ADJRequestHandlerMock *requestHandlerMock;
 @property (atomic,strong) ADJActivityHandlerMock *activityHandlerMock;
 
@@ -52,154 +59,265 @@
     XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
 }
 
-- (void)testFirstPackage
+- (void)testAddPackage
 {
     //  reseting to make the test order independent
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock];
+    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
 
-    [NSThread sleepForTimeInterval:2.0];
+    ADJActivityPackage *firstClickPackage = [ADJTestsUtil getClickPackage:@"FirstPackage"];
 
-    //  enable sending packages to Request Handler
-    [packageHandler resumeSending];
-
-    //  build and add the first package to the queue
-    [packageHandler addPackage:[ADJTestsUtil buildEmptyPackage]];
-
-    //  send the first package in the queue to the mock request handler
-    [packageHandler sendFirstPackage];
-
-    //  it's necessary to sleep the activity for a while after each handler call
-    //  to let the internal queue act
+    [packageHandler addPackage:firstClickPackage];
     [NSThread sleepForTimeInterval:1.0];
 
-    //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    [self checkAddPackage:1 packageString:@"clickFirstPackage"];
 
-    //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
+    id<ADJPackageHandler> secondPackageHandler = [self checkAddSecondPackage:nil];
 
-    //  check that added first package to a previous empty queue
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package 1 (session)"], @"%@", self.loggerMock);
+    ADJActivityPackage *secondClickPackage = [ADJTestsUtil getClickPackage:@"ThirdPackage"];
 
-    //TODO add the verbose message
+    [secondPackageHandler addPackage:secondClickPackage];
+    [NSThread sleepForTimeInterval:1.0];
 
-    //  it should write the package queue with the first session package
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler wrote 1 packages"], @"%@", self.loggerMock);
+    [self checkAddPackage:3 packageString:@"clickThirdPackage"];
 
-    //  check that the Request Handler was called to send the package
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler sendPackage"],  @"%@", self.loggerMock);
+    // send the first click package/ first package
+    [secondPackageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:1.0];
 
-    //  check that the the request handler called the package callback, that foward it to the activity handler
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJActivityHandler finishedTrackingWithResponse"],
-            @"%@", self.loggerMock);
+    aTest(@"RequestHandler sendPackage, clickFirstPackage");
 
-    //  check that the package was removed from the queue and 0 packages were written
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler wrote 0 packages"], @"%@", self.loggerMock);
+    // send the second click package/ third package
+    [secondPackageHandler sendNextPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"RequestHandler sendPackage, clickThirdPackage");
+
+    // send the unknow package/ second package
+    [secondPackageHandler sendNextPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"RequestHandler sendPackage, unknownSecondPackage");
 }
 
-- (void) testPaused {
-
+- (void)testSendFirst
+{
     //  reseting to make the test order independent
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock];
+    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
 
-    [NSThread sleepForTimeInterval:2.0];
+    [self checkSendFirst:ADJSendFirstEmptyQueue];
 
-    //  disable sending packages to Request Handler
+    [self checkAddAndSendFirst:packageHandler];
+
+    // try to send when it is still sending
+    [packageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    [self checkSendFirst:ADJSendFirstIsSending];
+
+    // try to send paused
     [packageHandler pauseSending];
-
-    // build and add a package the queue
-    [packageHandler addPackage:[ADJTestsUtil buildEmptyPackage]];
-
-    //  try to send the first package in the queue to the mock request handler
     [packageHandler sendFirstPackage];
-
     [NSThread sleepForTimeInterval:1.0];
 
-    //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    [self checkSendFirst:ADJSendFirstPaused];
 
-    //  check that a package was added
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package"], @"%@", self.loggerMock);
-
-    //  check that the mock request handler was NOT called to send the package
-    XCTAssertFalse([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler sendPackage"], @"%@", self.loggerMock);
-
-    //  check that the package handler is paused
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler is paused"], @"%@", self.loggerMock);
-
-}
-
-- (void) testMultiplePackages {
-
-    //  reseting to make the test order independent
-    [self reset];
-
-    //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock];
-
-    [NSThread sleepForTimeInterval:2.0];
-
-    //  enable sending packages to Request Handler
+    // unpause, it's still sending
     [packageHandler resumeSending];
-
-    //  build and add the 3 packages to the queue
-    [packageHandler addPackage:[ADJTestsUtil buildEmptyPackage]];
-    [packageHandler addPackage:[ADJTestsUtil buildEmptyPackage]];
-    [packageHandler addPackage:[ADJTestsUtil buildEmptyPackage]];
-
-    //  create a new package handler to simulate a new launch
-    [NSThread sleepForTimeInterval:1.0];
-    packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock];
-
-    //  try to send two packages without closing the first
     [packageHandler sendFirstPackage];
-    [packageHandler sendFirstPackage];
-
     [NSThread sleepForTimeInterval:1.0];
 
-    //  check that the request handler mock was created
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler initWithPackageHandler"], @"%@", self.loggerMock);
+    [self checkSendFirst:ADJSendFirstIsSending];
 
-    //  test that the file did not exist in the first run of the application
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package queue file not found"], @"%@", self.loggerMock);
+    // verify that both paused and isSending are reset with a new session
+    id<ADJPackageHandler> secondpackageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
+                                                                                  startPaused:NO];
 
-    //  check that added the third package to the queue and wrote to a file
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Added package 3 (session)"], @"%@", self.loggerMock);
+    [secondpackageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:1.0];
 
-    //  check that it reads the same 3 packages in the file
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Package handler read 3 packages"], @"%@", self.loggerMock);
-
-    //  check that the package handler was already sending one package before
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Package handler is already sending"], @"%@", self.loggerMock);
+    // send the package to request handler
+    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
 }
 
-- (void) testClickPackage {
+- (void)testSendNext
+{
     //  reseting to make the test order independent
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock];
+    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
 
-    [NSThread sleepForTimeInterval:2.0];
+    // add and send the first package
+    [self checkAddAndSendFirst:packageHandler];
 
-    [packageHandler sendClickPackage:[ADJTestsUtil buildEmptyPackage]];
-
+    // try to send when it is still sending
+    [packageHandler sendFirstPackage];
     [NSThread sleepForTimeInterval:1.0];
 
-    //  check if is sending clickPackage
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelDebug beginsWith:@"Sending click package ("], @"%@", self.loggerMock);
+    [self checkSendFirst:ADJSendFirstIsSending];
 
-    //  check that it prints it in verbose
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Path:      "], @"%@", self.loggerMock);
+    // add a second package
+    [self checkAddSecondPackage:packageHandler];
 
-    // check if request handler got clikPackage
-    XCTAssert([self.loggerMock containsMessage:ADJLogLevelTest beginsWith:@"ADJRequestHandler sendClickPackage"], @"%@", self.loggerMock);
+    //send next package
+    [packageHandler sendNextPackage];
+    [NSThread sleepForTimeInterval:2.0];
+
+    aDebug(@"Package handler wrote 1 packages");
+
+    // try to send the second package
+    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownSecondPackage"];
 }
 
+- (void)testCloseFirstPackage
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    //  initialize Package Handler
+    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
+
+    [self checkAddAndSendFirst:packageHandler];
+
+    // try to send when it is still sending
+    [packageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    [self checkSendFirst:ADJSendFirstIsSending];
+
+    //send next package
+    [packageHandler closeFirstPackage];
+    [NSThread sleepForTimeInterval:2.0];
+
+    anDebug(@"Package handler wrote");
+
+    [packageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:2.0];
+
+    // try to send the first package again
+    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
+}
+
+- (void)testCalls
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    //  initialize Package Handler
+    id<ADJPackageHandler> packageHandler = [self createPackageHandler:YES];
+
+    ADJActivityPackage *firstActivityPackage = [ADJTestsUtil getUnknowPackage:@"FirstPackage"];
+
+    [packageHandler addPackage:firstActivityPackage];
+    [packageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:2.0];
+
+    [self checkAddPackage:1 packageString:@"unknownFirstPackage"];
+
+    [self checkSendFirst:ADJSendFirstPaused];
+
+    [packageHandler finishedTracking:nil];
+
+    aTest(@"ActivityHandler finishedTracking, (null)");
+}
+
+- (id<ADJPackageHandler>)createPackageHandler
+{
+    return [self createPackageHandler:NO];
+}
+
+- (id<ADJPackageHandler>)createPackageHandler:(BOOL)startPaused
+{
+    //  initialize Package Handler
+    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
+                                                                                  startPaused:startPaused];
+    [NSThread sleepForTimeInterval:2.0];
+
+    aVerbose(@"Package queue file not found");
+
+    return packageHandler;
+}
+
+- (id<ADJPackageHandler>)checkAddSecondPackage:(id<ADJPackageHandler>)packageHandler
+{
+    if (packageHandler == nil) {
+        packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
+                                                                startPaused:NO];
+
+        [NSThread sleepForTimeInterval:2.0];
+
+        anVerbose(@"Package queue file not found");
+
+        // check that it can read the previously saved package
+        aDebug(@"Package handler read 1 packages");
+
+    }
+    ADJActivityPackage * secondActivityPackage = [ADJTestsUtil getUnknowPackage:@"SecondPackage"];
+
+    [packageHandler addPackage:secondActivityPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    [self checkAddPackage:2 packageString:@"unknownSecondPackage"];
+
+    return packageHandler;
+}
+
+- (void)checkAddAndSendFirst:(id<ADJPackageHandler>)packageHandler
+{
+    // add a package
+    ADJActivityPackage *firstActivityPackage = [ADJTestsUtil getUnknowPackage:@"FirstPackage"];
+
+    // send the first package
+    [packageHandler addPackage:firstActivityPackage];
+
+    [packageHandler sendFirstPackage];
+    [NSThread sleepForTimeInterval:2.0];
+
+    [self checkAddPackage:1 packageString:@"unknownFirstPackage"];
+
+    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
+}
+
+- (void)checkSendFirst:(ADJSendFirst)sendFirstState
+{
+    [self checkSendFirst:sendFirstState packageString:nil];
+}
+- (void)checkSendFirst:(ADJSendFirst)sendFirstState
+         packageString:(NSString*)packageString
+{
+    if (sendFirstState == ADJSendFirstPaused) {
+        aDebug(@"Package handler is paused");
+    } else {
+        anDebug(@"Package handler is paused");
+    }
+
+    if (sendFirstState == ADJSendFirstIsSending) {
+        aVerbose(@"Package handler is already sending");
+    } else {
+        anVerbose(@"Package handler is already sending");
+    }
+
+    if (sendFirstState == ADJSendFirstSend) {
+        NSString * aSend = [NSString stringWithFormat:@"RequestHandler sendPackage, %@", packageString];
+        aTest(aSend);
+    } else {
+        anTest(@"RequestHandler sendPackage");
+    }
+}
+
+- (void)checkAddPackage:(int)packageNumber
+          packageString:(NSString*)packageString
+{
+    NSString * aAdded = [NSString stringWithFormat:@"Added package %d (%@)", packageNumber, packageString];
+    aDebug(aAdded);
+
+    NSString * aPackagesWrote = [NSString stringWithFormat:@"Package handler wrote %d packages", packageNumber];
+    aDebug(aPackagesWrote);
+}
 @end

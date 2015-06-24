@@ -27,7 +27,6 @@ static const int kTransactionIdCount = 10;
     self.sessionLength   = -1;
     self.timeSpent       = -1;
     self.lastActivity    = -1;
-    self.createdAt       = -1;
     self.lastInterval    = -1;
     self.transactionIds  = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.enabled         = YES;
@@ -41,7 +40,6 @@ static const int kTransactionIdCount = 10;
     self.sessionLength   = 0;
     self.timeSpent       = 0;
     self.lastActivity    = now;
-    self.createdAt       = -1;
     self.lastInterval    = -1;
 }
 
@@ -78,7 +76,6 @@ static const int kTransactionIdCount = 10;
     self.subsessionCount   = [decoder decodeIntForKey:@"subsessionCount"];
     self.sessionLength     = [decoder decodeDoubleForKey:@"sessionLength"];
     self.timeSpent         = [decoder decodeDoubleForKey:@"timeSpent"];
-    self.createdAt         = [decoder decodeDoubleForKey:@"createdAt"];
     self.lastActivity      = [decoder decodeDoubleForKey:@"lastActivity"];
 
     // default values for migrating devices
@@ -121,7 +118,6 @@ static const int kTransactionIdCount = 10;
     [encoder encodeInt:self.subsessionCount    forKey:@"subsessionCount"];
     [encoder encodeDouble:self.sessionLength   forKey:@"sessionLength"];
     [encoder encodeDouble:self.timeSpent       forKey:@"timeSpent"];
-    [encoder encodeDouble:self.createdAt       forKey:@"createdAt"];
     [encoder encodeDouble:self.lastActivity    forKey:@"lastActivity"];
     [encoder encodeObject:self.uuid            forKey:@"uuid"];
     [encoder encodeObject:self.transactionIds  forKey:@"transactionIds"];
@@ -137,7 +133,6 @@ static const int kTransactionIdCount = 10;
         copy.subsessionCount   = self.subsessionCount;
         copy.sessionLength     = self.sessionLength;
         copy.timeSpent         = self.timeSpent;
-        copy.createdAt         = self.createdAt;
         copy.uuid              = [self.uuid copyWithZone:zone];
         copy.lastInterval      = self.lastInterval;
         copy.eventCount        = self.eventCount;

@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "ADJLogger.h"
 
-static const int ADJLogLevelTest = 0;
+static const int ADJLogLevelTest = 7;
+static const int ADJLogLevelCheck = 8;
 
 @interface ADJLoggerMock : NSObject <ADJLogger>
 - (void)test:(NSString *)message, ...;
-- (BOOL)containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
-- (void) reset;
+- (BOOL)deleteUntil:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
+- (void)reset;
 
 @end

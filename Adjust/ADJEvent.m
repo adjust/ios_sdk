@@ -8,6 +8,7 @@
 
 #import "ADJEvent.h"
 #import "ADJAdjustFactory.h"
+#import "ADJUtil.h"
 
 #pragma mark -
 @interface ADJEvent()
@@ -51,7 +52,7 @@
     }
 
     if ([self.callbackMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"key %@ was overwritten", key];
     }
 
     [self.callbackMutableParameters setObject:value forKey:key];
@@ -73,7 +74,7 @@
     }
 
     if ([self.partnerMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"key %@ was overwritten", key];
     }
 
     [self.partnerMutableParameters setObject:value forKey:key];
@@ -101,7 +102,7 @@
 }
 
 - (BOOL) checkEventToken:(NSString *)eventToken {
-    if (eventToken == nil) {
+    if ([ADJUtil isNull:eventToken]) {
         [self.logger error:@"Missing Event Token"];
         return NO;
     }
@@ -117,14 +118,14 @@
 - (BOOL) checkRevenue:(NSNumber*) revenue
              currency:(NSString*) currency
 {
-    if (revenue != nil) {
+    if (![ADJUtil isNull:revenue]) {
         double amount =  [revenue doubleValue];
         if (amount < 0.0) {
             [self.logger error:@"Invalid amount %.4f", amount];
             return NO;
         }
 
-        if (currency == nil) {
+        if ([ADJUtil isNull:currency]) {
             [self.logger error:@"Currency must be set with revenue"];
             return NO;
         }
@@ -134,7 +135,7 @@
             return NO;
         }
     } else {
-        if (currency != nil) {
+        if (![ADJUtil isNull:currency]) {
             [self.logger error:@"Revenue must be set with currency"];
             return NO;
         }
@@ -144,17 +145,13 @@
 }
 
 - (BOOL) isValid {
-    if (![self checkEventToken:self.eventToken]) return NO;
-    if (![self checkRevenue:self.revenue currency:self.currency]) return NO;
-    if (![self checkReceipt:self.receipt transactionId:self.transactionId]) return NO;
-
-    return YES;
+    return self.eventToken != nil;
 }
 
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
     if (![self checkReceipt:receipt transactionId:transactionId]) return;
 
-    if (receipt == nil || [receipt length] == 0) {
+    if ([ADJUtil isNull:receipt] || [receipt length] == 0) {
         _emptyReceipt = YES;
     }
     _receipt = receipt;
@@ -162,7 +159,7 @@
 }
 
 - (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if (receipt != nil && transactionId == nil) {
+    if (![ADJUtil isNull:receipt] && [ADJUtil isNull:transactionId]) {
         [self.logger error:@"Missing transactionId"];
         return NO;
     }
@@ -173,7 +170,7 @@
             attributeType:(NSString *)attributeType
             parameterName:(NSString *)parameterName
 {
-    if (attribute == nil) {
+    if ([ADJUtil isNull:attribute]) {
         [self.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
         return NO;
     }
@@ -197,7 +194,9 @@
         }
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        if (self.transactionId != nil) {
+        if (self.emptyReceipt) {
+            [copy setReceipt:self.receipt transactionId:self.transactionId];
+        } else if (self.transactionId != nil) {
             if (self.receipt != nil) {
                 [copy setReceipt:self.receipt transactionId:self.transactionId];
             } else {

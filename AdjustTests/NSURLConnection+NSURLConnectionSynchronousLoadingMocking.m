@@ -9,8 +9,8 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLoggerMock.h"
 
-static BOOL triggerConnectionError = NO;
-static int triggerResponse = 0;
+static ADJResponseType responseTypeInternal;
+static NSURLRequest * lastRequest = nil;
 
 @implementation NSURLConnection(NSURLConnectionSynchronousLoadingMock)
 
@@ -18,13 +18,36 @@ static int triggerResponse = 0;
     ADJLoggerMock *loggerMock =(ADJLoggerMock *)ADJAdjustFactory.logger;
     [loggerMock test:@"NSURLConnection sendSynchronousRequest"];
 
-    if (triggerConnectionError) {
+    lastRequest = request;
+    NSInteger statusCode = 200;
+    NSString * sResponse;
+
+    if (responseTypeInternal == ADJResponseTypeNil) {
+        return nil;
+    } else if (responseTypeInternal == ADJResponseTypeConnError) {
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"connection error", nil) };
         (*error) = [NSError errorWithDomain:@"Adjust"
-                                             code:-57
-                                         userInfo:userInfo];
+                                       code:-57
+                                   userInfo:userInfo];
         return nil;
+    } else if (responseTypeInternal == ADJResponseTypeServerError) {
+        statusCode = 500;
+        sResponse = @"{ \"message\": \"testResponseError\"}";
+    } else if (responseTypeInternal == ADJResponseTypeWrongJson) {
+        sResponse = @"not a json response";
+    } else if (responseTypeInternal == ADJResponseTypeEmptyJson) {
+        sResponse = @"{ }";
+    } else if (responseTypeInternal == ADJResponseTypeMessage) {
+        sResponse = @"{ \"message\" : \"response OK\"}";
     }
+    //  build response
+    (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
+
+    NSData *responseData = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
+
+    return responseData;
+
+    /*
     NSInteger statusCode;
     NSString * sResponse;
     if (triggerResponse == 0) {
@@ -53,16 +76,21 @@ static int triggerResponse = 0;
     NSData *responseData = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
 
     return responseData;
+     */
 }
 
-+ (void)setConnectionError:(BOOL)connection {
-    triggerConnectionError = connection;
++ (void)setResponseType:(ADJResponseType)responseType {
+    responseTypeInternal = responseType;
 }
 
-+ (void)setResponse:(int)response {
-    triggerResponse = response;
++ (NSURLRequest *)getLastRequest
+{
+    return lastRequest;
 }
 
-
++ (void)reset {
+    responseTypeInternal = ADJResponseTypeNil;
+    lastRequest = nil;
+}
 
 @end

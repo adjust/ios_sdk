@@ -75,9 +75,6 @@ static NSString * const kWWAN   = @"WWAN";
         copy.systemVersion = [self.systemVersion copyWithZone:zone];
         copy.languageCode = [self.languageCode copyWithZone:zone];
         copy.countryCode = [self.countryCode copyWithZone:zone];
-        copy.networkType = [self.networkType copyWithZone:zone];
-        copy.mobileCountryCode = [self.mobileCountryCode copyWithZone:zone];
-        copy.mobileNetworkCode = [self.mobileNetworkCode copyWithZone:zone];
     }
     
     return copy;

@@ -16,7 +16,6 @@
 
 - (void)sendPackage:(ADJActivityPackage *)activityPackage;
 
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage;
 @end
 
 

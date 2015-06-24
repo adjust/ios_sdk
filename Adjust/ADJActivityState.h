@@ -23,7 +23,6 @@
 @property (nonatomic, assign) double sessionLength; // all durations in seconds
 @property (nonatomic, assign) double timeSpent;
 @property (nonatomic, assign) double lastActivity;  // all times in seconds since 1970
-@property (nonatomic, assign) double createdAt;
 
 // last ten transaction identifiers
 @property (nonatomic, retain) NSMutableArray *transactionIds;

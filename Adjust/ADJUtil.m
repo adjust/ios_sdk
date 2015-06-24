@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.2.5";
+static NSString * const kClientSdk = @"ios4.2.6";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -101,10 +101,12 @@ static NSDateFormatter *dateFormat;
     @try {
         jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     } @catch (NSException *ex) {
+        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", ex.description];
         return nil;
     }
 
     if (error != nil) {
+        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", error.localizedDescription];
         return nil;
     }
 
@@ -177,4 +179,76 @@ static NSDateFormatter *dateFormat;
     return queryString;
 }
 
++ (BOOL)isNull:(id)value {
+    return value == nil || value == (id)[NSNull null];
+}
+
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+                 prefixErrorMessage:(NSString *)prefixErrorMessage
+{
+    return [ADJUtil sendRequest:request prefixErrorMessage:prefixErrorMessage suffixErrorMessage:nil];
+}
+
++ (NSString *)formatErrorMessage:(NSString *)prefixErrorMessage
+              systemErrorMessage:(NSString *)systemErrorMessage
+              suffixErrorMessage:(NSString *)suffixErrorMessage
+{
+    NSString * errorMessage = [NSString stringWithFormat:@"%@ (%@)", prefixErrorMessage, systemErrorMessage];
+    if (suffixErrorMessage == nil) {
+        return errorMessage;
+    } else {
+        return [errorMessage stringByAppendingFormat:@" %@", suffixErrorMessage];
+    }
+}
+
++ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
+                 prefixErrorMessage:(NSString *)prefixErrorMessage
+           suffixErrorMessage:(NSString *)suffixErrorMessage
+{
+    NSError *responseError = nil;
+    NSHTTPURLResponse *urlResponse = nil;
+
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:&urlResponse
+                                                             error:&responseError];
+
+    // connection error
+    if (responseError != nil) {
+        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
+                                                systemErrorMessage:responseError.localizedDescription
+                                                suffixErrorMessage:suffixErrorMessage]];
+        return nil;
+    }
+    if ([ADJUtil isNull:responseData]) {
+        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
+                                                systemErrorMessage:@"empty error"
+                                                suffixErrorMessage:suffixErrorMessage]];
+        return nil;
+    }
+
+    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
+    NSInteger statusCode = urlResponse.statusCode;
+
+    [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
+
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
+
+    if ([ADJUtil isNull:jsonDict]) {
+        return nil;
+    }
+
+    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+
+    if (messageResponse == nil) {
+        messageResponse = @"No message found";
+    }
+
+    if (statusCode == 200) {
+        [ADJAdjustFactory.logger info:@"%@", messageResponse];
+    } else {
+        [ADJAdjustFactory.logger error:@"%@", messageResponse];
+    }
+
+    return jsonDict;
+}
 @end

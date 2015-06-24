@@ -6,12 +6,27 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
+#import <XCTest/XCTestAssertionsImpl.h>
 #import "ADJTestsUtil.h"
 #import "ADJPackageBuilder.h"
-#import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
+@interface ADJTestsUtil()
+
+@property (nonatomic, strong) ADJLoggerMock* loggerMock;
+
+@end
+
 @implementation ADJTestsUtil
+
+- (id)initWithLoggerMock:(ADJLoggerMock *)loggerMock {
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.loggerMock = loggerMock;
+
+    return self;
+}
 
 + (NSString *)getFilename:(NSString *)filename {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -42,10 +57,19 @@
     return deleted;
 }
 
-+ (ADJActivityPackage *)buildEmptyPackage {
-    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] init];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
-    return sessionPackage;
++ (ADJActivityPackage *)getUnknowPackage:(NSString*)suffix
+{
+    ADJActivityPackage *activityPackage = [[ADJActivityPackage alloc] init];
+    activityPackage.suffix = suffix;
+    return activityPackage;
+}
+
++ (ADJActivityPackage *)getClickPackage:(NSString*)suffix
+{
+    ADJActivityPackage *activityPackage = [[ADJActivityPackage alloc] init];
+    activityPackage.activityKind = ADJActivityKindClick;
+    activityPackage.suffix = suffix;
+    return activityPackage;
 }
 
 @end
