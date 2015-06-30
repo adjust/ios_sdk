@@ -188,7 +188,7 @@
     aTest(@"PackageHandler addPackage");
 
     // check that event was buffered
-    aInfo(@"Buffered event (0.0010 EUR, 'event1')");
+    aInfo(@"Buffered event (0.00100 EUR, 'event1')");
 
     // and not sent to package handler
     anTest(@"PackageHandler sendFirstPackage");
@@ -230,7 +230,7 @@
     aTest(@"PackageHandler addPackage");
 
     // check that event was buffered
-    aInfo(@"Buffered event (0.0000 USD, 'event3')");
+    aInfo(@"Buffered event (0.00000 USD, 'event3')");
 
     // and not sent to package handler
     anTest(@"PackageHandler sendFirstPackage");
@@ -289,7 +289,7 @@
     firstPackageFields.currency = @"EUR";
     firstPackageFields.callbackParameters = @"{\"keyCall\":\"valueCall2\",\"fooCall\":\"barCall\"}";
     firstPackageFields.partnerParameters = @"{\"keyPartner\":\"valuePartner2\",\"fooPartner\":\"barPartner\"}";
-    firstPackageFields.suffix = @"(0.0010 EUR, 'event1')";
+    firstPackageFields.suffix = @"(0.00100 EUR, 'event1')";
 
     // test first event
     [self testEventSession:firstEventPackage fields:firstPackageFields eventToken:@"event1"];
@@ -304,7 +304,7 @@
     thirdPackageFields.eventCount = @"2";
     thirdPackageFields.revenue = @"0.00000";
     thirdPackageFields.currency = @"USD";
-    thirdPackageFields.suffix = @"(0.0000 USD, 'event3')";
+    thirdPackageFields.suffix = @"(0.00000 USD, 'event3')";
     thirdPackageFields.receipt = @"eyAidHJhbnNhY3Rpb24taWQiID0gInRfaWRfMiI7IH0";
 
     // test third event
@@ -420,7 +420,7 @@
     // event with negative revenue
     [firstEvent setRevenue:-0.0001 currency:@"EUR"];
 
-    aError(@"Invalid amount -0.0001");
+    aError(@"Invalid amount -0.00010");
 
     // event with null currency
     [firstEvent setRevenue:0 currency:nil];

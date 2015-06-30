@@ -121,7 +121,7 @@
     if (![ADJUtil isNull:revenue]) {
         double amount =  [revenue doubleValue];
         if (amount < 0.0) {
-            [self.logger error:@"Invalid amount %.4f", amount];
+            [self.logger error:@"Invalid amount %.5f", amount];
             return NO;
         }
 
