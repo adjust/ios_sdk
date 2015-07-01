@@ -341,7 +341,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Disable tracking
+### 11. Offline mode
 
 You can put the adjust SDK in offline mode to suspend transmission to our servers, 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
