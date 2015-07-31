@@ -95,10 +95,10 @@
     [self parameters:parameters setDate:self.purchaseTime                 forKey:@"purchase_time"];
 
     if (self.attribution != nil) {
-        [self parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
-        [self parameters:parameters setString:self.attribution.campaign forKey:@"campaign"];
-        [self parameters:parameters setString:self.attribution.adgroup forKey:@"adgroup"];
-        [self parameters:parameters setString:self.attribution.creative forKey:@"creative"];
+        [self parameters:parameters setString:self.attribution.trackerName  forKey:@"tracker"];
+        [self parameters:parameters setString:self.attribution.campaign     forKey:@"campaign"];
+        [self parameters:parameters setString:self.attribution.adgroup      forKey:@"adgroup"];
+        [self parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
