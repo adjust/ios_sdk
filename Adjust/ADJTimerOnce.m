@@ -52,7 +52,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)startIn:(NSTimeInterval)startIn
 {
-    self.fireDate = [[NSDate date] initWithTimeIntervalSinceNow:startIn];
+    self.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:startIn];
 
     if (self.source != nil) {
         dispatch_cancel(self.source);
