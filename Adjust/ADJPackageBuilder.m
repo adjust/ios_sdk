@@ -179,6 +179,7 @@
     [self parameters:parameters setString:deviceInfo.pushToken         forKey:@"push_token"];
     [self parameters:parameters setString:deviceInfo.bundeIdentifier   forKey:@"bundle_id"];
     [self parameters:parameters setString:deviceInfo.bundleVersion     forKey:@"app_version"];
+    [self parameters:parameters setString:deviceInfo.bundleShortVersion forKey:@"app_version_short"];
     [self parameters:parameters setString:deviceInfo.deviceType        forKey:@"device_type"];
     [self parameters:parameters setString:deviceInfo.deviceName        forKey:@"device_name"];
     [self parameters:parameters setString:deviceInfo.osName            forKey:@"os_name"];
