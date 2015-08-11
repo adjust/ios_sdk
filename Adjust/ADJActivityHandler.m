@@ -114,15 +114,13 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
 
-    if (![[UIApplication sharedApplication]
-          canOpenURL:deepLinkUrl]) {
-        [self.logger error:@"Unable to open deep link (%@)", deepLink];
-        return;
-    }
-
     [self.logger info:@"Open deep link (%@)", deepLink];
 
-    [[UIApplication sharedApplication] openURL:deepLinkUrl];
+    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
+
+    if (!success) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLink];
+    }
 }
 
 - (void)setEnabled:(BOOL)enabled {
