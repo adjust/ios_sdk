@@ -17,7 +17,7 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.2.7'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.2.8'
 ```
 
 ### 1. Get the SDK
@@ -343,7 +343,27 @@ You can check if the adjust SDK is currently enabled by calling the function
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Partner parameters
+### 11. Offline mode
+
+You can put the adjust SDK in offline mode to suspend transmission to our servers, 
+while retaining tracked data to be sent later. While in offline mode, all information is saved
+in a file, so be careful not to trigger too many events while in offline mode.
+
+You can activate offline mode by calling `setOfflineMode` with the parameter `YES`.
+
+```objc
+[Adjust setOfflineMode:YES];
+```
+
+Conversely, you can deactivate offline mode by calling `setOfflineMode` with `NO`.
+When the adjust SDK is put back in online mode, all saved information is send to our servers 
+with the correct time information.
+
+Unlike disabling tracking, this setting is *not remembered*
+bettween sessions. This means that the SDK is in online mode whenever it is started,
+even if the app was terminated in offline mode.
+
+### 12. Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the
 integrations that have been activated in your adjust dashboard.
