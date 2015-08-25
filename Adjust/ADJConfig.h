@@ -88,7 +88,7 @@
  * @param delegate The delegate that might implement the optional delegate
  *     methods like adjustAttributionChanged:
  */
-@property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, assign) BOOL hasDelegate;
 
 - (BOOL) isValid;
