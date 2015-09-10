@@ -30,11 +30,13 @@
 
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
-+ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-           prefixErrorMessage:(NSString *)prefixErrorMessage;
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 
-+ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-           prefixErrorMessage:(NSString *)prefixErrorMessage
-           suffixErrorMessage:(NSString *)suffixErrorMessage;
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+ suffixErrorMessage:(NSString *)suffixErrorMessage
+jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 
 @end

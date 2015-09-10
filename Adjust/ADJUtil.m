@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.2.8";
+static NSString * const kClientSdk = @"ios4.2.9";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -26,6 +26,8 @@ static NSDateFormatter *dateFormat;
 
 + (void) initialize {
     dateFormat = [[NSDateFormatter alloc] init];
+    dateFormat.calendar = [NSCalendar calendarWithIdentifier:NSGregorianCalendar];
+    dateFormat.locale = [NSLocale systemLocale];
     [dateFormat setDateFormat:kDateFormat];
 }
 
@@ -183,12 +185,6 @@ static NSDateFormatter *dateFormat;
     return value == nil || value == (id)[NSNull null];
 }
 
-+ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-                 prefixErrorMessage:(NSString *)prefixErrorMessage
-{
-    return [ADJUtil sendRequest:request prefixErrorMessage:prefixErrorMessage suffixErrorMessage:nil];
-}
-
 + (NSString *)formatErrorMessage:(NSString *)prefixErrorMessage
               systemErrorMessage:(NSString *)systemErrorMessage
               suffixErrorMessage:(NSString *)suffixErrorMessage
@@ -201,9 +197,55 @@ static NSDateFormatter *dateFormat;
     }
 }
 
-+ (NSDictionary *)sendRequest:(NSMutableURLRequest *)request
-                 prefixErrorMessage:(NSString *)prefixErrorMessage
-           suffixErrorMessage:(NSString *)suffixErrorMessage
++ (void)sendRequest:(NSMutableURLRequest *)request
+           prefixErrorMessage:(NSString *)prefixErrorMessage
+          jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+{
+    [ADJUtil sendRequest:request
+             prefixErrorMessage:prefixErrorMessage
+             suffixErrorMessage:nil
+            jsonResponseHandler:jsonResponseHandler];
+}
+
++ (void)sendRequest:(NSMutableURLRequest *)request
+             prefixErrorMessage:(NSString *)prefixErrorMessage
+             suffixErrorMessage:(NSString *)suffixErrorMessage
+            jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+{
+    Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
+    if (NSURLSessionClass != nil) {
+        [ADJUtil sendNSURLSessionRequest:request
+                      prefixErrorMessage:prefixErrorMessage
+                      suffixErrorMessage:suffixErrorMessage
+                     jsonResponseHandler:jsonResponseHandler];
+    } else {
+        [ADJUtil sendNSURLConnectionRequest:request
+                         prefixErrorMessage:prefixErrorMessage
+                         suffixErrorMessage:suffixErrorMessage
+                        jsonResponseHandler:jsonResponseHandler];
+    }
+}
+
++ (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request
+             prefixErrorMessage:(NSString *)prefixErrorMessage
+             suffixErrorMessage:(NSString *)suffixErrorMessage
+            jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+{
+    NSURLSession *session = [NSURLSession sharedSession];
+
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                            completionHandler:
+                                  ^(NSData *data, NSURLResponse *response, NSError *error) {
+                                      NSDictionary * jsonResponse = [ADJUtil completionHandler:data response:(NSHTTPURLResponse *)response error:error prefixErrorMessage:prefixErrorMessage suffixErrorMessage:suffixErrorMessage];
+                                      jsonResponseHandler(jsonResponse);
+                                  }];
+    [task resume];
+}
+
++ (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
+                prefixErrorMessage:(NSString *)prefixErrorMessage
+                suffixErrorMessage:(NSString *)suffixErrorMessage
+               jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
 {
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
@@ -212,6 +254,21 @@ static NSDateFormatter *dateFormat;
                                                  returningResponse:&urlResponse
                                                              error:&responseError];
 
+    NSDictionary * jsonResponse = [ADJUtil completionHandler:responseData
+                                                    response:(NSHTTPURLResponse *)urlResponse
+                                                       error:responseError
+                                          prefixErrorMessage:prefixErrorMessage
+                                          suffixErrorMessage:suffixErrorMessage];
+
+    jsonResponseHandler(jsonResponse);
+}
+
++ (NSDictionary *)completionHandler:(NSData *)responseData
+                           response:(NSHTTPURLResponse *)urlResponse
+                              error:(NSError *)responseError
+                 prefixErrorMessage:(NSString *)prefixErrorMessage
+                 suffixErrorMessage:(NSString *)suffixErrorMessage
+{
     // connection error
     if (responseError != nil) {
         [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
