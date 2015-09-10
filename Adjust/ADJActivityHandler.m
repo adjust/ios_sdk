@@ -255,6 +255,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (self.delegate == nil) {
         return;
     }
+    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        return;
+    }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
