@@ -9,6 +9,7 @@
 #import "ADJConfig.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
+#import "ADJUtil.h"
 
 @implementation ADJConfig
 
@@ -20,10 +21,10 @@
 - (id) initWithAppToken:(NSString *)appToken
             environment:(NSString *)environment
 {
-    if (![self checkAppToken:appToken]) return nil;
-    if (![self checkEnvironment:environment logAssert:YES]) return nil;
+    if (![self checkAppToken:appToken]) return self;
+    if (![self checkEnvironment:environment]) return self;
 
-    return [self initWithoutCheckAppToken:appToken environment:environment];
+    return [self initSelfWithAppToken:appToken environment:environment];
 }
 
 - (id) initWithoutCheckAppToken:(NSString *)appToken
@@ -32,18 +33,25 @@
     self = [super init];
     if (self == nil) return nil;
 
+    return [self initSelfWithAppToken:appToken environment:environment];
+}
+
+- (id) initSelfWithAppToken:(NSString *)appToken
+                environment:(NSString *)environment {
     _appToken = appToken;
     _environment = environment;
 
     // default values
     self.logLevel = ADJLogLevelInfo;
     self.macMd5TrackingEnabled = YES;
+    self.hasDelegate = NO;
+    self.eventBufferingEnabled = NO;
 
     return self;
 }
 
 - (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    if (delegate == nil) {
+    if ([ADJUtil isNull:delegate]) {
         _delegate = nil;
         self.hasDelegate = NO;
         return;
@@ -63,30 +71,29 @@
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
-                logAssert:(BOOL)logAssert
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
+    if ([ADJUtil isNull:environment]) {
+        [logger error:@"Missing environment"];
+        return NO;
+    }
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
-        if (logAssert) {
-            [logger assert:@"SANDBOX: Adjust will run in Sandbox mode. Use this setting for testing. Don't forget to set the environment to ADJEnvironmentProduction before publishing!"];
-        }
+        [logger assert:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to `production` before publishing"];
         return YES;
     } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        if (logAssert) {
-            [logger assert:@"PRODUCTION: Adjust will run in Production mode. Use this setting only for the build that you want to publish. Set the environment to ADJEnvironmentSandbox if you want to test your app!"];
-        }
+        [logger assert:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to `sandbox` if you want to test your app!"];
         return YES;
     }
-    [logger error:@"Malformed environment '%@'", environment];
+    [logger error:@"Unknown environment '%@'", environment];
     return NO;
 }
 
 - (BOOL)checkAppToken:(NSString *)appToken {
-    if (appToken == nil) {
+    if ([ADJUtil isNull:appToken]) {
         [ADJAdjustFactory.logger error:@"Missing App Token"];
         return NO;
     }
-    if (appToken == nil || appToken.length != 12) {
+    if (appToken.length != 12) {
         [ADJAdjustFactory.logger error:@"Malformed App Token '%@'", appToken];
         return NO;
     }
@@ -94,9 +101,7 @@
 }
 
 - (BOOL) isValid {
-    if (![self checkAppToken:self.appToken]) return NO;
-    if (![self checkEnvironment:self.environment logAssert:NO]) return NO;
-    return YES;
+    return self.appToken != nil;
 }
 
 -(id)copyWithZone:(NSZone *)zone
@@ -113,7 +118,7 @@
         copy.hasDelegate = self.hasDelegate;
         // adjust delegate not copied
     }
-    
+
     return copy;
 }
 

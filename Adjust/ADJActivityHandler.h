@@ -18,7 +18,7 @@
 
 - (void)trackEvent:(ADJEvent *)event;
 
-- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict;
+- (void)finishedTracking:(NSDictionary *)jsonDict;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;
@@ -33,7 +33,7 @@
 
 - (void) launchAttributionDelegate;
 
-- (void) setOfflineMode:(BOOL)enabled;
+- (void) setOfflineMode:(BOOL)offline;
 
 @end
 

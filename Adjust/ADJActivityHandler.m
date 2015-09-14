@@ -12,7 +12,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
-#import "ADJTimer.h"
+#import "ADJTimerCycle.h"
 #import "ADJUtil.h"
 #import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
@@ -23,10 +23,6 @@ static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 
-static const uint64_t kTimerInterval = 60 * NSEC_PER_SEC; // 1 minute
-static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
-
-
 #pragma mark -
 @interface ADJActivityHandler()
 
@@ -34,20 +30,18 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
-@property (nonatomic, retain) ADJTimer *timer;
+@property (nonatomic, retain) ADJTimerCycle *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, retain) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL offline;
-@property (nonatomic, assign) BOOL shouldGetAttribution;
 
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
 @end
-
 
 #pragma mark -
 @implementation ADJActivityHandler
@@ -62,16 +56,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     if (self == nil) return nil;
 
     if (adjustConfig == nil) {
+        [ADJAdjustFactory.logger error:@"AdjustConfig missing"];
+        return nil;
+    }
+
+    if (![adjustConfig isValid]) {
         [ADJAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
         return nil;
     }
 
     self.adjustConfig = adjustConfig;
     self.delegate = adjustConfig.delegate;
-
-    if (![self.adjustConfig isValid]) {
-        return nil;
-    }
 
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
@@ -104,41 +99,66 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     });
 }
 
-- (void)finishedTrackingWithResponse:(NSDictionary *)jsonDict{
+- (void)finishedTracking:(NSDictionary *)jsonDict{
+    if ([ADJUtil isNull:jsonDict]) return;
+
     [self launchDeepLink:jsonDict];
-    [[self getAttributionHandler] checkAttribution:jsonDict];
+    [self.attributionHandler checkAttribution:jsonDict];
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
+    if ([ADJUtil isNull:jsonDict]) return;
 
     NSString *deepLink = [jsonDict objectForKey:@"deeplink"];
     if (deepLink == nil) return;
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
 
-    if (![[UIApplication sharedApplication]
-          canOpenURL:deepLinkUrl]) {
-        [self.logger error:@"Unable to open deep link (%@)", deepLink];
-        return;
-    }
-
     [self.logger info:@"Open deep link (%@)", deepLink];
 
-    [[UIApplication sharedApplication] openURL:deepLinkUrl];
+    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
+
+    if (!success) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLink];
+    }
 }
 
 - (void)setEnabled:(BOOL)enabled {
+    if (![self hasChangedState:[self isEnabled]
+                     nextState:enabled
+                   trueMessage:@"Adjust already enabled"
+                  falseMessage:@"Adjust already disabled"])
+    {
+        return;
+    }
+
     _enabled = enabled;
     if (self.activityState != nil) {
         self.activityState.enabled = enabled;
         [self writeActivityState];
     }
-    if (enabled) {
-        [self trackSubsessionStart];
-    } else {
-        [self trackSubsessionEnd];
+
+    [self updateState:!enabled
+       pausingMessage:@"Pausing package handler and attribution handler to disable the SDK"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to the SDK is offline"
+     unPausingMessage:@"Resuming package handler and attribution handler to enabled the SDK"];
+}
+
+- (void)setOfflineMode:(BOOL)offline {
+    if (![self hasChangedState:self.offline
+                     nextState:offline
+                   trueMessage:@"Adjust already in offline mode"
+                  falseMessage:@"Adjust already in online mode"])
+    {
+        return;
     }
+
+    self.offline = offline;
+
+    [self updateState:offline
+       pausingMessage:@"Pausing package and attribution handler to put in offline mode"
+ remainsPausedMessage:@"Package and attribution handler remain paused because the SDK is disabled"
+     unPausingMessage:@"Resuming package handler and attribution handler to put in online mode"];
 }
 
 - (BOOL)isEnabled {
@@ -146,6 +166,43 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return self.activityState.enabled;
     } else {
         return _enabled;
+    }
+}
+
+- (BOOL)hasChangedState:(BOOL)previousState
+              nextState:(BOOL)nextState
+            trueMessage:(NSString *)trueMessage
+           falseMessage:(NSString *)falseMessage
+{
+    if (previousState != nextState) {
+        return YES;
+    }
+
+    if (previousState) {
+        [self.logger debug:trueMessage];
+    } else {
+        [self.logger debug:falseMessage];
+    }
+
+    return NO;
+}
+
+- (void)updateState:(BOOL)pausingState
+     pausingMessage:(NSString *)pausingMessage
+remainsPausedMessage:(NSString *)remainsPausedMessage
+   unPausingMessage:(NSString *)unPausingMessage
+{
+    if (pausingState) {
+        [self.logger info:pausingMessage];
+        [self trackSubsessionEnd];
+        return;
+    }
+
+    if ([self paused]) {
+        [self.logger info:remainsPausedMessage];
+    } else {
+        [self.logger info:unPausingMessage];
+        [self trackSubsessionStart];
     }
 }
 
@@ -166,16 +223,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
+    double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:self.deviceInfo
                                        activityState:self.activityState
-                                       config:self.adjustConfig];
+                                       config:self.adjustConfig
+                                       createdAt:now];
 
-    [clickBuilder setClickTime:iAdImpressionDate];
     [clickBuilder setPurchaseTime:appPurchaseDate];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-    [self.packageHandler sendClickPackage:clickPackage];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" clickTime:iAdImpressionDate];
+    [self.packageHandler addPackage:clickPackage];
 }
 
 - (BOOL)updateAttribution:(ADJAttribution *)attribution {
@@ -188,6 +246,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     self.attribution = attribution;
     [self writeAttribution];
 
+    [self launchAttributionDelegate];
+
     return YES;
 }
 
@@ -196,28 +256,21 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
     if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
-        [self.logger warn:@"Delegate can't be launched because it does not implement AdjustDelegate"];
         return;
     }
     [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
-- (void)setOfflineMode:(BOOL)isOffline {
-    self.offline = isOffline;
-    if (isOffline) {
-        [self.logger info:@"Pausing package handler to put in offline mode"];
-        [self endInternal];
-    } else {
-        [self.logger info:@"Resuming package handler to put in online mode"];
-        [self.packageHandler resumeSending];
-        [self startTimer];
-    }
-}
-
-- (void) setAskingAttribution:(BOOL)askingAttribution {
+- (void)setAskingAttribution:(BOOL)askingAttribution {
     self.activityState.askingAttribution = askingAttribution;
     [self writeActivityState];
+}
+
+- (void)updateStatus {
+    dispatch_async(self.internalQueue, ^{
+        [self updateStatusInternal];
+    });
 }
 
 #pragma mark - internal
@@ -245,50 +298,56 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self readAttribution];
     [self readActivityState];
 
-    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self];
+    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
+                                                                 startPaused:[self paused]];
 
-    self.shouldGetAttribution = YES;
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
+                                             initWithDeviceInfo:self.deviceInfo
+                                             activityState:self.activityState
+                                             config:self.adjustConfig
+                                             createdAt:now];
+    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
+    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+                                                              withAttributionPackage:attributionPackage
+                                                                         startPaused:[self paused]
+                                                                         hasDelegate:(self.delegate != nil)];
+
+    self.timer = [ADJTimerCycle timerWithBlock:^{ [self timerFiredInternal]; }
+                                    queue:self.internalQueue
+                                startTime:ADJAdjustFactory.timerStart
+                             intervalTime:ADJAdjustFactory.timerInterval];
 
     [[UIDevice currentDevice] adjSetIad:self];
 
     [self startInternal];
 }
 
-- (id<ADJAttributionHandler>) getAttributionHandler {
-    //TODO self.activity state can be null in the first session
-    if (self.attributionHandler == nil) {
-        ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                                activityState:self.activityState
-                                                                                       config:self.adjustConfig];
-        ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-        self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
-                                                                            withMaxDelay:nil
-                                                                            withAttributionPackage:attributionPackage];
-    }
-
-    return self.attributionHandler;
-}
-
 - (void)startInternal {
+    // it shouldn't start if it was disabled after a first session
     if (self.activityState != nil
         && !self.activityState.enabled) {
         return;
     }
 
-    if (!self.offline) {
-        [self.packageHandler resumeSending];
-    }
-    [self startTimer];
+    [self updateStatusInternal];
 
+    [self processSession];
+
+    [self checkAttributionState];
+
+    [self startTimer];
+}
+
+- (void)processSession {
     double now = [NSDate.date timeIntervalSince1970];
 
     // very first session
     if (self.activityState == nil) {
         self.activityState = [[ADJActivityState alloc] init];
         self.activityState.sessionCount = 1; // this is the first session
-        self.activityState.createdAt = now;  // starting now
 
-        [self transferSessionPackage];
+        [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
         self.activityState.enabled = _enabled;
         [self writeActivityState];
@@ -306,10 +365,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     // new session
     if (lastInterval > ADJAdjustFactory.sessionInterval) {
         self.activityState.sessionCount++;
-        self.activityState.createdAt = now;
         self.activityState.lastInterval = lastInterval;
 
-        [self transferSessionPackage];
+        [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
         [self writeActivityState];
         return;
@@ -321,20 +379,29 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
         [self writeActivityState];
-        [self.logger info:@"Processed Subsession %d of Session %d",
+        [self.logger info:@"Started subsession %d of session %d",
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
     }
+}
 
-    if (self.attribution == nil || self.activityState.askingAttribution) {
-        if (self.shouldGetAttribution) {
-            [[self getAttributionHandler] getAttribution];
-        }
+- (void)checkAttributionState {
+    // if it' a new session
+    if (self.activityState.subsessionCount <= 1) {
+        return;
     }
+
+    // if there is already an attribution saved and there was no attribution being asked
+    if (self.attribution != nil && !self.activityState.askingAttribution) {
+        return;
+    }
+
+    [self.attributionHandler getAttribution];
 }
 
 - (void)endInternal {
     [self.packageHandler pauseSending];
+    [self.attributionHandler pauseSending];
     [self stopTimer];
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
@@ -343,30 +410,26 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 - (void)eventInternal:(ADJEvent *)event
 {
-    // check consistency
-    if (![self checkActivityState:self.activityState]) return;
-    if (![event isValid]) return;
+    if (![self isEnabled]) return;
+    if (![self checkEvent:event]) return;
     if (![self checkTransactionId:event.transactionId]) return;
 
-    if (!self.activityState.enabled) {
-        return;
-    }
-
-    // update activity state
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState:now];
-    self.activityState.createdAt = now;
+
     self.activityState.eventCount++;
+    [self updateActivityState:now];
 
     // create and populate event package
-    ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                      activityState:self.activityState
-                                                                             config:self.adjustConfig];
+    ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig
+                                       createdAt:now];
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [self.packageHandler addPackage:eventPackage];
 
     if (self.adjustConfig.eventBufferingEnabled) {
-        [self.logger info:@"Buffered event%@", eventPackage.suffix];
+        [self.logger info:@"Buffered event %@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
     }
@@ -375,6 +438,10 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
+    if ([ADJUtil isNull:url]) {
+        return;
+    }
+
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
         return;
@@ -394,17 +461,17 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    [[self getAttributionHandler] getAttribution];
-
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                      activityState:self.activityState
-                                                                             config:self.adjustConfig];
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig
+                                       createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
-    [clickBuilder setClickTime:[NSDate date]];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
-    [self.packageHandler sendClickPackage:clickPackage];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" clickTime:[NSDate date]];
+    [self.packageHandler addPackage:clickPackage];
 }
 
 - (BOOL) readDeeplinkQueryString:(NSString *)queryString
@@ -462,7 +529,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
-    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:
+                       [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     self.deviceInfo.pushToken = token;
@@ -472,9 +540,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityState:(double)now {
-    if (![self checkActivityState:self.activityState]) return NO;
-
     double lastInterval = now - self.activityState.lastActivity;
+
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
         self.activityState.lastActivity = now;
@@ -512,24 +579,50 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
                                      class:[ADJAttribution class]];
 }
 
-- (void)transferSessionPackage {
-    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:self.deviceInfo
-                                                                        activityState:self.activityState
-                                                                               config:self.adjustConfig];
+- (void)transferSessionPackage:(double)now {
+    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
+                                         initWithDeviceInfo:self.deviceInfo
+                                         activityState:self.activityState
+                                         config:self.adjustConfig
+                                         createdAt:now];
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
-    self.shouldGetAttribution = NO;
+}
+
+# pragma mark - handlers status
+- (void)updateStatusInternal {
+    [self updateAttributionHandlerStatus];
+    [self updatePackageHandlerStatus];
+}
+
+- (void)updateAttributionHandlerStatus {
+    if ([self paused]) {
+        [self.attributionHandler pauseSending];
+    } else {
+        [self.attributionHandler resumeSending];
+    }
+}
+
+- (void)updatePackageHandlerStatus {
+    if ([self paused]) {
+        [self.packageHandler pauseSending];
+    } else {
+        [self.packageHandler resumeSending];
+    }
+}
+
+- (BOOL)paused {
+    return self.offline || !self.isEnabled;
 }
 
 # pragma mark - timer
 - (void)startTimer {
-    if (self.timer == nil) {
-        self.timer = [ADJTimer timerWithInterval:kTimerInterval
-                                          leeway:kTimerLeeway
-                                           queue:self.internalQueue
-                                           block:^{ [self timerFired]; }];
+    // don't start the timer if it's disabled/offline
+    if ([self paused]) {
+        return;
     }
+
     [self.timer resume];
 }
 
@@ -537,11 +630,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.timer suspend];
 }
 
-- (void)timerFired {
-    if (self.activityState != nil
-        && !self.activityState.enabled) {
+- (void)timerFiredInternal {
+    if ([self paused]) {
+        // stop the timer cycle if it's disabled/offline
+        [self stopTimer];
         return;
     }
+    [self.logger debug:@"Session timer fired"];
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {
@@ -575,15 +670,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 #pragma mark - checks
-- (BOOL)checkActivityState:(ADJActivityState *)activityState {
-    if (activityState == nil) {
-        [self.logger error:@"Missing activity state"];
-        return NO;
-    }
-    return YES;
-}
 
-- (BOOL) checkTransactionId:(NSString *)transactionId {
+- (BOOL)checkTransactionId:(NSString *)transactionId {
     if (transactionId == nil || transactionId.length == 0) {
         return YES; // no transaction ID given
     }
@@ -597,6 +685,20 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.activityState addTransactionId:transactionId];
     [self.logger verbose:@"Added transaction ID %@", self.activityState.transactionIds];
     // activity state will get written by caller
+    return YES;
+}
+
+- (BOOL)checkEvent:(ADJEvent *)event {
+    if (event == nil) {
+        [self.logger error:@"Event missing"];
+        return NO;
+    }
+
+    if (![event isValid]) {
+        [self.logger error:@"Event not initialized correctly"];
+        return NO;
+    }
+
     return YES;
 }
 

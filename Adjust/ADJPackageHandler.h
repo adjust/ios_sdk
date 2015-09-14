@@ -13,7 +13,8 @@
 
 @protocol ADJPackageHandler
 
-- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler;
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                  startPaused:(BOOL)startPaused;
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
@@ -21,13 +22,13 @@
 - (void)closeFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)finishedTrackingActivity:(NSDictionary *)jsonDict;
-- (void)sendClickPackage:(ADJActivityPackage *) clickPackage;
+- (void)finishedTracking:(NSDictionary *)jsonDict;
 
 @end
 
 @interface ADJPackageHandler : NSObject <ADJPackageHandler>
 
-+ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler;
++ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                        startPaused:(BOOL)startPaused;
 
 @end

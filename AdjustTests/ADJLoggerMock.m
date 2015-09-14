@@ -31,13 +31,14 @@ static NSString * const kLogTag = @"AdjustTests";
 - (void) reset {
     self.logBuffer = [[NSMutableString alloc] init];
     self.logMap = @{
-                    @0 : [NSMutableArray array],
                     @1 : [NSMutableArray array],
                     @2 : [NSMutableArray array],
                     @3 : [NSMutableArray array],
                     @4 : [NSMutableArray array],
                     @5 : [NSMutableArray array],
                     @6 : [NSMutableArray array],
+                    @7 : [NSMutableArray array],
+                    @8 : [NSMutableArray array],
                     };
 
     [self test:@"logger reset"];
@@ -47,17 +48,19 @@ static NSString * const kLogTag = @"AdjustTests";
     return self.logBuffer;
 }
 
-- (BOOL) containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith {
+- (BOOL)deleteUntil:(NSInteger)logLevel beginsWith:(NSString *)beginsWith {
     NSMutableArray  *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     for (int i = 0; i < [logArray count]; i++) {
         NSString *logMessage = logArray[i];
         if ([logMessage hasPrefix:beginsWith]) {
             [logArray removeObjectsInRange:NSMakeRange(0, i + 1)];
-            NSLog(@"%@ found", beginsWith);
+            [self check:@"found %@", beginsWith];
+            //NSLog(@"%@ found", beginsWith);
             return YES;
         }
     }
-    NSLog(@"%@ not in (%@)", beginsWith, [logArray componentsJoinedByString:@","]);
+    [self check:@"%@ is not in: %@", beginsWith, [logArray componentsJoinedByString:@","]];
+    //NSLog(@"%@ not in (%@)", beginsWith, [logArray componentsJoinedByString:@","]);
     return NO;
 }
 
@@ -65,11 +68,15 @@ static NSString * const kLogTag = @"AdjustTests";
     [self test:@"ADJLogger setLogLevel: %d", logLevel];
 }
 
+- (void)check:(NSString *)format, ... {
+    va_list parameters; va_start(parameters, format);
+    [self logLevel:ADJLogLevelCheck logPrefix:@"c" format:format parameters:parameters];
+}
+
 - (void)test:(NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
     [self logLevel:ADJLogLevelTest logPrefix:@"t" format:format parameters:parameters];
 }
-
 
 - (void)verbose:(NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
@@ -108,7 +115,7 @@ static NSString * const kLogTag = @"AdjustTests";
 
     NSString *logMessage = [NSString stringWithFormat:@"\t[%@]%@: %@", kLogTag, logPrefix, formatedMessage];
 
-    [self.logBuffer appendString:logMessage];
+    [self.logBuffer appendFormat:@"%@\n",logMessage];
 
     NSMutableArray *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     [logArray addObject:formatedMessage];

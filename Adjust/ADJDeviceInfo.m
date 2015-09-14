@@ -39,6 +39,7 @@ static NSString * const kWWAN   = @"WWAN";
     self.vendorId         = UIDevice.currentDevice.adjVendorId;
     self.bundeIdentifier  = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];
     self.bundleVersion    = [infoDictionary objectForKey:(NSString *)kCFBundleVersionKey];
+    self.bundleShortVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.languageCode     = [locale objectForKey:NSLocaleLanguageCode];
     self.countryCode      = [locale objectForKey:NSLocaleCountryCode];
     self.osName           = @"ios";
@@ -69,15 +70,13 @@ static NSString * const kWWAN   = @"WWAN";
         copy.clientSdk = [self.clientSdk copyWithZone:zone];
         copy.bundeIdentifier = [self.bundeIdentifier copyWithZone:zone];
         copy.bundleVersion = [self.bundleVersion copyWithZone:zone];
+        copy.bundleShortVersion = [self.bundleShortVersion copyWithZone:zone];
         copy.deviceType = [self.deviceType copyWithZone:zone];
         copy.deviceName = [self.deviceName copyWithZone:zone];
         copy.osName = [self.osName copyWithZone:zone];
         copy.systemVersion = [self.systemVersion copyWithZone:zone];
         copy.languageCode = [self.languageCode copyWithZone:zone];
         copy.countryCode = [self.countryCode copyWithZone:zone];
-        copy.networkType = [self.networkType copyWithZone:zone];
-        copy.mobileCountryCode = [self.mobileCountryCode copyWithZone:zone];
-        copy.mobileNetworkCode = [self.mobileNetworkCode copyWithZone:zone];
     }
     
     return copy;

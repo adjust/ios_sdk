@@ -16,15 +16,19 @@
 
 @interface ADJAdjustFactory : NSObject
 
-+ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler;
++ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startPaused:(BOOL)startPaused;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig;
 + (id<ADJLogger>)logger;
 + (double)sessionInterval;
 + (double)subsessionInterval;
++ (NSTimeInterval)timerInterval;
++ (NSTimeInterval)timerStart;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                                     withMaxDelay:(NSNumber *)milliseconds
-                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage;
+                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                                      startPaused:(BOOL)startPaused
+                                                      hasDelegate:(BOOL)hasDelegate;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -32,6 +36,8 @@
 + (void)setLogger:(id<ADJLogger>)logger;
 + (void)setSessionInterval:(double)sessionInterval;
 + (void)setSubsessionInterval:(double)subsessionInterval;
++ (void)setTimerInterval:(NSTimeInterval)timerInterval;
++ (void)setTimerStart:(NSTimeInterval)timerStart;
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler;
 
 @end

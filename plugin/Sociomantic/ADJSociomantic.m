@@ -56,6 +56,11 @@ NSString *const SCMCustomerTargeting = @"targeting";
 @property (nonatomic, strong) NSDictionary *properties;
 
 /**
+ * `NSString` storing the adpanId.
+ */
+@property (nonatomic, strong) NSString *adpanId;
+
+/**
  * As the purpose of a Singleton is to be stateful, there is no `init` function
  * exposed. You can only get the existing instance of it (init is implicitly
  * called if the instance wasn't created).
@@ -143,6 +148,11 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
 @implementation ADJSociomantic
 
++ (void)injectPartnerIdIntoSociomanticEvents:(NSString *) adpanId
+{
+    [SCMSingleton sharedClient].adpanId = adpanId;
+}
+
 + (void)injectCustomerDataIntoEvent:(ADJEvent *)event
                            withData:(NSDictionary *)data
 {
@@ -164,14 +174,37 @@ NSString *const SCMCustomerTargeting = @"targeting";
          _data[key] = value;
      }];
 
-    NSString *dob = [ADJSociomantic stringify:_data];
-    [event addPartnerParameter:@"socio_dob" value:dob];
+    NSString *dob = [ADJSociomantic stringifyAndEncode:_data];
+    [ADJSociomantic addPartnerParameter:event parameter:@"socio_dob" value:dob];
+}
+
++ (void)addPartnerParameter:(ADJEvent *)event
+{
+    [ADJSociomantic addPartnerParameter:event parameter:nil value:nil];
+}
+
++ (void)addPartnerParameter:(ADJEvent *)event
+                  parameter:(NSString *)parameterName
+                      value:(NSString *)jsonValue
+{
+    if (nil == [SCMSingleton sharedClient].adpanId) {
+        id<ADJLogger> logger = [ADJAdjustFactory logger];
+        [logger error:@"The adpanId must be set before sending any sociomantic event. No parameter has been added"];
+        return;
+    }
+
+    if (nil != parameterName && nil != jsonValue) {
+
+        [event addPartnerParameter:parameterName value:jsonValue];
+    }
+
+    [event addPartnerParameter:@"socio_aid" value:[SCMSingleton sharedClient].adpanId];
 }
 
 
 + (void)injectHomePageIntoEvent:(ADJEvent *)event
 {
-    // do nothing
+    [ADJSociomantic addPartnerParameter:event];
 }
 
 
@@ -195,8 +228,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
         co[SCMTimestamp] = date;
     }
 
-    NSString *jsonCo = [ADJSociomantic stringify:co];
-    [event addPartnerParameter:@"socio_co" value:jsonCo];
+    NSString *jsonCo = [ADJSociomantic stringifyAndEncode:@{@"category":co}];
+    [ADJSociomantic addPartnerParameter:event parameter:@"socio_co" value:jsonCo];
 }
 
 
@@ -221,8 +254,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
         [ADJSociomantic filter:parameters withAliases:aliases modifies:product ];
     }
 
-    NSString *jsonPo = [ADJSociomantic stringify:@[product]];
-    [event addPartnerParameter:@"socio_po" value:jsonPo];
+    NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products": @[product]}];
+    [ADJSociomantic addPartnerParameter:event parameter:@"socio_po" value:jsonPo];
 }
 
 
@@ -253,8 +286,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
 
     if ( 0 < po.count )
     {
-        NSString *jsonPo = [ADJSociomantic stringify:po];
-        [event addPartnerParameter:@"socio_po" value:jsonPo];
+        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products":po}];
+        [ADJSociomantic addPartnerParameter:event parameter:@"socio_po" value:jsonPo];
     }
 }
 
@@ -322,8 +355,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
             }
         }];
 
-        NSString *jsonPo = [ADJSociomantic stringify:po];
-        [event addPartnerParameter:@"socio_po" value:jsonPo];
+        NSString *jsonPo = [ADJSociomantic stringifyAndEncode:@{@"products":po}];
+        [ADJSociomantic addPartnerParameter:event parameter:@"socio_po" value:jsonPo];
     }
 
     if ( nil != parameters )
@@ -337,8 +370,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     to[@"transaction"]  = transactionID;
-    NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
-    [event addPartnerParameter:@"socio_to" value:jsonTo];
+    NSString *jsonTo    = [ADJSociomantic stringifyAndEncode:@{@"transaction":to}];
+    [ADJSociomantic addPartnerParameter:event parameter:@"socio_to" value:jsonTo];
 
 }
 
@@ -360,8 +393,8 @@ NSString *const SCMCustomerTargeting = @"targeting";
     }
 
     to[@"transaction"]  = leadID;
-    NSString *jsonTo    = [ADJSociomantic stringify:@{@"transaction":to}];
-    [event addPartnerParameter:@"socio_to" value:jsonTo];
+    NSString *jsonTo    = [ADJSociomantic stringifyAndEncode:@{@"transaction":to}];
+    [ADJSociomantic addPartnerParameter:event parameter:@"socio_to" value:jsonTo];
 }
 
 + (NSArray*)filterCategories:(NSArray*)categories
@@ -372,7 +405,7 @@ NSString *const SCMCustomerTargeting = @"targeting";
         if (![category isKindOfClass:[NSString class]]) {
             id<ADJLogger> logger = [ADJAdjustFactory logger];
             [logger error:@"Categories should only contains a string, failed on: [%@] type:[%@]", category, [category class]];
-            return nil;
+            return NO;
         }
 
         return [category isKindOfClass:[NSString class]];
@@ -433,6 +466,17 @@ NSString *const SCMCustomerTargeting = @"targeting";
     {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
+}
+
++ (NSString*) encode:(NSString*) unencodedString
+{
+    NSString *encoded = [unencodedString stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+    return encoded;
+}
+
++ (NSString*) stringifyAndEncode:(NSObject*) object
+{
+    return [ADJSociomantic encode:[ADJSociomantic stringify:object]];
 }
 
 @end

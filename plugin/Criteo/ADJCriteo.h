@@ -69,4 +69,7 @@
 
 + (void)injectViewSearchDatesIntoCriteoEvents:(NSString *)checkInDate
                                 checkOutDate:(NSString *)checkOutDate;
+
++ (void)injectPartnerIdIntoCriteoEvents:(NSString *)partnerId;
+
 @end

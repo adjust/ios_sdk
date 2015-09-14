@@ -16,15 +16,19 @@ static id<ADJAttributionHandler> internalAttributionHandler = nil;
 
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
+static NSTimeInterval internalTimerInterval = -1;
+static NSTimeInterval intervalTimerStart = -1;
+
 
 @implementation ADJAdjustFactory
 
-+ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler {
++ (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startPaused:(BOOL)startPaused {
     if (internalPackageHandler == nil) {
-        return [ADJPackageHandler handlerWithActivityHandler:activityHandler];
+        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startPaused:startPaused];
     }
 
-    return [internalPackageHandler initWithActivityHandler:activityHandler];
+    return [internalPackageHandler initWithActivityHandler:activityHandler startPaused:startPaused];
 }
 
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -58,24 +62,41 @@ static double intervalSubsessionInterval = -1;
 
 + (double)subsessionInterval {
     if (intervalSubsessionInterval == -1) {
-        return 1;                // 1 second
+        return 1;                 // 1 second
     }
     return intervalSubsessionInterval;
 }
 
++ (NSTimeInterval)timerInterval {
+    if (internalTimerInterval == -1) {
+        return 60;                // 1 minute
+    }
+    return internalTimerInterval;
+}
+
++ (NSTimeInterval)timerStart {
+    if (intervalTimerStart == -1) {
+        return 0;                 // 0 seconds
+    }
+    return intervalTimerStart;
+}
+
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                                     withMaxDelay:(NSNumber *)milliseconds
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
+                                                      startPaused:(BOOL)startPaused
+                                                      hasDelegate:(BOOL)hasDelegate
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
-                                                    withMaxDelay:milliseconds
-                                          withAttributionPackage:attributionPackage];
+                                          withAttributionPackage:attributionPackage
+                                                     startPaused:startPaused
+                                                     hasDelegate:hasDelegate];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
-                                                  withMaxDelay:milliseconds
-                                        withAttributionPackage:attributionPackage];
+                                        withAttributionPackage:attributionPackage
+                                                   startPaused:startPaused
+                                                   hasDelegate:hasDelegate];
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -100,6 +121,14 @@ static double intervalSubsessionInterval = -1;
 
 + (void)setSubsessionInterval:(double)subsessionInterval {
     intervalSubsessionInterval = subsessionInterval;
+}
+
++ (void)setTimerInterval:(NSTimeInterval)timerInterval {
+    internalTimerInterval = timerInterval;
+}
+
++ (void)setTimerStart:(NSTimeInterval)timerStart {
+    intervalTimerStart = timerStart;
 }
 
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler {

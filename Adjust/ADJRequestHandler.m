@@ -49,73 +49,25 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 - (void)sendPackage:(ADJActivityPackage *)activityPackage {
     dispatch_async(self.internalQueue, ^{
-        [self sendInternal:activityPackage sendToPackageHandler:YES];
+        [self sendInternal:activityPackage];
     });
 }
-
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self sendInternal:clickPackage sendToPackageHandler:NO];
-    });
-}
-
 
 #pragma mark - internal
-- (void)sendInternal:(ADJActivityPackage *)package sendToPackageHandler:(BOOL)sendToPackageHandler{
-    if (self.packageHandler == nil) return;
+- (void)sendInternal:(ADJActivityPackage *)package{
 
-    NSMutableURLRequest *request = [self requestForPackage:package];
-    NSHTTPURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&response
-                                                     error:&error];
+    [ADJUtil sendRequest:[self requestForPackage:package]
+      prefixErrorMessage:package.failureMessage
+      suffixErrorMessage:@"Will retry later"
+     jsonResponseHandler:^(NSDictionary *jsonDict) {
+         if (jsonDict == nil) {
+             [self.packageHandler closeFirstPackage];
+             return;
+         }
 
-    // connection error
-    if (error != nil || responseData == nil) {
-        if (error != nil) {
-            [self.logger error:@"%@. (%@) Will retry later.", package.failureMessage, error.localizedDescription];
-        } else {
-            [self.logger error:@"%@. (empty error) Will retry later.", package.failureMessage];
-        }
-        [self.packageHandler finishedTrackingActivity:nil];
-        if (sendToPackageHandler) {
-            [self.packageHandler closeFirstPackage];
-        }
-        return;
-    }
-
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
-    NSInteger statusCode = response.statusCode;
-
-    [self.logger verbose:@"status code %d for package response: %@", statusCode, responseString];
-
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
-
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) {
-        [self.logger error:@"Failed to parse json response. (%@) Will retry later.", responseString];
-        if (sendToPackageHandler) {
-            [self.packageHandler closeFirstPackage];
-        }
-        return;
-    }
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-
-    if (messageResponse == nil) {
-        messageResponse = @"No message found";
-    }
-
-    if (statusCode == 200) {
-        [self.logger info:@"%@", messageResponse];
-    } else {
-        [self.logger error:@"%@", messageResponse];
-    }
-
-    [self.packageHandler finishedTrackingActivity:jsonDict];
-    if (sendToPackageHandler) {
-        [self.packageHandler sendNextPackage];
-    }
+         [self.packageHandler finishedTracking:jsonDict];
+         [self.packageHandler sendNextPackage];
+     }];
 }
 
 #pragma mark - private
@@ -136,24 +88,6 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *bodyString = [ADJUtil queryString:parameters];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     return body;
-}
-
-- (void) checkMessageResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
-
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
-    if (messageResponse != nil) {
-        [self.logger info:messageResponse];
-    }
-}
-
-- (void)checkErrorResponse:(NSDictionary *)jsonDict {
-    if (jsonDict == nil || jsonDict == (id)[NSNull null]) return;
-
-    NSString* errorResponse = [jsonDict objectForKey:@"error"];
-    if (errorResponse != nil) {
-        [self.logger error:errorResponse];
-    }
 }
 
 @end

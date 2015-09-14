@@ -2,7 +2,7 @@
 
 Integrate adjust with Sociomantic events by following these steps:
 
-1. Locate the `plugin` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
+1. Locate the `plugin/Sociomantic` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
 2. Drag the `ADJSociomantic.h` and `ADJSociomantic.m` files into the `Adjust` folder inside your project.
 
@@ -41,8 +41,16 @@ to `Copy items if needed` and select the radio button to `Create groups`.
     NSString *const SCMCustomerSegment;
     NSString *const SCMCustomerTargeting;
     ```
+    
+5. Before sending any Sociomantic you should set a partner id as shown below:
 
-5. Now you can integrate each of the different Sociomantic events, like in the following examples:
+    ```objc
+    #import "ADJSociomantic.h"
+
+    [ADJSociomantic injectPartnerIdIntoSociomanticEvents:@"{sociomanticPartnerId}"];
+    ```
+
+6. Now you can integrate each of the different Sociomantic events, like in the following examples:
 
 ### Customer Event
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "ADJActivityKind.h"
 
 @interface ADJUtil : NSObject
 
@@ -28,4 +29,14 @@
          objectName:(NSString *)objectName;
 
 + (NSString *) queryString:(NSDictionary *)parameters;
++ (BOOL)isNull:(id)value;
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+ suffixErrorMessage:(NSString *)suffixErrorMessage
+jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+
 @end

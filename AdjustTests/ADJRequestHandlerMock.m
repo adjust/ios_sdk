@@ -10,7 +10,7 @@
 #import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const prefix = @"ADJRequestHandler ";
+static NSString * const prefix = @"RequestHandler ";
 
 @interface ADJRequestHandlerMock()
 
@@ -36,8 +36,9 @@ static NSString * const prefix = @"ADJRequestHandler ";
 }
 
 - (void)sendPackage:(ADJActivityPackage *)activityPackage {
-    [self.loggerMock test:[prefix stringByAppendingString:@"sendPackage"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"sendPackage, %@", activityPackage]];
 
+    /*
     NSDictionary *jsonDict;
 
     if (self.connectionError) {
@@ -53,11 +54,7 @@ static NSString * const prefix = @"ADJRequestHandler ";
     } else {
         [self.packageHandler sendNextPackage];
     }
+     */
 }
-
-- (void)sendClickPackage:(ADJActivityPackage *)clickPackage {
-    [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
-}
-
 
 @end

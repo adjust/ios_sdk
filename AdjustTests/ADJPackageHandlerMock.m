@@ -11,30 +11,34 @@
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 
-static NSString * const prefix = @"ADJPackageHandler ";
+static NSString * const prefix = @"PackageHandler ";
 
 @interface ADJPackageHandlerMock()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, assign) BOOL startPaused;
 
 @end
 
 @implementation ADJPackageHandlerMock
 
 - (id)init {
-    return [self initWithActivityHandler:nil];
+    return [self initWithActivityHandler:nil startPaused:NO];
 }
-- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler {
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                  startPaused:(BOOL)startPaused
+{
     self = [super init];
     if (self == nil) return nil;
 
+    self.startPaused = startPaused;
     self.activityHandler = activityHandler;
 
     self.loggerMock = (ADJLoggerMock *) ADJAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
 
-    [self.loggerMock test:[prefix stringByAppendingString:@"initWithActivityHandler"]];
+    [self.loggerMock test:[NSString stringWithFormat:@"%@initWithActivityHandler, paused: %d", prefix, startPaused]];
 
     return self;
 }
@@ -46,7 +50,6 @@ static NSString * const prefix = @"ADJPackageHandler ";
 
 - (void)sendFirstPackage {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendFirstPackage"]];
-    [self.activityHandler finishedTrackingWithResponse:self.jsonDict];
 }
 
 - (void)sendNextPackage {
@@ -65,14 +68,9 @@ static NSString * const prefix = @"ADJPackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
 }
 
-- (void)finishedTrackingActivity:(NSDictionary *)jsonDict {
-    [self.loggerMock test:[prefix stringByAppendingString:@"finishedTrackingActivity"]];
+- (void)finishedTracking:(NSDictionary *)jsonDict {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", jsonDict.descriptionInStringsFileFormat]];
     self.jsonDict = jsonDict;
-}
-
-- (void)sendClickPackage:(ADJActivityPackage *) clickPackage {
-    [self.loggerMock test:[prefix stringByAppendingString:@"sendClickPackage"]];
-    [self.packageQueue addObject:clickPackage];
 }
 
 @end
