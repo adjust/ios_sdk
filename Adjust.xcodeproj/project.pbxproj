@@ -93,6 +93,8 @@
 		96ED00391A38A4CD00209110 /* ADJAttributionHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */; };
 		96ED003E1A38A98C00209110 /* ADJDelegateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED003D1A38A98C00209110 /* ADJDelegateTest.m */; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
+		FA8103081BA6D7DE00F4074D /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 96854A581B1F2779002B2874 /* ADJTimerOnce.m */; settings = {ASSET_TAGS = (); }; };
+		FA81030B1BA6D7E200F4074D /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 96854A5E1B1F278C002B2874 /* ADJTimerCycle.m */; settings = {ASSET_TAGS = (); }; };
 		FA9217971AFCD6ED0033001B /* Adjust.h in Headers */ = {isa = PBXBuildFile; fileRef = FA9217961AFCD6ED0033001B /* Adjust.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA9217AD1AFCD7580033001B /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDD1A13BFC600A40AFB /* NSString+ADJAdditions.m */; };
 		FA9217AE1AFCD7580033001B /* UIDevice+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDF1A13BFC600A40AFB /* UIDevice+ADJAdditions.m */; };
@@ -107,7 +109,7 @@
 		FA9217B71AFCD7580033001B /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37618BBB48A008E7B30 /* ADJPackageBuilder.m */; };
 		FA9217B81AFCD7580033001B /* ADJPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37818BBB48A008E7B30 /* ADJPackageHandler.m */; };
 		FA9217B91AFCD7580033001B /* ADJRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37A18BBB48A008E7B30 /* ADJRequestHandler.m */; };
-		FA9217BA1AFCD7580033001B /* ADJTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E37E18BBB48A008E7B30 /* ADJTimer.m */; };
+		FA9217BA1AFCD7580033001B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		FA9217BB1AFCD7580033001B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* ADJUtil.m */; };
 		FA9217BC1AFCD7580033001B /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9609BC6919EEA55800E02303 /* ADJEvent.m */; };
 		FA9217BD1AFCD7580033001B /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 965307F51A000DA400107FF9 /* ADJDeviceInfo.m */; };
@@ -127,7 +129,7 @@
 		FA9217CB1AFCD7630033001B /* ADJPackageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37518BBB48A008E7B30 /* ADJPackageBuilder.h */; };
 		FA9217CC1AFCD7630033001B /* ADJPackageHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37718BBB48A008E7B30 /* ADJPackageHandler.h */; };
 		FA9217CD1AFCD7630033001B /* ADJRequestHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37918BBB48A008E7B30 /* ADJRequestHandler.h */; };
-		FA9217CE1AFCD7630033001B /* ADJTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37D18BBB48A008E7B30 /* ADJTimer.h */; };
+		FA9217CE1AFCD7630033001B /* (null) in Headers */ = {isa = PBXBuildFile; };
 		FA9217CF1AFCD7630033001B /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37F18BBB48A008E7B30 /* ADJUtil.h */; };
 		FA9217D01AFCD7630033001B /* ADJEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 9609BC6819EEA55800E02303 /* ADJEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA9217D11AFCD7630033001B /* ADJDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 9644B7EA19F148F3008576FC /* ADJDeviceInfo.h */; };
@@ -516,7 +518,7 @@
 				FA9217CB1AFCD7630033001B /* ADJPackageBuilder.h in Headers */,
 				FA9217CC1AFCD7630033001B /* ADJPackageHandler.h in Headers */,
 				FA9217CD1AFCD7630033001B /* ADJRequestHandler.h in Headers */,
-				FA9217CE1AFCD7630033001B /* ADJTimer.h in Headers */,
+				FA9217CE1AFCD7630033001B /* (null) in Headers */,
 				FA9217CF1AFCD7630033001B /* ADJUtil.h in Headers */,
 				FA9217D11AFCD7630033001B /* ADJDeviceInfo.h in Headers */,
 				FA9217D21AFCD7630033001B /* ADJAttributionHandler.h in Headers */,
@@ -598,7 +600,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */;
+			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -748,6 +750,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA81030B1BA6D7E200F4074D /* ADJTimerCycle.m in Sources */,
 				FA9217AD1AFCD7580033001B /* NSString+ADJAdditions.m in Sources */,
 				FA9217AE1AFCD7580033001B /* UIDevice+ADJAdditions.m in Sources */,
 				FA9217AF1AFCD7580033001B /* NSData+ADJAdditions.m in Sources */,
@@ -761,9 +764,10 @@
 				FA9217B71AFCD7580033001B /* ADJPackageBuilder.m in Sources */,
 				FA9217B81AFCD7580033001B /* ADJPackageHandler.m in Sources */,
 				FA9217B91AFCD7580033001B /* ADJRequestHandler.m in Sources */,
-				FA9217BA1AFCD7580033001B /* ADJTimer.m in Sources */,
+				FA9217BA1AFCD7580033001B /* (null) in Sources */,
 				FA9217BB1AFCD7580033001B /* ADJUtil.m in Sources */,
 				FA9217BC1AFCD7580033001B /* ADJEvent.m in Sources */,
+				FA8103081BA6D7DE00F4074D /* ADJTimerOnce.m in Sources */,
 				FA9217BD1AFCD7580033001B /* ADJDeviceInfo.m in Sources */,
 				FA9217BE1AFCD7580033001B /* ADJAttributionHandler.m in Sources */,
 				FA9217BF1AFCD7580033001B /* ADJAttribution.m in Sources */,
@@ -1029,7 +1033,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */ = {
+		9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9679922E18BBAE2800394606 /* Debug */,
