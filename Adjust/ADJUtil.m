@@ -28,7 +28,7 @@ static NSDateFormatter *dateFormat;
     dateFormat = [[NSDateFormatter alloc] init];
 
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
-        dateFormat.calendar = [NSCalendar calendarWithIdentifier:NSGregorianCalendar];
+        dateFormat.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
     }
 
     dateFormat.locale = [NSLocale systemLocale];
