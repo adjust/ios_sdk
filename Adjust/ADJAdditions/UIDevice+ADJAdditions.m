@@ -100,9 +100,13 @@
 }
 
 - (NSString *)adjFbAttributionId {
+#if ADJUST_NO_UIPASTEBOARD
+    return @"";
+#else
     NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
     if (result == nil) return @"";
     return result;
+#endif
 }
 
 - (NSString *)adjMacAddress {
