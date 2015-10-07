@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Adjust.h"
 
 @interface ViewController : UIViewController
 

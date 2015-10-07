@@ -15,8 +15,27 @@
 @implementation AppDelegate
 
 
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@"adjust attribution %@", attribution);
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSString *yourAppToken = @"{YourAppToken}";
+    NSString *environment = ADJEnvironmentSandbox;
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
+
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];
+    [adjustConfig setDelegate:self];
+
+    [Adjust appDidLaunch:adjustConfig];
+
+    return YES;
+}
+
+- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [Adjust appWillOpenUrl:url];
+
     return YES;
 }
 
