@@ -5,15 +5,16 @@ This is the iOS SDK of adjust™. You can read more about adjust™ at
 
 ## Example app
 
-There is an example app inside the [`example` directory][example]. You can open
-the Xcode project to see an example on how the adjust SDK can be integrated.
+There is an example app inside the [`example` directory][example] for `iOs` and 
+[`tvOSexample` directory][tvOSexample] for `tvOS`. You can open any of the Xcode projects
+to see an example on how the adjust SDK can be integrated.
 
 ## Basic integration
 
 We will describe the steps to integrate the adjust SDK into your iOS project.
-We are going to assume that you use Xcode for your iOS development.
+We are going to assume that you use Xcode for your iOS development unless stated otherwise for tvOS.
 
-If you're using [CocoaPods][cocoapods], you can add the following line to your
+If you're using [CocoaPods][cocoapods] for `iOs`, you can add the following line to your
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
@@ -45,11 +46,32 @@ Select your project in the Project Navigator. In the left hand side of the main
 view, select your target. In the tab `Build Phases` expand the group `Link
 Binary with Libraries`. On the bottom of that section click on the `+` button.
 Select the `AdSupport.framework` and click the `Add` button. Repeat the same
-steps to add the `iAd.framework`. Change the `Status` of both frameworks to
+steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status` of both frameworks to
 `Optional`.
 
 ![][framework]
 
+### Additional step for tvOS
+
+iAd framework was removed from tvOs, that is why it was not added it to your project in the previous step.
+It is also required to add pre-processor flags to you project to make the adjust SDK compatible with tvOS:
+
+- In the Project Navigator select your project. Make sure your target is
+  selected in the top left corner of the right hand window.
+
+- Select the `Build Settings` tab and search for `preprocessor` in the search
+  field below.
+
+- Expand the `Preprocessor Macros` or `GCC_PREPROCESSOR_DEFINITIONS` and change the `Debug` and `Release` 
+lines, besides other you might have, to change their value
+
+- Press on the `+` button at the bottom of the overlay and add the following lines:
+
+    ```
+    ADJUST_NO_IAD
+    ADJUST_NO_UIPASTEBOARD
+    ```
+    
 ### 4. Integrate Adjust into your app
 
 To start with, we'll set up basic session tracking.
@@ -385,6 +407,7 @@ You can read more about special partners and these integrations in our
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.com
 [example]: http://github.com/adjust/ios_sdk/tree/master/example
+[tvOSexample]: http://github.com/adjust/ios_sdk/tree/master/tvOSexample
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
