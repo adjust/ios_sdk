@@ -13,7 +13,6 @@
 		960FCF2F1A1B9ACE00282BD4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 960FCF2D1A1B9ACE00282BD4 /* Main.storyboard */; };
 		960FCF311A1B9ACE00282BD4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 960FCF301A1B9ACE00282BD4 /* Images.xcassets */; };
 		960FCF341A1B9ACE00282BD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 960FCF321A1B9ACE00282BD4 /* LaunchScreen.xib */; };
-		960FCF401A1B9ACE00282BD4 /* exampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF3F1A1B9ACE00282BD4 /* exampleTests.m */; };
 		960FCF7C1A1B9B7D00282BD4 /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF531A1B9B7D00282BD4 /* NSString+ADJAdditions.m */; };
 		960FCF7D1A1B9B7D00282BD4 /* UIDevice+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF551A1B9B7D00282BD4 /* UIDevice+ADJAdditions.m */; };
 		960FCF7E1A1B9B7D00282BD4 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 960FCF581A1B9B7D00282BD4 /* Adjust.m */; };
@@ -39,16 +38,6 @@
 		96C93DF91AC4828B00B53F56 /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C93DF81AC4828B00B53F56 /* NSData+ADJAdditions.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		960FCF3A1A1B9ACE00282BD4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 960FCF181A1B9ACE00282BD4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 960FCF1F1A1B9ACE00282BD4;
-			remoteInfo = example;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		960FCF201A1B9ACE00282BD4 /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		960FCF241A1B9ACE00282BD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,7 +49,6 @@
 		960FCF2E1A1B9ACE00282BD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		960FCF301A1B9ACE00282BD4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		960FCF331A1B9ACE00282BD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		960FCF391A1B9ACE00282BD4 /* exampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = exampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		960FCF3E1A1B9ACE00282BD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		960FCF3F1A1B9ACE00282BD4 /* exampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = exampleTests.m; sourceTree = "<group>"; };
 		960FCF521A1B9B7D00282BD4 /* NSString+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ADJAdditions.h"; sourceTree = "<group>"; };
@@ -119,13 +107,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		960FCF361A1B9ACE00282BD4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -144,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				960FCF201A1B9ACE00282BD4 /* example.app */,
-				960FCF391A1B9ACE00282BD4 /* exampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -269,24 +249,6 @@
 			productReference = 960FCF201A1B9ACE00282BD4 /* example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		960FCF381A1B9ACE00282BD4 /* exampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 960FCF461A1B9ACE00282BD4 /* Build configuration list for PBXNativeTarget "exampleTests" */;
-			buildPhases = (
-				960FCF351A1B9ACE00282BD4 /* Sources */,
-				960FCF361A1B9ACE00282BD4 /* Frameworks */,
-				960FCF371A1B9ACE00282BD4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				960FCF3B1A1B9ACE00282BD4 /* PBXTargetDependency */,
-			);
-			name = exampleTests;
-			productName = exampleTests;
-			productReference = 960FCF391A1B9ACE00282BD4 /* exampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -299,10 +261,6 @@
 					960FCF1F1A1B9ACE00282BD4 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = QGUGW9AUMK;
-					};
-					960FCF381A1B9ACE00282BD4 = {
-						CreatedOnToolsVersion = 6.1;
-						TestTargetID = 960FCF1F1A1B9ACE00282BD4;
 					};
 				};
 			};
@@ -320,7 +278,6 @@
 			projectRoot = "";
 			targets = (
 				960FCF1F1A1B9ACE00282BD4 /* example */,
-				960FCF381A1B9ACE00282BD4 /* exampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -333,13 +290,6 @@
 				960FCF2F1A1B9ACE00282BD4 /* Main.storyboard in Resources */,
 				960FCF341A1B9ACE00282BD4 /* LaunchScreen.xib in Resources */,
 				960FCF311A1B9ACE00282BD4 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		960FCF371A1B9ACE00282BD4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,23 +327,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		960FCF351A1B9ACE00282BD4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				960FCF401A1B9ACE00282BD4 /* exampleTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		960FCF3B1A1B9ACE00282BD4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 960FCF1F1A1B9ACE00282BD4 /* example */;
-			targetProxy = 960FCF3A1A1B9ACE00282BD4 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		960FCF2D1A1B9ACE00282BD4 /* Main.storyboard */ = {
@@ -518,42 +452,6 @@
 			};
 			name = Release;
 		};
-		960FCF471A1B9ACE00282BD4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = exampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/example.app/example";
-			};
-			name = Debug;
-		};
-		960FCF481A1B9ACE00282BD4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = exampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/example.app/example";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -571,15 +469,6 @@
 			buildConfigurations = (
 				960FCF441A1B9ACE00282BD4 /* Debug */,
 				960FCF451A1B9ACE00282BD4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		960FCF461A1B9ACE00282BD4 /* Build configuration list for PBXNativeTarget "exampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				960FCF471A1B9ACE00282BD4 /* Debug */,
-				960FCF481A1B9ACE00282BD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
