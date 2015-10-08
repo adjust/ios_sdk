@@ -46,7 +46,6 @@
 		969952D21A01309200928462 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952D11A01309200928462 /* ADJAttribution.m */; };
 		96BCFBCD1AC99231005A65C5 /* Adjust.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E34C18BBB48A008E7B30 /* Adjust.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BCFBCE1AC99235005A65C5 /* ADJEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 9609BC6819EEA55800E02303 /* ADJEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		96BCFBCF1AC99239005A65C5 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BCFBD01AC9923F005A65C5 /* ADJConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 960A8BB71A029A8000F2BB95 /* ADJConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */ = {isa = PBXBuildFile; fileRef = 969952D01A01309200928462 /* ADJAttribution.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BCFBD21AC99332005A65C5 /* NSString+ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 96CD2BDC1A13BFC600A40AFB /* NSString+ADJAdditions.h */; };
@@ -102,13 +101,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 960FCF201A1B9ACE00282BD4;
 			remoteInfo = example;
-		};
-		960FCF501A1B9ACF00282BD4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 960FCF391A1B9ACE00282BD4;
-			remoteInfo = exampleTests;
 		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -262,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				960FCF4F1A1B9ACF00282BD4 /* example.app */,
-				960FCF511A1B9ACF00282BD4 /* exampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -413,7 +404,6 @@
 				96BCFBCD1AC99231005A65C5 /* Adjust.h in Headers */,
 				96BCFBCE1AC99235005A65C5 /* ADJEvent.h in Headers */,
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
-				96BCFBCF1AC99239005A65C5 /* ADJLogger.h in Headers */,
 				96BCFBD01AC9923F005A65C5 /* ADJConfig.h in Headers */,
 				96BCFBD91AC9934E005A65C5 /* ADJAdjustFactory.h in Headers */,
 				96BCFBD81AC9934B005A65C5 /* ADJActivityState.h in Headers */,
@@ -421,7 +411,6 @@
 				96BCFBD71AC99348005A65C5 /* ADJActivityPackage.h in Headers */,
 				96BCFBD51AC9933E005A65C5 /* ADJActivityHandler.h in Headers */,
 				96854A5F1B1F278C002B2874 /* ADJTimerCycle.h in Headers */,
-				96BCFBCF1AC99239005A65C5 /* ADJLogger.h in Headers */,
 				96854A591B1F2779002B2874 /* ADJTimerOnce.h in Headers */,
 				96BCFBDF1AC99368005A65C5 /* ADJDeviceInfo.h in Headers */,
 				96BCFBDB1AC99355005A65C5 /* ADJPackageHandler.h in Headers */,
@@ -488,7 +477,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */;
+			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -523,13 +512,6 @@
 			fileType = wrapper.application;
 			path = example.app;
 			remoteRef = 960FCF4E1A1B9ACF00282BD4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		960FCF511A1B9ACF00282BD4 /* exampleTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = exampleTests.xctest;
-			remoteRef = 960FCF501A1B9ACF00282BD4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9689AB661BC3FFAB00F210F0 /* tvOSexample.app */ = {
@@ -837,7 +819,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */ = {
+		9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9679922E18BBAE2800394606 /* Debug */,
