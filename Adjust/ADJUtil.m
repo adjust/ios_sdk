@@ -273,9 +273,12 @@ static NSDateFormatter *dateFormat;
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&urlResponse
                                                              error:&responseError];
+#pragma clang diagnostic pop
 
     NSDictionary * jsonResponse = [ADJUtil completionHandler:responseData
                                                     response:(NSHTTPURLResponse *)urlResponse
