@@ -30,11 +30,23 @@ static NSDateFormatter *dateFormat;
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
         // http://stackoverflow.com/a/3339787
         NSString * calendarIdentifier;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
         if (&NSCalendarIdentifierGregorian != NULL) {
+#pragma clang diagnostic pop
             calendarIdentifier = NSCalendarIdentifierGregorian;
         } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             calendarIdentifier = NSGregorianCalendar;
+#pragma clang diagnostic pop
+#pragma clang diagnostic pop
         }
+
+
         dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
 
