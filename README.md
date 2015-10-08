@@ -18,7 +18,7 @@ If you're using [CocoaPods][cocoapods] for `iOs`, you can add the following line
 `Podfile` and continue with [step 3](#step3):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.3.1'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.4.0'
 ```
 
 ### 1. Get the SDK
@@ -427,7 +427,7 @@ You can read more about special partners and these integrations in our
 
 The adjust-SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2014 adjust GmbH,
+Copyright (c) 2012-2015 adjust GmbH,
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
