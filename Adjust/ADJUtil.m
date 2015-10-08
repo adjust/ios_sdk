@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.3.0";
+static NSString * const kClientSdk = @"ios4.4.0";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -28,7 +28,14 @@ static NSDateFormatter *dateFormat;
     dateFormat = [[NSDateFormatter alloc] init];
 
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
-        dateFormat.calendar = [NSCalendar calendarWithIdentifier:NSGregorianCalendar];
+        // http://stackoverflow.com/a/3339787
+        NSString * calendarIdentifier;
+        if (&NSCalendarIdentifierGregorian != NULL) {
+            calendarIdentifier = NSCalendarIdentifierGregorian;
+        } else {
+            calendarIdentifier = NSGregorianCalendar;
+        }
+        dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
 
     dateFormat.locale = [NSLocale systemLocale];

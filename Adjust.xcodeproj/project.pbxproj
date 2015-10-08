@@ -117,6 +117,13 @@
 			remoteGlobalIDString = 9679920C18BBAE2800394606;
 			remoteInfo = Adjust;
 		};
+		9689AB651BC3FFAB00F210F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9689AB481BC3FFAA00F210F0;
+			remoteInfo = tvOSexample;
+		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -165,6 +172,7 @@
 		96854A581B1F2779002B2874 /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
 		96854A5D1B1F278C002B2874 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		96854A5E1B1F278C002B2874 /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
+		9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tvOSexample.xcodeproj; path = tvOSexample/tvOSexample.xcodeproj; sourceTree = "<group>"; };
 		969952CD1A012F5300928462 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
 		969952CE1A012F5300928462 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
 		969952D01A01309200928462 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
@@ -262,6 +270,7 @@
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
+				9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */,
 				960FCF491A1B9ACE00282BD4 /* example.xcodeproj */,
 				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
 				96E5E34B18BBB48A008E7B30 /* Adjust */,
@@ -290,6 +299,14 @@
 				9679921018BBAE2800394606 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9689AB601BC3FFAB00F210F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9689AB661BC3FFAB00F210F0 /* tvOSexample.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		96CD2BDB1A13BFC600A40AFB /* ADJAdditions */ = {
@@ -486,6 +503,10 @@
 					ProductGroup = 960FCF4A1A1B9ACE00282BD4 /* Products */;
 					ProjectRef = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
 				},
+				{
+					ProductGroup = 9689AB601BC3FFAB00F210F0 /* Products */;
+					ProjectRef = 9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -509,6 +530,13 @@
 			fileType = wrapper.cfbundle;
 			path = exampleTests.xctest;
 			remoteRef = 960FCF501A1B9ACF00282BD4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9689AB661BC3FFAB00F210F0 /* tvOSexample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = tvOSexample.app;
+			remoteRef = 9689AB651BC3FFAB00F210F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
