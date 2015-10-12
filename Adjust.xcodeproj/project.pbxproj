@@ -102,19 +102,19 @@
 			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
 			remoteInfo = "AdjustExample-iOS";
 		};
+		963909CD1BCC0D8400A2E8A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 963909C91BCC0D8300A2E8A4 /* AdjustExample-tvOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 963909B21BCC0D8300A2E8A4;
+			remoteInfo = "AdjustExample-tvOS";
+		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9679920C18BBAE2800394606;
 			remoteInfo = Adjust;
-		};
-		9689AB651BC3FFAB00F210F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9689AB481BC3FFAA00F210F0;
-			remoteInfo = tvOSexample;
 		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -154,6 +154,7 @@
 		96325E84190E5CD900A97911 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96325E86190E5CE400A97911 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
+		963909C91BCC0D8300A2E8A4 /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
 		9644B7EA19F148F3008576FC /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
 		965307F51A000DA400107FF9 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
 		9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerTests.m; sourceTree = "<group>"; };
@@ -164,7 +165,6 @@
 		96854A581B1F2779002B2874 /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
 		96854A5D1B1F278C002B2874 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		96854A5E1B1F278C002B2874 /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
-		9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tvOSexample.xcodeproj; path = tvOSexample/tvOSexample.xcodeproj; sourceTree = "<group>"; };
 		969952CD1A012F5300928462 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
 		969952CE1A012F5300928462 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
 		969952D01A01309200928462 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
@@ -258,11 +258,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		963909CA1BCC0D8300A2E8A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				963909CE1BCC0D8400A2E8A4 /* AdjustExample-tvOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
+				963909C91BCC0D8300A2E8A4 /* AdjustExample-tvOS.xcodeproj */,
 				963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */,
-				9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */,
 				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
 				96E5E34B18BBB48A008E7B30 /* Adjust */,
 				9679920F18BBAE2800394606 /* Frameworks */,
@@ -290,14 +298,6 @@
 				9679921018BBAE2800394606 /* Foundation.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		9689AB601BC3FFAB00F210F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9689AB661BC3FFAB00F210F0 /* tvOSexample.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		96CD2BDB1A13BFC600A40AFB /* ADJAdditions */ = {
@@ -493,8 +493,8 @@
 					ProjectRef = 963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */;
 				},
 				{
-					ProductGroup = 9689AB601BC3FFAB00F210F0 /* Products */;
-					ProjectRef = 9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */;
+					ProductGroup = 963909CA1BCC0D8300A2E8A4 /* Products */;
+					ProjectRef = 963909C91BCC0D8300A2E8A4 /* AdjustExample-tvOS.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -514,11 +514,11 @@
 			remoteRef = 963909661BCBFE5300A2E8A4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9689AB661BC3FFAB00F210F0 /* tvOSexample.app */ = {
+		963909CE1BCC0D8400A2E8A4 /* AdjustExample-tvOS.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = tvOSexample.app;
-			remoteRef = 9689AB651BC3FFAB00F210F0 /* PBXContainerItemProxy */;
+			path = "AdjustExample-tvOS.app";
+			remoteRef = 963909CD1BCC0D8400A2E8A4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
