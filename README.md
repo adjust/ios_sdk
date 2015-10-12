@@ -7,7 +7,7 @@ This is the iOS SDK of adjust™. You can read more about adjust™ at
 
 There is an example app inside the [`example` directory][example] for `iOs` and 
 [`tvOSexample` directory][tvOSexample] for `tvOS`. You can open any of the Xcode projects
-to see an example on how the adjust SDK can be integrated.
+to see an example of how the adjust SDK can be integrated.
 
 ## Basic integration
 
@@ -43,7 +43,7 @@ groups`.
 ### 3. Add the AdSupport and iAd framework
 
 Select your project in the Project Navigator. In the left hand side of the main
-view, select your target. In the tab `Build Phases` expand the group `Link
+view, select your target. In the tab `Build Phases`, expand the group `Link
 Binary with Libraries`. On the bottom of that section click on the `+` button.
 Select the `AdSupport.framework` and click the `Add` button. Repeat the same
 steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status` of both frameworks to
@@ -132,7 +132,7 @@ parameters:
 ### 5. Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the
-SDK logs in the console. After the app launched for the first time, you should
+SDK logs in the console. After the app launches for the first time, you should
 see the info log `Install tracked`.
 
 ![][run]
@@ -367,7 +367,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 
 ### 11. Offline mode
 
-You can put the adjust SDK in offline mode to suspend transmission to our servers, 
+You can put the adjust SDK in offline mode to suspend transmission to our servers 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
 in a file, so be careful not to trigger too many events while in offline mode.
 
