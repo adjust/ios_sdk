@@ -18,10 +18,11 @@
 #import <AdSupport/ASIdentifierManager.h>
 #endif
 
-#if !ADJUST_NO_IAD
+#ifdef asdfg
+#endif
+#if !ADJUST_NO_IAD && !defined(TARGET_OS_TV)
 #import <iAd/iAd.h>
 #endif
-
 @implementation UIDevice(ADJAdditions)
 
 - (BOOL)adjTrackingEnabled {
@@ -100,7 +101,7 @@
 }
 
 - (NSString *)adjFbAttributionId {
-#if ADJUST_NO_UIPASTEBOARD
+#if ADJUST_NO_UIPASTEBOARD || defined (TARGET_OS_TV)
     return @"";
 #else
     NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
@@ -188,7 +189,7 @@
 }
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
-#if ADJUST_NO_IAD
+#if ADJUST_NO_IAD || defined (TARGET_OS_TV)
     return;
 #else
 
