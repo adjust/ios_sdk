@@ -39,10 +39,8 @@ static NSDateFormatter *dateFormat;
         } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
-#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             calendarIdentifier = NSGregorianCalendar;
-#pragma clang diagnostic pop
 #pragma clang diagnostic pop
         }
 
@@ -71,8 +69,6 @@ static NSDateFormatter *dateFormat;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
-
-#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
     if (&NSURLIsExcludedFromBackupKey == nil) {
         u_int8_t attrValue = 1;
@@ -100,7 +96,6 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
-#pragma clang diagnostic pop
 #pragma clang diagnostic pop
 
 }
