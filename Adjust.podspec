@@ -6,11 +6,14 @@ Pod::Spec.new do |s|
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Christian Wellenbrock" => "welle@adjust.com" }
   s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.4.0" }
-  s.platform       = :ios, '5.0'
+  s.ios.deployment_target = '5.0'
+  s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
-  s.weak_framework = 'AdSupport', 'iAd'
+  s.ios.weak_framework = 'AdSupport', 'iAd'
+  s.tvos.weak_framework = 'AdSupport'
   s.requires_arc   = true
   s.default_subspec = 'Core'
+  s.tvos.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'ADJUST_NO_IAD ADJUST_NO_UIPASTEBOARD' }
 
   s.subspec 'Core' do |co|
     co.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
