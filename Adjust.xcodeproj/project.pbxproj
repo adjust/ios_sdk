@@ -95,12 +95,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		960FCF4E1A1B9ACF00282BD4 /* PBXContainerItemProxy */ = {
+		963909661BCBFE5300A2E8A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
+			containerPortal = 963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 960FCF201A1B9ACE00282BD4;
-			remoteInfo = example;
+			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
+			remoteInfo = "AdjustExample-iOS";
 		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -145,7 +145,6 @@
 		9609BC6919EEA55800E02303 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
 		960A8BB71A029A8000F2BB95 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960A8BB81A029A8000F2BB95 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
-		960FCF491A1B9ACE00282BD4 /* example.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = example.xcodeproj; path = example/example.xcodeproj; sourceTree = "<group>"; };
 		9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTestActivityPackage.h; sourceTree = "<group>"; };
 		9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTestActivityPackage.m; sourceTree = "<group>"; };
 		9620EA4C1B06401B009673F1 /* ADJTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTest.h; sourceTree = "<group>"; };
@@ -154,6 +153,7 @@
 		9620EA501B065177009673F1 /* ADJPackageFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPackageFields.m; sourceTree = "<group>"; };
 		96325E84190E5CD900A97911 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		96325E86190E5CE400A97911 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
 		9644B7EA19F148F3008576FC /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
 		965307F51A000DA400107FF9 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
 		9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerTests.m; sourceTree = "<group>"; };
@@ -250,10 +250,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		960FCF4A1A1B9ACE00282BD4 /* Products */ = {
+		963909631BCBFE5200A2E8A4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				960FCF4F1A1B9ACF00282BD4 /* example.app */,
+				963909671BCBFE5300A2E8A4 /* AdjustExample-iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,8 +261,8 @@
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
+				963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */,
 				9689AB5F1BC3FFAB00F210F0 /* tvOSexample.xcodeproj */,
-				960FCF491A1B9ACE00282BD4 /* example.xcodeproj */,
 				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
 				96E5E34B18BBB48A008E7B30 /* Adjust */,
 				9679920F18BBAE2800394606 /* Frameworks */,
@@ -477,7 +477,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
+			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -489,8 +489,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 960FCF4A1A1B9ACE00282BD4 /* Products */;
-					ProjectRef = 960FCF491A1B9ACE00282BD4 /* example.xcodeproj */;
+					ProductGroup = 963909631BCBFE5200A2E8A4 /* Products */;
+					ProjectRef = 963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 9689AB601BC3FFAB00F210F0 /* Products */;
@@ -507,11 +507,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		960FCF4F1A1B9ACF00282BD4 /* example.app */ = {
+		963909671BCBFE5300A2E8A4 /* AdjustExample-iOS.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = example.app;
-			remoteRef = 960FCF4E1A1B9ACF00282BD4 /* PBXContainerItemProxy */;
+			path = "AdjustExample-iOS.app";
+			remoteRef = 963909661BCBFE5300A2E8A4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9689AB661BC3FFAB00F210F0 /* tvOSexample.app */ = {
@@ -812,7 +812,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */ = {
+		9679920818BBAE2800394606 /* Build configuration list for PBXProject "adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9679922E18BBAE2800394606 /* Debug */,
