@@ -12,10 +12,10 @@ to see an example on how the adjust SDK can be integrated.
 ## Basic integration
 
 We will describe the steps to integrate the adjust SDK into your iOS project.
-We are going to assume that you use Xcode for your iOS development unless stated otherwise for tvOS.
+We are going to assume that you use Xcode for your iOS development.
 
-If you're using [CocoaPods][cocoapods] for `iOs`, you can add the following line to your
-`Podfile` and continue with [step 3](#step3):
+If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the following line to your
+`Podfile` and continue with [step 4](#step4):
 
 ```ruby
 pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.4.0'
@@ -40,7 +40,7 @@ groups`.
 
 ![][add]
 
-### <a id="step3"></a>3. Add the AdSupport and iAd framework
+### 3. Add the AdSupport and iAd framework
 
 Select your project in the Project Navigator. In the left hand side of the main
 view, select your target. In the tab `Build Phases` expand the group `Link
@@ -72,7 +72,7 @@ lines, besides other you might have, to change their value
     ADJUST_NO_UIPASTEBOARD
     ```
     
-### 4. Integrate Adjust into your app
+### <a id="step4"></a>4. Integrate Adjust into your app
 
 To start with, we'll set up basic session tracking.
 
