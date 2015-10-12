@@ -51,27 +51,6 @@ steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status`
 
 ![][framework]
 
-### Additional step for tvOS
-
-iAd framework was removed from tvOs, that is why it was not added it to your project in the previous step.
-It is also required to add pre-processor flags to you project to make the adjust SDK compatible with tvOS:
-
-- In the Project Navigator select your project. Make sure your target is
-  selected in the top left corner of the right hand window.
-
-- Select the `Build Settings` tab and search for `preprocessor` in the search
-  field below.
-
-- Expand the `Preprocessor Macros` or `GCC_PREPROCESSOR_DEFINITIONS` and change the `Debug` and `Release` 
-lines, besides other you might have, to change their value
-
-- Press on the `+` button at the bottom of the overlay and add the following lines:
-
-    ```
-    ADJUST_NO_IAD
-    ADJUST_NO_UIPASTEBOARD
-    ```
-    
 ### <a id="step4"></a>4. Integrate Adjust into your app
 
 To start with, we'll set up basic session tracking.
