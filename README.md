@@ -3,10 +3,10 @@
 This is the iOS SDK of adjust™. You can read more about adjust™ at
 [adjust.com].
 
-## Example app
+## Example apps
 
-There is an example app inside the [`example` directory][example] for `iOs` and 
-[`tvOSexample` directory][tvOSexample] for `tvOS`. You can open any of the Xcode projects
+There are example apps inside the [`examples` directory][examples] for [`iOS`][example-ios] and 
+[`tvOS`][example-tvos]. You can open any of the Xcode projects 
 to see an example of how the adjust SDK can be integrated.
 
 ## Basic integration
@@ -406,8 +406,9 @@ You can read more about special partners and these integrations in our
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.com
-[example]: http://github.com/adjust/ios_sdk/tree/master/example
-[tvOSexample]: http://github.com/adjust/ios_sdk/tree/master/tvOSexample
+[examples]: http://github.com/adjust/ios_sdk/tree/master/examples
+[example-ios]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-tvos]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-tvOS
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
