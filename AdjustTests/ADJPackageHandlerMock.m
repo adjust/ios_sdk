@@ -24,7 +24,10 @@ static NSString * const prefix = @"PackageHandler ";
 @implementation ADJPackageHandlerMock
 
 - (id)init {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
     return [self initWithActivityHandler:nil startPaused:NO];
+#pragma clang diagnostic pop
 }
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                   startPaused:(BOOL)startPaused

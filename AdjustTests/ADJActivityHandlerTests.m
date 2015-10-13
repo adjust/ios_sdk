@@ -787,7 +787,10 @@
     NSURL* mixed = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_foo=bar&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
     NSURL* emptyQueryString = [NSURL URLWithString:@"AdjustTests://"];
     NSURL* emptyString = [NSURL URLWithString:@""];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
     NSURL* nilString = [NSURL URLWithString:nil];
+#pragma clang diagnostic pop
     NSURL* nilUrl = nil;
     NSURL* single = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_foo"];
     NSURL* prefix = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_=bar"];
@@ -1445,7 +1448,10 @@
     ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
 
     //  create handler and start the first session
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-variable"
     id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+#pragma clang diagnostic pop
 
     // it's necessary to sleep the activity for a while after each handler call
     //  to let the internal queue act
