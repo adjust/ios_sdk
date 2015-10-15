@@ -1495,9 +1495,9 @@ readActivityState:(NSString *)readActivityState
 
     // check environment level
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
-        aAssert(@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to `production` before publishing");
+        aInfo(@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to `production` before publishing");
     } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        aAssert(@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to `sandbox` if you want to test your app!");
+        aInfo(@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to `sandbox` if you want to test your app!");
     } else {
         aFail();
     }
