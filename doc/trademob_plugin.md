@@ -53,7 +53,7 @@ ADJTrademobItem *item2 = [[ADJTrademobItem alloc] initWithId:@"itemId2" price:20
 
 NSArray *items = @[item1, item2];
 
-[ADJTrademob injectAddToBusketIntoEvent:event items:items metadata:nil];
+[ADJTrademob injectAddToBasketIntoEvent:event items:items metadata:nil];
 
 [Adjust trackEvent:event];
 ```
