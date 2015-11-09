@@ -16,7 +16,7 @@
 #include <sys/xattr.h>
 
 static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.3.0";
+static NSString * const kClientSdk = @"ios4.4.1";
 
 static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
@@ -28,7 +28,24 @@ static NSDateFormatter *dateFormat;
     dateFormat = [[NSDateFormatter alloc] init];
 
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
-        dateFormat.calendar = [NSCalendar calendarWithIdentifier:NSGregorianCalendar];
+        // http://stackoverflow.com/a/3339787
+        NSString * calendarIdentifier;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
+        if (&NSCalendarIdentifierGregorian != NULL) {
+#pragma clang diagnostic pop
+            calendarIdentifier = NSCalendarIdentifierGregorian;
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            calendarIdentifier = NSGregorianCalendar;
+#pragma clang diagnostic pop
+        }
+
+
+        dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
 
     dateFormat.locale = [NSLocale systemLocale];
@@ -52,8 +69,6 @@ static NSDateFormatter *dateFormat;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
-
-#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
     if (&NSURLIsExcludedFromBackupKey == nil) {
         u_int8_t attrValue = 1;
@@ -81,7 +96,6 @@ static NSDateFormatter *dateFormat;
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
     }
-#pragma clang diagnostic pop
 #pragma clang diagnostic pop
 
 }
@@ -254,9 +268,12 @@ static NSDateFormatter *dateFormat;
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&urlResponse
                                                              error:&responseError];
+#pragma clang diagnostic pop
 
     NSDictionary * jsonResponse = [ADJUtil completionHandler:responseData
                                                     response:(NSHTTPURLResponse *)urlResponse

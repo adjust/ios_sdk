@@ -1,9 +1,9 @@
-## Migrate your adjust SDK for iOS to v4.3.0 from v3.4.0
+## Migrate your adjust SDK for iOS to v4.4.1 from v3.4.0
 
 ### Initial setup
 
-We changed how you configure the adjust SDK. All initial setup is now done with
-a new config object. We also replaced the adjust prefix from `AI` to `ADJ`.
+We've changed how you configure the adjust SDK. All initial setup is now done with
+a new config object. We've also replaced the adjust prefix from `AI` to `ADJ`.
 Here is an example of how the setup in `AppDelegate.m` might look before and
 after the migration:
 
@@ -36,7 +36,7 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 ### Event tracking
 
-We also introduced proper event objects that can be set up before they are
+We've also introduced proper event objects that can be set up before they are
 tracked. Again, an example of how it might look like before and after:
 
 ##### Before
@@ -59,7 +59,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 ### Revenue tracking
 
-Revenues are now handled like normal events. You just set a revenue and a
+Revenues are now handled like normal events. You simply set a revenue and a
 currency to track revenues. Note that it is no longer possible to track revenues
 without associated event tokens. You might need to create an additional event token
 in your dashboard. The optional transaction ID is now a property of the event
@@ -86,8 +86,8 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"xyz987"];
 
 ## Additional steps if you come from v3.0.0
 
-We added an optional parameter `transactionId` to our `trackRevenue` methods.
-If you are tracking In-App Purchases you might want to pass in the transaction
+We've added an optional parameter called `transactionId` to our `trackRevenue` methods.
+If you are tracking In-App Purchases, then you might want to pass in the transaction
 identifier provided by Apple to avoid duplicate revenue tracking. It should
 look roughly like this:
 

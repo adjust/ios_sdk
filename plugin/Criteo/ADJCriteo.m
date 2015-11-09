@@ -242,7 +242,7 @@ static NSString * partnerIdInternal;
         [criteoVBValue appendString:@","];
     }
     [criteoVBValue appendString:@"]"];
-    return [criteoVBValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [criteoVBValue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 + (NSString*) createCriteoVLFromProducts:(NSArray*) productIds
@@ -285,7 +285,7 @@ static NSString * partnerIdInternal;
     }
 
     [criteoVLValue appendString:@"]"];
-    return [criteoVLValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [criteoVLValue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 @end

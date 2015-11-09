@@ -3,21 +3,22 @@
 This is the iOS SDK of adjust™. You can read more about adjust™ at
 [adjust.com].
 
-## Example app
+## Example apps
 
-There is an example app inside the [`example` directory][example]. You can open
-the Xcode project to see an example on how the adjust SDK can be integrated.
+There are example apps inside the [`examples` directory][examples] for [`iOS`][example-ios] and 
+[`tvOS`][example-tvos]. You can open any of the Xcode projects 
+to see an example of how the adjust SDK can be integrated.
 
 ## Basic integration
 
 We will describe the steps to integrate the adjust SDK into your iOS project.
 We are going to assume that you use Xcode for your iOS development.
 
-If you're using [CocoaPods][cocoapods], you can add the following line to your
-`Podfile` and continue with [step 3](#step3):
+If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the following line to your
+`Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.3.0'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.4.1'
 ```
 
 ### 1. Get the SDK
@@ -39,18 +40,18 @@ groups`.
 
 ![][add]
 
-### <a id="step3"></a>3. Add the AdSupport and iAd framework
+### 3. Add the AdSupport and iAd framework
 
 Select your project in the Project Navigator. In the left hand side of the main
-view, select your target. In the tab `Build Phases` expand the group `Link
+view, select your target. In the tab `Build Phases`, expand the group `Link
 Binary with Libraries`. On the bottom of that section click on the `+` button.
 Select the `AdSupport.framework` and click the `Add` button. Repeat the same
-steps to add the `iAd.framework`. Change the `Status` of both frameworks to
+steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status` of both frameworks to
 `Optional`.
 
 ![][framework]
 
-### 4. Integrate Adjust into your app
+### <a id="step4"></a>4. Integrate Adjust into your app
 
 To start with, we'll set up basic session tracking.
 
@@ -110,7 +111,7 @@ parameters:
 ### 5. Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the
-SDK logs in the console. After the app launched for the first time, you should
+SDK logs in the console. After the app launches for the first time, you should
 see the info log `Install tracked`.
 
 ![][run]
@@ -345,7 +346,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 
 ### 11. Offline mode
 
-You can put the adjust SDK in offline mode to suspend transmission to our servers, 
+You can put the adjust SDK in offline mode to suspend transmission to our servers 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
 in a file, so be careful not to trigger too many events while in offline mode.
 
@@ -384,7 +385,9 @@ You can read more about special partners and these integrations in our
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [dashboard]: http://adjust.com
-[example]: http://github.com/adjust/ios_sdk/tree/master/example
+[examples]: http://github.com/adjust/ios_sdk/tree/master/examples
+[example-ios]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-tvos]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-tvOS
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
@@ -404,7 +407,7 @@ You can read more about special partners and these integrations in our
 
 The adjust-SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2014 adjust GmbH,
+Copyright (c) 2012-2015 adjust GmbH,
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
