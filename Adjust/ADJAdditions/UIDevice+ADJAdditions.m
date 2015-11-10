@@ -18,8 +18,6 @@
 #import <AdSupport/ASIdentifierManager.h>
 #endif
 
-#ifdef asdfg
-#endif
 #if !ADJUST_NO_IAD && !TARGET_OS_TV
 #import <iAd/iAd.h>
 #endif
