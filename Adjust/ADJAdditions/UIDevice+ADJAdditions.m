@@ -20,7 +20,7 @@
 
 #ifdef asdfg
 #endif
-#if !ADJUST_NO_IAD && !defined(TARGET_OS_TV)
+#if !ADJUST_NO_IAD && !TARGET_OS_TV
 #import <iAd/iAd.h>
 #endif
 @implementation UIDevice(ADJAdditions)
@@ -189,7 +189,7 @@
 }
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler{
-#if ADJUST_NO_IAD || defined (TARGET_OS_TV)
+#if ADJUST_NO_IAD || TARGET_OS_TV
     return;
 #else
 
