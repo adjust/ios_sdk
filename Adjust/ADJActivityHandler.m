@@ -234,9 +234,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        config:self.adjustConfig
                                        createdAt:now];
 
-    [clickBuilder setPurchaseTime:appPurchaseDate];
+    clickBuilder.purchaseTime = appPurchaseDate;
+    clickBuilder.clickTime = iAdImpressionDate;
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" clickTime:iAdImpressionDate];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
+
     [self.packageHandler addPackage:clickPackage];
 }
 
@@ -469,8 +471,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
+    clickBuilder.clickTime = [NSDate date];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" clickTime:[NSDate date]];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler addPackage:clickPackage];
 }
 
