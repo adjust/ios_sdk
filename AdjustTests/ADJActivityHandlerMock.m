@@ -86,7 +86,13 @@ static NSString * const prefix = @"ActivityHandler ";
 }
 
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDate"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDate, iAdImpressionDate %@ appPurchaseDate, %@", iAdImpressionDate, appPurchaseDate]];
+}
+
+- (void)setIadDetails:(NSDictionary *)attributionDetails
+                error:(NSError *)error
+          retriesLeft:(int)retriesLeft {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDetails, %@ error, %@", attributionDetails, error]];
 }
 
 - (void) launchAttributionDelegate {

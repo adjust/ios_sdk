@@ -888,12 +888,23 @@
 
     // should be ignored
     [activityHandler setIadDate:nil withPurchaseDate:nil];
-    [activityHandler setIadDate:nil withPurchaseDate:[NSDate date]];
+    [NSThread sleepForTimeInterval:1];
 
-    [NSThread sleepForTimeInterval:2];
+    // check that iAdImpressionDate was not received.
+    aVerbose(@"iAdImpressionDate not received");
 
     // didn't send click package
     anTest(@"PackageHandler addPackage");
+
+    [activityHandler setIadDate:nil withPurchaseDate:[NSDate date]];
+    [NSThread sleepForTimeInterval:1];
+
+    // check that iAdImpressionDate was not received.
+    aVerbose(@"iAdImpressionDate not received");
+
+    // didn't send click package
+    anTest(@"PackageHandler addPackage");
+
 
     // 1 session
     aiEquals(1, (int)[self.packageHandlerMock.packageQueue count]);
@@ -909,12 +920,23 @@
     [self.loggerMock test:@"date1 %@, date2 %@", date1.description, date2.description];
 
     [activityHandler setIadDate:date1 withPurchaseDate:date2];
-    [activityHandler setIadDate:date2 withPurchaseDate:nil];
+    [NSThread sleepForTimeInterval:1];
 
-    [NSThread sleepForTimeInterval:2];
+    // iAdImpressionDate received
+    NSString * iAdImpressionDate1Log =[NSString stringWithFormat:@"iAdImpressionDate received: %@", date1];
+    aVerbose(iAdImpressionDate1Log);
 
-    // first and second iad packages
+    // first iad package added
     aTest(@"PackageHandler addPackage");
+
+    [activityHandler setIadDate:date2 withPurchaseDate:nil];
+    [NSThread sleepForTimeInterval:1];
+
+    // iAdImpressionDate received
+    NSString * iAdImpressionDate2Log =[NSString stringWithFormat:@"iAdImpressionDate received: %@", date2];
+    aVerbose(iAdImpressionDate2Log);
+
+    // second iad package added
     aTest(@"PackageHandler addPackage");
 
     // 1 session + 2 click packages
@@ -1498,6 +1520,12 @@ readActivityState:(NSString *)readActivityState
 
     // check read files
     [self checkReadFiles:readActivityState readAttribution:readAttribution];
+
+    // tries to read iad v3
+    aDebug(@"iAd with 5 tries to read v3");
+
+    // iad is not disabled
+    anDebug(@"ADJUST_NO_IAD or TARGET_OS_TV set");
 }
 
 - (void)checkReadFiles:(NSString *)readActivityState
