@@ -277,19 +277,5 @@
     [self parameters:parameters setString:numberString forKey:key];
 }
 
-- (NSMutableDictionary *) joinParamters:(NSMutableDictionary *)permanentParameters
-                             parameters:(NSMutableDictionary *)parameters {
-    if (permanentParameters == nil) {
-        return parameters;
-    }
-    if (parameters == nil) {
-        return permanentParameters;
-    }
-
-    NSMutableDictionary *joinedParameters = [[NSMutableDictionary alloc] initWithDictionary:permanentParameters];
-    [joinedParameters addEntriesFromDictionary:parameters];
-
-    return joinedParameters;
-}
 @end
 
