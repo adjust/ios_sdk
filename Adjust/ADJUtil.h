@@ -39,4 +39,5 @@ jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
  suffixErrorMessage:(NSString *)suffixErrorMessage
 jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 
++ (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
 @end

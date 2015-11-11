@@ -106,11 +106,9 @@ static NSDateFormatter *dateFormat;
     return [self formatDate:date];
 }
 
-
 + (NSString *)formatDate:(NSDate *) value {
     return [dateFormat stringFromDate:value];
 }
-
 
 + (NSDictionary *)buildJsonDict:(NSData *)jsonData {
     if (jsonData == nil) {
@@ -328,5 +326,32 @@ static NSDateFormatter *dateFormat;
     }
 
     return jsonDict;
+}
+
+// convert all values to strings, if value is dictionary -> recursive call
++ (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary
+{
+    NSMutableDictionary * convertedDictionary = [[NSMutableDictionary alloc] initWithCapacity:dictionary.count];
+
+    for (NSString * key in dictionary) {
+        id value = [dictionary objectForKey:key];
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            // dictionary value, recursive call
+            NSDictionary * dictionaryValue = [ADJUtil convertDictionaryValues:(NSDictionary *)value];
+            [convertedDictionary setObject:dictionaryValue forKey:key];
+
+        } else if ([value isKindOfClass:[NSDate class]]) {
+            // format date to our custom format
+            NSString * dateStingValue = [ADJUtil formatDate:value];
+            [convertedDictionary setObject:dateStingValue forKey:key];
+
+        } else {
+            // convert all other objects directly to string
+            NSString * stringValue = [NSString stringWithFormat:@"%@", value];
+            [convertedDictionary setObject:stringValue forKey:key];
+        }
+    }
+
+    return convertedDictionary;
 }
 @end
