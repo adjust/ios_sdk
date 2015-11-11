@@ -21,6 +21,9 @@
 #if !ADJUST_NO_IAD && !TARGET_OS_TV
 #import <iAd/iAd.h>
 #endif
+
+#import "ADJAdjustFactory.h"
+
 @implementation UIDevice(ADJAdditions)
 
 - (BOOL)adjTrackingEnabled {
@@ -186,10 +189,15 @@
     return @"";
 }
 
-- (void) adjSetIad:(ADJActivityHandler *) activityHandler{
+- (void) adjSetIad:(ADJActivityHandler *) activityHandler
+{
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+
 #if ADJUST_NO_IAD || TARGET_OS_TV
+    [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
     return;
 #else
+    [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV not set"];
 
     // [[ADClient sharedClient] lookupAdConversionDetails:...]
     Class ADClientClass = NSClassFromString(@"ADClient");
