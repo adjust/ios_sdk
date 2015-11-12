@@ -287,10 +287,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger setLogLevel:self.adjustConfig.logLevel];
     }
 
-    if (!self.adjustConfig.macMd5TrackingEnabled) {
-        [self.logger info:@"Tracking of macMd5 is disabled"];
-    }
-
     if (self.adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
     }

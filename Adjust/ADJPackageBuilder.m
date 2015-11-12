@@ -133,7 +133,6 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [self injectDeviceInfoIds:self.deviceInfo
-        macMd5TrackingEnabled:self.adjustConfig.macMd5TrackingEnabled
                intoParameters:parameters];
     [self injectConfig:self.adjustConfig intoParameters:parameters];
     [self injectCreatedAt:self.createdAt intoParameters:parameters];
@@ -145,7 +144,6 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [self injectDeviceInfo:self.deviceInfo
-     macMd5TrackingEnabled:self.adjustConfig.macMd5TrackingEnabled
             intoParameters:parameters];
     [self injectConfig:self.adjustConfig intoParameters:parameters];
     [self injectActivityState:self.activityState intoParamters:parameters];
@@ -155,24 +153,16 @@
 }
 
 - (void) injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo
-    macMd5TrackingEnabled:(BOOL) macMd5TrackingEnabled
            intoParameters:(NSMutableDictionary *) parameters
 {
-    [self parameters:parameters setString:deviceInfo.macSha1           forKey:@"mac_sha1"];
     [self parameters:parameters setString:deviceInfo.idForAdvertisers  forKey:@"idfa"];
     [self parameters:parameters setString:deviceInfo.vendorId          forKey:@"idfv"];
-
-    if (macMd5TrackingEnabled) {
-        [self parameters:parameters setString:deviceInfo.macShortMd5   forKey:@"mac_md5"];
-    }
 }
 
 - (void) injectDeviceInfo:(ADJDeviceInfo *)deviceInfo
-    macMd5TrackingEnabled:(BOOL) macMd5TrackingEnabled
            intoParameters:(NSMutableDictionary *) parameters
 {
     [self injectDeviceInfoIds:deviceInfo
-        macMd5TrackingEnabled:macMd5TrackingEnabled
                intoParameters:parameters];
     [self parameters:parameters setString:deviceInfo.fbAttributionId   forKey:@"fb_id"];
     [self parameters:parameters setInt:deviceInfo.trackingEnabled      forKey:@"tracking_enabled"];
