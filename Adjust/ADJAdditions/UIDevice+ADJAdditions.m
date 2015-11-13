@@ -143,6 +143,8 @@
        triesV3Left:(int)triesV3Left
 {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
+    [logger debug:@"iAd with %d tries to read v3", triesV3Left];
+
 #if ADJUST_NO_IAD || TARGET_OS_TV
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
     return;
