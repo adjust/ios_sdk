@@ -73,14 +73,6 @@
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 
 /**
- * Disable macMd5 tracking if your privacy constraints require it.
- *
- * @param macMd5TrackingEnabled Enable or disable tracking of
- * the MD5 hash of the MAC address
- */
-@property (nonatomic, assign) BOOL macMd5TrackingEnabled;
-
-/**
  * Set the optional delegate that will inform you about attribution
  *
  * See the AdjustDelegate declaration above for details

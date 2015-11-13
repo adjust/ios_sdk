@@ -10,8 +10,6 @@
 
 @interface ADJDeviceInfo : NSObject<NSCopying>
 
-@property (nonatomic, copy) NSString *macSha1;
-@property (nonatomic, copy) NSString *macShortMd5;
 @property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, assign) BOOL trackingEnabled;

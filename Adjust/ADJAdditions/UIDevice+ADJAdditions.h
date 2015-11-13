@@ -14,7 +14,6 @@
 - (BOOL)adjTrackingEnabled;
 - (NSString *)adjIdForAdvertisers;
 - (NSString *)adjFbAttributionId;
-- (NSString *)adjMacAddress;
 - (NSString *)adjDeviceType;
 - (NSString *)adjDeviceName;
 - (NSString *)adjCreateUuid;

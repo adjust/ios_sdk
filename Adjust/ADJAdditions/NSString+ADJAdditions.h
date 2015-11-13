@@ -10,8 +10,6 @@
 @interface NSString(ADJAdditions)
 
 - (NSString *)adjTrim;
-- (NSString *)adjMd5;
-- (NSString *)adjSha1;
 - (NSString *)adjUrlEncode;
 - (NSString *)adjRemoveColons;
 

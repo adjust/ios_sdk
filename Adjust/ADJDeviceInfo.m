@@ -24,15 +24,11 @@ static NSString * const kWWAN   = @"WWAN";
     self = [super init];
     if (self == nil) return nil;
 
-    NSString *macAddress = UIDevice.currentDevice.adjMacAddress;
-    NSString *macShort = macAddress.adjRemoveColons;
     UIDevice *device = UIDevice.currentDevice;
     NSLocale *locale = NSLocale.currentLocale;
     NSBundle *bundle = NSBundle.mainBundle;
     NSDictionary *infoDictionary = bundle.infoDictionary;
 
-    self.macSha1          = macAddress.adjSha1;
-    self.macShortMd5      = macShort.adjMd5;
     self.trackingEnabled  = UIDevice.currentDevice.adjTrackingEnabled;
     self.idForAdvertisers = UIDevice.currentDevice.adjIdForAdvertisers;
     self.fbAttributionId  = UIDevice.currentDevice.adjFbAttributionId;
@@ -60,8 +56,6 @@ static NSString * const kWWAN   = @"WWAN";
 {
     ADJDeviceInfo* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        copy.macSha1 = [self.macSha1 copyWithZone:zone];
-        copy.macShortMd5 = [self.macShortMd5 copyWithZone:zone];
         copy.idForAdvertisers = [self.idForAdvertisers copyWithZone:zone];
         copy.fbAttributionId = [self.fbAttributionId copyWithZone:zone];
         copy.trackingEnabled = self.trackingEnabled;

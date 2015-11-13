@@ -220,8 +220,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
     if (iAdImpressionDate == nil) {
+        [self.logger verbose:@"iAdImpressionDate not received"];
         return;
     }
+
+    [self.logger verbose:@"iAdImpressionDate received: %@", iAdImpressionDate];
+
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
@@ -281,10 +285,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger setLogLevel:ADJLogLevelAssert];
     } else {
         [self.logger setLogLevel:self.adjustConfig.logLevel];
-    }
-
-    if (!self.adjustConfig.macMd5TrackingEnabled) {
-        [self.logger info:@"Tracking of macMd5 is disabled"];
     }
 
     if (self.adjustConfig.eventBufferingEnabled)  {

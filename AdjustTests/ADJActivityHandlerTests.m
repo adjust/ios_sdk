@@ -89,9 +89,6 @@
     // test init values
     [self checkInit:ADJEnvironmentSandbox logLevel:@"3"];
 
-    // check mac mad5 is enabled
-    anInfo(@"Tracking of macMd5 is disabled");
-
     // check event buffering is disabled
     anInfo(@"Event buffering is enabled");
 
@@ -131,9 +128,6 @@
     // set default tracker
     [config setDefaultTracker:@"default1234tracker"];
 
-    // set macMd5 disabled
-    [config setMacMd5TrackingEnabled:NO];
-
     //  create handler and start the first session
     id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
 
@@ -141,9 +135,6 @@
 
     // test init values
     [self checkInit:ADJEnvironmentSandbox logLevel:@"1"];
-
-    // check mac mad5 is disabled
-    aInfo(@"Tracking of macMd5 is disabled");
 
     // check event buffering is enabled
     aInfo(@"Event buffering is enabled");

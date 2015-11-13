@@ -242,14 +242,10 @@
 - (void)testDeviceInfoIds:(ADJActivityPackage *)package
                    fields:(ADJPackageFields *)fields
 {
-    // mac_sha1
-    appnNil(@"mac_sha1");
     // idfa
     appnNil(@"idfa");
     // idfv
     appnNil(@"idfv");
-    // mac_md5
-    // can't test in simulator
 }
 
 - (void)testDeviceInfo:(ADJActivityPackage *)package
