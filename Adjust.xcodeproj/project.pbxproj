@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		96BCFBE71AC99FBD005A65C5 /* framework */ = {
+		96BCFBE71AC99FBD005A65C5 /* AdjustStatic */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 96BCFBE81AC99FBD005A65C5 /* Build configuration list for PBXAggregateTarget "framework" */;
+			buildConfigurationList = 96BCFBE81AC99FBD005A65C5 /* Build configuration list for PBXAggregateTarget "AdjustStatic" */;
 			buildPhases = (
 				9DE7C9021AE68FA5001556E5 /* MultiPlatform Build */,
 			);
 			dependencies = (
 				9DE7C9001AE68EF1001556E5 /* PBXTargetDependency */,
 			);
-			name = framework;
+			name = AdjustStatic;
 			productName = framework;
 		};
 /* End PBXAggregateTarget section */
@@ -503,7 +503,7 @@
 			targets = (
 				9679920C18BBAE2800394606 /* Adjust */,
 				9679921C18BBAE2800394606 /* AdjustTests */,
-				96BCFBE71AC99FBD005A65C5 /* framework */,
+				96BCFBE71AC99FBD005A65C5 /* AdjustStatic */,
 			);
 		};
 /* End PBXProject section */
@@ -843,7 +843,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96BCFBE81AC99FBD005A65C5 /* Build configuration list for PBXAggregateTarget "framework" */ = {
+		96BCFBE81AC99FBD005A65C5 /* Build configuration list for PBXAggregateTarget "AdjustStatic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96BCFBE91AC99FBD005A65C5 /* Debug */,
