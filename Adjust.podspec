@@ -27,4 +27,9 @@ Pod::Spec.new do |s|
     cr.source_files = 'plugin/Criteo/*.{h,m}'
     cr.dependency 'Adjust/Core'
   end
+
+  s.subspec 'Trademob' do |tm|
+    tm.source_files = 'plugin/Trademob/*.{h,m}'
+    tm.dependency 'Adjust/Core'
+  end
 end
