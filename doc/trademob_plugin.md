@@ -20,7 +20,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
 NSArray *itemIds = @[@"itemId1", @"itemId2", @"itemId3"];
 
-NSDictionary *metaData = @{@"info1":@"value1", @"info2":@"value2"};
+NSDictionary *metadata = @{@"info1":@"value1", @"info2":@"value2"};
 
 [ADJTrademob injectViewListingIntoEvent:event itemIds:itemIds metadata:metadata];
 
