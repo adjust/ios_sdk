@@ -99,6 +99,7 @@
         [self parameters:parameters setString:self.attribution.adgroup      forKey:@"adgroup"];
         [self parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
+    [self parameters:parameters setDictionaryJson:self.iadDetails forKey:@"details"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";

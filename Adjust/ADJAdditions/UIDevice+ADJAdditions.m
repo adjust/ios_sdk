@@ -140,41 +140,83 @@
 }
 
 - (void) adjSetIad:(ADJActivityHandler *) activityHandler
+       triesV3Left:(int)triesV3Left
 {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
-
 #if ADJUST_NO_IAD || TARGET_OS_TV
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
     return;
 #else
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV not set"];
 
-    // [[ADClient sharedClient] lookupAdConversionDetails:...]
+    // [[ADClient sharedClient] ...]
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
         return;
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
         return;
     }
     id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
 
-    SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
-    if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
+    if (ADClientSharedClientInstance == nil) {
         return;
     }
+    BOOL iadv3Succes = NO;
+    if (triesV3Left > 0) {
+        // [[ADClient sharedClient] requestAttributionDetailsWithBlock:...]
+        iadv3Succes = [self adjSetIadWithDetails:activityHandler
+                     ADClientSharedClientInstance:ADClientSharedClientInstance
+                                      retriesLeft:(triesV3Left - 1)];
+    }
+    if (!iadv3Succes) {
+        // [[ADClient sharedClient] lookupAdConversionDetails:...]
+        [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
+    }
+#pragma clang diagnostic pop
+#endif
+}
 
+- (BOOL)adjSetIadWithDetails:(ADJActivityHandler *)activityHandler
+ADClientSharedClientInstance:(id)ADClientSharedClientInstance
+                 retriesLeft:(int)retriesLeft
+{
+    SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
+
+    if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
+        return NO;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [ADClientSharedClientInstance performSelector:iadDetailsSelector
+                                       withObject:^(NSDictionary *attributionDetails, NSError *error) {
+                                           [activityHandler setIadDetails:attributionDetails error:error retriesLeft:retriesLeft];
+                                       }];
+#pragma clang diagnostic pop
+
+    return YES;
+}
+
+- (BOOL)adjSetIadWithDates:(ADJActivityHandler *)activityHandler
+ADClientSharedClientInstance:(id)ADClientSharedClientInstance
+{
+    SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
+
+    if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iadDateSelector
                                        withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
                                            [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
                                        }];
 
 #pragma clang diagnostic pop
-#endif
+    return YES;
 }
 @end

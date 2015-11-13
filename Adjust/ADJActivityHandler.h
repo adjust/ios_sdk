@@ -30,6 +30,9 @@
 
 - (BOOL) updateAttribution:(ADJAttribution*) attribution;
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
+- (void)setIadDetails:(NSDictionary *)attributionDetails
+                error:(NSError *)error
+          retriesLeft:(int)retriesLeft;
 
 - (void) launchAttributionDelegate;
 
