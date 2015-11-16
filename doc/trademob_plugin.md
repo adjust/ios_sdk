@@ -9,6 +9,8 @@ Integrate adjust with Trademob events by following these steps:
 3. In the dialog `Choose options for adding these files` make sure to check the checkbox
 to `Copy items if needed` and select the radio button to `Create groups`.
 
+For questions regarding this plugin, please reach out to `eugenio.warglien@trademob.com`
+
 You can now use Trademob events in the following ways:
 
 ### View Listing
