@@ -65,6 +65,9 @@
                             uiData3:(NSUInteger)uiData3
                          customerId:(NSString *)customerId;
 
++ (void)injectDeeplinkIntoEvent:(ADJEvent *)event
+                            url:(NSURL *)url;
+
 + (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail;
 
 + (void)injectViewSearchDatesIntoCriteoEvents:(NSString *)checkInDate

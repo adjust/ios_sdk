@@ -162,6 +162,18 @@ static NSString * partnerIdInternal;
     [ADJCriteo injectOptionalParams:event];
 }
 
++ (void)injectDeeplinkIntoEvent:(ADJEvent *)event
+                            url:(NSURL *)url
+{
+    if (url == nil) {
+        return;
+    }
+
+    [event addPartnerParameter:@"criteo_deeplink" value:[url absoluteString]];
+
+    [ADJCriteo injectOptionalParams:event];
+}
+
 + (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail
 {
     hashEmailInternal = hashEmail;
