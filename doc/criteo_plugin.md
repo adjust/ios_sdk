@@ -168,3 +168,23 @@ The search dates can be removed by setting the `injectPartnerIdIntoCriteoEvent` 
 
 [ADJCriteo injectPartnerIdIntoCriteoEvents:@"{criteoPartnerId}"];
 ```
+
+### Send deeplink
+
+In the Project Navigator open the source file your Application Delegate. Find or add the method openURL and add the following call to adjust:
+
+```objc
+#import "ADJCriteo.h"
+
+- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url
+    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{deeplinkEventToken}"];
+    
+    [ADJCriteo injectDeeplinkIntoEvent:event url:url];
+    
+    [Adjust trackEvent:event];
+
+    //...
+}
+```
