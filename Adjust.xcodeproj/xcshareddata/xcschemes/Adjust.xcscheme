@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9DD144631BF5F766005B4CF6"
-               BuildableName = "AdjustDynamic.framework"
-               BlueprintName = "AdjustDynamic"
+               BuildableName = "Adjust.framework"
+               BlueprintName = "Adjust"
                ReferencedContainer = "container:Adjust.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9DD144631BF5F766005B4CF6"
-            BuildableName = "AdjustDynamic.framework"
-            BlueprintName = "AdjustDynamic"
+            BuildableName = "Adjust.framework"
+            BlueprintName = "Adjust"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9DD144631BF5F766005B4CF6"
-            BuildableName = "AdjustDynamic.framework"
-            BlueprintName = "AdjustDynamic"
+            BuildableName = "Adjust.framework"
+            BlueprintName = "Adjust"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
