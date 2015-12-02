@@ -21,3 +21,4 @@ FOUNDATION_EXPORT const unsigned char AdjustDynamicVersionString[];
 #import <Adjust/ADJConfig.h>
 #import <Adjust/ADJLogger.h>
 #import <Adjust/ADJAttribution.h>
+#import <Adjust/AdjustDynamic.h>
