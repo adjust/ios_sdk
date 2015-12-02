@@ -23,8 +23,8 @@ static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 // number of tries
-static const int kTryIadV3                       = 5;
-static const uint64_t kDelayRetryIad   =  1 * NSEC_PER_SEC; // 1 second
+static const int kTryIadV3                       = 2;
+static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 
 #pragma mark -
 @interface ADJActivityHandler()
