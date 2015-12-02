@@ -16,8 +16,8 @@ FOUNDATION_EXPORT const unsigned char AdjustDynamicVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <AdjustDynamic/PublicHeader.h>
 
-#import <AdjustDynamic/Adjust.h>
-#import <AdjustDynamic/ADJEvent.h>
-#import <AdjustDynamic/ADJConfig.h>
-#import <AdjustDynamic/ADJLogger.h>
-#import <AdjustDynamic/ADJAttribution.h>
+#import <Adjust/Adjust.h>
+#import <Adjust/ADJEvent.h>
+#import <Adjust/ADJConfig.h>
+#import <Adjust/ADJLogger.h>
+#import <Adjust/ADJAttribution.h>
