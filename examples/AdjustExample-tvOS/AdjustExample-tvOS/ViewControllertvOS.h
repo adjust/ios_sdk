@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ViewControllertvOS.h
 //  AdjustExample-tvOS
 //
 //  Created by Pedro Filipe on 12/10/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewControllertvOS : UIViewController
 
 
 @end
