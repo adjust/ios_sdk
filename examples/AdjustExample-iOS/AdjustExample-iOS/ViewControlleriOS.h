@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ViewControlleriOS.h
 //  AdjustExample-iOS
 //
 //  Created by Pedro Filipe on 12/10/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewControlleriOS : UIViewController
 
 
 @end
