@@ -6,11 +6,8 @@
 //  Copyright © 2015 adjust. All rights reserved.
 //
 
+#import "Constants.h"
 #import "URLRequest.h"
-
-static NSString * const kParamIdfv      = @"idfv";
-static NSString * const kParamAppToken  = @"app_token";
-static NSString * const kBaseForgetUrl  = @"https://app.adjust.com/forget_device";
 
 @implementation URLRequest
 
