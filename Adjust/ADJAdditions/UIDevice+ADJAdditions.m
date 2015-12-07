@@ -167,15 +167,19 @@
     if (ADClientSharedClientInstance == nil) {
         return;
     }
-    BOOL iadv3Succes = NO;
-    if (triesV3Left > 0) {
-        // [[ADClient sharedClient] requestAttributionDetailsWithBlock:...]
-        iadv3Succes = [self adjSetIadWithDetails:activityHandler
+
+    // if no tries for iad v3 left -> iad v2
+    if (triesV3Left == 0) {
+        [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
+        return;
+    }
+
+    BOOL isIadV3Avaliable = [self adjSetIadWithDetails:activityHandler
                      ADClientSharedClientInstance:ADClientSharedClientInstance
                                       retriesLeft:(triesV3Left - 1)];
-    }
-    if (!iadv3Succes) {
-        // [[ADClient sharedClient] lookupAdConversionDetails:...]
+
+    // if no tries for iad v3 left -> iad v2
+    if (!isIadV3Avaliable) {
         [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
     }
 #pragma clang diagnostic pop
