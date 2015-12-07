@@ -43,9 +43,9 @@ static NSURLRequest * lastRequest = nil;
     //  build response
     (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
 
-    NSData *responseData = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
 
-    return responseData;
+    return data;
 
     /*
     NSInteger statusCode;
@@ -73,9 +73,9 @@ static NSURLRequest * lastRequest = nil;
     //  build response
     (*response) = [[NSHTTPURLResponse alloc] initWithURL:[[NSURL alloc] init] statusCode:statusCode HTTPVersion:@"" headerFields:nil];
 
-    NSData *responseData = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [sResponse dataUsingEncoding:NSUTF8StringEncoding];
 
-    return responseData;
+    return data;
      */
 }
 

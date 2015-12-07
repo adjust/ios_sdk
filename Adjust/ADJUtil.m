@@ -275,12 +275,12 @@ static NSRegularExpression * universalLinkRegex = nil;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
+    NSData * data = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&urlResponse
                                                              error:&responseError];
 #pragma clang diagnostic pop
 
-    NSDictionary * jsonResponse = [ADJUtil completionHandler:responseData
+    NSDictionary * jsonResponse = [ADJUtil completionHandler:data
                                                     response:(NSHTTPURLResponse *)urlResponse
                                                        error:responseError
                                           prefixErrorMessage:prefixErrorMessage
@@ -289,7 +289,7 @@ static NSRegularExpression * universalLinkRegex = nil;
     jsonResponseHandler(jsonResponse);
 }
 
-+ (NSDictionary *)completionHandler:(NSData *)responseData
++ (NSDictionary *)completionHandler:(NSData *)data
                            response:(NSHTTPURLResponse *)urlResponse
                               error:(NSError *)responseError
                  prefixErrorMessage:(NSString *)prefixErrorMessage
@@ -302,19 +302,19 @@ static NSRegularExpression * universalLinkRegex = nil;
                                                 suffixErrorMessage:suffixErrorMessage]];
         return nil;
     }
-    if ([ADJUtil isNull:responseData]) {
+    if ([ADJUtil isNull:data]) {
         [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
                                                 systemErrorMessage:@"empty error"
                                                 suffixErrorMessage:suffixErrorMessage]];
         return nil;
     }
 
-    NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] adjTrim];
+    NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = urlResponse.statusCode;
 
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:responseData];
+    NSDictionary *jsonDict = [ADJUtil buildJsonDict:data];
 
     if ([ADJUtil isNull:jsonDict]) {
         return nil;
