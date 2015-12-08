@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Christian Wellenbrock" => "welle@adjust.com" }
   s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.5.0" }
-  s.ios.deployment_target = '5.0'
+  s.ios.deployment_target = '6.0'
   s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
   s.ios.weak_framework = 'AdSupport', 'iAd'
