@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Adjust.h"
+#import "AdjustMain.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
 
