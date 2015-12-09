@@ -34,6 +34,8 @@
 		96390A0F1BCC0DF100A2E8A4 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909F81BCC0DF100A2E8A4 /* ADJTimerOnce.m */; };
 		96390A101BCC0DF100A2E8A4 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909FA1BCC0DF100A2E8A4 /* Adjust.m */; };
 		96390A111BCC0DF100A2E8A4 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909FC1BCC0DF100A2E8A4 /* ADJUtil.m */; };
+		96FCC54A1C186458007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5471C186458007BBFE1 /* ADJResponseData.m */; };
+		96FCC54B1C186458007BBFE1 /* ADJResponseDataTasks.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5491C186458007BBFE1 /* ADJResponseDataTasks.m */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
 /* End PBXBuildFile section */
@@ -91,6 +93,10 @@
 		963909FA1BCC0DF100A2E8A4 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		963909FB1BCC0DF100A2E8A4 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		963909FC1BCC0DF100A2E8A4 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
+		96FCC5461C186458007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
+		96FCC5471C186458007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
+		96FCC5481C186458007BBFE1 /* ADJResponseDataTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseDataTasks.h; sourceTree = "<group>"; };
+		96FCC5491C186458007BBFE1 /* ADJResponseDataTasks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseDataTasks.m; sourceTree = "<group>"; };
 		9DC95F2D1C10596500138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DC95F301C105B4C00138E4B /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
@@ -157,6 +163,10 @@
 		963909D11BCC0DF100A2E8A4 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				96FCC5461C186458007BBFE1 /* ADJResponseData.h */,
+				96FCC5471C186458007BBFE1 /* ADJResponseData.m */,
+				96FCC5481C186458007BBFE1 /* ADJResponseDataTasks.h */,
+				96FCC5491C186458007BBFE1 /* ADJResponseDataTasks.m */,
 				963909D21BCC0DF100A2E8A4 /* ADJActivityHandler.h */,
 				963909D31BCC0DF100A2E8A4 /* ADJActivityHandler.m */,
 				963909D41BCC0DF100A2E8A4 /* ADJActivityKind.h */,
@@ -294,7 +304,9 @@
 				96390A0A1BCC0DF100A2E8A4 /* ADJLogger.m in Sources */,
 				963909FF1BCC0DF100A2E8A4 /* ADJActivityPackage.m in Sources */,
 				96390A091BCC0DF100A2E8A4 /* ADJEvent.m in Sources */,
+				96FCC54A1C186458007BBFE1 /* ADJResponseData.m in Sources */,
 				963909BD1BCC0D8300A2E8A4 /* ViewControllertvOS.m in Sources */,
+				96FCC54B1C186458007BBFE1 /* ADJResponseDataTasks.m in Sources */,
 				96390A0C1BCC0DF100A2E8A4 /* ADJPackageHandler.m in Sources */,
 				96390A011BCC0DF100A2E8A4 /* NSData+ADJAdditions.m in Sources */,
 				96390A0D1BCC0DF100A2E8A4 /* ADJRequestHandler.m in Sources */,
