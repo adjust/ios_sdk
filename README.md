@@ -29,15 +29,15 @@ github "adjust/ios_sdk"
 ```
 
 You can also choose to integrate the adjust SDK by adding it to your project as a framework.
-On [releases page][releases] you can find two archives:
+On the [releases page][releases] you can find two archives:
 
 * `AdjustSdkStatic.framework.zip`
 * `AdjustSdkDynamic.framework.zip`
 
-Since iOS 8 Apple has introduced dynamic frameworks (also known as embedded frameworks), 
-so if your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework.
-Choose which framework you want to use, static or dynamic one, add it to your project
-and continue with [step 3](#step3).
+iOS 8 Apple has introduced dynamic frameworks (also known as embedded frameworks). 
+If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework.
+Choose which framework you want to use – static or dynamic – and add it to your project
+before continuing with [step 3](#step3).
 
 
 ### 1. Get the SDK
@@ -74,21 +74,21 @@ steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status`
 
 #### Import statement
 
-If you added the adjust SDK from source or via Pod repository, you should 
+If you added the adjust SDK from the source or via a Pod repository, you should 
 use following import statement:
 
 ```objc
 #import "Adjust.h"
 ```
 
-If you added the adjust SDK as framework or via Carhage, you should use
+If you added the adjust SDK as a framework or via Carthage, you should use
 following import statement:
 
 ```objc
 #import <AdjustSdk/Adjust.h>
 ```
 
-To start with, we'll set up basic session tracking.
+To begin, we'll set up basic session tracking.
 
 #### Basic Setup
 
