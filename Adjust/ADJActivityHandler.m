@@ -36,7 +36,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJActivityState *activityState;
 @property (nonatomic, retain) ADJTimerCycle *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, weak) NSObject<AdjustDelegate> *attributionChangedDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 
     self.adjustConfig = adjustConfig;
-    self.delegate = adjustConfig.delegate;
+    self.attributionChangedDelegate = adjustConfig.delegate;
 
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
@@ -309,13 +309,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)launchAttributionDelegate{
-    if (self.delegate == nil) {
+    if (self.attributionChangedDelegate == nil) {
         return;
     }
-    if (![self.delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+
+    if (![self.attributionChangedDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return;
     }
-    [self.delegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
+    [self.attributionChangedDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
                                     withObject:self.attribution waitUntilDone:NO];
 }
 
@@ -364,7 +365,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                               withAttributionPackage:attributionPackage
                                                                          startPaused:[self paused]
-                                                                         hasDelegate:(self.delegate != nil)];
+                                                                         hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
     self.timer = [ADJTimerCycle timerWithBlock:^{ [self timerFiredInternal]; }
                                     queue:self.internalQueue

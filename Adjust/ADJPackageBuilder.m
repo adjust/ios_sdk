@@ -183,7 +183,7 @@
 {
     [self parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [self parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
-    [self parameters:parameters setBool:adjustConfig.hasDelegate forKey:@"needs_attribution_data"];
+    [self parameters:parameters setBool:adjustConfig.hasAttributionChangedDelegate forKey:@"needs_attribution_data"];
 }
 
 - (void) injectActivityState:(ADJActivityState *)activityState

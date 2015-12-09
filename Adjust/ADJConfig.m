@@ -43,7 +43,7 @@
 
     // default values
     self.logLevel = ADJLogLevelInfo;
-    self.hasDelegate = NO;
+    self.hasAttributionChangedDelegate  = NO;
     self.eventBufferingEnabled = NO;
 
     return self;
@@ -52,7 +52,7 @@
 - (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
     if ([ADJUtil isNull:delegate]) {
         _delegate = nil;
-        self.hasDelegate = NO;
+        self.hasAttributionChangedDelegate = NO;
         return;
     }
 
@@ -61,12 +61,12 @@
         [logger error:@"Delegate does not implement AdjustDelegate"];
 
         _delegate = nil;
-        self.hasDelegate = NO;
+        self.hasAttributionChangedDelegate = NO;
         return;
     }
 
     _delegate = delegate;
-    self.hasDelegate = YES;
+    self.hasAttributionChangedDelegate = YES;
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
@@ -113,7 +113,7 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
-        copy.hasDelegate = self.hasDelegate;
+        copy.hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
         // adjust delegate not copied
     }
 

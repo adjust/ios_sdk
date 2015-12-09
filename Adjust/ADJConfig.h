@@ -81,7 +81,7 @@
  *     methods like adjustAttributionChanged:
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
-@property (nonatomic, assign) BOOL hasDelegate;
+@property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
 
 - (BOOL) isValid;
 @end

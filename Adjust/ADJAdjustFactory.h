@@ -28,7 +28,7 @@
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                       startPaused:(BOOL)startPaused
-                                                      hasDelegate:(BOOL)hasDelegate;
+                                    hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
