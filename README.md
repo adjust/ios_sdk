@@ -18,8 +18,27 @@ If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the foll
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.4.5'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.5.0'
 ```
+
+If you're using [Carthage][carthage], you can add following line to your `Cartfile`
+and continue with [step 3](#step3):
+
+```ruby
+github "adjust/ios_sdk"
+```
+
+You can also choose to integrate the adjust SDK by adding it to your project as a framework.
+On the [releases page][releases] you can find two archives:
+
+* `AdjustSdkStatic.framework.zip`
+* `AdjustSdkDynamic.framework.zip`
+
+Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). 
+If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. 
+Choose which framework you want to use – static or dynamic – and add it to your project
+before continuing with [step 3](#step3).
+
 
 ### 1. Get the SDK
 
@@ -40,7 +59,7 @@ groups`.
 
 ![][add]
 
-### 3. Add the AdSupport and iAd framework
+### <a id="step3"></a>3. Add the AdSupport and iAd framework
 
 Select your project in the Project Navigator. In the left hand side of the main
 view, select your target. In the tab `Build Phases`, expand the group `Link
@@ -53,7 +72,23 @@ steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status`
 
 ### <a id="step4"></a>4. Integrate Adjust into your app
 
-To start with, we'll set up basic session tracking.
+#### Import statement
+
+If you added the adjust SDK from the source or via a Pod repository, you should 
+use following import statement:
+
+```objc
+#import "Adjust.h"
+```
+
+If you added the adjust SDK as a framework or via Carthage, you should use
+following import statement:
+
+```objc
+#import <AdjustSdk/Adjust.h>
+```
+
+To begin, we'll set up basic session tracking.
 
 #### Basic Setup
 
@@ -64,6 +99,7 @@ method of your app delegate:
 
 ```objc
 #import "Adjust.h"
+// or #import <AdjustSdk/Adjust.h>
 // ...
 NSString *yourAppToken = @"{YourAppToken}";
 NSString *environment = ADJEnvironmentSandbox;
@@ -297,6 +333,7 @@ policies.][attribution-data]
 
     ```objc
     #import "Adjust.h"
+    // or #import <AdjustSdk/Adjust.h>
 
     @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
     ```
@@ -384,6 +421,7 @@ You can read more about special partners and these integrations in our
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
+[carthage]: https://github.com/Carthage/Carthage
 [dashboard]: http://adjust.com
 [examples]: http://github.com/adjust/ios_sdk/tree/master/examples
 [example-ios]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
@@ -405,7 +443,7 @@ You can read more about special partners and these integrations in our
 
 ## License
 
-The adjust-SDK is licensed under the MIT License.
+The adjust SDK is licensed under the MIT License.
 
 Copyright (c) 2012-2015 adjust GmbH,
 http://www.adjust.com

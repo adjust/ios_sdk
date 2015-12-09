@@ -255,7 +255,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
           retriesLeft:(int)retriesLeft
 {
     if (![ADJUtil isNull:error]) {
-        [self.logger error:@"iAd details error (%s)", [error description]];
+        [self.logger warn:@"Unable to read iAd details"];
 
         if (retriesLeft < 0) {
             [self.logger error:@"Reached limit number of retry for iAd"];
@@ -267,7 +267,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         }
 
         if (error.code == AdjADClientErrorUnknown) {
-
             dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, kDelayRetryIad);
             dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [[UIDevice currentDevice] adjSetIad:self triesV3Left:retriesLeft];

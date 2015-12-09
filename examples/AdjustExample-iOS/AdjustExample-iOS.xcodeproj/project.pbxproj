@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		963909411BCBFCF300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909401BCBFCF300A2E8A4 /* main.m */; };
 		963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909431BCBFCF300A2E8A4 /* AppDelegate.m */; };
-		963909471BCBFCF300A2E8A4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909461BCBFCF300A2E8A4 /* ViewController.m */; };
 		9639094A1BCBFCF300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909481BCBFCF300A2E8A4 /* Main.storyboard */; };
 		9639094C1BCBFCF300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */; };
 		9639094F1BCBFCF300A2E8A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */; };
@@ -36,6 +35,9 @@
 		963909A61BCBFF8D00A2E8A4 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9639098F1BCBFF8D00A2E8A4 /* ADJTimerOnce.m */; };
 		963909A71BCBFF8D00A2E8A4 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909911BCBFF8D00A2E8A4 /* Adjust.m */; };
 		963909A81BCBFF8D00A2E8A4 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909931BCBFF8D00A2E8A4 /* ADJUtil.m */; };
+		9DAC2DEB1C0F611300AC9D97 /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */; };
+		9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */; };
+		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,8 +45,6 @@
 		963909401BCBFCF300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909421BCBFCF300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		963909431BCBFCF300A2E8A4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		963909451BCBFCF300A2E8A4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		963909461BCBFCF300A2E8A4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		963909491BCBFCF300A2E8A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9639094E1BCBFCF300A2E8A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -93,6 +93,12 @@
 		963909911BCBFF8D00A2E8A4 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		963909921BCBFF8D00A2E8A4 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		963909931BCBFF8D00A2E8A4 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
+		9DAC2DE91C0F611300AC9D97 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
+		9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
+		9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControlleriOS.h; sourceTree = "<group>"; };
+		9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControlleriOS.m; sourceTree = "<group>"; };
+		9DC95F281C10515300138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		9DC95F291C10515300138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,10 +135,14 @@
 		9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				9DC95F281C10515300138E4B /* Constants.h */,
+				9DC95F291C10515300138E4B /* Constants.m */,
 				963909421BCBFCF300A2E8A4 /* AppDelegate.h */,
 				963909431BCBFCF300A2E8A4 /* AppDelegate.m */,
-				963909451BCBFCF300A2E8A4 /* ViewController.h */,
-				963909461BCBFCF300A2E8A4 /* ViewController.m */,
+				9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */,
+				9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */,
+				9DAC2DE91C0F611300AC9D97 /* URLRequest.h */,
+				9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */,
 				963909481BCBFCF300A2E8A4 /* Main.storyboard */,
 				9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */,
 				9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */,
@@ -281,17 +291,18 @@
 			files = (
 				9639099F1BCBFF8D00A2E8A4 /* ADJDeviceInfo.m in Sources */,
 				963909A81BCBFF8D00A2E8A4 /* ADJUtil.m in Sources */,
+				9DAC2DEB1C0F611300AC9D97 /* URLRequest.m in Sources */,
 				9639099D1BCBFF8D00A2E8A4 /* ADJAttributionHandler.m in Sources */,
 				963909A21BCBFF8D00A2E8A4 /* ADJPackageBuilder.m in Sources */,
 				963909A51BCBFF8D00A2E8A4 /* ADJTimerCycle.m in Sources */,
 				963909A61BCBFF8D00A2E8A4 /* ADJTimerOnce.m in Sources */,
+				9DC95F2A1C10515300138E4B /* Constants.m in Sources */,
 				963909951BCBFF8D00A2E8A4 /* ADJActivityKind.m in Sources */,
 				9639099A1BCBFF8D00A2E8A4 /* UIDevice+ADJAdditions.m in Sources */,
 				963909971BCBFF8D00A2E8A4 /* ADJActivityState.m in Sources */,
 				963909A11BCBFF8D00A2E8A4 /* ADJLogger.m in Sources */,
 				963909961BCBFF8D00A2E8A4 /* ADJActivityPackage.m in Sources */,
 				963909A01BCBFF8D00A2E8A4 /* ADJEvent.m in Sources */,
-				963909471BCBFCF300A2E8A4 /* ViewController.m in Sources */,
 				963909A31BCBFF8D00A2E8A4 /* ADJPackageHandler.m in Sources */,
 				963909981BCBFF8D00A2E8A4 /* NSData+ADJAdditions.m in Sources */,
 				963909A41BCBFF8D00A2E8A4 /* ADJRequestHandler.m in Sources */,
@@ -303,6 +314,7 @@
 				9639099B1BCBFF8D00A2E8A4 /* ADJAdjustFactory.m in Sources */,
 				963909411BCBFCF300A2E8A4 /* main.m in Sources */,
 				9639099C1BCBFF8D00A2E8A4 /* ADJAttribution.m in Sources */,
+				9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

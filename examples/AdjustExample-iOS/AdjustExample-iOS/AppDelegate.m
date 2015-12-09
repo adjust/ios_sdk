@@ -6,6 +6,7 @@
 //  Copyright © 2015 adjust. All rights reserved.
 //
 
+#import "Constants.h"
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
@@ -19,7 +20,7 @@
     // Override point for customization after application launch.
 
     // configure adjust
-    NSString *yourAppToken = @"{YourAppToken}";
+    NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
 
@@ -46,8 +47,7 @@
     return YES;
 }
 
-- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     [Adjust appWillOpenUrl:url];
 
     return YES;
