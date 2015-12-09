@@ -21,3 +21,4 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkVersionString[];
 #import <AdjustSdk/ADJConfig.h>
 #import <AdjustSdk/ADJLogger.h>
 #import <AdjustSdk/ADJAttribution.h>
+#import <AdjustSdk/ADJResponseData.h>

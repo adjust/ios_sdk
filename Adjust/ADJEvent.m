@@ -158,6 +158,14 @@
     _transactionId = transactionId;
 }
 
+- (void) setSuccessDelegate:(ADJFinishActivity)successDelegate {
+    _successDelegate = successDelegate;
+}
+
+- (void) setFailureDelegate:(ADJFinishActivity)failureDelegate {
+    _failureDelegate = failureDelegate;
+}
+
 - (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
     if ([ADJUtil isNotNull:receipt] && [ADJUtil isNull:transactionId]) {
         [self.logger error:@"Missing transactionId"];

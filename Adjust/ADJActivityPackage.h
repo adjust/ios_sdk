@@ -7,6 +7,7 @@
 //
 
 #import "ADJActivityKind.h"
+#import "ADJEvent.h"
 
 @interface ADJActivityPackage : NSObject <NSCoding>
 
@@ -18,6 +19,10 @@
 // logs
 @property (nonatomic, assign) ADJActivityKind activityKind;
 @property (nonatomic, copy) NSString *suffix;
+
+// callbacks
+@property (nonatomic, copy) ADJFinishActivity successDelegate;
+@property (nonatomic, copy) ADJFinishActivity failureDelegate;
 
 - (NSString *)extendedString;
 - (NSString *)successMessage;

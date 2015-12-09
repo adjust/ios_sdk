@@ -7,7 +7,7 @@
 //
 
 #import "Adjust.h"
-#import "ADJAttribution.h"
+#import "ADJResponseDataTasks.h"
 
 @protocol ADJActivityHandler <NSObject>
 
@@ -18,7 +18,8 @@
 
 - (void)trackEvent:(ADJEvent *)event;
 
-- (void)finishedTracking:(NSDictionary *)jsonDict;
+- (void)finishedTracking:(ADJResponseDataTasks *)responseData;
+- (void)launchResponseTasks:(ADJResponseDataTasks *)responseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;
@@ -28,13 +29,11 @@
 - (void) setAttribution:(ADJAttribution*)attribution;
 - (void) setAskingAttribution:(BOOL)askingAttribution;
 
-- (BOOL) updateAttribution:(ADJAttribution*) attribution;
+- (SEL) updateAttribution:(ADJAttribution *)attribution;
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setIadDetails:(NSDictionary *)attributionDetails
                 error:(NSError *)error
           retriesLeft:(int)retriesLeft;
-
-- (void) launchAttributionDelegate;
 
 - (void) setOfflineMode:(BOOL)offline;
 

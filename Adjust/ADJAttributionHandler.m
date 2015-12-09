@@ -62,9 +62,9 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     return self;
 }
 
-- (void) checkAttribution:(NSDictionary *)jsonDict {
+- (void) checkResponse:(ADJResponseDataTasks *)responseDataTasks {
     dispatch_async(self.internalQueue, ^{
-        [self checkAttributionInternal:jsonDict];
+        [self checkResponseInternal:responseDataTasks];
     });
 }
 
@@ -96,28 +96,36 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 #pragma mark - internal
--(void) checkAttributionInternal:(NSDictionary *)jsonDict {
-    if ([ADJUtil isNull:jsonDict]) return;
+- (void) checkResponseInternal:(ADJResponseDataTasks *)responseDataTasks {
+    [self checkAttributionInternal:responseDataTasks];
 
-    NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
-    ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
-
-    NSNumber *timerMilliseconds = [jsonDict objectForKey:@"ask_in"];
-
-    if (timerMilliseconds == nil) {
-        [self.activityHandler updateAttribution:attribution];
-
-        [self.activityHandler setAskingAttribution:NO];
-
-        return;
-    };
-
-    [self.activityHandler setAskingAttribution:YES];
-
-    [self getAttributionWithDelay:[timerMilliseconds intValue]];
+    [self.activityHandler launchResponseTasks:responseDataTasks];
 }
 
--(void) getAttributionInternal {
+- (void) checkAttributionInternal:(ADJResponseDataTasks *)responseDataTasks {
+    NSDictionary * jsonResponse = responseDataTasks.responseData.jsonResponse;
+
+    if (jsonResponse == nil) {
+        return;
+    }
+
+    NSNumber *timerMilliseconds = [jsonResponse objectForKey:@"ask_in"];
+
+    if (timerMilliseconds != nil) {
+        [self.activityHandler setAskingAttribution:YES];
+
+        [self getAttributionWithDelay:[timerMilliseconds intValue]];
+
+        return;
+    }
+
+    [self.activityHandler setAskingAttribution:NO];
+
+    NSDictionary * jsonAttribution = [jsonResponse objectForKey:@"attribution"];
+    responseDataTasks.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+}
+
+- (void) getAttributionInternal {
     if (!self.hasDelegate) {
         return;
     }
@@ -129,9 +137,11 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
     [ADJUtil sendRequest:[self request]
       prefixErrorMessage:@"Failed to get attribution"
-     jsonResponseHandler:^(NSDictionary *jsonDict) {
-         [self checkAttribution:jsonDict];
-     }];
+         activityPackage:self.attributionPackage
+responseDataTasksHandler:^(ADJResponseDataTasks * responseDataTasks)
+    {
+        [self checkResponse:responseDataTasks];
+    }];
 }
 
 #pragma mark - private

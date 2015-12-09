@@ -21,6 +21,11 @@
     return self;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"message:%@ timestamp:%@ json:%@",
+            self.message, self.timeStamp, self.jsonResponse];
+}
+
 #pragma mark - NSCopying
 
 -(id)copyWithZone:(NSZone *)zone

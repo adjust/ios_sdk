@@ -12,6 +12,7 @@
 #import "ADJAdjustFactory.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
+#import "ADJResponseDataTasks.h"
 
 #include <sys/xattr.h>
 
@@ -113,25 +114,31 @@ static NSRegularExpression * universalLinkRegex = nil;
     return [dateFormat stringFromDate:value];
 }
 
-+ (NSDictionary *)buildJsonDict:(NSData *)jsonData {
++ (void) buildJsonDict:(NSData *)jsonData
+                   responseData:(ADJResponseData *)responseData
+{
     if (jsonData == nil) {
-        return nil;
+        return;
     }
     NSError *error = nil;
     NSDictionary *jsonDict = nil;
     @try {
         jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     } @catch (NSException *ex) {
-        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", ex.description];
-        return nil;
+        NSString * message = [NSString stringWithFormat:@"Failed to parse json response. (%@)", ex.description];
+        [ADJAdjustFactory.logger error:message];
+        responseData.message = message;
+        return;
     }
 
     if (error != nil) {
-        [ADJAdjustFactory.logger error:@"Failed to parse json response. (%@)", error.localizedDescription];
-        return nil;
+        NSString * message = [NSString stringWithFormat:@"Failed to parse json response. (%@)", error.localizedDescription];
+        [ADJAdjustFactory.logger error:message];
+        responseData.message = message;
+        return;
     }
 
-    return jsonDict;
+    responseData.jsonResponse = jsonDict;
 }
 
 + (NSString *)getFullFilename:(NSString *) baseFilename {
@@ -221,46 +228,57 @@ static NSRegularExpression * universalLinkRegex = nil;
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
-           prefixErrorMessage:(NSString *)prefixErrorMessage
-          jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
 {
     [ADJUtil sendRequest:request
-             prefixErrorMessage:prefixErrorMessage
-             suffixErrorMessage:nil
-            jsonResponseHandler:jsonResponseHandler];
+      prefixErrorMessage:prefixErrorMessage
+      suffixErrorMessage:nil
+         activityPackage:activityPackage
+responseDataTasksHandler:responseDataTasksHandler];
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
-             prefixErrorMessage:(NSString *)prefixErrorMessage
-             suffixErrorMessage:(NSString *)suffixErrorMessage
-            jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+ suffixErrorMessage:(NSString *)suffixErrorMessage
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
 {
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
     if (NSURLSessionClass != nil) {
         [ADJUtil sendNSURLSessionRequest:request
                       prefixErrorMessage:prefixErrorMessage
                       suffixErrorMessage:suffixErrorMessage
-                     jsonResponseHandler:jsonResponseHandler];
+                         activityPackage:activityPackage
+                responseDataTasksHandler:responseDataTasksHandler];
     } else {
         [ADJUtil sendNSURLConnectionRequest:request
                          prefixErrorMessage:prefixErrorMessage
                          suffixErrorMessage:suffixErrorMessage
-                        jsonResponseHandler:jsonResponseHandler];
+                            activityPackage:activityPackage
+                   responseDataTasksHandler:responseDataTasksHandler];
     }
 }
 
 + (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request
              prefixErrorMessage:(NSString *)prefixErrorMessage
              suffixErrorMessage:(NSString *)suffixErrorMessage
-            jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+                activityPackage:(ADJActivityPackage *)activityPackage
+       responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
 {
     NSURLSession *session = [NSURLSession sharedSession];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
-                                      NSDictionary * jsonResponse = [ADJUtil completionHandler:data response:(NSHTTPURLResponse *)response error:error prefixErrorMessage:prefixErrorMessage suffixErrorMessage:suffixErrorMessage];
-                                      jsonResponseHandler(jsonResponse);
+                                      ADJResponseDataTasks * responseDataTasks = [ADJUtil completionHandler:data
+                                                                                                   response:(NSHTTPURLResponse *)response
+                                                                                                      error:error
+                                                                                         prefixErrorMessage:prefixErrorMessage
+                                                                                         suffixErrorMessage:suffixErrorMessage
+                                                                                            activityPackage:activityPackage];
+                                      responseDataTasksHandler(responseDataTasks);
                                   }];
     [task resume];
 }
@@ -268,7 +286,8 @@ static NSRegularExpression * universalLinkRegex = nil;
 + (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
                 prefixErrorMessage:(NSString *)prefixErrorMessage
                 suffixErrorMessage:(NSString *)suffixErrorMessage
-               jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler
+                   activityPackage:(ADJActivityPackage *)activityPackage
+          responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
 {
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
@@ -280,33 +299,39 @@ static NSRegularExpression * universalLinkRegex = nil;
                                                              error:&responseError];
 #pragma clang diagnostic pop
 
-    NSDictionary * jsonResponse = [ADJUtil completionHandler:data
-                                                    response:(NSHTTPURLResponse *)urlResponse
-                                                       error:responseError
-                                          prefixErrorMessage:prefixErrorMessage
-                                          suffixErrorMessage:suffixErrorMessage];
+    ADJResponseDataTasks * responseDataTasks = [ADJUtil completionHandler:data
+                                                                 response:(NSHTTPURLResponse *)urlResponse
+                                                                    error:responseError
+                                                       prefixErrorMessage:prefixErrorMessage
+                                                       suffixErrorMessage:suffixErrorMessage
+                                                          activityPackage:activityPackage];
 
-    jsonResponseHandler(jsonResponse);
+    responseDataTasksHandler(responseDataTasks);
 }
 
-+ (NSDictionary *)completionHandler:(NSData *)data
-                           response:(NSHTTPURLResponse *)urlResponse
-                              error:(NSError *)responseError
-                 prefixErrorMessage:(NSString *)prefixErrorMessage
-                 suffixErrorMessage:(NSString *)suffixErrorMessage
++ (ADJResponseDataTasks *)completionHandler:(NSData *)data
+                                   response:(NSHTTPURLResponse *)urlResponse
+                                      error:(NSError *)responseError
+                         prefixErrorMessage:(NSString *)prefixErrorMessage
+                         suffixErrorMessage:(NSString *)suffixErrorMessage
+                            activityPackage:(ADJActivityPackage *)activityPackage
 {
+    ADJResponseDataTasks * responseDataTasks = [ADJResponseDataTasks responseDataTasks];
+    responseDataTasks.responseData = [ADJResponseData responseData];
+    responseDataTasks.finishDelegate = activityPackage.failureDelegate;
+
     // connection error
     if (responseError != nil) {
         [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
                                                 systemErrorMessage:responseError.localizedDescription
                                                 suffixErrorMessage:suffixErrorMessage]];
-        return nil;
+        return responseDataTasks;
     }
     if ([ADJUtil isNull:data]) {
         [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
                                                 systemErrorMessage:@"empty error"
                                                 suffixErrorMessage:suffixErrorMessage]];
-        return nil;
+        return responseDataTasks;
     }
 
     NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
@@ -314,13 +339,16 @@ static NSRegularExpression * universalLinkRegex = nil;
 
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
-    NSDictionary *jsonDict = [ADJUtil buildJsonDict:data];
+    [ADJUtil buildJsonDict:data responseData:responseDataTasks.responseData];
 
-    if ([ADJUtil isNull:jsonDict]) {
-        return nil;
+    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse]) {
+        return responseDataTasks;
     }
 
-    NSString* messageResponse = [jsonDict objectForKey:@"message"];
+    NSString* messageResponse = [responseDataTasks.responseData.jsonResponse objectForKey:@"message"];
+
+    responseDataTasks.responseData.message = messageResponse;
+    responseDataTasks.responseData.timeStamp = [responseDataTasks.responseData.jsonResponse objectForKey:@"timestamp"];
 
     if (messageResponse == nil) {
         messageResponse = @"No message found";
@@ -328,11 +356,12 @@ static NSRegularExpression * universalLinkRegex = nil;
 
     if (statusCode == 200) {
         [ADJAdjustFactory.logger info:@"%@", messageResponse];
+        responseDataTasks.finishDelegate = activityPackage.successDelegate;
     } else {
         [ADJAdjustFactory.logger error:@"%@", messageResponse];
     }
 
-    return jsonDict;
+    return responseDataTasks;
 }
 
 // convert all values to strings, if value is dictionary -> recursive call

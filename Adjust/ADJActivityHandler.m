@@ -18,6 +18,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJResponseDataTasks.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -109,11 +110,24 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)finishedTracking:(NSDictionary *)jsonDict{
-    if ([ADJUtil isNull:jsonDict]) return;
+- (void)finishedTracking:(ADJResponseDataTasks *)responseDataTasks {
+    // no response json to check for attributes and no callback for events
+    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse] && [ADJUtil isNull:responseDataTasks.finishDelegate]) {
+        return;
+    }
+    // callback for events is present
+    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse]) {
+        [self launchResponseTasks:responseDataTasks];
+        return;
+    }
+    // attribute might be present
+    [self.attributionHandler checkResponse:responseDataTasks];
+}
 
-    [self launchDeepLink:jsonDict];
-    [self.attributionHandler checkAttribution:jsonDict];
+- (void)launchResponseTasks:(ADJResponseDataTasks *)responseData {
+    dispatch_async(self.internalQueue, ^{
+        [self launchResponseTasksInternal:responseData];
+    });
 }
 
 - (void)launchDeepLink:(NSDictionary *)jsonDict{
@@ -293,31 +307,25 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.packageHandler addPackage:clickPackage];
 }
 
-- (BOOL)updateAttribution:(ADJAttribution *)attribution {
+- (SEL)updateAttribution:(ADJAttribution *)attribution {
     if (attribution == nil) {
-        return NO;
+        return nil;
     }
     if ([attribution isEqual:self.attribution]) {
-        return NO;
+        return nil;
     }
     self.attribution = attribution;
     [self writeAttribution];
 
-    [self launchAttributionDelegate];
-
-    return YES;
-}
-
-- (void)launchAttributionDelegate{
     if (self.attributionChangedDelegate == nil) {
-        return;
+        return nil;
     }
 
     if (![self.attributionChangedDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
-        return;
+        return nil;
     }
-    [self.attributionChangedDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                    withObject:self.attribution waitUntilDone:NO];
+
+    return @selector(adjustAttributionChanged:);
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -489,6 +497,30 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [self writeActivityState];
 }
+
+- (void) launchResponseTasksInternal:(ADJResponseDataTasks *)responseDataTasks {
+
+    SEL updateAttributionSEL = [self updateAttribution:responseDataTasks.attribution];
+    ADJAttribution * localAttributionCopy = self.attribution;
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // first try to update and launch the attribution changed listener
+        if (updateAttributionSEL != nil) {
+            [self.attributionChangedDelegate performSelectorOnMainThread:updateAttributionSEL
+                                                              withObject:localAttributionCopy
+                                                           waitUntilDone:YES];
+        }
+        // second try to launch the finished activity listener
+        if (responseDataTasks.finishDelegate != nil) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                responseDataTasks.finishDelegate(responseDataTasks.responseData);
+            });
+        }
+        // in last, try to launch the deeplink
+        [self launchDeepLink:responseDataTasks.responseData.jsonResponse];
+    });
+}
+
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     if ([ADJUtil isNull:url]) {

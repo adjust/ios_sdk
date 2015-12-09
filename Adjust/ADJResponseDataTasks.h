@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ADJEvent.h"
+#import "ADJResponseData.h"
 #import "ADJAttribution.h"
+#import "ADJEvent.h"
 
 @interface ADJResponseDataTasks : NSObject
 

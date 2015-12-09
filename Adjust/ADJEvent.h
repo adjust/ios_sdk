@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ADJResponseData.h"
+
+typedef void (^ADJFinishActivity)(ADJResponseData * responseData);
 
 @interface ADJEvent : NSObject<NSCopying>
 
@@ -18,6 +21,8 @@
 @property (nonatomic, copy, readonly) NSString* currency;
 @property (nonatomic, copy, readonly) NSData* receipt;
 @property (nonatomic, assign, readonly) BOOL emptyReceipt;
+@property (nonatomic, copy, readonly) ADJFinishActivity successDelegate;
+@property (nonatomic, copy, readonly) ADJFinishActivity failureDelegate;
 
 /**
  * Create Event object with Event Token.
@@ -85,5 +90,8 @@
  * @param transactionId The identifier used to validate the receipt and to avoid duplicate revenue events
  */
 - (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId;
+
+- (void) setSuccessDelegate:(ADJFinishActivity)successDelegate;
+- (void) setFailureDelegate:(ADJFinishActivity)failureDelegate;
 
 @end

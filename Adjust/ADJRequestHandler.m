@@ -59,14 +59,14 @@ static const double kRequestTimeout = 60; // 60 seconds
     [ADJUtil sendRequest:[self requestForPackage:package]
       prefixErrorMessage:package.failureMessage
       suffixErrorMessage:@"Will retry later"
-     jsonResponseHandler:^(NSDictionary *jsonDict) {
-         if (jsonDict == nil) {
+         activityPackage:package
+responseDataTasksHandler:^(ADJResponseDataTasks * responseDataTasks) {
+         if (responseDataTasks.responseData.jsonResponse == nil) {
              [self.packageHandler closeFirstPackage];
              return;
          }
 
-         [self.packageHandler finishedTracking:jsonDict];
-         [self.packageHandler sendNextPackage];
+         [self.packageHandler sendNextPackage:responseDataTasks];
      }];
 }
 

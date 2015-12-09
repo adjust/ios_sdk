@@ -7,6 +7,9 @@
 //
 #import <Foundation/Foundation.h>
 #import "ADJActivityKind.h"
+#import "ADJResponseDataTasks.h"
+#import "ADJActivityPackage.h"
+#import "ADJEvent.h"
 
 @interface ADJUtil : NSObject
 
@@ -16,7 +19,8 @@
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)formatSeconds1970:(double)value;
 + (NSString *)formatDate:(NSDate *)value;
-+ (NSDictionary *) buildJsonDict:(NSData *)jsonData;
++ (void) buildJsonDict:(NSData *)jsonData
+          responseData:(ADJResponseData *)responseData;
 
 + (NSString *)getFullFilename:(NSString *) baseFilename;
 
@@ -33,12 +37,14 @@
 + (BOOL)isNotNull:(id)value;
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
-jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler;
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
-jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
 

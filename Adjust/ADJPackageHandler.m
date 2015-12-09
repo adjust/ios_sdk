@@ -64,10 +64,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     });
 }
 
-- (void)sendNextPackage {
+- (void)sendNextPackage:(ADJResponseDataTasks *)responseDataTasks{
     dispatch_async(self.internalQueue, ^{
         [self sendNextInternal];
     });
+
+    [self.activityHandler finishedTracking:responseDataTasks];
 }
 
 - (void)closeFirstPackage {
@@ -80,10 +82,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (void)resumeSending {
     self.paused = NO;
-}
-
-- (void)finishedTracking:(NSDictionary *)jsonDict{
-    [self.activityHandler finishedTracking:jsonDict];
 }
 
 #pragma mark - internal
