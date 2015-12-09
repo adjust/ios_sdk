@@ -34,8 +34,8 @@ On the [releases page][releases] you can find two archives:
 * `AdjustSdkStatic.framework.zip`
 * `AdjustSdkDynamic.framework.zip`
 
-iOS 8 Apple has introduced dynamic frameworks (also known as embedded frameworks). 
-If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework.
+Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). 
+If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. 
 Choose which framework you want to use – static or dynamic – and add it to your project
 before continuing with [step 3](#step3).
 
