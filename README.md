@@ -441,7 +441,38 @@ Here is a quick summary of its properties:
 - `NSString creative` the creative grouping level of the current install.
 - `NSString clickLabel` the click label of the current install.
 
-### 10. Disable tracking
+### 10. Set block callbacks for tracked events and sessions
+
+You can register blocks to be callback when events and sessions are tracked. 
+There is a block callback for when the event or session is correctly tracked, and a block callback for when there was some type of failure.
+You can add any or both of the block callback after creating the `ADJConfig` object:
+
+```objc
+ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
+
+[adjustConfig setSuccessDelegate:^(ADJSuccessResponseData *successResponseData) {
+    // ...
+}];
+
+[adjustConfig setFailureDelegate:^(ADJFailureResponseData *failureResponseData) {
+    // ...
+}];
+
+[Adjust appDidLaunch:adjustConfig];
+```
+
+The block callback will be called after the SDK tries to send a package to the server. Within the block callback you have access to the `successResponseData` or `failureResponseData` object. Here is a quick summary of its common properties:
+
+- `NSString activityKindString` the type of package send, either `"event"` or `"session"`. 
+- `NSString message` the message from the server or the error logged by the SDK.
+- `NSString timestamp` timestamp from the server.
+- `NSString adid` a unique device identifier provided by adjust.
+- `NSString eventToken` the event token, if the package tracked was an event.
+- `NSDictionary jsonResponse` the json object with the reponse from the server.
+
+The extra parameter in `failureResponseData` is currently only `BOOL willRetry` and it indicates whether the package will try to be send again to the server. 
+
+### 11. Disable tracking
 
 You can disable the adjust SDK from tracking any activities of the current
 device by calling `setEnabled` with parameter `NO`. This setting is remembered
@@ -455,7 +486,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Offline mode
+### 12. Offline mode
 
 You can put the adjust SDK in offline mode to suspend transmission to our servers 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
@@ -475,7 +506,7 @@ Unlike disabling tracking, this setting is *not remembered*
 bettween sessions. This means that the SDK is in online mode whenever it is started,
 even if the app was terminated in offline mode.
 
-### 12. Partner parameters
+### 13. Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the
 integrations that have been activated in your adjust dashboard.
@@ -493,7 +524,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 You can read more about special partners and these integrations in our
 [guide to special partners.][special-partners]
 
-### 13. Device IDS
+### 14. Device IDS
 
 Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate reporting. 
 
@@ -503,7 +534,7 @@ To obtain the device identifier IDFA, call the function `idfa`:
 NSString * idfa = [Adjust idfa];
 ```
 
-### 14. Push token
+### 15. Push token
 
 To send us the push notification token, then add the following call to `Adjust` in the `didRegisterForRemoteNotificationsWithDeviceToken` of your app delegate:
 
