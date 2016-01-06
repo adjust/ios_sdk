@@ -36,6 +36,16 @@
     // set an attribution delegate
     [adjustConfig setDelegate:self];
 
+    // set finished success tracking delegate
+    [adjustConfig setSuccessDelegate:^(ADJSuccessResponseData *successResponseData) {
+        NSLog(@"adjust successResponseData %@", successResponseData);
+    }];
+
+    // set finished failure tracking delegate
+    [adjustConfig setFailureDelegate:^(ADJFailureResponseData *failureResponseData) {
+        NSLog(@"adjust failureResponseData %@", failureResponseData);
+    }];
+
     [Adjust appDidLaunch:adjustConfig];
 
     // put the SDK in offline mode

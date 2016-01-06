@@ -22,14 +22,41 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+    // configure adjust
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
 
+    // change the log level
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
+
+    // enable event buffering
+    //[adjustConfig setEventBufferingEnabled:YES];
+
+    // set default tracker
+    //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
+
+    // set an attribution delegate
     [adjustConfig setDelegate:self];
 
+    // set finished success tracking delegate
+    [adjustConfig setSuccessDelegate:^(ADJSuccessResponseData *successResponseData) {
+        NSLog(@"adjust successResponseData %@", successResponseData);
+    }];
+
+    // set finished failure tracking delegate
+    [adjustConfig setFailureDelegate:^(ADJFailureResponseData *failureResponseData) {
+        NSLog(@"adjust failureResponseData %@", failureResponseData);
+    }];
+
     [Adjust appDidLaunch:adjustConfig];
+
+    // put the SDK in offline mode
+    //[Adjust setOfflineMode:YES];
+
+    // disable the SDK
+    //[Adjust setEnabled:NO];
 
     return YES;
 }
