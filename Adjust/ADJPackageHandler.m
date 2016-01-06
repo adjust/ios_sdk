@@ -64,16 +64,19 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     });
 }
 
-- (void)sendNextPackage:(ADJResponseDataTasks *)responseDataTasks{
+- (void)sendNextPackage:(ADJResponseData *)responseData{
     dispatch_async(self.internalQueue, ^{
         [self sendNextInternal];
     });
 
-    [self.activityHandler finishedTracking:responseDataTasks];
+    [self.activityHandler finishedTracking:responseData];
 }
 
-- (void)closeFirstPackage {
+- (void)closeFirstPackage:(ADJResponseData *)responseData {
     dispatch_semaphore_signal(self.sendingSemaphore);
+
+    responseData.willRetry = YES;
+    [self.activityHandler finishedTracking:responseData];
 }
 
 - (void)pauseSending {

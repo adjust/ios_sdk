@@ -60,13 +60,13 @@ static const double kRequestTimeout = 60; // 60 seconds
       prefixErrorMessage:package.failureMessage
       suffixErrorMessage:@"Will retry later"
          activityPackage:package
-responseDataTasksHandler:^(ADJResponseDataTasks * responseDataTasks) {
-         if (responseDataTasks.responseData.jsonResponse == nil) {
-             [self.packageHandler closeFirstPackage];
+     responseDataHandler:^(ADJResponseData * responseData) {
+         if (responseData.jsonResponse == nil) {
+             [self.packageHandler closeFirstPackage:responseData];
              return;
          }
 
-         [self.packageHandler sendNextPackage:responseDataTasks];
+         [self.packageHandler sendNextPackage:responseData];
      }];
 }
 

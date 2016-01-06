@@ -62,9 +62,9 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     return self;
 }
 
-- (void) checkResponse:(ADJResponseDataTasks *)responseDataTasks {
+- (void) checkResponse:(ADJResponseData *)responseData {
     dispatch_async(self.internalQueue, ^{
-        [self checkResponseInternal:responseDataTasks];
+        [self checkResponseInternal:responseData];
     });
 }
 
@@ -96,20 +96,18 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 #pragma mark - internal
-- (void) checkResponseInternal:(ADJResponseDataTasks *)responseDataTasks {
-    [self checkAttributionInternal:responseDataTasks];
+- (void) checkResponseInternal:(ADJResponseData *)responseData {
+    [self checkAttributionInternal:responseData];
 
-    [self.activityHandler launchResponseTasks:responseDataTasks];
+    [self.activityHandler launchResponseTasks:responseData];
 }
 
-- (void) checkAttributionInternal:(ADJResponseDataTasks *)responseDataTasks {
-    NSDictionary * jsonResponse = responseDataTasks.responseData.jsonResponse;
-
-    if (jsonResponse == nil) {
+- (void) checkAttributionInternal:(ADJResponseData *)responseData {
+    if (responseData.jsonResponse == nil) {
         return;
     }
 
-    NSNumber *timerMilliseconds = [jsonResponse objectForKey:@"ask_in"];
+    NSNumber *timerMilliseconds = [responseData.jsonResponse objectForKey:@"ask_in"];
 
     if (timerMilliseconds != nil) {
         [self.activityHandler setAskingAttribution:YES];
@@ -121,8 +119,8 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
     [self.activityHandler setAskingAttribution:NO];
 
-    NSDictionary * jsonAttribution = [jsonResponse objectForKey:@"attribution"];
-    responseDataTasks.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+    NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
+    responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
 }
 
 - (void) getAttributionInternal {
@@ -138,9 +136,9 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     [ADJUtil sendRequest:[self request]
       prefixErrorMessage:@"Failed to get attribution"
          activityPackage:self.attributionPackage
-responseDataTasksHandler:^(ADJResponseDataTasks * responseDataTasks)
+     responseDataHandler:^(ADJResponseData * responseData)
     {
-        [self checkResponse:responseDataTasks];
+        [self checkResponse:responseData];
     }];
 }
 

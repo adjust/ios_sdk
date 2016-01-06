@@ -10,7 +10,7 @@
 #import "ADJActivityPackage.h"
 #import "ADJPackageHandler.h"
 #import "ADJActivityHandler.h"
-#import "ADJResponseDataTasks.h"
+#import "ADJResponseData.h"
 
 @protocol ADJPackageHandler
 
@@ -19,8 +19,8 @@
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
-- (void)sendNextPackage:(ADJResponseDataTasks *)responseDataTasks;
-- (void)closeFirstPackage;
+- (void)sendNextPackage:(ADJResponseData *)responseData;
+- (void)closeFirstPackage:(ADJResponseData *)responseData;;
 - (void)pauseSending;
 - (void)resumeSending;
 

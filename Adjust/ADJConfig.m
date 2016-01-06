@@ -99,6 +99,14 @@
     return YES;
 }
 
+- (void) setSuccessDelegate:(ADJTrackingSucceeded)successDelegate {
+    _successDelegate = successDelegate;
+}
+
+- (void) setFailureDelegate:(ADJTrackingFailed)failureDelegate {
+    _failureDelegate = failureDelegate;
+}
+
 - (BOOL) isValid {
     return self.appToken != nil;
 }

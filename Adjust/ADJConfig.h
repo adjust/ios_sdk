@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "ADJLogger.h"
 #import "ADJAttribution.h"
+#import "ADJSuccessResponseData.h"
+#import "ADJFailureResponseData.h"
 
 /**
  * Optional delegate that will get informed about tracking results
@@ -25,12 +27,17 @@
 
 @end
 
+typedef void (^ADJTrackingSucceeded)(ADJSuccessResponseData * successResponseData);
+typedef void (^ADJTrackingFailed)(ADJFailureResponseData * failureResponseData);
+
 @interface ADJConfig : NSObject<NSCopying>
 
 @property (nonatomic, copy, readonly) NSString *appToken;
 @property (nonatomic, copy, readonly) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, copy) NSString *defaultTracker;
+@property (nonatomic, copy, readonly) ADJTrackingSucceeded successDelegate;
+@property (nonatomic, copy, readonly) ADJTrackingFailed failureDelegate;
 
 /**
  * Configuration object for the initialization of the Adjust SDK.
@@ -82,6 +89,9 @@
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
+
+- (void) setSuccessDelegate:(ADJTrackingSucceeded)successDelegate;
+- (void) setFailureDelegate:(ADJTrackingFailed)failureDelegate;
 
 - (BOOL) isValid;
 @end

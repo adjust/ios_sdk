@@ -12,7 +12,7 @@
 #import "ADJAdjustFactory.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
-#import "ADJResponseDataTasks.h"
+#import "ADJResponseData.h"
 
 #include <sys/xattr.h>
 
@@ -230,20 +230,20 @@ static NSRegularExpression * universalLinkRegex = nil;
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
-responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
 {
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:nil
          activityPackage:activityPackage
-responseDataTasksHandler:responseDataTasksHandler];
+     responseDataHandler:responseDataHandler];
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
-responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
 {
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
     if (NSURLSessionClass != nil) {
@@ -251,13 +251,13 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
                       prefixErrorMessage:prefixErrorMessage
                       suffixErrorMessage:suffixErrorMessage
                          activityPackage:activityPackage
-                responseDataTasksHandler:responseDataTasksHandler];
+                     responseDataHandler:responseDataHandler];
     } else {
         [ADJUtil sendNSURLConnectionRequest:request
                          prefixErrorMessage:prefixErrorMessage
                          suffixErrorMessage:suffixErrorMessage
                             activityPackage:activityPackage
-                   responseDataTasksHandler:responseDataTasksHandler];
+                        responseDataHandler:responseDataHandler];
     }
 }
 
@@ -265,20 +265,20 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
              prefixErrorMessage:(NSString *)prefixErrorMessage
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
-       responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
+            responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
 {
     NSURLSession *session = [NSURLSession sharedSession];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
-                                      ADJResponseDataTasks * responseDataTasks = [ADJUtil completionHandler:data
-                                                                                                   response:(NSHTTPURLResponse *)response
-                                                                                                      error:error
-                                                                                         prefixErrorMessage:prefixErrorMessage
-                                                                                         suffixErrorMessage:suffixErrorMessage
-                                                                                            activityPackage:activityPackage];
-                                      responseDataTasksHandler(responseDataTasks);
+                                      ADJResponseData * responseData = [ADJUtil completionHandler:data
+                                                                                         response:(NSHTTPURLResponse *)response
+                                                                                            error:error
+                                                                               prefixErrorMessage:prefixErrorMessage
+                                                                               suffixErrorMessage:suffixErrorMessage
+                                                                                  activityPackage:activityPackage];
+                                      responseDataHandler(responseData);
                                   }];
     [task resume];
 }
@@ -287,7 +287,7 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
                 prefixErrorMessage:(NSString *)prefixErrorMessage
                 suffixErrorMessage:(NSString *)suffixErrorMessage
                    activityPackage:(ADJActivityPackage *)activityPackage
-          responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler
+               responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
 {
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
@@ -299,39 +299,41 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
                                                              error:&responseError];
 #pragma clang diagnostic pop
 
-    ADJResponseDataTasks * responseDataTasks = [ADJUtil completionHandler:data
-                                                                 response:(NSHTTPURLResponse *)urlResponse
-                                                                    error:responseError
-                                                       prefixErrorMessage:prefixErrorMessage
-                                                       suffixErrorMessage:suffixErrorMessage
-                                                          activityPackage:activityPackage];
+    ADJResponseData * responseData = [ADJUtil completionHandler:data
+                                                       response:(NSHTTPURLResponse *)urlResponse
+                                                          error:responseError
+                                             prefixErrorMessage:prefixErrorMessage
+                                             suffixErrorMessage:suffixErrorMessage
+                                                activityPackage:activityPackage];
 
-    responseDataTasksHandler(responseDataTasks);
+    responseDataHandler(responseData);
 }
 
-+ (ADJResponseDataTasks *)completionHandler:(NSData *)data
-                                   response:(NSHTTPURLResponse *)urlResponse
-                                      error:(NSError *)responseError
-                         prefixErrorMessage:(NSString *)prefixErrorMessage
-                         suffixErrorMessage:(NSString *)suffixErrorMessage
-                            activityPackage:(ADJActivityPackage *)activityPackage
++ (ADJResponseData *)completionHandler:(NSData *)data
+                              response:(NSHTTPURLResponse *)urlResponse
+                                 error:(NSError *)responseError
+                    prefixErrorMessage:(NSString *)prefixErrorMessage
+                    suffixErrorMessage:(NSString *)suffixErrorMessage
+                       activityPackage:(ADJActivityPackage *)activityPackage
 {
-    ADJResponseDataTasks * responseDataTasks = [ADJResponseDataTasks responseDataTasks];
-    responseDataTasks.responseData = [ADJResponseData responseData];
-    responseDataTasks.finishDelegate = activityPackage.failureDelegate;
+    ADJResponseData * responseData = [ADJResponseData responseDataWithActivityPackage:activityPackage];
 
     // connection error
     if (responseError != nil) {
-        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
-                                                systemErrorMessage:responseError.localizedDescription
-                                                suffixErrorMessage:suffixErrorMessage]];
-        return responseDataTasks;
+        NSString * errorMessage = [ADJUtil formatErrorMessage:prefixErrorMessage
+                                           systemErrorMessage:responseError.localizedDescription
+                                           suffixErrorMessage:suffixErrorMessage];
+        [ADJAdjustFactory.logger error:errorMessage];
+        responseData.message = errorMessage;
+        return responseData;
     }
     if ([ADJUtil isNull:data]) {
-        [ADJAdjustFactory.logger error:[ADJUtil formatErrorMessage:prefixErrorMessage
-                                                systemErrorMessage:@"empty error"
-                                                suffixErrorMessage:suffixErrorMessage]];
-        return responseDataTasks;
+        NSString * errorMessage = [ADJUtil formatErrorMessage:prefixErrorMessage
+                                           systemErrorMessage:@"empty error"
+                                           suffixErrorMessage:suffixErrorMessage];
+        [ADJAdjustFactory.logger error:errorMessage];
+        responseData.message = errorMessage;
+        return responseData;
     }
 
     NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
@@ -339,16 +341,17 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
 
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
-    [ADJUtil buildJsonDict:data responseData:responseDataTasks.responseData];
+    [ADJUtil buildJsonDict:data responseData:responseData];
 
-    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse]) {
-        return responseDataTasks;
+    if ([ADJUtil isNull:responseData.jsonResponse]) {
+        return responseData;
     }
 
-    NSString* messageResponse = [responseDataTasks.responseData.jsonResponse objectForKey:@"message"];
+    NSString* messageResponse = [responseData.jsonResponse objectForKey:@"message"];
 
-    responseDataTasks.responseData.message = messageResponse;
-    responseDataTasks.responseData.timeStamp = [responseDataTasks.responseData.jsonResponse objectForKey:@"timestamp"];
+    responseData.message = messageResponse;
+    responseData.timeStamp = [responseData.jsonResponse objectForKey:@"timestamp"];
+    responseData.adid = [responseData.jsonResponse objectForKey:@"adid"];
 
     if (messageResponse == nil) {
         messageResponse = @"No message found";
@@ -356,12 +359,12 @@ responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))re
 
     if (statusCode == 200) {
         [ADJAdjustFactory.logger info:@"%@", messageResponse];
-        responseDataTasks.finishDelegate = activityPackage.successDelegate;
+        responseData.success = YES;
     } else {
         [ADJAdjustFactory.logger error:@"%@", messageResponse];
     }
 
-    return responseDataTasks;
+    return responseData;
 }
 
 // convert all values to strings, if value is dictionary -> recursive call

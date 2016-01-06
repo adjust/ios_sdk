@@ -18,7 +18,6 @@
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJResponseDataTasks.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -110,21 +109,21 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)finishedTracking:(ADJResponseDataTasks *)responseDataTasks {
-    // no response json to check for attributes and no callback for events
-    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse] && [ADJUtil isNull:responseDataTasks.finishDelegate]) {
+- (void)finishedTracking:(ADJResponseData *)responseData {
+    // no response json to check for attributes and no callback for failed package
+    if ([ADJUtil isNull:responseData.jsonResponse] && [ADJUtil isNull:self.adjustConfig.failureDelegate]) {
         return;
     }
-    // callback for events is present
-    if ([ADJUtil isNull:responseDataTasks.responseData.jsonResponse]) {
-        [self launchResponseTasks:responseDataTasks];
+    // callback for failed package is present
+    if ([ADJUtil isNull:responseData.jsonResponse]) {
+        [self launchResponseTasks:responseData];
         return;
     }
     // attribute might be present
-    [self.attributionHandler checkResponse:responseDataTasks];
+    [self.attributionHandler checkResponse:responseData];
 }
 
-- (void)launchResponseTasks:(ADJResponseDataTasks *)responseData {
+- (void)launchResponseTasks:(ADJResponseData *)responseData {
     dispatch_async(self.internalQueue, ^{
         [self launchResponseTasksInternal:responseData];
     });
@@ -498,9 +497,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self writeActivityState];
 }
 
-- (void) launchResponseTasksInternal:(ADJResponseDataTasks *)responseDataTasks {
+- (void) launchResponseTasksInternal:(ADJResponseData *)responseData {
 
-    SEL updateAttributionSEL = [self updateAttribution:responseDataTasks.attribution];
+    SEL updateAttributionSEL = [self updateAttribution:responseData.attribution];
     ADJAttribution * localAttributionCopy = self.attribution;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -511,16 +510,34 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                            waitUntilDone:YES];
         }
         // second try to launch the finished activity listener
-        if (responseDataTasks.finishDelegate != nil) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                responseDataTasks.finishDelegate(responseDataTasks.responseData);
-            });
-        }
+        [self launchFinishedDelegate:responseData];
         // in last, try to launch the deeplink
-        [self launchDeepLink:responseDataTasks.responseData.jsonResponse];
+        [self launchDeepLink:responseData.jsonResponse];
     });
 }
 
+- (void) launchFinishedDelegate:(ADJResponseData *)responseData {
+    // no event or session package
+    if (responseData.activityKind != ADJActivityKindEvent && responseData.activityKind != ADJActivityKindSession) {
+        return;
+    }
+    // no success callback
+    if (responseData.success && [ADJUtil isNull:self.adjustConfig.successDelegate]) {
+        return;
+    }
+    // no failure callback
+    if (!responseData.success && [ADJUtil isNull:self.adjustConfig.failureDelegate]) {
+        return;
+    }
+    // add it to the handler queue
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if (responseData.success) {
+            self.adjustConfig.successDelegate([responseData successResponseData]);
+        } else {
+            self.adjustConfig.failureDelegate([responseData failureResponseData]);
+        }
+    });
+}
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     if ([ADJUtil isNull:url]) {

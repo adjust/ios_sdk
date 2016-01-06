@@ -80,8 +80,6 @@
     eventPackage.activityKind = ADJActivityKindEvent;
     eventPackage.suffix = [self eventSuffix:event];
     eventPackage.parameters = parameters;
-    eventPackage.successDelegate = event.successDelegate;
-    eventPackage.failureDelegate = event.failureDelegate;
 
     return eventPackage;
 }

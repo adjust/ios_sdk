@@ -7,7 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "ADJActivityKind.h"
-#import "ADJResponseDataTasks.h"
+#import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJEvent.h"
 
@@ -38,13 +38,13 @@
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
-responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler;
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
-responseDataTasksHandler:(void (^) (ADJResponseDataTasks * responseDataTasks))responseDataTasksHandler;
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
 
