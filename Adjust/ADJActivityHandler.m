@@ -37,6 +37,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJTimerCycle *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *attributionChangedDelegate;
+@property (nonatomic, copy) ADJTrackingSucceeded successDelegate;
+@property (nonatomic, copy) ADJTrackingFailed failureDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
@@ -77,6 +79,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     self.adjustConfig = adjustConfig;
     self.attributionChangedDelegate = adjustConfig.delegate;
+    self.successDelegate = adjustConfig.successDelegate;
+    self.failureDelegate = adjustConfig.failureDelegate;
 
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
@@ -111,7 +115,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
     // no response json to check for attributes and no callback for failed package
-    if ([ADJUtil isNull:responseData.jsonResponse] && [ADJUtil isNull:self.adjustConfig.failureDelegate]) {
+    if ([ADJUtil isNull:responseData.jsonResponse] && [ADJUtil isNull:self.failureDelegate]) {
         return;
     }
     // callback for failed package is present
@@ -522,19 +526,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
     // no success callback
-    if (responseData.success && [ADJUtil isNull:self.adjustConfig.successDelegate]) {
+    if (responseData.success && [ADJUtil isNull:self.successDelegate]) {
         return;
     }
     // no failure callback
-    if (!responseData.success && [ADJUtil isNull:self.adjustConfig.failureDelegate]) {
+    if (!responseData.success && [ADJUtil isNull:self.failureDelegate]) {
         return;
     }
     // add it to the handler queue
     dispatch_sync(dispatch_get_main_queue(), ^{
         if (responseData.success) {
-            self.adjustConfig.successDelegate([responseData successResponseData]);
+            self.successDelegate([responseData successResponseData]);
         } else {
-            self.adjustConfig.failureDelegate([responseData failureResponseData]);
+            self.failureDelegate([responseData failureResponseData]);
         }
     });
 }
