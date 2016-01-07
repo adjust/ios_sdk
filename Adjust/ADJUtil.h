@@ -19,8 +19,9 @@
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)formatSeconds1970:(double)value;
 + (NSString *)formatDate:(NSDate *)value;
-+ (void) buildJsonDict:(NSData *)jsonData
-          responseData:(ADJResponseData *)responseData;
++ (NSDictionary *) buildJsonDict:(NSData *)jsonData
+                    exceptionPtr:(NSException **)exceptionPtr
+                        errorPtr:(NSError **)error;
 
 + (NSString *)getFullFilename:(NSString *) baseFilename;
 
