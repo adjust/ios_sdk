@@ -324,6 +324,18 @@ If you are supporting [Universal Links][universal-links], then find or add the m
 }
 ```
 
+For example, if you were setting your `deep_link` parameter like this:
+
+```
+example://path/?key=foo&value=bar
+```
+
+adjust backend will convert it to universal link which looks like this:
+
+```
+https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
+```
+
 You can read more about universal links implementation in our
 [guide to universal links][universal-links-guide].
 
