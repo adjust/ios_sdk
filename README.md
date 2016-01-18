@@ -309,8 +309,7 @@ or add the method `openURL` and add the following call to adjust:
 
 #### Universal Links
 
-If your app supports [universal links][universal-links], make a call to our SDK
-in method which handles universal links in iOS app:
+If you are supporting [Universal Links][universal-links], then find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
 
 ``` objc
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity 
