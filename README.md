@@ -297,13 +297,30 @@ In the Project Navigator open the source file your Application Delegate. Find
 or add the method `openURL` and add the following call to adjust:
 
 ```objc
-- (BOOL)  application:(UIApplication *)application openURL:(NSURL *)url
-    sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     [Adjust appWillOpenUrl:url];
     
     // Your code goes here
-    Bool canHandle = [self someLogic:url];
+    BOOL canHandle = [self someLogic:url];
+    return canHandle;
+}
+```
+
+#### Universal Links
+
+If your app supports [universal links][universal-links], make a call to our SDK
+in method which handles universal links in iOS app:
+
+``` objc
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity 
+ restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+    }
+
+    // Your code goes here
+    BOOL canHandle = [self someLogic:[userActivity webpageURL]];
     return canHandle;
 }
 ```
@@ -440,6 +457,7 @@ You can read more about special partners and these integrations in our
 [event-tracking]: https://docs.adjust.com/en/event-tracking
 [special-partners]: https://docs.adjust.com/en/special-partners
 [currency-conversion]: https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[universal-links]: https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
 
 ## License
 
