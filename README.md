@@ -324,6 +324,9 @@ If you are supporting [Universal Links][universal-links], then find or add the m
 }
 ```
 
+You can read more about universal links implementation in our
+[guide to universal links][universal-links-guide].
+
 ### 8. Enable event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some
@@ -456,6 +459,7 @@ You can read more about special partners and these integrations in our
 [event-tracking]: https://docs.adjust.com/en/event-tracking
 [special-partners]: https://docs.adjust.com/en/special-partners
 [currency-conversion]: https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[universal-links-guide]: https://docs.adjust.com/en/universal-links/
 [universal-links]: https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
 
 ## License
