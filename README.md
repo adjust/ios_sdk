@@ -309,7 +309,39 @@ or add the method `openURL` and add the following call to adjust:
 
 #### Universal Links
 
-If you are supporting [Universal Links][universal-links], then find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
+If you want to support [Universal Links][universal-links], you should follow next steps.
+
+##### Enable Universal Links in dashboard
+
+In order to enable Universal Links for your app, go to the adjust dashboard and turn
+Universal Linking switch to `ON`.
+
+![][universal-links-dashboard]
+
+You will need to fill in your `iOS Bundle ID` and `iOS Team ID`. You can find your iOS Team ID
+in `Apple Developer Center`.
+
+![][adc-ios-team-id]
+
+After you entered these two values, universal link for your app will be generated and will
+look like this:
+
+```
+applinks:[hash].ulink.adjust.com
+```
+
+##### Enable your iOS app to handle Universal Links
+
+In Apple Developer Center, you should enable `Associated Domains` for your app.
+
+![][adc-associated-domains]
+
+Once you done this, you should enable `Associated Domains` in your app's XCode project settings
+as well and copy generated universal link from the dashboard in `Domains` section.
+
+![][xcode-associated-domains]
+
+Then find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
 
 ``` objc
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity 
@@ -461,6 +493,10 @@ You can read more about special partners and these integrations in our
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 [drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag4.png
+[universal-links-dashboard]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard.png
+[adc-ios-team-id]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-ios-team-id.png
+[adc-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-associated-domains.png
+[xcode-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains.png
 [add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add3.png
 [framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework4.png
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate4.png
