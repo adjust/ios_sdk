@@ -17,6 +17,7 @@
 #import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
+#import "NSString+ADJAdditions.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -536,14 +537,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     NSString* key = [pairComponents objectAtIndex:0];
     if (![key hasPrefix:kAdjustPrefix]) return NO;
 
+    NSString* keyDecoded = [key adjUrlDecode];
+
     NSString* value = [pairComponents objectAtIndex:1];
     if (value.length == 0) return NO;
 
-    NSString* keyWOutPrefix = [key substringFromIndex:kAdjustPrefix.length];
+    NSString* valueDecoded = [value adjUrlDecode];
+
+    NSString* keyWOutPrefix = [keyDecoded substringFromIndex:kAdjustPrefix.length];
     if (keyWOutPrefix.length == 0) return NO;
 
-    if (![self trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:value]) {
-        [adjustDeepLinks setObject:value forKey:keyWOutPrefix];
+    if (![self trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:valueDecoded]) {
+        [adjustDeepLinks setObject:valueDecoded forKey:keyWOutPrefix];
     }
 
     return YES;

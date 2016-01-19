@@ -30,6 +30,13 @@
     //        [NSCharacterSet characterSetWithCharactersInString:@"!*'\"();:@&=+$,/?%#[]% "]];
 }
 
+-(NSString *)adjUrlDecode {
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapes(
+                                                                                 kCFAllocatorDefault,
+                                                                                 (CFStringRef)self,
+                                                                                 CFSTR("")));
+}
+
 - (NSString *)adjRemoveColons {
     return [self stringByReplacingOccurrencesOfString:@":" withString:@""];
 }
