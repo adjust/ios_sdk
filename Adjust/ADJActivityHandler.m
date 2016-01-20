@@ -114,13 +114,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
-    // no response json to check for attributes and no callback for failed package
-    if ([ADJUtil isNull:responseData.jsonResponse] && [ADJUtil isNull:self.failureDelegate]) {
-        return;
-    }
-    // callback for failed package is present
+    // no response json to check for attributes
     if ([ADJUtil isNull:responseData.jsonResponse]) {
-        [self launchResponseTasks:responseData];
+        // callback for failed package is present
+        if (![ADJUtil isNull:self.failureDelegate]) {
+            [self.logger debug:@"No json with failure delegate"];
+            [self launchResponseTasks:responseData];
+        }
         return;
     }
     // attribute might be present
@@ -521,26 +521,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void) launchFinishedDelegate:(ADJResponseData *)responseData {
-    // no event or session package
-    if (responseData.activityKind != ADJActivityKindEvent && responseData.activityKind != ADJActivityKindSession) {
+    // no event package
+    if (responseData.activityKind != ADJActivityKindEvent) {
         return;
     }
-    // no success callback
+    // success callback
     if (responseData.success && [ADJUtil isNull:self.successDelegate]) {
-        return;
-    }
-    // no failure callback
-    if (!responseData.success && [ADJUtil isNull:self.failureDelegate]) {
-        return;
-    }
-    // add it to the handler queue
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        if (responseData.success) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
             self.successDelegate([responseData successResponseData]);
-        } else {
+        });
+        return;
+    }
+    // failure callback
+    if (!responseData.success && [ADJUtil isNull:self.failureDelegate]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
             self.failureDelegate([responseData failureResponseData]);
-        }
-    });
+        });
+        return;
+    }
 }
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
