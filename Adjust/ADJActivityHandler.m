@@ -36,9 +36,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJActivityState *activityState;
 @property (nonatomic, retain) ADJTimerCycle *timer;
 @property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, weak) NSObject<AdjustDelegate> *attributionChangedDelegate;
-@property (nonatomic, copy) ADJTrackingSucceeded successDelegate;
-@property (nonatomic, copy) ADJTrackingFailed failureDelegate;
+@property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
@@ -78,9 +76,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 
     self.adjustConfig = adjustConfig;
-    self.attributionChangedDelegate = adjustConfig.delegate;
-    self.successDelegate = adjustConfig.successDelegate;
-    self.failureDelegate = adjustConfig.failureDelegate;
+    self.adjustDelegate = adjustConfig.delegate;
 
     self.logger = ADJAdjustFactory.logger;
     [self addNotificationObserver];
@@ -116,11 +112,17 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)finishedTracking:(ADJResponseData *)responseData {
     // no response json to check for attributes
     if ([ADJUtil isNull:responseData.jsonResponse]) {
-        // callback for failed package is present
-        if (![ADJUtil isNull:self.failureDelegate]) {
-            [self.logger debug:@"No json with failure delegate"];
-            [self launchResponseTasks:responseData];
+        if (self.adjustDelegate == nil) {
+            return;
         }
+        if (![self.adjustDelegate respondsToSelector:@selector(adjustTrackingFailed:)]) {
+            return;
+        }
+
+        // callback for failed package is present
+        [self.logger debug:@"No json with failure delegate"];
+        [self launchResponseTasks:responseData];
+
         return;
     }
     // attribute might be present
@@ -320,11 +322,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.attribution = attribution;
     [self writeAttribution];
 
-    if (self.attributionChangedDelegate == nil) {
+    if (self.adjustDelegate == nil) {
         return nil;
     }
 
-    if (![self.attributionChangedDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+    if (![self.adjustDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return nil;
     }
 
@@ -504,14 +506,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void) launchResponseTasksInternal:(ADJResponseData *)responseData {
 
     SEL updateAttributionSEL = [self updateAttribution:responseData.attribution];
-    ADJAttribution * localAttributionCopy = self.attribution;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // first try to update and launch the attribution changed listener
         if (updateAttributionSEL != nil) {
-            [self.attributionChangedDelegate performSelectorOnMainThread:updateAttributionSEL
-                                                              withObject:localAttributionCopy
-                                                           waitUntilDone:YES];
+            [self.adjustDelegate performSelectorOnMainThread:updateAttributionSEL
+                                                  withObject:responseData.attribution
+                                               waitUntilDone:YES];
         }
         // second try to launch the finished activity listener
         [self launchFinishedDelegate:responseData];
@@ -525,18 +526,28 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (responseData.activityKind != ADJActivityKindEvent) {
         return;
     }
+
+    // no response delegate
+    if (self.adjustDelegate == nil) {
+        return;
+    }
+
     // success callback
-    if (responseData.success && [ADJUtil isNull:self.successDelegate]) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            self.successDelegate([responseData successResponseData]);
-        });
+    if (responseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustTrackingSucceeded:)])
+    {
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustTrackingSucceeded:)
+                                              withObject:[responseData successResponseData]
+                                           waitUntilDone:YES];
         return;
     }
     // failure callback
-    if (!responseData.success && [ADJUtil isNull:self.failureDelegate]) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            self.failureDelegate([responseData failureResponseData]);
-        });
+    if (!responseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustTrackingFailed:)])
+    {
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustTrackingFailed:)
+                                              withObject:[responseData failureResponseData]
+                                           waitUntilDone:YES];
         return;
     }
 }

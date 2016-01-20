@@ -43,30 +43,50 @@
 
     // default values
     self.logLevel = ADJLogLevelInfo;
-    self.hasAttributionChangedDelegate  = NO;
+    self.hasDelegate  = NO;
+    self.hasAttributionChangedDelegate = NO;
     self.eventBufferingEnabled = NO;
 
     return self;
 }
 
 - (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
+    self.hasDelegate = NO;
+    self.hasAttributionChangedDelegate = NO;
+
     if ([ADJUtil isNull:delegate]) {
         _delegate = nil;
-        self.hasAttributionChangedDelegate = NO;
         return;
     }
 
-    if (![delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
-        id<ADJLogger> logger = ADJAdjustFactory.logger;
-        [logger error:@"Delegate does not implement AdjustDelegate"];
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
 
+    if ([delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+        [logger debug:@"Delegate implements adjustAttributionChanged:"];
+
+        self.hasDelegate = YES;
+        self.hasAttributionChangedDelegate = YES;
+    }
+
+    if ([delegate respondsToSelector:@selector(adjustTrackingSucceeded:)]) {
+        [logger debug:@"Delegate implements adjustTrackingSucceeded:"];
+
+        self.hasDelegate = YES;
+    }
+
+    if ([delegate respondsToSelector:@selector(adjustTrackingFailed:)]) {
+        [logger debug:@"Delegate implements adjustTrackingFailed:"];
+
+        self.hasDelegate = YES;
+    }
+
+    if (!self.hasDelegate) {
+        [logger error:@"Delegate does not implement any optional method"];
         _delegate = nil;
-        self.hasAttributionChangedDelegate = NO;
         return;
     }
 
     _delegate = delegate;
-    self.hasAttributionChangedDelegate = YES;
 }
 
 - (BOOL) checkEnvironment:(NSString *)environment
@@ -99,14 +119,6 @@
     return YES;
 }
 
-- (void) setSuccessDelegate:(ADJTrackingSucceeded)successDelegate {
-    _successDelegate = successDelegate;
-}
-
-- (void) setFailureDelegate:(ADJTrackingFailed)failureDelegate {
-    _failureDelegate = failureDelegate;
-}
-
 - (BOOL) isValid {
     return self.appToken != nil;
 }
@@ -121,6 +133,7 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
+        copy.hasDelegate = self.hasDelegate;
         copy.hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
         // adjust delegate not copied
     }

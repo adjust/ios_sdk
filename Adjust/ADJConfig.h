@@ -25,10 +25,21 @@
  */
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution;
 
-@end
+/**
+ * Optional delegate method that gets called when an event is tracked with success
+ *
+ * @param successResponseData The response information from tracking with success. See ADJSuccessResponseData for details.
+ */
+- (void)adjustTrackingSucceeded:(ADJSuccessResponseData *)successResponseData;
 
-typedef void (^ADJTrackingSucceeded)(ADJSuccessResponseData * successResponseData);
-typedef void (^ADJTrackingFailed)(ADJFailureResponseData * failureResponseData);
+/**
+ * Optional delegate method that gets called when an event is tracked with failure
+ *
+ * @param failureResponseData The response information from tracking with failure. See ADJFailureResponseData for details.
+ */
+- (void)adjustTrackingFailed:(ADJFailureResponseData *)failureResponseData;
+
+@end
 
 @interface ADJConfig : NSObject<NSCopying>
 
@@ -36,8 +47,6 @@ typedef void (^ADJTrackingFailed)(ADJFailureResponseData * failureResponseData);
 @property (nonatomic, copy, readonly) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, copy) NSString *defaultTracker;
-@property (nonatomic, copy, readonly) ADJTrackingSucceeded successDelegate;
-@property (nonatomic, copy, readonly) ADJTrackingFailed failureDelegate;
 
 /**
  * Configuration object for the initialization of the Adjust SDK.
@@ -80,18 +89,16 @@ typedef void (^ADJTrackingFailed)(ADJFailureResponseData * failureResponseData);
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 
 /**
- * Set the optional delegate that will inform you about attribution
+ * Set the optional delegate that will inform you about attribution or events
  *
  * See the AdjustDelegate declaration above for details
  *
  * @var delegate The delegate that might implement the optional delegate
- *     methods like adjustAttributionChanged:
+ *     methods like adjustAttributionChanged, adjustTrackingSucceeded or adjustTrackingFailed:
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
+@property (nonatomic, assign) BOOL hasDelegate;
 @property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
-
-- (void) setSuccessDelegate:(ADJTrackingSucceeded)successDelegate;
-- (void) setFailureDelegate:(ADJTrackingFailed)failureDelegate;
 
 - (BOOL) isValid;
 @end
