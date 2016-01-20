@@ -11,6 +11,7 @@
 
 - (NSString *)adjTrim;
 - (NSString *)adjUrlEncode;
+- (NSString *)adjUrlDecode;
 - (NSString *)adjRemoveColons;
 
 + (NSString *)adjJoin:(NSString *)strings, ...;
