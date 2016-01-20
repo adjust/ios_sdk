@@ -20,6 +20,7 @@
 
 - (void)finishedTracking:(ADJResponseData *)responseData;
 - (void)launchResponseTasks:(ADJResponseData *)responseData;
+- (void)launchAttributionTasks:(ADJResponseData *)responseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;

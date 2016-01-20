@@ -99,7 +99,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 - (void) checkResponseInternal:(ADJResponseData *)responseData {
     [self checkAttributionInternal:responseData];
 
-    [self.activityHandler launchResponseTasks:responseData];
+    [self.activityHandler launchAttributionTasks:responseData];
 }
 
 - (void) checkAttributionInternal:(ADJResponseData *)responseData {

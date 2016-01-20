@@ -110,7 +110,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
-    // no response json to check for attributes
+    // redirect session responses to attribution handler to check for attribution information
+    if (responseData.activityKind == ADJActivityKindSession) {
+        [self.attributionHandler checkResponse:responseData];
+        return;
+    }
+    // no response json to check for attributes and no callback for failed package
     if ([ADJUtil isNull:responseData.jsonResponse]) {
         if (self.adjustDelegate == nil) {
             return;
@@ -118,20 +123,20 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         if (![self.adjustDelegate respondsToSelector:@selector(adjustTrackingFailed:)]) {
             return;
         }
-
-        // callback for failed package is present
-        [self.logger debug:@"No json with failure delegate"];
-        [self launchResponseTasks:responseData];
-
-        return;
     }
-    // attribute might be present
-    [self.attributionHandler checkResponse:responseData];
+
+    [self launchResponseTasks:responseData];
 }
 
 - (void)launchResponseTasks:(ADJResponseData *)responseData {
     dispatch_async(self.internalQueue, ^{
         [self launchResponseTasksInternal:responseData];
+    });
+}
+
+- (void)launchAttributionTasks:(ADJResponseData *)responseData {
+    dispatch_async(self.internalQueue, ^{
+        [self launchAttributionTasksInternal:responseData];
     });
 }
 
@@ -504,18 +509,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void) launchResponseTasksInternal:(ADJResponseData *)responseData {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // try to launch the finished activity listener
+        [self launchFinishedDelegate:responseData];
+        // in last, try to launch the deeplink
+        [self launchDeepLink:responseData.jsonResponse];
+    });
+}
 
+- (void) launchAttributionTasksInternal:(ADJResponseData *)responseData {
     SEL updateAttributionSEL = [self updateAttribution:responseData.attribution];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // first try to update and launch the attribution changed listener
+        // try to update and launch the attribution changed listener
         if (updateAttributionSEL != nil) {
             [self.adjustDelegate performSelectorOnMainThread:updateAttributionSEL
                                                   withObject:responseData.attribution
                                                waitUntilDone:YES];
         }
-        // second try to launch the finished activity listener
-        [self launchFinishedDelegate:responseData];
         // in last, try to launch the deeplink
         [self launchDeepLink:responseData.jsonResponse];
     });
