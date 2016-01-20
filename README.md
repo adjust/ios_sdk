@@ -309,21 +309,21 @@ or add the method `openURL` and add the following call to adjust:
 
 #### Universal Links
 
-If you want to support [Universal Links][universal-links], you should follow next steps.
+If you want to support [universal links][universal-links], then follow these next steps.
 
-##### Enable Universal Links in dashboard
+##### Enable universal links in the dashboard
 
-In order to enable Universal Links for your app, go to the adjust dashboard and turn
+In order to enable universal links for your app, go to the adjust dashboard and turn the
 Universal Linking switch to `ON`.
 
 ![][universal-links-dashboard]
 
 You will need to fill in your `iOS Bundle ID` and `iOS Team ID`. You can find your iOS Team ID
-in `Apple Developer Center`.
+in the `Apple Developer Center`.
 
 ![][adc-ios-team-id]
 
-After you entered these two values, universal link for your app will be generated and will
+After you entered these two values, a universal link for your app will be generated and will
 look like this:
 
 ```
@@ -336,12 +336,11 @@ In Apple Developer Center, you should enable `Associated Domains` for your app.
 
 ![][adc-associated-domains]
 
-Once you done this, you should enable `Associated Domains` in your app's XCode project settings
-as well and copy generated universal link from the dashboard in `Domains` section.
+Once you have done this, you should enable `Associated Domains` in your app's XCode project settings, and copy the generated universal link from the dashboard into the `Domains` section.
 
 ![][xcode-associated-domains]
 
-Then find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
+Next, find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
 
 ``` objc
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity 
@@ -362,13 +361,13 @@ For example, if you were setting your `deep_link` parameter like this:
 example://path/?key=foo&value=bar
 ```
 
-adjust backend will convert it to universal link which looks like this:
+the adjust backend will convert it to a universal link, which looks like this:
 
 ```
 https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
 ```
 
-You can read more about universal links implementation in our
+You can read more about implementing universal links in our
 [guide to universal links][universal-links-guide].
 
 ### 8. Enable event buffering
