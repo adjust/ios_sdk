@@ -441,29 +441,27 @@ Here is a quick summary of its properties:
 - `NSString creative` the creative grouping level of the current install.
 - `NSString clickLabel` the click label of the current install.
 
-### 10. Set block callbacks for tracked events and sessions
+### 10. Implement callbacks for tracked events
 
-You can register blocks to be callback when events and sessions are tracked. 
-There is a block callback for when the event or session is correctly tracked, and a block callback for when there was some type of failure.
-You can add any or both of the block callback after creating the `ADJConfig` object:
+You can register a delegate callback to be notified of successful and failed tracked events.
+The same optional protocol `AdjustDelegate` used for the attribution changed callback [here](#9-implement-the-attribution-callback) is used.
+Follow the same steps and implement the following delegate callback function for successful tracked events:
 
 ```objc
-ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-
-[adjustConfig setSuccessDelegate:^(ADJSuccessResponseData *successResponseData) {
-    // ...
-}];
-
-[adjustConfig setFailureDelegate:^(ADJFailureResponseData *failureResponseData) {
-    // ...
-}];
-
-[Adjust appDidLaunch:adjustConfig];
+- (void)adjustTrackingSucceeded:(ADJSuccessResponseData *)successResponseData {
+}
 ```
 
-The block callback will be called after the SDK tries to send a package to the server. Within the block callback you have access to the `successResponseData` or `failureResponseData` object. Here is a quick summary of its common properties:
+And the following delegate callback function for failed tracked events:
 
-- `NSString activityKindString` the type of package send, either `"event"` or `"session"`. 
+```objc
+- (void)adjustTrackingFailed:(ADJFailureResponseData *)failureResponseData {
+}
+```
+
+The delegate function will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to the `successResponseData` or `failureResponseData` object. Here is a quick summary of its common properties:
+
+- `NSString activityKindString` the type of package send, for now only `"event"`. 
 - `NSString message` the message from the server or the error logged by the SDK.
 - `NSString timestamp` timestamp from the server.
 - `NSString adid` a unique device identifier provided by adjust.
@@ -522,7 +520,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 ```
 
 You can read more about special partners and these integrations in our
-[guide to special partners.][special-partners]
+[guide to special partnersd.][special-partners]
 
 ### 14. Device IDS
 
