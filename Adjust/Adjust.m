@@ -138,6 +138,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.activityHandler setOfflineMode:enabled];
 }
 
+- (NSString*)idfa {
+    return [[UIDevice currentDevice] adjIdForAdvertisers];
+}
+
 #pragma mark - private
 
 - (BOOL) checkActivityHandler {
