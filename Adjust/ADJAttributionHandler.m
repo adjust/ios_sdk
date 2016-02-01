@@ -62,9 +62,15 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     return self;
 }
 
-- (void) checkResponse:(ADJResponseData *)responseData {
+- (void) checkSessionResponse:(ADJResponseData *)responseData {
     dispatch_async(self.internalQueue, ^{
-        [self checkResponseInternal:responseData];
+        [self checkSessionResponseInternal:responseData];
+    });
+}
+
+- (void) checkAttributionResponse:(ADJResponseData *)responseData {
+    dispatch_async(self.internalQueue, ^{
+        [self checkAttributionResponseInternal:responseData];
     });
 }
 
@@ -96,10 +102,16 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 #pragma mark - internal
-- (void) checkResponseInternal:(ADJResponseData *)responseData {
+- (void) checkSessionResponseInternal:(ADJResponseData *)responseData {
     [self checkAttributionInternal:responseData];
 
-    [self.activityHandler launchAttributionTasks:responseData];
+    [self.activityHandler launchAttributionChangedDelegateWithDeeplink:responseData];
+}
+
+- (void) checkAttributionResponseInternal:(ADJResponseData *)responseData {
+    [self checkAttributionInternal:responseData];
+
+    [self.activityHandler launchAttributionChangedDelegate:responseData];
 }
 
 - (void) checkAttributionInternal:(ADJResponseData *)responseData {
@@ -138,7 +150,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
          activityPackage:self.attributionPackage
      responseDataHandler:^(ADJResponseData * responseData)
     {
-        [self checkResponse:responseData];
+        [self checkAttributionResponse:responseData];
     }];
 }
 

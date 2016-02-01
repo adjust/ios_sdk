@@ -19,8 +19,8 @@
 - (void)trackEvent:(ADJEvent *)event;
 
 - (void)finishedTracking:(ADJResponseData *)responseData;
-- (void)launchResponseTasks:(ADJResponseData *)responseData;
-- (void)launchAttributionTasks:(ADJResponseData *)responseData;
+- (void)launchAttributionChangedDelegateWithDeeplink:(ADJResponseData *)responseData;
+- (void)launchAttributionChangedDelegate:(ADJResponseData *)responseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;
@@ -30,7 +30,7 @@
 - (void)setAttribution:(ADJAttribution*)attribution;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
-- (SEL)updateAttribution:(ADJAttribution *)attribution;
+- (BOOL)updateAttribution:(ADJAttribution *)attribution;
 - (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setIadDetails:(NSDictionary *)attributionDetails
                 error:(NSError *)error
