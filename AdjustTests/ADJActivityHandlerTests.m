@@ -19,6 +19,8 @@
 #import "ADJConfig.h"
 #import "ADJDelegateTest.h"
 #import "ADJTestActivityPackage.h"
+#import "ADJTrackingSucceededDelegate.h"
+#import "ADJTrackingFailedDelegate.h"
 
 @interface ADJActivityHandlerTests : ADJTestActivityPackage
 
@@ -379,7 +381,7 @@
     ADJTestsUtil * delegateNotImpl = [[ADJTestsUtil alloc] init];
     [config setDelegate:delegateNotImpl];
 
-    aError(@"Delegate does not implement AdjustDelegate");
+    aError(@"Delegate does not implement any optional method");
 
     //  create handler and start the first session
     id<ADJActivityHandler> activityHandler =[ADJActivityHandler handlerWithConfig:config];
@@ -862,7 +864,7 @@
     [self testClickPackage:mixedClickPackage fields:mixedClickFields source:@"deeplink"];
 }
 
-- (void)testIad
+- (void)testIadDates
 {
     //  reseting to make the test order independent
     [self reset];
@@ -904,7 +906,6 @@
 
     // didn't send click package
     anTest(@"PackageHandler addPackage");
-
 
     // 1 session
     aiEquals(1, (int)[self.packageHandlerMock.packageQueue count]);
@@ -966,6 +967,93 @@
     [self testClickPackage:secondIadPackage fields:secondIadFields source:@"iad"];
 }
 
+- (void)testIadDetails
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    // create the config to start the session
+    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
+
+    // start activity handler with config
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+
+    // it's necessary to sleep the activity for a while after each handler call
+    //  to let the internal queue act
+    [NSThread sleepForTimeInterval:2.0];
+
+    // test init values and first session
+    [self checkInitAndFirstSession];
+
+    // test iad details
+    // should be ignored
+    NSError * errorCode0 = [[NSError alloc] initWithDomain:@"adjust" code:0 userInfo:nil];
+    NSError * errorCode1 = [[NSError alloc] initWithDomain:@"adjust" code:1 userInfo:nil];
+
+    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:-1];
+    [NSThread sleepForTimeInterval:1];
+
+    aWarn(@"Unable to read iAd details");
+    aError(@"Limit number of retry for iAd v3 surpassed");
+
+    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:0];
+    [NSThread sleepForTimeInterval:4];
+
+    aWarn(@"Unable to read iAd details");
+    anError(@"Limit number of retry for iAd v3 surpassed");
+
+    aDebug(@"iAd with 0 tries to read v3");
+    aWarn(@"Reached limit number of retry for iAd v3. Trying iAd v2");
+
+    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:1];
+    [NSThread sleepForTimeInterval:4];
+
+    aWarn(@"Unable to read iAd details");
+
+    aDebug(@"iAd with 1 tries to read v3");
+    anWarn(@"Reached limit number of retry for iAd v3. Trying iAd v2");
+
+    [activityHandler setIadDetails:nil error:errorCode1 retriesLeft:1];
+    [NSThread sleepForTimeInterval:4];
+
+    aWarn(@"Unable to read iAd details");
+    anDebug(@"iAd with 1 tries to read v3");
+
+    [activityHandler setIadDetails:nil error:nil retriesLeft:1];
+    [NSThread sleepForTimeInterval:4];
+
+    anWarn(@"Unable to read iAd details");
+    aiEquals(1, (int)[self.packageHandlerMock.packageQueue count]);
+
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z"];
+
+    NSDate * date1 = [NSDate date];
+    NSString * date1String = [dateFormat stringFromDate:date1];
+
+    NSDictionary * attributionDetails = @{ @"iadVersion3" : @{ @"date" : date1 ,
+                                                               @"decimal" : [NSNumber numberWithDouble:0.1],
+                                                               @"string" : @"value"} };
+
+    [activityHandler setIadDetails:attributionDetails error:nil retriesLeft:1];
+    [NSThread sleepForTimeInterval:2];
+
+    // check the number of activity packages
+    // 1 session + 1 sdk_click
+    aiEquals(2, (int)[self.packageHandlerMock.packageQueue count]);
+
+    // get the click package
+    ADJActivityPackage *clickPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[1];
+
+    // create activity package test
+    ADJPackageFields * clickPackageFields = [ADJPackageFields fields];
+
+    clickPackageFields.iadDetails = [NSString stringWithFormat:@"{\"iadVersion3\":{\"date\":\"%@\",\"decimal\":\"0.1\",\"string\":\"value\"}}", date1String];
+
+    // test first session
+    [self testClickPackage:clickPackage fields:clickPackageFields source:@"iad3"];
+}
+
 - (void)testFinishedTracking
 {
     // reseting to make the test order independent
@@ -981,16 +1069,183 @@
     ADJDelegateTest * delegateTests = [[ADJDelegateTest alloc] init];
     [config setDelegate:delegateTests];
 
+    aDebug(@"Delegate implements adjustAttributionChanged");
+
     //  create handler and start the first session
     id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
 
-    [NSThread sleepForTimeInterval:2.0];
+    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
+
+    [NSThread sleepForTimeInterval:3.0];
 
     // test init values
     [self checkInit:ADJEnvironmentProduction logLevel:@"6"];
 
     // test first session start
     [self checkFirstSession];
+
+    // test session package to be checked for attribution
+    ADJActivityPackage * firstSessionPackage = self.packageHandlerMock.packageQueue[0];
+    ADJResponseData * firstSessionResponseData = [ADJResponseData responseDataWithActivityPackage:firstSessionPackage];
+
+    [activityHandler finishedTracking:firstSessionResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"AttributionHandler checkSessionResponse");
+
+    // test event success response data
+    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[1];
+    ADJResponseData * eventResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventResponseData.success = YES;
+
+    [activityHandler finishedTracking:eventResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Delegate implements adjustTrackingSucceeded");
+    anDebug(@"Delegate implements adjustTrackingFailed");
+
+    // test event failed response data
+    eventResponseData.success = NO;
+
+    [activityHandler finishedTracking:eventResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Delegate implements adjustTrackingSucceeded");
+    anDebug(@"Delegate implements adjustTrackingFailed");
+}
+
+- (void) testLaunchSuccessResponseTasks
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    // create the config to start the session
+    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
+
+    ADJTrackingSucceededDelegate * successDelegate = [[ADJTrackingSucceededDelegate alloc] init];
+    [config setDelegate:successDelegate];
+
+    anDebug(@"Delegate implements adjustAttributionChanged");
+    anDebug(@"Delegate implements adjustTrackingFailed");
+    aDebug(@"Delegate implements adjustTrackingSucceeded");
+
+    //  create handler and start the first session
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+
+    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
+
+    [activityHandler appWillOpenUrl:attributions];
+
+    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
+
+    [NSThread sleepForTimeInterval:3.0];
+
+    [self checkInitAndFirstSession];
+
+    // test success event response data
+    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
+    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventSuccessResponseData.success = YES;
+
+    [activityHandler finishedTracking:eventSuccessResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching failed event tracking delegate");
+    aDebug(@"Launching success event tracking delegate");
+
+    // test success sdk_click response data
+    ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[1];
+    ADJResponseData * sdkClickResponseData = [ADJResponseData responseDataWithActivityPackage:sdkClickPackage];
+    sdkClickResponseData.success = YES;
+
+    [activityHandler finishedTracking:sdkClickResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching success event tracking delegate");
+    anDebug(@"Launching failed event tracking delegate");
+
+    // test failed event response data
+    ADJResponseData * eventFailureResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventFailureResponseData.success = NO;
+
+    [activityHandler finishedTracking:eventFailureResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching success event tracking delegate");
+    // does not launch because delegate does not have failed callback
+    anDebug(@"Launching failed event tracking delegate");
+}
+
+- (void) testLaunchFailureResponseTasks
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    // create the config to start the session
+    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
+
+    ADJTrackingFailedDelegate * failureDelegate = [[ADJTrackingFailedDelegate alloc] init];
+    [config setDelegate:failureDelegate];
+
+    anDebug(@"Delegate implements adjustAttributionChanged");
+    anDebug(@"Delegate implements adjustTrackingSucceeded");
+    aDebug(@"Delegate implements adjustTrackingFailed");
+
+    //  create handler and start the first session
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+
+    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
+
+    [activityHandler appWillOpenUrl:attributions];
+
+    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
+
+    [NSThread sleepForTimeInterval:3.0];
+
+    [self checkInitAndFirstSession];
+
+    // test failed event response data
+    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
+    ADJResponseData * eventFailureResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventFailureResponseData.success = NO;
+
+    [activityHandler finishedTracking:eventFailureResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching success event tracking delegate");
+    aDebug(@"Launching failed event tracking delegate");
+
+    // test success sdk_click response data
+    ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[1];
+    ADJResponseData * sdkClickResponseData = [ADJResponseData responseDataWithActivityPackage:sdkClickPackage];
+    sdkClickResponseData.success = NO;
+
+    [activityHandler finishedTracking:sdkClickResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching success event tracking delegate");
+    anDebug(@"Launching failed event tracking delegate");
+
+    // test success event response data
+    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventSuccessResponseData.success = YES;
+
+    [activityHandler finishedTracking:eventSuccessResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    anTest(@"AttributionHandler checkSessionResponse");
+    anDebug(@"Launching failed event tracking delegate");
+    anDebug(@"Launching success event tracking delegate");
+}
+
+/*
 
     // test nil response
     [activityHandler finishedTracking:nil];
@@ -1005,11 +1260,14 @@
 
     NSString * deeplinkString = @"{\"deeplink\":\"wrongDeeplink://\"}";
     NSData * deeplinkData = [deeplinkString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * deeplinkDictionary = [ADJUtil buildJsonDict:deeplinkData];
+    NSError *error = nil;
+    NSException *exception = nil;
+
+    NSDictionary * deeplinkDictionary = [ADJUtil buildJsonDict:deeplinkData exceptionPtr:&exception errorPtr:&error];
 
     anNil(deeplinkDictionary);
 
-    [activityHandler finishedTracking:deeplinkDictionary];
+    //[activityHandler finishedTracking:deeplinkDictionary];
 
     [NSThread sleepForTimeInterval:1.0];
 
@@ -1035,8 +1293,9 @@
     // set first session
     [self testPackageSession:activityPackage fields:fields sessionCount:@"1"];
 }
+ */
 
-- (void)testUpdateAttribution
+- (void)testLaunchDeepLink
 {
     // reseting to make the test order independent
     [self reset];
@@ -1047,13 +1306,75 @@
     // start the session
     id<ADJActivityHandler> activityHandler =[ADJActivityHandler handlerWithConfig:config];
 
-    [NSThread sleepForTimeInterval:2];
+    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
+
+    [activityHandler appWillOpenUrl:attributions];
+
+    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
+
+    [NSThread sleepForTimeInterval:3.0];
+
+    [self checkInitAndFirstSession];
+
+    // test success event response data
+    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
+    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    eventSuccessResponseData.success = YES;
+
+    NSString * deeplinkString = @"{\"deeplink\":\"wrongDeeplink://\"}";
+    NSData * deeplinkData = [deeplinkString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    NSException *exception = nil;
+
+    NSDictionary * deeplinkDictionary = [ADJUtil buildJsonDict:deeplinkData exceptionPtr:&exception errorPtr:&error];
+
+    anNil(deeplinkDictionary);
+
+    eventSuccessResponseData.jsonResponse = deeplinkDictionary;
+
+    [activityHandler finishedTracking:eventSuccessResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    // event response does not open deeplinks
+    anInfo(@"Open deep link (wrongDeeplink://)");
+
+    anError(@"Unable to open deep link (wrongDeeplink://)");
+
+
+    // test success session response data
+    ADJActivityPackage * sessionPackage = self.packageHandlerMock.packageQueue[0];
+
+    ADJResponseData * sessionResponseData = [[ADJResponseData alloc] initWithActivityPackage:sessionPackage];
+    sessionResponseData.jsonResponse = deeplinkDictionary;
+
+    [activityHandler launchAttributionChangedDelegateWithDeeplink:sessionResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    aInfo(@"Open deep link (wrongDeeplink://)");
+
+    aError(@"Unable to open deep link (wrongDeeplink://)");
+}
+
+- (void)testUpdateAttribution
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    // create the config
+    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
+
+    ADJDelegateTest * delegateTests = [[ADJDelegateTest alloc] init];
+    [config setDelegate:delegateTests];
+
+    aDebug(@"Delegate implements adjustAttributionChanged");
+
+    // start the session
+    id<ADJActivityHandler> activityHandler =[ADJActivityHandler handlerWithConfig:config];
+
+    [NSThread sleepForTimeInterval:2.0];
 
     // test init values
-    [self checkInit:ADJEnvironmentSandbox logLevel:@"3"];
-
-    // test first session start
-    [self checkFirstSession];
+    [self checkInitAndFirstSession];
 
     // check if Attribution is not created with nil
     ADJAttribution * nilAttribution = [[ADJAttribution alloc] initWithJsonDict:nil];
@@ -1092,7 +1413,6 @@
     config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
 
     // set delegate to see attribution launched
-    ADJDelegateTest * delegateTests = [[ADJDelegateTest alloc] init];
     [config setDelegate:delegateTests];
 
     id<ADJActivityHandler> restartActivityHandler = [ADJActivityHandler handlerWithConfig:config];
@@ -1109,7 +1429,7 @@
     [self checkSubsession:1 subSessionCount:2 timerAlreadyStarted:NO];
 
     // check that it does not update the attribution after the restart
-    aFalse([restartActivityHandler updateAttribution:emptyAttribution]);
+    //aFalse([restartActivityHandler updateAttribution:emptyAttribution]);
     anDebug(@"Wrote Attribution");
 
     // new attribution
@@ -1123,7 +1443,10 @@
                                         "\"click_label\"   : \"clValue\" }";
 
     NSData * firstAttributionData = [firstAttributionString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * firstAttributionDictionary = [ADJUtil buildJsonDict:firstAttributionData];
+    NSError *error = nil;
+    NSException *exception = nil;
+
+    NSDictionary * firstAttributionDictionary = [ADJUtil buildJsonDict:firstAttributionData exceptionPtr:&exception errorPtr:&error];
 
     anNil(firstAttributionDictionary);
 
@@ -1179,7 +1502,7 @@
                                         "\"click_label\"   : \"clValue2\" }";
 
     NSData * secondAttributionData = [secondAttributionString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * secondAttributionDictionary = [ADJUtil buildJsonDict:secondAttributionData];
+    NSDictionary * secondAttributionDictionary = [ADJUtil buildJsonDict:secondAttributionData exceptionPtr:&exception errorPtr:&error];
 
     anNil(secondAttributionDictionary);
 
@@ -1197,7 +1520,6 @@
     // check that it does not update the attribution
     aFalse([secondRestartActivityHandler updateAttribution:secondAttribution]);
     anDebug(@"Wrote Attribution");
-
 }
 
 - (void)testOfflineMode
@@ -1393,7 +1715,9 @@
                                     "\"click_label\"   : \"clValue\" }";
 
     NSData * attributionData = [attributionString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * attributionDictionary = [ADJUtil buildJsonDict:attributionData];
+    NSError *error = nil;
+    NSException *exception = nil;
+    NSDictionary * attributionDictionary = [ADJUtil buildJsonDict:attributionData exceptionPtr:&exception errorPtr:&error];
 
     anNil(attributionDictionary);
 
@@ -1615,13 +1939,16 @@
                                  stringWithFormat:@"https://[hash].ulink.adjust.com/ulink%@", path]];
 }
 
-
 - (NSURL*)getUniversalLinkUrl:(NSString*)path
                         query:(NSString*)query
                      fragment:(NSString*)fragment
 {
     return [NSURL URLWithString:[NSString
                                  stringWithFormat:@"https://[hash].ulink.adjust.com/ulink%@%@%@", path, query, fragment]];
+}
+
+- (void)checkInit {
+    [self checkInit:ADJEnvironmentSandbox logLevel:@"3"];
 }
 
 - (void)checkInit:(NSString *)environment
@@ -1652,10 +1979,10 @@ readActivityState:(NSString *)readActivityState
     [self checkReadFiles:readActivityState readAttribution:readAttribution];
 
     // tries to read iad v3
-    aDebug(@"iAd with 5 tries to read v3");
+    aDebug(@"iAd with 2 tries to read v3");
 
-    // iad is not disabled
-    anDebug(@"ADJUST_NO_IAD or TARGET_OS_TV set");
+    // iad is enabled
+    aDebug(@"ADJUST_NO_IAD or TARGET_OS_TV not set");
 }
 
 - (void)checkReadFiles:(NSString *)readActivityState
@@ -1692,6 +2019,12 @@ readActivityState:(NSString *)readActivityState
 - (void)checkFirstSession
 {
     [self checkFirstSession:NO];
+}
+
+- (void)checkInitAndFirstSession
+{
+    [self checkInit];
+    [self checkFirstSession];
 }
 
 - (void)checkNewSession:(BOOL)paused

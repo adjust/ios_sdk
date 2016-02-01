@@ -60,6 +60,9 @@
 // assert not warn log
 #define anWarn(message) anLevel(message, ADJLogLevelWarn)
 
+// assert not error log
+#define anError(message) anLevel(message, ADJLogLevelError)
+
 // assert not assert log
 #define anAssert(message) anLevel(message, ADJLogLevelAssert)
 

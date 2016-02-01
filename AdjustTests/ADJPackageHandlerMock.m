@@ -41,7 +41,7 @@ static NSString * const prefix = @"PackageHandler ";
     self.loggerMock = (ADJLoggerMock *) ADJAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
 
-    [self.loggerMock test:[NSString stringWithFormat:@"%@initWithActivityHandler, paused: %d", prefix, startPaused]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler, paused: %d", startPaused]];
 
     return self;
 }
@@ -55,11 +55,11 @@ static NSString * const prefix = @"PackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"sendFirstPackage"]];
 }
 
-- (void)sendNextPackage {
+- (void)sendNextPackage:(ADJResponseData *)responseData {
     [self.loggerMock test:[prefix stringByAppendingString:@"sendNextPackage"]];
 }
 
-- (void)closeFirstPackage {
+- (void)closeFirstPackage:(ADJResponseData *)responseData {
     [self.loggerMock test:[prefix stringByAppendingString:@"closeFirstPackage"]];
 }
 

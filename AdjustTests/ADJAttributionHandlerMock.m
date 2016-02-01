@@ -26,7 +26,7 @@ static NSString * const prefix = @"AttributionHandler ";
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
                   startPaused:(BOOL)startPaused
-                  hasDelegate:(BOOL)hasDelegate
+hasAttributionChangedDelegate:(BOOL)hasDelegate
 {
     self = [super init];
     if (self == nil) return nil;
@@ -36,13 +36,13 @@ static NSString * const prefix = @"AttributionHandler ";
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
     self.attributionPackage = attributionPackage;
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler"]];
+    //[self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler"]];
 
     return self;
 }
 
-- (void)checkAttribution:(NSDictionary *)jsonDict {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkAttribution, jsonDict: %@", jsonDict]];
+- (void)checkSessionResponse:(ADJResponseData *)responseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkSessionResponse, responseData: %@", responseData]];
 }
 
 - (void)getAttribution {

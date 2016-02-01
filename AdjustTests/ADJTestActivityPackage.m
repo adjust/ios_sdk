@@ -155,7 +155,7 @@
 
     // click_time
     // TODO test click time
-    if (fields.iadTime == nil) {
+    if ([source isEqualToString:@"deeplink"]) {
         appnNil(@"click_time");
     } else {
         apspEquals(@"click_time", fields.iadTime);
@@ -185,6 +185,8 @@
         apspEquals(@"creative", fields.attribution.creative);
     }
 
+    // details
+    apspEquals(@"details", fields.iadDetails);
 }
 
 - (void)testAttributionPackage:(ADJActivityPackage *)package
@@ -285,9 +287,9 @@
     apspEquals(@"environment", fields.environment);
     // needs_attribution_data
     if (fields.hasDelegate == nil) {
-        appnNil(@"needs_attribution_data");
+        appnNil(@"needs_response_details");
     } else {
-        apspEquals(@"needs_attribution_data", fields.hasDelegate);
+        apspEquals(@"needs_response_details", fields.hasDelegate);
     }
 }
 
@@ -338,14 +340,17 @@
     // value not nil
     anlNil(value, package.extendedString);
 
+    NSError *error = nil;
+    NSException *exception = nil;
+
     NSData * parameterData = [parameterValue dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * parameterDictionary = [ADJUtil buildJsonDict:parameterData];
+    NSDictionary * parameterDictionary = [ADJUtil buildJsonDict:parameterData exceptionPtr:&exception errorPtr:&error];
 
     // check parameter parses from Json string
     anlNil(parameterDictionary, package.extendedString);
 
     NSData * valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * valueDictionary = [ADJUtil buildJsonDict:valueData];
+    NSDictionary * valueDictionary = [ADJUtil buildJsonDict:valueData exceptionPtr:&exception errorPtr:&error];
 
     // check value parses from Json string
     anlNil(valueDictionary, package.extendedString);
