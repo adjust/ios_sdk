@@ -182,4 +182,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     return filename;
 }
 
+-(void)dealloc {
+    //cleanup code
+    if (self.sendingSemaphore != nil) {
+        dispatch_semaphore_signal(self.sendingSemaphore);
+    }
+}
+
 @end
