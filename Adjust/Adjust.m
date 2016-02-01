@@ -10,6 +10,7 @@
 #import "ADJActivityHandler.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
+#import "UIDevice+ADJAdditions.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -62,6 +63,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (void)setOfflineMode:(BOOL)enabled {
     [[Adjust getInstance] setOfflineMode:enabled];
+}
+
++ (NSString*)idfa {
+    return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
 + (id)getInstance {
@@ -131,6 +136,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 - (void)setOfflineMode:(BOOL)enabled {
     if (![self checkActivityHandler]) return;
     [self.activityHandler setOfflineMode:enabled];
+}
+
+- (NSString*)idfa {
+    return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
 #pragma mark - private

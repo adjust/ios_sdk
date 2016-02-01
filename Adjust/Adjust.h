@@ -95,6 +95,8 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)setOfflineMode:(BOOL)enabled;
 
++ (NSString*)idfa;
+
 /**
  * Obtain singleton Adjust object
  */
