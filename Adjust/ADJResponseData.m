@@ -26,8 +26,8 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"message:%@ timestamp:%@ json:%@",
-            self.message, self.timeStamp, self.jsonResponse];
+    return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ eventToken:%@ success:%d willRetry:%d attribution:%@ json:%@",
+            self.message, self.timeStamp, self.adid, self.eventToken, self.success, self.willRetry, self.attribution, self.jsonResponse];
 }
 
 - (ADJSuccessResponseData *)successResponseData {
