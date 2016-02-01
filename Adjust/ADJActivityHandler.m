@@ -285,12 +285,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger warn:@"Unable to read iAd details"];
 
         if (retriesLeft < 0) {
-            [self.logger error:@"Reached limit number of retry for iAd"];
+            [self.logger error:@"Limit number of retry for iAd v3 surpassed"];
             return;
-        }
-
-        if (retriesLeft == 0) {
-            [self.logger error:@"Reached limit number of retry for iAd, trying iAd v2"];
         }
 
         if (error.code == AdjADClientErrorUnknown) {

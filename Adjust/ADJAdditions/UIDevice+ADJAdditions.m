@@ -170,6 +170,7 @@
 
     // if no tries for iad v3 left -> iad v2
     if (triesV3Left == 0) {
+        [logger warn:@"Reached limit number of retry for iAd v3. Trying iAd v2"];
         [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
         return;
     }
@@ -178,8 +179,9 @@
                      ADClientSharedClientInstance:ADClientSharedClientInstance
                                       retriesLeft:(triesV3Left - 1)];
 
-    // if no tries for iad v3 left -> iad v2
+    // if iad v3 not available -> iad v2
     if (!isIadV3Avaliable) {
+        [logger warn:@"iAd v3 not available. Trying iAd v2"];
         [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
     }
 #pragma clang diagnostic pop
