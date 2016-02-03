@@ -926,7 +926,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-fembed-bitcode";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -957,7 +957,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-fembed-bitcode";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
