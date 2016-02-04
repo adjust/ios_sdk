@@ -52,7 +52,7 @@
  * You can increase or reduce the amount of logs from Adjust by passing
  * one of the following parameters. Use Log.ASSERT to disable all logging.
  *
- * @param logLevel The desired minimum log level (default: info)
+ * @var logLevel The desired minimum log level (default: info)
  *     Must be one of the following:
  *      - ADJLogLevelVerbose (enable all logging)
  *      - ADJLogLevelDebug   (enable more logging)
@@ -68,7 +68,7 @@
  * When enabled, events get buffered and only get tracked each
  * minute. Buffered events are still persisted, of course.
  *
- * @param eventBufferingEnabled Enable or disable event buffering
+ * @var eventBufferingEnabled Enable or disable event buffering
  */
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 
@@ -77,7 +77,7 @@
  *
  * See the AdjustDelegate declaration above for details
  *
- * @param delegate The delegate that might implement the optional delegate
+ * @var delegate The delegate that might implement the optional delegate
  *     methods like adjustAttributionChanged:
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;

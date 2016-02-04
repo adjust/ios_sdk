@@ -22,7 +22,7 @@
 /**
  * Create Event object with Event Token.
  *
- * @param event Event token that is  created in the dashboard
+ * @param eventToken Event token that is  created in the dashboard
  * at http://adjust.com and should be six characters long.
  */
 + (ADJEvent *)eventWithEventToken:(NSString *)eventToken;
