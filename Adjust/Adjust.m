@@ -10,7 +10,6 @@
 #import "ADJActivityHandler.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
-#import "UIDevice+ADJAdditions.h"
 #import "ADJUtil.h"
 
 #if !__has_feature(objc_arc)
@@ -67,7 +66,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 + (NSString*)idfa {
-    return [[UIDevice currentDevice] adjIdForAdvertisers];
+    return [[Adjust getInstance] idfa];
 }
 
 + (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
@@ -144,7 +143,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (NSString*)idfa {
-    return [[UIDevice currentDevice] adjIdForAdvertisers];
+    return [ADJUtil idfa];
 }
 
 - (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {

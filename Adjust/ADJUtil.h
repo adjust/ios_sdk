@@ -43,4 +43,6 @@ jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
 
 + (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
++ (NSString*)idfa;
+
 @end

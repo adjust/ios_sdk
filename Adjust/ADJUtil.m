@@ -359,6 +359,10 @@ static NSDateFormatter *dateFormat;
     return convertedDictionary;
 }
 
++ (NSString*)idfa {
+    return [[UIDevice currentDevice] adjIdForAdvertisers];
+}
+
 + (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme
 {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
