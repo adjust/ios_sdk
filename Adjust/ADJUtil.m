@@ -201,6 +201,10 @@ static NSDateFormatter *dateFormat;
     return value == nil || value == (id)[NSNull null];
 }
 
++ (BOOL)isNotNull:(id)value {
+    return value != nil && value != (id)[NSNull null];
+}
+
 + (NSString *)formatErrorMessage:(NSString *)prefixErrorMessage
               systemErrorMessage:(NSString *)systemErrorMessage
               suffixErrorMessage:(NSString *)suffixErrorMessage

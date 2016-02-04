@@ -30,6 +30,7 @@
 
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
++ (BOOL)isNotNull:(id)value;
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
 jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
