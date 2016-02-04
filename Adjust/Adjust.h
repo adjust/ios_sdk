@@ -96,6 +96,7 @@ extern NSString * const ADJEnvironmentProduction;
 + (void)setOfflineMode:(BOOL)enabled;
 
 + (NSString*)idfa;
++ (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 
 /**
  * Obtain singleton Adjust object

@@ -41,4 +41,6 @@ jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
+
++ (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 @end
