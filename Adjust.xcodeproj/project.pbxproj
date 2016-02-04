@@ -660,6 +660,7 @@
 				9DFA37A91C0F219400782607 /* Frameworks */,
 				9DFA37AA1C0F219400782607 /* Headers */,
 				9DFA37AB1C0F219400782607 /* Resources */,
+				9DB1EE2C1C635DC0007FCFFC /* Copy Dynamic Framework */,
 			);
 			buildRules = (
 			);
@@ -753,6 +754,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		9DB1EE2C1C635DC0007FCFFC /* Copy Dynamic Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Dynamic Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${RW_FRAMEWORK_NAME}Sdk.framework\"\n\n# Copy the framework to the project directory\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/Frameworks/Dynamic/${RW_FRAMEWORK_NAME}Sdk.framework\"";
+		};
 		9DE7C9011AE68F68001556E5 /* Build Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
