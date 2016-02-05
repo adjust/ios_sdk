@@ -10,7 +10,7 @@
 #import "ADJActivityHandler.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
-#import "UIDevice+ADJAdditions.h"
+#import "ADJUtil.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -66,7 +66,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 + (NSString*)idfa {
-    return [[UIDevice currentDevice] adjIdForAdvertisers];
+    return [[Adjust getInstance] idfa];
+}
+
++ (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+    return [[Adjust getInstance] convertUniversalLink:url scheme:scheme];
 }
 
 + (id)getInstance {
@@ -139,7 +143,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (NSString*)idfa {
-    return [[UIDevice currentDevice] adjIdForAdvertisers];
+    return [ADJUtil idfa];
+}
+
+- (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+    return [ADJUtil convertUniversalLink:url scheme:scheme];
 }
 
 #pragma mark - private

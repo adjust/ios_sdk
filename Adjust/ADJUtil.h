@@ -30,6 +30,7 @@
 
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
++ (BOOL)isNotNull:(id)value;
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
 jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
@@ -40,4 +41,8 @@ jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
+
++ (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
++ (NSString*)idfa;
+
 @end

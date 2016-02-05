@@ -18,7 +18,7 @@ If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the foll
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.5.3'
+pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.5.4'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile`
@@ -365,6 +365,12 @@ the adjust backend will convert it to a universal link, which looks like this:
 
 ```
 https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
+```
+
+We provide a helper function that allows you to convert a universal link to a deeplink url.
+
+```objc
+NSURL * deeplink = [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"example"];
 ```
 
 You can read more about implementing universal links in our

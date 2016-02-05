@@ -24,3 +24,6 @@ Pods
 
 # git files
 *.orig
+
+# Adjust
+Frameworks

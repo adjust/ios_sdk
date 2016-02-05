@@ -95,6 +95,11 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)setOfflineMode:(BOOL)enabled;
 
+/**
+ * Convert a universal link style url to a deeplink style url with the corresponding scheme
+ */
++ (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
+
 + (NSString*)idfa;
 
 /**
@@ -111,6 +116,8 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)appWillOpenUrl:(NSURL *)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 - (void)setOfflineMode:(BOOL)enabled;
+- (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
+- (NSString*)idfa;
 
 @end
 

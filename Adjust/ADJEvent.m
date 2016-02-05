@@ -135,7 +135,7 @@
             return NO;
         }
     } else {
-        if (![ADJUtil isNull:currency]) {
+        if ([ADJUtil isNotNull:currency]) {
             [self.logger error:@"Revenue must be set with currency"];
             return NO;
         }
@@ -159,7 +159,7 @@
 }
 
 - (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if (![ADJUtil isNull:receipt] && [ADJUtil isNull:transactionId]) {
+    if ([ADJUtil isNotNull:receipt] && [ADJUtil isNull:transactionId]) {
         [self.logger error:@"Missing transactionId"];
         return NO;
     }

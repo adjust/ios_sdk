@@ -15,11 +15,14 @@
 
 #include <sys/xattr.h>
 
-static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.5.3";
-
-static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
+
+static NSString * const kClientSdk      = @"ios4.5.4";
+static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
+static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
+static NSString * const kBaseUrl        = @"https://app.adjust.com";
+static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
+static NSRegularExpression * universalLinkRegex = nil;
 
 #pragma mark -
 @implementation ADJUtil
@@ -201,6 +204,10 @@ static NSDateFormatter *dateFormat;
     return value == nil || value == (id)[NSNull null];
 }
 
++ (BOOL)isNotNull:(id)value {
+    return value != nil && value != (id)[NSNull null];
+}
+
 + (NSString *)formatErrorMessage:(NSString *)prefixErrorMessage
               systemErrorMessage:(NSString *)systemErrorMessage
               suffixErrorMessage:(NSString *)suffixErrorMessage
@@ -354,4 +361,80 @@ static NSDateFormatter *dateFormat;
 
     return convertedDictionary;
 }
+
++ (NSString *)idfa {
+    return [[UIDevice currentDevice] adjIdForAdvertisers];
+}
+
++ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    if ([ADJUtil isNull:scheme] || [scheme length] == 0) {
+        [logger warn:@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\""];
+        scheme = kDefaultScheme;
+    }
+
+    if ([ADJUtil isNull:url]) {
+        [logger error:@"Received universal link is nil"];
+        return nil;
+    }
+
+    NSString *urlString = [url absoluteString];
+
+    if ([ADJUtil isNull:urlString]) {
+        [logger error:@"Parsed universal link is nil"];
+        return nil;
+    }
+
+    if (universalLinkRegex == nil) {
+        NSError *error = NULL;
+
+        NSRegularExpression *regex  = [NSRegularExpression
+                                       regularExpressionWithPattern:kUniversalLinkPattern
+                                       options:NSRegularExpressionCaseInsensitive
+                                       error:&error];
+
+        if ([ADJUtil isNotNull:error]) {
+            [logger error:@"Universal link regex rule error (%@)", [error description]];
+            return nil;
+        }
+
+        universalLinkRegex = regex;
+    }
+
+    NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
+
+    if ([matches count] == 0) {
+        [logger error:@"Url doesn't match as universal link with format https://[hash].ulink.adjust.com/ulink/..."];
+        return nil;
+    }
+
+    if ([matches count] > 1) {
+        [logger error:@"Url match as universal link multiple times"];
+        return nil;
+    }
+
+    NSTextCheckingResult *match = matches[0];
+
+    if ([match numberOfRanges] != 2) {
+        [logger error:@"Wrong number of ranges matched"];
+        return nil;
+    }
+
+    NSString *tailSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
+
+    NSString *extractedUrlString = [NSString stringWithFormat:@"%@://%@", scheme, tailSubString];
+
+    [logger info:@"Converted deeplink from universal link %@", extractedUrlString];
+
+    NSURL *extractedUrl = [NSURL URLWithString:extractedUrlString];
+
+    if ([ADJUtil isNull:extractedUrl]) {
+        [logger error:@"Unable to parse converted deeplink from universal link %@", extractedUrlString];
+        return nil;
+    }
+
+    return extractedUrl;
+}
+
 @end

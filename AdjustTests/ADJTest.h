@@ -103,6 +103,10 @@
 #define aiEquals(field, value) \
     ailEquals(field, value, self.loggerMock)
 
+// assert equals
+#define aEquals(field, value) \
+    alEquals(field, value, self.loggerMock)
+
 // assert not nill
 #define anNil(field) \
     anlNil(field, self.loggerMock)
