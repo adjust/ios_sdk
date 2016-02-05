@@ -367,6 +367,12 @@ the adjust backend will convert it to a universal link, which looks like this:
 https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
 ```
 
+We provide an helper function that allows to convert the universal link to a deeplink url. 
+
+```objc
+NSURL * deeplink = [Adjust parseUniversalLink:[userActivity webpageURL] scheme:@"example"];
+```
+
 You can read more about implementing universal links in our
 [guide to universal links][universal-links-guide].
 
