@@ -1494,14 +1494,16 @@
     //[self checkTimerIsFired:NO];
 }
 
-- (void)testParseUniversalLink
+- (void)testConvertUniversalLink
 {
     //  reseting to make the test order independent
     [self reset];
 
     // nil url
-    aNil([ADJUtil parseUniversalLink:nil scheme:nil]);
-    aError(@"Received UniversalLink is nil");
+    aNil([ADJUtil convertUniversalLink:nil scheme:nil]);
+    aWarn(@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\"");
+    aError(@"Received universal link is nil");
+
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
@@ -1509,101 +1511,102 @@
 #pragma clang diagnostic pop
 
     // empty url
-    aNil([ADJUtil parseUniversalLink:nilStringUrl scheme:nil]);
-    aError(@"Received UniversalLink is nil");
+    aNil([ADJUtil convertUniversalLink:nilStringUrl scheme:nil]);
+    aWarn(@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\"");
+    aError(@"Received universal link is nil");
 
     // nil scheme
     NSString * nilScheme = nil;
 
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@""] scheme:nilScheme]);
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@""] scheme:nilScheme]);
     aWarn(@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\"");
-    aInfo(@"Extracted deeplink from UniversalLink AdjustUniversalScheme://");
+    aInfo(@"Converted deeplink from universal link AdjustUniversalScheme://");
 
     // empty Scheme
     NSString * emptyScheme = @"";
 
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@""] scheme:emptyScheme]);
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@""] scheme:emptyScheme]);
     aWarn(@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\"");
-    aInfo(@"Extracted deeplink from UniversalLink AdjustUniversalScheme://");
+    aInfo(@"Converted deeplink from universal link AdjustUniversalScheme://");
 
     // custom scheme empty path
     NSString * adjustScheme = @"AdjustTestScheme";
 
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@""] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@""] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://");
 
     // non Universal Url
     NSURL * nonUniversalUrl = [NSURL URLWithString:@"AdjustTestScheme://nonUniversalUrl"];
-    aNil([ADJUtil parseUniversalLink:nonUniversalUrl scheme:adjustScheme]);
-    aError(@"UniversalLink not matched to pattern");
+    aNil([ADJUtil convertUniversalLink:nonUniversalUrl scheme:adjustScheme]);
+    aError(@"Url doesn't match as universal link with format https://[hash].ulink.adjust.com/ulink/...");
 
     // path /
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://");
 
     // path /yourpath
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath");
 
     // path /yourpath/
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath/"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath/"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/");
 
     // path yourpath
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath");
 
     // path yourpath/
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath/"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath/"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/");
 
     // path / query ?key=value&foo=bar
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/?key=value&foo=bar"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://?key=value&foo=bar");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/?key=value&foo=bar"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://?key=value&foo=bar");
 
     // path /yourpath query ?key=value&foo=bar
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath?key=value&foo=bar"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath?key=value&foo=bar");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath?key=value&foo=bar"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath?key=value&foo=bar");
 
     // path /yourpath/ query ?key=value&foo=bar
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath/?key=value&foo=bar"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/?key=value&foo=bar");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath/?key=value&foo=bar"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/?key=value&foo=bar");
 
     // path yourpath query ?key=value&foo=bar
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath?key=value&foo=bar"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath?key=value&foo=bar");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath?key=value&foo=bar"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath?key=value&foo=bar");
 
     // path yourpath/ query ?key=value&foo=bar
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath/?key=value&foo=bar"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/?key=value&foo=bar");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath/?key=value&foo=bar"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/?key=value&foo=bar");
 
     // empty path/query fragment #
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"#"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://#");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"#"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://#");
 
     // empty path/query fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://#fragment");
 
     // path /yourpath/ fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath/#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath/#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/#fragment");
 
     // path yourpath fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath#fragment");
 
     // empty path query ?key=value&foo=bar fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"?key=value&foo=bar#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://?key=value&foo=bar#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"?key=value&foo=bar#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://?key=value&foo=bar#fragment");
 
     // path /yourpath/ query ?key=value&foo=bar fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"/yourpath/?key=value&foo=bar#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath/?key=value&foo=bar#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"/yourpath/?key=value&foo=bar#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath/?key=value&foo=bar#fragment");
 
     // path yourpath query ?key=value&foo=bar fragment #fragment
-    anNil([ADJUtil parseUniversalLink:[self getUniversalLinkUrl:@"yourpath?key=value&foo=bar#fragment"] scheme:adjustScheme]);
-    aInfo(@"Extracted deeplink from UniversalLink AdjustTestScheme://yourpath?key=value&foo=bar#fragment");
+    anNil([ADJUtil convertUniversalLink:[self getUniversalLinkUrl:@"yourpath?key=value&foo=bar#fragment"] scheme:adjustScheme]);
+    aInfo(@"Converted deeplink from universal link AdjustTestScheme://yourpath?key=value&foo=bar#fragment");
 }
 
 - (NSURL*)getUniversalLinkUrl:(NSString*)path
