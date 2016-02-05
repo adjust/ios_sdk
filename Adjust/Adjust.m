@@ -69,8 +69,8 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [[Adjust getInstance] idfa];
 }
 
-+ (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
-    return [[Adjust getInstance] parseUniversalLink:url scheme:scheme];
++ (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+    return [[Adjust getInstance] convertUniversalLink:url scheme:scheme];
 }
 
 + (id)getInstance {
@@ -146,8 +146,8 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [ADJUtil idfa];
 }
 
-- (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
-    return [ADJUtil parseUniversalLink:url scheme:scheme];
+- (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+    return [ADJUtil convertUniversalLink:url scheme:scheme];
 }
 
 #pragma mark - private

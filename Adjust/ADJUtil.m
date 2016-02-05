@@ -364,7 +364,7 @@ static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
     return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
-+ (NSURL *)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
++ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
     if ([ADJUtil isNull:url]) {
