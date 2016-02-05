@@ -370,7 +370,7 @@ https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
 We provide a helper function that allows you to convert a universal link to a deeplink url.
 
 ```objc
-NSURL * deeplink = [Adjust parseUniversalLink:[userActivity webpageURL] scheme:@"example"];
+NSURL * deeplink = [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"example"];
 ```
 
 You can read more about implementing universal links in our
