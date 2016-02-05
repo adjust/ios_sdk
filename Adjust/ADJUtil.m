@@ -389,14 +389,17 @@ static NSRegularExpression * universalLinkRegex = nil;
     if (universalLinkRegex == nil) {
         NSError *error = NULL;
 
-        universalLinkRegex = [NSRegularExpression
-                              regularExpressionWithPattern:kUniversalLinkPattern
-                              options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRegularExpression *regex  = [NSRegularExpression
+                                       regularExpressionWithPattern:kUniversalLinkPattern
+                                       options:NSRegularExpressionCaseInsensitive
+                                       error:&error];
 
         if ([ADJUtil isNotNull:error]) {
             [logger error:@"Universal link regex rule error (%@)", [error description]];
             return nil;
         }
+
+        universalLinkRegex = regex;
     }
 
     NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
