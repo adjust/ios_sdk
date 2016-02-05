@@ -15,11 +15,12 @@
 
 #include <sys/xattr.h>
 
-static NSString * const kBaseUrl   = @"https://app.adjust.com";
-static NSString * const kClientSdk = @"ios4.5.4";
-
-static NSString * const kDateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSDateFormatter *dateFormat;
+
+static NSString * const kClientSdk      = @"ios4.5.4";
+static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
+static NSString * const kBaseUrl        = @"https://app.adjust.com";
+static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
 #pragma mark -
 @implementation ADJUtil
@@ -359,73 +360,67 @@ static NSDateFormatter *dateFormat;
     return convertedDictionary;
 }
 
-+ (NSString*)idfa {
++ (NSString *)idfa {
     return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
-+ (NSURL*)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme
-{
++ (NSURL *)parseUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
-    if ([ADJUtil isNull:url])
-    {
-        [logger error:@"Received UniversalLink is nil"];
+    if ([ADJUtil isNull:url]) {
+        [logger error:@"Received universal link is nil"];
         return nil;
     }
 
-    NSString * urlString = [url absoluteString];
-    if ([ADJUtil isNull:urlString])
-    {
-        [logger error:@"Parsed UniversalLink is nil"];
+    NSString *urlString = [url absoluteString];
+
+    if ([ADJUtil isNull:urlString]) {
+        [logger error:@"Parsed universal link is nil"];
         return nil;
     }
 
     NSError *error = NULL;
-    NSString * pattern = @"https://(?:.*)\\.ulink\\.adjust\\.com/ulink/?([^?#]*)([^#]*)(.*)";
-
+    NSString *pattern = @"https://(?:.*)\\.ulink\\.adjust\\.com/ulink/([^?#]*)([^#]*)(.*)";
     NSRegularExpression *regex = [NSRegularExpression
                                   regularExpressionWithPattern:pattern
                                   options:NSRegularExpressionCaseInsensitive error:&error];
 
-    if ([ADJUtil isNotNull:error])
-    {
-        [logger error:@"UniversalLink regex rule error (%@)", [error description]];
+    if ([ADJUtil isNotNull:error]) {
+        [logger error:@"Universal link regex rule error (%@)", [error description]];
         return nil;
     }
 
-    NSArray<NSTextCheckingResult *> * matches = [regex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
+    NSArray<NSTextCheckingResult *> *matches = [regex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
 
-    if ([matches count] != 1)
-    {
-        [logger error:@"UniversalLink not matched to pattern"];
+    if ([matches count] != 1) {
+        [logger error:@"Universal link doesn't match the pattern"];
         return nil;
     }
 
-    NSTextCheckingResult * match = matches[0];
+    NSTextCheckingResult *match = matches[0];
 
-    if ([match numberOfRanges] != 4)
-    {
-        [logger error:@"Wrong number of Ranges matched"];
+    if ([match numberOfRanges] != 4) {
+        [logger error:@"Wrong number of ranges matched"];
         return nil;
     }
 
-    NSString * pathSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
-    NSString * querySubString = [urlString substringWithRange:[match rangeAtIndex:2]];
-    NSString * fragmentSubString = [urlString substringWithRange:[match rangeAtIndex:3]];
+    NSString *pathSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
+    NSString *querySubString = [urlString substringWithRange:[match rangeAtIndex:2]];
+    NSString *fragmentSubString = [urlString substringWithRange:[match rangeAtIndex:3]];
 
     if ([ADJUtil isNull:scheme] || [scheme length] == 0) {
         [logger warn:@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\""];
-        scheme = @"AdjustUniversalScheme";
+        scheme = kDefaultScheme;
     }
 
-    NSString * extractedUrlString = [NSString stringWithFormat:@"%@://%@%@%@", scheme, pathSubString, querySubString, fragmentSubString];
+    NSString *extractedUrlString = [NSString stringWithFormat:@"%@://%@%@%@", scheme, pathSubString, querySubString, fragmentSubString];
 
-    [logger info:@"Extracted deeplink from UniversalLink %@", extractedUrlString];
+    [logger info:@"Extracted deeplink from universal link %@", extractedUrlString];
 
-    NSURL * extractedUrl = [NSURL URLWithString:extractedUrlString];
+    NSURL *extractedUrl = [NSURL URLWithString:extractedUrlString];
 
     if ([ADJUtil isNull:extractedUrl]) {
-        [logger error:@"Unable to parse extracted deeplink from UniversalLink %@", extractedUrlString];
+        [logger error:@"Unable to parse extracted deeplink from universal link %@", extractedUrlString];
         return nil;
     }
 
