@@ -336,7 +336,7 @@ In Apple Developer Center, you should enable `Associated Domains` for your app.
 
 ![][adc-associated-domains]
 
-Once you have done this, you should enable `Associated Domains` in your app's XCode project settings, and copy the generated universal link from the dashboard into the `Domains` section.
+Once you have done this, you should enable `Associated Domains` in your app's Xcode project settings, and copy the generated universal link from the dashboard into the `Domains` section.
 
 ![][xcode-associated-domains]
 
