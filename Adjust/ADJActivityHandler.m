@@ -537,26 +537,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void) launchAttributionChangedDelegate:(ADJResponseData *)responseData
-                              tryDeeplink:(BOOL)tryDeeplink
-{
-    BOOL launchAttributionCallback = [self updateAttribution:responseData.attribution];
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // try to update and launch the attribution changed listener
-        if (launchAttributionCallback) {
-            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                                  withObject:responseData.attribution
-                                               waitUntilDone:YES];
-        }
-        // if possible, try to launch the deeplink
-        if (tryDeeplink) {
-            [self launchDeepLink:responseData.jsonResponse];
-        }
-    });
-
-}
-
 - (BOOL)updateAttribution:(ADJAttribution *)attribution {
     if (attribution == nil) {
         return NO;
