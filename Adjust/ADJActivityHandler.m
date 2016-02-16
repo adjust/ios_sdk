@@ -275,6 +275,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
     [self.packageHandler addPackage:clickPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (void)setIadDetails:(NSDictionary *)attributionDetails
@@ -313,6 +314,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
     [self.packageHandler addPackage:clickPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -612,6 +614,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.packageHandler addPackage:clickPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (BOOL) readDeeplinkQueryString:(NSString *)queryString
