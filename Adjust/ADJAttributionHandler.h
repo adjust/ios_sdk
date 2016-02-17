@@ -17,7 +17,9 @@
                  startPaused:(BOOL)startPaused
 hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
-- (void)checkSessionResponse:(ADJResponseData *)responseData;
+- (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
+
+- (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData;
 
 - (void)getAttribution;
 

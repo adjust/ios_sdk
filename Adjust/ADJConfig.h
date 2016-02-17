@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ADJLogger.h"
 #import "ADJAttribution.h"
-#import "ADJSuccessResponseData.h"
-#import "ADJFailureResponseData.h"
+#import "ADJSessionSuccess.h"
+#import "ADJSessionFailure.h"
+#import "ADJEventSuccess.h"
+#import "ADJEventFailure.h"
 
 /**
  * Optional delegate that will get informed about tracking results
@@ -28,16 +30,30 @@
 /**
  * Optional delegate method that gets called when an event is tracked with success
  *
- * @param successResponseData The response information from tracking with success. See ADJSuccessResponseData for details.
+ * @param eventSuccessResponseData The response information from tracking with success. See ADJEventSuccess for details.
  */
-- (void)adjustTrackingSucceeded:(ADJSuccessResponseData *)successResponseData;
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData;
 
 /**
  * Optional delegate method that gets called when an event is tracked with failure
  *
- * @param failureResponseData The response information from tracking with failure. See ADJFailureResponseData for details.
+ * @param eventFailureResponseData The response information from tracking with failure. See ADJEventFailure for details.
  */
-- (void)adjustTrackingFailed:(ADJFailureResponseData *)failureResponseData;
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with success
+ *
+ * @param sessionSuccessResponseData The response information from tracking with success. See ADJSessionSuccess for details.
+ */
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with failure
+ *
+ * @param sessionFailureResponseData The response information from tracking with failure. See ADJSessionFailure for details.
+ */
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData;
 
 @end
 

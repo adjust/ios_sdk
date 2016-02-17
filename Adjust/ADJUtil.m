@@ -332,7 +332,7 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
                     suffixErrorMessage:(NSString *)suffixErrorMessage
                        activityPackage:(ADJActivityPackage *)activityPackage
 {
-    ADJResponseData * responseData = [ADJResponseData responseDataWithActivityPackage:activityPackage];
+    ADJResponseData * responseData = [ADJResponseData buildResponseData:activityPackage];
 
     // connection error
     if (responseError != nil) {

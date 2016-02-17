@@ -68,14 +68,26 @@
         self.hasAttributionChangedDelegate = YES;
     }
 
-    if ([delegate respondsToSelector:@selector(adjustTrackingSucceeded:)]) {
-        [logger debug:@"Delegate implements adjustTrackingSucceeded:"];
+    if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
+        [logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
 
         self.hasDelegate = YES;
     }
 
-    if ([delegate respondsToSelector:@selector(adjustTrackingFailed:)]) {
-        [logger debug:@"Delegate implements adjustTrackingFailed:"];
+    if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
+        [logger debug:@"Delegate implements adjustEventTrackingFailed:"];
+
+        self.hasDelegate = YES;
+    }
+
+    if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
+        [logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
+
+        self.hasDelegate = YES;
+    }
+
+    if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
+        [logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
 
         self.hasDelegate = YES;
     }

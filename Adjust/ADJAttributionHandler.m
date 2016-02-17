@@ -62,15 +62,15 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     return self;
 }
 
-- (void) checkSessionResponse:(ADJResponseData *)responseData {
+- (void) checkSessionResponse:(ADJSessionResponseData *)sessionResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self checkSessionResponseInternal:responseData];
+        [self checkSessionResponseInternal:sessionResponseData];
     });
 }
 
-- (void) checkAttributionResponse:(ADJResponseData *)responseData {
+- (void) checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self checkAttributionResponseInternal:responseData];
+        [self checkAttributionResponseInternal:attributionResponseData];
     });
 }
 
@@ -102,16 +102,16 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 #pragma mark - internal
-- (void) checkSessionResponseInternal:(ADJResponseData *)responseData {
-    [self checkAttributionInternal:responseData];
+- (void) checkSessionResponseInternal:(ADJSessionResponseData *)sessionResponseData {
+    [self checkAttributionInternal:sessionResponseData];
 
-    [self.activityHandler launchAttributionChangedDelegateWithDeeplink:responseData];
+    [self.activityHandler launchSessionResponseTasks:sessionResponseData];
 }
 
-- (void) checkAttributionResponseInternal:(ADJResponseData *)responseData {
-    [self checkAttributionInternal:responseData];
+- (void) checkAttributionResponseInternal:(ADJAttributionResponseData *)attributionResponseData {
+    [self checkAttributionInternal:attributionResponseData];
 
-    [self.activityHandler launchAttributionChangedDelegate:responseData];
+    [self.activityHandler launchAttributionResponseTasks:attributionResponseData];
 }
 
 - (void) checkAttributionInternal:(ADJResponseData *)responseData {
@@ -150,7 +150,9 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
          activityPackage:self.attributionPackage
      responseDataHandler:^(ADJResponseData * responseData)
     {
-        [self checkAttributionResponse:responseData];
+        if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
+            [self checkAttributionResponse:(ADJAttributionResponseData*)responseData];
+        }
     }];
 }
 

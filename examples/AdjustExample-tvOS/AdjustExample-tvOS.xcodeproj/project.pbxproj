@@ -34,8 +34,8 @@
 		96390A0F1BCC0DF100A2E8A4 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909F81BCC0DF100A2E8A4 /* ADJTimerOnce.m */; };
 		96390A101BCC0DF100A2E8A4 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909FA1BCC0DF100A2E8A4 /* Adjust.m */; };
 		96390A111BCC0DF100A2E8A4 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909FC1BCC0DF100A2E8A4 /* ADJUtil.m */; };
-		96BA94051C3D57ED00C96245 /* ADJFailureResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA94031C3D57ED00C96245 /* ADJFailureResponseData.m */; };
-		96BA94061C3D57ED00C96245 /* ADJSuccessResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA94041C3D57ED00C96245 /* ADJSuccessResponseData.m */; };
+		96BA94051C3D57ED00C96245 /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA94031C3D57ED00C96245 /* ADJSessionFailure.m */; };
+		96BA94061C3D57ED00C96245 /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA94041C3D57ED00C96245 /* ADJSessionSuccess.m */; };
 		96FCC54A1C186458007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5471C186458007BBFE1 /* ADJResponseData.m */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
@@ -94,10 +94,10 @@
 		963909FA1BCC0DF100A2E8A4 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		963909FB1BCC0DF100A2E8A4 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		963909FC1BCC0DF100A2E8A4 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
-		96BA94011C3D57ED00C96245 /* ADJSuccessResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSuccessResponseData.h; sourceTree = "<group>"; };
-		96BA94021C3D57ED00C96245 /* ADJFailureResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJFailureResponseData.h; sourceTree = "<group>"; };
-		96BA94031C3D57ED00C96245 /* ADJFailureResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJFailureResponseData.m; sourceTree = "<group>"; };
-		96BA94041C3D57ED00C96245 /* ADJSuccessResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSuccessResponseData.m; sourceTree = "<group>"; };
+		96BA94011C3D57ED00C96245 /* ADJSessionSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionSuccess.h; sourceTree = "<group>"; };
+		96BA94021C3D57ED00C96245 /* ADJSessionFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionFailure.h; sourceTree = "<group>"; };
+		96BA94031C3D57ED00C96245 /* ADJSessionFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionFailure.m; sourceTree = "<group>"; };
+		96BA94041C3D57ED00C96245 /* ADJSessionSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionSuccess.m; sourceTree = "<group>"; };
 		96FCC5461C186458007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
 		96FCC5471C186458007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		9DC95F2D1C10596500138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -166,10 +166,10 @@
 		963909D11BCC0DF100A2E8A4 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
-				96BA94011C3D57ED00C96245 /* ADJSuccessResponseData.h */,
-				96BA94021C3D57ED00C96245 /* ADJFailureResponseData.h */,
-				96BA94031C3D57ED00C96245 /* ADJFailureResponseData.m */,
-				96BA94041C3D57ED00C96245 /* ADJSuccessResponseData.m */,
+				96BA94011C3D57ED00C96245 /* ADJSessionSuccess.h */,
+				96BA94021C3D57ED00C96245 /* ADJSessionFailure.h */,
+				96BA94031C3D57ED00C96245 /* ADJSessionFailure.m */,
+				96BA94041C3D57ED00C96245 /* ADJSessionSuccess.m */,
 				96FCC5461C186458007BBFE1 /* ADJResponseData.h */,
 				96FCC5471C186458007BBFE1 /* ADJResponseData.m */,
 				963909D21BCC0DF100A2E8A4 /* ADJActivityHandler.h */,
@@ -299,7 +299,7 @@
 				96390A081BCC0DF100A2E8A4 /* ADJDeviceInfo.m in Sources */,
 				96390A111BCC0DF100A2E8A4 /* ADJUtil.m in Sources */,
 				96390A061BCC0DF100A2E8A4 /* ADJAttributionHandler.m in Sources */,
-				96BA94051C3D57ED00C96245 /* ADJFailureResponseData.m in Sources */,
+				96BA94051C3D57ED00C96245 /* ADJSessionFailure.m in Sources */,
 				96390A0B1BCC0DF100A2E8A4 /* ADJPackageBuilder.m in Sources */,
 				96390A0E1BCC0DF100A2E8A4 /* ADJTimerCycle.m in Sources */,
 				9DC95F2F1C10596500138E4B /* Constants.m in Sources */,
@@ -308,7 +308,7 @@
 				96390A031BCC0DF100A2E8A4 /* UIDevice+ADJAdditions.m in Sources */,
 				96390A001BCC0DF100A2E8A4 /* ADJActivityState.m in Sources */,
 				96390A0A1BCC0DF100A2E8A4 /* ADJLogger.m in Sources */,
-				96BA94061C3D57ED00C96245 /* ADJSuccessResponseData.m in Sources */,
+				96BA94061C3D57ED00C96245 /* ADJSessionSuccess.m in Sources */,
 				963909FF1BCC0DF100A2E8A4 /* ADJActivityPackage.m in Sources */,
 				96390A091BCC0DF100A2E8A4 /* ADJEvent.m in Sources */,
 				96FCC54A1C186458007BBFE1 /* ADJResponseData.m in Sources */,

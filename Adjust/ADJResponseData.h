@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ADJActivityPackage.h"
 #import "ADJAttribution.h"
-#import "ADJSuccessResponseData.h"
-#import "ADJFailureResponseData.h"
+#import "ADJSessionSuccess.h"
+#import "ADJSessionFailure.h"
+#import "ADJEventSuccess.h"
+#import "ADJEventFailure.h"
 
 @interface ADJResponseData : NSObject <NSCopying>
 
@@ -22,8 +24,6 @@
 
 @property (nonatomic, copy) NSString * adid;
 
-@property (nonatomic, copy) NSString * eventToken;
-
 @property (nonatomic, assign) BOOL success;
 
 @property (nonatomic, assign) BOOL willRetry;
@@ -32,10 +32,40 @@
 
 @property (nonatomic, copy) ADJAttribution *attribution;
 
++ (ADJResponseData *)responseData;
+- (id)init;
+
++ (id)buildResponseData:(ADJActivityPackage *)activityPackage;
+
+@end
+
+@interface ADJSessionResponseData : ADJResponseData
+
+- (ADJSessionSuccess *)successResponseData;
+- (ADJSessionFailure *)failureResponseData;
+
+@end
+
+@interface ADJEventResponseData : ADJResponseData
+
+@property (nonatomic, copy) NSString * eventToken;
+
+- (ADJEventSuccess *)successResponseData;
+- (ADJEventFailure *)failureResponseData;
+
 + (ADJResponseData *)responseDataWithActivityPackage:(ADJActivityPackage *)activityPackage;
 - (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage;
 
-- (ADJSuccessResponseData *)successResponseData;
-- (ADJFailureResponseData *)failureResponseData;
+@end
+
+@interface ADJAttributionResponseData : ADJResponseData
+
+@end
+
+@interface ADJClickResponseData : ADJResponseData
+
+@end
+
+@interface ADJUnknowResponseData : ADJResponseData
 
 @end

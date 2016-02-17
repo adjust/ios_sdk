@@ -40,16 +40,6 @@
     // set an attribution delegate
     [adjustConfig setDelegate:self];
 
-    // set finished success tracking delegate
-    [adjustConfig setSuccessDelegate:^(ADJSuccessResponseData *successResponseData) {
-        NSLog(@"adjust successResponseData %@", successResponseData);
-    }];
-
-    // set finished failure tracking delegate
-    [adjustConfig setFailureDelegate:^(ADJFailureResponseData *failureResponseData) {
-        NSLog(@"adjust failureResponseData %@", failureResponseData);
-    }];
-
     [Adjust appDidLaunch:adjustConfig];
 
     // put the SDK in offline mode
@@ -59,6 +49,26 @@
     //[Adjust setEnabled:NO];
 
     return YES;
+}
+
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@"adjust attribution %@", attribution);
+}
+
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+    NSLog(@"adjust event success %@", eventSuccessResponseData);
+}
+
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    NSLog(@"adjust event failure %@", eventFailureResponseData);
+}
+
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+    NSLog(@"adjust session success %@", sessionSuccessResponseData);
+}
+
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    NSLog(@"adjust session failure %@", sessionFailureResponseData);
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

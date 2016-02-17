@@ -111,34 +111,33 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
     // redirect session responses to attribution handler to check for attribution information
-    if (responseData.activityKind == ADJActivityKindSession) {
-        [self.attributionHandler checkSessionResponse:responseData];
+    if ([responseData isKindOfClass:[ADJSessionResponseData class]]) {
+        [self.attributionHandler checkSessionResponse:(ADJSessionResponseData*)responseData];
         return;
     }
-    // check if it's an event response tasks and there is a delegate
-    if (responseData.activityKind == ADJActivityKindEvent
-        && self.adjustDelegate != nil)
-    {
-        [self launchEventResponseDelegate:responseData];
+
+    // check if it's an event response
+    if ([responseData isKindOfClass:[ADJEventResponseData class]]) {
+        [self launchEventResponseTasks:(ADJEventResponseData*)responseData];
         return;
     }
 }
 
-- (void)launchEventResponseDelegate:(ADJResponseData *)responseData {
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self launchEventResponseTasksInternal:responseData];
+        [self launchEventResponseTasksInternal:eventResponseData];
     });
 }
 
-- (void)launchAttributionChangedDelegateWithDeeplink:(ADJResponseData *)responseData {
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self launchAttributionChangedDelegateWithDeeplinkInternal:responseData];
+        [self launchSessionResponseTasksInternal:sessionResponseData];
     });
 }
 
-- (void)launchAttributionChangedDelegate:(ADJResponseData *)responseData {
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self launchAttributionChangedDelegateInternal:responseData];
+        [self launchAttributionResponseTasksInternal:attributionResponseData];
     });
 }
 
@@ -487,52 +486,73 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self writeActivityState];
 }
 
-- (void) launchEventResponseTasksInternal:(ADJResponseData *)responseData {
-    // success callback
-    if (responseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustTrackingSucceeded:)])
+- (void) launchEventResponseTasksInternal:(ADJEventResponseData *)eventResponseData {
+    // event success callback
+    if (eventResponseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
     {
         [self.logger debug:@"Launching success event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustTrackingSucceeded:)
-                                              withObject:[responseData successResponseData]
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingSucceeded:)
+                                              withObject:[eventResponseData successResponseData]
                                            waitUntilDone:NO]; // non-blocking
         return;
     }
-    // failure callback
-    if (!responseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustTrackingFailed:)])
+    // event failure callback
+    if (!eventResponseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingFailed:)])
     {
         [self.logger debug:@"Launching failed event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustTrackingFailed:)
-                                              withObject:[responseData failureResponseData]
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingFailed:)
+                                              withObject:[eventResponseData failureResponseData]
                                            waitUntilDone:NO]; // non-blocking
         return;
     }
 }
 
-- (void) launchAttributionChangedDelegateWithDeeplinkInternal:(ADJResponseData *)responseData {
-    BOOL toLaunchAttributionDelegate = [self updateAttribution:responseData.attribution];
+- (void) launchSessionResponseTasksInternal:(ADJSessionResponseData *)sessionResponseData {
+    BOOL toLaunchAttributionDelegate = [self updateAttribution:sessionResponseData.attribution];
 
     // Send tasks to background to avoid blocking the activity handler queue
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // session success callback
+        if (sessionResponseData.success
+            && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
+        {
+            [self.logger debug:@"Launching success session tracking delegate"];
+            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingSucceeded:)
+                                                  withObject:[sessionResponseData successResponseData]
+                                               waitUntilDone:YES]; // blocking
+        }
+        // session failure callback
+        if (!sessionResponseData.success
+            && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
+        {
+            [self.logger debug:@"Launching failed session tracking delegate"];
+            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingFailed:)
+                                                  withObject:[sessionResponseData failureResponseData]
+                                               waitUntilDone:NO]; // blocking
+        }
+
         // try to update and launch the attribution changed delegate blocking
         if (toLaunchAttributionDelegate) {
+            [self.logger debug:@"Launching attribution changed delegate"];
             [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                                  withObject:responseData.attribution
+                                                  withObject:sessionResponseData.attribution
                                                waitUntilDone:YES]; // blocking
         }
         // try to launch the deeplink after attribution changed delegate
-        [self launchDeepLink:responseData.jsonResponse];
+        [self launchDeepLink:sessionResponseData.jsonResponse];
     });
 }
 
-- (void) launchAttributionChangedDelegateInternal:(ADJResponseData *)responseData {
-    BOOL toLaunchAttributionDelegate = [self updateAttribution:responseData.attribution];
+- (void) launchAttributionResponseTasksInternal:(ADJAttributionResponseData *)attributionResponseData {
+    BOOL toLaunchAttributionDelegate = [self updateAttribution:attributionResponseData.attribution];
 
     // try to update and launch the attribution changed delegate non-blocking
     if (toLaunchAttributionDelegate) {
+        [self.logger debug:@"Launching attribution changed delegate"];
         [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                              withObject:responseData.attribution
+                                              withObject:attributionResponseData.attribution
                                            waitUntilDone:NO]; // non-blocking
     }
 }

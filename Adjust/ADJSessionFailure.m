@@ -1,17 +1,17 @@
 //
-//  ADJSuccessResponseData.m
+//  ADJFailureResponseData.m
 //  adjust
 //
 //  Created by Pedro Filipe on 05/01/16.
 //  Copyright © 2016 adjust GmbH. All rights reserved.
 //
 
-#import "ADJSuccessResponseData.h"
+#import "ADJSessionFailure.h"
 
-@implementation ADJSuccessResponseData
+@implementation ADJSessionFailure
 
-+ (ADJSuccessResponseData *)successResponseData {
-    return [[ADJSuccessResponseData alloc] init];
++ (ADJSessionFailure *)sessionFailureResponseData {
+    return [[ADJSessionFailure alloc] init];
 }
 
 - (id)init {
@@ -25,14 +25,14 @@
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    ADJSuccessResponseData* copy = [[[self class] allocWithZone:zone] init];
+    ADJSessionFailure* copy = [[[self class] allocWithZone:zone] init];
 
     if (copy) {
         copy.activityKindString = [self.activityKindString copyWithZone:zone];
         copy.message            = [self.message copyWithZone:zone];
         copy.timeStamp          = [self.timeStamp copyWithZone:zone];
         copy.adid               = [self.adid copyWithZone:zone];
-        copy.eventToken         = [self.eventToken copyWithZone:zone];
+        copy.willRetry          = self.willRetry;
         copy.jsonResponse       = [self.jsonResponse copyWithZone:zone];
     }
 
@@ -42,12 +42,12 @@
 #pragma mark - NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"%@ msg:%@ time:%@ adid:%@ event:%@ json:%@",
+    return [NSString stringWithFormat: @"%@ msg:%@ time:%@ adid:%@ retry:%@ json:%@",
             self.activityKindString,
             self.message,
             self.timeStamp,
             self.adid,
-            self.eventToken,
+            self.willRetry ? @"YES" : @"NO",
             self.jsonResponse];
 }
 

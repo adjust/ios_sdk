@@ -19,8 +19,9 @@
 - (void)trackEvent:(ADJEvent *)event;
 
 - (void)finishedTracking:(ADJResponseData *)responseData;
-- (void)launchAttributionChangedDelegateWithDeeplink:(ADJResponseData *)responseData;
-- (void)launchAttributionChangedDelegate:(ADJResponseData *)responseData;
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData;
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData;
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;
