@@ -95,16 +95,20 @@ static NSString * const prefix = @"ActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDetails, %@ error, %@", attributionDetails, error]];
 }
 
-- (void) launchAttributionChangedDelegateWithDeeplink:(ADJResponseData *)responseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionChangedDelegateWithDeeplink, %@", responseData]];
-    self.lastResponseData = responseData;
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchEventResponseTasks, %@", eventResponseData]];
+    self.lastResponseData = eventResponseData;
 }
 
-- (void) launchAttributionChangedDelegate:(ADJResponseData *)responseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionChangedDelegate, %@", responseData]];
-    self.lastResponseData = responseData;
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSessionResponseTasks, %@", sessionResponseData]];
+    self.lastResponseData = sessionResponseData;
 }
 
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionResponseTasks, %@", attributionResponseData]];
+    self.lastResponseData = attributionResponseData;
+}
 
 - (void) setOfflineMode:(BOOL)enabled {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setOfflineMode"]];

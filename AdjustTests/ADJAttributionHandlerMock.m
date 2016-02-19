@@ -36,13 +36,17 @@ hasAttributionChangedDelegate:(BOOL)hasDelegate
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
     self.attributionPackage = attributionPackage;
-    //[self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler"]];
 
     return self;
 }
 
-- (void)checkSessionResponse:(ADJResponseData *)responseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkSessionResponse, responseData: %@", responseData]];
+- (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkSessionResponse, responseData: %@", sessionResponseData]];
+}
+
+- (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkAttributionResponse, responseData: %@", attributionResponseData]];
 }
 
 - (void)getAttribution {

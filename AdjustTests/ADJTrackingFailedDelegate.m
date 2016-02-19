@@ -31,8 +31,12 @@ static NSString * const prefix = @"ADJTrackingFailedDelegate ";
     return self;
 }
 
-- (void)adjustTrackingFailed:(ADJFailureResponseData *)failureResponseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"adjustTrackingFailed, %@", failureResponseData]];
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"adjustSessionTrackingFailed, %@", sessionFailureResponseData]];
+}
+
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"adjustEventTrackingFailed, %@", eventFailureResponseData]];
 }
 
 @end

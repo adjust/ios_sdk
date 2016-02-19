@@ -129,7 +129,7 @@
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
     // check attribution was called without ask_in
-    aTest(@"ActivityHandler launchAttributionChangedDelegate, message:(null) timestamp:(null) adid:(null) eventToken:(null) success:1 willRetry:0 attribution:(null) json:{\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:(null) timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) json:{\n}");
 
     // test server error
     [self checkGetAttributionResponse:attributionHandler responseType:ADJSessionResponseTypeServerError];
@@ -143,7 +143,7 @@
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
     // check attribution was called without ask_in
-    aTest(@"ActivityHandler launchAttributionChangedDelegate, message:testResponseError timestamp:(null) json:{\n    message = testResponseError;\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:testResponseError timestamp:(null) adid:(null) success:0 willRetry:0 attribution:(null) json:{\n    message = testResponseError;\n}");
 
     // test ok response with message
     [self checkGetAttributionResponse:attributionHandler responseType:ADJSessionResponseTypeMessage];
@@ -170,7 +170,7 @@
     NSMutableDictionary * jsonDictionary = [[NSMutableDictionary alloc] init];
     [jsonDictionary setObject:attributionDictionary forKey:@"attribution"];
 
-    ADJResponseData * sessionResponseData = [[ADJResponseData alloc] initWithActivityPackage:self.firstSessionPackage];
+    ADJSessionResponseData * sessionResponseData = [ADJResponseData buildResponseData:self.firstSessionPackage];
     sessionResponseData.jsonResponse = jsonDictionary;
 
     [attributionHandler checkSessionResponse:sessionResponseData];
@@ -186,7 +186,7 @@
     anDebug(@"Waiting to query attribution");
 
     // check attribution changed delegate was called
-    aTest(@"ActivityHandler launchAttributionChangedDelegateWithDeeplink, message:(null) timestamp:(null) adid:(null) eventToken:(null) success:0 willRetry:0 attribution:tt:ttValue tn:tnValue net:nValue cam:cpValue adg:aValue cre:ctValue cl:clValue");
+    aTest(@"ActivityHandler launchSessionResponseTasks, message:(null) timestamp:(null) adid:(null) success:0 willRetry:0 attribution:tt:ttValue tn:tnValue net:nValue cam:cpValue adg:aValue cre:ctValue cl:clValue");
 }
 
 - (void)testAskIn
@@ -202,7 +202,7 @@
     // set null response to avoid a cycle;
     [NSURLSession setResponseType:ADJSessionResponseTypeMessage];
 
-    ADJResponseData * sessionResponseData = [[ADJResponseData alloc] initWithActivityPackage:self.firstSessionPackage];
+    ADJSessionResponseData * sessionResponseData = [ADJResponseData buildResponseData:self.firstSessionPackage];
     sessionResponseData.jsonResponse = askIn4sDictionary;
 
     [attributionHandler checkSessionResponse:sessionResponseData];
@@ -308,7 +308,7 @@
     // check attribution was called without ask_in
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
-    aTest(@"ActivityHandler launchAttributionChangedDelegate, message:response OK timestamp:(null) adid:(null) eventToken:(null) success:1 willRetry:0 attribution:(null) json:{\n    message = \"response OK\";\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:response OK timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) json:{\n    message = \"response OK\";\n}");
 }
 
 - (void)checkGetAttributionResponse:(id<ADJAttributionHandler>) attributionHandler

@@ -1054,7 +1054,54 @@
     [self testClickPackage:clickPackage fields:clickPackageFields source:@"iad3"];
 }
 
-- (void)testFinishedTracking
+- (void)testAttributionDelegate
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    ADJDelegateTest * delegateTests = [[ADJDelegateTest alloc] init];
+
+    [self checkFinishTasks:delegateTests
+attributionDelegatePresent:YES
+eventSuccessDelegatePresent:NO
+eventFailureDelegatePresent:NO
+sessionSuccessDelegatePresent:NO
+sessionFailureDelegatePresent:NO];
+
+}
+
+- (void)testSuccessDelegates
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    ADJTrackingSucceededDelegate * successDelegate = [[ADJTrackingSucceededDelegate alloc] init];
+
+    [self checkFinishTasks:successDelegate
+attributionDelegatePresent:NO
+eventSuccessDelegatePresent:YES
+eventFailureDelegatePresent:NO
+sessionSuccessDelegatePresent:YES
+sessionFailureDelegatePresent:NO];
+
+}
+
+- (void)testFailureDelegates
+{
+    // reseting to make the test order independent
+    [self reset];
+
+    ADJTrackingFailedDelegate * failureDelegate = [[ADJTrackingFailedDelegate alloc] init];
+
+    [self checkFinishTasks:failureDelegate
+attributionDelegatePresent:NO
+eventSuccessDelegatePresent:NO
+eventFailureDelegatePresent:YES
+sessionSuccessDelegatePresent:NO
+sessionFailureDelegatePresent:YES];
+}
+
+- (void)testLaunchDeepLink
 {
     // reseting to make the test order independent
     [self reset];
@@ -1064,244 +1111,6 @@
 
     // set verbose log level
     config.logLevel = ADJLogLevelDebug;
-
-    // set delegate
-    ADJDelegateTest * delegateTests = [[ADJDelegateTest alloc] init];
-    [config setDelegate:delegateTests];
-
-    aDebug(@"Delegate implements adjustAttributionChanged");
-
-    //  create handler and start the first session
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
-
-    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    // test init values
-    [self checkInit:ADJEnvironmentProduction logLevel:@"6"];
-
-    // test first session start
-    [self checkFirstSession];
-
-    // test session package to be checked for attribution
-    ADJActivityPackage * firstSessionPackage = self.packageHandlerMock.packageQueue[0];
-    ADJResponseData * firstSessionResponseData = [ADJResponseData responseDataWithActivityPackage:firstSessionPackage];
-
-    [activityHandler finishedTracking:firstSessionResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    aTest(@"AttributionHandler checkSessionResponse");
-
-    // test event success response data
-    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[1];
-    ADJResponseData * eventResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
-    eventResponseData.success = YES;
-
-    [activityHandler finishedTracking:eventResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Delegate implements adjustTrackingSucceeded");
-    anDebug(@"Delegate implements adjustTrackingFailed");
-
-    // test event failed response data
-    eventResponseData.success = NO;
-
-    [activityHandler finishedTracking:eventResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Delegate implements adjustTrackingSucceeded");
-    anDebug(@"Delegate implements adjustTrackingFailed");
-}
-
-- (void) testLaunchSuccessResponseTasks
-{
-    // reseting to make the test order independent
-    [self reset];
-
-    // create the config to start the session
-    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
-
-    ADJTrackingSucceededDelegate * successDelegate = [[ADJTrackingSucceededDelegate alloc] init];
-    [config setDelegate:successDelegate];
-
-    anDebug(@"Delegate implements adjustAttributionChanged");
-    anDebug(@"Delegate implements adjustTrackingFailed");
-    aDebug(@"Delegate implements adjustTrackingSucceeded");
-
-    //  create handler and start the first session
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
-
-    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
-
-    [activityHandler appWillOpenUrl:attributions];
-
-    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    [self checkInitAndFirstSession];
-
-    // test success event response data
-    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
-    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
-    eventSuccessResponseData.success = YES;
-
-    [activityHandler finishedTracking:eventSuccessResponseData];
-    [NSThread sleepForTimeInterval:2.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching failed event tracking delegate");
-    aDebug(@"Launching success event tracking delegate");
-
-    // test success sdk_click response data
-    ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[1];
-    ADJResponseData * sdkClickResponseData = [ADJResponseData responseDataWithActivityPackage:sdkClickPackage];
-    sdkClickResponseData.success = YES;
-
-    [activityHandler finishedTracking:sdkClickResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching success event tracking delegate");
-    anDebug(@"Launching failed event tracking delegate");
-
-    // test failed event response data
-    ADJResponseData * eventFailureResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
-    eventFailureResponseData.success = NO;
-
-    [activityHandler finishedTracking:eventFailureResponseData];
-    [NSThread sleepForTimeInterval:2.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching success event tracking delegate");
-    // does not launch because delegate does not have failed callback
-    anDebug(@"Launching failed event tracking delegate");
-}
-
-- (void) testLaunchFailureResponseTasks
-{
-    // reseting to make the test order independent
-    [self reset];
-
-    // create the config to start the session
-    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
-
-    ADJTrackingFailedDelegate * failureDelegate = [[ADJTrackingFailedDelegate alloc] init];
-    [config setDelegate:failureDelegate];
-
-    anDebug(@"Delegate implements adjustAttributionChanged");
-    anDebug(@"Delegate implements adjustTrackingSucceeded");
-    aDebug(@"Delegate implements adjustTrackingFailed");
-
-    //  create handler and start the first session
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
-
-    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
-
-    [activityHandler appWillOpenUrl:attributions];
-
-    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
-
-    [NSThread sleepForTimeInterval:3.0];
-
-    [self checkInitAndFirstSession];
-
-    // test failed event response data
-    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
-    ADJResponseData * eventFailureResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
-    eventFailureResponseData.success = NO;
-
-    [activityHandler finishedTracking:eventFailureResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching success event tracking delegate");
-    aDebug(@"Launching failed event tracking delegate");
-
-    // test success sdk_click response data
-    ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[1];
-    ADJResponseData * sdkClickResponseData = [ADJResponseData responseDataWithActivityPackage:sdkClickPackage];
-    sdkClickResponseData.success = NO;
-
-    [activityHandler finishedTracking:sdkClickResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching success event tracking delegate");
-    anDebug(@"Launching failed event tracking delegate");
-
-    // test success event response data
-    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
-    eventSuccessResponseData.success = YES;
-
-    [activityHandler finishedTracking:eventSuccessResponseData];
-    [NSThread sleepForTimeInterval:1.0];
-
-    anTest(@"AttributionHandler checkSessionResponse");
-    anDebug(@"Launching failed event tracking delegate");
-    anDebug(@"Launching success event tracking delegate");
-}
-
-/*
-
-    // test nil response
-    [activityHandler finishedTracking:nil];
-    [NSThread sleepForTimeInterval:1.0];
-
-    // if the response is null
-    anTest(@"AttributionHandler checkAttribution");
-    anTest(@"Unable to open deep link");
-    anTest(@"Open deep link");
-
-    // set package handler to respond with a valid attribution
-
-    NSString * deeplinkString = @"{\"deeplink\":\"wrongDeeplink://\"}";
-    NSData * deeplinkData = [deeplinkString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error = nil;
-    NSException *exception = nil;
-
-    NSDictionary * deeplinkDictionary = [ADJUtil buildJsonDict:deeplinkData exceptionPtr:&exception errorPtr:&error];
-
-    anNil(deeplinkDictionary);
-
-    //[activityHandler finishedTracking:deeplinkDictionary];
-
-    [NSThread sleepForTimeInterval:1.0];
-
-    // check that it was unable to open the url
-    aError(@"Unable to open deep link (wrongDeeplink://)");
-
-    // and it check the attribution
-    aTest(@"AttributionHandler checkAttribution");
-    // TODO add test that opens url
-
-    // checking the default values of the first session package
-    //  should only have one package
-    aiEquals(1, (int)[self.packageHandlerMock.packageQueue count]);
-
-    ADJActivityPackage *activityPackage = (ADJActivityPackage *) self.packageHandlerMock.packageQueue[0];
-
-    // create activity package test
-    ADJPackageFields * fields = [ADJPackageFields fields];
-
-    fields.hasDelegate = @"1";
-    fields.environment = @"production";
-
-    // set first session
-    [self testPackageSession:activityPackage fields:fields sessionCount:@"1"];
-}
- */
-
-- (void)testLaunchDeepLink
-{
-    // reseting to make the test order independent
-    [self reset];
-
-    // create the config
-    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
 
     // start the session
     id<ADJActivityHandler> activityHandler =[ADJActivityHandler handlerWithConfig:config];
@@ -1314,11 +1123,15 @@
 
     [NSThread sleepForTimeInterval:3.0];
 
-    [self checkInitAndFirstSession];
+    // test init values
+    [self checkInit:ADJEnvironmentProduction logLevel:@"6"];
+
+    // test first session start
+    [self checkFirstSession];
 
     // test success event response data
     ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[2];
-    ADJResponseData * eventSuccessResponseData = [ADJResponseData responseDataWithActivityPackage:eventPackage];
+    ADJEventResponseData * eventSuccessResponseData = [ADJResponseData buildResponseData:eventPackage];
     eventSuccessResponseData.success = YES;
 
     NSString * deeplinkString = @"{\"deeplink\":\"wrongDeeplink://\"}";
@@ -1330,24 +1143,13 @@
 
     anNil(deeplinkDictionary);
 
-    eventSuccessResponseData.jsonResponse = deeplinkDictionary;
-
-    [activityHandler finishedTracking:eventSuccessResponseData];
-    [NSThread sleepForTimeInterval:2.0];
-
-    // event response does not open deeplinks
-    anInfo(@"Open deep link (wrongDeeplink://)");
-
-    anError(@"Unable to open deep link (wrongDeeplink://)");
-
-
     // test success session response data
     ADJActivityPackage * sessionPackage = self.packageHandlerMock.packageQueue[0];
 
-    ADJResponseData * sessionResponseData = [[ADJResponseData alloc] initWithActivityPackage:sessionPackage];
+    ADJSessionResponseData * sessionResponseData = [ADJResponseData buildResponseData:sessionPackage];
     sessionResponseData.jsonResponse = deeplinkDictionary;
 
-    [activityHandler launchAttributionChangedDelegateWithDeeplink:sessionResponseData];
+    [activityHandler launchSessionResponseTasks:sessionResponseData];
     [NSThread sleepForTimeInterval:2.0];
 
     aInfo(@"Open deep link (wrongDeeplink://)");
@@ -1399,8 +1201,16 @@
 
     emptyAttribution = [[ADJAttribution alloc] initWithJsonDict:emptyJsonDictionary];
 
+    // test first session package
+    ADJActivityPackage * firstSessionPackage = self.packageHandlerMock.packageQueue[0];
+    // simulate a session response with attribution data
+    ADJSessionResponseData * sessionResponseDataWithAttribution = [ADJResponseData buildResponseData:firstSessionPackage];
+
+    sessionResponseDataWithAttribution.attribution = emptyAttribution;
     // check that it does not update the attribution
-    aFalse([activityHandler updateAttribution:emptyAttribution]);
+    [activityHandler launchSessionResponseTasks:sessionResponseDataWithAttribution];
+    [NSThread sleepForTimeInterval:1];
+
     anDebug(@"Wrote Attribution");
 
     // end session
@@ -1429,7 +1239,7 @@
     [self checkSubsession:1 subSessionCount:2 timerAlreadyStarted:NO];
 
     // check that it does not update the attribution after the restart
-    //aFalse([restartActivityHandler updateAttribution:emptyAttribution]);
+    aFalse([restartActivityHandler updateAttribution:emptyAttribution]);
     anDebug(@"Wrote Attribution");
 
     // new attribution
@@ -1452,8 +1262,11 @@
 
     ADJAttribution * firstAttribution = [[ADJAttribution alloc] initWithJsonDict:firstAttributionDictionary];
 
+    sessionResponseDataWithAttribution.attribution = firstAttribution;
     //check that it updates
-    aTrue([restartActivityHandler updateAttribution:firstAttribution]);
+    [restartActivityHandler launchSessionResponseTasks:sessionResponseDataWithAttribution];
+    [NSThread sleepForTimeInterval:1];
+
     aDebug(@"Wrote Attribution: tt:ttValue tn:tnValue net:nValue cam:cpValue adg:aValue cre:ctValue cl:clValue");
 
     // check that it launch the saved attribute
@@ -1461,8 +1274,16 @@
     //[NSThread sleepForTimeInterval:2];
     //aTest(@"ADJDelegateTest adjustAttributionChanged, tt:null tn:null net:null cam:null adg:null cre:null cl:null");
 
+    // test first session package
+    ADJActivityPackage * attributionPackage = self.attributionHandlerMock.attributionPackage;
+    // simulate a session response with attribution data
+    ADJAttributionResponseData * attributionResponseDataWithAttribution = [ADJResponseData buildResponseData:attributionPackage];
+
+    attributionResponseDataWithAttribution.attribution = firstAttribution;
     // check that it does not update the attribution
-    aFalse([restartActivityHandler updateAttribution:firstAttribution]);
+    [restartActivityHandler launchAttributionResponseTasks:attributionResponseDataWithAttribution];
+    [NSThread sleepForTimeInterval:1];
+
     anDebug(@"Wrote Attribution");
 
     // end session
@@ -1509,7 +1330,11 @@
     ADJAttribution * secondAttribution = [[ADJAttribution alloc] initWithJsonDict:secondAttributionDictionary];
 
     //check that it updates
-    aTrue([secondRestartActivityHandler updateAttribution:secondAttribution]);
+    attributionResponseDataWithAttribution.attribution = secondAttribution;
+
+    [secondRestartActivityHandler launchAttributionResponseTasks:attributionResponseDataWithAttribution];
+    [NSThread sleepForTimeInterval:1];
+
     aDebug(@"Wrote Attribution: tt:ttValue2 tn:tnValue2 net:nValue2 cam:cpValue2 adg:aValue2 cre:ctValue2 cl:clValue2");
 
     // check that it launch the saved attribute
@@ -2127,4 +1952,157 @@ readActivityState:(NSString *)readActivityState
     }
 }
 
+
+- (void)checkFinishTasks:(NSObject<AdjustDelegate> *)delegateTest
+attributionDelegatePresent:(BOOL)attributionDelegatePresent
+eventSuccessDelegatePresent:(BOOL)eventSuccessDelegatePresent
+eventFailureDelegatePresent:(BOOL)eventFailureDelegatePresent
+sessionSuccessDelegatePresent:(BOOL)sessionSuccessDelegatePresent
+sessionFailureDelegatePresent:(BOOL)sessionFailureDelegatePresent
+{
+    // create the config to start the session
+    ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
+
+    // set delegate
+    [config setDelegate:delegateTest];
+
+    if (attributionDelegatePresent) {
+        aDebug(@"Delegate implements adjustAttributionChanged");
+    } else {
+        anDebug(@"Delegate implements adjustAttributionChanged");
+    }
+    if (eventSuccessDelegatePresent) {
+        aDebug(@"Delegate implements adjustEventTrackingSucceeded");
+    } else {
+        anDebug(@"Delegate implements adjustEventTrackingSucceeded");
+    }
+    if (eventFailureDelegatePresent) {
+        aDebug(@"Delegate implements adjustEventTrackingFailed");
+    } else {
+        anDebug(@"Delegate implements adjustEventTrackingFailed");
+    }
+    if (sessionSuccessDelegatePresent) {
+        aDebug(@"Delegate implements adjustSessionTrackingSucceeded");
+    } else {
+        anDebug(@"Delegate implements adjustSessionTrackingSucceeded");
+    }
+    if (sessionFailureDelegatePresent) {
+        aDebug(@"Delegate implements adjustSessionTrackingFailed");
+    } else {
+        anDebug(@"Delegate implements adjustSessionTrackingFailed");
+    }
+
+    //  create handler and start the first session
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+
+    [NSThread sleepForTimeInterval:2.0];
+
+    [self checkInitAndFirstSession];
+
+    // test first session package
+    ADJActivityPackage * firstSessionPackage = self.packageHandlerMock.packageQueue[0];
+    // simulate a successful session
+    ADJSessionResponseData * successSessionResponseData = [ADJResponseData buildResponseData:firstSessionPackage];
+    successSessionResponseData.success = YES;
+
+    [activityHandler finishedTracking:successSessionResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // attribution handler should always receive the session response
+    aTest(@"AttributionHandler checkSessionResponse");
+    // the first session does not trigger the event response delegate
+    anDebug(@"Launching success event tracking delegate");
+    anDebug(@"Launching failed event tracking delegate");
+
+    [activityHandler launchSessionResponseTasks:successSessionResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // if present, the first session triggers the success session delegate
+    if (sessionSuccessDelegatePresent) {
+        aDebug(@"Launching success session tracking delegate");
+    } else {
+        anDebug(@"Launching success session tracking delegate");
+    }
+    // it doesn't trigger the failure session delegate
+    anDebug(@"Launching failed session tracking delegate");
+
+    // simulate a failure session
+    ADJSessionResponseData * failureSessionResponseData = [ADJResponseData buildResponseData:firstSessionPackage];
+    failureSessionResponseData.success = NO;
+
+    [activityHandler launchSessionResponseTasks:failureSessionResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // it doesn't trigger the success session delegate
+    anDebug(@"Launching success session tracking delegate");
+
+    // if present, the first session triggers the failure session delegate
+    if (sessionFailureDelegatePresent) {
+        aDebug(@"Launching failed session tracking delegate");
+    } else {
+        anDebug(@"Launching failed session tracking delegate");
+    }
+
+    // test success event response data
+    [activityHandler trackEvent:[ADJEvent eventWithEventToken:@"abc123"]];
+    [NSThread sleepForTimeInterval:1.0];
+
+    ADJActivityPackage * eventPackage = self.packageHandlerMock.packageQueue[1];
+    ADJEventResponseData * eventSuccessResponseData = [ADJResponseData buildResponseData:eventPackage];
+    eventSuccessResponseData.success = YES;
+
+    [activityHandler finishedTracking:eventSuccessResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // attribution handler should never receive the event response
+    anTest(@"AttributionHandler checkSessionResponse");
+
+    // if present, the success event triggers the success event delegate
+    if (eventSuccessDelegatePresent) {
+        aDebug(@"Launching success event tracking delegate");
+    } else {
+        anDebug(@"Launching success event tracking delegate");
+    }
+    // it doesn't trigger the failure event delegate
+    anDebug(@"Launching failed event tracking delegate");
+
+    // test failure event response data
+    ADJEventResponseData * eventFailureResponseData = [ADJResponseData buildResponseData:eventPackage];
+    eventFailureResponseData.success = NO;
+
+    [activityHandler finishedTracking:eventFailureResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // attribution handler should never receive the event response
+    anTest(@"AttributionHandler checkSessionResponse");
+
+    // if present, the failure event triggers the failure event delegate
+    if (eventFailureDelegatePresent) {
+        aDebug(@"Launching failed event tracking delegate");
+    } else {
+        anDebug(@"Launching failed event tracking delegate");
+    }
+    // it doesn't trigger the success event delegate
+    anDebug(@"Launching success event tracking delegate");
+
+    // test click
+    NSURL* attributions = [NSURL URLWithString:@"AdjustTests://example.com/path/inApp?adjust_tracker=trackerValue&other=stuff&adjust_campaign=campaignValue&adjust_adgroup=adgroupValue&adjust_creative=creativeValue"];
+
+    [activityHandler appWillOpenUrl:attributions];
+
+    [NSThread sleepForTimeInterval:1.0];
+
+    // test sdk_click response data
+    ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[2];
+    ADJClickResponseData * sdkClickResponseData = [ADJResponseData buildResponseData:sdkClickPackage];
+
+    [activityHandler finishedTracking:sdkClickResponseData];
+    [NSThread sleepForTimeInterval:1.0];
+
+    // attribution handler should never receive the click response
+    anTest(@"AttributionHandler checkSessionResponse");
+    // it doesn't trigger the any event delegate
+    anDebug(@"Launching success event tracking delegate");
+    anDebug(@"Launching failed event tracking delegate");
+}
 @end
