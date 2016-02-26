@@ -487,6 +487,17 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 You can read more about special partners and these integrations in our
 [guide to special partners.][special-partners]
 
+### 13. Device id's
+
+Certains services such as Google Analytics, require that Device and Client IDs must first coordinate in order to prevent duplicate reporting.
+
+To obtain the device identifier idfa, call the function `idfa`:
+
+```objc
+NSString * idfa = [Adjust idfa];
+});
+```
+
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [carthage]: https://github.com/Carthage/Carthage
