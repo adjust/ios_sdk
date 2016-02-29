@@ -11,9 +11,6 @@
 
 @interface ADJSessionFailure : NSObject <NSCopying>
 
-// activity type of the tracked package. For now only "event" is tracked.
-@property (nonatomic, copy) NSString * activityKindString;
-
 // error message from the server or the sdk.
 @property (nonatomic, copy) NSString * message;
 

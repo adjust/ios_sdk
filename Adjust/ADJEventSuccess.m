@@ -28,7 +28,6 @@
     ADJEventSuccess* copy = [[[self class] allocWithZone:zone] init];
 
     if (copy) {
-        copy.activityKindString = [self.activityKindString copyWithZone:zone];
         copy.message            = [self.message copyWithZone:zone];
         copy.timeStamp          = [self.timeStamp copyWithZone:zone];
         copy.adid               = [self.adid copyWithZone:zone];
@@ -42,8 +41,7 @@
 #pragma mark - NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"%@ msg:%@ time:%@ adid:%@ event:%@ json:%@",
-            self.activityKindString,
+    return [NSString stringWithFormat: @"Event Success msg:%@ time:%@ adid:%@ event:%@ json:%@",
             self.message,
             self.timeStamp,
             self.adid,

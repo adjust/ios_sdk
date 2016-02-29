@@ -10,9 +10,6 @@
 
 @interface ADJEventSuccess : NSObject
 
-// activity type of the tracked package. For now only "event" is tracked.
-@property (nonatomic, copy) NSString * activityKindString;
-
 // message from the server.
 @property (nonatomic, copy) NSString * message;
 
