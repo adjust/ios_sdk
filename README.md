@@ -487,7 +487,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 You can read more about special partners and these integrations in our
 [guide to special partners.][special-partners]
 
-### 13. Device id's
+### 13. Device IDS
 
 Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate reporting. 
 
