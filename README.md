@@ -441,34 +441,50 @@ Here is a quick summary of its properties:
 - `NSString creative` the creative grouping level of the current install.
 - `NSString clickLabel` the click label of the current install.
 
-### 10. Implement callbacks for tracked events
+### 10. Implement callbacks for tracked events and sessions
 
-You can register a delegate callback to be notified of successful and failed tracked events.
+You can register a delegate callback to be notified of successful and failed tracked events and/or sessions.
 The same optional protocol `AdjustDelegate` used for the attribution changed callback [here](#9-implement-the-attribution-callback) is used.
 Follow the same steps and implement the following delegate callback function for successful tracked events:
 
 ```objc
-- (void)adjustTrackingSucceeded:(ADJSuccessResponseData *)successResponseData {
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
 }
 ```
 
-And the following delegate callback function for failed tracked events:
+The following delegate callback function for failed tracked events:
 
 ```objc
-- (void)adjustTrackingFailed:(ADJFailureResponseData *)failureResponseData {
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
 }
 ```
 
-The delegate function will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to the `successResponseData` or `failureResponseData` object. Here is a quick summary of its common properties:
+For successful tracked sessions:
+```objc
+adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+}
+```
 
-- `NSString activityKindString` the type of package send, for now only `"event"`. 
+And for failed tracked sessions:
+```objc
+adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+}
+```
+
+The delegate functions will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to a response data object specific for the delegate callback. Here is a quick summary of the session response data properties:
+
 - `NSString message` the message from the server or the error logged by the SDK.
-- `NSString timestamp` timestamp from the server.
+- `NSString timeStamp` timestamp from the server.
 - `NSString adid` a unique device identifier provided by adjust.
-- `NSString eventToken` the event token, if the package tracked was an event.
 - `NSDictionary jsonResponse` the json object with the reponse from the server.
 
-The extra parameter in `failureResponseData` is currently only `BOOL willRetry` and it indicates whether the package will try to be send again to the server. 
+Both event response data objects contain:
+
+- `NSString eventToken` the event token, if the package tracked was an event.
+
+And both event and session failed objects also contain:
+
+- `BOOL willRetry` indicates if the package will be retried to be send later
 
 ### 11. Disable tracking
 
