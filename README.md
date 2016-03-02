@@ -18,7 +18,7 @@ If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the foll
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'git://github.com/adjust/ios_sdk.git', :tag => 'v4.5.4'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.5.4'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile`
