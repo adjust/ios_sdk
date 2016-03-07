@@ -8,7 +8,7 @@
 
 #import "Constants.h"
 #import "AppDelegate.h"
-
+#import "FRSystemProfile.h"
 @interface AppDelegate ()
 
 @end
@@ -43,7 +43,22 @@
 
     // disable the SDK
     //[Adjust setEnabled:NO];
-    
+
+    NSLog(@"is64bit %d", [FRSystemProfile is64bit]);
+    NSLog(@"cpuFamily %@", [FRSystemProfile cpuFamily]);
+    NSLog(@"osVersion %@", [FRSystemProfile osVersion]);
+    NSLog(@"cpuCount %d", [FRSystemProfile cpuCount]);
+    NSLog(@"machineArch %@", [FRSystemProfile machineArch]);
+    NSLog(@"machineModel %@", [FRSystemProfile machineModel]);
+    NSLog(@"cpuBrand %@", [FRSystemProfile cpuBrand]);
+    NSLog(@"cpuFeatures %@", [FRSystemProfile cpuFeatures]);
+    NSLog(@"cpuVendor %@", [FRSystemProfile cpuVendor]);
+    NSLog(@"appleLanguage %@", [FRSystemProfile appleLanguage]);
+    NSLog(@"cpuSpeed %lld", [FRSystemProfile cpuSpeed]);
+    NSLog(@"ramsize %lld", [FRSystemProfile ramsize]);
+    NSLog(@"cpuType %@", [FRSystemProfile cpuType]);
+    NSLog(@"cpuSubtype %@", [FRSystemProfile cpuSubtype]);
+
     return YES;
 }
 
