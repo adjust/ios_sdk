@@ -805,6 +805,7 @@
     // three click packages: attributions, extraParams and mixed
     for (int i = 3; i > 0; i--) {
         aTest(@"PackageHandler addPackage");
+        aTest(@"PackageHandler sendFirstPackage");
     }
 
     // checking the default values of the first session package
@@ -929,6 +930,7 @@
 
     // first iad package added
     aTest(@"PackageHandler addPackage");
+    aTest(@"PackageHandler sendFirstPackage");
 
     [activityHandler setIadDate:date2 withPurchaseDate:nil];
     [NSThread sleepForTimeInterval:1];
@@ -939,6 +941,7 @@
 
     // second iad package added
     aTest(@"PackageHandler addPackage");
+    aTest(@"PackageHandler sendFirstPackage");
 
     // 1 session + 2 click packages
     aiEquals(3, (int)[self.packageHandlerMock.packageQueue count]);
@@ -1000,7 +1003,7 @@
     [NSThread sleepForTimeInterval:4];
 
     aWarn(@"Unable to read iAd details");
-    anError(@"Limit number of retry for iAd v3 surpassed");
+    anWarn(@"Limit number of retry for iAd v3 surpassed");
 
     aDebug(@"iAd with 0 tries to read v3");
     aWarn(@"Reached limit number of retry for iAd v3. Trying iAd v2");
@@ -1037,6 +1040,9 @@
 
     [activityHandler setIadDetails:attributionDetails error:nil retriesLeft:1];
     [NSThread sleepForTimeInterval:2];
+
+    aTest(@"PackageHandler addPackage");
+    aTest(@"PackageHandler sendFirstPackage");
 
     // check the number of activity packages
     // 1 session + 1 sdk_click
@@ -2089,6 +2095,9 @@ sessionFailureDelegatePresent:(BOOL)sessionFailureDelegatePresent
     [activityHandler appWillOpenUrl:attributions];
 
     [NSThread sleepForTimeInterval:1.0];
+
+    aTest(@"PackageHandler addPackage");
+    aTest(@"PackageHandler sendFirstPackage");
 
     // test sdk_click response data
     ADJActivityPackage * sdkClickPackage = self.packageHandlerMock.packageQueue[2];
