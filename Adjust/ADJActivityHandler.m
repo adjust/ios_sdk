@@ -141,15 +141,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)launchDeepLink:(NSDictionary *)jsonDict{
-    if ([ADJUtil isNull:jsonDict]) return;
-
-    NSString *deepLink = [jsonDict objectForKey:@"deeplink"];
+- (void)launchDeepLink:(NSString *)deepLink{
     if (deepLink == nil) return;
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
-
-    [self.logger info:@"Open deep link (%@)", deepLink];
 
     BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
 
@@ -512,37 +507,47 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void) launchSessionResponseTasksInternal:(ADJSessionResponseData *)sessionResponseData {
     BOOL toLaunchAttributionDelegate = [self updateAttribution:sessionResponseData.attribution];
 
-    // Send tasks to background to avoid blocking the activity handler queue
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // session success callback
-        if (sessionResponseData.success
-            && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
-        {
-            [self.logger debug:@"Launching success session tracking delegate"];
-            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingSucceeded:)
-                                                  withObject:[sessionResponseData successResponseData]
-                                               waitUntilDone:YES]; // blocking
-        }
-        // session failure callback
-        if (!sessionResponseData.success
-            && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
-        {
-            [self.logger debug:@"Launching failed session tracking delegate"];
-            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingFailed:)
-                                                  withObject:[sessionResponseData failureResponseData]
-                                               waitUntilDone:NO]; // blocking
-        }
+    // session success callback
+    if (sessionResponseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
+    {
+        [self.logger debug:@"Launching success session tracking delegate"];
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingSucceeded:)
+                                              withObject:[sessionResponseData successResponseData]
+                                           waitUntilDone:NO]; // non-blocking
+    }
+    // session failure callback
+    if (!sessionResponseData.success
+        && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
+    {
+        [self.logger debug:@"Launching failed session tracking delegate"];
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingFailed:)
+                                              withObject:[sessionResponseData failureResponseData]
+                                           waitUntilDone:NO]; // non-blocking
+    }
 
-        // try to update and launch the attribution changed delegate blocking
-        if (toLaunchAttributionDelegate) {
-            [self.logger debug:@"Launching attribution changed delegate"];
-            [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                                  withObject:sessionResponseData.attribution
-                                               waitUntilDone:YES]; // blocking
-        }
-        // try to launch the deeplink after attribution changed delegate
-        [self launchDeepLink:sessionResponseData.jsonResponse];
-    });
+    // try to update and launch the attribution changed delegate blocking
+    if (toLaunchAttributionDelegate) {
+        [self.logger debug:@"Launching attribution changed delegate"];
+        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
+                                              withObject:sessionResponseData.attribution
+                                           waitUntilDone:NO]; // non-blocking
+    }
+
+    if ([ADJUtil isNull:sessionResponseData.jsonResponse]) {
+        return;
+    }
+
+    NSString *deepLink = [sessionResponseData.jsonResponse objectForKey:@"deeplink"];
+    if (deepLink == nil) {
+        return;
+    }
+
+    [self.logger info:@"Trying to open deep link (%@)", deepLink];
+
+    [self performSelectorOnMainThread:@selector(launchDeepLink:)
+                           withObject:deepLink
+                        waitUntilDone:NO]; // non-blocking
 }
 
 - (void) launchAttributionResponseTasksInternal:(ADJAttributionResponseData *)attributionResponseData {

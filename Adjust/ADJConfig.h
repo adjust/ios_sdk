@@ -17,7 +17,7 @@
 /**
  * Optional delegate that will get informed about tracking results
  */
-@protocol  AdjustDelegate
+@protocol AdjustDelegate
 @optional
 
 /**
