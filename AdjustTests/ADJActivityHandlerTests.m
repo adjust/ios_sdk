@@ -893,7 +893,7 @@
     [NSThread sleepForTimeInterval:1];
 
     // check that iAdImpressionDate was not received.
-    aVerbose(@"iAdImpressionDate not received");
+    aDebug(@"iAdImpressionDate not received");
 
     // didn't send click package
     anTest(@"PackageHandler addPackage");
@@ -902,7 +902,7 @@
     [NSThread sleepForTimeInterval:1];
 
     // check that iAdImpressionDate was not received.
-    aVerbose(@"iAdImpressionDate not received");
+    aDebug(@"iAdImpressionDate not received");
 
     // didn't send click package
     anTest(@"PackageHandler addPackage");
@@ -925,7 +925,7 @@
 
     // iAdImpressionDate received
     NSString * iAdImpressionDate1Log =[NSString stringWithFormat:@"iAdImpressionDate received: %@", date1];
-    aVerbose(iAdImpressionDate1Log);
+    aDebug(iAdImpressionDate1Log);
 
     // first iad package added
     aTest(@"PackageHandler addPackage");
@@ -935,7 +935,7 @@
 
     // iAdImpressionDate received
     NSString * iAdImpressionDate2Log =[NSString stringWithFormat:@"iAdImpressionDate received: %@", date2];
-    aVerbose(iAdImpressionDate2Log);
+    aDebug(iAdImpressionDate2Log);
 
     // second iad package added
     aTest(@"PackageHandler addPackage");
@@ -994,7 +994,7 @@
     [NSThread sleepForTimeInterval:1];
 
     aWarn(@"Unable to read iAd details");
-    aError(@"Limit number of retry for iAd v3 surpassed");
+    aWarn(@"Limit number of retry for iAd v3 surpassed");
 
     [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:0];
     [NSThread sleepForTimeInterval:4];
@@ -1152,9 +1152,7 @@ sessionFailureDelegatePresent:YES];
     [activityHandler launchSessionResponseTasks:sessionResponseData];
     [NSThread sleepForTimeInterval:2.0];
 
-    aInfo(@"Open deep link (wrongDeeplink://)");
-
-    aError(@"Unable to open deep link (wrongDeeplink://)");
+    aInfo(@"Trying to open deep link (wrongDeeplink://)");
 }
 
 - (void)testUpdateAttribution

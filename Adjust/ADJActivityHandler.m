@@ -250,11 +250,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
     if (iAdImpressionDate == nil) {
-        [self.logger verbose:@"iAdImpressionDate not received"];
+        [self.logger debug:@"iAdImpressionDate not received"];
         return;
     }
 
-    [self.logger verbose:@"iAdImpressionDate received: %@", iAdImpressionDate];
+    [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
 
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -280,7 +280,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger warn:@"Unable to read iAd details"];
 
         if (retriesLeft < 0) {
-            [self.logger error:@"Limit number of retry for iAd v3 surpassed"];
+            [self.logger warn:@"Limit number of retry for iAd v3 surpassed"];
             return;
         }
 
