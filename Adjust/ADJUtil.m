@@ -18,7 +18,7 @@
 
 static NSDateFormatter *dateFormat;
 
-static NSString * const kClientSdk      = @"ios4.5.4";
+static NSString * const kClientSdk      = @"ios4.6.0";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kBaseUrl        = @"https://app.adjust.com";
