@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ADJActivityKind.h"
 
 @interface ADJSessionFailure : NSObject <NSCopying>
 
