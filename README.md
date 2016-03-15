@@ -444,7 +444,9 @@ Here is a quick summary of its properties:
 ### 10. Implement callbacks for tracked events and sessions
 
 You can register a delegate callback to be notified of successful and failed tracked events and/or sessions.
+
 The same optional protocol `AdjustDelegate` used for the attribution changed callback [here](#9-implement-the-attribution-callback) is used.
+
 Follow the same steps and implement the following delegate callback function for successful tracked events:
 
 ```objc
@@ -466,17 +468,18 @@ adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
 ```
 
 And for failed tracked sessions:
+
 ```objc
 adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
 }
 ```
 
-The delegate functions will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to a response data object specific for the delegate callback. Here is a quick summary of the session response data properties:
+The delegate functions will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to a response data object specifically for the delegate callback. Here is a quick summary of the session response data properties:
 
 - `NSString message` the message from the server or the error logged by the SDK.
 - `NSString timeStamp` timestamp from the server.
 - `NSString adid` a unique device identifier provided by adjust.
-- `NSDictionary jsonResponse` the json object with the reponse from the server.
+- `NSDictionary jsonResponse` the JSON object with the response from the server.
 
 Both event response data objects contain:
 
@@ -484,7 +487,7 @@ Both event response data objects contain:
 
 And both event and session failed objects also contain:
 
-- `BOOL willRetry` indicates if the package will be retried to be send later
+- `BOOL willRetry` indicates there will be an attempt to resend the package at a later time.
 
 ### 11. Disable tracking
 
