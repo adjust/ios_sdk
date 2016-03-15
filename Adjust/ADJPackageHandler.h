@@ -10,6 +10,7 @@
 #import "ADJActivityPackage.h"
 #import "ADJPackageHandler.h"
 #import "ADJActivityHandler.h"
+#import "ADJResponseData.h"
 
 @protocol ADJPackageHandler
 
@@ -18,11 +19,10 @@
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
-- (void)sendNextPackage;
-- (void)closeFirstPackage;
+- (void)sendNextPackage:(ADJResponseData *)responseData;
+- (void)closeFirstPackage:(ADJResponseData *)responseData;;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)finishedTracking:(NSDictionary *)jsonDict;
 
 @end
 

@@ -22,16 +22,53 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+    // configure adjust
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
 
+    // change the log level
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
+
+    // enable event buffering
+    //[adjustConfig setEventBufferingEnabled:YES];
+
+    // set default tracker
+    //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
+
+    // set an attribution delegate
     [adjustConfig setDelegate:self];
 
     [Adjust appDidLaunch:adjustConfig];
 
+    // put the SDK in offline mode
+    //[Adjust setOfflineMode:YES];
+
+    // disable the SDK
+    //[Adjust setEnabled:NO];
+
     return YES;
+}
+
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@"adjust attribution %@", attribution);
+}
+
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+    NSLog(@"adjust event success %@", eventSuccessResponseData);
+}
+
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    NSLog(@"adjust event failure %@", eventFailureResponseData);
+}
+
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+    NSLog(@"adjust session success %@", sessionSuccessResponseData);
+}
+
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    NSLog(@"adjust session failure %@", sessionFailureResponseData);
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

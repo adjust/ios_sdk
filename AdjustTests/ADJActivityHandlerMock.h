@@ -13,6 +13,4 @@
 
 @property (nonatomic, strong) ADJAttribution *attributionUpdated;
 
-- (void) setUpdatedAttribution:(BOOL)updated;
-
 @end

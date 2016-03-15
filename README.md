@@ -18,13 +18,13 @@ If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the foll
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.5.4'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.6.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', '~> 4.5.4'
+pod 'Adjust', '~> 4.6.0'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile`
@@ -441,7 +441,55 @@ Here is a quick summary of its properties:
 - `NSString creative` the creative grouping level of the current install.
 - `NSString clickLabel` the click label of the current install.
 
-### 10. Disable tracking
+### 10. Implement callbacks for tracked events and sessions
+
+You can register a delegate callback to be notified of successful and failed tracked events and/or sessions.
+
+The same optional protocol `AdjustDelegate` used for the attribution changed callback [here](#9-implement-the-attribution-callback) is used.
+
+Follow the same steps and implement the following delegate callback function for successful tracked events:
+
+```objc
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+}
+```
+
+The following delegate callback function for failed tracked events:
+
+```objc
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+}
+```
+
+For successful tracked sessions:
+```objc
+adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+}
+```
+
+And for failed tracked sessions:
+
+```objc
+adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+}
+```
+
+The delegate functions will be called after the SDK tries to send a package to the server. Within the delegate callback you have access to a response data object specifically for the delegate callback. Here is a quick summary of the session response data properties:
+
+- `NSString message` the message from the server or the error logged by the SDK.
+- `NSString timeStamp` timestamp from the server.
+- `NSString adid` a unique device identifier provided by adjust.
+- `NSDictionary jsonResponse` the JSON object with the response from the server.
+
+Both event response data objects contain:
+
+- `NSString eventToken` the event token, if the package tracked was an event.
+
+And both event and session failed objects also contain:
+
+- `BOOL willRetry` indicates there will be an attempt to resend the package at a later time.
+
+### 11. Disable tracking
 
 You can disable the adjust SDK from tracking any activities of the current
 device by calling `setEnabled` with parameter `NO`. This setting is remembered
@@ -455,7 +503,7 @@ You can check if the adjust SDK is currently enabled by calling the function
 `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
-### 11. Offline mode
+### 12. Offline mode
 
 You can put the adjust SDK in offline mode to suspend transmission to our servers 
 while retaining tracked data to be sent later. While in offline mode, all information is saved
@@ -475,7 +523,7 @@ Unlike disabling tracking, this setting is *not remembered*
 bettween sessions. This means that the SDK is in online mode whenever it is started,
 even if the app was terminated in offline mode.
 
-### 12. Partner parameters
+### 13. Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the
 integrations that have been activated in your adjust dashboard.
@@ -491,9 +539,9 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 ```
 
 You can read more about special partners and these integrations in our
-[guide to special partners.][special-partners]
+[guide to special partnersd.][special-partners]
 
-### 13. Device IDS
+### 14. Device IDS
 
 Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate reporting. 
 
@@ -501,6 +549,16 @@ To obtain the device identifier IDFA, call the function `idfa`:
 
 ```objc
 NSString * idfa = [Adjust idfa];
+```
+
+### 15. Push token
+
+To send us the push notification token, then add the following call to `Adjust` in the `didRegisterForRemoteNotificationsWithDeviceToken` of your app delegate:
+
+```objc
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [Adjust setDeviceToken:deviceToken];
+}
 ```
 
 [adjust.com]: http://adjust.com

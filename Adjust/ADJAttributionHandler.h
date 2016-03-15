@@ -15,9 +15,11 @@
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
                  startPaused:(BOOL)startPaused
-                  hasDelegate:(BOOL)hasDelegate;
+hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
-- (void)checkAttribution:(NSDictionary *)jsonDict;
+- (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
+
+- (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData;
 
 - (void)getAttribution;
 
@@ -32,6 +34,6 @@
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                             startPaused:(BOOL)startPaused
-                                            hasDelegate:(BOOL)hasDelegate;
+                          hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 @end

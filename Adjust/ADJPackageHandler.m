@@ -64,14 +64,19 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     });
 }
 
-- (void)sendNextPackage {
+- (void)sendNextPackage:(ADJResponseData *)responseData{
     dispatch_async(self.internalQueue, ^{
         [self sendNextInternal];
     });
+
+    [self.activityHandler finishedTracking:responseData];
 }
 
-- (void)closeFirstPackage {
+- (void)closeFirstPackage:(ADJResponseData *)responseData {
     dispatch_semaphore_signal(self.sendingSemaphore);
+
+    responseData.willRetry = YES;
+    [self.activityHandler finishedTracking:responseData];
 }
 
 - (void)pauseSending {
@@ -80,10 +85,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (void)resumeSending {
     self.paused = NO;
-}
-
-- (void)finishedTracking:(NSDictionary *)jsonDict{
-    [self.activityHandler finishedTracking:jsonDict];
 }
 
 #pragma mark - internal
@@ -179,6 +180,13 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     NSString *path = [paths objectAtIndex:0];
     NSString *filename = [path stringByAppendingPathComponent:kPackageQueueFilename];
     return filename;
+}
+
+-(void)dealloc {
+    //cleanup code
+    if (self.sendingSemaphore != nil) {
+        dispatch_semaphore_signal(self.sendingSemaphore);
+    }
 }
 
 @end

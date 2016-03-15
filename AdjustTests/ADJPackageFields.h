@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString* deepLinkParameters;
 @property (nonatomic, copy) NSString* purchaseTime;
 @property (nonatomic, copy) NSString* iadTime;
+@property (nonatomic, copy) NSString* iadDetails;
 // ADJConfig
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *environment;

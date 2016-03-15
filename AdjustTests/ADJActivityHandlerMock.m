@@ -15,7 +15,7 @@ static NSString * const prefix = @"ActivityHandler ";
 @interface ADJActivityHandlerMock()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
-@property (nonatomic, assign) BOOL updated;
+@property (nonatomic, retain) ADJResponseData * lastResponseData;
 
 @end
 
@@ -26,7 +26,6 @@ static NSString * const prefix = @"ActivityHandler ";
     if (self == nil) return nil;
 
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
-    self.updated = NO;
 
     [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig"]];
 
@@ -45,8 +44,9 @@ static NSString * const prefix = @"ActivityHandler ";
 
 }
 
-- (void)finishedTracking:(NSDictionary *)jsonDict {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", jsonDict]];
+- (void)finishedTracking:(ADJResponseData *)responseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", responseData]];
+    self.lastResponseData = responseData;
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -82,7 +82,7 @@ static NSString * const prefix = @"ActivityHandler ";
 - (BOOL) updateAttribution:(ADJAttribution*) attribution {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution, %@", attribution]];
     self.attributionUpdated = attribution;
-    return self.updated;
+    return NO;
 }
 
 - (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate {
@@ -95,16 +95,23 @@ static NSString * const prefix = @"ActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDetails, %@ error, %@", attributionDetails, error]];
 }
 
-- (void) launchAttributionDelegate {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionDelegate"]];
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchEventResponseTasks, %@", eventResponseData]];
+    self.lastResponseData = eventResponseData;
+}
+
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSessionResponseTasks, %@", sessionResponseData]];
+    self.lastResponseData = sessionResponseData;
+}
+
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionResponseTasks, %@", attributionResponseData]];
+    self.lastResponseData = attributionResponseData;
 }
 
 - (void) setOfflineMode:(BOOL)enabled {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setOfflineMode"]];
-}
-
-- (void) setUpdatedAttribution:(BOOL)updated {
-    self.updated = updated;
 }
 
 @end

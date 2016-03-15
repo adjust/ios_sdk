@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "ADJLogger.h"
 #import "ADJAttribution.h"
+#import "ADJSessionSuccess.h"
+#import "ADJSessionFailure.h"
+#import "ADJEventSuccess.h"
+#import "ADJEventFailure.h"
 
 /**
  * Optional delegate that will get informed about tracking results
  */
-@protocol  AdjustDelegate
+@protocol AdjustDelegate
 @optional
 
 /**
@@ -22,6 +26,34 @@
  * @param attribution The attribution information. See ADJAttribution for details.
  */
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution;
+
+/**
+ * Optional delegate method that gets called when an event is tracked with success
+ *
+ * @param eventSuccessResponseData The response information from tracking with success. See ADJEventSuccess for details.
+ */
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData;
+
+/**
+ * Optional delegate method that gets called when an event is tracked with failure
+ *
+ * @param eventFailureResponseData The response information from tracking with failure. See ADJEventFailure for details.
+ */
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with success
+ *
+ * @param sessionSuccessResponseData The response information from tracking with success. See ADJSessionSuccess for details.
+ */
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData;
+
+/**
+ * Optional delegate method that gets called when an session is tracked with failure
+ *
+ * @param sessionFailureResponseData The response information from tracking with failure. See ADJSessionFailure for details.
+ */
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData;
 
 @end
 
@@ -73,15 +105,16 @@
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 
 /**
- * Set the optional delegate that will inform you about attribution
+ * Set the optional delegate that will inform you about attribution or events
  *
  * See the AdjustDelegate declaration above for details
  *
  * @var delegate The delegate that might implement the optional delegate
- *     methods like adjustAttributionChanged:
+ *     methods like adjustAttributionChanged, adjustTrackingSucceeded or adjustTrackingFailed:
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
 @property (nonatomic, assign) BOOL hasDelegate;
+@property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
 
 - (BOOL) isValid;
 @end

@@ -15,7 +15,7 @@ static NSString * const prefix = @"RequestHandler ";
 @interface ADJRequestHandlerMock()
 
 @property (nonatomic, assign) id<ADJPackageHandler> packageHandler;
-@property (nonatomic, assign) ADJLoggerMock *loggerMock;
+@property (nonatomic, strong) ADJLoggerMock *loggerMock;
 
 @end
 

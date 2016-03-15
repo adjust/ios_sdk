@@ -7,7 +7,7 @@
 //
 
 #import "Adjust.h"
-#import "ADJAttribution.h"
+#import "ADJResponseData.h"
 
 @protocol ADJActivityHandler <NSObject>
 
@@ -18,23 +18,24 @@
 
 - (void)trackEvent:(ADJEvent *)event;
 
-- (void)finishedTracking:(NSDictionary *)jsonDict;
+- (void)finishedTracking:(ADJResponseData *)responseData;
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData;
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData;
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 
 - (ADJAttribution*) attribution;
-- (void) setAttribution:(ADJAttribution*)attribution;
-- (void) setAskingAttribution:(BOOL)askingAttribution;
+- (void)setAttribution:(ADJAttribution*)attribution;
+- (void)setAskingAttribution:(BOOL)askingAttribution;
 
-- (BOOL) updateAttribution:(ADJAttribution*) attribution;
-- (void) setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
+- (BOOL)updateAttribution:(ADJAttribution *)attribution;
+- (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setIadDetails:(NSDictionary *)attributionDetails
                 error:(NSError *)error
           retriesLeft:(int)retriesLeft;
-
-- (void) launchAttributionDelegate;
 
 - (void) setOfflineMode:(BOOL)offline;
 

@@ -34,18 +34,18 @@ static const double kRequestTimeout = 60; // 60 seconds
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                             startPaused:(BOOL)startPaused
-                                            hasDelegate:(BOOL)hasDelegate;
+                          hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                            withAttributionPackage:attributionPackage
                                                       startPaused:startPaused
-                                                      hasDelegate:hasDelegate];
+                                    hasAttributionChangedDelegate:hasAttributionChangedDelegate];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
                   startPaused:(BOOL)startPaused
-                  hasDelegate:(BOOL)hasDelegate;
+hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     self = [super init];
     if (self == nil) return nil;
@@ -55,16 +55,22 @@ static const double kRequestTimeout = 60; // 60 seconds
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
     self.paused = startPaused;
-    self.hasDelegate = hasDelegate;
+    self.hasDelegate = hasAttributionChangedDelegate;
     self.timer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
                                          queue:self.internalQueue];
 
     return self;
 }
 
-- (void) checkAttribution:(NSDictionary *)jsonDict {
+- (void) checkSessionResponse:(ADJSessionResponseData *)sessionResponseData {
     dispatch_async(self.internalQueue, ^{
-        [self checkAttributionInternal:jsonDict];
+        [self checkSessionResponseInternal:sessionResponseData];
+    });
+}
+
+- (void) checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData {
+    dispatch_async(self.internalQueue, ^{
+        [self checkAttributionResponseInternal:attributionResponseData];
     });
 }
 
@@ -96,28 +102,40 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 #pragma mark - internal
--(void) checkAttributionInternal:(NSDictionary *)jsonDict {
-    if ([ADJUtil isNull:jsonDict]) return;
+- (void) checkSessionResponseInternal:(ADJSessionResponseData *)sessionResponseData {
+    [self checkAttributionInternal:sessionResponseData];
 
-    NSDictionary* jsonAttribution = [jsonDict objectForKey:@"attribution"];
-    ADJAttribution *attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
-
-    NSNumber *timerMilliseconds = [jsonDict objectForKey:@"ask_in"];
-
-    if (timerMilliseconds == nil) {
-        [self.activityHandler updateAttribution:attribution];
-
-        [self.activityHandler setAskingAttribution:NO];
-
-        return;
-    };
-
-    [self.activityHandler setAskingAttribution:YES];
-
-    [self getAttributionWithDelay:[timerMilliseconds intValue]];
+    [self.activityHandler launchSessionResponseTasks:sessionResponseData];
 }
 
--(void) getAttributionInternal {
+- (void) checkAttributionResponseInternal:(ADJAttributionResponseData *)attributionResponseData {
+    [self checkAttributionInternal:attributionResponseData];
+
+    [self.activityHandler launchAttributionResponseTasks:attributionResponseData];
+}
+
+- (void) checkAttributionInternal:(ADJResponseData *)responseData {
+    if (responseData.jsonResponse == nil) {
+        return;
+    }
+
+    NSNumber *timerMilliseconds = [responseData.jsonResponse objectForKey:@"ask_in"];
+
+    if (timerMilliseconds != nil) {
+        [self.activityHandler setAskingAttribution:YES];
+
+        [self getAttributionWithDelay:[timerMilliseconds intValue]];
+
+        return;
+    }
+
+    [self.activityHandler setAskingAttribution:NO];
+
+    NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
+    responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+}
+
+- (void) getAttributionInternal {
     if (!self.hasDelegate) {
         return;
     }
@@ -129,9 +147,13 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     [ADJUtil sendRequest:[self request]
       prefixErrorMessage:@"Failed to get attribution"
-     jsonResponseHandler:^(NSDictionary *jsonDict) {
-         [self checkAttribution:jsonDict];
-     }];
+         activityPackage:self.attributionPackage
+     responseDataHandler:^(ADJResponseData * responseData)
+    {
+        if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
+            [self checkAttributionResponse:(ADJAttributionResponseData*)responseData];
+        }
+    }];
 }
 
 #pragma mark - private

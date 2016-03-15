@@ -7,7 +7,6 @@
 //
 #import <Foundation/Foundation.h>
 
-#import "ADJRequestHandler.h"
 #import "ADJPackageHandler.h"
 
 @protocol ADJRequestHandler

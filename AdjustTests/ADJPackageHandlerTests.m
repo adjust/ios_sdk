@@ -65,7 +65,7 @@ typedef enum {
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
 
     ADJActivityPackage *firstClickPackage = [ADJTestsUtil getClickPackage:@"FirstPackage"];
 
@@ -75,7 +75,7 @@ typedef enum {
     [self checkAddPackage:1 packageString:@"clickFirstPackage"];
 
     id<ADJPackageHandler> secondPackageHandler = [self checkAddSecondPackage:nil];
-
+    
     ADJActivityPackage *secondClickPackage = [ADJTestsUtil getClickPackage:@"ThirdPackage"];
 
     [secondPackageHandler addPackage:secondClickPackage];
@@ -90,13 +90,13 @@ typedef enum {
     aTest(@"RequestHandler sendPackage, clickFirstPackage");
 
     // send the second click package/ third package
-    [secondPackageHandler sendNextPackage];
+    [secondPackageHandler sendNextPackage:nil];
     [NSThread sleepForTimeInterval:1.0];
 
     aTest(@"RequestHandler sendPackage, clickThirdPackage");
 
     // send the unknow package/ second package
-    [secondPackageHandler sendNextPackage];
+    [secondPackageHandler sendNextPackage:nil];
     [NSThread sleepForTimeInterval:1.0];
 
     aTest(@"RequestHandler sendPackage, unknownSecondPackage");
@@ -108,7 +108,7 @@ typedef enum {
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
 
     [self checkSendFirst:ADJSendFirstEmptyQueue];
 
@@ -151,7 +151,7 @@ typedef enum {
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
 
     // add and send the first package
     [self checkAddAndSendFirst:packageHandler];
@@ -166,7 +166,7 @@ typedef enum {
     [self checkAddSecondPackage:packageHandler];
 
     //send next package
-    [packageHandler sendNextPackage];
+    [packageHandler sendNextPackage:nil];
     [NSThread sleepForTimeInterval:2.0];
 
     aDebug(@"Package handler wrote 1 packages");
@@ -181,7 +181,7 @@ typedef enum {
     [self reset];
 
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [self createPackageHandler];
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
 
     [self checkAddAndSendFirst:packageHandler];
 
@@ -192,7 +192,7 @@ typedef enum {
     [self checkSendFirst:ADJSendFirstIsSending];
 
     //send next package
-    [packageHandler closeFirstPackage];
+    [packageHandler closeFirstPackage:nil];
     [NSThread sleepForTimeInterval:2.0];
 
     anDebug(@"Package handler wrote");
@@ -204,35 +204,12 @@ typedef enum {
     [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
 }
 
-- (void)testCalls
+- (id<ADJPackageHandler>)createFirstPackageHandler
 {
-    //  reseting to make the test order independent
-    [self reset];
-
-    //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [self createPackageHandler:YES];
-
-    ADJActivityPackage *firstActivityPackage = [ADJTestsUtil getUnknowPackage:@"FirstPackage"];
-
-    [packageHandler addPackage:firstActivityPackage];
-    [packageHandler sendFirstPackage];
-    [NSThread sleepForTimeInterval:2.0];
-
-    [self checkAddPackage:1 packageString:@"unknownFirstPackage"];
-
-    [self checkSendFirst:ADJSendFirstPaused];
-
-    [packageHandler finishedTracking:nil];
-
-    aTest(@"ActivityHandler finishedTracking, (null)");
+    return [self createFirstPackageHandler:NO];
 }
 
-- (id<ADJPackageHandler>)createPackageHandler
-{
-    return [self createPackageHandler:NO];
-}
-
-- (id<ADJPackageHandler>)createPackageHandler:(BOOL)startPaused
+- (id<ADJPackageHandler>)createFirstPackageHandler:(BOOL)startPaused
 {
     //  initialize Package Handler
     id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
@@ -243,6 +220,22 @@ typedef enum {
 
     return packageHandler;
 }
+
+- (id<ADJPackageHandler>)checkAddSecondPackage
+{
+    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
+                                                            startPaused:NO];
+
+    [NSThread sleepForTimeInterval:2.0];
+
+    ADJActivityPackage * secondActivityPackage = [ADJTestsUtil getUnknowPackage:@"SecondPackage"];
+
+    [packageHandler addPackage:secondActivityPackage];
+    [NSThread sleepForTimeInterval:1.0];
+
+    return packageHandler;
+}
+
 
 - (id<ADJPackageHandler>)checkAddSecondPackage:(id<ADJPackageHandler>)packageHandler
 {
@@ -256,8 +249,8 @@ typedef enum {
 
         // check that it can read the previously saved package
         aDebug(@"Package handler read 1 packages");
-
     }
+
     ADJActivityPackage * secondActivityPackage = [ADJTestsUtil getUnknowPackage:@"SecondPackage"];
 
     [packageHandler addPackage:secondActivityPackage];

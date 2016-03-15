@@ -10,6 +10,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLoggerMock.h"
 #import "NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h"
+#import "NSURLSession+NSURLDataWithRequestMocking.h"
 #import "ADJPackageHandlerMock.h"
 #import "ADJRequestHandlerMock.h"
 #import "ADJTestsUtil.h"
@@ -55,14 +56,14 @@
 - (void)testSend
 {
     // null response
-    [NSURLConnection setResponseType:ADJResponseTypeNil];
+    [NSURLSession setResponseType:ADJSessionResponseTypeNil];
 
     [self checkSendPackage];
 
     aTest(@"PackageHandler closeFirstPackage");
 
     // client exception
-    [NSURLConnection setResponseType:ADJResponseTypeConnError];
+    [NSURLSession setResponseType:ADJSessionResponseTypeConnError];
 
     [self checkSendPackage];
 
@@ -71,7 +72,7 @@
     aTest(@"PackageHandler closeFirstPackage");
 
     // server error
-    [NSURLConnection setResponseType:ADJResponseTypeServerError];
+    [NSURLSession setResponseType:ADJSessionResponseTypeServerError];
 
     [self checkSendPackage];
 
@@ -79,12 +80,10 @@
 
     aError(@"testResponseError");
 
-    aTest(@"PackageHandler finishedTracking, \"message\" = \"testResponseError\";");
-
     aTest(@"PackageHandler sendNextPackage");
 
     // wrong json
-    [NSURLConnection setResponseType:ADJResponseTypeWrongJson];
+    [NSURLSession setResponseType:ADJSessionResponseTypeWrongJson];
 
     [self checkSendPackage];
 
@@ -95,7 +94,7 @@
     aTest(@"PackageHandler closeFirstPackage");
 
     // empty json
-    [NSURLConnection setResponseType:ADJResponseTypeEmptyJson];
+    [NSURLSession setResponseType:ADJSessionResponseTypeEmptyJson];
 
     [self checkSendPackage];
 
@@ -103,20 +102,16 @@
 
     aInfo(@"No message found");
 
-    aTest(@"PackageHandler finishedTracking, ");
-
     aTest(@"PackageHandler sendNextPackage");
 
     // message response
-    [NSURLConnection setResponseType:ADJResponseTypeMessage];
+    [NSURLSession setResponseType:ADJSessionResponseTypeMessage];
 
     [self checkSendPackage];
 
     aVerbose(@"Response: { \"message\" : \"response OK\"}");
 
     aInfo(@"response OK");
-
-    aTest(@"PackageHandler finishedTracking, \"message\" = \"response OK\";");
 
     aTest(@"PackageHandler sendNextPackage");
 }
@@ -127,7 +122,7 @@
 
     [NSThread sleepForTimeInterval:1.0];
 
-    aTest(@"NSURLConnection sendSynchronousRequest");
+    aTest(@"NSURLSession dataTaskWithRequest");
 }
 
 @end

@@ -7,6 +7,9 @@
 //
 #import <Foundation/Foundation.h>
 #import "ADJActivityKind.h"
+#import "ADJResponseData.h"
+#import "ADJActivityPackage.h"
+#import "ADJEvent.h"
 
 @interface ADJUtil : NSObject
 
@@ -16,7 +19,9 @@
 + (void)excludeFromBackup:(NSString *)filename;
 + (NSString *)formatSeconds1970:(double)value;
 + (NSString *)formatDate:(NSDate *)value;
-+ (NSDictionary *) buildJsonDict:(NSData *)jsonData;
++ (NSDictionary *) buildJsonDict:(NSData *)jsonData
+                    exceptionPtr:(NSException **)exceptionPtr
+                        errorPtr:(NSError **)error;
 
 + (NSString *)getFullFilename:(NSString *) baseFilename;
 
@@ -33,12 +38,14 @@
 + (BOOL)isNotNull:(id)value;
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
-jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
-jsonResponseHandler:(void (^) (NSDictionary * jsonDict))jsonResponseHandler;
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
 
