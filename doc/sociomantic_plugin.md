@@ -1,6 +1,26 @@
 ## Sociomantic plugin
 
-Integrate adjust with Sociomantic events by following these steps:
+Integrate adjust with Sociomantic events by following one of this methods:
+
+### CocoaPods
+
+If you're using [CocoaPods](http://cocoapods.org/), you can add the following line to your Podfile:
+
+```ruby
+pod 'Adjust/Sociomantic'
+```
+
+### Carthage
+
+If you're using [Carthage](https://github.com/Carthage/Carthage), you can add following line to your Cartfile:
+
+```ruby
+github "adjust/ios_sdk" "sociomantic"
+```
+
+### Source
+
+You can also integrate adjust with Sociomantic events by following these steps:
 
 1. Locate the `plugin/Sociomantic` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
@@ -9,7 +29,11 @@ Integrate adjust with Sociomantic events by following these steps:
 3. In the dialog `Choose options for adding these files` make sure to check the checkbox
 to `Copy items if needed` and select the radio button to `Create groups`.
 
-4. You know have access to the Sociomantic events methods as well as constants that you should use for property names of your dictionaries:
+### Sociomantic events
+
+You can now use Sociomantic events by following these steps:
+
+1. You know have access to the Sociomantic events methods as well as constants that you should use for property names of your dictionaries:
 
     ```objc
     NSString *const SCMCategory;
@@ -42,7 +66,7 @@ to `Copy items if needed` and select the radio button to `Create groups`.
     NSString *const SCMCustomerTargeting;
     ```
     
-5. Before sending any Sociomantic you should set a partner id as shown below:
+2. Before sending any Sociomantic you should set a partner id as shown below:
 
     ```objc
     #import "ADJSociomantic.h"
@@ -50,9 +74,9 @@ to `Copy items if needed` and select the radio button to `Create groups`.
     [ADJSociomantic injectPartnerIdIntoSociomanticEvents:@"{sociomanticPartnerId}"];
     ```
 
-6. Now you can integrate each of the different Sociomantic events, like in the following examples:
+3. Now you can integrate each of the different Sociomantic events, like in the following examples:
 
-### Customer Event
+#### Customer Event
 
 ```objc
 #import "ADJSociomantic.h"
@@ -66,7 +90,7 @@ NSDictionary *customerData = @{
 [Adjust trackEvent:event];
 ```
 
-### View Home Page
+#### View Home Page
 
 ```objc
 #import "ADJSociomantic.h"
@@ -77,7 +101,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:HOMEPAGE_TOKEN];
 [Adjust trackEvent:event];
 ```
 
-### View Listing
+#### View Listing
 
 ```objc
 #import "ADJSociomantic.h"
@@ -92,7 +116,7 @@ NSString *date = @"1427792434";
 [Adjust trackEvent:event];
 ```
 
-### View Product
+#### View Product
 
 ```objc
 #import "ADJSociomantic.h"
@@ -212,7 +236,7 @@ NSDictionary *params = @{
 
 If you’re not certain what setup you should use please contact your Technical Account Manager at Sociomantic.
 
-### Cart
+#### Cart
 
 ```objc
 #import "ADJSociomantic.h"
@@ -282,7 +306,7 @@ NSArray * productList = @[product5, product6, product7];
 </tbody>
 </table>
 
-### Unconfirmed Transaction
+#### Unconfirmed Transaction
 
 ```objc
 #import "ADJSociomantic.h"
@@ -319,7 +343,7 @@ NSDictionary *parameters = @{
 [Adjust trackEvent:event];
 ```
 
-### Confirmed Transaction
+#### Confirmed Transaction
 
 ```objc
 #import "ADJSociomantic.h"
@@ -400,7 +424,7 @@ See cart parameters
 </tbody>
 </table>
 
-### Lead Event
+#### Lead Event
 
 ```objc
 #import "ADJSociomantic.h"
