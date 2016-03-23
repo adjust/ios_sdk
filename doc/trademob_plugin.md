@@ -1,6 +1,6 @@
 ## Trademob plugin
 
-Integrate adjust with Trademob events by following one of this methods:
+Integrate adjust with Trademob events by following one of these methods:
 
 ### CocoaPods
 
