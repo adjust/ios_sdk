@@ -1,6 +1,6 @@
 ## Sociomantic plugin
 
-Integrate adjust with Sociomantic events by following one of this methods:
+Integrate adjust with Sociomantic events by following one of these methods:
 
 ### CocoaPods
 
@@ -33,7 +33,7 @@ to `Copy items if needed` and select the radio button to `Create groups`.
 
 You can now use Sociomantic events by following these steps:
 
-1. You know have access to the Sociomantic events methods as well as constants that you should use for property names of your dictionaries:
+1. You now have access to the Sociomantic events methods as well as the constants you should use as the property names of your dictionaries:
 
     ```objc
     NSString *const SCMCategory;
@@ -66,7 +66,7 @@ You can now use Sociomantic events by following these steps:
     NSString *const SCMCustomerTargeting;
     ```
     
-2. Before sending any Sociomantic you should set a partner id as shown below:
+2. Before sending any Sociomantic you should set a partner ID as shown below:
 
     ```objc
     #import "ADJSociomantic.h"
@@ -74,7 +74,7 @@ You can now use Sociomantic events by following these steps:
     [ADJSociomantic injectPartnerIdIntoSociomanticEvents:@"{sociomanticPartnerId}"];
     ```
 
-3. Now you can integrate each of the different Sociomantic events, like in the following examples:
+3. Now you can integrate each of the different Sociomantic events, as in the following examples:
 
 #### Customer Event
 
