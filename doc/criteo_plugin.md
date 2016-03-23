@@ -1,6 +1,6 @@
 ## Criteo plugin
 
-Integrate adjust with Criteo events by following one of this methods:
+Integrate adjust with Criteo events by following one of these methods:
 
 ### CocoaPods
 
