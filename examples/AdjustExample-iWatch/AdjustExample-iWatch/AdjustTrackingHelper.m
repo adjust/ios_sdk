@@ -1,6 +1,6 @@
 //
 //  AdjustTrackingHelper.m
-//  AdjustAppleWatchDemo
+//  AdjustExample-iWatch
 //
 //  Created by Uglješa Erceg on 29/04/15.
 //  Copyright (c) 2015 adjust GmbH. All rights reserved.
@@ -24,7 +24,7 @@
 }
 
 - (void)initialize:(NSObject<AdjustDelegate> *)delegate {
-    NSString *yourAppToken = @"rb4g27fje5ej";
+    NSString *yourAppToken = @"{YourAppToken}";
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
 
@@ -53,13 +53,13 @@
 }
 
 - (void)trackSimpleEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"uqg17r"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     [Adjust trackEvent:event];
 }
 
 - (void)trackRevenueEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"71iltz"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     // Add revenue 15 cent of an euro.
     [event setRevenue:0.015 currency:@"EUR"];
@@ -68,7 +68,7 @@
 }
 
 - (void)trackCallbackEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"1ziip1"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     // Add callback parameters to this parameter.
     [event addCallbackParameter:@"key" value:@"value"];
@@ -77,7 +77,7 @@
 }
 
 - (void)trackPartnerEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"9s4lqn"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
 
     // Add partner parameteres to all events and sessions.
     [event addPartnerParameter:@"foo" value:@"bar"];
