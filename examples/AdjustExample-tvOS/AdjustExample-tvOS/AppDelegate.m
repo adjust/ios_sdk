@@ -15,11 +15,6 @@
 
 @implementation AppDelegate
 
-
-- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@"adjust attribution %@", attribution);
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
