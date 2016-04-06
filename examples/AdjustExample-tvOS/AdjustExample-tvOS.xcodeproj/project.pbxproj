@@ -129,7 +129,6 @@
 		963909A91BCC0D8300A2E8A4 = {
 			isa = PBXGroup;
 			children = (
-				963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */,
 				963909B41BCC0D8300A2E8A4 /* AdjustExample-tvOS */,
 				963909B31BCC0D8300A2E8A4 /* Products */,
 			);
@@ -165,6 +164,7 @@
 		963909B51BCC0D8300A2E8A4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9DF7ACCA1CB50DB700D3591F /* Frameworks */,
 				9DF7AA341CB4F52400D3591F /* Adjust */,
 				963909B61BCC0D8300A2E8A4 /* main.m */,
 			);
@@ -238,6 +238,14 @@
 				9DF7AA431CB4F52400D3591F /* UIDevice+ADJAdditions.m */,
 			);
 			path = ADJAdditions;
+			sourceTree = "<group>";
+		};
+		9DF7ACCA1CB50DB700D3591F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

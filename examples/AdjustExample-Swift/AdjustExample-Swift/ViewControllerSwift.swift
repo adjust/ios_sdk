@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnTrackEventSimple: UIButton?
     @IBOutlet weak var btnTrackEventRevenue: UIButton?
     @IBOutlet weak var btnTrackEventCallback: UIButton?

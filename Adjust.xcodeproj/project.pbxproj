@@ -198,6 +198,27 @@
 			remoteGlobalIDString = 9DF7A9C21CB4ECA600D3591F;
 			remoteInfo = "AdjustExample-Swift";
 		};
+		9DF7AC5B1CB4FEE200D3591F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC141CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch";
+		};
+		9DF7AC5D1CB4FEE200D3591F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC2B1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit App";
+		};
+		9DF7AC5F1CB4FEE200D3591F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC3A1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit Extension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -365,6 +386,7 @@
 		9DA11A681C96D2A200980777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DF7A9D71CB4ECBC00D3591F /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
+		9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
 		9DFA37AD1C0F219400782607 /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFA37B51C0F21D600782607 /* AdjustSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		9DFA37B61C0F21D600782607 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -424,6 +446,7 @@
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
+				9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */,
 				963909C91BCC0D8300A2E8A4 /* AdjustExample-tvOS.xcodeproj */,
 				963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */,
 				9DF7A9D71CB4ECBC00D3591F /* AdjustExample-Swift.xcodeproj */,
@@ -643,6 +666,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9DF7AC561CB4FEE200D3591F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9DF7AC5C1CB4FEE200D3591F /* AdjustExample-iWatch.app */,
+				9DF7AC5E1CB4FEE200D3591F /* AdjustExample-iWatch WatchKit App.app */,
+				9DF7AC601CB4FEE200D3591F /* AdjustExample-iWatch WatchKit Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9DFA37AE1C0F219400782607 /* AdjustSdk */ = {
 			isa = PBXGroup;
 			children = (
@@ -815,6 +848,10 @@
 					ProjectRef = 963909621BCBFE5200A2E8A4 /* AdjustExample-iOS.xcodeproj */;
 				},
 				{
+					ProductGroup = 9DF7AC561CB4FEE200D3591F /* Products */;
+					ProjectRef = 9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */;
+				},
+				{
 					ProductGroup = 9DF7A9D81CB4ECBC00D3591F /* Products */;
 					ProjectRef = 9DF7A9D71CB4ECBC00D3591F /* AdjustExample-Swift.xcodeproj */;
 				},
@@ -853,6 +890,27 @@
 			fileType = wrapper.application;
 			path = "AdjustExample-Swift.app";
 			remoteRef = 9DF7A9DC1CB4ECBC00D3591F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9DF7AC5C1CB4FEE200D3591F /* AdjustExample-iWatch.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch.app";
+			remoteRef = 9DF7AC5B1CB4FEE200D3591F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9DF7AC5E1CB4FEE200D3591F /* AdjustExample-iWatch WatchKit App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch WatchKit App.app";
+			remoteRef = 9DF7AC5D1CB4FEE200D3591F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9DF7AC601CB4FEE200D3591F /* AdjustExample-iWatch WatchKit Extension.appex */ = {
+			isa = PBXReferenceProxy;
+			fileType = "wrapper.app-extension";
+			path = "AdjustExample-iWatch WatchKit Extension.appex";
+			remoteRef = 9DF7AC5F1CB4FEE200D3591F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

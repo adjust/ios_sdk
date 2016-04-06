@@ -132,8 +132,6 @@
 		963909331BCBFCF300A2E8A4 = {
 			isa = PBXGroup;
 			children = (
-				963909601BCBFD4200A2E8A4 /* AdSupport.framework */,
-				9639095E1BCBFD3B00A2E8A4 /* iAd.framework */,
 				9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */,
 				9639093D1BCBFCF300A2E8A4 /* Products */,
 			);
@@ -170,6 +168,7 @@
 		9639093F1BCBFCF300A2E8A4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9DF7ACCB1CB50DC800D3591F /* Frameworks */,
 				963909681BCBFF8D00A2E8A4 /* Adjust */,
 				963909401BCBFCF300A2E8A4 /* main.m */,
 			);
@@ -242,6 +241,15 @@
 				963909771BCBFF8D00A2E8A4 /* UIDevice+ADJAdditions.m */,
 			);
 			path = ADJAdditions;
+			sourceTree = "<group>";
+		};
+		9DF7ACCB1CB50DC800D3591F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				963909601BCBFD4200A2E8A4 /* AdSupport.framework */,
+				9639095E1BCBFD3B00A2E8A4 /* iAd.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
