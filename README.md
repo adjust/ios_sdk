@@ -91,7 +91,7 @@ If you added the adjust SDK as a framework or via Carthage, you should use
 following import statement:
 
 ```objc
-#import <AdjustSdk/Adjust.h>
+#import <Adjust/Adjust.h>
 ```
 
 To begin, we'll set up basic session tracking.
@@ -105,7 +105,7 @@ method of your app delegate:
 
 ```objc
 #import "Adjust.h"
-// or #import <AdjustSdk/Adjust.h>
+// or #import <Adjust/Adjust.h>
 // ...
 NSString *yourAppToken = @"{YourAppToken}";
 NSString *environment = ADJEnvironmentSandbox;
