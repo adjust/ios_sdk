@@ -15,17 +15,17 @@ of the Xcode projects  to see an example of how the adjust SDK can be integrated
 We will describe the steps to integrate the adjust SDK into your iOS project.
 We are going to assume that you use Xcode for your iOS development.
 
-If you're using [CocoaPods][cocoapods] for `iOs` or `tvOS`, you can add the following line to your
+If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.6.0'
+pod 'Adjust', '~> 4.6.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', '~> 4.6.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.6.0'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile`
@@ -36,18 +36,24 @@ github "adjust/ios_sdk"
 ```
 
 You can also choose to integrate the adjust SDK by adding it to your project as a framework.
-On the [releases page][releases] you can find two archives:
+On the [releases page][releases] you can find three archives:
 
 * `AdjustSdkStatic.framework.zip`
 * `AdjustSdkDynamic.framework.zip`
+* `AdjustSdkStaticNoBitcode.framework.zip`
 
 Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). 
 If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. 
-Choose which framework you want to use – static or dynamic – and add it to your project
-before continuing with [step 3](#step3).
+Choose which framework you want to use – static or dynamic – and add it to your project.
 
+In case you want to use the static adjust SDK framework without Bitcode support added to it,
+you can choose `AdjustSdkStaticNoBitcode.framework.zip` file and add it to your project.
 
-### 1. Get the SDK
+If you have chosen one of these ways of integrating the adjust SDK, you may continue 
+with [step 3](#step3). If you want to add the adjust SDK by adding its source files to your
+project, you can continue with [step 1](#step1).
+
+### <a id="step1"></a>1. Get the SDK
 
 Download the latest version from our [releases page][releases]. Extract the
 archive into a directory of your choice.
