@@ -5,9 +5,10 @@ This is the iOS SDK of adjust™. You can read more about adjust™ at
 
 ## Example apps
 
-There are example apps inside the [`examples` directory][examples] for [`iOS`][example-ios] and 
-[`tvOS`][example-tvos]. You can open any of the Xcode projects 
-to see an example of how the adjust SDK can be integrated.
+There are example apps inside the [`examples` directory][examples] for 
+[`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], 
+[`tvOS`][example-tvos] and [`Apple Watch`][example-iwatch]. You can open any 
+of the Xcode projects  to see an example of how the adjust SDK can be integrated.
 
 ## Basic integration
 
@@ -547,8 +548,10 @@ To send us the push notification token, then add the following call to `Adjust` 
 [carthage]: https://github.com/Carthage/Carthage
 [dashboard]: http://adjust.com
 [examples]: http://github.com/adjust/ios_sdk/tree/master/examples
-[example-ios]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-ios-objc]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-ios-swift]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
 [example-tvos]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-tvOS
+[example-iwatch]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iWatch
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
