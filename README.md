@@ -307,13 +307,16 @@ If you want to support [universal links][universal-links], then follow these nex
 
 ##### Enable universal links in the dashboard
 
-In order to enable universal links for your app, go to the adjust dashboard and turn the
-Universal Linking switch to `ON`.
+In order to enable universal links for your app, go to the adjust dashboard and select
+`Universal Linking` option in your `Platform Settings` for iOS.
 
 ![][universal-links-dashboard]
 
-You will need to fill in your `iOS Bundle ID` and `iOS Team ID`. You can find your iOS Team ID
-in the `Apple Developer Center`.
+<a id="ulink-setup">You will need to fill in your `iOS Bundle ID` and `iOS Team ID`.
+
+![][universal-links-dashboard-values]
+
+You can find your iOS Team ID in the `Apple Developer Center`.
 
 ![][adc-ios-team-id]
 
@@ -330,11 +333,19 @@ In Apple Developer Center, you should enable `Associated Domains` for your app.
 
 ![][adc-associated-domains]
 
-Once you have done this, you should enable `Associated Domains` in your app's Xcode project settings, and copy the generated universal link from the dashboard into the `Domains` section.
+**Important**: Usually, `iOS Team ID` is the same as the `Prefix` value (above picture) 
+for your app. In some cases, it can happen that these two values differ. If this is the case, 
+please go back to this [step][#ulink-setup] and use `Prefix` value for `iOS Team ID` field
+in the adjust dashboard.
+
+Once you have done this, you should enable `Associated Domains` in your app's Xcode 
+project settings, and copy the generated universal link from the dashboard into the 
+`Domains` section.
 
 ![][xcode-associated-domains]
 
-Next, find or add the method `application:continueUserActivity:restorationHandler:` in your Application Delegate. In that method, add the following call to adjust:
+Next, find or add the method `application:continueUserActivity:restorationHandler:` 
+in your Application Delegate. In that method, add the following call to adjust:
 
 ``` objc
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity 
@@ -364,7 +375,7 @@ https://[hash].ulink.adjust.com/ulink/path/?key=foo&value=bar
 We provide a helper function that allows you to convert a universal link to a deeplink url.
 
 ```objc
-NSURL * deeplink = [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"example"];
+NSURL *deeplink = [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"example"];
 ```
 
 You can read more about implementing universal links in our
@@ -536,7 +547,7 @@ Certain services (such as Google Analytics) require you to coordinate Device and
 To obtain the device identifier IDFA, call the function `idfa`:
 
 ```objc
-NSString * idfa = [Adjust idfa];
+NSString *idfa = [Adjust idfa];
 ```
 
 ### 15. Push token
@@ -561,15 +572,16 @@ To send us the push notification token, then add the following call to `Adjust` 
 [releases]: https://github.com/adjust/ios_sdk/releases
 [arc]: http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [transition]: http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
-[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag4.png
-[universal-links-dashboard]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard.png
-[adc-ios-team-id]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-ios-team-id.png
-[adc-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-associated-domains.png
-[xcode-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains.png
-[add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add3.png
-[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework4.png
-[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate4.png
-[run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run4.png
+[drag]: https://raw.github.com/adjust/sdks/master/Resources/ios/drag5.png
+[universal-links-dashboard]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
+[universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
+[adc-ios-team-id]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-ios-team-id5.png
+[adc-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/adc-associated-domains5.png
+[xcode-associated-domains]: https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
+[add]: https://raw.github.com/adjust/sdks/master/Resources/ios/add5.png
+[framework]: https://raw.github.com/adjust/sdks/master/Resources/ios/framework5.png
+[delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate5.png
+[run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run5.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
 [attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [callbacks-guide]: https://docs.adjust.com/en/callbacks
