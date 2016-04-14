@@ -308,14 +308,14 @@ or add the method `openURL` and add the following call to adjust:
 ```
 
 **Important**: Tracker URLs with `deep_link` parameter and your custom URL scheme
-in it are no longer supported in **iOS 8 and higher** and clicks on them will not 
+in it are no longer supported in `iOS 8 and higher` and clicks on them will not 
 cause your app to be opened nor `openURL` method to get triggered. Apple dropped 
-support for this way of deep linking into the app in favour of **universal links**. 
-However, this approach will **still work for devices with iOS 7 and lower**.
+support for this way of deep linking into the app in favour of `universal links`. 
+However, this approach will `still works for devices with iOS 7 and lower`.
 
 #### Universal Links
 
-**Note**: Universal links are supported **since iOS 8**.
+**Note**: Universal links are supported `since iOS 8`.
 
 If you want to support [universal links][universal-links], then follow these next steps.
 
@@ -404,7 +404,7 @@ and iOS 7 devices as well, you need to build adjust style universal link like de
 
 Also, you should have both methods implemented in your Application Delegate class - `openURL`
 and `application:continueUserActivity:restorationHandler:` because based on device iOS version,
-one (**iOS 6 and iOS 7**) or another (**iOS 8 and higher**) method will be triggered and deep link
+one (`iOS 6 and iOS 7`) or another (`iOS 8 and higher`) method will be triggered and deep link
 content delivered in your app for you to parse it and decide where to navigate the user.
 
 For instructions how to test your implementation, please read our [guide][universal-links-testing].
