@@ -579,7 +579,7 @@ To send us the push notification token, then add the following call to `Adjust` 
 
 ## Troubleshooting
 
-### I'm seeing "Adjust requires ARC" error
+#### I'm seeing "Adjust requires ARC" error
 
 If your build failed with the error `Adjust requires ARC`, it looks like your
 project is not using [ARC][arc]. In that case we recommend [transitioning your
@@ -590,7 +590,7 @@ Expand the `Compile Sources` group, select all adjust files and change the
 `Compiler Flags` to `-fobjc-arc` (Select all and press the `Return` key to 
 change all at once).
 
-### I'm seeing the "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
+#### I'm seeing the "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
 
 This error can occur if you are adding the adjust SDK framework to your app. The adjust SDK 
 contains `categories` among it's source files and because of that, if you have chosen this
