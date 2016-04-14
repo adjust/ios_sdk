@@ -301,7 +301,15 @@ or add the method `openURL` and add the following call to adjust:
 }
 ```
 
+**Important**: Tracker URLs with `deep_link` parameter and your custom URL scheme
+in it are no longer supported in **iOS 8 and higher** and clicks on them will not 
+cause your app to be opened nor `openURL` method to get triggered. Apple dropped 
+support for this way of deep linking into the app in favour of **universal links**. 
+However, this approach will **still work for devices with iOS 7 and lower**.
+
 #### Universal Links
+
+**Note**: Universal links are supported **since iOS 8**.
 
 If you want to support [universal links][universal-links], then follow these next steps.
 
@@ -380,6 +388,20 @@ NSURL *deeplink = [Adjust convertUniversalLink:[userActivity webpageURL] scheme:
 
 You can read more about implementing universal links in our
 [guide to universal links][universal-links-guide].
+
+#### Support deep linking for all iOS versions supported by the adjust SDK
+
+If you are aiming iOS 8 and higher with your app, universal links are all you need in order
+to enable deep linking for your app. But, in case you want to support deep linking on iOS 6
+and iOS 7 devices as well, you need to build adjust style universal link like described in
+[here][adjust-universal-links].
+
+Also, you should have both methods implemented in your Application Delegate class - `openURL`
+and `application:continueUserActivity:restorationHandler:` because based on device iOS version,
+one (**iOS 6 and iOS 7**) or another (**iOS 8 and higher**) method will be triggered and deep link
+content delivered in your app for you to parse it and decide where to navigate the user.
+
+For instructions how to test your implementation, please read our [guide][universal-links-testing].
 
 ### 8. Enable event buffering
 
@@ -590,6 +612,8 @@ To send us the push notification token, then add the following call to `Adjust` 
 [currency-conversion]: https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 [universal-links-guide]: https://docs.adjust.com/en/universal-links/
 [universal-links]: https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
+[adjust-universal-links]: https://docs.adjust.com/en/universal-links/#redirecting-to-universal-links-directly
+[universal-links-testing]: https://docs.adjust.com/en/universal-links/#testing-universal-link-implementations
 
 ## License
 
