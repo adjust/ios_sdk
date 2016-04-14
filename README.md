@@ -280,6 +280,12 @@ tracking revenue that is not actually being generated.
 }
 ```
 
+#### In-App Purchase verification
+
+If you want to check the validity of In-App Purchases made in your app using Purchase Verification, 
+adjust's server side receipt verification tool, then check out our iOS purchase SDK and read more 
+about it [here][ios-purchase-verification].
+
 ### 7. Set up deep link reattributions
 
 You can set up the adjust SDK to handle deep links that are used to open your
@@ -614,6 +620,7 @@ To send us the push notification token, then add the following call to `Adjust` 
 [universal-links]: https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
 [adjust-universal-links]: https://docs.adjust.com/en/universal-links/#redirecting-to-universal-links-directly
 [universal-links-testing]: https://docs.adjust.com/en/universal-links/#testing-universal-link-implementations
+[ios-purchase-verification]: https://github.com/adjust/ios_purchase_sdk
 
 ## License
 
