@@ -484,14 +484,14 @@ The following delegate callback function for failed tracked events:
 
 For successful tracked sessions:
 ```objc
-adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
 }
 ```
 
 And for failed tracked sessions:
 
 ```objc
-adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
 }
 ```
 
