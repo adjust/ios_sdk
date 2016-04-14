@@ -335,7 +335,7 @@ In Apple Developer Center, you should enable `Associated Domains` for your app.
 
 **Important**: Usually, `iOS Team ID` is the same as the `Prefix` value (above picture) 
 for your app. In some cases, it can happen that these two values differ. If this is the case, 
-please go back to this [step][#ulink-setup] and use `Prefix` value for `iOS Team ID` field
+please go back to this [step](#ulink-setup) and use `Prefix` value for `iOS Team ID` field
 in the adjust dashboard.
 
 Once you have done this, you should enable `Associated Domains` in your app's Xcode 
