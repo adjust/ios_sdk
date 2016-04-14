@@ -165,17 +165,6 @@ see the info log `Install tracked`.
 
 ![][run]
 
-#### Troubleshooting
-
-If your build failed with the error `Adjust requires ARC`, it looks like your
-project is not using [ARC][arc]. In that case we recommend [transitioning your
-project to use ARC][transition]. If you don't want to use ARC, you have to
-enable ARC for all source files of adjust in the target's Build Phases:
-
-Expand the `Compile Sources` group, select all adjust files (Adjust, ADJ...,
-...+ADJAdditions) and change the `Compiler Flags` to `-fobjc-arc` (Select all
-and press the `Return` key to change all at once).
-
 ## Additional features
 
 Once you integrate the adjust SDK into your project, you can take advantage of
@@ -587,6 +576,26 @@ To send us the push notification token, then add the following call to `Adjust` 
     [Adjust setDeviceToken:deviceToken];
 }
 ```
+
+## Troubleshooting
+
+### I'm seeing "Adjust requires ARC" error
+
+If your build failed with the error `Adjust requires ARC`, it looks like your
+project is not using [ARC][arc]. In that case we recommend [transitioning your
+project to use ARC][transition]. If you don't want to use ARC, you have to
+enable ARC for all source files of adjust in the target's Build Phases:
+
+Expand the `Compile Sources` group, select all adjust files and change the 
+`Compiler Flags` to `-fobjc-arc` (Select all and press the `Return` key to 
+change all at once).
+
+### I'm seeing the "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
+
+This error can occur if you are adding the adjust SDK framework to your app. The adjust SDK 
+contains `categories` among it's source files and because of that, if you have chosen this
+SDK integration approach, you need to add `-ObjC` flag to `Other Linker Flags` in your Xcode
+project settings. Adding this flag fill fix this error.
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
