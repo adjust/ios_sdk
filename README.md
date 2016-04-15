@@ -88,10 +88,16 @@ steps to add the `iAd.framework`, unless you are using tvOS. Change the `Status`
 #### Import statement
 
 If you added the adjust SDK from the source or via a Pod repository, you should 
-use following import statement:
+use one of the following import statement:
 
 ```objc
 #import "Adjust.h"
+```
+
+or
+
+```objc
+#import <Adjust/Adjust.h>
 ```
 
 If you added the adjust SDK as a framework or via Carthage, you should use
@@ -112,8 +118,11 @@ method of your app delegate:
 
 ```objc
 #import "Adjust.h"
+// or #import <Adjust/Adjust.h>
 // or #import <AdjustSdk/Adjust.h>
+
 // ...
+
 NSString *yourAppToken = @"{YourAppToken}";
 NSString *environment = ADJEnvironmentSandbox;
 ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
@@ -423,6 +432,7 @@ policies.][attribution-data]
 
     ```objc
     #import "Adjust.h"
+    // or #import <Adjust/Adjust.h>
     // or #import <AdjustSdk/Adjust.h>
 
     @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
