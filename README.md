@@ -518,8 +518,8 @@ And both event and session failed objects also contain:
 ### 11. Disable tracking
 
 You can disable the adjust SDK from tracking any activities of the current
-device by calling `setEnabled` with parameter `NO`. This setting is remembered
-between sessions, but it can only be activated after the first session.
+device by calling `setEnabled` with parameter `NO`. **This setting is remembered
+between sessions**, but it can only be activated after the first session.
 
 ```objc
 [Adjust setEnabled:NO];
