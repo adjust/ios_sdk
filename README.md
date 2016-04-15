@@ -607,6 +607,32 @@ contains `categories` among it's source files and because of that, if you have c
 SDK integration approach, you need to add `-ObjC` flag to `Other Linker Flags` in your Xcode
 project settings. Adding this flag fill fix this error.
 
+#### I'm seeing the "Session failed (Ignoring too frequent session.)" error.
+
+This error typically occurs when testing installs. Uninstalling and reinstalling the app is not 
+enough to trigger a new install. The servers will determine that the SDK has lost its 
+locally aggregated session data and ignore the erroneous message, given the information 
+available on the servers about the device.
+
+This behaviour can be cumbersome during tests, but is necessary in order to have the sandbox 
+behaviour match production as much as possible.
+
+You can reset the session data of the device in our servers. Check the error 
+message in the logs:
+
+```
+Session failed (Ignoring too frequent session. Last session: YYYY-MM-DDTHH:mm:ss, this session: YYYY-MM-DDTHH:mm:ss, interval: XXs, min interval: 20m) (app_token: {yourAppToken}, adid: {adidValue})
+```
+
+With the `{yourAppToken}` and `{adidValue}` values filled in below, open the following link:
+
+```
+http://app.adjust.com/forget_device?app_token={yourAppToken}&adid={adidValue}
+```
+
+When the device is forgotten, the link just returns `Forgot device`. If the device was 
+already forgotten or the values were incorrect, the link returns `Device not found`.
+
 #### I'm seeing "Unattributable SDK click ignored" message
 
 You may notice this message while testing your app in `sandbox` envoronment. It is related
