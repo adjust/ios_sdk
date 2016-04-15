@@ -649,6 +649,49 @@ So, this message doesn't indicate any issue with your SDK integration but it's s
 informing you that our backend ignored artificially created `sdk_click` which could have
 lead to your user being wrongly attributed/reattributed.
 
+#### I'm seeing wrong revenue data in the adjust dashboard
+
+The adjust SDK tracks what you tell it to track. If you are attaching revenue to your event,
+number you write as an amount is the only amount which will reach the adjust backend and be
+displayed in the dashboard. Our SDK does not manipulate your amount value, nor does our
+backend. So, if you see wrong amount being tracked, it's because our SDK was told to track
+that amount.
+
+Usually, user's code for tracking revenue event looks something like this:
+
+```objc
+// ...
+
+- (double)someLogicForGettingRevenueAmount {
+    // This method somehow handles how user determines 
+    // what's the revenue value which should be tracked.
+    
+    // It is maybe making some calculations to determine it.
+    
+    // Or maybe extracting the info from In-App purchase which
+    // was successfully finished.
+    
+    // Or maybe returns some predefined double value.
+    
+    double amount; // double amount = some double value
+    
+    return amount;
+}
+
+// ...
+
+- (void)someRandomMethodInTheApp {
+    double amount = [self someLogicForGettingRevenueAmount];
+    
+    ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
+    [event setRevenue:amount currency:@"EUR"];
+    [Adjust trackEvent:event];
+}
+
+```
+
+If you are seing any value in the dashboard other than what you expected
+to be tracked, **please, check your logic for determining amount value**.
 
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
