@@ -607,7 +607,7 @@ contains `categories` among it's source files and because of that, if you have c
 SDK integration approach, you need to add `-ObjC` flag to `Other Linker Flags` in your Xcode
 project settings. Adding this flag fill fix this error.
 
-#### I'm seeing the "Session failed (Ignoring too frequent session.)" error.
+#### I'm seeing the "Session failed (Ignoring too frequent session.)" error
 
 This error typically occurs when testing installs. Uninstalling and reinstalling the app is not 
 enough to trigger a new install. The servers will determine that the SDK has lost its 
@@ -624,7 +624,8 @@ message in the logs:
 Session failed (Ignoring too frequent session. Last session: YYYY-MM-DDTHH:mm:ss, this session: YYYY-MM-DDTHH:mm:ss, interval: XXs, min interval: 20m) (app_token: {yourAppToken}, adid: {adidValue})
 ```
 
-With the `{yourAppToken}` and `{adidValue}` values filled in below, open the following link:
+<a id="forget-device">With the `{yourAppToken}` and `{adidValue}` values filled in below, 
+open the following link:
 
 ```
 http://app.adjust.com/forget_device?app_token={yourAppToken}&adid={adidValue}
@@ -632,6 +633,22 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&adid={adidValue}
 
 When the device is forgotten, the link just returns `Forgot device`. If the device was 
 already forgotten or the values were incorrect, the link returns `Device not found`.
+
+#### I'm not seeing "Install tracked" in the logs
+
+If you want to simulate installation scenario of your app on your test device, it is not
+enough if you just re-run the app from the Xcode on your test device which already has an
+app installed. Re-running the app from the Xcode doesn't cause app data to be wiped out and
+all internal files our SDK is keeping inside your app will still be there, so upon re-run,
+our SDK will see those files and think of your app as being already installed (and that SDK
+was already launched in it) but just opened for another time rather than being opened for the
+first time.
+
+In order to run app installation scenario, you need to do following:
+
+* Uninstall app from your device (completely remove it)
+* Forget your test device from the adjust backend like explained in the issue [above](#forget-device)
+* Run your app from the Xcode on the test device and you will see log message "Install tracked"
 
 #### I'm seeing "Unattributable SDK click ignored" message
 
