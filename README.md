@@ -600,14 +600,14 @@ Expand the `Compile Sources` group, select all adjust files and change the
 `Compiler Flags` to `-fobjc-arc` (Select all and press the `Return` key to 
 change all at once).
 
-#### I'm seeing the "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
+#### I'm seeing "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
 
 This error can occur if you are adding the adjust SDK framework to your app. The adjust SDK 
 contains `categories` among it's source files and because of that, if you have chosen this
 SDK integration approach, you need to add `-ObjC` flag to `Other Linker Flags` in your Xcode
 project settings. Adding this flag fill fix this error.
 
-#### "Unattributable SDK click ignored" message
+#### I'm seeing "Unattributable SDK click ignored" message
 
 You may notice this message while testing your app in `sandbox` envoronment. It is related
 to some changes Apple introduced in `iAd.framework` version 3. User can be navigated to your 
