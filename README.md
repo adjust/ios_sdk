@@ -607,6 +607,49 @@ contains `categories` among it's source files and because of that, if you have c
 SDK integration approach, you need to add `-ObjC` flag to `Other Linker Flags` in your Xcode
 project settings. Adding this flag fill fix this error.
 
+#### "Unattributable SDK click ignored" message
+
+You may notice this message while testing your app in `sandbox` envoronment. It is related
+to some changes Apple introduced in `iAd.framework` version 3. User can be navigated to your 
+app from a click on iAd banner and this will cause our SDK to send `sdk_click` package to the 
+adjust backend informing it about the content of the clicked URL. For some reason, Apple decided
+that if app was opened without clicking on iAd banner, they will artificially generate iAd 
+banner URL click with some random values. Our SDK won't be able to distinguish if iAd banner
+click was genuine or artificially generated and will send `sdk_click` package anyway to the
+adjust backend. If you have your log level set to `verbose` level, you will see this `sdk_click`
+package looking something like this:
+
+```
+[Adjust]d: Added package 1 (click)
+[Adjust]v: Path:      /sdk_click
+[Adjust]v: ClientSdk: ios4.6.0
+[Adjust]v: Parameters:
+[Adjust]v:      app_token              {YourAppToken}
+[Adjust]v:      created_at             2016-04-15T14:25:51.676Z+0200
+[Adjust]v:      details                {"Version3.1":{"iad-lineitem-id":"1234567890","iad-org-name":"OrgName","iad-creative-name":"CreativeName","iad-click-date":"2016-04-15T12:25:51Z","iad-campaign-id":"1234567890","iad-attribution":"true","iad-lineitem-name":"LineName","iad-creative-id":"1234567890","iad-campaign-name":"CampaignName","iad-conversion-date":"2016-04-15T12:25:51Z"}}
+[Adjust]v:      environment            sandbox
+[Adjust]v:      idfa                   XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+[Adjust]v:      idfv                   YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY
+[Adjust]v:      needs_response_details 1
+[Adjust]v:      source                 iad3
+```
+
+If for some reason this `sdk_click` would be taken in consideration, it might happen
+that if some user has opened your app by clicking on some other campaign URL or even
+as an organic user, he will get attributed to this unexisting iAd source.
+
+This is the reason why our backend ignores it and informs you with this message:
+
+```
+[Adjust]v: Response: {"message":"Unattributable SDK click ignored."}
+[Adjust]i: Unattributable SDK click ignored.
+```
+
+So, this message doesn't indicate any issue with your SDK integration but it's simply
+informing you that our backend ignored artificially created `sdk_click` which could have
+lead to your user being wrongly attributed/reattributed.
+
+
 [adjust.com]: http://adjust.com
 [cocoapods]: http://cocoapods.org
 [carthage]: https://github.com/Carthage/Carthage
