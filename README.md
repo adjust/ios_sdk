@@ -35,6 +35,7 @@ This is the iOS SDK of adjust™. You can read more about adjust™ at
     * [Device IDs](#step13)
     * [Push token](#step14)
 * [Troubleshooting](#troubleshooting)
+    * [Issues with delayed SDK initialisation](#ts-delayed-init)
     * [I'm seeing "Adjust requires ARC" error](#ts-arc)
     * [I'm seeing "\[UIDevice adjTrackingEnabled\]: unrecognized selector sent to instance" error](#ts-categories)
     * [I'm seeing the "Session failed (Ignoring too frequent session.)" error](#ts-session-failed)
@@ -170,6 +171,10 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 [Adjust appDidLaunch:adjustConfig];
 ```
 ![][delegate]
+
+**Note**: Initialising the adjust SDK like this is `very important`. Otherwise,
+you may encounter different kinds of [issues](#ts-delayed-init) described in our
+troubleshooting section.
 
 Replace `{YourAppToken}` with your app token. You can find this in your
 [dashboard].
@@ -590,8 +595,8 @@ between sessions**, but it can only be activated after the first session.
 [Adjust setEnabled:NO];
 ```
 
-You can check if the adjust SDK is currently enabled by calling the function
-`isEnabled`. It is always possible to activate the adjust SDK by invoking
+<a id="is-enabled">You can check if the adjust SDK is currently enabled by calling 
+the function `isEnabled`. It is always possible to activate the adjust SDK by invoking
 `setEnabled` with the enabled parameter as `YES`.
 
 ### <a id="step12">12. Offline mode
@@ -636,6 +641,105 @@ To send us the push notification token, then add the following call to `Adjust` 
 ```
 
 ## <a id="troubleshooting">Troubleshooting
+
+#### <a id="ts-delayed-init">Issues with delayed SDK initialisation
+
+As described in [basic setup step](#basic-setup), we strongly advise you to
+initialise the adjust SDK in the `didFinishLaunching` or `didFinishLaunchingWithOptions`
+method of your app delegate. It is really important to initialise the adjust SDK in
+this moment (basically, as soon as possible) so that you can use all the features
+of the SDK.
+
+Deciding not to initialise the adjust SDK at this moment can have all kinds of impacts
+to tracking in your app if you are unaware of this thing: **In order to perform any kind
+of tracking in your app, the adjust SDK *must* be initialised.**
+
+If you decide to perform any of these actions:
+
+* [Event tracking](#step6)
+* [Deep link reattributions](#step7)
+* [Disable tracking](#step11)
+* [Offline mode](#step12)
+
+before initialising the SDK, `they won't be performed`.
+
+If you want all the actions, which you wanted to do with the adjust SDK before its 
+actual initialisation, still to happen, the only way to do this is to build `custom
+actions queueing mechanism` inside your app.
+
+Offline mode state won't be changed, tracking enabled/disabled state won't be changed,
+deep link reattributions will not be possible to happen, any of tracked events will be
+`dropped`.
+
+One more thing which might be affected with delayed SDK is session tracking. The adjust
+SDK can't start to collect any session length info before it is actually initialised.
+This can affect your DAU numbers in the dashboard which might not be tracked properly.
+
+As an example, let's assume this scenario: You are starting the adjust SDK when some 
+specific view or view controller is loaded and let's say that this is not splash nor
+first screen in your app, but user has to navigate to it from the home screen. If user
+downloads your app and opens it, home screen will be displayed. In this moment, this
+user has made an install which should be tracked, maybe user came from some specific
+campaign, he started the app, so he made a session from his device and was in fact a
+daily active user of your app. The adjust SDK doesn't know anything about this, because
+user needs to navigate to some screen where you decided to initialise it. If user, for
+some reason, decides that he/she doesn't like the app and to uninstall it right after
+seeing home screen, all informations mentioned above will never be tracked by our SDK,
+nor displayed in the dashboard.
+
+You need to queue all the actions you want our SDK to perform and perform them once 
+the SDK is initialised.
+
+##### Event tracking
+
+For the events you wanted to track, queue them with some internal queueing mechanism and 
+track them after SDK is initialised. Tracking events before initialising SDK will cause
+the events to be `dropped` and `permanently lost`, so make sure you are tracking them
+once SDK is `initialised` and [`enabled`](#is-enabled).
+
+##### Offline mode and enable/disable tracking
+
+Offline mode is not the feature which is persisted between SDK initialisations, so 
+it is set to `false` by default. If you try to enable offline mode before initialising SDK, 
+it will still be set to `false` when you eventually initialise the SDK.
+
+Enabling/disabling tracking is the setting which is persisted between the SDK initialisations.
+If you try to toggle this value before initialising the SDK, toggle attempt will be ignored.
+Once initialised, SDK will be in the state (enabled or disabled) like before this toggle attempt.
+
+##### Deep link reattributions
+
+Like described in [step 7](#step7), when handling deep link reattributions, in some way
+(deppending on deep linking mechanism you are using - old style vs. universal links) you
+will obtain `NSURL` object after which you need to make following call:
+
+```objc
+[Adjust appWillOpenUrl:url]
+```
+
+If you make this call before SDK was initialised, information about deep link information from
+the URL which your user clicked and was supposed to be reattributed will be permanetly lost.
+If you want the adjust SDK to successfully reattribute your user, you would need to queue this
+`NSURL` object information and trigger `appWillOpenUrl` method once the SDK is initialised.
+
+##### Session tracking
+
+Session tracking is something what the adjust SDK performs automatically and is beyond 
+reach of an app developer. For proper session tracking it is crucial to have the adjust 
+SDK initialised like advised in this README. Not doing this can have unpredicted influence
+to proper session tracking and DAU numbers in the dashboard. Erroneous scenarios can be
+different and here are some of them:
+
+* User deleting your app before the SDK was even inialised, causing install and session
+never to be tracked, thus never reported in the dashboard.
+* If user downloads and opens your app before midnight and the adjust SDK gets initialised
+after midnight, causing install and session to be reported on another day.
+* If user didn't use your app on some day but opens it shortly after midnight and the SDK
+gets initialised after midnight, causing DAU to be reported on another day from the day of
+the app opening.
+
+For all these reasons, please follow the advices from this document and initialise the adjust
+SDK in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate.
 
 #### <a id="ts-arc">I'm seeing "Adjust requires ARC" error
 
