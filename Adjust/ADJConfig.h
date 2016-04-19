@@ -113,6 +113,15 @@
  *     methods like adjustAttributionChanged, adjustTrackingSucceeded or adjustTrackingFailed:
  */
 @property (nonatomic, weak) NSObject<AdjustDelegate> *delegate;
+
+/**
+ * Enables sending in the background
+ *
+ * @var sendInBackground Enable or disable sending in the background
+ */
+@property (nonatomic, assign) BOOL sendInBackground;
+
+
 @property (nonatomic, assign) BOOL hasDelegate;
 @property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
 

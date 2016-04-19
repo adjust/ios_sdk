@@ -13,8 +13,8 @@
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig;
 
-- (void)trackSubsessionStart;
-- (void)trackSubsessionEnd;
+- (void)applicationDidBecomeActive;
+- (void)applicationWillResignActive;
 
 - (void)trackEvent:(ADJEvent *)event;
 

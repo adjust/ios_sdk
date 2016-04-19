@@ -14,7 +14,7 @@
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                 startPaused:(BOOL)startPaused
+                startsSending:(BOOL)startsSending
 hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
@@ -33,7 +33,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                            startPaused:(BOOL)startPaused
+                                          startsSending:(BOOL)startsSending
                           hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 @end

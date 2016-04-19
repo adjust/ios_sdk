@@ -34,18 +34,18 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                            startPaused:(BOOL)startPaused
+                                          startsSending:(BOOL)startsSending
                           hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                            withAttributionPackage:attributionPackage
-                                                      startPaused:startPaused
+                                                    startsSending:startsSending
                                     hasAttributionChangedDelegate:hasAttributionChangedDelegate];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                  startPaused:(BOOL)startPaused
+                startsSending:(BOOL)startsSending
 hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     self = [super init];
@@ -55,7 +55,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
-    self.paused = startPaused;
+    self.paused = !startsSending;
     self.hasDelegate = hasAttributionChangedDelegate;
     self.attributionTimer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
                                                    queue:self.internalQueue

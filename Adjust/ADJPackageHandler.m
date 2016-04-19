@@ -29,24 +29,25 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 @end
 
-
 #pragma mark -
 @implementation ADJPackageHandler
 
 + (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                        startPaused:(BOOL)startPaused {
-    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler startPaused:startPaused];
+                                      startsSending:(BOOL)startsSending
+{
+    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                  startPaused:(BOOL)startPaused {
+                startsSending:(BOOL)startsSending
+{
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
     dispatch_async(self.internalQueue, ^{
-        [self initInternal:activityHandler startPaused:startPaused];
+        [self initInternal:activityHandler startsSending:startsSending];
     });
 
     return self;
@@ -89,10 +90,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 #pragma mark - internal
 - (void)initInternal:(id<ADJActivityHandler>)activityHandler
-         startPaused:(BOOL)startPaused
+        startsSending:(BOOL)startsSending
 {
     self.activityHandler = activityHandler;
-    self.paused = startPaused;
+    self.paused = !startsSending;
     self.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:self];
     self.logger = ADJAdjustFactory.logger;
     self.sendingSemaphore = dispatch_semaphore_create(1);

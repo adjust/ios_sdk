@@ -13,6 +13,7 @@
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
 #import "ADJTimerCycle.h"
+#import "ADJTimerOnce.h"
 #import "ADJUtil.h"
 #import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
@@ -24,10 +25,56 @@ static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 static NSString   * const kForegroundTimerName   = @"Foreground timer";
+static NSString   * const kBackgroundTimerName   = @"Background timer";
+
+static NSTimeInterval kForegroundTimerInterval;
+static NSTimeInterval kForegroundTimerStart;
+static NSTimeInterval kBackgroundTimerInterval;
+static double kSessionInterval;
+static double kSubSessionInterval;
 
 // number of tries
 static const int kTryIadV3                       = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
+
+@interface ADJInternalState : NSObject
+
+@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL offline;
+@property (nonatomic, assign) BOOL background;
+
+- (id)init;
+
+- (BOOL)isEnabled;
+- (BOOL)isDisabled;
+- (BOOL)isOffline;
+- (BOOL)isOnline;
+- (BOOL)isBackground;
+- (BOOL)isForeground;
+
+@end
+
+@implementation ADJInternalState
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    self.enabled = YES;
+    self.offline = YES;
+    self.background = YES;
+
+    return self;
+}
+
+- (BOOL)isEnabled { return self.enabled; }
+- (BOOL)isDisabled { return !self.enabled; }
+- (BOOL)isOffline { return self.offline; }
+- (BOOL)isOnline { return !self.offline; }
+- (BOOL)isBackground { return self.background; }
+- (BOOL)isForeground { return !self.background; }
+
+@end
 
 #pragma mark -
 @interface ADJActivityHandler()
@@ -37,13 +84,12 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
 @property (nonatomic, retain) ADJTimerCycle *foregroundTimer;
+@property (nonatomic, retain) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
-
-@property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL offline;
+@property (nonatomic, retain) ADJInternalState *internalState;
 
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
@@ -80,9 +126,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.adjustDelegate = adjustConfig.delegate;
 
     self.logger = ADJAdjustFactory.logger;
-    [self addNotificationObserver];
+    self.internalState = [[ADJInternalState alloc] init];
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    _enabled = YES;
+
+    [self addNotificationObserver];
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal];
@@ -91,13 +138,35 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     return self;
 }
 
+- (void)applicationDidBecomeActive {
+    self.internalState.background = NO;
+
+    [self stopBackgroundTimer];
+
+    [self startForegroundTimer];
+
+    [self trackSubsessionStart];
+}
+
 - (void)trackSubsessionStart {
+    [self.logger verbose:@"Subsession start"];
     dispatch_async(self.internalQueue, ^{
         [self startInternal];
     });
 }
 
+- (void)applicationWillResignActive {
+    self.internalState.background = YES;
+
+    [self stopForegroundTimer];
+
+    [self startBackgroundTimer];
+
+    [self trackSubsessionEnd];
+}
+
 - (void)trackSubsessionEnd {
+    [self.logger verbose:@"Subsession end"];
     dispatch_async(self.internalQueue, ^{
         [self endInternal];
     });
@@ -163,7 +232,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
-    _enabled = enabled;
+    self.internalState.enabled = enabled;
     if (self.activityState != nil) {
         self.activityState.enabled = enabled;
         [self writeActivityState];
@@ -176,7 +245,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    if (![self hasChangedState:self.offline
+    if (![self hasChangedState:[self.internalState isOffline]
                      nextState:offline
                    trueMessage:@"Adjust already in offline mode"
                   falseMessage:@"Adjust already in online mode"])
@@ -184,7 +253,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
-    self.offline = offline;
+    self.internalState.offline = offline;
 
     [self updateState:offline
        pausingMessage:@"Pausing package and attribution handler to put in offline mode"
@@ -196,7 +265,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (self.activityState != nil) {
         return self.activityState.enabled;
     } else {
-        return _enabled;
+        return [self.internalState isEnabled];
     }
 }
 
@@ -319,12 +388,31 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)updateStatus {
     dispatch_async(self.internalQueue, ^{
-        [self updateStatusInternal];
+        [self updateHandlersStatusInternal];
+    });
+}
+
+- (void)foregroundTimerFired {
+    dispatch_async(self.internalQueue, ^{
+        [self foregroundTimerFiredInternal];
+    });
+}
+
+- (void)backgroundTimerFired {
+    dispatch_async(self.internalQueue, ^{
+        [self backgroundTimerFiredInternal];
     });
 }
 
 #pragma mark - internal
 - (void)initInternal {
+    kForegroundTimerStart = ADJAdjustFactory.timerStart;
+    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
+    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
+
+    kSessionInterval = ADJAdjustFactory.sessionInterval;
+    kSubSessionInterval = ADJAdjustFactory.subsessionInterval;
+
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
 
     if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
@@ -345,7 +433,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                                 startPaused:[self paused]];
+                                                               startsSending:[self toSend]];
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
@@ -356,14 +444,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                               withAttributionPackage:attributionPackage
-                                                                         startPaused:[self paused]
-                                                                         hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
+                                                                       startsSending:[self toSend]
+                                                       hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
-    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFiredInternal]; }
+    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
                                     queue:self.internalQueue
-                                startTime:ADJAdjustFactory.timerStart
-                             intervalTime:ADJAdjustFactory.timerInterval
+                                startTime:kForegroundTimerStart
+                             intervalTime:kForegroundTimerInterval
                             name:kForegroundTimerName];
+
+    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
+                                                  queue:self.internalQueue
+                                                   name:kBackgroundTimerName];
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
@@ -377,13 +469,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [self updateStatusInternal];
+    [self updateHandlersStatusInternal];
 
     [self processSession];
 
     [self checkAttributionState];
-
-    [self startForegroundTimer];
 }
 
 - (void)processSession {
@@ -396,7 +486,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
         [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
-        self.activityState.enabled = _enabled;
+        self.activityState.enabled = [self.internalState isEnabled];
         [self writeActivityState];
         return;
     }
@@ -410,7 +500,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // new session
-    if (lastInterval > ADJAdjustFactory.sessionInterval) {
+    if (lastInterval > kSessionInterval) {
         self.activityState.sessionCount++;
         self.activityState.lastInterval = lastInterval;
 
@@ -421,7 +511,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // new subsession
-    if (lastInterval > ADJAdjustFactory.subsessionInterval) {
+    if (lastInterval > kSubSessionInterval) {
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
@@ -433,6 +523,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)checkAttributionState {
+    if (![self checkActivityState]) return;
+
     // if it' a new session
     if (self.activityState.subsessionCount <= 1) {
         return;
@@ -447,16 +539,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)endInternal {
-    [self.packageHandler pauseSending];
-    [self.attributionHandler pauseSending];
-    [self stopForegroundTimer];
+    // pause sending if it's not allowed to send
+    if (![self toSend]) {
+        [self pauseSending];
+    }
+
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState:now];
-    [self writeActivityState];
+    if ([self updateActivityState:now]) {
+        [self writeActivityState];
+    }
 }
 
 - (void)eventInternal:(ADJEvent *)event
 {
+    if (![self checkActivityState]) return;
     if (![self isEnabled]) return;
     if (![self checkEvent:event]) return;
     if (![self checkTransactionId:event.transactionId]) return;
@@ -479,6 +575,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger info:@"Buffered event %@", eventPackage.suffix];
     } else {
         [self.packageHandler sendFirstPackage];
+    }
+
+    // if it is in the background and it can send, start the background timer
+    if (self.adjustConfig.sendInBackground && [self.internalState isBackground]) {
+        [self startBackgroundTimer];
     }
 
     [self writeActivityState];
@@ -695,22 +796,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityState:(double)now {
+    if (![self checkActivityState]) return NO;
+
     double lastInterval = now - self.activityState.lastActivity;
+
+    // ignore late updates
+    if (lastInterval > kSessionInterval) return NO;
+
+    self.activityState.lastActivity = now;
 
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
-        self.activityState.lastActivity = now;
         return YES;
+    } else {
+        self.activityState.sessionLength += lastInterval;
+        self.activityState.timeSpent += lastInterval;
     }
 
-    // ignore late updates
-    if (lastInterval > ADJAdjustFactory.sessionInterval) return NO;
-
-    self.activityState.sessionLength += lastInterval;
-    self.activityState.timeSpent += lastInterval;
-    self.activityState.lastActivity = now;
-
-    return (lastInterval > ADJAdjustFactory.subsessionInterval);
+    return YES;
 }
 
 - (void)writeActivityState {
@@ -746,29 +849,42 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 # pragma mark - handlers status
-- (void)updateStatusInternal {
-    [self updateAttributionHandlerStatus];
-    [self updatePackageHandlerStatus];
-}
-
-- (void)updateAttributionHandlerStatus {
-    if ([self paused]) {
-        [self.attributionHandler pauseSending];
+- (void)updateHandlersStatusInternal {
+    if (![self toSend]) {
+        [self pauseSending];
     } else {
-        [self.attributionHandler resumeSending];
+        [self resumeSending];
     }
 }
 
-- (void)updatePackageHandlerStatus {
-    if ([self paused]) {
-        [self.packageHandler pauseSending];
-    } else {
-        [self.packageHandler resumeSending];
-    }
+- (void)pauseSending {
+    [self.attributionHandler pauseSending];
+    [self.packageHandler pauseSending];
 }
 
+- (void)resumeSending {
+    [self.attributionHandler resumeSending];
+    [self.packageHandler resumeSending];
+}
+
+// offline or disabled pauses the sdk
 - (BOOL)paused {
-    return self.offline || !self.isEnabled;
+    return [self.internalState isOffline] || ![self isEnabled];
+}
+
+- (BOOL)toSend {
+    // if it's offline, disabled -> don't send
+    if ([self paused]) {
+        return NO;
+    }
+
+    // has the option to send in the background -> is to send
+    if (self.adjustConfig.sendInBackground) {
+        return YES;
+    }
+
+    // doesn't have the option -> depends on being on the background/foreground
+    return [self.internalState isForeground];
 }
 
 # pragma mark - timer
@@ -798,18 +914,40 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)startBackgroundTimer {
+    // check if it can send in the background
+    if (![self toSend]) {
+        return;
+    }
+
+    // background timer already started
+    if ([self.backgroundTimer fireIn] > 0) {
+        return;
+    }
+
+    [self.backgroundTimer startIn:kBackgroundTimerInterval];
+}
+
+- (void)stopBackgroundTimer {
+    [self.backgroundTimer cancel];
+}
+
+-(void)backgroundTimerFiredInternal {
+    [self.packageHandler sendFirstPackage];
+}
+
 #pragma mark - notifications
 - (void)addNotificationObserver {
     NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
 
     [center removeObserver:self];
     [center addObserver:self
-               selector:@selector(trackSubsessionStart)
+               selector:@selector(applicationDidBecomeActive)
                    name:UIApplicationDidBecomeActiveNotification
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(trackSubsessionEnd)
+               selector:@selector(applicationWillResignActive)
                    name:UIApplicationWillResignActiveNotification
                  object:nil];
 
@@ -856,4 +994,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return YES;
 }
 
+- (BOOL)checkActivityState {
+    if (self.activityState == nil) {
+        [self.logger error:@"Missing activity state"];
+        return NO;
+    }
+    return YES;
+}
 @end

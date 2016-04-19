@@ -17,7 +17,7 @@
 @interface ADJAdjustFactory : NSObject
 
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                              startPaused:(BOOL)startPaused;
+                                            startsSending:(BOOL)startsSending;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig;
 + (id<ADJLogger>)logger;
@@ -27,7 +27,7 @@
 + (NSTimeInterval)timerStart;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                                      startPaused:(BOOL)startPaused
+                                                    startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;

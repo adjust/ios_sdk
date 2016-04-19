@@ -67,8 +67,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self cancel:NO];
 
     self.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:startIn];
-    NSString * fireInSeconds = [ADJUtil secondsNumberFormat:[self fireIn]];
-    [self.logger verbose:@"%@ starting. Launching in %@ seconds", self.name, fireInSeconds];
+    NSString * fireInFormatted = [ADJUtil secondsNumberFormat:[self fireIn]];
+    [self.logger verbose:@"%@ starting. Launching in %@ seconds", self.name, fireInFormatted];
 
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, self.internalQueue);
 

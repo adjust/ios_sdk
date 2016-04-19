@@ -23,12 +23,12 @@ static NSTimeInterval intervalTimerStart = -1;
 @implementation ADJAdjustFactory
 
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                              startPaused:(BOOL)startPaused {
+                                            startsSending:(BOOL)startsSending {
     if (internalPackageHandler == nil) {
-        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startPaused:startPaused];
+        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startsSending:startsSending];
     }
 
-    return [internalPackageHandler initWithActivityHandler:activityHandler startPaused:startPaused];
+    return [internalPackageHandler initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -83,19 +83,19 @@ static NSTimeInterval intervalTimerStart = -1;
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                                      startPaused:(BOOL)startPaused
+                                                    startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
                                           withAttributionPackage:attributionPackage
-                                                     startPaused:startPaused
+                                                   startsSending:startsSending
                                                      hasAttributionChangedDelegate:hasAttributionChangedDelegate];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
                                         withAttributionPackage:attributionPackage
-                                                   startPaused:startPaused
+                                                 startsSending:startsSending
                                  hasAttributionChangedDelegate:hasAttributionChangedDelegate];
 }
 

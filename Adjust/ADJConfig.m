@@ -147,6 +147,7 @@
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.hasDelegate = self.hasDelegate;
         copy.hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
+        copy.sendInBackground = self.sendInBackground;
         // adjust delegate not copied
     }
 
