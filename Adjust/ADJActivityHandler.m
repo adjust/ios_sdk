@@ -23,6 +23,8 @@ static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
+static NSString   * const kForegroundTimerName   = @"Foreground timer";
+
 // number of tries
 static const int kTryIadV3                       = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
@@ -34,7 +36,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
-@property (nonatomic, retain) ADJTimerCycle *timer;
+@property (nonatomic, retain) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
@@ -59,7 +61,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig];
 }
-
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig {
     self = [super init];
@@ -358,10 +359,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                          startPaused:[self paused]
                                                                          hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
-    self.timer = [ADJTimerCycle timerWithBlock:^{ [self timerFiredInternal]; }
+    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFiredInternal]; }
                                     queue:self.internalQueue
                                 startTime:ADJAdjustFactory.timerStart
-                             intervalTime:ADJAdjustFactory.timerInterval];
+                             intervalTime:ADJAdjustFactory.timerInterval
+                            name:kForegroundTimerName];
+
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
     [self startInternal];
@@ -380,7 +383,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [self checkAttributionState];
 
-    [self startTimer];
+    [self startForegroundTimer];
 }
 
 - (void)processSession {
@@ -446,7 +449,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)endInternal {
     [self.packageHandler pauseSending];
     [self.attributionHandler pauseSending];
-    [self stopTimer];
+    [self stopForegroundTimer];
     double now = [NSDate.date timeIntervalSince1970];
     [self updateActivityState:now];
     [self writeActivityState];
@@ -769,26 +772,25 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 # pragma mark - timer
-- (void)startTimer {
+- (void)startForegroundTimer {
     // don't start the timer if it's disabled/offline
     if ([self paused]) {
         return;
     }
 
-    [self.timer resume];
+    [self.foregroundTimer resume];
 }
 
-- (void)stopTimer {
-    [self.timer suspend];
+- (void)stopForegroundTimer {
+    [self.foregroundTimer suspend];
 }
 
-- (void)timerFiredInternal {
+- (void)foregroundTimerFiredInternal {
     if ([self paused]) {
         // stop the timer cycle if it's disabled/offline
-        [self stopTimer];
+        [self stopForegroundTimer];
         return;
     }
-    [self.logger debug:@"Session timer fired"];
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {

@@ -24,6 +24,7 @@ static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjus
 static NSString * const kBaseUrl        = @"https://app.adjust.com";
 static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSRegularExpression * universalLinkRegex = nil;
+static NSNumberFormatter * secondsNumberFormatter = nil;
 
 #pragma mark -
 @implementation ADJUtil
@@ -484,5 +485,20 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 
     return extractedUrl;
 }
+
++ (NSString *)secondsNumberFormat:(double)seconds {
+    if (secondsNumberFormatter == nil) {
+        secondsNumberFormatter = [[NSNumberFormatter alloc] init];
+        [secondsNumberFormatter setPositiveFormat:@"0.0"];
+    }
+
+    // normalize negative zero
+    if (seconds < 0) {
+        seconds = seconds * -1;
+    }
+
+    return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];
+}
+
 
 @end

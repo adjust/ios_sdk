@@ -7,6 +7,8 @@
 //
 
 #import "ADJTimerCycle.h"
+#import "ADJLogger.h"
+#import "ADJAdjustFactory.h"
 
 static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
@@ -15,6 +17,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
 @property (nonatomic) dispatch_source_t source;
 @property (nonatomic, assign) BOOL suspended;
+@property (nonatomic, retain) id<ADJLogger> logger;
+@property (nonatomic, copy) NSString *name;
 
 @end
 
@@ -22,29 +26,37 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 @implementation ADJTimerCycle
 
 + (ADJTimerCycle *)timerWithBlock:(dispatch_block_t)block
-                       queue:(dispatch_queue_t)queue
-                   startTime:(NSTimeInterval)startTime
-                intervalTime:(NSTimeInterval)intervalTime
+                            queue:(dispatch_queue_t)queue
+                        startTime:(NSTimeInterval)startTime
+                     intervalTime:(NSTimeInterval)intervalTime
+                             name:(NSString*)name
 {
-    return [[ADJTimerCycle alloc] initBlock:block queue:queue startTime:startTime intervalTime:intervalTime];
+    return [[ADJTimerCycle alloc] initBlock:block queue:queue startTime:startTime intervalTime:intervalTime name:name];
 }
 
 - (id)initBlock:(dispatch_block_t)block
           queue:(dispatch_queue_t)queue
       startTime:(NSTimeInterval)startTime
    intervalTime:(NSTimeInterval)intervalTime
+           name:(NSString*)name
+
 {
     self = [super init];
     if (self == nil) return nil;
 
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    self.logger = ADJAdjustFactory.logger;
+    self.name = name;
 
     dispatch_source_set_timer(self.source,
                               dispatch_walltime(NULL, startTime * NSEC_PER_SEC),
                               intervalTime * NSEC_PER_SEC,
                               kTimerLeeway);
 
-    dispatch_source_set_event_handler(self.source, block);
+    dispatch_source_set_event_handler(self.source,
+                                      ^{ [self.logger verbose:@"%@ fired", self.name];
+                                          block();
+                                      });
 
     self.suspended = YES;
 
@@ -52,14 +64,20 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)resume {
-    if (!self.suspended) return;
+    if (!self.suspended) {
+        [self.logger verbose:@"%@ is already started", self.name];
+        return;
+    }
 
     dispatch_resume(self.source);
     self.suspended = NO;
 }
 
 - (void)suspend {
-    if (self.suspended) return;
+    if (self.suspended) {
+        [self.logger verbose:@"%@ is already suspended", self.name];
+        return;
+    }
 
     dispatch_suspend(self.source);
     self.suspended = YES;

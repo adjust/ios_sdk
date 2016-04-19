@@ -51,5 +51,6 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 
 + (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 + (NSString*)idfa;
++ (NSString *)secondsNumberFormat:(double)seconds;
 
 @end

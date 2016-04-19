@@ -14,13 +14,14 @@
 #import "ADJTimerOnce.h"
 
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
+static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
 @interface ADJAttributionHandler()
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) ADJTimerOnce *timer;
+@property (nonatomic, retain) ADJTimerOnce *attributionTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, assign) BOOL hasDelegate;
@@ -56,8 +57,9 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     self.attributionPackage = attributionPackage;
     self.paused = startPaused;
     self.hasDelegate = hasAttributionChangedDelegate;
-    self.timer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
-                                         queue:self.internalQueue];
+    self.attributionTimer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
+                                                   queue:self.internalQueue
+                                                    name:kAttributionTimerName];
 
     return self;
 }
@@ -76,7 +78,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 - (void) getAttributionWithDelay:(int)milliSecondsDelay {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
-    NSTimeInterval nextAskIn = [self.timer fireIn];
+    NSTimeInterval nextAskIn = [self.attributionTimer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
     }
@@ -86,7 +88,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     }
 
     // set the new time the timer will fire in
-    [self.timer startIn:secondsDelay];
+    [self.attributionTimer startIn:secondsDelay];
 }
 
 - (void) getAttribution {
