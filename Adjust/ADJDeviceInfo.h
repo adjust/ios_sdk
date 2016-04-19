@@ -25,6 +25,8 @@
 @property (nonatomic, copy) NSString *systemVersion;
 @property (nonatomic, copy) NSString *languageCode;
 @property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *machineModel;
+@property (nonatomic, copy) NSString *cpuSubtype;
 
 - (id) initWithSdkPrefix:(NSString *)sdkPrefix;
 + (ADJDeviceInfo *)deviceInfoWithSdkPrefix:(NSString *)sdkPrefix;

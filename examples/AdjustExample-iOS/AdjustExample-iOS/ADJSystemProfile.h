@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// original at https://github.com/tcurdt/feedbackreporter/blob/master/Sources/Main/FRSystemProfile.h
 
 #import <Foundation/Foundation.h>
 
-@interface FRSystemProfile : NSObject
+@interface ADJSystemProfile : NSObject
 
 + (BOOL) is64bit;
 + (NSString*) cpuFamily;

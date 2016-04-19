@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// original at https://github.com/tcurdt/feedbackreporter/blob/master/Sources/Main/FRSystemProfile.m
 
-#import "FRSystemProfile.h"
+#import "ADJSystemProfile.h"
 #import <sys/sysctl.h>
 #import <sys/types.h>
 #import <mach/machine.h>
 
-@implementation FRSystemProfile
+@implementation ADJSystemProfile
 
 + (BOOL) is64bit
 {
@@ -144,27 +145,27 @@
 
 + (NSString*) machineArch
 {
-    return [FRSystemProfile readSysctlbString:"hw.machinearch" errorLog:@"Failed to obtain machine arch"];
+    return [ADJSystemProfile readSysctlbString:"hw.machinearch" errorLog:@"Failed to obtain machine arch"];
 }
 
 + (NSString*) machineModel
 {
-    return [FRSystemProfile readSysctlbString:"hw.model" errorLog:@"Failed to obtain machine model"];
+    return [ADJSystemProfile readSysctlbString:"hw.model" errorLog:@"Failed to obtain machine model"];
 }
 
 + (NSString*) cpuBrand
 {
-    return [FRSystemProfile readSysctlbString:"machdep.cpu.brand_string" errorLog:@"Failed to obtain CPU brand"];
+    return [ADJSystemProfile readSysctlbString:"machdep.cpu.brand_string" errorLog:@"Failed to obtain CPU brand"];
 }
 
 + (NSString*) cpuFeatures
 {
-    return [FRSystemProfile readSysctlbString:"machdep.cpu.features" errorLog:@"Failed to obtain CPU features"];
+    return [ADJSystemProfile readSysctlbString:"machdep.cpu.features" errorLog:@"Failed to obtain CPU features"];
 }
 
 + (NSString*) cpuVendor
 {
-    return [FRSystemProfile readSysctlbString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
+    return [ADJSystemProfile readSysctlbString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
 }
 
 + (NSString*) appleLanguage
@@ -235,7 +236,7 @@
         return nil;
     }
 
-    NSString * cpuTypeString = [FRSystemProfile readCpuTypeSubtype:cputype readSubType:NO cpusubtype:0];
+    NSString * cpuTypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:NO cpusubtype:0];
 
     if (cpuTypeString != nil) {
         return cpuTypeString;
@@ -269,7 +270,7 @@
     }
 
 
-    NSString * cpuSubtypeString = [FRSystemProfile readCpuTypeSubtype:cputype readSubType:YES cpusubtype:cpuSubtype];
+    NSString * cpuSubtypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:YES cpusubtype:cpuSubtype];
 
     if (cpuSubtypeString != nil) {
         return cpuSubtypeString;

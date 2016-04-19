@@ -176,6 +176,8 @@
     [self parameters:parameters setString:deviceInfo.systemVersion     forKey:@"os_version"];
     [self parameters:parameters setString:deviceInfo.languageCode      forKey:@"language"];
     [self parameters:parameters setString:deviceInfo.countryCode       forKey:@"country"];
+    [self parameters:parameters setString:deviceInfo.machineModel      forKey:@"hardware_name"];
+    [self parameters:parameters setString:deviceInfo.cpuSubtype       forKey:@"cpu_type"];
 }
 
 - (void)injectConfig:(ADJConfig*) adjustConfig
