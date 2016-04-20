@@ -13,6 +13,7 @@
 #import "ADJLogger.h"
 #import "ADJAttributionHandler.h"
 #import "ADJActivityPackage.h"
+#import "ADJBackoffStrategy.h"
 
 @interface ADJAdjustFactory : NSObject
 
@@ -25,6 +26,8 @@
 + (double)subsessionInterval;
 + (NSTimeInterval)timerInterval;
 + (NSTimeInterval)timerStart;
++ (ADJBackoffStrategy *)packageHandlerBackoffStrategy;
+
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
@@ -39,5 +42,6 @@
 + (void)setTimerInterval:(NSTimeInterval)timerInterval;
 + (void)setTimerStart:(NSTimeInterval)timerStart;
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler;
++ (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 
 @end

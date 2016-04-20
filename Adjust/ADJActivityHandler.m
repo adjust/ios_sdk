@@ -60,10 +60,6 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
     self = [super init];
     if (self == nil) return nil;
 
-    self.enabled = YES;
-    self.offline = YES;
-    self.background = YES;
-
     return self;
 }
 
@@ -122,18 +118,58 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return nil;
     }
 
+    // init logger to be available everywhere
+    self.logger = ADJAdjustFactory.logger;
+    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
+        [self.logger setLogLevel:ADJLogLevelAssert];
+    } else {
+        [self.logger setLogLevel:self.adjustConfig.logLevel];
+    }
+
     self.adjustConfig = adjustConfig;
     self.adjustDelegate = adjustConfig.delegate;
 
-    self.logger = ADJAdjustFactory.logger;
+    // read files to have sync values available
+    [self readAttribution];
+    [self readActivityState];
+
     self.internalState = [[ADJInternalState alloc] init];
+
+    // enabled by default
+    if (self.activityState == nil) {
+        self.internalState.enabled = YES;
+    } else {
+        self.internalState.enabled = self.activityState.enabled;
+    }
+
+    // online by default
+    self.internalState.offline = NO;
+    // in the background by default
+    self.internalState.background = YES;
+
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-
-    [self addNotificationObserver];
-
     dispatch_async(self.internalQueue, ^{
         [self initInternal];
     });
+
+    // get timer values
+    kForegroundTimerStart = ADJAdjustFactory.timerStart;
+    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
+    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
+
+    // initialize timers to be available in applicationDidBecomeActive/WillResignActive
+    // after initInternal so that the handlers are initialized
+    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
+                                                   queue:self.internalQueue
+                                               startTime:kForegroundTimerStart
+                                            intervalTime:kForegroundTimerInterval
+                                                    name:kForegroundTimerName];
+
+    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
+                                                  queue:self.internalQueue
+                                                   name:kBackgroundTimerName];
+
+    [self addNotificationObserver];
 
     return self;
 }
@@ -172,8 +208,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)trackEvent:(ADJEvent *)event
-{
+- (void)trackEvent:(ADJEvent *)event {
     dispatch_async(self.internalQueue, ^{
         [self eventInternal:event];
     });
@@ -224,6 +259,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)setEnabled:(BOOL)enabled {
+    // compare with the saved or internal state
     if (![self hasChangedState:[self isEnabled]
                      nextState:enabled
                    trueMessage:@"Adjust already enabled"
@@ -232,19 +268,29 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
+    // save new enabled state in internal state
     self.internalState.enabled = enabled;
-    if (self.activityState != nil) {
-        self.activityState.enabled = enabled;
-        [self writeActivityState];
+
+    if (self.activityState == nil) {
+        [self updateState:!enabled
+           pausingMessage:@"Package handler and attribution handler will start as paused due to the SDK being disabled"
+     remainsPausedMessage:@"Package and attribution handler will still start as paused due to the SDK being offline"
+         unPausingMessage:@"Package handler and attribution handler will start as active due to the SDK being enabled"];
+        return;
     }
 
+    // save new enabled state in activity state
+    self.activityState.enabled = enabled;
+    [self writeActivityState];
+
     [self updateState:!enabled
-       pausingMessage:@"Pausing package handler and attribution handler to disable the SDK"
- remainsPausedMessage:@"Package and attribution handler remain paused due to the SDK is offline"
-     unPausingMessage:@"Resuming package handler and attribution handler to enabled the SDK"];
+       pausingMessage:@"Pausing package handler and attribution handler due to SDK being disabled"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being offline"
+     unPausingMessage:@"Resuming package handler and attribution handler due to SDK being enabled"];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
+    // compare with the internal state
     if (![self hasChangedState:[self.internalState isOffline]
                      nextState:offline
                    trueMessage:@"Adjust already in offline mode"
@@ -253,12 +299,21 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
+    // save new offline state in internal state
     self.internalState.offline = offline;
 
+    if (self.activityState == nil) {
+        [self updateState:offline
+           pausingMessage:@"Package handler and attribution handler will start paused due to SDK being offline"
+     remainsPausedMessage:@"Package and attribution handler will still start as paused due to SDK being disabled"
+         unPausingMessage:@"Package handler and attribution handler will start as active due to SDK being online"];
+        return;
+    }
+
     [self updateState:offline
-       pausingMessage:@"Pausing package and attribution handler to put in offline mode"
- remainsPausedMessage:@"Package and attribution handler remain paused because the SDK is disabled"
-     unPausingMessage:@"Resuming package handler and attribution handler to put in online mode"];
+       pausingMessage:@"Pausing package and attribution handler to put SDK offline mode"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being disabled"
+     unPausingMessage:@"Resuming package handler and attribution handler to put SDK in online mode"];
 }
 
 - (BOOL)isEnabled {
@@ -292,18 +347,22 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 remainsPausedMessage:(NSString *)remainsPausedMessage
    unPausingMessage:(NSString *)unPausingMessage
 {
+    // it is changing from an active state to a pause state
     if (pausingState) {
         [self.logger info:pausingMessage];
-        [self trackSubsessionEnd];
+        [self updateHandlersStatusAndSend];
         return;
     }
 
+    // it is remaining in a pause state
     if ([self paused]) {
         [self.logger info:remainsPausedMessage];
-    } else {
-        [self.logger info:unPausingMessage];
-        [self trackSubsessionStart];
+        return;
     }
+
+    // it is changing from a pause state to an active state
+    [self.logger info:unPausingMessage];
+    [self updateHandlersStatusAndSend];
 }
 
 - (void)appWillOpenUrl:(NSURL*)url {
@@ -386,9 +445,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self writeActivityState];
 }
 
-- (void)updateStatus {
+- (void)updateHandlersStatusAndSend {
     dispatch_async(self.internalQueue, ^{
-        [self updateHandlersStatusInternal];
+        [self updateHandlersStatusAndSendInternal];
     });
 }
 
@@ -406,20 +465,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 #pragma mark - internal
 - (void)initInternal {
-    kForegroundTimerStart = ADJAdjustFactory.timerStart;
-    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
-    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
-
     kSessionInterval = ADJAdjustFactory.sessionInterval;
     kSubSessionInterval = ADJAdjustFactory.subsessionInterval;
 
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
-
-    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
-        [self.logger setLogLevel:ADJLogLevelAssert];
-    } else {
-        [self.logger setLogLevel:self.adjustConfig.logLevel];
-    }
 
     if (self.adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
@@ -428,9 +477,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (self.adjustConfig.defaultTracker != nil) {
         [self.logger info:@"Default tracker: %@", self.adjustConfig.defaultTracker];
     }
-
-    [self readAttribution];
-    [self readActivityState];
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
                                                                startsSending:[self toSend]];
@@ -447,16 +493,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                        startsSending:[self toSend]
                                                        hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
-    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
-                                    queue:self.internalQueue
-                                startTime:kForegroundTimerStart
-                             intervalTime:kForegroundTimerInterval
-                            name:kForegroundTimerName];
-
-    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
-                                                  queue:self.internalQueue
-                                                   name:kBackgroundTimerName];
-
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
     [self startInternal];
@@ -469,7 +505,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [self updateHandlersStatusInternal];
+    [self updateHandlersStatusAndSendInternal];
 
     [self processSession];
 
@@ -515,11 +551,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
-        [self writeActivityState];
-        [self.logger info:@"Started subsession %d of session %d",
+        [self.logger verbose:@"Started subsession %d of session %d",
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
+        [self writeActivityState];
+        return;
     }
+
+    [self.logger verbose:@"Time span since last activity too short for a new subsession"];
 }
 
 - (void)checkAttributionState {
@@ -550,8 +589,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)eventInternal:(ADJEvent *)event
-{
+- (void)eventInternal:(ADJEvent *)event {
     if (![self checkActivityState]) return;
     if (![self isEnabled]) return;
     if (![self checkEvent:event]) return;
@@ -849,11 +887,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 # pragma mark - handlers status
-- (void)updateHandlersStatusInternal {
+- (void)updateHandlersStatusAndSendInternal {
+    // check if it should stop sending
+
     if (![self toSend]) {
         [self pauseSending];
-    } else {
-        [self resumeSending];
+        return;
+    }
+
+    [self resumeSending];
+
+    // try to send
+    if (!self.adjustConfig.eventBufferingEnabled) {
+        [self.packageHandler sendFirstPackage];
     }
 }
 

@@ -10,6 +10,7 @@
 #import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJEvent.h"
+#import "ADJBackoffStrategy.h"
 
 @interface ADJUtil : NSObject
 
@@ -52,5 +53,7 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 + (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 + (NSString*)idfa;
 + (NSString *)secondsNumberFormat:(double)seconds;
++ (NSTimeInterval)waitingTime:(NSInteger)retries
+              backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 
 @end

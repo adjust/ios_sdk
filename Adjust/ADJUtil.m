@@ -15,6 +15,8 @@
 #import "ADJResponseData.h"
 
 #include <sys/xattr.h>
+#include <math.h>
+#include <stdlib.h>
 
 static NSDateFormatter *dateFormat;
 
@@ -500,5 +502,25 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];
 }
 
++ (NSTimeInterval)waitingTime:(NSInteger)retries
+              backoffStrategy:(ADJBackoffStrategy *)backoffStrategy
+{
+    if (retries < backoffStrategy.minRetries) {
+        return 0;
+    }
+    // start with base 0
+    NSInteger base = retries - backoffStrategy.minRetries;
+    // get the exponential Time from the base: 1, 2, 4, 8, 16, ... * times the multiplier
+    NSTimeInterval exponentialTime = pow(2.0, base) * backoffStrategy.secondMultiplier;
+    // limit the maximum allowed time to wait
+    NSTimeInterval ceilingTime = MIN(exponentialTime, backoffStrategy.maxWait);
+    // add 1 to allow maximum value
+    NSUInteger jitterFactorBase = (NSUInteger)arc4random_uniform((uint32_t)(backoffStrategy.maxJitter - backoffStrategy.minJitter + 1));
+    NSUInteger jitterFactorAdjusted = jitterFactorBase + backoffStrategy.minJitter;
+    double jitterFactor = jitterFactorAdjusted / 100.0;
+    // apply jitter factor
+    NSTimeInterval waitingTime =  ceilingTime * jitterFactor;
+    return waitingTime;
+}
 
 @end

@@ -49,6 +49,15 @@
             self.suffix];
 }
 
+- (NSInteger)getRetries {
+    return self.retries;
+}
+
+- (NSInteger)increaseRetries {
+    self.retries = self.retries + 1;
+    return self.retries;
+}
+
 #pragma mark NSCoding
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];

@@ -62,7 +62,7 @@ static const double kRequestTimeout = 60; // 60 seconds
          activityPackage:package
      responseDataHandler:^(ADJResponseData * responseData) {
          if (responseData.jsonResponse == nil) {
-             [self.packageHandler closeFirstPackage:responseData];
+             [self.packageHandler closeFirstPackage:responseData activityPackage:package];
              return;
          }
 

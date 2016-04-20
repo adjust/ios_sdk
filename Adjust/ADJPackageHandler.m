@@ -11,6 +11,7 @@
 #import "ADJLogger.h"
 #import "ADJUtil.h"
 #import "ADJAdjustFactory.h"
+#import "ADJBackoffStrategy.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -26,6 +27,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
 @property (nonatomic, assign) BOOL paused;
+@property (nonatomic, retain) ADJBackoffStrategy * backoffStrategy;
 
 @end
 
@@ -45,6 +47,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
 
     dispatch_async(self.internalQueue, ^{
         [self initInternal:activityHandler startsSending:startsSending];
@@ -73,11 +76,28 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTracking:responseData];
 }
 
-- (void)closeFirstPackage:(ADJResponseData *)responseData {
-    dispatch_semaphore_signal(self.sendingSemaphore);
-
+- (void)closeFirstPackage:(ADJResponseData *)responseData
+          activityPackage:(ADJActivityPackage *)activityPackage
+{
     responseData.willRetry = YES;
     [self.activityHandler finishedTracking:responseData];
+
+    if (activityPackage != nil) {
+        NSInteger retries = [activityPackage increaseRetries];
+
+        NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+        NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+
+        [self.logger verbose:@"Sleeping for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
+
+        [NSThread sleepForTimeInterval:waitTime];
+    }
+
+    [self.logger verbose:@"Package handler can send"];
+    dispatch_semaphore_signal(self.sendingSemaphore);
+
+    // Try to send the same package after sleeping
+    [self sendFirstPackage];
 }
 
 - (void)pauseSending {

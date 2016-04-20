@@ -41,6 +41,8 @@
 		9657BF6F1A3B029000CD6853 /* ADJAttributionHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */; };
 		965B7F221CC5368B00098639 /* ADJSystemProfile.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F201CC5368B00098639 /* ADJSystemProfile.h */; };
 		965B7F231CC5368B00098639 /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B7F211CC5368B00098639 /* ADJSystemProfile.m */; };
+		965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
+		965B7F311CC78F6600098639 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */; };
 		9679921118BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
 		9679922018BBAE2800394606 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679921018BBAE2800394606 /* Foundation.framework */; };
 		9679922518BBAE2800394606 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
@@ -262,6 +264,8 @@
 		9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerTests.m; sourceTree = "<group>"; };
 		965B7F201CC5368B00098639 /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJSystemProfile.h; path = "../examples/AdjustExample-iOS/AdjustExample-iOS/ADJSystemProfile.h"; sourceTree = "<group>"; };
 		965B7F211CC5368B00098639 /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJSystemProfile.m; path = "../examples/AdjustExample-iOS/AdjustExample-iOS/ADJSystemProfile.m"; sourceTree = "<group>"; };
+		965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
 		9679920D18BBAE2800394606 /* libAdjust.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjust.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679921018BBAE2800394606 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9679921D18BBAE2800394606 /* AdjustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -550,6 +554,8 @@
 				9601CAE71C74BAAE00670879 /* ADJEventFailure.m */,
 				965B7F201CC5368B00098639 /* ADJSystemProfile.h */,
 				965B7F211CC5368B00098639 /* ADJSystemProfile.m */,
+				965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */,
+				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -711,6 +717,7 @@
 				968173831C3C2D07002AE1DE /* ADJSessionSuccess.h in Headers */,
 				96BCFBD91AC9934E005A65C5 /* ADJAdjustFactory.h in Headers */,
 				96BCFBD81AC9934B005A65C5 /* ADJActivityState.h in Headers */,
+				965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */,
 				96BCFBD61AC99345005A65C5 /* ADJActivityKind.h in Headers */,
 				96BCFBD71AC99348005A65C5 /* ADJActivityPackage.h in Headers */,
 				96BCFBD51AC9933E005A65C5 /* ADJActivityHandler.h in Headers */,
@@ -1000,6 +1007,7 @@
 				96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* ADJActivityKind.m in Sources */,
+				965B7F311CC78F6600098639 /* ADJBackoffStrategy.m in Sources */,
 				96C93DF51AC47F2E00B53F56 /* NSData+ADJAdditions.m in Sources */,
 				965B7F231CC5368B00098639 /* ADJSystemProfile.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* ADJActivityPackage.m in Sources */,

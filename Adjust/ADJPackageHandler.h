@@ -20,7 +20,8 @@
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
 - (void)sendNextPackage:(ADJResponseData *)responseData;
-- (void)closeFirstPackage:(ADJResponseData *)responseData;;
+- (void)closeFirstPackage:(ADJResponseData *)responseData
+          activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
 

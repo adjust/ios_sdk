@@ -18,7 +18,7 @@ static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
 static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
-
+static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 
 @implementation ADJAdjustFactory
 
@@ -76,9 +76,16 @@ static NSTimeInterval intervalTimerStart = -1;
 
 + (NSTimeInterval)timerStart {
     if (intervalTimerStart == -1) {
-        return 0;                 // 0 seconds
+        return 60;                 // 1 minute
     }
     return intervalTimerStart;
+}
+
++ (ADJBackoffStrategy *)packageHandlerBackoffStrategy {
+    if (packageHandlerBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJLongWait];
+    }
+    return packageHandlerBackoffStrategy;
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
@@ -133,5 +140,9 @@ static NSTimeInterval intervalTimerStart = -1;
 
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler {
     internalAttributionHandler = attributionHandler;
+}
+
++ (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
+    packageHandlerBackoffStrategy = backoffStrategy;
 }
 @end
