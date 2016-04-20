@@ -1,6 +1,26 @@
 ## Trademob plugin
 
-Integrate adjust with Trademob events by following these steps:
+Integrate adjust with Trademob events by following one of these methods:
+
+### CocoaPods
+
+If you're using [CocoaPods](http://cocoapods.org/), you can add the following line to your Podfile:
+
+```ruby
+pod 'Adjust/Trademob'
+```
+
+### Carthage
+
+If you're using [Carthage](https://github.com/Carthage/Carthage), you can add following line to your Cartfile:
+
+```ruby
+github "adjust/ios_sdk" "trademob"
+```
+
+### Source
+
+You can also integrate adjust with Trademob events by following these steps:
 
 1. Locate the `plugin/Trademob` folder inside the downloaded archive from our [releases page](https://github.com/adjust/ios_sdk/releases).
 
@@ -11,9 +31,11 @@ to `Copy items if needed` and select the radio button to `Create groups`.
 
 For questions regarding this plugin, please reach out to `eugenio.warglien@trademob.com`
 
+### Trademob events
+
 You can now use Trademob events in the following ways:
 
-### View Listing
+#### View Listing
 
 ```objc
 #import "ADJTrademob.h"
@@ -29,7 +51,7 @@ NSDictionary *metadata = @{@"info1":@"value1", @"info2":@"value2"};
 [Adjust trackEvent:event];
 ```
 
-### View Item
+#### View Item
 
 ```objc
 #import "ADJTrademob.h"
@@ -43,7 +65,7 @@ NSDictionary *metadata = @{@"info1":@"value1", @"info2":@"value2"};
 [Adjust trackEvent:event];
 ```
 
-### Add to Basket
+#### Add to Basket
 
 ```objc
 #import "ADJTrademob.h"
@@ -60,7 +82,7 @@ NSArray *items = @[item1, item2];
 [Adjust trackEvent:event];
 ```
 
-### Checkout
+#### Checkout
 
 ```objc
 #import "ADJTrademob.h"
