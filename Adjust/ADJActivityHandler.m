@@ -747,21 +747,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
-        return;
+        queryArray = @[];
     }
 
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
-    BOOL hasDeepLink = NO;
 
     for (NSString* fieldValuePair in queryArray) {
-        if([self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution]) {
-            hasDeepLink = YES;
-        }
-    }
-
-    if (!hasDeepLink) {
-        return;
+        [self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -773,6 +766,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = [NSDate date];
+    clickBuilder.deeplink = [url absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [self.sdkClickHandler sendSdkClick:clickPackage];

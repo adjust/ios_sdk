@@ -100,6 +100,7 @@
         [self parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
     [self parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
+    [self parameters:parameters setString:self.deeplink forKey:@"deeplink"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
