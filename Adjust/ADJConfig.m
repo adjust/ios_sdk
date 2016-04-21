@@ -92,6 +92,12 @@
         self.hasDelegate = YES;
     }
 
+    if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+        [logger debug:@"Delegate implements adjustDeeplinkResponse:"];
+
+        // does not enable hasDelegate flag
+    }
+
     if (!self.hasDelegate) {
         [logger error:@"Delegate does not implement any optional method"];
         _delegate = nil;

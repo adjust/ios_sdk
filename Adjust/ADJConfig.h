@@ -55,6 +55,13 @@
  */
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData;
 
+/**
+ * Optional delegate method that gets called when a deeplink is about to be opened by the adjust SDK
+ *
+ * @param deeplink The deeplink url that was received by the adjust SDK to be opened
+ * @return boolean value that indicates whether the deeplink should be opened by the adjust SDK
+ */
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink;
 @end
 
 @interface ADJConfig : NSObject<NSCopying>

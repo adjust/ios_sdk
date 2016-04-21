@@ -246,18 +246,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)launchDeepLink:(NSString *)deepLink{
-    if (deepLink == nil) return;
-
-    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
-
-    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
-
-    if (!success) {
-        [self.logger error:@"Unable to open deep link (%@)", deepLink];
-    }
-}
-
 - (void)setEnabled:(BOOL)enabled {
     // compare with the saved or internal state
     if (![self hasChangedState:[self isEnabled]
@@ -668,7 +656,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                            waitUntilDone:NO]; // non-blocking
     }
 
-    // try to update and launch the attribution changed delegate blocking
+    // try to update and launch the attribution changed delegate
     if (toLaunchAttributionDelegate) {
         [self.logger debug:@"Launching attribution changed delegate"];
         [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
@@ -676,20 +664,44 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                            waitUntilDone:NO]; // non-blocking
     }
 
-    if ([ADJUtil isNull:sessionResponseData.jsonResponse]) {
+    [self prepareDeeplink:sessionResponseData];
+}
+
+- (void)prepareDeeplink:(ADJResponseData *)responseData {
+    if (responseData == nil) {
         return;
     }
 
-    NSString *deepLink = [sessionResponseData.jsonResponse objectForKey:@"deeplink"];
+    NSString *deepLink = [responseData.jsonResponse objectForKey:@"deeplink"];
     if (deepLink == nil) {
         return;
     }
 
+    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
+
     [self.logger info:@"Trying to open deep link (%@)", deepLink];
 
-    [self performSelectorOnMainThread:@selector(launchDeepLink:)
-                           withObject:deepLink
-                        waitUntilDone:NO]; // non-blocking
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // there is no validation to be made by the user
+        if (![self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+            [self launchDeepLinkMain:deepLinkUrl];
+            return;
+        }
+
+        // launch deeplink validation by user
+        BOOL toLaunchDeeplink = [self.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
+        if (toLaunchDeeplink) {
+            [self launchDeepLinkMain:deepLinkUrl];
+        }
+    });
+}
+
+- (void)launchDeepLinkMain:(NSURL *) deepLinkUrl{
+    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
+
+    if (!success) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+    }
 }
 
 - (void) launchAttributionResponseTasksInternal:(ADJAttributionResponseData *)attributionResponseData {
