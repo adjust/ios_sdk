@@ -206,6 +206,12 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 + (NSString *) queryString:(NSDictionary *)parameters {
+    return [ADJUtil queryString:parameters queueSize:0];
+}
+
++ (NSString *) queryString:(NSDictionary *)parameters
+                 queueSize:(NSUInteger)queueSize
+{
     NSMutableArray *pairs = [NSMutableArray array];
     for (NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
@@ -219,11 +225,17 @@ static const double kRequestTimeout = 60; // 60 seconds
     NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString adjUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-
     [pairs addObject:sentAtPair];
 
+    if (queueSize > 0) {
+        NSString *queueSizeString = [NSString stringWithFormat:@"%lu", queueSize];
+        NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
+        NSString *queueSizePair = [NSString stringWithFormat:@"%@=%@", @"queue_size", escapedQueueSize];
+        [pairs addObject:queueSizePair];
+    }
+
     NSString *queryString = [pairs componentsJoinedByString:@"&"];
-    
+
     return queryString;
 }
 
@@ -248,12 +260,13 @@ static const double kRequestTimeout = 60; // 60 seconds
 }
 
 + (void)sendPostRequest:(NSURL *)baseUrl
+              queueSize:(NSUInteger)queueSize
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
     responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
 {
-    NSMutableURLRequest * request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl];
+    NSMutableURLRequest * request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
@@ -264,6 +277,7 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 + (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)activityPackage
                                    baseUrl:(NSURL *)baseUrl
+                                 queueSize:(NSUInteger)queueSize
 {
     NSURL *url = [NSURL URLWithString:activityPackage.path relativeToURL:baseUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -272,15 +286,12 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
-    [request setHTTPBody:[ADJUtil bodyForParameters:activityPackage.parameters]];
+
+    NSString *bodyString = [ADJUtil queryString:activityPackage.parameters queueSize:queueSize];
+    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
+    [request setHTTPBody:body];
 
     return request;
-}
-
-+ (NSData *)bodyForParameters:(NSDictionary *)parameters {
-    NSString *bodyString = [ADJUtil queryString:parameters];
-    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
-    return body;
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request

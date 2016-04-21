@@ -39,6 +39,7 @@
 + (BOOL)isNotNull:(id)value;
 
 + (void)sendPostRequest:(NSURL *)baseUrl
+              queueSize:(NSUInteger)queueSize
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage

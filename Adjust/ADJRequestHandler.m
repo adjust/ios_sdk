@@ -45,16 +45,21 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     return self;
 }
 
-- (void)sendPackage:(ADJActivityPackage *)activityPackage {
+- (void)sendPackage:(ADJActivityPackage *)activityPackage
+          queueSize:(NSUInteger)queueSize
+{
     dispatch_async(self.internalQueue, ^{
-        [self sendInternal:activityPackage];
+        [self sendInternal:activityPackage queueSize:queueSize];
     });
 }
 
 #pragma mark - internal
-- (void)sendInternal:(ADJActivityPackage *)package{
+- (void)sendInternal:(ADJActivityPackage *)package
+           queueSize:(NSUInteger)queueSize
+{
 
     [ADJUtil sendPostRequest:self.baseUrl
+                   queueSize:queueSize
           prefixErrorMessage:package.failureMessage
           suffixErrorMessage:@"Will retry later"
              activityPackage:package

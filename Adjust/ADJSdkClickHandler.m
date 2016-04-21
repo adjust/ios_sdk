@@ -90,7 +90,8 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 
 - (void)sendNextSdkClickInternal {
     if (self.paused) return;
-    if (self.packageQueue.count == 0) return;
+    NSUInteger queueSize = self.packageQueue.count;
+    if (queueSize == 0) return;
 
     ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
 
@@ -114,6 +115,7 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     }
 
     [ADJUtil sendPostRequest:self.baseUrl
+                   queueSize:queueSize - 1
           prefixErrorMessage:@"Failed to send sdk_click"
           suffixErrorMessage:@"Will retry later"
              activityPackage:sdkClickPackage

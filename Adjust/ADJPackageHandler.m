@@ -129,7 +129,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)sendFirstInternal {
-    if (self.packageQueue.count == 0) return;
+    NSUInteger queueSize = self.packageQueue.count;
+    if (queueSize == 0) return;
 
     if (self.paused) {
         [self.logger debug:@"Package handler is paused"];
@@ -148,7 +149,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         return;
     }
 
-    [self.requestHandler sendPackage:activityPackage];
+    [self.requestHandler sendPackage:activityPackage
+                           queueSize:queueSize - 1];
 }
 
 - (void)sendNextInternal {
