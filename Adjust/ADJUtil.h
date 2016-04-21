@@ -37,6 +37,13 @@
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
 + (BOOL)isNotNull:(id)value;
+
++ (void)sendPostRequest:(NSURL *)baseUrl
+     prefixErrorMessage:(NSString *)prefixErrorMessage
+     suffixErrorMessage:(NSString *)suffixErrorMessage
+        activityPackage:(ADJActivityPackage *)activityPackage
+    responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
+
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage

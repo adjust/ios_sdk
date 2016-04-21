@@ -19,6 +19,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJSdkClickHandler.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
@@ -78,6 +79,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
+@property (nonatomic, retain) id<ADJSdkClickHandler> sdkClickHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
 @property (nonatomic, retain) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, retain) ADJTimerOnce *backgroundTimer;
@@ -385,8 +387,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.clickTime = iAdImpressionDate;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)setIadDetails:(NSDictionary *)attributionDetails
@@ -424,8 +425,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.iadDetails = attributionDetails;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -466,8 +466,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger info:@"Default tracker: %@", self.adjustConfig.defaultTracker];
     }
 
+    BOOL toSend = [self toSend];
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                               startsSending:[self toSend]];
+                                                               startsSending:toSend];
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
@@ -478,8 +479,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                               withAttributionPackage:attributionPackage
-                                                                       startsSending:[self toSend]
+                                                                       startsSending:toSend
                                                        hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
+
+    self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:toSend];
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
@@ -772,8 +775,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.clickTime = [NSDate date];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (BOOL) readDeeplinkQueryString:(NSString *)queryString
@@ -918,11 +920,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)pauseSending {
     [self.attributionHandler pauseSending];
     [self.packageHandler pauseSending];
+    [self.sdkClickHandler pauseSending];
 }
 
 - (void)resumeSending {
     [self.attributionHandler resumeSending];
     [self.packageHandler resumeSending];
+    [self.sdkClickHandler resumeSending];
 }
 
 // offline or disabled pauses the sdk

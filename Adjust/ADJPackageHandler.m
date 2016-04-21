@@ -121,11 +121,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)addInternal:(ADJActivityPackage *)newPackage {
-    if (newPackage.activityKind == ADJActivityKindClick && [self.packageQueue count] > 0) {
-        [self.packageQueue insertObject:newPackage atIndex:1];
-    } else {
-        [self.packageQueue addObject:newPackage];
-    }
+    [self.packageQueue addObject:newPackage];
     [self.logger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
     [self.logger verbose:@"%@", newPackage.extendedString];
 

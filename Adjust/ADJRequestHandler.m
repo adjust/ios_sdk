@@ -14,8 +14,6 @@
 #import "ADJActivityKind.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
-static const double kRequestTimeout = 60; // 60 seconds
-
 
 #pragma mark - private
 @interface ADJRequestHandler()
@@ -56,38 +54,19 @@ static const double kRequestTimeout = 60; // 60 seconds
 #pragma mark - internal
 - (void)sendInternal:(ADJActivityPackage *)package{
 
-    [ADJUtil sendRequest:[self requestForPackage:package]
-      prefixErrorMessage:package.failureMessage
-      suffixErrorMessage:@"Will retry later"
-         activityPackage:package
-     responseDataHandler:^(ADJResponseData * responseData) {
-         if (responseData.jsonResponse == nil) {
-             [self.packageHandler closeFirstPackage:responseData activityPackage:package];
-             return;
-         }
+    [ADJUtil sendPostRequest:self.baseUrl
+          prefixErrorMessage:package.failureMessage
+          suffixErrorMessage:@"Will retry later"
+             activityPackage:package
+         responseDataHandler:^(ADJResponseData * responseData)
+    {
+        if (responseData.jsonResponse == nil) {
+            [self.packageHandler closeFirstPackage:responseData activityPackage:package];
+            return;
+        }
 
-         [self.packageHandler sendNextPackage:responseData];
+        [self.packageHandler sendNextPackage:responseData];
      }];
-}
-
-#pragma mark - private
-- (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)package {
-    NSURL *url = [NSURL URLWithString:package.path relativeToURL:self.baseUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    request.timeoutInterval = kRequestTimeout;
-    request.HTTPMethod = @"POST";
-
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:package.clientSdk forHTTPHeaderField:@"Client-Sdk"];
-    [request setHTTPBody:[self bodyForParameters:package.parameters]];
-
-    return request;
-}
-
-- (NSData *)bodyForParameters:(NSDictionary *)parameters {
-    NSString *bodyString = [ADJUtil queryString:parameters];
-    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
-    return body;
 }
 
 @end

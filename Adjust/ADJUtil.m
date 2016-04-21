@@ -27,6 +27,7 @@ static NSString * const kBaseUrl        = @"https://app.adjust.com";
 static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSRegularExpression * universalLinkRegex = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
+static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark -
 @implementation ADJUtil
@@ -244,6 +245,42 @@ static NSNumberFormatter * secondsNumberFormatter = nil;
     } else {
         return [errorMessage stringByAppendingFormat:@" %@", suffixErrorMessage];
     }
+}
+
++ (void)sendPostRequest:(NSURL *)baseUrl
+     prefixErrorMessage:(NSString *)prefixErrorMessage
+     suffixErrorMessage:(NSString *)suffixErrorMessage
+        activityPackage:(ADJActivityPackage *)activityPackage
+    responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
+{
+    NSMutableURLRequest * request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl];
+
+    [ADJUtil sendRequest:request
+      prefixErrorMessage:prefixErrorMessage
+      suffixErrorMessage:suffixErrorMessage
+         activityPackage:activityPackage
+     responseDataHandler:responseDataHandler];
+}
+
++ (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)activityPackage
+                                   baseUrl:(NSURL *)baseUrl
+{
+    NSURL *url = [NSURL URLWithString:activityPackage.path relativeToURL:baseUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.timeoutInterval = kRequestTimeout;
+    request.HTTPMethod = @"POST";
+
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+    [request setHTTPBody:[ADJUtil bodyForParameters:activityPackage.parameters]];
+
+    return request;
+}
+
++ (NSData *)bodyForParameters:(NSDictionary *)parameters {
+    NSString *bodyString = [ADJUtil queryString:parameters];
+    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
+    return body;
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request

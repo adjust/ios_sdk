@@ -13,12 +13,14 @@ static id<ADJRequestHandler> internalRequestHandler = nil;
 static id<ADJActivityHandler> internalActivityHandler = nil;
 static id<ADJLogger> internalLogger = nil;
 static id<ADJAttributionHandler> internalAttributionHandler = nil;
+static id<ADJSdkClickHandler> internalSdkClickHandler = nil;
 
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
 static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
+static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 
 @implementation ADJAdjustFactory
 
@@ -88,6 +90,13 @@ static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
     return packageHandlerBackoffStrategy;
 }
 
++ (ADJBackoffStrategy *)sdkClickHandlerBackoffStrategy {
+    if (sdkClickHandlerBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
+    }
+    return sdkClickHandlerBackoffStrategy;
+}
+
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
@@ -104,6 +113,15 @@ static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
                                         withAttributionPackage:attributionPackage
                                                  startsSending:startsSending
                                  hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+}
+
++ (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending
+{
+    if (internalSdkClickHandler == nil) {
+        return [ADJSdkClickHandler handlerWithStartsSending:startsSending];
+    }
+
+    return [internalSdkClickHandler initWithStartsSending:startsSending];
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -142,7 +160,15 @@ static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
     internalAttributionHandler = attributionHandler;
 }
 
++ (void)setSdkClickHandler:(id<ADJSdkClickHandler>)sdkClickHandler {
+    internalSdkClickHandler = sdkClickHandler;
+}
+
 + (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
     packageHandlerBackoffStrategy = backoffStrategy;
+}
+
++ (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
+    sdkClickHandlerBackoffStrategy = backoffStrategy;
 }
 @end
