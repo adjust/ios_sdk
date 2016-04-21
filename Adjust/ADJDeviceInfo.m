@@ -60,7 +60,6 @@
         copy.fbAttributionId = [self.fbAttributionId copyWithZone:zone];
         copy.trackingEnabled = self.trackingEnabled;
         copy.vendorId = [self.vendorId copyWithZone:zone];
-        copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.clientSdk = [self.clientSdk copyWithZone:zone];
         copy.bundeIdentifier = [self.bundeIdentifier copyWithZone:zone];
         copy.bundleVersion = [self.bundleVersion copyWithZone:zone];

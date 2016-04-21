@@ -52,7 +52,6 @@ static const double kRequestTimeout = 60; // 60 seconds
 #pragma clang diagnostic pop
         }
 
-
         dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
 

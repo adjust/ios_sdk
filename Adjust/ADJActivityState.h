@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL askingAttribution;
+@property (nonatomic, copy) NSString *deviceToken;
 
 // global counters
 @property (nonatomic, assign) int eventCount;

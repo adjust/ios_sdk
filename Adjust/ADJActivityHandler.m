@@ -88,7 +88,6 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, retain) ADJInternalState *internalState;
-
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
 @end
@@ -826,16 +825,43 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return NO;
 }
 
-- (void) setDeviceTokenInternal:(NSData *)deviceToken {
+- (void)setDeviceTokenInternal:(NSData *)deviceToken {
     if (deviceToken == nil) {
         return;
     }
 
-    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:
+    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
                        [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
 
-    self.deviceInfo.pushToken = token;
+    if (![self updateDeviceToken:deviceTokenString]) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:self.deviceInfo
+                                        activityState:self.activityState
+                                        config:self.adjustConfig
+                                        createdAt:now];
+
+    clickBuilder.deviceToken = deviceTokenString;
+
+    ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"push"];
+
+    [self.sdkClickHandler sendSdkClick:clickPackage];
+}
+
+- (BOOL)updateDeviceToken:(NSString *)deviceToken {
+    if (deviceToken == nil) {
+        return NO;
+    }
+
+    if ([deviceToken isEqualToString:self.activityState.deviceToken]) {
+        return NO;
+    }
+
+    return YES;
 }
 
 #pragma mark - private

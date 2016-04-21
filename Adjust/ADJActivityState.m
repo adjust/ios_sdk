@@ -31,6 +31,7 @@ static const int kTransactionIdCount = 10;
     self.transactionIds  = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.enabled         = YES;
     self.askingAttribution           = NO;
+    self.deviceToken     = nil;
 
     return self;
 }
@@ -60,9 +61,9 @@ static const int kTransactionIdCount = 10;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f",
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@",
             self.eventCount, self.sessionCount, self.subsessionCount, self.askingAttribution, self.sessionLength,
-            self.timeSpent, self.lastActivity];
+            self.timeSpent, self.lastActivity, self.deviceToken];
 }
 
 #pragma mark NSCoding
@@ -107,6 +108,10 @@ static const int kTransactionIdCount = 10;
         self.askingAttribution = NO;
     }
 
+    if ([decoder containsValueForKey:@"deviceToken"]) {
+        self.deviceToken = [decoder decodeObjectForKey:@"deviceToken"];
+    }
+
     self.lastInterval = -1;
 
     return self;
@@ -123,6 +128,7 @@ static const int kTransactionIdCount = 10;
     [encoder encodeObject:self.transactionIds  forKey:@"transactionIds"];
     [encoder encodeBool:self.enabled           forKey:@"enabled"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
+    [encoder encodeObject:self.deviceToken     forKey:@"deviceToken"];
 }
 
 -(id)copyWithZone:(NSZone *)zone
@@ -139,6 +145,7 @@ static const int kTransactionIdCount = 10;
         copy.enabled           = self.enabled;
         copy.lastActivity      = self.lastActivity;
         copy.askingAttribution = self.askingAttribution;
+        copy.deviceToken       = self.deviceToken;
         // transactionIds not copied
     }
     

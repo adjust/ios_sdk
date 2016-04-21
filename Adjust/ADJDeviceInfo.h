@@ -14,7 +14,6 @@
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, copy) NSString *vendorId;
-@property (nonatomic, copy) NSString *pushToken;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *bundeIdentifier;
 @property (nonatomic, copy) NSString *bundleVersion;
