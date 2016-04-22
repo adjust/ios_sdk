@@ -43,21 +43,6 @@
     // disable the SDK
     //[Adjust setEnabled:NO];
 
-    NSLog(@"is64bit %d", [ADJSystemProfile is64bit]);
-    NSLog(@"cpuFamily %@", [ADJSystemProfile cpuFamily]);
-    NSLog(@"osVersion %@", [ADJSystemProfile osVersion]);
-    NSLog(@"cpuCount %d", [ADJSystemProfile cpuCount]);
-    NSLog(@"machineArch %@", [ADJSystemProfile machineArch]);
-    NSLog(@"machineModel %@", [ADJSystemProfile machineModel]);
-    NSLog(@"cpuBrand %@", [ADJSystemProfile cpuBrand]);
-    NSLog(@"cpuFeatures %@", [ADJSystemProfile cpuFeatures]);
-    NSLog(@"cpuVendor %@", [ADJSystemProfile cpuVendor]);
-    NSLog(@"appleLanguage %@", [ADJSystemProfile appleLanguage]);
-    NSLog(@"cpuSpeed %lld", [ADJSystemProfile cpuSpeed]);
-    NSLog(@"ramsize %lld", [ADJSystemProfile ramsize]);
-    NSLog(@"cpuType %@", [ADJSystemProfile cpuType]);
-    NSLog(@"cpuSubtype %@", [ADJSystemProfile cpuSubtype]);
-
     return YES;
 }
 

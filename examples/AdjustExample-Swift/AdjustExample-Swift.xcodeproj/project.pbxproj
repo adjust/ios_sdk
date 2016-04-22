@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96164DAF1CCA4E73009431AB /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DAA1CCA4E73009431AB /* ADJBackoffStrategy.m */; };
+		96164DB01CCA4E73009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DAC1CCA4E73009431AB /* ADJSdkClickHandler.m */; };
+		96164DB11CCA4E73009431AB /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DAE1CCA4E73009431AB /* ADJSystemProfile.m */; };
 		9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */; };
 		9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */; };
 		9DF7A9CB1CB4ECA600D3591F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C91CB4ECA600D3591F /* Main.storyboard */; };
@@ -42,6 +45,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96164DA91CCA4E73009431AB /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		96164DAA1CCA4E73009431AB /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		96164DAB1CCA4E73009431AB /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
+		96164DAC1CCA4E73009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		96164DAD1CCA4E73009431AB /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
+		96164DAE1CCA4E73009431AB /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
 		9DF7A9C21CB4ECA600D3591F /* AdjustExample-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSwift.swift; sourceTree = "<group>"; };
@@ -150,6 +159,12 @@
 		9DF7A9E21CB4F0DB00D3591F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				96164DA91CCA4E73009431AB /* ADJBackoffStrategy.h */,
+				96164DAA1CCA4E73009431AB /* ADJBackoffStrategy.m */,
+				96164DAB1CCA4E73009431AB /* ADJSdkClickHandler.h */,
+				96164DAC1CCA4E73009431AB /* ADJSdkClickHandler.m */,
+				96164DAD1CCA4E73009431AB /* ADJSystemProfile.h */,
+				96164DAE1CCA4E73009431AB /* ADJSystemProfile.m */,
 				9DF7A9E31CB4F0DB00D3591F /* ADJActivityHandler.h */,
 				9DF7A9E41CB4F0DB00D3591F /* ADJActivityHandler.m */,
 				9DF7A9E51CB4F0DB00D3591F /* ADJActivityKind.h */,
@@ -293,6 +308,7 @@
 				9DF7AA2E1CB4F0DB00D3591F /* ADJSessionSuccess.m in Sources */,
 				9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */,
 				9DF7AA291CB4F0DB00D3591F /* ADJPackageBuilder.m in Sources */,
+				96164DB11CCA4E73009431AB /* ADJSystemProfile.m in Sources */,
 				9DF7AA211CB4F0DB00D3591F /* ADJAttribution.m in Sources */,
 				9DF7AA251CB4F0DB00D3591F /* ADJEvent.m in Sources */,
 				9DF7AA311CB4F0DB00D3591F /* Adjust.m in Sources */,
@@ -300,7 +316,9 @@
 				9DF7AA321CB4F0DB00D3591F /* ADJUtil.m in Sources */,
 				9DF7AA261CB4F0DB00D3591F /* ADJEventFailure.m in Sources */,
 				9DF7AA221CB4F0DB00D3591F /* ADJAttributionHandler.m in Sources */,
+				96164DB01CCA4E73009431AB /* ADJSdkClickHandler.m in Sources */,
 				9DF7AA301CB4F0DB00D3591F /* ADJTimerOnce.m in Sources */,
+				96164DAF1CCA4E73009431AB /* ADJBackoffStrategy.m in Sources */,
 				9DF7AA241CB4F0DB00D3591F /* ADJDeviceInfo.m in Sources */,
 				9DF7AA1F1CB4F0DB00D3591F /* UIDevice+ADJAdditions.m in Sources */,
 				9DF7AA281CB4F0DB00D3591F /* ADJLogger.m in Sources */,
