@@ -111,6 +111,8 @@
 		96E5E3B818BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */; };
 		96ED00391A38A4CD00209110 /* ADJAttributionHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */; };
 		96ED003E1A38A98C00209110 /* ADJDelegateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED003D1A38A98C00209110 /* ADJDelegateTest.m */; };
+		96ED74FB1CD8085000C073B8 /* ADJSystemProfile.h in Headers */ = {isa = PBXBuildFile; fileRef = 96ED74F91CD8085000C073B8 /* ADJSystemProfile.h */; };
+		96ED74FC1CD8085000C073B8 /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED74FA1CD8085000C073B8 /* ADJSystemProfile.m */; };
 		96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 96FCC5361C186426007BBFE1 /* ADJResponseData.h */; };
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
 		96FDD75E1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */; };
@@ -343,6 +345,8 @@
 		96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerMock.m; sourceTree = "<group>"; };
 		96ED003C1A38A98C00209110 /* ADJDelegateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDelegateTest.h; sourceTree = "<group>"; };
 		96ED003D1A38A98C00209110 /* ADJDelegateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDelegateTest.m; sourceTree = "<group>"; };
+		96ED74F91CD8085000C073B8 /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
+		96ED74FA1CD8085000C073B8 /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
 		96FCC5361C186426007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+NSURLDataWithRequestMocking.h"; sourceTree = "<group>"; };
@@ -615,6 +619,8 @@
 		9DA11A321C96D2A200980777 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				96ED74F91CD8085000C073B8 /* ADJSystemProfile.h */,
+				96ED74FA1CD8085000C073B8 /* ADJSystemProfile.m */,
 				9DA11A3B1C96D2A200980777 /* ADJAdditions */,
 				9DA11A331C96D2A200980777 /* ADJActivityHandler.h */,
 				9DA11A341C96D2A200980777 /* ADJActivityHandler.m */,
@@ -758,6 +764,7 @@
 				9DA11A871C96D2A200980777 /* ADJLogger.h in Headers */,
 				9DA11A791C96D2A200980777 /* ADJAttribution.h in Headers */,
 				9DA11A831C96D2A200980777 /* ADJEventFailure.h in Headers */,
+				96ED74FB1CD8085000C073B8 /* ADJSystemProfile.h in Headers */,
 				9DA11A851C96D2A200980777 /* ADJEventSuccess.h in Headers */,
 				9DA11A911C96D2A300980777 /* ADJSessionFailure.h in Headers */,
 				9DA11A931C96D2A300980777 /* ADJSessionSuccess.h in Headers */,
@@ -1078,6 +1085,7 @@
 				96164D891CCA4D48009431AB /* ADJBackoffStrategy.m in Sources */,
 				96164D871CCA4D36009431AB /* ADJSdkClickHandler.m in Sources */,
 				9DA11A7E1C96D2A200980777 /* ADJConfig.m in Sources */,
+				96ED74FC1CD8085000C073B8 /* ADJSystemProfile.m in Sources */,
 				9DA11A9C1C96D2A300980777 /* ADJUtil.m in Sources */,
 				9DA11A7C1C96D2A200980777 /* ADJAttributionHandler.m in Sources */,
 				9DA11A961C96D2A300980777 /* ADJTimerCycle.m in Sources */,
