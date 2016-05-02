@@ -178,16 +178,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)applicationDidBecomeActive {
     self.internalState.background = NO;
 
-    [self stopBackgroundTimer];
-
-    [self startForegroundTimer];
-
-    [self trackSubsessionStart];
-}
-
-- (void)trackSubsessionStart {
-    [self.logger verbose:@"Subsession start"];
     dispatch_async(self.internalQueue, ^{
+        [self stopBackgroundTimer];
+
+        [self startForegroundTimer];
+
+        [self.logger verbose:@"Subsession start"];
+
         [self startInternal];
     });
 }
@@ -195,16 +192,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)applicationWillResignActive {
     self.internalState.background = YES;
 
-    [self stopForegroundTimer];
-
-    [self startBackgroundTimer];
-
-    [self trackSubsessionEnd];
-}
-
-- (void)trackSubsessionEnd {
-    [self.logger verbose:@"Subsession end"];
     dispatch_async(self.internalQueue, ^{
+        [self stopForegroundTimer];
+
+        [self startBackgroundTimer];
+
+        [self.logger verbose:@"Subsession end"];
+
         [self endInternal];
     });
 }
