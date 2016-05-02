@@ -678,14 +678,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.logger info:@"Trying to open deep link (%@)", deepLink];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        // there is no validation to be made by the user
-        if (![self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
-            [self launchDeepLinkMain:deepLinkUrl];
-            return;
+        BOOL toLaunchDeeplink = YES;
+
+        if ([self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+            toLaunchDeeplink = [self.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
         }
 
-        // launch deeplink validation by user
-        BOOL toLaunchDeeplink = [self.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
         if (toLaunchDeeplink) {
             [self launchDeepLinkMain:deepLinkUrl];
         }
