@@ -549,6 +549,19 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];
 }
 
++ (double)randomInRange:(double) minRange maxRange:(double) maxRange {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        srand48(arc4random());
+    });
+
+    double random = drand48();
+    double range = maxRange - minRange;
+    double scaled = random  * range;
+    double shifted = scaled + minRange;
+    return shifted;
+}
+
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy
 {
@@ -562,11 +575,9 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     // limit the maximum allowed time to wait
     NSTimeInterval ceilingTime = MIN(exponentialTime, backoffStrategy.maxWait);
     // add 1 to allow maximum value
-    NSUInteger jitterFactorBase = (NSUInteger)arc4random_uniform((uint32_t)(backoffStrategy.maxJitter - backoffStrategy.minJitter + 1));
-    NSUInteger jitterFactorAdjusted = jitterFactorBase + backoffStrategy.minJitter;
-    double jitterFactor = jitterFactorAdjusted / 100.0;
+    double randomRange = [ADJUtil randomInRange:backoffStrategy.minRange maxRange:backoffStrategy.maxRange];
     // apply jitter factor
-    NSTimeInterval waitingTime =  ceilingTime * jitterFactor;
+    NSTimeInterval waitingTime =  ceilingTime * randomRange;
     return waitingTime;
 }
 

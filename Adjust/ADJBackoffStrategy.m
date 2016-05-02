@@ -23,29 +23,29 @@
             [self saveStrategy:1
               secondMultiplier:120
                        maxWait:60*60*24
-                     minJitter:50
-                     maxJitter:100];
+                     minRange:0.5
+                     maxRange:1.0];
             break;
         case ADJShortWait:
             [self saveStrategy:1
               secondMultiplier:0.2
-                       maxWait:60
-                     minJitter:50
-                     maxJitter:100];
+                       maxWait:60*60
+                     minRange:0.5
+                     maxRange:1.0];
             break;
         case ADJTestWait:
             [self saveStrategy:1
               secondMultiplier:0.2
                        maxWait:1
-                     minJitter:50
-                     maxJitter:100];
+                     minRange:0.5
+                     maxRange:1.0];
             break;
         case ADJNoWait:
             [self saveStrategy:100
               secondMultiplier:1
                        maxWait:1
-                     minJitter:50
-                     maxJitter:100];
+                     minRange:0.5
+                     maxRange:1.0];
             break;
         default:
             break;
@@ -57,14 +57,14 @@
 - (void)saveStrategy:(NSInteger)minRetries
     secondMultiplier:(NSTimeInterval)secondMultiplier
              maxWait:(NSTimeInterval)maxWait
-           minJitter:(NSInteger)minJitter
-           maxJitter:(NSInteger)maxJitter
+           minRange:(double)minRange
+           maxRange:(double)maxRange
 {
     self.minRetries = minRetries;
     self.secondMultiplier = secondMultiplier;
     self.maxWait = maxWait;
-    self.minJitter = minJitter;
-    self.maxJitter = maxJitter;
+    self.minRange = minRange;
+    self.maxRange = maxRange;
 }
 
 @end

@@ -20,8 +20,8 @@ typedef NS_ENUM(NSInteger, ADJBackoffStrategyType) {
 @property (nonatomic, assign) NSUInteger minRetries;
 @property (nonatomic, assign) NSTimeInterval secondMultiplier;
 @property (nonatomic, assign) NSTimeInterval maxWait;
-@property (nonatomic, assign) NSUInteger minJitter;
-@property (nonatomic, assign) NSUInteger maxJitter;
+@property (nonatomic, assign) double minRange;
+@property (nonatomic, assign) double maxRange;
 
 - (id) initWithType:(ADJBackoffStrategyType)strategyType;
 + (ADJBackoffStrategy *)backoffStrategyWithType:(ADJBackoffStrategyType)strategyType;
