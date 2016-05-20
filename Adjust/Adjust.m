@@ -109,12 +109,12 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 - (void)trackSubsessionStart {
     if (![self checkActivityHandler]) return;
-    [self.activityHandler trackSubsessionStart];
+    [self.activityHandler applicationDidBecomeActive];
 }
 
 - (void)trackSubsessionEnd {
     if (![self checkActivityHandler]) return;
-    [self.activityHandler trackSubsessionEnd];
+    [self.activityHandler applicationWillResignActive];
 }
 
 - (void)setEnabled:(BOOL)enabled {

@@ -15,6 +15,8 @@
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, retain) NSDictionary *parameters;
 
+@property (nonatomic, assign) NSInteger retries;
+
 // logs
 @property (nonatomic, assign) ADJActivityKind activityKind;
 @property (nonatomic, copy) NSString *suffix;
@@ -22,5 +24,8 @@
 - (NSString *)extendedString;
 - (NSString *)successMessage;
 - (NSString *)failureMessage;
+
+- (NSInteger)getRetries;
+- (NSInteger)increaseRetries;
 
 @end

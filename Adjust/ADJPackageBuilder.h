@@ -19,6 +19,8 @@
 @property (nonatomic, copy) NSDate *clickTime;
 @property (nonatomic, retain) NSDictionary *iadDetails;
 @property (nonatomic, retain) NSDictionary* deeplinkParameters;
+@property (nonatomic, copy) NSString *deeplink;
+@property (nonatomic, copy) NSString *deviceToken;
 
 - (id) initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
             activityState:(ADJActivityState *)activityState

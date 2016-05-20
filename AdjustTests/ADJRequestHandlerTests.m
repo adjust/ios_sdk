@@ -31,13 +31,14 @@
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
 
-    [self reset];
-
+    //[self reset];
 }
 
 - (void)tearDown
 {
     [ADJAdjustFactory setLogger:nil];
+    [ADJAdjustFactory setPackageHandler:nil];
+    [NSURLConnection reset];
 
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
@@ -50,11 +51,15 @@
     self.packageHandlerMock = [[ADJPackageHandlerMock alloc] init];
     [ADJAdjustFactory setPackageHandler:self.packageHandlerMock];
 
-    self.requestHandler =[ADJAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
+    self.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:self.packageHandlerMock];
+    [NSURLConnection reset];
 }
 
 - (void)testSend
 {
+    //  reseting to make the test order independent
+    [self reset];
+
     // null response
     [NSURLSession setResponseType:ADJSessionResponseTypeNil];
 
@@ -118,7 +123,7 @@
 
 - (void)checkSendPackage
 {
-    [self.requestHandler sendPackage:[ADJTestsUtil getUnknowPackage:@""]];
+    [self.requestHandler sendPackage:[ADJTestsUtil getUnknowPackage:@""] queueSize:0];
 
     [NSThread sleepForTimeInterval:1.0];
 

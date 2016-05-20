@@ -15,15 +15,20 @@
 #import "ADJResponseData.h"
 
 #include <sys/xattr.h>
+#include <math.h>
+#include <stdlib.h>
 
 static NSDateFormatter *dateFormat;
 
-static NSString * const kClientSdk      = @"ios4.6.0";
+static NSString * const kClientSdk      = @"ios4.7.0";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
+
 static NSString * const kBaseUrl        = @"https://app.adjust.com";
 static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 static NSRegularExpression * universalLinkRegex = nil;
+static NSNumberFormatter * secondsNumberFormatter = nil;
+static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark -
 @implementation ADJUtil
@@ -47,7 +52,6 @@ static NSRegularExpression * universalLinkRegex = nil;
             calendarIdentifier = NSGregorianCalendar;
 #pragma clang diagnostic pop
         }
-
 
         dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
@@ -202,6 +206,12 @@ static NSRegularExpression * universalLinkRegex = nil;
 }
 
 + (NSString *) queryString:(NSDictionary *)parameters {
+    return [ADJUtil queryString:parameters queueSize:0];
+}
+
++ (NSString *) queryString:(NSDictionary *)parameters
+                 queueSize:(NSUInteger)queueSize
+{
     NSMutableArray *pairs = [NSMutableArray array];
     for (NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
@@ -215,11 +225,17 @@ static NSRegularExpression * universalLinkRegex = nil;
     NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString adjUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-
     [pairs addObject:sentAtPair];
 
+    if (queueSize > 0) {
+        NSString *queueSizeString = [NSString stringWithFormat:@"%lu", queueSize];
+        NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
+        NSString *queueSizePair = [NSString stringWithFormat:@"%@=%@", @"queue_size", escapedQueueSize];
+        [pairs addObject:queueSizePair];
+    }
+
     NSString *queryString = [pairs componentsJoinedByString:@"&"];
-    
+
     return queryString;
 }
 
@@ -241,6 +257,41 @@ static NSRegularExpression * universalLinkRegex = nil;
     } else {
         return [errorMessage stringByAppendingFormat:@" %@", suffixErrorMessage];
     }
+}
+
++ (void)sendPostRequest:(NSURL *)baseUrl
+              queueSize:(NSUInteger)queueSize
+     prefixErrorMessage:(NSString *)prefixErrorMessage
+     suffixErrorMessage:(NSString *)suffixErrorMessage
+        activityPackage:(ADJActivityPackage *)activityPackage
+    responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler
+{
+    NSMutableURLRequest * request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
+
+    [ADJUtil sendRequest:request
+      prefixErrorMessage:prefixErrorMessage
+      suffixErrorMessage:suffixErrorMessage
+         activityPackage:activityPackage
+     responseDataHandler:responseDataHandler];
+}
+
++ (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)activityPackage
+                                   baseUrl:(NSURL *)baseUrl
+                                 queueSize:(NSUInteger)queueSize
+{
+    NSURL *url = [NSURL URLWithString:activityPackage.path relativeToURL:baseUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.timeoutInterval = kRequestTimeout;
+    request.HTTPMethod = @"POST";
+
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+
+    NSString *bodyString = [ADJUtil queryString:activityPackage.parameters queueSize:queueSize];
+    NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
+    [request setHTTPBody:body];
+
+    return request;
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
@@ -485,4 +536,73 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     return extractedUrl;
 }
 
++ (NSString *)secondsNumberFormat:(double)seconds {
+    if (secondsNumberFormatter == nil) {
+        secondsNumberFormatter = [[NSNumberFormatter alloc] init];
+        [secondsNumberFormatter setPositiveFormat:@"0.0"];
+    }
+
+    // normalize negative zero
+    if (seconds < 0) {
+        seconds = seconds * -1;
+    }
+
+    return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];
+}
+
++ (double)randomInRange:(double) minRange maxRange:(double) maxRange {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        srand48(arc4random());
+    });
+
+    double random = drand48();
+    double range = maxRange - minRange;
+    double scaled = random  * range;
+    double shifted = scaled + minRange;
+    return shifted;
+}
+
++ (NSTimeInterval)waitingTime:(NSInteger)retries
+              backoffStrategy:(ADJBackoffStrategy *)backoffStrategy
+{
+    if (retries < backoffStrategy.minRetries) {
+        return 0;
+    }
+    // start with base 0
+    NSInteger base = retries - backoffStrategy.minRetries;
+    // get the exponential Time from the base: 1, 2, 4, 8, 16, ... * times the multiplier
+    NSTimeInterval exponentialTime = pow(2.0, base) * backoffStrategy.secondMultiplier;
+    // limit the maximum allowed time to wait
+    NSTimeInterval ceilingTime = MIN(exponentialTime, backoffStrategy.maxWait);
+    // add 1 to allow maximum value
+    double randomRange = [ADJUtil randomInRange:backoffStrategy.minRange maxRange:backoffStrategy.maxRange];
+    // apply jitter factor
+    NSTimeInterval waitingTime =  ceilingTime * randomRange;
+    return waitingTime;
+}
+
++ (void)launchInMainThread:(NSObject *)receiver
+                  selector:(SEL)selector
+                withObject:(id)object
+{
+    if (ADJAdjustFactory.testing) {
+        [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
+        [receiver performSelectorInBackground:selector
+                       withObject:object];
+    } else {
+        [receiver performSelectorOnMainThread:selector
+                                   withObject:object
+                                waitUntilDone:NO]; // non-blocking
+    }
+}
+
++ (void)launchInMainThread:(dispatch_block_t)block {
+    if (ADJAdjustFactory.testing) {
+        [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
+    } else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
 @end

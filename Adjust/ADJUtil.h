@@ -10,6 +10,7 @@
 #import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJEvent.h"
+#import "ADJBackoffStrategy.h"
 
 @interface ADJUtil : NSObject
 
@@ -36,6 +37,14 @@
 + (NSString *) queryString:(NSDictionary *)parameters;
 + (BOOL)isNull:(id)value;
 + (BOOL)isNotNull:(id)value;
+
++ (void)sendPostRequest:(NSURL *)baseUrl
+              queueSize:(NSUInteger)queueSize
+     prefixErrorMessage:(NSString *)prefixErrorMessage
+     suffixErrorMessage:(NSString *)suffixErrorMessage
+        activityPackage:(ADJActivityPackage *)activityPackage
+    responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandler;
+
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
@@ -51,5 +60,11 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 
 + (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 + (NSString*)idfa;
-
++ (NSString *)secondsNumberFormat:(double)seconds;
++ (NSTimeInterval)waitingTime:(NSInteger)retries
+              backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
++ (void)launchInMainThread:(NSObject *)receiver
+                  selector:(SEL)selector
+                withObject:(id)object;
++ (void)launchInMainThread:(dispatch_block_t)block;
 @end

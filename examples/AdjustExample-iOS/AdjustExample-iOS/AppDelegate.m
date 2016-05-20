@@ -8,13 +8,12 @@
 
 #import "Constants.h"
 #import "AppDelegate.h"
-
+#import "ADJSystemProfile.h"
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -33,6 +32,9 @@
     // set default tracker
     //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
 
+    // send in the background
+    //[adjustConfig setSendInBackground:YES];
+
     // set an attribution delegate
     [adjustConfig setDelegate:self];
 
@@ -43,7 +45,7 @@
 
     // disable the SDK
     //[Adjust setEnabled:NO];
-    
+
     return YES;
 }
 
@@ -72,6 +74,11 @@
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
     NSLog(@"adjust session failure %@", sessionFailureResponseData);
+}
+
+// evaluate deeplink to be launched
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

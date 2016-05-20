@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96164DA61CCA4E54009431AB /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA11CCA4E54009431AB /* ADJBackoffStrategy.m */; };
+		96164DA71CCA4E54009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA31CCA4E54009431AB /* ADJSdkClickHandler.m */; };
+		96164DA81CCA4E54009431AB /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA51CCA4E54009431AB /* ADJSystemProfile.m */; };
 		9DF7AC191CB4FEDB00D3591F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC181CB4FEDB00D3591F /* main.m */; };
 		9DF7AC1C1CB4FEDB00D3591F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1B1CB4FEDB00D3591F /* AppDelegate.m */; };
 		9DF7AC1F1CB4FEDB00D3591F /* ViewControllerWatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1E1CB4FEDB00D3591F /* ViewControllerWatch.m */; };
@@ -99,6 +102,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		96164DA01CCA4E54009431AB /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		96164DA11CCA4E54009431AB /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		96164DA21CCA4E54009431AB /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
+		96164DA31CCA4E54009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		96164DA41CCA4E54009431AB /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
+		96164DA51CCA4E54009431AB /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
 		9DF7AC141CB4FEDB00D3591F /* AdjustExample-iWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iWatch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7AC181CB4FEDB00D3591F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9DF7AC1A1CB4FEDB00D3591F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -287,6 +296,12 @@
 		9DF7AC611CB4FF1800D3591F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				96164DA01CCA4E54009431AB /* ADJBackoffStrategy.h */,
+				96164DA11CCA4E54009431AB /* ADJBackoffStrategy.m */,
+				96164DA21CCA4E54009431AB /* ADJSdkClickHandler.h */,
+				96164DA31CCA4E54009431AB /* ADJSdkClickHandler.m */,
+				96164DA41CCA4E54009431AB /* ADJSystemProfile.h */,
+				96164DA51CCA4E54009431AB /* ADJSystemProfile.m */,
 				9DF7AC621CB4FF1800D3591F /* ADJActivityHandler.h */,
 				9DF7AC631CB4FF1800D3591F /* ADJActivityHandler.m */,
 				9DF7AC641CB4FF1800D3591F /* ADJActivityKind.h */,
@@ -501,6 +516,7 @@
 				9DF7ACA91CB4FF1800D3591F /* ADJPackageHandler.m in Sources */,
 				9DF7AC991CB4FF1800D3591F /* ADJActivityKind.m in Sources */,
 				9DF7AC9E1CB4FF1800D3591F /* UIDevice+ADJAdditions.m in Sources */,
+				96164DA81CCA4E54009431AB /* ADJSystemProfile.m in Sources */,
 				9DF7ACB81CB4FF6400D3591F /* AdjustTrackingHelper.m in Sources */,
 				9DF7AC9B1CB4FF1800D3591F /* ADJActivityState.m in Sources */,
 				9DF7AC9A1CB4FF1800D3591F /* ADJActivityPackage.m in Sources */,
@@ -516,6 +532,7 @@
 				9DF7AC9D1CB4FF1800D3591F /* NSString+ADJAdditions.m in Sources */,
 				9DF7ACA21CB4FF1800D3591F /* ADJConfig.m in Sources */,
 				9DF7AC1C1CB4FEDB00D3591F /* AppDelegate.m in Sources */,
+				96164DA71CCA4E54009431AB /* ADJSdkClickHandler.m in Sources */,
 				9DF7ACAC1CB4FF1800D3591F /* ADJSessionFailure.m in Sources */,
 				9DF7ACAB1CB4FF1800D3591F /* ADJResponseData.m in Sources */,
 				9DF7ACA71CB4FF1800D3591F /* ADJLogger.m in Sources */,
@@ -524,6 +541,7 @@
 				9DF7AC9F1CB4FF1800D3591F /* ADJAdjustFactory.m in Sources */,
 				9DF7ACB71CB4FF6400D3591F /* AdjustLoggingHelper.m in Sources */,
 				9DF7AC191CB4FEDB00D3591F /* main.m in Sources */,
+				96164DA61CCA4E54009431AB /* ADJBackoffStrategy.m in Sources */,
 				9DF7ACAE1CB4FF1800D3591F /* ADJTimerCycle.m in Sources */,
 				9DF7ACA01CB4FF1800D3591F /* ADJAttribution.m in Sources */,
 			);

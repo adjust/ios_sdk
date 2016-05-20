@@ -43,56 +43,65 @@
 
     // default values
     self.logLevel = ADJLogLevelInfo;
-    self.hasDelegate  = NO;
-    self.hasAttributionChangedDelegate = NO;
+    _hasResponseDelegate = NO;
+    _hasAttributionChangedDelegate = NO;
     self.eventBufferingEnabled = NO;
 
     return self;
 }
 
 - (void) setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    self.hasDelegate = NO;
-    self.hasAttributionChangedDelegate = NO;
+    _hasResponseDelegate = NO;
+    _hasAttributionChangedDelegate = NO;
+    BOOL implementsDeeplinkCallback = NO;
+
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
 
     if ([ADJUtil isNull:delegate]) {
+        [logger warn:@"Delegate is nil"];
         _delegate = nil;
         return;
     }
 
-    id<ADJLogger> logger = ADJAdjustFactory.logger;
-
     if ([delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         [logger debug:@"Delegate implements adjustAttributionChanged:"];
 
-        self.hasDelegate = YES;
-        self.hasAttributionChangedDelegate = YES;
+        _hasResponseDelegate = YES;
+        _hasAttributionChangedDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
         [logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
 
-        self.hasDelegate = YES;
+        _hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
         [logger debug:@"Delegate implements adjustEventTrackingFailed:"];
 
-        self.hasDelegate = YES;
+        _hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
         [logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
 
-        self.hasDelegate = YES;
+        _hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
         [logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
 
-        self.hasDelegate = YES;
+        _hasResponseDelegate = YES;
     }
 
-    if (!self.hasDelegate) {
+    if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+        [logger debug:@"Delegate implements adjustDeeplinkResponse:"];
+
+        // does not enable hasDelegate flag
+        implementsDeeplinkCallback = YES;
+    }
+
+    if (!(self.hasResponseDelegate || implementsDeeplinkCallback)) {
         [logger error:@"Delegate does not implement any optional method"];
         _delegate = nil;
         return;
@@ -145,8 +154,9 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
-        copy.hasDelegate = self.hasDelegate;
-        copy.hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
+        copy->_hasResponseDelegate = self.hasResponseDelegate;
+        copy->_hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
+        copy.sendInBackground = self.sendInBackground;
         // adjust delegate not copied
     }
 

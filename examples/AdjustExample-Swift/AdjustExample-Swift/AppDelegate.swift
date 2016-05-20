@@ -27,6 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // set default tracker
         // adjustConfig.defaultTracker = "{TrackerToken}"
 
+        // send in the background
+        // adjustConfig.sendInBackground = true
+
         // set an attribution delegate
         adjustConfig.delegate = self
 
@@ -59,6 +62,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
 
     func adjustSessionTrackingFailed(sessionFailureResponseData: ADJSessionFailure) {
         NSLog("adjust session failure %@", sessionFailureResponseData)
+    }
+
+    func adjustDeeplinkResponse(deeplink: NSURL!) -> Bool {
+        return true
     }
 
     func applicationWillResignActive(application: UIApplication) {

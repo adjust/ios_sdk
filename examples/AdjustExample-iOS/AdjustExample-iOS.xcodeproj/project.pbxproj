@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96164D941CCA4E1C009431AB /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164D8F1CCA4E1C009431AB /* ADJBackoffStrategy.m */; };
+		96164D951CCA4E1C009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164D911CCA4E1C009431AB /* ADJSdkClickHandler.m */; };
+		96164D961CCA4E1C009431AB /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164D931CCA4E1C009431AB /* ADJSystemProfile.m */; };
 		963909411BCBFCF300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909401BCBFCF300A2E8A4 /* main.m */; };
 		963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909431BCBFCF300A2E8A4 /* AppDelegate.m */; };
 		9639094A1BCBFCF300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909481BCBFCF300A2E8A4 /* Main.storyboard */; };
@@ -46,6 +49,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96164D8E1CCA4E1C009431AB /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		96164D8F1CCA4E1C009431AB /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		96164D901CCA4E1C009431AB /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
+		96164D911CCA4E1C009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		96164D921CCA4E1C009431AB /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
+		96164D931CCA4E1C009431AB /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
 		9639093C1BCBFCF300A2E8A4 /* AdjustExample-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		963909401BCBFCF300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909421BCBFCF300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -178,6 +187,12 @@
 		963909681BCBFF8D00A2E8A4 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				96164D8E1CCA4E1C009431AB /* ADJBackoffStrategy.h */,
+				96164D8F1CCA4E1C009431AB /* ADJBackoffStrategy.m */,
+				96164D901CCA4E1C009431AB /* ADJSdkClickHandler.h */,
+				96164D911CCA4E1C009431AB /* ADJSdkClickHandler.m */,
+				96164D921CCA4E1C009431AB /* ADJSystemProfile.h */,
+				96164D931CCA4E1C009431AB /* ADJSystemProfile.m */,
 				96E423C61C85F3B50006729A /* ADJEventFailure.h */,
 				96E423C71C85F3B50006729A /* ADJEventFailure.m */,
 				96E423C81C85F3B50006729A /* ADJEventSuccess.h */,
@@ -328,6 +343,7 @@
 				96BA940B1C3D57FD00C96245 /* ADJSessionFailure.m in Sources */,
 				9639099D1BCBFF8D00A2E8A4 /* ADJAttributionHandler.m in Sources */,
 				963909A21BCBFF8D00A2E8A4 /* ADJPackageBuilder.m in Sources */,
+				96164D961CCA4E1C009431AB /* ADJSystemProfile.m in Sources */,
 				963909A51BCBFF8D00A2E8A4 /* ADJTimerCycle.m in Sources */,
 				963909A61BCBFF8D00A2E8A4 /* ADJTimerOnce.m in Sources */,
 				9DC95F2A1C10515300138E4B /* Constants.m in Sources */,
@@ -343,6 +359,7 @@
 				963909A31BCBFF8D00A2E8A4 /* ADJPackageHandler.m in Sources */,
 				963909981BCBFF8D00A2E8A4 /* NSData+ADJAdditions.m in Sources */,
 				963909A41BCBFF8D00A2E8A4 /* ADJRequestHandler.m in Sources */,
+				96164D951CCA4E1C009431AB /* ADJSdkClickHandler.m in Sources */,
 				963909941BCBFF8D00A2E8A4 /* ADJActivityHandler.m in Sources */,
 				963909991BCBFF8D00A2E8A4 /* NSString+ADJAdditions.m in Sources */,
 				963909A71BCBFF8D00A2E8A4 /* Adjust.m in Sources */,
@@ -351,6 +368,7 @@
 				9639099B1BCBFF8D00A2E8A4 /* ADJAdjustFactory.m in Sources */,
 				963909411BCBFCF300A2E8A4 /* main.m in Sources */,
 				96E423CB1C85F3B50006729A /* ADJEventSuccess.m in Sources */,
+				96164D941CCA4E1C009431AB /* ADJBackoffStrategy.m in Sources */,
 				9639099C1BCBFF8D00A2E8A4 /* ADJAttribution.m in Sources */,
 				9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */,
 			);

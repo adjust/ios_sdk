@@ -13,22 +13,25 @@ static id<ADJRequestHandler> internalRequestHandler = nil;
 static id<ADJActivityHandler> internalActivityHandler = nil;
 static id<ADJLogger> internalLogger = nil;
 static id<ADJAttributionHandler> internalAttributionHandler = nil;
+static id<ADJSdkClickHandler> internalSdkClickHandler = nil;
 
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
 static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
-
+static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
+static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
+static BOOL internalTesting = NO;
 
 @implementation ADJAdjustFactory
 
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                              startPaused:(BOOL)startPaused {
+                                            startsSending:(BOOL)startsSending {
     if (internalPackageHandler == nil) {
-        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startPaused:startPaused];
+        return [ADJPackageHandler handlerWithActivityHandler:activityHandler startsSending:startsSending];
     }
 
-    return [internalPackageHandler initWithActivityHandler:activityHandler startPaused:startPaused];
+    return [internalPackageHandler initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -76,27 +79,54 @@ static NSTimeInterval intervalTimerStart = -1;
 
 + (NSTimeInterval)timerStart {
     if (intervalTimerStart == -1) {
-        return 0;                 // 0 seconds
+        return 60;                 // 1 minute
     }
     return intervalTimerStart;
 }
 
++ (ADJBackoffStrategy *)packageHandlerBackoffStrategy {
+    if (packageHandlerBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJLongWait];
+    }
+    return packageHandlerBackoffStrategy;
+}
+
++ (ADJBackoffStrategy *)sdkClickHandlerBackoffStrategy {
+    if (sdkClickHandlerBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
+    }
+    return sdkClickHandlerBackoffStrategy;
+}
+
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                                      startPaused:(BOOL)startPaused
+                                                    startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
                                           withAttributionPackage:attributionPackage
-                                                     startPaused:startPaused
+                                                   startsSending:startsSending
                                                      hasAttributionChangedDelegate:hasAttributionChangedDelegate];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
                                         withAttributionPackage:attributionPackage
-                                                   startPaused:startPaused
+                                                 startsSending:startsSending
                                  hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+}
+
++ (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending
+{
+    if (internalSdkClickHandler == nil) {
+        return [ADJSdkClickHandler handlerWithStartsSending:startsSending];
+    }
+
+    return [internalSdkClickHandler initWithStartsSending:startsSending];
+}
+
++ (BOOL)testing {
+    return internalTesting;
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -133,5 +163,21 @@ static NSTimeInterval intervalTimerStart = -1;
 
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler {
     internalAttributionHandler = attributionHandler;
+}
+
++ (void)setSdkClickHandler:(id<ADJSdkClickHandler>)sdkClickHandler {
+    internalSdkClickHandler = sdkClickHandler;
+}
+
++ (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
+    packageHandlerBackoffStrategy = backoffStrategy;
+}
+
++ (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
+    sdkClickHandlerBackoffStrategy = backoffStrategy;
+}
+
++ (void)setTesting:(BOOL)testing {
+    internalTesting = testing;
 }
 @end

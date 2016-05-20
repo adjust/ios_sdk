@@ -17,7 +17,7 @@
                     fields:(ADJPackageFields *)fields
               sessionCount:(NSString*)sessionCount;
 
-- (void)testEventSession:(ADJActivityPackage *)package
+- (void)testEventPackage:(ADJActivityPackage *)package
                   fields:(ADJPackageFields *)fields
               eventToken:(NSString*)eventToken;
 

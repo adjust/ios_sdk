@@ -100,6 +100,8 @@
         [self parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
     [self parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
+    [self parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [self parameters:parameters setString:self.deviceToken forKey:@"push_token"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
@@ -166,7 +168,6 @@
                intoParameters:parameters];
     [self parameters:parameters setString:deviceInfo.fbAttributionId   forKey:@"fb_id"];
     [self parameters:parameters setInt:deviceInfo.trackingEnabled      forKey:@"tracking_enabled"];
-    [self parameters:parameters setString:deviceInfo.pushToken         forKey:@"push_token"];
     [self parameters:parameters setString:deviceInfo.bundeIdentifier   forKey:@"bundle_id"];
     [self parameters:parameters setString:deviceInfo.bundleVersion     forKey:@"app_version"];
     [self parameters:parameters setString:deviceInfo.bundleShortVersion forKey:@"app_version_short"];
@@ -176,6 +177,8 @@
     [self parameters:parameters setString:deviceInfo.systemVersion     forKey:@"os_version"];
     [self parameters:parameters setString:deviceInfo.languageCode      forKey:@"language"];
     [self parameters:parameters setString:deviceInfo.countryCode       forKey:@"country"];
+    [self parameters:parameters setString:deviceInfo.machineModel      forKey:@"hardware_name"];
+    [self parameters:parameters setString:deviceInfo.cpuSubtype       forKey:@"cpu_type"];
 }
 
 - (void)injectConfig:(ADJConfig*) adjustConfig
@@ -183,7 +186,8 @@
 {
     [self parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [self parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
-    [self parameters:parameters setBool:adjustConfig.hasDelegate forKey:@"needs_response_details"];
+    [self parameters:parameters setBool:adjustConfig.hasResponseDelegate forKey:@"needs_response_details"];
+    [self parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
 }
 
 - (void) injectActivityState:(ADJActivityState *)activityState

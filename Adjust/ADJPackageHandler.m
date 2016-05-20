@@ -11,6 +11,7 @@
 #import "ADJLogger.h"
 #import "ADJUtil.h"
 #import "ADJAdjustFactory.h"
+#import "ADJBackoffStrategy.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -26,27 +27,30 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) NSMutableArray *packageQueue;
 @property (nonatomic, assign) BOOL paused;
+@property (nonatomic, retain) ADJBackoffStrategy * backoffStrategy;
 
 @end
-
 
 #pragma mark -
 @implementation ADJPackageHandler
 
 + (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                        startPaused:(BOOL)startPaused {
-    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler startPaused:startPaused];
+                                      startsSending:(BOOL)startsSending
+{
+    return [[ADJPackageHandler alloc] initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                  startPaused:(BOOL)startPaused {
+                startsSending:(BOOL)startsSending
+{
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
 
     dispatch_async(self.internalQueue, ^{
-        [self initInternal:activityHandler startPaused:startPaused];
+        [self initInternal:activityHandler startsSending:startsSending];
     });
 
     return self;
@@ -72,11 +76,28 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTracking:responseData];
 }
 
-- (void)closeFirstPackage:(ADJResponseData *)responseData {
-    dispatch_semaphore_signal(self.sendingSemaphore);
-
+- (void)closeFirstPackage:(ADJResponseData *)responseData
+          activityPackage:(ADJActivityPackage *)activityPackage
+{
     responseData.willRetry = YES;
     [self.activityHandler finishedTracking:responseData];
+
+    if (activityPackage != nil) {
+        NSInteger retries = [activityPackage increaseRetries];
+
+        NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+        NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+
+        [self.logger verbose:@"Sleeping for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
+
+        [NSThread sleepForTimeInterval:waitTime];
+    }
+
+    [self.logger verbose:@"Package handler can send"];
+    dispatch_semaphore_signal(self.sendingSemaphore);
+
+    // Try to send the same package after sleeping
+    [self sendFirstPackage];
 }
 
 - (void)pauseSending {
@@ -89,10 +110,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 #pragma mark - internal
 - (void)initInternal:(id<ADJActivityHandler>)activityHandler
-         startPaused:(BOOL)startPaused
+        startsSending:(BOOL)startsSending
 {
     self.activityHandler = activityHandler;
-    self.paused = startPaused;
+    self.paused = !startsSending;
     self.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:self];
     self.logger = ADJAdjustFactory.logger;
     self.sendingSemaphore = dispatch_semaphore_create(1);
@@ -100,11 +121,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)addInternal:(ADJActivityPackage *)newPackage {
-    if (newPackage.activityKind == ADJActivityKindClick && [self.packageQueue count] > 0) {
-        [self.packageQueue insertObject:newPackage atIndex:1];
-    } else {
-        [self.packageQueue addObject:newPackage];
-    }
+    [self.packageQueue addObject:newPackage];
     [self.logger debug:@"Added package %d (%@)", self.packageQueue.count, newPackage];
     [self.logger verbose:@"%@", newPackage.extendedString];
 
@@ -112,7 +129,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)sendFirstInternal {
-    if (self.packageQueue.count == 0) return;
+    NSUInteger queueSize = self.packageQueue.count;
+    if (queueSize == 0) return;
 
     if (self.paused) {
         [self.logger debug:@"Package handler is paused"];
@@ -131,7 +149,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         return;
     }
 
-    [self.requestHandler sendPackage:activityPackage];
+    [self.requestHandler sendPackage:activityPackage
+                           queueSize:queueSize - 1];
 }
 
 - (void)sendNextInternal {

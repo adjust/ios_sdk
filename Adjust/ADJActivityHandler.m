@@ -13,19 +13,48 @@
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
 #import "ADJTimerCycle.h"
+#import "ADJTimerOnce.h"
 #import "ADJUtil.h"
 #import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJSdkClickHandler.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
+static NSString   * const kForegroundTimerName   = @"Foreground timer";
+static NSString   * const kBackgroundTimerName   = @"Background timer";
+
+static NSTimeInterval kForegroundTimerInterval;
+static NSTimeInterval kForegroundTimerStart;
+static NSTimeInterval kBackgroundTimerInterval;
+static double kSessionInterval;
+static double kSubSessionInterval;
+
 // number of tries
 static const int kTryIadV3                       = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
+
+@implementation ADJInternalState
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    return self;
+}
+
+- (BOOL)isEnabled { return self.enabled; }
+- (BOOL)isDisabled { return !self.enabled; }
+- (BOOL)isOffline { return self.offline; }
+- (BOOL)isOnline { return !self.offline; }
+- (BOOL)isBackground { return self.background; }
+- (BOOL)isForeground { return !self.background; }
+
+@end
 
 #pragma mark -
 @interface ADJActivityHandler()
@@ -33,16 +62,15 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
 @property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
+@property (nonatomic, retain) id<ADJSdkClickHandler> sdkClickHandler;
 @property (nonatomic, retain) ADJActivityState *activityState;
-@property (nonatomic, retain) ADJTimerCycle *timer;
+@property (nonatomic, retain) ADJTimerCycle *foregroundTimer;
+@property (nonatomic, retain) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
-
-@property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL offline;
-
+@property (nonatomic, retain) ADJInternalState *internalState;
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 
 @end
@@ -59,7 +87,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig];
 }
-
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig {
     self = [super init];
@@ -78,32 +105,88 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.adjustConfig = adjustConfig;
     self.adjustDelegate = adjustConfig.delegate;
 
+    // init logger to be available everywhere
     self.logger = ADJAdjustFactory.logger;
-    [self addNotificationObserver];
-    self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    _enabled = YES;
+    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
+        [self.logger setLogLevel:ADJLogLevelAssert];
+    } else {
+        [self.logger setLogLevel:self.adjustConfig.logLevel];
+    }
 
+    // read files to have sync values available
+    [self readAttribution];
+    [self readActivityState];
+
+    self.internalState = [[ADJInternalState alloc] init];
+
+    // enabled by default
+    if (self.activityState == nil) {
+        self.internalState.enabled = YES;
+    } else {
+        self.internalState.enabled = self.activityState.enabled;
+    }
+
+    // online by default
+    self.internalState.offline = NO;
+    // in the background by default
+    self.internalState.background = YES;
+
+    self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     dispatch_async(self.internalQueue, ^{
         [self initInternal];
     });
 
+    // get timer values
+    kForegroundTimerStart = ADJAdjustFactory.timerStart;
+    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
+    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
+
+    // initialize timers to be available in applicationDidBecomeActive/WillResignActive
+    // after initInternal so that the handlers are initialized
+    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
+                                                   queue:self.internalQueue
+                                               startTime:kForegroundTimerStart
+                                            intervalTime:kForegroundTimerInterval
+                                                    name:kForegroundTimerName];
+
+    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
+                                                  queue:self.internalQueue
+                                                   name:kBackgroundTimerName];
+
+    [self addNotificationObserver];
+
     return self;
 }
 
-- (void)trackSubsessionStart {
+- (void)applicationDidBecomeActive {
+    self.internalState.background = NO;
+
     dispatch_async(self.internalQueue, ^{
+        [self stopBackgroundTimer];
+
+        [self startForegroundTimer];
+
+        [self.logger verbose:@"Subsession start"];
+
         [self startInternal];
     });
 }
 
-- (void)trackSubsessionEnd {
+- (void)applicationWillResignActive {
+    self.internalState.background = YES;
+
     dispatch_async(self.internalQueue, ^{
+        [self stopForegroundTimer];
+
+        [self startBackgroundTimer];
+
+        [self.logger verbose:@"Subsession end"];
+
         [self endInternal];
     });
 }
 
-- (void)trackEvent:(ADJEvent *)event
-{
+- (void)trackEvent:(ADJEvent *)event {
     dispatch_async(self.internalQueue, ^{
         [self eventInternal:event];
     });
@@ -141,19 +224,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     });
 }
 
-- (void)launchDeepLink:(NSString *)deepLink{
-    if (deepLink == nil) return;
-
-    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
-
-    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
-
-    if (!success) {
-        [self.logger error:@"Unable to open deep link (%@)", deepLink];
-    }
-}
-
 - (void)setEnabled:(BOOL)enabled {
+    // compare with the saved or internal state
     if (![self hasChangedState:[self isEnabled]
                      nextState:enabled
                    trueMessage:@"Adjust already enabled"
@@ -162,20 +234,30 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
-    _enabled = enabled;
-    if (self.activityState != nil) {
-        self.activityState.enabled = enabled;
-        [self writeActivityState];
+    // save new enabled state in internal state
+    self.internalState.enabled = enabled;
+
+    if (self.activityState == nil) {
+        [self updateState:!enabled
+           pausingMessage:@"Package handler and attribution handler will start as paused due to the SDK being disabled"
+     remainsPausedMessage:@"Package and attribution handler will still start as paused due to the SDK being offline"
+         unPausingMessage:@"Package handler and attribution handler will start as active due to the SDK being enabled"];
+        return;
     }
 
+    // save new enabled state in activity state
+    self.activityState.enabled = enabled;
+    [self writeActivityState];
+
     [self updateState:!enabled
-       pausingMessage:@"Pausing package handler and attribution handler to disable the SDK"
- remainsPausedMessage:@"Package and attribution handler remain paused due to the SDK is offline"
-     unPausingMessage:@"Resuming package handler and attribution handler to enabled the SDK"];
+       pausingMessage:@"Pausing package handler and attribution handler due to SDK being disabled"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being offline"
+     unPausingMessage:@"Resuming package handler and attribution handler due to SDK being enabled"];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    if (![self hasChangedState:self.offline
+    // compare with the internal state
+    if (![self hasChangedState:[self.internalState isOffline]
                      nextState:offline
                    trueMessage:@"Adjust already in offline mode"
                   falseMessage:@"Adjust already in online mode"])
@@ -183,19 +265,28 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return;
     }
 
-    self.offline = offline;
+    // save new offline state in internal state
+    self.internalState.offline = offline;
+
+    if (self.activityState == nil) {
+        [self updateState:offline
+           pausingMessage:@"Package handler and attribution handler will start paused due to SDK being offline"
+     remainsPausedMessage:@"Package and attribution handler will still start as paused due to SDK being disabled"
+         unPausingMessage:@"Package handler and attribution handler will start as active due to SDK being online"];
+        return;
+    }
 
     [self updateState:offline
-       pausingMessage:@"Pausing package and attribution handler to put in offline mode"
- remainsPausedMessage:@"Package and attribution handler remain paused because the SDK is disabled"
-     unPausingMessage:@"Resuming package handler and attribution handler to put in online mode"];
+       pausingMessage:@"Pausing package and attribution handler to put SDK offline mode"
+ remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being disabled"
+     unPausingMessage:@"Resuming package handler and attribution handler to put SDK in online mode"];
 }
 
 - (BOOL)isEnabled {
     if (self.activityState != nil) {
         return self.activityState.enabled;
     } else {
-        return _enabled;
+        return [self.internalState isEnabled];
     }
 }
 
@@ -222,18 +313,22 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 remainsPausedMessage:(NSString *)remainsPausedMessage
    unPausingMessage:(NSString *)unPausingMessage
 {
+    // it is changing from an active state to a pause state
     if (pausingState) {
         [self.logger info:pausingMessage];
-        [self trackSubsessionEnd];
+        [self updateHandlersStatusAndSend];
         return;
     }
 
+    // it is remaining in a pause state
     if ([self paused]) {
         [self.logger info:remainsPausedMessage];
-    } else {
-        [self.logger info:unPausingMessage];
-        [self trackSubsessionStart];
+        return;
     }
+
+    // it is changing from a pause state to an active state
+    [self.logger info:unPausingMessage];
+    [self updateHandlersStatusAndSend];
 }
 
 - (void)appWillOpenUrl:(NSURL*)url {
@@ -268,8 +363,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.clickTime = iAdImpressionDate;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)setIadDetails:(NSDictionary *)attributionDetails
@@ -307,8 +401,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.iadDetails = attributionDetails;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -316,35 +409,42 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self writeActivityState];
 }
 
-- (void)updateStatus {
+- (void)updateHandlersStatusAndSend {
     dispatch_async(self.internalQueue, ^{
-        [self updateStatusInternal];
+        [self updateHandlersStatusAndSendInternal];
+    });
+}
+
+- (void)foregroundTimerFired {
+    dispatch_async(self.internalQueue, ^{
+        [self foregroundTimerFiredInternal];
+    });
+}
+
+- (void)backgroundTimerFired {
+    dispatch_async(self.internalQueue, ^{
+        [self backgroundTimerFiredInternal];
     });
 }
 
 #pragma mark - internal
 - (void)initInternal {
-    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
+    kSessionInterval = ADJAdjustFactory.sessionInterval;
+    kSubSessionInterval = ADJAdjustFactory.subsessionInterval;
 
-    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
-        [self.logger setLogLevel:ADJLogLevelAssert];
-    } else {
-        [self.logger setLogLevel:self.adjustConfig.logLevel];
-    }
+    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
 
     if (self.adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
     }
 
     if (self.adjustConfig.defaultTracker != nil) {
-        [self.logger info:@"Default tracker: %@", self.adjustConfig.defaultTracker];
+        [self.logger info:@"Default tracker: '%@'", self.adjustConfig.defaultTracker];
     }
 
-    [self readAttribution];
-    [self readActivityState];
-
+    BOOL toSend = [self toSend];
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                                 startPaused:[self paused]];
+                                                               startsSending:toSend];
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
@@ -355,16 +455,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                               withAttributionPackage:attributionPackage
-                                                                         startPaused:[self paused]
-                                                                         hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
+                                                                       startsSending:toSend
+                                                       hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
-    self.timer = [ADJTimerCycle timerWithBlock:^{ [self timerFiredInternal]; }
-                                    queue:self.internalQueue
-                                startTime:ADJAdjustFactory.timerStart
-                             intervalTime:ADJAdjustFactory.timerInterval];
+    self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:toSend];
+
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
-
-    [self startInternal];
 }
 
 - (void)startInternal {
@@ -374,13 +470,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [self updateStatusInternal];
+    [self updateHandlersStatusAndSendInternal];
 
     [self processSession];
 
     [self checkAttributionState];
-
-    [self startTimer];
 }
 
 - (void)processSession {
@@ -393,7 +487,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
         [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
-        self.activityState.enabled = _enabled;
+        self.activityState.enabled = [self.internalState isEnabled];
         [self writeActivityState];
         return;
     }
@@ -407,7 +501,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // new session
-    if (lastInterval > ADJAdjustFactory.sessionInterval) {
+    if (lastInterval > kSessionInterval) {
         self.activityState.sessionCount++;
         self.activityState.lastInterval = lastInterval;
 
@@ -418,18 +512,23 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // new subsession
-    if (lastInterval > ADJAdjustFactory.subsessionInterval) {
+    if (lastInterval > kSubSessionInterval) {
         self.activityState.subsessionCount++;
         self.activityState.sessionLength += lastInterval;
         self.activityState.lastActivity = now;
-        [self writeActivityState];
-        [self.logger info:@"Started subsession %d of session %d",
+        [self.logger verbose:@"Started subsession %d of session %d",
          self.activityState.subsessionCount,
          self.activityState.sessionCount];
+        [self writeActivityState];
+        return;
     }
+
+    [self.logger verbose:@"Time span since last activity too short for a new subsession"];
 }
 
 - (void)checkAttributionState {
+    if (![self checkActivityState]) return;
+
     // if it' a new session
     if (self.activityState.subsessionCount <= 1) {
         return;
@@ -444,16 +543,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)endInternal {
-    [self.packageHandler pauseSending];
-    [self.attributionHandler pauseSending];
-    [self stopTimer];
+    // pause sending if it's not allowed to send
+    if (![self toSend]) {
+        [self pauseSending];
+    }
+
     double now = [NSDate.date timeIntervalSince1970];
-    [self updateActivityState:now];
-    [self writeActivityState];
+    if ([self updateActivityState:now]) {
+        [self writeActivityState];
+    }
 }
 
-- (void)eventInternal:(ADJEvent *)event
-{
+- (void)eventInternal:(ADJEvent *)event {
+    if (![self checkActivityState]) return;
     if (![self isEnabled]) return;
     if (![self checkEvent:event]) return;
     if (![self checkTransactionId:event.transactionId]) return;
@@ -478,6 +580,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.packageHandler sendFirstPackage];
     }
 
+    // if it is in the background and it can send, start the background timer
+    if (self.adjustConfig.sendInBackground && [self.internalState isBackground]) {
+        [self startBackgroundTimer];
+    }
+
     [self writeActivityState];
 }
 
@@ -487,9 +594,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
     {
         [self.logger debug:@"Launching success event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingSucceeded:)
-                                              withObject:[eventResponseData successResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustEventTrackingSucceeded:)
+                         withObject:[eventResponseData successResponseData]];
         return;
     }
     // event failure callback
@@ -497,9 +604,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingFailed:)])
     {
         [self.logger debug:@"Launching failed event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingFailed:)
-                                              withObject:[eventResponseData failureResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustEventTrackingFailed:)
+                         withObject:[eventResponseData failureResponseData]];
         return;
     }
 }
@@ -512,42 +619,64 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
     {
         [self.logger debug:@"Launching success session tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingSucceeded:)
-                                              withObject:[sessionResponseData successResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustSessionTrackingSucceeded:)
+                         withObject:[sessionResponseData successResponseData]];
     }
     // session failure callback
     if (!sessionResponseData.success
         && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
     {
         [self.logger debug:@"Launching failed session tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingFailed:)
-                                              withObject:[sessionResponseData failureResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustSessionTrackingFailed:)
+                         withObject:[sessionResponseData failureResponseData]];
     }
 
-    // try to update and launch the attribution changed delegate blocking
+    // try to update and launch the attribution changed delegate
     if (toLaunchAttributionDelegate) {
         [self.logger debug:@"Launching attribution changed delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                              withObject:sessionResponseData.attribution
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:sessionResponseData.attribution];
     }
 
-    if ([ADJUtil isNull:sessionResponseData.jsonResponse]) {
+    [self prepareDeeplink:sessionResponseData];
+}
+
+- (void)prepareDeeplink:(ADJResponseData *)responseData {
+    if (responseData == nil) {
         return;
     }
 
-    NSString *deepLink = [sessionResponseData.jsonResponse objectForKey:@"deeplink"];
+    NSString *deepLink = [responseData.jsonResponse objectForKey:@"deeplink"];
     if (deepLink == nil) {
         return;
     }
 
-    [self.logger info:@"Trying to open deep link (%@)", deepLink];
+    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
 
-    [self performSelectorOnMainThread:@selector(launchDeepLink:)
-                           withObject:deepLink
-                        waitUntilDone:NO]; // non-blocking
+    [self.logger info:@"Open deep link (%@)", deepLink];
+
+    [ADJUtil launchInMainThread:^{
+        BOOL toLaunchDeeplink = YES;
+
+        if ([self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+            toLaunchDeeplink = [self.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
+        }
+
+        if (toLaunchDeeplink) {
+            [self launchDeepLinkMain:deepLinkUrl];
+        }
+    }];
+}
+
+- (void)launchDeepLinkMain:(NSURL *) deepLinkUrl{
+    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
+
+    if (!success) {
+        [self.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+    }
 }
 
 - (void) launchAttributionResponseTasksInternal:(ADJAttributionResponseData *)attributionResponseData {
@@ -556,9 +685,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // try to update and launch the attribution changed delegate non-blocking
     if (toLaunchAttributionDelegate) {
         [self.logger debug:@"Launching attribution changed delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                              withObject:attributionResponseData.attribution
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:attributionResponseData.attribution];
     }
 }
 
@@ -576,6 +705,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return NO;
     }
 
+    if (![self.adjustConfig hasAttributionChangedDelegate]) {
+        return NO;
+    }
+
     if (![self.adjustDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return NO;
     }
@@ -588,23 +721,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
+    if ([[url absoluteString] length] == 0) {
+        return;
+    }
+
     NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
-        return;
+        queryArray = @[];
     }
 
     NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
-    BOOL hasDeepLink = NO;
 
     for (NSString* fieldValuePair in queryArray) {
-        if([self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution]) {
-            hasDeepLink = YES;
-        }
-    }
-
-    if (!hasDeepLink) {
-        return;
+        [self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -616,10 +746,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = [NSDate date];
+    clickBuilder.deeplink = [url absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
-    [self.packageHandler addPackage:clickPackage];
-    [self.packageHandler sendFirstPackage];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (BOOL) readDeeplinkQueryString:(NSString *)queryString
@@ -676,38 +806,67 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return NO;
 }
 
-- (void) setDeviceTokenInternal:(NSData *)deviceToken {
+- (void)setDeviceTokenInternal:(NSData *)deviceToken {
     if (deviceToken == nil) {
         return;
     }
 
-    NSString *token = [deviceToken.description stringByTrimmingCharactersInSet:
+    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
                        [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
 
-    self.deviceInfo.pushToken = token;
+    if (![self updateDeviceToken:deviceTokenString]) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:self.deviceInfo
+                                        activityState:self.activityState
+                                        config:self.adjustConfig
+                                        createdAt:now];
+
+    clickBuilder.deviceToken = deviceTokenString;
+
+    ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"push"];
+
+    [self.sdkClickHandler sendSdkClick:clickPackage];
+}
+
+- (BOOL)updateDeviceToken:(NSString *)deviceToken {
+    if (deviceToken == nil) {
+        return NO;
+    }
+
+    if ([deviceToken isEqualToString:self.activityState.deviceToken]) {
+        return NO;
+    }
+
+    return YES;
 }
 
 #pragma mark - private
 
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityState:(double)now {
+    if (![self checkActivityState]) return NO;
+
     double lastInterval = now - self.activityState.lastActivity;
+
+    // ignore late updates
+    if (lastInterval > kSessionInterval) return NO;
+
+    self.activityState.lastActivity = now;
 
     if (lastInterval < 0) {
         [self.logger error:@"Time travel!"];
-        self.activityState.lastActivity = now;
         return YES;
+    } else {
+        self.activityState.sessionLength += lastInterval;
+        self.activityState.timeSpent += lastInterval;
     }
 
-    // ignore late updates
-    if (lastInterval > ADJAdjustFactory.sessionInterval) return NO;
-
-    self.activityState.sessionLength += lastInterval;
-    self.activityState.timeSpent += lastInterval;
-    self.activityState.lastActivity = now;
-
-    return (lastInterval > ADJAdjustFactory.subsessionInterval);
+    return YES;
 }
 
 - (void)writeActivityState {
@@ -743,57 +902,101 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 # pragma mark - handlers status
-- (void)updateStatusInternal {
-    [self updateAttributionHandlerStatus];
-    [self updatePackageHandlerStatus];
-}
+- (void)updateHandlersStatusAndSendInternal {
+    // check if it should stop sending
 
-- (void)updateAttributionHandlerStatus {
-    if ([self paused]) {
-        [self.attributionHandler pauseSending];
-    } else {
-        [self.attributionHandler resumeSending];
+    if (![self toSend]) {
+        [self pauseSending];
+        return;
+    }
+
+    [self resumeSending];
+
+    // try to send
+    if (!self.adjustConfig.eventBufferingEnabled) {
+        [self.packageHandler sendFirstPackage];
     }
 }
 
-- (void)updatePackageHandlerStatus {
-    if ([self paused]) {
-        [self.packageHandler pauseSending];
-    } else {
-        [self.packageHandler resumeSending];
-    }
+- (void)pauseSending {
+    [self.attributionHandler pauseSending];
+    [self.packageHandler pauseSending];
+    [self.sdkClickHandler pauseSending];
 }
 
+- (void)resumeSending {
+    [self.attributionHandler resumeSending];
+    [self.packageHandler resumeSending];
+    [self.sdkClickHandler resumeSending];
+}
+
+// offline or disabled pauses the sdk
 - (BOOL)paused {
-    return self.offline || !self.isEnabled;
+    return [self.internalState isOffline] || ![self isEnabled];
+}
+
+- (BOOL)toSend {
+    // if it's offline, disabled -> don't send
+    if ([self paused]) {
+        return NO;
+    }
+
+    // has the option to send in the background -> is to send
+    if (self.adjustConfig.sendInBackground) {
+        return YES;
+    }
+
+    // doesn't have the option -> depends on being on the background/foreground
+    return [self.internalState isForeground];
 }
 
 # pragma mark - timer
-- (void)startTimer {
+- (void)startForegroundTimer {
     // don't start the timer if it's disabled/offline
     if ([self paused]) {
         return;
     }
 
-    [self.timer resume];
+    [self.foregroundTimer resume];
 }
 
-- (void)stopTimer {
-    [self.timer suspend];
+- (void)stopForegroundTimer {
+    [self.foregroundTimer suspend];
 }
 
-- (void)timerFiredInternal {
+- (void)foregroundTimerFiredInternal {
     if ([self paused]) {
         // stop the timer cycle if it's disabled/offline
-        [self stopTimer];
+        [self stopForegroundTimer];
         return;
     }
-    [self.logger debug:@"Session timer fired"];
     [self.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
     if ([self updateActivityState:now]) {
         [self writeActivityState];
     }
+}
+
+- (void)startBackgroundTimer {
+    // check if it can send in the background
+    if (![self toSend]) {
+        return;
+    }
+
+    // background timer already started
+    if ([self.backgroundTimer fireIn] > 0) {
+        return;
+    }
+
+    [self.backgroundTimer startIn:kBackgroundTimerInterval];
+}
+
+- (void)stopBackgroundTimer {
+    [self.backgroundTimer cancel];
+}
+
+-(void)backgroundTimerFiredInternal {
+    [self.packageHandler sendFirstPackage];
 }
 
 #pragma mark - notifications
@@ -802,12 +1005,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [center removeObserver:self];
     [center addObserver:self
-               selector:@selector(trackSubsessionStart)
+               selector:@selector(applicationDidBecomeActive)
                    name:UIApplicationDidBecomeActiveNotification
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(trackSubsessionEnd)
+               selector:@selector(applicationWillResignActive)
                    name:UIApplicationWillResignActiveNotification
                  object:nil];
 
@@ -854,4 +1057,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return YES;
 }
 
+- (BOOL)checkActivityState {
+    if (self.activityState == nil) {
+        [self.logger error:@"Missing activity state"];
+        return NO;
+    }
+    return YES;
+}
 @end

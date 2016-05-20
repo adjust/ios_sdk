@@ -14,16 +14,17 @@
 #import "ADJTimerOnce.h"
 
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
+static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
 @interface ADJAttributionHandler()
 
 @property (nonatomic) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) ADJTimerOnce *timer;
+@property (nonatomic, retain) ADJTimerOnce *attributionTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
-@property (nonatomic, assign) BOOL hasDelegate;
+@property (nonatomic, assign) BOOL hasNeedsResponseDelegate;
 
 @end
 
@@ -33,18 +34,18 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                            startPaused:(BOOL)startPaused
+                                          startsSending:(BOOL)startsSending
                           hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                            withAttributionPackage:attributionPackage
-                                                      startPaused:startPaused
+                                                    startsSending:startsSending
                                     hasAttributionChangedDelegate:hasAttributionChangedDelegate];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                  startPaused:(BOOL)startPaused
+                startsSending:(BOOL)startsSending
 hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 {
     self = [super init];
@@ -54,10 +55,11 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
-    self.paused = startPaused;
-    self.hasDelegate = hasAttributionChangedDelegate;
-    self.timer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
-                                         queue:self.internalQueue];
+    self.paused = !startsSending;
+    self.hasNeedsResponseDelegate = hasAttributionChangedDelegate;
+    self.attributionTimer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
+                                                   queue:self.internalQueue
+                                                    name:kAttributionTimerName];
 
     return self;
 }
@@ -76,7 +78,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 - (void) getAttributionWithDelay:(int)milliSecondsDelay {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
-    NSTimeInterval nextAskIn = [self.timer fireIn];
+    NSTimeInterval nextAskIn = [self.attributionTimer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
     }
@@ -86,7 +88,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     }
 
     // set the new time the timer will fire in
-    [self.timer startIn:secondsDelay];
+    [self.attributionTimer startIn:secondsDelay];
 }
 
 - (void) getAttribution {
@@ -136,7 +138,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 - (void) getAttributionInternal {
-    if (!self.hasDelegate) {
+    if (!self.hasNeedsResponseDelegate) {
         return;
     }
     if (self.paused) {

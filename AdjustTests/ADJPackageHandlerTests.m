@@ -13,6 +13,9 @@
 #import "ADJRequestHandlerMock.h"
 #import "ADJTestsUtil.h"
 #import "ADJTestActivityPackage.h"
+#import "ADJResponseData.h"
+#import "ADJBackoffStrategy.h"
+#import "ADJPackageHandler.h"
 
 typedef enum {
     ADJSendFirstEmptyQueue = 0,
@@ -87,19 +90,22 @@ typedef enum {
     [secondPackageHandler sendFirstPackage];
     [NSThread sleepForTimeInterval:1.0];
 
-    aTest(@"RequestHandler sendPackage, clickFirstPackage");
+    aTest(@"RequestHandler sendPackage, activityPackage clickFirstPackage");
+    aTest(@"RequestHandler sendPackage, queueSize 2");
 
-    // send the second click package/ third package
+    // send the second package
     [secondPackageHandler sendNextPackage:nil];
     [NSThread sleepForTimeInterval:1.0];
 
-    aTest(@"RequestHandler sendPackage, clickThirdPackage");
+    aTest(@"RequestHandler sendPackage, activityPackage unknownSecondPackage");
+    aTest(@"RequestHandler sendPackage, queueSize 1");
 
     // send the unknow package/ second package
     [secondPackageHandler sendNextPackage:nil];
     [NSThread sleepForTimeInterval:1.0];
 
-    aTest(@"RequestHandler sendPackage, unknownSecondPackage");
+    aTest(@"RequestHandler sendPackage, activityPackage clickThirdPackage");
+    aTest(@"RequestHandler sendPackage, queueSize 0");
 }
 
 - (void)testSendFirst
@@ -136,13 +142,13 @@ typedef enum {
 
     // verify that both paused and isSending are reset with a new session
     id<ADJPackageHandler> secondpackageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
-                                                                                  startPaused:NO];
+                                                                                  startsSending:YES];
 
     [secondpackageHandler sendFirstPackage];
     [NSThread sleepForTimeInterval:1.0];
 
     // send the package to request handler
-    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
+    [self checkSendFirst:ADJSendFirstSend queueSize:0 packageString:@"unknownFirstPackage"];
 }
 
 - (void)testSendNext
@@ -172,13 +178,15 @@ typedef enum {
     aDebug(@"Package handler wrote 1 packages");
 
     // try to send the second package
-    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownSecondPackage"];
+    [self checkSendFirst:ADJSendFirstSend queueSize:0 packageString:@"unknownSecondPackage"];
 }
 
 - (void)testCloseFirstPackage
 {
     //  reseting to make the test order independent
     [self reset];
+
+    [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
 
     //  initialize Package Handler
     id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
@@ -192,28 +200,200 @@ typedef enum {
     [self checkSendFirst:ADJSendFirstIsSending];
 
     //send next package
-    [packageHandler closeFirstPackage:nil];
+    ADJActivityPackage *activityPackage = [[ADJActivityPackage alloc] init];
+    ADJResponseData * responseData = [ADJResponseData buildResponseData:activityPackage];
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:2.0];
+
+    aTest(@"ActivityHandler finishedTracking, message:(null) timestamp:(null) adid:(null)");
+    aVerbose(@"Package handler can send");
 
     anDebug(@"Package handler wrote");
 
-    [packageHandler sendFirstPackage];
-    [NSThread sleepForTimeInterval:2.0];
+    // tries to send the next package after sleeping
+    [self checkSendFirst:ADJSendFirstSend queueSize:0 packageString:@"unknownFirstPackage"];
+}
 
-    // try to send the first package again
-    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
+- (void) testBackoffJitter
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJTestWait]];
+
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler];
+
+    ADJActivityPackage * activityPackage = [ADJTestsUtil getUnknowPackage:@"FirstPackage"];
+
+    ADJResponseData * responseData = [ADJResponseData buildResponseData:activityPackage];
+    //Pattern pattern = Pattern.compile("Sleeping for (\\d+\\.\\d) seconds before retrying the (\\d+) time");
+
+    NSString * sleepingLogPattern = @"Sleeping for (\\d+\\.\\d) seconds before retrying the (\\d+) time";
+    NSError *error = NULL;
+    NSRegularExpression *regex  = [NSRegularExpression
+                                   regularExpressionWithPattern:sleepingLogPattern
+                                   options:NSRegularExpressionCaseInsensitive
+                                   error:&error];
+
+    if (error != nil) {
+        [self.loggerMock test:@"regex error %@", error.description];
+        aFail();
+    }
+
+    // 1st
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    NSString * sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+    // Sleeping for 0.1 seconds before retrying the 1 time
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:0.1
+               maxRange:0.2
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:1];
+
+    // 2nd
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:0.2
+               maxRange:0.4
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:2];
+
+    // 3rd
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:0.4
+               maxRange:0.8
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:3];
+
+    // 4th
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:0.8
+               maxRange:1.6
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:4];
+
+    // 5th
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:1.6
+               maxRange:3.2
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:5];
+
+    // 6th
+    [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+    [NSThread sleepForTimeInterval:1.5];
+
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    anNil(sleepingLogMessage);
+
+    [self checkSleeping:regex
+            sleepingLog:sleepingLogMessage
+               minRange:6.4
+               maxRange:12.8
+             maxCeiling:1
+             minCeiling:0.5
+          numberRetries:6];
+}
+
+- (void)checkSleeping:(NSRegularExpression *)regex
+          sleepingLog:(NSString *)sleepingLog
+             minRange:(double)minRange
+             maxRange:(double)maxRange
+           maxCeiling:(NSInteger)maxCeiling
+           minCeiling:(double)minCeiling
+        numberRetries:(NSInteger)numberRetries
+{
+    NSArray<NSTextCheckingResult *> *matches = [regex matchesInString:sleepingLog options:0 range:NSMakeRange(0, [sleepingLog length])];
+
+    if ([matches count] == 0) {
+        aFail();
+    }
+
+    NSTextCheckingResult *match = matches[0];
+
+    if ([match numberOfRanges] != 3) {
+        aFail();
+    }
+
+    NSString * sleepingTimeString = [sleepingLog substringWithRange:[match rangeAtIndex:1]];
+    double sleepingTime = [sleepingTimeString doubleValue];
+
+    [self.loggerMock test:@"sleeping time %f", sleepingTime];
+
+    BOOL failsCeiling = sleepingTime > maxCeiling;
+    aFalse(failsCeiling);
+
+    if (maxRange < maxCeiling) {
+        BOOL failsMinRange = sleepingTime < minRange;
+        aFalse(failsMinRange);
+    } else {
+        BOOL failsMinRange = sleepingTime < minCeiling ;
+        aFalse(failsMinRange);
+    }
+
+    if (maxRange < maxCeiling) {
+        BOOL failsMaxRange = sleepingTime > maxRange;
+        aFalse(failsMaxRange);
+    } else {
+        BOOL failsMaxRange = sleepingTime > maxCeiling;
+        aFalse(failsMaxRange);
+    }
+
+    NSString * retryTimeString = [sleepingLog substringWithRange:[match rangeAtIndex:2]];
+    NSInteger retryTime = [retryTimeString integerValue];
+
+    [self.loggerMock test:@"retry time %ld", retryTime];
+
+    aliEquals(numberRetries, retryTime);
 }
 
 - (id<ADJPackageHandler>)createFirstPackageHandler
 {
-    return [self createFirstPackageHandler:NO];
+    return [self createFirstPackageHandler:YES];
 }
 
-- (id<ADJPackageHandler>)createFirstPackageHandler:(BOOL)startPaused
+- (id<ADJPackageHandler>)createFirstPackageHandler:(BOOL)startsSending
 {
     //  initialize Package Handler
-    id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
-                                                                                  startPaused:startPaused];
+    id<ADJPackageHandler> packageHandler = [ADJPackageHandler handlerWithActivityHandler:self.activityHandlerMock startsSending:startsSending];
+
     [NSThread sleepForTimeInterval:2.0];
 
     aVerbose(@"Package queue file not found");
@@ -224,7 +404,7 @@ typedef enum {
 - (id<ADJPackageHandler>)checkAddSecondPackage
 {
     id<ADJPackageHandler> packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
-                                                            startPaused:NO];
+                                                            startsSending:YES];
 
     [NSThread sleepForTimeInterval:2.0];
 
@@ -241,7 +421,7 @@ typedef enum {
 {
     if (packageHandler == nil) {
         packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self.activityHandlerMock
-                                                                startPaused:NO];
+                                                                startsSending:YES];
 
         [NSThread sleepForTimeInterval:2.0];
 
@@ -274,14 +454,15 @@ typedef enum {
 
     [self checkAddPackage:1 packageString:@"unknownFirstPackage"];
 
-    [self checkSendFirst:ADJSendFirstSend packageString:@"unknownFirstPackage"];
+    [self checkSendFirst:ADJSendFirstSend queueSize:0 packageString:@"unknownFirstPackage"];
 }
 
 - (void)checkSendFirst:(ADJSendFirst)sendFirstState
 {
-    [self checkSendFirst:sendFirstState packageString:nil];
+    [self checkSendFirst:sendFirstState queueSize:0 packageString:nil];
 }
 - (void)checkSendFirst:(ADJSendFirst)sendFirstState
+             queueSize:(NSUInteger)queueSize
          packageString:(NSString*)packageString
 {
     if (sendFirstState == ADJSendFirstPaused) {
@@ -297,8 +478,10 @@ typedef enum {
     }
 
     if (sendFirstState == ADJSendFirstSend) {
-        NSString * aSend = [NSString stringWithFormat:@"RequestHandler sendPackage, %@", packageString];
-        aTest(aSend);
+        NSString * aActivitySend = [NSString stringWithFormat:@"RequestHandler sendPackage, activityPackage %@", packageString];
+        aTest(aActivitySend);
+        NSString * aQueueSizeSend = [NSString stringWithFormat:@"RequestHandler sendPackage, queueSize %lu", queueSize];
+        aTest(aQueueSizeSend);
     } else {
         anTest(@"RequestHandler sendPackage");
     }
@@ -313,4 +496,5 @@ typedef enum {
     NSString * aPackagesWrote = [NSString stringWithFormat:@"Package handler wrote %d packages", packageNumber];
     aDebug(aPackagesWrote);
 }
+
 @end

@@ -6,19 +6,19 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
-#import "ADJDelegateTest.h"
+#import "ADJAttributionChangedDelegate.h"
 #import "ADJLoggerMock.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const prefix = @"ADJDelegateTest ";
+static NSString * const prefix = @"ADJAttributionChangedDelegate ";
 
-@interface ADJDelegateTest()
+@interface ADJAttributionChangedDelegate()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
 
 @end
 
-@implementation ADJDelegateTest
+@implementation ADJAttributionChangedDelegate
 
 - (id) init {
     self = [super init];

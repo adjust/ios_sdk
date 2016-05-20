@@ -14,7 +14,6 @@
 @property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, copy) NSString *vendorId;
-@property (nonatomic, copy) NSString *pushToken;
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *bundeIdentifier;
 @property (nonatomic, copy) NSString *bundleVersion;
@@ -25,6 +24,8 @@
 @property (nonatomic, copy) NSString *systemVersion;
 @property (nonatomic, copy) NSString *languageCode;
 @property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *machineModel;
+@property (nonatomic, copy) NSString *cpuSubtype;
 
 - (id) initWithSdkPrefix:(NSString *)sdkPrefix;
 + (ADJDeviceInfo *)deviceInfoWithSdkPrefix:(NSString *)sdkPrefix;

@@ -10,17 +10,17 @@
 
 @interface ADJTimerCycle : NSObject
 
-@property (nonatomic, assign) NSTimeInterval startTime;
-
 + (ADJTimerCycle *)timerWithBlock:(dispatch_block_t)block
-                       queue:(dispatch_queue_t)queue
-                   startTime:(NSTimeInterval)startTime
-                intervalTime:(NSTimeInterval)intervalTime;
+                            queue:(dispatch_queue_t)queue
+                        startTime:(NSTimeInterval)startTime
+                     intervalTime:(NSTimeInterval)intervalTime
+                             name:(NSString*)name;
 
 - (id)initBlock:(dispatch_block_t)block
           queue:(dispatch_queue_t)queue
       startTime:(NSTimeInterval)startTime
-   intervalTime:(NSTimeInterval)intervalTime;
+   intervalTime:(NSTimeInterval)intervalTime
+           name:(NSString*)name;
 
 - (void)resume;
 - (void)suspend;

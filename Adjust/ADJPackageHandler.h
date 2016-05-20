@@ -15,12 +15,13 @@
 @protocol ADJPackageHandler
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                  startPaused:(BOOL)startPaused;
+                startsSending:(BOOL)startsSending;
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
 - (void)sendNextPackage:(ADJResponseData *)responseData;
-- (void)closeFirstPackage:(ADJResponseData *)responseData;;
+- (void)closeFirstPackage:(ADJResponseData *)responseData
+          activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
 
@@ -29,6 +30,6 @@
 @interface ADJPackageHandler : NSObject <ADJPackageHandler>
 
 + (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                        startPaused:(BOOL)startPaused;
+                                      startsSending:(BOOL)startsSending;
 
 @end

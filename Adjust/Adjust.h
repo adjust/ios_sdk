@@ -120,4 +120,3 @@ extern NSString * const ADJEnvironmentProduction;
 - (NSString*)idfa;
 
 @end
-

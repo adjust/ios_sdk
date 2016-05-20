@@ -10,9 +10,7 @@
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJUtil.h"
-
-static NSString * const kWiFi   = @"WIFI";
-static NSString * const kWWAN   = @"WWAN";
+#import "ADJSystemProfile.h"
 
 @implementation ADJDeviceInfo
 
@@ -42,6 +40,8 @@ static NSString * const kWWAN   = @"WWAN";
     self.deviceType       = device.adjDeviceType;
     self.deviceName       = device.adjDeviceName;
     self.systemVersion    = device.systemVersion;
+    self.machineModel     = [ADJSystemProfile machineModel];
+    self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
 
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
@@ -60,7 +60,6 @@ static NSString * const kWWAN   = @"WWAN";
         copy.fbAttributionId = [self.fbAttributionId copyWithZone:zone];
         copy.trackingEnabled = self.trackingEnabled;
         copy.vendorId = [self.vendorId copyWithZone:zone];
-        copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.clientSdk = [self.clientSdk copyWithZone:zone];
         copy.bundeIdentifier = [self.bundeIdentifier copyWithZone:zone];
         copy.bundleVersion = [self.bundleVersion copyWithZone:zone];
@@ -71,8 +70,10 @@ static NSString * const kWWAN   = @"WWAN";
         copy.systemVersion = [self.systemVersion copyWithZone:zone];
         copy.languageCode = [self.languageCode copyWithZone:zone];
         copy.countryCode = [self.countryCode copyWithZone:zone];
+        copy.machineModel = [self.machineModel copyWithZone:zone];
+        copy.cpuSubtype = [self.cpuSubtype copyWithZone:zone];
     }
-    
+
     return copy;
 }
 
