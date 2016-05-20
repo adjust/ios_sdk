@@ -32,6 +32,9 @@
     // set default tracker
     //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
 
+    // send in the background
+    //[adjustConfig setSendInBackground:YES];
+
     // set an attribution delegate
     [adjustConfig setDelegate:self];
 
@@ -71,6 +74,11 @@
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
     NSLog(@"adjust session failure %@", sessionFailureResponseData);
+}
+
+// evaluate deeplink to be launched
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
