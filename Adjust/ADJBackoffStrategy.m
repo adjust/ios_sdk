@@ -47,6 +47,13 @@
                      minRange:0.5
                      maxRange:1.0];
             break;
+        case ADJNoRetry:
+            [self saveStrategy:0
+              secondMultiplier:100000
+                       maxWait:100000
+                      minRange:0.5
+                      maxRange:1.0];
+            break;
         default:
             break;
     }

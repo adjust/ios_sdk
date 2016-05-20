@@ -594,9 +594,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
     {
         [self.logger debug:@"Launching success event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingSucceeded:)
-                                              withObject:[eventResponseData successResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustEventTrackingSucceeded:)
+                         withObject:[eventResponseData successResponseData]];
         return;
     }
     // event failure callback
@@ -604,9 +604,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingFailed:)])
     {
         [self.logger debug:@"Launching failed event tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustEventTrackingFailed:)
-                                              withObject:[eventResponseData failureResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustEventTrackingFailed:)
+                         withObject:[eventResponseData failureResponseData]];
         return;
     }
 }
@@ -619,26 +619,26 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
     {
         [self.logger debug:@"Launching success session tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingSucceeded:)
-                                              withObject:[sessionResponseData successResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustSessionTrackingSucceeded:)
+                         withObject:[sessionResponseData successResponseData]];
     }
     // session failure callback
     if (!sessionResponseData.success
         && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
     {
         [self.logger debug:@"Launching failed session tracking delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustSessionTrackingFailed:)
-                                              withObject:[sessionResponseData failureResponseData]
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustSessionTrackingFailed:)
+                         withObject:[sessionResponseData failureResponseData]];
     }
 
     // try to update and launch the attribution changed delegate
     if (toLaunchAttributionDelegate) {
         [self.logger debug:@"Launching attribution changed delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                              withObject:sessionResponseData.attribution
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:sessionResponseData.attribution];
     }
 
     [self prepareDeeplink:sessionResponseData];
@@ -658,7 +658,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [self.logger info:@"Open deep link (%@)", deepLink];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    [ADJUtil launchInMainThread:^{
         BOOL toLaunchDeeplink = YES;
 
         if ([self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
@@ -668,7 +668,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (toLaunchDeeplink) {
             [self launchDeepLinkMain:deepLinkUrl];
         }
-    });
+    }];
 }
 
 - (void)launchDeepLinkMain:(NSURL *) deepLinkUrl{
@@ -685,9 +685,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // try to update and launch the attribution changed delegate non-blocking
     if (toLaunchAttributionDelegate) {
         [self.logger debug:@"Launching attribution changed delegate"];
-        [self.adjustDelegate performSelectorOnMainThread:@selector(adjustAttributionChanged:)
-                                              withObject:attributionResponseData.attribution
-                                           waitUntilDone:NO]; // non-blocking
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:attributionResponseData.attribution];
     }
 }
 

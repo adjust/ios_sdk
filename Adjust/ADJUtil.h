@@ -63,5 +63,8 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 + (NSString *)secondsNumberFormat:(double)seconds;
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
-
++ (void)launchInMainThread:(NSObject *)receiver
+                  selector:(SEL)selector
+                withObject:(id)object;
++ (void)launchInMainThread:(dispatch_block_t)block;
 @end

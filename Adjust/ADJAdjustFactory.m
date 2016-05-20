@@ -21,6 +21,7 @@ static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
+static BOOL internalTesting = NO;
 
 @implementation ADJAdjustFactory
 
@@ -124,6 +125,10 @@ static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
     return [internalSdkClickHandler initWithStartsSending:startsSending];
 }
 
++ (BOOL)testing {
+    return internalTesting;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -170,5 +175,9 @@ static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy {
     sdkClickHandlerBackoffStrategy = backoffStrategy;
+}
+
++ (void)setTesting:(BOOL)testing {
+    internalTesting = testing;
 }
 @end

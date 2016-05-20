@@ -36,6 +36,7 @@
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
++ (BOOL)testing;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -49,4 +50,6 @@
 + (void)setAttributionHandler:(id<ADJAttributionHandler>)attributionHandler;
 + (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
++ (void)setTesting:(BOOL)testing;
+
 @end

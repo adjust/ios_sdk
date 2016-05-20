@@ -582,4 +582,27 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     return waitingTime;
 }
 
++ (void)launchInMainThread:(NSObject *)receiver
+                  selector:(SEL)selector
+                withObject:(id)object
+{
+    if (ADJAdjustFactory.testing) {
+        [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
+        [receiver performSelectorInBackground:selector
+                       withObject:object];
+    } else {
+        [receiver performSelectorOnMainThread:selector
+                                   withObject:object
+                                waitUntilDone:NO]; // non-blocking
+    }
+}
+
++ (void)launchInMainThread:(dispatch_block_t)block {
+    if (ADJAdjustFactory.testing) {
+        [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
+    } else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
 @end

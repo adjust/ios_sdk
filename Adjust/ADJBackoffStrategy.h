@@ -12,7 +12,8 @@ typedef NS_ENUM(NSInteger, ADJBackoffStrategyType) {
     ADJLongWait = 0,
     ADJShortWait = 1,
     ADJTestWait = 2,
-    ADJNoWait = 3
+    ADJNoWait = 3,
+    ADJNoRetry = 4
 };
 
 @interface ADJBackoffStrategy : NSObject
