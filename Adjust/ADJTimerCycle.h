@@ -10,8 +10,6 @@
 
 @interface ADJTimerCycle : NSObject
 
-@property (nonatomic, assign) NSTimeInterval startTime;
-
 + (ADJTimerCycle *)timerWithBlock:(dispatch_block_t)block
                             queue:(dispatch_queue_t)queue
                         startTime:(NSTimeInterval)startTime

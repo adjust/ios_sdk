@@ -38,23 +38,6 @@ static double kSubSessionInterval;
 static const int kTryIadV3                       = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 
-@interface ADJInternalState : NSObject
-
-@property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL offline;
-@property (nonatomic, assign) BOOL background;
-
-- (id)init;
-
-- (BOOL)isEnabled;
-- (BOOL)isDisabled;
-- (BOOL)isOffline;
-- (BOOL)isOnline;
-- (BOOL)isBackground;
-- (BOOL)isForeground;
-
-@end
-
 @implementation ADJInternalState
 
 - (id)init {
@@ -119,6 +102,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         return nil;
     }
 
+    self.adjustConfig = adjustConfig;
+    self.adjustDelegate = adjustConfig.delegate;
+
     // init logger to be available everywhere
     self.logger = ADJAdjustFactory.logger;
     if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
@@ -126,9 +112,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     } else {
         [self.logger setLogLevel:self.adjustConfig.logLevel];
     }
-
-    self.adjustConfig = adjustConfig;
-    self.adjustDelegate = adjustConfig.delegate;
 
     // read files to have sync values available
     [self readAttribution];
@@ -456,7 +439,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     if (self.adjustConfig.defaultTracker != nil) {
-        [self.logger info:@"Default tracker: %@", self.adjustConfig.defaultTracker];
+        [self.logger info:@"Default tracker: '%@'", self.adjustConfig.defaultTracker];
     }
 
     BOOL toSend = [self toSend];
@@ -675,7 +658,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
 
-    [self.logger info:@"Trying to open deep link (%@)", deepLink];
+    [self.logger info:@"Open deep link (%@)", deepLink];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         BOOL toLaunchDeeplink = YES;

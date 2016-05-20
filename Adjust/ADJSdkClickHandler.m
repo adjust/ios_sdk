@@ -116,7 +116,7 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 
     [ADJUtil sendPostRequest:self.baseUrl
                    queueSize:queueSize - 1
-          prefixErrorMessage:@"Failed to send sdk_click"
+          prefixErrorMessage:sdkClickPackage.failureMessage
           suffixErrorMessage:@"Will retry later"
              activityPackage:sdkClickPackage
          responseDataHandler:^(ADJResponseData * responseData)

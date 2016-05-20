@@ -9,6 +9,7 @@
 #import "ADJTimerCycle.h"
 #import "ADJLogger.h"
 #import "ADJAdjustFactory.h"
+#import "ADJUtil.h"
 
 static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
@@ -60,6 +61,11 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 
     self.suspended = YES;
 
+    NSString * startTimeFormatted = [ADJUtil secondsNumberFormat:startTime];
+    NSString * intervalTimeFormatted = [ADJUtil secondsNumberFormat:intervalTime];
+
+    [self.logger verbose:@"%@ fires after %@ seconds of starting and cycles every %@ seconds", self.name, startTimeFormatted, intervalTimeFormatted];
+
     return self;
 }
 
@@ -68,6 +74,8 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         [self.logger verbose:@"%@ is already started", self.name];
         return;
     }
+
+    [self.logger verbose:@"%@ starting", self.name];
 
     dispatch_resume(self.source);
     self.suspended = NO;
@@ -79,6 +87,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
         return;
     }
 
+    [self.logger verbose:@"%@ suspended", self.name];
     dispatch_suspend(self.source);
     self.suspended = YES;
 }

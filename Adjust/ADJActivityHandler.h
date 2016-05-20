@@ -9,6 +9,23 @@
 #import "Adjust.h"
 #import "ADJResponseData.h"
 
+@interface ADJInternalState : NSObject
+
+@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL offline;
+@property (nonatomic, assign) BOOL background;
+
+- (id)init;
+
+- (BOOL)isEnabled;
+- (BOOL)isDisabled;
+- (BOOL)isOffline;
+- (BOOL)isOnline;
+- (BOOL)isBackground;
+- (BOOL)isForeground;
+
+@end
+
 @protocol ADJActivityHandler <NSObject>
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig;
@@ -24,10 +41,10 @@
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
+
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 
-- (ADJAttribution*) attribution;
 - (void)setAttribution:(ADJAttribution*)attribution;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
@@ -38,11 +55,13 @@
           retriesLeft:(int)retriesLeft;
 
 - (void) setOfflineMode:(BOOL)offline;
+- (ADJInternalState*) internalState;
 
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig;
+- (ADJAttribution*) attribution;
 
 @end

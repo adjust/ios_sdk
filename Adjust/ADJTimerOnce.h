@@ -11,8 +11,6 @@
 
 @interface ADJTimerOnce : NSObject
 
-@property (nonatomic, assign) NSTimeInterval startTime;
-
 + (ADJTimerOnce *)timerWithBlock:(dispatch_block_t)block
                            queue:(dispatch_queue_t)queue
                             name:(NSString*)name;
