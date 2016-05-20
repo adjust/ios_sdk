@@ -461,8 +461,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:toSend];
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
-
-    [self startInternal];
 }
 
 - (void)startInternal {
