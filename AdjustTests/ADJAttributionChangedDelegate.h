@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "Adjust.h"
 
-@interface ADJDelegateTest : NSObject <AdjustDelegate>
+@interface ADJAttributionChangedDelegate : NSObject <AdjustDelegate>
 
 @end

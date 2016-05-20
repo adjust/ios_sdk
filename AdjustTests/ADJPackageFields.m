@@ -15,7 +15,7 @@
     if (self == nil) return nil;
 
     // default values
-    self.appToken = @"123456789012";
+    self.appToken = @"qwerty123456";
     self.clientSdk = @"ios4.6.0";
     self.suffix = @"";
     self.environment = @"sandbox";

@@ -24,5 +24,7 @@ typedef enum {
 + (void)setResponseType:(ADJResponseType)responseType;
 + (NSURLRequest *)getLastRequest;
 + (void)reset;
++ (void)setTimeoutMock:(BOOL)enable;
++ (void)setWaitingTime:(double)waitingTime;
 
 @end

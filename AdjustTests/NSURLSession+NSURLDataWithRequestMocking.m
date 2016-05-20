@@ -17,6 +17,9 @@ static NSData * completionData = nil;
 static NSURLResponse * completionResponse = nil;
 static NSError * completionError = nil;
 
+static BOOL timeoutMockInternal = NO;
+static double waitingTimeInternal = 0.0;
+
 static void (^completionDelegate) (NSData * data, NSURLResponse * response, NSError * error)  = nil;
 
 @implementation NSURLSession(NSURLDataWithRequestMocking)
@@ -35,6 +38,14 @@ static void (^completionDelegate) (NSData * data, NSURLResponse * response, NSEr
     completionResponse = nil;
     completionData = nil;
     completionError = nil;
+
+    if (timeoutMockInternal) {
+        [NSThread sleepForTimeInterval:10.0];
+    }
+
+    if (waitingTimeInternal != 0) {
+        [NSThread sleepForTimeInterval:waitingTimeInternal];
+    }
 
     if (sessionResponseTypeInternal == ADJSessionResponseTypeNil) {
 
@@ -81,6 +92,15 @@ static void (^completionDelegate) (NSData * data, NSURLResponse * response, NSEr
 + (void)reset {
     sessionResponseTypeInternal = ADJSessionResponseTypeNil;
     lastRequest = nil;
+    timeoutMockInternal = NO;
+    waitingTimeInternal = 0.0;
+}
+
++ (void)setTimeoutMock:(BOOL)enable {
+    timeoutMockInternal = enable;
+}
++ (void)setWaitingTime:(double)waitingTime {
+    waitingTimeInternal = waitingTime;
 }
 
 @end

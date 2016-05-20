@@ -26,9 +26,6 @@
 #define apspEquals(parameterName, value) \
     apsEquals((NSString *)package.parameters[parameterName], value)
 
-// assert package integer parameter equals
-#define apipEquals(parameterName, value) \
-    apspEquals(parameterName, [NSString stringWithFormat:@"%d",value])
 
 // assert package parameter not nil
 #define appnNil(parameterName) \
@@ -87,7 +84,7 @@
     apspEquals(@"default_tracker", fields.defaultTracker);
 }
 
-- (void)testEventSession:(ADJActivityPackage *)package
+- (void)testEventPackage:(ADJActivityPackage *)package
                   fields:(ADJPackageFields *)fields
               eventToken:(NSString*)eventToken
 {
@@ -157,6 +154,7 @@
     // TODO test click time
     if ([source isEqualToString:@"deeplink"]) {
         appnNil(@"click_time");
+        apspEquals(@"deeplink", fields.deepLink);
     } else {
         apspEquals(@"click_time", fields.iadTime);
     }
@@ -187,6 +185,9 @@
 
     // details
     apspEquals(@"details", fields.iadDetails);
+
+    // push_token
+    apspEquals(@"push_token", fields.pushToken);
 }
 
 - (void)testAttributionPackage:(ADJActivityPackage *)package
@@ -258,8 +259,6 @@
     //appnNil(@"fb_id");
     // tracking_enabled
     appnNil(@"tracking_enabled");
-    // push_token
-    apspEquals(@"push_token", fields.pushToken);
     // bundle_id
     //appnNil(@"bundle_id");
     // app_version
@@ -276,6 +275,10 @@
     appnNil(@"language");
     // country
     appnNil(@"country");
+    // hardware_name
+    appnNil(@"hardware_name");
+    // cpu_type
+    appnNil(@"cpu_type");
 }
 
 - (void)testConfig:(ADJActivityPackage *)package
@@ -286,13 +289,12 @@
     // environment
     apspEquals(@"environment", fields.environment);
     // needs_attribution_data
-    if (fields.hasDelegate == nil) {
-        appnNil(@"needs_response_details");
-    } else {
-        apspEquals(@"needs_response_details", fields.hasDelegate);
-    }
+    NSString * hasDelegateString = [NSString stringWithFormat:@"%d",fields.hasResponseDelegate];
+    apspEquals(@"needs_response_details", hasDelegateString);
+    // event_buffering_enabled
+    NSString * eventBufferingEnabledString = [NSString stringWithFormat:@"%d",fields.eventBufferingEnabled];
+    apspEquals(@"event_buffering_enabled", eventBufferingEnabledString);
 }
-
 
 - (void)testActivityState:(ADJActivityPackage *)package
                    fields:(ADJPackageFields *)fields

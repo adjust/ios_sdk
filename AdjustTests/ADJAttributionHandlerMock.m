@@ -15,7 +15,7 @@ static NSString * const prefix = @"AttributionHandler ";
 @interface ADJAttributionHandlerMock()
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
-@property (nonatomic, assign) BOOL startPaused;
+@property (nonatomic, assign) BOOL startsSending;
 @property (nonatomic, assign) BOOL hasDelegate;
 
 @end
@@ -25,18 +25,18 @@ static NSString * const prefix = @"AttributionHandler ";
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                  startPaused:(BOOL)startPaused
+                startsSending:(BOOL)startsSending
 hasAttributionChangedDelegate:(BOOL)hasDelegate
 {
     self = [super init];
     if (self == nil) return nil;
 
-    self.startPaused = startPaused;
+    self.startsSending = startsSending;
     self.hasDelegate = hasDelegate;
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
     self.attributionPackage = attributionPackage;
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler, startsSending: %d", startsSending]];
 
     return self;
 }

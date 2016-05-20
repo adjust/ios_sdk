@@ -32,11 +32,11 @@ static NSString * const prefix = @"ActivityHandler ";
     return self;
 }
 
-- (void)trackSubsessionStart {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"trackSubsessionStart"]];
+- (void)applicationDidBecomeActive {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"applicationDidBecomeActive"]];
 }
-- (void)trackSubsessionEnd {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"trackSubsessionEnd"]];
+- (void)applicationWillResignActive {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"applicationWillResignActive"]];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -47,6 +47,21 @@ static NSString * const prefix = @"ActivityHandler ";
 - (void)finishedTracking:(ADJResponseData *)responseData {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", responseData]];
     self.lastResponseData = responseData;
+}
+
+- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchEventResponseTasks, %@", eventResponseData]];
+    self.lastResponseData = eventResponseData;
+}
+
+- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSessionResponseTasks, %@", sessionResponseData]];
+    self.lastResponseData = sessionResponseData;
+}
+
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionResponseTasks, %@", attributionResponseData]];
+    self.lastResponseData = attributionResponseData;
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -95,23 +110,12 @@ static NSString * const prefix = @"ActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDetails, %@ error, %@", attributionDetails, error]];
 }
 
-- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchEventResponseTasks, %@", eventResponseData]];
-    self.lastResponseData = eventResponseData;
-}
-
-- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSessionResponseTasks, %@", sessionResponseData]];
-    self.lastResponseData = sessionResponseData;
-}
-
-- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionResponseTasks, %@", attributionResponseData]];
-    self.lastResponseData = attributionResponseData;
-}
-
 - (void) setOfflineMode:(BOOL)enabled {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setOfflineMode"]];
+}
+
+- (ADJInternalState*) internalState {
+    return nil;
 }
 
 @end

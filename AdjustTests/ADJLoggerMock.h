@@ -16,5 +16,5 @@ static const int ADJLogLevelCheck = 8;
 - (void)test:(NSString *)message, ...;
 - (BOOL)deleteUntil:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
 - (void)reset;
-
+- (NSString *)containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith;
 @end

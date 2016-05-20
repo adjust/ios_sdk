@@ -17,7 +17,7 @@ static NSString * const prefix = @"PackageHandler ";
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
 @property (nonatomic, assign) id<ADJActivityHandler> activityHandler;
-@property (nonatomic, assign) BOOL startPaused;
+@property (nonatomic, assign) BOOL startsSending;
 
 @end
 
@@ -26,28 +26,28 @@ static NSString * const prefix = @"PackageHandler ";
 - (id)init {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-designated-initializers"
-    return [self initWithActivityHandler:nil startPaused:NO];
+    return [self initWithActivityHandler:nil startsSending:YES];
 #pragma clang diagnostic pop
 }
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                  startPaused:(BOOL)startPaused
+                startsSending:(BOOL)startsSending
 {
     self = [super init];
     if (self == nil) return nil;
 
-    self.startPaused = startPaused;
+    self.startsSending = startsSending;
     self.activityHandler = activityHandler;
 
     self.loggerMock = (ADJLoggerMock *) ADJAdjustFactory.logger;
     self.packageQueue = [NSMutableArray array];
 
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler, paused: %d", startPaused]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler, startsSending: %d", startsSending]];
 
     return self;
 }
 
 - (void)addPackage:(ADJActivityPackage *)package {
-    [self.loggerMock test:[prefix stringByAppendingString:@"addPackage"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"addPackage %d", package.activityKind]];
     [self.packageQueue addObject:package];
 }
 
@@ -59,7 +59,9 @@ static NSString * const prefix = @"PackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"sendNextPackage"]];
 }
 
-- (void)closeFirstPackage:(ADJResponseData *)responseData {
+- (void)closeFirstPackage:(ADJResponseData *)responseData
+          activityPackage:(ADJActivityPackage *)activityPackage
+{
     [self.loggerMock test:[prefix stringByAppendingString:@"closeFirstPackage"]];
 }
 

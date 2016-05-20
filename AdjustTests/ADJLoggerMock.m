@@ -49,6 +49,10 @@ static NSString * const kLogTag = @"AdjustTests";
 }
 
 - (BOOL)deleteUntil:(NSInteger)logLevel beginsWith:(NSString *)beginsWith {
+    return [self containsMessage:logLevel beginsWith:beginsWith] != nil;
+}
+
+- (NSString *)containsMessage:(NSInteger)logLevel beginsWith:(NSString *)beginsWith {
     NSMutableArray  *logArray = (NSMutableArray *)self.logMap[@(logLevel)];
     for (int i = 0; i < [logArray count]; i++) {
         NSString *logMessage = logArray[i];
@@ -56,12 +60,12 @@ static NSString * const kLogTag = @"AdjustTests";
             [logArray removeObjectsInRange:NSMakeRange(0, i + 1)];
             [self check:@"found %@", beginsWith];
             //NSLog(@"%@ found", beginsWith);
-            return YES;
+            return logMessage;
         }
     }
     [self check:@"%@ is not in: %@", beginsWith, [logArray componentsJoinedByString:@","]];
     //NSLog(@"%@ not in (%@)", beginsWith, [logArray componentsJoinedByString:@","]);
-    return NO;
+    return nil;
 }
 
 - (void)setLogLevel:(ADJLogLevel)logLevel {

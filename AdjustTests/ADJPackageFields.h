@@ -18,12 +18,14 @@
 @property (nonatomic, copy) NSString* purchaseTime;
 @property (nonatomic, copy) NSString* iadTime;
 @property (nonatomic, copy) NSString* iadDetails;
+@property (nonatomic, copy) NSString* deepLink;
 // ADJConfig
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
-@property (nonatomic, copy) NSString *hasDelegate;
+@property (nonatomic, assign) BOOL hasResponseDelegate;
 @property (nonatomic, copy) NSString *defaultTracker;
+@property (nonatomic, assign) BOOL eventBufferingEnabled;
 // ADJDeviceInfo
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *pushToken;
