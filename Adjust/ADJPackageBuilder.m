@@ -186,7 +186,7 @@
 {
     [self parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [self parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
-    [self parameters:parameters setBool:adjustConfig.hasDelegate forKey:@"needs_response_details"];
+    [self parameters:parameters setBool:adjustConfig.hasResponseDelegate forKey:@"needs_response_details"];
     [self parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
 }
 

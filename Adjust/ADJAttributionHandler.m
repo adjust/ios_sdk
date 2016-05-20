@@ -24,7 +24,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (nonatomic, retain) ADJTimerOnce *attributionTimer;
 @property (nonatomic, retain) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
-@property (nonatomic, assign) BOOL hasDelegate;
+@property (nonatomic, assign) BOOL hasNeedsResponseDelegate;
 
 @end
 
@@ -56,7 +56,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
     self.paused = !startsSending;
-    self.hasDelegate = hasAttributionChangedDelegate;
+    self.hasNeedsResponseDelegate = hasAttributionChangedDelegate;
     self.attributionTimer = [ADJTimerOnce timerWithBlock:^{ [self getAttributionInternal]; }
                                                    queue:self.internalQueue
                                                     name:kAttributionTimerName];
@@ -138,7 +138,7 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 }
 
 - (void) getAttributionInternal {
-    if (!self.hasDelegate) {
+    if (!self.hasNeedsResponseDelegate) {
         return;
     }
     if (self.paused) {

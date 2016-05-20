@@ -705,6 +705,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return NO;
     }
 
+    if (![self.adjustConfig hasAttributionChangedDelegate]) {
+        return NO;
+    }
+
     if (![self.adjustDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return NO;
     }
@@ -714,6 +718,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void) appWillOpenUrlInternal:(NSURL *)url {
     if ([ADJUtil isNull:url]) {
+        return;
+    }
+
+    if ([[url absoluteString] length] == 0) {
         return;
     }
 

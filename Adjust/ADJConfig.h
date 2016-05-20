@@ -128,9 +128,8 @@
  */
 @property (nonatomic, assign) BOOL sendInBackground;
 
-
-@property (nonatomic, assign) BOOL hasDelegate;
-@property (nonatomic, assign) BOOL hasAttributionChangedDelegate;
+@property (nonatomic, assign, readonly) BOOL hasResponseDelegate;
+@property (nonatomic, assign, readonly) BOOL hasAttributionChangedDelegate;
 
 - (BOOL) isValid;
 @end
