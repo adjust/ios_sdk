@@ -60,13 +60,13 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your
 `Podfile` and continue with [step 4](#step4):
 
 ```ruby
-pod 'Adjust', '~> 4.6.0'
+pod 'Adjust', '~> 4.7.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.6.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.7.0'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile`
@@ -817,7 +817,7 @@ package looking something like this:
 ```
 [Adjust]d: Added package 1 (click)
 [Adjust]v: Path:      /sdk_click
-[Adjust]v: ClientSdk: ios4.6.0
+[Adjust]v: ClientSdk: ios4.7.0
 [Adjust]v: Parameters:
 [Adjust]v:      app_token              {YourAppToken}
 [Adjust]v:      created_at             2016-04-15T14:25:51.676Z+0200
