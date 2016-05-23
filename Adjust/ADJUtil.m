@@ -228,7 +228,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     [pairs addObject:sentAtPair];
 
     if (queueSize > 0) {
-        NSString *queueSizeString = [NSString stringWithFormat:@"%lu", queueSize];
+        NSString *queueSizeString = [NSString stringWithFormat:@"%ld", (NSInteger)queueSize];
         NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
         NSString *queueSizePair = [NSString stringWithFormat:@"%@=%@", @"queue_size", escapedQueueSize];
         [pairs addObject:queueSizePair];
