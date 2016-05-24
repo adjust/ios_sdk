@@ -110,6 +110,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
+- (void)updateQueue {
+    // TODO implement update
+}
+
 #pragma mark - internal
 - (void)initInternal:(id<ADJActivityHandler>)activityHandler
         startsSending:(BOOL)startsSending

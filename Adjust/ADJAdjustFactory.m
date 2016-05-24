@@ -22,6 +22,7 @@ static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static BOOL internalTesting = NO;
+static NSTimeInterval internalMaxDelayStart = -1;
 
 @implementation ADJAdjustFactory
 
@@ -129,6 +130,13 @@ static BOOL internalTesting = NO;
     return internalTesting;
 }
 
++ (NSTimeInterval)maxDelayStart {
+    if (internalMaxDelayStart == -1) {
+        return 10.0;               // 10 seconds
+    }
+    return internalMaxDelayStart;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -179,5 +187,9 @@ static BOOL internalTesting = NO;
 
 + (void)setTesting:(BOOL)testing {
     internalTesting = testing;
+}
+
++ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart {
+    internalMaxDelayStart = maxDelayStart;
 }
 @end

@@ -105,6 +105,8 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (NSString*)idfa;
 
++ (void)sendFirstPackages;
+
 /**
  * Tell adjust to send the request to Google and check if the installation 
  * belongs to Google AdWords campaign.

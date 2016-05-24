@@ -56,6 +56,7 @@
 
 - (void) setOfflineMode:(BOOL)offline;
 - (ADJInternalState*) internalState;
+- (void)sendFirstPackages;
 
 @end
 

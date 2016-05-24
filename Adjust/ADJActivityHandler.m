@@ -27,6 +27,7 @@ static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 static NSString   * const kForegroundTimerName   = @"Foreground timer";
 static NSString   * const kBackgroundTimerName   = @"Background timer";
+static NSString   * const kDelayStartTimerName   = @"Delay Start timer";
 
 static NSTimeInterval kForegroundTimerInterval;
 static NSTimeInterval kForegroundTimerStart;
@@ -72,6 +73,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, retain) ADJInternalState *internalState;
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
+@property (nonatomic, retain) ADJTimerOnce *delayStartTimer;
 
 @end
 
@@ -107,6 +109,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     // init logger to be available everywhere
     self.logger = ADJAdjustFactory.logger;
+
     if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
         [self.logger setLogLevel:ADJLogLevelAssert];
     } else {
@@ -145,6 +148,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.internalState.background = NO;
 
     dispatch_async(self.internalQueue, ^{
+        [self checkStartDelay];
+
         [self stopBackgroundTimer];
 
         [self startForegroundTimer];
@@ -222,9 +227,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     if (self.activityState == nil) {
         [self updateState:!enabled
-           pausingMessage:@"Package handler and attribution handler will start as paused due to the SDK being disabled"
-     remainsPausedMessage:@"Package and attribution handler will still start as paused due to the SDK being offline"
-         unPausingMessage:@"Package handler and attribution handler will start as active due to the SDK being enabled"];
+           pausingMessage:@"Handlers will start as paused due to the SDK being disabled"
+     remainsPausedMessage:@"Handlers will still start as paused"
+         unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
         return;
     }
 
@@ -233,9 +238,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self writeActivityState];
 
     [self updateState:!enabled
-       pausingMessage:@"Pausing package handler and attribution handler due to SDK being disabled"
- remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being offline"
-     unPausingMessage:@"Resuming package handler and attribution handler due to SDK being enabled"];
+       pausingMessage:@"Pausing handlers due to SDK being disabled"
+ remainsPausedMessage:@"Handlers remain paused"
+     unPausingMessage:@"Resuming handlers due to SDK being enabled"];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
@@ -253,16 +258,16 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     if (self.activityState == nil) {
         [self updateState:offline
-           pausingMessage:@"Package handler and attribution handler will start paused due to SDK being offline"
-     remainsPausedMessage:@"Package and attribution handler will still start as paused due to SDK being disabled"
-         unPausingMessage:@"Package handler and attribution handler will start as active due to SDK being online"];
+           pausingMessage:@"Handlers will start paused due to SDK being offline"
+     remainsPausedMessage:@"Handlers will still start as paused"
+         unPausingMessage:@"Handlers will start as active due to SDK being online"];
         return;
     }
 
     [self updateState:offline
-       pausingMessage:@"Pausing package and attribution handler to put SDK offline mode"
- remainsPausedMessage:@"Package and attribution handler remain paused due to SDK being disabled"
-     unPausingMessage:@"Resuming package handler and attribution handler to put SDK in online mode"];
+       pausingMessage:@"Pausing handlers to put SDK offline mode"
+ remainsPausedMessage:@"Handlers remain paused"
+     unPausingMessage:@"Resuming handlers to put SDK in online mode"];
 }
 
 - (BOOL)isEnabled {
@@ -299,18 +304,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // it is changing from an active state to a pause state
     if (pausingState) {
         [self.logger info:pausingMessage];
-        [self updateHandlersStatusAndSend];
-        return;
+    }
+    // check if it's remaining in a pause state
+    else if ([self paused:NO]) {
+        // including the sdk click handler
+        if ([self paused:YES]) {
+            [self.logger info:remainsPausedMessage];
+        } else {
+            // or except it
+            [self.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
+        }
+    } else {
+        // it is changing from a pause state to an active state
+        [self.logger info:unPausingMessage];
     }
 
-    // it is remaining in a pause state
-    if ([self paused]) {
-        [self.logger info:remainsPausedMessage];
-        return;
-    }
-
-    // it is changing from a pause state to an active state
-    [self.logger info:unPausingMessage];
     [self updateHandlersStatusAndSend];
 }
 
@@ -410,6 +418,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     });
 }
 
+- (void)sendFirstPackages {
+    dispatch_async(self.internalQueue, ^{
+        [self sendFirstPackagesInternal];
+    });
+}
+
 #pragma mark - internal
 - (void)initInternal {
     // get session values
@@ -436,13 +450,23 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                             intervalTime:kForegroundTimerInterval
                                                     name:kForegroundTimerName];
 
-    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
-                                                  queue:self.internalQueue
-                                                   name:kBackgroundTimerName];
+    if (self.adjustConfig.sendInBackground) {
+        [self.logger info:@"Send in background configured"];
+        self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
+                                                      queue:self.internalQueue
+                                                       name:kBackgroundTimerName];
+    }
+    if (self.activityState == nil &&
+        self.adjustConfig.delayStart > 0)
+    {
+        [self.logger info:@"Delay start configured"];
+        self.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [self sendFirstPackages]; }
+                                                      queue:self.internalQueue
+                                                       name:kDelayStartTimerName];
+    }
 
-    BOOL toSend = [self toSend];
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                               startsSending:toSend];
+                                                               startsSending:[self toSend:NO]];
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
@@ -453,10 +477,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
                                                               withAttributionPackage:attributionPackage
-                                                                       startsSending:toSend
+                                                                       startsSending:[self toSend:NO]
                                                        hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
 
-    self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:toSend];
+    self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[self toSend:YES]];
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
@@ -904,7 +928,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 # pragma mark - handlers status
 - (void)updateHandlersStatusAndSendInternal {
     // check if it should stop sending
-
     if (![self toSend]) {
         [self pauseSending];
         return;
@@ -921,7 +944,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)pauseSending {
     [self.attributionHandler pauseSending];
     [self.packageHandler pauseSending];
-    [self.sdkClickHandler pauseSending];
+    // the conditions to pause the sdk click handler are less restrictive
+    // it's possible for the sdk click handler to be active while others are paused
+    if (![self toSend:YES]) {
+        [self.sdkClickHandler pauseSending];
+    }
 }
 
 - (void)resumeSending {
@@ -930,14 +957,29 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.sdkClickHandler resumeSending];
 }
 
-// offline or disabled pauses the sdk
 - (BOOL)paused {
-    return [self.internalState isOffline] || ![self isEnabled];
+    return [self paused:NO];
+}
+
+- (BOOL)paused:(BOOL)sdkClickHandlerOnly {
+    if (sdkClickHandlerOnly) {
+        // sdk click handler is paused if either:
+        return [self.internalState isOffline] ||    // it's offline
+                ![self isEnabled];                  // is disabled
+    }
+    // other handlers are paused if either:
+    return [self.internalState isOffline] || // it's offline
+            ![self isEnabled] ||             // is disabled
+            self.delayStartTimer != nil;     // is in delayed start
 }
 
 - (BOOL)toSend {
-    // if it's offline, disabled -> don't send
-    if ([self paused]) {
+    return [self toSend:NO];
+}
+
+- (BOOL)toSend:(BOOL)sdkClickHandlerOnly {
+    // don't send when it's paused
+    if ([self paused:sdkClickHandlerOnly]) {
         return NO;
     }
 
@@ -952,7 +994,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 # pragma mark - timer
 - (void)startForegroundTimer {
-    // don't start the timer if it's disabled/offline
+    // don't start the timer when it's paused
     if ([self paused]) {
         return;
     }
@@ -965,8 +1007,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)foregroundTimerFiredInternal {
+    // stop the timer cycle when it's paused
     if ([self paused]) {
-        // stop the timer cycle if it's disabled/offline
         [self stopForegroundTimer];
         return;
     }
@@ -978,6 +1020,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)startBackgroundTimer {
+    if (self.backgroundTimer == nil) {
+        return;
+    }
+
     // check if it can send in the background
     if (![self toSend]) {
         return;
@@ -992,11 +1038,64 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)stopBackgroundTimer {
+    if (self.backgroundTimer == nil) {
+        return;
+    }
+
     [self.backgroundTimer cancel];
 }
 
--(void)backgroundTimerFiredInternal {
+- (void)backgroundTimerFiredInternal {
     [self.packageHandler sendFirstPackage];
+}
+
+- (void)checkStartDelay {
+    // first session has already been created
+    if (self.activityState != nil) {
+        return;
+    }
+
+    // it's not configured to start delayed or already finished
+    if (self.delayStartTimer == nil) {
+        return;
+    }
+
+    // the delay has already started
+    if ([self.delayStartTimer fireIn] > 0) {
+        return;
+    }
+
+    // check against max start delay
+    double delayStart = self.adjustConfig.delayStart;
+    double maxDelayStart = [ADJAdjustFactory maxDelayStart];
+
+    if (delayStart > maxDelayStart) {
+        NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
+        NSString * maxDelayStartFormatted = [ADJUtil secondsNumberFormat:maxDelayStart];
+
+        [self.logger warn:@"Delay start of %@ seconds bigger than max allowed value of %@ seconds", delayStartFormatted, maxDelayStartFormatted];
+        delayStart = maxDelayStart;
+    }
+
+    NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
+    [self.logger info:@"Waiting %@ seconds before starting first session", delayStartFormatted];
+
+    [self.delayStartTimer startIn:delayStart];
+}
+
+- (void)sendFirstPackagesInternal {
+    if (self.delayStartTimer == nil) {
+        [self.logger info:@"Start delay expired or never configured"];
+        return;
+    }
+    // cancel possible still running timer if it was called by user
+    [self.delayStartTimer cancel];
+    // no longer delayed
+    self.delayStartTimer = nil;
+    // update possible
+    [self.packageHandler updateQueue];
+    // update the status and try to send first package
+    [self updateHandlersStatusAndSendInternal];
 }
 
 #pragma mark - notifications

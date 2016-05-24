@@ -79,6 +79,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [[Adjust getInstance] convertUniversalLink:url scheme:scheme];
 }
 
++ (void)sendFirstPackages {
+    [[Adjust getInstance] sendFirstPackages];
+}
+
 + (id)getInstance {
     static Adjust *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -158,6 +162,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 - (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     return [ADJUtil convertUniversalLink:url scheme:scheme];
+}
+
+- (void)sendFirstPackages {
+    if (![self checkActivityHandler]) return;
+    [self.activityHandler sendFirstPackages];
 }
 
 #pragma mark - private

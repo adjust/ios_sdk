@@ -41,6 +41,11 @@
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
 
+    // delay the first session of the SDK
+    //[adjustConfig setDelayStart:7];
+
+    // set an attribution delegate
+
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
 

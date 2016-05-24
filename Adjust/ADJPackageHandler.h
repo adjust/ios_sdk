@@ -24,6 +24,7 @@
           activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
+- (void)updateQueue;
 
 @end
 

@@ -37,6 +37,7 @@
                                                     startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 + (BOOL)testing;
++ (NSTimeInterval)maxDelayStart;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -51,5 +52,6 @@
 + (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
++ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 
 @end

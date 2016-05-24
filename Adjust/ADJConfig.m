@@ -157,6 +157,7 @@
         copy->_hasResponseDelegate = self.hasResponseDelegate;
         copy->_hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
         copy.sendInBackground = self.sendInBackground;
+        copy.delayStart = self.delayStart;
         // adjust delegate not copied
     }
 
