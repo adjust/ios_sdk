@@ -1,0 +1,163 @@
+<!doctype html>
+<html><head>
+	<style type='text/css'>
+		html { font-family:Helvetica; color:#222; }
+		h1 { color:steelblue; font-size:24px; margin-top:24px; }
+		button { margin:0 3px 10px; font-size:12px; }
+		.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+	</style>
+</head><body>
+	<h1>Adjust Bridge Html demo</h1>
+	<script>
+
+	function connectWebViewJavascriptBridge(callback) {
+		if (window.WebViewJavascriptBridge) {
+			callback(WebViewJavascriptBridge)
+		} else {
+			document.addEventListener('WebViewJavascriptBridgeReady', function() {
+				callback(WebViewJavascriptBridge)
+			}, false)
+		}
+	}
+	
+	connectWebViewJavascriptBridge(function(bridge) {
+        //AdjustBridge.setBridge(bridge);
+
+        // put calls to AdjustBridge here
+
+        var uniqueId = 1
+        function log(message, data) {
+            var log = document.getElementById('log')
+            var el = document.createElement('div')
+            el.className = 'logLine'
+            el.innerHTML = uniqueId++ + '. ' + message + (data ? ':<br/>' + JSON.stringify(data) : '')
+            if (log.children.length) { log.insertBefore(el, log.children[0]) }
+            else { log.appendChild(el) }
+        }
+        var trackEventButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        trackEventButton.innerHTML = 'track event'
+        trackEventButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS calling handler "track event" with just token')
+
+            //AdjustBridge.trackEvent('123456')
+        }
+
+        document.body.appendChild(document.createElement('br'))
+
+        var trackEventParamButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        trackEventParamButton.innerHTML = 'track event with parameters'
+        trackEventParamButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "track event" with token and parameters')
+
+            //AdjustBridge.trackEvent('123456', {'foo': 'bar', 'key' : 'value'})
+        }
+
+        document.body.appendChild(document.createElement('br'))
+
+        var trackRevenueButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        trackRevenueButton.innerHTML = 'track revenue'
+        trackRevenueButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "track revenue" with amount')
+            //AdjustBridge.trackRevenue(4);
+        }
+
+        document.body.appendChild(document.createElement('br'))
+
+        var trackRevenueTokenButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        trackRevenueTokenButton.innerHTML = 'track revenue with token'
+        trackRevenueTokenButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "track revenue" with amount and token')
+            //AdjustBridge.trackRevenue(0.45, '123456')
+        }
+
+
+        document.body.appendChild(document.createElement('br'))
+
+        var trackRevenueParamButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        trackRevenueParamButton.innerHTML = 'track revenue with parameters'
+        trackRevenueParamButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "track revenue" with amount, token and parameters')
+            //AdjustBridge.trackRevenue(0, '123456', {'foo': 'bar', 'key' : 'value'})
+        }
+
+        document.body.appendChild(document.createElement('br'))
+
+        var setResponseButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        setResponseButton.innerHTML = 'set response delegate'
+        setResponseButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "set response delegate"')
+                                   /*
+            AdjustBridge.setResponseDelegate(function(responseData) {
+                log('response data, tracker token: ' + responseData.tracker_token)
+                log('response data, tracker name: ' + responseData.tracker_name)
+                log('response data, error: ' + responseData.error)
+                log('response data, yes: ' + responseData.yes)
+                log('response data, no: ' + responseData.no)
+            }, log)
+                                    */
+        }
+
+        document.body.appendChild(document.createElement('br'))
+        var isEnabled;
+
+        var setEnabledButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        //setEnabledButton.innerHTML = isEnabled ? 'disable SDK' : 'enable SDK'
+        setEnabledButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "set enabled"')
+            //AdjustBridge.setEnabled(!isEnabled)
+            checkEnabled()
+        }
+
+        var checkEnabled = function () {
+                                   /*
+            AdjustBridge.isEnabled(function(isEnabledParam) {
+                isEnabled = isEnabledParam
+                log('isEnabled: ' + isEnabled)
+                setEnabledButton.innerHTML = isEnabled ? 'disable SDK' : 'enable SDK'
+            })
+                                    */
+        }
+        checkEnabled()
+
+        document.body.appendChild(document.createElement('br'))
+
+        var isEnabledButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        isEnabledButton.innerHTML = 'is SDK enabled? '
+        isEnabledButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "is enabled"')
+            checkEnabled()
+            log('isEnabled? ' + isEnabled)
+        }
+        document.body.appendChild(document.createElement('br'))
+
+        var openUrlButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        openUrlButton.innerHTML = 'open custom url scheme'
+        openUrlButton.onclick = function(e) {
+            e.preventDefault()
+            log('JS  calling handler "set log level"')
+            //AdjustBridge.openUrl('AdjustTests://example.com/path/inApp?adjust_foo=bar&other=stuff&adjust_key=value')
+        }
+
+
+	})
+	</script>
+    <button name="button" id="outButton">Click me</button>
+	<div id='buttons'></div> <div id='log'></div>
+
+    <script>
+        var outButton = document.getElementById('outButton');
+        outButton.onclick = function() {
+            alert('out button pressed')
+            log('out button pressed')
+            //AdjustBridge.trackEvent('123456')
+        }
+    </script>
+</body></html>

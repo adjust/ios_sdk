@@ -1,0 +1,16 @@
+window.AdjustBridge = (
+
+    var bridge = {};
+
+    var adjustPrefix = 'adjust_';
+
+    function setBridgePrivate(bridgeParam) {
+        bridge = bridgeParam;
+    }
+
+    function () {
+        return {
+            setBridge: setBridgePrivate,
+        };
+    }
+)();

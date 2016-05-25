@@ -1,0 +1,560 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		961515E41CD2CBD70022D336 /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515A91CD2CBD70022D336 /* ADJSystemProfile.m */; };
+		961515E51CD2CBD70022D336 /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515AB1CD2CBD70022D336 /* NSString+ADJAdditions.m */; };
+		961515E61CD2CBD70022D336 /* UIDevice+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515AD1CD2CBD70022D336 /* UIDevice+ADJAdditions.m */; };
+		961515E71CD2CBD70022D336 /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515AF1CD2CBD70022D336 /* NSData+ADJAdditions.m */; };
+		961515E81CD2CBD70022D336 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515B21CD2CBD70022D336 /* Adjust.m */; };
+		961515E91CD2CBD70022D336 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515B41CD2CBD70022D336 /* ADJActivityHandler.m */; };
+		961515EA1CD2CBD70022D336 /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515B61CD2CBD70022D336 /* ADJActivityKind.m */; };
+		961515EB1CD2CBD70022D336 /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515B81CD2CBD70022D336 /* ADJActivityPackage.m */; };
+		961515EC1CD2CBD70022D336 /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515BA1CD2CBD70022D336 /* ADJActivityState.m */; };
+		961515ED1CD2CBD70022D336 /* ADJAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515BC1CD2CBD70022D336 /* ADJAdjustFactory.m */; };
+		961515EE1CD2CBD70022D336 /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515BE1CD2CBD70022D336 /* ADJLogger.m */; };
+		961515EF1CD2CBD70022D336 /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515C01CD2CBD70022D336 /* ADJPackageBuilder.m */; };
+		961515F01CD2CBD70022D336 /* ADJPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515C21CD2CBD70022D336 /* ADJPackageHandler.m */; };
+		961515F11CD2CBD70022D336 /* ADJRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515C41CD2CBD70022D336 /* ADJRequestHandler.m */; };
+		961515F21CD2CBD70022D336 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515C61CD2CBD70022D336 /* ADJUtil.m */; };
+		961515F31CD2CBD70022D336 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515C81CD2CBD70022D336 /* ADJEvent.m */; };
+		961515F41CD2CBD70022D336 /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515CA1CD2CBD70022D336 /* ADJDeviceInfo.m */; };
+		961515F51CD2CBD70022D336 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515CC1CD2CBD70022D336 /* ADJAttributionHandler.m */; };
+		961515F61CD2CBD70022D336 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515CE1CD2CBD70022D336 /* ADJAttribution.m */; };
+		961515F71CD2CBD70022D336 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515D01CD2CBD70022D336 /* ADJConfig.m */; };
+		961515F81CD2CBD70022D336 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515D21CD2CBD70022D336 /* ADJTimerOnce.m */; };
+		961515F91CD2CBD70022D336 /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515D41CD2CBD70022D336 /* ADJTimerCycle.m */; };
+		961515FA1CD2CBD70022D336 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515D61CD2CBD70022D336 /* ADJResponseData.m */; };
+		961515FB1CD2CBD70022D336 /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515D81CD2CBD70022D336 /* ADJSessionSuccess.m */; };
+		961515FC1CD2CBD70022D336 /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515DA1CD2CBD70022D336 /* ADJSessionFailure.m */; };
+		961515FD1CD2CBD70022D336 /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515DC1CD2CBD70022D336 /* ADJEventSuccess.m */; };
+		961515FE1CD2CBD70022D336 /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515DE1CD2CBD70022D336 /* ADJEventFailure.m */; };
+		961515FF1CD2CBD70022D336 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515E01CD2CBD70022D336 /* ADJBackoffStrategy.m */; };
+		961516001CD2CBD70022D336 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515E21CD2CBD70022D336 /* ADJSdkClickHandler.m */; };
+		9648C5B81CD148FB00A3B049 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C5B71CD148FB00A3B049 /* main.m */; };
+		9648C5BB1CD148FB00A3B049 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C5BA1CD148FB00A3B049 /* AppDelegate.m */; };
+		9648C5BE1CD148FB00A3B049 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C5BD1CD148FB00A3B049 /* ViewController.m */; };
+		9648C5C11CD148FB00A3B049 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9648C5BF1CD148FB00A3B049 /* Main.storyboard */; };
+		9648C5C31CD148FB00A3B049 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9648C5C21CD148FB00A3B049 /* Assets.xcassets */; };
+		9648C5C61CD148FB00A3B049 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9648C5C41CD148FB00A3B049 /* LaunchScreen.storyboard */; };
+		9648C5DA1CD14FBB00A3B049 /* AdjustExample-webView.html in Resources */ = {isa = PBXBuildFile; fileRef = 9648C5D91CD14FBB00A3B049 /* AdjustExample-webView.html */; };
+		9648C5DC1CD151F200A3B049 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9648C5DB1CD151F100A3B049 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9648C6111CD1842C00A3B049 /* ADJWebViewBridge.js.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9648C6061CD1842C00A3B049 /* ADJWebViewBridge.js.txt */; };
+		9648C6121CD1842C00A3B049 /* ADJWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C6071CD1842C00A3B049 /* ADJWebViewBridge.m */; };
+		9648C6131CD1842C00A3B049 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C60A1CD1842C00A3B049 /* WebViewJavascriptBridge.m */; };
+		9648C6141CD1842C00A3B049 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C60C1CD1842C00A3B049 /* WebViewJavascriptBridge_JS.m */; };
+		9648C6151CD1842C00A3B049 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C60E1CD1842C00A3B049 /* WebViewJavascriptBridgeBase.m */; };
+		9648C6161CD1842C00A3B049 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C6101CD1842C00A3B049 /* WKWebViewJavascriptBridge.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		961515A81CD2CBD70022D336 /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
+		961515A91CD2CBD70022D336 /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
+		961515AA1CD2CBD70022D336 /* NSString+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ADJAdditions.h"; sourceTree = "<group>"; };
+		961515AB1CD2CBD70022D336 /* NSString+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ADJAdditions.m"; sourceTree = "<group>"; };
+		961515AC1CD2CBD70022D336 /* UIDevice+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ADJAdditions.h"; sourceTree = "<group>"; };
+		961515AD1CD2CBD70022D336 /* UIDevice+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ADJAdditions.m"; sourceTree = "<group>"; };
+		961515AE1CD2CBD70022D336 /* NSData+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ADJAdditions.h"; sourceTree = "<group>"; };
+		961515AF1CD2CBD70022D336 /* NSData+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ADJAdditions.m"; sourceTree = "<group>"; };
+		961515B11CD2CBD70022D336 /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
+		961515B21CD2CBD70022D336 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
+		961515B31CD2CBD70022D336 /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
+		961515B41CD2CBD70022D336 /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
+		961515B51CD2CBD70022D336 /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
+		961515B61CD2CBD70022D336 /* ADJActivityKind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityKind.m; sourceTree = "<group>"; };
+		961515B71CD2CBD70022D336 /* ADJActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityPackage.h; sourceTree = "<group>"; };
+		961515B81CD2CBD70022D336 /* ADJActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityPackage.m; sourceTree = "<group>"; };
+		961515B91CD2CBD70022D336 /* ADJActivityState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityState.h; sourceTree = "<group>"; };
+		961515BA1CD2CBD70022D336 /* ADJActivityState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityState.m; sourceTree = "<group>"; };
+		961515BB1CD2CBD70022D336 /* ADJAdjustFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAdjustFactory.h; sourceTree = "<group>"; };
+		961515BC1CD2CBD70022D336 /* ADJAdjustFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdjustFactory.m; sourceTree = "<group>"; };
+		961515BD1CD2CBD70022D336 /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
+		961515BE1CD2CBD70022D336 /* ADJLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLogger.m; sourceTree = "<group>"; };
+		961515BF1CD2CBD70022D336 /* ADJPackageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPackageBuilder.h; sourceTree = "<group>"; };
+		961515C01CD2CBD70022D336 /* ADJPackageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPackageBuilder.m; sourceTree = "<group>"; };
+		961515C11CD2CBD70022D336 /* ADJPackageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPackageHandler.h; sourceTree = "<group>"; };
+		961515C21CD2CBD70022D336 /* ADJPackageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPackageHandler.m; sourceTree = "<group>"; };
+		961515C31CD2CBD70022D336 /* ADJRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJRequestHandler.h; sourceTree = "<group>"; };
+		961515C41CD2CBD70022D336 /* ADJRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJRequestHandler.m; sourceTree = "<group>"; };
+		961515C51CD2CBD70022D336 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
+		961515C61CD2CBD70022D336 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
+		961515C71CD2CBD70022D336 /* ADJEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEvent.h; sourceTree = "<group>"; };
+		961515C81CD2CBD70022D336 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
+		961515C91CD2CBD70022D336 /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
+		961515CA1CD2CBD70022D336 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
+		961515CB1CD2CBD70022D336 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
+		961515CC1CD2CBD70022D336 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
+		961515CD1CD2CBD70022D336 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
+		961515CE1CD2CBD70022D336 /* ADJAttribution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttribution.m; sourceTree = "<group>"; };
+		961515CF1CD2CBD70022D336 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
+		961515D01CD2CBD70022D336 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
+		961515D11CD2CBD70022D336 /* ADJTimerOnce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerOnce.h; sourceTree = "<group>"; };
+		961515D21CD2CBD70022D336 /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
+		961515D31CD2CBD70022D336 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
+		961515D41CD2CBD70022D336 /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
+		961515D51CD2CBD70022D336 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
+		961515D61CD2CBD70022D336 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
+		961515D71CD2CBD70022D336 /* ADJSessionSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionSuccess.h; sourceTree = "<group>"; };
+		961515D81CD2CBD70022D336 /* ADJSessionSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionSuccess.m; sourceTree = "<group>"; };
+		961515D91CD2CBD70022D336 /* ADJSessionFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionFailure.h; sourceTree = "<group>"; };
+		961515DA1CD2CBD70022D336 /* ADJSessionFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionFailure.m; sourceTree = "<group>"; };
+		961515DB1CD2CBD70022D336 /* ADJEventSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEventSuccess.h; sourceTree = "<group>"; };
+		961515DC1CD2CBD70022D336 /* ADJEventSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEventSuccess.m; sourceTree = "<group>"; };
+		961515DD1CD2CBD70022D336 /* ADJEventFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEventFailure.h; sourceTree = "<group>"; };
+		961515DE1CD2CBD70022D336 /* ADJEventFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEventFailure.m; sourceTree = "<group>"; };
+		961515DF1CD2CBD70022D336 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		961515E01CD2CBD70022D336 /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		961515E11CD2CBD70022D336 /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
+		961515E21CD2CBD70022D336 /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		9648C5B31CD148FB00A3B049 /* AdjustExample-webView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-webView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9648C5B71CD148FB00A3B049 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9648C5B91CD148FB00A3B049 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9648C5BA1CD148FB00A3B049 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9648C5BC1CD148FB00A3B049 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9648C5BD1CD148FB00A3B049 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		9648C5C01CD148FB00A3B049 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9648C5C21CD148FB00A3B049 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9648C5C51CD148FB00A3B049 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9648C5C71CD148FB00A3B049 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9648C5D91CD14FBB00A3B049 /* AdjustExample-webView.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AdjustExample-webView.html"; sourceTree = SOURCE_ROOT; };
+		9648C5DB1CD151F100A3B049 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9648C6051CD1842C00A3B049 /* ADJWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJWebViewBridge.h; sourceTree = "<group>"; };
+		9648C6061CD1842C00A3B049 /* ADJWebViewBridge.js.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ADJWebViewBridge.js.txt; sourceTree = "<group>"; };
+		9648C6071CD1842C00A3B049 /* ADJWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJWebViewBridge.m; sourceTree = "<group>"; };
+		9648C6091CD1842C00A3B049 /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		9648C60A1CD1842C00A3B049 /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
+		9648C60B1CD1842C00A3B049 /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
+		9648C60C1CD1842C00A3B049 /* WebViewJavascriptBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS.m; sourceTree = "<group>"; };
+		9648C60D1CD1842C00A3B049 /* WebViewJavascriptBridgeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridgeBase.h; sourceTree = "<group>"; };
+		9648C60E1CD1842C00A3B049 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
+		9648C60F1CD1842C00A3B049 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		9648C6101CD1842C00A3B049 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9648C5B01CD148FB00A3B049 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9648C5DC1CD151F200A3B049 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		961515B01CD2CBD70022D336 /* ADJAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				961515AA1CD2CBD70022D336 /* NSString+ADJAdditions.h */,
+				961515AB1CD2CBD70022D336 /* NSString+ADJAdditions.m */,
+				961515AC1CD2CBD70022D336 /* UIDevice+ADJAdditions.h */,
+				961515AD1CD2CBD70022D336 /* UIDevice+ADJAdditions.m */,
+				961515AE1CD2CBD70022D336 /* NSData+ADJAdditions.h */,
+				961515AF1CD2CBD70022D336 /* NSData+ADJAdditions.m */,
+			);
+			path = ADJAdditions;
+			sourceTree = "<group>";
+		};
+		961515E31CD2CBD70022D336 /* Adjust */ = {
+			isa = PBXGroup;
+			children = (
+				961515A81CD2CBD70022D336 /* ADJSystemProfile.h */,
+				961515A91CD2CBD70022D336 /* ADJSystemProfile.m */,
+				961515B01CD2CBD70022D336 /* ADJAdditions */,
+				961515B11CD2CBD70022D336 /* Adjust.h */,
+				961515B21CD2CBD70022D336 /* Adjust.m */,
+				961515B31CD2CBD70022D336 /* ADJActivityHandler.h */,
+				961515B41CD2CBD70022D336 /* ADJActivityHandler.m */,
+				961515B51CD2CBD70022D336 /* ADJActivityKind.h */,
+				961515B61CD2CBD70022D336 /* ADJActivityKind.m */,
+				961515B71CD2CBD70022D336 /* ADJActivityPackage.h */,
+				961515B81CD2CBD70022D336 /* ADJActivityPackage.m */,
+				961515B91CD2CBD70022D336 /* ADJActivityState.h */,
+				961515BA1CD2CBD70022D336 /* ADJActivityState.m */,
+				961515BB1CD2CBD70022D336 /* ADJAdjustFactory.h */,
+				961515BC1CD2CBD70022D336 /* ADJAdjustFactory.m */,
+				961515BD1CD2CBD70022D336 /* ADJLogger.h */,
+				961515BE1CD2CBD70022D336 /* ADJLogger.m */,
+				961515BF1CD2CBD70022D336 /* ADJPackageBuilder.h */,
+				961515C01CD2CBD70022D336 /* ADJPackageBuilder.m */,
+				961515C11CD2CBD70022D336 /* ADJPackageHandler.h */,
+				961515C21CD2CBD70022D336 /* ADJPackageHandler.m */,
+				961515C31CD2CBD70022D336 /* ADJRequestHandler.h */,
+				961515C41CD2CBD70022D336 /* ADJRequestHandler.m */,
+				961515C51CD2CBD70022D336 /* ADJUtil.h */,
+				961515C61CD2CBD70022D336 /* ADJUtil.m */,
+				961515C71CD2CBD70022D336 /* ADJEvent.h */,
+				961515C81CD2CBD70022D336 /* ADJEvent.m */,
+				961515C91CD2CBD70022D336 /* ADJDeviceInfo.h */,
+				961515CA1CD2CBD70022D336 /* ADJDeviceInfo.m */,
+				961515CB1CD2CBD70022D336 /* ADJAttributionHandler.h */,
+				961515CC1CD2CBD70022D336 /* ADJAttributionHandler.m */,
+				961515CD1CD2CBD70022D336 /* ADJAttribution.h */,
+				961515CE1CD2CBD70022D336 /* ADJAttribution.m */,
+				961515CF1CD2CBD70022D336 /* ADJConfig.h */,
+				961515D01CD2CBD70022D336 /* ADJConfig.m */,
+				961515D11CD2CBD70022D336 /* ADJTimerOnce.h */,
+				961515D21CD2CBD70022D336 /* ADJTimerOnce.m */,
+				961515D31CD2CBD70022D336 /* ADJTimerCycle.h */,
+				961515D41CD2CBD70022D336 /* ADJTimerCycle.m */,
+				961515D51CD2CBD70022D336 /* ADJResponseData.h */,
+				961515D61CD2CBD70022D336 /* ADJResponseData.m */,
+				961515D71CD2CBD70022D336 /* ADJSessionSuccess.h */,
+				961515D81CD2CBD70022D336 /* ADJSessionSuccess.m */,
+				961515D91CD2CBD70022D336 /* ADJSessionFailure.h */,
+				961515DA1CD2CBD70022D336 /* ADJSessionFailure.m */,
+				961515DB1CD2CBD70022D336 /* ADJEventSuccess.h */,
+				961515DC1CD2CBD70022D336 /* ADJEventSuccess.m */,
+				961515DD1CD2CBD70022D336 /* ADJEventFailure.h */,
+				961515DE1CD2CBD70022D336 /* ADJEventFailure.m */,
+				961515DF1CD2CBD70022D336 /* ADJBackoffStrategy.h */,
+				961515E01CD2CBD70022D336 /* ADJBackoffStrategy.m */,
+				961515E11CD2CBD70022D336 /* ADJSdkClickHandler.h */,
+				961515E21CD2CBD70022D336 /* ADJSdkClickHandler.m */,
+			);
+			name = Adjust;
+			path = ../../../Adjust;
+			sourceTree = "<group>";
+		};
+		9648C5AA1CD148FB00A3B049 = {
+			isa = PBXGroup;
+			children = (
+				9648C5DB1CD151F100A3B049 /* WebKit.framework */,
+				9648C5B51CD148FB00A3B049 /* AdjustExample-webView */,
+				9648C5B41CD148FB00A3B049 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9648C5B41CD148FB00A3B049 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9648C5B31CD148FB00A3B049 /* AdjustExample-webView.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9648C5B51CD148FB00A3B049 /* AdjustExample-webView */ = {
+			isa = PBXGroup;
+			children = (
+				9648C5B91CD148FB00A3B049 /* AppDelegate.h */,
+				9648C5BA1CD148FB00A3B049 /* AppDelegate.m */,
+				9648C5BC1CD148FB00A3B049 /* ViewController.h */,
+				9648C5BD1CD148FB00A3B049 /* ViewController.m */,
+				9648C5BF1CD148FB00A3B049 /* Main.storyboard */,
+				9648C5C21CD148FB00A3B049 /* Assets.xcassets */,
+				9648C5C41CD148FB00A3B049 /* LaunchScreen.storyboard */,
+				9648C5C71CD148FB00A3B049 /* Info.plist */,
+				9648C5B61CD148FB00A3B049 /* Supporting Files */,
+			);
+			path = "AdjustExample-webView";
+			sourceTree = "<group>";
+		};
+		9648C5B61CD148FB00A3B049 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				961515E31CD2CBD70022D336 /* Adjust */,
+				9648C6041CD1842C00A3B049 /* AdjustBridge */,
+				9648C5D91CD14FBB00A3B049 /* AdjustExample-webView.html */,
+				9648C5B71CD148FB00A3B049 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9648C6041CD1842C00A3B049 /* AdjustBridge */ = {
+			isa = PBXGroup;
+			children = (
+				9648C6051CD1842C00A3B049 /* ADJWebViewBridge.h */,
+				9648C6061CD1842C00A3B049 /* ADJWebViewBridge.js.txt */,
+				9648C6071CD1842C00A3B049 /* ADJWebViewBridge.m */,
+				9648C6081CD1842C00A3B049 /* WebViewJavascriptBridge */,
+			);
+			name = AdjustBridge;
+			path = ../../../AdjustBridge;
+			sourceTree = "<group>";
+		};
+		9648C6081CD1842C00A3B049 /* WebViewJavascriptBridge */ = {
+			isa = PBXGroup;
+			children = (
+				9648C6091CD1842C00A3B049 /* WebViewJavascriptBridge.h */,
+				9648C60A1CD1842C00A3B049 /* WebViewJavascriptBridge.m */,
+				9648C60B1CD1842C00A3B049 /* WebViewJavascriptBridge_JS.h */,
+				9648C60C1CD1842C00A3B049 /* WebViewJavascriptBridge_JS.m */,
+				9648C60D1CD1842C00A3B049 /* WebViewJavascriptBridgeBase.h */,
+				9648C60E1CD1842C00A3B049 /* WebViewJavascriptBridgeBase.m */,
+				9648C60F1CD1842C00A3B049 /* WKWebViewJavascriptBridge.h */,
+				9648C6101CD1842C00A3B049 /* WKWebViewJavascriptBridge.m */,
+			);
+			path = WebViewJavascriptBridge;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9648C5B21CD148FB00A3B049 /* AdjustExample-webView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9648C5CA1CD148FB00A3B049 /* Build configuration list for PBXNativeTarget "AdjustExample-webView" */;
+			buildPhases = (
+				9648C5AF1CD148FB00A3B049 /* Sources */,
+				9648C5B01CD148FB00A3B049 /* Frameworks */,
+				9648C5B11CD148FB00A3B049 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AdjustExample-webView";
+			productName = "AdjustExample-webView";
+			productReference = 9648C5B31CD148FB00A3B049 /* AdjustExample-webView.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9648C5AB1CD148FB00A3B049 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = adjust;
+				TargetAttributes = {
+					9648C5B21CD148FB00A3B049 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 9648C5AE1CD148FB00A3B049 /* Build configuration list for PBXProject "AdjustExample-webView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9648C5AA1CD148FB00A3B049;
+			productRefGroup = 9648C5B41CD148FB00A3B049 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9648C5B21CD148FB00A3B049 /* AdjustExample-webView */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9648C5B11CD148FB00A3B049 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9648C5C61CD148FB00A3B049 /* LaunchScreen.storyboard in Resources */,
+				9648C6111CD1842C00A3B049 /* ADJWebViewBridge.js.txt in Resources */,
+				9648C5C31CD148FB00A3B049 /* Assets.xcassets in Resources */,
+				9648C5DA1CD14FBB00A3B049 /* AdjustExample-webView.html in Resources */,
+				9648C5C11CD148FB00A3B049 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9648C5AF1CD148FB00A3B049 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				961515F51CD2CBD70022D336 /* ADJAttributionHandler.m in Sources */,
+				961515F41CD2CBD70022D336 /* ADJDeviceInfo.m in Sources */,
+				9648C5BE1CD148FB00A3B049 /* ViewController.m in Sources */,
+				9648C5BB1CD148FB00A3B049 /* AppDelegate.m in Sources */,
+				961515F01CD2CBD70022D336 /* ADJPackageHandler.m in Sources */,
+				961515FF1CD2CBD70022D336 /* ADJBackoffStrategy.m in Sources */,
+				961515EC1CD2CBD70022D336 /* ADJActivityState.m in Sources */,
+				961516001CD2CBD70022D336 /* ADJSdkClickHandler.m in Sources */,
+				961515E61CD2CBD70022D336 /* UIDevice+ADJAdditions.m in Sources */,
+				9648C6141CD1842C00A3B049 /* WebViewJavascriptBridge_JS.m in Sources */,
+				961515E71CD2CBD70022D336 /* NSData+ADJAdditions.m in Sources */,
+				961515E91CD2CBD70022D336 /* ADJActivityHandler.m in Sources */,
+				9648C6121CD1842C00A3B049 /* ADJWebViewBridge.m in Sources */,
+				961515EB1CD2CBD70022D336 /* ADJActivityPackage.m in Sources */,
+				961515F11CD2CBD70022D336 /* ADJRequestHandler.m in Sources */,
+				961515E81CD2CBD70022D336 /* Adjust.m in Sources */,
+				9648C6151CD1842C00A3B049 /* WebViewJavascriptBridgeBase.m in Sources */,
+				961515ED1CD2CBD70022D336 /* ADJAdjustFactory.m in Sources */,
+				961515FD1CD2CBD70022D336 /* ADJEventSuccess.m in Sources */,
+				961515F81CD2CBD70022D336 /* ADJTimerOnce.m in Sources */,
+				961515E51CD2CBD70022D336 /* NSString+ADJAdditions.m in Sources */,
+				961515FA1CD2CBD70022D336 /* ADJResponseData.m in Sources */,
+				961515EA1CD2CBD70022D336 /* ADJActivityKind.m in Sources */,
+				961515F21CD2CBD70022D336 /* ADJUtil.m in Sources */,
+				961515E41CD2CBD70022D336 /* ADJSystemProfile.m in Sources */,
+				961515F61CD2CBD70022D336 /* ADJAttribution.m in Sources */,
+				961515EE1CD2CBD70022D336 /* ADJLogger.m in Sources */,
+				961515EF1CD2CBD70022D336 /* ADJPackageBuilder.m in Sources */,
+				961515F91CD2CBD70022D336 /* ADJTimerCycle.m in Sources */,
+				961515FC1CD2CBD70022D336 /* ADJSessionFailure.m in Sources */,
+				961515FB1CD2CBD70022D336 /* ADJSessionSuccess.m in Sources */,
+				961515F71CD2CBD70022D336 /* ADJConfig.m in Sources */,
+				961515FE1CD2CBD70022D336 /* ADJEventFailure.m in Sources */,
+				9648C6161CD1842C00A3B049 /* WKWebViewJavascriptBridge.m in Sources */,
+				9648C5B81CD148FB00A3B049 /* main.m in Sources */,
+				961515F31CD2CBD70022D336 /* ADJEvent.m in Sources */,
+				9648C6131CD1842C00A3B049 /* WebViewJavascriptBridge.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9648C5BF1CD148FB00A3B049 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9648C5C01CD148FB00A3B049 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9648C5C41CD148FB00A3B049 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9648C5C51CD148FB00A3B049 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9648C5C81CD148FB00A3B049 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9648C5C91CD148FB00A3B049 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9648C5CB1CD148FB00A3B049 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "AdjustExample-webView/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-webView";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9648C5CC1CD148FB00A3B049 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "AdjustExample-webView/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-webView";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9648C5AE1CD148FB00A3B049 /* Build configuration list for PBXProject "AdjustExample-webView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9648C5C81CD148FB00A3B049 /* Debug */,
+				9648C5C91CD148FB00A3B049 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9648C5CA1CD148FB00A3B049 /* Build configuration list for PBXNativeTarget "AdjustExample-webView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9648C5CB1CD148FB00A3B049 /* Debug */,
+				9648C5CC1CD148FB00A3B049 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9648C5AB1CD148FB00A3B049 /* Project object */;
+}

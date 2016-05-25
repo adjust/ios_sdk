@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head>
+	<style type='text/css'>
+		html { font-family:Helvetica; color:#222; }
+		h1 { color:steelblue; font-size:24px; margin-top:24px; }
+        button { margin:0 3px 10px; font-size:12px; display:block}
+		.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+	</style>
+</head><body>
+	<h1>Adjust Example WebView app</h1>
+    <script>
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+            if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+
+        setupWebViewJavascriptBridge(function(bridge) {
+            var callbackButton = document.getElementById('btnTrackSimpleEvent')
+            callbackButton.onclick = function() {
+                alert('btnTrackSimpleEvent tracked');
+            }
+        })
+    </script>
+
+	<div id='buttons'>
+		<button id='btnTrackSimpleEvent'>Track Simple event</button>
+		<button id='btnTrackRevenueEvent'>Track Revenue event</button>
+        <button id='btnTrackCallback'>Track Callback event</button>
+        <button id='btnTrackPartnerEvent'>Track Partner event</button>
+        <button id='btnEnableOfflineMode'>Enable Offline mode</button>
+        <button id='btnDisableOfflineMode'>Disable Offline mode</button>
+        <button id='btnEnableSDK'>Enable SDK</button>
+        <button id='btnDisableSDK'>Disable SDK</button>
+        <button id='btnIsSDKEnabled'>Is SDK Enabled?</button>
+        <button id='btnForgetDevice'>Forget This Device</button>
+	</div>
+    <div id='log'></div>
+</body></html>
