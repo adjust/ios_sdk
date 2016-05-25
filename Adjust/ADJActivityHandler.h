@@ -14,7 +14,8 @@
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, assign) BOOL background;
-
+@property (nonatomic, assign) BOOL delayStart;
+@property (nonatomic, assign) BOOL eventPreStart;
 - (id)init;
 
 - (BOOL)isEnabled;
@@ -23,6 +24,10 @@
 - (BOOL)isOnline;
 - (BOOL)isBackground;
 - (BOOL)isForeground;
+- (BOOL)isDelayStart;
+- (BOOL)isToStartNow;
+- (BOOL)isEventPreStart;
+- (BOOL)isRegularStart;
 
 @end
 

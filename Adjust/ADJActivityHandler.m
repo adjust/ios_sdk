@@ -54,6 +54,10 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isOnline { return !self.offline; }
 - (BOOL)isBackground { return self.background; }
 - (BOOL)isForeground { return !self.background; }
+- (BOOL)isDelayStart { return self.delayStart; }
+- (BOOL)isToStartNow { return !self.delayStart; }
+- (BOOL)isEventPreStart { return self.eventPreStart; }
+- (BOOL)isRegularStart { return !self.eventPreStart; }
 
 @end
 
@@ -133,6 +137,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.internalState.offline = NO;
     // in the background by default
     self.internalState.background = YES;
+    // delay start not configured by default
+    self.internalState.delayStart = NO;
+    // event pre-start does not occur by default
+    self.internalState.eventPreStart = NO;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     dispatch_async(self.internalQueue, ^{
@@ -148,7 +156,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.internalState.background = NO;
 
     dispatch_async(self.internalQueue, ^{
-        [self checkStartDelay];
+        [self delayStartInternal];
+
+        // marks regular start
+        self.internalState.eventPreStart = NO;
 
         [self stopBackgroundTimer];
 
@@ -176,6 +187,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (void)trackEvent:(ADJEvent *)event {
     dispatch_async(self.internalQueue, ^{
+        // track event called before app started
+        if (self.activityState == nil) {
+            // not the regular start
+            self.internalState.eventPreStart = YES;
+            [self startInternal];
+        }
         [self eventInternal:event];
     });
 }
@@ -460,9 +477,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         self.adjustConfig.delayStart > 0)
     {
         [self.logger info:@"Delay start configured"];
+        self.internalState.delayStart = YES;
         self.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [self sendFirstPackages]; }
                                                       queue:self.internalQueue
                                                        name:kDelayStartTimerName];
+
     }
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
@@ -579,7 +598,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)eventInternal:(ADJEvent *)event {
-    if (![self checkActivityState]) return;
     if (![self isEnabled]) return;
     if (![self checkEvent:event]) return;
     if (![self checkTransactionId:event.transactionId]) return;
@@ -968,9 +986,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                 ![self isEnabled];                  // is disabled
     }
     // other handlers are paused if either:
-    return [self.internalState isOffline] || // it's offline
-            ![self isEnabled] ||             // is disabled
-            self.delayStartTimer != nil;     // is in delayed start
+    return [self.internalState isOffline] ||        // it's offline
+            ![self isEnabled] ||                    // is disabled
+            [self.internalState isDelayStart] ||    // is in delayed start
+            [self.internalState isEventPreStart];   // an pre-start event has occurred before the regular start
 }
 
 - (BOOL)toSend {
@@ -1049,19 +1068,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.packageHandler sendFirstPackage];
 }
 
-- (void)checkStartDelay {
-    // first session has already been created
-    if (self.activityState != nil) {
-        return;
-    }
-
+- (void)delayStartInternal {
     // it's not configured to start delayed or already finished
-    if (self.delayStartTimer == nil) {
+    if ([self.internalState isToStartNow]) {
         return;
     }
 
     // the delay has already started
-    if ([self.delayStartTimer fireIn] > 0) {
+    if (self.adjustConfig.delayStart == 0) {
+        return;
+    }
+
+    // first regular session has occurred
+    if (self.activityState != nil &&
+        [self.internalState isRegularStart]) {
         return;
     }
 
@@ -1081,17 +1101,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.logger info:@"Waiting %@ seconds before starting first session", delayStartFormatted];
 
     [self.delayStartTimer startIn:delayStart];
+
+    // mark delay start = 0 as timer started
+    //  ADJTimerOnce.fireIn not 100% reliable because of multi-threading
+    self.adjustConfig.delayStart = 0;
 }
 
 - (void)sendFirstPackagesInternal {
-    if (self.delayStartTimer == nil) {
+    if ([self.internalState isToStartNow]) {
         [self.logger info:@"Start delay expired or never configured"];
         return;
     }
+    // no longer is in delay start
+    self.internalState.delayStart = NO;
     // cancel possible still running timer if it was called by user
     [self.delayStartTimer cancel];
-    // no longer delayed
+    // and release timer
     self.delayStartTimer = nil;
+
     // update possible
     [self.packageHandler updateQueue];
     // update the status and try to send first package
