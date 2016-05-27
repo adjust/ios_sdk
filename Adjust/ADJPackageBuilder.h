@@ -11,6 +11,7 @@
 #import "ADJDeviceInfo.h"
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
+#import "ADJSessionParameters.h"
 
 #import <Foundation/Foundation.h>
 
@@ -21,8 +22,6 @@
 
 @property (nonatomic, copy) NSString *deeplink;
 @property (nonatomic, copy) NSString *deviceToken;
-@property (nonatomic, retain) NSDictionary* sessionCallbackParameters;
-@property (nonatomic, retain) NSDictionary* sessionPartnerParameters;
 
 @property (nonatomic, retain) NSDictionary *iadDetails;
 @property (nonatomic, retain) NSDictionary* deeplinkParameters;
@@ -34,12 +33,15 @@
                   config:(ADJConfig *)adjustConfig
                createdAt:(double)createdAt;
 
-- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
+- (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
+                                  isInDelay:(BOOL)isInDelay;
 - (ADJActivityPackage *)buildAttributionPackage;
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
+                        sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay;
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
++ (void)parameters:(NSMutableDictionary *)parameters setString:(NSString *)value forKey:(NSString *)key;
 
 @end

@@ -13,7 +13,7 @@
 // data
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, retain) NSDictionary *parameters;
+@property (nonatomic, retain) NSMutableDictionary *parameters;
 
 @property (nonatomic, assign) NSInteger retries;
 

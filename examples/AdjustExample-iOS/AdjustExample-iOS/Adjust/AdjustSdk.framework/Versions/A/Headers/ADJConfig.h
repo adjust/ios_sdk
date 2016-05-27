@@ -128,6 +128,8 @@
  */
 @property (nonatomic, assign) BOOL sendInBackground;
 
+@property (nonatomic, assign) double delayStart;
+
 @property (nonatomic, assign, readonly) BOOL hasResponseDelegate;
 @property (nonatomic, assign, readonly) BOOL hasAttributionChangedDelegate;
 

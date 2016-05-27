@@ -62,15 +62,17 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
                 error:(NSError *)error
           retriesLeft:(int)retriesLeft;
 
-- (void) setOfflineMode:(BOOL)offline;
+- (void)setOfflineMode:(BOOL)offline;
 - (ADJInternalState*) internalState;
 - (void)sendFirstPackages;
+- (void)addCustomUserId:(NSString *)customUserId;
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value;
 - (void)addSessionPartnerParameter:(NSString *)key
                              value:(NSString *)value;
 - (void)removeSessionCallbackParameter:(NSString *)key;
 - (void)removeSessionPartnerParameter:(NSString *)key;
+- (void)resetCustomUserId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 

@@ -111,12 +111,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)updatePackages:(NSDictionary *)sessionCallbackParameters
-sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
+- (void)updatePackages:(ADJSessionParameters *)sessionParameters
 {
+    // make copy to prevent possible Activity Handler changes of it
+    ADJSessionParameters * sessionParametersCopy = [sessionParameters copy];
     dispatch_async(self.internalQueue, ^{
-        [self updatePackagesInternal:sessionCallbackParameters
-            sessionPartnerParameters:sessionPartnerParameters];
+        [self updatePackagesInternal:sessionParametersCopy];
     });
 }
 
@@ -172,87 +172,50 @@ sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
     [self sendFirstInternal];
 }
 
-- (void)updatePackagesInternal:(NSDictionary *)sessionCallbackParameters
-      sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
+- (void)updatePackagesInternal:(ADJSessionParameters *)sessionParameters
 {
     [self.logger debug:@"Updating package handler queue"];
-    [self.logger verbose:@"Session callback parameters %@", sessionCallbackParameters];
-    [self.logger verbose:@"Session partner parameters %@", sessionPartnerParameters];
-
-    // if callback parameters is null
-    if (sessionCallbackParameters == nil && sessionPartnerParameters == nil) {
-        return;
-    }
+    [self.logger verbose:@"Session custom user id: %@", sessionParameters.customUserId];
+    [self.logger verbose:@"Session callback parameters: %@", sessionParameters.callbackParameters];
+    [self.logger verbose:@"Session partner parameters: %@", sessionParameters.partnerParameters];
 
     for (ADJActivityPackage * activityPackage in self.packageQueue) {
+        [ADJPackageBuilder parameters:activityPackage.parameters
+                            setString:sessionParameters.customUserId
+                               forKey:@"custom_user_id"];
+
         [self updateCallbackParameters:activityPackage
-             sessionCallbackParameters:sessionCallbackParameters];
+             sessionCallbackParameters:sessionParameters.callbackParameters];
 
         [self updatePartnerParameters:activityPackage
-             sessionPartnerParameters:sessionCallbackParameters];
+             sessionPartnerParameters:sessionParameters.partnerParameters];
     }
 }
 
 - (void)updateCallbackParameters:(ADJActivityPackage *)activityPackage
                  sessionCallbackParameters:(NSDictionary *)sessionCallbackParameters
 {
-    NSDictionary * mergedParameters = nil;
+    NSDictionary * mergedParameters = [ADJUtil mergeParameters:sessionCallbackParameters
+                                                        source:activityPackage.callbackParameters
+                                                 parameterName:@"Callback"];
 
-    if (sessionCallbackParameters == nil) {
-        mergedParameters = activityPackage.callbackParameters;
-    }
-
-    if (activityPackage.callbackParameters == nil) {
-        mergedParameters = sessionCallbackParameters;
-    }
-
-    if (activityPackage.callbackParameters != nil && sessionCallbackParameters != nil) {
-        mergedParameters = [ADJUtil mergeParameters:sessionCallbackParameters
-                                             source:activityPackage.callbackParameters
-                                      parameterName:@"Callback"];
-    }
-
-    if (mergedParameters == nil) {
-        return;
-    }
-    // get activity package parameters to save
-    NSMutableDictionary * parameters = [NSMutableDictionary dictionaryWithDictionary:activityPackage.parameters];
     // save the merged parameters
-    [ADJPackageBuilder parameters:parameters
+    [ADJPackageBuilder parameters:activityPackage.parameters
                     setDictionary:mergedParameters
                            forKey:@"callback_params"];
-    activityPackage.parameters = parameters;
 }
 
 - (void)updatePartnerParameters:(ADJActivityPackage *)activityPackage
        sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
 {
-    NSDictionary * mergedParameters = nil;
+    NSDictionary * mergedParameters = [ADJUtil mergeParameters:sessionPartnerParameters
+                                                        source:activityPackage.partnerParameters
+                                                 parameterName:@"Partner"];
 
-    if (sessionPartnerParameters == nil) {
-        mergedParameters = activityPackage.partnerParameters;
-    }
-
-    if (activityPackage.partnerParameters == nil) {
-        mergedParameters = sessionPartnerParameters;
-    }
-
-    if (activityPackage.partnerParameters != nil && sessionPartnerParameters != nil) {
-        mergedParameters = [ADJUtil mergeParameters:sessionPartnerParameters
-                                             source:activityPackage.partnerParameters
-                                      parameterName:@"Partner"];
-    }
-
-    if (mergedParameters == nil) {
-        return;
-    }
-    // get activity package parameters to save
-    NSMutableDictionary * parameters = [NSMutableDictionary dictionaryWithDictionary:activityPackage.parameters];
     // save the merged parameters
-    [ADJPackageBuilder parameters:parameters
+    [ADJPackageBuilder parameters:activityPackage.parameters
                     setDictionary:mergedParameters
                            forKey:@"partner_params"];
-    activityPackage.parameters = parameters;
 }
 
 

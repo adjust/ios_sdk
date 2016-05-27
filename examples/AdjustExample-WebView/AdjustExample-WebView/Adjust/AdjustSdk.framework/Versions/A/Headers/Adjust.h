@@ -105,11 +105,31 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (NSString*)idfa;
 
++ (void)sendFirstPackages;
+
 /**
  * Tell adjust to send the request to Google and check if the installation 
  * belongs to Google AdWords campaign.
  */
 + (void)sendAdWordsRequest;
+
++ (void)addCustomUserId:(NSString *)customUserId;
+
++ (void)addSessionCallbackParameter:(NSString *)key
+                                    value:(NSString *)value;
+
++ (void)addSessionPartnerParameter:(NSString *)key
+                                   value:(NSString *)value;
+
++ (void)removeSessionCallbackParameter:(NSString *)key;
+
++ (void)removeSessionPartnerParameter:(NSString *)key;
+
++ (void)resetCustomUserId;
+
++ (void)resetSessionCallbackParameters;
+
++ (void)resetSessionPartnerParameters;
 
 /**
  * Obtain singleton Adjust object
@@ -128,5 +148,16 @@ extern NSString * const ADJEnvironmentProduction;
 - (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 - (NSString*)idfa;
 - (void)sendAdWordsRequest;
+- (void)sendFirstPackages;
+- (void)addCustomUserId:(NSString *)customUserId;
+- (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value;
+- (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value;
+- (void)removeSessionCallbackParameter:(NSString *)key;
+- (void)removeSessionPartnerParameter:(NSString *)key;
+- (void)resetCustomUserId;
+- (void)resetSessionCallbackParameters;
+- (void)resetSessionPartnerParameters;
 
 @end

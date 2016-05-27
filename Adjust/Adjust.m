@@ -84,6 +84,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [[Adjust getInstance] sendFirstPackages];
 }
 
++ (void)addCustomUserId:(NSString *)customUserId {
+    [[Adjust getInstance] addCustomUserId:customUserId];
+}
+
 + (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     [[Adjust getInstance] addSessionCallbackParameter:key value:value];
@@ -102,6 +106,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (void)removeSessionPartnerParameter:(NSString *)key {
     [[Adjust getInstance] removeSessionPartnerParameter:key];
+}
+
++ (void)resetCustomUserId {
+    [[Adjust getInstance] resetCustomUserId];
 }
 
 + (void)resetSessionCallbackParameters {
@@ -199,6 +207,20 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.activityHandler sendFirstPackages];
 }
 
+- (void)addCustomUserId:(NSString *)customUserId {
+    if (self.activityHandler != nil) {
+        [self.activityHandler addCustomUserId:customUserId];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"add", @"customUserId", customUserId];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     if (self.activityHandler != nil) {
@@ -253,6 +275,20 @@ NSString * const ADJEnvironmentProduction   = @"production";
     }
 
     NSArray * action = @[@"remove", @"partner", key];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
+- (void)resetCustomUserId {
+    if (self.activityHandler != nil) {
+        [self.activityHandler resetCustomUserId];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"reset", @"customUserId"];
     [self.sessionParametersActionsArray addObject:action];
 }
 

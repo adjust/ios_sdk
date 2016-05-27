@@ -113,6 +113,8 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)sendAdWordsRequest;
 
++ (void)addCustomUserId:(NSString *)customUserId;
+
 + (void)addSessionCallbackParameter:(NSString *)key
                                     value:(NSString *)value;
 
@@ -122,6 +124,8 @@ extern NSString * const ADJEnvironmentProduction;
 + (void)removeSessionCallbackParameter:(NSString *)key;
 
 + (void)removeSessionPartnerParameter:(NSString *)key;
+
++ (void)resetCustomUserId;
 
 + (void)resetSessionCallbackParameters;
 
@@ -145,12 +149,14 @@ extern NSString * const ADJEnvironmentProduction;
 - (NSString*)idfa;
 - (void)sendAdWordsRequest;
 - (void)sendFirstPackages;
+- (void)addCustomUserId:(NSString *)customUserId;
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value;
 - (void)addSessionPartnerParameter:(NSString *)key
                              value:(NSString *)value;
 - (void)removeSessionCallbackParameter:(NSString *)key;
 - (void)removeSessionPartnerParameter:(NSString *)key;
+- (void)resetCustomUserId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 

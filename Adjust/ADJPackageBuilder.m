@@ -47,13 +47,15 @@
 
 #pragma mark - Public methods
 
-- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay {
+- (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
+                                  isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionCallbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionPartnerParameters forKey:@"partner_params"];
+        [ADJPackageBuilder parameters:parameters setString:sessionParameters.customUserId forKey:@"custom_user_id"];
+        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
     }
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
@@ -65,6 +67,7 @@
 }
 
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
+                        sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
     [ADJPackageBuilder parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
@@ -73,10 +76,11 @@
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
     if (!isInDelay) {
-        NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:self.sessionCallbackParameters
+        [ADJPackageBuilder parameters:parameters setString:sessionParameters.customUserId forKey:@"custom_user_id"];
+        NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
                                                                     source:event.callbackParameters
                                                              parameterName:@"Callback"];
-        NSDictionary * mergedPartnerParameters = [ADJUtil mergeParameters:self.sessionPartnerParameters
+        NSDictionary * mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
                                                                    source:event.partnerParameters
                                                             parameterName:@"Partner"];
         [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];

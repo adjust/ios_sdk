@@ -20,9 +20,11 @@
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
+#import "ADJSessionParameters.h"
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
+static NSString   * const kSessionParametersFilename   = @"AdjustSessionParameters";
 static NSString   * const kSessionCallbackParametersFilename   = @"AdjustSessionCallbackParameters";
 static NSString   * const kSessionPartnerParametersFilename    = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -81,8 +83,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJInternalState *internalState;
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 @property (nonatomic, retain) ADJTimerOnce *delayStartTimer;
-@property (nonatomic, retain) NSDictionary* sessionCallbackParameters;
-@property (nonatomic, retain) NSDictionary* sessionPartnerParameters;
+@property (nonatomic, retain) ADJSessionParameters *sessionParameters;
 
 @end
 
@@ -465,6 +466,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     });
 }
 
+- (void)addCustomUserId:(NSString *)customUserId {
+    dispatch_async(self.internalQueue, ^{
+        [self addCustomUserIdInternal:customUserId];
+    });
+}
+
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     dispatch_async(self.internalQueue, ^{
@@ -488,6 +495,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)removeSessionPartnerParameter:(NSString *)key {
     dispatch_async(self.internalQueue, ^{
         [self removeSessionPartnerParameterInternal:key];
+    });
+}
+
+- (void)resetCustomUserId {
+    dispatch_async(self.internalQueue, ^{
+        [self resetCustomUserIdInternal];
     });
 }
 
@@ -518,6 +531,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
 
     // read files that are accessed only in Internal sections
+    [self readSessionParameters];
+    if (self.sessionParameters == nil) {
+        self.sessionParameters = [[ADJSessionParameters alloc] init];
+    }
     [self readSessionCallbackParameters];
     [self readSessionPartnerParameters];
 
@@ -652,9 +669,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                          activityState:self.activityState
                                          config:self.adjustConfig
                                          createdAt:now];
-    sessionBuilder.sessionCallbackParameters = self.sessionCallbackParameters;
-    sessionBuilder.sessionPartnerParameters = self.sessionPartnerParameters;
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[self.internalState delayStart]];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:self.sessionParameters isInDelay:[self.internalState delayStart]];
     [self.packageHandler addPackage:sessionPackage];
     [self.packageHandler sendFirstPackage];
 }
@@ -703,9 +718,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        activityState:self.activityState
                                        config:self.adjustConfig
                                        createdAt:now];
-    eventBuilder.sessionCallbackParameters = self.sessionCallbackParameters;
-    eventBuilder.sessionPartnerParameters = self.sessionPartnerParameters;
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event isInDelay:[self.internalState delayStart]];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:self.sessionParameters isInDelay:[self.internalState delayStart]];
     [self.packageHandler addPackage:eventPackage];
 
     if (self.adjustConfig.eventBufferingEnabled) {
@@ -1011,14 +1024,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"Attribution"];
 }
 
+- (void)writeSessionParameters {
+    [ADJUtil writeObject:self.sessionParameters
+                filename:kSessionParametersFilename
+              objectName:@"Session parameters"];
+}
+
 - (void)writeSessionCallbackParameters {
-    [ADJUtil writeObject:self.sessionCallbackParameters
+    [ADJUtil writeObject:self.sessionParameters.callbackParameters
                 filename:kSessionCallbackParametersFilename
               objectName:@"Session Callback parameters"];
 }
 
 - (void)writeSessionPartnerParameters {
-    [ADJUtil writeObject:self.sessionPartnerParameters
+    [ADJUtil writeObject:self.sessionParameters.partnerParameters
                 filename:kSessionPartnerParametersFilename
               objectName:@"Session Partner parameters"];
 }
@@ -1036,16 +1055,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                      class:[ADJAttribution class]];
 }
 
+- (void)readSessionParameters {
+    self.sessionParameters = [ADJUtil readObject:kSessionParametersFilename
+                                      objectName:@"Session parameters"
+                                           class:[ADJSessionParameters class]];
+}
 - (void)readSessionCallbackParameters {
-    self.sessionCallbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
-                                              objectName:@"Session Callback parameters"
-                                                   class:[NSDictionary class]];
+    self.sessionParameters.callbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
+                                                         objectName:@"Session Callback parameters"
+                                                              class:[NSDictionary class]];
 }
 
 - (void)readSessionPartnerParameters {
-    self.sessionPartnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
-                                             objectName:@"Session Partner parameters"
-                                                  class:[NSDictionary class]];
+    self.sessionParameters.partnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
+                                                        objectName:@"Session Partner parameters"
+                                                             class:[NSDictionary class]];
 }
 
 # pragma mark - handlers status
@@ -1235,7 +1259,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)updatePackagesInternal {
     // update activity packages
-    [self.packageHandler updatePackages:self.sessionCallbackParameters sessionPartnerParameters:self.sessionPartnerParameters];
+    [self.packageHandler updatePackages:self.sessionParameters];
     // no longer needs to update packages
     self.internalState.updatePackages = NO;
     if (self.activityState != nil) {
@@ -1245,6 +1269,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 #pragma mark - session parameters
+- (void)addCustomUserIdInternal:(NSString *)customUserId {
+    if (![ADJUtil isValidParameter:customUserId
+                     attributeType:@"value"
+                     parameterName:@"Custom User Id"]) return;
+
+    if (self.sessionParameters.customUserId != nil) {
+        [self.logger warn:@"Custom User Id %@ will be overwritten", self.sessionParameters.customUserId];
+    }
+
+    self.sessionParameters.customUserId = customUserId;
+
+    [self writeSessionParameters];
+}
 - (void)addSessionCallbackParameterInternal:(NSString *)key
                               value:(NSString *)value
 {
@@ -1256,13 +1293,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                   attributeType:@"value"
                   parameterName:@"Session Callback"]) return;
 
-    if (self.sessionCallbackParameters == nil) {
-        self.sessionCallbackParameters = @{ key : value };
-        [self writeSessionCallbackParameters];
-        return;
+    if (self.sessionParameters.callbackParameters == nil) {
+        self.sessionParameters.callbackParameters = [NSMutableDictionary dictionary];
     }
 
-    NSString * oldValue = [self.sessionCallbackParameters objectForKey:key];
+    NSString * oldValue = [self.sessionParameters.callbackParameters objectForKey:key];
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
@@ -1272,11 +1307,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger warn:@"Key %@ will be overwritten", key];
     }
 
-    NSMutableDictionary * newSessionCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionCallbackParameters];
-
-    [newSessionCallbackMutableParameters setObject:value forKey:key];
-
-    self.sessionCallbackParameters = newSessionCallbackMutableParameters;
+    [self.sessionParameters.callbackParameters setObject:value forKey:key];
 
     [self writeSessionCallbackParameters];
 }
@@ -1292,13 +1323,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      attributeType:@"value"
                      parameterName:@"Session Partner"]) return;
 
-    if (self.sessionPartnerParameters == nil) {
-        self.sessionPartnerParameters = @{ key : value };
-        [self writeSessionPartnerParameters];
-        return;
+    if (self.sessionParameters.partnerParameters == nil) {
+        self.sessionParameters.partnerParameters = [NSMutableDictionary dictionary];
     }
 
-    NSString * oldValue = [self.sessionPartnerParameters objectForKey:key];
+    NSString * oldValue = [self.sessionParameters.partnerParameters objectForKey:key];
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
@@ -1308,11 +1337,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger warn:@"Key %@ will be overwritten", key];
     }
 
-    NSMutableDictionary * newPartnerCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionPartnerParameters];
 
-    [newPartnerCallbackMutableParameters setObject:value forKey:key];
-
-    self.sessionPartnerParameters = newPartnerCallbackMutableParameters;
+    [self.sessionParameters.partnerParameters setObject:value forKey:key];
 
     [self writeSessionPartnerParameters];
 }
@@ -1322,19 +1348,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      attributeType:@"key"
                      parameterName:@"Session Callback"]) return;
 
-    if (self.sessionCallbackParameters == nil) {
+    if (self.sessionParameters.callbackParameters == nil) {
         [self.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    NSString * oldValue = [self.sessionCallbackParameters objectForKey:key];
+    NSString * oldValue = [self.sessionParameters.callbackParameters objectForKey:key];
     if (oldValue == nil) {
         [self.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
     [self.logger debug:@"Key %@ eliminated", key];
-    [self.sessionCallbackParameters removeObjectForKey:key];
+    [self.sessionParameters.callbackParameters removeObjectForKey:key];
     [self writeSessionCallbackParameters];
 }
 
@@ -1343,37 +1369,46 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      attributeType:@"key"
                      parameterName:@"Session Partner"]) return;
 
-    if (self.sessionPartnerParameters == nil) {
+    if (self.sessionParameters.partnerParameters == nil) {
         [self.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    NSString * oldValue = [self.sessionPartnerParameters objectForKey:key];
+    NSString * oldValue = [self.sessionParameters.partnerParameters objectForKey:key];
     if (oldValue == nil) {
         [self.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
     [self.logger debug:@"key %@ eliminated", key];
-    [self.sessionPartnerParameters removeObjectForKey:key];
+    [self.sessionParameters.partnerParameters removeObjectForKey:key];
     [self writeSessionPartnerParameters];
 }
 
+- (void)resetCustomUserIdInternal {
+    if (self.sessionParameters.customUserId == nil) {
+        [self.logger warn:@"Custom User Id already reset"];
+        return;
+    }
+    self.sessionParameters.customUserId = nil;
+    [self writeSessionParameters];
+}
+
 - (void)resetSessionCallbackParametersInternal {
-    if (self.sessionCallbackParameters == nil) {
+    if (self.sessionParameters.callbackParameters == nil) {
         [self.logger warn:@"Session Callback parameters already reset"];
         return;
     }
-    self.sessionCallbackParameters = nil;
+    self.sessionParameters.callbackParameters = nil;
     [self writeSessionCallbackParameters];
 }
 
 - (void)resetSessionPartnerParametersInternal {
-    if (self.sessionPartnerParameters == nil) {
+    if (self.sessionParameters.partnerParameters == nil) {
         [self.logger warn:@"Session Partner parameters already reset"];
         return;
     }
-    self.sessionPartnerParameters = nil;
+    self.sessionParameters.partnerParameters = nil;
     [self writeSessionPartnerParameters];
 }
 
@@ -1404,6 +1439,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             }
             if ([@"reset" isEqualToString:action]) {
                 [self resetSessionPartnerParametersInternal];
+            }
+        }
+        if ([@"customUserId" isEqualToString:parameterType]) {
+            if ([@"add" isEqualToString:action]) {
+                [self addCustomUserIdInternal:actionArray[2]];
+            }
+            if ([@"reset" isEqualToString:action]) {
+                [self resetCustomUserId];
             }
         }
     }

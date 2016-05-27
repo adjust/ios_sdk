@@ -11,6 +11,7 @@
 #import "ADJPackageHandler.h"
 #import "ADJActivityHandler.h"
 #import "ADJResponseData.h"
+#import "ADJSessionParameters.h"
 
 @protocol ADJPackageHandler
 
@@ -24,8 +25,7 @@
           activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)updatePackages:(NSDictionary *)sessionCallbackParameters
-sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters;
+- (void)updatePackages:(ADJSessionParameters *)sessionParameters;
 
 @end
 
