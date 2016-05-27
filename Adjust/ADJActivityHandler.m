@@ -787,8 +787,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                            selector:@selector(adjustAttributionChanged:)
                          withObject:sessionResponseData.attribution];
     }
-
-    [self prepareDeeplink:sessionResponseData];
 }
 
 - (void)prepareDeeplink:(ADJResponseData *)responseData {
@@ -836,6 +834,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                            selector:@selector(adjustAttributionChanged:)
                          withObject:attributionResponseData.attribution];
     }
+
+    [self prepareDeeplink:attributionResponseData];
 }
 
 - (BOOL)updateAttribution:(ADJAttribution *)attribution {
