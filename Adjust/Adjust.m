@@ -25,8 +25,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 @property (nonatomic, retain) id<ADJLogger> logger;
 @property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
-@property (nonatomic, retain) NSMutableArray* sessionCallbackMutableParametersArray;
-@property (nonatomic, retain) NSMutableArray* sessionPartnerMutableParametersArray;
+@property (nonatomic, retain) NSMutableArray* sessionParametersActionsArray;
 
 @end
 
@@ -97,6 +96,22 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 
++ (void)removeSessionCallbackParameter:(NSString *)key {
+    [[Adjust getInstance] removeSessionCallbackParameter:key];
+}
+
++ (void)removeSessionPartnerParameter:(NSString *)key {
+    [[Adjust getInstance] removeSessionPartnerParameter:key];
+}
+
++ (void)resetSessionCallbackParameters {
+    [[Adjust getInstance] resetSessionCallbackParameters];
+}
+
++ (void)resetSessionPartnerParameters {
+    [[Adjust getInstance] resetSessionPartnerParameters];
+}
+
 + (id)getInstance {
     static Adjust *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -124,8 +139,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
     }
 
     self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig
-                                        sessionCallbackParametersArray:self.sessionCallbackMutableParametersArray
-                                         sessionPartnerParametersArray:self.sessionPartnerMutableParametersArray];
+                                        sessionParametersActionsArray:self.sessionParametersActionsArray];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -192,11 +206,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionCallbackMutableParametersArray == nil) {
-        self.sessionCallbackMutableParametersArray = [[NSMutableArray alloc] init];
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
-    NSArray * pair = @[key, value];
-    [self.sessionCallbackMutableParametersArray addObject:pair];
+    NSArray * action = @[@"add", @"callback", key, value];
+    [self.sessionParametersActionsArray addObject:action];
 }
 
 - (void)addSessionPartnerParameter:(NSString *)key
@@ -206,11 +220,68 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionPartnerMutableParametersArray == nil) {
-        self.sessionPartnerMutableParametersArray = [[NSMutableArray alloc] init];
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
-    NSArray * pair = @[key, value];
-    [self.sessionPartnerMutableParametersArray addObject:pair];
+
+    NSArray * action = @[@"add", @"partner", key, value];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
+- (void)removeSessionCallbackParameter:(NSString *)key {
+    if (self.activityHandler != nil) {
+        [self.activityHandler removeSessionCallbackParameter:key];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"remove", @"callback", key];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
+- (void)removeSessionPartnerParameter:(NSString *)key {
+    if (self.activityHandler != nil) {
+        [self.activityHandler removeSessionPartnerParameter:key];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"remove", @"partner", key];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
+- (void)resetSessionCallbackParameters {
+    if (self.activityHandler != nil) {
+        [self.activityHandler resetSessionCallbackParameters];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"reset", @"callback"];
+    [self.sessionParametersActionsArray addObject:action];
+}
+
+- (void)resetSessionPartnerParameters {
+    if (self.activityHandler != nil) {
+        [self.activityHandler resetSessionPartnerParameters];
+        return;
+    }
+
+    if (self.sessionParametersActionsArray == nil) {
+        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    }
+
+    NSArray * action = @[@"reset", @"partner"];
+    [self.sessionParametersActionsArray addObject:action];
 }
 
 

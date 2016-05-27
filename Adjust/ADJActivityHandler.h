@@ -36,8 +36,7 @@
 @protocol ADJActivityHandler <NSObject>
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
-sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
+sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -70,14 +69,17 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
                               value:(NSString *)value;
 - (void)addSessionPartnerParameter:(NSString *)key
                              value:(NSString *)value;
+- (void)removeSessionCallbackParameter:(NSString *)key;
+- (void)removeSessionPartnerParameter:(NSString *)key;
+- (void)resetSessionCallbackParameters;
+- (void)resetSessionPartnerParameters;
 
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
-              sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
+             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (ADJAttribution*) attribution;
 
 @end

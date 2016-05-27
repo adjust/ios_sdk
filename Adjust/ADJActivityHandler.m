@@ -96,17 +96,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 @implementation ADJActivityHandler
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
-              sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
-                       sessionCallbackParametersArray:sessionCallbackParametersArray
-                        sessionPartnerParametersArray:sessionPartnerParametersArray];
+                       sessionParametersActionsArray:sessionParametersActionsArray];
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
-sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 {
     self = [super init];
     if (self == nil) return nil;
@@ -163,8 +160,7 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     dispatch_async(self.internalQueue, ^{
-        [self initInternal:sessionCallbackParametersArray
-sessionPartnerParametersArray:sessionPartnerParametersArray];
+        [self initInternal:sessionParametersActionsArray];
     });
 
     [self addNotificationObserver];
@@ -483,9 +479,33 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     });
 }
 
+- (void)removeSessionCallbackParameter:(NSString *)key {
+    dispatch_async(self.internalQueue, ^{
+        [self removeSessionCallbackParameterInternal:key];
+    });
+}
+
+- (void)removeSessionPartnerParameter:(NSString *)key {
+    dispatch_async(self.internalQueue, ^{
+        [self removeSessionPartnerParameterInternal:key];
+    });
+}
+
+- (void)resetSessionCallbackParameters {
+    dispatch_async(self.internalQueue, ^{
+        [self resetSessionCallbackParametersInternal];
+    });
+}
+
+- (void)resetSessionPartnerParameters {
+    dispatch_async(self.internalQueue, ^{
+        [self resetSessionPartnerParametersInternal];
+    });
+}
+
+
 #pragma mark - internal
-- (void)initInternal:(NSArray*)sessionCallbackParametersArray
-sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+- (void)initInternal:(NSArray*)sessionParametersActionsArray
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -557,17 +577,7 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
 
-    if (sessionCallbackParametersArray != nil) {
-        for (NSArray* sessionCallbackParameterPair in sessionCallbackParametersArray) {
-            [self addSessionCallbackParameterInternal:sessionCallbackParameterPair[0] value:sessionCallbackParameterPair[1]];
-        }
-    }
-
-    if (sessionPartnerParametersArray != nil) {
-        for (NSArray* sessionPartnerParameterPair in sessionPartnerParametersArray) {
-            [self addSessionPartnerParameterInternal:sessionPartnerParameterPair[0] value:sessionPartnerParameterPair[1]];
-        }
-    }
+    [self sessionParametersActionsInternal:sessionParametersActionsArray];
 
     [self startInternal];
 }
@@ -1163,6 +1173,7 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
     [self.packageHandler sendFirstPackage];
 }
 
+#pragma mark - delay
 - (void)delayStartInternal {
     // it's not configured to start delayed or already finished
     if ([self.internalState isToStartNow]) {
@@ -1233,6 +1244,7 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
     }
 }
 
+#pragma mark - session parameters
 - (void)addSessionCallbackParameterInternal:(NSString *)key
                               value:(NSString *)value
 {
@@ -1254,10 +1266,10 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
-            [self.logger verbose:@"key %@ already present with the same value", key];
+            [self.logger verbose:@"Key %@ already present with the same value", key];
             return;
         }
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"Key %@ will be overwritten", key];
     }
 
     NSMutableDictionary * newSessionCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionCallbackParameters];
@@ -1290,10 +1302,10 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
-            [self.logger verbose:@"key %@ already present with the same value", key];
+            [self.logger verbose:@"Key %@ already present with the same value", key];
             return;
         }
-        [self.logger warn:@"key %@ will be overwritten", key];
+        [self.logger warn:@"Key %@ will be overwritten", key];
     }
 
     NSMutableDictionary * newPartnerCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionPartnerParameters];
@@ -1305,6 +1317,97 @@ sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
     [self writeSessionPartnerParameters];
 }
 
+- (void)removeSessionCallbackParameterInternal:(NSString *)key {
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Session Callback"]) return;
+
+    if (self.sessionCallbackParameters == nil) {
+        [self.logger warn:@"Key %@ does not exist", key];
+        return;
+    }
+
+    NSString * oldValue = [self.sessionCallbackParameters objectForKey:key];
+    if (oldValue == nil) {
+        [self.logger warn:@"Key %@ does not exist", key];
+        return;
+    }
+
+    [self.logger debug:@"Key %@ eliminated", key];
+    [self.sessionCallbackParameters removeObjectForKey:key];
+    [self writeSessionCallbackParameters];
+}
+
+- (void)removeSessionPartnerParameterInternal:(NSString *)key {
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Session Partner"]) return;
+
+    if (self.sessionPartnerParameters == nil) {
+        [self.logger warn:@"Key %@ does not exist", key];
+        return;
+    }
+
+    NSString * oldValue = [self.sessionPartnerParameters objectForKey:key];
+    if (oldValue == nil) {
+        [self.logger warn:@"Key %@ does not exist", key];
+        return;
+    }
+
+    [self.logger debug:@"key %@ eliminated", key];
+    [self.sessionPartnerParameters removeObjectForKey:key];
+    [self writeSessionPartnerParameters];
+}
+
+- (void)resetSessionCallbackParametersInternal {
+    if (self.sessionCallbackParameters == nil) {
+        [self.logger warn:@"Session Callback parameters already reset"];
+        return;
+    }
+    self.sessionCallbackParameters = nil;
+    [self writeSessionCallbackParameters];
+}
+
+- (void)resetSessionPartnerParametersInternal {
+    if (self.sessionPartnerParameters == nil) {
+        [self.logger warn:@"Session Partner parameters already reset"];
+        return;
+    }
+    self.sessionPartnerParameters = nil;
+    [self writeSessionPartnerParameters];
+}
+
+- (void)sessionParametersActionsInternal:(NSArray*)sessionParametersActionsArray {
+    if (sessionParametersActionsArray == nil) {
+        return;
+    }
+    for (NSArray* actionArray in sessionParametersActionsArray) {
+        NSString * action = actionArray[0];
+        NSString * parameterType = actionArray[1];
+        if ([@"callback" isEqualToString:parameterType]) {
+            if ([@"add" isEqualToString:action]) {
+                [self addSessionCallbackParameterInternal:actionArray[2] value:actionArray[3]];
+            }
+            if ([@"remove" isEqualToString:action]) {
+                [self removeSessionCallbackParameterInternal:actionArray[2]];
+            }
+            if ([@"reset" isEqualToString:action]) {
+                [self resetSessionCallbackParametersInternal];
+            }
+        }
+        if ([@"partner" isEqualToString:parameterType]) {
+            if ([@"add" isEqualToString:action]) {
+                [self addSessionPartnerParameterInternal:actionArray[2] value:actionArray[3]];
+            }
+            if ([@"remove" isEqualToString:action]) {
+                [self removeSessionPartnerParameterInternal:actionArray[2]];
+            }
+            if ([@"reset" isEqualToString:action]) {
+                [self resetSessionPartnerParametersInternal];
+            }
+        }
+    }
+}
 
 #pragma mark - notifications
 - (void)addNotificationObserver {
