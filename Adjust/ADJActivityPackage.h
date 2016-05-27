@@ -17,6 +17,9 @@
 
 @property (nonatomic, assign) NSInteger retries;
 
+@property (nonatomic, retain) NSDictionary *callbackParameters;
+@property (nonatomic, retain) NSDictionary *partnerParameters;
+
 // logs
 @property (nonatomic, assign) ADJActivityKind activityKind;
 @property (nonatomic, copy) NSString *suffix;

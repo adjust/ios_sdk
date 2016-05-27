@@ -21,6 +21,8 @@
 
 @property (nonatomic, copy) NSString *deeplink;
 @property (nonatomic, copy) NSString *deviceToken;
+@property (nonatomic, retain) NSDictionary* sessionCallbackParameters;
+@property (nonatomic, retain) NSDictionary* sessionPartnerParameters;
 
 @property (nonatomic, retain) NSDictionary *iadDetails;
 @property (nonatomic, retain) NSDictionary* deeplinkParameters;
@@ -32,9 +34,12 @@
                   config:(ADJConfig *)adjustConfig
                createdAt:(double)createdAt;
 
-- (ADJActivityPackage *)buildSessionPackage;
+- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
 - (ADJActivityPackage *)buildAttributionPackage;
-- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event;
+- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
+                                isInDelay:(BOOL)isInDelay;
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+
++ (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
 
 @end

@@ -42,11 +42,18 @@ static NSTimeInterval internalMaxDelayStart = -1;
     return [internalRequestHandler initWithPackageHandler:packageHandler];
 }
 
-+ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig {
++ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
+                     sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+                      sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+{
     if (internalActivityHandler == nil) {
-        return [ADJActivityHandler handlerWithConfig:adjustConfig];
+        return [ADJActivityHandler handlerWithConfig:adjustConfig
+                      sessionCallbackParametersArray:sessionCallbackParametersArray
+                       sessionPartnerParametersArray:sessionPartnerParametersArray];
     }
-    return [internalActivityHandler initWithConfig:adjustConfig];
+    return [internalActivityHandler initWithConfig:adjustConfig
+                    sessionCallbackParametersArray:sessionCallbackParametersArray
+                     sessionPartnerParametersArray:sessionPartnerParametersArray];
 }
 
 + (id<ADJLogger>)logger {

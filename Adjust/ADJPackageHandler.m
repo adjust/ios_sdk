@@ -12,6 +12,7 @@
 #import "ADJUtil.h"
 #import "ADJAdjustFactory.h"
 #import "ADJBackoffStrategy.h"
+#import "ADJPackageBuilder.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -110,8 +111,13 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)updateQueue {
-    // TODO implement update
+- (void)updatePackages:(NSDictionary *)sessionCallbackParameters
+sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
+{
+    dispatch_async(self.internalQueue, ^{
+        [self updatePackagesInternal:sessionCallbackParameters
+            sessionPartnerParameters:sessionPartnerParameters];
+    });
 }
 
 #pragma mark - internal
@@ -165,6 +171,90 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     dispatch_semaphore_signal(self.sendingSemaphore);
     [self sendFirstInternal];
 }
+
+- (void)updatePackagesInternal:(NSDictionary *)sessionCallbackParameters
+      sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
+{
+    [self.logger debug:@"Updating package handler queue"];
+    [self.logger verbose:@"Session callback parameters %@", sessionCallbackParameters];
+    [self.logger verbose:@"Session partner parameters %@", sessionPartnerParameters];
+
+    // if callback parameters is null
+    if (sessionCallbackParameters == nil && sessionPartnerParameters == nil) {
+        return;
+    }
+
+    for (ADJActivityPackage * activityPackage in self.packageQueue) {
+        [self updateCallbackParameters:activityPackage
+             sessionCallbackParameters:sessionCallbackParameters];
+
+        [self updatePartnerParameters:activityPackage
+             sessionPartnerParameters:sessionCallbackParameters];
+    }
+}
+
+- (void)updateCallbackParameters:(ADJActivityPackage *)activityPackage
+                 sessionCallbackParameters:(NSDictionary *)sessionCallbackParameters
+{
+    NSDictionary * mergedParameters = nil;
+
+    if (sessionCallbackParameters == nil) {
+        mergedParameters = activityPackage.callbackParameters;
+    }
+
+    if (activityPackage.callbackParameters == nil) {
+        mergedParameters = sessionCallbackParameters;
+    }
+
+    if (activityPackage.callbackParameters != nil && sessionCallbackParameters != nil) {
+        mergedParameters = [ADJUtil mergeParameters:sessionCallbackParameters
+                                             source:activityPackage.callbackParameters
+                                      parameterName:@"Callback"];
+    }
+
+    if (mergedParameters == nil) {
+        return;
+    }
+    // get activity package parameters to save
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionaryWithDictionary:activityPackage.parameters];
+    // save the merged parameters
+    [ADJPackageBuilder parameters:parameters
+                    setDictionary:mergedParameters
+                           forKey:@"callback_params"];
+    activityPackage.parameters = parameters;
+}
+
+- (void)updatePartnerParameters:(ADJActivityPackage *)activityPackage
+       sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters
+{
+    NSDictionary * mergedParameters = nil;
+
+    if (sessionPartnerParameters == nil) {
+        mergedParameters = activityPackage.partnerParameters;
+    }
+
+    if (activityPackage.partnerParameters == nil) {
+        mergedParameters = sessionPartnerParameters;
+    }
+
+    if (activityPackage.partnerParameters != nil && sessionPartnerParameters != nil) {
+        mergedParameters = [ADJUtil mergeParameters:sessionPartnerParameters
+                                             source:activityPackage.partnerParameters
+                                      parameterName:@"Partner"];
+    }
+
+    if (mergedParameters == nil) {
+        return;
+    }
+    // get activity package parameters to save
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionaryWithDictionary:activityPackage.parameters];
+    // save the merged parameters
+    [ADJPackageBuilder parameters:parameters
+                    setDictionary:mergedParameters
+                           forKey:@"partner_params"];
+    activityPackage.parameters = parameters;
+}
+
 
 #pragma mark - private
 - (void)readPackageQueue {

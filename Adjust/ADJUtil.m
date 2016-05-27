@@ -649,4 +649,48 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
         dispatch_async(dispatch_get_main_queue(), block);
     }
 }
+
++ (BOOL)isValidParameter:(NSString *)attribute
+           attributeType:(NSString *)attributeType
+           parameterName:(NSString *)parameterName
+{
+    if ([ADJUtil isNull:attribute]) {
+        [ADJAdjustFactory.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
+        return NO;
+    }
+
+    if ([attribute isEqualToString:@""]) {
+        [ADJAdjustFactory.logger error:@"%@ parameter %@ is empty", parameterName, attributeType];
+        return NO;
+    }
+
+    return YES;
+}
+
++ (NSDictionary *)mergeParameters:(NSDictionary *)target
+                           source:(NSDictionary *)source
+                    parameterName:(NSString *)parameterName
+{
+    if (target == nil) {
+        return source;
+    }
+    if (source == nil) {
+        return target;
+    }
+    NSMutableDictionary * mergedParameters = [NSMutableDictionary dictionaryWithDictionary:target];
+    [source enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* obj, BOOL * stop) {
+        NSString * oldValue = [mergedParameters objectForKey:key];
+        if (oldValue != nil) {
+            [ADJAdjustFactory.logger warn:@"key %@ with value %@ from %@ parameter was replaced by value %@",
+             key,
+             oldValue,
+             parameterName,
+             obj];
+        }
+        [mergedParameters setObject:obj forKey:key];
+    }];
+
+    return (NSDictionary *)mergedParameters;
+}
+
 @end

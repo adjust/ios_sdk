@@ -21,7 +21,9 @@
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                             startsSending:(BOOL)startsSending;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
-+ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig;
++ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
+                     sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+                      sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
 + (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending;
 
 + (id<ADJLogger>)logger;

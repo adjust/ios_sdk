@@ -16,6 +16,7 @@
 
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, copy) NSString *deviceToken;
+@property (nonatomic, assign) BOOL updatePackages;
 
 // Global counters
 @property (nonatomic, assign) int eventCount;

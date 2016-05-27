@@ -16,6 +16,7 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL eventPreStart;
+@property (nonatomic, assign) BOOL updatePackages;
 - (id)init;
 
 - (BOOL)isEnabled;
@@ -28,12 +29,15 @@
 - (BOOL)isToStartNow;
 - (BOOL)isEventPreStart;
 - (BOOL)isRegularStart;
+- (BOOL)isToUpdatePackages;
 
 @end
 
 @protocol ADJActivityHandler <NSObject>
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig;
+- (id)initWithConfig:(ADJConfig *)adjustConfig
+sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -62,12 +66,18 @@
 - (void) setOfflineMode:(BOOL)offline;
 - (ADJInternalState*) internalState;
 - (void)sendFirstPackages;
+- (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value;
+- (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value;
 
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
-+ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig;
++ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
+             sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+              sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray;
 - (ADJAttribution*) attribution;
 
 @end

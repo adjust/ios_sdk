@@ -113,6 +113,12 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)sendAdWordsRequest;
 
++ (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value;
+
++ (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value;
+
 /**
  * Obtain singleton Adjust object
  */
@@ -130,5 +136,10 @@ extern NSString * const ADJEnvironmentProduction;
 - (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 - (NSString*)idfa;
 - (void)sendAdWordsRequest;
+- (void)sendFirstPackages;
+- (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value;
+- (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value;
 
 @end

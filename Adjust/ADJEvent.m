@@ -39,13 +39,13 @@
 - (void) addCallbackParameter:(NSString *)key
                         value:(NSString *)value
 {
-    if (![self isValidParameter:key
-                  attributeType:@"key"
-                  parameterName:@"Callback"]) return;
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Callback"]) return;
 
-    if (![self isValidParameter:value
-                  attributeType:@"value"
-                  parameterName:@"Callback"]) return;
+    if (![ADJUtil isValidParameter:value
+                     attributeType:@"value"
+                     parameterName:@"Callback"]) return;
 
     if (self.callbackMutableParameters == nil) {
         self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
@@ -61,13 +61,13 @@
 - (void) addPartnerParameter:(NSString *)key
                        value:(NSString *)value {
 
-    if (![self isValidParameter:key
-                  attributeType:@"key"
-                  parameterName:@"Partner"]) return;
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Partner"]) return;
 
-    if (![self isValidParameter:value
-                  attributeType:@"value"
-                  parameterName:@"Partner"]) return;
+    if (![ADJUtil isValidParameter:value
+                     attributeType:@"value"
+                     parameterName:@"Partner"]) return;
 
     if (self.partnerMutableParameters == nil) {
         self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
@@ -163,23 +163,6 @@
         [self.logger error:@"Missing transactionId"];
         return NO;
     }
-    return YES;
-}
-
-- (BOOL) isValidParameter:(NSString *)attribute
-            attributeType:(NSString *)attributeType
-            parameterName:(NSString *)parameterName
-{
-    if ([ADJUtil isNull:attribute]) {
-        [self.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
-        return NO;
-    }
-
-    if ([attribute isEqualToString:@""]) {
-        [self.logger error:@"%@ parameter %@ is empty", parameterName, attributeType];
-        return NO;
-    }
-
     return YES;
 }
 

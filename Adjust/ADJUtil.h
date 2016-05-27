@@ -67,4 +67,10 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
                   selector:(SEL)selector
                 withObject:(id)object;
 + (void)launchInMainThread:(dispatch_block_t)block;
++ (BOOL)isValidParameter:(NSString *)attribute
+           attributeType:(NSString *)attributeType
+           parameterName:(NSString *)parameterName;
++ (NSDictionary *)mergeParameters:(NSDictionary *)target
+                           source:(NSDictionary *)source
+                    parameterName:(NSString *)parameterName;
 @end

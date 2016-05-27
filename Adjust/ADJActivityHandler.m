@@ -23,6 +23,8 @@
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
+static NSString   * const kSessionCallbackParametersFilename   = @"AdjustSessionCallbackParameters";
+static NSString   * const kSessionPartnerParametersFilename    = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix          = @"adjust_";
 static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 static NSString   * const kForegroundTimerName   = @"Foreground timer";
@@ -58,6 +60,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isToStartNow { return !self.delayStart; }
 - (BOOL)isEventPreStart { return self.eventPreStart; }
 - (BOOL)isRegularStart { return !self.eventPreStart; }
+- (BOOL)isToUpdatePackages { return self.updatePackages; }
 
 @end
 
@@ -78,6 +81,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, retain) ADJInternalState *internalState;
 @property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
 @property (nonatomic, retain) ADJTimerOnce *delayStartTimer;
+@property (nonatomic, retain) NSDictionary* sessionCallbackParameters;
+@property (nonatomic, retain) NSDictionary* sessionPartnerParameters;
 
 @end
 
@@ -90,11 +95,19 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 #pragma mark -
 @implementation ADJActivityHandler
 
-+ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig {
-    return [[ADJActivityHandler alloc] initWithConfig:adjustConfig];
++ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
+             sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+              sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+{
+    return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
+                       sessionCallbackParametersArray:sessionCallbackParametersArray
+                        sessionPartnerParametersArray:sessionPartnerParametersArray];
 }
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig {
+- (id)initWithConfig:(ADJConfig *)adjustConfig
+sessionCallbackParametersArray:(NSArray*)sessionCallbackParametersArray
+sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+{
     self = [super init];
     if (self == nil) return nil;
 
@@ -141,10 +154,17 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.internalState.delayStart = NO;
     // event pre-start does not occur by default
     self.internalState.eventPreStart = NO;
+    // does not need to update packages by default
+    if (self.activityState == nil) {
+        self.internalState.updatePackages = NO;
+    } else {
+        self.internalState.updatePackages = self.activityState.updatePackages;
+    }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     dispatch_async(self.internalQueue, ^{
-        [self initInternal];
+        [self initInternal:sessionCallbackParametersArray
+sessionPartnerParametersArray:sessionPartnerParametersArray];
     });
 
     [self addNotificationObserver];
@@ -295,6 +315,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 }
 
+- (BOOL)isToUpdatePackages {
+    if (self.activityState != nil) {
+        return self.activityState.updatePackages;
+    } else {
+        return [self.internalState isToUpdatePackages];
+    }
+}
+
 - (BOOL)hasChangedState:(BOOL)previousState
               nextState:(BOOL)nextState
             trueMessage:(NSString *)trueMessage
@@ -441,8 +469,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     });
 }
 
+- (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value {
+    dispatch_async(self.internalQueue, ^{
+        [self addSessionCallbackParameterInternal:key value:value];
+    });
+}
+
+- (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value {
+    dispatch_async(self.internalQueue, ^{
+        [self addSessionPartnerParameterInternal:key value:value];
+    });
+}
+
 #pragma mark - internal
-- (void)initInternal {
+- (void)initInternal:(NSArray*)sessionCallbackParametersArray
+sessionPartnerParametersArray:(NSArray*)sessionPartnerParametersArray
+{
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
     kSubSessionInterval = ADJAdjustFactory.subsessionInterval;
@@ -452,6 +496,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
 
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
+
+    // read files that are accessed only in Internal sections
+    [self readSessionCallbackParameters];
+    [self readSessionPartnerParameters];
 
     if (self.adjustConfig.eventBufferingEnabled)  {
         [self.logger info:@"Event buffering is enabled"];
@@ -473,6 +521,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                       queue:self.internalQueue
                                                        name:kBackgroundTimerName];
     }
+
     if (self.activityState == nil &&
         self.adjustConfig.delayStart > 0)
     {
@@ -486,6 +535,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
                                                                startsSending:[self toSend:NO]];
+
+    // update session parameters in package queue
+    if ([self isToUpdatePackages]) {
+        [self updatePackagesInternal];
+     }
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
@@ -502,6 +556,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[self toSend:YES]];
 
     [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
+
+    if (sessionCallbackParametersArray != nil) {
+        for (NSArray* sessionCallbackParameterPair in sessionCallbackParametersArray) {
+            [self addSessionCallbackParameterInternal:sessionCallbackParameterPair[0] value:sessionCallbackParameterPair[1]];
+        }
+    }
+
+    if (sessionPartnerParametersArray != nil) {
+        for (NSArray* sessionPartnerParameterPair in sessionPartnerParametersArray) {
+            [self addSessionPartnerParameterInternal:sessionPartnerParameterPair[0] value:sessionPartnerParameterPair[1]];
+        }
+    }
 
     [self startInternal];
 }
@@ -531,6 +597,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self transferSessionPackage:now];
         [self.activityState resetSessionAttributes:now];
         self.activityState.enabled = [self.internalState isEnabled];
+        self.activityState.updatePackages = [self.internalState isToUpdatePackages];
         [self writeActivityState];
         return;
     }
@@ -567,6 +634,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     [self.logger verbose:@"Time span since last activity too short for a new subsession"];
+}
+
+- (void)transferSessionPackage:(double)now {
+    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
+                                         initWithDeviceInfo:self.deviceInfo
+                                         activityState:self.activityState
+                                         config:self.adjustConfig
+                                         createdAt:now];
+    sessionBuilder.sessionCallbackParameters = self.sessionCallbackParameters;
+    sessionBuilder.sessionPartnerParameters = self.sessionPartnerParameters;
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[self.internalState delayStart]];
+    [self.packageHandler addPackage:sessionPackage];
+    [self.packageHandler sendFirstPackage];
 }
 
 - (void)checkAttributionState {
@@ -613,7 +693,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        activityState:self.activityState
                                        config:self.adjustConfig
                                        createdAt:now];
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
+    eventBuilder.sessionCallbackParameters = self.sessionCallbackParameters;
+    eventBuilder.sessionPartnerParameters = self.sessionPartnerParameters;
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event isInDelay:[self.internalState delayStart]];
     [self.packageHandler addPackage:eventPackage];
 
     if (self.adjustConfig.eventBufferingEnabled) {
@@ -919,6 +1001,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"Attribution"];
 }
 
+- (void)writeSessionCallbackParameters {
+    [ADJUtil writeObject:self.sessionCallbackParameters
+                filename:kSessionCallbackParametersFilename
+              objectName:@"Session Callback parameters"];
+}
+
+- (void)writeSessionPartnerParameters {
+    [ADJUtil writeObject:self.sessionPartnerParameters
+                filename:kSessionPartnerParametersFilename
+              objectName:@"Session Partner parameters"];
+}
+
 - (void)readActivityState {
     [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
     self.activityState = [ADJUtil readObject:kActivityStateFilename
@@ -932,15 +1026,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                      class:[ADJAttribution class]];
 }
 
-- (void)transferSessionPackage:(double)now {
-    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
-                                         initWithDeviceInfo:self.deviceInfo
-                                         activityState:self.activityState
-                                         config:self.adjustConfig
-                                         createdAt:now];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
-    [self.packageHandler addPackage:sessionPackage];
-    [self.packageHandler sendFirstPackage];
+- (void)readSessionCallbackParameters {
+    self.sessionCallbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
+                                              objectName:@"Session Callback parameters"
+                                                   class:[NSDictionary class]];
+}
+
+- (void)readSessionPartnerParameters {
+    self.sessionPartnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
+                                             objectName:@"Session Partner parameters"
+                                                  class:[NSDictionary class]];
 }
 
 # pragma mark - handlers status
@@ -1075,7 +1170,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // the delay has already started
-    if (self.adjustConfig.delayStart == 0) {
+    if ([self isToUpdatePackages]) {
         return;
     }
 
@@ -1102,9 +1197,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [self.delayStartTimer startIn:delayStart];
 
-    // mark delay start = 0 as timer started
-    //  ADJTimerOnce.fireIn not 100% reliable because of multi-threading
-    self.adjustConfig.delayStart = 0;
+    self.internalState.updatePackages = YES;
+
+    if (self.activityState != nil) {
+        self.activityState.updatePackages = YES;
+        [self writeActivityState];
+    }
 }
 
 - (void)sendFirstPackagesInternal {
@@ -1112,18 +1210,101 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger info:@"Start delay expired or never configured"];
         return;
     }
+    // update packages in queue
+    [self updatePackagesInternal];
     // no longer is in delay start
     self.internalState.delayStart = NO;
     // cancel possible still running timer if it was called by user
     [self.delayStartTimer cancel];
     // and release timer
     self.delayStartTimer = nil;
-
-    // update possible
-    [self.packageHandler updateQueue];
     // update the status and try to send first package
     [self updateHandlersStatusAndSendInternal];
 }
+
+- (void)updatePackagesInternal {
+    // update activity packages
+    [self.packageHandler updatePackages:self.sessionCallbackParameters sessionPartnerParameters:self.sessionPartnerParameters];
+    // no longer needs to update packages
+    self.internalState.updatePackages = NO;
+    if (self.activityState != nil) {
+        self.activityState.updatePackages = NO;
+        [self writeActivityState];
+    }
+}
+
+- (void)addSessionCallbackParameterInternal:(NSString *)key
+                              value:(NSString *)value
+{
+    if (![ADJUtil isValidParameter:key
+                  attributeType:@"key"
+                  parameterName:@"Session Callback"]) return;
+
+    if (![ADJUtil isValidParameter:value
+                  attributeType:@"value"
+                  parameterName:@"Session Callback"]) return;
+
+    if (self.sessionCallbackParameters == nil) {
+        self.sessionCallbackParameters = @{ key : value };
+        [self writeSessionCallbackParameters];
+        return;
+    }
+
+    NSString * oldValue = [self.sessionCallbackParameters objectForKey:key];
+
+    if (oldValue != nil) {
+        if ([oldValue isEqualToString:value]) {
+            [self.logger verbose:@"key %@ already present with the same value", key];
+            return;
+        }
+        [self.logger warn:@"key %@ will be overwritten", key];
+    }
+
+    NSMutableDictionary * newSessionCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionCallbackParameters];
+
+    [newSessionCallbackMutableParameters setObject:value forKey:key];
+
+    self.sessionCallbackParameters = newSessionCallbackMutableParameters;
+
+    [self writeSessionCallbackParameters];
+}
+
+- (void)addSessionPartnerParameterInternal:(NSString *)key
+                             value:(NSString *)value
+{
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Session Partner"]) return;
+
+    if (![ADJUtil isValidParameter:value
+                     attributeType:@"value"
+                     parameterName:@"Session Partner"]) return;
+
+    if (self.sessionPartnerParameters == nil) {
+        self.sessionPartnerParameters = @{ key : value };
+        [self writeSessionPartnerParameters];
+        return;
+    }
+
+    NSString * oldValue = [self.sessionPartnerParameters objectForKey:key];
+
+    if (oldValue != nil) {
+        if ([oldValue isEqualToString:value]) {
+            [self.logger verbose:@"key %@ already present with the same value", key];
+            return;
+        }
+        [self.logger warn:@"key %@ will be overwritten", key];
+    }
+
+    NSMutableDictionary * newPartnerCallbackMutableParameters = [NSMutableDictionary dictionaryWithDictionary:self.sessionPartnerParameters];
+
+    [newPartnerCallbackMutableParameters setObject:value forKey:key];
+
+    self.sessionPartnerParameters = newPartnerCallbackMutableParameters;
+
+    [self writeSessionPartnerParameters];
+}
+
 
 #pragma mark - notifications
 - (void)addNotificationObserver {

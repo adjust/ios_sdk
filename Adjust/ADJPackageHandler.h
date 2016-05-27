@@ -24,7 +24,8 @@
           activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)updateQueue;
+- (void)updatePackages:(NSDictionary *)sessionCallbackParameters
+sessionPartnerParameters:(NSDictionary *)sessionPartnerParameters;
 
 @end
 
