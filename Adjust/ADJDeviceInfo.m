@@ -11,6 +11,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJUtil.h"
 #import "ADJSystemProfile.h"
+#import "NSData+ADJAdditions.h"
 
 @implementation ADJDeviceInfo
 
@@ -47,6 +48,19 @@
         self.clientSdk        = ADJUtil.clientSdk;
     } else {
         self.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, ADJUtil.clientSdk];
+    }
+
+    @try {
+        NSURL * installReceiptLocation = [bundle appStoreReceiptURL];
+        NSData * installReceiptData = nil;
+
+        if (installReceiptLocation != nil) {
+            installReceiptData = [NSData dataWithContentsOfURL:installReceiptLocation];
+        }
+        if (installReceiptData != nil) {
+            self.installReceiptBase64 = [installReceiptData adjEncodeBase64];
+        }
+    } @catch (NSException *exception) {
     }
 
     return self;

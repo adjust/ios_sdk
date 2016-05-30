@@ -204,6 +204,7 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.countryCode       forKey:@"country"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.machineModel      forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.cpuSubtype       forKey:@"cpu_type"];
+    [ADJPackageBuilder parameters:parameters setString:deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
 }
 
 - (void)injectConfig:(ADJConfig*) adjustConfig
