@@ -486,7 +486,7 @@ event buffering with your `ADJConfig` instance:
 
 ### <a id="step9">9. Send in the background
 
-The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is on the background.
+The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is in the background.
 You can change this in your `AdjustConfig` instance:
 
 ```objc
@@ -618,8 +618,8 @@ deferred deeplinks:
 }
 ```
 
-The callback function will be called after the SDK receives a deffered deeplink from ther server and before open it. 
-Within the callback function you have access to the deeplink and the boolean that you return determines if the SDK will launch the deeplink.
+The callback function will be called after the SDK receives a deffered deeplink from our server and before opening it. 
+Within the callback function you have access to the deeplink. The returned boolean value determines if the SDK will launch the deeplink.
 You could, for example, not allow the SDK open the deeplink at the moment, save it, and open it yourself later.
 
 ### <a id="step13">13. Disable tracking
