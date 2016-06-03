@@ -17,9 +17,9 @@
 
 @property (nonatomic, assign) double createdAt;
 
-@property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
+@property (nonatomic, weak) ADJDeviceInfo* deviceInfo;
 @property (nonatomic, copy) ADJActivityState *activityState;
-@property (nonatomic, copy) ADJConfig *adjustConfig;
+@property (nonatomic, weak) ADJConfig *adjustConfig;
 
 @end
 

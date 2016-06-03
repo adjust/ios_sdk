@@ -18,10 +18,10 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 #pragma mark - private
 @interface ADJRequestHandler()
 
-@property (nonatomic) dispatch_queue_t internalQueue;
-@property (nonatomic, assign) id<ADJPackageHandler> packageHandler;
-@property (nonatomic, assign) id<ADJLogger> logger;
-@property (nonatomic, retain) NSURL *baseUrl;
+@property (nonatomic, strong) dispatch_queue_t internalQueue;
+@property (nonatomic, weak) id<ADJPackageHandler> packageHandler;
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) NSURL *baseUrl;
 
 @end
 

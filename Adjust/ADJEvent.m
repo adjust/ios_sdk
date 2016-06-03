@@ -12,9 +12,9 @@
 
 #pragma mark -
 @interface ADJEvent()
-@property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, retain) NSMutableDictionary* callbackMutableParameters;
-@property (nonatomic, retain) NSMutableDictionary* partnerMutableParameters;
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) NSMutableDictionary* callbackMutableParameters;
+@property (nonatomic, strong) NSMutableDictionary* partnerMutableParameters;
 @end
 
 @implementation ADJEvent

@@ -16,9 +16,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark - private
 @interface ADJTimerCycle()
 
-@property (nonatomic) dispatch_source_t source;
+@property (nonatomic, strong) dispatch_source_t source;
 @property (nonatomic, assign) BOOL suspended;
-@property (nonatomic, retain) id<ADJLogger> logger;
+@property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, copy) NSString *name;
 
 @end

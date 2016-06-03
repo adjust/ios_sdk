@@ -17,12 +17,12 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 #pragma mark - private
 @interface ADJSdkClickHandler()
 
-@property (nonatomic) dispatch_queue_t internalQueue;
-@property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, retain) ADJBackoffStrategy * backoffStrategy;
+@property (nonatomic, strong) dispatch_queue_t internalQueue;
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) ADJBackoffStrategy * backoffStrategy;
 @property (nonatomic, assign) BOOL paused;
-@property (nonatomic, retain) NSMutableArray *packageQueue;
-@property (nonatomic, retain) NSURL *baseUrl;
+@property (nonatomic, strong) NSMutableArray *packageQueue;
+@property (nonatomic, strong) NSURL *baseUrl;
 
 @end
 

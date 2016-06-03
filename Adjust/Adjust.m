@@ -23,9 +23,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 @interface Adjust()
 
-@property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
-@property (nonatomic, retain) NSMutableArray* sessionParametersActionsArray;
+@property (nonatomic, strong) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) NSMutableArray* sessionParametersActionsArray;
 
 @end
 

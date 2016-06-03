@@ -13,12 +13,12 @@
 // data
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, retain) NSMutableDictionary *parameters;
+@property (nonatomic, strong) NSMutableDictionary *parameters;
 
 @property (nonatomic, assign) NSInteger retries;
 
-@property (nonatomic, retain) NSDictionary *callbackParameters;
-@property (nonatomic, retain) NSDictionary *partnerParameters;
+@property (nonatomic, strong) NSDictionary *callbackParameters;
+@property (nonatomic, strong) NSDictionary *partnerParameters;
 
 // logs
 @property (nonatomic, assign) ADJActivityKind activityKind;

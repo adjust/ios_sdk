@@ -10,8 +10,8 @@
 
 @interface ADJSessionParameters : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, retain) NSMutableDictionary* callbackParameters;
-@property (nonatomic, retain) NSMutableDictionary* partnerParameters;
+@property (nonatomic, strong) NSMutableDictionary* callbackParameters;
+@property (nonatomic, strong) NSMutableDictionary* partnerParameters;
 @property (nonatomic, copy) NSString *customUserId;
 
 @end

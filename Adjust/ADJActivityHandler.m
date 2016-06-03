@@ -69,21 +69,23 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 #pragma mark -
 @interface ADJActivityHandler()
 
-@property (nonatomic) dispatch_queue_t internalQueue;
-@property (nonatomic, retain) id<ADJPackageHandler> packageHandler;
-@property (nonatomic, retain) id<ADJAttributionHandler> attributionHandler;
-@property (nonatomic, retain) id<ADJSdkClickHandler> sdkClickHandler;
-@property (nonatomic, retain) ADJActivityState *activityState;
-@property (nonatomic, retain) ADJTimerCycle *foregroundTimer;
-@property (nonatomic, retain) ADJTimerOnce *backgroundTimer;
-@property (nonatomic, retain) id<ADJLogger> logger;
+@property (nonatomic, strong) dispatch_queue_t internalQueue;
+@property (nonatomic, strong) id<ADJPackageHandler> packageHandler;
+@property (nonatomic, strong) id<ADJAttributionHandler> attributionHandler;
+@property (nonatomic, strong) id<ADJSdkClickHandler> sdkClickHandler;
+@property (nonatomic, strong) ADJActivityState *activityState;
+@property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
+@property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
+@property (nonatomic, strong) ADJInternalState *internalState;
+@property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
+@property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
+@property (nonatomic, strong) ADJSessionParameters *sessionParameters;
+// weak for object that Activity Handler does not "own"
+@property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
+// copy for objects shared with the user
 @property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
-@property (nonatomic, retain) ADJInternalState *internalState;
-@property (nonatomic, copy) ADJDeviceInfo* deviceInfo;
-@property (nonatomic, retain) ADJTimerOnce *delayStartTimer;
-@property (nonatomic, retain) ADJSessionParameters *sessionParameters;
 
 @end
 
