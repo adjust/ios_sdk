@@ -238,6 +238,8 @@ startsSending:(BOOL)startsSending
                         setDictionary:mergedPartnerParameters
                                forKey:@"partner_params"];
     }
+
+    [selfI writePackageQueueS:selfI];
 }
 
 #pragma mark - private
