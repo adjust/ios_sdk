@@ -217,8 +217,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"add", @"customUserId", customUserId];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler addCustomUserIdI:activityHandler customUserId:customUserId];
+    }];
 }
 
 - (void)addSessionCallbackParameter:(NSString *)key
@@ -232,8 +233,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"add", @"callback", key, value];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler addSessionCallbackParameterI:activityHandler key:key value:value];
+    }];
 }
 
 - (void)addSessionPartnerParameter:(NSString *)key
@@ -247,8 +249,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"add", @"partner", key, value];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler addSessionPartnerParameterI:activityHandler key:key value:value];
+    }];
 }
 
 - (void)removeSessionCallbackParameter:(NSString *)key {
@@ -261,8 +264,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"remove", @"callback", key];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler removeSessionCallbackParameterI:activityHandler key:key];
+    }];
 }
 
 - (void)removeSessionPartnerParameter:(NSString *)key {
@@ -275,8 +279,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"remove", @"partner", key];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
+    }];
 }
 
 - (void)resetCustomUserId {
@@ -289,8 +294,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"reset", @"customUserId"];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler resetCustomUserIdI:activityHandler];
+    }];
 }
 
 - (void)resetSessionCallbackParameters {
@@ -303,8 +309,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"reset", @"callback"];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler resetSessionCallbackParametersI:activityHandler];
+    }];
 }
 
 - (void)resetSessionPartnerParameters {
@@ -317,8 +324,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    NSArray * action = @[@"reset", @"partner"];
-    [self.sessionParametersActionsArray addObject:action];
+    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+        [activityHandler resetSessionPartnerParametersI:activityHandler];
+    }];
 }
 
 - (void)teardown:(BOOL)deleteState {
@@ -332,7 +340,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 #pragma mark - private
 
-- (BOOL) checkActivityHandler {
+- (BOOL)checkActivityHandler {
     if (self.activityHandler == nil) {
         [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
         return NO;

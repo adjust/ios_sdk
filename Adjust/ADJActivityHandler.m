@@ -22,6 +22,8 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJSessionParameters.h"
 
+typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
+
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
 static NSString   * const kSessionParametersFilename   = @"AdjustSessionParameters";
@@ -1606,43 +1608,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)sessionParametersActionsI:(ADJActivityHandler *)selfI
-    sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray {
+    sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+{
     if (sessionParametersActionsArray == nil) {
         return;
     }
-    for (NSArray* actionArray in sessionParametersActionsArray) {
-        NSString * action = actionArray[0];
-        NSString * parameterType = actionArray[1];
-        if ([@"callback" isEqualToString:parameterType]) {
-            if ([@"add" isEqualToString:action]) {
-                [selfI addSessionCallbackParameterI:selfI key:actionArray[2] value:actionArray[3]];
-            }
-            if ([@"remove" isEqualToString:action]) {
-                [selfI removeSessionCallbackParameterI:selfI key:actionArray[2]];
-            }
-            if ([@"reset" isEqualToString:action]) {
-                [selfI resetSessionCallbackParametersI:selfI];
-            }
-        }
-        if ([@"partner" isEqualToString:parameterType]) {
-            if ([@"add" isEqualToString:action]) {
-                [selfI addSessionPartnerParameterI:selfI key:actionArray[2] value:actionArray[3]];
-            }
-            if ([@"remove" isEqualToString:action]) {
-                [selfI removeSessionPartnerParameterI:selfI key:actionArray[2]];
-            }
-            if ([@"reset" isEqualToString:action]) {
-                [selfI resetSessionPartnerParametersI:selfI];
-            }
-        }
-        if ([@"customUserId" isEqualToString:parameterType]) {
-            if ([@"add" isEqualToString:action]) {
-                [selfI addCustomUserIdI:selfI customUserId:actionArray[2]];
-            }
-            if ([@"reset" isEqualToString:action]) {
-                [selfI resetCustomUserIdI:selfI];
-            }
-        }
+    for (activityHandlerBlockI activityHandlerActionI in sessionParametersActionsArray) {
+        activityHandlerActionI(selfI);
     }
 }
 

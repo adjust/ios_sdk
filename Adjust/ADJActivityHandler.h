@@ -65,6 +65,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (void)setOfflineMode:(BOOL)offline;
 - (ADJInternalState*) internalState;
 - (void)sendFirstPackages;
+
 - (void)addCustomUserId:(NSString *)customUserId;
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value;
@@ -75,6 +76,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (void)resetCustomUserId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
+
 - (void)teardown:(BOOL)deleteState;
 @end
 
@@ -83,5 +85,22 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (ADJAttribution*) attribution;
+
+- (void)addCustomUserIdI:(ADJActivityHandler *)selfI
+            customUserId:(NSString *)customUserId;
+- (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
+                                 key:(NSString *)key
+                               value:(NSString *)value;
+
+- (void)addSessionPartnerParameterI:(ADJActivityHandler *)selfI
+                                key:(NSString *)key
+                              value:(NSString *)value;
+- (void)removeSessionCallbackParameterI:(ADJActivityHandler *)selfI
+                                    key:(NSString *)key;
+- (void)removeSessionPartnerParameterI:(ADJActivityHandler *)selfI
+                                   key:(NSString *)key;
+- (void)resetCustomUserIdI:(ADJActivityHandler *)selfI;
+- (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI;
+- (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
 
 @end
