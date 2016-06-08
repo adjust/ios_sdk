@@ -15,13 +15,13 @@
     self = [super init];
     if (self == nil) return self;
 
-    self.customUserId = [decoder decodeObjectForKey:@"customUserId"];
+    self.externalDeviceId = [decoder decodeObjectForKey:@"externalDeviceId"];
     // does not read dictionary parameters
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.customUserId forKey:@"customUserId"];
+    [encoder encodeObject:self.externalDeviceId forKey:@"externalDeviceId"];
     // does not save dictionary parameters
 }
 
@@ -30,7 +30,7 @@
 {
     ADJSessionParameters* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        copy.customUserId       = [self.customUserId copyWithZone:zone];
+        copy.externalDeviceId       = [self.externalDeviceId copyWithZone:zone];
         copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
         copy.partnerParameters  = [self.partnerParameters copyWithZone:zone];
     }

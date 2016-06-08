@@ -492,11 +492,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      }];
 }
 
-- (void)addCustomUserId:(NSString *)customUserId {
+- (void)addExternalDeviceId:(NSString *)externalDeviceId {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI addCustomUserIdI:selfI customUserId:customUserId];
+                         [selfI addExternalDeviceIdI:selfI externalDeviceId:externalDeviceId];
                      }];
 }
 
@@ -534,11 +534,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      }];
 }
 
-- (void)resetCustomUserId {
+- (void)resetExternalDeviceId {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI resetCustomUserIdI:selfI];
+                         [selfI resetExternalDeviceIdI:selfI];
                      }];
 }
 
@@ -1459,17 +1459,17 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 #pragma mark - session parameters
-- (void)addCustomUserIdI:(ADJActivityHandler *)selfI
-            customUserId:(NSString *)customUserId {
-    if (![ADJUtil isValidParameter:customUserId
+- (void)addExternalDeviceIdI:(ADJActivityHandler *)selfI
+            externalDeviceId:(NSString *)externalDeviceId {
+    if (![ADJUtil isValidParameter:externalDeviceId
                      attributeType:@"value"
-                     parameterName:@"Custom User Id"]) return;
+                     parameterName:@"External Device Id"]) return;
 
-    if (selfI.sessionParameters.customUserId != nil) {
-        [selfI.logger warn:@"Custom User Id %@ will be overwritten", selfI.sessionParameters.customUserId];
+    if (selfI.sessionParameters.externalDeviceId != nil) {
+        [selfI.logger warn:@"External Device Id %@ will be overwritten", selfI.sessionParameters.externalDeviceId];
     }
 
-    selfI.sessionParameters.customUserId = customUserId;
+    selfI.sessionParameters.externalDeviceId = externalDeviceId;
 
     [selfI writeSessionParametersI:selfI];
 }
@@ -1580,12 +1580,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)resetCustomUserIdI:(ADJActivityHandler *)selfI {
-    if (selfI.sessionParameters.customUserId == nil) {
-        [selfI.logger warn:@"Custom User Id already reset"];
+- (void)resetExternalDeviceIdI:(ADJActivityHandler *)selfI {
+    if (selfI.sessionParameters.externalDeviceId == nil) {
+        [selfI.logger warn:@"External Device Id already reset"];
         return;
     }
-    selfI.sessionParameters.customUserId = nil;
+    selfI.sessionParameters.externalDeviceId = nil;
     [selfI writeSessionParametersI:selfI];
 }
 

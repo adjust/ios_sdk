@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) NSMutableDictionary* callbackParameters;
 @property (nonatomic, strong) NSMutableDictionary* partnerParameters;
-@property (nonatomic, copy) NSString *customUserId;
+@property (nonatomic, copy) NSString *externalDeviceId;
 
 @end

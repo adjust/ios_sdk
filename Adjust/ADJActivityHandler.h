@@ -66,14 +66,14 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (ADJInternalState*) internalState;
 - (void)sendFirstPackages;
 
-- (void)addCustomUserId:(NSString *)customUserId;
+- (void)addExternalDeviceId:(NSString *)externalDeviceId;
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value;
 - (void)addSessionPartnerParameter:(NSString *)key
                              value:(NSString *)value;
 - (void)removeSessionCallbackParameter:(NSString *)key;
 - (void)removeSessionPartnerParameter:(NSString *)key;
-- (void)resetCustomUserId;
+- (void)resetExternalDeviceId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 
@@ -86,8 +86,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (ADJAttribution*) attribution;
 
-- (void)addCustomUserIdI:(ADJActivityHandler *)selfI
-            customUserId:(NSString *)customUserId;
+- (void)addExternalDeviceIdI:(ADJActivityHandler *)selfI
+            externalDeviceId:(NSString *)externalDeviceId;
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key
                                value:(NSString *)value;
@@ -99,7 +99,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
                                     key:(NSString *)key;
 - (void)removeSessionPartnerParameterI:(ADJActivityHandler *)selfI
                                    key:(NSString *)key;
-- (void)resetCustomUserIdI:(ADJActivityHandler *)selfI;
+- (void)resetExternalDeviceIdI:(ADJActivityHandler *)selfI;
 - (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI;
 - (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
 
