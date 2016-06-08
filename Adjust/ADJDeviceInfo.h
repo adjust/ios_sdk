@@ -28,7 +28,7 @@
 @property (nonatomic, copy) NSString *cpuSubtype;
 @property (nonatomic, copy) NSString *installReceiptBase64;
 
-- (id) initWithSdkPrefix:(NSString *)sdkPrefix;
+- (id)initWithSdkPrefix:(NSString *)sdkPrefix;
 + (ADJDeviceInfo *)deviceInfoWithSdkPrefix:(NSString *)sdkPrefix;
 
 @end

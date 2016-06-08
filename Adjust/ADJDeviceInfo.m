@@ -19,7 +19,7 @@
     return [[ADJDeviceInfo alloc] initWithSdkPrefix:sdkPrefix];
 }
 
-- (id) initWithSdkPrefix:(NSString *)sdkPrefix {
+- (id)initWithSdkPrefix:(NSString *)sdkPrefix {
     self = [super init];
     if (self == nil) return nil;
 
@@ -50,20 +50,22 @@
         self.clientSdk = [NSString stringWithFormat:@"%@@%@", sdkPrefix, ADJUtil.clientSdk];
     }
 
-    @try {
-        NSURL * installReceiptLocation = [bundle appStoreReceiptURL];
-        NSData * installReceiptData = nil;
-
-        if (installReceiptLocation != nil) {
-            installReceiptData = [NSData dataWithContentsOfURL:installReceiptLocation];
-        }
-        if (installReceiptData != nil) {
-            self.installReceiptBase64 = [installReceiptData adjEncodeBase64];
-        }
-    } @catch (NSException *exception) {
-    }
+    [self injectInstallReceipt:bundle];
 
     return self;
+}
+
+- (void)injectInstallReceipt:(NSBundle *)bundle{
+    @try {
+        NSURL * installReceiptLocation = [bundle appStoreReceiptURL];
+        if (installReceiptLocation == nil) return;
+
+        NSData * installReceiptData = [NSData dataWithContentsOfURL:installReceiptLocation];
+        if (installReceiptData == nil) return;
+
+        self.installReceiptBase64 = [installReceiptData adjEncodeBase64];
+    } @catch (NSException *exception) {
+    }
 }
 /*
 -(id)copyWithZone:(NSZone *)zone
