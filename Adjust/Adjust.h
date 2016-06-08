@@ -159,5 +159,5 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)resetCustomUserId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
-
+- (void)teardown:(BOOL)deleteState;
 @end

@@ -321,6 +321,14 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.sessionParametersActionsArray addObject:action];
 }
 
+- (void)teardown:(BOOL)deleteState {
+    if (self.activityHandler == nil) {
+        [self.logger error:@"Adjust already down or not initialized"];
+        return;
+   }
+    [self.activityHandler teardown:deleteState];
+    self.activityHandler = nil;
+}
 
 #pragma mark - private
 

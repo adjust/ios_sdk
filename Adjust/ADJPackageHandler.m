@@ -133,7 +133,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 }
 
-- (void)teardown {
+- (void)teardown:(BOOL)deleteState {
     [ADJAdjustFactory.logger verbose:@"ADJPackageHandler teardown"];
     if (self.sendingSemaphore != nil) {
         dispatch_semaphore_signal(self.sendingSemaphore);
@@ -141,13 +141,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (self.requestHandler != nil) {
         [self.requestHandler teardown];
     }
-    if (self.packageQueue != nil) {
-        [self.packageQueue removeAllObjects];
-    }
+    [self teardownPackageQueueS:deleteState];
     self.internalQueue = nil;
     self.sendingSemaphore = nil;
     self.requestHandler = nil;
-    self.packageQueue = nil;
     self.backoffStrategy = nil;
     self.activityHandler = nil;
     self.logger = nil;
@@ -173,7 +170,7 @@ startsSending:(BOOL)startsSending
     [selfI.logger debug:@"Added package %d (%@)", selfI.packageQueue.count, newPackage];
     [selfI.logger verbose:@"%@", newPackage.extendedString];
 
-    [selfI writePackageQueueI:selfI];
+    [selfI writePackageQueueS:selfI];
 }
 
 - (void)sendFirstI:(ADJPackageHandler *)selfI
@@ -204,7 +201,7 @@ startsSending:(BOOL)startsSending
 
 - (void)sendNextI:(ADJPackageHandler *)selfI {
     [selfI.packageQueue removeObjectAtIndex:0];
-    [selfI writePackageQueueI:selfI];
+    [selfI writePackageQueueS:selfI];
     dispatch_semaphore_signal(selfI.sendingSemaphore);
     [selfI sendFirstI:selfI];
 }
@@ -266,14 +263,34 @@ startsSending:(BOOL)startsSending
     selfI.packageQueue = [NSMutableArray array];
 }
 
-- (void)writePackageQueueI:(ADJPackageHandler *)selfI {
-    NSString *filename = selfI.packageQueueFilename;
-    BOOL result = [NSKeyedArchiver archiveRootObject:selfI.packageQueue toFile:filename];
-    if (result == YES) {
-        [ADJUtil excludeFromBackup:filename];
-        [selfI.logger debug:@"Package handler wrote %d packages", selfI.packageQueue.count];
-    } else {
-        [selfI.logger error:@"Failed to write package queue"];
+- (void)writePackageQueueS:(ADJPackageHandler *)selfS {
+    @synchronized ([ADJPackageHandler class]) {
+        if (selfS.packageQueue == nil) {
+            return;
+        }
+        NSString *filename = selfS.packageQueueFilename;
+        BOOL result = [NSKeyedArchiver archiveRootObject:selfS.packageQueue toFile:filename];
+        if (result == YES) {
+            [ADJUtil excludeFromBackup:filename];
+            [selfS.logger debug:@"Package handler wrote %d packages", selfS.packageQueue.count];
+        } else {
+            [selfS.logger error:@"Failed to write package queue"];
+        }
+    }
+}
+
+- (void)teardownPackageQueueS:(BOOL)deleteState
+{
+    @synchronized ([ADJPackageHandler class]) {
+        if (self.packageQueue == nil) {
+            return;
+        }
+        if (deleteState) {
+            [ADJUtil deleteFile:self.packageQueueFilename];
+        }
+        [self.packageQueue removeAllObjects];
+
+        self.packageQueue = nil;
     }
 }
 

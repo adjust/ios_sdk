@@ -706,4 +706,34 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     });
 }
 
++ (NSString *)getFilename:(NSString *)filename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filepath = [path stringByAppendingPathComponent:filename];
+    return filepath;
+}
+
++ (BOOL)deleteFile:(NSString *)filename
+{
+    NSString *filepath = [ADJUtil getFilename:filename];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error = nil;
+    BOOL exists = [fileManager fileExistsAtPath:filepath];
+    if (!exists) {
+        [ADJAdjustFactory.logger verbose:@"File %@ does not exist at path %@", filename, filepath];
+        return YES;
+    }
+    BOOL deleted = [fileManager removeItemAtPath:filepath error:&error];
+
+    if (!deleted) {
+        [ADJAdjustFactory.logger verbose:@"Unable to delete file %@ at path %@", filename, filepath];
+    }
+
+    if (error) {
+        [ADJAdjustFactory.logger error:@"Error (%@) deleting file %@", [error localizedDescription], filename];
+    }
+
+    return deleted;
+}
+
 @end

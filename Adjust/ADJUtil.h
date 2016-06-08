@@ -79,5 +79,5 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 + (void)launchInQueue:(dispatch_queue_t)queue
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
-
++ (BOOL)deleteFile:(NSString *)filename;
 @end

@@ -556,7 +556,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      }];
 }
 
-- (void)teardown {
+- (void)teardown:(BOOL)deleteState
+{
     [ADJAdjustFactory.logger verbose:@"ADJActivityHandler teardown"];
     [self removeNotificationObserver];
     if (self.backgroundTimer != nil) {
@@ -572,26 +573,27 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.attributionHandler teardown];
     }
     if (self.packageHandler != nil) {
-        [self.packageHandler teardown];
+        [self.packageHandler teardown:deleteState];
     }
     if (self.sdkClickHandler != nil) {
         [self.sdkClickHandler teardown];
     }
+    [self teardownActivityStateS:deleteState];
+    [self teardownAttributionS:deleteState];
+    [self teardownAllSessionParametersS:deleteState];
+
     self.internalQueue = nil;
     self.packageHandler = nil;
     self.attributionHandler = nil;
     self.sdkClickHandler = nil;
-    self.activityState = nil;
     self.foregroundTimer = nil;
     self.backgroundTimer = nil;
     self.logger = nil;
     self.adjustDelegate = nil;
-    self.attribution = nil;
     self.adjustConfig = nil;
     self.internalState = nil;
     self.deviceInfo = nil;
     self.delayStartTimer = nil;
-    self.sessionParameters = nil;
 }
 
 #pragma mark - internal
@@ -1129,7 +1131,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)writeActivityStateS:(ADJActivityHandler *)selfS
         changesInStateBlock:(void (^)(void))changesInStateBlock
 {
-    @synchronized (selfS) {
+    @synchronized ([ADJActivityState class]) {
+        if (selfS.activityState == nil) {
+            return;
+        }
         if (changesInStateBlock != nil) {
             changesInStateBlock();
         }
@@ -1137,8 +1142,39 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 }
 
+- (void)teardownActivityStateS:(BOOL)deleteState
+{
+    @synchronized ([ADJActivityState class]) {
+        if (self.activityState == nil) {
+            return;
+        }
+        if (deleteState) {
+            [ADJUtil deleteFile:kActivityStateFilename];
+        }
+        self.activityState = nil;
+    }
+}
+
 - (void)writeAttributionI:(ADJActivityHandler *)selfI {
-    [ADJUtil writeObject:selfI.attribution filename:kAttributionFilename objectName:@"Attribution"];
+    @synchronized ([ADJAttribution class]) {
+        if (selfI.attribution == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.attribution filename:kAttributionFilename objectName:@"Attribution"];
+    }
+}
+
+- (void)teardownAttributionS:(BOOL)deleteState
+{
+    @synchronized ([ADJAttribution class]) {
+        if (self.attribution == nil) {
+            return;
+        }
+        if (deleteState) {
+            [ADJUtil deleteFile:kAttributionFilename];
+        }
+        self.attribution = nil;
+    }
 }
 
 - (void)readActivityState {
@@ -1152,6 +1188,55 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     self.attribution = [ADJUtil readObject:kAttributionFilename
                                 objectName:@"Attribution"
                                      class:[ADJAttribution class]];
+}
+
+- (void)writeSessionParametersI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJSessionParameters class]) {
+        if (selfI.sessionParameters == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.sessionParameters
+                    filename:kSessionParametersFilename
+                  objectName:@"Session parameters"];
+    }
+}
+
+- (void)writeSessionCallbackParametersI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJSessionParameters class]) {
+        if (selfI.sessionParameters == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
+                    filename:kSessionCallbackParametersFilename
+                  objectName:@"Session Callback parameters"];
+    }
+}
+
+- (void)writeSessionPartnerParametersI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJSessionParameters class]) {
+        if (selfI.sessionParameters == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
+                    filename:kSessionPartnerParametersFilename
+                  objectName:@"Session Partner parameters"];
+    }
+}
+
+- (void)teardownAllSessionParametersS:(BOOL)deleteState {
+    @synchronized ([ADJSessionParameters class]) {
+        if (self.sessionParameters == nil) {
+            return;
+        }
+        if (deleteState) {
+            [ADJUtil deleteFile:kSessionParametersFilename];
+            [ADJUtil deleteFile:kSessionCallbackParametersFilename];
+            [ADJUtil deleteFile:kSessionPartnerParametersFilename];
+        }
+        [self.sessionParameters.callbackParameters removeAllObjects];
+        [self.sessionParameters.partnerParameters removeAllObjects];
+        self.sessionParameters = nil;
+    }
 }
 
 - (void)readSessionParametersI:(ADJActivityHandler *)selfI {
@@ -1560,25 +1645,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         }
     }
 }
-
-- (void)writeSessionParametersI:(ADJActivityHandler *)selfI {
-    [ADJUtil writeObject:selfI.sessionParameters
-                filename:kSessionParametersFilename
-              objectName:@"Session parameters"];
-}
-
-- (void)writeSessionCallbackParametersI:(ADJActivityHandler *)selfI {
-    [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
-                filename:kSessionCallbackParametersFilename
-              objectName:@"Session Callback parameters"];
-}
-
-- (void)writeSessionPartnerParametersI:(ADJActivityHandler *)selfI {
-    [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
-                filename:kSessionPartnerParametersFilename
-              objectName:@"Session Partner parameters"];
-}
-
 
 #pragma mark - notifications
 - (void)addNotificationObserver {

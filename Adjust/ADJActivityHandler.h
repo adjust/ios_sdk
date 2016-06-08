@@ -75,7 +75,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (void)resetCustomUserId;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
-- (void)teardown;
+- (void)teardown:(BOOL)deleteState;
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
