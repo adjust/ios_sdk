@@ -196,4 +196,21 @@ static NSTimeInterval internalMaxDelayStart = -1;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart {
     internalMaxDelayStart = maxDelayStart;
 }
+
++ (void)teardown {
+    internalPackageHandler = nil;
+    internalRequestHandler = nil;
+    internalActivityHandler = nil;
+    internalLogger = nil;
+    internalAttributionHandler = nil;
+    internalSdkClickHandler = nil;
+
+    internalSessionInterval    = -1;
+    intervalSubsessionInterval = -1;
+    internalTimerInterval = -1;
+    intervalTimerStart = -1;
+    packageHandlerBackoffStrategy = nil;
+    sdkClickHandlerBackoffStrategy = nil;
+    internalMaxDelayStart = -1;
+}
 @end

@@ -16,6 +16,8 @@
 - (void)sendPackage:(ADJActivityPackage *)activityPackage
           queueSize:(NSUInteger)queueSize;
 
+- (void)teardown;
+
 @end
 
 

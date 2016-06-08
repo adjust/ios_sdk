@@ -24,4 +24,5 @@
 
 - (void)resume;
 - (void)suspend;
+- (void)cancel;
 @end

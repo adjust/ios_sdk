@@ -65,7 +65,7 @@
 
     return self;
 }
-
+/*
 -(id)copyWithZone:(NSZone *)zone
 {
     ADJDeviceInfo* copy = [[[self class] allocWithZone:zone] init];
@@ -90,5 +90,6 @@
 
     return copy;
 }
+*/
 
 @end

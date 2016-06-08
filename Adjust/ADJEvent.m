@@ -27,7 +27,7 @@
     self = [super init];
     if (self == nil) return nil;
 
-    self.logger     = ADJAdjustFactory.logger;
+    self.logger = ADJAdjustFactory.logger;
 
     if (![self checkEventToken:eventToken]) return self;
 

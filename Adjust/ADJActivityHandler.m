@@ -162,9 +162,12 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    dispatch_async(self.internalQueue, ^{
-        [self initInternal:sessionParametersActionsArray];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI initI:selfI
+        sessionParametersActionsArray:sessionParametersActionsArray];
+                     }];
 
     [self addNotificationObserver];
 
@@ -174,46 +177,52 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)applicationDidBecomeActive {
     self.internalState.background = NO;
 
-    dispatch_async(self.internalQueue, ^{
-        [self delayStartInternal];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI delayStartI:selfI];
 
-        // marks regular start
-        self.internalState.eventPreStart = NO;
+                         // marks regular start
+                         selfI.internalState.eventPreStart = NO;
 
-        [self stopBackgroundTimer];
+                         [selfI stopBackgroundTimerI:selfI];
 
-        [self startForegroundTimer];
+                         [selfI startForegroundTimerI:selfI];
 
-        [self.logger verbose:@"Subsession start"];
+                         [selfI.logger verbose:@"Subsession start"];
 
-        [self startInternal];
-    });
+                         [selfI startI:selfI];
+                     }];
 }
 
 - (void)applicationWillResignActive {
     self.internalState.background = YES;
 
-    dispatch_async(self.internalQueue, ^{
-        [self stopForegroundTimer];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI stopForegroundTimerI:selfI];
 
-        [self startBackgroundTimer];
+                         [selfI startBackgroundTimerI:selfI];
 
-        [self.logger verbose:@"Subsession end"];
+                         [selfI.logger verbose:@"Subsession end"];
 
-        [self endInternal];
-    });
+                         [selfI endI:selfI];
+                     }];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
-    dispatch_async(self.internalQueue, ^{
-        // track event called before app started
-        if (self.activityState == nil) {
-            // not the regular start
-            self.internalState.eventPreStart = YES;
-            [self startInternal];
-        }
-        [self eventInternal:event];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         // track event called before app started
+                         if (selfI.activityState == nil) {
+                             // not the regular start
+                             selfI.internalState.eventPreStart = YES;
+                             [selfI startI:selfI];
+                         }
+                         [selfI eventI:selfI event:event];
+                     }];
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
@@ -231,21 +240,27 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
-    dispatch_async(self.internalQueue, ^{
-        [self launchEventResponseTasksInternal:eventResponseData];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI launchEventResponseTasksI:selfI eventResponseData:eventResponseData];
+                     }];
 }
 
 - (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData {
-    dispatch_async(self.internalQueue, ^{
-        [self launchSessionResponseTasksInternal:sessionResponseData];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI launchSessionResponseTasksI:selfI sessionResponseData:sessionResponseData];
+                     }];
 }
 
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
-    dispatch_async(self.internalQueue, ^{
-        [self launchAttributionResponseTasksInternal:attributionResponseData];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI launchAttributionResponseTasksI:selfI attributionResponseData:attributionResponseData];
+                     }];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -270,8 +285,9 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     // save new enabled state in activity state
-    self.activityState.enabled = enabled;
-    [self writeActivityState];
+    [self writeActivityStateS:self changesInStateBlock:^{
+        self.activityState.enabled = enabled;
+    }];
 
     [self updateState:!enabled
        pausingMessage:@"Pausing handlers due to SDK being disabled"
@@ -307,19 +323,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (BOOL)isEnabled {
-    if (self.activityState != nil) {
-        return self.activityState.enabled;
-    } else {
-        return [self.internalState isEnabled];
-    }
-}
-
-- (BOOL)isToUpdatePackages {
-    if (self.activityState != nil) {
-        return self.activityState.updatePackages;
-    } else {
-        return [self.internalState isToUpdatePackages];
-    }
+    return [self isEnabledI:self];
 }
 
 - (BOOL)hasChangedState:(BOOL)previousState
@@ -350,9 +354,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.logger info:pausingMessage];
     }
     // check if it's remaining in a pause state
-    else if ([self paused:NO]) {
+    else if ([self pausedI:self sdkClickHandlerOnly:NO]) {
         // including the sdk click handler
-        if ([self paused:YES]) {
+        if ([self pausedI:self sdkClickHandlerOnly:YES]) {
             [self.logger info:remainsPausedMessage];
         } else {
             // or except it
@@ -367,15 +371,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)appWillOpenUrl:(NSURL*)url {
-    dispatch_async(self.internalQueue, ^{
-        [self appWillOpenUrlInternal:url];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI appWillOpenUrlI:selfI url:url];
+                     }];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    dispatch_async(self.internalQueue, ^{
-        [self setDeviceTokenInternal:deviceToken];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setDeviceTokenI:selfI deviceToken:deviceToken];
+                     }];
 }
 
 - (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
@@ -439,88 +447,156 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
+
 - (void)setAskingAttribution:(BOOL)askingAttribution {
-    self.activityState.askingAttribution = askingAttribution;
-    [self writeActivityState];
+    [self writeActivityStateS:self changesInStateBlock:^{
+        self.activityState.askingAttribution = askingAttribution;
+    }];
+}
+
+- (BOOL)updateAttribution:(ADJAttribution *)attribution {
+    return [self updateAttributionI:self attribution:attribution];
 }
 
 - (void)updateHandlersStatusAndSend {
-    dispatch_async(self.internalQueue, ^{
-        [self updateHandlersStatusAndSendInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI updateHandlersStatusAndSendI:selfI];
+                     }];
 }
 
 - (void)foregroundTimerFired {
-    dispatch_async(self.internalQueue, ^{
-        [self foregroundTimerFiredInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI foregroundTimerFiredI:selfI];
+                     }];
 }
 
 - (void)backgroundTimerFired {
-    dispatch_async(self.internalQueue, ^{
-        [self backgroundTimerFiredInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI backgroundTimerFiredI:selfI];
+                     }];
 }
 
 - (void)sendFirstPackages {
-    dispatch_async(self.internalQueue, ^{
-        [self sendFirstPackagesInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI sendFirstPackagesI:selfI];
+                     }];
 }
 
 - (void)addCustomUserId:(NSString *)customUserId {
-    dispatch_async(self.internalQueue, ^{
-        [self addCustomUserIdInternal:customUserId];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI addCustomUserIdI:selfI customUserId:customUserId];
+                     }];
 }
 
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
-    dispatch_async(self.internalQueue, ^{
-        [self addSessionCallbackParameterInternal:key value:value];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI addSessionCallbackParameterI:selfI key:key value:value];
+                     }];
 }
 
 - (void)addSessionPartnerParameter:(NSString *)key
                              value:(NSString *)value {
-    dispatch_async(self.internalQueue, ^{
-        [self addSessionPartnerParameterInternal:key value:value];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI addSessionPartnerParameterI:selfI key:key value:value];
+                     }];
 }
 
 - (void)removeSessionCallbackParameter:(NSString *)key {
-    dispatch_async(self.internalQueue, ^{
-        [self removeSessionCallbackParameterInternal:key];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI removeSessionCallbackParameterI:selfI key:key];
+                     }];
 }
 
 - (void)removeSessionPartnerParameter:(NSString *)key {
-    dispatch_async(self.internalQueue, ^{
-        [self removeSessionPartnerParameterInternal:key];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI removeSessionPartnerParameterI:selfI key:key];
+                     }];
 }
 
 - (void)resetCustomUserId {
-    dispatch_async(self.internalQueue, ^{
-        [self resetCustomUserIdInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI resetCustomUserIdI:selfI];
+                     }];
 }
 
 - (void)resetSessionCallbackParameters {
-    dispatch_async(self.internalQueue, ^{
-        [self resetSessionCallbackParametersInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI resetSessionCallbackParametersI:selfI];
+                     }];
 }
 
 - (void)resetSessionPartnerParameters {
-    dispatch_async(self.internalQueue, ^{
-        [self resetSessionPartnerParametersInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI resetSessionPartnerParametersI:selfI];
+                     }];
 }
 
+- (void)teardown {
+    [ADJAdjustFactory.logger verbose:@"ADJActivityHandler teardown"];
+    [self removeNotificationObserver];
+    if (self.backgroundTimer != nil) {
+        [self.backgroundTimer cancel];
+    }
+    if (self.foregroundTimer != nil) {
+        [self.foregroundTimer cancel];
+    }
+    if (self.delayStartTimer != nil) {
+        [self.delayStartTimer cancel];
+    }
+    if (self.attributionHandler != nil) {
+        [self.attributionHandler teardown];
+    }
+    if (self.packageHandler != nil) {
+        [self.packageHandler teardown];
+    }
+    if (self.sdkClickHandler != nil) {
+        [self.sdkClickHandler teardown];
+    }
+    self.internalQueue = nil;
+    self.packageHandler = nil;
+    self.attributionHandler = nil;
+    self.sdkClickHandler = nil;
+    self.activityState = nil;
+    self.foregroundTimer = nil;
+    self.backgroundTimer = nil;
+    self.logger = nil;
+    self.adjustDelegate = nil;
+    self.attribution = nil;
+    self.adjustConfig = nil;
+    self.internalState = nil;
+    self.deviceInfo = nil;
+    self.delayStartTimer = nil;
+    self.sessionParameters = nil;
+}
 
 #pragma mark - internal
-- (void)initInternal:(NSArray*)sessionParametersActionsArray
+- (void)initI:(ADJActivityHandler *)selfI
+sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -530,268 +606,293 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
     kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
 
-    self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
+    selfI.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:selfI.adjustConfig.sdkPrefix];
 
     // read files that are accessed only in Internal sections
-    [self readSessionParameters];
-    if (self.sessionParameters == nil) {
-        self.sessionParameters = [[ADJSessionParameters alloc] init];
+    [selfI readSessionParametersI:selfI];
+    if (selfI.sessionParameters == nil) {
+        selfI.sessionParameters = [[ADJSessionParameters alloc] init];
     }
-    [self readSessionCallbackParameters];
-    [self readSessionPartnerParameters];
+    [selfI readSessionCallbackParametersI:selfI];
+    [selfI readSessionPartnerParametersI:selfI];
 
-    if (self.adjustConfig.eventBufferingEnabled)  {
-        [self.logger info:@"Event buffering is enabled"];
-    }
-
-    if (self.adjustConfig.defaultTracker != nil) {
-        [self.logger info:@"Default tracker: '%@'", self.adjustConfig.defaultTracker];
+    if (selfI.adjustConfig.eventBufferingEnabled)  {
+        [selfI.logger info:@"Event buffering is enabled"];
     }
 
-    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
-                                                   queue:self.internalQueue
-                                               startTime:kForegroundTimerStart
-                                            intervalTime:kForegroundTimerInterval
-                                                    name:kForegroundTimerName];
-
-    if (self.adjustConfig.sendInBackground) {
-        [self.logger info:@"Send in background configured"];
-        self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
-                                                      queue:self.internalQueue
-                                                       name:kBackgroundTimerName];
+    if (selfI.adjustConfig.defaultTracker != nil) {
+        [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
 
-    if (self.activityState == nil &&
-        self.adjustConfig.delayStart > 0)
+    selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
+        [selfI foregroundTimerFired]; }
+                                                    queue:selfI.internalQueue
+                                                startTime:kForegroundTimerStart
+                                             intervalTime:kForegroundTimerInterval
+                                                     name:kForegroundTimerName];
+
+    if (selfI.adjustConfig.sendInBackground) {
+        [selfI.logger info:@"Send in background configured"];
+        selfI.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [selfI backgroundTimerFired]; }
+                                                      queue:selfI.internalQueue
+                                                        name:kBackgroundTimerName];
+    }
+
+    if (selfI.activityState == nil &&
+        selfI.adjustConfig.delayStart > 0)
     {
-        [self.logger info:@"Delay start configured"];
-        self.internalState.delayStart = YES;
-        self.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [self sendFirstPackages]; }
-                                                      queue:self.internalQueue
-                                                       name:kDelayStartTimerName];
+        [selfI.logger info:@"Delay start configured"];
+        selfI.internalState.delayStart = YES;
+        selfI.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [selfI sendFirstPackages]; }
+                                                       queue:selfI.internalQueue
+                                                        name:kDelayStartTimerName];
 
     }
 
-    self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
-                                                               startsSending:[self toSend:NO]];
+    selfI.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:selfI
+                                                                startsSending:[selfI toSendI:selfI
+                                                                         sdkClickHandlerOnly:NO]];
 
     // update session parameters in package queue
-    if ([self isToUpdatePackages]) {
-        [self updatePackagesInternal];
+    if ([selfI isToUpdatePackagesI:selfI]) {
+        [selfI updatePackagesI:selfI];
      }
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                             initWithDeviceInfo:self.deviceInfo
-                                             activityState:self.activityState
-                                             config:self.adjustConfig
+                                             initWithDeviceInfo:selfI.deviceInfo
+                                             activityState:selfI.activityState
+                                             config:selfI.adjustConfig
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
-    self.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:self
+    selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
                                                               withAttributionPackage:attributionPackage
-                                                                       startsSending:[self toSend:NO]
-                                                       hasAttributionChangedDelegate:self.adjustConfig.hasAttributionChangedDelegate];
+                                                                        startsSending:[selfI toSendI:selfI
+                                                                                 sdkClickHandlerOnly:NO]
+                                                       hasAttributionChangedDelegate:selfI.adjustConfig.hasAttributionChangedDelegate];
 
-    self.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[self toSend:YES]];
+    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[selfI toSendI:selfI
+                                                                        sdkClickHandlerOnly:YES]];
 
-    [[UIDevice currentDevice] adjSetIad:self triesV3Left:kTryIadV3];
+    [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
 
-    [self sessionParametersActionsInternal:sessionParametersActionsArray];
+    [selfI sessionParametersActionsI:selfI sessionParametersActionsArray:sessionParametersActionsArray];
 
-    [self startInternal];
+    [selfI startI:selfI];
 }
 
-- (void)startInternal {
+- (void)startI:(ADJActivityHandler *)selfI {
     // it shouldn't start if it was disabled after a first session
-    if (self.activityState != nil
-        && !self.activityState.enabled) {
+    if (selfI.activityState != nil
+        && !selfI.activityState.enabled) {
         return;
     }
 
-    [self updateHandlersStatusAndSendInternal];
+    [selfI updateHandlersStatusAndSendI:selfI];
 
-    [self processSession];
+    [selfI processSessionI:selfI];
 
-    [self checkAttributionState];
+    [selfI checkAttributionStateI:selfI];
 }
 
-- (void)processSession {
+- (void)processSessionI:(ADJActivityHandler *)selfI {
     double now = [NSDate.date timeIntervalSince1970];
 
     // very first session
-    if (self.activityState == nil) {
-        self.activityState = [[ADJActivityState alloc] init];
-        self.activityState.sessionCount = 1; // this is the first session
+    if (selfI.activityState == nil) {
+        selfI.activityState = [[ADJActivityState alloc] init];
+        selfI.activityState.sessionCount = 1; // this is the first session
 
-        [self transferSessionPackage:now];
-        [self.activityState resetSessionAttributes:now];
-        self.activityState.enabled = [self.internalState isEnabled];
-        self.activityState.updatePackages = [self.internalState isToUpdatePackages];
-        [self writeActivityState];
+        [selfI transferSessionPackageI:selfI now:now];
+        [selfI.activityState resetSessionAttributes:now];
+        selfI.activityState.enabled = [selfI.internalState isEnabled];
+        selfI.activityState.updatePackages = [selfI.internalState isToUpdatePackages];
+        [selfI writeActivityStateI:selfI];
         return;
     }
 
-    double lastInterval = now - self.activityState.lastActivity;
+    double lastInterval = now - selfI.activityState.lastActivity;
     if (lastInterval < 0) {
-        [self.logger error:@"Time travel!"];
-        self.activityState.lastActivity = now;
-        [self writeActivityState];
+        [selfI.logger error:@"Time travel!"];
+        selfI.activityState.lastActivity = now;
+        [selfI writeActivityStateI:selfI];
         return;
     }
 
     // new session
     if (lastInterval > kSessionInterval) {
-        self.activityState.sessionCount++;
-        self.activityState.lastInterval = lastInterval;
+        selfI.activityState.sessionCount++;
+        selfI.activityState.lastInterval = lastInterval;
 
-        [self transferSessionPackage:now];
-        [self.activityState resetSessionAttributes:now];
-        [self writeActivityState];
+        [selfI transferSessionPackageI:selfI now:now];
+        [selfI.activityState resetSessionAttributes:now];
+        [selfI writeActivityStateI:selfI];
         return;
     }
 
     // new subsession
     if (lastInterval > kSubSessionInterval) {
-        self.activityState.subsessionCount++;
-        self.activityState.sessionLength += lastInterval;
-        self.activityState.lastActivity = now;
-        [self.logger verbose:@"Started subsession %d of session %d",
-         self.activityState.subsessionCount,
-         self.activityState.sessionCount];
-        [self writeActivityState];
+        selfI.activityState.subsessionCount++;
+        selfI.activityState.sessionLength += lastInterval;
+        selfI.activityState.lastActivity = now;
+        [selfI.logger verbose:@"Started subsession %d of session %d",
+         selfI.activityState.subsessionCount,
+         selfI.activityState.sessionCount];
+        [selfI writeActivityStateI:selfI];
         return;
     }
 
-    [self.logger verbose:@"Time span since last activity too short for a new subsession"];
+    [selfI.logger verbose:@"Time span since last activity too short for a new subsession"];
 }
 
-- (void)transferSessionPackage:(double)now {
+- (void)transferSessionPackageI:(ADJActivityHandler *)selfI
+                            now:(double)now {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
-                                         initWithDeviceInfo:self.deviceInfo
-                                         activityState:self.activityState
-                                         config:self.adjustConfig
+                                         initWithDeviceInfo:selfI.deviceInfo
+                                         activityState:selfI.activityState
+                                         config:selfI.adjustConfig
                                          createdAt:now];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:self.sessionParameters isInDelay:[self.internalState delayStart]];
-    [self.packageHandler addPackage:sessionPackage];
-    [self.packageHandler sendFirstPackage];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    [selfI.packageHandler addPackage:sessionPackage];
+    [selfI.packageHandler sendFirstPackage];
 }
 
-- (void)checkAttributionState {
-    if (![self checkActivityState]) return;
+- (void)checkAttributionStateI:(ADJActivityHandler *)selfI {
+    if (![selfI checkActivityStateI:selfI]) return;
 
     // if it' a new session
-    if (self.activityState.subsessionCount <= 1) {
+    if (selfI.activityState.subsessionCount <= 1) {
         return;
     }
 
     // if there is already an attribution saved and there was no attribution being asked
-    if (self.attribution != nil && !self.activityState.askingAttribution) {
+    if (selfI.attribution != nil && !selfI.activityState.askingAttribution) {
         return;
     }
 
-    [self.attributionHandler getAttribution];
+    [selfI.attributionHandler getAttribution];
 }
 
-- (void)endInternal {
+- (void)endI:(ADJActivityHandler *)selfI {
     // pause sending if it's not allowed to send
-    if (![self toSend]) {
-        [self pauseSending];
+    if (![selfI toSendI:selfI]) {
+        [selfI pauseSendingI:selfI];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    if ([self updateActivityState:now]) {
-        [self writeActivityState];
+    if ([selfI updateActivityStateI:selfI now:now]) {
+        [selfI writeActivityStateI:selfI];
     }
 }
 
-- (void)eventInternal:(ADJEvent *)event {
-    if (![self isEnabled]) return;
-    if (![self checkEvent:event]) return;
-    if (![self checkTransactionId:event.transactionId]) return;
+- (void)eventI:(ADJActivityHandler *)selfI
+         event:(ADJEvent *)event {
+    if (![selfI isEnabledI:selfI]) return;
+    if (![selfI checkEventI:selfI event:event]) return;
+    if (![selfI checkTransactionIdI:selfI transactionId:event.transactionId]) return;
 
     double now = [NSDate.date timeIntervalSince1970];
 
-    self.activityState.eventCount++;
-    [self updateActivityState:now];
+    selfI.activityState.eventCount++;
+    [selfI updateActivityStateI:selfI now:now];
 
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
                                        createdAt:now];
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:self.sessionParameters isInDelay:[self.internalState delayStart]];
-    [self.packageHandler addPackage:eventPackage];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    [selfI.packageHandler addPackage:eventPackage];
 
-    if (self.adjustConfig.eventBufferingEnabled) {
-        [self.logger info:@"Buffered event %@", eventPackage.suffix];
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", eventPackage.suffix];
     } else {
-        [self.packageHandler sendFirstPackage];
+        [selfI.packageHandler sendFirstPackage];
     }
 
     // if it is in the background and it can send, start the background timer
-    if (self.adjustConfig.sendInBackground && [self.internalState isBackground]) {
-        [self startBackgroundTimer];
+    if (selfI.adjustConfig.sendInBackground && [selfI.internalState isBackground]) {
+        [selfI startBackgroundTimerI:selfI];
     }
 
-    [self writeActivityState];
+    [selfI writeActivityStateI:selfI];
 }
 
-- (void) launchEventResponseTasksInternal:(ADJEventResponseData *)eventResponseData {
+- (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
+                eventResponseData:(ADJEventResponseData *)eventResponseData {
     // event success callback
     if (eventResponseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
+        && [selfI.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
     {
-        [self.logger debug:@"Launching success event tracking delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
+        [selfI.logger debug:@"Launching success event tracking delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustEventTrackingSucceeded:)
                          withObject:[eventResponseData successResponseData]];
         return;
     }
     // event failure callback
     if (!eventResponseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustEventTrackingFailed:)])
+        && [selfI.adjustDelegate respondsToSelector:@selector(adjustEventTrackingFailed:)])
     {
-        [self.logger debug:@"Launching failed event tracking delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
+        [selfI.logger debug:@"Launching failed event tracking delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustEventTrackingFailed:)
                          withObject:[eventResponseData failureResponseData]];
         return;
     }
 }
 
-- (void) launchSessionResponseTasksInternal:(ADJSessionResponseData *)sessionResponseData {
-    BOOL toLaunchAttributionDelegate = [self updateAttribution:sessionResponseData.attribution];
+- (void)launchSessionResponseTasksI:(ADJActivityHandler *)selfI
+                sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
+    BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sessionResponseData.attribution];
 
     // session success callback
     if (sessionResponseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
+        && [selfI.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
     {
-        [self.logger debug:@"Launching success session tracking delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
+        [selfI.logger debug:@"Launching success session tracking delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustSessionTrackingSucceeded:)
                          withObject:[sessionResponseData successResponseData]];
     }
     // session failure callback
     if (!sessionResponseData.success
-        && [self.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
+        && [selfI.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingFailed:)])
     {
-        [self.logger debug:@"Launching failed session tracking delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
+        [selfI.logger debug:@"Launching failed session tracking delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustSessionTrackingFailed:)
                          withObject:[sessionResponseData failureResponseData]];
     }
 
     // try to update and launch the attribution changed delegate
     if (toLaunchAttributionDelegate) {
-        [self.logger debug:@"Launching attribution changed delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
+        [selfI.logger debug:@"Launching attribution changed delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustAttributionChanged:)
                          withObject:sessionResponseData.attribution];
     }
 }
 
-- (void)prepareDeeplink:(ADJResponseData *)responseData {
+- (void)launchAttributionResponseTasksI:(ADJActivityHandler *)selfI
+                attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
+    BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI
+                                                     attribution:attributionResponseData.attribution];
+
+    // try to update and launch the attribution changed delegate non-blocking
+    if (toLaunchAttributionDelegate) {
+        [selfI.logger debug:@"Launching attribution changed delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:attributionResponseData.attribution];
+    }
+
+    [selfI prepareDeeplinkI:selfI responseData:attributionResponseData];
+}
+
+- (void)prepareDeeplinkI:(ADJActivityHandler *)selfI
+            responseData:(ADJResponseData *)responseData {
     if (responseData == nil) {
         return;
     }
@@ -803,69 +904,60 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
 
-    [self.logger info:@"Open deep link (%@)", deepLink];
+    [selfI.logger info:@"Open deep link (%@)", deepLink];
 
     [ADJUtil launchInMainThread:^{
         BOOL toLaunchDeeplink = YES;
 
-        if ([self.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
-            toLaunchDeeplink = [self.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
+        if ([selfI.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+            toLaunchDeeplink = [selfI.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
         }
 
         if (toLaunchDeeplink) {
-            [self launchDeepLinkMain:deepLinkUrl];
+            [selfI launchDeepLinkMainI:selfI deepLinkUrl:deepLinkUrl];
         }
     }];
 }
 
-- (void)launchDeepLinkMain:(NSURL *) deepLinkUrl{
+- (void)launchDeepLinkMainI:(ADJActivityHandler *)selfI
+                deepLinkUrl:(NSURL *)deepLinkUrl{
     BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
 
     if (!success) {
-        [self.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+        [selfI.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
     }
 }
 
-- (void) launchAttributionResponseTasksInternal:(ADJAttributionResponseData *)attributionResponseData {
-    BOOL toLaunchAttributionDelegate = [self updateAttribution:attributionResponseData.attribution];
-
-    // try to update and launch the attribution changed delegate non-blocking
-    if (toLaunchAttributionDelegate) {
-        [self.logger debug:@"Launching attribution changed delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
-                           selector:@selector(adjustAttributionChanged:)
-                         withObject:attributionResponseData.attribution];
-    }
-
-    [self prepareDeeplink:attributionResponseData];
-}
-
-- (BOOL)updateAttribution:(ADJAttribution *)attribution {
+- (BOOL)updateAttributionI:(ADJActivityHandler *)selfI
+               attribution:(ADJAttribution *)attribution {
     if (attribution == nil) {
         return NO;
     }
-    if ([attribution isEqual:self.attribution]) {
+    if ([attribution isEqual:selfI.attribution]) {
         return NO;
     }
-    self.attribution = attribution;
-    [self writeAttribution];
+    // copy attribution property
+    //  to avoid using the same object for the delegate
+    selfI.attribution = attribution;
+    [selfI writeAttributionI:selfI];
 
-    if (self.adjustDelegate == nil) {
-        return NO;
-    }
-
-    if (![self.adjustConfig hasAttributionChangedDelegate]) {
+    if (selfI.adjustDelegate == nil) {
         return NO;
     }
 
-    if (![self.adjustDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
+    if (![selfI.adjustConfig hasAttributionChangedDelegate]) {
+        return NO;
+    }
+
+    if (![selfI.adjustDelegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         return NO;
     }
 
     return YES;
 }
 
-- (void) appWillOpenUrlInternal:(NSURL *)url {
+- (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
+                    url:(NSURL *)url {
     if ([ADJUtil isNull:url]) {
         return;
     }
@@ -883,14 +975,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
 
     for (NSString* fieldValuePair in queryArray) {
-        [self readDeeplinkQueryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
+        [selfI readDeeplinkQueryStringI:selfI queryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
@@ -898,10 +990,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplink = [url absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (BOOL) readDeeplinkQueryString:(NSString *)queryString
+- (BOOL)readDeeplinkQueryStringI:(ADJActivityHandler *)selfI
+                     queryString:(NSString *)queryString
                  adjustDeepLinks:(NSMutableDictionary*)adjustDeepLinks
                      attribution:(ADJAttribution *)deeplinkAttribution
 {
@@ -921,17 +1014,17 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     NSString* keyWOutPrefix = [keyDecoded substringFromIndex:kAdjustPrefix.length];
     if (keyWOutPrefix.length == 0) return NO;
 
-    if (![self trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:valueDecoded]) {
+    if (![selfI trySetAttributionDeeplink:deeplinkAttribution withKey:keyWOutPrefix withValue:valueDecoded]) {
         [adjustDeepLinks setObject:valueDecoded forKey:keyWOutPrefix];
     }
 
     return YES;
 }
 
-- (BOOL) trySetAttributionDeeplink:(ADJAttribution *)deeplinkAttribution
-                           withKey:(NSString *)key
-                         withValue:(NSString*)value {
-
+- (BOOL)trySetAttributionDeeplink:(ADJAttribution *)deeplinkAttribution
+                          withKey:(NSString *)key
+                        withValue:(NSString*)value
+{
     if ([key isEqualToString:@"tracker"]) {
         deeplinkAttribution.trackerName = value;
         return YES;
@@ -955,7 +1048,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return NO;
 }
 
-- (void)setDeviceTokenInternal:(NSData *)deviceToken {
+- (void)setDeviceTokenI:(ADJActivityHandler *)selfI
+            deviceToken:(NSData *)deviceToken {
     if (deviceToken == nil) {
         return;
     }
@@ -964,84 +1058,87 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                        [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
 
-    if (![self updateDeviceToken:deviceTokenString]) {
+    if (deviceTokenString == nil) {
+        return;
+    }
+
+    if ([deviceTokenString isEqualToString:selfI.activityState.deviceToken]) {
         return;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:self.deviceInfo
-                                        activityState:self.activityState
-                                        config:self.adjustConfig
+                                        initWithDeviceInfo:selfI.deviceInfo
+                                        activityState:selfI.activityState
+                                        config:selfI.adjustConfig
                                         createdAt:now];
 
     clickBuilder.deviceToken = deviceTokenString;
 
     ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"push"];
 
-    [self.sdkClickHandler sendSdkClick:clickPackage];
-}
-
-- (BOOL)updateDeviceToken:(NSString *)deviceToken {
-    if (deviceToken == nil) {
-        return NO;
-    }
-
-    if ([deviceToken isEqualToString:self.activityState.deviceToken]) {
-        return NO;
-    }
-
-    return YES;
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 #pragma mark - private
 
-// returns whether or not the activity state should be written
-- (BOOL)updateActivityState:(double)now {
-    if (![self checkActivityState]) return NO;
+- (BOOL)isEnabledI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.enabled;
+    } else {
+        return [selfI.internalState isEnabled];
+    }
+}
 
-    double lastInterval = now - self.activityState.lastActivity;
+- (BOOL)isToUpdatePackagesI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.updatePackages;
+    } else {
+        return [selfI.internalState isToUpdatePackages];
+    }
+}
+
+// returns whether or not the activity state should be written
+- (BOOL)updateActivityStateI:(ADJActivityHandler *)selfI
+                         now:(double)now {
+    if (![selfI checkActivityStateI:selfI]) return NO;
+
+    double lastInterval = now - selfI.activityState.lastActivity;
 
     // ignore late updates
     if (lastInterval > kSessionInterval) return NO;
 
-    self.activityState.lastActivity = now;
+    selfI.activityState.lastActivity = now;
 
     if (lastInterval < 0) {
-        [self.logger error:@"Time travel!"];
+        [selfI.logger error:@"Time travel!"];
         return YES;
     } else {
-        self.activityState.sessionLength += lastInterval;
-        self.activityState.timeSpent += lastInterval;
+        selfI.activityState.sessionLength += lastInterval;
+        selfI.activityState.timeSpent += lastInterval;
     }
 
     return YES;
 }
 
-- (void)writeActivityState {
-    [ADJUtil writeObject:self.activityState filename:kActivityStateFilename objectName:@"Activity state"];
+- (void)writeActivityStateI:(ADJActivityHandler *)selfI
+{
+    [selfI writeActivityStateS:selfI changesInStateBlock:nil];
 }
 
-- (void)writeAttribution {
-    [ADJUtil writeObject:self.attribution filename:kAttributionFilename objectName:@"Attribution"];
+- (void)writeActivityStateS:(ADJActivityHandler *)selfS
+        changesInStateBlock:(void (^)(void))changesInStateBlock
+{
+    @synchronized (selfS) {
+        if (changesInStateBlock != nil) {
+            changesInStateBlock();
+        }
+        [ADJUtil writeObject:selfS.activityState filename:kActivityStateFilename objectName:@"Activity state"];
+    }
 }
 
-- (void)writeSessionParameters {
-    [ADJUtil writeObject:self.sessionParameters
-                filename:kSessionParametersFilename
-              objectName:@"Session parameters"];
-}
-
-- (void)writeSessionCallbackParameters {
-    [ADJUtil writeObject:self.sessionParameters.callbackParameters
-                filename:kSessionCallbackParametersFilename
-              objectName:@"Session Callback parameters"];
-}
-
-- (void)writeSessionPartnerParameters {
-    [ADJUtil writeObject:self.sessionParameters.partnerParameters
-                filename:kSessionPartnerParametersFilename
-              objectName:@"Session Partner parameters"];
+- (void)writeAttributionI:(ADJActivityHandler *)selfI {
+    [ADJUtil writeObject:selfI.attribution filename:kAttributionFilename objectName:@"Attribution"];
 }
 
 - (void)readActivityState {
@@ -1057,234 +1154,240 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                      class:[ADJAttribution class]];
 }
 
-- (void)readSessionParameters {
-    self.sessionParameters = [ADJUtil readObject:kSessionParametersFilename
+- (void)readSessionParametersI:(ADJActivityHandler *)selfI {
+    selfI.sessionParameters = [ADJUtil readObject:kSessionParametersFilename
                                       objectName:@"Session parameters"
                                            class:[ADJSessionParameters class]];
 }
-- (void)readSessionCallbackParameters {
-    self.sessionParameters.callbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
+- (void)readSessionCallbackParametersI:(ADJActivityHandler *)selfI {
+    selfI.sessionParameters.callbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
                                                          objectName:@"Session Callback parameters"
                                                               class:[NSDictionary class]];
 }
 
-- (void)readSessionPartnerParameters {
-    self.sessionParameters.partnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
+- (void)readSessionPartnerParametersI:(ADJActivityHandler *)selfI {
+    selfI.sessionParameters.partnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
                                                         objectName:@"Session Partner parameters"
                                                              class:[NSDictionary class]];
 }
 
 # pragma mark - handlers status
-- (void)updateHandlersStatusAndSendInternal {
+- (void)updateHandlersStatusAndSendI:(ADJActivityHandler *)selfI {
     // check if it should stop sending
-    if (![self toSend]) {
-        [self pauseSending];
+    if (![selfI toSendI:selfI]) {
+        [selfI pauseSendingI:selfI];
         return;
     }
 
-    [self resumeSending];
+    [selfI resumeSendingI:selfI];
 
     // try to send
-    if (!self.adjustConfig.eventBufferingEnabled) {
-        [self.packageHandler sendFirstPackage];
+    if (!selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.packageHandler sendFirstPackage];
     }
 }
 
-- (void)pauseSending {
-    [self.attributionHandler pauseSending];
-    [self.packageHandler pauseSending];
+- (void)pauseSendingI:(ADJActivityHandler *)selfI {
+    [selfI.attributionHandler pauseSending];
+    [selfI.packageHandler pauseSending];
     // the conditions to pause the sdk click handler are less restrictive
     // it's possible for the sdk click handler to be active while others are paused
-    if (![self toSend:YES]) {
-        [self.sdkClickHandler pauseSending];
+    if (![selfI toSendI:selfI sdkClickHandlerOnly:YES]) {
+        [selfI.sdkClickHandler pauseSending];
     }
 }
 
-- (void)resumeSending {
-    [self.attributionHandler resumeSending];
-    [self.packageHandler resumeSending];
-    [self.sdkClickHandler resumeSending];
+- (void)resumeSendingI:(ADJActivityHandler *)selfI {
+    [selfI.attributionHandler resumeSending];
+    [selfI.packageHandler resumeSending];
+    [selfI.sdkClickHandler resumeSending];
 }
 
-- (BOOL)paused {
-    return [self paused:NO];
+- (BOOL)pausedI:(ADJActivityHandler *)selfI {
+    return [selfI pausedI:selfI sdkClickHandlerOnly:NO];
 }
 
-- (BOOL)paused:(BOOL)sdkClickHandlerOnly {
+- (BOOL)pausedI:(ADJActivityHandler *)selfI
+sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
+{
     if (sdkClickHandlerOnly) {
         // sdk click handler is paused if either:
-        return [self.internalState isOffline] ||    // it's offline
-                ![self isEnabled];                  // is disabled
+        return [selfI.internalState isOffline] ||    // it's offline
+         ![selfI isEnabledI:selfI];                  // is disabled
     }
     // other handlers are paused if either:
-    return [self.internalState isOffline] ||        // it's offline
-            ![self isEnabled] ||                    // is disabled
-            [self.internalState isDelayStart] ||    // is in delayed start
-            [self.internalState isEventPreStart];   // an pre-start event has occurred before the regular start
+    return [selfI.internalState isOffline] ||        // it's offline
+            ![selfI isEnabledI:selfI] ||             // is disabled
+            [selfI.internalState isDelayStart] ||    // is in delayed start
+            [selfI.internalState isEventPreStart];   // an pre-start event has occurred before the regular start
 }
 
-- (BOOL)toSend {
-    return [self toSend:NO];
+- (BOOL)toSendI:(ADJActivityHandler *)selfI {
+    return [selfI toSendI:selfI sdkClickHandlerOnly:NO];
 }
 
-- (BOOL)toSend:(BOOL)sdkClickHandlerOnly {
+- (BOOL)toSendI:(ADJActivityHandler *)selfI
+sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
+{
     // don't send when it's paused
-    if ([self paused:sdkClickHandlerOnly]) {
+    if ([selfI pausedI:selfI sdkClickHandlerOnly:sdkClickHandlerOnly]) {
         return NO;
     }
 
     // has the option to send in the background -> is to send
-    if (self.adjustConfig.sendInBackground) {
+    if (selfI.adjustConfig.sendInBackground) {
         return YES;
     }
 
     // doesn't have the option -> depends on being on the background/foreground
-    return [self.internalState isForeground];
+    return [selfI.internalState isForeground];
 }
 
 # pragma mark - timer
-- (void)startForegroundTimer {
+- (void)startForegroundTimerI:(ADJActivityHandler *)selfI {
     // don't start the timer when it's paused
-    if ([self paused]) {
+    if ([selfI pausedI:selfI]) {
         return;
     }
 
-    [self.foregroundTimer resume];
+    [selfI.foregroundTimer resume];
 }
 
-- (void)stopForegroundTimer {
-    [self.foregroundTimer suspend];
+- (void)stopForegroundTimerI:(ADJActivityHandler *)selfI {
+    [selfI.foregroundTimer suspend];
 }
 
-- (void)foregroundTimerFiredInternal {
+- (void)foregroundTimerFiredI:(ADJActivityHandler *)selfI {
     // stop the timer cycle when it's paused
-    if ([self paused]) {
-        [self stopForegroundTimer];
+    if ([selfI pausedI:selfI]) {
+        [selfI stopForegroundTimerI:selfI];
         return;
     }
-    [self.packageHandler sendFirstPackage];
+    [selfI.packageHandler sendFirstPackage];
     double now = [NSDate.date timeIntervalSince1970];
-    if ([self updateActivityState:now]) {
-        [self writeActivityState];
+    if ([selfI updateActivityStateI:selfI now:now]) {
+        [selfI writeActivityStateI:selfI];
     }
 }
 
-- (void)startBackgroundTimer {
-    if (self.backgroundTimer == nil) {
+- (void)startBackgroundTimerI:(ADJActivityHandler *)selfI {
+    if (selfI.backgroundTimer == nil) {
         return;
     }
 
     // check if it can send in the background
-    if (![self toSend]) {
+    if (![selfI toSendI:selfI]) {
         return;
     }
 
     // background timer already started
-    if ([self.backgroundTimer fireIn] > 0) {
+    if ([selfI.backgroundTimer fireIn] > 0) {
         return;
     }
 
-    [self.backgroundTimer startIn:kBackgroundTimerInterval];
+    [selfI.backgroundTimer startIn:kBackgroundTimerInterval];
 }
 
-- (void)stopBackgroundTimer {
-    if (self.backgroundTimer == nil) {
+- (void)stopBackgroundTimerI:(ADJActivityHandler *)selfI {
+    if (selfI.backgroundTimer == nil) {
         return;
     }
 
-    [self.backgroundTimer cancel];
+    [selfI.backgroundTimer cancel];
 }
 
-- (void)backgroundTimerFiredInternal {
-    [self.packageHandler sendFirstPackage];
+- (void)backgroundTimerFiredI:(ADJActivityHandler *)selfI {
+    [selfI.packageHandler sendFirstPackage];
 }
 
 #pragma mark - delay
-- (void)delayStartInternal {
+- (void)delayStartI:(ADJActivityHandler *)selfI {
     // it's not configured to start delayed or already finished
-    if ([self.internalState isToStartNow]) {
+    if ([selfI.internalState isToStartNow]) {
         return;
     }
 
     // the delay has already started
-    if ([self isToUpdatePackages]) {
+    if ([selfI isToUpdatePackagesI:selfI]) {
         return;
     }
 
     // first regular session has occurred
-    if (self.activityState != nil &&
-        [self.internalState isRegularStart]) {
+    if (selfI.activityState != nil &&
+        [selfI.internalState isRegularStart]) {
         return;
     }
 
     // check against max start delay
-    double delayStart = self.adjustConfig.delayStart;
+    double delayStart = selfI.adjustConfig.delayStart;
     double maxDelayStart = [ADJAdjustFactory maxDelayStart];
 
     if (delayStart > maxDelayStart) {
         NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
         NSString * maxDelayStartFormatted = [ADJUtil secondsNumberFormat:maxDelayStart];
 
-        [self.logger warn:@"Delay start of %@ seconds bigger than max allowed value of %@ seconds", delayStartFormatted, maxDelayStartFormatted];
+        [selfI.logger warn:@"Delay start of %@ seconds bigger than max allowed value of %@ seconds", delayStartFormatted, maxDelayStartFormatted];
         delayStart = maxDelayStart;
     }
 
     NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
-    [self.logger info:@"Waiting %@ seconds before starting first session", delayStartFormatted];
+    [selfI.logger info:@"Waiting %@ seconds before starting first session", delayStartFormatted];
 
-    [self.delayStartTimer startIn:delayStart];
+    [selfI.delayStartTimer startIn:delayStart];
 
-    self.internalState.updatePackages = YES;
+    selfI.internalState.updatePackages = YES;
 
-    if (self.activityState != nil) {
-        self.activityState.updatePackages = YES;
-        [self writeActivityState];
+    if (selfI.activityState != nil) {
+        selfI.activityState.updatePackages = YES;
+        [selfI writeActivityStateI:selfI];
     }
 }
 
-- (void)sendFirstPackagesInternal {
-    if ([self.internalState isToStartNow]) {
-        [self.logger info:@"Start delay expired or never configured"];
+- (void)sendFirstPackagesI:(ADJActivityHandler *)selfI {
+    if ([selfI.internalState isToStartNow]) {
+        [selfI.logger info:@"Start delay expired or never configured"];
         return;
     }
     // update packages in queue
-    [self updatePackagesInternal];
+    [selfI updatePackagesI:selfI];
     // no longer is in delay start
-    self.internalState.delayStart = NO;
+    selfI.internalState.delayStart = NO;
     // cancel possible still running timer if it was called by user
-    [self.delayStartTimer cancel];
+    [selfI.delayStartTimer cancel];
     // and release timer
-    self.delayStartTimer = nil;
+    selfI.delayStartTimer = nil;
     // update the status and try to send first package
-    [self updateHandlersStatusAndSendInternal];
+    [selfI updateHandlersStatusAndSendI:selfI];
 }
 
-- (void)updatePackagesInternal {
+- (void)updatePackagesI:(ADJActivityHandler *)selfI {
     // update activity packages
-    [self.packageHandler updatePackages:self.sessionParameters];
+    [selfI.packageHandler updatePackages:selfI.sessionParameters];
     // no longer needs to update packages
-    self.internalState.updatePackages = NO;
-    if (self.activityState != nil) {
-        self.activityState.updatePackages = NO;
-        [self writeActivityState];
+    selfI.internalState.updatePackages = NO;
+    if (selfI.activityState != nil) {
+        selfI.activityState.updatePackages = NO;
+        [selfI writeActivityStateI:selfI];
     }
 }
 
 #pragma mark - session parameters
-- (void)addCustomUserIdInternal:(NSString *)customUserId {
+- (void)addCustomUserIdI:(ADJActivityHandler *)selfI
+            customUserId:(NSString *)customUserId {
     if (![ADJUtil isValidParameter:customUserId
                      attributeType:@"value"
                      parameterName:@"Custom User Id"]) return;
 
-    if (self.sessionParameters.customUserId != nil) {
-        [self.logger warn:@"Custom User Id %@ will be overwritten", self.sessionParameters.customUserId];
+    if (selfI.sessionParameters.customUserId != nil) {
+        [selfI.logger warn:@"Custom User Id %@ will be overwritten", selfI.sessionParameters.customUserId];
     }
 
-    self.sessionParameters.customUserId = customUserId;
+    selfI.sessionParameters.customUserId = customUserId;
 
-    [self writeSessionParameters];
+    [selfI writeSessionParametersI:selfI];
 }
-- (void)addSessionCallbackParameterInternal:(NSString *)key
+- (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
+                                 key:(NSString *)key
                               value:(NSString *)value
 {
     if (![ADJUtil isValidParameter:key
@@ -1295,26 +1398,27 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                   attributeType:@"value"
                   parameterName:@"Session Callback"]) return;
 
-    if (self.sessionParameters.callbackParameters == nil) {
-        self.sessionParameters.callbackParameters = [NSMutableDictionary dictionary];
+    if (selfI.sessionParameters.callbackParameters == nil) {
+        selfI.sessionParameters.callbackParameters = [NSMutableDictionary dictionary];
     }
 
-    NSString * oldValue = [self.sessionParameters.callbackParameters objectForKey:key];
+    NSString * oldValue = [selfI.sessionParameters.callbackParameters objectForKey:key];
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
-            [self.logger verbose:@"Key %@ already present with the same value", key];
+            [selfI.logger verbose:@"Key %@ already present with the same value", key];
             return;
         }
-        [self.logger warn:@"Key %@ will be overwritten", key];
+        [selfI.logger warn:@"Key %@ will be overwritten", key];
     }
 
-    [self.sessionParameters.callbackParameters setObject:value forKey:key];
+    [selfI.sessionParameters.callbackParameters setObject:value forKey:key];
 
-    [self writeSessionCallbackParameters];
+    [selfI writeSessionCallbackParametersI:selfI];
 }
 
-- (void)addSessionPartnerParameterInternal:(NSString *)key
+- (void)addSessionPartnerParameterI:(ADJActivityHandler *)selfI
+                               key:(NSString *)key
                              value:(NSString *)value
 {
     if (![ADJUtil isValidParameter:key
@@ -1325,96 +1429,99 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      attributeType:@"value"
                      parameterName:@"Session Partner"]) return;
 
-    if (self.sessionParameters.partnerParameters == nil) {
-        self.sessionParameters.partnerParameters = [NSMutableDictionary dictionary];
+    if (selfI.sessionParameters.partnerParameters == nil) {
+        selfI.sessionParameters.partnerParameters = [NSMutableDictionary dictionary];
     }
 
-    NSString * oldValue = [self.sessionParameters.partnerParameters objectForKey:key];
+    NSString * oldValue = [selfI.sessionParameters.partnerParameters objectForKey:key];
 
     if (oldValue != nil) {
         if ([oldValue isEqualToString:value]) {
-            [self.logger verbose:@"Key %@ already present with the same value", key];
+            [selfI.logger verbose:@"Key %@ already present with the same value", key];
             return;
         }
-        [self.logger warn:@"Key %@ will be overwritten", key];
+        [selfI.logger warn:@"Key %@ will be overwritten", key];
     }
 
 
-    [self.sessionParameters.partnerParameters setObject:value forKey:key];
+    [selfI.sessionParameters.partnerParameters setObject:value forKey:key];
 
-    [self writeSessionPartnerParameters];
+    [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)removeSessionCallbackParameterInternal:(NSString *)key {
+- (void)removeSessionCallbackParameterI:(ADJActivityHandler *)selfI
+                                    key:(NSString *)key {
     if (![ADJUtil isValidParameter:key
                      attributeType:@"key"
                      parameterName:@"Session Callback"]) return;
 
-    if (self.sessionParameters.callbackParameters == nil) {
-        [self.logger warn:@"Key %@ does not exist", key];
+    if (selfI.sessionParameters.callbackParameters == nil) {
+        [selfI.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    NSString * oldValue = [self.sessionParameters.callbackParameters objectForKey:key];
+    NSString * oldValue = [selfI.sessionParameters.callbackParameters objectForKey:key];
     if (oldValue == nil) {
-        [self.logger warn:@"Key %@ does not exist", key];
+        [selfI.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    [self.logger debug:@"Key %@ eliminated", key];
-    [self.sessionParameters.callbackParameters removeObjectForKey:key];
-    [self writeSessionCallbackParameters];
+    [selfI.logger debug:@"Key %@ eliminated", key];
+    [selfI.sessionParameters.callbackParameters removeObjectForKey:key];
+    [selfI writeSessionCallbackParametersI:selfI];
 }
 
-- (void)removeSessionPartnerParameterInternal:(NSString *)key {
+- (void)removeSessionPartnerParameterI:(ADJActivityHandler *)selfI
+                                   key:(NSString *)key {
     if (![ADJUtil isValidParameter:key
                      attributeType:@"key"
                      parameterName:@"Session Partner"]) return;
 
-    if (self.sessionParameters.partnerParameters == nil) {
-        [self.logger warn:@"Key %@ does not exist", key];
+    if (selfI.sessionParameters.partnerParameters == nil) {
+        [selfI.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    NSString * oldValue = [self.sessionParameters.partnerParameters objectForKey:key];
+    NSString * oldValue = [selfI.sessionParameters.partnerParameters objectForKey:key];
     if (oldValue == nil) {
-        [self.logger warn:@"Key %@ does not exist", key];
+        [selfI.logger warn:@"Key %@ does not exist", key];
         return;
     }
 
-    [self.logger debug:@"key %@ eliminated", key];
-    [self.sessionParameters.partnerParameters removeObjectForKey:key];
-    [self writeSessionPartnerParameters];
+    [selfI.logger debug:@"key %@ eliminated", key];
+    [selfI.sessionParameters.partnerParameters removeObjectForKey:key];
+    [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)resetCustomUserIdInternal {
-    if (self.sessionParameters.customUserId == nil) {
-        [self.logger warn:@"Custom User Id already reset"];
+- (void)resetCustomUserIdI:(ADJActivityHandler *)selfI {
+    if (selfI.sessionParameters.customUserId == nil) {
+        [selfI.logger warn:@"Custom User Id already reset"];
         return;
     }
-    self.sessionParameters.customUserId = nil;
-    [self writeSessionParameters];
+    selfI.sessionParameters.customUserId = nil;
+    [selfI writeSessionParametersI:selfI];
 }
 
-- (void)resetSessionCallbackParametersInternal {
-    if (self.sessionParameters.callbackParameters == nil) {
-        [self.logger warn:@"Session Callback parameters already reset"];
+- (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI {
+    if (selfI.sessionParameters.callbackParameters == nil) {
+        [selfI.logger warn:@"Session Callback parameters already reset"];
         return;
     }
-    self.sessionParameters.callbackParameters = nil;
-    [self writeSessionCallbackParameters];
+    selfI.sessionParameters.callbackParameters = nil;
+    [selfI writeSessionCallbackParametersI:selfI];
 }
 
-- (void)resetSessionPartnerParametersInternal {
-    if (self.sessionParameters.partnerParameters == nil) {
-        [self.logger warn:@"Session Partner parameters already reset"];
+- (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI {
+    if (selfI.sessionParameters.partnerParameters == nil) {
+        [selfI.logger warn:@"Session Partner parameters already reset"];
         return;
     }
-    self.sessionParameters.partnerParameters = nil;
-    [self writeSessionPartnerParameters];
+    selfI.sessionParameters.partnerParameters = nil;
+    [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)sessionParametersActionsInternal:(NSArray*)sessionParametersActionsArray {
+- (void)sessionParametersActionsI:(ADJActivityHandler *)selfI
+    sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray {
     if (sessionParametersActionsArray == nil) {
         return;
     }
@@ -1423,36 +1530,55 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         NSString * parameterType = actionArray[1];
         if ([@"callback" isEqualToString:parameterType]) {
             if ([@"add" isEqualToString:action]) {
-                [self addSessionCallbackParameterInternal:actionArray[2] value:actionArray[3]];
+                [selfI addSessionCallbackParameterI:selfI key:actionArray[2] value:actionArray[3]];
             }
             if ([@"remove" isEqualToString:action]) {
-                [self removeSessionCallbackParameterInternal:actionArray[2]];
+                [selfI removeSessionCallbackParameterI:selfI key:actionArray[2]];
             }
             if ([@"reset" isEqualToString:action]) {
-                [self resetSessionCallbackParametersInternal];
+                [selfI resetSessionCallbackParametersI:selfI];
             }
         }
         if ([@"partner" isEqualToString:parameterType]) {
             if ([@"add" isEqualToString:action]) {
-                [self addSessionPartnerParameterInternal:actionArray[2] value:actionArray[3]];
+                [selfI addSessionPartnerParameterI:selfI key:actionArray[2] value:actionArray[3]];
             }
             if ([@"remove" isEqualToString:action]) {
-                [self removeSessionPartnerParameterInternal:actionArray[2]];
+                [selfI removeSessionPartnerParameterI:selfI key:actionArray[2]];
             }
             if ([@"reset" isEqualToString:action]) {
-                [self resetSessionPartnerParametersInternal];
+                [selfI resetSessionPartnerParametersI:selfI];
             }
         }
         if ([@"customUserId" isEqualToString:parameterType]) {
             if ([@"add" isEqualToString:action]) {
-                [self addCustomUserIdInternal:actionArray[2]];
+                [selfI addCustomUserIdI:selfI customUserId:actionArray[2]];
             }
             if ([@"reset" isEqualToString:action]) {
-                [self resetCustomUserId];
+                [selfI resetCustomUserIdI:selfI];
             }
         }
     }
 }
+
+- (void)writeSessionParametersI:(ADJActivityHandler *)selfI {
+    [ADJUtil writeObject:selfI.sessionParameters
+                filename:kSessionParametersFilename
+              objectName:@"Session parameters"];
+}
+
+- (void)writeSessionCallbackParametersI:(ADJActivityHandler *)selfI {
+    [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
+                filename:kSessionCallbackParametersFilename
+              objectName:@"Session Callback parameters"];
+}
+
+- (void)writeSessionPartnerParametersI:(ADJActivityHandler *)selfI {
+    [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
+                filename:kSessionPartnerParametersFilename
+              objectName:@"Session Partner parameters"];
+}
+
 
 #pragma mark - notifications
 - (void)addNotificationObserver {
@@ -1481,40 +1607,42 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 #pragma mark - checks
 
-- (BOOL)checkTransactionId:(NSString *)transactionId {
+- (BOOL)checkTransactionIdI:(ADJActivityHandler *)selfI
+              transactionId:(NSString *)transactionId {
     if (transactionId == nil || transactionId.length == 0) {
         return YES; // no transaction ID given
     }
 
-    if ([self.activityState findTransactionId:transactionId]) {
-        [self.logger info:@"Skipping duplicate transaction ID '%@'", transactionId];
-        [self.logger verbose:@"Found transaction ID in %@", self.activityState.transactionIds];
+    if ([selfI.activityState findTransactionId:transactionId]) {
+        [selfI.logger info:@"Skipping duplicate transaction ID '%@'", transactionId];
+        [selfI.logger verbose:@"Found transaction ID in %@", selfI.activityState.transactionIds];
         return NO; // transaction ID found -> used already
     }
     
-    [self.activityState addTransactionId:transactionId];
-    [self.logger verbose:@"Added transaction ID %@", self.activityState.transactionIds];
+    [selfI.activityState addTransactionId:transactionId];
+    [selfI.logger verbose:@"Added transaction ID %@", selfI.activityState.transactionIds];
     // activity state will get written by caller
     return YES;
 }
 
-- (BOOL)checkEvent:(ADJEvent *)event {
+- (BOOL)checkEventI:(ADJActivityHandler *)selfI
+              event:(ADJEvent *)event {
     if (event == nil) {
-        [self.logger error:@"Event missing"];
+        [selfI.logger error:@"Event missing"];
         return NO;
     }
 
     if (![event isValid]) {
-        [self.logger error:@"Event not initialized correctly"];
+        [selfI.logger error:@"Event not initialized correctly"];
         return NO;
     }
 
     return YES;
 }
 
-- (BOOL)checkActivityState {
-    if (self.activityState == nil) {
-        [self.logger error:@"Missing activity state"];
+- (BOOL)checkActivityStateI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState == nil) {
+        [selfI.logger error:@"Missing activity state"];
         return NO;
     }
     return YES;

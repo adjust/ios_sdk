@@ -26,7 +26,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)updatePackages:(ADJSessionParameters *)sessionParameters;
-
+- (void)teardown;
 @end
 
 @interface ADJPackageHandler : NSObject <ADJPackageHandler>

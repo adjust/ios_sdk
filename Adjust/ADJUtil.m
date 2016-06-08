@@ -693,4 +693,17 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     return (NSDictionary *)mergedParameters;
 }
 
++ (void)launchInQueue:(dispatch_queue_t)queue
+           selfInject:(id)selfInject
+                block:(selfInjectedBlock)block
+{
+    __weak __typeof__(selfInject) weakSelf = selfInject;
+    dispatch_async(queue, ^{
+        __typeof__(selfInject) strongSelf = weakSelf;
+        if (strongSelf == nil) return;
+
+        block(strongSelf);
+    });
+}
+
 @end

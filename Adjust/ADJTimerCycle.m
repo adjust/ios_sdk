@@ -70,6 +70,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)resume {
+    if (self.source == nil) return;
     if (!self.suspended) {
         [self.logger verbose:@"%@ is already started", self.name];
         return;
@@ -82,6 +83,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)suspend {
+    if (self.source == nil) return;
     if (self.suspended) {
         [self.logger verbose:@"%@ is already suspended", self.name];
         return;
@@ -90,6 +92,14 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.logger verbose:@"%@ suspended", self.name];
     dispatch_suspend(self.source);
     self.suspended = YES;
+}
+
+- (void)cancel {
+    if (self.source != nil) {
+        [self resume];
+        dispatch_cancel(self.source);
+    }
+    self.source = nil;
 }
 
 @end

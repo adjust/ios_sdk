@@ -25,7 +25,6 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @end
 
-
 #pragma mark -
 @implementation ADJRequestHandler
 
@@ -48,29 +47,43 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 - (void)sendPackage:(ADJActivityPackage *)activityPackage
           queueSize:(NSUInteger)queueSize
 {
-    dispatch_async(self.internalQueue, ^{
-        [self sendInternal:activityPackage queueSize:queueSize];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJRequestHandler* selfI) {
+                         [selfI sendI:selfI
+                     activityPackage:activityPackage
+                           queueSize:queueSize];
+                     }];
+}
+
+- (void)teardown {
+    [ADJAdjustFactory.logger verbose:@"ADJRequestHandler teardown"];
+
+    self.internalQueue = nil;
+    self.packageHandler = nil;
+    self.logger = nil;
+    self.baseUrl = nil;
 }
 
 #pragma mark - internal
-- (void)sendInternal:(ADJActivityPackage *)package
-           queueSize:(NSUInteger)queueSize
+- (void)sendI:(ADJRequestHandler *)selfI
+activityPackage:(ADJActivityPackage *)activityPackage
+   queueSize:(NSUInteger)queueSize
 {
 
-    [ADJUtil sendPostRequest:self.baseUrl
+    [ADJUtil sendPostRequest:selfI.baseUrl
                    queueSize:queueSize
-          prefixErrorMessage:package.failureMessage
+          prefixErrorMessage:activityPackage.failureMessage
           suffixErrorMessage:@"Will retry later"
-             activityPackage:package
+             activityPackage:activityPackage
          responseDataHandler:^(ADJResponseData * responseData)
     {
         if (responseData.jsonResponse == nil) {
-            [self.packageHandler closeFirstPackage:responseData activityPackage:package];
+            [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
             return;
         }
 
-        [self.packageHandler sendNextPackage:responseData];
+        [selfI.packageHandler sendNextPackage:responseData];
      }];
 }
 

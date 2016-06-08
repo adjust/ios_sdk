@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJDeviceInfo : NSObject<NSCopying>
+@interface ADJDeviceInfo : NSObject
 
 @property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *fbAttributionId;

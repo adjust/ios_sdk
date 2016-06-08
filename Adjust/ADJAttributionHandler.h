@@ -27,6 +27,8 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
 - (void)resumeSending;
 
+- (void)teardown;
+
 @end
 
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>

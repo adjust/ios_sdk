@@ -231,6 +231,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
     if (self.sessionParametersActionsArray == nil) {
         self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
+
     NSArray * action = @[@"add", @"callback", key, value];
     [self.sessionParametersActionsArray addObject:action];
 }

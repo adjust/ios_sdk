@@ -40,10 +40,14 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
-    dispatch_async(self.internalQueue, ^{
-        [self initInternal:startsSending];
-    });
+    self.logger = ADJAdjustFactory.logger;
+    self.paused = !startsSending;
 
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJSdkClickHandler * selfI) {
+                         [selfI initI:selfI];
+                     }];
     return self;
 }
 
@@ -58,69 +62,86 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 }
 
 - (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage {
-    dispatch_async(self.internalQueue, ^{
-        [self sendSdkClickInternal:sdkClickPackage];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJSdkClickHandler * selfI) {
+                         [selfI sendSdkClickI:selfI sdkClickPackage:sdkClickPackage];
+                     }];
 }
 
 - (void)sendNextSdkClick {
-    dispatch_async(self.internalQueue, ^{
-        [self sendNextSdkClickInternal];
-    });
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJSdkClickHandler * selfI) {
+                         [selfI sendNextSdkClickI:selfI];
+                     }];
+}
+
+- (void)teardown {
+    [ADJAdjustFactory.logger verbose:@"ADJSdkClickHandler teardown"];
+    if (self.packageQueue != nil) {
+        [self.packageQueue removeAllObjects];
+    }
+    self.internalQueue = nil;
+    self.logger = nil;
+    self.backoffStrategy = nil;
+    self.packageQueue = nil;
+    self.baseUrl = nil;
 }
 
 #pragma mark - internal
-- (void)initInternal:(BOOL)startsSending
+- (void)initI:(ADJSdkClickHandler *)selfI
 {
-    self.paused = !startsSending;
-    self.logger = ADJAdjustFactory.logger;
-    self.backoffStrategy = [ADJAdjustFactory sdkClickHandlerBackoffStrategy];
-    self.packageQueue = [NSMutableArray array];
-    self.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
+    selfI.backoffStrategy = [ADJAdjustFactory sdkClickHandlerBackoffStrategy];
+    selfI.packageQueue = [NSMutableArray array];
+    selfI.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
 }
 
-- (void)sendSdkClickInternal:(ADJActivityPackage *)sdkClickPackage {
-    [self.packageQueue addObject:sdkClickPackage];
+- (void)sendSdkClickI:(ADJSdkClickHandler *)selfI
+      sdkClickPackage:(ADJActivityPackage *)sdkClickPackage
+{
+    [selfI.packageQueue addObject:sdkClickPackage];
 
-    [self.logger debug:@"Added sdk_click %d", self.packageQueue.count];
-    [self.logger verbose:@"%@", sdkClickPackage.extendedString];
+    [selfI.logger debug:@"Added sdk_click %d", selfI.packageQueue.count];
+    [selfI.logger verbose:@"%@", sdkClickPackage.extendedString];
 
-    [self sendNextSdkClick];
+    [selfI sendNextSdkClick];
 }
 
-- (void)sendNextSdkClickInternal {
-    if (self.paused) return;
-    NSUInteger queueSize = self.packageQueue.count;
+- (void)sendNextSdkClickI:(ADJSdkClickHandler *)selfI
+{
+    if (selfI.paused) return;
+    NSUInteger queueSize = selfI.packageQueue.count;
     if (queueSize == 0) return;
 
     ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
     [self.packageQueue removeObjectAtIndex:0];
 
     if (![sdkClickPackage isKindOfClass:[ADJActivityPackage class]]) {
-        [self.logger error:@"Failed to read sdk_click package"];
+        [selfI.logger error:@"Failed to read sdk_click package"];
 
-        [self sendNextSdkClick];
+        [selfI sendNextSdkClick];
 
         return;
     }
 
     dispatch_block_t work = ^{
-        [ADJUtil sendPostRequest:self.baseUrl
+        [ADJUtil sendPostRequest:selfI.baseUrl
                        queueSize:queueSize - 1
               prefixErrorMessage:sdkClickPackage.failureMessage
               suffixErrorMessage:@"Will retry later"
                  activityPackage:sdkClickPackage
              responseDataHandler:^(ADJResponseData * responseData)
-         {
-             if (responseData.jsonResponse == nil) {
-                 NSInteger retries = [sdkClickPackage increaseRetries];
-                 [self.logger error:@"Retrying sdk_click package for the %d time", retries];
+             {
+                 if (responseData.jsonResponse == nil) {
+                     NSInteger retries = [sdkClickPackage increaseRetries];
+                     [selfI.logger error:@"Retrying sdk_click package for the %d time", retries];
 
-                 [self sendSdkClick:sdkClickPackage];
-             }
-         }];
+                     [selfI sendSdkClick:sdkClickPackage];
+                 }
+             }];
 
-        [self sendNextSdkClick];
+        [selfI sendNextSdkClick];
     };
 
     NSInteger retries = [sdkClickPackage retries];

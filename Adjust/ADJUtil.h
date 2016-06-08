@@ -12,6 +12,8 @@
 #import "ADJEvent.h"
 #import "ADJBackoffStrategy.h"
 
+typedef void (^selfInjectedBlock)(id);
+
 @interface ADJUtil : NSObject
 
 + (NSString *)baseUrl;
@@ -73,4 +75,9 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 + (NSDictionary *)mergeParameters:(NSDictionary *)target
                            source:(NSDictionary *)source
                     parameterName:(NSString *)parameterName;
+
++ (void)launchInQueue:(dispatch_queue_t)queue
+           selfInject:(id)selfInject
+                block:(selfInjectedBlock)block;
+
 @end
