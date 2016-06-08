@@ -53,7 +53,7 @@
 		9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18A1D07463800E5D222 /* WebViewJavascriptBridge_JS.m */; };
 		9D75F1981D07463800E5D222 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18C1D07463800E5D222 /* WebViewJavascriptBridgeBase.m */; };
 		9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18E1D07463800E5D222 /* WKWebViewJavascriptBridge.m */; };
-		9D75F19A1D07463800E5D222 /* AdjustWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1911D07463800E5D222 /* AdjustWebBridge.m */; };
+		9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1911D07463800E5D222 /* AdjustBridge.m */; };
 		9D75F19B1D07463800E5D222 /* adjust.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1921D07463800E5D222 /* adjust.js */; };
 		9D75F19C1D07463800E5D222 /* adjust_event.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1931D07463800E5D222 /* adjust_event.js */; };
 		9D75F19D1D07463800E5D222 /* adjust_config.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1941D07463800E5D222 /* adjust_config.js */; };
@@ -144,8 +144,8 @@
 		9D75F18C1D07463800E5D222 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
 		9D75F18D1D07463800E5D222 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D75F18E1D07463800E5D222 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
-		9D75F1901D07463800E5D222 /* AdjustWebBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustWebBridge.h; sourceTree = "<group>"; };
-		9D75F1911D07463800E5D222 /* AdjustWebBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustWebBridge.m; sourceTree = "<group>"; };
+		9D75F1901D07463800E5D222 /* AdjustBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
+		9D75F1911D07463800E5D222 /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		9D75F1921D07463800E5D222 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
 		9D75F1931D07463800E5D222 /* adjust_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_event.js; sourceTree = "<group>"; };
 		9D75F1941D07463800E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
@@ -319,8 +319,8 @@
 			isa = PBXGroup;
 			children = (
 				9D75F18F1D07463800E5D222 /* WebViewJavascriptBridge */,
-				9D75F1901D07463800E5D222 /* AdjustWebBridge.h */,
-				9D75F1911D07463800E5D222 /* AdjustWebBridge.m */,
+				9D75F1901D07463800E5D222 /* AdjustBridge.h */,
+				9D75F1911D07463800E5D222 /* AdjustBridge.m */,
 				9D75F1921D07463800E5D222 /* adjust.js */,
 				9D75F1931D07463800E5D222 /* adjust_event.js */,
 				9D75F1941D07463800E5D222 /* adjust_config.js */,
@@ -426,7 +426,7 @@
 				9D10831A1CFDB0100050568B /* ADJAttributionHandler.m in Sources */,
 				9D1083101CFDB0100050568B /* ADJActivityPackage.m in Sources */,
 				9D1083241CFDB0100050568B /* ADJBackoffStrategy.m in Sources */,
-				9D75F19A1D07463800E5D222 /* AdjustWebBridge.m in Sources */,
+				9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */,
 				9D1083151CFDB0100050568B /* ADJPackageHandler.m in Sources */,
 				9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */,
 				9D1083111CFDB0100050568B /* ADJActivityState.m in Sources */,

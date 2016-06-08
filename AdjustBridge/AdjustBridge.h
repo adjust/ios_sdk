@@ -1,5 +1,5 @@
 //
-//  AdjustWebBridge.h
+//  AdjustBridge.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 27/04/16.
@@ -12,7 +12,7 @@
 
 #import "WKWebViewJavascriptBridge.h"
 
-@interface AdjustWebBridge : NSObject
+@interface AdjustBridge : NSObject
 
 - (void)loadUIWebViewBridge:(UIWebView *)webView;
 - (void)loadWKWebViewBridge:(WKWebView *)webView;

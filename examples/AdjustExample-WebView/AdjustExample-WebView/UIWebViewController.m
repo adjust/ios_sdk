@@ -30,7 +30,7 @@
     UIWebView *uiWebView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:uiWebView];
 
-    _adjustBridge = [[AdjustWebBridge alloc] init];
+    _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadUIWebViewBridge:uiWebView];
 
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];

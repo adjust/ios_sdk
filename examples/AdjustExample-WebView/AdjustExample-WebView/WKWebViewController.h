@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "AdjustWebBridge.h"
+#import "AdjustBridge.h"
 
 @interface WKWebViewController : UINavigationController<WKNavigationDelegate>
 
-@property AdjustWebBridge *adjustBridge;
+@property AdjustBridge *adjustBridge;
 
 @end

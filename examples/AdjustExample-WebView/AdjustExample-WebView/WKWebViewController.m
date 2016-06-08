@@ -31,7 +31,7 @@
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
 
-    _adjustBridge = [[AdjustWebBridge alloc] init];
+    _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:webView];
 
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];

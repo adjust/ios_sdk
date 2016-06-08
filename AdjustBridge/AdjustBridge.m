@@ -1,5 +1,5 @@
 //
-//  AdjustWebBridge.m
+//  AdjustBridge.m
 //  Adjust
 //
 //  Created by Pedro Filipe on 27/04/16.
@@ -11,7 +11,7 @@
 // #import <AdjustSdk/Adjust.h>
 // (depends how you import the adjust SDK to your app)
 
-#import "AdjustWebBridge.h"
+#import "AdjustBridge.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 
@@ -30,7 +30,7 @@
 #define KEY_CALLBACK_PARAMETERS         @"callbackParameters"
 #define KEY_PARTNER_PARAMETERS          @"partnerParameters"
 
-@interface AdjustWebBridge() <AdjustDelegate>
+@interface AdjustBridge() <AdjustDelegate>
 
 @property BOOL openDeferredDeeplink;
 
@@ -47,7 +47,7 @@
 
 @end
 
-@implementation AdjustWebBridge
+@implementation AdjustBridge
 
 #pragma mark - Object lifecycle
 
