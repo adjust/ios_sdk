@@ -1,17 +1,19 @@
 //
 //  AppDelegate.m
-//  AdjustExample-webView
+//  AdjustExample-WebView
 //
-//  Created by Pedro Filipe on 27/04/16.
-//  Copyright © 2016 adjust. All rights reserved.
+//  Created by Uglješa Erceg on 31/05/16.
+//  Copyright © 2016 adjust GmbH. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "Adjust.h"
-
-NSString * const kAppToken       = @"qwerty123456";
+#import "UIWebViewController.h"
+#import "WKWebViewController.h"
 
 @interface AppDelegate ()
+
+@property UIWebViewController *uiWebViewExampleController;
+@property WKWebViewController *wkWebViewExampleController;
 
 @end
 
@@ -19,16 +21,44 @@ NSString * const kAppToken       = @"qwerty123456";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    // configure adjust
-    NSString *yourAppToken = kAppToken;
-    NSString *environment = ADJEnvironmentSandbox;
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
+    // 1. Create the UIWebView example
+    self.uiWebViewExampleController = [[UIWebViewController alloc] init];
+    self.uiWebViewExampleController.tabBarItem.title = @"UIWebView";
 
-    // change the log level
-    [adjustConfig setLogLevel:ADJLogLevelVerbose];
+    // 2. Create the tab footer and add the UIWebView example
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    [tabBarController addChildViewController:self.uiWebViewExampleController];
 
-    [Adjust appDidLaunch:adjustConfig];
+    // 3. Create the WKWebView example for devices >= iOS 8
+    if ([WKWebView class]) {
+        self.wkWebViewExampleController = [[WKWebViewController alloc] init];
+        self.wkWebViewExampleController.tabBarItem.title = @"WKWebView";
+        [tabBarController addChildViewController:self.wkWebViewExampleController];
+    }
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NSLog(@"application openURL %@", url);
+
+    [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
+    [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
+
+        [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
+        [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
+    }
 
     return YES;
 }

@@ -1,9 +1,9 @@
 //
 //  main.m
-//  AdjustExample-webView
+//  AdjustExample-WebView
 //
-//  Created by Pedro Filipe on 27/04/16.
-//  Copyright © 2016 adjust. All rights reserved.
+//  Created by Uglješa Erceg on 31/05/16.
+//  Copyright © 2016 adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

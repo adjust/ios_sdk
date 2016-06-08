@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  ViewController.h
 //  AdjustExample-WebView
 //
 //  Created by Uglješa Erceg on 31/05/16.
@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AdjustWebBridge.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface UIWebViewController : UINavigationController <UIWebViewDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property AdjustWebBridge *adjustBridge;
 
 @end
 

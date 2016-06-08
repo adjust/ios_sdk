@@ -62,6 +62,15 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
+        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+    }
+
+    return YES;
+}
+
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
     NSLog(@"adjust attribution %@", attribution);
 }
