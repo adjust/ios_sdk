@@ -15,7 +15,6 @@
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
-@property (nonatomic, assign) BOOL eventPreStart;
 @property (nonatomic, assign) BOOL updatePackages;
 - (id)init;
 
@@ -27,8 +26,6 @@
 - (BOOL)isForeground;
 - (BOOL)isDelayStart;
 - (BOOL)isToStartNow;
-- (BOOL)isEventPreStart;
-- (BOOL)isRegularStart;
 - (BOOL)isToUpdatePackages;
 
 @end

@@ -62,8 +62,6 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isForeground { return !self.background; }
 - (BOOL)isDelayStart { return self.delayStart; }
 - (BOOL)isToStartNow { return !self.delayStart; }
-- (BOOL)isEventPreStart { return self.eventPreStart; }
-- (BOOL)isRegularStart { return !self.eventPreStart; }
 - (BOOL)isToUpdatePackages { return self.updatePackages; }
 
 @end
@@ -154,8 +152,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     self.internalState.background = YES;
     // delay start not configured by default
     self.internalState.delayStart = NO;
-    // event pre-start does not occur by default
-    self.internalState.eventPreStart = NO;
     // does not need to update packages by default
     if (self.activityState == nil) {
         self.internalState.updatePackages = NO;
@@ -183,9 +179,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI delayStartI:selfI];
-
-                         // marks regular start
-                         selfI.internalState.eventPreStart = NO;
 
                          [selfI stopBackgroundTimerI:selfI];
 
@@ -219,8 +212,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                      block:^(ADJActivityHandler * selfI) {
                          // track event called before app started
                          if (selfI.activityState == nil) {
-                             // not the regular start
-                             selfI.internalState.eventPreStart = YES;
                              [selfI startI:selfI];
                          }
                          [selfI eventI:selfI event:event];
@@ -1305,8 +1296,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // other handlers are paused if either:
     return [selfI.internalState isOffline] ||        // it's offline
             ![selfI isEnabledI:selfI] ||             // is disabled
-            [selfI.internalState isDelayStart] ||    // is in delayed start
-            [selfI.internalState isEventPreStart];   // an pre-start event has occurred before the regular start
+            [selfI.internalState isDelayStart];      // is in delayed start
 }
 
 - (BOOL)toSendI:(ADJActivityHandler *)selfI {
@@ -1396,12 +1386,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // the delay has already started
     if ([selfI isToUpdatePackagesI:selfI]) {
-        return;
-    }
-
-    // first regular session has occurred
-    if (selfI.activityState != nil &&
-        [selfI.internalState isRegularStart]) {
         return;
     }
 
