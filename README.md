@@ -1,6 +1,11 @@
 ## Summary
 
-This is the iOS SDK of adjust™. You can read more about adjust™ at [adjust.com].
+This is the iOS SDK of adjust™. You can read more about adjust™ at
+[adjust.com].
+
+If your app is an app which uses web views you would
+like to use adjust tracking from Javascript code, please consult our
+[iOS web views SDK guide][ios-web-views-guide].
 
 ## Table of contents
 
@@ -877,6 +882,7 @@ determining amount value**.
 [cocoapods]: http://cocoapods.org
 [carthage]: https://github.com/Carthage/Carthage
 [dashboard]: http://adjust.com
+[ios-web-views-guide]: https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
 [examples]: http://github.com/adjust/ios_sdk/tree/master/examples
 [example-ios-objc]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
 [example-ios-swift]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
