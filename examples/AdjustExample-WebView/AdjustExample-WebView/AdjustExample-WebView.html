@@ -41,7 +41,7 @@
 
         var adjustConfig = new AdjustConfig(bridge, '{YourAppToken}', AdjustConfig.EnvironmentSandbox)
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose)
-        adjustConfig.setOpenDeferredDeeplink = true     // Just for test, is true by default.
+        adjustConfig.setOpenDeferredDeeplink(true)     // Just for test, is true by default.
 
         adjustConfig.setAttributionCallback(function(attribution) {
             alert('Tracker token = ' + attribution.trackerToken + '\n' +
