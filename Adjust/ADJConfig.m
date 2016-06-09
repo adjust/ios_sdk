@@ -183,10 +183,10 @@
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    ADJConfig* copy = [[[self class] allocWithZone:zone]
-                       initWithoutCheckAppToken:[self.appToken copyWithZone:zone]
-                       environment:[self.environment copyWithZone:zone]];
+    ADJConfig* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
+        copy->_appToken = [self.appToken copyWithZone:zone];
+        copy->_environment = [self.environment copyWithZone:zone];
         copy.logLevel = self.logLevel;
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];

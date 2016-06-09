@@ -168,24 +168,16 @@
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    ADJEvent* copy = [[[self class] allocWithZone:zone]
-                      initWithEventToken:[self.eventToken copyWithZone:zone]];
+    ADJEvent* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        if (self.revenue != nil) {
-            double amount = [[self.revenue copyWithZone:zone] doubleValue];
-            [copy setRevenue:amount currency:[self.currency copyWithZone:zone]];
-        }
+        copy->_eventToken = [self.eventToken copyWithZone:zone];
+        copy->_revenue = [self.revenue copyWithZone:zone];
+        copy->_currency = [self.currency copyWithZone:zone];
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        if (self.emptyReceipt) {
-            [copy setReceipt:self.receipt transactionId:self.transactionId];
-        } else if (self.transactionId != nil) {
-            if (self.receipt != nil) {
-                [copy setReceipt:self.receipt transactionId:self.transactionId];
-            } else {
-                [copy setTransactionId:self.transactionId];
-            }
-        }
+        copy->_transactionId = [self.transactionId copyWithZone:zone];
+        copy->_receipt = [self.receipt copyWithZone:zone];
+        copy->_emptyReceipt = self.emptyReceipt;
     }
     return copy;
 }
