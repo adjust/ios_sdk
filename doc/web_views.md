@@ -30,7 +30,7 @@ the [WebViewJavascriptBridge][web_view_js_bridge] plugin. This plugin is also li
     * [Set up deep link reattributions](#step12)
     * [Attribution callback](#step13)
     * [Callbacks for tracked events and sessions](#step14)
-    * [Callbacks for deferred deeplinks](#step15)
+    * [Deferred deeplink callback](#step15)
 * [License](#license)
 
 ## <a id="basic-integration">Basic integration
@@ -65,17 +65,19 @@ calls to `AdjustBridge`:
 ```objc
 #import "Adjust.h"
 // Or #import <AdjustSdk/Adjust.h>
-// (depends on the way you have chosen to add our native iOS SDK.
+// (depends on the way you have chosen to add our native iOS SDK)
 // ...
 
-UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-// or with WKWebView:
-// WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
+- (void)viewWillAppear:(BOOL)animated {
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    // or with WKWebView:
+    // WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
 
-AdjustBridge *adjustBridge = [[AdjustBridge alloc] init];
-[adjustBridge loadUIWebViewBridge:webView];
-// or with WKWebView:
-// [_adjustBridge loadWKWebViewBridge:webView];
+    AdjustBridge *adjustBridge = [[AdjustBridge alloc] init];
+    [adjustBridge loadUIWebViewBridge:webView];
+    // or with WKWebView:
+    // [adjustBridge loadWKWebViewBridge:webView];
+}
 
 // ...
 ```
@@ -85,7 +87,7 @@ AdjustBridge *adjustBridge = [[AdjustBridge alloc] init];
 ### <a id="step4">4. Integrate the AdjustBrige into your web view
 
 To use the Javascript bridge of on your web view, it must be configured like the 
-[WebViewJavascriptBridge plugin README][wvjsb_readme] is advising in section `4`.
+WebViewJavascriptBridge plugin [README][wvjsb_readme] is advising in section `4`.
 Include the following Javascript code to intialize the adjust iOS web bridge:
 
 ```js
@@ -333,14 +335,15 @@ Conversely, you can deactivate offline mode by calling `setOfflineMode` with `fa
 When the adjust SDK is put back in online mode, all saved information is send to our
 servers with the correct time information.
 
-Unlike disabling tracking, this setting is *not remembered*
-bettween sessions. This means that the SDK is in online mode whenever it is started,
-even if the app was terminated in offline mode.
+Unlike disabling tracking, this setting is **not remembered bettween sessions**. 
+This means that the SDK is in online mode whenever it is started, even if the app 
+was terminated in offline mode.
 
 ### <a id="step10">10. Send in the background
 
 The default behaviour of the adjust SDK is to pause sending HTTP requests while 
-the app is on the background. You can change this in your `AdjustConfig` instance:
+the app is on the background. You can change this behaviour in your `AdjustConfig`
+instance:
 
 ```js
 adjustConfig.setSendInBackground(true)
@@ -374,7 +377,7 @@ which is displaying the web view:
 ```objc
 #import "Adjust.h"
 // Or #import <AdjustSdk/Adjust.h>
-// (depends on the way you have chosen to add our native iOS SDK.
+// (depends on the way you have chosen to add our native iOS SDK)
 // ...
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
@@ -437,6 +440,7 @@ should call `setAttributionCallback` before calling `Adjust.appDidLaunch(adjustC
 
 ```js
 adjustConfig.setAttributionCallback(function(attribution) {
+    // In this example, we're just displaying alert with attribution content.
     alert('Tracker token = ' + attribution.trackerToken + '\n' +
           'Tracker name = ' + attribution.trackerName + '\n' +
           'Network = ' + attribution.network + '\n' +
@@ -514,7 +518,7 @@ And both event and session failed objects also contain:
 
 - `var willRetry` indicates there will be an attempt to resend the package at a later time.
 
-### <a id="step15">15. Callback for deferred deeplinks
+### <a id="step15">15. Deferred deeplink callback
 
 You can register a callback method to get notified before a deferred deeplink 
 is opened and decide whether the adjust SDK should open it or not.
@@ -523,6 +527,7 @@ This callback is also set on `AdjustConfig` instance:
 
 ```js
 adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
+    // In this example, we're just displaying alert with deferred deeplink URL content.
     alert('Deferred deeplink:\n' + deferredDeeplink)
 })
 ```
