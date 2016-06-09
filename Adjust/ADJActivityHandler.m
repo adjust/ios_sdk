@@ -127,11 +127,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     // init logger to be available everywhere
     self.logger = ADJAdjustFactory.logger;
 
-    if ([self.adjustConfig.environment isEqualToString:ADJEnvironmentProduction]) {
-        [self.logger setLogLevel:ADJLogLevelAssert];
-    } else {
-        [self.logger setLogLevel:self.adjustConfig.logLevel];
-    }
+    [self.logger lockLogLevel];
 
     // read files to have sync values available
     [self readAttribution];

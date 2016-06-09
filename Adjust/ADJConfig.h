@@ -86,10 +86,30 @@
 - (id)initWithAppToken:(NSString *)appToken environment:(NSString *)environment;
 
 /**
+ * Configuration object for the initialization of the Adjust SDK.
+ *
+ * @param appToken The App Token of your app. This unique identifier can
+ *     be found it in your dashboard at http://adjust.com and should always
+ *     be 12 characters long.
+ * @param environment The current environment your app. We use this environment to
+ *     distinguish between real traffic and artificial traffic from test devices.
+ *     It is very important that you keep this value meaningful at all times!
+ *     Especially if you are tracking revenue.
+ * @param allowSupressLogLevel If set to true, it allows usage of ADJLogLevelSupress
+ *     and replaces the default value for production environment
+ */
++ (ADJConfig*)configWithAppToken:(NSString *)appToken
+                     environment:(NSString *)environment
+            allowSupressLogLevel:(BOOL)allowSupressLogLevel;
+- (id)initWithAppToken:(NSString *)appToken
+           environment:(NSString *)environment
+  allowSupressLogLevel:(BOOL)allowSupressLogLevel;
+
+/**
  * Change the verbosity of Adjust's logs.
  *
  * You can increase or reduce the amount of logs from Adjust by passing
- * one of the following parameters. Use Log.ASSERT to disable all logging.
+ * one of the following parameters. Use ADJLogLevelSupress to disable all logging.
  *
  * @var logLevel The desired minimum log level (default: info)
  *     Must be one of the following:
@@ -99,6 +119,7 @@
  *      - ADJLogLevelWarn    (disable info logging)
  *      - ADJLogLevelError   (disable warnings as well)
  *      - ADJLogLevelAssert  (disable errors as well)
+ *      - ADJLogLevelSupress (supress all logging)
  */
 @property (nonatomic, assign) ADJLogLevel logLevel;
 
