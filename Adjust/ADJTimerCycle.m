@@ -64,7 +64,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     NSString * startTimeFormatted = [ADJUtil secondsNumberFormat:startTime];
     NSString * intervalTimeFormatted = [ADJUtil secondsNumberFormat:intervalTime];
 
-    [self.logger verbose:@"%@ fires after %@ seconds of starting and cycles every %@ seconds", self.name, startTimeFormatted, intervalTimeFormatted];
+    [self.logger verbose:@"%@ configured to fire after %@ seconds of starting and cycles every %@ seconds", self.name, startTimeFormatted, intervalTimeFormatted];
 
     return self;
 }
