@@ -255,17 +255,6 @@
         NSString *currency = [data objectForKey:KEY_CURRENCY];
         NSString *transactionId = [data objectForKey:KEY_TRANSACTION_ID];
 
-        NSMutableArray *callbackParameters = [[NSMutableArray alloc] init];
-        NSMutableArray *partnerParameters = [[NSMutableArray alloc] init];
-
-        for (id item in [data objectForKey:KEY_CALLBACK_PARAMETERS]) {
-            [callbackParameters addObject:item];
-        }
-
-        for (id item in [data objectForKey:KEY_PARTNER_PARAMETERS]) {
-            [partnerParameters addObject:item];
-        }
-
         ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
 
         if ([adjustEvent isValid]) {
@@ -277,19 +266,24 @@
             }
 
             // Callback parameters
-            for (int i = 0; i < [callbackParameters count]; i += 2) {
-                NSString *key = [callbackParameters objectAtIndex:i];
-                NSString *value = [callbackParameters objectAtIndex:(i+1)];
-
-                [adjustEvent addCallbackParameter:key value:value];
+            NSString * key = nil;
+            for (id item in [data objectForKey:KEY_CALLBACK_PARAMETERS]) {
+                if (key == nil) {
+                    key = item;
+                    continue;
+                }
+                [adjustEvent addCallbackParameter:key value:item];
+                key = nil;
             }
 
             // Partner parameters
-            for (int i = 0; i < [partnerParameters count]; i += 2) {
-                NSString *key = [partnerParameters objectAtIndex:i];
-                NSString *value = [partnerParameters objectAtIndex:(i+1)];
-
-                [adjustEvent addPartnerParameter:key value:value];
+            for (id item in [data objectForKey:KEY_PARTNER_PARAMETERS]) {
+                if (key == nil) {
+                    key = item;
+                    continue;
+                }
+                [adjustEvent addPartnerParameter:key value:item];
+                key = nil;
             }
 
             // Transaction ID
