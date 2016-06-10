@@ -104,7 +104,7 @@
         return self.openDeferredDeeplink;
     }
 
-    return NO;
+    return YES;
 }
 
 #pragma mark - Public methods
@@ -270,7 +270,7 @@
 
         if ([adjustEvent isValid]) {
             // Revenue and currency
-            if ([self isFieldValid:revenue]) {
+            if ([self isFieldValid:revenue] || [self isFieldValid:currency]) {
                 double revenueValue = [revenue doubleValue];
 
                 [adjustEvent setRevenue:revenueValue currency:currency];
@@ -341,25 +341,21 @@
 }
 
 - (void)sendDeeplinkToWebView:(NSURL *)deeplink {
-    if (self.bridgeRegister != nil) {
-        [self.bridgeRegister callHandler:@"deeplink" data:[deeplink absoluteString]];
-    }
-    
-    if (self.bridgeRegister != nil) {
-        [self.bridgeRegister callHandler:@"deeplink" data:[deeplink absoluteString]];
-    }
+    [self.bridgeRegister callHandler:@"adjust_deeplink" data:[deeplink absoluteString]];
 }
 
 #pragma mark - Private & helper methods
 
 - (BOOL)isFieldValid:(NSObject *)field {
-    if (![field isKindOfClass:[NSNull class]]) {
-        if (field != nil) {
-            return YES;
-        }
+    if (field == nil) {
+        return NO;
+    }
+
+    if ([field isKindOfClass:[NSNull class]]) {
+        return NO;
     }
     
-    return NO;
+    return YES;
 }
 
 @end

@@ -82,8 +82,8 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
     this.defaultTracker = defaultTracker;
 };
 
-AdjustConfig.prototype.setAttributionCallback = function(callbackFluf) {
-    this.attributionCallback = callbackFluf;
+AdjustConfig.prototype.setAttributionCallback = function(callback) {
+    this.attributionCallback = callback;
 };
 
 AdjustConfig.prototype.setEventSuccessCallback = function(callback) {
