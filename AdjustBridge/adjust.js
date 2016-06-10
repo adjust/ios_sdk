@@ -5,43 +5,43 @@ var Adjust = {
         if (this.bridge != null) {
             if (adjustConfig != null) {
                 if (adjustConfig.getAttributionCallback() != null) {
-                    this.bridge.callHandler('setAttributionCallback', null, adjustConfig.getAttributionCallback())
+                    this.bridge.callHandler('adjust_setAttributionCallback', null, adjustConfig.getAttributionCallback())
                 }
 
                 if (adjustConfig.getEventSuccessCallback() != null) {
-                    this.bridge.callHandler('setEventSuccessCallback', null, adjustConfig.getEventSuccessCallback())
+                    this.bridge.callHandler('adjust_setEventSuccessCallback', null, adjustConfig.getEventSuccessCallback())
                 }
 
                 if (adjustConfig.getEventFailureCallback() != null) {
-                    this.bridge.callHandler('setEventFailureCallback', null, adjustConfig.getEventFailureCallback())
+                    this.bridge.callHandler('adjust_setEventFailureCallback', null, adjustConfig.getEventFailureCallback())
                 }
 
                 if (adjustConfig.getSessionSuccessCallback() != null) {
-                    this.bridge.callHandler('setSessionSuccessCallback', null, adjustConfig.getSessionSuccessCallback())
+                    this.bridge.callHandler('adjust_setSessionSuccessCallback', null, adjustConfig.getSessionSuccessCallback())
                 }
 
                 if (adjustConfig.getSessionFailureCallback() != null) {
-                    this.bridge.callHandler('setSessionFailureCallback', null, adjustConfig.getSessionFailureCallback())
+                    this.bridge.callHandler('adjust_setSessionFailureCallback', null, adjustConfig.getSessionFailureCallback())
                 }
 
                 if (adjustConfig.getDeferredDeeplinkCallback() != null) {
-                    this.bridge.callHandler('setDeferredDeeplinkCallback', null, adjustConfig.getDeferredDeeplinkCallback())
+                    this.bridge.callHandler('adjust_setDeferredDeeplinkCallback', null, adjustConfig.getDeferredDeeplinkCallback())
                 }
 
-                this.bridge.callHandler('appDidLaunch', adjustConfig, null)
+                this.bridge.callHandler('adjust_appDidLaunch', adjustConfig, null)
             }
         }
     },
 
     trackEvent: function (adjustEvent) {
         if (this.bridge != null) {
-            this.bridge.callHandler('trackEvent', adjustEvent, null)
+            this.bridge.callHandler('adjust_trackEvent', adjustEvent, null)
         }
     },
 
     setOfflineMode: function(isOffline) {
         if (this.bridge != null) {
-            this.bridge.callHandler('setOfflineMode', isOffline, null)
+            this.bridge.callHandler('adjust_setOfflineMode', isOffline, null)
         }
     },
 

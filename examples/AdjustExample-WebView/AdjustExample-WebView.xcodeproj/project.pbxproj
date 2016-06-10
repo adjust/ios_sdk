@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
 		9D1082AF1CFDAF8E0050568B /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */; };
 		9D1082B41CFDAF8E0050568B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082B31CFDAF8E0050568B /* Assets.xcassets */; };
@@ -60,6 +61,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
+		968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A81CFDAF8E0050568B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D1082AD1CFDAF8E0050568B /* UIWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIWebViewController.h; sourceTree = "<group>"; };
@@ -318,6 +321,8 @@
 		9D75F1951D07463800E5D222 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
+				968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */,
+				968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */,
 				9D75F18F1D07463800E5D222 /* WebViewJavascriptBridge */,
 				9D75F1901D07463800E5D222 /* AdjustBridge.h */,
 				9D75F1911D07463800E5D222 /* AdjustBridge.m */,
@@ -430,6 +435,7 @@
 				9D1083151CFDB0100050568B /* ADJPackageHandler.m in Sources */,
 				9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */,
 				9D1083111CFDB0100050568B /* ADJActivityState.m in Sources */,
+				968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */,
 				9D10830B1CFDB0100050568B /* UIDevice+ADJAdditions.m in Sources */,
 				9D1083091CFDB0100050568B /* ADJSystemProfile.m in Sources */,
 				9D75F1981D07463800E5D222 /* WebViewJavascriptBridgeBase.m in Sources */,

@@ -71,6 +71,7 @@
 		96854A5A1B1F2779002B2874 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 96854A581B1F2779002B2874 /* ADJTimerOnce.m */; };
 		96854A5F1B1F278C002B2874 /* ADJTimerCycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 96854A5D1B1F278C002B2874 /* ADJTimerCycle.h */; };
 		96854A601B1F278C002B2874 /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 96854A5E1B1F278C002B2874 /* ADJTimerCycle.m */; };
+		968595EE1D0B25970011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */; };
 		969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952CE1A012F5300928462 /* ADJAttributionHandler.m */; };
 		969952D21A01309200928462 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 969952D11A01309200928462 /* ADJAttribution.m */; };
 		96A2D2261CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */; };
@@ -337,6 +338,8 @@
 		96854A581B1F2779002B2874 /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
 		96854A5D1B1F278C002B2874 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		96854A5E1B1F278C002B2874 /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
+		968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
+		968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		969952CD1A012F5300928462 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttributionHandler.h; sourceTree = "<group>"; };
 		969952CE1A012F5300928462 /* ADJAttributionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandler.m; sourceTree = "<group>"; };
 		969952D01A01309200928462 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
@@ -554,6 +557,8 @@
 				9D75F1861D07460600E5D222 /* adjust.js */,
 				9D75F1851D07460600E5D222 /* adjust_event.js */,
 				9D75F1841D07460600E5D222 /* adjust_config.js */,
+				968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */,
+				968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */,
 			);
 			path = AdjustBridge;
 			sourceTree = SOURCE_ROOT;
@@ -1190,6 +1195,7 @@
 				961515A51CD2CBA80022D336 /* WebViewJavascriptBridgeBase.m in Sources */,
 				961515A61CD2CBAC0022D336 /* WKWebViewJavascriptBridge.m in Sources */,
 				961515941CD2CB2C0022D336 /* AdjustBridge.m in Sources */,
+				968595EE1D0B25970011CA2B /* AdjustBridgeRegister.m in Sources */,
 				961515A31CD2CB9D0022D336 /* WebViewJavascriptBridge.m in Sources */,
 				961515A41CD2CBA20022D336 /* WebViewJavascriptBridge_JS.m in Sources */,
 			);
