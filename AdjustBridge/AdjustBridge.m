@@ -12,9 +12,9 @@
 // (depends how you import the adjust SDK to your app)
 
 #import "AdjustBridge.h"
+#import "AdjustBridgeRegister.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
-#import "AdjustBridgeRegister.h"
 
 #define KEY_APP_TOKEN                   @"appToken"
 #define KEY_ENVIRONMENT                 @"environment"
@@ -24,6 +24,7 @@
 #define KEY_SEND_IN_BACKGROUND          @"sendInBackground"
 #define KEY_OPEN_DEFERRED_DEEPLINK      @"openDeferredDeeplink"
 #define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
+#define KEY_WEB_VIEW_LOGGING_ENABLED    @"webViewLoggingEnabled"
 #define KEY_EVENT_TOKEN                 @"eventToken"
 #define KEY_REVENUE                     @"revenue"
 #define KEY_CURRENCY                    @"currency"
@@ -35,8 +36,6 @@
 
 @property BOOL openDeferredDeeplink;
 
-@property (nonatomic, strong) id<AdjustBridgeRegister> bridgeRegister;
-
 @property WVJBResponseCallback deeplinkCallback;
 @property WVJBResponseCallback attributionCallback;
 @property WVJBResponseCallback eventSuccessCallback;
@@ -44,6 +43,8 @@
 @property WVJBResponseCallback sessionSuccessCallback;
 @property WVJBResponseCallback sessionFailureCallback;
 @property WVJBResponseCallback deferredDeeplinkCallback;
+
+@property (nonatomic, strong) id<AdjustBridgeRegister> bridgeRegister;
 
 @end
 
@@ -53,6 +54,12 @@
 
 - (id)init {
     self = [super init];
+
+    if (self == nil) {
+        return nil;
+    }
+
+    self.bridgeRegister = nil;
 
     self.openDeferredDeeplink = YES;
 
@@ -68,43 +75,83 @@
 #pragma mark - AdjustDelegate methods
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    if (self.attributionCallback) {
-        self.attributionCallback([attribution dictionary]);
+    if (self.attributionCallback == nil) {
+        return;
     }
+
+    self.attributionCallback([attribution dictionary]);
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    if (self.eventSuccessCallback) {
-        self.eventSuccessCallback([eventSuccessResponseData jsonResponse]);
+    if (self.eventSuccessCallback == nil) {
+        return;
     }
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
+    [dictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [dictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
+    [dictionary setValue:eventSuccessResponseData.message forKey:@"message"];
+    [dictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    self.eventSuccessCallback(dictionary);
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    if (self.eventFailureCallback) {
-        self.eventFailureCallback([eventFailureResponseData jsonResponse]);
+    if (self.eventFailureCallback == nil) {
+        return;
     }
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
+    [dictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
+    [dictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
+    [dictionary setValue:eventFailureResponseData.message forKey:@"message"];
+    [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+    [dictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
+
+    self.eventFailureCallback(dictionary);
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    if (self.sessionSuccessCallback) {
-        self.sessionSuccessCallback([sessionSuccessResponseData jsonResponse]);
+    if (self.sessionSuccessCallback == nil) {
+        return;
     }
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    [dictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [dictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
+    [dictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
+    [dictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    self.sessionSuccessCallback(dictionary);
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    if (self.sessionFailureCallback) {
-        self.sessionFailureCallback([sessionFailureResponseData jsonResponse]);
+    if (self.sessionFailureCallback == nil) {
+        return;
     }
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    [dictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
+    [dictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
+    [dictionary setValue:sessionFailureResponseData.message forKey:@"message"];
+    [dictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+    [dictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
+
+    self.sessionFailureCallback(dictionary);
 }
 
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
     if (self.deferredDeeplinkCallback) {
         self.deferredDeeplinkCallback([deeplink absoluteString]);
-
-        return self.openDeferredDeeplink;
     }
 
-    return YES;
+    return self.openDeferredDeeplink;
 }
 
 #pragma mark - Public methods
@@ -115,11 +162,7 @@
         return;
     }
 
-    // Enable WebViewJavaScriptBridge logging.
-    [WebViewJavascriptBridge enableLogging];
-
     self.bridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:uiWebView];
-
     [self loadWebViewBridge];
 }
 
@@ -129,11 +172,7 @@
         return;
     }
 
-    // Enable WebViewJavaScriptBridge logging.
-    [WebViewJavascriptBridge enableLogging];
-
     self.bridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
-
     [self loadWebViewBridge];
 }
 
@@ -201,6 +240,7 @@
         NSString *defaultTracker = [data objectForKey:KEY_DEFAULT_TRACKER];
         NSNumber *sendInBackground = [data objectForKey:KEY_SEND_IN_BACKGROUND];
         NSNumber *eventBufferingEnabled = [data objectForKey:KEY_EVENT_BUFFERING_ENABLED];
+        NSNumber *webViewLoggingEnabled = [data objectForKey:KEY_WEB_VIEW_LOGGING_ENABLED];
         NSNumber *shouldOpenDeferredDeeplink = [data objectForKey:KEY_OPEN_DEFERRED_DEEPLINK];
 
         ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
@@ -219,6 +259,13 @@
             // Event buffering
             if ([self isFieldValid:eventBufferingEnabled]) {
                 [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+            }
+
+            // Web bridge logging
+            if ([self isFieldValid:webViewLoggingEnabled]) {
+                if ([eventBufferingEnabled boolValue]) {
+                    [WebViewJavascriptBridge enableLogging];
+                }
             }
 
             // Deferred deeplink opening
@@ -266,24 +313,15 @@
             }
 
             // Callback parameters
-            NSString * key = nil;
-            for (id item in [data objectForKey:KEY_CALLBACK_PARAMETERS]) {
-                if (key == nil) {
-                    key = item;
-                    continue;
-                }
-                [adjustEvent addCallbackParameter:key value:item];
-                key = nil;
+            for (int i = 0; i < [[data objectForKey:KEY_CALLBACK_PARAMETERS] count]; i += 2) {
+                [adjustEvent addCallbackParameter:[[data objectForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:i]
+                                            value:[[data objectForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:(i+1)]];
             }
 
             // Partner parameters
-            for (id item in [data objectForKey:KEY_PARTNER_PARAMETERS]) {
-                if (key == nil) {
-                    key = item;
-                    continue;
-                }
-                [adjustEvent addPartnerParameter:key value:item];
-                key = nil;
+            for (int i = 0; i < [[data objectForKey:KEY_PARTNER_PARAMETERS] count]; i += 2) {
+                [adjustEvent addPartnerParameter:[[data objectForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:i]
+                                           value:[[data objectForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:(i+1)]];
             }
 
             // Transaction ID
@@ -296,12 +334,12 @@
     }];
 
     // Register for setOfflineMode method.
-    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(NSNumber * data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(NSNumber *data, WVJBResponseCallback responseCallback) {
         [Adjust setOfflineMode:[data boolValue]];
     }];
 
     // Register for setEnabled method.
-    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(NSNumber * data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(NSNumber *data, WVJBResponseCallback responseCallback) {
         [Adjust setEnabled:[data boolValue]];
     }];
 
@@ -311,7 +349,7 @@
             return;
         }
 
-        responseCallback([Adjust isEnabled] ? @"Yes" : @"No");
+        responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
 
     // Register for IDFA method.
@@ -344,7 +382,7 @@
     if (field == nil) {
         return NO;
     }
-
+    
     if ([field isKindOfClass:[NSNull class]]) {
         return NO;
     }

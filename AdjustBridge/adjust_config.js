@@ -11,6 +11,7 @@ function AdjustConfig(bridge, appToken, environment) {
     this.sendInBackground = null;
     this.openDeferredDeeplink = null;
     this.eventBufferingEnabled = null;
+    this.webBridgeLoggingEnabled = null;
 
     this.attributionCallback = null;
     this.eventSuccessCallback = null;
@@ -68,6 +69,10 @@ AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
 
 AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
     this.openDeferredDeeplink = shouldOpen;
+};
+
+AdjustConfig.prototype.setWebBridgeLoggingEnabled = function(isEnabled) {
+    this.webBridgeLoggingEnabled = isEnabled;
 };
 
 AdjustConfig.prototype.setLogLevel = function(logLevel) {

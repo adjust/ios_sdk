@@ -35,7 +35,7 @@
     }
 
     setupWebViewJavascriptBridge(function(bridge) {
-		bridge.registerHandler('deeplink', function(data, responseCallback) {
+		bridge.registerHandler('adjust_deeplink', function(data, responseCallback) {
 			alert('Deeplink:\n' + data)
 		})
 
@@ -94,8 +94,8 @@
         btnTrackRevenueEvent.onclick = function(e) {
             e.preventDefault()
 
-            var adjustEvent = new AdjustEvent("{YourAppToken}")
-            adjustEvent.setRevenue(0.01, "EUR")
+            var adjustEvent = new AdjustEvent('{YourAppToken}')
+            adjustEvent.setRevenue(0.01, 'EUR')
             Adjust.trackEvent(adjustEvent)
         }
 
@@ -103,10 +103,10 @@
         btnTrackCallbackEvent.onclick = function(e) {
             e.preventDefault()
 
-            var adjustEvent = new AdjustEvent("{YourAppToken}")
-            adjustEvent.addCallbackParameter("key", "value")
-            adjustEvent.addCallbackParameter("x", "y")
-            adjustEvent.addCallbackParameter("key", "lock")
+            var adjustEvent = new AdjustEvent('{YourAppToken}")
+            adjustEvent.addCallbackParameter('key', 'value')
+            adjustEvent.addCallbackParameter('x', 'y')
+            adjustEvent.addCallbackParameter('key', 'lock')
             Adjust.trackEvent(adjustEvent)
         }
 
@@ -114,11 +114,11 @@
         btnTrackPartnerEvent.onclick = function(e) {
             e.preventDefault()
 
-            var adjustEvent = new AdjustEvent("{YourAppToken}")
-            adjustEvent.addPartnerParameter("foo", "bar")
-            adjustEvent.addPartnerParameter("x", "y")
-            adjustEvent.addPartnerParameter("foo", "foot")
-            adjustEvent.addPartnerParameter("x", "z")
+            var adjustEvent = new AdjustEvent('{YourAppToken}')
+            adjustEvent.addPartnerParameter('foo', 'bar')
+            adjustEvent.addPartnerParameter('x', 'y')
+            adjustEvent.addPartnerParameter('foo', 'foot')
+            adjustEvent.addPartnerParameter('x', 'z')
             Adjust.trackEvent(adjustEvent);
         }
 

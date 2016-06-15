@@ -12,19 +12,19 @@
 
 @protocol AdjustBridgeRegister <NSObject>
 
-- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
 - (void)callHandler:(NSString *)handlerName data:(id)data;
+- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
 
 @end
 
 @interface AdjustUIBridgeRegister : NSObject<AdjustBridgeRegister>
 
-+ (id<AdjustBridgeRegister>)bridgeRegisterWithUIWebView:(WVJB_WEBVIEW_TYPE*)webView;
++ (id<AdjustBridgeRegister>)bridgeRegisterWithUIWebView:(WVJB_WEBVIEW_TYPE *)webView;
 
 @end
 
 @interface AdjustWKBridgeRegister : NSObject<AdjustBridgeRegister>
 
-+ (id<AdjustBridgeRegister>)bridgeRegisterWithWKWebView:(WKWebView*)webView;
++ (id<AdjustBridgeRegister>)bridgeRegisterWithWKWebView:(WKWebView *)webView;
 
 @end

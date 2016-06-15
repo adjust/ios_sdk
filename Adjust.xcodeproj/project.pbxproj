@@ -554,11 +554,11 @@
 				9648C5E51CD1765E00A3B049 /* WebViewJavascriptBridge */,
 				9648C5F51CD1770300A3B049 /* AdjustBridge.h */,
 				9648C5F61CD1770300A3B049 /* AdjustBridge.m */,
+				968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */,
+				968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */,
 				9D75F1861D07460600E5D222 /* adjust.js */,
 				9D75F1851D07460600E5D222 /* adjust_event.js */,
 				9D75F1841D07460600E5D222 /* adjust_config.js */,
-				968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */,
-				968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */,
 			);
 			path = AdjustBridge;
 			sourceTree = SOURCE_ROOT;

@@ -8,7 +8,7 @@
 
 #import "AdjustBridgeRegister.h"
 
-static NSString   * const kHandlerPrefix = @"adjust_";
+static NSString * const kHandlerPrefix = @"adjust_";
 
 @interface AdjustUIBridgeRegister()
 
@@ -18,13 +18,16 @@ static NSString   * const kHandlerPrefix = @"adjust_";
 
 @implementation AdjustUIBridgeRegister
 
-+ (id<AdjustBridgeRegister>)bridgeRegisterWithUIWebView:(WVJB_WEBVIEW_TYPE*)uiWebView {
++ (id<AdjustBridgeRegister>)bridgeRegisterWithUIWebView:(WVJB_WEBVIEW_TYPE *)uiWebView {
     return [[AdjustUIBridgeRegister alloc] initWithUIWebView:uiWebView];
 }
 
-- (id)initWithUIWebView:(WVJB_WEBVIEW_TYPE*)uiWebView {
+- (id)initWithUIWebView:(WVJB_WEBVIEW_TYPE *)uiWebView {
     self = [super init];
-    if (self == nil) return nil;
+
+    if (self == nil) {
+        return nil;
+    }
 
     self.uiBridge = [WebViewJavascriptBridge bridgeForWebView:uiWebView];
 
@@ -32,11 +35,19 @@ static NSString   * const kHandlerPrefix = @"adjust_";
 }
 
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
-    [self.uiBridge registerHandler:[kHandlerPrefix stringByAppendingString:handlerName] handler:handler];
+    if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
+        return;
+    }
+
+    [self.uiBridge registerHandler:handlerName handler:handler];
 }
 
 - (void)callHandler:(NSString *)handlerName data:(id)data {
-    [self.uiBridge callHandler:[kHandlerPrefix stringByAppendingString:handlerName] data:data];
+    if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
+        return;
+    }
+
+    [self.uiBridge callHandler:handlerName data:data];
 }
 
 @end
@@ -49,13 +60,16 @@ static NSString   * const kHandlerPrefix = @"adjust_";
 
 @implementation AdjustWKBridgeRegister
 
-+ (id<AdjustBridgeRegister>)bridgeRegisterWithWKWebView:(WKWebView*)wkWebView {
++ (id<AdjustBridgeRegister>)bridgeRegisterWithWKWebView:(WKWebView *)wkWebView {
     return [[AdjustWKBridgeRegister alloc] initWithWKWebView:wkWebView];
 }
 
-- (id)initWithWKWebView:(WKWebView*)wkWebView {
+- (id)initWithWKWebView:(WKWebView *)wkWebView {
     self = [super init];
-    if (self == nil) return nil;
+
+    if (self == nil) {
+        return nil;
+    }
 
     self.wkBridge = [WKWebViewJavascriptBridge bridgeForWebView:wkWebView];
 
@@ -63,11 +77,19 @@ static NSString   * const kHandlerPrefix = @"adjust_";
 }
 
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
-    [self.wkBridge registerHandler:[kHandlerPrefix stringByAppendingString:handlerName] handler:handler];
+    if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
+        return;
+    }
+
+    [self.wkBridge registerHandler:handlerName handler:handler];
 }
 
 - (void)callHandler:(NSString *)handlerName data:(id)data {
-    [self.wkBridge callHandler:[kHandlerPrefix stringByAppendingString:handlerName] data:data];
+    if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
+        return;
+    }
+
+    [self.wkBridge callHandler:handlerName data:data];
 }
 
 @end

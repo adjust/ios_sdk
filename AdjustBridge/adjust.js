@@ -47,21 +47,21 @@ var Adjust = {
 
     setEnabled: function (enabled) {
         if (this.bridge != null) {
-            this.bridge.callHandler('setEnabled', enabled, null)
+            this.bridge.callHandler('adjust_setEnabled', enabled, null)
         }
     },
 
     isEnabled: function (callback) {
         if (this.bridge != null) {
-            this.bridge.callHandler('isEnabled', null, function(response) {
-                callback(response)
+            this.bridge.callHandler('adjust_isEnabled', null, function(response) {
+                callback(new Boolean(response))
             })
         }
     },
 
     getIdfa: function (callback) {
         if (this.bridge != null) {
-            this.bridge.callHandler('idfa', null, function(response) {
+            this.bridge.callHandler('adjust_idfa', null, function(response) {
                 callback(response)
             })
         }
@@ -69,7 +69,7 @@ var Adjust = {
 
     appWillOpenUrl: function (url) {
         if (this.bridge != null) {
-            this.bridge.callHandler('appWillOpenUrl', url, null)
+            this.bridge.callHandler('adjust_appWillOpenUrl', url, null)
         }
     }
 };
