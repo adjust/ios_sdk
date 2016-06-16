@@ -373,14 +373,14 @@ or add the method `openURL` and add the following call to adjust:
 ```
 
 **Important**: Tracker URLs with `deep_link` parameter and your custom URL scheme
-in it are no longer supported in `iOS 8 and higher` and clicks on them will not 
+in it are no longer supported in `iOS 9 and higher` and clicks on them will not 
 cause your app to be opened nor `openURL` method to get triggered. Apple dropped 
 support for this way of deep linking into the app in favour of `universal links`. 
-However, this approach will `still works for devices with iOS 7 and lower`.
+However, this approach will `still works for devices with iOS 8 and lower`.
 
 #### <a id="universal-links">Universal Links
 
-**Note**: Universal links are supported `since iOS 8`.
+**Note**: Universal links are supported `since iOS 9`.
 
 If you want to support [universal links][universal-links], then follow these next steps.
 
@@ -462,14 +462,14 @@ You can read more about implementing universal links in our
 
 #### <a id="ulinks-support-all">Support deep linking for all iOS versions supported by the adjust SDK
 
-If you are aiming iOS 8 and higher with your app, universal links are all you need in order
-to enable deep linking for your app. But, in case you want to support deep linking on iOS 6
-and iOS 7 devices as well, you need to build adjust style universal link like described in
+If you are aiming iOS 9 and higher with your app, universal links are all you need in order
+to enable deep linking for your app. But, in case you want to support deep linking on iOS 8
+and lower devices as well, you need to build adjust style universal link like described in
 [here][adjust-universal-links].
 
 Also, you should have both methods implemented in your Application Delegate class - `openURL`
 and `application:continueUserActivity:restorationHandler:` because based on device iOS version,
-one (`iOS 6 and iOS 7`) or another (`iOS 8 and higher`) method will be triggered and deep link
+one (`iOS 8 and lower`) or another (`iOS 9 and higher`) method will be triggered and deep link
 content delivered in your app for you to parse it and decide where to navigate the user.
 
 For instructions how to test your implementation, please read our [guide][universal-links-testing].
