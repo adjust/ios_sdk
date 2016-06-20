@@ -1,4 +1,4 @@
-### Version 4.7.0 (20th June 2016)
+### Version 4.7.1 (20th June 2016)
 #### Added
 - Added `CHANGELOG.md` to repository.
 
