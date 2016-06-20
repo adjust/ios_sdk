@@ -1,3 +1,12 @@
+### Version 4.7.0 (20th June 2016)
+#### Added
+- Added `CHANGELOG.md` to repository.
+
+#### Fixed
+- Re-added support for `iOS 8.0` as minimal deployment target for dynamic framework.
+
+---
+
 ### Version 4.7.0 (22nd May 2016)
 #### Added
 - Added `adjustDeeplinkResponse` method to `AdjustDelegate` to get info when deferred deep link info is received.
