@@ -100,10 +100,12 @@
         }
 
         var btnTrackCallbackEvent = document.getElementById('btnTrackCallbackEvent')
+
         btnTrackCallbackEvent.onclick = function(e) {
+
             e.preventDefault()
 
-            var adjustEvent = new AdjustEvent('{YourAppToken}")
+            var adjustEvent = new AdjustEvent('{YourAppToken}')
             adjustEvent.addCallbackParameter('key', 'value')
             adjustEvent.addCallbackParameter('x', 'y')
             adjustEvent.addCallbackParameter('key', 'lock')
