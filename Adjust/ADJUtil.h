@@ -80,4 +80,6 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
 + (BOOL)deleteFile:(NSString *)filename;
+
++ (void)launchDeepLinkMain:(NSURL *)deepLinkUrl;
 @end

@@ -616,7 +616,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
-        [selfI foregroundTimerFired]; }
+        [selfI foregroundTimerFired];
+    }
                                                     queue:selfI.internalQueue
                                                 startTime:kForegroundTimerStart
                                              intervalTime:kForegroundTimerInterval
@@ -905,18 +906,9 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         }
 
         if (toLaunchDeeplink) {
-            [selfI launchDeepLinkMainI:selfI deepLinkUrl:deepLinkUrl];
+            [ADJUtil launchDeepLinkMain:deepLinkUrl];
         }
     }];
-}
-
-- (void)launchDeepLinkMainI:(ADJActivityHandler *)selfI
-                deepLinkUrl:(NSURL *)deepLinkUrl{
-    BOOL success = [[UIApplication sharedApplication] openURL:deepLinkUrl];
-
-    if (!success) {
-        [selfI.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
-    }
 }
 
 - (BOOL)updateAttributionI:(ADJActivityHandler *)selfI

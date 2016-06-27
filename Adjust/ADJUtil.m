@@ -781,4 +781,24 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return deleted;
 }
 
++ (void)launchDeepLinkMain:(NSURL *)deepLinkUrl {
+    UIApplication * sharedUIApplication = [UIApplication sharedApplication];
+    if ([sharedUIApplication respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+        [sharedUIApplication openURL:deepLinkUrl options:@{} completionHandler:^(BOOL success) {
+            if (!success) {
+                [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+            }
+        }];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        BOOL success = [sharedUIApplication openURL:deepLinkUrl];
+#pragma clang diagnostic pop
+
+        if (!success) {
+            [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+        }
+    }
+}
+
 @end
