@@ -10,6 +10,7 @@
 		96164DA61CCA4E54009431AB /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA11CCA4E54009431AB /* ADJBackoffStrategy.m */; };
 		96164DA71CCA4E54009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA31CCA4E54009431AB /* ADJSdkClickHandler.m */; };
 		96164DA81CCA4E54009431AB /* ADJSystemProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164DA51CCA4E54009431AB /* ADJSystemProfile.m */; };
+		9DAA08B11D2A8302001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA08B01D2A8302001C04E4 /* ADJTrackingPixel.m */; };
 		9DF7AC191CB4FEDB00D3591F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC181CB4FEDB00D3591F /* main.m */; };
 		9DF7AC1C1CB4FEDB00D3591F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1B1CB4FEDB00D3591F /* AppDelegate.m */; };
 		9DF7AC1F1CB4FEDB00D3591F /* ViewControllerWatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1E1CB4FEDB00D3591F /* ViewControllerWatch.m */; };
@@ -108,6 +109,8 @@
 		96164DA31CCA4E54009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
 		96164DA41CCA4E54009431AB /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
 		96164DA51CCA4E54009431AB /* ADJSystemProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSystemProfile.m; sourceTree = "<group>"; };
+		9DAA08AF1D2A8301001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
+		9DAA08B01D2A8302001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DF7AC141CB4FEDB00D3591F /* AdjustExample-iWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iWatch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7AC181CB4FEDB00D3591F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9DF7AC1A1CB4FEDB00D3591F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -296,6 +299,8 @@
 		9DF7AC611CB4FF1800D3591F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DAA08AF1D2A8301001C04E4 /* ADJTrackingPixel.h */,
+				9DAA08B01D2A8302001C04E4 /* ADJTrackingPixel.m */,
 				96164DA01CCA4E54009431AB /* ADJBackoffStrategy.h */,
 				96164DA11CCA4E54009431AB /* ADJBackoffStrategy.m */,
 				96164DA21CCA4E54009431AB /* ADJSdkClickHandler.h */,
@@ -541,6 +546,7 @@
 				9DF7AC9F1CB4FF1800D3591F /* ADJAdjustFactory.m in Sources */,
 				9DF7ACB71CB4FF6400D3591F /* AdjustLoggingHelper.m in Sources */,
 				9DF7AC191CB4FEDB00D3591F /* main.m in Sources */,
+				9DAA08B11D2A8302001C04E4 /* ADJTrackingPixel.m in Sources */,
 				96164DA61CCA4E54009431AB /* ADJBackoffStrategy.m in Sources */,
 				9DF7ACAE1CB4FF1800D3591F /* ADJTimerCycle.m in Sources */,
 				9DF7ACA01CB4FF1800D3591F /* ADJAttribution.m in Sources */,

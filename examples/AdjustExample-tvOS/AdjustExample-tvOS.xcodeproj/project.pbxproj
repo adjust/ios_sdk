@@ -16,6 +16,7 @@
 		963909C01BCC0D8300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909BE1BCC0D8300A2E8A4 /* Main.storyboard */; };
 		963909C21BCC0D8300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963909C11BCC0D8300A2E8A4 /* Assets.xcassets */; };
 		963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9DAA08B41D2A831A001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA08B31D2A831A001C04E4 /* ADJTrackingPixel.m */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
 		9DF7AA6B1CB4F52500D3591F /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AA361CB4F52400D3591F /* ADJActivityHandler.m */; };
@@ -64,6 +65,8 @@
 		963909C11BCC0D8300A2E8A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		963909C31BCC0D8300A2E8A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		9DAA08B21D2A831A001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
+		9DAA08B31D2A831A001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DC95F2D1C10596500138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DC95F301C105B4C00138E4B /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 		9DF7AA341CB4F52400D3591F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DAA08B21D2A831A001C04E4 /* ADJTrackingPixel.h */,
+				9DAA08B31D2A831A001C04E4 /* ADJTrackingPixel.m */,
 				96164D971CCA4E3A009431AB /* ADJBackoffStrategy.h */,
 				96164D981CCA4E3A009431AB /* ADJBackoffStrategy.m */,
 				96164D991CCA4E3A009431AB /* ADJSdkClickHandler.h */,
@@ -364,6 +369,7 @@
 				9DF7AA781CB4F52500D3591F /* ADJEventFailure.m in Sources */,
 				9DF7AA6F1CB4F52500D3591F /* NSData+ADJAdditions.m in Sources */,
 				9DF7AA7A1CB4F52500D3591F /* ADJLogger.m in Sources */,
+				9DAA08B41D2A831A001C04E4 /* ADJTrackingPixel.m in Sources */,
 				96164D9D1CCA4E3A009431AB /* ADJBackoffStrategy.m in Sources */,
 				9DF7AA771CB4F52500D3591F /* ADJEvent.m in Sources */,
 				9DF7AA6D1CB4F52500D3591F /* ADJActivityPackage.m in Sources */,
