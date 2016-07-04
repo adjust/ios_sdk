@@ -73,8 +73,7 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
 
     NSBundle *appBundle = [NSBundle bundleForClass:[self class]];
     NSString *bundleIdentifier = appBundle.bundleIdentifier;
-    NSString *sdkVersion = [NSString stringWithFormat:@"adjust-%@", [ADJUtil clientSdk]];
-
+    NSString *sdkVersion = [NSString stringWithFormat:@"adjust-sdk-i-v%@", [[[ADJUtil clientSdk] componentsSeparatedByString:@"s"] lastObject]];
     NSString * const urlStringFormat = @"%@"
     @"/%@/?app_event_type=web_bridge"
     @"&idtype=idfa"
