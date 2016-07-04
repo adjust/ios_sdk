@@ -18,8 +18,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    [Adjust sendAdWordsRequest];
-    /*
     // configure adjust
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
@@ -47,7 +45,6 @@
 
     // disable the SDK
     //[Adjust setEnabled:NO];
-    */
 
     return YES;
 }
