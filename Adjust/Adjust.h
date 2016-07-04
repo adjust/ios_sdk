@@ -100,7 +100,16 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 
+/**
+ * Retrieve iOS device IDFA value.
+ */
 + (NSString*)idfa;
+
+/**
+ * Tell adjust to send the request to Google and check if the installation 
+ * belongs to Google AdWords campaign.
+ */
++ (void)sendAdWordsRequest;
 
 /**
  * Obtain singleton Adjust object
@@ -118,5 +127,6 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)setOfflineMode:(BOOL)enabled;
 - (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 - (NSString*)idfa;
+- (void)sendAdWordsRequest;
 
 @end

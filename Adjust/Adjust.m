@@ -7,10 +7,11 @@
 //
 
 #import "Adjust.h"
-#import "ADJActivityHandler.h"
-#import "ADJAdjustFactory.h"
-#import "ADJLogger.h"
 #import "ADJUtil.h"
+#import "ADJLogger.h"
+#import "ADJTrackingPixel.h"
+#import "ADJAdjustFactory.h"
+#import "ADJActivityHandler.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -22,8 +23,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 @interface Adjust()
 
-@property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, retain) id<ADJLogger> logger;
+@property (nonatomic, retain) id<ADJActivityHandler> activityHandler;
+
 @end
 
 #pragma mark -
@@ -63,6 +65,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (void)setOfflineMode:(BOOL)enabled {
     [[Adjust getInstance] setOfflineMode:enabled];
+}
+
++ (void)sendAdWordsRequest {
+    [[Adjust getInstance] sendAdWordsRequest];
 }
 
 + (NSString*)idfa {
@@ -140,6 +146,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 - (void)setOfflineMode:(BOOL)enabled {
     if (![self checkActivityHandler]) return;
     [self.activityHandler setOfflineMode:enabled];
+}
+
+- (void)sendAdWordsRequest {
+    [ADJTrackingPixel present];
 }
 
 - (NSString*)idfa {
