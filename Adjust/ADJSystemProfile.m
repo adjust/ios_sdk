@@ -69,7 +69,7 @@
             return @"CPUFAMILY_INTEL_6_13";
 #ifdef CPUFAMILY_INTEL_YONAH
         case CPUFAMILY_INTEL_YONAH:
-        return @"CPUFAMILY_INTEL_YONAH";
+            return @"CPUFAMILY_INTEL_YONAH";
 #endif
 #ifdef CPUFAMILY_INTEL_MEROM
         case CPUFAMILY_INTEL_MEROM:
