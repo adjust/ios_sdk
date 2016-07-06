@@ -67,10 +67,14 @@
             return @"CPUFAMILY_POWERPC_G5";
         case CPUFAMILY_INTEL_6_13:
             return @"CPUFAMILY_INTEL_6_13";
+#ifdef CPUFAMILY_INTEL_YONAH
         case CPUFAMILY_INTEL_YONAH:
-            return @"CPUFAMILY_INTEL_YONAH";
+        return @"CPUFAMILY_INTEL_YONAH";
+#endif
+#ifdef CPUFAMILY_INTEL_MEROM
         case CPUFAMILY_INTEL_MEROM:
             return @"CPUFAMILY_INTEL_MEROM";
+#endif
         case CPUFAMILY_INTEL_PENRYN:
             return @"CPUFAMILY_INTEL_PENRYN";
         case CPUFAMILY_INTEL_NEHALEM:
