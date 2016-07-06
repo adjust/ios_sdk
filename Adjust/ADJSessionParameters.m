@@ -25,6 +25,10 @@
     // does not save dictionary parameters
 }
 
+- (NSString*)description {
+    return [NSString stringWithFormat:@"External Device Id: %@", self.externalDeviceId];
+}
+
 #pragma mark - NSCopying
 -(id)copyWithZone:(NSZone *)zone
 {

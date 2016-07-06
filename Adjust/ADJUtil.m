@@ -723,7 +723,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         NSString *oldValue = [mergedParameters objectForKey:key];
 
         if (oldValue != nil) {
-            [ADJAdjustFactory.logger warn:@"key %@ with value %@ from %@ parameter was replaced by value %@",
+            [ADJAdjustFactory.logger warn:@"Key %@ with value %@ from %@ parameter was replaced by value %@",
              key, oldValue, parameterName, obj];
         }
 

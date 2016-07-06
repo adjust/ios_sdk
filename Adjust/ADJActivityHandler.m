@@ -577,12 +577,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     self.sdkClickHandler = nil;
     self.foregroundTimer = nil;
     self.backgroundTimer = nil;
-    self.logger = nil;
     self.adjustDelegate = nil;
     self.adjustConfig = nil;
     self.internalState = nil;
     self.deviceInfo = nil;
     self.delayStartTimer = nil;
+    self.logger = nil;
 }
 
 #pragma mark - internal
@@ -621,7 +621,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                                     queue:selfI.internalQueue
                                                 startTime:kForegroundTimerStart
                                              intervalTime:kForegroundTimerInterval
-                                                     name:kForegroundTimerName];
+                                                     name:kForegroundTimerName
+    ];
 
     if (selfI.adjustConfig.sendInBackground) {
         [selfI.logger info:@"Send in background configured"];
@@ -1515,7 +1516,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                      parameterName:@"Session Callback"]) return;
 
     if (selfI.sessionParameters.callbackParameters == nil) {
-        [selfI.logger warn:@"Session Callback parameters is not set"];
+        [selfI.logger warn:@"Session Callback parameters are not set"];
         return;
     }
 
@@ -1537,7 +1538,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                      parameterName:@"Session Partner"]) return;
 
     if (selfI.sessionParameters.partnerParameters == nil) {
-        [selfI.logger warn:@"Session Partner parameters is not set"];
+        [selfI.logger warn:@"Session Partner parameters are not set"];
         return;
     }
 
@@ -1563,7 +1564,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI {
     if (selfI.sessionParameters.callbackParameters == nil) {
-        [selfI.logger warn:@"Session Callback parameters is not set"];
+        [selfI.logger warn:@"Session Callback parameters are not set"];
         return;
     }
     selfI.sessionParameters.callbackParameters = nil;
@@ -1572,7 +1573,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI {
     if (selfI.sessionParameters.partnerParameters == nil) {
-        [selfI.logger warn:@"Session Partner parameters is not set"];
+        [selfI.logger warn:@"Session Partner parameters are not set"];
         return;
     }
     selfI.sessionParameters.partnerParameters = nil;

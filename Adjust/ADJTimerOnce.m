@@ -96,4 +96,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 - (void)cancel {
     [self cancel:YES];
 }
+
+- (void)dealloc {
+    [self.logger verbose:@"%@ dealloc", self.name];
+}
+
 @end
