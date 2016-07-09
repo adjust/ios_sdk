@@ -1,4 +1,4 @@
-### Version 4.7.2 (xxth July 2016)
+### Version 4.7.2 (9th July 2016)
 #### Changed
 - Re-enabled SDK auto-start upon initialisation.
 
