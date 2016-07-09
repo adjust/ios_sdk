@@ -1,3 +1,9 @@
+### Version 4.7.2 (xxth July 2016)
+#### Changed
+- Re-enabled SDK auto-start upon initialisation.
+
+---
+
 ### Version 4.7.1 (20th June 2016)
 #### Added
 - Added `CHANGELOG.md` to repository.
@@ -15,6 +21,7 @@
 
 #### Changed
 - Updated docs.
+- Disabled SDK auto-start upon initialisation.
 - Added separate handler for `sdk_click` which is sending those packages immediately after they are created.
 
 #### Fixed
