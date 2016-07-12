@@ -20,7 +20,7 @@
 
 static NSDateFormatter *dateFormat;
 
-static NSString * const kClientSdk      = @"ios4.7.2";
+static NSString * const kClientSdk      = @"ios4.7.3";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 
