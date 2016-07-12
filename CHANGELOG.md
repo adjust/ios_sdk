@@ -1,3 +1,10 @@
+### Version 4.7.3 (12th July 2016)
+#### Changed
+- Adding #define for `CPUFAMILY_INTEL_YONAH` due to its deprecation in iOS 10.
+- Adding #define for `CPUFAMILY_INTEL_MEROM` due to its deprecation in iOS 10.
+
+---
+
 ### Version 4.7.2 (9th July 2016)
 #### Changed
 - Re-enabled SDK auto-start upon initialisation.
