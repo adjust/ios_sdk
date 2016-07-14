@@ -129,6 +129,8 @@
 		96ED00391A38A4CD00209110 /* ADJAttributionHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */; };
 		96ED003E1A38A98C00209110 /* ADJAttributionChangedDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */; };
 		96ED74FF1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */; };
+		96FC6E4F1D256B81004482D8 /* ADJActivityHandlerConstructorState.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */; };
+		96FC6E581D258272004482D8 /* ADJEndSessionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FC6E571D258272004482D8 /* ADJEndSessionState.m */; };
 		96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 96FCC5361C186426007BBFE1 /* ADJResponseData.h */; };
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
 		96FDD75E1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */; };
@@ -431,6 +433,10 @@
 		96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionChangedDelegate.m; sourceTree = "<group>"; };
 		96ED74FD1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandlerMock.h; sourceTree = "<group>"; };
 		96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandlerMock.m; sourceTree = "<group>"; };
+		96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandlerConstructorState.h; sourceTree = "<group>"; };
+		96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandlerConstructorState.m; sourceTree = "<group>"; };
+		96FC6E561D258272004482D8 /* ADJEndSessionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEndSessionState.h; sourceTree = "<group>"; };
+		96FC6E571D258272004482D8 /* ADJEndSessionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEndSessionState.m; sourceTree = "<group>"; };
 		96FCC5361C186426007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+NSURLDataWithRequestMocking.h"; sourceTree = "<group>"; };
@@ -832,6 +838,12 @@
 				96E768A81CE6281F005D811C /* ADJTrackingDelegate.h */,
 				96E768A91CE6281F005D811C /* ADJTrackingDelegate.m */,
 				96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */,
+				96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */,
+				96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */,
+				96FC6E561D258272004482D8 /* ADJEndSessionState.h */,
+				96FC6E571D258272004482D8 /* ADJEndSessionState.m */,
+				96AB755B1D26A3CB00E7CCF9 /* ADJInitState.h */,
+				96AB755C1D26A3CB00E7CCF9 /* ADJInitState.m */,
 			);
 			path = AdjustTests;
 			sourceTree = "<group>";
@@ -1439,14 +1451,17 @@
 				9657BF6F1A3B029000CD6853 /* ADJAttributionHandlerTests.m in Sources */,
 				96E5E3B118BBB49E008E7B30 /* ADJLoggerMock.m in Sources */,
 				96E5E3AF18BBB49E008E7B30 /* ADJActivityHandlerMock.m in Sources */,
+				96FC6E4F1D256B81004482D8 /* ADJActivityHandlerConstructorState.m in Sources */,
 				96E5E3B318BBB49E008E7B30 /* ADJPackageHandlerTests.m in Sources */,
 				9620EA451B062D6F009673F1 /* ADJTestActivityPackage.m in Sources */,
 				96E768A11CE6267D005D811C /* ADJDeeplinkDelegate.m in Sources */,
 				96E5E3B618BBB49E008E7B30 /* ADJTestsUtil.m in Sources */,
 				96CD2BE11A13BFC600A40AFB /* UIDevice+ADJAdditions.m in Sources */,
 				96FDD75E1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m in Sources */,
+				96AB755D1D26A3CB00E7CCF9 /* ADJInitState.m in Sources */,
 				9620EA511B065177009673F1 /* ADJPackageFields.m in Sources */,
 				967D069A1CE2272500ECFCE3 /* ADJSessionState.m in Sources */,
+				96FC6E581D258272004482D8 /* ADJEndSessionState.m in Sources */,
 				9620EA4E1B06401B009673F1 /* ADJTest.m in Sources */,
 				96A2D2381CEF3B2D00C39DE0 /* ADJRequestHandlerTests.m in Sources */,
 				96E5E3B018BBB49E008E7B30 /* ADJActivityHandlerTests.m in Sources */,

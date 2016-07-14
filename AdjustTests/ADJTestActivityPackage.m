@@ -72,8 +72,6 @@
     [self testDefaultParameters:package
                          fields:fields];
 
-    // session parameters
-
     // last_interval
     if ([@"1" isEqualToString:fields.sessionCount]) {
         appNil(@"last_interval");
@@ -82,6 +80,14 @@
     }
     // default_tracker
     apspEquals(@"default_tracker", fields.defaultTracker);
+
+    // external_device_id
+    apspEquals(@"external_device_id", fields.externalDeviceId);
+
+    // callback_params
+    [self assertJsonParameters:package parameterName:@"callback_params" value:fields.callbackParameters];
+    // partner_params
+    [self assertJsonParameters:package parameterName:@"partner_params" value:fields.partnerParameters];
 }
 
 - (void)testEventPackage:(ADJActivityPackage *)package
@@ -123,10 +129,27 @@
     apspEquals(@"revenue", fields.revenue);
     // currency
     apspEquals(@"currency", fields.currency);
+
+    // external_device_id
+    apspEquals(@"external_device_id", fields.externalDeviceId);
     // callback_params
     [self assertJsonParameters:package parameterName:@"callback_params" value:fields.callbackParameters];
     // partner_params
     [self assertJsonParameters:package parameterName:@"partner_params" value:fields.partnerParameters];
+
+    // saved callback parameters
+    if (fields.savedCallbackParameters == nil) {
+        alNil(package.callbackParameters, package.extendedString);
+    } else {
+        alTrue([fields.savedCallbackParameters isEqualToDictionary:package.callbackParameters], package.extendedString);
+    }
+
+    // saved partner parameters
+    if (fields.savedPartnerParameters == nil) {
+        alNil(package.partnerParameters, package.extendedString);
+    } else {
+        alTrue([fields.savedPartnerParameters isEqualToDictionary:package.partnerParameters], package.extendedString);
+    }
 }
 
 - (void)testClickPackage:(ADJActivityPackage *)package
@@ -329,14 +352,15 @@
     appnNil(@"ios_uuid");
 }
 
-- (BOOL)assertJsonParameters:(ADJActivityPackage *)package
+- (void)assertJsonParameters:(ADJActivityPackage *)package
                parameterName:(NSString *)parameterName
                        value:(NSString *)value
 {
     NSString * parameterValue = (NSString *)package.parameters[parameterName];
 
     if (parameterValue == nil) {
-        return value == nil;
+        alNil(value, package.extendedString);
+        return;
     }
 
     // value not nil

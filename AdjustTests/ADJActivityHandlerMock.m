@@ -21,13 +21,15 @@ static NSString * const prefix = @"ActivityHandler ";
 
 @implementation ADJActivityHandlerMock
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig {
+- (id)initWithConfig:(ADJConfig *)adjustConfig
+sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+{
     self = [super init];
     if (self == nil) return nil;
 
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig"]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig, %@", sessionParametersActionsArray]];
 
     return self;
 }
@@ -94,7 +96,7 @@ static NSString * const prefix = @"ActivityHandler ";
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setAskingAttribution, %d", askingAttribution]];
 }
 
-- (BOOL) updateAttribution:(ADJAttribution*) attribution {
+- (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"updateAttribution, %@", attribution]];
     self.attributionUpdated = attribution;
     return NO;
@@ -116,6 +118,49 @@ static NSString * const prefix = @"ActivityHandler ";
 
 - (ADJInternalState*) internalState {
     return nil;
+}
+
+- (void)sendFirstPackages {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"sendFirstPackages"]];
+}
+
+- (void)addExternalDeviceId:(NSString *)externalDeviceId {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"addExternalDeviceId, %@", externalDeviceId]];
+
+}
+
+- (void)addSessionCallbackParameter:(NSString *)key
+                              value:(NSString *)value {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"addSessionCallbackParameter, key %@ value, %@", key, value]];
+}
+
+- (void)addSessionPartnerParameter:(NSString *)key
+                             value:(NSString *)value {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"addSessionPartnerParameter, key %@ value, %@", key, value]];
+}
+
+- (void)removeSessionCallbackParameter:(NSString *)key {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"removeSessionCallbackParameter, %@", key]];
+}
+
+- (void)removeSessionPartnerParameter:(NSString *)key {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"removeSessionPartnerParameter, %@", key]];
+}
+
+- (void)resetExternalDeviceId {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"resetExternalDeviceId"]];
+}
+
+- (void)resetSessionCallbackParameters {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"resetSessionCallbackParameters"]];
+}
+
+- (void)resetSessionPartnerParameters {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"resetSessionPartnerParameters"]];
+}
+
+- (void)teardown:(BOOL)deleteState {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"teardown"]];
 }
 
 @end

@@ -72,6 +72,10 @@ static NSString * const kLogTag = @"AdjustTests";
     [self test:@"ADJLogger setLogLevel: %d", logLevel];
 }
 
+- (void)lockLogLevel {
+    [self test:@"ADJLogger lockLogLevel"];
+}
+
 - (void)check:(NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
     [self logLevel:ADJLogLevelCheck logPrefix:@"c" format:format parameters:parameters];

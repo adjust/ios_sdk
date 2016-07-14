@@ -16,6 +16,10 @@
 #import "ADJResponseData.h"
 #import "ADJBackoffStrategy.h"
 #import "ADJPackageHandler.h"
+#import "ADJAttributionHandlerMock.h"
+#import "ADJPackageHandlerMock.h"
+#import "ADJSdkClickHandlerMock.h"
+#import "ADJSessionParameters.h"
 
 typedef enum {
     ADJSendFirstEmptyQueue = 0,
@@ -56,7 +60,7 @@ typedef enum {
     [ADJAdjustFactory setRequestHandler:self.requestHandlerMock];
 
     ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
-    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config];
+    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config sessionParametersActionsArray:nil];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
@@ -228,7 +232,7 @@ typedef enum {
     ADJResponseData * responseData = [ADJResponseData buildResponseData:activityPackage];
     //Pattern pattern = Pattern.compile("Sleeping for (\\d+\\.\\d) seconds before retrying the (\\d+) time");
 
-    NSString * sleepingLogPattern = @"Sleeping for (\\d+\\.\\d) seconds before retrying the (\\d+) time";
+    NSString * sleepingLogPattern = @"Waiting for (\\d+\\.\\d) seconds before retrying the (\\d+) time";
     NSError *error = NULL;
     NSRegularExpression *regex  = [NSRegularExpression
                                    regularExpressionWithPattern:sleepingLogPattern
@@ -244,7 +248,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    NSString * sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    NSString * sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
     // Sleeping for 0.1 seconds before retrying the 1 time
 
@@ -260,7 +264,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
 
     [self checkSleeping:regex
@@ -275,7 +279,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
 
     [self checkSleeping:regex
@@ -290,7 +294,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
 
     [self checkSleeping:regex
@@ -305,7 +309,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
 
     [self checkSleeping:regex
@@ -320,7 +324,7 @@ typedef enum {
     [packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
     [NSThread sleepForTimeInterval:1.5];
 
-    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Sleeping for"];
+    sleepingLogMessage = [self.loggerMock containsMessage:ADJLogLevelVerbose beginsWith:@"Waiting for"];
     anNil(sleepingLogMessage);
 
     [self checkSleeping:regex
@@ -330,6 +334,173 @@ typedef enum {
              maxCeiling:1
              minCeiling:0.5
           numberRetries:6];
+}
+
+- (void)testUpdate
+{
+    //  reseting to make the test order independent
+    [self reset];
+
+    NSArray * delayPackages = [self createDelayPackages];
+
+    ADJActivityPackage * firstSessionPackage = delayPackages[0];
+    ADJActivityPackage * firstEventPackage = delayPackages[1];
+    ADJActivityPackage * secondEventPackage = delayPackages[2];
+
+    // create event package test
+    ADJPackageFields * sessionPackageFields = [ADJPackageFields fields];
+
+    [self testPackageSession:firstSessionPackage fields:sessionPackageFields sessionCount:@"1"];
+
+    // create event package test
+    ADJPackageFields * firstEventPackageFields = [ADJPackageFields fields];
+
+    // set event test parameters
+    firstEventPackageFields.eventCount = @"1";
+    firstEventPackageFields.savedCallbackParameters = @{@"ceFoo":@"ceBar"};
+    firstEventPackageFields.savedPartnerParameters = @{@"peFoo":@"peBar"};
+    firstEventPackageFields.suffix = @"'event1'";
+
+    // test first event
+    [self testEventPackage:firstEventPackage fields:firstEventPackageFields eventToken:@"event1"];
+
+    // create event package test
+    ADJPackageFields * secondEventPackageFields = [ADJPackageFields fields];
+
+    // set event test parameters
+    secondEventPackageFields.eventCount = @"2";
+    secondEventPackageFields.savedCallbackParameters = @{@"scpKey":@"ceBar"};
+    secondEventPackageFields.savedPartnerParameters = @{@"sppKey":@"peBar"};
+    secondEventPackageFields.suffix = @"'event2'";
+
+    // test second event
+    [self testEventPackage:secondEventPackage fields:secondEventPackageFields eventToken:@"event2"];
+
+    //  initialize Package Handler
+    id<ADJPackageHandler> packageHandler = [self createFirstPackageHandler:NO];
+
+    [self checkSendFirst:ADJSendFirstEmptyQueue];
+
+    [packageHandler addPackage:firstSessionPackage];
+
+    [packageHandler addPackage:firstEventPackage];
+
+    [packageHandler addPackage:secondEventPackage];
+
+    [NSThread sleepForTimeInterval:1];
+
+    [self checkAddPackage:1 packageString:@"session"];
+
+    [self checkAddPackage:2 packageString:@"event'event1'"];
+
+    [self checkAddPackage:3 packageString:@"event'event2'"];
+
+    [packageHandler updatePackages:nil];
+
+    [NSThread sleepForTimeInterval:1];
+
+    aDebug(@"Updating package handler queue");
+
+    aVerbose(@"Session external device id: (null)");
+    aVerbose(@"Session callback parameters: (null)");
+    aVerbose(@"Session partner parameters: (null)");
+
+    ADJSessionParameters * sessionParameters = [[ADJSessionParameters alloc] init];
+
+    sessionParameters.externalDeviceId = @"sedi";
+
+    sessionParameters.callbackParameters = [NSMutableDictionary dictionary];
+    [sessionParameters.callbackParameters setObject:@"scpValue" forKey:@"scpKey"];
+
+    sessionParameters.partnerParameters = [NSMutableDictionary dictionary];
+    [sessionParameters.partnerParameters setObject:@"sppValue" forKey:@"sppKey"];
+
+
+    [packageHandler updatePackages:sessionParameters];
+
+    [NSThread sleepForTimeInterval:2];
+
+    aDebug(@"Updating package handler queue");
+
+    aVerbose(@"Session external device id: sedi");
+    aVerbose(@"Session callback parameters: {\n    scpKey = scpValue;\n}");
+    aVerbose(@"Session partner parameters: {\n    sppKey = sppValue;\n}");
+
+    aWarn(@"Key scpKey with value scpValue from Callback parameter was replaced by value ceBar");
+    aWarn(@"Key sppKey with value sppValue from Partner parameter was replaced by value peBar");
+    aDebug(@"Package handler wrote 3 packages");
+    
+    sessionPackageFields.externalDeviceId = @"sedi";
+    sessionPackageFields.callbackParameters = @"{\"scpKey\":\"scpValue\"}";
+    sessionPackageFields.partnerParameters = @"{\"sppKey\":\"sppValue\"}";
+
+    [self testPackageSession:firstSessionPackage fields:sessionPackageFields sessionCount:@"1"];
+
+    firstEventPackageFields.externalDeviceId = @"sedi";
+    firstEventPackageFields.callbackParameters = @"{\"scpKey\":\"scpValue\",\"ceFoo\":\"ceBar\"}";
+    firstEventPackageFields.partnerParameters = @"{\"peFoo\":\"peBar\",\"sppKey\":\"sppValue\"}";
+
+    [self testEventPackage:firstEventPackage fields:firstEventPackageFields eventToken:@"event1"];
+
+    secondEventPackageFields.externalDeviceId = @"sedi";
+    secondEventPackageFields.callbackParameters = @"{\"scpKey\":\"ceBar\"}";
+    secondEventPackageFields.partnerParameters = @"{\"sppKey\":\"peBar\"}";
+
+    [self testEventPackage:secondEventPackage fields:secondEventPackageFields eventToken:@"event2"];
+}
+
+- (NSArray *)createDelayPackages {
+    ADJPackageHandlerMock * packageHandlerMock = [ADJPackageHandlerMock alloc];
+    [ADJAdjustFactory setPackageHandler:packageHandlerMock];
+
+    ADJSdkClickHandlerMock * sdkClickHandlerMock = [ADJSdkClickHandlerMock alloc];
+    [ADJAdjustFactory setSdkClickHandler:sdkClickHandlerMock];
+
+    ADJAttributionHandlerMock * attributionHandlerMock = [ADJAttributionHandlerMock alloc];
+    [ADJAdjustFactory setAttributionHandler:attributionHandlerMock];
+
+    [ADJAdjustFactory setSessionInterval:-1];
+    [ADJAdjustFactory setSubsessionInterval:-1];
+    [ADJAdjustFactory setTimerInterval:-1];
+    [ADJAdjustFactory setTimerStart:-1];
+
+    [ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock];
+    [ADJTestsUtil deleteFile:@"AdjustIoAttribution" logger:self.loggerMock];
+    [ADJTestsUtil deleteFile:@"AdjustSessionParameters" logger:self.loggerMock];
+    [ADJTestsUtil deleteFile:@"AdjustSessionCallbackParameters" logger:self.loggerMock];
+    [ADJTestsUtil deleteFile:@"AdjustSessionPartnerParameters" logger:self.loggerMock];
+
+    ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:ADJEnvironmentSandbox];
+
+    [config setDelayStart:4];
+
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
+
+    [activityHandler addSessionCallbackParameter:@"scpKey" value:@"scpValue"];
+    [activityHandler addSessionPartnerParameter:@"sppKey" value:@"sppValue"];
+
+    [activityHandler applicationDidBecomeActive];
+
+    ADJEvent * event1 = [ADJEvent eventWithEventToken:@"event1"];
+    [event1 addCallbackParameter:@"ceFoo" value:@"ceBar"];
+    [event1 addPartnerParameter:@"peFoo" value:@"peBar"];
+    [activityHandler trackEvent:event1];
+
+    ADJEvent * event2 = [ADJEvent eventWithEventToken:@"event2"];
+    [event2 addCallbackParameter:@"scpKey" value:@"ceBar"];
+    [event2 addPartnerParameter:@"sppKey" value:@"peBar"];
+    [activityHandler trackEvent:event2];
+
+    [NSThread sleepForTimeInterval:3.0];
+
+    ADJActivityPackage * firstSessionPackage = packageHandlerMock.packageQueue[0];
+
+    ADJActivityPackage * firstEventPackage = packageHandlerMock.packageQueue[1];
+    ADJActivityPackage * secondEventPackage = packageHandlerMock.packageQueue[2];
+
+    [self.loggerMock reset];
+
+    return @[firstSessionPackage, firstEventPackage, secondEventPackage];
 }
 
 - (void)checkSleeping:(NSRegularExpression *)regex

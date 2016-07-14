@@ -61,4 +61,8 @@ hasAttributionChangedDelegate:(BOOL)hasDelegate
     [self.loggerMock test:[prefix stringByAppendingFormat:@"resumeSending"]];
 }
 
+- (void)teardown {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"teardown"]];
+}
+
 @end

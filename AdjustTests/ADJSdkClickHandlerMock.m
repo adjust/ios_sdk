@@ -47,4 +47,8 @@ static NSString * const prefix = @"SdkClickHandler ";
     [self.packageQueue addObject:sdkClickPackage];
 }
 
+- (void)teardown {
+    [self.loggerMock test:[prefix stringByAppendingString:@"teardown"]];
+}
+
 @end

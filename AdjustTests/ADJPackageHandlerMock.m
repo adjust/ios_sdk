@@ -73,9 +73,13 @@ static NSString * const prefix = @"PackageHandler ";
     [self.loggerMock test:[prefix stringByAppendingString:@"resumeSending"]];
 }
 
-- (void)finishedTracking:(NSDictionary *)jsonDict {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"finishedTracking, %@", jsonDict.descriptionInStringsFileFormat]];
-    self.jsonDict = jsonDict;
+- (void)updatePackages:(ADJSessionParameters *)sessionParameters {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"updatePackages, sessionParameters: %@", sessionParameters]];
+
+}
+
+- (void)teardown:(BOOL)deleteState {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"teardown, deleteState: %d", deleteState]];
 }
 
 @end
