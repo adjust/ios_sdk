@@ -31,7 +31,6 @@
 		9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9609BC6919EEA55800E02303 /* ADJEvent.m */; };
 		960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960A8BB81A029A8000F2BB95 /* ADJConfig.m */; };
 		961515921CD2CB2C0022D336 /* AdjustBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 961515911CD2CB2C0022D336 /* AdjustBridge.h */; };
-		961515941CD2CB2C0022D336 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 961515931CD2CB2C0022D336 /* AdjustBridge.m */; };
 		9615159F1CD2CB360022D336 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		961515A01CD2CB450022D336 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		961515A21CD2CB4F0022D336 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961515A11CD2CB4F0022D336 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1192,10 +1191,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				961515A71CD2CBB00022D336 /* AdjustBridge.m in Sources */,
-				961515A51CD2CBA80022D336 /* WebViewJavascriptBridgeBase.m in Sources */,
-				961515A61CD2CBAC0022D336 /* WKWebViewJavascriptBridge.m in Sources */,
-				961515941CD2CB2C0022D336 /* AdjustBridge.m in Sources */,
 				968595EE1D0B25970011CA2B /* AdjustBridgeRegister.m in Sources */,
+				961515A61CD2CBAC0022D336 /* WKWebViewJavascriptBridge.m in Sources */,
+				961515A51CD2CBA80022D336 /* WebViewJavascriptBridgeBase.m in Sources */,
 				961515A31CD2CB9D0022D336 /* WebViewJavascriptBridge.m in Sources */,
 				961515A41CD2CBA20022D336 /* WebViewJavascriptBridge_JS.m in Sources */,
 			);
