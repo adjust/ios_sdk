@@ -16,6 +16,7 @@
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
+#import <objc/message.h>
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
@@ -830,12 +831,38 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl {
     UIApplication * sharedUIApplication = [UIApplication sharedApplication];
-    if ([sharedUIApplication respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-        [sharedUIApplication openURL:deepLinkUrl options:@{} completionHandler:^(BOOL success) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    SEL openUrlSelector = @selector(openURL:options:completionHandler:);
+#pragma clang diagnostic pop
+
+    if ([sharedUIApplication respondsToSelector:openUrlSelector]) {
+        /*
+         [sharedUIApplication openURL:deepLinkUrl options:@{} completionHandler:^(BOOL success) {
+         if (!success) {
+         [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+         }
+         }];
+         */
+
+        NSMethodSignature * methSig = [sharedUIApplication methodSignatureForSelector: openUrlSelector];
+        NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: methSig];
+
+        [invocation setSelector: openUrlSelector];
+        [invocation setTarget: sharedUIApplication];
+
+        NSDictionary * emptyDictionary = @{};
+        void (^completion)(BOOL) = ^(BOOL success) {
             if (!success) {
                 [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
             }
-        }];
+        };
+
+        [invocation setArgument: &deepLinkUrl  atIndex: 2];
+        [invocation setArgument: &emptyDictionary atIndex: 3];
+        [invocation setArgument: &completion  atIndex: 4];
+
+        [invocation invoke];
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
