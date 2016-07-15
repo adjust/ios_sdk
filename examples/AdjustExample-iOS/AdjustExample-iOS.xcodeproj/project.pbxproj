@@ -43,6 +43,7 @@
 		96E423CA1C85F3B50006729A /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E423C71C85F3B50006729A /* ADJEventFailure.m */; };
 		96E423CB1C85F3B50006729A /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E423C91C85F3B50006729A /* ADJEventSuccess.m */; };
 		96FCC5441C18643E007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5411C18643E007BBFE1 /* ADJResponseData.m */; };
+		9DAA08B71D2A835E001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA08B61D2A835E001C04E4 /* ADJTrackingPixel.m */; };
 		9DAC2DEB1C0F611300AC9D97 /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */; };
 		9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */; };
 		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
@@ -117,6 +118,8 @@
 		96E423C91C85F3B50006729A /* ADJEventSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEventSuccess.m; sourceTree = "<group>"; };
 		96FCC5401C18643E007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
 		96FCC5411C18643E007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
+		9DAA08B51D2A835E001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
+		9DAA08B61D2A835E001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DAC2DE91C0F611300AC9D97 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
 		9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
 		9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControlleriOS.h; sourceTree = "<group>"; };
@@ -187,6 +190,8 @@
 		963909681BCBFF8D00A2E8A4 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DAA08B51D2A835E001C04E4 /* ADJTrackingPixel.h */,
+				9DAA08B61D2A835E001C04E4 /* ADJTrackingPixel.m */,
 				96164D8E1CCA4E1C009431AB /* ADJBackoffStrategy.h */,
 				96164D8F1CCA4E1C009431AB /* ADJBackoffStrategy.m */,
 				96164D901CCA4E1C009431AB /* ADJSdkClickHandler.h */,
@@ -368,6 +373,7 @@
 				9639099B1BCBFF8D00A2E8A4 /* ADJAdjustFactory.m in Sources */,
 				963909411BCBFCF300A2E8A4 /* main.m in Sources */,
 				96E423CB1C85F3B50006729A /* ADJEventSuccess.m in Sources */,
+				9DAA08B71D2A835E001C04E4 /* ADJTrackingPixel.m in Sources */,
 				96164D941CCA4E1C009431AB /* ADJBackoffStrategy.m in Sources */,
 				9639099C1BCBFF8D00A2E8A4 /* ADJAttribution.m in Sources */,
 				9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */,

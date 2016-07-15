@@ -173,6 +173,10 @@
 		9DA11A9B1C96D2A300980777 /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DA11A661C96D2A200980777 /* ADJUtil.h */; };
 		9DA11A9C1C96D2A300980777 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DA11A671C96D2A200980777 /* ADJUtil.m */; };
 		9DA11A9D1C96D2A300980777 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DA11A681C96D2A200980777 /* Info.plist */; };
+		9DAA089F1D2A7B15001C04E4 /* ADJTrackingPixel.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */; };
+		9DAA08A01D2A7B15001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */; };
+		9DAA08AD1D2A80B7001C04E4 /* ADJTrackingPixel.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DAA08A91D2A80B7001C04E4 /* ADJTrackingPixel.h */; };
+		9DAA08AE1D2A80B7001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA08AA1D2A80B7001C04E4 /* ADJTrackingPixel.m */; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		9DFA37B71C0F21D600782607 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFA37B51C0F21D600782607 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -412,6 +416,12 @@
 		9DA11A661C96D2A200980777 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		9DA11A671C96D2A200980777 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
 		9DA11A681C96D2A200980777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
+		9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
+		9DAA08A71D2A80B7001C04E4 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		9DAA08A81D2A80B7001C04E4 /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		9DAA08A91D2A80B7001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
+		9DAA08AA1D2A80B7001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DF7A9D71CB4ECBC00D3591F /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
 		9DF7AC551CB4FEE200D3591F /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
@@ -578,6 +588,8 @@
 				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
 				96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */,
 				96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */,
+				9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */,
+				9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -632,6 +644,10 @@
 		9DA11A321C96D2A200980777 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DAA08A71D2A80B7001C04E4 /* ADJBackoffStrategy.h */,
+				9DAA08A81D2A80B7001C04E4 /* ADJBackoffStrategy.m */,
+				9DAA08A91D2A80B7001C04E4 /* ADJTrackingPixel.h */,
+				9DAA08AA1D2A80B7001C04E4 /* ADJTrackingPixel.m */,
 				96ED74F91CD8085000C073B8 /* ADJSystemProfile.h */,
 				96ED74FA1CD8085000C073B8 /* ADJSystemProfile.m */,
 				9DA11A3B1C96D2A200980777 /* ADJAdditions */,
@@ -760,6 +776,7 @@
 				96BCFBD31AC99336005A65C5 /* UIDevice+ADJAdditions.h in Headers */,
 				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
+				9DAA089F1D2A7B15001C04E4 /* ADJTrackingPixel.h in Headers */,
 				96BCFBDE1AC99365005A65C5 /* ADJUtil.h in Headers */,
 				96BCFBDC1AC99360005A65C5 /* ADJRequestHandler.h in Headers */,
 				96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */,
@@ -781,6 +798,7 @@
 				9DA11A851C96D2A200980777 /* ADJEventSuccess.h in Headers */,
 				9DA11A911C96D2A300980777 /* ADJSessionFailure.h in Headers */,
 				9DA11A931C96D2A300980777 /* ADJSessionSuccess.h in Headers */,
+				9DAA08AD1D2A80B7001C04E4 /* ADJTrackingPixel.h in Headers */,
 				96164D861CCA4D27009431AB /* ADJBackoffStrategy.h in Headers */,
 				96164D841CCA4D10009431AB /* ADJSdkClickHandler.h in Headers */,
 				9DA11A7F1C96D2A200980777 /* ADJDeviceInfo.h in Headers */,
@@ -1052,6 +1070,7 @@
 				9601CAE51C74B70600670879 /* ADJEventSuccess.m in Sources */,
 				96E5E38E18BBB48A008E7B30 /* ADJActivityState.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
+				9DAA08A01D2A7B15001C04E4 /* ADJTrackingPixel.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* ADJPackageHandler.m in Sources */,
 				96854A5A1B1F2779002B2874 /* ADJTimerOnce.m in Sources */,
 				968173841C3C2D07002AE1DE /* ADJSessionSuccess.m in Sources */,
@@ -1122,6 +1141,7 @@
 				9DA11A841C96D2A200980777 /* ADJEventFailure.m in Sources */,
 				9DA11A721C96D2A200980777 /* NSData+ADJAdditions.m in Sources */,
 				9DA11A9A1C96D2A300980777 /* Adjust.m in Sources */,
+				9DAA08AE1D2A80B7001C04E4 /* ADJTrackingPixel.m in Sources */,
 				9DA11A901C96D2A300980777 /* ADJResponseData.m in Sources */,
 				9DA11A801C96D2A200980777 /* ADJDeviceInfo.m in Sources */,
 				9DA11A6A1C96D2A200980777 /* ADJActivityHandler.m in Sources */,
