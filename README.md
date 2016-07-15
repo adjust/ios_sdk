@@ -306,7 +306,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 [Adjust trackEvent:event];
 ```
 
-You can read more about special partners and these integrations in our [guide to special partnersd.][special-partners]
+You can read more about special partners and these integrations in our [guide to special partners.][special-partners]
 
 In that case we would track the event and send a request to:
 
@@ -325,6 +325,10 @@ You can read more about using URL callbacks, including a full list of available 
 You can set up the adjust SDK to handle deeplinks that are used to open your app via a custom URL scheme. We will only read 
 certain adjust specific parameters. This is essential if you are planning to run retargeting or re-engagement campaigns with
 deeplinks.
+
+If you are planning to run retargeting or re-engagement campaigns with deep links, you should put the adjust campaign 
+specific parameter into your deep link. For more information on how to run retargeting or re-engagement campaigns with deep 
+links, check our [official docs][reattribution-deeplinks].
 
 In the Project Navigator open the source file your Application Delegate. Find or add the method `openURL` and add the 
 following call to adjust:
@@ -902,6 +906,7 @@ determining amount value**.
 [adjust-universal-links]: https://docs.adjust.com/en/universal-links/#redirecting-to-universal-links-directly
 [universal-links-testing]: https://docs.adjust.com/en/universal-links/#testing-universal-link-implementations
 [ios-purchase-verification]: https://github.com/adjust/ios_purchase_sdk
+[reattribution-deeplinks]: https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
 ## <a id="license">License
 
