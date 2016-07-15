@@ -13,32 +13,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        // Check AdWords Search and Mobile Web.
+        // Adjust.sendAdWordsRequest()
+
         let appToken = "{YourAppToken}"
         let environment = ADJEnvironmentSandbox
 
         let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
 
-        // change the log level
+        // Change the log level.
         adjustConfig.logLevel = ADJLogLevelVerbose
 
-        // enable event buffering
-        // adjustConfig.eventBufferingEnabled = true;
+        // Enable event buffering.
+        // adjustConfig.eventBufferingEnabled = true
 
-        // set default tracker
+        // Set default tracker.
         // adjustConfig.defaultTracker = "{TrackerToken}"
 
-        // send in the background
+        // Send in the background.
         // adjustConfig.sendInBackground = true
 
-        // set an attribution delegate
+        // Set an attribution delegate.
         adjustConfig.delegate = self
 
+        // Initialise the SDK.
         Adjust.appDidLaunch(adjustConfig)
 
-        // put the SDK in offline mode
+        // Put the SDK in offline mode.
         // Adjust.setOfflineMode(true);
         
-        // disable the SDK
+        // Disable the SDK
         // Adjust.setEnabled(false);
 
         return true

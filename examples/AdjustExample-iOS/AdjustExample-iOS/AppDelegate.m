@@ -9,6 +9,7 @@
 #import "Constants.h"
 #import "AppDelegate.h"
 #import "ADJSystemProfile.h"
+
 @interface AppDelegate ()
 
 @end
@@ -18,39 +19,44 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    // configure adjust
+    // Check AdWords Search and Mobile Web.
+    [Adjust sendAdWordsRequest];
+
+    // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
 
-    // change the log level
+    // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
 
-    // enable event buffering
-    //[adjustConfig setEventBufferingEnabled:YES];
+    // Enable event buffering.
+    // [adjustConfig setEventBufferingEnabled:YES];
 
-    // set default tracker
-    //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
+    // Set default tracker.
+    // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
 
-    // send in the background
-    //[adjustConfig setSendInBackground:YES];
+    // Send in the background.
+    // [adjustConfig setSendInBackground:YES];
 
-    // set an attribution delegate
+    // Set an attribution delegate.
     [adjustConfig setDelegate:self];
 
+    // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
 
-    // put the SDK in offline mode
-    //[Adjust setOfflineMode:YES];
+    // Put the SDK in offline mode.
+    // [Adjust setOfflineMode:YES];
 
-    // disable the SDK
-    //[Adjust setEnabled:NO];
+    // Disable the SDK.
+    // [Adjust setEnabled:NO];
 
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     NSLog(@"application openURL %@", url);
+
     [Adjust appWillOpenUrl:url];
 
     return YES;
@@ -76,7 +82,7 @@
     NSLog(@"adjust session failure %@", sessionFailureResponseData);
 }
 
-// evaluate deeplink to be launched
+// Evaluate deeplink to be launched.
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
     return YES;
 }
