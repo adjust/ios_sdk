@@ -1,7 +1,12 @@
+### Version 4.8.0 (xxth July 2016)
+#### Added `sendAdWordsRequest` method on `Adjust` instance to support AdWords Search and Mobile Web tracking.
+
+---
+
 ### Version 4.7.3 (12th July 2016)
 #### Changed
-- Adding #define for `CPUFAMILY_INTEL_YONAH` due to its deprecation in iOS 10.
-- Adding #define for `CPUFAMILY_INTEL_MEROM` due to its deprecation in iOS 10.
+- Added #define for `CPUFAMILY_INTEL_YONAH` due to its deprecation in iOS 10.
+- Added #define for `CPUFAMILY_INTEL_MEROM` due to its deprecation in iOS 10.
 
 ---
 
