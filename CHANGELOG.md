@@ -1,4 +1,4 @@
-### Version 4.8.0 (xxth July 2016)
+### Version 4.8.0 (18th July 2016)
 #### Added 
 - Added `sendAdWordsRequest` method on `Adjust` instance to support AdWords Search and Mobile Web tracking.
 
