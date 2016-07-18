@@ -20,7 +20,7 @@
     // Override point for customization after application launch.
 
     // Check AdWords Search and Mobile Web.
-    [Adjust sendAdWordsRequest];
+    // [Adjust sendAdWordsRequest];
 
     // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
