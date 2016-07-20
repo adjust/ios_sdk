@@ -60,6 +60,8 @@
 
 @interface ADJAttributionResponseData : ADJResponseData
 
+@property (nonatomic, strong) NSURL * deeplink;
+
 @end
 
 @interface ADJClickResponseData : ADJResponseData

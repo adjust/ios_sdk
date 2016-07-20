@@ -119,6 +119,8 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
                   attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     [selfI checkAttributionI:selfI responseData:attributionResponseData];
 
+    [selfI checkDeeplinkI:selfI attributionResponseData:attributionResponseData];
+
     [selfI.activityHandler launchAttributionResponseTasks:attributionResponseData];
 }
 
@@ -143,6 +145,25 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 
     NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
     responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+}
+
+- (void)checkDeeplinkI:(ADJAttributionHandler*)selfI
+attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
+    if (attributionResponseData.jsonResponse == nil) {
+        return;
+    }
+
+    NSDictionary * jsonAttribution = [attributionResponseData.jsonResponse objectForKey:@"attribution"];
+    if (jsonAttribution == nil) {
+        return;
+    }
+
+    NSString *deepLink = [jsonAttribution objectForKey:@"deeplink"];
+    if (deepLink == nil) {
+        return;
+    }
+
+    attributionResponseData.deeplink = [NSURL URLWithString:deepLink];
 }
 
 - (void)requestAttributionI:(ADJAttributionHandler*)selfI {

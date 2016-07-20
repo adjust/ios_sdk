@@ -187,6 +187,12 @@
     return copy;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ success:%d willRetry:%d attribution:%@ deeplink:%@ json:%@",
+            self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.deeplink, self.jsonResponse];
+}
+
+
 @end
 
 @implementation ADJClickResponseData

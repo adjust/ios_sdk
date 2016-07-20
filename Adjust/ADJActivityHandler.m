@@ -885,29 +885,26 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *)selfI
-            responseData:(ADJResponseData *)responseData {
-    if (responseData == nil) {
+            responseData:(ADJAttributionResponseData *)attributionResponseData {
+    if (attributionResponseData == nil) {
         return;
     }
 
-    NSString *deepLink = [responseData.jsonResponse objectForKey:@"deeplink"];
-    if (deepLink == nil) {
+    if (attributionResponseData.deeplink == nil) {
         return;
     }
 
-    NSURL* deepLinkUrl = [NSURL URLWithString:deepLink];
-
-    [selfI.logger info:@"Open deep link (%@)", deepLink];
+    [selfI.logger info:@"Open deep link (%@)", attributionResponseData.deeplink.absoluteString];
 
     [ADJUtil launchInMainThread:^{
         BOOL toLaunchDeeplink = YES;
 
         if ([selfI.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
-            toLaunchDeeplink = [selfI.adjustDelegate adjustDeeplinkResponse:deepLinkUrl];
+            toLaunchDeeplink = [selfI.adjustDelegate adjustDeeplinkResponse:attributionResponseData.deeplink];
         }
 
         if (toLaunchDeeplink) {
-            [ADJUtil launchDeepLinkMain:deepLinkUrl];
+            [ADJUtil launchDeepLinkMain:attributionResponseData.deeplink];
         }
     }];
 }
