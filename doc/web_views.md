@@ -230,6 +230,18 @@ adjustEvent.addCallbackParameter('foo', 'bar')
 Adjust.trackEvent(adjustEvent)
 ```
 
+In that case we would track the event and send a request to:
+
+    http://www.adjust.com/callback?key=value&foo=bar
+
+It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
+resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
+don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
+an event, these parameters won't even be read.
+
+You can read more about using URL callbacks, including a full list of available values, in our 
+[callbacks guide][callbacks-guide].
+
 #### <a id="partner-parameters">Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the integrations that have been activated in your 
@@ -246,19 +258,7 @@ adjustEvent.addPartnerParameter('foo', 'bar')
 Adjust.trackEvent(adjustEvent)
 ```
 
-You can read more about special partners and these integrations in our [guide to special partnersd.][special-partners]
-
-In that case we would track the event and send a request to:
-
-    http://www.adjust.com/callback?key=value&foo=bar
-
-It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
-resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
-don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
-an event, these parameters won't even be read.
-
-You can read more about using URL callbacks, including a full list of available values, in our 
-[callbacks guide][callbacks-guide].
+You can read more about special partners and these integrations in our [guide to special partners.][special-partners]
 
 ### <a id="attribution-callback">Attribution callback
 
@@ -510,24 +510,26 @@ adjustConfig.setOpenDeferredDeeplink(false)
 
 If you do not specify anything, by default, our SDK will try to open the link.
 
+[dashboard]:  http://adjust.com
 [adjust.com]: http://adjust.com
-[dashboard]: http://adjust.com
-[web_view_js_bridge]: https://github.com/marcuswestin/WebViewJavascriptBridge
-[basic_integration]: https://github.com/adjust/ios_sdk/#basic-integration
-[bridge_drag]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_drag.png
-[bridge_add]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_add.png
-[bridge_init_objc]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_objc.png
-[wvjsb_readme]: https://github.com/marcuswestin/WebViewJavascriptBridge#usage
-[bridge_init_js]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js.png
-[bridge_init_js_xcode]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js_xcode.png
+
+[wvjsb_readme]:             https://github.com/marcuswestin/WebViewJavascriptBridge#usage
+[ios_sdk_ulinks]:           https://github.com/adjust/ios_sdk/#universal-links
+[callbacks-guide]:          https://docs.adjust.com/en/callbacks
+[attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[special-partners]:         https://docs.adjust.com/en/special-partners
+[basic_integration]:        https://github.com/adjust/ios_sdk/#basic-integration
+[web_view_js_bridge]:       https://github.com/marcuswestin/WebViewJavascriptBridge
+[currency-conversion]:      https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[event-tracking-guide]:     https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues
+[reattribution-deeplinks]:  https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
+
+[bridge_add]:             https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_add.png
+[bridge_drag]:            https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_drag.png
+[bridge_init_js]:         https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js.png
+[bridge_init_objc]:       https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_objc.png
+[bridge_init_js_xcode]:   https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js_xcode.png
 [bridge_install_tracked]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_install_tracked.png
-[currency-conversion]: https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
-[event-tracking-guide]: https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues
-[special-partners]: https://docs.adjust.com/en/special-partners
-[callbacks-guide]: https://docs.adjust.com/en/callbacks
-[ios_sdk_ulinks]: https://github.com/adjust/ios_sdk/#universal-links
-[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[reattribution-deeplinks]: https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
 ## <a id="license">License
 
