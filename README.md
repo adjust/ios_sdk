@@ -1,6 +1,11 @@
 ## Summary
 
-This is the iOS SDK of adjust™. You can read more about adjust™ at [adjust.com].
+This is the iOS SDK of adjust™. You can read more about adjust™ at
+[adjust.com].
+
+If your app is an app which uses web views you would
+like to use adjust tracking from Javascript code, please consult our
+[iOS web views SDK guide][ios-web-views-guide].
 
 ## Table of contents
 
@@ -292,6 +297,18 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 [Adjust trackEvent:event];
 ```
 
+In that case we would track the event and send a request to:
+
+    http://www.adjust.com/callback?key=value&foo=bar
+
+It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
+resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
+don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
+an event, these parameters won't even be read.
+
+You can read more about using URL callbacks, including a full list of available values, in our 
+[callbacks guide][callbacks-guide].
+
 #### <a id="partner-parameters">Partner parameters
 
 You can also add parameters to be transmitted to network partners, for the integrations that have been activated in your 
@@ -306,19 +323,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 [Adjust trackEvent:event];
 ```
 
-You can read more about special partners and these integrations in our [guide to special partners.][special-partners]
-
-In that case we would track the event and send a request to:
-
-    http://www.adjust.com/callback?key=value&foo=bar
-
-It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
-resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
-don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
-an event, these parameters won't even be read.
-
-You can read more about using URL callbacks, including a full list of available values, in our 
-[callbacks guide][callbacks-guide].
+You can read more about special partners and these integrations in our [guide to special partners][special-partners].
 
 ### <a id="deeplink-reattributions">7. Deeplink reattributions
 
@@ -877,6 +882,7 @@ determining amount value**.
 [cocoapods]: http://cocoapods.org
 [carthage]: https://github.com/Carthage/Carthage
 [dashboard]: http://adjust.com
+[ios-web-views-guide]: https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
 [examples]: http://github.com/adjust/ios_sdk/tree/master/examples
 [example-ios-objc]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
 [example-ios-swift]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
