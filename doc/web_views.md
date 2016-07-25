@@ -258,7 +258,7 @@ adjustEvent.addPartnerParameter('foo', 'bar')
 Adjust.trackEvent(adjustEvent)
 ```
 
-You can read more about special partners and these integrations in our [guide to special partners.][special-partners]
+You can read more about special partners and these integrations in our [guide to special partners][special-partners].
 
 ### <a id="attribution-callback">Attribution callback
 
