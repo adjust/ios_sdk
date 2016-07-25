@@ -9,37 +9,37 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
 ## Table of contents
 
 * [Basic integration](#basic-integration)
-    * [Add native adjust iOS SDK](#native-add)
-    * [Add the AdjustBridge to your project](#bridge-add)
-    * [Integrate the AdjustBridge into your app](#bridge-integrate-app)
-    * [Integrate the AdjustBridge into your web view](#bridge-integrate-web)
-        * [Basic setup](#basic-setup)
-        * [Adjust logging](#adjust-logging)
-    * [Build your app](#build-the-app)
+   * [Add native adjust iOS SDK](#native-add)
+   * [Add the AdjustBridge to your project](#bridge-add)
+   * [Integrate the AdjustBridge into your app](#bridge-integrate-app)
+   * [Integrate the AdjustBridge into your web view](#bridge-integrate-web)
+   * [Basic setup](#basic-setup)
+   * [AdjustBridge logging](#bridge-logging)
+   * [Build your app](#build-the-app)
 * [Additional features](#additional-features)
-    * [Event tracking](#event-tracking)
-        * [Revenue tracking](#revenue-tracking)
-        * [Callback parameters](#callback-parameters)
-        * [Partner parameters](#partner-parameters)
-    * [Event buffering](#event-buffering)
-    * [Disable tracking](#disable-tracking)
-    * [Offline mode](#offline-mode)
-    * [Background tracking](#background-tracking)
-    * [Device IDs](#device-ids)
-    * [Attribution callback](#attribution-callback)
-    * [Event and session callbacks](#event-session-callbacks)
-    * [Deep linking](#deeplink)
-    * [Deferred deeplink callback](#deferred-deeplink-callback)
+   * [Event tracking](#event-tracking)
+      * [Revenue tracking](#revenue-tracking)
+      * [Callback parameters](#callback-parameters)
+      * [Partner parameters](#partner-parameters)
+   * [Attribution callback](#attribution-callback)
+   * [Event and session callbacks](#event-session-callbacks)
+   * [Event buffering](#event-buffering)
+   * [Disable tracking](#disable-tracking)
+   * [Offline mode](#offline-mode)
+   * [Background tracking](#background-tracking)
+   * [Device IDs](#device-ids)
+   * [Deep linking](#deeplinking)
+      * [Deferred deeplink callback](#deferred-deeplinking-callback)
 * [License](#license)
 
 ## <a id="basic-integration">Basic integration
 
-### <a id="native-add">1. Add native adjust iOS SDK
+### <a id="native-add">Add native adjust iOS SDK
 
 In oder to use adjust SDK in your web views, you need to add native adjust iOS SDK to your app. To install native iOS SDK 
 of adjust, follow the `Basic integration` chapter of our [iOS SDK README][basic_integration].
 
-### <a id="bridge-add">2. Add the AdjustBridge to your project
+### <a id="bridge-add">Add the AdjustBridge to your project
 
 In Xcode's `Project Navigator` locate the `Supporting Files` group (or any other group of your choice). From Finder drag 
 the `AdjustBridge` subdirectory into Xcode's `Supporting Files` group.
@@ -78,7 +78,7 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 
 ![][bridge_init_objc]
 
-### <a id="bridge-integrate-web">4. Integrate the AdjustBrige into your web view
+### <a id="bridge-integrate-web">Integrate the AdjustBrige into your web view
 
 To use the Javascript bridge of on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
 [README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the adjust iOS web 
@@ -111,7 +111,7 @@ setupWebViewJavascriptBridge(function(bridge) {
 
 ![][bridge_init_js]
 
-#### <a id="basic-setup">Basic setup
+### <a id="basic-setup">Basic setup
 
 In your HTML file, add references to the adjust Javascript files:
 
@@ -155,7 +155,7 @@ back to `AdjustConfig.EnvironmentSandbox` when you start developing and testing 
 We use this environment to distinguish between real traffic and test traffic from test devices. It is very important that 
 you keep this value meaningful at all times! This is especially important if you are tracking revenue.
 
-#### <a id="adjust-logging">Adjust logging
+### <a id="bridge-logging">AdjustBridge logging
 
 You can increase or decrease the amount of logs you see in tests by calling `setLogLevel` on your `AdjustConfig` instance 
 with one of the following parameters:
@@ -169,7 +169,7 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelError)   // disable warnings as we
 adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert)  // disable errors as well
 ```
 
-### <a id="build-the-app">5. Build your app
+### <a id="build-the-app">Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches
 for the first time, you should see the info log `Install tracked`.
@@ -180,7 +180,7 @@ for the first time, you should see the info log `Install tracked`.
 
 Once you integrate the adjust SDK into your project, you can take advantage of the following features.
 
-### <a id="event-tracking">6. Event tracking
+### <a id="event-tracking">Event tracking
 
 You can use adjust to track events. Lets say you want to track every tap on a particular button. You would create a new 
 event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's 
@@ -260,78 +260,7 @@ an event, these parameters won't even be read.
 You can read more about using URL callbacks, including a full list of available values, in our 
 [callbacks guide][callbacks-guide].
 
-### <a id="event-buffering">7. Event buffering
-
-If your app makes heavy use of event tracking, you might want to delay some HTTP requests in order to send them in one batch
-every minute. You can enable event buffering with your `AdjustConfig` instance:
-
-```js
-adjustConfig.setEventBufferingEnabled(true)
-```
-
-### <a id="disable-tracking">8. Disable tracking
-
-You can disable the adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter 
-`false`. **This setting is remembered between sessions**, but it can only be activated after the first session.
-
-```js
-Adjust.setEnabled(false)
-```
-
-<a id="is-enabled">You can check if the adjust SDK is currently enabled by calling the function `isEnabled`. It is always 
-possible to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
-
-```js
-Adjust.isEnabled(function(isEnabled) {
-    if (isEnabled) {
-        // SDK is enabled.    
-    } else {
-        // SDK is disabled.
-    }
-})
-```
-
-### <a id="offline-mode">9. Offline mode
-
-You can put the adjust SDK in offline mode to suspend transmission to our servers while retaining tracked data to be sent 
-later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in 
-offline mode.
-
-You can activate offline mode by calling `setOfflineMode` with the parameter `true`.
-
-```js
-Adjust.setOfflineMode(true)
-```
-
-Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`. When the adjust SDK is put back in 
-online mode, all saved information is send to our servers with the correct time information.
-
-Unlike disabling tracking, this setting is **not remembered bettween sessions**. This means that the SDK is in online mode 
-whenever it is started, even if the app was terminated in offline mode.
-
-### <a id="background-tracking">10. Background tracking
-
-The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is on the background. You can change
-this behaviour in your `AdjustConfig` instance:
-
-```js
-adjustConfig.setSendInBackground(true)
-```
-
-### <a id="device-ids">11. Device IDs
-
-Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate 
-reporting. 
-
-To obtain the device identifier IDFA, call the function `getIdfa`:
-
-```js
-Adjust.getIdfa(function(idfa) {
-    // ...
-});
-```
-
-### <a id="attribution-callback">12. Attribution callback
+### <a id="attribution-callback">Attribution callback
 
 You can register a callback method to be notified of tracker attribution changes. Due to the different sources considered 
 for attribution, this information can not by provided synchronously.
@@ -365,7 +294,7 @@ the `attribution` parameter. Here is a quick summary of its properties:
 - `var creative` the creative grouping level of the current install.
 - `var clickLabel` the click label of the current install.
 
-### <a id="event-session-callbacks">13. Event and session callbacks
+### <a id="event-session-callbacks">Event and session callbacks
 
 You can register a callback method to be notified of successful and failed tracked events and/or sessions.
 
@@ -418,7 +347,78 @@ And both event and session failed objects also contain:
 
 - `var willRetry` indicates there will be an attempt to resend the package at a later time.
 
-### <a id="deeplink">14. Deep linking
+### <a id="event-buffering">Event buffering
+
+If your app makes heavy use of event tracking, you might want to delay some HTTP requests in order to send them in one batch
+every minute. You can enable event buffering with your `AdjustConfig` instance:
+
+```js
+adjustConfig.setEventBufferingEnabled(true)
+```
+
+### <a id="disable-tracking">Disable tracking
+
+You can disable the adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter 
+`false`. **This setting is remembered between sessions**, but it can only be activated after the first session.
+
+```js
+Adjust.setEnabled(false)
+```
+
+<a id="is-enabled">You can check if the adjust SDK is currently enabled by calling the function `isEnabled`. It is always 
+possible to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
+
+```js
+Adjust.isEnabled(function(isEnabled) {
+    if (isEnabled) {
+        // SDK is enabled.    
+    } else {
+        // SDK is disabled.
+    }
+})
+```
+
+### <a id="offline-mode">Offline mode
+
+You can put the adjust SDK in offline mode to suspend transmission to our servers while retaining tracked data to be sent 
+later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in 
+offline mode.
+
+You can activate offline mode by calling `setOfflineMode` with the parameter `true`.
+
+```js
+Adjust.setOfflineMode(true)
+```
+
+Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`. When the adjust SDK is put back in 
+online mode, all saved information is send to our servers with the correct time information.
+
+Unlike disabling tracking, this setting is **not remembered bettween sessions**. This means that the SDK is in online mode 
+whenever it is started, even if the app was terminated in offline mode.
+
+### <a id="background-tracking">Background tracking
+
+The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is on the background. You can change
+this behaviour in your `AdjustConfig` instance:
+
+```js
+adjustConfig.setSendInBackground(true)
+```
+
+### <a id="device-ids">Device IDs
+
+Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate 
+reporting. 
+
+To obtain the device identifier IDFA, call the function `getIdfa`:
+
+```js
+Adjust.getIdfa(function(idfa) {
+    // ...
+});
+```
+
+### <a id="deeplinking">Deep linking
 
 You can set up the adjust SDK to handle deep links that are used to open your app via a custom URL scheme. 
 
@@ -482,7 +482,7 @@ setupWebViewJavascriptBridge(function(bridge) {
 })
 ```
 
-### <a id="deferred-deeplink-callback">15. Deferred deeplink callback
+#### <a id="deferred-deeplinking-callback">Deferred deeplink callback
 
 You can register a callback method to get notified before a deferred deeplink is opened and decide whether the adjust SDK 
 should open it or not.
