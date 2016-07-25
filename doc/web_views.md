@@ -10,9 +10,9 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
 
 * [Basic integration](#basic-integration)
    * [Add native adjust iOS SDK](#native-add)
-   * [Add the AdjustBridge to your project](#bridge-add)
-   * [Integrate the AdjustBridge into your app](#bridge-integrate-app)
-   * [Integrate the AdjustBridge into your web view](#bridge-integrate-web)
+   * [Add AdjustBridge to your project](#bridge-add)
+   * [Integrate AdjustBridge into your app](#bridge-integrate-app)
+   * [Integrate AdjustBridge into your web view](#bridge-integrate-web)
    * [Basic setup](#basic-setup)
    * [AdjustBridge logging](#bridge-logging)
    * [Build your app](#build-the-app)
@@ -36,10 +36,9 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
 
 ### <a id="native-add">Add native adjust iOS SDK
 
-In oder to use adjust SDK in your web views, you need to add native adjust iOS SDK to your app. To install native iOS SDK 
-of adjust, follow the `Basic integration` chapter of our [iOS SDK README][basic_integration].
+In oder to use adjust SDK in your web views, you need to add adjust's native iOS SDK to your app. To install adjust's native iOS SDK, follow the `Basic integration` chapter of our [iOS SDK README][basic_integration].
 
-### <a id="bridge-add">Add the AdjustBridge to your project
+### <a id="bridge-add">Add AdjustBridge to your project
 
 In Xcode's `Project Navigator` locate the `Supporting Files` group (or any other group of your choice). From Finder drag 
 the `AdjustBridge` subdirectory into Xcode's `Supporting Files` group.
@@ -51,7 +50,7 @@ In the dialog `Choose options for adding these files` make sure to check the che
 
 ![][bridge_add]
 
-### <a id="bridge-integrate-app">3. Integrate the AdjustBridge into your app
+### <a id="bridge-integrate-app">3. Integrate AdjustBridge into your app
 
 In the Project Navigator open the source file your View Controller. Add the `import` statement at the top of the file. In 
 the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the following calls to `AdjustBridge`:
@@ -78,9 +77,9 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 
 ![][bridge_init_objc]
 
-### <a id="bridge-integrate-web">Integrate the AdjustBrige into your web view
+### <a id="bridge-integrate-web">Integrate AdjustBrige into your web view
 
-To use the Javascript bridge of on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
+To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
 [README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the adjust iOS web 
 bridge:
 
@@ -139,7 +138,7 @@ setupWebViewJavascriptBridge(function(bridge) {
 
 ![][bridge_init_js_xcode]
 
-Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
+Replace `{YourAppToken}` with your app token. You can find it in your [dashboard].
 
 Depending on whether you build your app for testing or for production, you must set `environment` with one of these values:
 
@@ -182,7 +181,7 @@ Once you integrate the adjust SDK into your project, you can take advantage of t
 
 ### <a id="event-tracking">Event tracking
 
-You can use adjust to track events. Lets say you want to track every tap on a particular button. You would create a new 
+You can use adjust to track events. Let's say you want to track every tap on a particular button. You would create a new 
 event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's 
 `onclick` method you would then add the following lines to track the tap:
 
@@ -262,8 +261,8 @@ You can read more about special partners and these integrations in our [guide to
 
 ### <a id="attribution-callback">Attribution callback
 
-You can register a callback method to be notified of tracker attribution changes. Due to the different sources considered 
-for attribution, this information can not by provided synchronously.
+You can register a callback method to be notified of attribution changes. Due to the different sources considered 
+for attribution, this information cannot by provided synchronously.
 
 Please make sure to consider our [applicable attribution data policies][attribution-data].
 
@@ -296,9 +295,11 @@ the `attribution` parameter. Here is a quick summary of its properties:
 
 ### <a id="event-session-callbacks">Event and session callbacks
 
-You can register a callback method to be notified of successful and failed tracked events and/or sessions.
+You can register a listener to be notified when events or sessions are tracked. There are four listeners: one for tracking 
+successful events, one for tracking failed events, one for tracking successful sessions and one for tracking failed 
+sessions.
 
-Follow these steps and implement the following callback methods for successful tracked events:
+Follow these steps and implement the following callback methods to track successful events:
 
 ```js
 adjustConfig.setEventSuccessCallback(function(eventSuccess) {
@@ -306,7 +307,7 @@ adjustConfig.setEventSuccessCallback(function(eventSuccess) {
 })
 ```
 
-The following delegate callback function for failed tracked events:
+The following delegate callback function to track failed events:
 
 ```js
 adjustConfig.setEventFailureCallback(function(eventFailure) {
@@ -314,7 +315,7 @@ adjustConfig.setEventFailureCallback(function(eventFailure) {
 })
 ```
 
-For successful tracked sessions:
+To track successful sessions:
 
 ```js
 adjustConfig.setSessionSuccessCallback(function(sessionSuccess) {
@@ -322,7 +323,7 @@ adjustConfig.setSessionSuccessCallback(function(sessionSuccess) {
 })
 ```
 
-And for failed tracked sessions:
+And to track failed sessions:
 
 ```js
 adjustConfig.setSessionFailureCallback(function(sessionFailure) {
@@ -398,7 +399,7 @@ whenever it is started, even if the app was terminated in offline mode.
 
 ### <a id="background-tracking">Background tracking
 
-The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is on the background. You can change
+The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is in the background. You can change
 this behaviour in your `AdjustConfig` instance:
 
 ```js
@@ -496,11 +497,11 @@ adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
 })
 ```
 
-The callback function will be called after the SDK receives a deffered deeplink from ther server and before SDK tries to 
+The callback function will be called after the SDK receives a deferred deeplink from the server and before SDK tries to 
 open it. 
 
-With another setting on the `AdjustConfig` instance, you have the possibility to say to our SDK should it try to open this 
-link or not. You can do that calling the `setOpenDeferredDeeplink` method:
+With another setting on the `AdjustConfig` instance, you have the possibility to tell our SDK to open this 
+link or not. You can do this by calling the `setOpenDeferredDeeplink` method:
 
 ```js
 adjustConfig.setOpenDeferredDeeplink(true)
