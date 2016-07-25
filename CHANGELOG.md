@@ -1,3 +1,12 @@
+### Version 4.8.0 (25th July 2016)
+#### Added 
+- Added tracking support for native web apps (no SDK version change).
+
+### Changed
+- Updated docs.
+
+---
+
 ### Version 4.8.0 (18th July 2016)
 #### Added 
 - Added `sendAdWordsRequest` method on `Adjust` instance to support AdWords Search and Mobile Web tracking.
