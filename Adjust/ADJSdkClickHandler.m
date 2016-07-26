@@ -104,33 +104,36 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
         return;
     }
 
+    dispatch_block_t work = ^{
+        [ADJUtil sendPostRequest:self.baseUrl
+                       queueSize:queueSize - 1
+              prefixErrorMessage:sdkClickPackage.failureMessage
+              suffixErrorMessage:@"Will retry later"
+                 activityPackage:sdkClickPackage
+             responseDataHandler:^(ADJResponseData * responseData)
+         {
+             if (responseData.jsonResponse == nil) {
+                 NSInteger retries = [sdkClickPackage increaseRetries];
+                 [self.logger error:@"Retrying sdk_click package for the %d time", retries];
+
+                 [self sendSdkClick:sdkClickPackage];
+             }
+         }];
+
+        [self.packageQueue removeObjectAtIndex:0];
+        [self sendNextSdkClick];
+    };
+
     NSInteger retries = [sdkClickPackage retries];
     if (retries > 0) {
         NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
         NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
         [self.logger verbose:@"Sleeping for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
-
-        [NSThread sleepForTimeInterval:waitTime];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
+    } else {
+        work();
     }
-
-    [ADJUtil sendPostRequest:self.baseUrl
-                   queueSize:queueSize - 1
-          prefixErrorMessage:sdkClickPackage.failureMessage
-          suffixErrorMessage:@"Will retry later"
-             activityPackage:sdkClickPackage
-         responseDataHandler:^(ADJResponseData * responseData)
-     {
-         if (responseData.jsonResponse == nil) {
-             NSInteger retries = [sdkClickPackage increaseRetries];
-             [self.logger error:@"Retrying sdk_click package for the %d time", retries];
-
-             [self sendSdkClick:sdkClickPackage];
-         }
-     }];
-
-    [self.packageQueue removeObjectAtIndex:0];
-    [self sendNextSdkClick];
 }
 
 @end

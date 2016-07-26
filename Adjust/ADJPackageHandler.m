@@ -82,22 +82,23 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     responseData.willRetry = YES;
     [self.activityHandler finishedTracking:responseData];
 
+    dispatch_block_t work = ^{
+        [self.logger verbose:@"Package handler can send"];
+        dispatch_semaphore_signal(self.sendingSemaphore);
+
+        [self sendFirstPackage];
+    };
+
     if (activityPackage != nil) {
         NSInteger retries = [activityPackage increaseRetries];
-
         NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
         NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
         [self.logger verbose:@"Sleeping for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
-
-        [NSThread sleepForTimeInterval:waitTime];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
+    } else {
+        work();
     }
-
-    [self.logger verbose:@"Package handler can send"];
-    dispatch_semaphore_signal(self.sendingSemaphore);
-
-    // Try to send the same package after sleeping
-    [self sendFirstPackage];
 }
 
 - (void)pauseSending {
