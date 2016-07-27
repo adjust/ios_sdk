@@ -66,13 +66,13 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your `
 [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.8.0'
+pod 'Adjust', '~> 4.8.1'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.8.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.8.1'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue with 
