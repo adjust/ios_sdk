@@ -94,11 +94,11 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     if (queueSize == 0) return;
 
     ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
+    [self.packageQueue removeObjectAtIndex:0];
 
     if (![sdkClickPackage isKindOfClass:[ADJActivityPackage class]]) {
         [self.logger error:@"Failed to read sdk_click package"];
 
-        [self.packageQueue removeObjectAtIndex:0];
         [self sendNextSdkClick];
 
         return;
@@ -120,7 +120,6 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
              }
          }];
 
-        [self.packageQueue removeObjectAtIndex:0];
         [self sendNextSdkClick];
     };
 
