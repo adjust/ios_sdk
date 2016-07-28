@@ -89,16 +89,17 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         [self sendFirstPackage];
     };
 
-    if (activityPackage != nil) {
-        NSInteger retries = [activityPackage increaseRetries];
-        NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
-        NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
-
-        [self.logger verbose:@"Sleeping for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
-    } else {
+    if (activityPackage == nil) {
         work();
+        return;
     }
+
+    NSInteger retries = [activityPackage increaseRetries];
+    NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+    NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+
+    [self.logger verbose:@"Waiting for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
 - (void)pauseSending {

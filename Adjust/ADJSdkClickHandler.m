@@ -125,15 +125,17 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     };
 
     NSInteger retries = [sdkClickPackage retries];
-    if (retries > 0) {
-        NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
-        NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
-        [self.logger verbose:@"Sleeping for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
-    } else {
+    if (retries <= 0) {
         work();
+        return;
     }
+
+    NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+    NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+
+    [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
 @end
