@@ -288,7 +288,7 @@ event gets tracked. You can add callback parameters to that event by calling `ad
 tracking it. We will then append these parameters to your callback URL.
 
 For example, suppose you have registered the URL
-`http://www.adjust.com/callback` then track an event like this:
+`http://www.mydomain.com/callback` then track an event like this:
 
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
@@ -299,12 +299,11 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 In that case we would track the event and send a request to:
 
-    http://www.adjust.com/callback?key=value&foo=bar
+    http://www.mydomain.com/callback?key=value&foo=bar
 
 It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
 resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
-don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
-an event, these parameters won't even be read.
+don't store any of your custom parameters, but only append them to your callbacks, thus without a callback they will not be saved nor sent to you.
 
 You can read more about using URL callbacks, including a full list of available values, in our 
 [callbacks guide][callbacks-guide].
@@ -739,7 +738,7 @@ here are some of them:
 
 * User deleting your app before the SDK was even inialised, causing install and session never to be tracked, thus never reported in the dashboard.
 * If user downloads and opens your app before midnight and the adjust SDK gets initialised after midnight, causing install and session to be reported on another day.
-* If user didn't use your app on some day but opens it shortly after midnight and the SDK gets initialised after midnight, causing DAU to be reported on another day from the day of the app opening.
+
 
 For all these reasons, please follow the advices from this document and initialise the adjust SDK in the 
 `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate.
@@ -822,7 +821,7 @@ send `sdk_click` package anyway to the adjust backend. If you have your log leve
 [Adjust]v:      source                 iad3
 ```
 
-If for some reason this `sdk_click` would be taken in consideration, it might happen that if some user has opened your app 
+If for some reason this false `sdk_click` would be taken in consideration, event though a user may have opened your app 
 by clicking on some other campaign URL or even as an organic user, he will get attributed to this unexisting iAd source.
 
 This is the reason why our backend ignores it and informs you with this message:
