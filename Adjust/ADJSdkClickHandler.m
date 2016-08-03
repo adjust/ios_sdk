@@ -94,43 +94,47 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     if (queueSize == 0) return;
 
     ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
+    [self.packageQueue removeObjectAtIndex:0];
 
     if (![sdkClickPackage isKindOfClass:[ADJActivityPackage class]]) {
         [self.logger error:@"Failed to read sdk_click package"];
 
-        [self.packageQueue removeObjectAtIndex:0];
         [self sendNextSdkClick];
 
         return;
     }
 
+    dispatch_block_t work = ^{
+        [ADJUtil sendPostRequest:self.baseUrl
+                       queueSize:queueSize - 1
+              prefixErrorMessage:sdkClickPackage.failureMessage
+              suffixErrorMessage:@"Will retry later"
+                 activityPackage:sdkClickPackage
+             responseDataHandler:^(ADJResponseData * responseData)
+         {
+             if (responseData.jsonResponse == nil) {
+                 NSInteger retries = [sdkClickPackage increaseRetries];
+                 [self.logger error:@"Retrying sdk_click package for the %d time", retries];
+
+                 [self sendSdkClick:sdkClickPackage];
+             }
+         }];
+
+        [self sendNextSdkClick];
+    };
+
     NSInteger retries = [sdkClickPackage retries];
-    if (retries > 0) {
-        NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
-        NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
-        [self.logger verbose:@"Sleeping for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
-
-        [NSThread sleepForTimeInterval:waitTime];
+    if (retries <= 0) {
+        work();
+        return;
     }
 
-    [ADJUtil sendPostRequest:self.baseUrl
-                   queueSize:queueSize - 1
-          prefixErrorMessage:sdkClickPackage.failureMessage
-          suffixErrorMessage:@"Will retry later"
-             activityPackage:sdkClickPackage
-         responseDataHandler:^(ADJResponseData * responseData)
-     {
-         if (responseData.jsonResponse == nil) {
-             NSInteger retries = [sdkClickPackage increaseRetries];
-             [self.logger error:@"Retrying sdk_click package for the %d time", retries];
+    NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+    NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
-             [self sendSdkClick:sdkClickPackage];
-         }
-     }];
-
-    [self.packageQueue removeObjectAtIndex:0];
-    [self sendNextSdkClick];
+    [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
 @end

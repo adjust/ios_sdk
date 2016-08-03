@@ -38,6 +38,7 @@
 		963909A61BCBFF8D00A2E8A4 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9639098F1BCBFF8D00A2E8A4 /* ADJTimerOnce.m */; };
 		963909A71BCBFF8D00A2E8A4 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909911BCBFF8D00A2E8A4 /* Adjust.m */; };
 		963909A81BCBFF8D00A2E8A4 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909931BCBFF8D00A2E8A4 /* ADJUtil.m */; };
+		964E17FD1D50C6250097770B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 964E17FC1D50C6250097770B /* SafariServices.framework */; };
 		96BA940B1C3D57FD00C96245 /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA94091C3D57FD00C96245 /* ADJSessionFailure.m */; };
 		96BA940C1C3D57FD00C96245 /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BA940A1C3D57FD00C96245 /* ADJSessionSuccess.m */; };
 		96E423CA1C85F3B50006729A /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E423C71C85F3B50006729A /* ADJEventFailure.m */; };
@@ -108,6 +109,7 @@
 		963909911BCBFF8D00A2E8A4 /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		963909921BCBFF8D00A2E8A4 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		963909931BCBFF8D00A2E8A4 /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
+		964E17FC1D50C6250097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		96BA94071C3D57FD00C96245 /* ADJSessionSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionSuccess.h; sourceTree = "<group>"; };
 		96BA94081C3D57FD00C96245 /* ADJSessionFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionFailure.h; sourceTree = "<group>"; };
 		96BA94091C3D57FD00C96245 /* ADJSessionFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionFailure.m; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				964E17FD1D50C6250097770B /* SafariServices.framework in Frameworks */,
 				963909611BCBFD4200A2E8A4 /* AdSupport.framework in Frameworks */,
 				9639095F1BCBFD3B00A2E8A4 /* iAd.framework in Frameworks */,
 			);
@@ -146,6 +149,7 @@
 			children = (
 				9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */,
 				9639093D1BCBFCF300A2E8A4 /* Products */,
+				964E17FB1D50C6240097770B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -261,6 +265,14 @@
 				963909771BCBFF8D00A2E8A4 /* UIDevice+ADJAdditions.m */,
 			);
 			path = ADJAdditions;
+			sourceTree = "<group>";
+		};
+		964E17FB1D50C6240097770B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				964E17FC1D50C6250097770B /* SafariServices.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9DF7ACCB1CB50DC800D3591F /* Frameworks */ = {
