@@ -136,23 +136,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         [self initInternal];
     });
 
-    // get timer values
-    kForegroundTimerStart = ADJAdjustFactory.timerStart;
-    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
-    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
-
-    // initialize timers to be available in applicationDidBecomeActive/WillResignActive
-    // after initInternal so that the handlers are initialized
-    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
-                                                   queue:self.internalQueue
-                                               startTime:kForegroundTimerStart
-                                            intervalTime:kForegroundTimerInterval
-                                                    name:kForegroundTimerName];
-
-    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
-                                                  queue:self.internalQueue
-                                                   name:kBackgroundTimerName];
-
     [self addNotificationObserver];
 
     return self;
@@ -429,8 +412,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 #pragma mark - internal
 - (void)initInternal {
+    // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
     kSubSessionInterval = ADJAdjustFactory.subsessionInterval;
+    // get timer values
+    kForegroundTimerStart = ADJAdjustFactory.timerStart;
+    kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
+    kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
 
     self.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:self.adjustConfig.sdkPrefix];
 
@@ -441,6 +429,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (self.adjustConfig.defaultTracker != nil) {
         [self.logger info:@"Default tracker: '%@'", self.adjustConfig.defaultTracker];
     }
+
+    self.foregroundTimer = [ADJTimerCycle timerWithBlock:^{ [self foregroundTimerFired]; }
+                                                   queue:self.internalQueue
+                                               startTime:kForegroundTimerStart
+                                            intervalTime:kForegroundTimerInterval
+                                                    name:kForegroundTimerName];
+
+    self.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [self backgroundTimerFired]; }
+                                                  queue:self.internalQueue
+                                                   name:kBackgroundTimerName];
 
     BOOL toSend = [self toSend];
     self.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:self
