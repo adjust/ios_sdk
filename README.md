@@ -66,13 +66,13 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your `
 [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.8.1'
+pod 'Adjust', '~> 4.8.2'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.8.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.8.2'
 ```
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue with 
@@ -809,7 +809,7 @@ send `sdk_click` package anyway to the adjust backend. If you have your log leve
 ```
 [Adjust]d: Added package 1 (click)
 [Adjust]v: Path:      /sdk_click
-[Adjust]v: ClientSdk: ios4.8.0
+[Adjust]v: ClientSdk: ios4.8.2
 [Adjust]v: Parameters:
 [Adjust]v:      app_token              {YourAppToken}
 [Adjust]v:      created_at             2016-04-15T14:25:51.676Z+0200
