@@ -19,6 +19,8 @@
 #include <stdlib.h>
 
 static NSDateFormatter *dateFormat;
+static NSRegularExpression * universalLinkRegex = nil;
+static NSNumberFormatter * secondsNumberFormatter = nil;
 
 static NSString * const kClientSdk      = @"ios4.8.1";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
@@ -26,14 +28,21 @@ static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjus
 
 static NSString * const kBaseUrl        = @"https://app.adjust.com";
 static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
-static NSRegularExpression * universalLinkRegex = nil;
-static NSNumberFormatter * secondsNumberFormatter = nil;
 static const double kRequestTimeout = 60; // 60 seconds
 
 #pragma mark -
 @implementation ADJUtil
 
 + (void) initialize {
+    if (self != [ADJUtil class]) {
+        return;
+    }
+    [self initializeDateFormat];
+    [self initializeUniversalLinkRegex];
+    [self initializeSecondsNumberFormatter];
+}
+
++ (void)initializeDateFormat {
     dateFormat = [[NSDateFormatter alloc] init];
 
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
@@ -58,6 +67,27 @@ static const double kRequestTimeout = 60; // 60 seconds
 
     dateFormat.locale = [NSLocale systemLocale];
     [dateFormat setDateFormat:kDateFormat];
+
+}
++ (void)initializeUniversalLinkRegex {
+    NSError *error = NULL;
+
+    NSRegularExpression *regex  = [NSRegularExpression
+                                   regularExpressionWithPattern:kUniversalLinkPattern
+                                   options:NSRegularExpressionCaseInsensitive
+                                   error:&error];
+
+    if ([ADJUtil isNotNull:error]) {
+        [ADJAdjustFactory.logger error:@"Universal link regex rule error (%@)", [error description]];
+        return;
+    }
+
+    universalLinkRegex = regex;
+}
+
++ (void)initializeSecondsNumberFormatter {
+    secondsNumberFormatter = [[NSNumberFormatter alloc] init];
+    [secondsNumberFormatter setPositiveFormat:@"0.0"];
 }
 
 + (NSString *)baseUrl {
@@ -487,19 +517,8 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
     }
 
     if (universalLinkRegex == nil) {
-        NSError *error = NULL;
-
-        NSRegularExpression *regex  = [NSRegularExpression
-                                       regularExpressionWithPattern:kUniversalLinkPattern
-                                       options:NSRegularExpressionCaseInsensitive
-                                       error:&error];
-
-        if ([ADJUtil isNotNull:error]) {
-            [logger error:@"Universal link regex rule error (%@)", [error description]];
-            return nil;
-        }
-
-        universalLinkRegex = regex;
+        [logger error:@"Universal link regex not correctly configured"];
+        return nil;
     }
 
     NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
@@ -538,11 +557,6 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 }
 
 + (NSString *)secondsNumberFormat:(double)seconds {
-    if (secondsNumberFormatter == nil) {
-        secondsNumberFormatter = [[NSNumberFormatter alloc] init];
-        [secondsNumberFormatter setPositiveFormat:@"0.0"];
-    }
-
     // normalize negative zero
     if (seconds < 0) {
         seconds = seconds * -1;
