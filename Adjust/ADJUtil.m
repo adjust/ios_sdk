@@ -22,7 +22,7 @@ static NSDateFormatter *dateFormat;
 static NSRegularExpression * universalLinkRegex = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk      = @"ios4.8.1";
+static NSString * const kClientSdk      = @"ios4.8.2";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 
