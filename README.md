@@ -466,7 +466,7 @@ this in your `AdjustConfig` instance:
 ### <a id="attribution-callback">10. Attribution callback
 
 You can register a delegate callback to be notified of tracker attribution changes. Due to the different sources considered 
-for attribution, this information can not by provided synchronously. Follow these steps to implement the optional delegate 
+for attribution, this information can not be provided synchronously. Follow these steps to implement the optional delegate 
 protocol in your app delegate:
 
 Please make sure to consider our [applicable attribution data policies.][attribution-data]
