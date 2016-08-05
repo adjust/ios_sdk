@@ -16,7 +16,7 @@
 
     // default values
     self.appToken = @"qwerty123456";
-    self.clientSdk = @"ios4.8.1";
+    self.clientSdk = @"ios4.8.2";
     self.suffix = @"";
     self.environment = @"sandbox";
 

@@ -1,3 +1,18 @@
+### Version 4.8.2 (5th August 2016)
+#### Fixed
+- Initialize static vars to prevent dealloc
+
+---
+
+### Version 4.8.1 (3rd August 2016)
+#### Added
+- Added Safari Framework in the example app.
+
+### Fixed
+- Replace sleeping background thread with delay execution
+
+---
+
 ### Version 4.8.0 (25th July 2016)
 #### Added 
 - Added tracking support for native web apps (no SDK version change).
