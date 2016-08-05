@@ -881,7 +881,7 @@ determining amount value**.
 [cocoapods]: http://cocoapods.org
 [carthage]: https://github.com/Carthage/Carthage
 [dashboard]: http://adjust.com
-[ios-web-views-guide]: https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
+[ios-web-views-guide]: https://github.com/adjust/ios_sdk/tree/master/doc/english/web_views.md
 [examples]: http://github.com/adjust/ios_sdk/tree/master/examples
 [example-ios-objc]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
 [example-ios-swift]: http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
@@ -901,7 +901,7 @@ determining amount value**.
 [delegate]: https://raw.github.com/adjust/sdks/master/Resources/ios/delegate5.png
 [run]: https://raw.github.com/adjust/sdks/master/Resources/ios/run5.png
 [AEPriceMatrix]: https://github.com/adjust/AEPriceMatrix
-[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[attribution-data]: https://github.com/adjust/sdks/blob/master/doc/english/attribution-data.md
 [callbacks-guide]: https://docs.adjust.com/en/callbacks
 [event-tracking]: https://docs.adjust.com/en/event-tracking
 [special-partners]: https://docs.adjust.com/en/special-partners
