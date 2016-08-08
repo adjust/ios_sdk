@@ -26,6 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
 static NSString * const kClientSdk              = @"ios4.8.5";
+static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
 static NSString * const kSchemeDelimiter        = @"://";
 static NSString * const kDefaultScheme          = @"AdjustUniversalScheme";
@@ -44,6 +45,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     [self initializeUniversalLinkRegex];
     [self initializeSecondsNumberFormatter];
     [self initializeShortUniversalLinkRegex];
+    [self initializeUrlSessionConfiguration];
 }
 
 + (void)initializeDateFormat {
@@ -109,6 +111,16 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 + (void)initializeSecondsNumberFormatter {
     secondsNumberFormatter = [[NSNumberFormatter alloc] init];
     [secondsNumberFormatter setPositiveFormat:@"0.0"];
+}
+
++ (void)initializeUrlSessionConfiguration {
+    urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+}
+
++ (void)updateUrlSessionConfiguration:(ADJConfig *)config {
+    if (config.sendInBackground) {
+        urlSessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"Adjust"];
+    }
 }
 
 + (NSString *)baseUrl {
@@ -390,8 +402,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
              prefixErrorMessage:(NSString *)prefixErrorMessage
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
-            responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSURLSession *session = [NSURLSession sharedSession];
+            responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
+{
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {

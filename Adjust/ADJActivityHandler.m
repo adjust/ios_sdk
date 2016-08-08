@@ -642,6 +642,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     }
 
+    [ADJUtil updateUrlSessionConfiguration:selfI.adjustConfig];
+
     selfI.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:selfI
                                                                 startsSending:[selfI toSendI:selfI
                                                                          sdkClickHandlerOnly:NO]];

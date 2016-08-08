@@ -11,10 +11,13 @@
 #import "ADJActivityPackage.h"
 #import "ADJEvent.h"
 #import "ADJBackoffStrategy.h"
+#import "ADJConfig.h"
 
 typedef void (^selfInjectedBlock)(id);
 
 @interface ADJUtil : NSObject
+
++ (void)updateUrlSessionConfiguration:(ADJConfig *)config;
 
 + (NSString *)baseUrl;
 + (NSString *)clientSdk;
