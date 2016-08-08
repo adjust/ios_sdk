@@ -773,10 +773,14 @@ You can reset the session data of the device in our servers. Check the error mes
 Session failed (Ignoring too frequent session. Last session: YYYY-MM-DDTHH:mm:ss, this session: YYYY-MM-DDTHH:mm:ss, interval: XXs, min interval: 20m) (app_token: {yourAppToken}, adid: {adidValue})
 ```
 
-<a id="forget-device">With the `{yourAppToken}` and `{adidValue}` values filled in below, open the following link:
+<a id="forget-device">With the `{yourAppToken}` and `{adidValue}` or `{idfaValue}` values filled in below, open either of the the following links:
 
 ```
 http://app.adjust.com/forget_device?app_token={yourAppToken}&adid={adidValue}
+```
+
+```
+http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 ```
 
 When the device is forgotten, the link just returns `Forgot device`. If the device was already forgotten or the values were 
