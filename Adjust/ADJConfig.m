@@ -195,6 +195,7 @@
         copy->_hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
         copy.sendInBackground = self.sendInBackground;
         copy.delayStart = self.delayStart;
+        copy.userAgent = [self.userAgent copyWithZone:zone];
         // adjust delegate not copied
     }
 

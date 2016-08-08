@@ -639,7 +639,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         selfI.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [selfI sendFirstPackages]; }
                                                        queue:selfI.internalQueue
                                                         name:kDelayStartTimerName];
-
     }
 
     [ADJUtil updateUrlSessionConfiguration:selfI.adjustConfig];

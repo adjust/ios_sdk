@@ -27,6 +27,7 @@ static NSNumberFormatter * secondsNumberFormatter = nil;
 
 static NSString * const kClientSdk              = @"ios4.8.5";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
+static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
 static NSString * const kSchemeDelimiter        = @"://";
 static NSString * const kDefaultScheme          = @"AdjustUniversalScheme";
@@ -121,6 +122,8 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     if (config.sendInBackground) {
         urlSessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"Adjust"];
     }
+
+    userAgent = config.userAgent;
 }
 
 + (NSString *)baseUrl {
@@ -383,6 +386,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
 
+    if (userAgent != nil) {
+        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    }
     if (NSURLSessionClass != nil) {
         [ADJUtil sendNSURLSessionRequest:request
                       prefixErrorMessage:prefixErrorMessage
