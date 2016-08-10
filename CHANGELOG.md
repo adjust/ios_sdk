@@ -1,3 +1,9 @@
+### Version 4.8.3 (10th August 2016)
+#### Added
+- Support to convert shorten universal links
+
+---
+
 ### Version 4.8.2 (5th August 2016)
 #### Fixed
 - Initialize static vars to prevent dealloc
