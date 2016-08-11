@@ -35,8 +35,8 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Pre-installed trackers](#pre-installed-trackers)
    * [Deeplink reattributions](#deeplink-reattributions)
       * [Universal links](#universal-links)
-         * [Enable universal links in the dashboard](#ulinks-dashboard)
-         * [Enable your iOS app to handle universal links](#ulinks-ios-app)
+      * [Enable universal links in the dashboard](#ulinks-dashboard)
+      * [Enable your iOS app to handle universal links](#ulinks-ios-app)
       * [Support deeplinks for all iOS versions supported by the adjust SDK](#ulinks-support-all)
       * [Deferred deeplink callback](#deferred-deeplink-callback)
 * [Troubleshooting](#troubleshooting)
@@ -568,7 +568,7 @@ dropped  support for this way of deeplinking into the app in favour of `universa
 
 If you want to support [universal links][universal-links], then follow these next steps.
 
-##### <a id="ulinks-dashboard">Enable universal links in the dashboard
+#### <a id="ulinks-dashboard">Enable universal links in the dashboard
 
 In order to enable universal links for your app, go to the adjust dashboard and select `Universal Linking` option in your 
 `Platform Settings` for iOS.
@@ -589,7 +589,7 @@ After you entered these two values, a universal link for your app will be genera
 applinks:[hash].ulink.adjust.com
 ```
 
-##### <a id="ulinks-ios-app">Enable your iOS app to handle universal links
+#### <a id="ulinks-ios-app">Enable your iOS app to handle universal links
 
 In Apple Developer Center, you should enable `Associated Domains` for your app.
 
