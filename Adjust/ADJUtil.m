@@ -20,11 +20,14 @@
 
 static NSDateFormatter *dateFormat;
 static NSRegularExpression * universalLinkRegex = nil;
+static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk      = @"ios4.8.2";
+static NSString * const kClientSdk      = @"ios4.8.3";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
+static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
+
 
 static NSString * const kBaseUrl        = @"https://app.adjust.com";
 static NSString * const kDateFormat     = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
@@ -40,6 +43,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     [self initializeDateFormat];
     [self initializeUniversalLinkRegex];
     [self initializeSecondsNumberFormatter];
+    [self initializeShortUniversalLinkRegex];
 }
 
 + (void)initializeDateFormat {
@@ -69,6 +73,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     [dateFormat setDateFormat:kDateFormat];
 
 }
+
 + (void)initializeUniversalLinkRegex {
     NSError *error = NULL;
 
@@ -83,6 +88,22 @@ static const double kRequestTimeout = 60; // 60 seconds
     }
 
     universalLinkRegex = regex;
+}
+
++ (void)initializeShortUniversalLinkRegex {
+    NSError *error = NULL;
+
+    NSRegularExpression *regex  = [NSRegularExpression
+                                   regularExpressionWithPattern:kShortUniversalLinkPattern
+                                   options:NSRegularExpressionCaseInsensitive
+                                   error:&error];
+
+    if ([ADJUtil isNotNull:error]) {
+        [ADJAdjustFactory.logger error:@"Short Universal link regex rule error (%@)", [error description]];
+        return;
+    }
+
+    shortUniversalLinkRegex = regex;
 }
 
 + (void)initializeSecondsNumberFormatter {
@@ -521,11 +542,19 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
         return nil;
     }
 
+    if (shortUniversalLinkRegex == nil) {
+        [logger error:@"Short Universal link regex not correctly configured"];
+        return nil;
+    }
+
     NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
 
     if ([matches count] == 0) {
-        [logger error:@"Url doesn't match as universal link with format https://[hash].ulink.adjust.com/ulink/..."];
-        return nil;
+        matches = [shortUniversalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
+        if ([matches count] == 0) {
+            [logger error:@"Url doesn't match as universal link or short version"];
+            return nil;
+        }
     }
 
     if ([matches count] > 1) {
