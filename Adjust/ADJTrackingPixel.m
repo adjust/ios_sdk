@@ -91,23 +91,62 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
     NSURL *url = [NSURL URLWithString:urlString];
 
     dispatch_async(dispatch_get_main_queue(), ^(void){
+//        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:NO];
+//        safariViewController.delegate = self;
+//
+//        window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//        window.rootViewController = safariViewController;
+//        window.hidden = NO;
+//        window.windowLevel -= 1000;
+
+        UIViewController *topViewController = [self topViewController];
+
+        if (!topViewController) {
+            return;
+        }
+
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:NO];
         safariViewController.delegate = self;
+        safariViewController.view.userInteractionEnabled = NO;
+        safariViewController.view.alpha = 0.05;
+        safariViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
 
-        window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-        window.rootViewController = safariViewController;
-        window.hidden = NO;
-        window.windowLevel -= 1000;
+        [topViewController addChildViewController:safariViewController];
+        [topViewController.view addSubview:safariViewController.view];
+        
+        safariViewController.view.frame = CGRectMake(0, 0, 1, 1);
     });
 #endif
 }
 
 #if !TARGET_OS_TV
+//- (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
+//    window = nil;
+//
+//    if (didLoadSuccessfully) {
+//        [[ADJAdjustFactory logger] verbose:@"AdWords request completed successfully"];
+//    } else {
+//        if (numberOfAttempts < kTrackingPixelMaxAttempts) {
+//            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * kTrackingPixelTimeout[numberOfAttempts++]);
+//            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                [self tryToLoadTrackingPixel];
+//            });
+//        } else {
+//            numberOfAttempts = 0;
+//            [[ADJAdjustFactory logger] verbose:@"AdWords request failed"];
+//        }
+//    }
+//}
+
 - (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
     window = nil;
 
     if (didLoadSuccessfully) {
         [[ADJAdjustFactory logger] verbose:@"AdWords request completed successfully"];
+
+        // Remove the tracking pixel from the view hierarchy.
+        [controller.view removeFromSuperview];
+        [controller removeFromParentViewController];
     } else {
         if (numberOfAttempts < kTrackingPixelMaxAttempts) {
             dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * kTrackingPixelTimeout[numberOfAttempts++]);
@@ -119,6 +158,39 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
             [[ADJAdjustFactory logger] verbose:@"AdWords request failed"];
         }
     }
+}
+
+- (UIWindow *)mainWindow {
+    UIApplication *sharedApplication = [UIApplication sharedApplication];
+    UIWindow *mainWindow = sharedApplication.keyWindow;
+
+    if (!mainWindow && [sharedApplication.delegate respondsToSelector:@selector(window)]) {
+        mainWindow = [sharedApplication.delegate window];
+    }
+
+    return mainWindow;
+}
+
+- (UIViewController *)topViewController {
+    UIWindow *mainWindow = [self mainWindow];
+    UIViewController *topViewController = nil;
+    UIViewController *presentedViewController = mainWindow.rootViewController;
+
+    while (presentedViewController) {
+        topViewController = presentedViewController;
+
+        if ([topViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *navController = (UINavigationController *)topViewController;
+            presentedViewController = navController.topViewController;
+        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
+            UITabBarController *tabBarController = (UITabBarController *)topViewController;
+            presentedViewController = tabBarController.selectedViewController;
+        } else {
+            presentedViewController = topViewController.presentedViewController;
+        }
+    }
+    
+    return topViewController;
 }
 #endif
 
