@@ -90,15 +90,7 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
 
     NSURL *url = [NSURL URLWithString:urlString];
 
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-//        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:NO];
-//        safariViewController.delegate = self;
-//
-//        window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-//        window.rootViewController = safariViewController;
-//        window.hidden = NO;
-//        window.windowLevel -= 1000;
-
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
         UIViewController *topViewController = [self topViewController];
 
         if (!topViewController) {
@@ -120,24 +112,6 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
 }
 
 #if !TARGET_OS_TV
-//- (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
-//    window = nil;
-//
-//    if (didLoadSuccessfully) {
-//        [[ADJAdjustFactory logger] verbose:@"AdWords request completed successfully"];
-//    } else {
-//        if (numberOfAttempts < kTrackingPixelMaxAttempts) {
-//            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * kTrackingPixelTimeout[numberOfAttempts++]);
-//            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                [self tryToLoadTrackingPixel];
-//            });
-//        } else {
-//            numberOfAttempts = 0;
-//            [[ADJAdjustFactory logger] verbose:@"AdWords request failed"];
-//        }
-//    }
-//}
-
 - (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
     window = nil;
 
