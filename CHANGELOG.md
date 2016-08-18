@@ -1,3 +1,9 @@
+### Version 4.8.4 (xxth August 2016)
+#### Added
+- Added support for making Google AdWords request in iOS 10.
+
+---
+
 ### Version 4.8.3 (10th August 2016)
 #### Added
 - Added support to convert shorten universal links.
