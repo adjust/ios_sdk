@@ -1,4 +1,4 @@
-### Version 4.8.4 (xxth August 2016)
+### Version 4.8.4 (18th August 2016)
 #### Added
 - Added support for making Google AdWords request in iOS 10.
 
