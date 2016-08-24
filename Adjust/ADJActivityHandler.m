@@ -1255,6 +1255,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     // it's possible for the sdk click handler to be active while others are paused
     if (![selfI toSendI:selfI sdkClickHandlerOnly:YES]) {
         [selfI.sdkClickHandler pauseSending];
+    } else {
+        [selfI.sdkClickHandler resumeSending];
     }
 }
 
@@ -1305,8 +1307,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 # pragma mark - timer
 - (void)startForegroundTimerI:(ADJActivityHandler *)selfI {
-    // don't start the timer when it's paused
-    if ([selfI pausedI:selfI]) {
+    // don't start the timer when it's disabled
+    if (![selfI isEnabledI:selfI]) {
         return;
     }
 
@@ -1318,12 +1320,16 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)foregroundTimerFiredI:(ADJActivityHandler *)selfI {
-    // stop the timer cycle when it's paused
-    if ([selfI pausedI:selfI]) {
+    // stop the timer cycle when it's disabled
+    if (![selfI isEnabledI:selfI]) {
         [selfI stopForegroundTimerI:selfI];
         return;
     }
-    [selfI.packageHandler sendFirstPackage];
+
+    if ([selfI toSendI:selfI]) {
+        [selfI.packageHandler sendFirstPackage];
+    }
+
     double now = [NSDate.date timeIntervalSince1970];
     if ([selfI updateActivityStateI:selfI now:now]) {
         [selfI writeActivityStateI:selfI];
@@ -1357,7 +1363,9 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)backgroundTimerFiredI:(ADJActivityHandler *)selfI {
-    [selfI.packageHandler sendFirstPackage];
+    if ([selfI toSendI:selfI]) {
+        [selfI.packageHandler sendFirstPackage];
+    }
 }
 
 #pragma mark - delay
