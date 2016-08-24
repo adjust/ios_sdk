@@ -23,6 +23,7 @@ static const double kRequestTimeout = 60;   // 60 seconds
 static NSDateFormatter *dateFormat;
 static NSRegularExpression * universalLinkRegex = nil;
 static NSRegularExpression * shortUniversalLinkRegex = nil;
+static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
 static NSString * const kClientSdk              = @"ios4.8.5";
@@ -33,6 +34,8 @@ static NSString * const kSchemeDelimiter        = @"://";
 static NSString * const kDefaultScheme          = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern   = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
+static NSString * const kOptionalRedirectPattern = @"adjust_redirect=[^&#]*";
+
 static NSString * const kBaseUrl                = @"https://app.adjust.com";
 static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
@@ -46,6 +49,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     [self initializeUniversalLinkRegex];
     [self initializeSecondsNumberFormatter];
     [self initializeShortUniversalLinkRegex];
+    [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
 }
 
@@ -107,6 +111,21 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     }
 
     shortUniversalLinkRegex = regex;
+}
+
++ (void)initializeOptionalRedirectRegex {
+    NSError *error = NULL;
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kOptionalRedirectPattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+
+    if ([ADJUtil isNotNull:error]) {
+        [ADJAdjustFactory.logger error:@"Optional redirect regex rule error (%@)", [error description]];
+        return;
+    }
+
+    optionalRedirectRegex = regex;
 }
 
 + (void)initializeSecondsNumberFormatter {
@@ -580,19 +599,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         }
     }
 
-    if ([universalLinkMatches count] > 1) {
+    if ([matches count] > 1) {
         [logger error:@"Url match as universal link multiple times"];
         return nil;
     }
 
-    NSTextCheckingResult *universalLinkmatch = universalLinkMatches[0];
+    NSTextCheckingResult *match = matches[0];
 
-    if ([universalLinkmatch numberOfRanges] != 2) {
+    if ([match numberOfRanges] != 2) {
         [logger error:@"Wrong number of ranges matched"];
         return nil;
     }
 
-    NSString *tailSubString = [urlString substringWithRange:[universalLinkmatch rangeAtIndex:1]];
+    NSString *tailSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
 
     NSString *finalTailSubString = [ADJUtil removeOptionalRedirect:tailSubString];
 
@@ -614,18 +633,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
     if (optionalRedirectRegex == nil) {
-        NSError *error = NULL;
-
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kOptionalRedirectPattern
-                                                                               options:NSRegularExpressionCaseInsensitive
-                                                                                 error:&error];
-
-        if ([ADJUtil isNotNull:error]) {
-            [logger error:@"Optional redirect regex rule error (%@)", [error description]];
-            return tailSubString;
-        }
-
-        optionalRedirectRegex = regex;
+        [ADJAdjustFactory.logger error:@"Remove Optional Redirect regex not correctly configured"];
+        return tailSubString;
     }
 
     NSArray<NSTextCheckingResult *> *optionalRedirectmatches = [optionalRedirectRegex matchesInString:tailSubString
