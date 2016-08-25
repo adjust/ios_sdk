@@ -1,3 +1,34 @@
+### Version 4.9.0 ( 2016)
+#### Added
+ - Support for `Supress` log level
+ - Allow to delay the start of the first session
+ - Support for session parameters to be send in every session/event:
+  - External device id
+  - Callback parameters
+  - Partner parameters
+ - Inject User-agent of each request
+ - Teardown
+ - Send install receipt
+ - Remove optional redirect parameter from universal link function
+
+#### Changed
+ - Project targets Xcode 8 and iOs 10
+ - Normalize properties attributes
+ - Naming standard of background blocks
+ - Use of weakself strongself pattern for background blocks
+ - Open defferred deeplink from the attribution response
+ - Log level logic moved to config object
+ - Access private properties directly when copying
+ 
+#### Fixed
+ - Allow foreground/background timer to work in offline mode
+ - Use `synchronized` blocks to prevent write deadlock/contention
+ - Don't create/use background timer if the option is not configured
+ - Replace strong references with weak when possible 
+ - Use background session configuration for `NSURLSession` when the option is set
+
+--
+
 ### Version 4.8.5 (30th August 2016)
 #### Fixed
 - Not using `SFSafariViewController` on iOS devices with iOS version lower than 9.
