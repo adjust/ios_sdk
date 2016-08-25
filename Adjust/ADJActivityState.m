@@ -220,7 +220,7 @@ static const int kTransactionIdCount = 10;
         copy.enabled            = self.enabled;
         copy.lastActivity       = self.lastActivity;
         copy.askingAttribution  = self.askingAttribution;
-        copy.deviceToken        = self.deviceToken;
+        copy.deviceToken        = [self.deviceToken copyWithZone:zone];
 
         // transactionIds not copied.
     }
