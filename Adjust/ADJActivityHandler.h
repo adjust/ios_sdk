@@ -53,7 +53,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 - (void)setAttribution:(ADJAttribution*)attribution;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
-- (BOOL)updateAttribution:(ADJAttribution *)attribution;
+- (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
 - (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setIadDetails:(NSDictionary *)attributionDetails
                 error:(NSError *)error

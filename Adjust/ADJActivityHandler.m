@@ -443,10 +443,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }];
 }
 
-- (BOOL)updateAttribution:(ADJAttribution *)attribution {
-    return [self updateAttributionI:self attribution:attribution];
-}
-
 - (void)updateHandlersStatusAndSend {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
