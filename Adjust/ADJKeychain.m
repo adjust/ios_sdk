@@ -45,11 +45,19 @@
     OSStatus status = [self setValueWithStatus:value forKeychainKey:key inService:service];
 
     if (status != noErr) {
-        [[ADJAdjustFactory logger] warn:@"Unable to write value in the keychain"];
+        [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain"];
         return NO;
     } else {
-        [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain"];
-        return YES;
+        // Check was writing successful.
+        BOOL wasSuccessful = [self wasWritingSuccessful:value forKeychainKey:key inService:service];
+
+        if (wasSuccessful) {
+            [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain"];
+        } else {
+            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check"];
+        }
+
+        return wasSuccessful;
     }
 }
 
@@ -93,6 +101,16 @@
     keychainItem[(__bridge id)kSecValueData] = [value dataUsingEncoding:NSUTF8StringEncoding];
 
     return SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
+}
+
+- (BOOL)wasWritingSuccessful:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
+    NSString *writtenValue = [self valueForKeychainKey:key service:service];
+
+    if ([writtenValue isEqualToString:value]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 @end
