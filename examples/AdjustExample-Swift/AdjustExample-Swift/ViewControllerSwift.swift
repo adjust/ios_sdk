@@ -27,68 +27,68 @@ class ViewControllerSwift: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    @IBAction func btnTrackEventSimpleTapped(sender: UIButton) {
+    @IBAction func btnTrackEventSimpleTapped(_ sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventRevenueTapped(sender: UIButton) {
+    @IBAction func btnTrackEventRevenueTapped(_ sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
-        event.setRevenue(0.99, currency: "EUR");
+        event?.setRevenue(0.99, currency: "EUR");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventCallbackTapped(sender: UIButton) {
+    @IBAction func btnTrackEventCallbackTapped(_ sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
-        event.addCallbackParameter("foo", value: "bar");
-        event.addCallbackParameter("key", value: "value");
+        event?.addCallbackParameter("foo", value: "bar");
+        event?.addCallbackParameter("key", value: "value");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventPartnerTapped(sender: UIButton) {
+    @IBAction func btnTrackEventPartnerTapped(_ sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
-        event.addPartnerParameter("foo", value: "bar");
-        event.addPartnerParameter("key", value: "value");
+        event?.addPartnerParameter("foo", value: "bar");
+        event?.addPartnerParameter("key", value: "value");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnEnableOfflineModeTapped(sender: UIButton) {
+    @IBAction func btnEnableOfflineModeTapped(_ sender: UIButton) {
         Adjust.setOfflineMode(true);
     }
 
-    @IBAction func btnDisableOfflineModeTapped(sender: UIButton) {
+    @IBAction func btnDisableOfflineModeTapped(_ sender: UIButton) {
         Adjust.setOfflineMode(false);
     }
 
-    @IBAction func btnEnableSDKTapped(sender: UIButton) {
+    @IBAction func btnEnableSDKTapped(_ sender: UIButton) {
         Adjust.setEnabled(true);
     }
 
-    @IBAction func btnDisableSDKTapped(sender: UIButton) {
+    @IBAction func btnDisableSDKTapped(_ sender: UIButton) {
         Adjust.setEnabled(false);
     }
 
-    @IBAction func btnIsSDKEnabledTapped(sender: UIButton) {
+    @IBAction func btnIsSDKEnabledTapped(_ sender: UIButton) {
         let isSDKEnabled = Adjust.isEnabled();
 
         if (isSDKEnabled) {
             let alert = UIAlertController(title: "Is SDK Enabled?",
                                           message: "SDK is ENABLED!",
-                                          preferredStyle: UIAlertControllerStyle.Alert)
+                                          preferredStyle: UIAlertControllerStyle.alert)
 
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Is SDK Enabled?",
                                           message: "SDK is DISABLED!",
-                                          preferredStyle: UIAlertControllerStyle.Alert)
+                                          preferredStyle: UIAlertControllerStyle.alert)
 
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }
