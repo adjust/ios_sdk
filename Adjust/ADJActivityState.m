@@ -23,7 +23,7 @@ static const int kTransactionIdCount = 10;
         return nil;
     }
 
-    [self generateUuid];
+    [self assignUuid:[UIDevice.currentDevice adjCreateUuid]];
 
     self.eventCount         = 0;
     self.sessionCount       = 0;
@@ -71,40 +71,10 @@ static const int kTransactionIdCount = 10;
 
 #pragma mark - Private & helper methods
 
-- (void)generateUuid {
-    // First check if there's any UUID written in keychain.
-    // If yes, assign it to UUID field and flag that.
-    // If not, generate new UUID and assign it to UUID field.
-    // If new UUID generated and assigned, try to write it to keychain.
-    //      If successfully written, flat that.
-    //      If writing failed, don't flag it.
-
-    NSString *persistedUuid = [ADJKeychain valueForKeychainKey:@"adjust_persisted_uuid" service:@"deviceInfo"];
-
-    // Check if value existed in keychain.
-    if (persistedUuid != nil) {
-        // Check if value has UUID format.
-        if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
-            // Value written in keychain seems to have UUID format.
-            // Assign it and flag.
-            self.uuid = persistedUuid;
-            self.isPersisted = YES;
-
-            return;
-        }
-    }
-
-    // At this point, UUID was not persisted or if persisted, didn't have proper UUID format.
-
-    // Generate UUID and try to save it to keychain and flag if successfully written.
-    self.uuid = [UIDevice.currentDevice adjCreateUuid];
-    self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
-}
-
-- (void)checkUuidFromFile:(NSString *)readUuid {
+- (void)assignUuid:(NSString *)uuid {
     // First check if there's any UUID written in keychain.
     // If yes, use keychain value and flag it.
-    // If not, use read UUID and store it to keychain.
+    // If not, use given UUID and store it to keychain.
     //      If successfully written, flag it.
     //      If writing failed, don't flat it.
 
@@ -115,8 +85,6 @@ static const int kTransactionIdCount = 10;
         // Check if value has UUID format.
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
             // Value written in keychain seems to have UUID format.
-            // In this moment, we can compare read UUID value with the one read from the keychain,
-            // but regardless of the comparison result, we trust the keychain value the most.
             self.uuid = persistedUuid;
             self.isPersisted = YES;
 
@@ -126,9 +94,9 @@ static const int kTransactionIdCount = 10;
 
     // At this point, UUID was not persisted or if persisted, didn't have proper UUID format.
 
-    // Since we don't have anything in the keychain, we'll use the read UUID value.
+    // Since we don't have anything in the keychain, we'll use the passed UUID value.
     // Try to save that value to the keychain and flag if successfully written.
-    self.uuid = readUuid;
+    self.uuid = uuid;
     self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
 }
 
@@ -156,11 +124,11 @@ static const int kTransactionIdCount = 10;
 
     // Default values for migrating devices
     if ([decoder containsValueForKey:@"uuid"]) {
-        [self checkUuidFromFile:[decoder decodeObjectForKey:@"uuid"]];
+        [self assignUuid:[decoder decodeObjectForKey:@"uuid"]];
     }
 
     if (self.uuid == nil) {
-        [self generateUuid];
+        [self assignUuid:[UIDevice.currentDevice adjCreateUuid]];
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
