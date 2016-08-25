@@ -26,7 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk              = @"ios4.8.5";
+static NSString * const kClientSdk              = @"ios4.9.0";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
