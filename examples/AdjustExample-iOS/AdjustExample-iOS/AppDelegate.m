@@ -8,7 +8,6 @@
 
 #import "Constants.h"
 #import "AppDelegate.h"
-#import "ADJSystemProfile.h"
 
 @interface AppDelegate ()
 

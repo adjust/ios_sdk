@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
-#import "AdjustTrackingHelper.h"
 #import <UIKit/UIKit.h>
+#import <AdjustSdk/Adjust.h>
+
+#import "AdjustTrackingHelper.h"
 
 @implementation AdjustTrackingHelper
 
