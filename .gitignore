@@ -27,3 +27,6 @@ Pods
 
 # Adjust
 Frameworks
+
+# Code style
+uncrustify.cfg
