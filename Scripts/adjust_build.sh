@@ -17,13 +17,21 @@ mkdir -p Frameworks/Dynamic
 mkdir -p Frameworks/tvOS
 
 # Build static AdjustSdk.framework
-xcodebuild -target AdjustStatic -configuration Release
+xcodebuild -target AdjustStatic -configuration Release clean build
 
 # Build dynamic AdjustSdk.framework
-xcodebuild -target AdjustSdk -configuration Release
+xcodebuild -target AdjustSdk -configuration Release clean build
 
 # Build tvOS AdjustSdkTV.framework
-xcodebuild -target AdjustSdkTv -configuration Release
+# Build it for simulator and device
+xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
+xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos clean build
+
+# Copy tvOS framework to destination
+cp -R build/Release-appletvos/AdjustSdkTv.framework Frameworks/tvOS
+
+# Create universal tvOS framework
+lipo -create -output Frameworks/tvOS/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
 
 # Build Carthage AdjustSdk.framework
 carthage build --no-skip-current
@@ -46,7 +54,3 @@ cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-WebView/Adjus
 # Copy static framework into example iWatch app
 rm -rf examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/AdjustSdk.framework
 cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/
-
-# Copy static framework into example tvOS app
-rm -rf examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/AdjustSdkTv.framework
-cp -R Frameworks/tvOS/AdjustSdkTv.framework examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/

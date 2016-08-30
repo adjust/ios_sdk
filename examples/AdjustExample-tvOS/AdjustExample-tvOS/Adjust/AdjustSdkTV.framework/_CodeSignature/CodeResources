@@ -40,17 +40,17 @@
 		<data>
 		JEjo/k6ApGq4BeenSlgDcm8j/fA=
 		</data>
-		<key>Headers/AdjustSdkTV.h</key>
+		<key>Headers/AdjustSdkTv.h</key>
 		<data>
-		nAitBgLGxbkV9kEivsi3EUbgMbw=
+		bsPqO/1acqYnrpfUPnF8HTbszfE=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		djShayEv1IauG/wyJOrsImxU0co=
+		WLbRA2Rav+ah1h/Ze2Yoz0slD6c=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		7LfXd96B4gKUm0aVvhntkeLRUJY=
+		RYOq6TAofvU6FudBmRynjQjLibk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -154,26 +154,26 @@
 			BD0rthohl7omx6/Yozk8X0T9+gc4PzlPkx3hyzqS/nI=
 			</data>
 		</dict>
-		<key>Headers/AdjustSdkTV.h</key>
+		<key>Headers/AdjustSdkTv.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			nAitBgLGxbkV9kEivsi3EUbgMbw=
+			bsPqO/1acqYnrpfUPnF8HTbszfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Q9TQbBD1EhudKFzhVfnp9RA6BAZmNOGT0KUSwX9yISc=
+			LFZq28ZFCvaRtFwU1MLoA4rltVZmSaEHORFSzzVCCNo=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7LfXd96B4gKUm0aVvhntkeLRUJY=
+			RYOq6TAofvU6FudBmRynjQjLibk=
 			</data>
 			<key>hash2</key>
 			<data>
-			aHOt+kfn5Or/YZnycjcGC3AKvJzx0GovauZ/38sl0l4=
+			xSanbXlaKKREfmidijXwxyaFz/FKrv3QPq76gwm5TIw=
 			</data>
 		</dict>
 	</dict>
