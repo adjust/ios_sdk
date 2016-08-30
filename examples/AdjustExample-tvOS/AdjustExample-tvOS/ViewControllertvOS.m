@@ -6,7 +6,7 @@
 //  Copyright © 2015 adjust. All rights reserved.
 //
 
-#import <AdjustSdk/Adjust.h>
+#import <AdjustSdkTV/Adjust.h>
 
 #import "Constants.h"
 #import "URLRequest.h"

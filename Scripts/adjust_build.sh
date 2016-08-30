@@ -9,16 +9,21 @@ cd ..
 # Clean the folders
 rm -rf Frameworks/Static
 rm -rf Frameworks/Dynamic
+rm -rf Frameworks/tvOS
 
 # Create needed folders
 mkdir -p Frameworks/Static
 mkdir -p Frameworks/Dynamic
+mkdir -p Frameworks/tvOS
 
 # Build static AdjustSdk.framework
 xcodebuild -target AdjustStatic -configuration Release
 
 # Build dynamic AdjustSdk.framework
 xcodebuild -target AdjustSdk -configuration Release
+
+# Build tvOS AdjustSdkTV.framework
+xcodebuild -target AdjustSdkTv -configuration Release
 
 # Build Carthage AdjustSdk.framework
 carthage build --no-skip-current
@@ -43,5 +48,5 @@ rm -rf examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/AdjustSdk.frame
 cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/
 
 # Copy static framework into example tvOS app
-rm -rf examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/AdjustSdk.framework
-cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/
+rm -rf examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/AdjustSdkTv.framework
+cp -R Frameworks/tvOS/AdjustSdkTv.framework examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/

@@ -15,7 +15,7 @@
 		963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
-		9DFB04DA1D746081006D48FC /* AdjustSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04D91D746081006D48FC /* AdjustSdk.framework */; };
+		9DFB060A1D746FB9006D48FC /* AdjustSdkTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DC95F301C105B4C00138E4B /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
 		9DC95F311C105B4C00138E4B /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
-		9DFB04D91D746081006D48FC /* AdjustSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdjustSdk.framework; path = Adjust/AdjustSdk.framework; sourceTree = "<group>"; };
+		9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdjustSdkTV.framework; path = Adjust/AdjustSdkTV.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,8 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DFB04DA1D746081006D48FC /* AdjustSdk.framework in Frameworks */,
 				963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */,
+				9DFB060A1D746FB9006D48FC /* AdjustSdkTV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,8 +96,8 @@
 		9DF7ACCA1CB50DB700D3591F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9DFB04D91D746081006D48FC /* AdjustSdk.framework */,
 				963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */,
+				9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -285,7 +285,7 @@
 				);
 				INFOPLIST_FILE = "AdjustExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -303,7 +303,7 @@
 				);
 				INFOPLIST_FILE = "AdjustExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
