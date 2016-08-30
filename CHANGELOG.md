@@ -1,3 +1,9 @@
+### Version 4.8.5 (30th August 2016)
+#### Fixed
+- Not using `SFSafariViewController` on iOS devices with iOS version lower than 9.
+
+---
+
 ### Version 4.8.4 (18th August 2016)
 #### Added
 - Added support for making Google AdWords request in iOS 10.

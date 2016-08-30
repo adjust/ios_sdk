@@ -23,7 +23,7 @@ static NSRegularExpression * universalLinkRegex = nil;
 static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk      = @"ios4.8.4";
+static NSString * const kClientSdk      = @"ios4.8.5";
 static NSString * const kDefaultScheme  = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern  = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
