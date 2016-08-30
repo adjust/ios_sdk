@@ -58,7 +58,13 @@ static const int kTrackingPixelTimeout[]    = { 10, 100 };
 }
 
 + (void)present {
-    [[ADJTrackingPixel getInstance] present];
+    // If SFSafariViewController is present, use it.
+    // SFSafariViewController is supported starting from iOS 9.
+    if (NSClassFromString(@"SFSafariViewController")) {
+        [[ADJTrackingPixel getInstance] present];
+    } else {
+        [[ADJAdjustFactory logger] warn:@"AdWords request can't be sent with this iOS version"];
+    }
 }
 
 - (void)present {
