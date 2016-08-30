@@ -825,6 +825,7 @@
 		9DF9C8C81D6F3CA5008E362F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DF9C8D11D6F3CA5008E362F /* ADJAdditions */,
 				9DF9C8C91D6F3CA5008E362F /* ADJActivityHandler.h */,
 				9DF9C8CA1D6F3CA5008E362F /* ADJActivityHandler.m */,
 				9DF9C8CB1D6F3CA5008E362F /* ADJActivityKind.h */,
@@ -833,7 +834,6 @@
 				9DF9C8CE1D6F3CA5008E362F /* ADJActivityPackage.m */,
 				9DF9C8CF1D6F3CA5008E362F /* ADJActivityState.h */,
 				9DF9C8D01D6F3CA5008E362F /* ADJActivityState.m */,
-				9DF9C8D11D6F3CA5008E362F /* ADJAdditions */,
 				9DF9C8D81D6F3CA5008E362F /* ADJAdjustFactory.h */,
 				9DF9C8D91D6F3CA5008E362F /* ADJAdjustFactory.m */,
 				9DF9C8DA1D6F3CA5008E362F /* ADJAttribution.h */,
@@ -923,6 +923,7 @@
 		9DFB06191D7470C0006D48FC /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9DFB06221D7470C0006D48FC /* ADJAdditions */,
 				9DFB061A1D7470C0006D48FC /* ADJActivityHandler.h */,
 				9DFB061B1D7470C0006D48FC /* ADJActivityHandler.m */,
 				9DFB061C1D7470C0006D48FC /* ADJActivityKind.h */,
@@ -931,7 +932,6 @@
 				9DFB061F1D7470C0006D48FC /* ADJActivityPackage.m */,
 				9DFB06201D7470C0006D48FC /* ADJActivityState.h */,
 				9DFB06211D7470C0006D48FC /* ADJActivityState.m */,
-				9DFB06221D7470C0006D48FC /* ADJAdditions */,
 				9DFB06291D7470C0006D48FC /* ADJAdjustFactory.h */,
 				9DFB062A1D7470C0006D48FC /* ADJAdjustFactory.m */,
 				9DFB062B1D7470C0006D48FC /* ADJAttribution.h */,
