@@ -203,10 +203,10 @@
     [self parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
 
     // Check if UUID was persisted or not.
-    // If yes, assign it to persisted_ios_uuid parameter.
+    // If yes, assign it to persistent_ios_uuid parameter.
     // If not, assign it to ios_uuid parameter.
     if (activityState.isPersisted) {
-        [self parameters:parameters setString:activityState.uuid        forKey:@"persisted_ios_uuid"];
+        [self parameters:parameters setString:activityState.uuid        forKey:@"persistent_ios_uuid"];
     } else {
         [self parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
