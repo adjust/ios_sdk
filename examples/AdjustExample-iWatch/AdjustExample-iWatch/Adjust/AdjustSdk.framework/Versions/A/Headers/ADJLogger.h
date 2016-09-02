@@ -13,13 +13,15 @@ typedef enum {
     ADJLogLevelInfo    = 3,
     ADJLogLevelWarn    = 4,
     ADJLogLevelError   = 5,
-    ADJLogLevelAssert  = 6
+    ADJLogLevelAssert  = 6,
+    ADJLogLevelSupress = 7
 } ADJLogLevel;
 
 // A simple logger with multiple log levels.
 @protocol ADJLogger
 
 - (void)setLogLevel:(ADJLogLevel)logLevel;
+- (void)lockLogLevel;
 
 - (void)verbose:(NSString *)message, ...;
 - (void)debug:  (NSString *)message, ...;

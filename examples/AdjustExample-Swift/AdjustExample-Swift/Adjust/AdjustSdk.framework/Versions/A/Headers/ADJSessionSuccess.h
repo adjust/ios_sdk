@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSString * adid;
 
 // the server response in json format
-@property (nonatomic, retain) NSDictionary *jsonResponse;
+@property (nonatomic, strong) NSDictionary *jsonResponse;
 
 + (ADJSessionSuccess *)sessionSuccessResponseData;
 - (id)init;
