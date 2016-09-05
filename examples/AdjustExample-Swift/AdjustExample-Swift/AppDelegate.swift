@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let appToken = "{YourAppToken}"
         let environment = ADJEnvironmentSandbox
 
@@ -45,49 +45,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         return true
     }
 
-    func adjustAttributionChanged(_ attribution: ADJAttribution) {
-        NSLog("adjust attribution %@", attribution)
+    func adjustAttributionChanged(_attribution: ADJAttribution) {
+        NSLog("adjust attribution %@", _attribution)
     }
 
-    func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess) {
-        NSLog("adjust event success %@", eventSuccessResponseData)
+    func adjustEventTrackingSucceeded(_eventSuccessResponseData: ADJEventSuccess) {
+        NSLog("adjust event success %@", _eventSuccessResponseData)
     }
 
-    func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure) {
-        NSLog("adjust event failure %@", eventFailureResponseData)
+    func adjustEventTrackingFailed(_eventFailureResponseData: ADJEventFailure) {
+        NSLog("adjust event failure %@", _eventFailureResponseData)
     }
 
-    func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess) {
-        NSLog("adjust session success %@", sessionSuccessResponseData)
+    func adjustSessionTrackingSucceeded(_sessionSuccessResponseData: ADJSessionSuccess) {
+        NSLog("adjust session success %@", _sessionSuccessResponseData)
     }
 
-    func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure) {
-        NSLog("adjust session failure %@", sessionFailureResponseData)
+    func adjustSessionTrackingFailed(_sessionFailureResponseData: ADJSessionFailure) {
+        NSLog("adjust session failure %@", _sessionFailureResponseData)
     }
 
-    func adjustDeeplinkResponse(_ deeplink: URL!) -> Bool {
+    @objc func adjustDeeplinkResponse(_deeplink: NSURL!) -> Bool {
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
+    func applicationWillResignActive(_application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
+    func applicationDidEnterBackground(_application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationWillEnterForeground(_application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
+    func applicationWillTerminate(_application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 }

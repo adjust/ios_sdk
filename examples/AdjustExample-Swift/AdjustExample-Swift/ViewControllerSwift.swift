@@ -27,20 +27,20 @@ class ViewControllerSwift: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    @IBAction func btnTrackEventSimpleTapped(_ sender: UIButton) {
+    @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventRevenueTapped(_ sender: UIButton) {
+    @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
         event?.setRevenue(0.99, currency: "EUR");
 
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventCallbackTapped(_ sender: UIButton) {
+    @IBAction func btnTrackEventCallbackTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
         event?.addCallbackParameter("foo", value: "bar");
         event?.addCallbackParameter("key", value: "value");
@@ -48,7 +48,7 @@ class ViewControllerSwift: UIViewController {
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnTrackEventPartnerTapped(_ sender: UIButton) {
+    @IBAction func btnTrackEventPartnerTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "{YourEventToken}");
         event?.addPartnerParameter("foo", value: "bar");
         event?.addPartnerParameter("key", value: "value");
@@ -56,39 +56,43 @@ class ViewControllerSwift: UIViewController {
         Adjust.trackEvent(event);
     }
 
-    @IBAction func btnEnableOfflineModeTapped(_ sender: UIButton) {
+    @IBAction func btnEnableOfflineModeTapped(_sender: UIButton) {
         Adjust.setOfflineMode(true);
     }
 
-    @IBAction func btnDisableOfflineModeTapped(_ sender: UIButton) {
+    @IBAction func btnDisableOfflineModeTapped(_sender: UIButton) {
         Adjust.setOfflineMode(false);
     }
 
-    @IBAction func btnEnableSDKTapped(_ sender: UIButton) {
+    @IBAction func btnEnableSDKTapped(_sender: UIButton) {
         Adjust.setEnabled(true);
     }
 
-    @IBAction func btnDisableSDKTapped(_ sender: UIButton) {
+    @IBAction func btnDisableSDKTapped(_sender: UIButton) {
         Adjust.setEnabled(false);
     }
 
-    @IBAction func btnIsSDKEnabledTapped(_ sender: UIButton) {
+    @IBAction func btnIsSDKEnabledTapped(_sender: UIButton) {
         let isSDKEnabled = Adjust.isEnabled();
 
         if (isSDKEnabled) {
-            let alert = UIAlertController(title: "Is SDK Enabled?",
-                                          message: "SDK is ENABLED!",
-                                          preferredStyle: UIAlertControllerStyle.alert)
+            // let alert = UIAlertController(title: "Is SDK Enabled?",
+            //                               message: "SDK is ENABLED!",
+            //                               preferredStyle: UIAlertControllerStyle.Alert)
+            //
+            // alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            // self.present(alert, animated: true, completion: nil)
 
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            NSLog("SDK is enabled!");
         } else {
-            let alert = UIAlertController(title: "Is SDK Enabled?",
-                                          message: "SDK is DISABLED!",
-                                          preferredStyle: UIAlertControllerStyle.alert)
+            // let alert = UIAlertController(title: "Is SDK Enabled?",
+            //                               message: "SDK is DISABLED!",
+            //                               preferredStyle: UIAlertControllerStyle.Alert)
+            //
+            // alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            // self.present(alert, animated: true, completion: nil)
 
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            NSLog("SDK is disabled");
         }
     }
 }
