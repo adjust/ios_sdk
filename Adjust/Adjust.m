@@ -84,10 +84,6 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [[Adjust getInstance] sendFirstPackages];
 }
 
-+ (void)addExternalDeviceId:(NSString *)externalDeviceId {
-    [[Adjust getInstance] addExternalDeviceId:externalDeviceId];
-}
-
 + (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     [[Adjust getInstance] addSessionCallbackParameter:key value:value];
@@ -106,10 +102,6 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (void)removeSessionPartnerParameter:(NSString *)key {
     [[Adjust getInstance] removeSessionPartnerParameter:key];
-}
-
-+ (void)resetExternalDeviceId {
-    [[Adjust getInstance] resetExternalDeviceId];
 }
 
 + (void)resetSessionCallbackParameters {
@@ -207,21 +199,6 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.activityHandler sendFirstPackages];
 }
 
-- (void)addExternalDeviceId:(NSString *)externalDeviceId {
-    if (self.activityHandler != nil) {
-        [self.activityHandler addExternalDeviceId:externalDeviceId];
-        return;
-    }
-
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
-    }
-
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
-        [activityHandler addExternalDeviceIdI:activityHandler externalDeviceId:externalDeviceId];
-    }];
-}
-
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     if (self.activityHandler != nil) {
@@ -281,21 +258,6 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
     [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
-    }];
-}
-
-- (void)resetExternalDeviceId {
-    if (self.activityHandler != nil) {
-        [self.activityHandler resetExternalDeviceId];
-        return;
-    }
-
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
-    }
-
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
-        [activityHandler resetExternalDeviceIdI:activityHandler];
     }];
 }
 

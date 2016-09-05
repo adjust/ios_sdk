@@ -210,16 +210,10 @@ startsSending:(BOOL)startsSending
       sessionParameters:(ADJSessionParameters *)sessionParameters
 {
     [selfI.logger debug:@"Updating package handler queue"];
-    [selfI.logger verbose:@"Session external device id: %@", sessionParameters.externalDeviceId];
     [selfI.logger verbose:@"Session callback parameters: %@", sessionParameters.callbackParameters];
     [selfI.logger verbose:@"Session partner parameters: %@", sessionParameters.partnerParameters];
 
     for (ADJActivityPackage * activityPackage in selfI.packageQueue) {
-        // external device id
-        [ADJPackageBuilder parameters:activityPackage.parameters
-                            setString:sessionParameters.externalDeviceId
-                               forKey:@"external_device_id"];
-
         // callback parameters
         NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
                                                                     source:activityPackage.callbackParameters

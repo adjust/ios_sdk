@@ -10,31 +10,11 @@
 
 @implementation ADJSessionParameters
 
-#pragma mark NSCoding
-- (id)initWithCoder:(NSCoder *)decoder {
-    self = [super init];
-    if (self == nil) return self;
-
-    self.externalDeviceId = [decoder decodeObjectForKey:@"externalDeviceId"];
-    // does not read dictionary parameters
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.externalDeviceId forKey:@"externalDeviceId"];
-    // does not save dictionary parameters
-}
-
-- (NSString*)description {
-    return [NSString stringWithFormat:@"External Device Id: %@", self.externalDeviceId];
-}
-
 #pragma mark - NSCopying
 -(id)copyWithZone:(NSZone *)zone
 {
     ADJSessionParameters* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        copy.externalDeviceId       = [self.externalDeviceId copyWithZone:zone];
         copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
         copy.partnerParameters  = [self.partnerParameters copyWithZone:zone];
     }

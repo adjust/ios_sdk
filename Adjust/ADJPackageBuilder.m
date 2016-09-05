@@ -53,7 +53,6 @@
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setString:sessionParameters.externalDeviceId forKey:@"external_device_id"];
         [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
         [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
     }
@@ -76,7 +75,6 @@
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
     if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setString:sessionParameters.externalDeviceId forKey:@"external_device_id"];
         NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
                                                                     source:event.callbackParameters
                                                              parameterName:@"Callback"];

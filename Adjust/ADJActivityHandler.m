@@ -26,7 +26,6 @@ typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
-static NSString   * const kSessionParametersFilename   = @"AdjustSessionParameters";
 static NSString   * const kSessionCallbackParametersFilename   = @"AdjustSessionCallbackParameters";
 static NSString   * const kSessionPartnerParametersFilename    = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -475,14 +474,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      }];
 }
 
-- (void)addExternalDeviceId:(NSString *)externalDeviceId {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI addExternalDeviceIdI:selfI externalDeviceId:externalDeviceId];
-                     }];
-}
-
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     [ADJUtil launchInQueue:self.internalQueue
@@ -514,14 +505,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI removeSessionPartnerParameterI:selfI key:key];
-                     }];
-}
-
-- (void)resetExternalDeviceId {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI resetExternalDeviceIdI:selfI];
                      }];
 }
 
@@ -596,10 +579,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     selfI.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:selfI.adjustConfig.sdkPrefix];
 
     // read files that are accessed only in Internal sections
-    [selfI readSessionParametersI:selfI];
-    if (selfI.sessionParameters == nil) {
-        selfI.sessionParameters = [[ADJSessionParameters alloc] init];
-    }
+    selfI.sessionParameters = [[ADJSessionParameters alloc] init];
     [selfI readSessionCallbackParametersI:selfI];
     [selfI readSessionPartnerParametersI:selfI];
 
@@ -1170,17 +1150,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                      class:[ADJAttribution class]];
 }
 
-- (void)writeSessionParametersI:(ADJActivityHandler *)selfI {
-    @synchronized ([ADJSessionParameters class]) {
-        if (selfI.sessionParameters == nil) {
-            return;
-        }
-        [ADJUtil writeObject:selfI.sessionParameters
-                    filename:kSessionParametersFilename
-                  objectName:@"Session parameters"];
-    }
-}
-
 - (void)writeSessionCallbackParametersI:(ADJActivityHandler *)selfI {
     @synchronized ([ADJSessionParameters class]) {
         if (selfI.sessionParameters == nil) {
@@ -1209,7 +1178,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kSessionParametersFilename];
             [ADJUtil deleteFile:kSessionCallbackParametersFilename];
             [ADJUtil deleteFile:kSessionPartnerParametersFilename];
         }
@@ -1219,11 +1187,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 }
 
-- (void)readSessionParametersI:(ADJActivityHandler *)selfI {
-    selfI.sessionParameters = [ADJUtil readObject:kSessionParametersFilename
-                                      objectName:@"Session parameters"
-                                           class:[ADJSessionParameters class]];
-}
 - (void)readSessionCallbackParametersI:(ADJActivityHandler *)selfI {
     selfI.sessionParameters.callbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
                                                          objectName:@"Session Callback parameters"
@@ -1438,20 +1401,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 #pragma mark - session parameters
-- (void)addExternalDeviceIdI:(ADJActivityHandler *)selfI
-            externalDeviceId:(NSString *)externalDeviceId {
-    if (![ADJUtil isValidParameter:externalDeviceId
-                     attributeType:@"value"
-                     parameterName:@"External Device Id"]) return;
-
-    if (selfI.sessionParameters.externalDeviceId != nil) {
-        [selfI.logger warn:@"External Device Id %@ will be overwritten", selfI.sessionParameters.externalDeviceId];
-    }
-
-    selfI.sessionParameters.externalDeviceId = externalDeviceId;
-
-    [selfI writeSessionParametersI:selfI];
-}
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key
                               value:(NSString *)value
@@ -1557,15 +1506,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [selfI.logger debug:@"Key %@ will be removed", key];
     [selfI.sessionParameters.partnerParameters removeObjectForKey:key];
     [selfI writeSessionPartnerParametersI:selfI];
-}
-
-- (void)resetExternalDeviceIdI:(ADJActivityHandler *)selfI {
-    if (selfI.sessionParameters.externalDeviceId == nil) {
-        [selfI.logger warn:@"External Device Id is not set"];
-        return;
-    }
-    selfI.sessionParameters.externalDeviceId = nil;
-    [selfI writeSessionParametersI:selfI];
 }
 
 - (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI {

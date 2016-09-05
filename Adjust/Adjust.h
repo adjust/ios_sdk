@@ -170,9 +170,6 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)resetSessionPartnerParameters;
 
-+ (void)addExternalDeviceId:(NSString *)externalDeviceId;
-+ (void)resetExternalDeviceId;
-
 /**
  * Obtain singleton Adjust object
  */
@@ -194,12 +191,10 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)sendAdWordsRequest;
 - (void)trackSubsessionEnd;
 - (void)trackSubsessionStart;
-- (void)resetExternalDeviceId;
 - (void)resetSessionPartnerParameters;
 - (void)resetSessionCallbackParameters;
 - (void)removeSessionPartnerParameter:(NSString *)key;
 - (void)removeSessionCallbackParameter:(NSString *)key;
-- (void)addExternalDeviceId:(NSString *)externalDeviceId;
 - (void)addSessionPartnerParameter:(NSString *)key value:(NSString *)value;
 - (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value;
 

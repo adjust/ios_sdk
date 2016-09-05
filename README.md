@@ -26,7 +26,6 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Session parameters](#session-parameters)
       * [Session callback parameters](#session-callback-parameters)
       * [Session partner parameters](#session-partner-parameters)
-      * [External device id](#external-device-id)
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
    * [Event and session callbacks](#event-session-callbacks)
@@ -388,22 +387,6 @@ If you wish to remove all key and values from the session partner parameters, yo
 
 ```objc
 [Adjust resetSessionPartnerParameters];
-```
-
-#### <a id="external-device-id"> External device id
-
-The adjust SDK uses device ids that are available from iOS, but your app might have other sources of identifiers that can help features like ad conversion.
-
-To save your unique identifier in the session parameters that are send in every request and session, call the `addExternalDeviceId` method:
-
-```objc
-[Adjust addExternalDeviceId:@"customDeviceId"];
-```
-
-It's also possible to remove the saved unique identifier by calling the method `resetExternalDeviceId`:
-
-```objc
-[Adjust resetExternalDeviceId];
 ```
 
 #### <a id="delay-start"> Delay start
