@@ -1056,6 +1056,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"push"];
 
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+
+    // save new push token
+    selfI.activityState.deviceToken = deviceTokenString;
+    [selfI writeActivityStateI:selfI];
 }
 
 #pragma mark - private
