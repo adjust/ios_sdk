@@ -15,7 +15,7 @@
 @interface ADJConfig()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, assign) BOOL allowSupressLogLevel;
+@property (nonatomic, assign) BOOL allowSuppressLogLevel;
 
 @end
 
@@ -28,9 +28,9 @@
 
 + (ADJConfig *)configWithAppToken:(NSString *)appToken
                       environment:(NSString *)environment
-             allowSupressLogLevel:(BOOL)allowSupressLogLevel
+             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
 {
-    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSupressLogLevel:allowSupressLogLevel];
+    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 }
 
 - (id)initWithAppToken:(NSString *)appToken
@@ -38,17 +38,17 @@
 {
     return [self initWithAppToken:appToken
                       environment:environment
-             allowSupressLogLevel:NO];
+             allowSuppressLogLevel:NO];
 }
 
 - (id)initWithAppToken:(NSString *)appToken
            environment:(NSString *)environment
-  allowSupressLogLevel:(BOOL)allowSupressLogLevel
+  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
 {
     self = [super init];
     if (self == nil) return nil;
 
-    self.allowSupressLogLevel = allowSupressLogLevel;
+    self.allowSuppressLogLevel = allowSuppressLogLevel;
     self.logger = ADJAdjustFactory.logger;
     // default values
     [self setLogLevel:ADJLogLevelInfo environment:environment];
@@ -73,14 +73,14 @@
 - (void)setLogLevel:(ADJLogLevel)logLevel
         environment:(NSString *)environment{
     if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        if (self.allowSupressLogLevel) {
-            _logLevel = ADJLogLevelSupress;
+        if (self.allowSuppressLogLevel) {
+            _logLevel = ADJLogLevelSuppress;
         } else {
             _logLevel = ADJLogLevelAssert;
         }
     } else {
-        if (!self.allowSupressLogLevel &&
-            logLevel == ADJLogLevelSupress) {
+        if (!self.allowSuppressLogLevel &&
+            logLevel == ADJLogLevelSuppress) {
             _logLevel = ADJLogLevelAssert;
         } else {
             _logLevel = logLevel;

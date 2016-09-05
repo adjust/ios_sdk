@@ -103,31 +103,31 @@
  *                              distinguish between real traffic and artificial traffic from test devices.
  *                              It is very important that you keep this value meaningful at all times!
  *                              Especially if you are tracking revenue
- * @param allowSupressLogLevel  If set to true, it allows usage of ADJLogLevelSupress
+ * @param allowSuppressLogLevel  If set to true, it allows usage of ADJLogLevelSuppress
  *                              and replaces the default value for production environment
  */
 + (ADJConfig *)configWithAppToken:(NSString *)appToken
                       environment:(NSString *)environment
-             allowSupressLogLevel:(BOOL)allowSupressLogLevel;
+             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 - (id)initWithAppToken:(NSString *)appToken
            environment:(NSString *)environment
-  allowSupressLogLevel:(BOOL)allowSupressLogLevel;
+  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
 /**
  * Change the verbosity of Adjust's logs
  *
  * You can increase or reduce the amount of logs from Adjust by passing
- * one of the following parameters. Use ADJLogLevelSupress to disable all logging
+ * one of the following parameters. Use ADJLogLevelSuppress to disable all logging
  *
  * @var logLevel The desired minimum log level (default: info)
  *     Must be one of the following:
- *      - ADJLogLevelVerbose (enable all logging)
- *      - ADJLogLevelDebug   (enable more logging)
- *      - ADJLogLevelInfo    (the default)
- *      - ADJLogLevelWarn    (disable info logging)
- *      - ADJLogLevelError   (disable warnings as well)
- *      - ADJLogLevelAssert  (disable errors as well)
- *      - ADJLogLevelSupress (supress all logging)
+ *      - ADJLogLevelVerbose    (enable all logging)
+ *      - ADJLogLevelDebug      (enable more logging)
+ *      - ADJLogLevelInfo       (the default)
+ *      - ADJLogLevelWarn       (disable info logging)
+ *      - ADJLogLevelError      (disable warnings as well)
+ *      - ADJLogLevelAssert     (disable errors as well)
+ *      - ADJLogLevelSuppress   (suppress all logging)
  */
 @property (nonatomic, assign) ADJLogLevel logLevel;
 

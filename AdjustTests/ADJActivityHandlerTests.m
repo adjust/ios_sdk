@@ -2740,29 +2740,29 @@ sessionFailureDelegatePresent:YES];
     aTest(@"ADJLogger setLogLevel: 5");
     aTest(@"ADJLogger setLogLevel: 6");
 
-    config.logLevel = ADJLogLevelSupress;
+    config.logLevel = ADJLogLevelSuppress;
     // chooses Assert because config object was not configured to allow suppress
     aTest(@"ADJLogger setLogLevel: 6");
 
     // init log level with assert because it was not configured to allow suppress
-    config = [self getConfig:@"production" appToken:@"qwerty123456" allowSupressLogLevel:NO initLogLevel:@"6"];
+    config = [self getConfig:@"production" appToken:@"qwerty123456" allowSuppressLogLevel:NO initLogLevel:@"6"];
 
-    config.logLevel = ADJLogLevelSupress;
+    config.logLevel = ADJLogLevelSuppress;
     // chooses Assert because config object was not configured to allow suppress
     aTest(@"ADJLogger setLogLevel: 6");
 
     // init with info because it's sandbox
-    config = [self getConfig:@"sandbox" appToken:@"qwerty123456" allowSupressLogLevel:YES initLogLevel:@"3"];
+    config = [self getConfig:@"sandbox" appToken:@"qwerty123456" allowSuppressLogLevel:YES initLogLevel:@"3"];
 
-    config.logLevel = ADJLogLevelSupress;
-    // chooses Supress because config object was configured to allow suppress
+    config.logLevel = ADJLogLevelSuppress;
+    // chooses Suppress because config object was configured to allow suppress
     aTest(@"ADJLogger setLogLevel: 7");
 
     // init with info because it's sandbox
-    config = [self getConfig:@"production" appToken:@"qwerty123456" allowSupressLogLevel:YES initLogLevel:@"7"];
+    config = [self getConfig:@"production" appToken:@"qwerty123456" allowSuppressLogLevel:YES initLogLevel:@"7"];
 
     config.logLevel = ADJLogLevelAssert;
-    // chooses Supress because config object was configured to allow suppress
+    // chooses Suppress because config object was configured to allow suppress
     aTest(@"ADJLogger setLogLevel: 7");
 }
 
@@ -3011,18 +3011,18 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
 }
 
 - (ADJConfig *)getConfig {
-    return [self getConfig:@"sandbox" appToken:@"qwerty123456" allowSupressLogLevel:NO initLogLevel:@"3"];
+    return [self getConfig:@"sandbox" appToken:@"qwerty123456" allowSuppressLogLevel:NO initLogLevel:@"3"];
 }
 
 - (ADJConfig *)getConfig:(NSString *)environment
                 appToken:(NSString *)appToken
-    allowSupressLogLevel:(BOOL)allowSupressLogLevel
+    allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
             initLogLevel:(NSString *)initLogLevel
 {
     ADJConfig * config = nil;
 
-    if (allowSupressLogLevel) {
-        config = [ADJConfig configWithAppToken:appToken environment:environment allowSupressLogLevel:YES];
+    if (allowSuppressLogLevel) {
+        config = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:YES];
     } else {
         config = [ADJConfig configWithAppToken:appToken environment:environment];
     }
