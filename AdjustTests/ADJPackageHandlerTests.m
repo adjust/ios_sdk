@@ -401,13 +401,10 @@ typedef enum {
 
     aDebug(@"Updating package handler queue");
 
-    aVerbose(@"Session external device id: (null)");
     aVerbose(@"Session callback parameters: (null)");
     aVerbose(@"Session partner parameters: (null)");
 
     ADJSessionParameters * sessionParameters = [[ADJSessionParameters alloc] init];
-
-    sessionParameters.externalDeviceId = @"sedi";
 
     sessionParameters.callbackParameters = [NSMutableDictionary dictionary];
     [sessionParameters.callbackParameters setObject:@"scpValue" forKey:@"scpKey"];
@@ -422,7 +419,6 @@ typedef enum {
 
     aDebug(@"Updating package handler queue");
 
-    aVerbose(@"Session external device id: sedi");
     aVerbose(@"Session callback parameters: {\n    scpKey = scpValue;\n}");
     aVerbose(@"Session partner parameters: {\n    sppKey = sppValue;\n}");
 
@@ -430,19 +426,16 @@ typedef enum {
     aWarn(@"Key sppKey with value sppValue from Partner parameter was replaced by value peBar");
     aDebug(@"Package handler wrote 3 packages");
     
-    sessionPackageFields.externalDeviceId = @"sedi";
     sessionPackageFields.callbackParameters = @"{\"scpKey\":\"scpValue\"}";
     sessionPackageFields.partnerParameters = @"{\"sppKey\":\"sppValue\"}";
 
     [self testPackageSession:firstSessionPackage fields:sessionPackageFields sessionCount:@"1"];
 
-    firstEventPackageFields.externalDeviceId = @"sedi";
     firstEventPackageFields.callbackParameters = @"{\"scpKey\":\"scpValue\",\"ceFoo\":\"ceBar\"}";
     firstEventPackageFields.partnerParameters = @"{\"peFoo\":\"peBar\",\"sppKey\":\"sppValue\"}";
 
     [self testEventPackage:firstEventPackage fields:firstEventPackageFields eventToken:@"event1"];
 
-    secondEventPackageFields.externalDeviceId = @"sedi";
     secondEventPackageFields.callbackParameters = @"{\"scpKey\":\"ceBar\"}";
     secondEventPackageFields.partnerParameters = @"{\"sppKey\":\"peBar\"}";
 

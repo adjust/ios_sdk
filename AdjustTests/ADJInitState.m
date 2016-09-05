@@ -25,7 +25,6 @@
     self.delayStartConfigured = NO;
     self.updatePackages = NO;
     self.activityStateAlreadyCreated = NO;
-    self.readSessionParameters = nil;
     self.readCallbackParameters = nil;
     self.readPartnerParameters = nil;
     self.foregroundTimerStart = 60;

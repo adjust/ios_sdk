@@ -124,11 +124,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [self.loggerMock test:[prefix stringByAppendingFormat:@"sendFirstPackages"]];
 }
 
-- (void)addExternalDeviceId:(NSString *)externalDeviceId {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"addExternalDeviceId, %@", externalDeviceId]];
-
-}
-
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"addSessionCallbackParameter, key %@ value, %@", key, value]];
@@ -145,10 +140,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)removeSessionPartnerParameter:(NSString *)key {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"removeSessionPartnerParameter, %@", key]];
-}
-
-- (void)resetExternalDeviceId {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"resetExternalDeviceId"]];
 }
 
 - (void)resetSessionCallbackParameters {

@@ -81,9 +81,6 @@
     // default_tracker
     apspEquals(@"default_tracker", fields.defaultTracker);
 
-    // external_device_id
-    apspEquals(@"external_device_id", fields.externalDeviceId);
-
     // callback_params
     [self assertJsonParameters:package parameterName:@"callback_params" value:fields.callbackParameters];
     // partner_params
@@ -130,8 +127,6 @@
     // currency
     apspEquals(@"currency", fields.currency);
 
-    // external_device_id
-    apspEquals(@"external_device_id", fields.externalDeviceId);
     // callback_params
     [self assertJsonParameters:package parameterName:@"callback_params" value:fields.callbackParameters];
     // partner_params

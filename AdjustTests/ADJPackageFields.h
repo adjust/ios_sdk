@@ -43,7 +43,6 @@
 @property (nonatomic, copy) NSString* sessionCount;
 @property (nonatomic, copy) NSString* subSessionCount;
 @property (nonatomic, copy) NSString* eventCount;
-@property (nonatomic, copy) NSString* externalDeviceId;
 
 + (ADJPackageFields *)fields;
 @end

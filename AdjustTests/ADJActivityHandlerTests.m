@@ -579,7 +579,6 @@
     // test first event
     [self testEventPackage:eventPackage fields:eventFields eventToken:@"event1"];
 
-    [activityHandler resetExternalDeviceId];
     [activityHandler resetSessionCallbackParameters];
     [activityHandler resetSessionPartnerParameters];
 
@@ -590,9 +589,6 @@
     [activityHandler removeSessionPartnerParameter:nil];
     [activityHandler removeSessionPartnerParameter:@""];
     [activityHandler removeSessionPartnerParameter:@"nonExistent"];
-
-    [activityHandler addExternalDeviceId:nil];
-    [activityHandler addExternalDeviceId:@""];
 
     [activityHandler addSessionCallbackParameter:nil value:@"value"];
     [activityHandler addSessionCallbackParameter:@"" value:@"value"];
@@ -611,7 +607,6 @@
 
     [NSThread sleepForTimeInterval:2];
 
-    aWarn(@"External Device Id is not set");
     aWarn(@"Session Callback parameters are not set");
     aWarn(@"Session Partner parameters are not set");
 
@@ -622,9 +617,6 @@
     aError(@"Session Partner parameter key is missing");
     aError(@"Session Partner parameter key is empty");
     aWarn(@"Session Partner parameters are not set");
-
-    aError(@"External Device Id parameter value is missing");
-    aError(@"External Device Id parameter value is empty");
 
     aError(@"Session Callback parameter key is missing");
     aError(@"Session Callback parameter key is empty");
@@ -2322,11 +2314,6 @@ sessionFailureDelegatePresent:YES];
     ADJActivityHandlerConstructorState * cState = [[ADJActivityHandlerConstructorState alloc] initWithConfig:config];
     cState.sessionParametersActionsArray = @[^(ADJActivityHandler * activityHandler)
     {
-        [activityHandler addExternalDeviceIdI:activityHandler externalDeviceId:@"externalDeviceIdTest"];
-        [activityHandler addExternalDeviceIdI:activityHandler externalDeviceId:@"externalDeviceIdTest2"];
-        [activityHandler resetExternalDeviceIdI:activityHandler];
-        [activityHandler addExternalDeviceIdI:activityHandler externalDeviceId:@"externalDeviceIdTest3"];
-
         //
         [activityHandler addSessionCallbackParameterI:activityHandler key:@"cKey" value:@"cValue"];
         [activityHandler addSessionCallbackParameterI:activityHandler key:@"cFoo" value:@"cBar"];
@@ -2358,16 +2345,6 @@ sessionFailureDelegatePresent:YES];
     [activityHandler trackEvent:firstEvent];
 
     [NSThread sleepForTimeInterval:2.0];
-
-    aDebug(@"Wrote Session parameters: External Device Id: externalDeviceIdTest");
-
-    aWarn(@"External Device Id externalDeviceIdTest will be overwritten");
-    aDebug(@"Wrote Session parameters: External Device Id: externalDeviceIdTest2");
-
-    aDebug(@"Wrote Session parameters: External Device Id: (null)");
-
-    anWarn(@"External Device Id externalDeviceIdTest2 will be overwritten");
-    aDebug(@"Wrote Session parameters: External Device Id: externalDeviceIdTest3");
 
     //
     aDebug(@"Wrote Session Callback parameters: {\n    cKey = cValue;\n}");
@@ -2424,7 +2401,6 @@ sessionFailureDelegatePresent:YES];
     // set event test parameters
     sessionPackageFields.callbackParameters = @"{\"cFoo\":\"cBar\"}";
     sessionPackageFields.partnerParameters = @"{\"pFoo\":\"pBar\"}";
-    sessionPackageFields.externalDeviceId = @"externalDeviceIdTest3";
 
     [self testPackageSession:sessionPackage fields:sessionPackageFields sessionCount:@"1"];
 
@@ -2439,7 +2415,6 @@ sessionFailureDelegatePresent:YES];
     eventPackageFields.suffix = @"'abc123'";
     eventPackageFields.callbackParameters = @"{\"cFoo\":\"cBar\"}";
     eventPackageFields.partnerParameters = @"{\"pFoo\":\"pBar\"}";
-    eventPackageFields.externalDeviceId = @"externalDeviceIdTest3";
 
     [self testEventPackage:eventPackage fields:eventPackageFields eventToken:@"abc123"];
 
@@ -2464,7 +2439,6 @@ sessionFailureDelegatePresent:YES];
 
     // delay start not configured because activity state is already created
     restartInitState.activityStateAlreadyCreated = YES;
-    restartInitState.readSessionParameters = @"External Device Id: externalDeviceIdTest3";
     restartInitState.readCallbackParameters = @"{\n    cFoo = cBar;\n}";
     restartInitState.readPartnerParameters = @"{\n    pFoo = pBar;\n}";
 
@@ -2502,7 +2476,6 @@ sessionFailureDelegatePresent:YES];
     firstEventPackageFields.suffix = @"'abc123'";
     firstEventPackageFields.callbackParameters = @"{\"cFoo\":\"cBar\",\"ceFoo\":\"ceBar\"}";
     firstEventPackageFields.partnerParameters = @"{\"pFoo\":\"pBar\",\"peFoo\":\"peBar\"}";
-    firstEventPackageFields.externalDeviceId = @"externalDeviceIdTest3";
 
     [self testEventPackage:firstEventPackage fields:firstEventPackageFields eventToken:@"abc123"];
 
@@ -2517,7 +2490,6 @@ sessionFailureDelegatePresent:YES];
     secondEventPackageFields.suffix = @"'abc123'";
     secondEventPackageFields.callbackParameters = @"{\"cFoo\":\"ceBar\"}";
     secondEventPackageFields.partnerParameters = @"{\"pFoo\":\"peBar\"}";
-    secondEventPackageFields.externalDeviceId = @"externalDeviceIdTest3";
 
     [self testEventPackage:secondEventPackage fields:secondEventPackageFields eventToken:@"abc123"];
 }
@@ -2911,12 +2883,6 @@ sessionFailureDelegatePresent:YES];
 
 - (void)checkInitTests:(ADJInitState *)initState
 {
-    // check session parameters file
-    if (initState.readSessionParameters == nil) {
-        aVerbose(@"Session parameters file not found");
-    } else {
-        aDebug([@"Read Session parameters: " stringByAppendingString:initState.readSessionParameters]);
-    }
     if (initState.readCallbackParameters == nil) {
         aVerbose(@"Session Callback parameters file not found");
     } else {

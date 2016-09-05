@@ -20,7 +20,6 @@
 @property (nonatomic, assign) BOOL delayStartConfigured;
 @property (nonatomic, assign) BOOL updatePackages;
 @property (nonatomic, assign) BOOL activityStateAlreadyCreated;
-@property (nonatomic, copy) NSString * readSessionParameters;
 @property (nonatomic, copy) NSString * readCallbackParameters;
 @property (nonatomic, copy) NSString * readPartnerParameters;
 @property (nonatomic, assign) int foregroundTimerStart;
