@@ -100,7 +100,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:HOMEPAGE_TOKEN];
 [Adjust trackEvent:event];
 ```
 
-#### View Listing
+#### リスティング
 
 ```objc
 #import "ADJSociomantic.h"
@@ -115,7 +115,7 @@ NSString *date = @"1427792434";
 [Adjust trackEvent:event];
 ```
 
-#### View Product
+#### プロダクト
 
 ```objc
 #import "ADJSociomantic.h"
@@ -130,7 +130,7 @@ NSDictionary *params = @{
 [ADJSociomantic injectViewProductIntoEvent:event productId:@"productId_4" withParameters:params];
 [Adjust trackEvent:event];
 ```
-*Available product parameters for reporting product view*
+*Product Viewに使用できるプロダクトパラメータ一覧*
 
 <table>
 <colgroup>
@@ -141,97 +141,97 @@ NSDictionary *params = @{
 </colgroup>
 <thead>
 <tr class="header">
-    <th align="left">Parameter name</th>
-    <th align="left">Requirement</th>
-    <th align="left">Description</th>
-    <th align="left">Note</th>
+    <th align="left">パラメータ名</th>
+    <th align="left">条件</th>
+    <th align="left">説明</th>
+    <th align="left">備考</th>
 </tr>
 </thead>
 <tbody>
 
 <tr class="odd">
     <td align="left">SCMCategory</td>
-    <td align="left">Required*</td>
-    <td align="left">Product category (entire category path)</td>
-    <td align="left">Category information provided in the tracking code on category or listing pages should match the category information provided in the feed or in the tracking code of product pages.</td>
+    <td align="left">必須*</td>
+    <td align="left">プロダクトカテゴリ(entire category path)</td>
+    <td align="left">リスティングページまたはカテゴリのトラッキングコードから提供されるカテゴリ情報は、フィードまたはプロダクトページのトラッキングコードから提供されるカテゴリ情報と一致する必要があります。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMProductName</td>
-    <td align="left">Required*</td>
-    <td align="left">Product name</td>
-    <td align="left">Special characters should not be encoded but provided in proper UTF-8. Do not use any HTML markup.</td>
+    <td align="left">必須*</td>
+    <td align="left">プロダクト名</td>
+    <td align="left">記号はエンコードできませんが、UTF-8で使用できます。HTMLマークアップは使用できません。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMSalePrice</td>
-    <td align="left">Required*</td>
-    <td align="left">Sale price as decimal value (e.g. 2.99)</td>
-    <td align="left">Please use a dot as a decimal separator and do not use any thousand separators.</td>
+    <td align="left">必須*</td>
+    <td align="left">セール価格 (小数 e.g. 2.99)</td>
+    <td align="left">小数点はドットを使ってください。カンマは使えません。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMAmount</td>
-    <td align="left">Required*</td>
-    <td align="left">Regular price as decimal value (e.g. 3.99)</td>
-    <td align="left">Please use a dot as a decimal separator and do not use any thousand separators.</td>
+    <td align="left">必須*</td>
+    <td align="left">通常価格 (小数 e.g. 3.99)</td>
+    <td align="left">小数点はドットを使ってください。カンマは使えません。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMCurrency</td>
-    <td align="left">Required*</td>
-    <td align="left">Currency code in ISO 4217 format (e.g. EUR)</td>
-    <td align="left">Fixed currency code. Should have been provided to you in the tracking code examples.</td>
+    <td align="left">必須*</td>
+    <td align="left">通貨コード(ISO 4217フォーマット e.g. EUR)</td>
+    <td align="left">決められた通貨コードが入ります。トラッキングコードサンプルでご確認いただけます。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMProductURL></td>
-    <td align="left">Required*</td>
-    <td align="left">Product URL (deeplink)</td>
-    <td align="left">Please provide a working deeplink ideally without any click tracking parameter (Google Analytics, HURRA, Eulerian, etc.), Please always use deeplinks with http://</td>
+    <td align="left">必須*</td>
+    <td align="left">プロダクトURL (ディープリンク)</td>
+    <td align="left">有効なディープリンクを設定してください。Googleアナリティクス、Hurra、Eulerian等のクリックトラッキングパラメータを含まないディープリンクが理想的です。ディープリンクは http:// で始まるようにしてください。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMProductImageURL</td>
-    <td align="left">Required*</td>
-    <td align="left">Product image URL</td>
-    <td align="left">Please provide images in a reasonable size. For an optimal appearance in the ads the images should be at least 200x200px and should have the same aspect ratio.</td>
+    <td align="left">必須*</td>
+    <td align="left">プロダクト画像URL</td>
+    <td align="left">画像サイズにご注意ください。広告中に任意でつけられる画像は最小で 200x200 px で、同じアスペクト比である必要があります。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMBrand</td>
-    <td align="left">Required*</td>
-    <td align="left">Product brand</td>
-    <td align="left">Special characters should not be encoded but provided in proper UTF-8 (Same as SCMProductName above). Do not use any HTML markup.</td>
+    <td align="left">必須*</td>
+    <td align="left">プロダクトブランド</td>
+    <td align="left">記号はエンコードできませんが、UTF-8で使用できます(上記SCMProductNameと同様です)。HTMLマークアップは使用できません。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMDescription</td>
-    <td align="left">Optional</td>
-    <td align="left">Short product description</td>
-    <td align="left">Special characters should not be encoded but provided in proper UTF-8 (Same as SCMProductName above). Do not use any HTML markup.</td>
+    <td align="left">任意</td>
+    <td align="left">短い商品説明</td>
+    <td align="left">記号はエンコードできませんが、UTF-8で使用できます(上記SCMProductNameと同様です)。HTMLマークアップは使用できません。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMTimestamp</td>
-    <td align="left">Optional</td>
-    <td align="left">Timestamp until when the product is available (please use GMT time)</td>
-    <td align="left">Please provide the date a visitor has searched for. It should be an NSTimeInterval wrapped in NSNumber (see example).</td>
+    <td align="left">任意</td>
+    <td align="left">プロダクト公開までのタイムスタンプ(GMT)</td>
+    <td align="left">訪問者が検索した日付を入力してください。NSNumberクラスでラップされたNSTimeInterval形式にしてください(例をご確認ください)。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMValidityTimestamp</td>
-    <td align="left">Optional</td>
-    <td align="left">Timestamp until when the product is available (please use GMT time)</td>
-    <td align="left">Please provide the unix timestamp until when the product is available. Please use 0 for products that are always available. It should be an NSTimeInterval wrapped in NSNumber (Same as SCMTimestamp above).</td>
+    <td align="left">任意</td>
+    <td align="left">プロダクト公開までのタイムスタンプ(GMT)</td>
+    <td align="left">プロダクトが利用可能になるまでの時間をUnixタイムスタンプで入力してください。常に利用できるプロダクトには 0 を入力してください。NSNumberクラスでラップされたNSTimeInterval形式にしてください(SCMTimestampと同様です)。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMQuantity</td>
-    <td align="left">Optional</td>
-    <td align="left">Number of products in stock</td>
-    <td align="left">Please integrate this field only after discussion with your personal Sociomantic contact</td>
+    <td align="left">任意</td>
+    <td align="left">プロダクトの在庫数</td>
+    <td align="left">このフィールドはSociomanticの担当者にご相談いただいた上でご使用ください。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMScore</td>
-    <td align="left">Optional</td>
-    <td align="left">Priority score of the product (value range is between 0 to 10.0)</td>
-    <td align="left">Please integrate this field only after discussion with your personal Sociomantic contact</td>
+    <td align="left">任意</td>
+    <td align="left">プロダクトのプライオリティスコア(0 から 10.0 まで)</td>
+    <td align="left">このフィールドはSociomanticの担当者にご相談いただいた上でご使用ください。</td>
 </tr>
 
 </tbody>
 </table>
 
-\*optional, if provided in the feed
+\*フィードで設定されている場合は任意
 
 どの設定を使うべきか不明瞭な場合は、Sociomanticのテクニカルアカウント担当にご相談ください。
 
@@ -259,7 +259,7 @@ NSArray * productList = @[product5, product6, product7];
 [Adjust trackEvent:event];
 ```
 
-*Available cart parameters for reporting cart view*
+*Cart Viewに利用できるカートパラメータ一覧*
 
 <table>
 <colgroup>
@@ -270,36 +270,36 @@ NSArray * productList = @[product5, product6, product7];
 </colgroup>
 <thead>
 <tr class="header">
-    <th align="left">Parameter name</th>
-    <th align="left">Requirement</th>
-    <th align="left">Description</th>
-    <th align="left">Note</th>
+    <th align="left">パラメータ名</th>
+    <th align="left">条件</th>
+    <th align="left">説明</th>
+    <th align="left">備考</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
     <td align="left">SCMProductID</td>
-    <td align="left">Required</td>
-    <td align="left">Product ID</td>
-    <td align="left">Please provide the product ID without any subIDs for any color or size variations.</td>
+    <td align="left">必須</td>
+    <td align="left">プロダクトID</td>
+    <td align="left">カラーやサイズなどのサブIDを除いたプロダクトIDを入力してください。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMAmount</td>
-    <td align="left">Optional</td>
-    <td align="left">Product price as decimal value (e.g. 2.99)</td>
-    <td align="left">Please use a dot as a decimal separator and do not use any thousand separators. Please only provide price per product, even if quantity has a value larger than 1.</td>
+    <td align="left">任意</td>
+    <td align="left">価格(小数 e.g. 2.99)</td>
+    <td align="left">小数点はドットを使ってください。カンマは使えません。数量が1より大きい場合でも、プロダクト1つあたりの価格を入力してください。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMCurrency</td>
-    <td align="left">Optional</td>
-    <td align="left">Currency code in ISO 4217 format (e.g. EUR)</td>
-    <td align="left">Fixed currency code. Should have been provided to you in the tracking code examples.</td>
+    <td align="left">任意</td>
+    <td align="left">通貨コード(ISO 4217フォーマット e.g. EUR)</td>
+    <td align="left">決められた通貨コードが入ります。トラッキングコードサンプルでご確認いただけます。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMQuantity</td>
-    <td align="left">Optional</td>
-    <td align="left">Quantity of the product selected</td>
-    <td align="left">Please use an integer value.</td>
+    <td align="left">任意</td>
+    <td align="left">選択されたプロダクトの数量</td>
+    <td align="left">整数で入力してください。</td>
 </tr>
 
 </tbody>
@@ -379,11 +379,11 @@ NSDictionary *parameters = @{
 [Adjust trackEvent:event];
 ```
 
-*Available cart parameters for reporting transaction view*
+*Transaction Viewに使用できるカートパラメータの一覧*
 
-See cart parameters
+カートパラメータを見る
 
-*Available transaction parameters for reporting transaction views*
+*Transaction Viewに使用できるトランザクションパラメータの一覧*
 
 <table>
 <colgroup>
@@ -394,30 +394,30 @@ See cart parameters
 </colgroup>
 <thead>
 <tr class="header">
-    <th align="left">Parameter name</th>
-    <th align="left">Requirement</th>
-    <th align="left">Description</th>
-    <th align="left">Note</th>
+    <th align="left">パラメータ名</th>
+    <th align="left">必須</th>
+    <th align="left">説明</th>
+    <th align="left">備考</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
     <td align="left">SCMAmount</td>
-    <td align="left">Optional</td>
-    <td align="left">Product price as decimal value (e.g. 2.99)</td>
-    <td align="left">Please use a dot as a decimal separator and do not use any thousand separators. Please only provide price per product, even if quantity has a value larger than 1.</td>
+    <td align="left">任意</td>
+    <td align="left">価格(小数 e.g. 2.99)</td>
+    <td align="left">小数点はドットを使ってください。カンマは使えません。数量が1より大きい場合でも、プロダクト1つあたりの価格を入力してください。</td>
 </tr>
 <tr class="even">
     <td align="left">SCMCurrency</td>
-    <td align="left">Optional</td>
-    <td align="left">Currency code in ISO 4217 format (e.g. EUR)</td>
-    <td align="left">Fixed currency code. Should have been provided to you in the tracking code examples.</td>
+    <td align="left">任意</td>
+    <td align="left">通貨コード(ISO 4217フォーマット e.g. EUR)</td>
+    <td align="left">決められた通貨コードが入ります。トラッキングコードサンプルでご確認いただけます。</td>
 </tr>
 <tr class="odd">
     <td align="left">SCMQuantity</td>
-    <td align="left">Optional</td>
-    <td align="left">Quantity of the product selected</td>
-    <td align="left">Please use an integer value.</td>
+    <td align="left">任意</td>
+    <td align="left">選択されたプロダクトの数量</td>
+    <td align="left">整数で入力してください。</td>
 </tr>
 
 </tbody>
