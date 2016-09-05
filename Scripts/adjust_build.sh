@@ -54,3 +54,7 @@ cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-WebView/Adjus
 # Copy static framework into example iWatch app
 rm -rf examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/AdjustSdk.framework
 cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/
+
+# Copy static framework into example tvOS app
+rm -rf examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/AdjustSdkTv.framework
+cp -R Frameworks/tvOS/AdjustSdkTv.framework examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/
