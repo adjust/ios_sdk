@@ -1057,7 +1057,6 @@
 				96BCFBD91AC9934E005A65C5 /* ADJAdjustFactory.h in Headers */,
 				96BCFBDA1AC99353005A65C5 /* ADJPackageBuilder.h in Headers */,
 				96BCFBDB1AC99355005A65C5 /* ADJPackageHandler.h in Headers */,
-				96B671101D788EEC0090A023 /* ADJSessionParameters.h in Headers */,
 				96BCFBDC1AC99360005A65C5 /* ADJRequestHandler.h in Headers */,
 				96BCFBDE1AC99365005A65C5 /* ADJUtil.h in Headers */,
 				96BCFBDF1AC99368005A65C5 /* ADJDeviceInfo.h in Headers */,
@@ -1070,6 +1069,7 @@
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
 				9DAA089F1D2A7B15001C04E4 /* ADJTrackingPixel.h in Headers */,
 				9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */,
+				96B671101D788EEC0090A023 /* ADJSessionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1093,7 +1093,6 @@
 				9DF9C9091D6F3CA5008E362F /* ADJActivityHandler.h in Headers */,
 				9DF9C90B1D6F3CA5008E362F /* ADJActivityKind.h in Headers */,
 				9DF9C90D1D6F3CA5008E362F /* ADJActivityPackage.h in Headers */,
-				96B671141D788F4A0090A023 /* ADJSessionParameters.h in Headers */,
 				9DF9C90F1D6F3CA5008E362F /* ADJActivityState.h in Headers */,
 				9DF9C9171D6F3CA5008E362F /* ADJAdjustFactory.h in Headers */,
 				9DF9C92D1D6F3CA5008E362F /* ADJPackageBuilder.h in Headers */,
@@ -1110,6 +1109,7 @@
 				96164D841CCA4D10009431AB /* ADJSdkClickHandler.h in Headers */,
 				9DF9C9411D6F3CA5008E362F /* ADJTrackingPixel.h in Headers */,
 				9DF9C9291D6F3CA5008E362F /* ADJKeychain.h in Headers */,
+				96B671141D788F4A0090A023 /* ADJSessionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,7 +1133,6 @@
 				9DFB065A1D7470C0006D48FC /* ADJActivityHandler.h in Headers */,
 				9DFB065C1D7470C0006D48FC /* ADJActivityKind.h in Headers */,
 				9DFB065E1D7470C0006D48FC /* ADJActivityPackage.h in Headers */,
-				96B671181D788F7A0090A023 /* ADJSessionParameters.h in Headers */,
 				9DFB06601D7470C0006D48FC /* ADJActivityState.h in Headers */,
 				9DFB06681D7470C0006D48FC /* ADJAdjustFactory.h in Headers */,
 				9DFB067E1D7470C0006D48FC /* ADJPackageBuilder.h in Headers */,
@@ -1150,6 +1149,7 @@
 				9DFB06861D7470C0006D48FC /* ADJSdkClickHandler.h in Headers */,
 				9DFB06921D7470C0006D48FC /* ADJTrackingPixel.h in Headers */,
 				9DFB067A1D7470C0006D48FC /* ADJKeychain.h in Headers */,
+				96B671181D788F7A0090A023 /* ADJSessionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1421,7 +1421,6 @@
 				96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */,
 				968173841C3C2D07002AE1DE /* ADJSessionSuccess.m in Sources */,
 				968173881C3C2D36002AE1DE /* ADJSessionFailure.m in Sources */,
-				96B671111D788EEC0090A023 /* ADJSessionParameters.m in Sources */,
 				9601CAE51C74B70600670879 /* ADJEventSuccess.m in Sources */,
 				9601CAE91C74BAAE00670879 /* ADJEventFailure.m in Sources */,
 				96164D8D1CCA4DEA009431AB /* ADJSystemProfile.m in Sources */,
@@ -1429,6 +1428,7 @@
 				96164D731CC8FA73009431AB /* ADJSdkClickHandler.m in Sources */,
 				9DAA08A01D2A7B15001C04E4 /* ADJTrackingPixel.m in Sources */,
 				9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */,
+				96B671111D788EEC0090A023 /* ADJSessionParameters.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1494,7 +1494,6 @@
 				9DF9C9341D6F3CA5008E362F /* ADJResponseData.m in Sources */,
 				9DF9C93A1D6F3CA5008E362F /* ADJSessionSuccess.m in Sources */,
 				9DF9C9381D6F3CA5008E362F /* ADJSessionFailure.m in Sources */,
-				96B671151D788F4A0090A023 /* ADJSessionParameters.m in Sources */,
 				9DF9C9281D6F3CA5008E362F /* ADJEventSuccess.m in Sources */,
 				9DF9C9261D6F3CA5008E362F /* ADJEventFailure.m in Sources */,
 				9DF9C93C1D6F3CA5008E362F /* ADJSystemProfile.m in Sources */,
@@ -1502,6 +1501,7 @@
 				9DB457B11D743704004D69E8 /* ADJSdkClickHandler.m in Sources */,
 				9DF9C9421D6F3CA5008E362F /* ADJTrackingPixel.m in Sources */,
 				9DF9C92A1D6F3CA5008E362F /* ADJKeychain.m in Sources */,
+				96B671151D788F4A0090A023 /* ADJSessionParameters.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1533,7 +1533,6 @@
 				9DFB06851D7470C0006D48FC /* ADJResponseData.m in Sources */,
 				9DFB068B1D7470C0006D48FC /* ADJSessionSuccess.m in Sources */,
 				9DFB06891D7470C0006D48FC /* ADJSessionFailure.m in Sources */,
-				96B671191D788F7A0090A023 /* ADJSessionParameters.m in Sources */,
 				9DFB06791D7470C0006D48FC /* ADJEventSuccess.m in Sources */,
 				9DFB06771D7470C0006D48FC /* ADJEventFailure.m in Sources */,
 				9DFB068D1D7470C0006D48FC /* ADJSystemProfile.m in Sources */,
@@ -1541,6 +1540,7 @@
 				9DFB06871D7470C0006D48FC /* ADJSdkClickHandler.m in Sources */,
 				9DFB06931D7470C0006D48FC /* ADJTrackingPixel.m in Sources */,
 				9DFB067B1D7470C0006D48FC /* ADJKeychain.m in Sources */,
+				96B671191D788F7A0090A023 /* ADJSessionParameters.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
