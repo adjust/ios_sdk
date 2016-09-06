@@ -710,7 +710,7 @@ tracker URL as part of the `deep_link` parameter. In order to set this in your a
 which you want your app to handle. In the example below, we have chosen that our app should handle `adjustExample` scheme 
 name.
 
-![][custom_url_scheme]
+![][custom-url-scheme]
 
 After this has been set up, your app will get opened after you click the adjust tracker URL with `deep_link` parameter 
 which contains scheme name which you have chosen. After app get's opened, `openURL` method of your `AppDelegate` class will
