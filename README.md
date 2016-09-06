@@ -953,7 +953,7 @@ midnight, causing DAU to be reported on another day from the day of the app open
 For all these reasons, please follow the instructions in this document and initialise the adjust SDK in the  
 `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate.
 
-#### <a id="ts-arc">I'm seeing "Adjust requires ARC" error
+### <a id="ts-arc">I'm seeing "Adjust requires ARC" error
 
 If your build failed with the error `Adjust requires ARC`, it looks like your project is not using [ARC][arc]. In that case
 we recommend [transitioning your project][transition] so that it does use ARC. If you don't want to use ARC, you have to 
