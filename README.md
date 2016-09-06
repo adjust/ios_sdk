@@ -738,7 +738,7 @@ links. What are universal links and how does their setup look like, you can chec
 
 Adjust is taking care for lots of things from universal links setup for you behind the scenes. But, in order to support 
 universal links with the adjust, you need to perform small setup for universal links in the adjust dashboard. For more 
-information on that should be done, please consult our official [docs][universal-links-adjust].
+information on that should be done, please consult our official [docs][universal-links-guide].
 
 Once you have successfully enabled universal links feature in the dashboard, you need to do that in your app as well.
 
@@ -882,7 +882,7 @@ Deciding not to initialise the adjust SDK immediately can have all kinds of impa
 If you decide to perform any of these actions:
 
 * [Event tracking](#event-tracking)
-* [Deeplink reattributions](#deeplink-reattributions)
+* [Reattribution via deep links](#deeplinking-reattribution)
 * [Disable tracking](#disable-tracking)
 * [Offline mode](#offline-mode)
 
@@ -892,7 +892,7 @@ If you want any of these actions to be tracked with the adjust SDK before its ac
 `custom actions queueing mechanism` inside your app. You need to queue all the actions you want our SDK to perform and 
 perform them once the SDK is initialised.
 
-Offline mode state won't be changed, tracking enabled/disabled state won't be changed, deeplink reattributions will not be 
+Offline mode state won't be changed, tracking enabled/disabled state won't be changed, deep link reattributions will not be
 possible to happen, any of tracked events will be `dropped`.
 
 Another thing which might be affected by delayed SDK initialisation is session tracking. The adjust SDK can't start to 
@@ -922,9 +922,9 @@ Enabling/disabling tracking is the setting which is persisted between the SDK in
 value before initialising the SDK, toggle attempt will be ignored. Once initialised, SDK will be in the state (enabled or 
 disabled) like before this toggle attempt.
 
-##### Deep link reattributions
+##### Reattribution via deep links
 
-As described in [above](#deeplink-reattributions), when handling deep link reattributions, depending on deep linking 
+As described [above](#deeplinking-reattribution), when handling deep link reattributions, depending on deep linking 
 mechanism you are using (old style vs. universal links), you will obtain `NSURL` object after which you need to make 
 following call:
 
@@ -932,7 +932,7 @@ following call:
 [Adjust appWillOpenUrl:url]
 ```
 
-If you make this call before the SDK has been initialised, information about the attribution information from the deeplink 
+If you make this call before the SDK has been initialised, information about the attribution information from the deep link
 URL will be permanetly lost. If you want the adjust SDK to successfully reattribute your user, you would need to queue this
 `NSURL` object information and trigger `appWillOpenUrl` method once the SDK has been initialised.
 
@@ -1121,6 +1121,8 @@ determining amount value**.
 [universal-links-testing]:    https://docs.adjust.com/en/universal-links/#testing-universal-link-implementations
 [reattribution-deeplinks]:    https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 [ios-purchase-verification]:  https://github.com/adjust/ios_purchase_sdk
+
+[reattribution-with-deeplinks]:   https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
 [run]:         https://raw.github.com/adjust/sdks/master/Resources/ios/run5.png
 [add]:         https://raw.github.com/adjust/sdks/master/Resources/ios/add5.png
