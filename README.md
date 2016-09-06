@@ -870,7 +870,7 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
 
 ## <a id="troubleshooting">Troubleshooting
 
-#### <a id="ts-delayed-init">Issues with delayed SDK initialisation
+### <a id="ts-delayed-init">Issues with delayed SDK initialisation
 
 As described in the [basic setup step](#basic-setup), we strongly advise you to initialise the adjust SDK in the 
 `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate. It is imperative to initialise the 
@@ -907,13 +907,13 @@ to navigate to the screen mentioned previously where you decided to initialise t
 that he/she doesn't like the app and uninstalls it right after seeing home screen, all the information mentioned above will
 never be tracked by our SDK, nor displayed in the dashboard.
 
-##### Event tracking
+#### Event tracking
 
 For the events you want to track, queue them with some internal queueing mechanism and track them after SDK is initialised.
 Tracking events before initialising SDK will cause the events to be `dropped` and `permanently lost`, so make sure you are 
 tracking them once SDK is `initialised` and [`enabled`](#is-enabled).
 
-##### Offline mode and enable/disable tracking
+#### Offline mode and enable/disable tracking
 
 Offline mode is not the feature which is persisted between SDK initialisations, so it is set to `false` by default. If you 
 try to enable offline mode before initialising SDK, it will still be set to `false` when you eventually initialise the SDK.
@@ -922,7 +922,7 @@ Enabling/disabling tracking is the setting which is persisted between the SDK in
 value before initialising the SDK, toggle attempt will be ignored. Once initialised, SDK will be in the state (enabled or 
 disabled) like before this toggle attempt.
 
-##### Reattribution via deep links
+#### Reattribution via deep links
 
 As described [above](#deeplinking-reattribution), when handling deep link reattributions, depending on deep linking 
 mechanism you are using (old style vs. universal links), you will obtain `NSURL` object after which you need to make 
@@ -936,7 +936,7 @@ If you make this call before the SDK has been initialised, information about the
 URL will be permanetly lost. If you want the adjust SDK to successfully reattribute your user, you would need to queue this
 `NSURL` object information and trigger `appWillOpenUrl` method once the SDK has been initialised.
 
-##### Session tracking
+#### Session tracking
 
 Session tracking is something what the adjust SDK performs automatically and is beyond reach of an app developer. For 
 proper session tracking it is crucial to have the adjust SDK initialised as advised in this README. Not doing so can have 
@@ -962,13 +962,13 @@ enable ARC for all source files of adjust in the target's Build Phases:
 Expand the `Compile Sources` group, select all adjust files and change the `Compiler Flags` to `-fobjc-arc` (Select all and
 press the `Return` key to change all at once).
 
-#### <a id="ts-categories">I'm seeing "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
+### <a id="ts-categories">I'm seeing "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
 
 This error can occur when you are adding the adjust SDK framework to your app. The adjust SDK contains `categories` among 
 it's source files and for this reason, if you have chosen this SDK integration approach, you need to add `-ObjC` flags to 
 `Other Linker Flags` in your Xcode project settings. Adding this flag will fix this error.
 
-#### <a id="ts-session-failed">I'm seeing the "Session failed (Ignoring too frequent session.)" error
+### <a id="ts-session-failed">I'm seeing the "Session failed (Ignoring too frequent session.)" error
 
 This error typically occurs when testing installs. Uninstalling and reinstalling the app is not enough to trigger a new  
 install. The servers will determine that the SDK has lost its locally aggregated session data and ignore the erroneous 
@@ -997,7 +997,7 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 When the device is forgotten, the link just returns `Forgot device`. If the device was already forgotten or the values were
 incorrect, the link returns `Device not found`.
 
-#### <a id="ts-install-tracked">I'm not seeing "Install tracked" in the logs
+### <a id="ts-install-tracked">I'm not seeing "Install tracked" in the logs
 
 If you want to simulate the installation scenario of your app on your test device, it is not enough if you just re-run the 
 app from the Xcode on your test device. Re-running the app from the Xcode doesn't cause app data to be wiped out and all 
@@ -1011,7 +1011,7 @@ In order to run app the installation scenario, you need to do following:
 * Forget your test device from the adjust backend like explained in the issue [above](#forget-device)
 * Run your app from the Xcode on the test device and you will see log message "Install tracked"
 
-#### <a id="ts-iad-sdk-click">I'm seeing the "Unattributable SDK click ignored" message
+### <a id="ts-iad-sdk-click">I'm seeing the "Unattributable SDK click ignored" message
 
 You may notice this message while testing your app in `sandbox` envoronment. It is related to some changes Apple introduced
 in `iAd.framework` version 3. With this, a user can be directed to your app from a click on iAd banner and this will cause 
@@ -1048,7 +1048,7 @@ why our backend ignores it and informs you with this message:
 So, this message doesn't indicate any issue with your SDK integration but it's simply informing you that our backend has 
 ignored this artificially created `sdk_click` which could have lead to your user being wrongly attributed/reattributed.
 
-#### <a id="ts-wrong-revenue-amount">I'm seeing incorrect revenue data in the adjust dashboard
+### <a id="ts-wrong-revenue-amount">I'm seeing incorrect revenue data in the adjust dashboard
 
 The adjust SDK tracks what you tell it to track. If you are attaching revenue to your event, the number you write as an 
 amount is the only amount which will reach the adjust backend and be displayed in the dashboard. Our SDK does not 
