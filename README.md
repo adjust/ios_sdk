@@ -283,7 +283,7 @@ When tapping the button you should now see `Event tracked` in the logs.
 
 The event instance can be used to configure the event further before tracking it:
 
-#### <a id="revenue-tracking">Revenue tracking
+### <a id="revenue-tracking">Revenue tracking
 
 If your users can generate revenue by tapping on advertisements or making in-app purchases you can track those revenues 
 with events. Lets say a tap is worth one Euro cent. You could then track the revenue event like this:
@@ -304,7 +304,7 @@ choice. Read more about [currency conversion here.][currency-conversion]
 You can read more about revenue and event tracking in the [event tracking guide]
 (https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues).
 
-#### <a id="revenue-deduplication"></a>Revenue deduplication
+### <a id="revenue-deduplication"></a>Revenue deduplication
 
 You can also pass in an optional transaction ID to avoid tracking duplicate revenues. The last ten transaction IDs are 
 remembered and revenue events with duplicate transaction IDs are skipped. This is especially useful for in-app purchase 
@@ -333,12 +333,12 @@ tracking revenue that is not actually being generated.
 }
 ```
 
-#### <a id="iap-verification">In-App Purchase verification
+### <a id="iap-verification">In-App Purchase verification
 
 If you want to check the validity of In-App Purchases made in your app using Purchase Verification, adjust's server side 
 receipt verification tool, then check out our iOS purchase SDK and read more about it [here][ios-purchase-verification].
 
-#### <a id="callback-parameters">Callback parameters
+### <a id="callback-parameters">Callback parameters
 
 You can register a callback URL for your events in your [dashboard]. We will send a GET request to that URL whenever the 
 event is tracked. You can add callback parameters to that event by calling `addCallbackParameter` to the event before 
@@ -367,7 +367,7 @@ saved nor sent to you.
 You can read more about using URL callbacks, including a full list of available values, in our 
 [callbacks guide][callbacks-guide].
 
-#### <a id="partner-parameters">Partner parameters
+### <a id="partner-parameters">Partner parameters
 
 You can also add parameters to be transmitted to network partners, which have been activated in youradjust dashboard.
 
@@ -395,7 +395,7 @@ These session parameters can be called before the adjust SDK is launched to make
 need to send them with an install, but can only obtain the needed values after launch, it's possible to 
 [delay](#delay-start) the first launch of the adjust SDK to allow this behaviour.
 
-#### <a id="session-callback-parameters"> Session callback parameters
+### <a id="session-callback-parameters"> Session callback parameters
 
 The same callback parameters that are registered for [events](#callback-parameters) can be also saved to be sent in every 
 event or session of the adjust SDK.
@@ -426,7 +426,7 @@ If you wish to remove all key and values from the session callback parameters, y
 [Adjust resetSessionCallbackParameters];
 ```
 
-#### <a id="session-partner-parameters">Session partner parameters
+### <a id="session-partner-parameters">Session partner parameters
 
 In the same way that there is [session callback parameters](#session-callback-parameters) that are send every in event or 
 session of the adjust SDK, there is also session partner parameters.
@@ -458,7 +458,7 @@ If you wish to remove all key and values from the session partner parameters, yo
 [Adjust resetSessionPartnerParameters];
 ```
 
-#### <a id="delay-start">Delay start
+### <a id="delay-start">Delay start
 
 Delaying the start of the adjust SDK allows your app some time to obtain session parameters, such as unique identifiers, to
 be send on install.
@@ -693,7 +693,7 @@ get info about the deep link URL and its content. Hitting the URL can happen whe
 these scenarios are supported by the adjust SDK and in both cases the deep link URL will be provided to you after you app 
 has been started after hitting the tracker URL. In order to use this feature in your app, you need to set it up properly.
 
-#### <a id="deeplinking-standard">Standard deep linking scenario
+### <a id="deeplinking-standard">Standard deep linking scenario
 
 If your user already has the app installed and hits the tracker URL with deep link information in it, your application will
 get opened and the content of the deep link will be sent to your app so that you can parse it and decide what to do next. 
@@ -701,7 +701,7 @@ With introduction of iOS 9, Apple has changed the way how deep linking should be
 scenario you want to use for your app (or if you want to use them both to support wide range of devices), you need to set 
 up your app to handle one of these or both scenarios.
 
-#### <a id="deeplinking-setup-old"> Deep linking on iOS 8 and earlier
+### <a id="deeplinking-setup-old"> Deep linking on iOS 8 and earlier
 
 Deep linking on iOS 8 and earlier devices is being done with usage of custom URL scheme setting. You need to pick some 
 custom URL scheme name which your app will be in charge for opening. This scheme name will also be used in the adjust 
@@ -731,7 +731,7 @@ want to access the content of the deep link, override this method.
 
 With this setup, you have successfully set up deep linking handling for iOS devices with iOS 8 and earlier versions.
 
-#### <a id="deeplinking-setup-new"> Deep linking on iOS 9 and later
+### <a id="deeplinking-setup-new"> Deep linking on iOS 9 and later
 
 In order to set deep linking support for iOS 9 and later devices, you need to enable your app to handle Apple universal 
 links. What are universal links and how does their setup look like, you can check in [here][universal-links].
@@ -792,7 +792,7 @@ prefixed with and we will generate the custom URL scheme deep link for you:
 }
 ```
 
-#### <a id="deeplinking-deferred">Deferred deep linking scenario
+### <a id="deeplinking-deferred">Deferred deep linking scenario
 
 You can register a delegate callback to be notified before a deferred deep link is opened and decide if the adjust SDK will
 try to open it. The same optional protocol `AdjustDelegate` used for the [attribution callback](#attribution-callback) and 
@@ -818,7 +818,7 @@ yourself later.
 
 If this callback is not implemented, **the adjust SDK will always try to open the deep link by default**.
 
-#### <a id="deeplinking-reattribution">Reattribution via deep links
+### <a id="deeplinking-reattribution">Reattribution via deep links
 
 Adjust enables you to run re-engagement campaigns with usage of deep links. For more information on how to do that, please 
 check our [official docs][reattribution-with-deeplinks]. 
