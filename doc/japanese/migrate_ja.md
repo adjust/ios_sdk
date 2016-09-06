@@ -1,4 +1,4 @@
-## Migrate your adjust SDK for iOS to v4.8.0 from v3.4.0
+## iOS用adjust SDKのv3.4.0からv.4.8.0への移行
 
 ### 初期設定
 
