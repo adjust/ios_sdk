@@ -16,6 +16,7 @@
 - Using `weakself strongself` pattern for background blocks.
 - Moving log level to the ADJConfig object.
 - Accessing private properties directly when copying.
+- Removed static framework build with no Bitcode support from releases page.
  
 #### Fixed
 - Allow foreground/background timer to work in offline mode.
