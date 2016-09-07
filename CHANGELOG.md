@@ -1,31 +1,28 @@
-### Version 4.9.0 ( 2016)
+### Version 4.9.0 (7th September 2016)
 #### Added
- - Support for `Supress` log level
- - Allow to delay the start of the first session
- - Support for session parameters to be send in every session/event:
-  - External device id
-  - Callback parameters
-  - Partner parameters
- - Inject User-agent of each request
- - Teardown
- - Send install receipt
- - Remove optional redirect parameter from universal link function
+- Added `ADJLogLevelSuppress` to disable all log output messages.
+- Added possibility to delay the start of the first session.
+- Added support for session parameters which are going to be sent with each session/event:
+    - Callback parameters
+    - Partner parameters
+- Added sending of install receipt.
+- Added iOS 10 compatibility.
 
 #### Changed
- - Project targets Xcode 8 and iOs 10
- - Normalize properties attributes
- - Naming standard of background blocks
- - Use of weakself strongself pattern for background blocks
- - Open defferred deeplink from the attribution response
- - Log level logic moved to config object
- - Access private properties directly when copying
+- Deferred deep link info is now delivered as part of the `attribution` answer from the backend.
+- Removed optional `adjust_redirect` parameter from resulting URL string when using `convertUniversalLink:scheme` method.
+- Normalized properties attributes.
+- Changed naming of background blocks.
+- Using `weakself strongself` pattern for background blocks.
+- Moving log level to the ADJConfig object.
+- Accessing private properties directly when copying.
  
 #### Fixed
- - Allow foreground/background timer to work in offline mode
- - Use `synchronized` blocks to prevent write deadlock/contention
- - Don't create/use background timer if the option is not configured
- - Replace strong references with weak when possible 
- - Use background session configuration for `NSURLSession` when the option is set
+- Allow foreground/background timer to work in offline mode.
+- Use `synchronized` blocks to prevent write deadlock/contention.
+- Don't create/use background timer if the option is not configured.
+- Replace strong references with weak when possible.
+- Use background session configuration for `NSURLSession` when the option is set.
 
 --
 
