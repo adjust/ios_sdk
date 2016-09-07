@@ -35,7 +35,6 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
    * [Push token](#push-token)
-   * [AdWords Search and Mobile Web tracking](#adwords)
    * [Pre-installed trackers](#pre-installed-trackers)
    * [Deep linking](#deeplinking)
       * [Standard deep linking scenario](#deeplinking-standard)
@@ -634,28 +633,6 @@ To send us the push notification token, add the following call to `Adjust` in th
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [Adjust setDeviceToken:deviceToken];
 }
-```
-
-### <a id="adwords">AdWords Search and Mobile Web tracking
-
-To support deterministic tracking for all AdWords web inventories, you simply need to call the `sendAdWordsRequest` on the
-adjust instance **before** initialising the SDK.
-
-```objc
-#import "Adjust.h"
-// or #import <Adjust/Adjust.h>
-// or #import <AdjustSdk/Adjust.h>
-// or #import <AdjustSdkTv/Adjust.h>
-
-// ...
-[Adjust sendAdWordsRequest];
-
-NSString *yourAppToken = @"{YourAppToken}";
-NSString *environment = ADJEnvironmentSandbox;
-ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
-                                            environment:environment];
-
-[Adjust appDidLaunch:adjustConfig];
 ```
 
 ### <a id="pre-installed-trackers">Pre-installed trackers
