@@ -7,6 +7,7 @@
     - Partner parameters
 - Added sending of install receipt.
 - Added iOS 10 compatibility.
+- Added `AdjustSdkTv.framework` to releases page.
 
 #### Changed
 - Deferred deep link info is now delivered as part of the `attribution` answer from the backend.
@@ -17,6 +18,7 @@
 - Moving log level to the ADJConfig object.
 - Accessing private properties directly when copying.
 - Removed static framework build with no Bitcode support from releases page.
+- Updated docs.
  
 #### Fixed
 - Allow foreground/background timer to work in offline mode.
