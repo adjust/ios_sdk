@@ -23,7 +23,7 @@
 @property (nonatomic, assign) BOOL willRetry;
 
 // the server response in json format
-@property (nonatomic, retain) NSDictionary *jsonResponse;
+@property (nonatomic, strong) NSDictionary *jsonResponse;
 
 + (ADJSessionFailure *)sessionFailureResponseData;
 - (id)init;

@@ -23,7 +23,7 @@
 @property (nonatomic, copy) NSString * eventToken;
 
 // the server response in json format
-@property (nonatomic, retain) NSDictionary *jsonResponse;
+@property (nonatomic, strong) NSDictionary *jsonResponse;
 
 + (ADJEventSuccess *)eventSuccessResponseData;
 - (id)init;
