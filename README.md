@@ -113,15 +113,11 @@ You can also choose to integrate the adjust SDK by adding it to your project as 
 
 * `AdjustSdkStatic.framework.zip`
 * `AdjustSdkDynamic.framework.zip`
-* `AdjustSdkStaticNoBitcode.framework.zip`
 * `AdjustSdkTv.framework.zip`
 
 Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is
 targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. Choose which framework you want to use – static or
 dynamic – and add it to your project.
-
-In case you want to use the static adjust SDK framework without Bitcode support added to it, you can choose the
-`AdjustSdkStaticNoBitcode.framework.zip` file and add it to your project.
 
 If you are having `tvOS` app, you can use the adjust SDK with it as well with usage of our tvOS framework which you can
 extract from `AdjustSdkTv.framework.zip` archive.
