@@ -57,6 +57,9 @@
 
 - (void)injectInstallReceipt:(NSBundle *)bundle{
     @try {
+        if (![bundle respondsToSelector:@selector(appStoreReceiptURL)]) {
+            return;
+        }
         NSURL * installReceiptLocation = [bundle appStoreReceiptURL];
         if (installReceiptLocation == nil) return;
 
