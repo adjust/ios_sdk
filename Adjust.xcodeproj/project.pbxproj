@@ -66,6 +66,12 @@
 		96164D731CC8FA73009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */; };
 		96164D841CCA4D10009431AB /* ADJSdkClickHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */; };
 		96164D861CCA4D27009431AB /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
+		961D2DCC1D80706500142BF1 /* ADJCriteo.h in Headers */ = {isa = PBXBuildFile; fileRef = 961D2DCA1D80706500142BF1 /* ADJCriteo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		961D2DCD1D80706500142BF1 /* ADJCriteo.m in Sources */ = {isa = PBXBuildFile; fileRef = 961D2DCB1D80706500142BF1 /* ADJCriteo.m */; };
+		961D2DD01D80707A00142BF1 /* ADJCriteo.h in Headers */ = {isa = PBXBuildFile; fileRef = 961D2DCE1D80707A00142BF1 /* ADJCriteo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		961D2DD11D80707A00142BF1 /* ADJCriteo.m in Sources */ = {isa = PBXBuildFile; fileRef = 961D2DCF1D80707A00142BF1 /* ADJCriteo.m */; };
+		961D2DD41D80709100142BF1 /* ADJCriteo.h in Headers */ = {isa = PBXBuildFile; fileRef = 961D2DD21D80709100142BF1 /* ADJCriteo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		961D2DD51D80709100142BF1 /* ADJCriteo.m in Sources */ = {isa = PBXBuildFile; fileRef = 961D2DD31D80709100142BF1 /* ADJCriteo.m */; };
 		9620EA451B062D6F009673F1 /* ADJTestActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */; };
 		9620EA4E1B06401B009673F1 /* ADJTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA4D1B06401B009673F1 /* ADJTest.m */; };
 		9620EA511B065177009673F1 /* ADJPackageFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 9620EA501B065177009673F1 /* ADJPackageFields.m */; };
@@ -648,6 +654,12 @@
 		961515A11CD2CB4F0022D336 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
 		96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		961D2DCA1D80706500142BF1 /* ADJCriteo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJCriteo.h; path = Criteo/ADJCriteo.h; sourceTree = "<group>"; };
+		961D2DCB1D80706500142BF1 /* ADJCriteo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJCriteo.m; path = Criteo/ADJCriteo.m; sourceTree = "<group>"; };
+		961D2DCE1D80707A00142BF1 /* ADJCriteo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJCriteo.h; path = Criteo/ADJCriteo.h; sourceTree = "<group>"; };
+		961D2DCF1D80707A00142BF1 /* ADJCriteo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJCriteo.m; path = Criteo/ADJCriteo.m; sourceTree = "<group>"; };
+		961D2DD21D80709100142BF1 /* ADJCriteo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJCriteo.h; path = Criteo/ADJCriteo.h; sourceTree = "<group>"; };
+		961D2DD31D80709100142BF1 /* ADJCriteo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJCriteo.m; path = Criteo/ADJCriteo.m; sourceTree = "<group>"; };
 		9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTestActivityPackage.h; sourceTree = "<group>"; };
 		9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTestActivityPackage.m; sourceTree = "<group>"; };
 		9620EA4C1B06401B009673F1 /* ADJTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTest.h; sourceTree = "<group>"; };
@@ -1312,6 +1324,8 @@
 		96E5E34B18BBB48A008E7B30 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				961D2DCA1D80706500142BF1 /* ADJCriteo.h */,
+				961D2DCB1D80706500142BF1 /* ADJCriteo.m */,
 				96CD2BDB1A13BFC600A40AFB /* ADJAdditions */,
 				96E5E34C18BBB48A008E7B30 /* Adjust.h */,
 				96E5E34D18BBB48A008E7B30 /* Adjust.m */,
@@ -1709,6 +1723,8 @@
 		9DF9C8C81D6F3CA5008E362F /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				961D2DCE1D80707A00142BF1 /* ADJCriteo.h */,
+				961D2DCF1D80707A00142BF1 /* ADJCriteo.m */,
 				9DF9C8D11D6F3CA5008E362F /* ADJAdditions */,
 				9DF9C8C91D6F3CA5008E362F /* ADJActivityHandler.h */,
 				9DF9C8CA1D6F3CA5008E362F /* ADJActivityHandler.m */,
@@ -1812,6 +1828,8 @@
 		9DFB06191D7470C0006D48FC /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				961D2DD21D80709100142BF1 /* ADJCriteo.h */,
+				961D2DD31D80709100142BF1 /* ADJCriteo.m */,
 				9DFB06221D7470C0006D48FC /* ADJAdditions */,
 				9DFB061A1D7470C0006D48FC /* ADJActivityHandler.h */,
 				9DFB061B1D7470C0006D48FC /* ADJActivityHandler.m */,
@@ -1915,6 +1933,7 @@
 				9D3A2ABF2625BEB800BD6E44 /* ADJAdRevenue.h in Headers */,
 				6FAB784C2636DC0E00773869 /* ADJLinkResolution.h in Headers */,
 				9D651BF625B25A64006D69D6 /* ADJThirdPartySharing.h in Headers */,
+				961D2DCC1D80706500142BF1 /* ADJCriteo.h in Headers */,
 				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
 				96BCFBD21AC99332005A65C5 /* NSString+ADJAdditions.h in Headers */,
 				96BCFBD51AC9933E005A65C5 /* ADJActivityHandler.h in Headers */,
@@ -2042,6 +2061,8 @@
 				9D2F23F92447DCE800B7CA90 /* ADJSubscription.h in Headers */,
 				9DF9C9251D6F3CA5008E362F /* ADJEventFailure.h in Headers */,
 				9DF9C9271D6F3CA5008E362F /* ADJEventSuccess.h in Headers */,
+				961D2DD01D80707A00142BF1 /* ADJCriteo.h in Headers */,
+				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
 				9DF9C9391D6F3CA5008E362F /* ADJSessionSuccess.h in Headers */,
 				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
 				6FBE0C6E2577CDAC00EC2CE0 /* ADJThirdPartySharing.h in Headers */,
@@ -2085,6 +2106,8 @@
 				9D2F24002447DD3700B7CA90 /* ADJSubscription.h in Headers */,
 				9DFB06761D7470C0006D48FC /* ADJEventFailure.h in Headers */,
 				9DFB06781D7470C0006D48FC /* ADJEventSuccess.h in Headers */,
+				961D2DD41D80709100142BF1 /* ADJCriteo.h in Headers */,
+				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
 				9DFB068A1D7470C0006D48FC /* ADJSessionSuccess.h in Headers */,
 				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
 				9D651C9625B26E1B006D69D6 /* ADJThirdPartySharing.h in Headers */,
@@ -2602,6 +2625,7 @@
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
 				6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
+				961D2DCD1D80706500142BF1 /* ADJCriteo.m in Sources */,
 				969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */,
 				969952D21A01309200928462 /* ADJAttribution.m in Sources */,
 				960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */,
@@ -2776,6 +2800,7 @@
 				9DF9C9321D6F3CA5008E362F /* ADJRequestHandler.m in Sources */,
 				9DF9C9461D6F3CA5008E362F /* ADJUtil.m in Sources */,
 				9DF9C9241D6F3CA5008E362F /* ADJEvent.m in Sources */,
+				961D2DD11D80707A00142BF1 /* ADJCriteo.m in Sources */,
 				9DF9C91C1D6F3CA5008E362F /* ADJAttributionHandler.m in Sources */,
 				9DF9C91A1D6F3CA5008E362F /* ADJAttribution.m in Sources */,
 				9DF9C9201D6F3CA5008E362F /* ADJConfig.m in Sources */,
@@ -2818,6 +2843,7 @@
 				9DFB06971D7470C0006D48FC /* ADJUtil.m in Sources */,
 				9DFB06751D7470C0006D48FC /* ADJEvent.m in Sources */,
 				9DFB06731D7470C0006D48FC /* ADJPackageParams.m in Sources */,
+				961D2DD51D80709100142BF1 /* ADJCriteo.m in Sources */,
 				9DFB066D1D7470C0006D48FC /* ADJAttributionHandler.m in Sources */,
 				9DFB066B1D7470C0006D48FC /* ADJAttribution.m in Sources */,
 				9DFB06711D7470C0006D48FC /* ADJConfig.m in Sources */,
