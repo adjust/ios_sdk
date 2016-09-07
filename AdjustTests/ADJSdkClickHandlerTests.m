@@ -53,7 +53,7 @@
 
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:ADJEnvironmentSandbox];
 
-    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config];
+    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config sessionParametersActionsArray:nil];
     self.sdkClickPackage = [self getClickPackage];
 
     [NSURLSession reset];
@@ -134,7 +134,7 @@
     aDebug(@"Added sdk_click 1");
 
     // waiting to try again
-    aVerbose(@"Sleeping for");
+    aVerbose(@"Waiting for");
 }
 
 - (void)testClientException {
@@ -162,7 +162,7 @@
     aDebug(@"Added sdk_click 1");
 
     // waiting to try again
-    aVerbose(@"Sleeping for");
+    aVerbose(@"Waiting for");
 }
 
 - (void)testServerError {
@@ -292,7 +292,7 @@
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:@"sandbox"];
 
     // start activity handler with config
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
     [activityHandler applicationDidBecomeActive];
     [activityHandler appWillOpenUrl:[NSURL URLWithString:@"AdjustTests://"]];
     [NSThread sleepForTimeInterval:2.0];

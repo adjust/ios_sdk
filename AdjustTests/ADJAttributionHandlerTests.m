@@ -54,7 +54,8 @@
 
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:ADJEnvironmentSandbox];
 
-    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config];
+    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config
+                                                sessionParametersActionsArray:nil];
     [self savePackages:config];
     [NSURLConnection reset];
 }
@@ -74,7 +75,7 @@
     [ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock];
     [ADJTestsUtil deleteFile:@"AdjustIoAttribution" logger:self.loggerMock];
 
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config];
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
     [activityHandler applicationDidBecomeActive];
     [NSThread sleepForTimeInterval:5.0];
 
@@ -130,7 +131,7 @@
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
     // check attribution was called without ask_in
-    aTest(@"ActivityHandler launchAttributionResponseTasks, message:(null) timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) json:{\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:(null) timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) deeplink:(null) json:{\n}");
 
     // test server error
     [self checkGetAttributionResponse:attributionHandler responseType:ADJSessionResponseTypeServerError];
@@ -144,7 +145,7 @@
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
     // check attribution was called without ask_in
-    aTest(@"ActivityHandler launchAttributionResponseTasks, message:testResponseError timestamp:(null) adid:(null) success:0 willRetry:0 attribution:(null) json:{\n    message = testResponseError;\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:testResponseError timestamp:(null) adid:(null) success:0 willRetry:0 attribution:(null) deeplink:(null) json:{\n    message = testResponseError;\n}");
 
     // test ok response with message
     [self checkGetAttributionResponse:attributionHandler responseType:ADJSessionResponseTypeMessage];
@@ -298,6 +299,41 @@
     anTest(@"NSURLSession dataTaskWithRequest");
 }
 
+- (void)testDeeplink {
+    //  reseting to make the test order independent
+    [self reset];
+
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:YES];
+
+    NSMutableDictionary * attributionDictionary = [[NSMutableDictionary alloc] init];
+    [attributionDictionary setObject:@"testDeeplinkAttribution://" forKey:@"deeplink"];
+
+    NSMutableDictionary * jsonDictionary = [[NSMutableDictionary alloc] init];
+    [jsonDictionary setObject:attributionDictionary forKey:@"attribution"];
+    [jsonDictionary setObject:@"testDeeplinkRoot://" forKey:@"deeplink"];
+
+    ADJSessionResponseData * sessionResponseData = [ADJResponseData buildResponseData:self.firstSessionPackage];
+    sessionResponseData.jsonResponse = jsonDictionary;
+
+    [attributionHandler checkSessionResponse:sessionResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    aTest(@"ActivityHandler setAskingAttribution, 0");
+
+    aTest(@"ActivityHandler launchSessionResponseTasks, message:(null) timestamp:(null) adid:(null) success:0 willRetry:0 attribution:tt:(null) tn:(null) net:(null) cam:(null) adg:(null) cre:(null) cl:(null) json:{\n    attribution =     {\n        deeplink = \"testDeeplinkAttribution://\";\n    };\n    deeplink = \"testDeeplinkRoot://\";\n}");
+
+    ADJAttributionResponseData * attributionResponseData = [ADJResponseData buildResponseData:self.attributionPackage];
+    attributionResponseData.jsonResponse = jsonDictionary;
+    [attributionHandler checkAttributionResponse:attributionResponseData];
+    [NSThread sleepForTimeInterval:2.0];
+
+    aTest(@"ActivityHandler setAskingAttribution, 0");
+
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:(null) timestamp:(null) adid:(null) success:0 willRetry:0 attribution:tt:(null) tn:(null) net:(null) cam:(null) adg:(null) cre:(null) cl:(null) deeplink:testDeeplinkAttribution:// json:{\n    attribution =     {\n        deeplink = \"testDeeplinkAttribution://\";\n    };\n    deeplink = \"testDeeplinkRoot://\";\n}");
+
+    aEquals([attributionResponseData.deeplink absoluteString], @"testDeeplinkAttribution://");
+}
+
 - (void)checkOkMessageGetAttributionResponse
 {
     // the response logged
@@ -309,7 +345,7 @@
     // check attribution was called without ask_in
     aTest(@"ActivityHandler setAskingAttribution, 0");
 
-    aTest(@"ActivityHandler launchAttributionResponseTasks, message:response OK timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) json:{\n    message = \"response OK\";\n}");
+    aTest(@"ActivityHandler launchAttributionResponseTasks, message:response OK timestamp:(null) adid:(null) success:1 willRetry:0 attribution:(null) deeplink:(null) json:{\n    message = \"response OK\";\n}");
 }
 
 - (void)checkGetAttributionResponse:(id<ADJAttributionHandler>) attributionHandler

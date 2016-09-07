@@ -12,9 +12,9 @@
 
 #pragma mark -
 @interface ADJEvent()
-@property (nonatomic, retain) id<ADJLogger> logger;
-@property (nonatomic, retain) NSMutableDictionary* callbackMutableParameters;
-@property (nonatomic, retain) NSMutableDictionary* partnerMutableParameters;
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) NSMutableDictionary* callbackMutableParameters;
+@property (nonatomic, strong) NSMutableDictionary* partnerMutableParameters;
 @end
 
 @implementation ADJEvent
@@ -27,7 +27,7 @@
     self = [super init];
     if (self == nil) return nil;
 
-    self.logger     = ADJAdjustFactory.logger;
+    self.logger = ADJAdjustFactory.logger;
 
     if (![self checkEventToken:eventToken]) return self;
 
@@ -39,13 +39,13 @@
 - (void) addCallbackParameter:(NSString *)key
                         value:(NSString *)value
 {
-    if (![self isValidParameter:key
-                  attributeType:@"key"
-                  parameterName:@"Callback"]) return;
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Callback"]) return;
 
-    if (![self isValidParameter:value
-                  attributeType:@"value"
-                  parameterName:@"Callback"]) return;
+    if (![ADJUtil isValidParameter:value
+                     attributeType:@"value"
+                     parameterName:@"Callback"]) return;
 
     if (self.callbackMutableParameters == nil) {
         self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
@@ -61,13 +61,13 @@
 - (void) addPartnerParameter:(NSString *)key
                        value:(NSString *)value {
 
-    if (![self isValidParameter:key
-                  attributeType:@"key"
-                  parameterName:@"Partner"]) return;
+    if (![ADJUtil isValidParameter:key
+                     attributeType:@"key"
+                     parameterName:@"Partner"]) return;
 
-    if (![self isValidParameter:value
-                  attributeType:@"value"
-                  parameterName:@"Partner"]) return;
+    if (![ADJUtil isValidParameter:value
+                     attributeType:@"value"
+                     parameterName:@"Partner"]) return;
 
     if (self.partnerMutableParameters == nil) {
         self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
@@ -166,43 +166,18 @@
     return YES;
 }
 
-- (BOOL) isValidParameter:(NSString *)attribute
-            attributeType:(NSString *)attributeType
-            parameterName:(NSString *)parameterName
-{
-    if ([ADJUtil isNull:attribute]) {
-        [self.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
-        return NO;
-    }
-
-    if ([attribute isEqualToString:@""]) {
-        [self.logger error:@"%@ parameter %@ is empty", parameterName, attributeType];
-        return NO;
-    }
-
-    return YES;
-}
-
 -(id)copyWithZone:(NSZone *)zone
 {
-    ADJEvent* copy = [[[self class] allocWithZone:zone]
-                      initWithEventToken:[self.eventToken copyWithZone:zone]];
+    ADJEvent* copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        if (self.revenue != nil) {
-            double amount = [[self.revenue copyWithZone:zone] doubleValue];
-            [copy setRevenue:amount currency:[self.currency copyWithZone:zone]];
-        }
+        copy->_eventToken = [self.eventToken copyWithZone:zone];
+        copy->_revenue = [self.revenue copyWithZone:zone];
+        copy->_currency = [self.currency copyWithZone:zone];
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        if (self.emptyReceipt) {
-            [copy setReceipt:self.receipt transactionId:self.transactionId];
-        } else if (self.transactionId != nil) {
-            if (self.receipt != nil) {
-                [copy setReceipt:self.receipt transactionId:self.transactionId];
-            } else {
-                [copy setTransactionId:self.transactionId];
-            }
-        }
+        copy->_transactionId = [self.transactionId copyWithZone:zone];
+        copy->_receipt = [self.receipt copyWithZone:zone];
+        copy->_emptyReceipt = self.emptyReceipt;
     }
     return copy;
 }

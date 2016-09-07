@@ -16,9 +16,9 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 #pragma mark - private
 @interface ADJTimerCycle()
 
-@property (nonatomic) dispatch_source_t source;
+@property (nonatomic, strong) dispatch_source_t source;
 @property (nonatomic, assign) BOOL suspended;
-@property (nonatomic, retain) id<ADJLogger> logger;
+@property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, copy) NSString *name;
 
 @end
@@ -64,12 +64,13 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     NSString * startTimeFormatted = [ADJUtil secondsNumberFormat:startTime];
     NSString * intervalTimeFormatted = [ADJUtil secondsNumberFormat:intervalTime];
 
-    [self.logger verbose:@"%@ fires after %@ seconds of starting and cycles every %@ seconds", self.name, startTimeFormatted, intervalTimeFormatted];
+    [self.logger verbose:@"%@ configured to fire after %@ seconds of starting and cycles every %@ seconds", self.name, startTimeFormatted, intervalTimeFormatted];
 
     return self;
 }
 
 - (void)resume {
+    if (self.source == nil) return;
     if (!self.suspended) {
         [self.logger verbose:@"%@ is already started", self.name];
         return;
@@ -82,6 +83,7 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
 }
 
 - (void)suspend {
+    if (self.source == nil) return;
     if (self.suspended) {
         [self.logger verbose:@"%@ is already suspended", self.name];
         return;
@@ -90,6 +92,18 @@ static const uint64_t kTimerLeeway   =  1 * NSEC_PER_SEC; // 1 second
     [self.logger verbose:@"%@ suspended", self.name];
     dispatch_suspend(self.source);
     self.suspended = YES;
+}
+
+- (void)cancel {
+    if (self.source != nil) {
+        [self resume];
+        dispatch_cancel(self.source);
+    }
+    self.source = nil;
+}
+
+- (void)dealloc {
+    [self.logger verbose:@"%@ dealloc", self.name];
 }
 
 @end

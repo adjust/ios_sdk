@@ -6,7 +6,8 @@
 //  Copyright © 2016 adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+// #import "Adjust.h"
+#import <AdjustSdk/Adjust.h>
 // In case of erroneous import statement try with:
 // #import <AdjustSdk/Adjust.h>
 // (depends how you import the adjust SDK to your app)

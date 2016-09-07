@@ -21,7 +21,8 @@
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                             startsSending:(BOOL)startsSending;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
-+ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig;
++ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
+                     sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 + (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending;
 
 + (id<ADJLogger>)logger;
@@ -37,6 +38,7 @@
                                                     startsSending:(BOOL)startsSending
                                     hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
 + (BOOL)testing;
++ (NSTimeInterval)maxDelayStart;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -51,5 +53,7 @@
 + (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
++ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 
++ (void)teardown;
 @end

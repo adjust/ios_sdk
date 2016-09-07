@@ -22,10 +22,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.adjust.AdjustExample-iOS</string>
+			<string>com.adjust.example</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>adjustexampleios</string>
+				<string>adjustExample</string>
 			</array>
 		</dict>
 	</array>

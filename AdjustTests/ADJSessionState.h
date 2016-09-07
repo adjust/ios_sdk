@@ -18,7 +18,7 @@ typedef enum {
 @interface ADJSessionState : NSObject
 
 @property (nonatomic, assign) BOOL toSend;
-@property (nonatomic, assign) BOOL paused;
+//@property (nonatomic, assign) BOOL paused;
 @property (nonatomic, assign) NSInteger sessionCount;
 @property (nonatomic, assign) NSInteger subsessionCount;
 @property (nonatomic, assign) ADJSessionType sessionType;
@@ -28,6 +28,13 @@ typedef enum {
 @property (nonatomic, assign) BOOL eventBufferingIsEnabled;
 @property (nonatomic, assign) BOOL foregroundTimerStarts;
 @property (nonatomic, assign) BOOL foregroundTimerAlreadyStarted;
+@property (nonatomic, assign) BOOL sendInBackgroundConfigured;
+@property (nonatomic, assign) BOOL sdkClickHandlerAlsoPauses;
+@property (nonatomic, copy) NSString * delayStart;
+@property (nonatomic, assign) BOOL activityStateCreated;
+@property (nonatomic, assign) BOOL startSubSession;
+
+
 /*
 boolean toSend = true;
 boolean paused = false;

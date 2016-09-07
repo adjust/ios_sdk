@@ -1,3 +1,34 @@
+### Version 4.9.0 (7th September 2016)
+#### Added
+- Added `ADJLogLevelSuppress` to disable all log output messages.
+- Added possibility to delay the start of the first session.
+- Added support for session parameters which are going to be sent with each session/event:
+    - Callback parameters
+    - Partner parameters
+- Added sending of install receipt.
+- Added iOS 10 compatibility.
+- Added `AdjustSdkTv.framework` to releases page.
+
+#### Changed
+- Deferred deep link info is now delivered as part of the `attribution` answer from the backend.
+- Removed optional `adjust_redirect` parameter from resulting URL string when using `convertUniversalLink:scheme` method.
+- Normalized properties attributes.
+- Changed naming of background blocks.
+- Using `weakself strongself` pattern for background blocks.
+- Moving log level to the ADJConfig object.
+- Accessing private properties directly when copying.
+- Removed static framework build with no Bitcode support from releases page.
+- Updated docs.
+ 
+#### Fixed
+- Allow foreground/background timer to work in offline mode.
+- Use `synchronized` blocks to prevent write deadlock/contention.
+- Don't create/use background timer if the option is not configured.
+- Replace strong references with weak when possible.
+- Use background session configuration for `NSURLSession` when the option is set.
+
+--
+
 ### Version 4.8.5 (30th August 2016)
 #### Fixed
 - Not using `SFSafariViewController` on iOS devices with iOS version lower than 9.

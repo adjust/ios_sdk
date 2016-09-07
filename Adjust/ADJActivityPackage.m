@@ -71,6 +71,8 @@
 
     self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
+    self.callbackParameters = [decoder decodeObjectForKey:@"callbackParameters"];
+    self.partnerParameters = [decoder decodeObjectForKey:@"partnerParameters"];
     return self;
 }
 
@@ -82,6 +84,8 @@
     [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:kindString forKey:@"kind"];
     [encoder encodeObject:self.suffix forKey:@"suffix"];
+    [encoder encodeObject:self.callbackParameters forKey:@"callbackParameters"];
+    [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
 }
 
 @end

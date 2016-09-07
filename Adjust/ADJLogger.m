@@ -13,15 +13,33 @@ static NSString * const kLogTag = @"Adjust";
 @interface ADJLogger()
 
 @property (nonatomic, assign) ADJLogLevel loglevel;
+@property (nonatomic, assign) BOOL logLevelLocked;
 
 @end
 
 #pragma mark -
 @implementation ADJLogger
 
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    //default values
+    self.logLevelLocked = NO;
+    _loglevel = ADJLogLevelInfo;
+
+    return self;
+}
 
 - (void)setLogLevel:(ADJLogLevel)logLevel {
-    self.loglevel = logLevel;
+    if (self.logLevelLocked) {
+        return;
+    }
+    _loglevel = logLevel;
+}
+
+- (void)lockLogLevel {
+    self.logLevelLocked = YES;
 }
 
 - (void)verbose:(NSString *)format, ... {

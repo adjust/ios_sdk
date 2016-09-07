@@ -37,6 +37,8 @@
 @property (nonatomic, copy) NSString* currency;
 @property (nonatomic, copy) NSString* receipt;
 @property (nonatomic, copy) NSString* emptyReceipt;
+@property (nonatomic, copy) NSDictionary* savedCallbackParameters;
+@property (nonatomic, copy) NSDictionary* savedPartnerParameters;
 // ADJActivityState
 @property (nonatomic, copy) NSString* sessionCount;
 @property (nonatomic, copy) NSString* subSessionCount;

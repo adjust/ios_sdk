@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="16A201w" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" generatesPrototypingConstraints="YES" useTraitCollections="YES" colorMatched="NO" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <development version="7000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -22,7 +22,7 @@
                                 <rect key="frame" x="50" y="69" width="500" height="30"/>
                                 <state key="normal" title="Track Simple Event" backgroundImage="button_background">
                                     <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickTrackSimpleEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3rC-Zv-JNn"/>
@@ -32,7 +32,7 @@
                                 <rect key="frame" x="50" y="117" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Track Revenue Event" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickTrackRevenueEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AeX-jH-kSB"/>
@@ -42,7 +42,7 @@
                                 <rect key="frame" x="50" y="165" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Track Callback Event" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickTrackCallbackEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SJO-Tu-6xN"/>
@@ -52,7 +52,7 @@
                                 <rect key="frame" x="50" y="213" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Track Partner Event" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickTrackPartnerEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0AJ-C9-R7U"/>
@@ -62,7 +62,7 @@
                                 <rect key="frame" x="50" y="261" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Enable Offline Mode" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickEnableOfflineMode:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Kg-os-Zmk"/>
@@ -72,7 +72,7 @@
                                 <rect key="frame" x="50" y="309" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Disable Offline Mode" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickDisableOfflineMode:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WHz-On-5as"/>
@@ -82,7 +82,7 @@
                                 <rect key="frame" x="50" y="357" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Enable SDK" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickEnableSdk:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7u3-QN-RuK"/>
@@ -92,7 +92,7 @@
                                 <rect key="frame" x="50" y="405" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Disable SDK" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickDisableSdk:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bme-GZ-0U2"/>
@@ -102,7 +102,7 @@
                                 <rect key="frame" x="50" y="453" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Is SDK Enabled?" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickIsSdkEnabled:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jnE-5E-SRO"/>
@@ -112,7 +112,7 @@
                                 <rect key="frame" x="50" y="501" width="500" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Forget This Device" backgroundImage="button_background">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="clickForgetThisDevice:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fa9-3K-l5X"/>

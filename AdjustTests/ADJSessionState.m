@@ -10,13 +10,13 @@
 
 @implementation ADJSessionState
 
+
 - (id)initWithSessionType:(ADJSessionType)sessionType {
     self = [super init];
     if (self == nil) return nil;
 
     // default values
-    self.toSend = YES;
-    self.paused = NO;
+    self.toSend = NO;
     self.sessionCount = 1;
     self.subsessionCount = 1;
     self.eventCount = 0;
@@ -25,12 +25,18 @@
     self.eventBufferingIsEnabled = NO;
     self.foregroundTimerStarts = YES;
     self.foregroundTimerAlreadyStarted = NO;
-
+    self.sdkClickHandlerAlsoPauses = YES;
+    self.delayStart = nil;
+    self.activityStateCreated = NO;
+    self.startSubSession = YES;
+/*
     if (sessionType == ADJSessionTypeSubSession ||
         sessionType == ADJSessionTypeNonSession)
     {
         self.timerAlreadyStarted = YES;
+        self.toSend = YES;
     }
+*/
     self.sessionType = sessionType;
 
     return self;

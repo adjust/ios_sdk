@@ -22,6 +22,7 @@ static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static BOOL internalTesting = NO;
+static NSTimeInterval internalMaxDelayStart = -1;
 
 @implementation ADJAdjustFactory
 
@@ -41,11 +42,15 @@ static BOOL internalTesting = NO;
     return [internalRequestHandler initWithPackageHandler:packageHandler];
 }
 
-+ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig {
++ (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
+                     sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+{
     if (internalActivityHandler == nil) {
-        return [ADJActivityHandler handlerWithConfig:adjustConfig];
+        return [ADJActivityHandler handlerWithConfig:adjustConfig
+                      sessionParametersActionsArray:sessionParametersActionsArray];
     }
-    return [internalActivityHandler initWithConfig:adjustConfig];
+    return [internalActivityHandler initWithConfig:adjustConfig
+                    sessionParametersActionsArray:sessionParametersActionsArray];
 }
 
 + (id<ADJLogger>)logger {
@@ -129,6 +134,13 @@ static BOOL internalTesting = NO;
     return internalTesting;
 }
 
++ (NSTimeInterval)maxDelayStart {
+    if (internalMaxDelayStart == -1) {
+        return 10.0;               // 10 seconds
+    }
+    return internalMaxDelayStart;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -179,5 +191,26 @@ static BOOL internalTesting = NO;
 
 + (void)setTesting:(BOOL)testing {
     internalTesting = testing;
+}
+
++ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart {
+    internalMaxDelayStart = maxDelayStart;
+}
+
++ (void)teardown {
+    internalPackageHandler = nil;
+    internalRequestHandler = nil;
+    internalActivityHandler = nil;
+    internalLogger = nil;
+    internalAttributionHandler = nil;
+    internalSdkClickHandler = nil;
+
+    internalSessionInterval    = -1;
+    intervalSubsessionInterval = -1;
+    internalTimerInterval = -1;
+    intervalTimerStart = -1;
+    packageHandlerBackoffStrategy = nil;
+    sdkClickHandlerBackoffStrategy = nil;
+    internalMaxDelayStart = -1;
 }
 @end

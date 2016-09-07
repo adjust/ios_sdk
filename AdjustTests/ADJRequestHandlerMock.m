@@ -60,4 +60,8 @@ static NSString * const prefix = @"RequestHandler ";
      */
 }
 
+- (void)teardown {
+    [self.loggerMock test:[prefix stringByAppendingString:@"teardown"]];
+}
+
 @end
