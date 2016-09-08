@@ -18,9 +18,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    // Check AdWords Search and Mobile Web.
-    // [Adjust sendAdWordsRequest];
-
     // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;

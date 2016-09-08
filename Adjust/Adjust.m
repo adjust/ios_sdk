@@ -9,7 +9,6 @@
 #import "Adjust.h"
 #import "ADJUtil.h"
 #import "ADJLogger.h"
-#import "ADJTrackingPixel.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 
@@ -23,9 +22,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 @interface Adjust()
 
-@property (nonatomic, strong) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, strong) NSMutableArray* sessionParametersActionsArray;
+@property (nonatomic, strong) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, strong) NSMutableArray *sessionParametersActionsArray;
 
 @end
 
@@ -69,14 +68,14 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 + (void)sendAdWordsRequest {
-    [[Adjust getInstance] sendAdWordsRequest];
+    [[ADJAdjustFactory logger] warn:@"Send AdWords Request functionality removed"];
 }
 
-+ (NSString*)idfa {
++ (NSString *)idfa {
     return [[Adjust getInstance] idfa];
 }
 
-+ (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
++ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     return [[Adjust getInstance] convertUniversalLink:url scheme:scheme];
 }
 
@@ -182,15 +181,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.activityHandler setOfflineMode:enabled];
 }
 
-- (void)sendAdWordsRequest {
-    [ADJTrackingPixel present];
-}
-
-- (NSString*)idfa {
+- (NSString *)idfa {
     return [ADJUtil idfa];
 }
 
-- (NSURL*)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
+- (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     return [ADJUtil convertUniversalLink:url scheme:scheme];
 }
 
