@@ -67,7 +67,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [[Adjust getInstance] setOfflineMode:enabled];
 }
 
-+ (void)sendAdWordsRequest {}
++ (void)sendAdWordsRequest {
+    [[ADJAdjustFactory logger] warn:@"Send AdWords Request functionality removed"];
+}
 
 + (NSString *)idfa {
     return [[Adjust getInstance] idfa];
@@ -178,8 +180,6 @@ NSString * const ADJEnvironmentProduction   = @"production";
     if (![self checkActivityHandler]) return;
     [self.activityHandler setOfflineMode:enabled];
 }
-
-- (void)sendAdWordsRequest {}
 
 - (NSString *)idfa {
     return [ADJUtil idfa];
