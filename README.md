@@ -88,13 +88,13 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your `
 [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.9.0'
+pod 'Adjust', '~> 4.10.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.9.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.10.0'
 ```
 
 --
@@ -1020,7 +1020,7 @@ set to `verbose` level, you will see this `sdk_click` package looking something 
 ```
 [Adjust]d: Added package 1 (click)
 [Adjust]v: Path:      /sdk_click
-[Adjust]v: ClientSdk: ios4.9.0
+[Adjust]v: ClientSdk: ios4.10.0
 [Adjust]v: Parameters:
 [Adjust]v:      app_token              {YourAppToken}
 [Adjust]v:      created_at             2016-04-15T14:25:51.676Z+0200
