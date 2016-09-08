@@ -136,8 +136,6 @@
 		96FDD75E1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */; };
 		9D0C7D3F1D79B3FE009DDF4E /* ADJInitState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9DAA089F1D2A7B15001C04E4 /* ADJTrackingPixel.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */; };
-		9DAA08A01D2A7B15001C04E4 /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */; };
 		9DB457B01D743704004D69E8 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8DF1D6F3CA5008E362F /* ADJBackoffStrategy.m */; };
 		9DB457B11D743704004D69E8 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8F71D6F3CA5008E362F /* ADJSdkClickHandler.m */; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
@@ -195,8 +193,6 @@
 		9DF9C93E1D6F3CA5008E362F /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8FF1D6F3CA5008E362F /* ADJTimerCycle.m */; };
 		9DF9C93F1D6F3CA5008E362F /* ADJTimerOnce.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C9001D6F3CA5008E362F /* ADJTimerOnce.h */; };
 		9DF9C9401D6F3CA5008E362F /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C9011D6F3CA5008E362F /* ADJTimerOnce.m */; };
-		9DF9C9411D6F3CA5008E362F /* ADJTrackingPixel.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C9021D6F3CA5008E362F /* ADJTrackingPixel.h */; };
-		9DF9C9421D6F3CA5008E362F /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C9031D6F3CA5008E362F /* ADJTrackingPixel.m */; };
 		9DF9C9431D6F3CA5008E362F /* Adjust.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C9041D6F3CA5008E362F /* Adjust.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DF9C9441D6F3CA5008E362F /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C9051D6F3CA5008E362F /* Adjust.m */; };
 		9DF9C9451D6F3CA5008E362F /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C9061D6F3CA5008E362F /* ADJUtil.h */; };
@@ -260,8 +256,6 @@
 		9DFB068F1D7470C0006D48FC /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06501D7470C0006D48FC /* ADJTimerCycle.m */; };
 		9DFB06901D7470C0006D48FC /* ADJTimerOnce.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06511D7470C0006D48FC /* ADJTimerOnce.h */; };
 		9DFB06911D7470C0006D48FC /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06521D7470C0006D48FC /* ADJTimerOnce.m */; };
-		9DFB06921D7470C0006D48FC /* ADJTrackingPixel.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06531D7470C0006D48FC /* ADJTrackingPixel.h */; };
-		9DFB06931D7470C0006D48FC /* ADJTrackingPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06541D7470C0006D48FC /* ADJTrackingPixel.m */; };
 		9DFB06941D7470C0006D48FC /* Adjust.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06551D7470C0006D48FC /* Adjust.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DFB06951D7470C0006D48FC /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06561D7470C0006D48FC /* Adjust.m */; };
 		9DFB06961D7470C0006D48FC /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06571D7470C0006D48FC /* ADJUtil.h */; };
@@ -447,8 +441,6 @@
 		9D75F1841D07460600E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
 		9D75F1851D07460600E5D222 /* adjust_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_event.js; sourceTree = "<group>"; };
 		9D75F1861D07460600E5D222 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
-		9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
-		9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DF9C8B11D6ED228008E362F /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
 		9DF9C8B21D6ED228008E362F /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
@@ -508,8 +500,6 @@
 		9DF9C8FF1D6F3CA5008E362F /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
 		9DF9C9001D6F3CA5008E362F /* ADJTimerOnce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerOnce.h; sourceTree = "<group>"; };
 		9DF9C9011D6F3CA5008E362F /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
-		9DF9C9021D6F3CA5008E362F /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
-		9DF9C9031D6F3CA5008E362F /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DF9C9041D6F3CA5008E362F /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
 		9DF9C9051D6F3CA5008E362F /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		9DF9C9061D6F3CA5008E362F /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
@@ -577,8 +567,6 @@
 		9DFB06501D7470C0006D48FC /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
 		9DFB06511D7470C0006D48FC /* ADJTimerOnce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerOnce.h; sourceTree = "<group>"; };
 		9DFB06521D7470C0006D48FC /* ADJTimerOnce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerOnce.m; sourceTree = "<group>"; };
-		9DFB06531D7470C0006D48FC /* ADJTrackingPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTrackingPixel.h; sourceTree = "<group>"; };
-		9DFB06541D7470C0006D48FC /* ADJTrackingPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTrackingPixel.m; sourceTree = "<group>"; };
 		9DFB06551D7470C0006D48FC /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
 		9DFB06561D7470C0006D48FC /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
 		9DFB06571D7470C0006D48FC /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
@@ -788,8 +776,6 @@
 				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
 				96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */,
 				96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */,
-				9DAA089D1D2A7B15001C04E4 /* ADJTrackingPixel.h */,
-				9DAA089E1D2A7B15001C04E4 /* ADJTrackingPixel.m */,
 				9DF9C8B11D6ED228008E362F /* ADJKeychain.h */,
 				9DF9C8B21D6ED228008E362F /* ADJKeychain.m */,
 				96B6710E1D788EEC0090A023 /* ADJSessionParameters.h */,
@@ -905,8 +891,6 @@
 				9DF9C8FF1D6F3CA5008E362F /* ADJTimerCycle.m */,
 				9DF9C9001D6F3CA5008E362F /* ADJTimerOnce.h */,
 				9DF9C9011D6F3CA5008E362F /* ADJTimerOnce.m */,
-				9DF9C9021D6F3CA5008E362F /* ADJTrackingPixel.h */,
-				9DF9C9031D6F3CA5008E362F /* ADJTrackingPixel.m */,
 				9DF9C9041D6F3CA5008E362F /* Adjust.h */,
 				9DF9C9051D6F3CA5008E362F /* Adjust.m */,
 				9DF9C9061D6F3CA5008E362F /* ADJUtil.h */,
@@ -1005,8 +989,6 @@
 				9DFB06501D7470C0006D48FC /* ADJTimerCycle.m */,
 				9DFB06511D7470C0006D48FC /* ADJTimerOnce.h */,
 				9DFB06521D7470C0006D48FC /* ADJTimerOnce.m */,
-				9DFB06531D7470C0006D48FC /* ADJTrackingPixel.h */,
-				9DFB06541D7470C0006D48FC /* ADJTrackingPixel.m */,
 				9DFB06551D7470C0006D48FC /* Adjust.h */,
 				9DFB06561D7470C0006D48FC /* Adjust.m */,
 				9DFB06571D7470C0006D48FC /* ADJUtil.h */,
@@ -1067,7 +1049,6 @@
 				96164D8C1CCA4DEA009431AB /* ADJSystemProfile.h in Headers */,
 				965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */,
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
-				9DAA089F1D2A7B15001C04E4 /* ADJTrackingPixel.h in Headers */,
 				9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */,
 				96B671101D788EEC0090A023 /* ADJSessionParameters.h in Headers */,
 			);
@@ -1107,7 +1088,6 @@
 				9DF9C93B1D6F3CA5008E362F /* ADJSystemProfile.h in Headers */,
 				96164D861CCA4D27009431AB /* ADJBackoffStrategy.h in Headers */,
 				96164D841CCA4D10009431AB /* ADJSdkClickHandler.h in Headers */,
-				9DF9C9411D6F3CA5008E362F /* ADJTrackingPixel.h in Headers */,
 				9DF9C9291D6F3CA5008E362F /* ADJKeychain.h in Headers */,
 				96B671141D788F4A0090A023 /* ADJSessionParameters.h in Headers */,
 			);
@@ -1147,7 +1127,6 @@
 				9DFB068C1D7470C0006D48FC /* ADJSystemProfile.h in Headers */,
 				9DFB066E1D7470C0006D48FC /* ADJBackoffStrategy.h in Headers */,
 				9DFB06861D7470C0006D48FC /* ADJSdkClickHandler.h in Headers */,
-				9DFB06921D7470C0006D48FC /* ADJTrackingPixel.h in Headers */,
 				9DFB067A1D7470C0006D48FC /* ADJKeychain.h in Headers */,
 				96B671181D788F7A0090A023 /* ADJSessionParameters.h in Headers */,
 			);
@@ -1426,7 +1405,6 @@
 				96164D8D1CCA4DEA009431AB /* ADJSystemProfile.m in Sources */,
 				965B7F311CC78F6600098639 /* ADJBackoffStrategy.m in Sources */,
 				96164D731CC8FA73009431AB /* ADJSdkClickHandler.m in Sources */,
-				9DAA08A01D2A7B15001C04E4 /* ADJTrackingPixel.m in Sources */,
 				9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */,
 				96B671111D788EEC0090A023 /* ADJSessionParameters.m in Sources */,
 			);
@@ -1499,7 +1477,6 @@
 				9DF9C93C1D6F3CA5008E362F /* ADJSystemProfile.m in Sources */,
 				9DB457B01D743704004D69E8 /* ADJBackoffStrategy.m in Sources */,
 				9DB457B11D743704004D69E8 /* ADJSdkClickHandler.m in Sources */,
-				9DF9C9421D6F3CA5008E362F /* ADJTrackingPixel.m in Sources */,
 				9DF9C92A1D6F3CA5008E362F /* ADJKeychain.m in Sources */,
 				96B671151D788F4A0090A023 /* ADJSessionParameters.m in Sources */,
 			);
@@ -1538,7 +1515,6 @@
 				9DFB068D1D7470C0006D48FC /* ADJSystemProfile.m in Sources */,
 				9DFB066F1D7470C0006D48FC /* ADJBackoffStrategy.m in Sources */,
 				9DFB06871D7470C0006D48FC /* ADJSdkClickHandler.m in Sources */,
-				9DFB06931D7470C0006D48FC /* ADJTrackingPixel.m in Sources */,
 				9DFB067B1D7470C0006D48FC /* ADJKeychain.m in Sources */,
 				96B671191D788F7A0090A023 /* ADJSessionParameters.m in Sources */,
 			);
