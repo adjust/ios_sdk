@@ -188,7 +188,6 @@ extern NSString * const ADJEnvironmentProduction;
 - (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
 
 - (void)sendFirstPackages;
-- (void)sendAdWordsRequest;
 - (void)trackSubsessionEnd;
 - (void)trackSubsessionStart;
 - (void)resetSessionPartnerParameters;
