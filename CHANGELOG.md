@@ -1,3 +1,12 @@
+### Version 4.10.1 (12th September 2016)
+#### Changed
+- Revert deployment target to iOs 6.0 
+
+#### Fixed
+- Remove NSURLSessionConfiguration with backgroundSessionConfigurationWithIdentifier
+
+--
+
 ### Version 4.10.0 (8th September 2016)
 #### Changed
 - SDK updated due to an update to the Apple App Store Review Guidelines (https://developer.apple.com/app-store/review/guidelines/ chapter 5.1.1 iv).
