@@ -26,7 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk              = @"ios4.10.0";
+static NSString * const kClientSdk              = @"ios4.10.1";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
@@ -138,10 +138,6 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
-    if (config.sendInBackground) {
-        urlSessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"Adjust"];
-    }
-
     userAgent = config.userAgent;
 }
 
