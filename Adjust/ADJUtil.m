@@ -138,10 +138,6 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
-    if (config.sendInBackground) {
-        urlSessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"Adjust"];
-    }
-
     userAgent = config.userAgent;
 }
 
