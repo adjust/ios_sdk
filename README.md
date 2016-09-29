@@ -87,13 +87,13 @@ If you're using [CocoaPods][cocoapods], you can add the following line to your `
 [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.10.1'
+pod 'Adjust', '~> 4.10.2'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.10.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.10.2'
 ```
 
 --

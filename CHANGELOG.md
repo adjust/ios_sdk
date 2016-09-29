@@ -1,3 +1,9 @@
+### Version 4.10.2 (30th September 2016)
+#### Fixed
+- Check if all CPU families are defined
+
+--
+
 ### Version 4.10.1 (12th September 2016)
 #### Changed
 - Revert deployment target to iOs 6.0 
