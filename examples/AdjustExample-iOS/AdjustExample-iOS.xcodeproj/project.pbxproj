@@ -33,6 +33,7 @@
 		9639095E1BCBFD3B00A2E8A4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		963909601BCBFD4200A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		964E17FC1D50C6250097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		96D361681DB7CC87006284FA /* AdjustExample-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-iOS.entitlements"; sourceTree = "<group>"; };
 		9DAC2DE91C0F611300AC9D97 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
 		9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
 		9DB457B21D743AB4004D69E8 /* AdjustSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdjustSdk.framework; path = Adjust/AdjustSdk.framework; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 		9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				96D361681DB7CC87006284FA /* AdjustExample-iOS.entitlements */,
 				9DC95F281C10515300138E4B /* Constants.h */,
 				9DC95F291C10515300138E4B /* Constants.m */,
 				963909421BCBFCF300A2E8A4 /* AppDelegate.h */,
@@ -144,6 +146,12 @@
 				TargetAttributes = {
 					9639093B1BCBFCF300A2E8A4 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = QGUGW9AUMK;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -300,7 +308,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
+				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-iOS/Adjust",
@@ -319,7 +329,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
+				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-iOS/Adjust",

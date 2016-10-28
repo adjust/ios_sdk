@@ -12,7 +12,7 @@ NSString * const kParamIdfv      = @"idfv";
 NSString * const kParamAppToken  = @"app_token";
 NSString * const kBaseForgetUrl  = @"https://app.adjust.com/forget_device";
 
-NSString * const kAppToken       = @"{YourAppToken}";
+NSString * const kAppToken       = @"qwerty123456";
 NSString * const kEventToken1    = @"{YourEventToken}";
 NSString * const kEventToken2    = @"{YourEventToken}";
 NSString * const kEventToken3    = @"{YourEventToken}";

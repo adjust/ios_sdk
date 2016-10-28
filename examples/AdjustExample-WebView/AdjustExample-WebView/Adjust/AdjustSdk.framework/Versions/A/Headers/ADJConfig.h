@@ -171,7 +171,6 @@
 @property (nonatomic, copy) NSString *userAgent;
 
 @property (nonatomic, assign, readonly) BOOL hasResponseDelegate;
-@property (nonatomic, assign, readonly) BOOL hasAttributionChangedDelegate;
 
 - (BOOL) isValid;
 @end

@@ -8,6 +8,7 @@
 
 #import "Constants.h"
 #import "AppDelegate.h"
+#import <sys/utsname.h>
 
 @interface AppDelegate ()
 
@@ -41,8 +42,6 @@
     // delay the first session of the SDK
     //[adjustConfig setDelayStart:7];
 
-    // set an attribution delegate
-
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
 
@@ -51,7 +50,6 @@
 
     // Disable the SDK.
     // [Adjust setEnabled:NO];
-
     return YES;
 }
 
@@ -66,6 +64,7 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
+        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample://"];
         [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
 
