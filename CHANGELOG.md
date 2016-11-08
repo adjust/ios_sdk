@@ -1,3 +1,15 @@
+### Version 4.10.3 (XXth November 2016)
+#### Added
+- Send os build
+- Adjust sdk version in adjust.h
+
+#### Fixed
+- Replace NSLog in System Profile with adjust logger
+- No longer necessary to have attribution delegate to open deferred deeplinks
+- Send os build or permenent version, not both
+
+--
+
 ### Version 4.10.2 (30th September 2016)
 #### Fixed
 - Check if all CPU families are defined
