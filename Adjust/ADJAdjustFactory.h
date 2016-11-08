@@ -35,8 +35,7 @@
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                                    startsSending:(BOOL)startsSending
-                                    hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
+                                                    startsSending:(BOOL)startsSending;
 + (BOOL)testing;
 + (NSTimeInterval)maxDelayStart;
 

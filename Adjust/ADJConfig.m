@@ -60,7 +60,6 @@
     _environment = environment;
     // default values
     _hasResponseDelegate = NO;
-    _hasAttributionChangedDelegate = NO;
     self.eventBufferingEnabled = NO;
 
     return self;
@@ -92,7 +91,6 @@
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     _hasResponseDelegate = NO;
-    _hasAttributionChangedDelegate = NO;
     BOOL implementsDeeplinkCallback = NO;
 
     if ([ADJUtil isNull:delegate]) {
@@ -105,7 +103,6 @@
         [self.logger debug:@"Delegate implements adjustAttributionChanged:"];
 
         _hasResponseDelegate = YES;
-        _hasAttributionChangedDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
@@ -192,7 +189,6 @@
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy->_hasResponseDelegate = self.hasResponseDelegate;
-        copy->_hasAttributionChangedDelegate = self.hasAttributionChangedDelegate;
         copy.sendInBackground = self.sendInBackground;
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];

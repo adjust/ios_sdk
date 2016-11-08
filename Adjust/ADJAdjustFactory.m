@@ -106,19 +106,16 @@ static NSTimeInterval internalMaxDelayStart = -1;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
-                                    hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
                                           withAttributionPackage:attributionPackage
-                                                   startsSending:startsSending
-                                                     hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+                                                   startsSending:startsSending];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
                                         withAttributionPackage:attributionPackage
-                                                 startsSending:startsSending
-                                 hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+                                                 startsSending:startsSending];
 }
 
 + (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending

@@ -638,8 +638,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
                                                               withAttributionPackage:attributionPackage
                                                                         startsSending:[selfI toSendI:selfI
-                                                                                 sdkClickHandlerOnly:NO]
-                                                       hasAttributionChangedDelegate:selfI.adjustConfig.hasAttributionChangedDelegate];
+                                                                                 sdkClickHandlerOnly:NO]];
 
     selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[selfI toSendI:selfI
                                                                         sdkClickHandlerOnly:YES]];
@@ -900,10 +899,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [selfI writeAttributionI:selfI];
 
     if (selfI.adjustDelegate == nil) {
-        return NO;
-    }
-
-    if (![selfI.adjustConfig hasAttributionChangedDelegate]) {
         return NO;
     }
 
