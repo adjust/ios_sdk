@@ -172,7 +172,10 @@
     [ADJAdjustFactory.logger warn:@"%@", unknowCpuFamily];
     return unknowCpuFamily;
 }
-
+/*
+ original function
+ operatingSystemVersionString should not be parsed
+  https://developer.apple.com/reference/foundation/nsprocessinfo/1408730-operatingsystemversionstring?language=objc
 + (NSString*) osVersion
 {
     NSProcessInfo *info = [NSProcessInfo processInfo];
@@ -187,7 +190,7 @@
 
     return version;
 }
-
+*/
 + (int) cpuCount
 {
     int error = 0;
@@ -226,6 +229,11 @@
 + (NSString*) cpuVendor
 {
     return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
+}
+
++ (NSString*) osVersion
+{
+    return [ADJSystemProfile readSysctlbByNameString:"kern.osversion" errorLog:@"Failed to obtain OS version"];
 }
 
 + (NSString*) readSysctlbByNameString:(const char *)name
