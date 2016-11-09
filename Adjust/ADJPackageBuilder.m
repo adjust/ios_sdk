@@ -226,6 +226,7 @@
     [ADJPackageBuilder parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
+    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
 
     // Check if UUID was persisted or not.
     // If yes, assign it to persistent_ios_uuid parameter.
@@ -235,7 +236,6 @@
     } else {
        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
-
 }
 
 - (NSString *)eventSuffix:(ADJEvent *)event {

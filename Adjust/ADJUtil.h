@@ -85,4 +85,5 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 + (BOOL)deleteFile:(NSString *)filename;
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl;
++ (NSString*)convertDeviceToken:(NSData*)deviceToken;
 @end

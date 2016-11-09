@@ -899,4 +899,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 }
 
++ (NSString*)convertDeviceToken:(NSData*)deviceToken {
+    if (deviceToken == nil) {
+        return nil;;
+    }
+    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
+                                   [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    if (deviceTokenString == nil) {
+        return nil;;
+    }
+
+    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    return deviceTokenString;
+}
+
 @end

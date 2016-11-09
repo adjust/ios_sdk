@@ -25,6 +25,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, strong) NSMutableArray *sessionParametersActionsArray;
+@property (nonatomic, copy) NSData *deviceTokenData;
 
 @end
 
@@ -138,7 +139,8 @@ NSString * const ADJEnvironmentProduction   = @"production";
     }
 
     self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig
-                                        sessionParametersActionsArray:self.sessionParametersActionsArray];
+                                        sessionParametersActionsArray:self.sessionParametersActionsArray
+                                                           deviceToken:self.deviceTokenData];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -172,8 +174,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    if (![self checkActivityHandler]) return;
-    [self.activityHandler setDeviceToken:deviceToken];
+    self.deviceTokenData = deviceToken;
+    if (self.activityHandler != nil) {
+        [self.activityHandler setDeviceToken:deviceToken];
+    }
 }
 
 - (void)setOfflineMode:(BOOL)enabled {

@@ -99,13 +99,16 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+                                deviceToken:(NSData*)deviceToken
 {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
-                       sessionParametersActionsArray:sessionParametersActionsArray];
+                       sessionParametersActionsArray:sessionParametersActionsArray
+                                          deviceToken:deviceToken];
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
 sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+         deviceToken:(NSData*)deviceToken
 {
     self = [super init];
     if (self == nil) return nil;
@@ -153,6 +156,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     } else {
         self.internalState.updatePackages = self.activityState.updatePackages;
     }
+    self.internalState.deviceToken = deviceToken;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -671,6 +675,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
         selfI.activityState.sessionCount = 1; // this is the first session
+        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:self.internalState.deviceToken];
 
         [selfI transferSessionPackageI:selfI now:now];
         [selfI.activityState resetSessionAttributes:now];
@@ -1003,13 +1008,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)setDeviceTokenI:(ADJActivityHandler *)selfI
             deviceToken:(NSData *)deviceToken {
-    if (deviceToken == nil) {
-        return;
-    }
-
-    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
-                       [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
 
     if (deviceTokenString == nil) {
         return;
