@@ -1019,15 +1019,15 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder * clickBuilder = [[ADJPackageBuilder alloc]
+    ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
                                         initWithDeviceInfo:selfI.deviceInfo
                                         activityState:selfI.activityState
                                         config:selfI.adjustConfig
                                         createdAt:now];
 
-    clickBuilder.deviceToken = deviceTokenString;
+    infoBuilder.deviceToken = deviceTokenString;
 
-    ADJActivityPackage * clickPackage = [clickBuilder buildClickPackage:@"push"];
+    ADJActivityPackage * clickPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 

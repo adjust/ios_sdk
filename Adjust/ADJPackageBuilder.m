@@ -125,7 +125,6 @@
     }
     [ADJPackageBuilder parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
-    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
@@ -134,6 +133,22 @@
     clickPackage.parameters = parameters;
 
     return clickPackage;
+}
+
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource {
+    NSMutableDictionary *parameters = [self idsParameters];
+
+    [ADJPackageBuilder parameters:parameters setString:infoSource                     forKey:@"source"];
+
+    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
+
+    ADJActivityPackage *infoPackage = [self defaultActivityPackage];
+    infoPackage.path = @"/sdk_info";
+    infoPackage.activityKind = ADJActivityKindInfo;
+    infoPackage.suffix = @"";
+    infoPackage.parameters = parameters;
+
+    return infoPackage;
 }
 
 - (ADJActivityPackage *)buildAttributionPackage {

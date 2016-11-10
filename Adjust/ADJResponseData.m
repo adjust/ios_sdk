@@ -228,3 +228,20 @@
 }
 
 @end
+
+@implementation ADJInfoResponseData
+
+- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
+    self = [super init];
+    if (self == nil) return nil;
+
+    return self;
+}
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    ADJInfoResponseData* copy = [super copyWithZone:zone];
+    return copy;
+}
+
+@end

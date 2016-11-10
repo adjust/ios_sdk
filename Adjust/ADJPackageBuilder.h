@@ -40,6 +40,7 @@
                         sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay;
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
 + (void)parameters:(NSMutableDictionary *)parameters setString:(NSString *)value forKey:(NSString *)key;

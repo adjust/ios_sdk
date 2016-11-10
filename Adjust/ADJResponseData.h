@@ -71,3 +71,7 @@
 @interface ADJUnknowResponseData : ADJResponseData
 
 @end
+
+@interface ADJInfoResponseData : ADJResponseData
+
+@end
