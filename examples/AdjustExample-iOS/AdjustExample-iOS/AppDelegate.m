@@ -8,7 +8,6 @@
 
 #import "Constants.h"
 #import "AppDelegate.h"
-#import <sys/utsname.h>
 
 @interface AppDelegate ()
 
@@ -39,7 +38,7 @@
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
 
-    // delay the first session of the SDK
+    // Delay the first session of the SDK.
     //[adjustConfig setDelayStart:7];
 
     // Initialise the SDK.
@@ -54,7 +53,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    NSLog(@"application openURL %@", url);
+    NSLog(@"openURL method called with URL: %@", url);
 
     [Adjust appWillOpenUrl:url];
 
@@ -63,7 +62,7 @@
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
+        NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
         [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample://"];
         [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
@@ -72,27 +71,35 @@
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@"adjust attribution %@", attribution);
+    NSLog(@"Attribution callback called!");
+    NSLog(@"Attribution: %@", attribution);
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    NSLog(@"adjust event success %@", eventSuccessResponseData);
+    NSLog(@"Event success callback called!");
+    NSLog(@"Event success data: %@", eventSuccessResponseData);
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    NSLog(@"adjust event failure %@", eventFailureResponseData);
+    NSLog(@"Event failure callback called!");
+    NSLog(@"Event failure data: %@", eventFailureResponseData);
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    NSLog(@"adjust session success %@", sessionSuccessResponseData);
+    NSLog(@"Session success callback called!");
+    NSLog(@"Session success data: %@", sessionSuccessResponseData);
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    NSLog(@"adjust session failure %@", sessionFailureResponseData);
+    NSLog(@"Session failure callback called!");
+    NSLog(@"Session failure data: %@", sessionFailureResponseData);
 }
 
 // Evaluate deeplink to be launched.
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    NSLog(@"Deferred deep link callback called!");
+    NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
+    
     return YES;
 }
 
