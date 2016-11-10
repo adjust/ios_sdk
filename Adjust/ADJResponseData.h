@@ -63,15 +63,3 @@
 @property (nonatomic, strong) NSURL * deeplink;
 
 @end
-
-@interface ADJClickResponseData : ADJResponseData
-
-@end
-
-@interface ADJUnknowResponseData : ADJResponseData
-
-@end
-
-@interface ADJInfoResponseData : ADJResponseData
-
-@end
