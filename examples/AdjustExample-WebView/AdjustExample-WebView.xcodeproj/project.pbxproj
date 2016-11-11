@@ -211,6 +211,7 @@
 				TargetAttributes = {
 					9D1082A31CFDAF8E0050568B = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = QGUGW9AUMK;
 					};
 				};
 			};
@@ -356,6 +357,7 @@
 		9D1082BC1CFDAF8E0050568B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-WebView/Adjust",
@@ -363,7 +365,7 @@
 				INFOPLIST_FILE = "AdjustExample-WebView/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -372,6 +374,7 @@
 		9D1082BD1CFDAF8E0050568B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-WebView/Adjust",
@@ -379,7 +382,7 @@
 				INFOPLIST_FILE = "AdjustExample-WebView/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
