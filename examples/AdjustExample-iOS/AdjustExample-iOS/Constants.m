@@ -12,8 +12,8 @@ NSString * const kParamIdfv      = @"idfv";
 NSString * const kParamAppToken  = @"app_token";
 NSString * const kBaseForgetUrl  = @"https://app.adjust.com/forget_device";
 
-NSString * const kAppToken       = @"rb4g27fje5ej";
-NSString * const kEventToken1    = @"uqg17r";
-NSString * const kEventToken2    = @"71iltz";
-NSString * const kEventToken3    = @"1ziip1";
-NSString * const kEventToken4    = @"9s4lqn";
+NSString * const kAppToken       = @"2fm9gkqubvpc";
+NSString * const kEventToken1    = @"g3mfiw";
+NSString * const kEventToken2    = @"a4fd35";
+NSString * const kEventToken3    = @"34vgg9";
+NSString * const kEventToken4    = @"w788qs";

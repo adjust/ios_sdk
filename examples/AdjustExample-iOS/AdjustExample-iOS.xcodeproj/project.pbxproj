@@ -33,7 +33,6 @@
 		9639095E1BCBFD3B00A2E8A4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		963909601BCBFD4200A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		964E17FC1D50C6250097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		96D361681DB7CC87006284FA /* AdjustExample-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-iOS.entitlements"; sourceTree = "<group>"; };
 		9DAC2DE91C0F611300AC9D97 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
 		9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
 		9DB457B21D743AB4004D69E8 /* AdjustSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdjustSdk.framework; path = Adjust/AdjustSdk.framework; sourceTree = "<group>"; };
@@ -41,6 +40,7 @@
 		9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControlleriOS.m; sourceTree = "<group>"; };
 		9DC95F281C10515300138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F291C10515300138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		9DCA5CF01DD5B6BE000296B2 /* AdjustExample-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-iOS.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,7 @@
 		9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				96D361681DB7CC87006284FA /* AdjustExample-iOS.entitlements */,
+				9DCA5CF01DD5B6BE000296B2 /* AdjustExample-iOS.entitlements */,
 				9DC95F281C10515300138E4B /* Constants.h */,
 				9DC95F291C10515300138E4B /* Constants.m */,
 				963909421BCBFCF300A2E8A4 /* AppDelegate.h */,
@@ -141,12 +141,13 @@
 		963909341BCBFCF300A2E8A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = adjust;
 				TargetAttributes = {
 					9639093B1BCBFCF300A2E8A4 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = QGUGW9AUMK;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 1;
@@ -234,8 +235,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -278,8 +281,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -310,6 +315,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -319,7 +325,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -331,6 +337,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -340,7 +347,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

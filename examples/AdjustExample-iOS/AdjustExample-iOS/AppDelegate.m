@@ -34,6 +34,26 @@
 
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
+    
+    // Add session callback parameters.
+    [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
+    
+    // Add session partner parameters.
+    [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
+    
+    // Remove session callback parameter.
+    [Adjust removeSessionCallbackParameter:@"sp_key"];
+    
+    // Remove session partner parameter.
+    [Adjust removeSessionPartnerParameter:@"sp_foo"];
+    
+    // Remove all session callback parameters.
+    // [Adjust resetSessionCallbackParameters];
+    
+    // Remove all session partner parameters.
+    // [Adjust resetSessionPartnerParameters];
 
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
@@ -49,6 +69,7 @@
 
     // Disable the SDK.
     // [Adjust setEnabled:NO];
+    
     return YES;
 }
 
@@ -63,7 +84,7 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
-        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample://"];
+        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample"];
         [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
 
