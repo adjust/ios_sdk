@@ -34,6 +34,10 @@ static NSString * const kHandlerPrefix = @"adjust_";
     return self;
 }
 
+- (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE*)webViewDelegate {
+    [self.uiBridge setWebViewDelegate:webViewDelegate];
+}
+
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
     if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
         return;
@@ -74,6 +78,10 @@ static NSString * const kHandlerPrefix = @"adjust_";
     self.wkBridge = [WKWebViewJavascriptBridge bridgeForWebView:wkWebView];
 
     return self;
+}
+
+- (void)setWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate {
+    [self.wkBridge setWebViewDelegate:webViewDelegate];
 }
 
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
