@@ -30,6 +30,8 @@
 - SDK updated due to an update to the Apple App Store Review Guidelines (https://developer.apple.com/app-store/review/guidelines/ chapter 5.1.1 iv).
 - Removed functionality of `sendAdWordsRequest` method because of the reason mentioned above.
 
+---
+
 ### Version 4.9.0 (7th September 2016)
 #### Added
 - Added `ADJLogLevelSuppress` to disable all log output messages.
