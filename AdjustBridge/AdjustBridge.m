@@ -166,27 +166,29 @@
 }
 
 - (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView
-            webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE*)webViewDelegate {
+            webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate {
     if (self.bridgeRegister != nil) {
         // WebViewBridge already loaded.
         return;
     }
 
-    AdjustUIBridgeRegister * uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
+    AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
     [uiBridgeRegister setWebViewDelegate:webViewDelegate];
+    
     self.bridgeRegister = uiBridgeRegister;
     [self loadWebViewBridge];
 }
 
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView
-            wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate {
+          wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate {
     if (self.bridgeRegister != nil) {
         // WebViewBridge already loaded.
         return;
     }
 
-    AdjustWKBridgeRegister * wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
+    AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
     [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
+    
     self.bridgeRegister = wkBridgeRegister;
     [self loadWebViewBridge];
 }

@@ -34,7 +34,7 @@ static NSString * const kHandlerPrefix = @"adjust_";
     return self;
 }
 
-- (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE*)webViewDelegate {
+- (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate {
     [self.uiBridge setWebViewDelegate:webViewDelegate];
 }
 

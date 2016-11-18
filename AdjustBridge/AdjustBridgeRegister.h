@@ -20,7 +20,7 @@
 @interface AdjustUIBridgeRegister : NSObject<AdjustBridgeRegister>
 
 + (id<AdjustBridgeRegister>)bridgeRegisterWithUIWebView:(WVJB_WEBVIEW_TYPE *)webView;
-- (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE*)webViewDelegate;
+- (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate;
 
 @end
 
