@@ -59,7 +59,7 @@
     [adjustConfig setDelegate:self];
 
     // Delay the first session of the SDK.
-    //[adjustConfig setDelayStart:7];
+    // [adjustConfig setDelayStart:7];
 
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
@@ -69,6 +69,9 @@
 
     // Disable the SDK.
     // [Adjust setEnabled:NO];
+    
+    // Interrupt delayed start set with setDelayStart: method.
+    // [Adjust sendFirstPackages];
     
     return YES;
 }
