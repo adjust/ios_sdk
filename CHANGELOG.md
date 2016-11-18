@@ -1,29 +1,29 @@
-### Version 4.10.3 (XXth November 2016)
+### Version 4.10.3 (18th November 2016)
 #### Added
-- Send os build
-- Adjust sdk version in adjust.h
+- Added sending of `os_build` parameter.
+- Added adjust SDK version information to `Adjust.h` header file.
 
 #### Fixed
-- Replace NSLog in System Profile with adjust logger
-- No longer necessary to have attribution delegate to open deferred deeplinks
-- Send os build or permenent version, not both
+- Replaced `NSLog` in `ADJSystemProfile` with the adjust logger.
+- It is no longer necessary to have attribution delegate implemented to get deferred deep links.
+- Sending `os_build` or permenent version, not both.
 
 --
 
 ### Version 4.10.2 (30th September 2016)
 #### Fixed
-- Check if all CPU families are defined
+- Added checks if all CPU families are defined.
 
---
+---
 
 ### Version 4.10.1 (12th September 2016)
 #### Changed
-- Revert deployment target to iOs 6.0 
+- Reverted deployment target to `iOS 6.0`.
 
 #### Fixed
-- Remove NSURLSessionConfiguration with backgroundSessionConfigurationWithIdentifier
+- Removed `NSURLSessionConfiguration` with `backgroundSessionConfigurationWithIdentifier`.
 
---
+---
 
 ### Version 4.10.0 (8th September 2016)
 #### Changed
@@ -59,7 +59,7 @@
 - Replace strong references with weak when possible.
 - Use background session configuration for `NSURLSession` when the option is set.
 
---
+---
 
 ### Version 4.8.5 (30th August 2016)
 #### Fixed
@@ -540,7 +540,7 @@
 
 ### Version 3.2.1 (9th April 2014)
 #### Changed
-- Dependency to `AdSupport.framework` is now set to `weak`.
+- Changed `AdSupport.framework` dependency to `weak`.
 
 ---
 
