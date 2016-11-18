@@ -44,13 +44,17 @@ static NSTimeInterval internalMaxDelayStart = -1;
 
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
                      sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+                                        deviceToken:(NSData*)deviceToken
 {
     if (internalActivityHandler == nil) {
         return [ADJActivityHandler handlerWithConfig:adjustConfig
-                      sessionParametersActionsArray:sessionParametersActionsArray];
+                      sessionParametersActionsArray:sessionParametersActionsArray
+                                         deviceToken:deviceToken
+                ];
     }
     return [internalActivityHandler initWithConfig:adjustConfig
-                    sessionParametersActionsArray:sessionParametersActionsArray];
+                    sessionParametersActionsArray:sessionParametersActionsArray
+                                       deviceToken:deviceToken];
 }
 
 + (id<ADJLogger>)logger {
@@ -106,19 +110,16 @@ static NSTimeInterval internalMaxDelayStart = -1;
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                            withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
-                                    hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
                                           withAttributionPackage:attributionPackage
-                                                   startsSending:startsSending
-                                                     hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+                                                   startsSending:startsSending];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
                                         withAttributionPackage:attributionPackage
-                                                 startsSending:startsSending
-                                 hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+                                                 startsSending:startsSending];
 }
 
 + (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(BOOL)startsSending

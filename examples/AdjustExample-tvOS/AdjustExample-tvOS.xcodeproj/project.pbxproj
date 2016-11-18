@@ -15,8 +15,23 @@
 		963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
-		9DFB060A1D746FB9006D48FC /* AdjustSdkTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */; };
+		9DEFCE661DD5CCDE006A10E6 /* AdjustSdkTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */; };
+		9DEFCE671DD5CCDE006A10E6 /* AdjustSdkTV.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB06091D746FB9006D48FC /* AdjustSdkTV.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9DEFCE681DD5CCDE006A10E6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9DEFCE671DD5CCDE006A10E6 /* AdjustSdkTV.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		963909B21BCC0D8300A2E8A4 /* AdjustExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,8 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DEFCE661DD5CCDE006A10E6 /* AdjustSdkTV.framework in Frameworks */,
 				963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */,
-				9DFB060A1D746FB9006D48FC /* AdjustSdkTV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +127,7 @@
 				963909AE1BCC0D8300A2E8A4 /* Sources */,
 				963909AF1BCC0D8300A2E8A4 /* Frameworks */,
 				963909B01BCC0D8300A2E8A4 /* Resources */,
+				9DEFCE681DD5CCDE006A10E6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,11 +144,12 @@
 		963909AA1BCC0D8300A2E8A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = adjust;
 				TargetAttributes = {
 					963909B11BCC0D8300A2E8A4 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = QGUGW9AUMK;
 					};
 				};
 			};
@@ -206,8 +223,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -250,8 +269,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -281,13 +302,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-tvOS/Adjust",
 				);
 				INFOPLIST_FILE = "AdjustExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -299,13 +321,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdjustExample-tvOS/Adjust",
 				);
 				INFOPLIST_FILE = "AdjustExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.examples;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};

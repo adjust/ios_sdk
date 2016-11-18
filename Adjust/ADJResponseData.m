@@ -23,31 +23,31 @@
 }
 
 + (id)buildResponseData:(ADJActivityPackage *)activityPackage {
+    ADJActivityKind activityKind;
     if (activityPackage == nil) {
-        return [[ADJUnknowResponseData alloc] init];
+        activityKind = ADJActivityKindUnknown;
+    } else {
+        activityKind = activityPackage.activityKind;
     }
 
     ADJResponseData * responseData = nil;
 
-    switch (activityPackage.activityKind) {
+    switch (activityKind) {
         case ADJActivityKindSession:
             responseData = [[ADJSessionResponseData alloc] init];
             break;
         case ADJActivityKindEvent:
             responseData = [[ADJEventResponseData alloc] initWithActivityPackage:activityPackage];
             break;
-        case ADJActivityKindClick:
-            responseData = [[ADJClickResponseData alloc] init];
-            break;
         case ADJActivityKindAttribution:
             responseData = [[ADJAttributionResponseData alloc] init];
             break;
         default:
-            responseData = [[ADJUnknowResponseData alloc] init];
+            responseData = [[ADJResponseData alloc] init];
             break;
     }
 
-    responseData.activityKind = activityPackage.activityKind;
+    responseData.activityKind = activityKind;
 
     return responseData;
 }
@@ -192,39 +192,5 @@
             self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.deeplink, self.jsonResponse];
 }
 
-
-@end
-
-@implementation ADJClickResponseData
-
-- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
-    self = [super init];
-    if (self == nil) return nil;
-
-    return self;
-}
-
--(id)copyWithZone:(NSZone *)zone
-{
-    ADJClickResponseData* copy = [super copyWithZone:zone];
-    return copy;
-}
-
-@end
-
-@implementation ADJUnknowResponseData
-
-- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
-    self = [super init];
-    if (self == nil) return nil;
-
-    return self;
-}
-
--(id)copyWithZone:(NSZone *)zone
-{
-    ADJUnknowResponseData* copy = [super copyWithZone:zone];
-    return copy;
-}
 
 @end

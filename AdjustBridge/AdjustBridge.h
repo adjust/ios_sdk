@@ -11,11 +11,15 @@
 #import <Foundation/Foundation.h>
 
 #import "WKWebViewJavascriptBridge.h"
+#import "WebViewJavascriptBridge.h"
 
 @interface AdjustBridge : NSObject
 
-- (void)loadUIWebViewBridge:(UIWebView *)webView;
-- (void)loadWKWebViewBridge:(WKWebView *)webView;
+- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView;
+- (void)loadWKWebViewBridge:(WKWebView *)wkWebView;
+- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate;
+- (void)loadWKWebViewBridge:(WKWebView *)wkWebView wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate;
+
 - (void)sendDeeplinkToWebView:(NSURL *)deeplink;
 
 @end

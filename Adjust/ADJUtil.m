@@ -26,7 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk              = @"ios4.10.2";
+static NSString * const kClientSdk              = @"ios4.10.3";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
@@ -897,6 +897,21 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
         }
     }
+}
+
++ (NSString*)convertDeviceToken:(NSData*)deviceToken {
+    if (deviceToken == nil) {
+        return nil;;
+    }
+    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
+                                   [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    if (deviceTokenString == nil) {
+        return nil;;
+    }
+
+    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    return deviceTokenString;
 }
 
 @end

@@ -31,7 +31,7 @@
     [self.view addSubview:uiWebView];
 
     _adjustBridge = [[AdjustBridge alloc] init];
-    [_adjustBridge loadUIWebViewBridge:uiWebView];
+    [_adjustBridge loadUIWebViewBridge:uiWebView webViewDelegate:self];
 
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];
     NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];

@@ -125,7 +125,6 @@
     }
     [ADJPackageBuilder parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
-    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
@@ -134,6 +133,22 @@
     clickPackage.parameters = parameters;
 
     return clickPackage;
+}
+
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource {
+    NSMutableDictionary *parameters = [self idsParameters];
+
+    [ADJPackageBuilder parameters:parameters setString:infoSource                     forKey:@"source"];
+
+    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
+
+    ADJActivityPackage *infoPackage = [self defaultActivityPackage];
+    infoPackage.path = @"/sdk_info";
+    infoPackage.activityKind = ADJActivityKindInfo;
+    infoPackage.suffix = @"";
+    infoPackage.parameters = parameters;
+
+    return infoPackage;
 }
 
 - (ADJActivityPackage *)buildAttributionPackage {
@@ -208,6 +223,7 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.machineModel      forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.cpuSubtype       forKey:@"cpu_type"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
+    [ADJPackageBuilder parameters:parameters setString:deviceInfo.osBuild       forKey:@"os_build"];
 }
 
 - (void)injectConfig:(ADJConfig*) adjustConfig
@@ -225,7 +241,7 @@
     [ADJPackageBuilder parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
-    [ADJPackageBuilder parameters:parameters setString:activityState.uuid            forKey:@"ios_uuid"];
+    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
 
     // Check if UUID was persisted or not.
     // If yes, assign it to persistent_ios_uuid parameter.
@@ -235,7 +251,6 @@
     } else {
        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
-
 }
 
 - (NSString *)eventSuffix:(ADJEvent *)event {

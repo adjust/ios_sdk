@@ -43,6 +43,7 @@
     self.systemVersion    = device.systemVersion;
     self.machineModel     = [ADJSystemProfile machineModel];
     self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
+    self.osBuild          = [ADJSystemProfile osVersion];
 
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;

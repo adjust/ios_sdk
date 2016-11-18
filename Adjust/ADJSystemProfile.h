@@ -33,5 +33,4 @@
 + (long long) ramsize;
 + (NSString*) cpuType;
 + (NSString*) cpuSubtype;
-
 @end

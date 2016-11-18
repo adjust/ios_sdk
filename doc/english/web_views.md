@@ -68,8 +68,13 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 
     AdjustBridge *adjustBridge = [[AdjustBridge alloc] init];
     [adjustBridge loadUIWebViewBridge:webView];
+    // optionally you can add a web view delegate so that you can also capture its events
+    // [adjustBridge loadUIWebViewBridge:webView webViewDelegate:(UIWebViewDelegate*)self];
+    
     // or with WKWebView:
     // [adjustBridge loadWKWebViewBridge:webView];
+    // optionally you can add a web view delegate so that you can also capture its events
+    // [adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:(id<WKNavigationDelegate>)self];
 }
 
 // ...

@@ -34,14 +34,32 @@
 
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
+    
+    // Add session callback parameters.
+    [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
+    
+    // Add session partner parameters.
+    [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
+    
+    // Remove session callback parameter.
+    [Adjust removeSessionCallbackParameter:@"sp_key"];
+    
+    // Remove session partner parameter.
+    [Adjust removeSessionPartnerParameter:@"sp_foo"];
+    
+    // Remove all session callback parameters.
+    // [Adjust resetSessionCallbackParameters];
+    
+    // Remove all session partner parameters.
+    // [Adjust resetSessionPartnerParameters];
 
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
 
-    // delay the first session of the SDK
-    //[adjustConfig setDelayStart:7];
-
-    // set an attribution delegate
+    // Delay the first session of the SDK.
+    // [adjustConfig setDelayStart:7];
 
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
@@ -51,12 +69,15 @@
 
     // Disable the SDK.
     // [Adjust setEnabled:NO];
-
+    
+    // Interrupt delayed start set with setDelayStart: method.
+    // [Adjust sendFirstPackages];
+    
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    NSLog(@"application openURL %@", url);
+    NSLog(@"openURL method called with URL: %@", url);
 
     [Adjust appWillOpenUrl:url];
 
@@ -65,7 +86,8 @@
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
+        NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
+        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample"];
         [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
 
@@ -73,27 +95,35 @@
 }
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@"adjust attribution %@", attribution);
+    NSLog(@"Attribution callback called!");
+    NSLog(@"Attribution: %@", attribution);
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    NSLog(@"adjust event success %@", eventSuccessResponseData);
+    NSLog(@"Event success callback called!");
+    NSLog(@"Event success data: %@", eventSuccessResponseData);
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    NSLog(@"adjust event failure %@", eventFailureResponseData);
+    NSLog(@"Event failure callback called!");
+    NSLog(@"Event failure data: %@", eventFailureResponseData);
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    NSLog(@"adjust session success %@", sessionSuccessResponseData);
+    NSLog(@"Session success callback called!");
+    NSLog(@"Session success data: %@", sessionSuccessResponseData);
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    NSLog(@"adjust session failure %@", sessionFailureResponseData);
+    NSLog(@"Session failure callback called!");
+    NSLog(@"Session failure data: %@", sessionFailureResponseData);
 }
 
 // Evaluate deeplink to be launched.
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    NSLog(@"Deferred deep link callback called!");
+    NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
+    
     return YES;
 }
 

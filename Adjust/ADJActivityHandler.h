@@ -16,6 +16,8 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL updatePackages;
+@property (nonatomic, copy) NSData* deviceToken;
+
 - (id)init;
 
 - (BOOL)isEnabled;
@@ -33,7 +35,8 @@
 @protocol ADJActivityHandler <NSObject>
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
+sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+         deviceToken:(NSData*)deviceToken;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -78,7 +81,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray;
+             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+                                deviceToken:(NSData*)deviceToken;
 - (ADJAttribution*) attribution;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI

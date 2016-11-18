@@ -28,20 +28,20 @@ class ViewControllerSwift: UIViewController {
     }
 
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "{YourEventToken}");
+        let event = ADJEvent(eventToken: "g3mfiw");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "{YourEventToken}");
+        let event = ADJEvent(eventToken: "a4fd35");
         event?.setRevenue(0.99, currency: "EUR");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventCallbackTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "{YourEventToken}");
+        let event = ADJEvent(eventToken: "34vgg9");
         event?.addCallbackParameter("foo", value: "bar");
         event?.addCallbackParameter("key", value: "value");
 
@@ -49,7 +49,7 @@ class ViewControllerSwift: UIViewController {
     }
 
     @IBAction func btnTrackEventPartnerTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "{YourEventToken}");
+        let event = ADJEvent(eventToken: "w788qs");
         event?.addPartnerParameter("foo", value: "bar");
         event?.addPartnerParameter("key", value: "value");
 
@@ -76,22 +76,8 @@ class ViewControllerSwift: UIViewController {
         let isSDKEnabled = Adjust.isEnabled();
 
         if (isSDKEnabled) {
-            // let alert = UIAlertController(title: "Is SDK Enabled?",
-            //                               message: "SDK is ENABLED!",
-            //                               preferredStyle: UIAlertControllerStyle.Alert)
-            //
-            // alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            // self.present(alert, animated: true, completion: nil)
-
             NSLog("SDK is enabled!");
         } else {
-            // let alert = UIAlertController(title: "Is SDK Enabled?",
-            //                               message: "SDK is DISABLED!",
-            //                               preferredStyle: UIAlertControllerStyle.Alert)
-            //
-            // alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            // self.present(alert, animated: true, completion: nil)
-
             NSLog("SDK is disabled");
         }
     }

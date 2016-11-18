@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller Swift-->
@@ -15,101 +19,102 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-JC-uce" userLabel="Button Track Simple Event">
-                                <rect key="frame" x="50" y="105" width="500" height="30"/>
+                                <rect key="frame" x="50" y="118.5" width="275" height="30"/>
                                 <state key="normal" title="Track Simple Event" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnTrackEventSimpleTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gSN-MT-XGj"/>
+                                    <action selector="btnTrackEventSimpleTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r0d-vg-xFI"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbz-nV-DP7" userLabel="Button Track Revenue Event">
-                                <rect key="frame" x="50" y="150" width="500" height="30"/>
+                                <rect key="frame" x="50" y="168.5" width="275" height="30"/>
                                 <state key="normal" title="Track Revenue Event" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnTrackEventRevenueTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FSx-ra-DY3"/>
+                                    <action selector="btnTrackEventRevenueTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JbS-iP-0xn"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efq-q3-ru1" userLabel="Button Track Callback Event">
-                                <rect key="frame" x="50" y="195" width="500" height="30"/>
+                                <rect key="frame" x="50" y="218.5" width="275" height="30"/>
                                 <state key="normal" title="Track Callback Event" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnTrackEventCallbackTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hw3-Hl-J0v"/>
+                                    <action selector="btnTrackEventCallbackTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9RU-Vm-pTi"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eR0-I3-hc9" userLabel="Button Track Partner Event">
-                                <rect key="frame" x="50" y="240" width="500" height="30"/>
+                                <rect key="frame" x="50" y="268.5" width="275" height="30"/>
                                 <state key="normal" title="Track Partner Event" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnTrackEventPartnerTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zfn-84-gnW"/>
+                                    <action selector="btnTrackEventPartnerTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="C7O-AK-Gng"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UYh-Ox-dBr" userLabel="Button Enable Offline Mode">
-                                <rect key="frame" x="50" y="285" width="500" height="30"/>
+                                <rect key="frame" x="50" y="318.5" width="275" height="30"/>
                                 <state key="normal" title="Enable Offline Mode" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="btnEnableOfflineModeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pMF-Br-CdA"/>
+                                    <action selector="btnEnableOfflineModeTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hwE-HY-Q7e"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjt-uq-4Av" userLabel="Button Disable Offline Mode">
-                                <rect key="frame" x="50" y="330" width="500" height="30"/>
+                                <rect key="frame" x="50" y="368.5" width="275" height="30"/>
                                 <state key="normal" title="Disable Offline Mode" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnDisableOfflineModeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wG0-ar-Zv0"/>
+                                    <action selector="btnDisableOfflineModeTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5IP-Lv-tYt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltr-fW-v4T" userLabel="Button Enable SDK">
-                                <rect key="frame" x="50" y="375" width="500" height="30"/>
+                                <rect key="frame" x="50" y="418.5" width="275" height="30"/>
                                 <state key="normal" title="Enable SDK" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnEnableSDKTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="S7C-XH-Ao0"/>
+                                    <action selector="btnEnableSDKTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cu6-HX-yOh"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpZ-9j-r3g" userLabel="Button Disable SDK">
-                                <rect key="frame" x="50" y="420" width="500" height="30"/>
+                                <rect key="frame" x="50" y="468.5" width="275" height="30"/>
                                 <state key="normal" title="Disable SDK" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnDisableSDKTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Dk-nj-g3G"/>
+                                    <action selector="btnDisableSDKTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kwk-dJ-Nxd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8c-fJ-GFW" userLabel="Button Is SDK Enabled">
-                                <rect key="frame" x="50" y="465" width="500" height="30"/>
+                                <rect key="frame" x="50" y="518.5" width="275" height="30"/>
                                 <state key="normal" title="Is SDK Enabled?" backgroundImage="button_background">
-                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnIsSDKEnabledTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aHX-kx-qNx"/>
+                                    <action selector="btnIsSDKEnabledTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7w0-kd-Fyb"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UYh-Ox-dBr" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="0B9-2L-lj8"/>
                             <constraint firstItem="cbz-nV-DP7" firstAttribute="trailing" secondItem="3wE-JC-uce" secondAttribute="trailing" id="1Pf-hA-fH8"/>

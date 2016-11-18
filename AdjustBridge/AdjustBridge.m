@@ -157,23 +157,39 @@
 
 #pragma mark - Public methods
 
-- (void)loadUIWebViewBridge:(UIWebView *)uiWebView {
-    if (self.bridgeRegister != nil) {
-        // WebViewBridge already loaded.
-        return;
-    }
-
-    self.bridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:uiWebView];
-    [self loadWebViewBridge];
+- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView {
+    [self loadUIWebViewBridge:webView webViewDelegate:nil];
 }
 
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView {
+    [self loadWKWebViewBridge:wkWebView wkWebViewDelegate:nil];
+}
+
+- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView
+            webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate {
     if (self.bridgeRegister != nil) {
         // WebViewBridge already loaded.
         return;
     }
 
-    self.bridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
+    AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
+    [uiBridgeRegister setWebViewDelegate:webViewDelegate];
+    
+    self.bridgeRegister = uiBridgeRegister;
+    [self loadWebViewBridge];
+}
+
+- (void)loadWKWebViewBridge:(WKWebView *)wkWebView
+          wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate {
+    if (self.bridgeRegister != nil) {
+        // WebViewBridge already loaded.
+        return;
+    }
+
+    AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
+    [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
+    
+    self.bridgeRegister = wkBridgeRegister;
     [self loadWebViewBridge];
 }
 

@@ -24,7 +24,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (nonatomic, strong) ADJTimerOnce *attributionTimer;
 @property (nonatomic, strong) ADJActivityPackage * attributionPackage;
 @property (nonatomic, assign) BOOL paused;
-@property (nonatomic, assign) BOOL hasNeedsResponseDelegate;
 
 @end
 
@@ -34,19 +33,16 @@ static const double kRequestTimeout = 60; // 60 seconds
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                                  withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                                          startsSending:(BOOL)startsSending
-                          hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
+                                          startsSending:(BOOL)startsSending;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
                                            withAttributionPackage:attributionPackage
-                                                    startsSending:startsSending
-                                    hasAttributionChangedDelegate:hasAttributionChangedDelegate];
+                                                    startsSending:startsSending];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
-                startsSending:(BOOL)startsSending
-hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
+                startsSending:(BOOL)startsSending;
 {
     self = [super init];
     if (self == nil) return nil;
@@ -56,7 +52,6 @@ hasAttributionChangedDelegate:(BOOL)hasAttributionChangedDelegate;
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
     self.paused = !startsSending;
-    self.hasNeedsResponseDelegate = hasAttributionChangedDelegate;
     __weak __typeof__(self) weakSelf = self;
     self.attributionTimer = [ADJTimerOnce timerWithBlock:^{
         __typeof__(self) strongSelf = weakSelf;
@@ -167,9 +162,6 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 }
 
 - (void)requestAttributionI:(ADJAttributionHandler*)selfI {
-    if (!selfI.hasNeedsResponseDelegate) {
-        return;
-    }
     if (selfI.paused) {
         [selfI.logger debug:@"Attribution handler is paused"];
         return;

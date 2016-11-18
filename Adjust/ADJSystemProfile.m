@@ -19,6 +19,8 @@
 #import <sys/sysctl.h>
 #import <sys/types.h>
 #import <mach/machine.h>
+#import "ADJAdjustFactory.h"
+#import "ADJLogger.h"
 
 @implementation ADJSystemProfile
 
@@ -52,7 +54,7 @@
     int error = sysctlbyname("hw.cpufamily", &cpufamily, &length, NULL, 0);
 
     if (error != 0) {
-        NSLog(@"Failed to obtain CPU family (%d)", error);
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU family (%d)", error];
         return nil;
     }
     switch (cpufamily)
@@ -167,10 +169,13 @@
 #endif
     }
     NSString * unknowCpuFamily = [NSString stringWithFormat:@"Unknown CPU family %d", cpufamily];
-    NSLog(@"%@", unknowCpuFamily);
+    [ADJAdjustFactory.logger warn:@"%@", unknowCpuFamily];
     return unknowCpuFamily;
 }
-
+/*
+ original function
+ operatingSystemVersionString should not be parsed
+  https://developer.apple.com/reference/foundation/nsprocessinfo/1408730-operatingsystemversionstring?language=objc
 + (NSString*) osVersion
 {
     NSProcessInfo *info = [NSProcessInfo processInfo];
@@ -185,7 +190,7 @@
 
     return version;
 }
-
+*/
 + (int) cpuCount
 {
     int error = 0;
@@ -194,7 +199,7 @@
     error = sysctlbyname("hw.ncpu", &value, &length, NULL, 0);
     
     if (error != 0) {
-        NSLog(@"Failed to obtain CPU count");
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU count (%d)", error];
         return 1;
     }
     
@@ -203,27 +208,63 @@
 
 + (NSString*) machineArch
 {
-    return [ADJSystemProfile readSysctlbString:"hw.machinearch" errorLog:@"Failed to obtain machine arch"];
+    return [ADJSystemProfile readSysctlbByNameString:"hw.machinearch" errorLog:@"Failed to obtain machine arch"];
 }
 
 + (NSString*) machineModel
 {
-    return [ADJSystemProfile readSysctlbString:"hw.model" errorLog:@"Failed to obtain machine model"];
+    return [ADJSystemProfile readSysctlbByNameString:"hw.model" errorLog:@"Failed to obtain machine model"];
 }
 
 + (NSString*) cpuBrand
 {
-    return [ADJSystemProfile readSysctlbString:"machdep.cpu.brand_string" errorLog:@"Failed to obtain CPU brand"];
+    return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.brand_string" errorLog:@"Failed to obtain CPU brand"];
 }
 
 + (NSString*) cpuFeatures
 {
-    return [ADJSystemProfile readSysctlbString:"machdep.cpu.features" errorLog:@"Failed to obtain CPU features"];
+    return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.features" errorLog:@"Failed to obtain CPU features"];
 }
 
 + (NSString*) cpuVendor
 {
-    return [ADJSystemProfile readSysctlbString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
+    return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
+}
+
++ (NSString*) osVersion
+{
+    return [ADJSystemProfile readSysctlbByNameString:"kern.osversion" errorLog:@"Failed to obtain OS version"];
+}
+
++ (NSString*) readSysctlbByNameString:(const char *)name
+                             errorLog:(NSString*)errorLog
+{
+    int error = 0;
+    size_t length = 0;
+    error = sysctlbyname(name, NULL, &length, NULL, 0);
+
+    if (error != 0) {
+        [ADJAdjustFactory.logger error:@"%@ (%d)", errorLog, error];
+        return nil;
+    }
+
+    char *p = malloc(sizeof(char) * length);
+    if (p) {
+        error = sysctlbyname(name, p, &length, NULL, 0);
+    }
+
+    if (error != 0) {
+        [ADJAdjustFactory.logger error:@"%@ (%d)", errorLog, error];
+        free(p);
+        return nil;
+    }
+
+    NSString * result = [NSString stringWithUTF8String:p];
+
+    free(p);
+
+    return result;
+
 }
 
 + (NSString*) appleLanguage
@@ -232,7 +273,7 @@
     NSArray *languages = [defs objectForKey:@"AppleLanguages"];
 
     if ([languages count] == 0) {
-        NSLog(@"Failed to obtain preferred language");
+        [ADJAdjustFactory.logger error:@"Failed to obtain preferred language"];
         return nil;
     }
     
@@ -252,7 +293,7 @@
 	error = sysctl(mib, 2, &hertz, &size, NULL, 0);
 	
     if (error) {
-        NSLog(@"Failed to obtain CPU speed");
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU speed (%d)", error];
         return -1;
     }
 	
@@ -271,7 +312,7 @@
 	
     error = sysctlbyname("hw.memsize", &value, &length, NULL, 0);
 	if (error) {
-        NSLog(@"Failed to obtain RAM size");
+        [ADJAdjustFactory.logger error:@"Failed to obtain RAM size (%d)", error];
         return -1;
 	}
 	const int64_t kBytesPerMebibyte = 1024*1024;
@@ -290,7 +331,7 @@
     error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
 
     if (error != 0) {
-        NSLog(@"Failed to obtain CPU type");
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU type (%d)", error];
         return nil;
     }
 
@@ -301,7 +342,7 @@
     }
 
     NSString * unknowCpuType = [NSString stringWithFormat:@"Unknown CPU type %d", cputype];
-    NSLog(@"%@", unknowCpuType);
+    [ADJAdjustFactory.logger warn:@"%@", unknowCpuType];
     return unknowCpuType;
 }
 
@@ -314,7 +355,7 @@
     error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
 
     if (error != 0) {
-        NSLog(@"Failed to obtain CPU type");
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU type (%d)", error];
         return nil;
     }
 
@@ -323,7 +364,7 @@
     error = sysctlbyname("hw.cpusubtype", &cpuSubtype, &length, NULL, 0);
 
     if (error != 0) {
-        NSLog(@"Failed to obtain CPU subtype");
+        [ADJAdjustFactory.logger error:@"Failed to obtain CPU subtype (%d)", error];
         return nil;
     }
 
@@ -335,11 +376,9 @@
     }
 
     NSString * unknowCpuSubtype = [NSString stringWithFormat:@"Unknown CPU subtype %d", cpuSubtype];
-    NSLog(@"%@", unknowCpuSubtype);
+    [ADJAdjustFactory.logger warn:@"%@", unknowCpuSubtype];
     return unknowCpuSubtype;
 }
-
-
 
 + (NSString*) readCpuTypeSubtype:(int)cputype
                      readSubType:(BOOL)readSubType
@@ -774,37 +813,6 @@
     }
 
     return nil;
-}
-
-+ (NSString*) readSysctlbString:(const char *)name
-                       errorLog:(NSString*)errorLog
-{
-    int error = 0;
-    size_t length = 0;
-    error = sysctlbyname(name, NULL, &length, NULL, 0);
-
-    if (error != 0) {
-        NSLog(@"%@", errorLog);
-        return nil;
-    }
-
-    char *p = malloc(sizeof(char) * length);
-    if (p) {
-        error = sysctlbyname(name, p, &length, NULL, 0);
-    }
-
-    if (error != 0) {
-        NSLog(@"%@", errorLog);
-        free(p);
-        return nil;
-    }
-
-    NSString * result = [NSString stringWithUTF8String:p];
-
-    free(p);
-
-    return result;
-    
 }
 
 @end
