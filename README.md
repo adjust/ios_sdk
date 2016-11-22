@@ -83,6 +83,10 @@ the radio button to `Create groups`.
 
 --
 
+If you decided to use the dynamic framework, one more step is necessary. Go to the *General* tab inside the project. Under the *Embedded Binaries* section, press the little '+' button and choose `AdjustSdk.framework`. 
+
+--
+
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from
 [this step](#sdk-integrate):
 
