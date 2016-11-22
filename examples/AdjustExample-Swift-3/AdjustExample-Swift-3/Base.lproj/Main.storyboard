@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="AdjustExample_Swift_3" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KL5-C5-5xb">
+                                <rect key="frame" x="114.5" y="143" width="145" height="430"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peN-Lc-o8U">
+                                        <rect key="frame" x="7" y="0.0" width="131" height="30"/>
+                                        <state key="normal" title="Track Simple Event"/>
+                                        <connections>
+                                            <action selector="btnTrackEventSimpleTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="asW-fe-2ZW"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZoE-bX-sbP">
+                                        <rect key="frame" x="0.5" y="50" width="144" height="30"/>
+                                        <state key="normal" title="Track Revenue Event"/>
+                                        <connections>
+                                            <action selector="btnTrackEventRevenueTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2uM-h3-jZ6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nJl-Xy-JUb">
+                                        <rect key="frame" x="0.5" y="100" width="144" height="30"/>
+                                        <state key="normal" title="Track Callback Event"/>
+                                        <connections>
+                                            <action selector="btnTrackEventCallbackTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qFs-pk-BfG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AUB-B2-FAW">
+                                        <rect key="frame" x="5" y="150" width="135" height="30"/>
+                                        <state key="normal" title="Track Partner Event"/>
+                                        <connections>
+                                            <action selector="btnTrackEventPartnerTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RuZ-cG-Zzx"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iZZ-GM-DxX">
+                                        <rect key="frame" x="3" y="200" width="139" height="30"/>
+                                        <state key="normal" title="Enable Offline mode"/>
+                                        <connections>
+                                            <action selector="btnEnableOfflineModeTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ggu-Aj-4S2"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLH-o2-lG7">
+                                        <rect key="frame" x="0.5" y="250" width="144" height="30"/>
+                                        <state key="normal" title="Disable Offline mode"/>
+                                        <connections>
+                                            <action selector="btnDisableOfflineModeTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a6w-Zt-pCt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooH-Ge-dSY">
+                                        <rect key="frame" x="32.5" y="300" width="80" height="30"/>
+                                        <state key="normal" title="Enable SDK"/>
+                                        <connections>
+                                            <action selector="btnEnableSDKTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XTH-pA-sBm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOd-ii-tZo">
+                                        <rect key="frame" x="30" y="350" width="85" height="30"/>
+                                        <state key="normal" title="Disable SDK"/>
+                                        <connections>
+                                            <action selector="btnDisableSDKTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MPW-OM-ZJO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1U-td-uav">
+                                        <rect key="frame" x="16.5" y="400" width="112" height="30"/>
+                                        <state key="normal" title="Is SDK Enabled?"/>
+                                        <connections>
+                                            <action selector="btnIsSDKEnabledTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b2h-Ms-1BF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="nJl-Xy-JUb" firstAttribute="trailing" secondItem="CLH-o2-lG7" secondAttribute="trailing" id="I9N-sT-eVq"/>
+                                    <constraint firstItem="WOd-ii-tZo" firstAttribute="leading" secondItem="KL5-C5-5xb" secondAttribute="leading" constant="30" id="RxJ-cE-cCI"/>
+                                    <constraint firstItem="peN-Lc-o8U" firstAttribute="leading" secondItem="KL5-C5-5xb" secondAttribute="leading" constant="7" id="cGs-bz-U3U"/>
+                                    <constraint firstItem="AUB-B2-FAW" firstAttribute="leading" secondItem="KL5-C5-5xb" secondAttribute="leading" constant="5" id="gsR-yq-go5"/>
+                                    <constraint firstItem="iZZ-GM-DxX" firstAttribute="leading" secondItem="KL5-C5-5xb" secondAttribute="leading" constant="3" id="vXw-lX-KAk"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adjust SDK Swift Example App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bnO-57-0r7">
+                                <rect key="frame" x="63" y="63" width="249" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Mel-SJ-ykS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="KL5-C5-5xb" firstAttribute="top" secondItem="bnO-57-0r7" secondAttribute="bottom" constant="35" id="Bbw-N1-DSB"/>
+                            <constraint firstItem="bnO-57-0r7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="47" id="FN5-Um-cw7"/>
+                            <constraint firstItem="bnO-57-0r7" firstAttribute="centerX" secondItem="KL5-C5-5xb" secondAttribute="centerX" id="f6V-qG-eCW"/>
+                            <constraint firstItem="KL5-C5-5xb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hCi-fC-Ily"/>
+                            <constraint firstItem="bnO-57-0r7" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="43" id="kZE-PH-8G6"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
+        </scene>
+    </scenes>
+</document>
