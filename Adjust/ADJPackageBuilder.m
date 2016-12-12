@@ -195,6 +195,7 @@
 - (void)injectCommonParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
+    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
 }
 
 - (void) injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo
@@ -231,7 +232,6 @@
 {
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:adjustConfig.hasResponseDelegate forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
 }
 
