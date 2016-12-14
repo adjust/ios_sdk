@@ -176,6 +176,7 @@
 
     [self injectDeviceInfoIds:self.deviceInfo   intoParameters:parameters];
     [self injectConfig:self.adjustConfig        intoParameters:parameters];
+    [self injectIosUuid:self.activityState      intoParamters:parameters];
     [self injectCommonParameters:parameters];
 
     return parameters;
@@ -235,22 +236,35 @@
     [ADJPackageBuilder parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
 }
 
-- (void) injectActivityState:(ADJActivityState *)activityState
+- (void)injectActivityState:(ADJActivityState *)activityState
                intoParamters:(NSMutableDictionary *)parameters {
+    if (activityState == nil) {
+        return;
+    }
+
+    [self injectIosUuid:activityState intoParamters:parameters];
     [self injectPushToken:activityState intoParamters:parameters];
 
     [ADJPackageBuilder parameters:parameters setInt:activityState.sessionCount       forKey:@"session_count"];
     [ADJPackageBuilder parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
+}
+
+- (void)injectIosUuid:(ADJActivityState *)activityState
+        intoParamters:(NSMutableDictionary *)parameters
+{
+    if (activityState == nil) {
+        return;
+    }
 
     // Check if UUID was persisted or not.
     // If yes, assign it to persistent_ios_uuid parameter.
     // If not, assign it to ios_uuid parameter.
     if (activityState.isPersisted) {
-       [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"persistent_ios_uuid"];
+        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"persistent_ios_uuid"];
     } else {
-       [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
+        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
 }
 
