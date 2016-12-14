@@ -116,6 +116,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [[Adjust getInstance] attribution];
 }
 
++ (NSString *)adid {
+    return [[Adjust getInstance] adid];
+}
+
 + (id)getInstance {
     static Adjust *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -297,6 +301,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
 - (ADJAttribution *)attribution {
     if (![self checkActivityHandler]) return nil;
     return [self.activityHandler attribution];
+}
+
+- (NSString *)adid {
+    if (![self checkActivityHandler]) return nil;
+    return [self.activityHandler adid];
 }
 
 - (void)teardown:(BOOL)deleteState {

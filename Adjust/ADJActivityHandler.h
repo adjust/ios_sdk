@@ -35,6 +35,7 @@
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, copy) ADJAttribution *attribution;
+- (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
 sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray

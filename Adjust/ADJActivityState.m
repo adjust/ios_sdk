@@ -162,6 +162,10 @@ static const int kTransactionIdCount = 10;
         self.updatePackages     = NO;
     }
 
+    if ([decoder containsValueForKey:@"adid"]) {
+        self.adid               = [decoder decodeObjectForKey:@"adid"];
+    }
+
     self.lastInterval = -1;
 
     return self;
@@ -180,6 +184,7 @@ static const int kTransactionIdCount = 10;
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
     [encoder encodeObject:self.deviceToken     forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages    forKey:@"updatePackages"];
+    [encoder encodeObject:self.adid            forKey:@"adid"];
 }
 
 - (id)copyWithZone:(NSZone *)zone {

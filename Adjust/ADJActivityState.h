@@ -18,6 +18,8 @@
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, assign) BOOL updatePackages;
 
+@property (nonatomic, copy) NSString *adid;
+
 // Global counters
 @property (nonatomic, assign) int eventCount;
 @property (nonatomic, assign) int sessionCount;

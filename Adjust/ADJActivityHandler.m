@@ -319,6 +319,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     return [self isEnabledI:self];
 }
 
+- (NSString *)adid {
+    if (self.activityState == nil) {
+        return nil;
+    }
+    return self.activityState.adid;
+}
+
 - (BOOL)hasChangedState:(BOOL)previousState
               nextState:(BOOL)nextState
             trueMessage:(NSString *)trueMessage
@@ -796,6 +803,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
                 eventResponseData:(ADJEventResponseData *)eventResponseData {
+    [selfI updateAdidI:selfI adid:eventResponseData.adid];
+
     // event success callback
     if (eventResponseData.success
         && [selfI.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
@@ -820,6 +829,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchSessionResponseTasksI:(ADJActivityHandler *)selfI
                 sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
+    [selfI updateAdidI:selfI adid:sessionResponseData.adid];
+
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sessionResponseData.attribution];
 
     // session success callback
@@ -852,6 +863,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchAttributionResponseTasksI:(ADJActivityHandler *)selfI
                 attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
+    [selfI updateAdidI:selfI adid:attributionResponseData.adid];
+
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI
                                                      attribution:attributionResponseData.attribution];
 
@@ -889,6 +902,20 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             [ADJUtil launchDeepLinkMain:attributionResponseData.deeplink];
         }
     }];
+}
+
+- (void)updateAdidI:(ADJActivityHandler *)selfI
+               adid:(NSString *)adid {
+    if (adid == nil) {
+        return;
+    }
+
+    if ([adid isEqualToString:selfI.activityState.adid]) {
+        return;
+    }
+
+    selfI.activityState.adid = adid;
+    [selfI writeActivityStateI:selfI];
 }
 
 - (BOOL)updateAttributionI:(ADJActivityHandler *)selfI
