@@ -139,7 +139,7 @@ static const double kRequestTimeout = 60; // 60 seconds
     [selfI.activityHandler setAskingAttribution:NO];
 
     NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
-    responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+    responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution adid:responseData.adid];
 }
 
 - (void)checkDeeplinkI:(ADJAttributionHandler*)selfI
