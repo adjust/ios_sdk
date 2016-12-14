@@ -140,7 +140,7 @@
 
     [ADJPackageBuilder parameters:parameters setString:infoSource                     forKey:@"source"];
 
-    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
+    [self injectPushToken:self.activityState intoParamters:parameters];
 
     ADJActivityPackage *infoPackage = [self defaultActivityPackage];
     infoPackage.path = @"/sdk_info";
@@ -237,11 +237,12 @@
 
 - (void) injectActivityState:(ADJActivityState *)activityState
                intoParamters:(NSMutableDictionary *)parameters {
+    [self injectPushToken:activityState intoParamters:parameters];
+
     [ADJPackageBuilder parameters:parameters setInt:activityState.sessionCount       forKey:@"session_count"];
     [ADJPackageBuilder parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
-    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
 
     // Check if UUID was persisted or not.
     // If yes, assign it to persistent_ios_uuid parameter.
@@ -251,6 +252,15 @@
     } else {
        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
+}
+
+- (void)injectPushToken:(ADJActivityState *)activityState
+          intoParamters:(NSMutableDictionary *)parameters
+{
+    if (activityState == nil) {
+        return;
+    }
+    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
 }
 
 - (NSString *)eventSuffix:(ADJEvent *)event {

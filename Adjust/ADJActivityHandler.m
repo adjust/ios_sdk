@@ -84,6 +84,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 // copy for objects shared with the user
 @property (nonatomic, copy) ADJConfig *adjustConfig;
+@property (nonatomic, copy) NSData* deviceTokenData;
 
 @end
 
@@ -157,7 +158,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     } else {
         self.internalState.updatePackages = self.activityState.updatePackages;
     }
-    self.internalState.deviceToken = deviceToken;
+    self.deviceTokenData = deviceToken;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -603,6 +604,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
 
+    if (selfI.deviceTokenData != nil) {
+        [selfI.logger info:@"Push token: '%@'", selfI.deviceTokenData];
+        if (selfI.activityState != nil) {
+            [selfI setDeviceToken:selfI.deviceTokenData];
+        }
+    }
+
     selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
         [selfI foregroundTimerFired];
     }
@@ -683,7 +691,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
         selfI.activityState.sessionCount = 1; // this is the first session
-        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:self.internalState.deviceToken];
+        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
 
         [selfI transferSessionPackageI:selfI now:now];
         [selfI.activityState resetSessionAttributes:now];
@@ -1046,6 +1054,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         return;
     }
 
+    // save new push token
+    selfI.activityState.deviceToken = deviceTokenString;
+    [selfI writeActivityStateI:selfI];
+
+    // send info package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
                                         initWithDeviceInfo:selfI.deviceInfo
@@ -1053,15 +1066,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                         config:selfI.adjustConfig
                                         createdAt:now];
 
-    infoBuilder.deviceToken = deviceTokenString;
+    ADJActivityPackage * infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
-    ADJActivityPackage * clickPackage = [infoBuilder buildInfoPackage:@"push"];
-
-    [selfI.sdkClickHandler sendSdkClick:clickPackage];
-
-    // save new push token
-    selfI.activityState.deviceToken = deviceTokenString;
-    [selfI writeActivityStateI:selfI];
+    [selfI.packageHandler addPackage:infoPackage];
+    [selfI.packageHandler sendFirstPackage];
 }
 
 #pragma mark - private

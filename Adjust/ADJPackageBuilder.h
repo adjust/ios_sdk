@@ -21,7 +21,6 @@
 @property (nonatomic, copy) NSDate *purchaseTime;
 
 @property (nonatomic, copy) NSString *deeplink;
-@property (nonatomic, copy) NSString *deviceToken;
 
 @property (nonatomic, strong) NSDictionary *iadDetails;
 @property (nonatomic, strong) NSDictionary* deeplinkParameters;

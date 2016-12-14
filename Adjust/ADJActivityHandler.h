@@ -16,7 +16,6 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL updatePackages;
-@property (nonatomic, copy) NSData* deviceToken;
 
 - (id)init;
 
