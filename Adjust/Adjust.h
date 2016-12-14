@@ -171,6 +171,8 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)resetSessionPartnerParameters;
 
++ (ADJAttribution *)attribution;
+
 /**
  * Obtain singleton Adjust object
  */
@@ -197,5 +199,6 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)removeSessionCallbackParameter:(NSString *)key;
 - (void)addSessionPartnerParameter:(NSString *)key value:(NSString *)value;
 - (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value;
+- (ADJAttribution *)attribution;
 
 @end

@@ -34,6 +34,8 @@
 
 @protocol ADJActivityHandler <NSObject>
 
+@property (nonatomic, copy) ADJAttribution *attribution;
+
 - (id)initWithConfig:(ADJConfig *)adjustConfig
 sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
          deviceToken:(NSData*)deviceToken;
@@ -53,7 +55,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 
-- (void)setAttribution:(ADJAttribution*)attribution;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
@@ -83,7 +84,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                 deviceToken:(NSData*)deviceToken;
-- (ADJAttribution*) attribution;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key

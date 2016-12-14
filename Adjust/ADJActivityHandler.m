@@ -83,7 +83,6 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 // copy for objects shared with the user
-@property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 
 @end
@@ -96,6 +95,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 #pragma mark -
 @implementation ADJActivityHandler
+
+@synthesize attribution = _attribution;
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray

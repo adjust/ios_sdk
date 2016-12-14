@@ -112,6 +112,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [[Adjust getInstance] resetSessionPartnerParameters];
 }
 
++ (ADJAttribution *)attribution {
+    return [[Adjust getInstance] attribution];
+}
+
 + (id)getInstance {
     static Adjust *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -288,6 +292,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
     [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler resetSessionPartnerParametersI:activityHandler];
     }];
+}
+
+- (ADJAttribution *)attribution {
+    if (![self checkActivityHandler]) return nil;
+    return [self.activityHandler attribution];
 }
 
 - (void)teardown:(BOOL)deleteState {
