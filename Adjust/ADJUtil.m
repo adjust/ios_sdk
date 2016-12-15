@@ -438,6 +438,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                       responseDataHandler(responseData);
                                   }];
     [task resume];
+
+    [session finishTasksAndInvalidate];
 }
 
 + (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
