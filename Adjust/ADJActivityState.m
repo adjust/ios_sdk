@@ -166,6 +166,10 @@ static const int kTransactionIdCount = 10;
         self.adid               = [decoder decodeObjectForKey:@"adid"];
     }
 
+    if ([decoder containsValueForKey:@"attributionDetails"]) {
+        self.attributionDetails = [decoder decodeObjectForKey:@"attributionDetails"];
+    }
+
     self.lastInterval = -1;
 
     return self;
@@ -185,11 +189,13 @@ static const int kTransactionIdCount = 10;
     [encoder encodeObject:self.deviceToken     forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages    forKey:@"updatePackages"];
     [encoder encodeObject:self.adid            forKey:@"adid"];
+    [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     ADJActivityState *copy = [[[self class] allocWithZone:zone] init];
 
+    // copy only values used by package builder
     if (copy) {
         copy.sessionCount       = self.sessionCount;
         copy.subsessionCount    = self.subsessionCount;
@@ -202,9 +208,7 @@ static const int kTransactionIdCount = 10;
         copy.lastActivity       = self.lastActivity;
         copy.askingAttribution  = self.askingAttribution;
         copy.deviceToken        = [self.deviceToken copyWithZone:zone];
-        copy.updatePackages    = self.updatePackages;
-
-        // transactionIds not copied.
+        copy.updatePackages     = self.updatePackages;
     }
     
     return copy;

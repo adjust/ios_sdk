@@ -123,7 +123,7 @@
         [ADJPackageBuilder parameters:parameters setString:self.attribution.adgroup      forKey:@"adgroup"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
-    [ADJPackageBuilder parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
+    [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];

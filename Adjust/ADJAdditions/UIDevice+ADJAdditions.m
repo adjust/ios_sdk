@@ -139,7 +139,7 @@
     return @"";
 }
 
-- (void) adjSetIad:(ADJActivityHandler *) activityHandler
+- (void)adjSetIad:(ADJActivityHandler *)activityHandler
        triesV3Left:(int)triesV3Left
 {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
@@ -202,7 +202,7 @@ ADClientSharedClientInstance:(id)ADClientSharedClientInstance
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iadDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
-                                           [activityHandler setIadDetails:attributionDetails error:error retriesLeft:retriesLeft];
+                                           [activityHandler setAttributionDetails:attributionDetails error:error retriesLeft:retriesLeft];
                                        }];
 #pragma clang diagnostic pop
 

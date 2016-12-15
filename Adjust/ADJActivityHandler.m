@@ -410,9 +410,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (void)setIadDetails:(NSDictionary *)attributionDetails
-                error:(NSError *)error
-          retriesLeft:(int)retriesLeft
+- (void)setAttributionDetails:(NSDictionary *)attributionDetails
+                        error:(NSError *)error
+                  retriesLeft:(int)retriesLeft
 {
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
@@ -435,6 +435,29 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI updateAttributionDetailsI:selfI
+                                      attributionDetails:attributionDetails];
+                     }];
+}
+
+- (void)updateAttributionDetailsI:(ADJActivityHandler *)selfI
+              attributionDetails:(NSDictionary *)attributionDetails
+{
+    if ([ADJUtil isNull:attributionDetails]) {
+        return;
+    }
+
+    if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
+        return;
+    }
+
+    // save new iAd details
+    selfI.activityState.attributionDetails = attributionDetails;
+    [selfI writeAttributionI:selfI];
+
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:self.deviceInfo
@@ -442,12 +465,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        config:self.adjustConfig
                                        createdAt:now];
 
-    clickBuilder.iadDetails = attributionDetails;
+    clickBuilder.attributionDetails = attributionDetails;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
     [self.sdkClickHandler sendSdkClick:clickPackage];
 }
-
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
     [self writeActivityStateS:self changesInStateBlock:^{
