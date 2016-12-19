@@ -99,7 +99,7 @@
 }
 
 - (NSString *)adjFbAttributionId {
-#if ADJUST_NO_UIPASTEBOARD || defined (TARGET_OS_TV)
+#if ADJUST_NO_UIPASTEBOARD || TARGET_OS_TV
     return @"";
 #else
     NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
