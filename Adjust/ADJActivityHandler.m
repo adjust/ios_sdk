@@ -431,40 +431,66 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
+    // check if it's a valid attribution details
     if (![ADJUtil checkAttributionDetails:attributionDetails]) {
         return;
     }
 
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI updateAttributionDetailsI:selfI
-                                      attributionDetails:attributionDetails];
-                     }];
-}
+    // send immediately if there is no previous attribution details
+    if (self.activityState == nil ||
+        self.activityState.attributionDetails == nil)
+    {
+        // send immediately
+        [self sendIad3ClickPackage:self attributionDetails:attributionDetails];
+        // save in the background queue
+        [ADJUtil launchInQueue:self.internalQueue
+                    selfInject:self
+                         block:^(ADJActivityHandler * selfI) {
+                             [selfI saveAttributionDetailsI:selfI
+                                         attributionDetails:attributionDetails];
 
-- (void)updateAttributionDetailsI:(ADJActivityHandler *)selfI
-              attributionDetails:(NSDictionary *)attributionDetails
-{
-    if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
+                         }];
         return;
     }
 
+    // check if new updates previous written one
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
+                             return;
+                         }
+
+                         [selfI sendIad3ClickPackage:selfI attributionDetails:attributionDetails];
+
+                         // save new iAd details
+                         [selfI saveAttributionDetailsI:selfI
+                                     attributionDetails:attributionDetails];
+                     }];
+}
+
+- (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
+          attributionDetails:(NSDictionary *)attributionDetails
+ {
+     double now = [NSDate.date timeIntervalSince1970];
+     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:selfI.deviceInfo
+                                        activityState:selfI.activityState
+                                        config:selfI.adjustConfig
+                                        createdAt:now];
+
+     clickBuilder.attributionDetails = attributionDetails;
+
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
+     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+}
+
+- (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
+             attributionDetails:(NSDictionary *)attributionDetails
+{
     // save new iAd details
     selfI.activityState.attributionDetails = attributionDetails;
     [selfI writeAttributionI:selfI];
-
-    double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
-                                       createdAt:now];
-
-    clickBuilder.attributionDetails = attributionDetails;
-
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
