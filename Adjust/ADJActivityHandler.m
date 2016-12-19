@@ -431,7 +431,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    if ([ADJUtil isNull:attributionDetails]) {
+    if (![ADJUtil checkAttributionDetails:attributionDetails]) {
         return;
     }
 
@@ -446,10 +446,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)updateAttributionDetailsI:(ADJActivityHandler *)selfI
               attributionDetails:(NSDictionary *)attributionDetails
 {
-    if ([ADJUtil isNull:attributionDetails]) {
-        return;
-    }
-
     if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
         return;
     }
