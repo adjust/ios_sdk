@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.10.3
+//  V4.11.0
 //  Created by Christian Wellenbrock on 2012-07-23.
 //  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
 //
@@ -171,6 +171,9 @@ extern NSString * const ADJEnvironmentProduction;
  */
 + (void)resetSessionPartnerParameters;
 
++ (ADJAttribution *)attribution;
++ (NSString *)adid;
+
 /**
  * Obtain singleton Adjust object
  */
@@ -197,5 +200,7 @@ extern NSString * const ADJEnvironmentProduction;
 - (void)removeSessionCallbackParameter:(NSString *)key;
 - (void)addSessionPartnerParameter:(NSString *)key value:(NSString *)value;
 - (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value;
+- (ADJAttribution *)attribution;
+- (NSString *)adid;
 
 @end
