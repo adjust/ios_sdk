@@ -436,6 +436,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
                                       responseDataHandler(responseData);
+                                      [session finishTasksAndInvalidate];
                                   }];
     [task resume];
 }
