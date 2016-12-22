@@ -109,9 +109,9 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@ cl:%@",
+    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@ cl:%@ adid:%@",
             self.trackerToken, self.trackerName, self.network, self.campaign,
-            self.adgroup, self.creative, self.clickLabel];
+            self.adgroup, self.creative, self.clickLabel, self.adid];
 }
 
 
