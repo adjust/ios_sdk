@@ -33,7 +33,7 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Event buffering](#event-buffering)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
-      * [iOS Advertising Identifier](#di-adid)
+      * [iOS Advertising Identifier](#di-idfa)
       * [Adjust device identifier](#di-adid)
    * [User attribution](#user-attribution)
    * [Push token](#push-token)
