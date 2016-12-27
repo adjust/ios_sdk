@@ -1,4 +1,4 @@
-### Version 4.11.0 (23rd December 2016)
+### Version 4.11.0 (27th December 2016)
 #### Added
 - Added `adid` field to the attribution callback response.
 - Added accessor `[Adjust adid]` to be able to get `adid` value at any time after obtaining it, not only when session/event callbacks have been triggered.
