@@ -26,7 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk              = @"ios4.10.3";
+static NSString * const kClientSdk              = @"ios4.11.0";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
@@ -438,6 +438,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                       responseDataHandler(responseData);
                                   }];
     [task resume];
+
+    [session finishTasksAndInvalidate];
 }
 
 + (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
@@ -912,6 +914,59 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     return deviceTokenString;
+}
+
++ (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails {
+    if ([ADJUtil isNull:attributionDetails]) {
+        return NO;
+    }
+
+    NSDictionary* details = [attributionDetails objectForKey:@"Version3.1"];
+    
+    if ([ADJUtil isNull:details]) {
+        return YES;
+    }
+
+    // Common fields for both iAd3 and Apple Search Ads
+    if (![ADJUtil contains:details key:@"iad-org-name" value:@"OrgName"] ||
+        ![ADJUtil contains:details key:@"iad-campaign-id" value:@"1234567890"] ||
+        ![ADJUtil contains:details key:@"iad-campaign-name" value:@"CampaignName"] ||
+        ![ADJUtil contains:details key:@"iad-lineitem-id" value:@"1234567890"] ||
+        ![ADJUtil contains:details key:@"iad-lineitem-name" value:@"LineName"])
+    {
+        [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy common fields for both iAd3 and Apple Search Ads"];
+        return YES;
+    }
+
+    // Apple Search Ads fields
+    if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
+        [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] &&
+        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"])
+    {
+        [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy Apple Search Ads fields"];
+
+        return NO;
+    }
+
+    // iAd3 fields
+    if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
+        [ADJUtil contains:details key:@"iad-creative-name" value:@"CreativeName"])
+    {
+        [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy iAd3 fields"];
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)contains:(NSDictionary *)dictionary
+        key:(NSString *)key
+        value:(NSString *)value
+{
+    id readValue = [dictionary objectForKey:key];
+    if ([ADJUtil isNull:readValue]) {
+        return NO;
+    }
+    return [value isEqualToString:[readValue description]];
 }
 
 @end

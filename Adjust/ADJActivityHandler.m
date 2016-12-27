@@ -83,8 +83,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 // copy for objects shared with the user
-@property (nonatomic, copy) ADJAttribution *attribution;
 @property (nonatomic, copy) ADJConfig *adjustConfig;
+@property (nonatomic, copy) NSData* deviceTokenData;
 
 @end
 
@@ -96,6 +96,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 #pragma mark -
 @implementation ADJActivityHandler
+
+@synthesize attribution = _attribution;
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
@@ -156,7 +158,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     } else {
         self.internalState.updatePackages = self.activityState.updatePackages;
     }
-    self.internalState.deviceToken = deviceToken;
+    self.deviceTokenData = deviceToken;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -318,6 +320,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     return [self isEnabledI:self];
 }
 
+- (NSString *)adid {
+    if (self.activityState == nil) {
+        return nil;
+    }
+    return self.activityState.adid;
+}
+
 - (BOOL)hasChangedState:(BOOL)previousState
               nextState:(BOOL)nextState
             trueMessage:(NSString *)trueMessage
@@ -401,9 +410,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (void)setIadDetails:(NSDictionary *)attributionDetails
-                error:(NSError *)error
-          retriesLeft:(int)retriesLeft
+- (void)setAttributionDetails:(NSDictionary *)attributionDetails
+                        error:(NSError *)error
+                  retriesLeft:(int)retriesLeft
 {
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
@@ -422,23 +431,67 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    if ([ADJUtil isNull:attributionDetails]) {
+    // check if it's a valid attribution details
+    if (![ADJUtil checkAttributionDetails:attributionDetails]) {
         return;
     }
 
-    double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
-                                       createdAt:now];
+    // send immediately if there is no previous attribution details
+    if (self.activityState == nil ||
+        self.activityState.attributionDetails == nil)
+    {
+        // send immediately
+        [self sendIad3ClickPackage:self attributionDetails:attributionDetails];
+        // save in the background queue
+        [ADJUtil launchInQueue:self.internalQueue
+                    selfInject:self
+                         block:^(ADJActivityHandler * selfI) {
+                             [selfI saveAttributionDetailsI:selfI
+                                         attributionDetails:attributionDetails];
 
-    clickBuilder.iadDetails = attributionDetails;
+                         }];
+        return;
+    }
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
+    // check if new updates previous written one
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
+                             return;
+                         }
+
+                         [selfI sendIad3ClickPackage:selfI attributionDetails:attributionDetails];
+
+                         // save new iAd details
+                         [selfI saveAttributionDetailsI:selfI
+                                     attributionDetails:attributionDetails];
+                     }];
 }
 
+- (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
+          attributionDetails:(NSDictionary *)attributionDetails
+ {
+     double now = [NSDate.date timeIntervalSince1970];
+     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:selfI.deviceInfo
+                                        activityState:selfI.activityState
+                                        config:selfI.adjustConfig
+                                        createdAt:now];
+
+     clickBuilder.attributionDetails = attributionDetails;
+
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
+     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+}
+
+- (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
+             attributionDetails:(NSDictionary *)attributionDetails
+{
+    // save new iAd details
+    selfI.activityState.attributionDetails = attributionDetails;
+    [selfI writeAttributionI:selfI];
+}
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
     [self writeActivityStateS:self changesInStateBlock:^{
@@ -595,6 +648,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
 
+    if (selfI.deviceTokenData != nil) {
+        [selfI.logger info:@"Push token: '%@'", selfI.deviceTokenData];
+        if (selfI.activityState != nil) {
+            [selfI setDeviceToken:selfI.deviceTokenData];
+        }
+    }
+
     selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
         [selfI foregroundTimerFired];
     }
@@ -675,7 +735,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
         selfI.activityState.sessionCount = 1; // this is the first session
-        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:self.internalState.deviceToken];
+        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
 
         [selfI transferSessionPackageI:selfI now:now];
         [selfI.activityState resetSessionAttributes:now];
@@ -795,6 +855,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
                 eventResponseData:(ADJEventResponseData *)eventResponseData {
+    [selfI updateAdidI:selfI adid:eventResponseData.adid];
+
     // event success callback
     if (eventResponseData.success
         && [selfI.adjustDelegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)])
@@ -819,6 +881,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchSessionResponseTasksI:(ADJActivityHandler *)selfI
                 sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
+    [selfI updateAdidI:selfI adid:sessionResponseData.adid];
+
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sessionResponseData.attribution];
 
     // session success callback
@@ -851,6 +915,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)launchAttributionResponseTasksI:(ADJActivityHandler *)selfI
                 attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
+    [selfI updateAdidI:selfI adid:attributionResponseData.adid];
+
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI
                                                      attribution:attributionResponseData.attribution];
 
@@ -888,6 +954,20 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             [ADJUtil launchDeepLinkMain:attributionResponseData.deeplink];
         }
     }];
+}
+
+- (void)updateAdidI:(ADJActivityHandler *)selfI
+               adid:(NSString *)adid {
+    if (adid == nil) {
+        return;
+    }
+
+    if ([adid isEqualToString:selfI.activityState.adid]) {
+        return;
+    }
+
+    selfI.activityState.adid = adid;
+    [selfI writeActivityStateI:selfI];
 }
 
 - (BOOL)updateAttributionI:(ADJActivityHandler *)selfI
@@ -1018,6 +1098,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         return;
     }
 
+    // save new push token
+    selfI.activityState.deviceToken = deviceTokenString;
+    [selfI writeActivityStateI:selfI];
+
+    // send info package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
                                         initWithDeviceInfo:selfI.deviceInfo
@@ -1025,15 +1110,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                         config:selfI.adjustConfig
                                         createdAt:now];
 
-    infoBuilder.deviceToken = deviceTokenString;
+    ADJActivityPackage * infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
-    ADJActivityPackage * clickPackage = [infoBuilder buildInfoPackage:@"push"];
-
-    [selfI.sdkClickHandler sendSdkClick:clickPackage];
-
-    // save new push token
-    selfI.activityState.deviceToken = deviceTokenString;
-    [selfI writeActivityStateI:selfI];
+    [selfI.packageHandler addPackage:infoPackage];
+    [selfI.packageHandler sendFirstPackage];
 }
 
 #pragma mark - private

@@ -28,42 +28,34 @@
 @interface ADJCriteo : NSObject
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
-                        productIds:(NSArray *)productIds
-                        customerId:(NSString *)customerId;
+                        productIds:(NSArray *)productIds;
 
 + (void)injectViewProductIntoEvent:(ADJEvent *)event
-                         productId:(NSString *)productId
-                        customerId:(NSString *)customerId;
+                         productId:(NSString *)productId;
 
 + (void)injectCartIntoEvent:(ADJEvent *)event
-                   products:(NSArray *)products
-                 customerId:(NSString *)customerId;
+                   products:(NSArray *)products;
 
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
                                    products:(NSArray *)products
                               transactionId:(NSString *)transactionId
-                                 customerId:(NSString *)customerId;
+                                newCustomer:(NSString *)newCustomer;
 
 + (void)injectUserLevelIntoEvent:(ADJEvent *)event
-                         uiLevel:(NSUInteger)uiLevel
-                      customerId:(NSString *)customerId;
+                         uiLevel:(NSUInteger)uiLevel;
 
 + (void)injectUserStatusIntoEvent:(ADJEvent *)event
-                         uiStatus:(NSString *)uiStatus
-                       customerId:(NSString *)customerId;
+                         uiStatus:(NSString *)uiStatus;
 
 + (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
-                             uiAchievement:(NSString *)uiAchievement
-                                customerId:(NSString *)customerId;
+                             uiAchievement:(NSString *)uiAchievement;
 
 + (void)injectCustomEventIntoEvent:(ADJEvent *)event
-                            uiData:(NSString *)uiData
-                        customerId:(NSString *)customerId;
+                            uiData:(NSString *)uiData;
 
 + (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
                             uiData2:(NSString *)uiData2
-                            uiData3:(NSUInteger)uiData3
-                         customerId:(NSString *)customerId;
+                            uiData3:(NSUInteger)uiData3;
 
 + (void)injectDeeplinkIntoEvent:(ADJEvent *)event
                             url:(NSURL *)url;
@@ -74,5 +66,9 @@
                                 checkOutDate:(NSString *)checkOutDate;
 
 + (void)injectPartnerIdIntoCriteoEvents:(NSString *)partnerId;
+
++ (void)injectUserSegmentIntoCriteoEvents:(NSString *)userSegment;
+
++ (void)injectCustomerIdIntoCriteoEvents:(NSString *)customerId;
 
 @end

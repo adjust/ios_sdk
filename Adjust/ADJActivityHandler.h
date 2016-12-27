@@ -16,7 +16,6 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL updatePackages;
-@property (nonatomic, copy) NSData* deviceToken;
 
 - (id)init;
 
@@ -33,6 +32,9 @@
 @end
 
 @protocol ADJActivityHandler <NSObject>
+
+@property (nonatomic, copy) ADJAttribution *attribution;
+- (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
 sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
@@ -53,14 +55,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
 
-- (void)setAttribution:(ADJAttribution*)attribution;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
 - (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
-- (void)setIadDetails:(NSDictionary *)attributionDetails
-                error:(NSError *)error
-          retriesLeft:(int)retriesLeft;
+- (void)setAttributionDetails:(NSDictionary *)attributionDetails
+                        error:(NSError *)error
+                  retriesLeft:(int)retriesLeft;
 
 - (void)setOfflineMode:(BOOL)offline;
 - (ADJInternalState*) internalState;
@@ -83,7 +84,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
              sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                 deviceToken:(NSData*)deviceToken;
-- (ADJAttribution*) attribution;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key

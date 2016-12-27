@@ -86,4 +86,5 @@ responseDataHandler:(void (^) (ADJResponseData * responseData))responseDataHandl
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl;
 + (NSString*)convertDeviceToken:(NSData*)deviceToken;
++ (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails;
 @end

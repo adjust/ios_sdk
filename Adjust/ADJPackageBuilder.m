@@ -123,7 +123,7 @@
         [ADJPackageBuilder parameters:parameters setString:self.attribution.adgroup      forKey:@"adgroup"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative     forKey:@"creative"];
     }
-    [ADJPackageBuilder parameters:parameters setDictionary:self.iadDetails forKey:@"details"];
+    [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
 
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
@@ -140,7 +140,7 @@
 
     [ADJPackageBuilder parameters:parameters setString:infoSource                     forKey:@"source"];
 
-    [ADJPackageBuilder parameters:parameters setString:self.deviceToken forKey:@"push_token"];
+    [self injectPushToken:self.activityState intoParamters:parameters];
 
     ADJActivityPackage *infoPackage = [self defaultActivityPackage];
     infoPackage.path = @"/sdk_info";
@@ -176,6 +176,7 @@
 
     [self injectDeviceInfoIds:self.deviceInfo   intoParameters:parameters];
     [self injectConfig:self.adjustConfig        intoParameters:parameters];
+    [self injectIosUuid:self.activityState      intoParamters:parameters];
     [self injectCommonParameters:parameters];
 
     return parameters;
@@ -195,6 +196,7 @@
 - (void)injectCommonParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
+    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
 }
 
 - (void) injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo
@@ -231,26 +233,48 @@
 {
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.appToken        forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.environment     forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:adjustConfig.hasResponseDelegate forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
 }
 
-- (void) injectActivityState:(ADJActivityState *)activityState
+- (void)injectActivityState:(ADJActivityState *)activityState
                intoParamters:(NSMutableDictionary *)parameters {
+    if (activityState == nil) {
+        return;
+    }
+
+    [self injectIosUuid:activityState intoParamters:parameters];
+    [self injectPushToken:activityState intoParamters:parameters];
+
     [ADJPackageBuilder parameters:parameters setInt:activityState.sessionCount       forKey:@"session_count"];
     [ADJPackageBuilder parameters:parameters setInt:activityState.subsessionCount    forKey:@"subsession_count"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.sessionLength forKey:@"session_length"];
     [ADJPackageBuilder parameters:parameters setDuration:activityState.timeSpent     forKey:@"time_spent"];
-    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
+}
+
+- (void)injectIosUuid:(ADJActivityState *)activityState
+        intoParamters:(NSMutableDictionary *)parameters
+{
+    if (activityState == nil) {
+        return;
+    }
 
     // Check if UUID was persisted or not.
     // If yes, assign it to persistent_ios_uuid parameter.
     // If not, assign it to ios_uuid parameter.
     if (activityState.isPersisted) {
-       [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"persistent_ios_uuid"];
+        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"persistent_ios_uuid"];
     } else {
-       [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
+        [ADJPackageBuilder parameters:parameters setString:activityState.uuid        forKey:@"ios_uuid"];
     }
+}
+
+- (void)injectPushToken:(ADJActivityState *)activityState
+          intoParamters:(NSMutableDictionary *)parameters
+{
+    if (activityState == nil) {
+        return;
+    }
+    [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken     forKey:@"push_token"];
 }
 
 - (NSString *)eventSuffix:(ADJEvent *)event {

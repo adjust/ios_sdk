@@ -43,6 +43,8 @@ static NSString * hashEmailInternal;
 static NSString * checkInDateInternal;
 static NSString * checkOutDateInternal;
 static NSString * partnerIdInternal;
+static NSString * userSegmentInternal;
+static NSString * customerIdInternal;
 
 + (id<ADJLogger>) logger {
     return ADJAdjustFactory.logger;
@@ -60,10 +62,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
                         productIds:(NSArray *)productIds
-                        customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
-
     NSString * jsonProductsIds = [ADJCriteo createCriteoVLFromProducts:productIds];
     [event addPartnerParameter:@"criteo_p" value:jsonProductsIds];
 
@@ -72,9 +71,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectViewProductIntoEvent:(ADJEvent *)event
                          productId:(NSString *)productId
-                        customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"criteo_p" value:productId];
 
     [ADJCriteo injectOptionalParams:event];
@@ -82,10 +79,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectCartIntoEvent:(ADJEvent *)event
                    products:(NSArray *)products
-                 customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
-
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
 
@@ -95,23 +89,20 @@ static NSString * partnerIdInternal;
 + (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
                                    products:(NSArray *)products
                               transactionId:(NSString *)transactionId
-                                 customerId:(NSString *)customerId
+                                newCustomer:(NSString *)newCustomer
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"transaction_id" value:transactionId];
 
     NSString * jsonProducts = [ADJCriteo createCriteoVBFromProducts:products];
     [event addPartnerParameter:@"criteo_p" value:jsonProducts];
+    [event addPartnerParameter:@"new_customer" value:newCustomer];
 
     [ADJCriteo injectOptionalParams:event];
 }
 
 + (void)injectUserLevelIntoEvent:(ADJEvent *)event
                          uiLevel:(NSUInteger)uiLevel
-                      customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
-
     NSString * uiLevelString = [NSString stringWithFormat:@"%lu",(unsigned long)uiLevel];
     [event addPartnerParameter:@"ui_level" value:uiLevelString];
 
@@ -120,9 +111,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectUserStatusIntoEvent:(ADJEvent *)event
                          uiStatus:(NSString *)uiStatus
-                       customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_status" value:uiStatus];
 
     [ADJCriteo injectOptionalParams:event];
@@ -130,9 +119,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
                              uiAchievement:(NSString *)uiAchievement
-                                customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_achievmnt" value:uiAchievement];
 
     [ADJCriteo injectOptionalParams:event];
@@ -140,9 +127,7 @@ static NSString * partnerIdInternal;
 
 + (void)injectCustomEventIntoEvent:(ADJEvent *)event
                             uiData:(NSString *)uiData
-                        customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_data" value:uiData];
 
     [ADJCriteo injectOptionalParams:event];
@@ -151,9 +136,7 @@ static NSString * partnerIdInternal;
 + (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
                             uiData2:(NSString *)uiData2
                             uiData3:(NSUInteger)uiData3
-                         customerId:(NSString *)customerId
 {
-    [event addPartnerParameter:@"customer_id" value:customerId];
     [event addPartnerParameter:@"ui_data2" value:uiData2];
 
     NSString * uiData3String = [NSString stringWithFormat:@"%lu",(unsigned long)uiData3];
@@ -191,10 +174,22 @@ static NSString * partnerIdInternal;
     partnerIdInternal = partnerId;
 }
 
++ (void)injectUserSegmentIntoCriteoEvents:(NSString *)userSegment
+{
+    userSegmentInternal = userSegment;
+}
+
++ (void)injectCustomerIdIntoCriteoEvents:(NSString *)customerId
+{
+    customerIdInternal = customerId;
+}
+
 + (void)injectOptionalParams:(ADJEvent *)event {
     [ADJCriteo injectHashEmail:event];
     [ADJCriteo injectSearchDates:event];
     [ADJCriteo injectPartnerId:event];
+    [ADJCriteo injectUserSegment:event];
+    [ADJCriteo injectCustomerId:event];
 }
 
 + (void)injectHashEmail:(ADJEvent *)event {
@@ -217,6 +212,20 @@ static NSString * partnerIdInternal;
         return;
     }
     [event addPartnerParameter:@"criteo_partner_id" value:partnerIdInternal];
+}
+
++ (void)injectUserSegment:(ADJEvent *)event {
+    if (userSegmentInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"user_segment" value:userSegmentInternal];
+}
+
++ (void)injectCustomerId:(ADJEvent *)event {
+    if (customerIdInternal == nil) {
+        return;
+    }
+    [event addPartnerParameter:@"customer_id" value:customerIdInternal];
 }
 
 + (NSString*) createCriteoVBFromProducts:(NSArray*) products

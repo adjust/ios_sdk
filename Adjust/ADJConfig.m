@@ -59,7 +59,6 @@
     _appToken = appToken;
     _environment = environment;
     // default values
-    _hasResponseDelegate = NO;
     self.eventBufferingEnabled = NO;
 
     return self;
@@ -90,7 +89,7 @@
 
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
-    _hasResponseDelegate = NO;
+    BOOL hasResponseDelegate = NO;
     BOOL implementsDeeplinkCallback = NO;
 
     if ([ADJUtil isNull:delegate]) {
@@ -102,31 +101,31 @@
     if ([delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         [self.logger debug:@"Delegate implements adjustAttributionChanged:"];
 
-        _hasResponseDelegate = YES;
+        hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
 
-        _hasResponseDelegate = YES;
+        hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingFailed:"];
 
-        _hasResponseDelegate = YES;
+        hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
 
-        _hasResponseDelegate = YES;
+        hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
 
-        _hasResponseDelegate = YES;
+        hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
@@ -136,7 +135,7 @@
         implementsDeeplinkCallback = YES;
     }
 
-    if (!(self.hasResponseDelegate || implementsDeeplinkCallback)) {
+    if (!(hasResponseDelegate || implementsDeeplinkCallback)) {
         [self.logger error:@"Delegate does not implement any optional method"];
         _delegate = nil;
         return;
@@ -188,7 +187,6 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
-        copy->_hasResponseDelegate = self.hasResponseDelegate;
         copy.sendInBackground = self.sendInBackground;
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];
