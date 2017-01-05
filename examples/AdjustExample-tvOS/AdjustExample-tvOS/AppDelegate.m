@@ -18,65 +18,112 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    // configure adjust
+    // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-
-    // change the log level
+    
+    // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-
-    // enable event buffering
-    //[adjustConfig setEventBufferingEnabled:YES];
-
-    // set default tracker
-    //[adjustConfig setDefaultTracker:@"{TrackerToken}"];
-
-    // send in the background
-    //[adjustConfig setSendInBackground:YES];
-
-    // set an attribution delegate
+    
+    // Enable event buffering.
+    // [adjustConfig setEventBufferingEnabled:YES];
+    
+    // Set default tracker.
+    // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
+    
+    // Send in the background.
+    [adjustConfig setSendInBackground:YES];
+    
+    // Add session callback parameters.
+    [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
+    
+    // Add session partner parameters.
+    [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
+    [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
+    
+    // Remove session callback parameter.
+    [Adjust removeSessionCallbackParameter:@"sp_key"];
+    
+    // Remove session partner parameter.
+    [Adjust removeSessionPartnerParameter:@"sp_foo"];
+    
+    // Remove all session callback parameters.
+    // [Adjust resetSessionCallbackParameters];
+    
+    // Remove all session partner parameters.
+    // [Adjust resetSessionPartnerParameters];
+    
+    // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-
+    
+    // Delay the first session of the SDK.
+    // [adjustConfig setDelayStart:7];
+    
+    // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
+    
+    // Put the SDK in offline mode.
+    // [Adjust setOfflineMode:YES];
+    
+    // Disable the SDK.
+    // [Adjust setEnabled:NO];
+    
+    // Interrupt delayed start set with setDelayStart: method.
+    // [Adjust sendFirstPackages];
 
-    // put the SDK in offline mode
-    //[Adjust setOfflineMode:YES];
-
-    // disable the SDK
-    //[Adjust setEnabled:NO];
-
-    return YES;
-}
-
-- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    NSLog(@"adjust attribution %@", attribution);
-}
-
-- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    NSLog(@"adjust event success %@", eventSuccessResponseData);
-}
-
-- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    NSLog(@"adjust event failure %@", eventFailureResponseData);
-}
-
-- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    NSLog(@"adjust session success %@", sessionSuccessResponseData);
-}
-
-- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    NSLog(@"adjust session failure %@", sessionFailureResponseData);
-}
-
-// evaluate deeplink to be launched
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NSLog(@"openURL method called with URL: %@", url);
+    
     [Adjust appWillOpenUrl:url];
+    
+    return YES;
+}
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
+        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample"];
+        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+    }
+    
+    return YES;
+}
+
+- (void)adjustAttributionChanged:(ADJAttribution *)attribution {
+    NSLog(@"Attribution callback called!");
+    NSLog(@"Attribution: %@", attribution);
+}
+
+- (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
+    NSLog(@"Event success callback called!");
+    NSLog(@"Event success data: %@", eventSuccessResponseData);
+}
+
+- (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
+    NSLog(@"Event failure callback called!");
+    NSLog(@"Event failure data: %@", eventFailureResponseData);
+}
+
+- (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
+    NSLog(@"Session success callback called!");
+    NSLog(@"Session success data: %@", sessionSuccessResponseData);
+}
+
+- (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
+    NSLog(@"Session failure callback called!");
+    NSLog(@"Session failure data: %@", sessionFailureResponseData);
+}
+
+// Evaluate deeplink to be launched.
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+    NSLog(@"Deferred deep link callback called!");
+    NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
+    
     return YES;
 }
 
