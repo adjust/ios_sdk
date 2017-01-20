@@ -201,7 +201,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     return [dateFormat stringFromDate:value];
 }
 
-+ (void) saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
++ (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
     NSError *error = nil;
     NSException *exception = nil;
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:jsonData exceptionPtr:&exception errorPtr:&error];
