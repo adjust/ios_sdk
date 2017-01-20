@@ -1,0 +1,525 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F18FF0F1E3250DA00BC1990 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF0E1E3250DA00BC1990 /* main.m */; };
+		6F18FF121E3250DA00BC1990 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF111E3250DA00BC1990 /* AppDelegate.m */; };
+		6F18FF151E3250DA00BC1990 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF141E3250DA00BC1990 /* ViewController.m */; };
+		6F18FF181E3250DA00BC1990 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F18FF161E3250DA00BC1990 /* Main.storyboard */; };
+		6F18FF1A1E3250DA00BC1990 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F18FF191E3250DA00BC1990 /* Assets.xcassets */; };
+		6F18FF1D1E3250DA00BC1990 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F18FF1B1E3250DA00BC1990 /* LaunchScreen.storyboard */; };
+		6F18FF2B1E32511500BC1990 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F18FF2A1E32511500BC1990 /* Messages.framework */; };
+		6F18FF2F1E32511500BC1990 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF2E1E32511500BC1990 /* MessagesViewController.m */; };
+		6F18FF321E32511500BC1990 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F18FF301E32511500BC1990 /* MainInterface.storyboard */; };
+		6F18FF341E32511500BC1990 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F18FF331E32511500BC1990 /* Assets.xcassets */; };
+		6F18FF381E32511500BC1990 /* IM.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 6F18FF281E32511500BC1990 /* IM.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6F18FF3E1E3262CE00BC1990 /* AdjustSdkIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F18FF3D1E3262CE00BC1990 /* AdjustSdkIM.framework */; };
+		6F18FF3F1E3262CE00BC1990 /* AdjustSdkIM.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F18FF3D1E3262CE00BC1990 /* AdjustSdkIM.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F18FF411E32633000BC1990 /* AdjustSdkIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F18FF3D1E3262CE00BC1990 /* AdjustSdkIM.framework */; };
+		6F18FF441E3263D700BC1990 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF431E3263D700BC1990 /* Constants.m */; };
+		6F18FF471E326BB800BC1990 /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F18FF461E326BB800BC1990 /* URLRequest.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6F18FF361E32511500BC1990 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F18FF021E3250DA00BC1990 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6F18FF271E32511500BC1990;
+			remoteInfo = IM;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6F18FF3C1E32511500BC1990 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6F18FF381E32511500BC1990 /* IM.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F18FF401E3262CE00BC1990 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6F18FF3F1E3262CE00BC1990 /* AdjustSdkIM.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6F18FF0A1E3250DA00BC1990 /* AdjustExample-iMessageExtension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iMessageExtension.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F18FF0E1E3250DA00BC1990 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F18FF101E3250DA00BC1990 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6F18FF111E3250DA00BC1990 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6F18FF131E3250DA00BC1990 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6F18FF141E3250DA00BC1990 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		6F18FF171E3250DA00BC1990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6F18FF191E3250DA00BC1990 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6F18FF1C1E3250DA00BC1990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6F18FF1E1E3250DA00BC1990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F18FF281E32511500BC1990 /* IM.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = IM.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F18FF2A1E32511500BC1990 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		6F18FF2D1E32511500BC1990 /* MessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
+		6F18FF2E1E32511500BC1990 /* MessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
+		6F18FF311E32511500BC1990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		6F18FF331E32511500BC1990 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6F18FF351E32511500BC1990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F18FF3D1E3262CE00BC1990 /* AdjustSdkIM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdjustSdkIM.framework; path = "AdjustExample-iMessageExtension/Adjust/AdjustSdkIM.framework"; sourceTree = "<group>"; };
+		6F18FF421E3263D700BC1990 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		6F18FF431E3263D700BC1990 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		6F18FF451E326BB800BC1990 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
+		6F18FF461E326BB800BC1990 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6F18FF071E3250DA00BC1990 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF3E1E3262CE00BC1990 /* AdjustSdkIM.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F18FF251E32511500BC1990 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF411E32633000BC1990 /* AdjustSdkIM.framework in Frameworks */,
+				6F18FF2B1E32511500BC1990 /* Messages.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F18FF011E3250DA00BC1990 = {
+			isa = PBXGroup;
+			children = (
+				6F18FF0C1E3250DA00BC1990 /* AdjustExample-iMessageExtension */,
+				6F18FF2C1E32511500BC1990 /* IM */,
+				6F18FF291E32511500BC1990 /* Frameworks */,
+				6F18FF0B1E3250DA00BC1990 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F18FF0B1E3250DA00BC1990 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F18FF0A1E3250DA00BC1990 /* AdjustExample-iMessageExtension.app */,
+				6F18FF281E32511500BC1990 /* IM.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F18FF0C1E3250DA00BC1990 /* AdjustExample-iMessageExtension */ = {
+			isa = PBXGroup;
+			children = (
+				6F18FF101E3250DA00BC1990 /* AppDelegate.h */,
+				6F18FF111E3250DA00BC1990 /* AppDelegate.m */,
+				6F18FF131E3250DA00BC1990 /* ViewController.h */,
+				6F18FF141E3250DA00BC1990 /* ViewController.m */,
+				6F18FF161E3250DA00BC1990 /* Main.storyboard */,
+				6F18FF191E3250DA00BC1990 /* Assets.xcassets */,
+				6F18FF1B1E3250DA00BC1990 /* LaunchScreen.storyboard */,
+				6F18FF1E1E3250DA00BC1990 /* Info.plist */,
+				6F18FF0D1E3250DA00BC1990 /* Supporting Files */,
+			);
+			path = "AdjustExample-iMessageExtension";
+			sourceTree = "<group>";
+		};
+		6F18FF0D1E3250DA00BC1990 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6F18FF0E1E3250DA00BC1990 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6F18FF291E32511500BC1990 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F18FF3D1E3262CE00BC1990 /* AdjustSdkIM.framework */,
+				6F18FF2A1E32511500BC1990 /* Messages.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F18FF2C1E32511500BC1990 /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				6F18FF451E326BB800BC1990 /* URLRequest.h */,
+				6F18FF461E326BB800BC1990 /* URLRequest.m */,
+				6F18FF2D1E32511500BC1990 /* MessagesViewController.h */,
+				6F18FF2E1E32511500BC1990 /* MessagesViewController.m */,
+				6F18FF301E32511500BC1990 /* MainInterface.storyboard */,
+				6F18FF331E32511500BC1990 /* Assets.xcassets */,
+				6F18FF351E32511500BC1990 /* Info.plist */,
+				6F18FF421E3263D700BC1990 /* Constants.h */,
+				6F18FF431E3263D700BC1990 /* Constants.m */,
+			);
+			path = IM;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6F18FF091E3250DA00BC1990 /* AdjustExample-iMessageExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F18FF211E3250DA00BC1990 /* Build configuration list for PBXNativeTarget "AdjustExample-iMessageExtension" */;
+			buildPhases = (
+				6F18FF061E3250DA00BC1990 /* Sources */,
+				6F18FF071E3250DA00BC1990 /* Frameworks */,
+				6F18FF081E3250DA00BC1990 /* Resources */,
+				6F18FF3C1E32511500BC1990 /* Embed App Extensions */,
+				6F18FF401E3262CE00BC1990 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6F18FF371E32511500BC1990 /* PBXTargetDependency */,
+			);
+			name = "AdjustExample-iMessageExtension";
+			productName = "AdjustExample-iMessageExtension";
+			productReference = 6F18FF0A1E3250DA00BC1990 /* AdjustExample-iMessageExtension.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6F18FF271E32511500BC1990 /* IM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F18FF391E32511500BC1990 /* Build configuration list for PBXNativeTarget "IM" */;
+			buildPhases = (
+				6F18FF241E32511500BC1990 /* Sources */,
+				6F18FF251E32511500BC1990 /* Frameworks */,
+				6F18FF261E32511500BC1990 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IM;
+			productName = IM;
+			productReference = 6F18FF281E32511500BC1990 /* IM.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6F18FF021E3250DA00BC1990 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = adjust;
+				TargetAttributes = {
+					6F18FF091E3250DA00BC1990 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = QGUGW9AUMK;
+						ProvisioningStyle = Automatic;
+					};
+					6F18FF271E32511500BC1990 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = QGUGW9AUMK;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6F18FF051E3250DA00BC1990 /* Build configuration list for PBXProject "AdjustExample-iMessageExtension" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6F18FF011E3250DA00BC1990;
+			productRefGroup = 6F18FF0B1E3250DA00BC1990 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F18FF091E3250DA00BC1990 /* AdjustExample-iMessageExtension */,
+				6F18FF271E32511500BC1990 /* IM */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F18FF081E3250DA00BC1990 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF1D1E3250DA00BC1990 /* LaunchScreen.storyboard in Resources */,
+				6F18FF1A1E3250DA00BC1990 /* Assets.xcassets in Resources */,
+				6F18FF181E3250DA00BC1990 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F18FF261E32511500BC1990 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF341E32511500BC1990 /* Assets.xcassets in Resources */,
+				6F18FF321E32511500BC1990 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6F18FF061E3250DA00BC1990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF151E3250DA00BC1990 /* ViewController.m in Sources */,
+				6F18FF121E3250DA00BC1990 /* AppDelegate.m in Sources */,
+				6F18FF0F1E3250DA00BC1990 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F18FF241E32511500BC1990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F18FF2F1E32511500BC1990 /* MessagesViewController.m in Sources */,
+				6F18FF441E3263D700BC1990 /* Constants.m in Sources */,
+				6F18FF471E326BB800BC1990 /* URLRequest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6F18FF371E32511500BC1990 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6F18FF271E32511500BC1990 /* IM */;
+			targetProxy = 6F18FF361E32511500BC1990 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6F18FF161E3250DA00BC1990 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F18FF171E3250DA00BC1990 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6F18FF1B1E3250DA00BC1990 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F18FF1C1E3250DA00BC1990 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		6F18FF301E32511500BC1990 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F18FF311E32511500BC1990 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6F18FF1F1E3250DA00BC1990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6F18FF201E3250DA00BC1990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6F18FF221E3250DA00BC1990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdjustExample-iMessageExtension/Adjust",
+				);
+				INFOPLIST_FILE = "AdjustExample-iMessageExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-iMessageExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6F18FF231E3250DA00BC1990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdjustExample-iMessageExtension/Adjust",
+				);
+				INFOPLIST_FILE = "AdjustExample-iMessageExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-iMessageExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		6F18FF3A1E32511500BC1990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdjustExample-iMessageExtension/Adjust",
+				);
+				INFOPLIST_FILE = IM/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-iMessageExtension.IM";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		6F18FF3B1E32511500BC1990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdjustExample-iMessageExtension/Adjust",
+				);
+				INFOPLIST_FILE = IM/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adjust.AdjustExample-iMessageExtension.IM";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6F18FF051E3250DA00BC1990 /* Build configuration list for PBXProject "AdjustExample-iMessageExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F18FF1F1E3250DA00BC1990 /* Debug */,
+				6F18FF201E3250DA00BC1990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F18FF211E3250DA00BC1990 /* Build configuration list for PBXNativeTarget "AdjustExample-iMessageExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F18FF221E3250DA00BC1990 /* Debug */,
+				6F18FF231E3250DA00BC1990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6F18FF391E32511500BC1990 /* Build configuration list for PBXNativeTarget "IM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F18FF3A1E32511500BC1990 /* Debug */,
+				6F18FF3B1E32511500BC1990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6F18FF021E3250DA00BC1990 /* Project object */;
+}
