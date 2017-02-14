@@ -10,13 +10,15 @@
 #include <stdlib.h>
 #include <sys/xattr.h>
 
+#import <objc/message.h>
+
 #import "ADJUtil.h"
 #import "ADJLogger.h"
 #import "ADJResponseData.h"
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
-#import <objc/message.h>
+#import "ADJConnectionValidator.h"
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
@@ -425,7 +427,25 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+    int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
+    ADJConnectionValidator *connectionValidator = [[ADJConnectionValidator alloc] initWithExpectedTce:tce];
+    // NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
+                                                          delegate:connectionValidator
+                                                     delegateQueue:nil];
+    
+//    NSString *body = [NSString stringWithUTF8String:[[request HTTPBody] bytes]];
+//    NSLog(@"1: %@", body);
+//    NSString *tcePair = [NSString stringWithFormat:@"%@=%@", @"tce", @"0"];
+//    //NSString *changedBody = [NSString stringWithFormat:@"%@&%@", body, @"tce=1"];
+//    
+//    NSMutableArray *pairs = [NSMutableArray array];
+//    [pairs addObject:body];
+//    [pairs addObject:tcePair];
+//    NSString *changedBody = [pairs componentsJoinedByString:@"&"];
+//    NSData *newBody = [NSData dataWithBytes:changedBody.UTF8String length:changedBody.length];
+//    [request setHTTPBody:newBody];
+    
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -435,8 +455,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               prefixErrorMessage:prefixErrorMessage
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
+                                      responseData.validationResult = [connectionValidator validationResult];
+
                                       responseDataHandler(responseData);
                                   }];
+    
     [task resume];
 
     [session finishTasksAndInvalidate];

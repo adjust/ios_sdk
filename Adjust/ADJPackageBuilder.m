@@ -197,6 +197,7 @@
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
+    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
 }
 
 - (void) injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo

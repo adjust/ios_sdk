@@ -12,6 +12,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityKind.h"
+#import "ADJPackageBuilder.h"
 
 static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
@@ -78,6 +79,23 @@ activityPackage:(ADJActivityPackage *)activityPackage
              activityPackage:activityPackage
          responseDataHandler:^(ADJResponseData * responseData)
     {
+        if (NO == responseData.validationResult) {
+            NSString *previousValue = [activityPackage.parameters objectForKey:@"tce"];
+            
+            if (nil == previousValue) {
+                [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
+            } else {
+                if ([previousValue isEqualToString:@"0"]) {
+                    [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
+                } else {
+                    [ADJPackageBuilder parameters:activityPackage.parameters setString:@"0" forKey:@"tce"];
+                }
+            }
+
+            [self sendPackage:activityPackage queueSize:queueSize];
+            return;
+        }
+
         if (responseData.jsonResponse == nil) {
             [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
             return;

@@ -28,6 +28,8 @@
 
 @property (nonatomic, assign) BOOL willRetry;
 
+@property (nonatomic, assign) BOOL validationResult;
+
 @property (nonatomic, strong) NSDictionary *jsonResponse;
 
 @property (nonatomic, copy) ADJAttribution *attribution;
