@@ -41,7 +41,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewListingEventToken}"];
 
 NSArray *productIds = @[@"productId1", @"productId2", @"product3"];
 
-[ADJCriteo injectViewListingIntoEvent:event productIds:productIds customerId:@"customerId1"];
+[ADJCriteo injectViewListingIntoEvent:event productIds:productIds];
 
 [Adjust trackEvent:event];
 ```
@@ -53,7 +53,7 @@ NSArray *productIds = @[@"productId1", @"productId2", @"product3"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{viewProductEventToken}"];
 
-[ADJCriteo injectViewProductIntoEvent:event productId:@"productId1" customerId:@"customerId1"];
+[ADJCriteo injectViewProductIntoEvent:event productId:@"productId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -70,7 +70,7 @@ ADJCriteoProduct *product2 = [ADJCriteoProduct productWithId:@"productId2" price
 ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price:50 quantity:2];
 NSArray *products = @[product1, product2, product3];
 
-[ADJCriteo injectCartIntoEvent:event products:products customerId:@"customerId1"];
+[ADJCriteo injectCartIntoEvent:event products:products];
 
 [Adjust trackEvent:event];
 ```
@@ -88,7 +88,7 @@ ADJCriteoProduct *product3 = [ADJCriteoProduct productWithId:@"productId3" price
 NSArray *products = @[product1, product2, product3];
 
 [ADJCriteo injectTransactionConfirmedIntoEvent:event products:products 
-  transactionId:@"transactionId1" customerId:@"customerId1"];
+  transactionId:@"transactionId1" newCustomer:@"newCustomerId1"];
 
 [Adjust trackEvent:event];
 ```
@@ -100,7 +100,7 @@ NSArray *products = @[product1, product2, product3];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{userLevelEventToken}"];
 
-[ADJCriteo injectUserLevelIntoEvent:event uiLevel:1 customerId:@"customerId1"];
+[ADJCriteo injectUserLevelIntoEvent:event uiLevel:1];
 
 [Adjust trackEvent:event];
 ```
@@ -112,7 +112,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{userLevelEventToken}"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{userStatusEventToken}"];
 
-[ADJCriteo injectUserStatusIntoEvent:event uiStatus:@"uiStatusValue" customerId:@"customerId1"];
+[ADJCriteo injectUserStatusIntoEvent:event uiStatus:@"uiStatusValue"];
 
 [Adjust trackEvent:event];
 ```
@@ -124,7 +124,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{userStatusEventToken}"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{achievementUnlockedEventToken}"];
 
-[ADJCriteo injectAchievementUnlockedIntoEvent:event uiAchievement:@"uiAchievementValue" customerId:@"customerId"];
+[ADJCriteo injectAchievementUnlockedIntoEvent:event uiAchievement:@"uiAchievementValue"];
 
 [Adjust trackEvent:event];
 ```
@@ -136,7 +136,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{achievementUnlockedEventToken
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEventEventToken}"];
 
-[ADJCriteo injectCustomEventIntoEvent:event uiData:@"uiDataValue" customerId:@"customerId"];
+[ADJCriteo injectCustomEventIntoEvent:event uiData:@"uiDataValue"];
 
 [Adjust trackEvent:event];
 ```
@@ -148,7 +148,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEventEventToken}"];
 
 ADJEvent *event = [ADJEvent eventWithEventToken:@"{customEvent2EventToken}"];
 
-[ADJCriteo injectCustomEvent2IntoEvent:event uiData2:@"uiDataValue2" uiData3:3 customerId:@"customerId"];
+[ADJCriteo injectCustomEvent2IntoEvent:event uiData2:@"uiDataValue2" uiData3:3];
 
 [Adjust trackEvent:event];
 ```
@@ -182,7 +182,7 @@ The search dates can be removed by setting the `injectViewSearchDatesIntoCriteoE
 
 It's possible to attach a partner id to every Criteo event with the `injectPartnerIdIntoCriteoEvent` method. The partner id will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
 
-The search dates can be removed by setting the `injectPartnerIdIntoCriteoEvent` value with `nil`.
+The partner id can be removed by setting the `injectPartnerIdIntoCriteoEvent` value with `nil`.
 
 ```objc
 #import "ADJCriteo.h"
@@ -208,4 +208,28 @@ In the Project Navigator open the source file your Application Delegate. Find or
 
     //...
 }
+```
+
+#### Customer Id
+
+It's possible to attach the customer id to every Criteo event with the `injectCustomerIdIntoCriteoEvents` method. The customer id will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+
+The customer id can be removed by setting the `injectCustomerIdIntoCriteoEvents` value with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+[ADJCriteo injectCustomerIdIntoCriteoEvents:@"{criteoCustomerId}"];
+```
+
+#### User Segment
+
+It's possible to attach the user segment to every Criteo event with the `injectUserSegmentIntoCriteoEvents` method. The user segment will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+
+The customer id can be removed by setting the `injectUserSegmentIntoCriteoEvents` value with `nil`.
+
+```objc
+#import "ADJCriteo.h"
+
+[ADJCriteo injectUserSegmentIntoCriteoEvents:@"{criteoUserSegment}"];
 ```

@@ -1,0 +1,6 @@
+framework module AdjustSdkIM {
+  umbrella header "AdjustSdkIM.h"
+
+  export *
+  module * { export * }
+}

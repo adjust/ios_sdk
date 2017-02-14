@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Messages View Controller-->
+        <scene sceneID="7MM-of-jgj">
+            <objects>
+                <viewController id="ObA-dk-sSI" customClass="MessagesViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qkL-Od-lgU"/>
+                        <viewControllerLayoutGuide type="bottom" id="n38-gi-rB5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtI-NC-kSu">
+                                <rect key="frame" x="95" y="20" width="131" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Track Simple Event"/>
+                                <connections>
+                                    <action selector="clickTrackSimpleEvent:" destination="ObA-dk-sSI" eventType="touchUpInside" id="sEt-Ea-ZeH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tan-rc-tAr">
+                                <rect key="frame" x="88" y="58" width="144" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Track Revenue Event"/>
+                                <connections>
+                                    <action selector="clickTrackRevenueEvent:" destination="ObA-dk-sSI" eventType="touchUpInside" id="NFU-v1-u0N"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qld-PI-aVW">
+                                <rect key="frame" x="88" y="96" width="144" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Track Callback Event"/>
+                                <connections>
+                                    <action selector="clickTrackCallbackEvent:" destination="ObA-dk-sSI" eventType="touchUpInside" id="pi0-nM-94j"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgE-th-J02">
+                                <rect key="frame" x="93" y="134" width="135" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Track Partner Event"/>
+                                <connections>
+                                    <action selector="clickTrackPartnerEvent:" destination="ObA-dk-sSI" eventType="touchUpInside" id="UnM-e0-gO4"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y7l-YF-1tB">
+                                <rect key="frame" x="90" y="172" width="139" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Enable Offline Mode"/>
+                                <connections>
+                                    <action selector="clickEnableOfflineMode:" destination="ObA-dk-sSI" eventType="touchUpInside" id="OFN-zd-bw7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kdn-5p-REQ">
+                                <rect key="frame" x="88" y="210" width="144" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Disable Offline Mode"/>
+                                <connections>
+                                    <action selector="clickDisableOfflineMode:" destination="ObA-dk-sSI" eventType="touchUpInside" id="mc9-1Z-a4g"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pA1-Da-YjV">
+                                <rect key="frame" x="121" y="248" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Enable Sdk"/>
+                                <connections>
+                                    <action selector="clickEnableSdk:" destination="ObA-dk-sSI" eventType="touchUpInside" id="Jfx-cX-gU6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M93-cC-mYk">
+                                <rect key="frame" x="119" y="286" width="81" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Disable Sdk"/>
+                                <connections>
+                                    <action selector="clickDisableSdk:" destination="ObA-dk-sSI" eventType="touchUpInside" id="5Jc-Jp-Bg9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ci3-RW-FCO">
+                                <rect key="frame" x="105" y="324" width="109" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Is Sdk Enabled?"/>
+                                <connections>
+                                    <action selector="clickIsSdkEnabled:" destination="ObA-dk-sSI" eventType="touchUpInside" id="e7z-aW-x5t"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rg-ie-rkr">
+                                <rect key="frame" x="99" y="362" width="123" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Forget this device"/>
+                                <connections>
+                                    <action selector="clickForgetDevice:" destination="ObA-dk-sSI" eventType="touchUpInside" id="7SN-6g-F3g"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="btnDisableOfflineMode" destination="Kdn-5p-REQ" id="Eam-kP-MJL"/>
+                        <outlet property="btnDisableSdk" destination="M93-cC-mYk" id="omi-eX-DJm"/>
+                        <outlet property="btnEnableOfflineMode" destination="Y7l-YF-1tB" id="hhG-EV-xYU"/>
+                        <outlet property="btnEnableSdk" destination="pA1-Da-YjV" id="g0D-kv-eaW"/>
+                        <outlet property="btnForgetDevice" destination="0rg-ie-rkr" id="752-UY-OuY"/>
+                        <outlet property="btnIsSdkEnabled" destination="Ci3-RW-FCO" id="ahb-Uo-r37"/>
+                        <outlet property="btnTrackCallbackEvent" destination="Qld-PI-aVW" id="EOc-nr-Pw3"/>
+                        <outlet property="btnTrackPartnerEvent" destination="hgE-th-J02" id="y0e-IT-bha"/>
+                        <outlet property="btnTrackRevenueEvent" destination="Tan-rc-tAr" id="PdK-Va-234"/>
+                        <outlet property="btnTrackSimpleEvent" destination="TtI-NC-kSu" id="foD-ft-6EN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

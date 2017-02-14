@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9DFA37AC1C0F219400782607"
-               BuildableName = "AdjustSdk.framework"
-               BlueprintName = "AdjustSdk"
+               BlueprintIdentifier = "6F1978E11E31293500B721D2"
+               BuildableName = "AdjustSdkIM.framework"
+               BlueprintName = "AdjustSdkIM"
                ReferencedContainer = "container:Adjust.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9DFA37AC1C0F219400782607"
-            BuildableName = "AdjustSdk.framework"
-            BlueprintName = "AdjustSdk"
+            BlueprintIdentifier = "6F1978E11E31293500B721D2"
+            BuildableName = "AdjustSdkIM.framework"
+            BlueprintName = "AdjustSdkIM"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9DFA37AC1C0F219400782607"
-            BuildableName = "AdjustSdk.framework"
-            BlueprintName = "AdjustSdk"
+            BlueprintIdentifier = "6F1978E11E31293500B721D2"
+            BuildableName = "AdjustSdkIM.framework"
+            BlueprintName = "AdjustSdkIM"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

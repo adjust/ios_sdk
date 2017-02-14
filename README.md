@@ -56,7 +56,7 @@ If your app is an app which uses web views you would like to use adjust tracking
 
 ## <a id="example-apps"></a>Example apps
 
-There are example apps inside the [`examples` directory][examples] for [`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], [`tvOS`][example-tvos] and [`Apple Watch`][example-iwatch]. You can open any of these Xcode projects to see an example of how the adjust SDK can be integrated.
+There are example apps inside the [`examples` directory][examples] for [`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], [`tvOS`][example-tvos], [`Apple Watch`][example-iwatch] and [`iMessage Extension`][example-imessage]. You can open any of these Xcode projects to see an example of how the adjust SDK can be integrated.
 
 ## <a id="basic-integration">Basic integration
 
@@ -81,13 +81,13 @@ In the dialog `Choose options for adding these files` make sure to check the che
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.11.0'
+pod 'Adjust', '~> 4.11.1'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.11.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.11.1'
 ```
 
 --
@@ -107,12 +107,15 @@ You can also choose to integrate the adjust SDK by adding it to your project as 
 * `AdjustSdkDynamic.framework.zip`
 * `AdjustSdkDynamicWithoutSimulator.framework.zip`
 * `AdjustSdkTv.framework.zip`
-
+* `AdjustSdkIM.framework.zip`
 Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
 
 If you want to use dynamic framework without architectures used for simulator (`x86_64` and `i386`), you can use SDK inside `AdjustSdkDynamicWithoutSimulator.framework.zip` archive.
 
 If you are having `tvOS` app, you can use the adjust SDK with it as well with usage of our tvOS framework which you can extract from `AdjustSdkTv.framework.zip` archive.
+
+If you are developing an iMessage app, you need to choose where to use the sdk, either in the native app, using one the previously mentioned frameworks, or in the iMessage extension, using the unzipped `AdjustSdkIM.framework.zip` archive.
+To use the sdk in the iMessage extension, you still need to embebed in the native app and link in the extension part, but again, only use it from the extension part.
 
 If you have chosen one of these ways to integrate the adjust SDK, you may continue from [this step](#sdk-frameworks). If you want to add the adjust SDK by adding its source files to your project, you can continue from [this step](#sdk-get).
 
@@ -160,6 +163,14 @@ If you are are using the adjust SDK with your tvOS app, you should use the follo
 #import <AdjustSdkTv/Adjust.h>
 ```
 
+--
+
+If you are are using the adjust SDK in your iMessage extension, you should use the following import statement:
+
+```objc
+#import <AdjustSdkIM/Adjust.h>
+```
+
 Next, we'll set up basic session tracking.
 
 ### <a id="basic-setup">Basic setup
@@ -185,6 +196,25 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ![][delegate]
 
 **Note**: Initialising the adjust SDK like this is `very important`. Otherwise, you may encounter different kinds of issues as described in our [troubleshooting section](#ts-delayed-init).
+
+If you need to initialise the SDK from another method that is not `didFinishLaunching` or `didFinishLaunchingWithOptions`, such as in an iMessage extenstion because there is no such method, make sure that it is initialized as soon as possible and that it can only occur once. Also, you will need to start the sdk manually by calling `trackSubsessionStart` since the `UIApplicationDidBecomeActiveNotification` notification won't be trigger automatically after the sdk start. The previous example would look like this:
+
+```
+#import <AdjustSdkIM/Adjust.h>
+
+// ...
+
+static dispatch_once_t onceToken;
+dispatch_once(&onceToken, ^{
+NSString *yourAppToken = @"{YourAppToken}";
+    NSString *environment = ADJEnvironmentSandbox;
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
+                                                environment:environment];
+
+    [Adjust appDidLaunch:adjustConfig];
+    [Adjust trackSubsessionStart];
+});
+```
 
 Replace `{YourAppToken}` with your app token. You can find this in your [dashboard].
 
@@ -931,6 +961,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
 [event-tracking]:    https://docs.adjust.com/en/event-tracking
 [example-iwatch]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iWatch
+[example-imessage]:  examples/AdjustExample-iMessageExtension
 [callbacks-guide]:   https://docs.adjust.com/en/callbacks
 [universal-links]:   https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
 

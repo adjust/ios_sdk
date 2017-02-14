@@ -26,7 +26,7 @@ static NSRegularExpression * shortUniversalLinkRegex = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSNumberFormatter * secondsNumberFormatter = nil;
 
-static NSString * const kClientSdk              = @"ios4.11.0";
+static NSString * const kClientSdk              = @"ios4.11.1";
 static NSURLSessionConfiguration * urlSessionConfiguration = nil;
 static NSString * userAgent = nil;
 static NSString * const kDeeplinkParam          = @"deep_link=";
@@ -201,7 +201,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     return [dateFormat stringFromDate:value];
 }
 
-+ (void) saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
++ (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
     NSError *error = nil;
     NSException *exception = nil;
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:jsonData exceptionPtr:&exception errorPtr:&error];
@@ -856,7 +856,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl {
-    UIApplication * sharedUIApplication = [UIApplication sharedApplication];
+    UIApplication * sharedUIApplication = nil;
+#if ADJUST_IM
+    return;
+#else
+    sharedUIApplication = [UIApplication sharedApplication];
+#endif
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     SEL openUrlSelector = @selector(openURL:options:completionHandler:);
@@ -892,7 +897,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#if ADJUST_IM
+        BOOL success = NO;
+#else
         BOOL success = [sharedUIApplication openURL:deepLinkUrl];
+#endif
 #pragma clang diagnostic pop
 
         if (!success) {
