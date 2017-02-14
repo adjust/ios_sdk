@@ -656,7 +656,7 @@ After this has been set up, your app will be opened after you click the adjust t
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSURL url = [userActivity webpageURL];
+        NSURL *url = [userActivity webpageURL];
 
         // url object contains your universal link content
     }
@@ -676,7 +676,7 @@ We provide a helper function that allows you to convert a universal link to an o
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSURL url = [userActivity webpageURL];
+        NSURL *url = [userActivity webpageURL];
 
         NSURL *oldStyleDeeplink = [Adjust convertUniversalLink:url scheme:@"adjustExample"];
     }
@@ -695,7 +695,7 @@ You can register a delegate callback to be notified before a deferred deep link 
 Follow the same steps and implement the following delegate callback function for deferred deep links:
 
 ```objc
-- (void)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
     // deeplink object contains information about deferred deep link content
 
     // Apply your logic to determine whether the adjust SDK should try to open the deep link
@@ -719,16 +719,12 @@ Once you have received deep link content information in your app, add a call to 
 
 The call to `appWillOpenUrl` should be done like this to support deep linking reattributions in all iOS versions:
 
-``` objc
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
-    if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSURL url = [userActivity webpageURL];
-
-        // url object contains your universal link content
-
-        [Adjust appWillOpenUrl:url];
-    }
+```objc
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    // url object contains your deep link content
+    
+    [Adjust appWillOpenUrl:url];
 
     // Apply your logic to determine the return value of this method
     return YES;
