@@ -210,11 +210,11 @@ In the Project Navigator open the source file your Application Delegate. Find or
 }
 ```
 
-#### Customer Id
+#### Customer ID
 
-It's possible to attach the customer id to every Criteo event with the `injectCustomerIdIntoCriteoEvents` method. The customer id will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+It's possible to attach the customer ID to every Criteo event with the `injectCustomerIdIntoCriteoEvents` method. The customer ID will be sent with every Criteo event for the duration of the application life cycle, so it must be set again when the app is re-launched.
 
-The customer id can be removed by setting the `injectCustomerIdIntoCriteoEvents` value with `nil`.
+The customer ID can be removed by setting the `injectCustomerIdIntoCriteoEvents` value to `nil`.
 
 ```objc
 #import "ADJCriteo.h"
@@ -225,9 +225,9 @@ The customer id can be removed by setting the `injectCustomerIdIntoCriteoEvents`
 
 #### User Segment
 
-It's possible to attach the user segment to every Criteo event with the `injectUserSegmentIntoCriteoEvents` method. The user segment will be sent with every Criteo event for the duration of the application lifecycle, so it must be set again when the app is re-lauched.
+It's possible to attach the user segment to every Criteo event with the `injectUserSegmentIntoCriteoEvents` method. The user segment will be sent with every Criteo event for the duration of the application life cycle, so it must be set again when the app is re-launched.
 
-The customer id can be removed by setting the `injectUserSegmentIntoCriteoEvents` value with `nil`.
+The user segment can be removed by setting the `injectUserSegmentIntoCriteoEvents` value to `nil`.
 
 ```objc
 #import "ADJCriteo.h"
