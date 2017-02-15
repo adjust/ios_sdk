@@ -206,10 +206,12 @@
 }
 
 - (void)injectCommonParameters:(NSMutableDictionary *)parameters {
+    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
-    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"updated_at"];
 }
 
 - (void)injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo intoParameters:(NSMutableDictionary *)parameters {

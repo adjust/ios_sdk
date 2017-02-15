@@ -570,6 +570,50 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
++ (NSString *)getUpdateTime {
+    NSDate *updateTime = nil;
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    @try {
+        __autoreleasing NSError *error;
+        NSString *infoPlistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
+        updateTime = [[[NSFileManager defaultManager] attributesOfItemAtPath:infoPlistPath error:&error] objectForKey:NSFileModificationDate];
+    } @catch (NSException *exception) {
+        [logger error:@"Error while trying to check update date. Exception: %@", exception];
+    }
+    
+    return [ADJUtil formatDate:updateTime];
+}
+
++ (NSString *)getInstallTime {
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    NSDate *installTime = nil;
+    NSString *pathToCheck = nil;
+    NSSearchPathDirectory folderToCheck = NSDocumentDirectory;
+#if TARGET_OS_TV
+    folderToCheck = NSCachesDirectory;
+#endif
+    
+    @try {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(folderToCheck, NSUserDomainMask, YES);
+
+        if (paths.count > 0) {
+            pathToCheck = [paths objectAtIndex:0];
+        } else {
+            // There's no NSDocumentDirectory (or NSCachesDirectory).
+            // Check app's bundle creation date instead.
+            pathToCheck = [[NSBundle mainBundle] bundlePath];
+        }
+
+        installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
+    } @catch (NSException *exception) {
+        [logger error:@"Error while trying to check install date. Exception: %@", exception];
+    }
+    
+    return [ADJUtil formatDate:installTime];
+}
+
 + (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
