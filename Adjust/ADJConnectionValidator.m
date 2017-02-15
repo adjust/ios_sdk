@@ -10,8 +10,6 @@
 
 #import "ADJConnectionValidator.h"
 
-// typedef void (^ValidationBlock)(int);
-
 @interface ADJConnectionValidator()
 
 @property (nonatomic) int expectedTce;
