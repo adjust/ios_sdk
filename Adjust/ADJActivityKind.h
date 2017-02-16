@@ -16,7 +16,7 @@ typedef NS_ENUM(int, ADJActivityKind) {
     ADJActivityKindUnknown       = 0,
     ADJActivityKindSession       = 1,
     ADJActivityKindEvent         = 2,
-//    ADJActivityKindRevenue       = 3,
+//  ADJActivityKindRevenue       = 3,
     ADJActivityKindClick         = 4,
     ADJActivityKindAttribution   = 5,
     ADJActivityKindInfo          = 6,
@@ -24,7 +24,8 @@ typedef NS_ENUM(int, ADJActivityKind) {
 
 @interface ADJActivityKindUtil : NSObject
 
++ (NSString *)activityKindToString:(ADJActivityKind)activityKind;
+
 + (ADJActivityKind)activityKindFromString:(NSString *)activityKindString;
-+ (NSString*)activityKindToString:(ADJActivityKind)activityKind;
 
 @end
