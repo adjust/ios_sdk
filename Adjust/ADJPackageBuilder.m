@@ -53,6 +53,8 @@
                                   isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"updated_at"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
 
@@ -210,8 +212,6 @@
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"updated_at"];
 }
 
 - (void)injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo intoParameters:(NSMutableDictionary *)parameters {
