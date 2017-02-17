@@ -62,6 +62,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isDelayStart { return self.delayStart; }
 - (BOOL)isToStartNow { return !self.delayStart; }
 - (BOOL)isToUpdatePackages { return self.updatePackages; }
+- (BOOL)isFirstLaunch { return self.firstLaunch; }
+- (BOOL)hasSessionResponseNotProcessed { return !self.sessionResponseProcessed; }
 
 @end
 
@@ -158,6 +160,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     } else {
         self.internalState.updatePackages = self.activityState.updatePackages;
     }
+    if (self.activityState == nil) {
+        self.internalState.firstLaunch = YES;
+    } else {
+        self.internalState.firstLaunch = NO;
+    }
+    // does not have the session response by default
+    self.internalState.sessionResponseProcessed = NO;
     self.deviceTokenData = deviceToken;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
@@ -794,9 +803,12 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)checkAttributionStateI:(ADJActivityHandler *)selfI {
     if (![selfI checkActivityStateI:selfI]) return;
 
-    // if it' a new session
-    if (selfI.activityState.subsessionCount <= 1) {
-        return;
+    // if it's the first launch
+    if ([selfI.internalState isFirstLaunch]) {
+        // and it hasn't received the session response
+        if ([selfI.internalState hasSessionResponseNotProcessed]) {
+            return;
+        }
     }
 
     // if there is already an attribution saved and there was no attribution being asked
@@ -911,6 +923,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                            selector:@selector(adjustAttributionChanged:)
                          withObject:sessionResponseData.attribution];
     }
+
+    self.internalState.sessionResponseProcessed = YES;
 }
 
 - (void)launchAttributionResponseTasksI:(ADJActivityHandler *)selfI
