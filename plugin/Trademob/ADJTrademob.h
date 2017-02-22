@@ -7,37 +7,38 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "ADJEvent.h"
 
 @interface ADJTrademobItem : NSObject
 
 @property (nonatomic, assign) float price;
-@property (nonatomic, assign) NSUInteger quantity;
-@property (nonatomic, copy) NSString *itemId;
 
-- (instancetype) initWithId:(NSString *)itemId
-            price:(float)price
-         quantity:(NSUInteger)quantity;
+@property (nonatomic, assign) NSUInteger quantity;
+
+@property (nonatomic, copy, nonnull) NSString *itemId;
+
+- (nullable instancetype)initWithId:(nonnull NSString *)itemId price:(float)price quantity:(NSUInteger)quantity;
 
 @end
 
 @interface ADJTrademob : NSObject
 
-+ (void)injectViewListingIntoEvent:(ADJEvent *)event
-                          itemIds:(NSArray *)itemIds
-                          metadata:(NSDictionary *)metadata;
++ (void)injectViewListingIntoEvent:(nonnull ADJEvent *)event
+                           itemIds:(nonnull NSArray *)itemIds
+                          metadata:(nonnull NSDictionary *)metadata;
 
-+ (void)injectViewItemIntoEvent:(ADJEvent *)event
-                        itemId:(NSString *)itemId
-                       metadata:(NSDictionary *)metadata;
++ (void)injectViewItemIntoEvent:(nonnull ADJEvent *)event
+                         itemId:(nonnull NSString *)itemId
+                       metadata:(nonnull NSDictionary *)metadata;
 
 
-+ (void)injectAddToBasketIntoEvent:(ADJEvent *)event
-                         items:(NSArray *)items
-                          metadata:(NSDictionary *)metadata;
++ (void)injectAddToBasketIntoEvent:(nonnull ADJEvent *)event
+                             items:(nonnull NSArray *)items
+                          metadata:(nonnull NSDictionary *)metadata;
 
-+ (void)injectCheckoutIntoEvent:(ADJEvent *)event
-                            items:(NSArray *)items
-                       metadata:(NSDictionary *)metadata;
++ (void)injectCheckoutIntoEvent:(nonnull ADJEvent *)event
+                          items:(nonnull NSArray *)items
+                       metadata:(nonnull NSDictionary *)metadata;
 
 @end
