@@ -31,7 +31,7 @@ static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.11.0";
+static NSString * const kClientSdk                  = @"ios4.11.1";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
