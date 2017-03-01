@@ -7,6 +7,7 @@
 //
 
 #import "ADJKeychain.h"
+#import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
 #import "UIDevice+ADJAdditions.h"
 
@@ -85,6 +86,8 @@ static const int kTransactionIdCount = 10;
     if (persistedUuid != nil) {
         // Check if value has UUID format.
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
+            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain"];
+
             // Value written in keychain seems to have UUID format.
             self.uuid = persistedUuid;
             self.isPersisted = YES;
