@@ -61,14 +61,6 @@
     }
 }
 
-- (NSString *)valueForKeychainKey:(NSString *)key service:(NSString *)service {
-    NSString * value = [self valueForKeychainKeyNew:key service:service];
-    if (value != nil) {
-        return value;
-    }
-    return [self valueForKeychainKeyOld:key service:service];
-}
-
 - (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *newkeychainItem = [self keychainItemForKeyNew:key service:service];
     return [self valueForKeychainItem:newkeychainItem key:key service:service];
@@ -138,7 +130,7 @@
 }
 
 - (BOOL)wasWritingSuccessful:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
-    NSString *writtenValue = [self valueForKeychainKey:key service:service];
+    NSString *writtenValue = [self valueForKeychainKeyNew:key service:service];
 
     if ([writtenValue isEqualToString:value]) {
         return YES;

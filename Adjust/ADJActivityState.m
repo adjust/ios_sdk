@@ -80,16 +80,16 @@ static const int kTransactionIdCount = 10;
     //      If successfully written, flag it.
     //      If writing failed, don't flat it.
 
-    NSString *persistedUuid = [ADJKeychain valueForKeychainKey:@"adjust_persisted_uuid" service:@"deviceInfo"];
+    NSString *newPersistedUuid = [ADJKeychain valueForKeychainKeyNew:@"adjust_persisted_uuid" service:@"deviceInfo"];
 
     // Check if value existed in keychain.
-    if (persistedUuid != nil) {
+    if (newPersistedUuid != nil) {
         // Check if value has UUID format.
-        if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
+        if ((bool)[[NSUUID alloc] initWithUUIDString:newPersistedUuid]) {
             [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain"];
 
             // Value written in keychain seems to have UUID format.
-            self.uuid = persistedUuid;
+            self.uuid = newPersistedUuid;
             self.isPersisted = YES;
 
             return;
@@ -98,9 +98,16 @@ static const int kTransactionIdCount = 10;
 
     // At this point, UUID was not persisted or if persisted, didn't have proper UUID format.
 
-    // Since we don't have anything in the keychain, we'll use the passed UUID value.
+    // Check if it's still saved in the previous keychain key
+    NSString *oldPersistedUuid = [ADJKeychain valueForKeychainKeyOld:@"adjust_persisted_uuid" service:@"deviceInfo"];
+    if (oldPersistedUuid != nil) {
+        // Since we have the value in the old keychain, we'll use that to save in the new keychain
+        self.uuid = oldPersistedUuid;
+    } else {
+        // Since we don't have anything in the keychain, we'll use the passed UUID value.
+        self.uuid = uuid;
+    }
     // Try to save that value to the keychain and flag if successfully written.
-    self.uuid = uuid;
     self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
 }
 
