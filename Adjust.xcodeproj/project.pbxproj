@@ -51,7 +51,6 @@
 		96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		964E17FF1D50C68E0097770B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 964E17FE1D50C68E0097770B /* SafariServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		965307F61A000DA400107FF9 /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 965307F51A000DA400107FF9 /* ADJDeviceInfo.m */; };
 		9657BF6F1A3B029000CD6853 /* ADJAttributionHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */; };
 		965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
@@ -392,7 +391,6 @@
 		9648C5ED1CD1765E00A3B049 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		9648C5F51CD1770300A3B049 /* AdjustBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
 		9648C5F61CD1770300A3B049 /* AdjustBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
-		964E17FE1D50C68E0097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		965307F51A000DA400107FF9 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
 		9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerTests.m; sourceTree = "<group>"; };
 		965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
@@ -655,7 +653,6 @@
 				9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */,
 				96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */,
 				9679921118BBAE2800394606 /* Foundation.framework in Frameworks */,
-				964E17FF1D50C68E0097770B /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,12 +660,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */,
-				9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */,
-				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
-				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
 				9679922518BBAE2800394606 /* libAdjust.a in Frameworks */,
+				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
+				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
 				9679922018BBAE2800394606 /* Foundation.framework in Frameworks */,
+				9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */,
+				9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,7 +750,6 @@
 				961515A11CD2CB4F0022D336 /* WebKit.framework */,
 				96325E84190E5CD900A97911 /* AdSupport.framework */,
 				9679921018BBAE2800394606 /* Foundation.framework */,
-				964E17FE1D50C68E0097770B /* SafariServices.framework */,
 				9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */,
 				9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */,
 			);
