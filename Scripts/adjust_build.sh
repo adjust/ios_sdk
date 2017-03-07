@@ -38,23 +38,3 @@ carthage build --no-skip-current
 
 # Copy build Carthage framework to Frameworks folder
 cp -R Carthage/Build/iOS/* Frameworks/Dynamic/
-
-# Copy static framework into example iOS app
-rm -rf examples/AdjustExample-iOS/AdjustExample-iOS/Adjust/AdjustSdk.framework
-cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-iOS/AdjustExample-iOS/Adjust/
-
-# Copy static framework into example Swift app
-rm -rf examples/AdjustExample-Swift/AdjustExample-Swift/Adjust/AdjustSdk.framework
-cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-Swift/AdjustExample-Swift/Adjust/
-
-# Copy static framework into example WebView app
-rm -rf examples/AdjustExample-WebView/AdjustExample-WebView/Adjust/AdjustSdk.framework
-cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-WebView/AdjustExample-WebView/Adjust/
-
-# Copy static framework into example iWatch app
-rm -rf examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/AdjustSdk.framework
-cp -R Frameworks/Static/AdjustSdk.framework examples/AdjustExample-iWatch/AdjustExample-iWatch/Adjust/
-
-# Copy static framework into example tvOS app
-rm -rf examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/AdjustSdkTv.framework
-cp -R Frameworks/tvOS/AdjustSdkTv.framework examples/AdjustExample-tvOS/AdjustExample-tvOS/Adjust/

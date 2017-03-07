@@ -277,6 +277,55 @@
 			remoteGlobalIDString = 9679920C18BBAE2800394606;
 			remoteInfo = Adjust;
 		};
+		9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
+			remoteInfo = "AdjustExample-iOS";
+		};
+		9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC141CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch";
+		};
+		9D449DBB1E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC2B1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit App";
+		};
+		9D449DBD1E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC3A1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit Extension";
+		};
+		9D449DC31E6ED23900E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7A9C21CB4ECA600D3591F;
+			remoteInfo = "AdjustExample-Swift";
+		};
+		9D449DC91E6ED24000E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 963909B21BCC0D8300A2E8A4;
+			remoteInfo = "AdjustExample-tvOS";
+		};
+		9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D1082A41CFDAF8E0050568B;
+			remoteInfo = "AdjustExample-WebView";
+		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -444,6 +493,11 @@
 		96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+NSURLDataWithRequestMocking.m"; sourceTree = "<group>"; };
 		9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJInitState.h; sourceTree = "<group>"; };
 		9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJInitState.m; sourceTree = "<group>"; };
+		9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
+		9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
+		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
+		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
+		9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-WebView.xcodeproj"; path = "examples/AdjustExample-WebView/AdjustExample-WebView.xcodeproj"; sourceTree = "<group>"; };
 		9D75F1841D07460600E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
 		9D75F1851D07460600E5D222 /* adjust_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_event.js; sourceTree = "<group>"; };
 		9D75F1861D07460600E5D222 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
@@ -687,6 +741,7 @@
 				9DFA37AE1C0F219400782607 /* AdjustSdk */,
 				961515901CD2CB2C0022D336 /* AdjustBridge */,
 				9DFB06111D747070006D48FC /* AdjustSdkTv */,
+				9D449DAC1E6ED20400E7E80B /* Example Apps */,
 				9679920F18BBAE2800394606 /* Frameworks */,
 				9679920E18BBAE2800394606 /* Products */,
 			);
@@ -849,6 +904,60 @@
 				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
 			);
 			path = AdjustTests;
+			sourceTree = "<group>";
+		};
+		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */,
+				9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */,
+				9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */,
+				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
+				9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */,
+			);
+			name = "Example Apps";
+			sourceTree = "<group>";
+		};
+		9D449DAE1E6ED22900E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DB41E6ED23400E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DBA1E6ED23400E7E80B /* AdjustExample-iWatch.app */,
+				9D449DBC1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit App.app */,
+				9D449DBE1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DC01E6ED23900E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DC41E6ED23900E7E80B /* AdjustExample-Swift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DC61E6ED24000E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DCA1E6ED24000E7E80B /* AdjustExample-tvOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DCC1E6ED24400E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DD01E6ED24400E7E80B /* AdjustExample-WebView.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9DF9C8C81D6F3CA5008E362F /* Adjust */ = {
@@ -1254,7 +1363,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9615158E1CD2CB2C0022D336 = {
@@ -1281,6 +1390,28 @@
 			mainGroup = 9679920418BBAE2800394606;
 			productRefGroup = 9679920E18BBAE2800394606 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9D449DAE1E6ED22900E7E80B /* Products */;
+					ProjectRef = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DB41E6ED23400E7E80B /* Products */;
+					ProjectRef = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DC01E6ED23900E7E80B /* Products */;
+					ProjectRef = 9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DC61E6ED24000E7E80B /* Products */;
+					ProjectRef = 9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DCC1E6ED24400E7E80B /* Products */;
+					ProjectRef = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9679920C18BBAE2800394606 /* Adjust */,
@@ -1292,6 +1423,58 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iOS.app";
+			remoteRef = 9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBA1E6ED23400E7E80B /* AdjustExample-iWatch.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch.app";
+			remoteRef = 9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBC1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch WatchKit App.app";
+			remoteRef = 9D449DBB1E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBE1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit Extension.appex */ = {
+			isa = PBXReferenceProxy;
+			fileType = "wrapper.app-extension";
+			path = "AdjustExample-iWatch WatchKit Extension.appex";
+			remoteRef = 9D449DBD1E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DC41E6ED23900E7E80B /* AdjustExample-Swift.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-Swift.app";
+			remoteRef = 9D449DC31E6ED23900E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DCA1E6ED24000E7E80B /* AdjustExample-tvOS.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-tvOS.app";
+			remoteRef = 9D449DC91E6ED24000E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DD01E6ED24400E7E80B /* AdjustExample-WebView.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-WebView.app";
+			remoteRef = 9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9679921B18BBAE2800394606 /* Resources */ = {
@@ -1622,13 +1805,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1662,13 +1850,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1788,7 +1981,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -1817,7 +2010,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -1847,6 +2040,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -1878,6 +2072,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;

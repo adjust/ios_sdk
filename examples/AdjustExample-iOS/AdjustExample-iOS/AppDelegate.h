@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AdjustSdk/Adjust.h>
+
+#import "Adjust.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-
 @end
-

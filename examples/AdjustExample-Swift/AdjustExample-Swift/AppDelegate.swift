@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         adjustConfig?.delegate = self
 
         // Initialise the SDK.
-        Adjust.appDidLaunch(adjustConfig)
+        Adjust.appDidLaunch(adjustConfig!)
 
         // Put the SDK in offline mode.
         // Adjust.setOfflineMode(true);
