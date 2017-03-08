@@ -16,29 +16,29 @@
 
 @property (nonatomic, assign) NSUInteger quantity;
 
-@property (nonatomic, copy, nonnull) NSString *itemId;
+@property (nonatomic, copy, nullable) NSString *itemId;
 
-- (nullable instancetype)initWithId:(nonnull NSString *)itemId price:(float)price quantity:(NSUInteger)quantity;
+- (nullable instancetype)initWithId:(nullable NSString *)itemId price:(float)price quantity:(NSUInteger)quantity;
 
 @end
 
 @interface ADJTrademob : NSObject
 
-+ (void)injectViewListingIntoEvent:(nonnull ADJEvent *)event
-                           itemIds:(nonnull NSArray *)itemIds
-                          metadata:(nonnull NSDictionary *)metadata;
++ (void)injectViewListingIntoEvent:(nullable ADJEvent *)event
+                           itemIds:(nullable NSArray *)itemIds
+                          metadata:(nullable NSDictionary *)metadata;
 
-+ (void)injectViewItemIntoEvent:(nonnull ADJEvent *)event
-                         itemId:(nonnull NSString *)itemId
-                       metadata:(nonnull NSDictionary *)metadata;
++ (void)injectViewItemIntoEvent:(nullable ADJEvent *)event
+                         itemId:(nullable NSString *)itemId
+                       metadata:(nullable NSDictionary *)metadata;
 
 
-+ (void)injectAddToBasketIntoEvent:(nonnull ADJEvent *)event
-                             items:(nonnull NSArray *)items
-                          metadata:(nonnull NSDictionary *)metadata;
++ (void)injectAddToBasketIntoEvent:(nullable ADJEvent *)event
+                             items:(nullable NSArray *)items
+                          metadata:(nullable NSDictionary *)metadata;
 
-+ (void)injectCheckoutIntoEvent:(nonnull ADJEvent *)event
-                          items:(nonnull NSArray *)items
-                       metadata:(nonnull NSDictionary *)metadata;
++ (void)injectCheckoutIntoEvent:(nullable ADJEvent *)event
+                          items:(nullable NSArray *)items
+                       metadata:(nullable NSDictionary *)metadata;
 
 @end

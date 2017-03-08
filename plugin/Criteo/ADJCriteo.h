@@ -16,47 +16,47 @@
 
 @property (nonatomic, assign) NSUInteger criteoQuantity;
 
-@property (nonatomic, copy, nonnull) NSString *criteoProductID;
+@property (nonatomic, copy, nullable) NSString *criteoProductID;
 
-- (nullable id)initWithId:(nonnull NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
+- (nullable id)initWithId:(nullable NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
 
-+ (nullable ADJCriteoProduct *)productWithId:(nonnull NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
++ (nullable ADJCriteoProduct *)productWithId:(nullable NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
 
 @end
 
 @interface ADJCriteo : NSObject
 
-+ (void)injectPartnerIdIntoCriteoEvents:(nonnull NSString *)partnerId;
++ (void)injectPartnerIdIntoCriteoEvents:(nullable NSString *)partnerId;
 
-+ (void)injectCustomerIdIntoCriteoEvents:(nonnull NSString *)customerId;
++ (void)injectCustomerIdIntoCriteoEvents:(nullable NSString *)customerId;
 
-+ (void)injectHashedEmailIntoCriteoEvents:(nonnull NSString *)hashEmail;
++ (void)injectHashedEmailIntoCriteoEvents:(nullable NSString *)hashEmail;
 
-+ (void)injectUserSegmentIntoCriteoEvents:(nonnull NSString *)userSegment;
++ (void)injectUserSegmentIntoCriteoEvents:(nullable NSString *)userSegment;
 
-+ (void)injectDeeplinkIntoEvent:(nonnull ADJEvent *)event url:(nonnull NSURL *)url;
++ (void)injectDeeplinkIntoEvent:(nullable ADJEvent *)event url:(nullable NSURL *)url;
 
-+ (void)injectCartIntoEvent:(nonnull ADJEvent *)event products:(nonnull NSArray *)products;
++ (void)injectCartIntoEvent:(nullable ADJEvent *)event products:(nullable NSArray *)products;
 
-+ (void)injectUserLevelIntoEvent:(nonnull ADJEvent *)event uiLevel:(NSUInteger)uiLevel;
++ (void)injectUserLevelIntoEvent:(nullable ADJEvent *)event uiLevel:(NSUInteger)uiLevel;
 
-+ (void)injectCustomEventIntoEvent:(nonnull ADJEvent *)event uiData:(nonnull NSString *)uiData;
++ (void)injectCustomEventIntoEvent:(nullable ADJEvent *)event uiData:(nullable NSString *)uiData;
 
-+ (void)injectUserStatusIntoEvent:(nonnull ADJEvent *)event uiStatus:(nonnull NSString *)uiStatus;
++ (void)injectUserStatusIntoEvent:(nullable ADJEvent *)event uiStatus:(nullable NSString *)uiStatus;
 
-+ (void)injectViewProductIntoEvent:(nonnull ADJEvent *)event productId:(nonnull NSString *)productId;
++ (void)injectViewProductIntoEvent:(nullable ADJEvent *)event productId:(nullable NSString *)productId;
 
-+ (void)injectViewListingIntoEvent:(nonnull ADJEvent *)event productIds:(nonnull NSArray *)productIds;
++ (void)injectViewListingIntoEvent:(nullable ADJEvent *)event productIds:(nullable NSArray *)productIds;
 
-+ (void)injectAchievementUnlockedIntoEvent:(nonnull ADJEvent *)event uiAchievement:(nonnull NSString *)uiAchievement;
++ (void)injectAchievementUnlockedIntoEvent:(nullable ADJEvent *)event uiAchievement:(nullable NSString *)uiAchievement;
 
-+ (void)injectViewSearchDatesIntoCriteoEvents:(nonnull NSString *)checkInDate checkOutDate:(nonnull NSString *)checkOutDate;
++ (void)injectViewSearchDatesIntoCriteoEvents:(nullable NSString *)checkInDate checkOutDate:(nullable NSString *)checkOutDate;
 
-+ (void)injectCustomEvent2IntoEvent:(nonnull ADJEvent *)event uiData2:(nonnull NSString *)uiData2 uiData3:(NSUInteger)uiData3;
++ (void)injectCustomEvent2IntoEvent:(nullable ADJEvent *)event uiData2:(nullable NSString *)uiData2 uiData3:(NSUInteger)uiData3;
 
-+ (void)injectTransactionConfirmedIntoEvent:(nonnull ADJEvent *)event
-                                   products:(nonnull NSArray *)products
-                              transactionId:(nonnull NSString *)transactionId
-                                newCustomer:(nonnull NSString *)newCustomer;
++ (void)injectTransactionConfirmedIntoEvent:(nullable ADJEvent *)event
+                                   products:(nullable NSArray *)products
+                              transactionId:(nullable NSString *)transactionId
+                                newCustomer:(nullable NSString *)newCustomer;
 
 @end

@@ -60,7 +60,7 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectPartnerIdIntoSociomanticEvents:(nonnull NSString *)adpanId;
++ (void)injectPartnerIdIntoSociomanticEvents:(nullable NSString *)adpanId;
 
 /**
  * Methods uses the given dictionary, filters it and injects it into the event.
@@ -70,8 +70,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectCustomerDataIntoEvent:(nonnull ADJEvent *)event
-                           withData:(nonnull NSDictionary *)data;
++ (void)injectCustomerDataIntoEvent:(nullable ADJEvent *)event
+                           withData:(nullable NSDictionary *)data;
 
 
 /**
@@ -81,7 +81,7 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)addPartnerParameter:(nonnull ADJEvent *)event;
++ (void)addPartnerParameter:(nullable ADJEvent *)event;
 
 
 /**
@@ -92,7 +92,7 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)addPartnerParameter:(nonnull ADJEvent *)event
++ (void)addPartnerParameter:(nullable ADJEvent *)event
                   parameter:(nullable NSString *)parameterName
                       value:(nullable NSString *)jsonValue;
 
@@ -103,7 +103,7 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectHomePageIntoEvent:(nonnull ADJEvent *)event;
++ (void)injectHomePageIntoEvent:(nullable ADJEvent *)event;
 
 
 /**
@@ -116,8 +116,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectViewListingIntoEvent:(nonnull ADJEvent *)event
-                    withCategories:(nonnull NSArray *)categories;
++ (void)injectViewListingIntoEvent:(nullable ADJEvent *)event
+                    withCategories:(nullable NSArray *)categories;
 
 /**
  * Method injects a category page view into an Adjust event.
@@ -130,7 +130,7 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectViewListingIntoEvent:(nonnull ADJEvent *)event
++ (void)injectViewListingIntoEvent:(nullable ADJEvent *)event
                     withCategories:(nullable NSArray *)categories
                           withDate:(nullable NSString *)date;
 
@@ -142,8 +142,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectViewProductIntoEvent:(nonnull ADJEvent *)event
-                         productId:(nonnull NSString *)productId;
++ (void)injectViewProductIntoEvent:(nullable ADJEvent *)event
+                         productId:(nullable NSString *)productId;
 
 /**
  * Method injects a product page view into an Adjust event.
@@ -158,8 +158,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectViewProductIntoEvent:(nonnull ADJEvent *)event
-                         productId:(nonnull NSString *)productId
++ (void)injectViewProductIntoEvent:(nullable ADJEvent *)event
+                         productId:(nullable NSString *)productId
                     withParameters:(nullable NSDictionary *)parameters;
 
 /**
@@ -173,8 +173,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectCartIntoEvent:(nonnull ADJEvent *)event
-                       cart:(nonnull NSArray *)products;
++ (void)injectCartIntoEvent:(nullable ADJEvent *)event
+                       cart:(nullable NSArray *)products;
 
 
 /**
@@ -188,9 +188,9 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectConfirmedTransactionIntoEvent:(nonnull ADJEvent *)event
-                              transactionId:(nonnull NSString *)transactionID
-                               withProducts:(nonnull NSArray *)products;
++ (void)injectConfirmedTransactionIntoEvent:(nullable ADJEvent *)event
+                              transactionId:(nullable NSString *)transactionID
+                               withProducts:(nullable NSArray *)products;
 
 /**
  * Method injects a confirmed sale page view into an Adjust event.
@@ -206,9 +206,9 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectConfirmedTransactionIntoEvent:(nonnull ADJEvent *)event
-                              transactionId:(nonnull NSString *)transactionID
-                               withProducts:(nonnull NSArray *)products
++ (void)injectConfirmedTransactionIntoEvent:(nullable ADJEvent *)event
+                              transactionId:(nullable NSString *)transactionID
+                               withProducts:(nullable NSArray *)products
                              withParameters:(nullable NSDictionary *)parameters;
 
 /**
@@ -224,9 +224,9 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectTransactionIntoEvent:(nonnull ADJEvent *)event
-                     transactionId:(nonnull NSString *)transactionID
-                      withProducts:(nonnull NSArray *)products;
++ (void)injectTransactionIntoEvent:(nullable ADJEvent *)event
+                     transactionId:(nullable NSString *)transactionID
+                      withProducts:(nullable NSArray *)products;
 /**
  * Method injects a sale page view into an Adjust event.
  * The array will be filtered according to the keys of
@@ -241,10 +241,10 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectTransactionIntoEvent:(nonnull ADJEvent *)event
-                     transactionId:(nonnull NSString *)transactionID
-                      withProducts:(nonnull NSArray *)products
-                    withParameters:(nonnull NSDictionary *)parameters;
++ (void)injectTransactionIntoEvent:(nullable ADJEvent *)event
+                     transactionId:(nullable NSString *)transactionID
+                      withProducts:(nullable NSArray *)products
+                    withParameters:(nullable NSDictionary *)parameters;
 
 /**
  * Method injects a lead page into an Adjust event.
@@ -254,8 +254,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectLeadIntoEvent:(nonnull ADJEvent *)event
-                     leadID:(nonnull NSString *)transactionID;
++ (void)injectLeadIntoEvent:(nullable ADJEvent *)event
+                     leadID:(nullable NSString *)transactionID;
 
 /**
  * Method injects a lead page into an Adjust event.
@@ -266,8 +266,8 @@ extern NSString * __nonnull const SCMCustomerTargeting;
  *
  * @return  `void`
  */
-+ (void)injectLeadIntoEvent:(nonnull ADJEvent *)event
-                     leadID:(nonnull NSString *)transactionID
++ (void)injectLeadIntoEvent:(nullable ADJEvent *)event
+                     leadID:(nullable NSString *)transactionID
                andConfirmed:(BOOL)confirmed;
 
 @end
