@@ -146,7 +146,7 @@
 @property (nonatomic, assign) double delayStart;
 
 /**
- * User agent for the requests.
+ * @brief User agent for the requests.
  */
 @property (nonatomic, copy, nullable) NSString *userAgent;
 

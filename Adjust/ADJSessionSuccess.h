@@ -10,19 +10,31 @@
 
 @interface ADJSessionSuccess : NSObject <NSCopying>
 
-// message from the server.
-@property (nonatomic, copy) NSString * message;
+/**
+ * @brief Message from the adjust backend.
+ */
+@property (nonatomic, copy, nullable) NSString *message;
 
-// timeStamp from the server.
-@property (nonatomic, copy) NSString * timeStamp;
+/**
+ * @brief Timestamp from the adjust backend.
+ */
+@property (nonatomic, copy, nullable) NSString *timeStamp;
 
-// adid of the device.
-@property (nonatomic, copy) NSString * adid;
+/**
+ * @brief Adjust identifier of the device.
+ */
+@property (nonatomic, copy, nullable) NSString *adid;
 
-// the server response in json format
-@property (nonatomic, strong) NSDictionary *jsonResponse;
+/**
+ * @brief Backend response in JSON format.
+ */
+@property (nonatomic, strong, nullable) NSDictionary *jsonResponse;
 
-+ (ADJSessionSuccess *)sessionSuccessResponseData;
-- (id)init;
+/**
+ * @brief Initialisation method.
+ *
+ * @return ADJSessionSuccess instance.
+ */
++ (nullable ADJSessionSuccess *)sessionSuccessResponseData;
 
 @end
