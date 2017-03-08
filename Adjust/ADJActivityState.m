@@ -96,17 +96,19 @@ static const int kTransactionIdCount = 10;
         }
     }
 
-    // At this point, UUID was not persisted or if persisted, didn't have proper UUID format.
+    // At this point, UUID was not persisted with new method or if persisted, didn't have proper UUID format.
 
-    // Check if it's still saved in the previous keychain key
+    // Check if it's still saved in the previous keychain key.
     NSString *oldPersistedUuid = [ADJKeychain valueForKeychainKeyOld:@"adjust_persisted_uuid" service:@"deviceInfo"];
+
     if (oldPersistedUuid != nil) {
-        // Since we have the value in the old keychain, we'll use that to save in the new keychain
+        // Since we have the value in the old keychain, we'll use that to save in the new keychain.
         self.uuid = oldPersistedUuid;
     } else {
         // Since we don't have anything in the keychain, we'll use the passed UUID value.
         self.uuid = uuid;
     }
+
     // Try to save that value to the keychain and flag if successfully written.
     self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
 }
@@ -202,10 +204,12 @@ static const int kTransactionIdCount = 10;
     [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
 }
 
+#pragma mark - NSCopying protocol methods
+
 - (id)copyWithZone:(NSZone *)zone {
     ADJActivityState *copy = [[[self class] allocWithZone:zone] init];
 
-    // copy only values used by package builder
+    // Copy only values used by package builder.
     if (copy) {
         copy.sessionCount       = self.sessionCount;
         copy.subsessionCount    = self.subsessionCount;

@@ -12,6 +12,8 @@
 
 @implementation ADJKeychain
 
+#pragma mark - Object lifecycle methods
+
 + (id)getInstance {
     static ADJKeychain *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -33,13 +35,21 @@
     return self;
 }
 
+#pragma mark - Public methods
+
 + (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     return [[ADJKeychain getInstance] setValue:value forKeychainKey:key inService:service];
 }
 
-+ (NSString *)valueForKeychainKey:(NSString *)key service:(NSString *)service {
-    return [[ADJKeychain getInstance] valueForKeychainKey:key service:service];
++ (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
+    return [[ADJKeychain getInstance] valueForKeychainKeyOld:key service:service];
 }
+
++ (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
+    return [[ADJKeychain getInstance] valueForKeychainKeyNew:key service:service];
+}
+
+#pragma mark - Private & helper methods
 
 - (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     OSStatus status = [self setValueWithStatus:value forKeychainKey:key inService:service];
@@ -62,13 +72,15 @@
 }
 
 - (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
-    NSMutableDictionary *newkeychainItem = [self keychainItemForKeyNew:key service:service];
-    return [self valueForKeychainItem:newkeychainItem key:key service:service];
+    NSMutableDictionary *newKeychainItem = [self keychainItemForKeyNew:key service:service];
+
+    return [self valueForKeychainItem:newKeychainItem key:key service:service];
 }
 
 - (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
-    NSMutableDictionary *oldkeychainItem = [self keychainItemForKeyOld:key service:service];
-    return [self valueForKeychainItem:oldkeychainItem key:key service:service];
+    NSMutableDictionary *oldKeychainItem = [self keychainItemForKeyOld:key service:service];
+
+    return [self valueForKeychainItem:oldKeychainItem key:key service:service];
 }
 
 - (NSString *)valueForKeychainItem:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
