@@ -38,16 +38,16 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 - (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler {
     self = [super init];
-
+    
     if (self == nil) {
         return nil;
     }
-
+    
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
     self.logger = ADJAdjustFactory.logger;
     self.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
-
+    
     return self;
 }
 
@@ -61,7 +61,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 - (void)teardown {
     [ADJAdjustFactory.logger verbose:@"ADJRequestHandler teardown"];
-
+    
     self.logger = nil;
     self.baseUrl = nil;
     self.internalQueue = nil;
@@ -77,32 +77,32 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
           suffixErrorMessage:@"Will retry later"
              activityPackage:activityPackage
          responseDataHandler:^(ADJResponseData *responseData) {
-        if (NO == responseData.validationResult) {
-            NSString *previousValue = [activityPackage.parameters objectForKey:@"tce"];
-            
-            if (nil == previousValue) {
-                [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
-            } else {
-                if ([previousValue isEqualToString:@"0"]) {
-                    [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
-                } else {
-                    [ADJPackageBuilder parameters:activityPackage.parameters setString:@"0" forKey:@"tce"];
-                }
-            }
-
-            [self sendPackage:activityPackage queueSize:queueSize];
-
-            return;
-        }
-
-        if (responseData.jsonResponse == nil) {
-            [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
-
-            return;
-        }
-
-        [selfI.packageHandler sendNextPackage:responseData];
-     }];
+             if (NO == responseData.validationResult) {
+                 NSString *previousValue = [activityPackage.parameters objectForKey:@"tce"];
+                 
+                 if (nil == previousValue) {
+                     [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
+                 } else {
+                     if ([previousValue isEqualToString:@"0"]) {
+                         [ADJPackageBuilder parameters:activityPackage.parameters setString:@"1" forKey:@"tce"];
+                     } else {
+                         [ADJPackageBuilder parameters:activityPackage.parameters setString:@"0" forKey:@"tce"];
+                     }
+                 }
+                 
+                 [self sendPackage:activityPackage queueSize:queueSize];
+                 
+                 return;
+             }
+             
+             if (responseData.jsonResponse == nil) {
+                 [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+                 
+                 return;
+             }
+             
+             [selfI.packageHandler sendNextPackage:responseData];
+         }];
 }
 
 @end

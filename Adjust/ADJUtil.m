@@ -29,6 +29,8 @@ static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 
+static ADJConnectionValidator *connectionValidator = nil;
+
 static NSString *userAgent = nil;
 
 static NSString * const kClientSdk                  = @"ios4.11.1";
@@ -55,6 +57,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
+    [self initializeConnectionValidator];
 }
 
 + (void)initializeDateFormat {
@@ -137,6 +140,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)initializeUrlSessionConfiguration {
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+}
+
++ (void)initializeConnectionValidator {
+    connectionValidator = [[ADJConnectionValidator alloc] init];
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
@@ -429,14 +436,14 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
-    
-    ADJConnectionValidator *connectionValidator = [[ADJConnectionValidator alloc] initWithExpectedTce:tce];
-    
-    // NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+
+    [connectionValidator setExpectedTce:tce];
+    [connectionValidator setDidValidationHappen:NO];
+
     NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
                                                           delegate:connectionValidator
                                                      delegateQueue:nil];
-    
+
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -447,7 +454,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
 
-                                      responseData.validationResult = [connectionValidator validationResult];
+                                      if (NO == connectionValidator.didValidationHappen) {
+                                          responseData.validationResult = YES;
+                                      } else {
+                                          responseData.validationResult = connectionValidator.validationResult;
+                                      }
+
                                       responseDataHandler(responseData);
                                   }];
     

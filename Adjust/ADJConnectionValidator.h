@@ -10,8 +10,10 @@
 
 @interface ADJConnectionValidator : NSObject <NSURLSessionDelegate>
 
-@property (nonatomic, assign, readonly) BOOL validationResult;
+@property (nonatomic, assign) int expectedTce;
 
-- (id)initWithExpectedTce:(int)tce;
+@property (nonatomic, assign) BOOL didValidationHappen;
+
+@property (nonatomic, assign, readonly) BOOL validationResult;
 
 @end

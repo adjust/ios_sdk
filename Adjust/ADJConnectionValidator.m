@@ -10,33 +10,25 @@
 
 #import "ADJConnectionValidator.h"
 
-@interface ADJConnectionValidator()
-
-@property (nonatomic) int expectedTce;
-
-@end
-
 @implementation ADJConnectionValidator
 
 #pragma mark - Object lifecycle
 
-- (id)initWithExpectedTce:(int)tce {
+- (id)init {
     self = [super init];
     
     if (self == nil) {
         return nil;
     }
     
-    self.expectedTce = tce;
-    
     return self;
 }
 
 #pragma mark - NSURLSessionDelegate protocol
 
-- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler {
     NSString *trustedThumbprint = @"5fb7ee0633e259dbad0c4c9ae6d38f1a61c7dc25";
-
+    
     SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
     SecTrustEvaluate(serverTrust, NULL);
     CFIndex count = SecTrustGetCertificateCount(serverTrust);
@@ -44,9 +36,9 @@
     SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, count - 1);
     CFDataRef certData = SecCertificateCopyData(certificate);
     
-    NSData *data = (__bridge_transfer NSData*)certData;
+    NSData *data = (__bridge_transfer NSData *)certData;
     NSString *thumbprint = [self getThumbprintAsSha1:data];
-    
+
     if ([[trustedThumbprint uppercaseString] isEqualToString:[thumbprint uppercaseString]]) {
         // tce = 0
         
@@ -55,10 +47,12 @@
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
             
             _validationResult = YES;
+            self.didValidationHappen = YES;
         } else {
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, NULL);
             
             _validationResult = NO;
+            self.didValidationHappen = YES;
         }
     } else {
         // tce = 1++
@@ -68,10 +62,12 @@
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
             
             _validationResult = YES;
+            self.didValidationHappen = YES;
         } else {
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, NULL);
             
             _validationResult = NO;
+            self.didValidationHappen = YES;
         }
     }
 }
