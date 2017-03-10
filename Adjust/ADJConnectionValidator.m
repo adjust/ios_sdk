@@ -47,12 +47,10 @@
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
             
             _validationResult = YES;
-            self.didValidationHappen = YES;
         } else {
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, NULL);
             
             _validationResult = NO;
-            self.didValidationHappen = YES;
         }
     } else {
         // tce = 1++
@@ -62,14 +60,15 @@
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
             
             _validationResult = YES;
-            self.didValidationHappen = YES;
         } else {
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, NULL);
             
             _validationResult = NO;
-            self.didValidationHappen = YES;
         }
     }
+
+    // mark validation as done
+    self.didValidationHappen = YES;
 }
 
 #pragma mark - Private & helper methods
