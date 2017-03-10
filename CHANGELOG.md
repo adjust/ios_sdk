@@ -8,7 +8,7 @@
 - Added connection validity checks.
 
 #### Changed
-- Changed some variable types to enable comipation of SDK even if `Sign Comparison` option is turned on in Xcode.
+- Changed some variable types to enable compilation of SDK even if `Sign Comparison` option is turned on in Xcode.
 
 #### Fixed
 - Fixed not processing of `sdk_info` package type causing logs not to print proper package name once tracked.
