@@ -53,7 +53,7 @@
                                   isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"updated_at"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
