@@ -1,3 +1,21 @@
+### Version 4.11.1 (13th March 2017)
+#### Added
+- Added sending of the app's install time.
+- Added sending of the app's update time.
+- Added nullability annotations to public headers for Swift 3.0 compatibility.
+- Added `BITCODE_GENERATION_MODE` to iOS framework for `Carthage` support.
+- Added support for iOS 10.3.
+- Added connection validity checks.
+
+#### Changed
+- Changed some variable types to enable comipation of SDK even if `Sign Comparison` option is turned on in Xcode.
+
+#### Fixed
+- Fixed not processing of `sdk_info` package type causing logs not to print proper package name once tracked.
+- Fixed random occurrence of attribution request being fired before session request.
+
+---
+
 ### Version 4.11.0 (27th December 2016)
 #### Added
 - Added `adid` field to the attribution callback response.
