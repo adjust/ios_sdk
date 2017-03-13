@@ -12,6 +12,8 @@
 
 @implementation ADJKeychain
 
+#pragma mark - Object lifecycle methods
+
 + (id)getInstance {
     static ADJKeychain *defaultInstance = nil;
     static dispatch_once_t onceToken;
@@ -33,37 +35,69 @@
     return self;
 }
 
+#pragma mark - Public methods
+
 + (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     return [[ADJKeychain getInstance] setValue:value forKeychainKey:key inService:service];
 }
 
-+ (NSString *)valueForKeychainKey:(NSString *)key service:(NSString *)service {
-    return [[ADJKeychain getInstance] valueForKeychainKey:key service:service];
++ (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
+    return [[ADJKeychain getInstance] valueForKeychainKeyOld:key service:service];
 }
+
++ (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
+    return [[ADJKeychain getInstance] valueForKeychainKeyNew:key service:service];
+}
+
+#pragma mark - Private & helper methods
 
 - (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     OSStatus status = [self setValueWithStatus:value forKeychainKey:key inService:service];
 
     if (status != noErr) {
-        [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain"];
+        if (NULL == &kSecAttrAccessGroupToken) {
+            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain old way"];
+        } else {
+            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain new way"];
+        }
+
         return NO;
     } else {
         // Check was writing successful.
         BOOL wasSuccessful = [self wasWritingSuccessful:value forKeychainKey:key inService:service];
 
         if (wasSuccessful) {
-            [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain"];
+            if (NULL == &kSecAttrAccessGroupToken) {
+                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain old way"];
+            } else {
+                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain new way"];
+            }
         } else {
-            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check"];
+            if (NULL == &kSecAttrAccessGroupToken) {
+                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check old way"];
+            } else {
+                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check new way"];
+            }
         }
 
         return wasSuccessful;
     }
 }
 
-- (NSString *)valueForKeychainKey:(NSString *)key service:(NSString *)service {
+- (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
+    NSMutableDictionary *newKeychainItem = [self keychainItemForKeyNew:key service:service];
+
+    return [self valueForKeychainItem:newKeychainItem key:key service:service];
+}
+
+- (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
+    NSMutableDictionary *oldKeychainItem = [self keychainItemForKeyOld:key service:service];
+
+    return [self valueForKeychainItem:oldKeychainItem key:key service:service];
+}
+
+- (NSString *)valueForKeychainItem:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
     CFDictionaryRef result = nil;
-    NSMutableDictionary *keychainItem = [self keychainItemForKey:key service:service];
 
     keychainItem[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     keychainItem[(__bridge id)kSecReturnAttributes] = (__bridge id)kCFBooleanTrue;
@@ -84,19 +118,38 @@
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-- (NSMutableDictionary *)keychainItemForKey:(NSString *)key service:(NSString *)service {
+- (NSMutableDictionary *)keychainItemForKeyNew:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
 
-    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
-    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAlways;
-    keychainItem[(__bridge id)kSecAttrAccount] = key;
-    keychainItem[(__bridge id)kSecAttrService] = service;
+    keychainItem[(__bridge id)kSecAttrAccessGroup] = (__bridge id)kSecAttrAccessGroupToken;
+    [self keychainItemForKey:keychainItem key:key service:service];
 
     return keychainItem;
 }
 
+- (NSMutableDictionary *)keychainItemForKeyOld:(NSString *)key service:(NSString *)service {
+    NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
+
+    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAlways;
+    [self keychainItemForKey:keychainItem key:key service:service];
+
+    return keychainItem;
+}
+
+- (void)keychainItemForKey:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
+    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
+    keychainItem[(__bridge id)kSecAttrAccount] = key;
+    keychainItem[(__bridge id)kSecAttrService] = service;
+}
+
 - (OSStatus)setValueWithStatus:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
-    NSMutableDictionary *keychainItem = [self keychainItemForKey:key service:service];
+    NSMutableDictionary *keychainItem;
+
+    if (NULL == &kSecAttrAccessGroupToken) {
+        keychainItem = [self keychainItemForKeyOld:key service:service];
+    } else {
+        keychainItem = [self keychainItemForKeyNew:key service:service];
+    }
 
     keychainItem[(__bridge id)kSecValueData] = [value dataUsingEncoding:NSUTF8StringEncoding];
 
@@ -104,7 +157,13 @@
 }
 
 - (BOOL)wasWritingSuccessful:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
-    NSString *writtenValue = [self valueForKeychainKey:key service:service];
+    NSString *writtenValue;
+
+    if (NULL == &kSecAttrAccessGroupToken) {
+        writtenValue = [self valueForKeychainKeyOld:key service:service];
+    } else {
+        writtenValue = [self valueForKeychainKeyNew:key service:service];
+    }
 
     if ([writtenValue isEqualToString:value]) {
         return YES;

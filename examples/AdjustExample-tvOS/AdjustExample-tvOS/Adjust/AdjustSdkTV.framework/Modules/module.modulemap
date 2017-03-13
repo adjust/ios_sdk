@@ -1,6 +1,0 @@
-framework module AdjustSdkTv {
-  umbrella header "AdjustSdkTv.h"
-
-  export *
-  module * { export * }
-}

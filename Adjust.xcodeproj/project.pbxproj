@@ -30,7 +30,6 @@
 		9601CAE91C74BAAE00670879 /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9601CAE71C74BAAE00670879 /* ADJEventFailure.m */; };
 		9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9609BC6919EEA55800E02303 /* ADJEvent.m */; };
 		960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 960A8BB81A029A8000F2BB95 /* ADJConfig.m */; };
-		961515921CD2CB2C0022D336 /* AdjustBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 961515911CD2CB2C0022D336 /* AdjustBridge.h */; };
 		9615159F1CD2CB360022D336 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		961515A01CD2CB450022D336 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		961515A21CD2CB4F0022D336 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961515A11CD2CB4F0022D336 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -52,7 +51,6 @@
 		96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		964E17FF1D50C68E0097770B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 964E17FE1D50C68E0097770B /* SafariServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		965307F61A000DA400107FF9 /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 965307F51A000DA400107FF9 /* ADJDeviceInfo.m */; };
 		9657BF6F1A3B029000CD6853 /* ADJAttributionHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */; };
 		965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
@@ -138,6 +136,12 @@
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DB457B01D743704004D69E8 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8DF1D6F3CA5008E362F /* ADJBackoffStrategy.m */; };
 		9DB457B11D743704004D69E8 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8F71D6F3CA5008E362F /* ADJSdkClickHandler.m */; };
+		9DCAE04B1E5334F4009DD542 /* ADJConnectionValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DCAE0491E5334F4009DD542 /* ADJConnectionValidator.h */; };
+		9DCAE04C1E5334F4009DD542 /* ADJConnectionValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCAE04A1E5334F4009DD542 /* ADJConnectionValidator.m */; };
+		9DCAE04F1E535134009DD542 /* ADJConnectionValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DCAE04D1E535134009DD542 /* ADJConnectionValidator.h */; };
+		9DCAE0501E535134009DD542 /* ADJConnectionValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCAE04E1E535134009DD542 /* ADJConnectionValidator.m */; };
+		9DCAE0531E535147009DD542 /* ADJConnectionValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DCAE0511E535147009DD542 /* ADJConnectionValidator.h */; };
+		9DCAE0541E535147009DD542 /* ADJConnectionValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCAE0521E535147009DD542 /* ADJConnectionValidator.m */; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8B11D6ED228008E362F /* ADJKeychain.h */; };
 		9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8B21D6ED228008E362F /* ADJKeychain.m */; };
@@ -271,6 +275,55 @@
 			remoteGlobalIDString = 9679920C18BBAE2800394606;
 			remoteInfo = Adjust;
 		};
+		9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
+			remoteInfo = "AdjustExample-iOS";
+		};
+		9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC141CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch";
+		};
+		9D449DBB1E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC2B1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit App";
+		};
+		9D449DBD1E6ED23400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7AC3A1CB4FEDB00D3591F;
+			remoteInfo = "AdjustExample-iWatch WatchKit Extension";
+		};
+		9D449DC31E6ED23900E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DF7A9C21CB4ECA600D3591F;
+			remoteInfo = "AdjustExample-Swift";
+		};
+		9D449DC91E6ED24000E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 963909B21BCC0D8300A2E8A4;
+			remoteInfo = "AdjustExample-tvOS";
+		};
+		9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D1082A41CFDAF8E0050568B;
+			remoteInfo = "AdjustExample-WebView";
+		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -287,7 +340,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				961515921CD2CB2C0022D336 /* AdjustBridge.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,8 +367,6 @@
 		960A8BB71A029A8000F2BB95 /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		960A8BB81A029A8000F2BB95 /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
 		9615158F1CD2CB2C0022D336 /* libAdjustBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		961515911CD2CB2C0022D336 /* AdjustBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
-		961515931CD2CB2C0022D336 /* AdjustBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		961515A11CD2CB4F0022D336 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
 		96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
@@ -341,7 +391,6 @@
 		9648C5ED1CD1765E00A3B049 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		9648C5F51CD1770300A3B049 /* AdjustBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
 		9648C5F61CD1770300A3B049 /* AdjustBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
-		964E17FE1D50C68E0097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		965307F51A000DA400107FF9 /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
 		9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAttributionHandlerTests.m; sourceTree = "<group>"; };
 		965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
@@ -438,9 +487,20 @@
 		96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+NSURLDataWithRequestMocking.m"; sourceTree = "<group>"; };
 		9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJInitState.h; sourceTree = "<group>"; };
 		9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJInitState.m; sourceTree = "<group>"; };
+		9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
+		9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
+		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
+		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
+		9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-WebView.xcodeproj"; path = "examples/AdjustExample-WebView/AdjustExample-WebView.xcodeproj"; sourceTree = "<group>"; };
 		9D75F1841D07460600E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
 		9D75F1851D07460600E5D222 /* adjust_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_event.js; sourceTree = "<group>"; };
 		9D75F1861D07460600E5D222 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
+		9DCAE0491E5334F4009DD542 /* ADJConnectionValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConnectionValidator.h; sourceTree = "<group>"; };
+		9DCAE04A1E5334F4009DD542 /* ADJConnectionValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConnectionValidator.m; sourceTree = "<group>"; };
+		9DCAE04D1E535134009DD542 /* ADJConnectionValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConnectionValidator.h; sourceTree = "<group>"; };
+		9DCAE04E1E535134009DD542 /* ADJConnectionValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConnectionValidator.m; sourceTree = "<group>"; };
+		9DCAE0511E535147009DD542 /* ADJConnectionValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConnectionValidator.h; sourceTree = "<group>"; };
+		9DCAE0521E535147009DD542 /* ADJConnectionValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConnectionValidator.m; sourceTree = "<group>"; };
 		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DF9C8B11D6ED228008E362F /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
 		9DF9C8B21D6ED228008E362F /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
@@ -593,7 +653,6 @@
 				9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */,
 				96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */,
 				9679921118BBAE2800394606 /* Foundation.framework in Frameworks */,
-				964E17FF1D50C68E0097770B /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,12 +660,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */,
-				9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */,
-				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
-				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
 				9679922518BBAE2800394606 /* libAdjust.a in Frameworks */,
+				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
+				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
 				9679922018BBAE2800394606 /* Foundation.framework in Frameworks */,
+				9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */,
+				9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,19 +686,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		961515901CD2CB2C0022D336 /* AdjustBridge */ = {
-			isa = PBXGroup;
-			children = (
-				961515911CD2CB2C0022D336 /* AdjustBridge.h */,
-				961515931CD2CB2C0022D336 /* AdjustBridge.m */,
-			);
-			path = AdjustBridge;
-			sourceTree = "<group>";
-		};
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
-				9648C5E51CD1765E00A3B049 /* WebViewJavascriptBridge */,
 				9648C5F51CD1770300A3B049 /* AdjustBridge.h */,
 				9648C5F61CD1770300A3B049 /* AdjustBridge.m */,
 				968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */,
@@ -647,6 +696,7 @@
 				9D75F1861D07460600E5D222 /* adjust.js */,
 				9D75F1851D07460600E5D222 /* adjust_event.js */,
 				9D75F1841D07460600E5D222 /* adjust_config.js */,
+				9648C5E51CD1765E00A3B049 /* WebViewJavascriptBridge */,
 			);
 			path = AdjustBridge;
 			sourceTree = SOURCE_ROOT;
@@ -669,12 +719,12 @@
 		9679920418BBAE2800394606 = {
 			isa = PBXGroup;
 			children = (
-				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
 				96E5E34B18BBB48A008E7B30 /* Adjust */,
-				9648C5E41CD1765E00A3B049 /* AdjustBridge */,
 				9DFA37AE1C0F219400782607 /* AdjustSdk */,
-				961515901CD2CB2C0022D336 /* AdjustBridge */,
+				9648C5E41CD1765E00A3B049 /* AdjustBridge */,
 				9DFB06111D747070006D48FC /* AdjustSdkTv */,
+				96E5E39A18BBB49E008E7B30 /* AdjustTests */,
+				9D449DAC1E6ED20400E7E80B /* Example Apps */,
 				9679920F18BBAE2800394606 /* Frameworks */,
 				9679920E18BBAE2800394606 /* Products */,
 			);
@@ -700,7 +750,6 @@
 				961515A11CD2CB4F0022D336 /* WebKit.framework */,
 				96325E84190E5CD900A97911 /* AdSupport.framework */,
 				9679921018BBAE2800394606 /* Foundation.framework */,
-				964E17FE1D50C68E0097770B /* SafariServices.framework */,
 				9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */,
 				9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */,
 			);
@@ -780,6 +829,8 @@
 				9DF9C8B21D6ED228008E362F /* ADJKeychain.m */,
 				96B6710E1D788EEC0090A023 /* ADJSessionParameters.h */,
 				96B6710F1D788EEC0090A023 /* ADJSessionParameters.m */,
+				9DCAE0491E5334F4009DD542 /* ADJConnectionValidator.h */,
+				9DCAE04A1E5334F4009DD542 /* ADJConnectionValidator.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -835,6 +886,60 @@
 				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
 			);
 			path = AdjustTests;
+			sourceTree = "<group>";
+		};
+		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */,
+				9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */,
+				9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */,
+				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
+				9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */,
+			);
+			name = "Example Apps";
+			sourceTree = "<group>";
+		};
+		9D449DAE1E6ED22900E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DB41E6ED23400E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DBA1E6ED23400E7E80B /* AdjustExample-iWatch.app */,
+				9D449DBC1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit App.app */,
+				9D449DBE1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DC01E6ED23900E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DC41E6ED23900E7E80B /* AdjustExample-Swift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DC61E6ED24000E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DCA1E6ED24000E7E80B /* AdjustExample-tvOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D449DCC1E6ED24400E7E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D449DD01E6ED24400E7E80B /* AdjustExample-WebView.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9DF9C8C81D6F3CA5008E362F /* Adjust */ = {
@@ -897,6 +1002,8 @@
 				9DF9C9071D6F3CA5008E362F /* ADJUtil.m */,
 				96B671121D788F4A0090A023 /* ADJSessionParameters.h */,
 				96B671131D788F4A0090A023 /* ADJSessionParameters.m */,
+				9DCAE04D1E535134009DD542 /* ADJConnectionValidator.h */,
+				9DCAE04E1E535134009DD542 /* ADJConnectionValidator.m */,
 				9DF9C9081D6F3CA5008E362F /* Info.plist */,
 			);
 			path = Adjust;
@@ -995,6 +1102,8 @@
 				9DFB06581D7470C0006D48FC /* ADJUtil.m */,
 				96B671161D788F7A0090A023 /* ADJSessionParameters.h */,
 				96B671171D788F7A0090A023 /* ADJSessionParameters.m */,
+				9DCAE0511E535147009DD542 /* ADJConnectionValidator.h */,
+				9DCAE0521E535147009DD542 /* ADJConnectionValidator.m */,
 				9DFB06591D7470C0006D48FC /* Info.plist */,
 			);
 			path = Adjust;
@@ -1039,6 +1148,7 @@
 				96BCFBD91AC9934E005A65C5 /* ADJAdjustFactory.h in Headers */,
 				96BCFBDA1AC99353005A65C5 /* ADJPackageBuilder.h in Headers */,
 				96BCFBDB1AC99355005A65C5 /* ADJPackageHandler.h in Headers */,
+				9DCAE04B1E5334F4009DD542 /* ADJConnectionValidator.h in Headers */,
 				96BCFBDC1AC99360005A65C5 /* ADJRequestHandler.h in Headers */,
 				96BCFBDE1AC99365005A65C5 /* ADJUtil.h in Headers */,
 				96BCFBDF1AC99368005A65C5 /* ADJDeviceInfo.h in Headers */,
@@ -1079,6 +1189,7 @@
 				9DF9C92D1D6F3CA5008E362F /* ADJPackageBuilder.h in Headers */,
 				9DF9C92F1D6F3CA5008E362F /* ADJPackageHandler.h in Headers */,
 				9DF9C9311D6F3CA5008E362F /* ADJRequestHandler.h in Headers */,
+				9DCAE04F1E535134009DD542 /* ADJConnectionValidator.h in Headers */,
 				9DF9C9451D6F3CA5008E362F /* ADJUtil.h in Headers */,
 				9DF9C9211D6F3CA5008E362F /* ADJDeviceInfo.h in Headers */,
 				9DF9C91B1D6F3CA5008E362F /* ADJAttributionHandler.h in Headers */,
@@ -1118,6 +1229,7 @@
 				9DFB067E1D7470C0006D48FC /* ADJPackageBuilder.h in Headers */,
 				9DFB06801D7470C0006D48FC /* ADJPackageHandler.h in Headers */,
 				9DFB06821D7470C0006D48FC /* ADJRequestHandler.h in Headers */,
+				9DCAE0531E535147009DD542 /* ADJConnectionValidator.h in Headers */,
 				9DFB06961D7470C0006D48FC /* ADJUtil.h in Headers */,
 				9DFB06721D7470C0006D48FC /* ADJDeviceInfo.h in Headers */,
 				9DFB066C1D7470C0006D48FC /* ADJAttributionHandler.h in Headers */,
@@ -1233,7 +1345,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9615158E1CD2CB2C0022D336 = {
@@ -1260,6 +1372,28 @@
 			mainGroup = 9679920418BBAE2800394606;
 			productRefGroup = 9679920E18BBAE2800394606 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9D449DAE1E6ED22900E7E80B /* Products */;
+					ProjectRef = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DB41E6ED23400E7E80B /* Products */;
+					ProjectRef = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DC01E6ED23900E7E80B /* Products */;
+					ProjectRef = 9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DC61E6ED24000E7E80B /* Products */;
+					ProjectRef = 9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 9D449DCC1E6ED24400E7E80B /* Products */;
+					ProjectRef = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9679920C18BBAE2800394606 /* Adjust */,
@@ -1271,6 +1405,58 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iOS.app";
+			remoteRef = 9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBA1E6ED23400E7E80B /* AdjustExample-iWatch.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch.app";
+			remoteRef = 9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBC1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iWatch WatchKit App.app";
+			remoteRef = 9D449DBB1E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DBE1E6ED23400E7E80B /* AdjustExample-iWatch WatchKit Extension.appex */ = {
+			isa = PBXReferenceProxy;
+			fileType = "wrapper.app-extension";
+			path = "AdjustExample-iWatch WatchKit Extension.appex";
+			remoteRef = 9D449DBD1E6ED23400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DC41E6ED23900E7E80B /* AdjustExample-Swift.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-Swift.app";
+			remoteRef = 9D449DC31E6ED23900E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DCA1E6ED24000E7E80B /* AdjustExample-tvOS.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-tvOS.app";
+			remoteRef = 9D449DC91E6ED24000E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D449DD01E6ED24400E7E80B /* AdjustExample-WebView.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-WebView.app";
+			remoteRef = 9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9679921B18BBAE2800394606 /* Resources */ = {
@@ -1400,6 +1586,7 @@
 				96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */,
 				968173841C3C2D07002AE1DE /* ADJSessionSuccess.m in Sources */,
 				968173881C3C2D36002AE1DE /* ADJSessionFailure.m in Sources */,
+				9DCAE04C1E5334F4009DD542 /* ADJConnectionValidator.m in Sources */,
 				9601CAE51C74B70600670879 /* ADJEventSuccess.m in Sources */,
 				9601CAE91C74BAAE00670879 /* ADJEventFailure.m in Sources */,
 				96164D8D1CCA4DEA009431AB /* ADJSystemProfile.m in Sources */,
@@ -1472,6 +1659,7 @@
 				9DF9C9341D6F3CA5008E362F /* ADJResponseData.m in Sources */,
 				9DF9C93A1D6F3CA5008E362F /* ADJSessionSuccess.m in Sources */,
 				9DF9C9381D6F3CA5008E362F /* ADJSessionFailure.m in Sources */,
+				9DCAE0501E535134009DD542 /* ADJConnectionValidator.m in Sources */,
 				9DF9C9281D6F3CA5008E362F /* ADJEventSuccess.m in Sources */,
 				9DF9C9261D6F3CA5008E362F /* ADJEventFailure.m in Sources */,
 				9DF9C93C1D6F3CA5008E362F /* ADJSystemProfile.m in Sources */,
@@ -1510,6 +1698,7 @@
 				9DFB06851D7470C0006D48FC /* ADJResponseData.m in Sources */,
 				9DFB068B1D7470C0006D48FC /* ADJSessionSuccess.m in Sources */,
 				9DFB06891D7470C0006D48FC /* ADJSessionFailure.m in Sources */,
+				9DCAE0541E535147009DD542 /* ADJConnectionValidator.m in Sources */,
 				9DFB06791D7470C0006D48FC /* ADJEventSuccess.m in Sources */,
 				9DFB06771D7470C0006D48FC /* ADJEventFailure.m in Sources */,
 				9DFB068D1D7470C0006D48FC /* ADJSystemProfile.m in Sources */,
@@ -1588,6 +1777,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1597,13 +1787,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1627,6 +1822,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1636,13 +1832,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1659,6 +1860,7 @@
 		9679923118BBAE2800394606 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
@@ -1669,6 +1871,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
+				GCC_WARN_SIGN_COMPARE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1681,6 +1884,7 @@
 		9679923218BBAE2800394606 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
@@ -1691,6 +1895,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
+				GCC_WARN_SIGN_COMPARE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
@@ -1758,7 +1963,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -1787,7 +1992,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -1817,6 +2022,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -1848,6 +2054,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;

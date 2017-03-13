@@ -10,36 +10,40 @@
 
 @implementation ADJEventFailure
 
-+ (ADJEventFailure *)eventFailureResponseData {
-    return [[ADJEventFailure alloc] init];
-}
+#pragma mark - Object lifecycle methods
 
 - (id)init {
     self = [super init];
-    if (self == nil) return nil;
+    
+    if (self == nil) {
+        return nil;
+    }
 
     return self;
 }
 
-#pragma mark - NSCopying
++ (ADJEventFailure *)eventFailureResponseData {
+    return [[ADJEventFailure alloc] init];
+}
 
--(id)copyWithZone:(NSZone *)zone
-{
-    ADJEventFailure* copy = [[[self class] allocWithZone:zone] init];
+#pragma mark - NSCopying protocol methods
+
+- (id)copyWithZone:(NSZone *)zone {
+    ADJEventFailure *copy = [[[self class] allocWithZone:zone] init];
 
     if (copy) {
-        copy.message            = [self.message copyWithZone:zone];
-        copy.timeStamp          = [self.timeStamp copyWithZone:zone];
-        copy.adid               = [self.adid copyWithZone:zone];
-        copy.eventToken         = [self.eventToken copyWithZone:zone];
-        copy.willRetry          = self.willRetry;
-        copy.jsonResponse       = [self.jsonResponse copyWithZone:zone];
+        copy.message = [self.message copyWithZone:zone];
+        copy.timeStamp = [self.timeStamp copyWithZone:zone];
+        copy.adid = [self.adid copyWithZone:zone];
+        copy.eventToken = [self.eventToken copyWithZone:zone];
+        copy.willRetry = self.willRetry;
+        copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
     }
 
     return copy;
 }
 
-#pragma mark - NSObject
+#pragma mark - NSObject protocol methods
 
 - (NSString *)description {
     return [NSString stringWithFormat: @"Event Failure msg:%@ time:%@ adid:%@ event:%@ retry:%@ json:%@",

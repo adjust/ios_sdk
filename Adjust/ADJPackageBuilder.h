@@ -23,7 +23,7 @@
 @property (nonatomic, copy) NSString *deeplink;
 
 @property (nonatomic, strong) NSDictionary *attributionDetails;
-@property (nonatomic, strong) NSDictionary* deeplinkParameters;
+@property (nonatomic, strong) NSDictionary *deeplinkParameters;
 
 @property (nonatomic, copy) ADJAttribution *attribution;
 
@@ -34,14 +34,19 @@
 
 - (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
                                   isInDelay:(BOOL)isInDelay;
+
 - (ADJActivityPackage *)buildAttributionPackage;
+
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                         sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay;
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
+
 + (void)parameters:(NSMutableDictionary *)parameters setString:(NSString *)value forKey:(NSString *)key;
 
 @end

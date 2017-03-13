@@ -6,47 +6,34 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 
-#import "ADJActivityPackage.h"
 #import "ADJActivityKind.h"
+#import "ADJActivityPackage.h"
 
-#pragma mark -
 @implementation ADJActivityPackage
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"%@%@",
-            [ADJActivityKindUtil activityKindToString:self.activityKind],
-            self.suffix];
-}
+#pragma mark - Public methods
 
 - (NSString *)extendedString {
     NSMutableString *builder = [NSMutableString string];
+
     [builder appendFormat:@"Path:      %@\n", self.path];
     [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];
 
     if (self.parameters != nil) {
-        NSArray * sortedKeys = [[self.parameters allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        NSArray *sortedKeys = [[self.parameters allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         NSUInteger keyCount = [sortedKeys count];
+
         [builder appendFormat:@"Parameters:"];
-        for (int i = 0; i < keyCount; i++) {
+        
+        for (NSUInteger i = 0; i < keyCount; i++) {
             NSString *key = (NSString*)[sortedKeys objectAtIndex:i];
             NSString *value = [self.parameters objectForKey:key];
+            
             [builder appendFormat:@"\n\t\t%-22s %@", [key UTF8String], value];
         }
     }
 
     return builder;
-}
-
-- (NSString *)successMessage {
-    return [NSString stringWithFormat:@"Tracked %@%@",
-            [ADJActivityKindUtil activityKindToString:self.activityKind],
-            self.suffix];
-}
-
-- (NSString *)failureMessage {
-    return [NSString stringWithFormat:@"Failed to track %@%@",
-            [ADJActivityKindUtil activityKindToString:self.activityKind],
-            self.suffix];
 }
 
 - (NSInteger)getRetries {
@@ -55,24 +42,41 @@
 
 - (NSInteger)increaseRetries {
     self.retries = self.retries + 1;
+    
     return self.retries;
 }
 
-#pragma mark NSCoding
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
+}
+
+- (NSString *)successMessage {
+    return [NSString stringWithFormat:@"Tracked %@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
+}
+
+- (NSString *)failureMessage {
+    return [NSString stringWithFormat:@"Failed to track %@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
+}
+
+#pragma mark - NSCoding protocol methods
+
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
-    if (self == nil) return self;
+
+    if (self == nil) {
+        return self;
+    }
 
     self.path = [decoder decodeObjectForKey:@"path"];
+    self.suffix = [decoder decodeObjectForKey:@"suffix"];
     self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
     self.parameters = [decoder decodeObjectForKey:@"parameters"];
-    NSString *kindString = [decoder decodeObjectForKey:@"kind"];
-    self.suffix = [decoder decodeObjectForKey:@"suffix"];
+    self.partnerParameters = [decoder decodeObjectForKey:@"partnerParameters"];
+    self.callbackParameters = [decoder decodeObjectForKey:@"callbackParameters"];
 
+    NSString *kindString = [decoder decodeObjectForKey:@"kind"];
     self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
-    self.callbackParameters = [decoder decodeObjectForKey:@"callbackParameters"];
-    self.partnerParameters = [decoder decodeObjectForKey:@"partnerParameters"];
     return self;
 }
 
@@ -80,10 +84,10 @@
     NSString *kindString = [ADJActivityKindUtil activityKindToString:self.activityKind];
 
     [encoder encodeObject:self.path forKey:@"path"];
-    [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
-    [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:kindString forKey:@"kind"];
     [encoder encodeObject:self.suffix forKey:@"suffix"];
+    [encoder encodeObject:self.clientSdk forKey:@"clientSdk"];
+    [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:self.callbackParameters forKey:@"callbackParameters"];
     [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
 }

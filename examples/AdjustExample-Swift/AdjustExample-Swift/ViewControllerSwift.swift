@@ -34,7 +34,7 @@ class ViewControllerSwift: UIViewController {
     }
 
     @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "a4fd35");
+        let event = ADJEvent(eventToken: "a4fd35")
         event?.setRevenue(0.99, currency: "EUR");
 
         Adjust.trackEvent(event);

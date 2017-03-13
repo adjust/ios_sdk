@@ -10,47 +10,54 @@
 #include <stdlib.h>
 #include <sys/xattr.h>
 
+#import <objc/message.h>
+
 #import "ADJUtil.h"
 #import "ADJLogger.h"
 #import "ADJResponseData.h"
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
-#import <objc/message.h>
+#import "ADJConnectionValidator.h"
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
 static NSDateFormatter *dateFormat;
-static NSRegularExpression * universalLinkRegex = nil;
-static NSRegularExpression * shortUniversalLinkRegex = nil;
+static NSRegularExpression *universalLinkRegex = nil;
+static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
-static NSNumberFormatter * secondsNumberFormatter = nil;
+static NSRegularExpression *shortUniversalLinkRegex = nil;
+static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 
-static NSString * const kClientSdk              = @"ios4.11.0";
-static NSURLSessionConfiguration * urlSessionConfiguration = nil;
-static NSString * userAgent = nil;
-static NSString * const kDeeplinkParam          = @"deep_link=";
-static NSString * const kSchemeDelimiter        = @"://";
-static NSString * const kDefaultScheme          = @"AdjustUniversalScheme";
-static NSString * const kUniversalLinkPattern   = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
+static ADJConnectionValidator *connectionValidator = nil;
+
+static NSString *userAgent = nil;
+
+static NSString * const kClientSdk                  = @"ios4.11.1";
+static NSString * const kDeeplinkParam              = @"deep_link=";
+static NSString * const kSchemeDelimiter            = @"://";
+static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
+static NSString * const kUniversalLinkPattern       = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
+static NSString * const kOptionalRedirectPattern    = @"adjust_redirect=[^&#]*";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
-static NSString * const kOptionalRedirectPattern = @"adjust_redirect=[^&#]*";
 
-static NSString * const kBaseUrl                = @"https://app.adjust.com";
-static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
+static NSString * const kBaseUrl                    = @"https://app.adjust.com";
+static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
 @implementation ADJUtil
 
-+ (void) initialize {
++ (void)initialize {
     if (self != [ADJUtil class]) {
         return;
     }
+
     [self initializeDateFormat];
     [self initializeUniversalLinkRegex];
     [self initializeSecondsNumberFormatter];
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
+    [self initializeConnectionValidator];
 }
 
 + (void)initializeDateFormat {
@@ -84,10 +91,9 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 + (void)initializeUniversalLinkRegex {
     NSError *error = NULL;
 
-    NSRegularExpression *regex  = [NSRegularExpression
-                                   regularExpressionWithPattern:kUniversalLinkPattern
-                                   options:NSRegularExpressionCaseInsensitive
-                                   error:&error];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kUniversalLinkPattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
 
     if ([ADJUtil isNotNull:error]) {
         [ADJAdjustFactory.logger error:@"Universal link regex rule error (%@)", [error description]];
@@ -100,10 +106,9 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 + (void)initializeShortUniversalLinkRegex {
     NSError *error = NULL;
 
-    NSRegularExpression *regex  = [NSRegularExpression
-                                   regularExpressionWithPattern:kShortUniversalLinkPattern
-                                   options:NSRegularExpressionCaseInsensitive
-                                   error:&error];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kShortUniversalLinkPattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
 
     if ([ADJUtil isNotNull:error]) {
         [ADJAdjustFactory.logger error:@"Short Universal link regex rule error (%@)", [error description]];
@@ -135,6 +140,10 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 
 + (void)initializeUrlSessionConfiguration {
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+}
+
++ (void)initializeConnectionValidator {
+    connectionValidator = [[ADJConnectionValidator alloc] init];
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
@@ -201,7 +210,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     return [dateFormat stringFromDate:value];
 }
 
-+ (void) saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
++ (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
     NSError *error = nil;
     NSException *exception = nil;
     NSDictionary *jsonDict = [ADJUtil buildJsonDict:jsonData exceptionPtr:&exception errorPtr:&error];
@@ -343,6 +352,7 @@ static NSString * const kDateFormat             = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
               systemErrorMessage:(NSString *)systemErrorMessage
               suffixErrorMessage:(NSString *)suffixErrorMessage {
     NSString *errorMessage = [NSString stringWithFormat:@"%@ (%@)", prefixErrorMessage, systemErrorMessage];
+    
     if (suffixErrorMessage == nil) {
         return errorMessage;
     } else {
@@ -404,6 +414,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (userAgent != nil) {
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     }
+
     if (NSURLSessionClass != nil) {
         [ADJUtil sendNSURLSessionRequest:request
                       prefixErrorMessage:prefixErrorMessage
@@ -423,9 +434,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
              prefixErrorMessage:(NSString *)prefixErrorMessage
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
-            responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
-{
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+            responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
+
+    [connectionValidator setExpectedTce:tce];
+    [connectionValidator setDidValidationHappen:NO];
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
+                                                          delegate:connectionValidator
+                                                     delegateQueue:nil];
+
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -435,10 +453,17 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               prefixErrorMessage:prefixErrorMessage
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
+
+                                      if (NO == connectionValidator.didValidationHappen) {
+                                          responseData.validationResult = YES;
+                                      } else {
+                                          responseData.validationResult = connectionValidator.validationResult;
+                                      }
+
                                       responseDataHandler(responseData);
                                   }];
+    
     [task resume];
-
     [session finishTasksAndInvalidate];
 }
 
@@ -557,6 +582,50 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return [[UIDevice currentDevice] adjIdForAdvertisers];
 }
 
++ (NSString *)getUpdateTime {
+    NSDate *updateTime = nil;
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    @try {
+        __autoreleasing NSError *error;
+        NSString *infoPlistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
+        updateTime = [[[NSFileManager defaultManager] attributesOfItemAtPath:infoPlistPath error:&error] objectForKey:NSFileModificationDate];
+    } @catch (NSException *exception) {
+        [logger error:@"Error while trying to check update date. Exception: %@", exception];
+    }
+    
+    return [ADJUtil formatDate:updateTime];
+}
+
++ (NSString *)getInstallTime {
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+
+    NSDate *installTime = nil;
+    NSString *pathToCheck = nil;
+    NSSearchPathDirectory folderToCheck = NSDocumentDirectory;
+#if TARGET_OS_TV
+    folderToCheck = NSCachesDirectory;
+#endif
+    
+    @try {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(folderToCheck, NSUserDomainMask, YES);
+
+        if (paths.count > 0) {
+            pathToCheck = [paths objectAtIndex:0];
+        } else {
+            // There's no NSDocumentDirectory (or NSCachesDirectory).
+            // Check app's bundle creation date instead.
+            pathToCheck = [[NSBundle mainBundle] bundlePath];
+        }
+
+        installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
+    } @catch (NSException *exception) {
+        [logger error:@"Error while trying to check install date. Exception: %@", exception];
+    }
+    
+    return [ADJUtil formatDate:installTime];
+}
+
 + (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
@@ -591,6 +660,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     if ([matches count] == 0) {
         matches = [shortUniversalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
+        
         if ([matches count] == 0) {
             [logger error:@"Url doesn't match as universal link or short version"];
             return nil;
@@ -610,9 +680,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     NSString *tailSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
-
     NSString *finalTailSubString = [ADJUtil removeOptionalRedirect:tailSubString];
-
     NSString *extractedUrlString = [NSString stringWithFormat:@"%@://%@", scheme, finalTailSubString];
 
     [logger info:@"Converted deeplink from universal link %@", extractedUrlString];
@@ -650,47 +718,38 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     NSTextCheckingResult *redirectMatch = optionalRedirectmatches[0];
-
     NSRange redirectRange = [redirectMatch rangeAtIndex:0];
 
     NSString *beforeRedirect = [tailSubString substringToIndex:redirectRange.location];
     NSString *afterRedirect = [tailSubString substringFromIndex:(redirectRange.location + redirectRange.length)];
 
-    if (beforeRedirect.length > 0 &&
-        afterRedirect.length > 0)
-    {
+    if (beforeRedirect.length > 0 && afterRedirect.length > 0) {
         NSString *lastCharacterBeforeRedirect = [beforeRedirect substringFromIndex:beforeRedirect.length - 1];
         NSString *firstCharacterAfterRedirect = [afterRedirect substringToIndex:1];
 
         if ([@"&" isEqualToString:lastCharacterBeforeRedirect] &&
-            [@"&" isEqualToString:firstCharacterAfterRedirect])
-        {
-            beforeRedirect = [beforeRedirect
-                              substringToIndex:beforeRedirect.length - 1];
+            [@"&" isEqualToString:firstCharacterAfterRedirect]) {
+            beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
 
         if ([@"&" isEqualToString:lastCharacterBeforeRedirect] &&
-            [@"#" isEqualToString:firstCharacterAfterRedirect])
-        {
-            beforeRedirect = [beforeRedirect
-                              substringToIndex:beforeRedirect.length - 1];
+            [@"#" isEqualToString:firstCharacterAfterRedirect]) {
+            beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
 
         if ([@"?" isEqualToString:lastCharacterBeforeRedirect] &&
-            [@"#" isEqualToString:firstCharacterAfterRedirect])
-        {
-            beforeRedirect = [beforeRedirect
-                              substringToIndex:beforeRedirect.length - 1];
+            [@"#" isEqualToString:firstCharacterAfterRedirect]) {
+            beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
 
         if ([@"?" isEqualToString:lastCharacterBeforeRedirect] &&
-            [@"&" isEqualToString:firstCharacterAfterRedirect])
-        {
+            [@"&" isEqualToString:firstCharacterAfterRedirect]) {
             afterRedirect = [afterRedirect substringFromIndex:1];
         }
 
     }
-    NSString * removedRedirect = [NSString stringWithFormat:@"%@%@", beforeRedirect, afterRedirect];
+    
+    NSString *removedRedirect = [NSString stringWithFormat:@"%@%@", beforeRedirect, afterRedirect];
 
     return removedRedirect;
 }
@@ -793,6 +852,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     NSMutableDictionary *mergedParameters = [NSMutableDictionary dictionaryWithDictionary:target];
+    
     [source enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
         NSString *oldValue = [mergedParameters objectForKey:key];
 
@@ -856,7 +916,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl {
-    UIApplication * sharedUIApplication = [UIApplication sharedApplication];
+    UIApplication *sharedUIApplication = [UIApplication sharedApplication];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     SEL openUrlSelector = @selector(openURL:options:completionHandler:);
@@ -871,23 +931,22 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
          }];
          */
 
-        NSMethodSignature * methSig = [sharedUIApplication methodSignatureForSelector: openUrlSelector];
-        NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: methSig];
+        NSMethodSignature *methSig = [sharedUIApplication methodSignatureForSelector:openUrlSelector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methSig];
 
         [invocation setSelector: openUrlSelector];
         [invocation setTarget: sharedUIApplication];
 
-        NSDictionary * emptyDictionary = @{};
+        NSDictionary *emptyDictionary = @{};
         void (^completion)(BOOL) = ^(BOOL success) {
             if (!success) {
                 [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
             }
         };
 
-        [invocation setArgument: &deepLinkUrl  atIndex: 2];
-        [invocation setArgument: &emptyDictionary atIndex: 3];
-        [invocation setArgument: &completion  atIndex: 4];
-
+        [invocation setArgument:&deepLinkUrl atIndex: 2];
+        [invocation setArgument:&emptyDictionary atIndex: 3];
+        [invocation setArgument:&completion atIndex: 4];
         [invocation invoke];
     } else {
 #pragma clang diagnostic push
@@ -901,10 +960,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 }
 
-+ (NSString*)convertDeviceToken:(NSData*)deviceToken {
++ (NSString *)convertDeviceToken:(NSData *)deviceToken {
     if (deviceToken == nil) {
         return nil;;
     }
+
     NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
                                    [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     if (deviceTokenString == nil) {
@@ -921,7 +981,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         return NO;
     }
 
-    NSDictionary* details = [attributionDetails objectForKey:@"Version3.1"];
+    NSDictionary *details = [attributionDetails objectForKey:@"Version3.1"];
     
     if ([ADJUtil isNull:details]) {
         return YES;
@@ -932,8 +992,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         ![ADJUtil contains:details key:@"iad-campaign-id" value:@"1234567890"] ||
         ![ADJUtil contains:details key:@"iad-campaign-name" value:@"CampaignName"] ||
         ![ADJUtil contains:details key:@"iad-lineitem-id" value:@"1234567890"] ||
-        ![ADJUtil contains:details key:@"iad-lineitem-name" value:@"LineName"])
-    {
+        ![ADJUtil contains:details key:@"iad-lineitem-name" value:@"LineName"]) {
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy common fields for both iAd3 and Apple Search Ads"];
         return YES;
     }
@@ -941,31 +1000,30 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     // Apple Search Ads fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
         [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] &&
-        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"])
-    {
+        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"]) {
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy Apple Search Ads fields"];
-
         return NO;
     }
 
     // iAd3 fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
-        [ADJUtil contains:details key:@"iad-creative-name" value:@"CreativeName"])
-    {
+        [ADJUtil contains:details key:@"iad-creative-name" value:@"CreativeName"]) {
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy iAd3 fields"];
         return NO;
     }
+
     return YES;
 }
 
 + (BOOL)contains:(NSDictionary *)dictionary
         key:(NSString *)key
-        value:(NSString *)value
-{
+        value:(NSString *)value {
     id readValue = [dictionary objectForKey:key];
+    
     if ([ADJUtil isNull:readValue]) {
         return NO;
     }
+    
     return [value isEqualToString:[readValue description]];
 }
 

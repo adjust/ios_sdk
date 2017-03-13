@@ -16,6 +16,8 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL updatePackages;
+@property (nonatomic, assign) BOOL firstLaunch;
+@property (nonatomic, assign) BOOL sessionResponseProcessed;
 
 - (id)init;
 
@@ -28,6 +30,8 @@
 - (BOOL)isDelayStart;
 - (BOOL)isToStartNow;
 - (BOOL)isToUpdatePackages;
+- (BOOL)isFirstLaunch;
+- (BOOL)hasSessionResponseNotProcessed;
 
 @end
 

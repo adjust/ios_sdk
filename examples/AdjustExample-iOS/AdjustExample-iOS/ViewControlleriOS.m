@@ -6,11 +6,10 @@
 //  Copyright © 2015 adjust. All rights reserved.
 //
 
+#import "Adjust.h"
 #import "Constants.h"
 #import "URLRequest.h"
 #import "ViewControlleriOS.h"
-
-#import <AdjustSdk/Adjust.h>
 
 @interface ViewControlleriOS ()
 

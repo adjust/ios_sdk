@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AdjustSdk/Adjust.h>
 
+#import "Adjust.h"
 #import "AdjustTrackingHelper.h"
 
 @implementation AdjustTrackingHelper

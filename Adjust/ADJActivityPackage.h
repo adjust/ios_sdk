@@ -10,25 +10,34 @@
 
 @interface ADJActivityPackage : NSObject <NSCoding>
 
-// data
+// Data
+
 @property (nonatomic, copy) NSString *path;
+
 @property (nonatomic, copy) NSString *clientSdk;
-@property (nonatomic, strong) NSMutableDictionary *parameters;
 
 @property (nonatomic, assign) NSInteger retries;
 
-@property (nonatomic, strong) NSDictionary *callbackParameters;
+@property (nonatomic, strong) NSMutableDictionary *parameters;
+
 @property (nonatomic, strong) NSDictionary *partnerParameters;
 
-// logs
-@property (nonatomic, assign) ADJActivityKind activityKind;
+@property (nonatomic, strong) NSDictionary *callbackParameters;
+
+// Logs
+
 @property (nonatomic, copy) NSString *suffix;
 
+@property (nonatomic, assign) ADJActivityKind activityKind;
+
 - (NSString *)extendedString;
+
 - (NSString *)successMessage;
+
 - (NSString *)failureMessage;
 
 - (NSInteger)getRetries;
+
 - (NSInteger)increaseRetries;
 
 @end

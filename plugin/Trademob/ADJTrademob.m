@@ -11,13 +11,9 @@
 
 static const NSUInteger MAX_LISTING_ITEMS_COUNT = 5;
 
-
 @implementation ADJTrademobItem
 
-- (instancetype) initWithId:(NSString *)itemId
-                      price:(float)price
-                   quantity:(NSUInteger)quantity {
-    
+- (instancetype)initWithId:(NSString *)itemId price:(float)price quantity:(NSUInteger)quantity {
     self = [super init];
     
     if (self) {
@@ -25,20 +21,19 @@ static const NSUInteger MAX_LISTING_ITEMS_COUNT = 5;
         self.price = price;
         self.quantity = quantity;
     }
-    
+
     return self;
 }
 
-+ (NSDictionary *)dictionaryFromItem: (ADJTrademobItem *)item {
-    return @{@"itemId": item.itemId, @"price":
-                 [NSNumber numberWithFloat:item.price],
++ (NSDictionary *)dictionaryFromItem:(ADJTrademobItem *)item {
+    return @{@"itemId": item.itemId,
+             @"price": [NSNumber numberWithFloat:item.price],
              @"quantity":[NSNumber numberWithUnsignedInteger:item.quantity]};
 }
 
 @end
 
 @implementation ADJTrademob
-
 
 + (void)injectViewListingIntoEvent:(ADJEvent *)event
                            itemIds:(NSArray *)itemIds
@@ -68,49 +63,46 @@ static const NSUInteger MAX_LISTING_ITEMS_COUNT = 5;
     [event addPartnerParameter:@"tm_md" value:[ADJTrademob stringifyMetadata:metadata]];
 }
 
-
 # pragma private helper functions
 
-
 + (NSString *)stringifyItemIds:(NSArray *)itemIds {
-    
     NSUInteger length = [itemIds count];
-    
     NSMutableArray *filteredArray = [NSMutableArray array];
     
     for (NSUInteger index = 0; index < length; ++index) {
         if (index >= MAX_LISTING_ITEMS_COUNT) {
             break;
         }
-        
+
         NSObject *currentId = itemIds[index];
+
         if ([currentId isKindOfClass:[NSString class]] && ![(NSString *)currentId isEqualToString:@""]) {
             [filteredArray addObject:currentId];
         }
     }
-    
-    NSString* tmItemIds = [ADJTrademob stringify:filteredArray];
-    
+
+    NSString *tmItemIds = [ADJTrademob stringify:filteredArray];
+
     if (nil == tmItemIds) {
         tmItemIds = @"[]";
     }
-    
+
     return [tmItemIds stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
 }
 
 + (NSString *)stringifyItems:(NSArray *)items {
     NSUInteger length = [items count];
-    
     NSMutableArray *filteredItems = [NSMutableArray array];
     
     for (NSUInteger index = 0; index < length; ++index) {
-        
         if (index >= MAX_LISTING_ITEMS_COUNT) {
             break;
         }
-        ADJTrademobItem* currentItem = items[index];
+        
+        ADJTrademobItem *currentItem = items[index];
+
         if ([currentItem isKindOfClass:[ADJTrademobItem class]]) {
-            NSDictionary* dict = [ADJTrademobItem dictionaryFromItem:currentItem];
+            NSDictionary *dict = [ADJTrademobItem dictionaryFromItem:currentItem];
             [filteredItems addObject:dict];
         }
     }
@@ -127,12 +119,11 @@ static const NSUInteger MAX_LISTING_ITEMS_COUNT = 5;
 + (NSString *)stringifyMetadata: (NSDictionary *)metadata {
     NSMutableDictionary *filteredData = [NSMutableDictionary dictionary];
     
-    [metadata enumerateKeysAndObjectsUsingBlock:
-     ^(NSString *key, id value, BOOL* stop){
-         if ([value isKindOfClass:[NSString class]]) {
-             filteredData[key] = value;
-         }
-     }];
+    [metadata enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+        if ([value isKindOfClass:[NSString class]]) {
+            filteredData[key] = value;
+        }
+    }];
     
     NSString *jsonMetaData = [ADJTrademob stringify:filteredData];
     
@@ -144,17 +135,17 @@ static const NSUInteger MAX_LISTING_ITEMS_COUNT = 5;
 }
 
 + (NSString *)stringify:(NSObject *)object {
-    if ( nil == object ) {
+    if (nil == object) {
         return nil;
     }
     
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:0 error:&error];
     
-    if ( !jsonData || error ) {
+    if (!jsonData || error) {
         [ADJAdjustFactory.logger error:@"%@", [error debugDescription]];
         return nil;
-    } else{
+    } else {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
 }

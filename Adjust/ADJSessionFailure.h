@@ -10,22 +10,36 @@
 
 @interface ADJSessionFailure : NSObject <NSCopying>
 
-// error message from the server or the sdk.
-@property (nonatomic, copy) NSString * message;
+/**
+ * @brief Message from the adjust backend.
+ */
+@property (nonatomic, copy, nullable) NSString *message;
 
-// timeStamp from the server.
-@property (nonatomic, copy) NSString * timeStamp;
+/**
+ * @brief Timestamp from the adjust backend.
+ */
+@property (nonatomic, copy, nullable) NSString *timeStamp;
 
-// adid of the device.
-@property (nonatomic, copy) NSString * adid;
+/**
+ * @brief Adjust identifier of the device.
+ */
+@property (nonatomic, copy, nullable) NSString *adid;
 
-// indicates if the package will be retried to be send later
+/**
+ * @brief Information whether sending of the package will be retried or not.
+ */
 @property (nonatomic, assign) BOOL willRetry;
 
-// the server response in json format
-@property (nonatomic, strong) NSDictionary *jsonResponse;
+/**
+ * @brief Backend response in JSON format.
+ */
+@property (nonatomic, strong, nullable) NSDictionary *jsonResponse;
 
-+ (ADJSessionFailure *)sessionFailureResponseData;
-- (id)init;
+/**
+ * @brief Initialisation method.
+ *
+ * @return ADJSessionFailure instance.
+ */
++ (nullable ADJSessionFailure *)sessionFailureResponseData;
 
 @end

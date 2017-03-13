@@ -8,40 +8,77 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * @brief Adjust attribution object.
+ */
 @interface ADJAttribution : NSObject <NSCoding, NSCopying>
 
-// the following attributes are only set when error is nil
-// (when activity was tracked successfully and response could be parsed)
+/**
+ * @brief Tracker token.
+ */
+@property (nonatomic, copy, nullable) NSString *trackerToken;
 
-// tracker token of current device
-@property (nonatomic, copy) NSString *trackerToken;
+/**
+ * @brief Tracker name.
+ */
+@property (nonatomic, copy, nullable) NSString *trackerName;
 
-// tracker name of current device
-@property (nonatomic, copy) NSString *trackerName;
+/**
+ * @brief Network name.
+ */
+@property (nonatomic, copy, nullable) NSString *network;
 
-// tracker network
-@property (nonatomic, copy) NSString *network;
+/**
+ * @brief Campaign name.
+ */
+@property (nonatomic, copy, nullable) NSString *campaign;
 
-// tracker campaign
-@property (nonatomic, copy) NSString *campaign;
+/**
+ * @brief Adgroup name.
+ */
+@property (nonatomic, copy, nullable) NSString *adgroup;
 
-// tracker adgroup
-@property (nonatomic, copy) NSString *adgroup;
+/**
+ * @brief Creative name.
+ */
+@property (nonatomic, copy, nullable) NSString *creative;
 
-// tracker creative
-@property (nonatomic, copy) NSString *creative;
+/**
+ * @brief Click label content.
+ */
+@property (nonatomic, copy, nullable) NSString *clickLabel;
 
-// tracker click_label
-@property (nonatomic, copy) NSString *clickLabel;
+/**
+ * @brief Adjust identifier value.
+ */
+@property (nonatomic, copy, nullable) NSString *adid;
 
-@property (nonatomic, copy) NSString *adid;
+/**
+ * @brief Make attribution object.
+ * 
+ * @param jsonDict Dictionary holding attribution key value pairs.
+ * @param adid Adjust identifier value.
+ * 
+ * @return Adjust attribution object.
+ */
++ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
 
-- (BOOL)isEqualToAttribution:(ADJAttribution *)attribution;
+- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
 
-+ (ADJAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict
-                                adid:(NSString *)adid;
-- (id)initWithJsonDict:(NSDictionary *)jsonDict
-                  adid:(NSString *)adid;
-- (NSDictionary *)dictionary;
+/**
+ * @brief Check if given attribution equals current one.
+ * 
+ * @param attribution Attribution object to be compared with current one.
+ * 
+ * @return Boolean indicating whether two attribution objects are the equal.
+ */
+- (BOOL)isEqualToAttribution:(nonnull ADJAttribution *)attribution;
+
+/**
+ * @brief Get attribution value as dictionary.
+ * 
+ * @return Dictionary containing attribution as key-value pairs.
+ */
+- (nullable NSDictionary *)dictionary;
 
 @end

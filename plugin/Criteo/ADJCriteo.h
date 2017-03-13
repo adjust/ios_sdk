@@ -7,68 +7,56 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "ADJEvent.h"
 
 @interface ADJCriteoProduct : NSObject
 
 @property (nonatomic, assign) float criteoPrice;
+
 @property (nonatomic, assign) NSUInteger criteoQuantity;
-@property (nonatomic, copy) NSString *criteoProductID;
 
-- (id) initWithId:(NSString*)productId
-            price:(float)price
-         quantity:(NSUInteger)quantity;
+@property (nonatomic, copy, nullable) NSString *criteoProductID;
 
-+ (ADJCriteoProduct *)productWithId:(NSString*)productId
-                           price:(float)price
-                        quantity:(NSUInteger)quantity;
+- (nullable id)initWithId:(nullable NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
+
++ (nullable ADJCriteoProduct *)productWithId:(nullable NSString *)productId price:(float)price quantity:(NSUInteger)quantity;
 
 @end
 
 @interface ADJCriteo : NSObject
 
-+ (void)injectViewListingIntoEvent:(ADJEvent *)event
-                        productIds:(NSArray *)productIds;
++ (void)injectPartnerIdIntoCriteoEvents:(nullable NSString *)partnerId;
 
-+ (void)injectViewProductIntoEvent:(ADJEvent *)event
-                         productId:(NSString *)productId;
++ (void)injectCustomerIdIntoCriteoEvents:(nullable NSString *)customerId;
 
-+ (void)injectCartIntoEvent:(ADJEvent *)event
-                   products:(NSArray *)products;
++ (void)injectHashedEmailIntoCriteoEvents:(nullable NSString *)hashEmail;
 
-+ (void)injectTransactionConfirmedIntoEvent:(ADJEvent *)event
-                                   products:(NSArray *)products
-                              transactionId:(NSString *)transactionId
-                                newCustomer:(NSString *)newCustomer;
++ (void)injectUserSegmentIntoCriteoEvents:(nullable NSString *)userSegment;
 
-+ (void)injectUserLevelIntoEvent:(ADJEvent *)event
-                         uiLevel:(NSUInteger)uiLevel;
++ (void)injectDeeplinkIntoEvent:(nullable ADJEvent *)event url:(nullable NSURL *)url;
 
-+ (void)injectUserStatusIntoEvent:(ADJEvent *)event
-                         uiStatus:(NSString *)uiStatus;
++ (void)injectCartIntoEvent:(nullable ADJEvent *)event products:(nullable NSArray *)products;
 
-+ (void)injectAchievementUnlockedIntoEvent:(ADJEvent *)event
-                             uiAchievement:(NSString *)uiAchievement;
++ (void)injectUserLevelIntoEvent:(nullable ADJEvent *)event uiLevel:(NSUInteger)uiLevel;
 
-+ (void)injectCustomEventIntoEvent:(ADJEvent *)event
-                            uiData:(NSString *)uiData;
++ (void)injectCustomEventIntoEvent:(nullable ADJEvent *)event uiData:(nullable NSString *)uiData;
 
-+ (void)injectCustomEvent2IntoEvent:(ADJEvent *)event
-                            uiData2:(NSString *)uiData2
-                            uiData3:(NSUInteger)uiData3;
++ (void)injectUserStatusIntoEvent:(nullable ADJEvent *)event uiStatus:(nullable NSString *)uiStatus;
 
-+ (void)injectDeeplinkIntoEvent:(ADJEvent *)event
-                            url:(NSURL *)url;
++ (void)injectViewProductIntoEvent:(nullable ADJEvent *)event productId:(nullable NSString *)productId;
 
-+ (void)injectHashedEmailIntoCriteoEvents:(NSString *)hashEmail;
++ (void)injectViewListingIntoEvent:(nullable ADJEvent *)event productIds:(nullable NSArray *)productIds;
 
-+ (void)injectViewSearchDatesIntoCriteoEvents:(NSString *)checkInDate
-                                checkOutDate:(NSString *)checkOutDate;
++ (void)injectAchievementUnlockedIntoEvent:(nullable ADJEvent *)event uiAchievement:(nullable NSString *)uiAchievement;
 
-+ (void)injectPartnerIdIntoCriteoEvents:(NSString *)partnerId;
++ (void)injectViewSearchDatesIntoCriteoEvents:(nullable NSString *)checkInDate checkOutDate:(nullable NSString *)checkOutDate;
 
-+ (void)injectUserSegmentIntoCriteoEvents:(NSString *)userSegment;
++ (void)injectCustomEvent2IntoEvent:(nullable ADJEvent *)event uiData2:(nullable NSString *)uiData2 uiData3:(NSUInteger)uiData3;
 
-+ (void)injectCustomerIdIntoCriteoEvents:(NSString *)customerId;
++ (void)injectTransactionConfirmedIntoEvent:(nullable ADJEvent *)event
+                                   products:(nullable NSArray *)products
+                              transactionId:(nullable NSString *)transactionId
+                                newCustomer:(nullable NSString *)newCustomer;
 
 @end
