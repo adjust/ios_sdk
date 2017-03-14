@@ -41,6 +41,8 @@
 
 - (void)resetSessionAttributes:(double)now;
 
++ (void)saveAppToken:(NSString *)appTokenToSave;
+
 // Transaction ID management
 - (void)addTransactionId:(NSString *)transactionId;
 - (BOOL)findTransactionId:(NSString *)transactionId;

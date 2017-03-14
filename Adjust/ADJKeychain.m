@@ -38,14 +38,23 @@
 #pragma mark - Public methods
 
 + (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
+    if (key == nil) {
+        return NO;
+    }
     return [[ADJKeychain getInstance] setValue:value forKeychainKey:key inService:service];
 }
 
 + (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
+    if (key == nil) {
+        return nil;
+    }
     return [[ADJKeychain getInstance] valueForKeychainKeyOld:key service:service];
 }
 
 + (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
+    if (key == nil) {
+        return nil;
+    }
     return [[ADJKeychain getInstance] valueForKeychainKeyNew:key service:service];
 }
 

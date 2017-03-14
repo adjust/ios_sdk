@@ -1,3 +1,9 @@
+### Version 4.11.2 (14th March 2017)
+#### Changed
+- Changed key name used to save persistent UUID to be unique per app.
+
+---
+
 ### Version 4.11.1 (13th March 2017)
 #### Added
 - Added sending of the app's install time.
