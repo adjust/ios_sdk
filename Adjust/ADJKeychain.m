@@ -67,7 +67,7 @@
         if (NULL == &kSecAttrAccessGroupToken) {
             [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain old way"];
         } else {
-            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain new way with key %@", key];
+            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain new way"];
         }
 
         return NO;
@@ -79,13 +79,13 @@
             if (NULL == &kSecAttrAccessGroupToken) {
                 [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain old way"];
             } else {
-                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain new way with key %@", key];
+                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain new way"];
             }
         } else {
             if (NULL == &kSecAttrAccessGroupToken) {
                 [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check old way"];
             } else {
-                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check new way with key %@", key];
+                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check new way"];
             }
         }
 
