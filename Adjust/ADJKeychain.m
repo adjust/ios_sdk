@@ -38,14 +38,23 @@
 #pragma mark - Public methods
 
 + (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
+    if (key == nil) {
+        return NO;
+    }
     return [[ADJKeychain getInstance] setValue:value forKeychainKey:key inService:service];
 }
 
 + (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service {
+    if (key == nil) {
+        return nil;
+    }
     return [[ADJKeychain getInstance] valueForKeychainKeyOld:key service:service];
 }
 
 + (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service {
+    if (key == nil) {
+        return nil;
+    }
     return [[ADJKeychain getInstance] valueForKeychainKeyNew:key service:service];
 }
 
@@ -58,7 +67,7 @@
         if (NULL == &kSecAttrAccessGroupToken) {
             [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain old way"];
         } else {
-            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain new way"];
+            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain new way with key %@", key];
         }
 
         return NO;
@@ -70,13 +79,13 @@
             if (NULL == &kSecAttrAccessGroupToken) {
                 [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain old way"];
             } else {
-                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain new way"];
+                [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain new way with key %@", key];
             }
         } else {
             if (NULL == &kSecAttrAccessGroupToken) {
                 [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check old way"];
             } else {
-                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check new way"];
+                [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written to the keychain after the check new way with key %@", key];
             }
         }
 

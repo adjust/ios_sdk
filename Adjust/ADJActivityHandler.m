@@ -135,6 +135,9 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     [self.logger lockLogLevel];
 
+    // inject app token be available in activity state
+    [ADJActivityState saveAppToken:adjustConfig.appToken];
+
     // read files to have sync values available
     [self readAttribution];
     [self readActivityState];

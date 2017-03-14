@@ -10,8 +10,10 @@
 #import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
 #import "UIDevice+ADJAdditions.h"
+#import "NSString+ADJAdditions.h"
 
 static const int kTransactionIdCount = 10;
+static NSString *appToken = nil;
 
 @implementation ADJActivityState
 
@@ -40,6 +42,12 @@ static const int kTransactionIdCount = 10;
     self.updatePackages  = NO;
     
     return self;
+}
+
++ (void)saveAppToken:(NSString*)appTokenToSave {
+    @synchronized (self) {
+        appToken = appTokenToSave;
+    }
 }
 
 #pragma mark - Public methods
@@ -120,15 +128,28 @@ static const int kTransactionIdCount = 10;
     self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
 }
 
+- (NSString *)generateUniqueKey {
+    if (appToken == nil) {
+        return nil;
+    }
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    if (bundleIdentifier == nil) {
+        return nil;
+    }
+    NSString * joinedKey = [NSString stringWithFormat:@"%@%@", bundleIdentifier, appToken];
+    return [joinedKey adjSha1];
+}
+
 - (void)assignUuidNewMethod:(NSString *)uuid {
     // First check if we have the key written with app's unique key name.
-    NSString *uniqueKey = [NSString stringWithFormat:@"%@.adjust_uuid", [[NSBundle mainBundle] bundleIdentifier]];
+    NSString *uniqueKey = [self generateUniqueKey];
+
     NSString *persistedUuidUnique = [ADJKeychain valueForKeychainKeyNew:uniqueKey service:@"deviceInfo"];
     
     if (persistedUuidUnique != nil) {
         // Check if value has UUID format.
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuidUnique]) {
-            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain new unique way"];
+            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain key %@", uniqueKey];
             
             // Value written in keychain seems to have UUID format.
             self.uuid = persistedUuidUnique;
