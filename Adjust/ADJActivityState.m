@@ -44,13 +44,13 @@ static NSString *appToken = nil;
     return self;
 }
 
-+ (void)saveAppToken:(NSString*)appTokenToSave {
+#pragma mark - Public methods
+
++ (void)saveAppToken:(NSString *)appTokenToSave {
     @synchronized (self) {
         appToken = appTokenToSave;
     }
 }
-
-#pragma mark - Public methods
 
 - (void)resetSessionAttributes:(double)now {
     self.subsessionCount = 1;
@@ -132,18 +132,21 @@ static NSString *appToken = nil;
     if (appToken == nil) {
         return nil;
     }
+
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+
     if (bundleIdentifier == nil) {
         return nil;
     }
-    NSString * joinedKey = [NSString stringWithFormat:@"%@%@", bundleIdentifier, appToken];
+
+    NSString *joinedKey = [NSString stringWithFormat:@"%@%@", bundleIdentifier, appToken];
+
     return [joinedKey adjSha1];
 }
 
 - (void)assignUuidNewMethod:(NSString *)uuid {
     // First check if we have the key written with app's unique key name.
     NSString *uniqueKey = [self generateUniqueKey];
-
     NSString *persistedUuidUnique = [ADJKeychain valueForKeychainKeyNew:uniqueKey service:@"deviceInfo"];
     
     if (persistedUuidUnique != nil) {
