@@ -1,3 +1,9 @@
+### Version 4.11.3 (23rd March 2017)
+#### Changed
+- Performing connection validity checks only on main package queue.
+
+---
+
 ### Version 4.11.2 (14th March 2017)
 #### Changed
 - Changed key name used to save persistent UUID to be unique per app.

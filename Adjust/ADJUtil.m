@@ -29,11 +29,9 @@ static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 
-static ADJConnectionValidator *connectionValidator = nil;
-
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.11.2";
+static NSString * const kClientSdk                  = @"ios4.11.3";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -57,7 +55,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
-    [self initializeConnectionValidator];
 }
 
 + (void)initializeDateFormat {
@@ -140,10 +137,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)initializeUrlSessionConfiguration {
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-}
-
-+ (void)initializeConnectionValidator {
-    connectionValidator = [[ADJConnectionValidator alloc] init];
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
@@ -435,14 +428,24 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
+    NSURLSession *session;
+    ADJConnectionValidator *connectionValidator;
+    
+    if (activityPackage.activityKind == ADJActivityKindEvent ||
+        activityPackage.activityKind == ADJActivityKindSession ||
+        activityPackage.activityKind == ADJActivityKindInfo) {
+        int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
+        
+        connectionValidator = [[ADJConnectionValidator alloc] init];
+        [connectionValidator setExpectedTce:tce];
+        [connectionValidator setDidValidationHappen:NO];
 
-    [connectionValidator setExpectedTce:tce];
-    [connectionValidator setDidValidationHappen:NO];
-
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
-                                                          delegate:connectionValidator
-                                                     delegateQueue:nil];
+        session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
+                                                delegate:connectionValidator
+                                           delegateQueue:nil];
+    } else {
+        session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+    }
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
@@ -454,10 +457,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
 
-                                      if (NO == connectionValidator.didValidationHappen) {
-                                          responseData.validationResult = YES;
-                                      } else {
-                                          responseData.validationResult = connectionValidator.validationResult;
+                                      if (nil != connectionValidator) {
+                                          if (NO == connectionValidator.didValidationHappen) {
+                                              responseData.validationResult = YES;
+                                          } else {
+                                              responseData.validationResult = connectionValidator.validationResult;
+                                          }
                                       }
 
                                       responseDataHandler(responseData);
