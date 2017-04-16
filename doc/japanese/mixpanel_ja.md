@@ -1,4 +1,4 @@
-##adjustとMixpanel SDKの統合
+## adjustとMixpanel SDKの統合
 
 Mixpanel APIは共通のプロパティを`super properties`としてすべてのアクティビティで送信できるよう登録できます。詳しくは[Mixpanel page][mixpanel_ios]でご確認いただけます。Mixpanelのトラッキングされるすべてのイベントとadjustを統合するには、アトリビューションデータを受け取った後に`super properties`を設定する必要があります。adjustのiOS SDKガイド[デリゲートコールバック][response_callbacks]章に従って実装してください。
 Mixpanel APIを使用するための関数は以下のように設定できます。

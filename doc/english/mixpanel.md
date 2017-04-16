@@ -1,4 +1,4 @@
-##Integrate adjust with Mixpanel SDK
+## Integrate adjust with Mixpanel SDK
 
 The Mixpanel API allows to register common properties to be sent in all activities as `super properties`, as it is explained in the [Mixpanel page][mixpanel_ios]. To integrate adjust with all tracked events of Mixpanel, you must set the `super properties` after receiving the attribution data. Follow the steps of the [delegate callbacks][response_callbacks] chapter in our iOS SDK guide to implement it. 
 The delegate function can be set as the following, to use the Mixpanel API: 
