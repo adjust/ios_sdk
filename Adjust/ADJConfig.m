@@ -70,23 +70,9 @@
 
 - (void)setLogLevel:(ADJLogLevel)logLevel
         environment:(NSString *)environment{
-    if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        if (self.allowSuppressLogLevel) {
-            _logLevel = ADJLogLevelSuppress;
-        } else {
-            _logLevel = ADJLogLevelAssert;
-        }
-    } else {
-        if (!self.allowSuppressLogLevel &&
-            logLevel == ADJLogLevelSuppress) {
-            _logLevel = ADJLogLevelAssert;
-        } else {
-            _logLevel = logLevel;
-        }
-    }
-    [self.logger setLogLevel:self.logLevel];
+    [self.logger setLogLevel:self.logLevel
+     isProductionEnvironment:[environment isEqualToString:ADJEnvironmentProduction]];
 }
-
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     BOOL hasResponseDelegate = NO;
@@ -151,10 +137,10 @@
         return NO;
     }
     if ([environment isEqualToString:ADJEnvironmentSandbox]) {
-        [self.logger assert:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to `production` before publishing"];
+        [self.logger warnInProduction:@"SANDBOX: Adjust is running in Sandbox mode. Use this setting for testing. Don't forget to set the environment to `production` before publishing"];
         return YES;
     } else if ([environment isEqualToString:ADJEnvironmentProduction]) {
-        [self.logger assert:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to `sandbox` if you want to test your app!"];
+        [self.logger warnInProduction:@"PRODUCTION: Adjust is running in Production mode. Use this setting only for the build that you want to publish. Set the environment to `sandbox` if you want to test your app!"];
         return YES;
     }
     [self.logger error:@"Unknown environment '%@'", environment];
