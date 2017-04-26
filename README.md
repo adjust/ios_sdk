@@ -346,7 +346,7 @@ You can read more about special partners and these integrations in our [guide to
 
 Some parameters are saved to be sent in every event and session of the adjust SDK. Once you have added any of these parameters, you don't need to add them every time, since they will be saved locally. If you add the same parameter twice, there will be no effect.
 
-These session parameters can be called before the adjust SDK is launched to make sure they are sent even on install. If you need to send them with an install, but can only obtain the needed values after launch, it's possible to [delay](#delay-start) the first launch of the adjust SDK to allow this behaviour.
+These session parameters **must** be called _before_ the adjust SDK is launched with `[Adjust appDidLaunch:]` if you want them to be included on the initial install event. If you need to send them with an install, but can only obtain the needed values after launch, it's possible to [delay](#delay-start) the first launch of the adjust SDK to allow this behaviour.
 
 ### <a id="session-callback-parameters"> Session callback parameters
 
