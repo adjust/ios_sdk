@@ -486,6 +486,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
           attributionDetails:(NSDictionary *)attributionDetails
  {
      double now = [NSDate.date timeIntervalSince1970];
+     if (selfI.activityState != nil) {
+         double lastInterval = now - selfI.activityState.lastActivity;
+         selfI.activityState.lastInterval = lastInterval;
+     }
      ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                         initWithDeviceInfo:selfI.deviceInfo
                                         activityState:selfI.activityState
@@ -1051,6 +1055,9 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     double now = [NSDate.date timeIntervalSince1970];
+    double lastInterval = now - selfI.activityState.lastActivity;
+    selfI.activityState.lastInterval = lastInterval;
+
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
@@ -1162,6 +1169,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
 
     double now = [NSDate.date timeIntervalSince1970];
+    if (selfI.activityState != nil) {
+        double lastInterval = now - selfI.activityState.lastActivity;
+        selfI.activityState.lastInterval = lastInterval;
+    }
+
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:self.deviceInfo
                                        activityState:self.activityState
