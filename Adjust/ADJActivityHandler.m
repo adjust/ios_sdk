@@ -413,27 +413,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                      }];
 }
 
-- (void)setIadDate:(NSDate *)iAdImpressionDate withPurchaseDate:(NSDate *)appPurchaseDate {
-    if (iAdImpressionDate == nil) {
-        [self.logger debug:@"iAdImpressionDate not received"];
-        return;
-    }
-
-    [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
-
-
-    double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
-                                       createdAt:now];
-
-    clickBuilder.purchaseTime = appPurchaseDate;
-    clickBuilder.clickTime = iAdImpressionDate;
-
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
+- (void)setIadDate:(NSDate *)iAdImpressionDate
+   withPurchaseDate:(NSDate *)appPurchaseDate
+{
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setIadDateI:selfI iAdImpressionDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
+                     }];
 }
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
@@ -507,7 +494,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3" sessionParameters:selfI.sessionParameters];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -1074,7 +1061,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     clickBuilder.clickTime = [NSDate date];
     clickBuilder.deeplink = [url absoluteString];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" sessionParameters:selfI.sessionParameters];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -1162,6 +1149,32 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [selfI.packageHandler addPackage:infoPackage];
     [selfI.packageHandler sendFirstPackage];
 }
+
+- (void)setIadDateI:(ADJActivityHandler *)selfI
+  iAdImpressionDate:(NSDate *)iAdImpressionDate
+   withPurchaseDate:(NSDate *)appPurchaseDate
+{
+    if (iAdImpressionDate == nil) {
+        [self.logger debug:@"iAdImpressionDate not received"];
+        return;
+    }
+
+    [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
+
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:self.deviceInfo
+                                       activityState:self.activityState
+                                       config:self.adjustConfig
+                                       createdAt:now];
+
+    clickBuilder.purchaseTime = appPurchaseDate;
+    clickBuilder.clickTime = iAdImpressionDate;
+
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" sessionParameters:selfI.sessionParameters];
+    [self.sdkClickHandler sendSdkClick:clickPackage];
+}
+
 
 #pragma mark - private
 

@@ -51,17 +51,11 @@
 
 - (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
                                   isInDelay:(BOOL)isInDelay {
-    NSMutableDictionary *parameters = [self defaultParameters];
-
-    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
-
+    NSMutableDictionary *parameters;
     if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
+        parameters = [self attributableParameters:sessionParameters];
+    } else {
+        parameters = [self attributableParameters:nil];
     }
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
@@ -123,8 +117,10 @@
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
-    NSMutableDictionary *parameters = [self idsParameters];
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                        sessionParameters:(ADJSessionParameters *)sessionParameters
+{
+    NSMutableDictionary *parameters = [self attributableParameters:sessionParameters];
 
     [ADJPackageBuilder parameters:parameters setString:clickSource forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
@@ -195,6 +191,23 @@
     [self injectConfig:self.adjustConfig intoParameters:parameters];
     [self injectIosUuid:self.activityState intoParamters:parameters];
     [self injectCommonParameters:parameters];
+
+    return parameters;
+}
+
+- (NSMutableDictionary *)attributableParameters:(ADJSessionParameters *)sessionParameters {
+    NSMutableDictionary *parameters = [self defaultParameters];
+
+    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
+    [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
+
+    if (sessionParameters != nil) {
+        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
+    }
 
     return parameters;
 }

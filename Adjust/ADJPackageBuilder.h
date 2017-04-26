@@ -41,7 +41,8 @@
                         sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                        sessionParameters:(ADJSessionParameters *)sessionParameters;
 
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
