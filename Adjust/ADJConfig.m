@@ -15,7 +15,6 @@
 @interface ADJConfig()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, assign) BOOL allowSuppressLogLevel;
 
 @end
 
@@ -48,7 +47,6 @@
     self = [super init];
     if (self == nil) return nil;
 
-    self.allowSuppressLogLevel = allowSuppressLogLevel;
     self.logger = ADJAdjustFactory.logger;
     // default values
     [self setLogLevel:ADJLogLevelInfo environment:environment];
