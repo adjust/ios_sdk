@@ -52,6 +52,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)finishedTracking:(ADJResponseData *)responseData;
 - (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData;
 - (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData;
+- (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData *)sdkClickResponseData;
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;

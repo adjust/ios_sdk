@@ -23,17 +23,21 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 @property (nonatomic, strong) NSURL *baseUrl;
+@property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 
 @end
 
 @implementation ADJSdkClickHandler
 
-+ (id<ADJSdkClickHandler>)handlerWithStartsSending:(BOOL)startsSending
++ (id<ADJSdkClickHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                     startsSending:(BOOL)startsSending
 {
-    return [[ADJSdkClickHandler alloc] initWithStartsSending:startsSending];
+    return [[ADJSdkClickHandler alloc] initWithActivityHandler:activityHandler
+                                               startsSending:startsSending];
 }
 
-- (id)initWithStartsSending:(BOOL)startsSending
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+              startsSending:(BOOL)startsSending
 {
     self = [super init];
     if (self == nil) return nil;
@@ -41,12 +45,13 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
     self.logger = ADJAdjustFactory.logger;
-    self.paused = !startsSending;
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJSdkClickHandler * selfI) {
-                         [selfI initI:selfI];
+                         [selfI initI:selfI
+                      activityHandler:activityHandler
+                        startsSending:startsSending];
                      }];
     return self;
 }
@@ -87,11 +92,16 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     self.backoffStrategy = nil;
     self.packageQueue = nil;
     self.baseUrl = nil;
+    self.activityHandler = nil;
 }
 
 #pragma mark - internal
 - (void)initI:(ADJSdkClickHandler *)selfI
+activityHandler:(id<ADJActivityHandler>)activityHandler
+startsSending:(BOOL)startsSending
 {
+    selfI.activityHandler = activityHandler;
+    selfI.paused = !startsSending;
     selfI.backoffStrategy = [ADJAdjustFactory sdkClickHandlerBackoffStrategy];
     selfI.packageQueue = [NSMutableArray array];
     selfI.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
@@ -138,7 +148,10 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
                      [selfI.logger error:@"Retrying sdk_click package for the %d time", retries];
 
                      [selfI sendSdkClick:sdkClickPackage];
+                     return;
                  }
+
+                 [selfI.activityHandler finishedTracking:responseData];
              }];
 
         [selfI sendNextSdkClick];

@@ -40,6 +40,9 @@
         case ADJActivityKindSession:
             responseData = [[ADJSessionResponseData alloc] init];
             break;
+        case ADJActivityKindClick:
+            responseData = [[ADJSdkClickResponseData alloc] init];
+            break;
         case ADJActivityKindEvent:
             responseData = [[ADJEventResponseData alloc] initWithActivityPackage:activityPackage];
             break;

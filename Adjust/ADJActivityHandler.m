@@ -238,6 +238,12 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         return;
     }
 
+    // redirect sdk_click responses to attribution handler to check for attribution information
+    if ([responseData isKindOfClass:[ADJSdkClickResponseData class]]) {
+        [self.attributionHandler checkSdkClickResponse:(ADJSdkClickResponseData*)responseData];
+        return;
+    }
+
     // check if it's an event response
     if ([responseData isKindOfClass:[ADJEventResponseData class]]) {
         [self launchEventResponseTasks:(ADJEventResponseData*)responseData];
@@ -258,6 +264,14 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI launchSessionResponseTasksI:selfI sessionResponseData:sessionResponseData];
+                     }];
+}
+
+- (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData *)sdkClickResponseData {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI launchSdkClickResponseTasksI:selfI sdkClickResponseData:sdkClickResponseData];
                      }];
 }
 
@@ -716,7 +730,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                                                         startsSending:[selfI toSendI:selfI
                                                                                  sdkClickHandlerOnly:NO]];
 
-    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:[selfI toSendI:selfI
+    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:selfI
+                                                                startsSending:[selfI toSendI:selfI
                                                                         sdkClickHandlerOnly:YES]];
 
     [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
@@ -928,6 +943,21 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     self.internalState.sessionResponseProcessed = YES;
+}
+
+- (void)launchSdkClickResponseTasksI:(ADJActivityHandler *)selfI
+                sdkClickResponseData:(ADJSdkClickResponseData *)sdkClickResponseData {
+    [selfI updateAdidI:selfI adid:sdkClickResponseData.adid];
+
+    BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sdkClickResponseData.attribution];
+
+    // try to update and launch the attribution changed delegate
+    if (toLaunchAttributionDelegate) {
+        [selfI.logger debug:@"Launching attribution changed delegate"];
+        [ADJUtil launchInMainThread:selfI.adjustDelegate
+                           selector:@selector(adjustAttributionChanged:)
+                         withObject:sdkClickResponseData.attribution];
+    }
 }
 
 - (void)launchAttributionResponseTasksI:(ADJActivityHandler *)selfI

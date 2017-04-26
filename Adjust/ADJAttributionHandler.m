@@ -74,6 +74,15 @@ static const double kRequestTimeout = 60; // 60 seconds
                      }];
 }
 
+- (void)checkSdkClickResponse:(ADJSdkClickResponseData *)sdkClickResponseData {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJAttributionHandler* selfI) {
+                         [selfI checkSdkClickResponseI:selfI
+                                  sdkClickResponseData:sdkClickResponseData];
+                     }];
+}
+
 - (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -108,6 +117,13 @@ static const double kRequestTimeout = 60; // 60 seconds
     [selfI checkAttributionI:selfI responseData:sessionResponseData];
 
     [selfI.activityHandler launchSessionResponseTasks:sessionResponseData];
+}
+
+- (void)checkSdkClickResponseI:(ADJAttributionHandler*)selfI
+          sdkClickResponseData:(ADJSdkClickResponseData *)sdkClickResponseData {
+    [selfI checkAttributionI:selfI responseData:sdkClickResponseData];
+
+    [selfI.activityHandler launchSdkClickResponseTasks:sdkClickResponseData];
 }
 
 - (void)checkAttributionResponseI:(ADJAttributionHandler*)selfI
