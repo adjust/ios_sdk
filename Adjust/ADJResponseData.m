@@ -127,6 +127,10 @@
 
 @end
 
+@implementation ADJSdkClickResponseData
+
+@end
+
 @implementation ADJEventResponseData
 
 + (ADJEventResponseData *)responseDataWithActivityPackage:(ADJActivityPackage *)activityPackage {
@@ -211,3 +215,4 @@
 }
 
 @end
+
