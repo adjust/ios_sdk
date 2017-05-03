@@ -16,7 +16,6 @@ static NSString * const prefix = @"AttributionHandler ";
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
 @property (nonatomic, assign) BOOL startsSending;
-@property (nonatomic, assign) BOOL hasDelegate;
 
 @end
 
@@ -26,13 +25,11 @@ static NSString * const prefix = @"AttributionHandler ";
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
        withAttributionPackage:(ADJActivityPackage *) attributionPackage
                 startsSending:(BOOL)startsSending
-hasAttributionChangedDelegate:(BOOL)hasDelegate
 {
     self = [super init];
     if (self == nil) return nil;
 
     self.startsSending = startsSending;
-    self.hasDelegate = hasDelegate;
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
     self.attributionPackage = attributionPackage;
@@ -43,6 +40,10 @@ hasAttributionChangedDelegate:(BOOL)hasDelegate
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"checkSessionResponse, responseData: %@", sessionResponseData]];
+}
+
+- (void)checkSdkClickResponse:(ADJSdkClickResponseData *)sdkClickResponseData {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"checkSdkClickResponse, responseData: %@", sdkClickResponseData]];
 }
 
 - (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData {

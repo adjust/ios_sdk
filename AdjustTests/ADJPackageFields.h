@@ -23,7 +23,6 @@
 @property (nonatomic, copy) NSString *appToken;
 @property (nonatomic, copy) NSString *environment;
 @property (nonatomic, copy) NSString *sdkPrefix;
-@property (nonatomic, assign) BOOL hasResponseDelegate;
 @property (nonatomic, copy) NSString *defaultTracker;
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
 // ADJDeviceInfo
