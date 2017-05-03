@@ -53,7 +53,9 @@
 
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:ADJEnvironmentSandbox];
 
-    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config sessionParametersActionsArray:nil];
+    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config
+                                                sessionParametersActionsArray:nil
+                                                                  deviceToken:nil];
     self.sdkClickPackage = [self getClickPackage];
 
     [NSURLSession reset];
@@ -70,7 +72,7 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:NO];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock startsSending:NO];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeConnError];
 
@@ -113,7 +115,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoRetry]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeNil];
 
@@ -143,7 +146,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoRetry]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeConnError];
 
@@ -171,7 +175,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeServerError];
 
@@ -191,7 +196,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoRetry]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeWrongJson];
 
@@ -211,7 +217,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoRetry]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeEmptyJson];
 
@@ -231,7 +238,8 @@
 
     [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoRetry]];
 
-    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithStartsSending:YES];
+    id<ADJSdkClickHandler> sdkClickHandler = [ADJSdkClickHandler handlerWithActivityHandler:self.activityHandlerMock
+                                                                              startsSending:YES];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeMessage];
 
@@ -262,7 +270,7 @@
     //assertUtil.test("MockHttpsURLConnection setRequestProperty, field Client-SDK, newValue Test-Second-Click");
 
     // and that it will try to send it again
-    NSString * errorLog = [NSString stringWithFormat:@"Retrying sdk_click package for the %ld time", retries];
+    NSString * errorLog = [NSString stringWithFormat:@"Retrying sdk_click package for the %ld time", (long)retries];
     aError(errorLog);
 
     // second package added again on the end of the queue
@@ -292,7 +300,9 @@
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:@"sandbox"];
 
     // start activity handler with config
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config
+                                                     sessionParametersActionsArray:nil
+                                                                       deviceToken:nil];
     [activityHandler applicationDidBecomeActive];
     [activityHandler appWillOpenUrl:[NSURL URLWithString:@"AdjustTests://"]];
     [NSThread sleepForTimeInterval:2.0];

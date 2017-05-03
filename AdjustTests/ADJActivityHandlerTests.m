@@ -425,14 +425,16 @@
 
     // activity handler created with a nil config
     id<ADJActivityHandler> nilConfigActivityHandler = [ADJActivityHandler handlerWithConfig:nil
-                                                              sessionParametersActionsArray:nil];
+                                                              sessionParametersActionsArray:nil
+                                                       deviceToken:nil];
 
     aError(@"AdjustConfig missing");
     aNil(nilConfigActivityHandler);
 
     // activity handler created with an invalid config
     id<ADJActivityHandler> invalidConfigActivityHandler = [ADJActivityHandler handlerWithConfig:nilAppTokenConfig
-                                                                  sessionParametersActionsArray:nil];
+                                                                  sessionParametersActionsArray:nil
+                                                                                    deviceToken:nil];
 
     aError(@"AdjustConfig not initialized correctly");
     aNil(invalidConfigActivityHandler);
@@ -1169,13 +1171,13 @@
     NSError * errorCode0 = [[NSError alloc] initWithDomain:@"adjust" code:0 userInfo:nil];
     NSError * errorCode1 = [[NSError alloc] initWithDomain:@"adjust" code:1 userInfo:nil];
 
-    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:-1];
+    [activityHandler setAttributionDetails:nil error:errorCode0 retriesLeft:-1];
     [NSThread sleepForTimeInterval:1];
 
     aWarn(@"Unable to read iAd details");
     aWarn(@"Limit number of retry for iAd v3 surpassed");
 
-    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:0];
+    [activityHandler setAttributionDetails:nil error:errorCode0 retriesLeft:0];
     [NSThread sleepForTimeInterval:4];
 
     aWarn(@"Unable to read iAd details");
@@ -1184,7 +1186,7 @@
     aDebug(@"iAd with 0 tries to read v3");
     aWarn(@"Reached limit number of retry for iAd v3. Trying iAd v2");
 
-    [activityHandler setIadDetails:nil error:errorCode0 retriesLeft:1];
+    [activityHandler setAttributionDetails:nil error:errorCode0 retriesLeft:1];
     [NSThread sleepForTimeInterval:4];
 
     aWarn(@"Unable to read iAd details");
@@ -1192,13 +1194,13 @@
     aDebug(@"iAd with 1 tries to read v3");
     anWarn(@"Reached limit number of retry for iAd v3. Trying iAd v2");
 
-    [activityHandler setIadDetails:nil error:errorCode1 retriesLeft:1];
+    [activityHandler setAttributionDetails:nil error:errorCode1 retriesLeft:1];
     [NSThread sleepForTimeInterval:4];
 
     aWarn(@"Unable to read iAd details");
     anDebug(@"iAd with 1 tries to read v3");
 
-    [activityHandler setIadDetails:nil error:nil retriesLeft:1];
+    [activityHandler setAttributionDetails:nil error:nil retriesLeft:1];
     [NSThread sleepForTimeInterval:4];
 
     anWarn(@"Unable to read iAd details");
@@ -1214,7 +1216,7 @@
                                                                @"decimal" : [NSNumber numberWithDouble:0.1],
                                                                @"string" : @"value"} };
 
-    [activityHandler setIadDetails:attributionDetails error:nil retriesLeft:1];
+    [activityHandler setAttributionDetails:attributionDetails error:nil retriesLeft:1];
     [NSThread sleepForTimeInterval:2];
 
     aTest(@"SdkClickHandler sendSdkClick");
@@ -1463,7 +1465,7 @@ sessionFailureDelegatePresent:YES];
     id<ADJActivityHandler> activityHandler = [self startAndCheckFirstSession:config];
 
     // check if Attribution is not created with nil
-    ADJAttribution * nilAttribution = [[ADJAttribution alloc] initWithJsonDict:nil];
+    ADJAttribution * nilAttribution = [[ADJAttribution alloc] initWithJsonDict:nil adid:nil];
 
     aNil(nilAttribution);
 
@@ -1472,13 +1474,13 @@ sessionFailureDelegatePresent:YES];
 
     // create an empty attribution
     NSMutableDictionary * emptyJsonDictionary = [[NSMutableDictionary alloc] init];
-    ADJAttribution * emptyAttribution = [[ADJAttribution alloc] initWithJsonDict:emptyJsonDictionary];
+    ADJAttribution * emptyAttribution = [[ADJAttribution alloc] initWithJsonDict:emptyJsonDictionary adid:nil];
 
     // check that updates attribution
     aTrue([activityHandler updateAttributionI:activityHandler attribution:emptyAttribution]);
     aDebug(@"Wrote Attribution: tt:(null) tn:(null) net:(null) cam:(null) adg:(null) cre:(null) cl:(null)");
 
-    emptyAttribution = [[ADJAttribution alloc] initWithJsonDict:emptyJsonDictionary];
+    emptyAttribution = [[ADJAttribution alloc] initWithJsonDict:emptyJsonDictionary adid:nil];
 
     // test first session package
     ADJActivityPackage * firstSessionPackage = self.packageHandlerMock.packageQueue[0];
@@ -1541,7 +1543,8 @@ sessionFailureDelegatePresent:YES];
 
     anNil(firstAttributionDictionary);
 
-    ADJAttribution * firstAttribution = [[ADJAttribution alloc] initWithJsonDict:firstAttributionDictionary];
+    ADJAttribution * firstAttribution = [[ADJAttribution alloc] initWithJsonDict:firstAttributionDictionary
+                                                                            adid:nil];
 
     //check that it updates
     sessionResponseDataWithAttribution.attribution = firstAttribution;
@@ -1611,7 +1614,8 @@ sessionFailureDelegatePresent:YES];
 
     anNil(secondAttributionDictionary);
 
-    ADJAttribution * secondAttribution = [[ADJAttribution alloc] initWithJsonDict:secondAttributionDictionary];
+    ADJAttribution * secondAttribution = [[ADJAttribution alloc] initWithJsonDict:secondAttributionDictionary
+                                                                             adid:nil];
 
     //check that it updates
     attributionResponseDataWithAttribution.attribution = secondAttribution;
@@ -1875,7 +1879,7 @@ sessionFailureDelegatePresent:YES];
 
     anNil(attributionDictionary);
 
-    ADJAttribution * attribution = [[ADJAttribution alloc] initWithJsonDict:attributionDictionary];
+    ADJAttribution * attribution = [[ADJAttribution alloc] initWithJsonDict:attributionDictionary adid:nil];
 
     // update the attribution
     [activityHandler updateAttributionI:activityHandler attribution:attribution];
@@ -3074,7 +3078,7 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
 - (id<ADJActivityHandler>)getActivityHandler:(ADJActivityHandlerConstructorState *)cState
 {
     id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:cState.config
-                                                     sessionParametersActionsArray:cState.sessionParametersActionsArray];
+                                                     sessionParametersActionsArray:cState.sessionParametersActionsArray deviceToken:nil];
 
     if (activityHandler != nil) {
         aTest(@"ADJLogger lockLogLevel");
@@ -3441,7 +3445,7 @@ sessionFailureDelegatePresent:(BOOL)sessionFailureDelegatePresent
 
     // test sdk_click response data
     ADJActivityPackage * sdkClickPackage = self.sdkClickHandlerMock.packageQueue[0];
-    ADJClickResponseData * sdkClickResponseData = [ADJResponseData buildResponseData:sdkClickPackage];
+    ADJSdkClickResponseData * sdkClickResponseData = [ADJResponseData buildResponseData:sdkClickPackage];
 
     [activityHandler finishedTracking:sdkClickResponseData];
     [NSThread sleepForTimeInterval:1.0];

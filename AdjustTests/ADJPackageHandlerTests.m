@@ -60,7 +60,9 @@ typedef enum {
     [ADJAdjustFactory setRequestHandler:self.requestHandlerMock];
 
     ADJConfig * config = [ADJConfig configWithAppToken:@"123456789012" environment:ADJEnvironmentSandbox];
-    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config sessionParametersActionsArray:nil];
+    self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config
+                                                sessionParametersActionsArray:nil
+                                                                  deviceToken:nil];
 
     //  delete previously created Package queue file to make a new queue
     XCTAssert([ADJTestsUtil deleteFile:@"AdjustIoPackageQueue" logger:self.loggerMock], @"%@", self.loggerMock);
@@ -467,7 +469,9 @@ typedef enum {
 
     [config setDelayStart:4];
 
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config
+                                                     sessionParametersActionsArray:nil
+                                                                       deviceToken:nil];
 
     [activityHandler addSessionCallbackParameter:@"scpKey" value:@"scpValue"];
     [activityHandler addSessionPartnerParameter:@"sppKey" value:@"sppValue"];
