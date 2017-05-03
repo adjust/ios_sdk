@@ -2304,6 +2304,7 @@
 				9D7431FB1EB9F9B700969F14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9DFA37B21C0F219400782607 /* Build configuration list for PBXNativeTarget "AdjustSdk" */ = {
 			isa = XCConfigurationList;
