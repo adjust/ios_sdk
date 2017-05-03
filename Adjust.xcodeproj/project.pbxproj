@@ -2044,6 +2044,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "adjust.${PRODUCT_NAME:rfc1034identifier}";
@@ -2063,6 +2064,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
 				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "adjust.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
