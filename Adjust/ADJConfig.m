@@ -49,7 +49,11 @@
 
     self.logger = ADJAdjustFactory.logger;
     // default values
-    [self setLogLevel:ADJLogLevelInfo environment:environment];
+    if (allowSuppressLogLevel && [ADJEnvironmentProduction isEqualToString:environment]) {
+        [self setLogLevel:ADJLogLevelSuppress environment:environment];
+    } else {
+        [self setLogLevel:ADJLogLevelInfo environment:environment];
+    }
 
     if (![self checkEnvironment:environment]) return self;
     if (![self checkAppToken:appToken]) return self;
@@ -67,9 +71,10 @@
 }
 
 - (void)setLogLevel:(ADJLogLevel)logLevel
-        environment:(NSString *)environment{
+        environment:(NSString *)environment
+{
     [self.logger setLogLevel:self.logLevel
-     isProductionEnvironment:[environment isEqualToString:ADJEnvironmentProduction]];
+     isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
