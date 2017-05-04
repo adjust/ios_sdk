@@ -73,7 +73,7 @@
 - (void)setLogLevel:(ADJLogLevel)logLevel
         environment:(NSString *)environment
 {
-    [self.logger setLogLevel:self.logLevel
+    [self.logger setLogLevel:logLevel
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
 }
 
