@@ -16,6 +16,8 @@ static NSString * const prefix = @"ActivityHandler ";
 
 @property (nonatomic, strong) ADJLoggerMock *loggerMock;
 @property (nonatomic, retain) ADJResponseData * lastResponseData;
+@property (nonatomic, strong) NSArray *sessionParametersActionsArray;
+@property (nonatomic, copy) NSData * deviceToken;
 
 @end
 
@@ -23,13 +25,17 @@ static NSString * const prefix = @"ActivityHandler ";
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
 sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+         deviceToken:(NSData*)deviceToken
 {
     self = [super init];
     if (self == nil) return nil;
 
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig, %@", sessionParametersActionsArray]];
+    self.sessionParametersActionsArray = sessionParametersActionsArray;
+    self.deviceToken = deviceToken;
+
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithConfig"]];
 
     return self;
 }
@@ -60,6 +66,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSessionResponseTasks, %@", sessionResponseData]];
     self.lastResponseData = sessionResponseData;
 }
+
+- (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData *)sdkClickResponseData
+{
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"launchSdkClickResponseTasks, %@", sdkClickResponseData]];
+    self.lastResponseData = sdkClickResponseData;
+}
+
 
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"launchAttributionResponseTasks, %@", attributionResponseData]];
@@ -106,10 +119,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDate, iAdImpressionDate %@ appPurchaseDate, %@", iAdImpressionDate, appPurchaseDate]];
 }
 
-- (void)setIadDetails:(NSDictionary *)attributionDetails
-                error:(NSError *)error
-          retriesLeft:(int)retriesLeft {
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"setIadDetails, %@ error, %@", attributionDetails, error]];
+- (void)setAttributionDetails:(NSDictionary *)attributionDetails
+                        error:(NSError *)error
+                  retriesLeft:(int)retriesLeft
+{
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"setAttributionDetails, %@ error, %@", attributionDetails, error]];
 }
 
 - (void) setOfflineMode:(BOOL)enabled {
@@ -148,6 +162,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)resetSessionPartnerParameters {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"resetSessionPartnerParameters"]];
+}
+
+- (NSString *)adid {
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"adid"]];
+    return nil;
 }
 
 - (void)teardown:(BOOL)deleteState {
