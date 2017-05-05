@@ -112,7 +112,7 @@
 
 // assert equals long integer
 #define aliEquals(field, value) \
-    alilEquals(field, value, self.loggerMock)
+    alilEquals((long)field, (long)value, self.loggerMock)
 
 // assert equals
 #define aEquals(field, value) \

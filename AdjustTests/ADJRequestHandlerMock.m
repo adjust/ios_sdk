@@ -39,7 +39,7 @@ static NSString * const prefix = @"RequestHandler ";
           queueSize:(NSUInteger)queueSize
 {
     [self.loggerMock test:[prefix stringByAppendingFormat:@"sendPackage, activityPackage %@", activityPackage]];
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"sendPackage, queueSize %lu", queueSize]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"sendPackage, queueSize %lu", (unsigned long)queueSize]];
 
     /*
     NSDictionary *jsonDict;

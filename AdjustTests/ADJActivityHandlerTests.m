@@ -3178,7 +3178,7 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
         {
             // test the subsession message
             NSString * startedSubsessionLog = [NSString stringWithFormat:@"Started subsession %ld of session %ld",
-                                               sessionState.subsessionCount, sessionState.sessionCount];
+                                               (long)sessionState.subsessionCount, sessionState.sessionCount];
             aVerbose(startedSubsessionLog);
             break;
         }
@@ -3198,7 +3198,7 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
     // after processing the session, writes the activity state
     if (sessionState.sessionType != ADJSessionTypeNonSession) {
         NSString * wroteActivityLog = [NSString stringWithFormat:@"Wrote Activity state: ec:%ld sc:%ld ssc:%ld",
-                                       sessionState.eventCount, sessionState.sessionCount, sessionState.subsessionCount];
+                                       (long)sessionState.eventCount, sessionState.sessionCount, sessionState.subsessionCount];
         aDebug(wroteActivityLog);
     }
     // check Attribution State
@@ -3331,13 +3331,6 @@ sessionFailureDelegatePresent:(BOOL)sessionFailureDelegatePresent
 
     // create activity package test
     ADJPackageFields * firstSessionPackageFields = [ADJPackageFields fields];
-
-    firstSessionPackageFields.hasResponseDelegate =
-        attributionDelegatePresent ||
-        eventFailureDelegatePresent ||
-        eventSuccessDelegatePresent ||
-        sessionFailureDelegatePresent ||
-        sessionSuccessDelegatePresent;
 
     // test first session
     [self testPackageSession:firstSessionPackage fields:firstSessionPackageFields sessionCount:@"1"];

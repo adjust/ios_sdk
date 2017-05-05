@@ -648,7 +648,7 @@ typedef enum {
     if (sendFirstState == ADJSendFirstSend) {
         NSString * aActivitySend = [NSString stringWithFormat:@"RequestHandler sendPackage, activityPackage %@", packageString];
         aTest(aActivitySend);
-        NSString * aQueueSizeSend = [NSString stringWithFormat:@"RequestHandler sendPackage, queueSize %lu", queueSize];
+        NSString * aQueueSizeSend = [NSString stringWithFormat:@"RequestHandler sendPackage, queueSize %lu", (unsigned long)queueSize];
         aTest(aQueueSizeSend);
     } else {
         anTest(@"RequestHandler sendPackage");
