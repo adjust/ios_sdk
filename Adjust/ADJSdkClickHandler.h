@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "ADJActivityPackage.h"
+#import "ADJActivityHandler.h"
 
 @protocol ADJSdkClickHandler
 
-- (id)initWithStartsSending:(BOOL)startsSending;
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                startsSending:(BOOL)startsSending;
 
 - (void)pauseSending;
 - (void)resumeSending;
@@ -22,6 +24,7 @@
 
 @interface ADJSdkClickHandler : NSObject <ADJSdkClickHandler>
 
-+ (id<ADJSdkClickHandler>)handlerWithStartsSending:(BOOL)startsSending;
++ (id<ADJSdkClickHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                       startsSending:(BOOL)startsSending;
 
 @end

@@ -51,6 +51,9 @@
 
 @end
 
+@interface ADJSdkClickResponseData : ADJResponseData
+@end
+
 @interface ADJEventResponseData : ADJResponseData
 
 @property (nonatomic, copy) NSString *eventToken;

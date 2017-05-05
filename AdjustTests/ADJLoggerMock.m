@@ -68,8 +68,9 @@ static NSString * const kLogTag = @"AdjustTests";
     return nil;
 }
 
-- (void)setLogLevel:(ADJLogLevel)logLevel {
-    [self test:@"ADJLogger setLogLevel: %d", logLevel];
+- (void)setLogLevel:(ADJLogLevel)logLevel isProductionEnvironment:(BOOL)isProductionEnvironment
+{
+    [self test:@"ADJLogger setLogLevel: %d, isProductionEnvironment: %d", logLevel, isProductionEnvironment];
 }
 
 - (void)lockLogLevel {
@@ -102,6 +103,11 @@ static NSString * const kLogTag = @"AdjustTests";
 }
 
 - (void)warn:   (NSString *)format, ... {
+    va_list parameters; va_start(parameters, format);
+    [self logLevel:ADJLogLevelWarn logPrefix:@"w" format:format parameters:parameters];
+}
+
+- (void)warnInProduction:   (NSString *)format, ... {
     va_list parameters; va_start(parameters, format);
     [self logLevel:ADJLogLevelWarn logPrefix:@"w" format:format parameters:parameters];
 }

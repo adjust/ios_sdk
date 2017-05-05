@@ -40,6 +40,9 @@
         case ADJActivityKindSession:
             responseData = [[ADJSessionResponseData alloc] init];
             break;
+        case ADJActivityKindClick:
+            responseData = [[ADJSdkClickResponseData alloc] init];
+            break;
         case ADJActivityKindEvent:
             responseData = [[ADJEventResponseData alloc] initWithActivityPackage:activityPackage];
             break;
@@ -121,6 +124,10 @@
     ADJSessionResponseData* copy = [super copyWithZone:zone];
     return copy;
 }
+
+@end
+
+@implementation ADJSdkClickResponseData
 
 @end
 
@@ -208,3 +215,4 @@
 }
 
 @end
+

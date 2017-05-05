@@ -21,13 +21,15 @@ static NSString * const prefix = @"SdkClickHandler ";
 
 @implementation ADJSdkClickHandlerMock
 
-- (id)initWithStartsSending:(BOOL)startsSending {
+- (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
+                startsSending:(BOOL)startsSending
+{
     self = [super init];
     if (self == nil) return nil;
 
     self.loggerMock = (ADJLoggerMock *) [ADJAdjustFactory logger];
 
-    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithStartsSending, startsSending: %d", startsSending]];
+    [self.loggerMock test:[prefix stringByAppendingFormat:@"initWithActivityHandler, startsSending: %d", startsSending]];
 
     self.packageQueue = [NSMutableArray array];
 

@@ -14,6 +14,7 @@ static NSString * const kLogTag = @"Adjust";
 
 @property (nonatomic, assign) ADJLogLevel loglevel;
 @property (nonatomic, assign) BOOL logLevelLocked;
+@property (nonatomic, assign) BOOL isProductionEnvironment;
 
 @end
 
@@ -25,17 +26,21 @@ static NSString * const kLogTag = @"Adjust";
     if (self == nil) return nil;
 
     //default values
-    self.logLevelLocked = NO;
     _loglevel = ADJLogLevelInfo;
+    self.logLevelLocked = NO;
+    self.isProductionEnvironment = NO;
 
     return self;
 }
 
-- (void)setLogLevel:(ADJLogLevel)logLevel {
+- (void)setLogLevel:(ADJLogLevel)logLevel
+isProductionEnvironment:(BOOL)isProductionEnvironment
+{
     if (self.logLevelLocked) {
         return;
     }
     _loglevel = logLevel;
+    self.isProductionEnvironment = isProductionEnvironment;
 }
 
 - (void)lockLogLevel {
@@ -43,36 +48,47 @@ static NSString * const kLogTag = @"Adjust";
 }
 
 - (void)verbose:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
     if (self.loglevel > ADJLogLevelVerbose) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"v" format:format parameters:parameters];
 }
 
 - (void)debug:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
     if (self.loglevel > ADJLogLevelDebug) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"d" format:format parameters:parameters];
 }
 
 - (void)info:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
     if (self.loglevel > ADJLogLevelInfo) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"i" format:format parameters:parameters];
 }
 
 - (void)warn:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
+    if (self.loglevel > ADJLogLevelWarn) return;
+    va_list parameters; va_start(parameters, format);
+    [self logLevel:@"w" format:format parameters:parameters];
+}
+- (void)warnInProduction:(nonnull NSString *)format, ... {
     if (self.loglevel > ADJLogLevelWarn) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"w" format:format parameters:parameters];
 }
 
 - (void)error:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
     if (self.loglevel > ADJLogLevelError) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"e" format:format parameters:parameters];
 }
 
 - (void)assert:(NSString *)format, ... {
+    if (self.isProductionEnvironment) return;
     if (self.loglevel > ADJLogLevelAssert) return;
     va_list parameters; va_start(parameters, format);
     [self logLevel:@"a" format:format parameters:parameters];

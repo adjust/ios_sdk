@@ -55,7 +55,8 @@
     ADJConfig * config = [ADJConfig configWithAppToken:@"qwerty123456" environment:ADJEnvironmentSandbox];
 
     self.activityHandlerMock = [[ADJActivityHandlerMock alloc] initWithConfig:config
-                                                sessionParametersActionsArray:nil];
+                                                sessionParametersActionsArray:nil
+                                                                  deviceToken:nil];
     [self savePackages:config];
     [NSURLConnection reset];
 }
@@ -75,7 +76,9 @@
     [ADJTestsUtil deleteFile:@"AdjustIoActivityState" logger:self.loggerMock];
     [ADJTestsUtil deleteFile:@"AdjustIoAttribution" logger:self.loggerMock];
 
-    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config sessionParametersActionsArray:nil];
+    id<ADJActivityHandler> activityHandler = [ADJActivityHandler handlerWithConfig:config
+                                                     sessionParametersActionsArray:nil
+                                                                       deviceToken:nil];
     [activityHandler applicationDidBecomeActive];
     [NSThread sleepForTimeInterval:5.0];
 
@@ -97,7 +100,10 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:YES];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler
+                                                    handlerWithActivityHandler:self.activityHandlerMock
+                                                        withAttributionPackage:self.attributionPackage
+                                                                 startsSending:YES];
 
     // test null response without error
     [self checkGetAttributionResponse:attributionHandler responseType:ADJSessionResponseTypeNil];
@@ -158,7 +164,7 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:YES];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES];
 
     NSMutableDictionary * attributionDictionary = [[NSMutableDictionary alloc] init];
     [attributionDictionary setObject:@"ttValue" forKey:@"tracker_token"];
@@ -196,7 +202,7 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:YES];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES];
 
     NSMutableDictionary * askIn4sDictionary = [[NSMutableDictionary alloc] init];
     [askIn4sDictionary setObject:@"4000" forKey:@"ask_in"];
@@ -260,7 +266,7 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:NO hasAttributionChangedDelegate:YES];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:NO];
 
     [NSURLSession setResponseType:ADJSessionResponseTypeMessage];
 
@@ -282,7 +288,7 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:NO];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES];
 
     [NSURLConnection setResponseType:ADJResponseTypeMessage];
 
@@ -303,7 +309,7 @@
     //  reseting to make the test order independent
     [self reset];
 
-    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES hasAttributionChangedDelegate:YES];
+    id<ADJAttributionHandler> attributionHandler = [ADJAttributionHandler handlerWithActivityHandler:self.activityHandlerMock withAttributionPackage:self.attributionPackage startsSending:YES];
 
     NSMutableDictionary * attributionDictionary = [[NSMutableDictionary alloc] init];
     [attributionDictionary setObject:@"testDeeplinkAttribution://" forKey:@"deeplink"];

@@ -18,6 +18,8 @@
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
 
+- (void)checkSdkClickResponse:(ADJSdkClickResponseData *)sdkClickResponseData;
+
 - (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData;
 
 - (void)getAttribution;
