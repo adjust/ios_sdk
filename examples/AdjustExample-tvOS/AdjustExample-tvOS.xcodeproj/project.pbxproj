@@ -47,7 +47,6 @@
 		9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */; };
 		9D449F5F1E6EE6C500E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449F3E1E6EE6C500E7E80B /* Info.plist */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
-		9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F311C105B4C00138E4B /* URLRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -141,8 +140,6 @@
 		9D449F3E1E6EE6C500E7E80B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DC95F2D1C10596500138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		9DC95F301C105B4C00138E4B /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
-		9DC95F311C105B4C00138E4B /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,8 +179,6 @@
 				963909B91BCC0D8300A2E8A4 /* AppDelegate.m */,
 				963909BB1BCC0D8300A2E8A4 /* ViewControllertvOS.h */,
 				963909BC1BCC0D8300A2E8A4 /* ViewControllertvOS.m */,
-				9DC95F301C105B4C00138E4B /* URLRequest.h */,
-				9DC95F311C105B4C00138E4B /* URLRequest.m */,
 				963909BE1BCC0D8300A2E8A4 /* Main.storyboard */,
 				963909C11BCC0D8300A2E8A4 /* Assets.xcassets */,
 				963909C31BCC0D8300A2E8A4 /* Info.plist */,
@@ -388,7 +383,6 @@
 				9D449F3F1E6EE6C500E7E80B /* ADJActivityHandler.m in Sources */,
 				9D449F5C1E6EE6C500E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449F401E6EE6C500E7E80B /* ADJActivityKind.m in Sources */,
-				9DC95F321C105B4C00138E4B /* URLRequest.m in Sources */,
 				9D449F481E6EE6C500E7E80B /* ADJAttributionHandler.m in Sources */,
 				9D449F541E6EE6C500E7E80B /* ADJRequestHandler.m in Sources */,
 				9D449F4D1E6EE6C500E7E80B /* ADJEvent.m in Sources */,

@@ -8,7 +8,6 @@
 
 #import "Adjust.h"
 #import "Constants.h"
-#import "URLRequest.h"
 #import "ViewControllertvOS.h"
 
 @interface ViewControllertvOS ()
@@ -22,7 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnEnableSdk;
 @property (weak, nonatomic) IBOutlet UIButton *btnDisableSdk;
 @property (weak, nonatomic) IBOutlet UIButton *btnIsSdkEnabled;
-@property (weak, nonatomic) IBOutlet UIButton *btnForgetThisDevice;
 
 @end
 
@@ -105,42 +103,6 @@
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {}];
     
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (IBAction)clickForgetThisDevice:(id)sender {
-    NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-
-    [URLRequest forgetDeviceWithAppToken:kAppToken
-                                    idfv:idfv
-                         responseHandler:^(NSString *response) {
-                             [self responseHandler:response];
-                         }];
-}
-
-- (void)responseHandler:(NSString *)response {
-    NSString *message;
-
-    if ([[response lowercaseString] containsString:[@"Forgot device" lowercaseString]]) {
-        message = @"Device is forgotten!";
-    } else {
-        message = @"Device isn't known!";
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showResultInMainThread:message];
-    });
-}
-
-- (void)showResultInMainThread:(NSString *)message {
-    UIAlertController *alert =
-    [UIAlertController alertControllerWithTitle:@"Forget device"
-                                        message:message
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {}];
-
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
