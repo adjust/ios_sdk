@@ -46,7 +46,6 @@
 		9D449E301E6ED88F00E7E80B /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0D1E6ED88F00E7E80B /* ADJKeychain.m */; };
 		9D449E311E6ED88F00E7E80B /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */; };
 		9D449E321E6ED88F00E7E80B /* ADJConnectionValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E111E6ED88F00E7E80B /* ADJConnectionValidator.m */; };
-		9DAC2DEB1C0F611300AC9D97 /* URLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */; };
 		9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */; };
 		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
 /* End PBXBuildFile section */
@@ -127,8 +126,6 @@
 		9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionParameters.m; sourceTree = "<group>"; };
 		9D449E101E6ED88F00E7E80B /* ADJConnectionValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConnectionValidator.h; sourceTree = "<group>"; };
 		9D449E111E6ED88F00E7E80B /* ADJConnectionValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConnectionValidator.m; sourceTree = "<group>"; };
-		9DAC2DE91C0F611300AC9D97 /* URLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRequest.h; sourceTree = "<group>"; };
-		9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRequest.m; sourceTree = "<group>"; };
 		9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControlleriOS.h; sourceTree = "<group>"; };
 		9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControlleriOS.m; sourceTree = "<group>"; };
 		9DC95F281C10515300138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -175,8 +172,6 @@
 				963909431BCBFCF300A2E8A4 /* AppDelegate.m */,
 				9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */,
 				9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */,
-				9DAC2DE91C0F611300AC9D97 /* URLRequest.h */,
-				9DAC2DEA1C0F611300AC9D97 /* URLRequest.m */,
 				963909481BCBFCF300A2E8A4 /* Main.storyboard */,
 				9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */,
 				9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */,
@@ -368,7 +363,6 @@
 				9D449E2A1E6ED88F00E7E80B /* ADJSessionFailure.m in Sources */,
 				9D449E201E6ED88F00E7E80B /* ADJUtil.m in Sources */,
 				9D449E241E6ED88F00E7E80B /* ADJAttribution.m in Sources */,
-				9DAC2DEB1C0F611300AC9D97 /* URLRequest.m in Sources */,
 				9DC95F2A1C10515300138E4B /* Constants.m in Sources */,
 				963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */,
 				9D449E321E6ED88F00E7E80B /* ADJConnectionValidator.m in Sources */,
