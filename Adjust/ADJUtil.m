@@ -466,6 +466,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                       }
 
                                       responseDataHandler(responseData);
+                                      [session finishTasksAndInvalidate];
                                   }];
     
     [task resume];
