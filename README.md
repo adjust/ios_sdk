@@ -450,6 +450,8 @@ The delegate function will be called after the SDK receives the final attributio
 - `NSString clickLabel` the click label of the current install.
 - `NSString adid` the unique device identifier provided by adjust.
 
+If any of the values is not available, it's value will default to `nil`.
+
 ### <a id="event-session-callbacks">Event and session callbacks
 
 You can register a delegate callback to be notified of successful and failed tracked events and/or sessions. The same optional protocol `AdjustDelegate` used for the [attribution callback](#attribution-callback) is used.
@@ -492,6 +494,8 @@ The delegate functions will be called after the SDK tries to send a package to t
 Both event response data objects contain:
 
 - `NSString eventToken` the event token, if the package tracked was an event.
+
+If any of these values is not available, it's value will default to `nil`.
 
 And both event and session failed objects also contain:
 
