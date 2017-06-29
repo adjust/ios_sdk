@@ -284,62 +284,19 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    // compare with the saved or internal state
-    if (![self hasChangedState:[self isEnabled]
-                     nextState:enabled
-                   trueMessage:@"Adjust already enabled"
-                  falseMessage:@"Adjust already disabled"])
-    {
-        return;
-    }
-
-    // save new enabled state in internal state
-    self.internalState.enabled = enabled;
-
-    if (self.activityState == nil) {
-        [self updateState:!enabled
-           pausingMessage:@"Handlers will start as paused due to the SDK being disabled"
-     remainsPausedMessage:@"Handlers will still start as paused"
-         unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
-        return;
-    }
-
-    // save new enabled state in activity state
-    [self writeActivityStateS:self changesInStateBlock:^{
-        self.activityState.enabled = enabled;
-    }];
-
-    [self updateState:!enabled
-       pausingMessage:@"Pausing handlers due to SDK being disabled"
- remainsPausedMessage:@"Handlers remain paused"
-     unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setEnabledI:selfI enabled:enabled];
+                     }];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    // compare with the internal state
-    if (![self hasChangedState:[self.internalState isOffline]
-                     nextState:offline
-                   trueMessage:@"Adjust already in offline mode"
-                  falseMessage:@"Adjust already in online mode"])
-    {
-        return;
-    }
-
-    // save new offline state in internal state
-    self.internalState.offline = offline;
-
-    if (self.activityState == nil) {
-        [self updateState:offline
-           pausingMessage:@"Handlers will start paused due to SDK being offline"
-     remainsPausedMessage:@"Handlers will still start as paused"
-         unPausingMessage:@"Handlers will start as active due to SDK being online"];
-        return;
-    }
-
-    [self updateState:offline
-       pausingMessage:@"Pausing handlers to put SDK offline mode"
- remainsPausedMessage:@"Handlers remain paused"
-     unPausingMessage:@"Resuming handlers to put SDK in online mode"];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setOfflineModeI:selfI offline:offline];
+                     }];
 }
 
 - (BOOL)isEnabled {
@@ -351,50 +308,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         return nil;
     }
     return self.activityState.adid;
-}
-
-- (BOOL)hasChangedState:(BOOL)previousState
-              nextState:(BOOL)nextState
-            trueMessage:(NSString *)trueMessage
-           falseMessage:(NSString *)falseMessage
-{
-    if (previousState != nextState) {
-        return YES;
-    }
-
-    if (previousState) {
-        [self.logger debug:trueMessage];
-    } else {
-        [self.logger debug:falseMessage];
-    }
-
-    return NO;
-}
-
-- (void)updateState:(BOOL)pausingState
-     pausingMessage:(NSString *)pausingMessage
-remainsPausedMessage:(NSString *)remainsPausedMessage
-   unPausingMessage:(NSString *)unPausingMessage
-{
-    // it is changing from an active state to a pause state
-    if (pausingState) {
-        [self.logger info:pausingMessage];
-    }
-    // check if it's remaining in a pause state
-    else if ([self pausedI:self sdkClickHandlerOnly:NO]) {
-        // including the sdk click handler
-        if ([self pausedI:self sdkClickHandlerOnly:YES]) {
-            [self.logger info:remainsPausedMessage];
-        } else {
-            // or except it
-            [self.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
-        }
-    } else {
-        // it is changing from a pause state to an active state
-        [self.logger info:unPausingMessage];
-    }
-
-    [self updateHandlersStatusAndSend];
 }
 
 - (void)appWillOpenUrl:(NSURL*)url {
@@ -514,14 +427,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self writeActivityStateS:self changesInStateBlock:^{
         self.activityState.askingAttribution = askingAttribution;
     }];
-}
-
-- (void)updateHandlersStatusAndSend {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI updateHandlersStatusAndSendI:selfI];
-                     }];
 }
 
 - (void)foregroundTimerFired {
@@ -933,7 +838,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                          withObject:sessionResponseData.attribution];
     }
 
-    self.internalState.sessionResponseProcessed = YES;
+    selfI.internalState.sessionResponseProcessed = YES;
 }
 
 - (void)launchSdkClickResponseTasksI:(ADJActivityHandler *)selfI
@@ -1030,6 +935,120 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     return YES;
+}
+
+
+- (void)setEnabledI:(ADJActivityHandler *)selfI
+            enabled:(BOOL)enabled
+{
+    // compare with the saved or internal state
+    if (![selfI hasChangedStateI:selfI
+                   previousState:[selfI isEnabled]
+                       nextState:enabled
+                     trueMessage:@"Adjust already enabled"
+                    falseMessage:@"Adjust already disabled"])
+    {
+        return;
+    }
+
+    // save new enabled state in internal state
+    selfI.internalState.enabled = enabled;
+
+    if (selfI.activityState == nil) {
+        [selfI checkStatusI:selfI
+               pausingState:!enabled
+              pausingMessage:@"Handlers will start as paused due to the SDK being disabled"
+        remainsPausedMessage:@"Handlers will still start as paused"
+            unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
+        return;
+    }
+
+    // save new enabled state in activity state
+    selfI.activityState.enabled = enabled;
+    [selfI writeActivityStateI:selfI];
+
+    [selfI checkStatusI:selfI
+           pausingState:!enabled
+          pausingMessage:@"Pausing handlers due to SDK being disabled"
+    remainsPausedMessage:@"Handlers remain paused"
+        unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+}
+
+- (void)setOfflineModeI:(ADJActivityHandler *)selfI
+                offline:(BOOL)offline {
+    // compare with the internal state
+    if (![selfI hasChangedStateI:selfI
+                   previousState:[selfI.internalState isOffline]
+                       nextState:offline
+                     trueMessage:@"Adjust already in offline mode"
+                    falseMessage:@"Adjust already in online mode"])
+    {
+        return;
+    }
+
+    // save new offline state in internal state
+    selfI.internalState.offline = offline;
+
+    if (selfI.activityState == nil) {
+        [selfI checkStatusI:selfI
+               pausingState:offline
+             pausingMessage:@"Handlers will start paused due to SDK being offline"
+       remainsPausedMessage:@"Handlers will still start as paused"
+           unPausingMessage:@"Handlers will start as active due to SDK being online"];
+        return;
+    }
+
+    [selfI checkStatusI:selfI
+           pausingState:offline
+         pausingMessage:@"Pausing handlers to put SDK offline mode"
+   remainsPausedMessage:@"Handlers remain paused"
+       unPausingMessage:@"Resuming handlers to put SDK in online mode"];
+}
+
+- (BOOL)hasChangedStateI:(ADJActivityHandler *)selfI
+           previousState:(BOOL)previousState
+               nextState:(BOOL)nextState
+             trueMessage:(NSString *)trueMessage
+            falseMessage:(NSString *)falseMessage
+{
+    if (previousState != nextState) {
+        return YES;
+    }
+
+    if (previousState) {
+        [selfI.logger debug:trueMessage];
+    } else {
+        [selfI.logger debug:falseMessage];
+    }
+
+    return NO;
+}
+
+- (void)checkStatusI:(ADJActivityHandler *)selfI
+        pausingState:(BOOL)pausingState
+      pausingMessage:(NSString *)pausingMessage
+remainsPausedMessage:(NSString *)remainsPausedMessage
+    unPausingMessage:(NSString *)unPausingMessage
+{
+    // it is changing from an active state to a pause state
+    if (pausingState) {
+        [selfI.logger info:pausingMessage];
+    }
+    // check if it's remaining in a pause state
+    else if ([selfI pausedI:selfI sdkClickHandlerOnly:NO]) {
+        // including the sdk click handler
+        if ([selfI pausedI:selfI sdkClickHandlerOnly:YES]) {
+            [selfI.logger info:remainsPausedMessage];
+        } else {
+            // or except it
+            [selfI.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
+        }
+    } else {
+        // it is changing from a pause state to an active state
+        [selfI.logger info:unPausingMessage];
+    }
+
+    [selfI updateHandlersStatusAndSendI:selfI];
 }
 
 - (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
@@ -1162,11 +1181,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
    withPurchaseDate:(NSDate *)appPurchaseDate
 {
     if (iAdImpressionDate == nil) {
-        [self.logger debug:@"iAdImpressionDate not received"];
+        [selfI.logger debug:@"iAdImpressionDate not received"];
         return;
     }
 
-    [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
+    [selfI.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
 
     double now = [NSDate.date timeIntervalSince1970];
     if (selfI.activityState != nil) {
@@ -1175,16 +1194,16 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
                                        createdAt:now];
 
     clickBuilder.purchaseTime = appPurchaseDate;
     clickBuilder.clickTime = iAdImpressionDate;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" sessionParameters:selfI.sessionParameters];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 
