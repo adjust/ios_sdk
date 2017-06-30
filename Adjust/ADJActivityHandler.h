@@ -25,13 +25,13 @@
 - (BOOL)isDisabled;
 - (BOOL)isOffline;
 - (BOOL)isOnline;
-- (BOOL)isBackground;
-- (BOOL)isForeground;
-- (BOOL)isDelayStart;
-- (BOOL)isToStartNow;
-- (BOOL)isToUpdatePackages;
+- (BOOL)isInBackground;
+- (BOOL)isInForeground;
+- (BOOL)isInDelayedStart;
+- (BOOL)isNotInDelayedStart;
+- (BOOL)itHasToUpdatePackages;
 - (BOOL)isFirstLaunch;
-- (BOOL)hasSessionResponseNotProcessed;
+- (BOOL)hasSessionResponseNotBeenProcessed;
 
 @end
 
