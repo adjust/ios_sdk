@@ -57,13 +57,13 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isDisabled { return !self.enabled; }
 - (BOOL)isOffline { return self.offline; }
 - (BOOL)isOnline { return !self.offline; }
-- (BOOL)isBackground { return self.background; }
-- (BOOL)isForeground { return !self.background; }
-- (BOOL)isDelayStart { return self.delayStart; }
-- (BOOL)isToStartNow { return !self.delayStart; }
-- (BOOL)isToUpdatePackages { return self.updatePackages; }
+- (BOOL)isInBackground { return self.background; }
+- (BOOL)isInForeground { return !self.background; }
+- (BOOL)isInDelayedStart { return self.delayStart; }
+- (BOOL)isNotInDelayedStart { return !self.delayStart; }
+- (BOOL)itHasToUpdatePackages { return self.updatePackages; }
 - (BOOL)isFirstLaunch { return self.firstLaunch; }
-- (BOOL)hasSessionResponseNotProcessed { return !self.sessionResponseProcessed; }
+- (BOOL)hasSessionResponseNotBeenProcessed { return !self.sessionResponseProcessed; }
 
 @end
 
@@ -610,7 +610,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                                                          sdkClickHandlerOnly:NO]];
 
     // update session parameters in package queue
-    if ([selfI isToUpdatePackagesI:selfI]) {
+    if ([selfI itHasToUpdatePackagesI:selfI]) {
         [selfI updatePackagesI:selfI];
      }
 
@@ -663,7 +663,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         [selfI transferSessionPackageI:selfI now:now];
         [selfI.activityState resetSessionAttributes:now];
         selfI.activityState.enabled = [selfI.internalState isEnabled];
-        selfI.activityState.updatePackages = [selfI.internalState isToUpdatePackages];
+        selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
         [selfI writeActivityStateI:selfI];
         return;
     }
@@ -709,7 +709,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                          activityState:selfI.activityState
                                          config:selfI.adjustConfig
                                          createdAt:now];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:selfI.sessionParameters isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:sessionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -720,7 +720,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     // if it's the first launch
     if ([selfI.internalState isFirstLaunch]) {
         // and it hasn't received the session response
-        if ([selfI.internalState hasSessionResponseNotProcessed]) {
+        if ([selfI.internalState hasSessionResponseNotBeenProcessed]) {
             return;
         }
     }
@@ -762,7 +762,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
                                        createdAt:now];
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:selfI.sessionParameters isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:eventPackage];
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -772,7 +772,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     // if it is in the background and it can send, start the background timer
-    if (selfI.adjustConfig.sendInBackground && [selfI.internalState isBackground]) {
+    if (selfI.adjustConfig.sendInBackground && [selfI.internalState isInBackground]) {
         [selfI startBackgroundTimerI:selfI];
     }
 
@@ -1217,11 +1217,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (BOOL)isToUpdatePackagesI:(ADJActivityHandler *)selfI {
+- (BOOL)itHasToUpdatePackagesI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
         return selfI.activityState.updatePackages;
     } else {
-        return [selfI.internalState isToUpdatePackages];
+        return [selfI.internalState itHasToUpdatePackages];
     }
 }
 
@@ -1413,7 +1413,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // other handlers are paused if either:
     return [selfI.internalState isOffline] ||        // it's offline
             ![selfI isEnabledI:selfI] ||             // is disabled
-            [selfI.internalState isDelayStart];      // is in delayed start
+            [selfI.internalState isInDelayedStart];      // is in delayed start
 }
 
 - (BOOL)toSendI:(ADJActivityHandler *)selfI {
@@ -1434,7 +1434,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     // doesn't have the option -> depends on being on the background/foreground
-    return [selfI.internalState isForeground];
+    return [selfI.internalState isInForeground];
 }
 
 # pragma mark - timer
@@ -1503,12 +1503,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 #pragma mark - delay
 - (void)delayStartI:(ADJActivityHandler *)selfI {
     // it's not configured to start delayed or already finished
-    if ([selfI.internalState isToStartNow]) {
+    if ([selfI.internalState isNotInDelayedStart]) {
         return;
     }
 
     // the delay has already started
-    if ([selfI isToUpdatePackagesI:selfI]) {
+    if ([selfI itHasToUpdatePackagesI:selfI]) {
         return;
     }
 
@@ -1538,7 +1538,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)sendFirstPackagesI:(ADJActivityHandler *)selfI {
-    if ([selfI.internalState isToStartNow]) {
+    if ([selfI.internalState isNotInDelayedStart]) {
         [selfI.logger info:@"Start delay expired or never configured"];
         return;
     }
