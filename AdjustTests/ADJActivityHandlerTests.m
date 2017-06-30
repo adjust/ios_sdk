@@ -3066,7 +3066,7 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
     ADJInternalState * internalState = [activityHandler internalState];
 
     // goes to the background
-    aTrue([internalState isBackground]);
+    aTrue([internalState isInBackground]);
 }
 
 - (id<ADJActivityHandler>)getFirstActivityHandler:(ADJConfig *)config
@@ -3090,8 +3090,8 @@ backgroundTimerStarts:(BOOL)backgroundTimerStarts
         // test default values
         aiEquals(cState.startEnabled, [internalState isEnabled]);
         aTrue([internalState isOnline]);
-        aTrue([internalState isBackground]);
-        aTrue([internalState isToStartNow]);
+        aTrue([internalState isInBackground]);
+        aTrue([internalState isNotInDelayedStart]);
         aiEquals(cState.isToUpdatePackages, [internalState isToUpdatePackages]);
     }
 
