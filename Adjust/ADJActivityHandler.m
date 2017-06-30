@@ -424,9 +424,12 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
-    [self writeActivityStateS:self changesInStateBlock:^{
-        self.activityState.askingAttribution = askingAttribution;
-    }];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setAskingAttributionI:selfI
+                                   askingAttribution:askingAttribution];
+                     }];
 }
 
 - (void)foregroundTimerFired {
@@ -1250,20 +1253,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)writeActivityStateI:(ADJActivityHandler *)selfI
 {
-    [selfI writeActivityStateS:selfI changesInStateBlock:nil];
-}
-
-- (void)writeActivityStateS:(ADJActivityHandler *)selfS
-        changesInStateBlock:(void (^)(void))changesInStateBlock
-{
     @synchronized ([ADJActivityState class]) {
-        if (selfS.activityState == nil) {
+        if (selfI.activityState == nil) {
             return;
         }
-        if (changesInStateBlock != nil) {
-            changesInStateBlock();
-        }
-        [ADJUtil writeObject:selfS.activityState filename:kActivityStateFilename objectName:@"Activity state"];
+        [ADJUtil writeObject:selfI.activityState filename:kActivityStateFilename objectName:@"Activity state"];
     }
 }
 
@@ -1443,6 +1437,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // doesn't have the option -> depends on being on the background/foreground
     return [selfI.internalState isInForeground];
+}
+
+- (void)setAskingAttributionI:(ADJActivityHandler *)selfI
+            askingAttribution:(BOOL)askingAttribution
+{
+    selfI.activityState.askingAttribution = askingAttribution;
+    [selfI writeActivityStateI:selfI];
 }
 
 # pragma mark - timer
