@@ -48,7 +48,8 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 + (void)setEnabled:(BOOL)enabled {
-    [[Adjust getInstance] setEnabled:enabled];
+    Adjust * instance = [Adjust getInstance];
+    [instance setEnabled:enabled];
 }
 
 + (BOOL)isEnabled {
@@ -166,8 +167,14 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    if (![self checkActivityHandler]) { return; }
-    [self.activityHandler setEnabled:enabled];
+    if (![self checkActivityHandler: enabled
+                        trueMessage:@"enabled mode"
+                       falseMessage:@"disabled mode"])
+    {
+        self.savedPreLaunch.enabled = [NSNumber numberWithBool:enabled];
+    } else {
+        [self.activityHandler setEnabled:enabled];
+    }
 }
 
 - (BOOL)isEnabled {
@@ -189,8 +196,14 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)setOfflineMode:(BOOL)enabled {
-    if (![self checkActivityHandler]) { return; }
-    [self.activityHandler setOfflineMode:enabled];
+    if (![self checkActivityHandler:enabled
+                        trueMessage:@"offline mode"
+                       falseMessage:@"online mode"])
+    {
+        self.savedPreLaunch.offline = enabled;
+    } else {
+        [self.activityHandler setOfflineMode:enabled];
+    }
 }
 
 - (NSString *)idfa {
@@ -214,11 +227,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler addSessionCallbackParameterI:activityHandler key:key value:value];
     }];
 }
@@ -231,11 +244,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler addSessionPartnerParameterI:activityHandler key:key value:value];
     }];
 }
@@ -247,11 +260,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler removeSessionCallbackParameterI:activityHandler key:key];
     }];
 }
@@ -262,11 +275,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
     }];
 }
@@ -277,11 +290,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler resetSessionCallbackParametersI:activityHandler];
     }];
 }
@@ -292,11 +305,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
-        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler resetSessionPartnerParametersI:activityHandler];
     }];
 }
