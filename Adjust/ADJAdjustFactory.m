@@ -43,18 +43,15 @@ static NSTimeInterval internalMaxDelayStart = -1;
 }
 
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
-                     sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                        deviceToken:(NSData*)deviceToken
+                     savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
 {
     if (internalActivityHandler == nil) {
         return [ADJActivityHandler handlerWithConfig:adjustConfig
-                      sessionParametersActionsArray:sessionParametersActionsArray
-                                         deviceToken:deviceToken
+                                      savedPreLaunch:savedPreLaunch
                 ];
     }
     return [internalActivityHandler initWithConfig:adjustConfig
-                    sessionParametersActionsArray:sessionParametersActionsArray
-                                       deviceToken:deviceToken];
+                                    savedPreLaunch:savedPreLaunch];
 }
 
 + (id<ADJLogger>)logger {

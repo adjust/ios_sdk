@@ -35,14 +35,22 @@
 
 @end
 
+@interface ADJSavedPreLaunch : NSObject
+
+@property (nonatomic, strong) NSMutableArray *sessionParametersActionsArray;
+@property (nonatomic, copy) NSData *deviceTokenData;
+
+- (id)init;
+
+@end
+
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, copy) ADJAttribution *attribution;
 - (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-         deviceToken:(NSData*)deviceToken;
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -87,8 +95,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                deviceToken:(NSData*)deviceToken;
+                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key
