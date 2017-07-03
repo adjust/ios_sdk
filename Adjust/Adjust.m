@@ -24,8 +24,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) id<ADJActivityHandler> activityHandler;
-@property (nonatomic, strong) NSMutableArray *sessionParametersActionsArray;
-@property (nonatomic, copy) NSData *deviceTokenData;
+@property (nonatomic, strong) ADJSavedPreLaunch *savedPreLaunch;
 
 @end
 
@@ -136,6 +135,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
     self.activityHandler = nil;
     self.logger = [ADJAdjustFactory logger];
+    self.savedPreLaunch = [[ADJSavedPreLaunch alloc] init];
 
     return self;
 }
@@ -147,8 +147,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
     }
 
     self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig
-                                        sessionParametersActionsArray:self.sessionParametersActionsArray
-                                                           deviceToken:self.deviceTokenData];
+                                        savedPreLaunch:self.savedPreLaunch];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -183,7 +182,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 - (void)setDeviceToken:(NSData *)deviceToken {
     if (![self checkActivityHandler:@"device token"]) {
-        self.deviceTokenData = deviceToken;
+        self.savedPreLaunch.deviceTokenData = deviceToken;
     } else {
         [self.activityHandler setDeviceToken:deviceToken];
     }
@@ -215,11 +214,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler addSessionCallbackParameterI:activityHandler key:key value:value];
     }];
 }
@@ -232,11 +231,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler addSessionPartnerParameterI:activityHandler key:key value:value];
     }];
 }
@@ -248,11 +247,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler removeSessionCallbackParameterI:activityHandler key:key];
     }];
 }
@@ -263,11 +262,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
     }];
 }
@@ -278,11 +277,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler resetSessionCallbackParametersI:activityHandler];
     }];
 }
@@ -293,11 +292,11 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    if (self.sessionParametersActionsArray == nil) {
-        self.sessionParametersActionsArray = [[NSMutableArray alloc] init];
+    if (self.savedPreLaunch.sessionParametersActionsArray == nil) {
+        self.savedPreLaunch.sessionParametersActionsArray = [[NSMutableArray alloc] init];
     }
 
-    [self.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
+    [self.savedPreLaunch.sessionParametersActionsArray addObject:^(ADJActivityHandler * activityHandler){
         [activityHandler resetSessionPartnerParametersI:activityHandler];
     }];
 }

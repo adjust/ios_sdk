@@ -67,6 +67,17 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 
 @end
 
+@implementation ADJSavedPreLaunch
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    return self;
+}
+
+@end
+
 #pragma mark -
 @interface ADJActivityHandler()
 
@@ -102,17 +113,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 @synthesize attribution = _attribution;
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                deviceToken:(NSData*)deviceToken
+                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
 {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
-                       sessionParametersActionsArray:sessionParametersActionsArray
-                                          deviceToken:deviceToken];
+                                       savedPreLaunch:savedPreLaunch];
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-         deviceToken:(NSData*)deviceToken
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
 {
     self = [super init];
     if (self == nil) return nil;
@@ -170,14 +178,14 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
-    self.deviceTokenData = deviceToken;
+    self.deviceTokenData = savedPreLaunch.deviceTokenData;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI initI:selfI
-        sessionParametersActionsArray:sessionParametersActionsArray];
+        sessionParametersActionsArray:savedPreLaunch.sessionParametersActionsArray];
                      }];
 
     [self addNotificationObserver];

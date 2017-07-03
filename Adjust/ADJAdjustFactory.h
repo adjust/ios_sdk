@@ -22,8 +22,7 @@
                                             startsSending:(BOOL)startsSending;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
-                     sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                        deviceToken:(NSData*)deviceToken;
+                     savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 + (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(id<ADJActivityHandler>)activityHandler
                                             startsSending:(BOOL)startsSending;
 
