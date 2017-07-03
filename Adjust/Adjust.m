@@ -152,44 +152,45 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)trackEvent:(ADJEvent *)event {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler trackEvent:event];
 }
 
 - (void)trackSubsessionStart {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler applicationDidBecomeActive];
 }
 
 - (void)trackSubsessionEnd {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler applicationWillResignActive];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler setEnabled:enabled];
 }
 
 - (BOOL)isEnabled {
-    if (![self checkActivityHandler]) return NO;
+    if (![self checkActivityHandler]) { return NO; }
     return [self.activityHandler isEnabled];
 }
 
 - (void)appWillOpenUrl:(NSURL *)url {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler  appWillOpenUrl:url];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    self.deviceTokenData = deviceToken;
-    if (self.activityHandler != nil) {
+    if (![self checkActivityHandler:@"device token"]) {
+        self.deviceTokenData = deviceToken;
+    } else {
         [self.activityHandler setDeviceToken:deviceToken];
     }
 }
 
 - (void)setOfflineMode:(BOOL)enabled {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler setOfflineMode:enabled];
 }
 
@@ -202,13 +203,14 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)sendFirstPackages {
-    if (![self checkActivityHandler]) return;
+    if (![self checkActivityHandler]) { return; }
     [self.activityHandler sendFirstPackages];
 }
 
 - (void)addSessionCallbackParameter:(NSString *)key
-                              value:(NSString *)value {
-    if (self.activityHandler != nil) {
+                              value:(NSString *)value
+{
+    if ([self checkActivityHandler:@"adding session callback parameter"]) {
         [self.activityHandler addSessionCallbackParameter:key value:value];
         return;
     }
@@ -223,8 +225,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)addSessionPartnerParameter:(NSString *)key
-                             value:(NSString *)value {
-    if (self.activityHandler != nil) {
+                             value:(NSString *)value
+{
+    if ([self checkActivityHandler:@"adding session partner parameter"]) {
         [self.activityHandler addSessionPartnerParameter:key value:value];
         return;
     }
@@ -238,8 +241,9 @@ NSString * const ADJEnvironmentProduction   = @"production";
     }];
 }
 
-- (void)removeSessionCallbackParameter:(NSString *)key {
-    if (self.activityHandler != nil) {
+- (void)removeSessionCallbackParameter:(NSString *)key
+{
+    if ([self checkActivityHandler:@"removing session callback parameter"]) {
         [self.activityHandler removeSessionCallbackParameter:key];
         return;
     }
@@ -254,7 +258,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)removeSessionPartnerParameter:(NSString *)key {
-    if (self.activityHandler != nil) {
+    if ([self checkActivityHandler:@"removing session partner parameter"]) {
         [self.activityHandler removeSessionPartnerParameter:key];
         return;
     }
@@ -269,7 +273,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)resetSessionCallbackParameters {
-    if (self.activityHandler != nil) {
+    if ([self checkActivityHandler:@"resetting session callback parameters"]) {
         [self.activityHandler resetSessionCallbackParameters];
         return;
     }
@@ -284,7 +288,7 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (void)resetSessionPartnerParameters {
-    if (self.activityHandler != nil) {
+    if ([self checkActivityHandler:@"resetting session partner parameters"]) {
         [self.activityHandler resetSessionPartnerParameters];
         return;
     }
@@ -299,12 +303,12 @@ NSString * const ADJEnvironmentProduction   = @"production";
 }
 
 - (ADJAttribution *)attribution {
-    if (![self checkActivityHandler]) return nil;
+    if (![self checkActivityHandler]) { return nil; }
     return [self.activityHandler attribution];
 }
 
 - (NSString *)adid {
-    if (![self checkActivityHandler]) return nil;
+    if (![self checkActivityHandler]) { return nil; }
     return [self.activityHandler adid];
 }
 
@@ -320,12 +324,33 @@ NSString * const ADJEnvironmentProduction   = @"production";
 #pragma mark - private
 
 - (BOOL)checkActivityHandler {
+    return [self checkActivityHandler:nil];
+}
+
+- (BOOL)checkActivityHandler:(BOOL)status
+                 trueMessage:(NSString *)trueMessage
+                falseMessage:(NSString *)falseMessage
+{
+    if (status) {
+        return [self checkActivityHandler:trueMessage];
+    } else {
+        return [self checkActivityHandler:falseMessage];
+    }
+}
+
+- (BOOL)checkActivityHandler:(NSString *)savedForLaunchWarningSuffixMessage
+{
     if (self.activityHandler == nil) {
-        [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
+        if (savedForLaunchWarningSuffixMessage != nil) {
+            [self.logger warn:@"Adjust not initialized, but %@ saved for launch", savedForLaunchWarningSuffixMessage];
+        } else {
+            [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
+        }
         return NO;
     } else {
         return YES;
     }
+
 }
 
 @end
