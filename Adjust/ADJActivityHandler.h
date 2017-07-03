@@ -37,8 +37,10 @@
 
 @interface ADJSavedPreLaunch : NSObject
 
-@property (nonatomic, strong) NSMutableArray *sessionParametersActionsArray;
+@property (nonatomic, strong) NSMutableArray *preLaunchActionsArray;
 @property (nonatomic, copy) NSData *deviceTokenData;
+@property (nonatomic, copy) NSNumber *enabled;
+@property (nonatomic, assign) BOOL offline;
 
 - (id)init;
 

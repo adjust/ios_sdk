@@ -73,6 +73,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
     self = [super init];
     if (self == nil) return nil;
 
+    // online by default
+    self.offline = NO;
     return self;
 }
 
@@ -152,6 +154,17 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     self.internalState = [[ADJInternalState alloc] init];
 
+    if (savedPreLaunch.enabled != nil) {
+        if (savedPreLaunch.preLaunchActionsArray == nil) {
+            savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
+        }
+
+        BOOL newEnabled = [savedPreLaunch.enabled boolValue];
+        [savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
+            [activityHandler setEnabledI:activityHandler enabled:newEnabled];
+        }];
+    }
+
     // enabled by default
     if (self.activityState == nil) {
         self.internalState.enabled = YES;
@@ -159,8 +172,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         self.internalState.enabled = self.activityState.enabled;
     }
 
-    // online by default
-    self.internalState.offline = NO;
+    // reads offline mode from pre launch
+    self.internalState.offline = savedPreLaunch.offline;
     // in the background by default
     self.internalState.background = YES;
     // delay start not configured by default
@@ -185,7 +198,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI initI:selfI
-        sessionParametersActionsArray:savedPreLaunch.sessionParametersActionsArray];
+        preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
 
     [self addNotificationObserver];
@@ -556,7 +569,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -643,7 +656,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
 
-    [selfI sessionParametersActionsI:selfI sessionParametersActionsArray:sessionParametersActionsArray];
+    [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
     [selfI startI:selfI];
 }
@@ -1708,13 +1721,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)sessionParametersActionsI:(ADJActivityHandler *)selfI
-    sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+- (void)preLaunchActionsI:(ADJActivityHandler *)selfI
+    preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 {
-    if (sessionParametersActionsArray == nil) {
+    if (preLaunchActionsArray == nil) {
         return;
     }
-    for (activityHandlerBlockI activityHandlerActionI in sessionParametersActionsArray) {
+    for (activityHandlerBlockI activityHandlerActionI in preLaunchActionsArray) {
         activityHandlerActionI(selfI);
     }
 }
