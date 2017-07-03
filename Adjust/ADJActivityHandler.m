@@ -419,6 +419,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
           attributionDetails:(NSDictionary *)attributionDetails
  {
+     if (![selfI isEnabledI:selfI]) {
+         return;
+     }
+
      double now = [NSDate.date timeIntervalSince1970];
      if (selfI.activityState != nil) {
          double lastInterval = now - selfI.activityState.lastActivity;
@@ -684,7 +688,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         selfI.activityState.sessionCount = 1; // this is the first session
         selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
 
-        [selfI transferSessionPackageI:selfI now:now];
+        // track the first session package only if it's enabled
+        if ([selfI.internalState isEnabled]) {
+            [selfI transferSessionPackageI:selfI now:now];
+        }
+
         [selfI.activityState resetSessionAttributes:now];
         selfI.activityState.enabled = [selfI.internalState isEnabled];
         selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
@@ -961,7 +969,6 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     return YES;
 }
 
-
 - (void)setEnabledI:(ADJActivityHandler *)selfI
             enabled:(BOOL)enabled
 {
@@ -1078,6 +1085,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
                     url:(NSURL *)url {
     if ([ADJUtil isNull:url]) {
+        return;
+    }
+
+    if (![selfI isEnabledI:selfI]) {
         return;
     }
 
@@ -1206,6 +1217,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 {
     if (iAdImpressionDate == nil) {
         [selfI.logger debug:@"iAdImpressionDate not received"];
+        return;
+    }
+
+    if (![selfI isEnabledI:selfI]) {
         return;
     }
 
