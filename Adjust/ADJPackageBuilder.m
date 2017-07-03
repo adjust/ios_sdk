@@ -12,6 +12,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "NSData+ADJAdditions.h"
+#import "UIDevice+ADJAdditions.h"
 
 @interface ADJPackageBuilder()
 
@@ -230,7 +231,7 @@
 }
 
 - (void)injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo intoParameters:(NSMutableDictionary *)parameters {
-    [ADJPackageBuilder parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
+    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.vendorId forKey:@"idfv"];
 }
 
