@@ -12,6 +12,10 @@
 #import "ADJUtil.h"
 #import "ADJSystemProfile.h"
 #import "NSData+ADJAdditions.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
+
+
 
 @implementation ADJDeviceInfo
 
@@ -44,6 +48,12 @@
     self.machineModel     = [ADJSystemProfile machineModel];
     self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
     self.osBuild          = [ADJSystemProfile osVersion];
+    
+    //MCC & MNC
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+    self.mcc = [carrier mobileCountryCode];
+    self.mnc = [carrier mobileNetworkCode];
 
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
