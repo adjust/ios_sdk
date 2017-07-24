@@ -18,7 +18,6 @@
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJConnectionValidator.h"
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
@@ -428,24 +427,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSURLSession *session;
-    ADJConnectionValidator *connectionValidator;
-    
-    if (activityPackage.activityKind == ADJActivityKindEvent ||
-        activityPackage.activityKind == ADJActivityKindSession ||
-        activityPackage.activityKind == ADJActivityKindInfo) {
-        int tce = [[activityPackage.parameters objectForKey:@"tce"] intValue];
-        
-        connectionValidator = [[ADJConnectionValidator alloc] init];
-        [connectionValidator setExpectedTce:tce];
-        [connectionValidator setDidValidationHappen:NO];
-
-        session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration
-                                                delegate:connectionValidator
-                                           delegateQueue:nil];
-    } else {
-        session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
-    }
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
@@ -456,14 +438,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               prefixErrorMessage:prefixErrorMessage
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
-
-                                      if (nil != connectionValidator) {
-                                          if (NO == connectionValidator.didValidationHappen) {
-                                              responseData.validationResult = YES;
-                                          } else {
-                                              responseData.validationResult = connectionValidator.validationResult;
-                                          }
-                                      }
 
                                       responseDataHandler(responseData);
                                   }];

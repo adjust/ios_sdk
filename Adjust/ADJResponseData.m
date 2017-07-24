@@ -75,7 +75,6 @@
         copy.adid = [self.adid copyWithZone:zone];
         copy.success = self.success;
         copy.willRetry = self.willRetry;
-        copy.validationResult = self.validationResult;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
         copy.attribution = [self.attribution copyWithZone:zone];
     }
