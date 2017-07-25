@@ -56,6 +56,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeUrlSessionConfiguration];
 }
 
++ (void)teardown {
+    dateFormat = nil;
+    universalLinkRegex = nil;
+    secondsNumberFormatter = nil;
+    optionalRedirectRegex   = nil;
+    shortUniversalLinkRegex = nil;
+    urlSessionConfiguration = nil;
+}
+
 + (void)initializeDateFormat {
     dateFormat = [[NSDateFormatter alloc] init];
 
@@ -134,6 +143,14 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [secondsNumberFormatter setPositiveFormat:@"0.0"];
 }
 
++ (NSURLSessionConfiguration *)getUrlSessionConfiguration {
+    if (urlSessionConfiguration != nil) {
+        return urlSessionConfiguration;
+    } else {
+        return [NSURLSessionConfiguration defaultSessionConfiguration];
+    }
+}
+
 + (void)initializeUrlSessionConfiguration {
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 }
@@ -199,6 +216,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)formatDate:(NSDate *)value {
+    if (dateFormat == nil) {
+        return nil;
+    }
     return [dateFormat stringFromDate:value];
 }
 
@@ -427,7 +447,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
              suffixErrorMessage:(NSString *)suffixErrorMessage
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[ADJUtil getUrlSessionConfiguration]];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
@@ -546,7 +566,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         } else if ([value isKindOfClass:[NSDate class]]) {
             // Format date to our custom format
             NSString *dateStingValue = [ADJUtil formatDate:value];
-            [convertedDictionary setObject:dateStingValue forKey:key];
+            if (dateStingValue != nil) {
+                [convertedDictionary setObject:dateStingValue forKey:key];
+            }
         } else {
             // Convert all other objects directly to string
             NSString *stringValue = [NSString stringWithFormat:@"%@", value];
@@ -737,6 +759,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     // Normalize negative zero
     if (seconds < 0) {
         seconds = seconds * -1;
+    }
+
+    if (secondsNumberFormatter == nil) {
+        return nil;
     }
 
     return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];

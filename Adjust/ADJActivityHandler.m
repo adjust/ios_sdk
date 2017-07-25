@@ -557,6 +557,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self teardownAttributionS:deleteState];
     [self teardownAllSessionParametersS:deleteState];
 
+    [ADJUtil teardown];
+
     self.internalQueue = nil;
     self.packageHandler = nil;
     self.attributionHandler = nil;

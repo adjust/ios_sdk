@@ -19,6 +19,8 @@ typedef void (^selfInjectedBlock)(id);
 
 @interface ADJUtil : NSObject
 
++ (void)teardown;
+
 + (id)readObject:(NSString *)filename
       objectName:(NSString *)objectName
            class:(Class)classToRead;
