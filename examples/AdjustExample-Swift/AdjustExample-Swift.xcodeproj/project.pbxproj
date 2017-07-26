@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */; };
 		9D449E761E6EDC3D00E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */; };
 		9D449E771E6EDC3D00E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E371E6EDC3D00E7E80B /* ADJActivityKind.m */; };
 		9D449E781E6EDC3D00E7E80B /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E391E6EDC3D00E7E80B /* ADJActivityPackage.m */; };
@@ -49,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
+		6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		9D449E341E6EDC3D00E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D449E361E6EDC3D00E7E80B /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
@@ -197,6 +200,8 @@
 				9D449E721E6EDC3D00E7E80B /* Adjust.m */,
 				9D449E731E6EDC3D00E7E80B /* ADJUtil.h */,
 				9D449E741E6EDC3D00E7E80B /* ADJUtil.m */,
+				6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */,
+				6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */,
 				9D449E751E6EDC3D00E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -345,6 +350,7 @@
 				9D449E7E1E6EDC3D00E7E80B /* ADJAttribution.m in Sources */,
 				9D449E831E6EDC3D00E7E80B /* ADJDeviceInfo.m in Sources */,
 				9D449E7F1E6EDC3D00E7E80B /* ADJAttributionHandler.m in Sources */,
+				6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */,
 				9D449E891E6EDC3D00E7E80B /* ADJPackageBuilder.m in Sources */,
 				9D449E841E6EDC3D00E7E80B /* ADJEvent.m in Sources */,
 				9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */,

@@ -116,4 +116,5 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (NSString *)readMNC;
 
++ (NSNumber *)readReachabilityFlags;
 @end

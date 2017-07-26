@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC85181F27950000D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85171F2794F800D6A0ED /* ADJReachability.m */; };
 		9D449FA31E6EE72000E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */; };
 		9D449FA41E6EE72000E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F641E6EE72000E7E80B /* ADJActivityKind.m */; };
 		9D449FA51E6EE72000E7E80B /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F661E6EE72000E7E80B /* ADJActivityPackage.m */; };
@@ -104,6 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FCC85161F2794F800D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
+		6FCC85171F2794F800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		9D449F611E6EE72000E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D449F631E6EE72000E7E80B /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
@@ -282,6 +285,8 @@
 				9D449F9F1E6EE72000E7E80B /* Adjust.m */,
 				9D449FA01E6EE72000E7E80B /* ADJUtil.h */,
 				9D449FA11E6EE72000E7E80B /* ADJUtil.m */,
+				6FCC85161F2794F800D6A0ED /* ADJReachability.h */,
+				6FCC85171F2794F800D6A0ED /* ADJReachability.m */,
 				9D449FA21E6EE72000E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -527,6 +532,7 @@
 				9D449FB31E6EE72000E7E80B /* ADJEventSuccess.m in Sources */,
 				9D449FBF1E6EE72000E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449FAB1E6EE72000E7E80B /* ADJAttribution.m in Sources */,
+				6FCC85181F27950000D6A0ED /* ADJReachability.m in Sources */,
 				9D449FA61E6EE72000E7E80B /* ADJActivityState.m in Sources */,
 				9DF7ACB81CB4FF6400D3591F /* AdjustTrackingHelper.m in Sources */,
 				9DF7AC1F1CB4FEDB00D3591F /* ViewControllerWatch.m in Sources */,

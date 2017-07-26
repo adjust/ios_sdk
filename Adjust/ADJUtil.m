@@ -20,6 +20,7 @@
 #import "NSString+ADJAdditions.h"
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#import "ADJReachability.h"
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
@@ -30,6 +31,7 @@ static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 static CTCarrier *carrier = nil;
+static ADJReachability *reachability = nil;
 
 static NSString *userAgent = nil;
 
@@ -58,6 +60,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
     [self initializeCarrier];
+    [self initializeReachability];
 }
 
 + (void)teardown {
@@ -68,6 +71,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
     carrier = nil;
+    reachability = nil;
 }
 
 + (void)initializeDateFormat {
@@ -163,6 +167,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (void)initializeCarrier {
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     carrier = [networkInfo subscriberCellularProvider];
+}
+
++ (void)initializeReachability {
+    reachability = [ADJReachability reachabilityForInternetConnection];
+    [reachability startNotifier];
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
@@ -1056,6 +1065,14 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     return [carrier mobileNetworkCode];
+}
+
++ (NSNumber *)readReachabilityFlags {
+    if (reachability == nil) {
+        return nil;
+    }
+
+    return [reachability currentReachabilityFlags];
 }
 
 @end
