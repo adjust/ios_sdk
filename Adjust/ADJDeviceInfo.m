@@ -49,12 +49,6 @@
     self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
     self.osBuild          = [ADJSystemProfile osVersion];
     
-    //MCC & MNC
-    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
-    self.mcc = [carrier mobileCountryCode];
-    self.mnc = [carrier mobileNetworkCode];
-
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
     } else {

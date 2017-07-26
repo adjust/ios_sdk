@@ -112,4 +112,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 
++ (NSString *)readMCC;
+
++ (NSString *)readMNC;
+
 @end

@@ -250,8 +250,8 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.cpuSubtype forKey:@"cpu_type"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.osBuild forKey:@"os_build"];
-    [ADJPackageBuilder parameters:parameters setString:deviceInfo.mcc forKey:@"mcc"];
-    [ADJPackageBuilder parameters:parameters setString:deviceInfo.mnc forKey:@"mnc"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
 }
 
 - (void)injectConfig:(ADJConfig *)adjustConfig intoParameters:(NSMutableDictionary *) parameters {
