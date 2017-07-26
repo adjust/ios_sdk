@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC850C1F2794AB00D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850A1F2794A300D6A0ED /* ADJReachability.m */; };
 		963909411BCBFCF300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909401BCBFCF300A2E8A4 /* main.m */; };
 		963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909431BCBFCF300A2E8A4 /* AppDelegate.m */; };
 		9639094A1BCBFCF300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909481BCBFCF300A2E8A4 /* Main.storyboard */; };
@@ -50,6 +51,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FCC850A1F2794A300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
+		6FCC850B1F2794A300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		9639093C1BCBFCF300A2E8A4 /* AdjustExample-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		963909401BCBFCF300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909421BCBFCF300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -261,6 +264,8 @@
 				9D449E0D1E6ED88F00E7E80B /* ADJKeychain.m */,
 				9D449E0E1E6ED88F00E7E80B /* ADJSessionParameters.h */,
 				9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */,
+				6FCC850B1F2794A300D6A0ED /* ADJReachability.h */,
+				6FCC850A1F2794A300D6A0ED /* ADJReachability.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -369,6 +374,7 @@
 				9D449E1E1E6ED88F00E7E80B /* ADJPackageHandler.m in Sources */,
 				9D449E281E6ED88F00E7E80B /* ADJResponseData.m in Sources */,
 				9D449E301E6ED88F00E7E80B /* ADJKeychain.m in Sources */,
+				6FCC850C1F2794AB00D6A0ED /* ADJReachability.m in Sources */,
 				9D449E131E6ED88F00E7E80B /* NSString+ADJAdditions.m in Sources */,
 				9D449E221E6ED88F00E7E80B /* ADJDeviceInfo.m in Sources */,
 				9D449E1C1E6ED88F00E7E80B /* ADJLogger.m in Sources */,

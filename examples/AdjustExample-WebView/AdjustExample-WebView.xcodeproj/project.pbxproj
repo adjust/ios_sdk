@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85111F2794D600D6A0ED /* ADJReachability.m */; };
 		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
 		9D1082AF1CFDAF8E0050568B /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */; };
@@ -64,6 +65,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FCC85101F2794D600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
+		6FCC85111F2794D600D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,6 +300,8 @@
 				9D449ED61E6EDD4100E7E80B /* Adjust.m */,
 				9D449ED71E6EDD4100E7E80B /* ADJUtil.h */,
 				9D449ED81E6EDD4100E7E80B /* ADJUtil.m */,
+				6FCC85101F2794D600D6A0ED /* ADJReachability.h */,
+				6FCC85111F2794D600D6A0ED /* ADJReachability.m */,
 				9D449ED91E6EDD4100E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -438,6 +443,7 @@
 				9D449EE01E6EDD4100E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */,
 				9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */,
+				6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */,
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,
 				9D10833D1CFDD8F00050568B /* WKWebViewController.m in Sources */,
 				9D449EE51E6EDD4100E7E80B /* ADJConfig.m in Sources */,

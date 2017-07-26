@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC85151F2794EC00D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85131F2794E800D6A0ED /* ADJReachability.m */; };
 		963909B71BCC0D8300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B61BCC0D8300A2E8A4 /* main.m */; };
 		963909BA1BCC0D8300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B91BCC0D8300A2E8A4 /* AppDelegate.m */; };
 		963909BD1BCC0D8300A2E8A4 /* ViewControllertvOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909BC1BCC0D8300A2E8A4 /* ViewControllertvOS.m */; };
@@ -62,6 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FCC85131F2794E800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
+		6FCC85141F2794E800D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		963909B21BCC0D8300A2E8A4 /* AdjustExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		963909B61BCC0D8300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909B81BCC0D8300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				9D449F3B1E6EE6C500E7E80B /* Adjust.m */,
 				9D449F3C1E6EE6C500E7E80B /* ADJUtil.h */,
 				9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */,
+				6FCC85141F2794E800D6A0ED /* ADJReachability.h */,
+				6FCC85131F2794E800D6A0ED /* ADJReachability.m */,
 				9D449F3E1E6EE6C500E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -375,6 +380,7 @@
 				9D449F4E1E6EE6C500E7E80B /* ADJEventFailure.m in Sources */,
 				9D449F461E6EE6C500E7E80B /* ADJAdjustFactory.m in Sources */,
 				9D449F3F1E6EE6C500E7E80B /* ADJActivityHandler.m in Sources */,
+				6FCC85151F2794EC00D6A0ED /* ADJReachability.m in Sources */,
 				9D449F5C1E6EE6C500E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449F401E6EE6C500E7E80B /* ADJActivityKind.m in Sources */,
 				9D449F481E6EE6C500E7E80B /* ADJAttributionHandler.m in Sources */,

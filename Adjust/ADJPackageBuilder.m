@@ -252,6 +252,7 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
+    [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"ios_connectivity_type"];
 }
 
 - (void)injectConfig:(ADJConfig *)adjustConfig intoParameters:(NSMutableDictionary *) parameters {
@@ -402,6 +403,14 @@
     NSString *numberString = [NSString stringWithFormat:@"%.5f", [value doubleValue]];
 
     [ADJPackageBuilder parameters:parameters setString:numberString forKey:key];
+}
+
++ (void)parameters:(NSMutableDictionary *)parameters setNumberInt:(NSNumber *)value forKey:(NSString *)key {
+    if (value == nil) {
+        return;
+    }
+
+    [ADJPackageBuilder parameters:parameters setInt:[value intValue] forKey:key];
 }
 
 @end

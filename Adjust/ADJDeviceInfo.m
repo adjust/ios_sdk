@@ -14,8 +14,7 @@
 #import "NSData+ADJAdditions.h"
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
-
-
+#import "ADJReachability.h"
 
 @implementation ADJDeviceInfo
 
@@ -75,6 +74,7 @@
     } @catch (NSException *exception) {
     }
 }
+
 /*
 -(id)copyWithZone:(NSZone *)zone
 {
