@@ -18,6 +18,8 @@
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
@@ -27,6 +29,7 @@ static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
+static CTCarrier *carrier = nil;
 
 static NSString *userAgent = nil;
 
@@ -54,6 +57,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
+    [self initializeCarrier];
 }
 
 + (void)teardown {
@@ -63,6 +67,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     optionalRedirectRegex   = nil;
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
+    carrier = nil;
 }
 
 + (void)initializeDateFormat {
@@ -153,6 +158,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)initializeUrlSessionConfiguration {
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+}
+
++ (void)initializeCarrier {
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    carrier = [networkInfo subscriberCellularProvider];
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
@@ -1030,6 +1040,22 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
     
     return [value isEqualToString:[readValue description]];
+}
+
++ (NSString *)readMCC {
+    if (carrier == nil) {
+        return nil;
+    }
+
+    return [carrier mobileCountryCode];
+}
+
++ (NSString *)readMNC {
+    if (carrier == nil) {
+        return nil;
+    }
+
+    return [carrier mobileNetworkCode];
 }
 
 @end
