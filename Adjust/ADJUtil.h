@@ -117,4 +117,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSString *)readMNC;
 
 + (NSNumber *)readReachabilityFlags;
+
++ (NSString *)readCurrentRadioAccessTechnology;
 @end

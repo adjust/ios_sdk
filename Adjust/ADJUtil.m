@@ -30,6 +30,7 @@ static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex   = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
+static CTTelephonyNetworkInfo *networkInfo = nil;
 static CTCarrier *carrier = nil;
 static ADJReachability *reachability = nil;
 
@@ -59,7 +60,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
-    [self initializeCarrier];
+    [self initializeNetworkInfoAndCarrier];
     [self initializeReachability];
 }
 
@@ -70,6 +71,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     optionalRedirectRegex   = nil;
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
+    networkInfo = nil;
     carrier = nil;
     reachability = nil;
 }
@@ -164,8 +166,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 }
 
-+ (void)initializeCarrier {
-    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
++ (void)initializeNetworkInfoAndCarrier {
+    networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     carrier = [networkInfo subscriberCellularProvider];
 }
 
@@ -1073,6 +1075,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     return [reachability currentReachabilityFlags];
+}
+
++ (NSString *)readCurrentRadioAccessTechnology {
+    if (networkInfo == nil) {
+        return nil;
+    }
+    return [networkInfo currentRadioAccessTechnology];
 }
 
 @end
