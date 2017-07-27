@@ -252,8 +252,8 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"ios_network_type"];
-    [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"ios_connectivity_type"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
+    [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"connectivity_type"];
 }
 
 - (void)injectConfig:(ADJConfig *)adjustConfig intoParameters:(NSMutableDictionary *) parameters {
