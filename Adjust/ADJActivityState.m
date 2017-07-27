@@ -92,13 +92,13 @@ static NSString *appToken = nil;
 
     // Check if device supports new writing method.
     // kSecAttrAccessGroupToken available since iOS 10.0.
-    if (NULL == &kSecAttrAccessGroupToken) {
-        // This device's iOS version doesn't support new writing method.
-        [self assignUuidOldMethod:uuid];
-        return;
-    } else {
+    if ([ADJKeychain isSecAttrAccessGroupTokenAccessible]) {
         // This device's iOS version supports new writing method.
         [self assignUuidNewMethod:uuid];
+        return;
+    } else {
+        // This device's iOS version doesn't support new writing method.
+        [self assignUuidOldMethod:uuid];
         return;
     }
 }

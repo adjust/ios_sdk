@@ -13,5 +13,5 @@
 + (NSString *)valueForKeychainKeyOld:(NSString *)key service:(NSString *)service;
 + (NSString *)valueForKeychainKeyNew:(NSString *)key service:(NSString *)service;
 + (BOOL)setValue:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service;
-
++ (BOOL)isSecAttrAccessGroupTokenAccessible;
 @end
