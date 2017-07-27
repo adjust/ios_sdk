@@ -179,6 +179,7 @@
         copy.sendInBackground = self.sendInBackground;
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];
+        copy.isDeviceKnown = self.isDeviceKnown;
         // adjust delegate not copied
     }
 
