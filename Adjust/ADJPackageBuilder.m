@@ -213,6 +213,7 @@
     [self injectDeviceInfo:self.deviceInfo intoParameters:parameters];
     [self injectConfig:self.adjustConfig intoParameters:parameters];
     [self injectActivityState:self.activityState intoParamters:parameters];
+    [self injectSessionParameters:self.sessionParameters intoParamters:parameters];
     [self injectCommonParameters:parameters];
 
     return parameters;
@@ -297,6 +298,15 @@
     }
 
     [ADJPackageBuilder parameters:parameters setString:activityState.deviceToken forKey:@"push_token"];
+}
+
+- (void)injectSessionParameters:(ADJSessionParameters *)sessionParameters
+                  intoParamters:(NSMutableDictionary *)parameters {
+    if (sessionParameters == nil) {
+        return;
+    }
+
+    [ADJPackageBuilder parameters:parameters setString:sessionParameters.externalDeviceId forKey:@"external_device_id"];
 }
 
 - (NSString *)eventSuffix:(ADJEvent *)event {

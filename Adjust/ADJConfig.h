@@ -156,6 +156,12 @@
 @property (nonatomic, assign) BOOL isDeviceKnown;
 
 /**
+ * @brief Set the external device id.
+ */
+
+@property (nonatomic, copy, nullable) NSString *externalDeviceId;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can

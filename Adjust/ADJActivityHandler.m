@@ -26,6 +26,7 @@ typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
+static NSString   * const kSessionParametersFilename   = @"AdjustSessionParameters";
 static NSString   * const kSessionCallbackParametersFilename   = @"AdjustSessionCallbackParameters";
 static NSString   * const kSessionPartnerParametersFilename    = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix          = @"adjust_";
@@ -589,7 +590,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     selfI.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:selfI.adjustConfig.sdkPrefix];
 
     // read files that are accessed only in Internal sections
-    selfI.sessionParameters = [[ADJSessionParameters alloc] init];
+    [selfI readSessionParameters:selfI];
     [selfI readSessionCallbackParametersI:selfI];
     [selfI readSessionPartnerParametersI:selfI];
 
@@ -1389,6 +1390,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [self.sessionParameters.callbackParameters removeAllObjects];
         [self.sessionParameters.partnerParameters removeAllObjects];
         self.sessionParameters = nil;
+    }
+}
+
+- (void)readSessionParameters:(ADJActivityHandler *)selfI {
+    selfI.sessionParameters = [ADJUtil readObject:kSessionParametersFilename
+                                      objectName:@"Session parameters"
+                                           class:[ADJSessionParameters class]];
+
+    if (selfI.sessionParameters == nil) {
+        selfI.sessionParameters = [[ADJSessionParameters alloc] init];
     }
 }
 
