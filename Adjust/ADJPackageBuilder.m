@@ -24,6 +24,8 @@
 
 @property (nonatomic, copy) ADJActivityState *activityState;
 
+@property (nonatomic, weak) ADJSessionParameters *sessionParameters;
+
 @end
 
 @implementation ADJPackageBuilder
@@ -33,6 +35,7 @@
 - (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
+       sessionParameters:(ADJSessionParameters *)sessionParameters
                createdAt:(double)createdAt {
     self = [super init];
 
@@ -44,20 +47,16 @@
     self.deviceInfo = deviceInfo;
     self.adjustConfig = adjustConfig;
     self.activityState = activityState;
+    self.sessionParameters = sessionParameters;
 
     return self;
 }
 
 #pragma mark - Public methods
 
-- (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
-                                  isInDelay:(BOOL)isInDelay {
+- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay {
     NSMutableDictionary *parameters;
-    if (!isInDelay) {
-        parameters = [self attributableParameters:sessionParameters];
-    } else {
-        parameters = [self attributableParameters:nil];
-    }
+    parameters = [self attributableParameters:isInDelay];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
@@ -69,7 +68,6 @@
 }
 
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
-                        sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
@@ -79,10 +77,10 @@
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
     if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
+        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.sessionParameters.callbackParameters
                                                                    source:event.callbackParameters
                                                             parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
+        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:self.sessionParameters.partnerParameters
                                                                   source:event.partnerParameters
                                                            parameterName:@"Partner"];
 
@@ -117,10 +115,9 @@
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
-                        sessionParameters:(ADJSessionParameters *)sessionParameters
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 {
-    NSMutableDictionary *parameters = [self attributableParameters:sessionParameters];
+    NSMutableDictionary *parameters = [self attributableParameters:NO];
 
     [ADJPackageBuilder parameters:parameters setString:clickSource forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
@@ -194,7 +191,7 @@
     return parameters;
 }
 
-- (NSMutableDictionary *)attributableParameters:(ADJSessionParameters *)sessionParameters {
+- (NSMutableDictionary *)attributableParameters:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
@@ -202,9 +199,9 @@
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
 
-    if (sessionParameters != nil) {
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
+    if (!isInDelay) {
+        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.callbackParameters forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
     }
 
     return parameters;

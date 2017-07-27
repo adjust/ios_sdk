@@ -432,11 +432,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                         initWithDeviceInfo:selfI.deviceInfo
                                         activityState:selfI.activityState
                                         config:selfI.adjustConfig
+                                        sessionParameters:self.sessionParameters
                                         createdAt:now];
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3" sessionParameters:selfI.sessionParameters];
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -649,6 +650,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                              initWithDeviceInfo:selfI.deviceInfo
                                              activityState:selfI.activityState
                                              config:selfI.adjustConfig
+                                             sessionParameters:selfI.sessionParameters
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
@@ -742,8 +744,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                          initWithDeviceInfo:selfI.deviceInfo
                                          activityState:selfI.activityState
                                          config:selfI.adjustConfig
+                                         sessionParameters:selfI.sessionParameters
                                          createdAt:now];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:selfI.sessionParameters isInDelay:[selfI.internalState isInDelayedStart]];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:sessionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -795,8 +798,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
                                        createdAt:now];
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:selfI.sessionParameters isInDelay:[selfI.internalState isInDelayedStart]];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
+                                                             isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:eventPackage];
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -1118,13 +1123,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = [NSDate date];
     clickBuilder.deeplink = [url absoluteString];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" sessionParameters:selfI.sessionParameters];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -1202,10 +1208,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        createdAt:now];
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
+                                       createdAt:now];
 
     ADJActivityPackage * infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
@@ -1238,12 +1245,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
                                        createdAt:now];
 
     clickBuilder.purchaseTime = appPurchaseDate;
     clickBuilder.clickTime = iAdImpressionDate;
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" sessionParameters:selfI.sessionParameters];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
