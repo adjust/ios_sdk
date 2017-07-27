@@ -151,6 +151,11 @@
 @property (nonatomic, copy, nullable) NSString *userAgent;
 
 /**
+ * @brief Set if the device is known.
+ */
+@property (nonatomic, assign) BOOL isDeviceKnown;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can

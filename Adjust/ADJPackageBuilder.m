@@ -260,6 +260,9 @@
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (adjustConfig.isDeviceKnown) {
+        [ADJPackageBuilder parameters:parameters setBool:adjustConfig.isDeviceKnown forKey:@"device_known"];
+    }
 }
 
 - (void)injectActivityState:(ADJActivityState *)activityState intoParamters:(NSMutableDictionary *)parameters {
