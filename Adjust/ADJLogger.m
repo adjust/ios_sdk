@@ -105,7 +105,7 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     }
 }
 
-+ (ADJLogLevel)LogLevelFromString:(NSString *)logLevelString {
++ (ADJLogLevel)logLevelFromString:(NSString *)logLevelString {
     if ([logLevelString isEqualToString:@"verbose"])
         return ADJLogLevelVerbose;
 
