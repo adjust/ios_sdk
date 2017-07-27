@@ -30,19 +30,17 @@
 - (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
+       sessionParameters:(ADJSessionParameters *)sessionParameters
                createdAt:(double)createdAt;
 
-- (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
-                                  isInDelay:(BOOL)isInDelay;
+- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
 
 - (ADJActivityPackage *)buildAttributionPackage;
 
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
-                        sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
-                        sessionParameters:(ADJSessionParameters *)sessionParameters;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
