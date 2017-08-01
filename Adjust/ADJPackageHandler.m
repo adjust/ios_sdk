@@ -238,25 +238,13 @@ startsSending:(BOOL)startsSending
 
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
-    @try {
-        [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
-        NSString *filename = selfI.packageQueueFilename;
-        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        if ([object isKindOfClass:[NSArray class]]) {
-            selfI.packageQueue = object;
-            [selfI.logger debug:@"Package handler read %d packages", selfI.packageQueue.count];
-            return;
-        } else if (object == nil) {
-            [selfI.logger verbose:@"Package queue file not found"];
-        } else {
-            [selfI.logger error:@"Failed to read package queue"];
-        }
-    } @catch (NSException *exception) {
-        [selfI.logger error:@"Failed to read package queue (%@)", exception];
-    }
+    id object = [ADJUtil readObject:selfI.packageQueueFilename objectName:@"Package queue" class:[NSArray class]];
 
-    // start with a fresh package queue in case of any exception
-    selfI.packageQueue = [NSMutableArray array];
+    if (object != nil) {
+        selfI.packageQueue = object;
+    } else {
+        selfI.packageQueue = [NSMutableArray array];
+    }
 }
 
 - (void)writePackageQueueS:(ADJPackageHandler *)selfS {
@@ -264,14 +252,8 @@ startsSending:(BOOL)startsSending
         if (selfS.packageQueue == nil) {
             return;
         }
-        NSString *filename = selfS.packageQueueFilename;
-        BOOL result = [NSKeyedArchiver archiveRootObject:selfS.packageQueue toFile:filename];
-        if (result == YES) {
-            [ADJUtil excludeFromBackup:filename];
-            [selfS.logger debug:@"Package handler wrote %d packages", selfS.packageQueue.count];
-        } else {
-            [selfS.logger error:@"Failed to write package queue"];
-        }
+
+        [ADJUtil writeObject:selfS.packageQueue fileName:selfS.packageQueueFilename objectName:@"Package queue"];
     }
 }
 

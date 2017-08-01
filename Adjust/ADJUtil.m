@@ -288,51 +288,153 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return jsonDict;
 }
 
-+ (NSString *)getFullFilename:(NSString *)baseFilename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:baseFilename];
-
-    return filename;
-}
-
-+ (id)readObject:(NSString *)filename
++ (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class) classToRead {
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
+           class:(Class)classToRead {
+    // Try to read from Application Support directory first.
+    NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
+    NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
     @try {
-        NSString *fullFilename = [ADJUtil getFullFilename:filename];
-        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:fullFilename];
+        id appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
 
-        if ([object isKindOfClass:classToRead]) {
-            [logger debug:@"Read %@: %@", objectName, object];
-            return object;
-        } else if (object == nil) {
-            [logger verbose:@"%@ file not found", objectName];
+        if ([appSupportObject isKindOfClass:classToRead]) {
+            // Successfully read object from Application Support folder, return it.
+
+            if ([appSupportObject isKindOfClass:[NSArray class]]) {
+                [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [appSupportObject count]];
+            } else {
+                [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, appSupportObject];
+            }
+
+            // Just in case check if old file exists in Documents folder and if yes, remove it.
+            [ADJUtil deleteFile:documentsFilePath];
+
+            return appSupportObject;
+        } else if (appSupportObject == nil) {
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found", objectName];
         } else {
-            [logger error:@"Failed to read %@ file", objectName];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", objectName];
         }
-    } @catch (NSException *ex ) {
-        [logger error:@"Failed to read %@ file (%@)", objectName, ex];
+    } @catch (NSException *ex) {
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", objectName, ex];
     }
 
+    // If in here, for some reason, reading of file from Application Support folder failed.
+    // Let's check the Documents folder.
+
+    @try {
+        id documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
+
+        if (documentsObject != nil) {
+            // Successfully read object from Documents folder.
+
+            [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
+
+            // Do the file migration and retry.
+            [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
+
+            return [ADJUtil readObject:fileName objectName:objectName class:classToRead];
+        } else if (documentsObject == nil) {
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found", objectName];
+        } else {
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", objectName];
+        }
+    } @catch (NSException *ex) {
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", objectName, ex];
+    }
+    
     return nil;
 }
 
 + (void)writeObject:(id)object
-           filename:(NSString *)filename
+           fileName:(NSString *)fileName
          objectName:(NSString *)objectName {
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    NSString *fullFilename = [ADJUtil getFullFilename:filename];
-    BOOL result = [NSKeyedArchiver archiveRootObject:object toFile:fullFilename];
+    NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+
+    BOOL result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
 
     if (result == YES) {
-        [ADJUtil excludeFromBackup:fullFilename];
-        [logger debug:@"Wrote %@: %@", objectName, object];
+        [ADJUtil excludeFromBackup:filePath];
+
+        if ([object isKindOfClass:[NSArray class]]) {
+            [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+        } else {
+            [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+        }
     } else {
-        [logger error:@"Failed to write %@ file", objectName];
+        [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
     }
+}
+
++ (BOOL)migrateFileFromPath:(NSString *)oldPath toPath:(NSString *)newPath {
+    NSError *errorCopy;
+
+    [[NSFileManager defaultManager] copyItemAtPath:oldPath toPath:newPath error:&errorCopy];
+
+    if (errorCopy != nil) {
+        [[ADJAdjustFactory logger] error:@"Error while copying from %@ to %@", oldPath, newPath];
+        [[ADJAdjustFactory logger] error:[errorCopy description]];
+
+        return NO;
+    }
+
+    // Migration successful.
+    return YES;
+}
+
++ (NSString *)getFilePathInDocumentsDir:(NSString *)fileName {
+    // Documents directory exists by default inside app bundle, no need to check for it's presence.
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDir stringByAppendingPathComponent:fileName];
+
+    return filePath;
+}
+
++ (NSString *)getFilePathInAppSupportDir:(NSString *)fileName {
+    // Application Support directory doesn't exist by default inside app bundle.
+    // All Adjust files are going to be stored in Adjust sub-directory inside Application Support directory.
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *appSupportDir = [paths firstObject];
+
+    if (![ADJUtil checkForDirectoryPresence:appSupportDir]) {
+        return nil;
+    }
+
+    NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:@"/Adjust"];
+
+    if (![ADJUtil checkForDirectoryPresence:adjustDir]) {
+        return nil;
+    }
+
+    NSString *filePath = [adjustDir stringByAppendingPathComponent:fileName];
+
+    return filePath;
+}
+
++ (BOOL)checkForDirectoryPresence:(NSString *)path {
+    // Check for presence of directory first.
+    // If it doesn't exist, make one.
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", path];
+
+        NSError *error;
+
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error];
+
+        if (error != nil) {
+            [[ADJAdjustFactory logger] error:@"Error while creating % directory", path];
+            [[ADJAdjustFactory logger] error:[error description]];
+
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 + (NSString *)queryString:(NSDictionary *)parameters {

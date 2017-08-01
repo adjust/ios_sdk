@@ -21,7 +21,7 @@ typedef void (^selfInjectedBlock)(id);
 
 + (void)teardown;
 
-+ (id)readObject:(NSString *)filename
++ (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
            class:(Class)classToRead;
 
@@ -34,7 +34,7 @@ typedef void (^selfInjectedBlock)(id);
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config;
 
 + (void)writeObject:(id)object
-           filename:(NSString *)filename
+           fileName:(NSString *)fileName
          objectName:(NSString *)objectName;
 
 + (void)launchInMainThread:(NSObject *)receiver
@@ -80,8 +80,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSString *)secondsNumberFormat:(double)seconds;
 
 + (NSString *)queryString:(NSDictionary *)parameters;
-
-+ (NSString *)getFullFilename:(NSString *)baseFilename;
 
 + (NSString *)convertDeviceToken:(NSData *)deviceToken;
 
