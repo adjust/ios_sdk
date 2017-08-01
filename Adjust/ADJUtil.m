@@ -1011,33 +1011,22 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     });
 }
 
-+ (NSString *)getFilename:(NSString *)filename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filepath = [path stringByAppendingPathComponent:filename];
++ (BOOL)deleteFile:(NSString *)filePath {
+    NSError *error;
 
-    return filepath;
-}
-
-+ (BOOL)deleteFile:(NSString *)filename {
-    NSString *filepath = [ADJUtil getFilename:filename];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error = nil;
-    BOOL exists = [fileManager fileExistsAtPath:filepath];
-
-    if (!exists) {
-        [ADJAdjustFactory.logger verbose:@"File %@ does not exist at path %@", filename, filepath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
         return YES;
     }
 
-    BOOL deleted = [fileManager removeItemAtPath:filepath error:&error];
+    BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
 
     if (!deleted) {
-        [ADJAdjustFactory.logger verbose:@"Unable to delete file %@ at path %@", filename, filepath];
+        [[ADJAdjustFactory logger] verbose:@"Unable to delete file at path %@", filePath];
     }
 
     if (error) {
-        [ADJAdjustFactory.logger error:@"Error (%@) deleting file %@", [error localizedDescription], filename];
+        [[ADJAdjustFactory logger] error:@"Error while deleting file at path %@", filePath];
     }
 
     return deleted;
