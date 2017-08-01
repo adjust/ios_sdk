@@ -312,12 +312,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
             return appSupportObject;
         } else if (appSupportObject == nil) {
-            [[ADJAdjustFactory logger] verbose:@"%@ file not found", objectName];
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found", appSupportFilePath];
         } else {
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", objectName];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
         }
     } @catch (NSException *ex) {
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", objectName, ex];
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", appSupportFilePath, ex];
     }
 
     // If in here, for some reason, reading of file from Application Support folder failed.
@@ -329,19 +329,23 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         if (documentsObject != nil) {
             // Successfully read object from Documents folder.
 
-            [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
+            if ([documentsObject isKindOfClass:[NSArray class]]) {
+                [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [documentsObject count]];
+            } else {
+                [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
+            }
 
             // Do the file migration.
             [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
 
             return documentsObject;
         } else if (documentsObject == nil) {
-            [[ADJAdjustFactory logger] verbose:@"%@ file not found", objectName];
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found", documentsFilePath];
         } else {
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", objectName];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
         }
     } @catch (NSException *ex) {
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", objectName, ex];
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
     }
     
     return nil;
