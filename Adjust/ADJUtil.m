@@ -331,10 +331,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
             [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
 
-            // Do the file migration and retry.
+            // Do the file migration.
             [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
 
-            return [ADJUtil readObject:fileName objectName:objectName class:classToRead];
+            return documentsObject;
         } else if (documentsObject == nil) {
             [[ADJAdjustFactory logger] verbose:@"%@ file not found", objectName];
         } else {
