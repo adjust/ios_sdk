@@ -1304,7 +1304,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.activityState == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.activityState filename:kActivityStateFilename objectName:@"Activity state"];
+        [ADJUtil writeObject:selfI.activityState fileName:kActivityStateFilename objectName:@"Activity state"];
     }
 }
 
@@ -1326,7 +1326,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.attribution == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.attribution filename:kAttributionFilename objectName:@"Attribution"];
+        [ADJUtil writeObject:selfI.attribution fileName:kAttributionFilename objectName:@"Attribution"];
     }
 }
 
@@ -1362,7 +1362,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             return;
         }
         [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
-                    filename:kSessionCallbackParametersFilename
+                    fileName:kSessionCallbackParametersFilename
                   objectName:@"Session Callback parameters"];
     }
 }
@@ -1373,7 +1373,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             return;
         }
         [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
-                    filename:kSessionPartnerParametersFilename
+                    fileName:kSessionPartnerParametersFilename
                   objectName:@"Session Partner parameters"];
     }
 }
