@@ -1015,7 +1015,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSError *error;
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
+        // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
         return YES;
     }
 

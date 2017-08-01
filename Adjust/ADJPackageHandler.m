@@ -238,7 +238,7 @@ startsSending:(BOOL)startsSending
 
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
-    id object = [ADJUtil readObject:selfI.packageQueueFilename objectName:@"Package queue" class:[NSArray class]];
+    id object = [ADJUtil readObject:kPackageQueueFilename objectName:@"Package queue" class:[NSArray class]];
 
     if (object != nil) {
         selfI.packageQueue = object;
@@ -253,34 +253,27 @@ startsSending:(BOOL)startsSending
             return;
         }
 
-        [ADJUtil writeObject:selfS.packageQueue fileName:selfS.packageQueueFilename objectName:@"Package queue"];
+        [ADJUtil writeObject:selfS.packageQueue fileName:kPackageQueueFilename objectName:@"Package queue"];
     }
 }
 
-- (void)teardownPackageQueueS:(BOOL)deleteState
-{
+- (void)teardownPackageQueueS:(BOOL)deleteState {
     @synchronized ([ADJPackageHandler class]) {
         if (self.packageQueue == nil) {
             return;
         }
-        if (deleteState) {
-            [ADJUtil deleteFile:self.packageQueueFilename];
-        }
-        [self.packageQueue removeAllObjects];
 
+        if (deleteState) {
+            [ADJUtil deleteFile:kPackageQueueFilename];
+        }
+
+        [self.packageQueue removeAllObjects];
         self.packageQueue = nil;
     }
 }
 
-- (NSString *)packageQueueFilename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:kPackageQueueFilename];
-    return filename;
-}
-
--(void)dealloc {
-    //cleanup code
+- (void)dealloc {
+    // Cleanup code
     if (self.sendingSemaphore != nil) {
         dispatch_semaphore_signal(self.sendingSemaphore);
     }
