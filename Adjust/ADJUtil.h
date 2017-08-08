@@ -117,4 +117,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSNumber *)readReachabilityFlags;
 
 + (NSString *)readCurrentRadioAccessTechnology;
+
++ (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage;
+
++ (NSString *)buildAuthorizationHeader:(NSString *)appSecret
+                       activityPackage:(ADJActivityPackage *)activityPackage;
 @end

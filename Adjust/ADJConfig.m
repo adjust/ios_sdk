@@ -166,6 +166,17 @@
     return self.appToken != nil;
 }
 
+- (void)setAppSecret:(NSUInteger)info1
+               info2:(NSUInteger)info2
+               info3:(NSUInteger)info3
+               info4:(NSUInteger)info4 {
+    _appSecretS = [NSString stringWithFormat:@"%lu%lu%lu%lu",
+                   (unsigned long)info1,
+                   (unsigned long)info2,
+                   (unsigned long)info3,
+                   (unsigned long)info4];
+}
+
 -(id)copyWithZone:(NSZone *)zone
 {
     ADJConfig* copy = [[[self class] allocWithZone:zone] init];
@@ -181,6 +192,7 @@
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
+        copy->_appSecretS = [self.appSecretS copyWithZone:zone];
         // adjust delegate not copied
     }
 

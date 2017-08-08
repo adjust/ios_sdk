@@ -504,14 +504,33 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
-    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
+{
+    NSString * appSecret = [ADJUtil extractAppSecret:activityPackage];
+
     NSMutableURLRequest *request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
+
+    NSString * authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:activityPackage];
+    if (authHeader != nil) {
+        [request setValue:authHeader forHTTPHeaderField:@"authHeader"];
+    }
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:suffixErrorMessage
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
+}
+
++ (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage {
+    NSString * appSecret = [activityPackage.parameters objectForKey:@"app_secret"];
+    if (appSecret == nil) {
+        return nil;
+    }
+
+    [activityPackage.parameters removeObjectForKey:@"app_secret"];
+
+    return appSecret;
 }
 
 + (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)activityPackage
@@ -530,6 +549,112 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [request setHTTPBody:body];
 
     return request;
+}
+
++ (NSString *)buildAuthorizationHeader:(NSString *)appSecret
+                 activityPackage:(ADJActivityPackage *)activityPackage {
+    if (appSecret == nil) {
+        return nil;
+    }
+    NSMutableDictionary * parameters = activityPackage.parameters;
+    NSString * clientSdk = activityPackage.clientSdk;
+    NSString * activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
+
+
+    NSDictionary * signatureParameters = [ADJUtil buildSignatureParameters:parameters
+                                                                 appSecret:appSecret
+                                                                 clientSdk:clientSdk
+                                                             activityKindS:activityKindS];
+
+    NSMutableString * fields = [[NSMutableString alloc] initWithCapacity:5];
+    NSMutableString * clearSignature = [[NSMutableString alloc] initWithCapacity:5];
+
+    // signature part of header
+    for (NSDictionary * key in signatureParameters) {
+        [fields appendFormat:@"%@ ", key];
+
+        NSString * value = [signatureParameters objectForKey:key];
+        [clearSignature appendString:value];
+    }
+
+    // algorithm part of header
+    NSString * algorithmHeader = @"md5";
+
+    NSString * signature = [clearSignature adjMd5];
+    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
+
+    // fields part of header
+    // Remove last empty space.
+    if (fields.length > 0) {
+        [fields deleteCharactersInRange:NSMakeRange(fields.length - 1, 1)];
+    }
+    NSString * fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
+
+    // putting it all together
+    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@", signatureHeader, algorithmHeader, fieldsHeader];
+
+    return authorizationHeader;
+}
+
++ (NSDictionary *)buildSignatureParameters:(NSMutableDictionary *)parameters
+                                 appSecret:(NSString *)appSecret
+                                 clientSdk:(NSString *)clientSdk
+                             activityKindS:(NSString *)activityKindS
+{
+    NSString * sdkVersionName = @"sdk_version";
+    NSString * sdkVersionValue = clientSdk;
+
+    NSString * appVersionName = @"app_version";
+    NSString * appVersionValue = [parameters objectForKey:appVersionName];
+
+    NSString * activityKindName = @"activity_kind";
+    NSString * activityKindValue = activityKindS;
+
+    NSString * createdAtName = @"created_at";
+    NSString * createdAtValue = [parameters objectForKey:createdAtName];
+
+    NSString * deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
+    NSString * deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
+
+    NSMutableDictionary * signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
+
+    [ADJUtil checkAndAddEntry:signatureParameters key:@"app_secret" value:appSecret];
+    [ADJUtil checkAndAddEntry:signatureParameters key:sdkVersionName value:sdkVersionValue];
+    [ADJUtil checkAndAddEntry:signatureParameters key:appVersionName value:appVersionValue];
+    [ADJUtil checkAndAddEntry:signatureParameters key:createdAtName value:createdAtValue];
+    [ADJUtil checkAndAddEntry:signatureParameters key:activityKindName value:activityKindValue];
+    [ADJUtil checkAndAddEntry:signatureParameters key:deviceIdentifierName value:deviceIdentifierValue];
+
+    return signatureParameters;
+}
+
++ (void)checkAndAddEntry:(NSMutableDictionary *)parameters
+                     key:(NSString *)key
+                   value:(NSString *)value {
+    if (key == nil) {
+        return;
+    }
+    if (value == nil) {
+        return;
+    }
+    [parameters setObject:value forKey:key];
+}
+
++ (NSString *)getValidIdentifier:(NSMutableDictionary *)parameters {
+    NSString * idfaName = @"idfa";
+    NSString * persistentUUIDName = @"persistent_ios_uuid";
+    NSString * uUIDName = @"ios_uuid";
+
+    if ([parameters objectForKey:idfaName] != nil) {
+        return idfaName;
+    }
+    if ([parameters objectForKey:persistentUUIDName] != nil) {
+        return persistentUUIDName;
+    }
+    if ([parameters objectForKey:uUIDName] != nil) {
+        return uUIDName;
+    }
+    return nil;
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
