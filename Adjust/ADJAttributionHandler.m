@@ -215,11 +215,18 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 #pragma mark - private
 
 - (NSMutableURLRequest *)requestI:(ADJAttributionHandler*)selfI {
+    NSString * appSecret = [ADJUtil extractAppSecret:selfI.attributionPackage];
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[selfI urlI:selfI]];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"GET";
 
     [request setValue:selfI.attributionPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+
+    NSString * authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:selfI.attributionPackage];
+    if (authHeader != nil) {
+        [request setValue:authHeader forHTTPHeaderField:@"authHeader"];
+    }
 
     return request;
 }

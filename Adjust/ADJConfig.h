@@ -162,6 +162,19 @@
 @property (nonatomic, copy, nullable) NSString *externalDeviceId;
 
 /**
+ * @brief Adjust app secret.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *appSecretS;
+
+/**
+ * @brief Adjust set app secret.
+ */
+- (void)setAppSecret:(NSUInteger)info1
+               info2:(NSUInteger)info2
+               info3:(NSUInteger)info3
+               info4:(NSUInteger)info4;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can

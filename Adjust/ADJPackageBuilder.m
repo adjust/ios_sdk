@@ -261,6 +261,7 @@
     if (adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
+    [ADJPackageBuilder parameters:parameters setString:adjustConfig.appSecretS forKey:@"app_secret"];
 }
 
 - (void)injectActivityState:(ADJActivityState *)activityState intoParamters:(NSMutableDictionary *)parameters {
