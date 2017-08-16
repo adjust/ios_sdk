@@ -659,9 +659,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                         startsSending:[selfI toSendI:selfI
                                                                                  sdkClickHandlerOnly:NO]];
 
-    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:selfI
-                                                                startsSending:[selfI toSendI:selfI
-                                                                        sdkClickHandlerOnly:YES]];
+    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerForActivityHandler:selfI
+                                                                  startsSending:[selfI toSendI:selfI
+                                                                           sdkClickHandlerOnly:YES]];
 
     [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
 
