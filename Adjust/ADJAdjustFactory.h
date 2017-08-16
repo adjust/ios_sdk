@@ -23,8 +23,8 @@
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
                      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
-+ (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(id<ADJActivityHandler>)activityHandler
-                                            startsSending:(BOOL)startsSending;
++ (id<ADJSdkClickHandler>)sdkClickHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startsSending:(BOOL)startsSending;
 
 + (id<ADJLogger>)logger;
 + (double)sessionInterval;

@@ -119,8 +119,8 @@ static NSTimeInterval internalMaxDelayStart = -1;
                                                  startsSending:startsSending];
 }
 
-+ (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(id<ADJActivityHandler>)activityHandler
-                                            startsSending:(BOOL)startsSending
++ (id<ADJSdkClickHandler>)sdkClickHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startsSending:(BOOL)startsSending
 {
     if (internalSdkClickHandler == nil) {
         return [ADJSdkClickHandler handlerWithActivityHandler:activityHandler startsSending:startsSending];
