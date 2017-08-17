@@ -40,6 +40,7 @@
 		9D449E941E6EDC3D00E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E721E6EDC3D00E7E80B /* Adjust.m */; };
 		9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E741E6EDC3D00E7E80B /* ADJUtil.m */; };
 		9D449E961E6EDC3D00E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449E751E6EDC3D00E7E80B /* Info.plist */; };
+		9DD0E9C11F45879A00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */; };
 		9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */; };
 		9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */; };
 		9DF7A9CB1CB4ECA600D3591F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C91CB4ECA600D3591F /* Main.storyboard */; };
@@ -115,6 +116,8 @@
 		9D449E731E6EDC3D00E7E80B /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		9D449E741E6EDC3D00E7E80B /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
 		9D449E751E6EDC3D00E7E80B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9DD0E9BF1F45879A00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
+		9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DF7A9C21CB4ECA600D3591F /* AdjustExample-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSwift.swift; sourceTree = "<group>"; };
@@ -143,6 +146,7 @@
 		9D449E331E6EDC3D00E7E80B /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9D449E3C1E6EDC3D00E7E80B /* ADJAdditions */,
 				9D449E341E6EDC3D00E7E80B /* ADJActivityHandler.h */,
 				9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */,
 				9D449E361E6EDC3D00E7E80B /* ADJActivityKind.h */,
@@ -151,7 +155,6 @@
 				9D449E391E6EDC3D00E7E80B /* ADJActivityPackage.m */,
 				9D449E3A1E6EDC3D00E7E80B /* ADJActivityState.h */,
 				9D449E3B1E6EDC3D00E7E80B /* ADJActivityState.m */,
-				9D449E3C1E6EDC3D00E7E80B /* ADJAdditions */,
 				9D449E431E6EDC3D00E7E80B /* ADJAdjustFactory.h */,
 				9D449E441E6EDC3D00E7E80B /* ADJAdjustFactory.m */,
 				9D449E451E6EDC3D00E7E80B /* ADJAttribution.h */,
@@ -202,6 +205,8 @@
 				9D449E741E6EDC3D00E7E80B /* ADJUtil.m */,
 				6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */,
 				6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */,
+				9DD0E9BF1F45879A00B2A759 /* ADJUserDefaults.h */,
+				9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */,
 				9D449E751E6EDC3D00E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -343,6 +348,7 @@
 				9D449E8F1E6EDC3D00E7E80B /* ADJSessionParameters.m in Sources */,
 				9D449E901E6EDC3D00E7E80B /* ADJSessionSuccess.m in Sources */,
 				9D449E861E6EDC3D00E7E80B /* ADJEventSuccess.m in Sources */,
+				9DD0E9C11F45879A00B2A759 /* ADJUserDefaults.m in Sources */,
 				9D449E761E6EDC3D00E7E80B /* ADJActivityHandler.m in Sources */,
 				9D449E8B1E6EDC3D00E7E80B /* ADJRequestHandler.m in Sources */,
 				9D449E8A1E6EDC3D00E7E80B /* ADJPackageHandler.m in Sources */,

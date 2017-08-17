@@ -62,6 +62,7 @@
 		9D75F19C1D07463800E5D222 /* adjust_event.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1931D07463800E5D222 /* adjust_event.js */; };
 		9D75F19D1D07463800E5D222 /* adjust_config.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1941D07463800E5D222 /* adjust_config.js */; };
 		9D9A99DA1D0B699A0022FFCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9A99D91D0B699A0022FFCE /* AppDelegate.m */; };
+		9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +164,8 @@
 		9D75F1941D07463800E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
 		9D9A99D81D0B699A0022FFCE /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9A99D91D0B699A0022FFCE /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
+		9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +246,7 @@
 		9D449E971E6EDD4100E7E80B /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9D449EA01E6EDD4100E7E80B /* ADJAdditions */,
 				9D449E981E6EDD4100E7E80B /* ADJActivityHandler.h */,
 				9D449E991E6EDD4100E7E80B /* ADJActivityHandler.m */,
 				9D449E9A1E6EDD4100E7E80B /* ADJActivityKind.h */,
@@ -251,7 +255,6 @@
 				9D449E9D1E6EDD4100E7E80B /* ADJActivityPackage.m */,
 				9D449E9E1E6EDD4100E7E80B /* ADJActivityState.h */,
 				9D449E9F1E6EDD4100E7E80B /* ADJActivityState.m */,
-				9D449EA01E6EDD4100E7E80B /* ADJAdditions */,
 				9D449EA71E6EDD4100E7E80B /* ADJAdjustFactory.h */,
 				9D449EA81E6EDD4100E7E80B /* ADJAdjustFactory.m */,
 				9D449EA91E6EDD4100E7E80B /* ADJAttribution.h */,
@@ -302,6 +305,8 @@
 				9D449ED81E6EDD4100E7E80B /* ADJUtil.m */,
 				6FCC85101F2794D600D6A0ED /* ADJReachability.h */,
 				6FCC85111F2794D600D6A0ED /* ADJReachability.m */,
+				9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */,
+				9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */,
 				9D449ED91E6EDD4100E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -443,6 +448,7 @@
 				9D449EE01E6EDD4100E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */,
 				9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */,
+				9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */,
 				6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */,
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,
 				9D10833D1CFDD8F00050568B /* WKWebViewController.m in Sources */,
