@@ -942,7 +942,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
 [example-ios-swift]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
-[ios-web-views-guide]:  https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
+[ios-web-views-guide]:  doc/english/web_views.md
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 
 [universal-links-guide]:      https://docs.adjust.com/en/universal-links/
