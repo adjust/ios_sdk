@@ -48,6 +48,7 @@
 		9D449E311E6ED88F00E7E80B /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */; };
 		9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */; };
 		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
+		9DD0E9BE1F457EF800B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,8 @@
 		9DC95F281C10515300138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F291C10515300138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DCA5CF01DD5B6BE000296B2 /* AdjustExample-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-iOS.entitlements"; sourceTree = "<group>"; };
+		9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
+		9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +269,8 @@
 				9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */,
 				6FCC850B1F2794A300D6A0ED /* ADJReachability.h */,
 				6FCC850A1F2794A300D6A0ED /* ADJReachability.m */,
+				9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */,
+				9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -370,6 +375,7 @@
 				9D449E141E6ED88F00E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449E181E6ED88F00E7E80B /* ADJActivityKind.m in Sources */,
 				9D449E151E6ED88F00E7E80B /* NSData+ADJAdditions.m in Sources */,
+				9DD0E9BE1F457EF800B2A759 /* ADJUserDefaults.m in Sources */,
 				9D449E191E6ED88F00E7E80B /* ADJActivityPackage.m in Sources */,
 				9D449E1E1E6ED88F00E7E80B /* ADJPackageHandler.m in Sources */,
 				9D449E281E6ED88F00E7E80B /* ADJResponseData.m in Sources */,
