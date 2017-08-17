@@ -14,7 +14,7 @@
 #import "NSData+ADJAdditions.h"
 #import "ADJReachability.h"
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
