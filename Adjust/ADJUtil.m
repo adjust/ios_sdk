@@ -18,21 +18,27 @@
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
 #import "ADJReachability.h"
+
+#ifndef TARGET_OS_TV
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#endif
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
 static NSDateFormatter *dateFormat;
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
-static NSRegularExpression *optionalRedirectRegex   = nil;
+static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
+static ADJReachability *reachability = nil;
+
+#ifndef TARGET_OS_TV
 static CTTelephonyNetworkInfo *networkInfo = nil;
 static CTCarrier *carrier = nil;
-static ADJReachability *reachability = nil;
+#endif
 
 static NSString *userAgent = nil;
 
@@ -60,8 +66,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
-    [self initializeNetworkInfoAndCarrier];
     [self initializeReachability];
+#ifndef TARGET_OS_TV
+    [self initializeNetworkInfoAndCarrier];
+#endif
 }
 
 + (void)teardown {
@@ -71,9 +79,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     optionalRedirectRegex   = nil;
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
+    reachability = nil;
+#ifndef TARGET_OS_TV
     networkInfo = nil;
     carrier = nil;
-    reachability = nil;
+#endif
+
 }
 
 + (void)initializeDateFormat {
@@ -166,10 +177,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 }
 
+#ifndef TARGET_OS_TV
 + (void)initializeNetworkInfoAndCarrier {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     carrier = [networkInfo subscriberCellularProvider];
 }
+#endif
 
 + (void)initializeReachability {
     reachability = [ADJReachability reachabilityForInternetConnection];
@@ -504,13 +517,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
-    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
-{
-    NSString * appSecret = [ADJUtil extractAppSecret:activityPackage];
-
+    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
     NSMutableURLRequest *request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
+    NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:activityPackage];
 
-    NSString * authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:activityPackage];
     if (authHeader != nil) {
         [request setValue:authHeader forHTTPHeaderField:@"authHeader"];
     }
@@ -523,7 +534,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage {
-    NSString * appSecret = [activityPackage.parameters objectForKey:@"app_secret"];
+    NSString *appSecret = [activityPackage.parameters objectForKey:@"app_secret"];
+
     if (appSecret == nil) {
         return nil;
     }
@@ -552,46 +564,48 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)buildAuthorizationHeader:(NSString *)appSecret
-                 activityPackage:(ADJActivityPackage *)activityPackage {
+                       activityPackage:(ADJActivityPackage *)activityPackage {
     if (appSecret == nil) {
         return nil;
     }
-    NSMutableDictionary * parameters = activityPackage.parameters;
-    NSString * clientSdk = activityPackage.clientSdk;
-    NSString * activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
+
+    NSMutableDictionary *parameters = activityPackage.parameters;
+    NSString *clientSdk = activityPackage.clientSdk;
+    NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
 
 
-    NSDictionary * signatureParameters = [ADJUtil buildSignatureParameters:parameters
-                                                                 appSecret:appSecret
-                                                                 clientSdk:clientSdk
-                                                             activityKindS:activityKindS];
+    NSDictionary *signatureParameters = [ADJUtil buildSignatureParameters:parameters
+                                                                appSecret:appSecret
+                                                                clientSdk:clientSdk
+                                                            activityKindS:activityKindS];
 
-    NSMutableString * fields = [[NSMutableString alloc] initWithCapacity:5];
-    NSMutableString * clearSignature = [[NSMutableString alloc] initWithCapacity:5];
+    NSMutableString *fields = [[NSMutableString alloc] initWithCapacity:5];
+    NSMutableString *clearSignature = [[NSMutableString alloc] initWithCapacity:5];
 
     // signature part of header
-    for (NSDictionary * key in signatureParameters) {
+    for (NSDictionary *key in signatureParameters) {
         [fields appendFormat:@"%@ ", key];
 
-        NSString * value = [signatureParameters objectForKey:key];
+        NSString *value = [signatureParameters objectForKey:key];
         [clearSignature appendString:value];
     }
 
     // algorithm part of header
-    NSString * algorithmHeader = @"sha256";
+    NSString *algorithmHeader = @"sha256";
 
-    NSString * signature = [clearSignature adjSha256];
-    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
+    NSString *signature = [clearSignature adjSha256];
+    NSString *signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
 
     // fields part of header
     // Remove last empty space.
     if (fields.length > 0) {
         [fields deleteCharactersInRange:NSMakeRange(fields.length - 1, 1)];
     }
-    NSString * fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
+
+    NSString *fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
 
     // putting it all together
-    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@", signatureHeader, algorithmHeader, fieldsHeader];
+    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@", signatureHeader, algorithmHeader, fieldsHeader];
 
     return authorizationHeader;
 }
@@ -599,24 +613,23 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (NSDictionary *)buildSignatureParameters:(NSMutableDictionary *)parameters
                                  appSecret:(NSString *)appSecret
                                  clientSdk:(NSString *)clientSdk
-                             activityKindS:(NSString *)activityKindS
-{
-    NSString * sdkVersionName = @"sdk_version";
-    NSString * sdkVersionValue = clientSdk;
+                             activityKindS:(NSString *)activityKindS {
+    NSString *sdkVersionName = @"sdk_version";
+    NSString *sdkVersionValue = clientSdk;
 
-    NSString * appVersionName = @"app_version";
-    NSString * appVersionValue = [parameters objectForKey:appVersionName];
+    NSString *appVersionName = @"app_version";
+    NSString *appVersionValue = [parameters objectForKey:appVersionName];
 
-    NSString * activityKindName = @"activity_kind";
-    NSString * activityKindValue = activityKindS;
+    NSString *activityKindName = @"activity_kind";
+    NSString *activityKindValue = activityKindS;
 
-    NSString * createdAtName = @"created_at";
-    NSString * createdAtValue = [parameters objectForKey:createdAtName];
+    NSString *createdAtName = @"created_at";
+    NSString *createdAtValue = [parameters objectForKey:createdAtName];
 
-    NSString * deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
-    NSString * deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
+    NSString *deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
+    NSString *deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
 
-    NSMutableDictionary * signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
+    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
 
     [ADJUtil checkAndAddEntry:signatureParameters key:@"app_secret" value:appSecret];
     [ADJUtil checkAndAddEntry:signatureParameters key:sdkVersionName value:sdkVersionValue];
@@ -634,26 +647,31 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (key == nil) {
         return;
     }
+
     if (value == nil) {
         return;
     }
+
     [parameters setObject:value forKey:key];
 }
 
 + (NSString *)getValidIdentifier:(NSMutableDictionary *)parameters {
-    NSString * idfaName = @"idfa";
-    NSString * persistentUUIDName = @"persistent_ios_uuid";
-    NSString * uUIDName = @"ios_uuid";
+    NSString *idfaName = @"idfa";
+    NSString *persistentUUIDName = @"persistent_ios_uuid";
+    NSString *uuidName = @"ios_uuid";
 
     if ([parameters objectForKey:idfaName] != nil) {
         return idfaName;
     }
+
     if ([parameters objectForKey:persistentUUIDName] != nil) {
         return persistentUUIDName;
     }
-    if ([parameters objectForKey:uUIDName] != nil) {
-        return uUIDName;
+
+    if ([parameters objectForKey:uuidName] != nil) {
+        return uuidName;
     }
+
     return nil;
 }
 
@@ -1273,6 +1291,15 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return [value isEqualToString:[readValue description]];
 }
 
++ (NSNumber *)readReachabilityFlags {
+    if (reachability == nil) {
+        return nil;
+    }
+
+    return [reachability currentReachabilityFlags];
+}
+
+#ifndef TARGET_OS_TV
 + (NSString *)readMCC {
     if (carrier == nil) {
         return nil;
@@ -1289,19 +1316,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return [carrier mobileNetworkCode];
 }
 
-+ (NSNumber *)readReachabilityFlags {
-    if (reachability == nil) {
-        return nil;
-    }
-
-    return [reachability currentReachabilityFlags];
-}
-
 + (NSString *)readCurrentRadioAccessTechnology {
     if (networkInfo == nil) {
         return nil;
     }
+
     return [networkInfo currentRadioAccessTechnology];
 }
+#endif
 
 @end

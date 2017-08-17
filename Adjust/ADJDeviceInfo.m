@@ -12,9 +12,12 @@
 #import "ADJUtil.h"
 #import "ADJSystemProfile.h"
 #import "NSData+ADJAdditions.h"
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
 #import "ADJReachability.h"
+
+#ifndef TARGET_OS_TV
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#endif
 
 @implementation ADJDeviceInfo
 

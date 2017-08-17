@@ -110,16 +110,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 
-+ (NSString *)readMCC;
-
-+ (NSString *)readMNC;
-
 + (NSNumber *)readReachabilityFlags;
-
-+ (NSString *)readCurrentRadioAccessTechnology;
 
 + (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage;
 
 + (NSString *)buildAuthorizationHeader:(NSString *)appSecret
                        activityPackage:(ADJActivityPackage *)activityPackage;
+
+#ifndef TARGET_OS_TV
++ (NSString *)readMCC;
+
++ (NSString *)readMNC;
+
++ (NSString *)readCurrentRadioAccessTechnology;
+#endif
+
 @end
