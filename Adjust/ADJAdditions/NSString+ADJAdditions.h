@@ -11,6 +11,7 @@
 
 - (NSString *)adjMd5;
 - (NSString *)adjSha1;
+- (NSString *)adjSha256;
 - (NSString *)adjTrim;
 - (NSString *)adjUrlEncode;
 - (NSString *)adjUrlDecode;

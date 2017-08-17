@@ -578,9 +578,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     // algorithm part of header
-    NSString * algorithmHeader = @"md5";
+    NSString * algorithmHeader = @"sha256";
 
-    NSString * signature = [clearSignature adjMd5];
+    NSString * signature = [clearSignature adjSha256];
     NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
 
     // fields part of header
