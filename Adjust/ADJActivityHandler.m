@@ -21,6 +21,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
 #import "ADJSessionParameters.h"
+#import "ADJUserDefaults.h"
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
@@ -690,11 +691,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     // very first session
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
-        selfI.activityState.sessionCount = 1; // this is the first session
         selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
+            selfI.activityState.sessionCount = 1; // this is the first session
             [selfI transferSessionPackageI:selfI now:now];
         }
 
@@ -715,12 +716,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     // new session
     if (lastInterval > kSessionInterval) {
-        selfI.activityState.sessionCount++;
-        selfI.activityState.lastInterval = lastInterval;
-
-        [selfI transferSessionPackageI:selfI now:now];
-        [selfI.activityState resetSessionAttributes:now];
-        [selfI writeActivityStateI:selfI];
+        [self trackNewSessionI:now withActivityHandler:selfI];
         return;
     }
 
@@ -737,6 +733,17 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     }
 
     [selfI.logger verbose:@"Time span since last activity too short for a new subsession"];
+}
+
+- (void)trackNewSessionI:(double)now withActivityHandler:(ADJActivityHandler *)selfI {
+    double lastInterval = now - selfI.activityState.lastActivity;
+
+    selfI.activityState.sessionCount++;
+    selfI.activityState.lastInterval = lastInterval;
+
+    [selfI transferSessionPackageI:selfI now:now];
+    [selfI.activityState resetSessionAttributes:now];
+    [selfI writeActivityStateI:selfI];
 }
 
 - (void)transferSessionPackageI:(ADJActivityHandler *)selfI
@@ -850,6 +857,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     [selfI updateAdidI:selfI adid:sessionResponseData.adid];
 
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sessionResponseData.attribution];
+
+    // mark install as tracked on success
+    if (sessionResponseData.success) {
+        [ADJUserDefaults setInstallTracked];
+    }
 
     // session success callback
     if (sessionResponseData.success
@@ -977,16 +989,13 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     return YES;
 }
 
-- (void)setEnabledI:(ADJActivityHandler *)selfI
-            enabled:(BOOL)enabled
-{
+- (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
     // compare with the saved or internal state
     if (![selfI hasChangedStateI:selfI
                    previousState:[selfI isEnabled]
                        nextState:enabled
                      trueMessage:@"Adjust already enabled"
-                    falseMessage:@"Adjust already disabled"])
-    {
+                    falseMessage:@"Adjust already disabled"]) {
         return;
     }
 
@@ -1000,6 +1009,14 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         remainsPausedMessage:@"Handlers will still start as paused"
             unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
         return;
+    }
+
+    // Check if upon enabling install has been tracked.
+    if (enabled) {
+        if (![ADJUserDefaults getInstallTracked]) {
+            double now = [NSDate.date timeIntervalSince1970];
+            [self trackNewSessionI:now withActivityHandler:selfI];
+        }
     }
 
     // save new enabled state in activity state

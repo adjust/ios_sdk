@@ -193,7 +193,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)resetSessionPartnerParameters;
 
 /**
- * Obtain singleton Adjust object
+ * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
 
