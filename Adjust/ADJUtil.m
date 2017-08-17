@@ -20,7 +20,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJReachability.h"
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
@@ -35,7 +35,7 @@ static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 static ADJReachability *reachability = nil;
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 static CTTelephonyNetworkInfo *networkInfo = nil;
 static CTCarrier *carrier = nil;
 #endif
@@ -67,7 +67,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeOptionalRedirectRegex];
     [self initializeUrlSessionConfiguration];
     [self initializeReachability];
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
     [self initializeNetworkInfoAndCarrier];
 #endif
 }
@@ -80,7 +80,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
     reachability = nil;
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
     networkInfo = nil;
     carrier = nil;
 #endif
@@ -177,7 +177,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 }
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 + (void)initializeNetworkInfoAndCarrier {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     carrier = [networkInfo subscriberCellularProvider];
@@ -1299,7 +1299,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return [reachability currentReachabilityFlags];
 }
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 + (NSString *)readMCC {
     if (carrier == nil) {
         return nil;

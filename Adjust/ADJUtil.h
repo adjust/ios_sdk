@@ -117,7 +117,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSString *)buildAuthorizationHeader:(NSString *)appSecret
                        activityPackage:(ADJActivityPackage *)activityPackage;
 
-#ifndef TARGET_OS_TV
+#if !TARGET_OS_TV
 + (NSString *)readMCC;
 
 + (NSString *)readMNC;
