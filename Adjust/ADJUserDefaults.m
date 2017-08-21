@@ -38,12 +38,12 @@ static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 
 #pragma mark - Public methods
 
-+ (void)savePushToken:(NSString *)pushToken {
++ (void)savePushToken:(NSData *)pushToken {
     [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (NSString *)getPushToken {
++ (NSData *)getPushToken {
     return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_PUSH_TOKEN];
 }
 
@@ -59,6 +59,12 @@ static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 
 + (BOOL)getInstallTracked {
     return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_INSTALL_TRACKED];
+}
+
++ (void)clearAdjustStuff {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

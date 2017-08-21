@@ -10,9 +10,11 @@
 
 @interface ADJUserDefaults : NSObject
 
-+ (void)savePushToken:(NSString *)pushToken;
++ (void)savePushToken:(NSData *)pushToken;
 
-+ (NSString *)getPushToken;
++ (NSData *)getPushToken;
+
++ (void)clearAdjustStuff;
 
 + (void)removePushToken;
 
