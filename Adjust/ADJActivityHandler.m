@@ -189,11 +189,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
 
-    // self.deviceTokenData = savedPreLaunch.deviceTokenData;
-    if (self.activityState != nil) {
-        [self setDeviceToken:[ADJUserDefaults getPushToken]];
-    }
-
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -201,6 +196,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                          [selfI initI:selfI
         preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
+
+    // self.deviceTokenData = savedPreLaunch.deviceTokenData;
+    if (self.activityState != nil) {
+        [self setDeviceToken:[ADJUserDefaults getPushToken]];
+    }
 
     [self addNotificationObserver];
 
@@ -1229,6 +1229,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)setDeviceTokenI:(ADJActivityHandler *)selfI
             deviceToken:(NSData *)deviceToken {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+
     NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
 
     if (deviceTokenString == nil) {
