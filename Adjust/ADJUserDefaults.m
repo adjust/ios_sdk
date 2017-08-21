@@ -13,29 +13,6 @@ static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 
 @implementation ADJUserDefaults
 
-#pragma mark - Object lifecycle methods
-
-+ (id)getInstance {
-    static ADJUserDefaults *defaultInstance = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        defaultInstance = [[self alloc] init];
-    });
-
-    return defaultInstance;
-}
-
-- (id)init {
-    self = [super init];
-
-    if (self == nil) {
-        return nil;
-    }
-
-    return self;
-}
-
 #pragma mark - Public methods
 
 + (void)savePushToken:(NSData *)pushToken {
