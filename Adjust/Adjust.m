@@ -9,6 +9,7 @@
 #import "Adjust.h"
 #import "ADJUtil.h"
 #import "ADJLogger.h"
+#import "ADJUserDefaults.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 
@@ -207,14 +208,16 @@ NSString * const ADJEnvironmentProduction   = @"production";
         return;
     }
 
-    [self.activityHandler  appWillOpenUrl:url];
+    [self.activityHandler appWillOpenUrl:url];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    if (![self checkActivityHandler:@"device token"]) {
-        self.savedPreLaunch.deviceTokenData = deviceToken;
-    } else {
-        [self.activityHandler setDeviceToken:deviceToken];
+    [ADJUserDefaults savePushToken:deviceToken];
+
+    if ([self checkActivityHandler:@"device token"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setDeviceToken:deviceToken];
+        }
     }
 }
 

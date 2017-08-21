@@ -167,13 +167,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         }];
     }
 
-    // enabled by default
-    if (self.activityState == nil) {
-        self.internalState.enabled = YES;
-    } else {
-        self.internalState.enabled = self.activityState.enabled;
-    }
-
+    // check if SDK is enabled/disabled
+    self.internalState.enabled = savedPreLaunch.enabled != nil ? [savedPreLaunch.enabled boolValue] : YES;
     // reads offline mode from pre launch
     self.internalState.offline = savedPreLaunch.offline;
     // in the background by default
@@ -193,7 +188,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
-    self.deviceTokenData = savedPreLaunch.deviceTokenData;
+
+    // self.deviceTokenData = savedPreLaunch.deviceTokenData;
+    if (self.activityState != nil) {
+        [self setDeviceToken:[ADJUserDefaults getPushToken]];
+    }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -560,6 +559,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self teardownAttributionS:deleteState];
     [self teardownAllSessionParametersS:deleteState];
 
+    if (deleteState) {
+        [ADJUserDefaults clearAdjustStuff];
+    }
+
     [ADJUtil teardown];
 
     self.internalQueue = nil;
@@ -607,6 +610,12 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         [selfI.logger info:@"Push token: '%@'", selfI.deviceTokenData];
         if (selfI.activityState != nil) {
             [selfI setDeviceToken:selfI.deviceTokenData];
+        }
+    } else {
+        if (selfI.activityState != nil) {
+            NSData *deviceToken = [ADJUserDefaults getPushToken];
+
+            [selfI setDeviceToken:deviceToken];
         }
     }
 
@@ -691,7 +700,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     // very first session
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
-        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
+
+        // selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
+        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:[ADJUserDefaults getPushToken]];
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
@@ -702,7 +713,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         [selfI.activityState resetSessionAttributes:now];
         selfI.activityState.enabled = [selfI.internalState isEnabled];
         selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
+
         [selfI writeActivityStateI:selfI];
+        [ADJUserDefaults removePushToken];
+
         return;
     }
 
@@ -1017,6 +1031,12 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             double now = [NSDate.date timeIntervalSince1970];
             [self trackNewSessionI:now withActivityHandler:selfI];
         }
+
+        NSData *deviceToken = [ADJUserDefaults getPushToken];
+
+        if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
+            [self setDeviceToken:deviceToken];
+        }
     }
 
     // save new enabled state in activity state
@@ -1225,17 +1245,24 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:selfI.deviceInfo
-                                       activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       sessionParameters:selfI.sessionParameters
-                                       createdAt:now];
+    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                     activityState:selfI.activityState
+                                                                            config:selfI.adjustConfig
+                                                                 sessionParameters:selfI.sessionParameters
+                                                                         createdAt:now];
 
-    ADJActivityPackage * infoPackage = [infoBuilder buildInfoPackage:@"push"];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.packageHandler addPackage:infoPackage];
-    [selfI.packageHandler sendFirstPackage];
+
+    // if push token was cached, remove it
+    [ADJUserDefaults removePushToken];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
 }
 
 - (void)setIadDateI:(ADJActivityHandler *)selfI
