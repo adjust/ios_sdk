@@ -1321,7 +1321,18 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         return nil;
     }
 
-    return [networkInfo currentRadioAccessTechnology];
+    SEL radioTechSelector = NSSelectorFromString(@"currentRadioAccessTechnology");
+
+    if (![networkInfo respondsToSelector:radioTechSelector]) {
+        return nil;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id radioTech = [networkInfo performSelector:radioTechSelector];
+#pragma clang diagnostic pop
+
+    return radioTech;
 }
 #endif
 
