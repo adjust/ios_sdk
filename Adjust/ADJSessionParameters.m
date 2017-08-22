@@ -24,7 +24,6 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-
     [encoder encodeObject:self.externalDeviceId     forKey:@"externalDeviceId"];
 }
 
@@ -35,6 +34,7 @@
     if (copy) {
         copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
         copy.partnerParameters  = [self.partnerParameters copyWithZone:zone];
+        copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
     }
 
     return copy;

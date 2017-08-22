@@ -675,6 +675,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
 
+    [selfI setExternalDeviceIdI:selfI
+               externalDeviceId:selfI.adjustConfig.externalDeviceId];
+
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
     [selfI startI:selfI];
@@ -1426,6 +1429,17 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)writeSessionParametersI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJSessionParameters class]) {
+        if (selfI.sessionParameters == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.sessionParameters
+                    fileName:kSessionParametersFilename
+                  objectName:@"Session parameters"];
+    }
+}
+
 - (void)teardownAllSessionParametersS:(BOOL)deleteState {
     @synchronized ([ADJSessionParameters class]) {
         if (self.sessionParameters == nil) {
@@ -1803,6 +1817,16 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
     selfI.sessionParameters.partnerParameters = nil;
     [selfI writeSessionPartnerParametersI:selfI];
+}
+
+- (void)setExternalDeviceIdI:(ADJActivityHandler *)selfI
+            externalDeviceId:(NSString *)externalDeviceId {
+    if (externalDeviceId == nil) {
+        return;
+    }
+
+    selfI.sessionParameters.externalDeviceId = externalDeviceId;
+    [selfI writeSessionParametersI:selfI];
 }
 
 - (void)preLaunchActionsI:(ADJActivityHandler *)selfI
