@@ -523,7 +523,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:activityPackage];
 
     if (authHeader != nil) {
-        [request setValue:authHeader forHTTPHeaderField:@"authHeader"];
+        [request setValue:authHeader forHTTPHeaderField:@"Authorization"];
     }
 
     [ADJUtil sendRequest:request
@@ -591,11 +591,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     // algorithm part of header
-    NSString *algorithmHeader = @"sha256";
+    NSString * algorithm = @"sha256";
+    NSString * signature = [clearSignature adjSha256];
+    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
 
-    NSString *signature = [clearSignature adjSha256];
-    NSString *signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
-
+    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm];
     // fields part of header
     // Remove last empty space.
     if (fields.length > 0) {
