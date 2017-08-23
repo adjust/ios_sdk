@@ -23,7 +23,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) ADJTimerOnce *attributionTimer;
 @property (nonatomic, strong) ADJActivityPackage * attributionPackage;
-@property (nonatomic, assign) BOOL paused;
+@property (atomic, assign) BOOL paused;
 
 @end
 
