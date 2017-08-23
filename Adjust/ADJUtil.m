@@ -27,7 +27,6 @@
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
-static NSDateFormatter *dateFormat;
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
@@ -60,7 +59,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return;
     }
 
-    [self initializeDateFormat];
     [self initializeUniversalLinkRegex];
     [self initializeSecondsNumberFormatter];
     [self initializeShortUniversalLinkRegex];
@@ -73,7 +71,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (void)teardown {
-    dateFormat = nil;
     universalLinkRegex = nil;
     secondsNumberFormatter = nil;
     optionalRedirectRegex   = nil;
@@ -84,34 +81,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     networkInfo = nil;
     carrier = nil;
 #endif
-
-}
-
-+ (void)initializeDateFormat {
-    dateFormat = [[NSDateFormatter alloc] init];
-
-    if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
-        // http://stackoverflow.com/a/3339787
-        NSString *calendarIdentifier;
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
-        if (&NSCalendarIdentifierGregorian != NULL) {
-#pragma clang diagnostic pop
-            calendarIdentifier = NSCalendarIdentifierGregorian;
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            calendarIdentifier = NSGregorianCalendar;
-#pragma clang diagnostic pop
-        }
-
-        dateFormat.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
-    }
-
-    dateFormat.locale = [NSLocale systemLocale];
-    [dateFormat setDateFormat:kDateFormat];
 
 }
 
@@ -201,6 +170,35 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return kClientSdk;
 }
 
++ (NSDateFormatter *)getDateFormatter {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+
+    if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
+        // http://stackoverflow.com/a/3339787
+        NSString *calendarIdentifier;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
+        if (&NSCalendarIdentifierGregorian != NULL) {
+#pragma clang diagnostic pop
+            calendarIdentifier = NSCalendarIdentifierGregorian;
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            calendarIdentifier = NSGregorianCalendar;
+#pragma clang diagnostic pop
+        }
+
+        dateFormatter.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
+    }
+
+    dateFormatter.locale = [NSLocale systemLocale];
+    [dateFormatter setDateFormat:kDateFormat];
+
+    return dateFormatter;
+}
+
 // Inspired by https://gist.github.com/kevinbarrett/2002382
 + (void)excludeFromBackup:(NSString *)path {
     NSURL *url = [NSURL fileURLWithPath:path];
@@ -250,10 +248,13 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)formatDate:(NSDate *)value {
-    if (dateFormat == nil) {
+    NSDateFormatter *dateFormatter = [ADJUtil getDateFormatter];
+
+    if (dateFormatter == nil) {
         return nil;
     }
-    return [dateFormat stringFromDate:value];
+
+    return [dateFormatter stringFromDate:value];
 }
 
 + (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
