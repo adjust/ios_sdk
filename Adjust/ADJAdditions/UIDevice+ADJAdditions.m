@@ -168,10 +168,9 @@
         return;
     }
 
-    // if no tries for iad v3 left -> iad v2
+    // if no tries for iad v3 left, stop trying
     if (triesV3Left == 0) {
-        [logger warn:@"Reached limit number of retry for iAd v3. Trying iAd v2"];
-        [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
+        [logger warn:@"Reached limit number of retry for iAd v3"];
         return;
     }
 
@@ -179,10 +178,10 @@
                      ADClientSharedClientInstance:ADClientSharedClientInstance
                                       retriesLeft:(triesV3Left - 1)];
 
-    // if iad v3 not available -> iad v2
+    // if iad v3 not available
     if (!isIadV3Avaliable) {
-        [logger warn:@"iAd v3 not available. Trying iAd v2"];
-        [self adjSetIadWithDates:activityHandler ADClientSharedClientInstance:ADClientSharedClientInstance];
+        [logger warn:@"iAd v3 not available"];
+        return;
     }
 #pragma clang diagnostic pop
 #endif
@@ -209,22 +208,4 @@ ADClientSharedClientInstance:(id)ADClientSharedClientInstance
     return YES;
 }
 
-- (BOOL)adjSetIadWithDates:(ADJActivityHandler *)activityHandler
-ADClientSharedClientInstance:(id)ADClientSharedClientInstance
-{
-    SEL iadDateSelector = NSSelectorFromString(@"lookupAdConversionDetails:");
-
-    if (![ADClientSharedClientInstance respondsToSelector:iadDateSelector]) {
-        return NO;
-    }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [ADClientSharedClientInstance performSelector:iadDateSelector
-                                       withObject:^(NSDate *appPurchaseDate, NSDate *iAdImpressionDate) {
-                                           [activityHandler setIadDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
-                                       }];
-
-#pragma clang diagnostic pop
-    return YES;
-}
 @end
