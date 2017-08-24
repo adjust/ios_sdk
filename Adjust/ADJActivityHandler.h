@@ -73,7 +73,6 @@
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
-- (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
                   retriesLeft:(int)retriesLeft;

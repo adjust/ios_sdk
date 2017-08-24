@@ -348,16 +348,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
-- (void)setIadDate:(NSDate *)iAdImpressionDate
-   withPurchaseDate:(NSDate *)appPurchaseDate
-{
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI setIadDateI:selfI iAdImpressionDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
-                     }];
-}
-
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
                   retriesLeft:(int)retriesLeft
@@ -1271,42 +1261,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [selfI.packageHandler sendFirstPackage];
     }
 }
-
-- (void)setIadDateI:(ADJActivityHandler *)selfI
-  iAdImpressionDate:(NSDate *)iAdImpressionDate
-   withPurchaseDate:(NSDate *)appPurchaseDate
-{
-    if (iAdImpressionDate == nil) {
-        [selfI.logger debug:@"iAdImpressionDate not received"];
-        return;
-    }
-
-    if (![selfI isEnabledI:selfI]) {
-        return;
-    }
-
-    [selfI.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
-
-    double now = [NSDate.date timeIntervalSince1970];
-    if (selfI.activityState != nil) {
-        double lastInterval = now - selfI.activityState.lastActivity;
-        selfI.activityState.lastInterval = lastInterval;
-    }
-
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:selfI.deviceInfo
-                                       activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       sessionParameters:selfI.sessionParameters
-                                       createdAt:now];
-
-    clickBuilder.purchaseTime = appPurchaseDate;
-    clickBuilder.clickTime = iAdImpressionDate;
-
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad"];
-    [selfI.sdkClickHandler sendSdkClick:clickPackage];
-}
-
 
 #pragma mark - private
 
