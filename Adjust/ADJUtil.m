@@ -353,6 +353,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             }
 
             // Do the file migration.
+            [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
             [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
 
             return documentsObject;
@@ -429,7 +430,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return nil;
     }
 
-    NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:adjustDirName];
+    NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", adjustDirName]];
 
     if (![ADJUtil checkForDirectoryPresenceInPath:adjustDir forFolder:adjustDirName]) {
         return nil;
