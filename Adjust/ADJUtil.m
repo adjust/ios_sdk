@@ -326,12 +326,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
             return appSupportObject;
         } else if (appSupportObject == nil) {
-            [[ADJAdjustFactory logger] verbose:@"%@ file not found", appSupportFilePath];
+            // [[ADJAdjustFactory logger] verbose:@"%@ file not found", appSupportFilePath];
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found in \"Application Support/Adjust\" folder", fileName];
         } else {
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
+            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder", fileName];
         }
     } @catch (NSException *ex) {
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", appSupportFilePath, ex];
+        // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder (%@)", fileName, ex];
     }
 
     // If in here, for some reason, reading of file from Application Support folder failed.
@@ -354,12 +357,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
             return documentsObject;
         } else if (documentsObject == nil) {
-            [[ADJAdjustFactory logger] verbose:@"%@ file not found", documentsFilePath];
+            // [[ADJAdjustFactory logger] verbose:@"%@ file not found", documentsFilePath];
+            [[ADJAdjustFactory logger] verbose:@"%@ file not found in Documents folder", fileName];
         } else {
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
+            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder", fileName];
         }
     } @catch (NSException *ex) {
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
+        // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder (%@)", fileName, ex];
     }
     
     return nil;
@@ -417,14 +423,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *appSupportDir = [paths firstObject];
+    NSString *adjustDirName = @"Adjust";
 
-    if (![ADJUtil checkForDirectoryPresence:appSupportDir]) {
+    if (![ADJUtil checkForDirectoryPresenceInPath:appSupportDir forFolder:[appSupportDir lastPathComponent]]) {
         return nil;
     }
 
-    NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:@"/Adjust"];
+    NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:adjustDirName];
 
-    if (![ADJUtil checkForDirectoryPresence:adjustDir]) {
+    if (![ADJUtil checkForDirectoryPresenceInPath:adjustDir forFolder:adjustDirName]) {
         return nil;
     }
 
@@ -433,12 +440,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return filePath;
 }
 
-+ (BOOL)checkForDirectoryPresence:(NSString *)path {
++ (BOOL)checkForDirectoryPresenceInPath:(NSString *)path forFolder:(NSString *)folderName {
     // Check for presence of directory first.
     // If it doesn't exist, make one.
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", path];
+        [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", folderName];
 
         NSError *error;
 
