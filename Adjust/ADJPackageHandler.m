@@ -264,7 +264,7 @@ startsSending:(BOOL)startsSending
         }
 
         if (deleteState) {
-            [ADJUtil deleteFile:kPackageQueueFilename];
+            [ADJUtil deleteFileWithName:kPackageQueueFilename];
         }
 
         [self.packageQueue removeAllObjects];

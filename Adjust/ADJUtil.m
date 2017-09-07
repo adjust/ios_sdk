@@ -322,7 +322,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             }
 
             // Just in case check if old file exists in Documents folder and if yes, remove it.
-            [ADJUtil deleteFile:documentsFilePath];
+            [ADJUtil deleteFileInPath:documentsFilePath];
 
             return appSupportObject;
         } else if (appSupportObject == nil) {
@@ -1159,7 +1159,17 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     });
 }
 
-+ (BOOL)deleteFile:(NSString *)filePath {
++ (BOOL)deleteFileWithName:(NSString *)fileName {
+    NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
+    NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+
+    BOOL deletedDocumentsFilePath = [ADJUtil deleteFileInPath:documentsFilePath];
+    BOOL deletedAppSupportFilePath = [ADJUtil deleteFileInPath:appSupportFilePath];
+
+    return deletedDocumentsFilePath || deletedAppSupportFilePath;
+}
+
++ (BOOL)deleteFileInPath:(NSString *)filePath {
     NSError *error;
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {

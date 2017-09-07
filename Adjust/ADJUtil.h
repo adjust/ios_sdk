@@ -87,7 +87,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (BOOL)isNotNull:(id)value;
 
-+ (BOOL)deleteFile:(NSString *)filename;
++ (BOOL)deleteFileWithName:(NSString *)filename;
 
 + (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails;
 

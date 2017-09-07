@@ -1320,7 +1320,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kActivityStateFilename];
+            [ADJUtil deleteFileWithName:kActivityStateFilename];
         }
         self.activityState = nil;
     }
@@ -1342,7 +1342,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kAttributionFilename];
+            [ADJUtil deleteFileWithName:kAttributionFilename];
         }
         self.attribution = nil;
     }
@@ -1400,8 +1400,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kSessionCallbackParametersFilename];
-            [ADJUtil deleteFile:kSessionPartnerParametersFilename];
+            [ADJUtil deleteFileWithName:kSessionCallbackParametersFilename];
+            [ADJUtil deleteFileWithName:kSessionPartnerParametersFilename];
         }
         [self.sessionParameters.callbackParameters removeAllObjects];
         [self.sessionParameters.partnerParameters removeAllObjects];
