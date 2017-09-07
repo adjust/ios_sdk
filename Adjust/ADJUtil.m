@@ -579,13 +579,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     NSMutableDictionary *parameters = activityPackage.parameters;
-    NSString *clientSdk = activityPackage.clientSdk;
     NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
 
 
     NSDictionary *signatureParameters = [ADJUtil buildSignatureParameters:parameters
                                                                 appSecret:appSecret
-                                                                clientSdk:clientSdk
                                                             activityKindS:activityKindS];
 
     NSMutableString *fields = [[NSMutableString alloc] initWithCapacity:5];
@@ -616,19 +614,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // putting it all together
     NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@", signatureHeader, algorithmHeader, fieldsHeader];
 
+    [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
+
+
     return authorizationHeader;
 }
 
 + (NSDictionary *)buildSignatureParameters:(NSMutableDictionary *)parameters
                                  appSecret:(NSString *)appSecret
-                                 clientSdk:(NSString *)clientSdk
                              activityKindS:(NSString *)activityKindS {
-    NSString *sdkVersionName = @"sdk_version";
-    NSString *sdkVersionValue = clientSdk;
-
-    NSString *appVersionName = @"app_version";
-    NSString *appVersionValue = [parameters objectForKey:appVersionName];
-
     NSString *activityKindName = @"activity_kind";
     NSString *activityKindValue = activityKindS;
 
@@ -638,11 +632,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
     NSString *deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
 
-    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
+    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:4];
 
     [ADJUtil checkAndAddEntry:signatureParameters key:@"app_secret" value:appSecret];
-    [ADJUtil checkAndAddEntry:signatureParameters key:sdkVersionName value:sdkVersionValue];
-    [ADJUtil checkAndAddEntry:signatureParameters key:appVersionName value:appVersionValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:createdAtName value:createdAtValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:activityKindName value:activityKindValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:deviceIdentifierName value:deviceIdentifierValue];
