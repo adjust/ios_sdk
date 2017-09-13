@@ -10,7 +10,6 @@
 
 @implementation ADJSessionParameters
 
-#pragma mark - NSCoding protocol methods
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
 
@@ -18,13 +17,7 @@
         return nil;
     }
 
-    self.externalDeviceId = [decoder decodeObjectForKey:@"externalDeviceId"];
-
     return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.externalDeviceId     forKey:@"externalDeviceId"];
 }
 
 #pragma mark - NSCopying
@@ -34,7 +27,6 @@
     if (copy) {
         copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
         copy.partnerParameters  = [self.partnerParameters copyWithZone:zone];
-        copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
     }
 
     return copy;

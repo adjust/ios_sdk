@@ -156,12 +156,6 @@
 @property (nonatomic, assign) BOOL isDeviceKnown;
 
 /**
- * @brief Set the external device id.
- */
-
-@property (nonatomic, copy, nullable) NSString *externalDeviceId;
-
-/**
  * @brief Adjust app secret.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *appSecretS;

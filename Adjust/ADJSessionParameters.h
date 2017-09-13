@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJSessionParameters : NSObject <NSCoding, NSCopying>
+@interface ADJSessionParameters : NSObject <NSCopying>
 
 @property (nonatomic, strong) NSMutableDictionary* callbackParameters;
 @property (nonatomic, strong) NSMutableDictionary* partnerParameters;
-@property (nonatomic, copy) NSString *externalDeviceId;
 
 @end

@@ -191,7 +191,6 @@
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;
-        copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy->_appSecretS = [self.appSecretS copyWithZone:zone];
         // adjust delegate not copied
     }
