@@ -62,14 +62,6 @@
     return [[ADJKeychain getInstance] valueForKeychainKeyV2:key service:service];
 }
 
-+ (BOOL)isSecAttrAccessGroupTokenAccessible {
-    if ([ADJKeychain getSecAttrAccessGroupToken]) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
 + (CFStringRef *)getSecAttrAccessGroupToken {
     CFStringRef* stringRef = dlsym(RTLD_SELF, "kSecAttrAccessGroupToken");
     return stringRef;
@@ -109,6 +101,10 @@
 }
 
 - (NSString *)valueForKeychainItem:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
+    if (!keychainItem) {
+        return nil;
+    }
+
     CFDictionaryRef result = nil;
 
     keychainItem[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
@@ -133,7 +129,13 @@
 - (NSMutableDictionary *)keychainItemForKeyV2:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
 
-    keychainItem[(__bridge id)kSecAttrAccessGroup] = (__bridge id)(* [ADJKeychain getSecAttrAccessGroupToken]);
+    CFStringRef * cStringSecAttrAccessGroupToken = [ADJKeychain getSecAttrAccessGroupToken];
+
+    if (!cStringSecAttrAccessGroupToken) {
+        return nil;
+    }
+
+    keychainItem[(__bridge id)kSecAttrAccessGroup] = (__bridge id)(* cStringSecAttrAccessGroupToken);
     [self keychainItemForKey:keychainItem key:key service:service];
 
     return keychainItem;
