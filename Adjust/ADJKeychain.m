@@ -89,7 +89,7 @@
         BOOL wasSuccessful = [self wasWritingSuccessful:value forKeychainKey:key inService:service];
 
         if (wasSuccessful) {
-            [[ADJAdjustFactory logger] warn:@"Value unsuccessfully written in v1 way to the keychain after the check"];
+            [[ADJAdjustFactory logger] warn:@"Value successfully written in v1 way to the keychain after the check"];
         }
 
         return wasSuccessful;
