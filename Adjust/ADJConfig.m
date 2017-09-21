@@ -166,10 +166,12 @@
     return self.appToken != nil;
 }
 
-- (void)setAppSecret:(NSUInteger)info1
+- (void)setAppSecret:(NSUInteger)secretId
+               info1:(NSUInteger)info1
                info2:(NSUInteger)info2
                info3:(NSUInteger)info3
                info4:(NSUInteger)info4 {
+    _secretId = [NSString stringWithFormat:@"%lu", secretId];
     _appSecretS = [NSString stringWithFormat:@"%lu%lu%lu%lu",
                    (unsigned long)info1,
                    (unsigned long)info2,
@@ -191,6 +193,7 @@
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;
+        copy->_secretId = [self.secretId copyWithZone:zone];
         copy->_appSecretS = [self.appSecretS copyWithZone:zone];
         // adjust delegate not copied
     }

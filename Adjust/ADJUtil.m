@@ -567,8 +567,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     activityPackage:(ADJActivityPackage *)activityPackage
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
+    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
+
 
     NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret
+                                                    secretId:secretId
                                              activityPackage:activityPackage];
 
     if (authHeader != nil) {
@@ -607,6 +610,18 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return appSecret;
 }
 
++ (NSString *)extractSecretId:(ADJActivityPackage *)activityPackage {
+    NSString *appSecret = [activityPackage.parameters objectForKey:@"secret_id"];
+
+    if (appSecret == nil) {
+        return nil;
+    }
+
+    [activityPackage.parameters removeObjectForKey:@"secret_id"];
+
+    return appSecret;
+}
+
 + (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
                                        baseUrl:(NSURL *)baseUrl{
     NSString *parameters = [ADJUtil queryString:activityPackage.parameters];
@@ -641,6 +656,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (NSString *)buildAuthorizationHeader:(NSString *)appSecret
+                              secretId:(NSString *)secretId
                        activityPackage:(ADJActivityPackage *)activityPackage {
     if (appSecret == nil) {
         return nil;
@@ -665,6 +681,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [clearSignature appendString:value];
     }
 
+    NSString * secretIdHeader = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
+
     // algorithm part of header
     NSString * algorithm = @"sha256";
     NSString * signature = [clearSignature adjSha256];
@@ -680,7 +698,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSString *fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
 
     // putting it all together
-    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@", signatureHeader, algorithmHeader, fieldsHeader];
+    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@", secretIdHeader, signatureHeader, algorithmHeader, fieldsHeader];
 
     [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
 
