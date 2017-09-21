@@ -521,25 +521,78 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 }
 
++ (void)sendGetRequest:(NSURL *)baseUrl
+    prefixErrorMessage:(NSString *)prefixErrorMessage
+       activityPackage:(ADJActivityPackage *)activityPackage
+   responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+
+    NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage baseUrl:baseUrl];
+
+    [ADJUtil sendRequest:request
+      prefixErrorMessage:prefixErrorMessage
+         activityPackage:activityPackage
+     responseDataHandler:responseDataHandler];
+}
+
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    [ADJUtil sendRequest:request
+      prefixErrorMessage:prefixErrorMessage
+      suffixErrorMessage:nil
+         activityPackage:activityPackage
+     responseDataHandler:responseDataHandler];
+}
+
 + (void)sendPostRequest:(NSURL *)baseUrl
               queueSize:(NSUInteger)queueSize
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
     responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
-    NSMutableURLRequest *request = [ADJUtil requestForPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
-    NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:activityPackage];
 
-    if (authHeader != nil) {
-        [request setValue:authHeader forHTTPHeaderField:@"Authorization"];
-    }
+    NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:suffixErrorMessage
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
+}
+
++ (void)sendRequest:(NSMutableURLRequest *)request
+ prefixErrorMessage:(NSString *)prefixErrorMessage
+ suffixErrorMessage:(NSString *)suffixErrorMessage
+    activityPackage:(ADJActivityPackage *)activityPackage
+responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
+
+    NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret
+                                             activityPackage:activityPackage];
+
+    if (authHeader != nil) {
+        [request setValue:authHeader forHTTPHeaderField:@"Authorization"];
+    }
+
+    if (userAgent != nil) {
+        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    }
+
+    Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
+    if (NSURLSessionClass != nil) {
+        [ADJUtil sendNSURLSessionRequest:request
+                      prefixErrorMessage:prefixErrorMessage
+                      suffixErrorMessage:suffixErrorMessage
+                         activityPackage:activityPackage
+                     responseDataHandler:responseDataHandler];
+    } else {
+        [ADJUtil sendNSURLConnectionRequest:request
+                         prefixErrorMessage:prefixErrorMessage
+                         suffixErrorMessage:suffixErrorMessage
+                            activityPackage:activityPackage
+                        responseDataHandler:responseDataHandler];
+    }
 }
 
 + (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage {
@@ -554,9 +607,24 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return appSecret;
 }
 
-+ (NSMutableURLRequest *)requestForPackage:(ADJActivityPackage *)activityPackage
-                                   baseUrl:(NSURL *)baseUrl
-                                 queueSize:(NSUInteger)queueSize {
++ (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
+                                       baseUrl:(NSURL *)baseUrl{
+    NSString *parameters = [ADJUtil queryString:activityPackage.parameters];
+    NSString *relativePath = [NSString stringWithFormat:@"%@?%@", activityPackage.path, parameters];
+    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.timeoutInterval = kRequestTimeout;
+    request.HTTPMethod = @"GET";
+
+    [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+
+    return request;
+}
+
++ (NSMutableURLRequest *)requestForPostPackage:(ADJActivityPackage *)activityPackage
+                                       baseUrl:(NSURL *)baseUrl
+                                     queueSize:(NSUInteger)queueSize {
     NSURL *url = [NSURL URLWithString:activityPackage.path relativeToURL:baseUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
@@ -674,43 +742,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     return nil;
-}
-
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    [ADJUtil sendRequest:request
-      prefixErrorMessage:prefixErrorMessage
-      suffixErrorMessage:nil
-         activityPackage:activityPackage
-     responseDataHandler:responseDataHandler];
-}
-
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
- suffixErrorMessage:(NSString *)suffixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
-
-    if (userAgent != nil) {
-        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    }
-
-    if (NSURLSessionClass != nil) {
-        [ADJUtil sendNSURLSessionRequest:request
-                      prefixErrorMessage:prefixErrorMessage
-                      suffixErrorMessage:suffixErrorMessage
-                         activityPackage:activityPackage
-                     responseDataHandler:responseDataHandler];
-    } else {
-        [ADJUtil sendNSURLConnectionRequest:request
-                         prefixErrorMessage:prefixErrorMessage
-                         suffixErrorMessage:suffixErrorMessage
-                            activityPackage:activityPackage
-                        responseDataHandler:responseDataHandler];
-    }
 }
 
 + (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request

@@ -184,15 +184,15 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     }
     [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
 
-    [ADJUtil sendRequest:[selfI requestI:selfI]
-      prefixErrorMessage:@"Failed to get attribution"
-         activityPackage:selfI.attributionPackage
-     responseDataHandler:^(ADJResponseData * responseData)
-    {
-        if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
-            [selfI checkAttributionResponse:(ADJAttributionResponseData*)responseData];
-        }
-    }];
+    [ADJUtil sendGetRequest:[NSURL URLWithString:ADJUtil.baseUrl]
+         prefixErrorMessage:@"Failed to get attribution"
+            activityPackage:selfI.attributionPackage
+        responseDataHandler:^(ADJResponseData * responseData)
+     {
+         if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
+             [selfI checkAttributionResponse:(ADJAttributionResponseData*)responseData];
+         }
+     }];
 }
 
 - (void)waitRequestAttributionWithDelayI:(ADJAttributionHandler*)selfI
@@ -213,32 +213,6 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 }
 
 #pragma mark - private
-
-- (NSMutableURLRequest *)requestI:(ADJAttributionHandler*)selfI {
-    NSString * appSecret = [ADJUtil extractAppSecret:selfI.attributionPackage];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[selfI urlI:selfI]];
-    request.timeoutInterval = kRequestTimeout;
-    request.HTTPMethod = @"GET";
-
-    [request setValue:selfI.attributionPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
-
-    NSString * authHeader = [ADJUtil buildAuthorizationHeader:appSecret activityPackage:selfI.attributionPackage];
-    if (authHeader != nil) {
-        [request setValue:authHeader forHTTPHeaderField:@"authHeader"];
-    }
-
-    return request;
-}
-
-- (NSURL *)urlI:(ADJAttributionHandler*)selfI {
-    NSString *parameters = [ADJUtil queryString:selfI.attributionPackage.parameters];
-    NSString *relativePath = [NSString stringWithFormat:@"%@?%@", selfI.attributionPackage.path, parameters];
-    NSURL *baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
-    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
-    
-    return url;
-}
 
 - (void)teardown {
     [ADJAdjustFactory.logger verbose:@"ADJAttributionHandler teardown"];

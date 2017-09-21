@@ -45,16 +45,10 @@ typedef void (^selfInjectedBlock)(id);
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
 
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
-
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
- suffixErrorMessage:(NSString *)suffixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
++ (void)sendGetRequest:(NSURL *)baseUrl
+    prefixErrorMessage:(NSString *)prefixErrorMessage
+       activityPackage:(ADJActivityPackage *)activityPackage
+   responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
 
 + (void)sendPostRequest:(NSURL *)baseUrl
               queueSize:(NSUInteger)queueSize
@@ -113,9 +107,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSNumber *)readReachabilityFlags;
 
 + (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage;
-
-+ (NSString *)buildAuthorizationHeader:(NSString *)appSecret
-                       activityPackage:(ADJActivityPackage *)activityPackage;
 
 #if !TARGET_OS_TV
 + (NSString *)readMCC;
