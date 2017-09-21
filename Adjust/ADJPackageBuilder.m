@@ -72,7 +72,6 @@
                                 isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
-    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
     [ADJPackageBuilder parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:event.currency forKey:@"currency"];
@@ -149,7 +148,6 @@
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource {
     NSMutableDictionary *parameters = [self idsParameters];
 
-    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
     [ADJPackageBuilder parameters:parameters setString:infoSource forKey:@"source"];
 
     [self injectPushToken:self.activityState intoParamters:parameters];
@@ -198,7 +196,6 @@
 - (NSMutableDictionary *)attributableParameters:(ADJSessionParameters *)sessionParameters {
     NSMutableDictionary *parameters = [self defaultParameters];
 
-    [ADJPackageBuilder parameters:parameters setInt:0 forKey:@"tce"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];

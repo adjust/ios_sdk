@@ -19,7 +19,6 @@
 		9D449E7F1E6EDC3D00E7E80B /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E481E6EDC3D00E7E80B /* ADJAttributionHandler.m */; };
 		9D449E801E6EDC3D00E7E80B /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E4A1E6EDC3D00E7E80B /* ADJBackoffStrategy.m */; };
 		9D449E811E6EDC3D00E7E80B /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E4C1E6EDC3D00E7E80B /* ADJConfig.m */; };
-		9D449E821E6EDC3D00E7E80B /* ADJConnectionValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E4E1E6EDC3D00E7E80B /* ADJConnectionValidator.m */; };
 		9D449E831E6EDC3D00E7E80B /* ADJDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E501E6EDC3D00E7E80B /* ADJDeviceInfo.m */; };
 		9D449E841E6EDC3D00E7E80B /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E521E6EDC3D00E7E80B /* ADJEvent.m */; };
 		9D449E851E6EDC3D00E7E80B /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E541E6EDC3D00E7E80B /* ADJEventFailure.m */; };
@@ -74,8 +73,6 @@
 		9D449E4A1E6EDC3D00E7E80B /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
 		9D449E4B1E6EDC3D00E7E80B /* ADJConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConfig.h; sourceTree = "<group>"; };
 		9D449E4C1E6EDC3D00E7E80B /* ADJConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConfig.m; sourceTree = "<group>"; };
-		9D449E4D1E6EDC3D00E7E80B /* ADJConnectionValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJConnectionValidator.h; sourceTree = "<group>"; };
-		9D449E4E1E6EDC3D00E7E80B /* ADJConnectionValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJConnectionValidator.m; sourceTree = "<group>"; };
 		9D449E4F1E6EDC3D00E7E80B /* ADJDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJDeviceInfo.h; sourceTree = "<group>"; };
 		9D449E501E6EDC3D00E7E80B /* ADJDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJDeviceInfo.m; sourceTree = "<group>"; };
 		9D449E511E6EDC3D00E7E80B /* ADJEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEvent.h; sourceTree = "<group>"; };
@@ -162,8 +159,6 @@
 				9D449E4A1E6EDC3D00E7E80B /* ADJBackoffStrategy.m */,
 				9D449E4B1E6EDC3D00E7E80B /* ADJConfig.h */,
 				9D449E4C1E6EDC3D00E7E80B /* ADJConfig.m */,
-				9D449E4D1E6EDC3D00E7E80B /* ADJConnectionValidator.h */,
-				9D449E4E1E6EDC3D00E7E80B /* ADJConnectionValidator.m */,
 				9D449E4F1E6EDC3D00E7E80B /* ADJDeviceInfo.h */,
 				9D449E501E6EDC3D00E7E80B /* ADJDeviceInfo.m */,
 				9D449E511E6EDC3D00E7E80B /* ADJEvent.h */,
@@ -340,7 +335,6 @@
 				9D449E8C1E6EDC3D00E7E80B /* ADJResponseData.m in Sources */,
 				9D449E911E6EDC3D00E7E80B /* ADJSystemProfile.m in Sources */,
 				9D449E8E1E6EDC3D00E7E80B /* ADJSessionFailure.m in Sources */,
-				9D449E821E6EDC3D00E7E80B /* ADJConnectionValidator.m in Sources */,
 				9D449E8F1E6EDC3D00E7E80B /* ADJSessionParameters.m in Sources */,
 				9D449E901E6EDC3D00E7E80B /* ADJSessionSuccess.m in Sources */,
 				9D449E861E6EDC3D00E7E80B /* ADJEventSuccess.m in Sources */,

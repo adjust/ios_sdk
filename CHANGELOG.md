@@ -1,3 +1,12 @@
+### Version 4.11.5 (21st September 2017)
+#### Fixed
+- Fixed `WKWebViewJavascriptBridge` bug (https://github.com/marcuswestin/WebViewJavascriptBridge/issues/267).
+
+#### Changed
+- Improved iOS 11 compatibility.
+- Removed connection validity checks.
+
+---
 ### Version 4.11.4 (5th May 2017)
 #### Added
 - Added check if `sdk_click` package response contains attribution information.
