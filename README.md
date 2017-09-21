@@ -81,13 +81,13 @@ In the dialog `Choose options for adding these files` make sure to check the che
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.11.4'
+pod 'Adjust', '~> 4.11.5'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.11.4'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.11.5'
 ```
 
 --
