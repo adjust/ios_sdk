@@ -63,7 +63,7 @@
 }
 
 + (CFStringRef *)getSecAttrAccessGroupToken {
-    CFStringRef* stringRef = dlsym(RTLD_SELF, "kSecAttrAccessGroupToken");
+    CFStringRef *stringRef = dlsym(RTLD_SELF, "kSecAttrAccessGroupToken");
     return stringRef;
 }
 
@@ -129,7 +129,7 @@
 - (NSMutableDictionary *)keychainItemForKeyV2:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
 
-    CFStringRef * cStringSecAttrAccessGroupToken = [ADJKeychain getSecAttrAccessGroupToken];
+    CFStringRef *cStringSecAttrAccessGroupToken = [ADJKeychain getSecAttrAccessGroupToken];
 
     if (!cStringSecAttrAccessGroupToken) {
         return nil;
