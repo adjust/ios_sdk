@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "WebViewJavascriptBridge.h"
-#import "WKWebViewJavascriptBridge.h"
 
 @protocol AdjustBridgeRegister <NSObject>
 
