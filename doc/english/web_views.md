@@ -102,7 +102,7 @@ function setupWebViewJavascriptBridge(callback) {
 
     var WVJBIframe = document.createElement('iframe');
     WVJBIframe.style.display = 'none';
-    WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+    WVJBIframe.src = 'https://__bridge_loaded__';
     document.documentElement.appendChild(WVJBIframe);
 
     setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
@@ -112,6 +112,8 @@ setupWebViewJavascriptBridge(function(bridge) {
     // AdjustBridge initialisation will be added in this method.
 })
 ```
+
+Take notice that the line `WVJBIframe.src = 'https://__bridge_loaded__';` was changed in version 4.11.6 from `WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';` due to a change in the  `WebViewJavascriptBridge` plugin.
 
 ![][bridge_init_js]
 
