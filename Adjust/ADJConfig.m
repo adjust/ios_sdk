@@ -171,7 +171,7 @@
                info2:(NSUInteger)info2
                info3:(NSUInteger)info3
                info4:(NSUInteger)info4 {
-    _secretId = [NSString stringWithFormat:@"%lu", secretId];
+    _secretId = [NSString stringWithFormat:@"%lu", (unsigned long)secretId];
     _appSecretS = [NSString stringWithFormat:@"%lu%lu%lu%lu",
                    (unsigned long)info1,
                    (unsigned long)info2,

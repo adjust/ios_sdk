@@ -27,8 +27,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
 @end
 
-static const double kRequestTimeout = 60; // 60 seconds
-
 @implementation ADJAttributionHandler
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler

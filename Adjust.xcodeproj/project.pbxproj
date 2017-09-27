@@ -151,6 +151,10 @@
 		9DB457B11D743704004D69E8 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8F71D6F3CA5008E362F /* ADJSdkClickHandler.m */; };
 		9DD0E9AE1F44690B00B2A759 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
 		9DD0E9AF1F44690B00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
+		9DDF243B1F7BE4A4001C1A70 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
+		9DDF24431F7BE4BA001C1A70 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
+		9DDF24441F7BE4DF001C1A70 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
+		9DDF24451F7BE4E7001C1A70 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8B11D6ED228008E362F /* ADJKeychain.h */; };
 		9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8B21D6ED228008E362F /* ADJKeychain.m */; };
@@ -1244,6 +1248,7 @@
 				9DF9C9271D6F3CA5008E362F /* ADJEventSuccess.h in Headers */,
 				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
 				9DF9C9391D6F3CA5008E362F /* ADJSessionSuccess.h in Headers */,
+				9DDF24431F7BE4BA001C1A70 /* ADJUserDefaults.h in Headers */,
 				6FCC85041F27945E00D6A0ED /* ADJReachability.h in Headers */,
 				9DF9C9111D6F3CA5008E362F /* NSData+ADJAdditions.h in Headers */,
 				9DF9C9131D6F3CA5008E362F /* NSString+ADJAdditions.h in Headers */,
@@ -1284,6 +1289,7 @@
 				9DFB06781D7470C0006D48FC /* ADJEventSuccess.h in Headers */,
 				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
 				9DFB068A1D7470C0006D48FC /* ADJSessionSuccess.h in Headers */,
+				9DDF24451F7BE4E7001C1A70 /* ADJUserDefaults.h in Headers */,
 				6FCC85081F27948C00D6A0ED /* ADJReachability.h in Headers */,
 				9DFB06621D7470C0006D48FC /* NSData+ADJAdditions.h in Headers */,
 				9DFB06641D7470C0006D48FC /* NSString+ADJAdditions.h in Headers */,
@@ -1750,6 +1756,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DDF243B1F7BE4A4001C1A70 /* ADJUserDefaults.m in Sources */,
 				9DF9C9121D6F3CA5008E362F /* NSData+ADJAdditions.m in Sources */,
 				9DF9C9141D6F3CA5008E362F /* NSString+ADJAdditions.m in Sources */,
 				9DF9C9161D6F3CA5008E362F /* UIDevice+ADJAdditions.m in Sources */,
@@ -1789,6 +1796,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DDF24441F7BE4DF001C1A70 /* ADJUserDefaults.m in Sources */,
 				9DFB06631D7470C0006D48FC /* NSData+ADJAdditions.m in Sources */,
 				9DFB06651D7470C0006D48FC /* NSString+ADJAdditions.m in Sources */,
 				9DFB06671D7470C0006D48FC /* UIDevice+ADJAdditions.m in Sources */,
