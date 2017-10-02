@@ -526,21 +526,30 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
        activityPackage:(ADJActivityPackage *)activityPackage
    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
 
+    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
+    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
+
     NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage baseUrl:baseUrl];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
          activityPackage:activityPackage
+                secretId:secretId
+               appSecret:appSecret
      responseDataHandler:responseDataHandler];
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
+           secretId:(NSString *)secretId
+          appSecret:(NSString *)appSecret
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:nil
+                secretId:secretId
+               appSecret:appSecret
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
 }
@@ -552,11 +561,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         activityPackage:(ADJActivityPackage *)activityPackage
     responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
 
+    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
+    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
+
     NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:suffixErrorMessage
+                secretId:secretId
+               appSecret:appSecret
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
 }
@@ -564,11 +578,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
+           secretId:(NSString *)secretId
+          appSecret:(NSString *)appSecret
     activityPackage:(ADJActivityPackage *)activityPackage
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
-    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
-
 
     NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret
                                                     secretId:secretId
