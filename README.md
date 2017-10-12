@@ -561,7 +561,7 @@ NSString *idfa = [Adjust idfa];
 
 ### <a id="di-adid"></a>Adjust device identifier
 
-For each device with your app installed, adjust backend generates unique **adjust device identifier** (**adid**). In order to obtain this identifier, you can make a call to following the method on the `Adjust` instance:
+For each device with your app installed, adjust backend generates unique **adjust device identifier** (**adid**). In order to obtain this identifier, you can make a call to the following method on the `Adjust` instance:
 
 ```objc
 NSString *adid = [Adjust adid];
@@ -847,7 +847,7 @@ When the device is forgotten, the link just returns `Forgot device`. If the devi
 
 If you want to simulate the installation scenario of your app on your test device, it is not enough if you just re-run the app from the Xcode on your test device. Re-running the app from the Xcode doesn't cause app data to be wiped out and all internal files that our SDK is keeping inside your app will still be there, so upon re-run, our SDK will see those files and think of your app was already installed (and that SDK was already launched in it) but just opened for another time rather than being opened for the first time.
 
-In order to run app the installation scenario, you need to do following:
+In order to run the app installation scenario, you need to do following:
 
 * Uninstall app from your device (completely remove it)
 * Forget your test device from the adjust backend like explained in the issue [above](#forget-device)
