@@ -271,7 +271,7 @@ This can be combined with callback parameters of course.
 
 When you set a currency token, adjust will automatically convert the incoming revenues into a reporting revenue of your choice. Read more about [currency conversion here.][currency-conversion]
 
-You can read more about revenue and event tracking in the [event tracking guide] (https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues).
+You can read more about revenue and event tracking in the [event tracking guide](https://docs.adjust.com/en/event-tracking/#tracking-purchases-and-revenues).
 
 ### <a id="revenue-deduplication"></a>Revenue deduplication
 
