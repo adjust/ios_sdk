@@ -102,8 +102,16 @@
 #if ADJUST_NO_UIPASTEBOARD || TARGET_OS_TV
     return @"";
 #else
-    NSString *result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
-    if (result == nil) return @"";
+    __block NSString *result;
+    void(^resultRetrievalBlock)(void) = ^{
+        result = [UIPasteboard pasteboardWithName:@"fb_app_attribution" create:NO].string;
+        if (result == nil) {
+            result = @"";
+        }
+    };
+    [NSThread isMainThread] ?
+    resultRetrievalBlock() :
+    dispatch_sync(dispatch_get_main_queue(), resultRetrievalBlock);
     return result;
 #endif
 }
