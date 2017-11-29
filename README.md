@@ -441,14 +441,14 @@ As the delegate callback is configured using the `ADJConfig` instance, you shoul
 
 The delegate function will be called after the SDK receives the final attribution data. Within the delegate function you have access to the `attribution` parameter. Here is a quick summary of its properties:
 
-- `NSString trackerToken` the tracker token of the current install.
-- `NSString trackerName` the tracker name of the current install.
-- `NSString network` the network grouping level of the current install.
-- `NSString campaign` the campaign grouping level of the current install.
-- `NSString adgroup` the ad group grouping level of the current install.
-- `NSString creative` the creative grouping level of the current install.
-- `NSString clickLabel` the click label of the current install.
-- `NSString adid` the unique device identifier provided by adjust.
+- `NSString trackerToken` the tracker token of the current attribution.
+- `NSString trackerName` the tracker name of the current attribution.
+- `NSString network` the network grouping level of the current attribution.
+- `NSString campaign` the campaign grouping level of the current attribution.
+- `NSString adgroup` the ad group grouping level of the current attribution.
+- `NSString creative` the creative grouping level of the current attribution.
+- `NSString clickLabel` the click label of the current attribution.
+- `NSString adid` the unique device identifier provided by attribution.
 
 If any value is unavailable, it will default to `nil`.
 
