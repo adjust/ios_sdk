@@ -163,7 +163,7 @@
 /**
  * @brief Adjust app secret.
  */
-@property (nonatomic, copy, readonly, nullable) NSString *appSecretS;
+@property (nonatomic, copy, readonly, nullable) NSString *appSecret;
 
 /**
  * @brief Adjust set app secret.

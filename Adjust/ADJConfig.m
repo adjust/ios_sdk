@@ -172,7 +172,7 @@
                info3:(NSUInteger)info3
                info4:(NSUInteger)info4 {
     _secretId = [NSString stringWithFormat:@"%lu", (unsigned long)secretId];
-    _appSecretS = [NSString stringWithFormat:@"%lu%lu%lu%lu",
+    _appSecret = [NSString stringWithFormat:@"%lu%lu%lu%lu",
                    (unsigned long)info1,
                    (unsigned long)info2,
                    (unsigned long)info3,
@@ -194,7 +194,7 @@
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;
         copy->_secretId = [self.secretId copyWithZone:zone];
-        copy->_appSecretS = [self.appSecretS copyWithZone:zone];
+        copy->_appSecret = [self.appSecret copyWithZone:zone];
         // adjust delegate not copied
     }
 

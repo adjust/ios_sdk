@@ -263,7 +263,7 @@
         [ADJPackageBuilder parameters:parameters setBool:adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.secretId forKey:@"secret_id"];
-    [ADJPackageBuilder parameters:parameters setString:adjustConfig.appSecretS forKey:@"app_secret"];
+    [ADJPackageBuilder parameters:parameters setString:adjustConfig.appSecret forKey:@"app_secret"];
 }
 
 - (void)injectActivityState:(ADJActivityState *)activityState intoParamters:(NSMutableDictionary *)parameters {
