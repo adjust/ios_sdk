@@ -1,9 +1,10 @@
 ### Version 4.12.0 (12th December 2017)
 #### Added
-- Added reading of MCC parameter.
-- Added reading of MNC parameter.
+- Added reading of MCC.
+- Added reading of MNC.
 - Added reading of network type.
 - Added reading of connectivity type.
+- Added usage of app secret in authorization header.
 
 #### Changed
 - Improved push token handling.
