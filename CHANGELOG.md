@@ -1,3 +1,23 @@
+### Version 4.12.0 (12th December 2017)
+#### Added
+- Added reading of MCC parameter.
+- Added reading of MNC parameter.
+- Added reading of network type.
+- Added reading of connectivity type.
+
+#### Changed
+- Improved push token handling.
+- Migrated Adjust internal files from `Documents` to `Application Support` directory.
+- Deprecated `iAd v2` handling.
+- Updated `WebViewJavascriptBridge` to `6.0.2`.
+- Updated instructions for iOS SDK web bridge integration.
+
+#### Fixed
+- Fixed data race in `ADJAttributionHandler` (https://github.com/adjust/ios_sdk/issues/303) (thanks to @mindbrix).
+- Fixed potential deadlock in shared access to `UIPasteboard` with Facebook SDK (https://github.com/adjust/ios_sdk/pull/310) (thanks to @sanekgusev).
+
+---
+
 ### Version 4.11.5 (21st September 2017)
 #### Fixed
 - Fixed `WKWebViewJavascriptBridge` bug (https://github.com/marcuswestin/WebViewJavascriptBridge/issues/267).
