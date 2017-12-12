@@ -559,7 +559,7 @@ To send us the push notification token, add the following call to `Adjust` in th
 }
 ```
 
-Push token is needed for uninstall tracking feature.
+Push token is used for Audience Builder and client callbacks and needed for the upcoming uninstall tracking feature.
 
 ### <a id="pre-installed-trackers"></a>Pre-installed trackers
 
