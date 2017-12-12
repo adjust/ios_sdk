@@ -98,7 +98,13 @@ If you are having `tvOS` app, you can use the adjust SDK with it as well with us
 
 ### <a id="sdk-frameworks"></a>Add iOS frameworks
 
-Select your project in the Project Navigator. In the left hand side of the main view, select your target. In the tab `Build Phases`, expand the group `Link Binary with Libraries`. On the bottom of that section click on the `+` button. Select the `AdSupport.framework` and click the `Add` button. Unless you are using tvOS, repeat the same steps to add the `iAd.framework` and `CoreTelephony.framework`. Change the `Status` of frameworks to `Optional`.
+1. Select your project in the Project Navigator
+2. In the left-hand side of the main view, select your target
+3. In the `Build Phases` tab, expand the `Link Binary with Libraries` group
+4. At the bottom of that section, select the `+` button
+5. Select the `AdSupport.framework`, then the `Add` button 
+6. Unless you are using tvOS, repeat the same steps to add the `iAd.framework` and `CoreTelephony.framework`
+7. Change the `Status` of the frameworks to `Optional`.
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
@@ -559,7 +565,7 @@ To send us the push notification token, add the following call to `Adjust` in th
 }
 ```
 
-Push token is used for Audience Builder and client callbacks and needed for the upcoming uninstall tracking feature.
+Push tokens are used for the Adjust Audience Builder and client callbacks, and are required for the upcoming uninstall tracking feature.
 
 ### <a id="pre-installed-trackers"></a>Pre-installed trackers
 
