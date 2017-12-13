@@ -25,13 +25,24 @@
 - (BOOL)isDisabled;
 - (BOOL)isOffline;
 - (BOOL)isOnline;
-- (BOOL)isBackground;
-- (BOOL)isForeground;
-- (BOOL)isDelayStart;
-- (BOOL)isToStartNow;
-- (BOOL)isToUpdatePackages;
+- (BOOL)isInBackground;
+- (BOOL)isInForeground;
+- (BOOL)isInDelayedStart;
+- (BOOL)isNotInDelayedStart;
+- (BOOL)itHasToUpdatePackages;
 - (BOOL)isFirstLaunch;
-- (BOOL)hasSessionResponseNotProcessed;
+- (BOOL)hasSessionResponseNotBeenProcessed;
+
+@end
+
+@interface ADJSavedPreLaunch : NSObject
+
+@property (nonatomic, strong) NSMutableArray *preLaunchActionsArray;
+@property (nonatomic, copy) NSData *deviceTokenData;
+@property (nonatomic, copy) NSNumber *enabled;
+@property (nonatomic, assign) BOOL offline;
+
+- (id)init;
 
 @end
 
@@ -41,8 +52,7 @@
 - (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-         deviceToken:(NSData*)deviceToken;
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -63,7 +73,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
-- (void)setIadDate:(NSDate*)iAdImpressionDate withPurchaseDate:(NSDate*)appPurchaseDate;
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
                   retriesLeft:(int)retriesLeft;
@@ -87,8 +96,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                deviceToken:(NSData*)deviceToken;
+                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key

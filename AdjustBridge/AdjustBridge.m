@@ -265,7 +265,7 @@
         if ([adjustConfig isValid]) {
             // Log level
             if ([self isFieldValid:logLevel]) {
-                [adjustConfig setLogLevel:[ADJLogger LogLevelFromString:[logLevel lowercaseString]]];
+                [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
             }
 
             // Sending in background

@@ -307,8 +307,7 @@
     // environment
     apspEquals(@"environment", fields.environment);
     // needs_attribution_data
-    NSString * hasDelegateString = [NSString stringWithFormat:@"%d",fields.hasResponseDelegate];
-    apspEquals(@"needs_response_details", hasDelegateString);
+    apspEquals(@"needs_response_details", @"1");
     // event_buffering_enabled
     NSString * eventBufferingEnabledString = [NSString stringWithFormat:@"%d",fields.eventBufferingEnabled];
     apspEquals(@"event_buffering_enabled", eventBufferingEnabledString);

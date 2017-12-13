@@ -238,25 +238,15 @@ startsSending:(BOOL)startsSending
 
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
-    @try {
-        [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
-        NSString *filename = selfI.packageQueueFilename;
-        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        if ([object isKindOfClass:[NSArray class]]) {
-            selfI.packageQueue = object;
-            [selfI.logger debug:@"Package handler read %d packages", selfI.packageQueue.count];
-            return;
-        } else if (object == nil) {
-            [selfI.logger verbose:@"Package queue file not found"];
-        } else {
-            [selfI.logger error:@"Failed to read package queue"];
-        }
-    } @catch (NSException *exception) {
-        [selfI.logger error:@"Failed to read package queue (%@)", exception];
-    }
+    [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
 
-    // start with a fresh package queue in case of any exception
-    selfI.packageQueue = [NSMutableArray array];
+    id object = [ADJUtil readObject:kPackageQueueFilename objectName:@"Package queue" class:[NSArray class]];
+
+    if (object != nil) {
+        selfI.packageQueue = object;
+    } else {
+        selfI.packageQueue = [NSMutableArray array];
+    }
 }
 
 - (void)writePackageQueueS:(ADJPackageHandler *)selfS {
@@ -264,41 +254,28 @@ startsSending:(BOOL)startsSending
         if (selfS.packageQueue == nil) {
             return;
         }
-        NSString *filename = selfS.packageQueueFilename;
-        BOOL result = [NSKeyedArchiver archiveRootObject:selfS.packageQueue toFile:filename];
-        if (result == YES) {
-            [ADJUtil excludeFromBackup:filename];
-            [selfS.logger debug:@"Package handler wrote %d packages", selfS.packageQueue.count];
-        } else {
-            [selfS.logger error:@"Failed to write package queue"];
-        }
+
+        [ADJUtil writeObject:selfS.packageQueue fileName:kPackageQueueFilename objectName:@"Package queue"];
     }
 }
 
-- (void)teardownPackageQueueS:(BOOL)deleteState
-{
+- (void)teardownPackageQueueS:(BOOL)deleteState {
     @synchronized ([ADJPackageHandler class]) {
         if (self.packageQueue == nil) {
             return;
         }
-        if (deleteState) {
-            [ADJUtil deleteFile:self.packageQueueFilename];
-        }
-        [self.packageQueue removeAllObjects];
 
+        if (deleteState) {
+            [ADJUtil deleteFileWithName:kPackageQueueFilename];
+        }
+
+        [self.packageQueue removeAllObjects];
         self.packageQueue = nil;
     }
 }
 
-- (NSString *)packageQueueFilename {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filename = [path stringByAppendingPathComponent:kPackageQueueFilename];
-    return filename;
-}
-
--(void)dealloc {
-    //cleanup code
+- (void)dealloc {
+    // Cleanup code
     if (self.sendingSemaphore != nil) {
         dispatch_semaphore_signal(self.sendingSemaphore);
     }

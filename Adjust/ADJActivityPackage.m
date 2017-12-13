@@ -15,6 +15,7 @@
 
 - (NSString *)extendedString {
     NSMutableString *builder = [NSMutableString string];
+    NSArray *excludedKeys = @[@"secret_id", @"app_secret"];
 
     [builder appendFormat:@"Path:      %@\n", self.path];
     [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];
@@ -26,7 +27,12 @@
         [builder appendFormat:@"Parameters:"];
         
         for (NSUInteger i = 0; i < keyCount; i++) {
-            NSString *key = (NSString*)[sortedKeys objectAtIndex:i];
+            NSString *key = (NSString *)[sortedKeys objectAtIndex:i];
+
+            if ([excludedKeys containsObject:key]) {
+                continue;
+            }
+
             NSString *value = [self.parameters objectForKey:key];
             
             [builder appendFormat:@"\n\t\t%-22s %@", [key UTF8String], value];

@@ -151,6 +151,30 @@
 @property (nonatomic, copy, nullable) NSString *userAgent;
 
 /**
+ * @brief Set if the device is known.
+ */
+@property (nonatomic, assign) BOOL isDeviceKnown;
+
+/**
+ * @brief Adjust app secret id.
+ */
+@property (nonatomic, copy, readonly, nullable) NSString *secretId;
+
+/**
+ * @brief Adjust app secret.
+ */
+@property (nonatomic, copy, readonly, nullable) NSString *appSecret;
+
+/**
+ * @brief Adjust set app secret.
+ */
+- (void)setAppSecret:(NSUInteger)secretId
+               info1:(NSUInteger)info1
+               info2:(NSUInteger)info2
+               info3:(NSUInteger)info3
+               info4:(NSUInteger)info4;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can

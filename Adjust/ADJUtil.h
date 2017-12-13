@@ -19,7 +19,9 @@ typedef void (^selfInjectedBlock)(id);
 
 @interface ADJUtil : NSObject
 
-+ (id)readObject:(NSString *)filename
++ (void)teardown;
+
++ (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
            class:(Class)classToRead;
 
@@ -32,7 +34,7 @@ typedef void (^selfInjectedBlock)(id);
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config;
 
 + (void)writeObject:(id)object
-           filename:(NSString *)filename
+           fileName:(NSString *)fileName
          objectName:(NSString *)objectName;
 
 + (void)launchInMainThread:(NSObject *)receiver
@@ -43,16 +45,10 @@ typedef void (^selfInjectedBlock)(id);
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
 
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
-
-+ (void)sendRequest:(NSMutableURLRequest *)request
- prefixErrorMessage:(NSString *)prefixErrorMessage
- suffixErrorMessage:(NSString *)suffixErrorMessage
-    activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
++ (void)sendGetRequest:(NSURL *)baseUrl
+    prefixErrorMessage:(NSString *)prefixErrorMessage
+       activityPackage:(ADJActivityPackage *)activityPackage
+   responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
 
 + (void)sendPostRequest:(NSURL *)baseUrl
               queueSize:(NSUInteger)queueSize
@@ -79,15 +75,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (NSString *)queryString:(NSDictionary *)parameters;
 
-+ (NSString *)getFullFilename:(NSString *)baseFilename;
-
 + (NSString *)convertDeviceToken:(NSData *)deviceToken;
 
 + (BOOL)isNull:(id)value;
 
 + (BOOL)isNotNull:(id)value;
 
-+ (BOOL)deleteFile:(NSString *)filename;
++ (BOOL)deleteFileWithName:(NSString *)filename;
 
 + (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails;
 
@@ -109,5 +103,17 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
+
++ (NSNumber *)readReachabilityFlags;
+
++ (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage;
+
+#if !TARGET_OS_TV
++ (NSString *)readMCC;
+
++ (NSString *)readMNC;
+
++ (NSString *)readCurrentRadioAccessTechnology;
+#endif
 
 @end

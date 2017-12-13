@@ -12,6 +12,12 @@
 #import "ADJUtil.h"
 #import "ADJSystemProfile.h"
 #import "NSData+ADJAdditions.h"
+#import "ADJReachability.h"
+
+#if !TARGET_OS_TV
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#endif
 
 @implementation ADJDeviceInfo
 
@@ -44,7 +50,7 @@
     self.machineModel     = [ADJSystemProfile machineModel];
     self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
     self.osBuild          = [ADJSystemProfile osVersion];
-
+    
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;
     } else {
@@ -71,6 +77,7 @@
     } @catch (NSException *exception) {
     }
 }
+
 /*
 -(id)copyWithZone:(NSZone *)zone
 {

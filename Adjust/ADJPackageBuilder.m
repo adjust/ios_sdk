@@ -12,6 +12,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "NSData+ADJAdditions.h"
+#import "UIDevice+ADJAdditions.h"
 
 @interface ADJPackageBuilder()
 
@@ -23,6 +24,8 @@
 
 @property (nonatomic, copy) ADJActivityState *activityState;
 
+@property (nonatomic, weak) ADJSessionParameters *sessionParameters;
+
 @end
 
 @implementation ADJPackageBuilder
@@ -32,6 +35,7 @@
 - (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
+       sessionParameters:(ADJSessionParameters *)sessionParameters
                createdAt:(double)createdAt {
     self = [super init];
 
@@ -43,20 +47,16 @@
     self.deviceInfo = deviceInfo;
     self.adjustConfig = adjustConfig;
     self.activityState = activityState;
+    self.sessionParameters = sessionParameters;
 
     return self;
 }
 
 #pragma mark - Public methods
 
-- (ADJActivityPackage *)buildSessionPackage:(ADJSessionParameters *)sessionParameters
-                                  isInDelay:(BOOL)isInDelay {
+- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay {
     NSMutableDictionary *parameters;
-    if (!isInDelay) {
-        parameters = [self attributableParameters:sessionParameters];
-    } else {
-        parameters = [self attributableParameters:nil];
-    }
+    parameters = [self attributableParameters:isInDelay];
 
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
@@ -68,7 +68,6 @@
 }
 
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
-                        sessionParameters:(ADJSessionParameters *)sessionParameters
                                 isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
@@ -78,10 +77,10 @@
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
 
     if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
+        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.sessionParameters.callbackParameters
                                                                    source:event.callbackParameters
                                                             parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
+        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:self.sessionParameters.partnerParameters
                                                                   source:event.partnerParameters
                                                            parameterName:@"Partner"];
 
@@ -116,10 +115,9 @@
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
-                        sessionParameters:(ADJSessionParameters *)sessionParameters
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 {
-    NSMutableDictionary *parameters = [self attributableParameters:sessionParameters];
+    NSMutableDictionary *parameters = [self attributableParameters:NO];
 
     [ADJPackageBuilder parameters:parameters setString:clickSource forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
@@ -193,7 +191,7 @@
     return parameters;
 }
 
-- (NSMutableDictionary *)attributableParameters:(ADJSessionParameters *)sessionParameters {
+- (NSMutableDictionary *)attributableParameters:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self defaultParameters];
 
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
@@ -201,9 +199,9 @@
     [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
 
-    if (sessionParameters != nil) {
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.callbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:sessionParameters.partnerParameters forKey:@"partner_params"];
+    if (!isInDelay) {
+        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.callbackParameters forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
     }
 
     return parameters;
@@ -227,7 +225,7 @@
 }
 
 - (void)injectDeviceInfoIds:(ADJDeviceInfo *)deviceInfo intoParameters:(NSMutableDictionary *)parameters {
-    [ADJPackageBuilder parameters:parameters setString:deviceInfo.idForAdvertisers forKey:@"idfa"];
+    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.vendorId forKey:@"idfv"];
 }
 
@@ -249,12 +247,23 @@
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.cpuSubtype forKey:@"cpu_type"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:deviceInfo.osBuild forKey:@"os_build"];
+    [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"connectivity_type"];
+#if !TARGET_OS_TV
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
+#endif
 }
 
 - (void)injectConfig:(ADJConfig *)adjustConfig intoParameters:(NSMutableDictionary *) parameters {
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (adjustConfig.isDeviceKnown) {
+        [ADJPackageBuilder parameters:parameters setBool:adjustConfig.isDeviceKnown forKey:@"device_known"];
+    }
+    [ADJPackageBuilder parameters:parameters setString:adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setString:adjustConfig.appSecret forKey:@"app_secret"];
 }
 
 - (void)injectActivityState:(ADJActivityState *)activityState intoParamters:(NSMutableDictionary *)parameters {
@@ -399,6 +408,14 @@
     NSString *numberString = [NSString stringWithFormat:@"%.5f", [value doubleValue]];
 
     [ADJPackageBuilder parameters:parameters setString:numberString forKey:key];
+}
+
++ (void)parameters:(NSMutableDictionary *)parameters setNumberInt:(NSNumber *)value forKey:(NSString *)key {
+    if (value == nil) {
+        return;
+    }
+
+    [ADJPackageBuilder parameters:parameters setInt:[value intValue] forKey:key];
 }
 
 @end

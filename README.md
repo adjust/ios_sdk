@@ -8,9 +8,8 @@ If your app is an app which uses web views you would like to use adjust tracking
 
 * [Example apps](#example-apps)
 * [Basic integration](#basic-integration)
-   * [Get the SDK](#sdk-get)
    * [Add the SDK to your project](#sdk-add)
-   * [Add the AdSupport and iAd framework](#sdk-frameworks)
+   * [Add iOS frameworks](#sdk-frameworks)
    * [Integrate the SDK into your app](#sdk-integrate)
    * [Basic setup](#basic-setup)
    * [Adjust logging](#adjust-logging)
@@ -62,35 +61,21 @@ There are example apps inside the [`examples` directory][examples] for [`iOS (Ob
 
 We will describe the steps to integrate the adjust SDK into your iOS project. We are going to assume that you are using Xcode for your iOS development.
 
-### <a id="sdk-get"></a>Get the SDK
-
-Download the latest adjust SDK version from our [releases page][releases]. Extract the archive into a directory of your choice.
-
-### <a id="sdk-add">Add the SDK to your project
-
-You can add the adjust SDK by adding all of it's source files direcly into your app. In Xcode's Project Navigator locate the `Supporting Files` group (or any other group of your choice). From Finder, drag the `Adjust` subdirectory into Xcode's `Supporting Files` group.
-
-![][drag]
-
-In the dialog `Choose options for adding these files` make sure to check the checkbox for `Copy items if needed` and select the radio button to `Create groups`.
-
-![][add]
-
---
+### <a id="sdk-add"></a>Add the SDK to your project
 
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.11.5'
+pod 'Adjust', '~> 4.12.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.11.5'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.12.0'
 ```
 
---
+---
 
 If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue from
 [this step](#sdk-frameworks):
@@ -99,38 +84,29 @@ If you're using [Carthage][carthage], you can add following line to your `Cartfi
 github "adjust/ios_sdk"
 ```
 
---
+---
 
 You can also choose to integrate the adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the following archives:
 
 * `AdjustSdkStatic.framework.zip`
 * `AdjustSdkDynamic.framework.zip`
-* `AdjustSdkDynamicWithoutSimulator.framework.zip`
 * `AdjustSdkTv.framework.zip`
 
 Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
 
-If you want to use dynamic framework without architectures used for simulator (`x86_64` and `i386`), you can use SDK inside `AdjustSdkDynamicWithoutSimulator.framework.zip` archive.
-
 If you are having `tvOS` app, you can use the adjust SDK with it as well with usage of our tvOS framework which you can extract from `AdjustSdkTv.framework.zip` archive.
 
-If you have chosen one of these ways to integrate the adjust SDK, you may continue from [this step](#sdk-frameworks). If you want to add the adjust SDK by adding its source files to your project, you can continue from [this step](#sdk-get).
+### <a id="sdk-frameworks"></a>Add iOS frameworks
 
-### <a id="sdk-frameworks"></a>Add the AdSupport and iAd framework
-
-Select your project in the Project Navigator. In the left hand side of the main view, select your target. In the tab `Build Phases`, expand the group `Link Binary with Libraries`. On the bottom of that section click on the `+` button. Select the `AdSupport.framework` and click the `Add` button. Unless you are using tvOS, repeat the same steps to add the `iAd.framework`. Change the `Status` of both frameworks to `Optional`.
-
-![][framework]
+1. Select your project in the Project Navigator
+2. In the left-hand side of the main view, select your target
+3. In the `Build Phases` tab, expand the `Link Binary with Libraries` group
+4. At the bottom of that section, select the `+` button
+5. Select the `AdSupport.framework`, then the `Add` button 
+6. Unless you are using tvOS, repeat the same steps to add the `iAd.framework` and `CoreTelephony.framework`
+7. Change the `Status` of the frameworks to `Optional`.
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
-
-If you added the adjust SDK from the source, you should use the following import statement:
-
-```objc
-#import "Adjust.h"
-```
-
---
 
 If you added the adjust SDK via a Pod repository, you should use one of the following import statements:
 
@@ -144,7 +120,7 @@ or
 #import <Adjust/Adjust.h>
 ```
 
---
+---
 
 If you added the adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement:
 
@@ -152,7 +128,7 @@ If you added the adjust SDK as a static/dynamic framework or via Carthage, you s
 #import <AdjustSdk/Adjust.h>
 ```
 
---
+---
 
 If you are are using the adjust SDK with your tvOS app, you should use the following import statement:
 
@@ -162,7 +138,7 @@ If you are are using the adjust SDK with your tvOS app, you should use the follo
 
 Next, we'll set up basic session tracking.
 
-### <a id="basic-setup">Basic setup
+### <a id="basic-setup"></a>Basic setup
 
 In the Project Navigator, open the source file of your application delegate. Add the `import` statement at the top of the file, then add the following call to `Adjust` in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate:
 
@@ -199,7 +175,7 @@ NSString *environment = ADJEnvironmentProduction;
 
 We use this environment to distinguish between real traffic and test traffic from test devices. It is very important that you keep this value meaningful at all times! This is especially important if you are tracking revenue.
 
-### <a id="adjust-logging">Adjust logging
+### <a id="adjust-logging"></a>Adjust logging
 
 You can increase or decrease the amount of logs that you see during testing by calling `setLogLevel:` on your `ADJConfig` instance with one of the following parameters:
 
@@ -232,7 +208,7 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 [Adjust appDidLaunch:adjustConfig];
 ```
 
-### <a id="build-the-app">Build your app
+### <a id="build-the-app"></a>Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches for the first time, you should see the info log `Install tracked`.
 
@@ -242,7 +218,7 @@ Build and run your app. If the build succeeds, you should carefully read the SDK
 
 Once you integrate the adjust SDK into your project, you can take advantage of the following features.
 
-### <a id="event-tracking">Event tracking
+### <a id="event-tracking"></a>Event tracking
 
 You can use adjust to track events. Lets say you want to track every tap on a particular button. You would create a new event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's `buttonDown` method you would then add the following lines to track the tap:
 
@@ -255,7 +231,7 @@ When tapping the button you should now see `Event tracked` in the logs.
 
 The event instance can be used to configure the event further before tracking it:
 
-### <a id="revenue-tracking">Revenue tracking
+### <a id="revenue-tracking"></a>Revenue tracking
 
 If your users can generate revenue by tapping on advertisements or making in-app purchases you can track those revenues with events. Lets say a tap is worth one Euro cent. You could then track the revenue event like this:
 
@@ -298,11 +274,11 @@ If you want to track in-app purchases, please make sure to call `trackEvent` aft
 }
 ```
 
-### <a id="iap-verification">In-App Purchase verification
+### <a id="iap-verification"></a>In-App Purchase verification
 
 If you want to check the validity of In-App Purchases made in your app using Purchase Verification, adjust's server side receipt verification tool, then check out our iOS purchase SDK and read more about it [here][ios-purchase-verification].
 
-### <a id="callback-parameters">Callback parameters
+### <a id="callback-parameters"></a>Callback parameters
 
 You can register a callback URL for your events in your [dashboard]. We will send a GET request to that URL whenever the event is tracked. You can add callback parameters to that event by calling `addCallbackParameter` to the event before tracking it. We will then append these parameters to your callback URL.
 
@@ -325,7 +301,7 @@ It should be mentioned that we support a variety of placeholders like `{idfa}` t
 
 You can read more about using URL callbacks, including a full list of available values, in our [callbacks guide][callbacks-guide].
 
-### <a id="partner-parameters">Partner parameters
+### <a id="partner-parameters"></a>Partner parameters
 
 You can also add parameters to be transmitted to network partners, which have been activated in youradjust dashboard.
 
@@ -342,13 +318,13 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 You can read more about special partners and these integrations in our [guide to special partners][special-partners].
 
-### <a id="session-parameters">Session parameters
+### <a id="session-parameters"></a>Session parameters
 
 Some parameters are saved to be sent in every event and session of the adjust SDK. Once you have added any of these parameters, you don't need to add them every time, since they will be saved locally. If you add the same parameter twice, there will be no effect.
 
 If you want to send session parameters with the initial install event, they must be called before the Adjust SDK launches via `[Adjust appDidLaunch:]`. If you need to send them with an install, but can only obtain the needed values after launch, it's possible to [delay](#delay-start) the first launch of the adjust SDK to allow this behavior.
 
-### <a id="session-callback-parameters"> Session callback parameters
+### <a id="session-callback-parameters"></a>Session callback parameters
 
 The same callback parameters that are registered for [events](#callback-parameters) can be also saved to be sent in every event or session of the adjust SDK.
 
@@ -372,7 +348,7 @@ If you wish to remove all key and values from the session callback parameters, y
 [Adjust resetSessionCallbackParameters];
 ```
 
-### <a id="session-partner-parameters">Session partner parameters
+### <a id="session-partner-parameters"></a>Session partner parameters
 
 In the same way that there is [session callback parameters](#session-callback-parameters) that are sent every in event or session of the adjust SDK, there is also session partner parameters.
 
@@ -398,7 +374,7 @@ If you wish to remove all key and values from the session partner parameters, yo
 [Adjust resetSessionPartnerParameters];
 ```
 
-### <a id="delay-start">Delay start
+### <a id="delay-start"></a>Delay start
 
 Delaying the start of the adjust SDK allows your app some time to obtain session parameters, such as unique identifiers, to be send on install.
 
@@ -412,7 +388,7 @@ In this case this will make the adjust SDK not send the initial install session 
 
 **The maximum delay start time of the adjust SDK is 10 seconds**.
 
-### <a id="attribution-callback">Attribution callback
+### <a id="attribution-callback"></a>Attribution callback
 
 You can register a delegate callback to be notified of tracker attribution changes. Due to the different sources considered for attribution, this information can not be provided synchronously. Follow these steps to implement the optional delegate protocol in your app delegate:
 
@@ -441,18 +417,18 @@ As the delegate callback is configured using the `ADJConfig` instance, you shoul
 
 The delegate function will be called after the SDK receives the final attribution data. Within the delegate function you have access to the `attribution` parameter. Here is a quick summary of its properties:
 
-- `NSString trackerToken` the tracker token of the current install.
-- `NSString trackerName` the tracker name of the current install.
-- `NSString network` the network grouping level of the current install.
-- `NSString campaign` the campaign grouping level of the current install.
-- `NSString adgroup` the ad group grouping level of the current install.
-- `NSString creative` the creative grouping level of the current install.
-- `NSString clickLabel` the click label of the current install.
-- `NSString adid` the unique device identifier provided by adjust.
+- `NSString trackerToken` the tracker token of the current attribution.
+- `NSString trackerName` the tracker name of the current attribution.
+- `NSString network` the network grouping level of the current attribution.
+- `NSString campaign` the campaign grouping level of the current attribution.
+- `NSString adgroup` the ad group grouping level of the current attribution.
+- `NSString creative` the creative grouping level of the current attribution.
+- `NSString clickLabel` the click label of the current attribution.
+- `NSString adid` the unique device identifier provided by attribution.
 
 If any value is unavailable, it will default to `nil`.
 
-### <a id="event-session-callbacks">Event and session callbacks
+### <a id="event-session-callbacks"></a>Event and session callbacks
 
 You can register a delegate callback to be notified of successful and failed tracked events and/or sessions. The same optional protocol `AdjustDelegate` used for the [attribution callback](#attribution-callback) is used.
 
@@ -501,7 +477,7 @@ And both event and session failed objects also contain:
 
 - `BOOL willRetry` indicates that there will be an attempt to resend the package at a later time.
 
-### <a id="disable-tracking">Disable tracking
+### <a id="disable-tracking"></a>Disable tracking
 
 You can disable the adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter `NO`. **This setting is remembered between sessions**, but it can only be activated after the first session.
 
@@ -511,7 +487,7 @@ You can disable the adjust SDK from tracking any activities of the current devic
 
 <a id="is-enabled">You can check if the adjust SDK is currently enabled by calling the function `isEnabled`. It is always possible to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `YES`.
 
-### <a id="offline-mode">Offline mode
+### <a id="offline-mode"></a>Offline mode
 
 You can put the adjust SDK in offline mode to suspend transmission to our servers while retaining tracked data to be sent later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in offline mode.
 
@@ -525,7 +501,7 @@ Conversely, you can deactivate offline mode by calling `setOfflineMode` with `NO
 
 Unlike disabling tracking, this setting is **not remembered** bettween sessions. This means that the SDK is in online mode whenever it is started, even if the app was terminated in offline mode.
 
-### <a id="event-buffering">Event buffering
+### <a id="event-buffering"></a>Event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some HTTP requests in order to send them in one batch every minute. You can enable event buffering with your `ADJConfig` instance:
 
@@ -535,7 +511,7 @@ If your app makes heavy use of event tracking, you might want to delay some HTTP
 
 If nothing is set, event buffering is **disabled by default**.
 
-### <a id="background-tracking">Background tracking
+### <a id="background-tracking"></a>Background tracking
 
 The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is in the background. You can change this in your `AdjustConfig` instance:
 
@@ -545,11 +521,11 @@ The default behaviour of the adjust SDK is to pause sending HTTP requests while 
 
 If nothing is set, sending in background is **disabled by default**.
 
-### <a id="device-ids">Device IDs
+### <a id="device-ids"></a>Device IDs
 
 The adjust SDK offers you possibility to obtain some of the device identifiers.
 
-### <a id="di-idfa">iOS Advertising Identifier
+### <a id="di-idfa"></a>iOS Advertising Identifier
 
 Certain services (such as Google Analytics) require you to coordinate device and client IDs in order to prevent duplicate reporting.
 
@@ -579,7 +555,7 @@ ADJAttribution *attribution = [Adjust attribution];
 
 **Note**: Information about current attribution is available after app installation has been tracked by the adjust backend and attribution callback has been initially triggered. From that moment on, adjust SDK has information about your user's attribution and you can access it with this method. So, **it is not possible** to access user's attribution value before the SDK has been initialised and attribution callback has been initially triggered.
 
-### <a id="push-token">Push token
+### <a id="push-token"></a>Push token
 
 To send us the push notification token, add the following call to `Adjust` in the `didRegisterForRemoteNotificationsWithDeviceToken` of your app delegate:
 
@@ -589,7 +565,9 @@ To send us the push notification token, add the following call to `Adjust` in th
 }
 ```
 
-### <a id="pre-installed-trackers">Pre-installed trackers
+Push tokens are used for the Adjust Audience Builder and client callbacks, and are required for the upcoming uninstall tracking feature.
+
+### <a id="pre-installed-trackers"></a>Pre-installed trackers
 
 If you want to use the Adjust SDK to recognize users that found your app pre-installed on their device, follow these steps.
 
@@ -612,15 +590,15 @@ If you want to use the Adjust SDK to recognize users that found your app pre-ins
     Default tracker: 'abc123'
     ```
 
-### <a id="deeplinking">Deep linking
+### <a id="deeplinking"></a>Deep linking
 
 If you are using the adjust tracker URL with an option to deep link into your app from the URL, there is the possibility to get info about the deep link URL and its content. Hitting the URL can happen when the user has your app already installed (standard deep linking scenario) or if they don't have the app on their device (deferred deep linking scenario). Both of these scenarios are supported by the adjust SDK and in both cases the deep link URL will be provided to you after you app has been started after hitting the tracker URL. In order to use this feature in your app, you need to set it up properly.
 
-### <a id="deeplinking-standard">Standard deep linking scenario
+### <a id="deeplinking-standard"></a>Standard deep linking scenario
 
 If your user already has the app installed and hits the tracker URL with deep link information in it, your application will be opened and the content of the deep link will be sent to your app so that you can parse it and decide what to do next. With introduction of iOS 9, Apple has changed the way how deep linking should be handled in the app. Depending on which scenario you want to use for your app (or if you want to use them both to support wide range of devices), you need to set up your app to handle one or both of the following scenarios.
 
-### <a id="deeplinking-setup-old"> Deep linking on iOS 8 and earlier
+### <a id="deeplinking-setup-old"></a>Deep linking on iOS 8 and earlier
 
 Deep linking on iOS 8 and earlier devices is being done with usage of a custom URL scheme setting. You need to pick a custom URL scheme name which your app will be in charge for opening. This scheme name will also be used in the adjust tracker URL as part of the `deep_link` parameter. In order to set this in your app, open your `Info.plist` file and add new `URL types` row to it. In there, as `URL identifier` write you app's bundle ID and under `URL schemes` add scheme name(s) which you want your app to handle. In the example below, we have chosen that our app should handle the `adjustExample` scheme name.
 
@@ -642,7 +620,7 @@ After this has been set up, your app will be opened after you click the adjust t
 
 With this setup, you have successfully set up deep linking handling for iOS devices with iOS 8 and earlier versions.
 
-### <a id="deeplinking-setup-new"> Deep linking on iOS 9 and later
+### <a id="deeplinking-setup-new"></a>Deep linking on iOS 9 and later
 
 In order to set deep linking support for iOS 9 and later devices, you need to enable your app to handle Apple universal links. To find out more about universal links and how their setup looks like, you can check [here][universal-links].
 
@@ -692,7 +670,7 @@ We provide a helper function that allows you to convert a universal link to an o
 }
 ```
 
-### <a id="deeplinking-deferred">Deferred deep linking scenario
+### <a id="deeplinking-deferred"></a>Deferred deep linking scenario
 
 You can register a delegate callback to be notified before a deferred deep link is opened and decide if the adjust SDK will try to open it. The same optional protocol `AdjustDelegate` used for the [attribution callback](#attribution-callback) and for [event and session callbacks](#event-session-callbacks) is used.
 
@@ -713,7 +691,7 @@ The callback function will be called after the SDK receives a deffered deep link
 
 If this callback is not implemented, **the adjust SDK will always try to open the deep link by default**.
 
-### <a id="deeplinking-reattribution">Reattribution via deep links
+### <a id="deeplinking-reattribution"></a>Reattribution via deep links
 
 Adjust enables you to run re-engagement campaigns with usage of deep links. For more information on how to do that, please check our [official docs][reattribution-with-deeplinks].
 
@@ -753,9 +731,9 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
 }
 ```
 
-## <a id="troubleshooting">Troubleshooting
+## <a id="troubleshooting"></a>Troubleshooting
 
-### <a id="ts-delayed-init">Issues with delayed SDK initialisation
+### <a id="ts-delayed-init"></a>Issues with delayed SDK initialisation
 
 As described in the [basic setup step](#basic-setup), we strongly advise you to initialise the adjust SDK in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate. It is imperative to initialise the adjust SDK in as soon as possible so that you can use all the features of the SDK.
 
@@ -809,17 +787,17 @@ For example:
 
 For all these reasons, please follow the instructions in this document and initialise the adjust SDK in the `didFinishLaunching` or `didFinishLaunchingWithOptions` method of your app delegate.
 
-### <a id="ts-arc">I'm seeing "Adjust requires ARC" error
+### <a id="ts-arc"></a>I'm seeing "Adjust requires ARC" error
 
 If your build failed with the error `Adjust requires ARC`, it looks like your project is not using [ARC][arc]. In that case we recommend [transitioning your project][transition] so that it does use ARC. If you don't want to use ARC, you have to enable ARC for all source files of adjust in the target's Build Phases:
 
 Expand the `Compile Sources` group, select all adjust files and change the `Compiler Flags` to `-fobjc-arc` (Select all and press the `Return` key to change all at once).
 
-### <a id="ts-categories">I'm seeing "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
+### <a id="ts-categories"></a>I'm seeing "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" error
 
 This error can occur when you are adding the adjust SDK framework to your app. The adjust SDK contains `categories` among it's source files and for this reason, if you have chosen this SDK integration approach, you need to add `-ObjC` flags to `Other Linker Flags` in your Xcode project settings. Adding this flag will fix this error.
 
-### <a id="ts-session-failed">I'm seeing the "Session failed (Ignoring too frequent session.)" error
+### <a id="ts-session-failed"></a>I'm seeing the "Session failed (Ignoring too frequent session.)" error
 
 This error typically occurs when testing installs. Uninstalling and reinstalling the app is not enough to trigger a new install. The servers will determine that the SDK has lost its locally aggregated session data and ignore the erroneous message, given the information available on the servers about the device.
 
@@ -843,7 +821,7 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 
 When the device is forgotten, the link just returns `Forgot device`. If the device was already forgotten or the values were incorrect, the link returns `Device not found`.
 
-### <a id="ts-install-tracked">I'm not seeing "Install tracked" in the logs
+### <a id="ts-install-tracked"></a>I'm not seeing "Install tracked" in the logs
 
 If you want to simulate the installation scenario of your app on your test device, it is not enough if you just re-run the app from the Xcode on your test device. Re-running the app from the Xcode doesn't cause app data to be wiped out and all internal files that our SDK is keeping inside your app will still be there, so upon re-run, our SDK will see those files and think of your app was already installed (and that SDK was already launched in it) but just opened for another time rather than being opened for the first time.
 
@@ -853,7 +831,7 @@ In order to run the app installation scenario, you need to do following:
 * Forget your test device from the adjust backend like explained in the issue [above](#forget-device)
 * Run your app from the Xcode on the test device and you will see log message "Install tracked"
 
-### <a id="ts-iad-sdk-click">I'm seeing the "Unattributable SDK click ignored" message
+### <a id="ts-iad-sdk-click"></a>I'm seeing the "Unattributable SDK click ignored" message
 
 You may notice this message while testing your app in `sandbox` envoronment. It is related to some changes Apple introduced in `iAd.framework` version 3. With this, a user can be directed to your app from a click on iAd banner and this will cause our SDK to send an `sdk_click` package to the adjust backend informing it about the content of the clicked URL. For some reason, Apple decided that if the app was opened without clicking on iAd banner, they will artificially generate an iAd banner URL click with some random values. Our SDK won't be able to distinguish if the iAd banner click was genuine or artificially generated and will send an `sdk_click` package regardless to the adjust backend. If you have your log level set to `verbose` level, you will see this `sdk_click` package looking something like this:
 
@@ -881,7 +859,7 @@ If for some reason this `sdk_click` would be accepted, it would mean that a user
 
 So, this message doesn't indicate any issue with your SDK integration but it's simply informing you that our backend has ignored this artificially created `sdk_click` which could have lead to your user being wrongly attributed/reattributed.
 
-### <a id="ts-wrong-revenue-amount">I'm seeing incorrect revenue data in the adjust dashboard
+### <a id="ts-wrong-revenue-amount"></a>I'm seeing incorrect revenue data in the adjust dashboard
 
 The adjust SDK tracks what you tell it to track. If you are attaching revenue to your event, the number you write as an amount is the only amount which will reach the adjust backend and be displayed in the dashboard. Our SDK does not manipulate your amount value, nor does our backend. So, if you see wrong amount being tracked, it's because our SDK was told to track that amount.
 
@@ -942,7 +920,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
 [example-ios-swift]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
-[ios-web-views-guide]:  https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
+[ios-web-views-guide]:  doc/english/web_views.md
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 
 [universal-links-guide]:      https://docs.adjust.com/en/universal-links/
@@ -968,7 +946,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 [associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 
-## <a id="license">License
+## <a id="license"></a>License
 
 The adjust SDK is licensed under the MIT License.
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC85181F27950000D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85171F2794F800D6A0ED /* ADJReachability.m */; };
 		9D449FA31E6EE72000E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */; };
 		9D449FA41E6EE72000E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F641E6EE72000E7E80B /* ADJActivityKind.m */; };
 		9D449FA51E6EE72000E7E80B /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F661E6EE72000E7E80B /* ADJActivityPackage.m */; };
@@ -39,6 +40,7 @@
 		9D449FC11E6EE72000E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F9F1E6EE72000E7E80B /* Adjust.m */; };
 		9D449FC21E6EE72000E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449FA11E6EE72000E7E80B /* ADJUtil.m */; };
 		9D449FC31E6EE72000E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449FA21E6EE72000E7E80B /* Info.plist */; };
+		9DD0E9C71F45949600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C61F45949600B2A759 /* ADJUserDefaults.m */; };
 		9DF7AC191CB4FEDB00D3591F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC181CB4FEDB00D3591F /* main.m */; };
 		9DF7AC1C1CB4FEDB00D3591F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1B1CB4FEDB00D3591F /* AppDelegate.m */; };
 		9DF7AC1F1CB4FEDB00D3591F /* ViewControllerWatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1E1CB4FEDB00D3591F /* ViewControllerWatch.m */; };
@@ -104,6 +106,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FCC85161F2794F800D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
+		6FCC85171F2794F800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		9D449F611E6EE72000E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D449F631E6EE72000E7E80B /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 		9D449FA01E6EE72000E7E80B /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		9D449FA11E6EE72000E7E80B /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
 		9D449FA21E6EE72000E7E80B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9DD0E9C51F45949600B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
+		9DD0E9C61F45949600B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DF7AC141CB4FEDB00D3591F /* AdjustExample-iWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iWatch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7AC181CB4FEDB00D3591F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9DF7AC1A1CB4FEDB00D3591F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -225,6 +231,7 @@
 		9D449F601E6EE72000E7E80B /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9D449F691E6EE72000E7E80B /* ADJAdditions */,
 				9D449F611E6EE72000E7E80B /* ADJActivityHandler.h */,
 				9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */,
 				9D449F631E6EE72000E7E80B /* ADJActivityKind.h */,
@@ -233,7 +240,6 @@
 				9D449F661E6EE72000E7E80B /* ADJActivityPackage.m */,
 				9D449F671E6EE72000E7E80B /* ADJActivityState.h */,
 				9D449F681E6EE72000E7E80B /* ADJActivityState.m */,
-				9D449F691E6EE72000E7E80B /* ADJAdditions */,
 				9D449F701E6EE72000E7E80B /* ADJAdjustFactory.h */,
 				9D449F711E6EE72000E7E80B /* ADJAdjustFactory.m */,
 				9D449F721E6EE72000E7E80B /* ADJAttribution.h */,
@@ -282,6 +288,10 @@
 				9D449F9F1E6EE72000E7E80B /* Adjust.m */,
 				9D449FA01E6EE72000E7E80B /* ADJUtil.h */,
 				9D449FA11E6EE72000E7E80B /* ADJUtil.m */,
+				6FCC85161F2794F800D6A0ED /* ADJReachability.h */,
+				6FCC85171F2794F800D6A0ED /* ADJReachability.m */,
+				9DD0E9C51F45949600B2A759 /* ADJUserDefaults.h */,
+				9DD0E9C61F45949600B2A759 /* ADJUserDefaults.m */,
 				9D449FA21E6EE72000E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -450,7 +460,7 @@
 		9DF7AC0C1CB4FEDB00D3591F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9DF7AC131CB4FEDB00D3591F = {
@@ -459,9 +469,11 @@
 					};
 					9DF7AC2A1CB4FEDB00D3591F = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = QGUGW9AUMK;
 					};
 					9DF7AC391CB4FEDB00D3591F = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = QGUGW9AUMK;
 					};
 				};
 			};
@@ -527,6 +539,7 @@
 				9D449FB31E6EE72000E7E80B /* ADJEventSuccess.m in Sources */,
 				9D449FBF1E6EE72000E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449FAB1E6EE72000E7E80B /* ADJAttribution.m in Sources */,
+				6FCC85181F27950000D6A0ED /* ADJReachability.m in Sources */,
 				9D449FA61E6EE72000E7E80B /* ADJActivityState.m in Sources */,
 				9DF7ACB81CB4FF6400D3591F /* AdjustTrackingHelper.m in Sources */,
 				9DF7AC1F1CB4FEDB00D3591F /* ViewControllerWatch.m in Sources */,
@@ -554,6 +567,7 @@
 				9D449FB51E6EE72000E7E80B /* ADJLogger.m in Sources */,
 				9D449FB91E6EE72000E7E80B /* ADJResponseData.m in Sources */,
 				9D449FB71E6EE72000E7E80B /* ADJPackageHandler.m in Sources */,
+				9DD0E9C71F45949600B2A759 /* ADJUserDefaults.m in Sources */,
 				9D449FA71E6EE72000E7E80B /* NSData+ADJAdditions.m in Sources */,
 				9D449FC11E6EE72000E7E80B /* Adjust.m in Sources */,
 				9D449FA51E6EE72000E7E80B /* ADJActivityPackage.m in Sources */,
@@ -623,14 +637,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -670,14 +690,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -705,6 +731,7 @@
 		9DF7AC4B1CB4FEDB00D3591F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				INFOPLIST_FILE = "AdjustExample-iWatch WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
@@ -720,6 +747,7 @@
 		9DF7AC4C1CB4FEDB00D3591F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				INFOPLIST_FILE = "AdjustExample-iWatch WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
@@ -736,6 +764,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				IBSC_MODULE = AdjustExample_iWatch_WatchKit_Extension;
 				INFOPLIST_FILE = "AdjustExample-iWatch WatchKit App/Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
@@ -752,6 +781,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				IBSC_MODULE = AdjustExample_iWatch_WatchKit_Extension;
 				INFOPLIST_FILE = "AdjustExample-iWatch WatchKit App/Info.plist";
 				OTHER_LDFLAGS = "-ObjC";

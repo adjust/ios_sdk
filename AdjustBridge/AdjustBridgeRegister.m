@@ -58,7 +58,7 @@ static NSString * const kHandlerPrefix = @"adjust_";
 
 @interface AdjustWKBridgeRegister()
 
-@property (nonatomic, strong) WKWebViewJavascriptBridge *wkBridge;
+@property (nonatomic, strong) WebViewJavascriptBridge *wkBridge;
 
 @end
 
@@ -75,7 +75,7 @@ static NSString * const kHandlerPrefix = @"adjust_";
         return nil;
     }
 
-    self.wkBridge = [WKWebViewJavascriptBridge bridgeForWebView:wkWebView];
+    self.wkBridge = [WebViewJavascriptBridge bridgeForWebView:wkWebView];
 
     return self;
 }

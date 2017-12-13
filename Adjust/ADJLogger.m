@@ -105,7 +105,7 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     }
 }
 
-+ (ADJLogLevel)LogLevelFromString:(NSString *)logLevelString {
++ (ADJLogLevel)logLevelFromString:(NSString *)logLevelString {
     if ([logLevelString isEqualToString:@"verbose"])
         return ADJLogLevelVerbose;
 
@@ -123,6 +123,9 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
 
     if ([logLevelString isEqualToString:@"assert"])
         return ADJLogLevelAssert;
+
+    if ([logLevelString isEqualToString:@"suppress"])
+        return ADJLogLevelSuppress;
 
     // default value if string does not match
     return ADJLogLevelInfo;

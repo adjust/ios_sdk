@@ -22,10 +22,9 @@
                                             startsSending:(BOOL)startsSending;
 + (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
-                     sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                        deviceToken:(NSData*)deviceToken;
-+ (id<ADJSdkClickHandler>)sdkClickHandlerWithStartsPaused:(id<ADJActivityHandler>)activityHandler
-                                            startsSending:(BOOL)startsSending;
+                     savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
++ (id<ADJSdkClickHandler>)sdkClickHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
+                                              startsSending:(BOOL)startsSending;
 
 + (id<ADJLogger>)logger;
 + (double)sessionInterval;

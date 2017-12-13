@@ -2,9 +2,9 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.11.5
-//  Created by Christian Wellenbrock on 2012-07-23.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  V4.12.0
+//  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
+//  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
 
 #import "ADJEvent.h"
@@ -193,7 +193,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)resetSessionPartnerParameters;
 
 /**
- * Obtain singleton Adjust object
+ * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
 

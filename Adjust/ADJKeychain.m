@@ -169,7 +169,7 @@
     NSString *writtenValue;
 
     writtenValue = [self valueForKeychainKeyV1:key service:service];
-
+    
     if ([writtenValue isEqualToString:value]) {
         return YES;
     } else {

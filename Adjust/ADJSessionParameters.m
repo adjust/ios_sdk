@@ -10,6 +10,16 @@
 
 @implementation ADJSessionParameters
 
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+
+    if (self == nil) {
+        return nil;
+    }
+
+    return self;
+}
+
 #pragma mark - NSCopying
 -(id)copyWithZone:(NSZone *)zone
 {

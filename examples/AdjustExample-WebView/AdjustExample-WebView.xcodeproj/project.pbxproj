@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85111F2794D600D6A0ED /* ADJReachability.m */; };
 		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
 		9D1082AF1CFDAF8E0050568B /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */; };
@@ -61,9 +62,12 @@
 		9D75F19C1D07463800E5D222 /* adjust_event.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1931D07463800E5D222 /* adjust_event.js */; };
 		9D75F19D1D07463800E5D222 /* adjust_config.js in Resources */ = {isa = PBXBuildFile; fileRef = 9D75F1941D07463800E5D222 /* adjust_config.js */; };
 		9D9A99DA1D0B699A0022FFCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9A99D91D0B699A0022FFCE /* AppDelegate.m */; };
+		9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FCC85101F2794D600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
+		6FCC85111F2794D600D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +164,8 @@
 		9D75F1941D07463800E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
 		9D9A99D81D0B699A0022FFCE /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9A99D91D0B699A0022FFCE /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
+		9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +246,7 @@
 		9D449E971E6EDD4100E7E80B /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9D449EA01E6EDD4100E7E80B /* ADJAdditions */,
 				9D449E981E6EDD4100E7E80B /* ADJActivityHandler.h */,
 				9D449E991E6EDD4100E7E80B /* ADJActivityHandler.m */,
 				9D449E9A1E6EDD4100E7E80B /* ADJActivityKind.h */,
@@ -248,7 +255,6 @@
 				9D449E9D1E6EDD4100E7E80B /* ADJActivityPackage.m */,
 				9D449E9E1E6EDD4100E7E80B /* ADJActivityState.h */,
 				9D449E9F1E6EDD4100E7E80B /* ADJActivityState.m */,
-				9D449EA01E6EDD4100E7E80B /* ADJAdditions */,
 				9D449EA71E6EDD4100E7E80B /* ADJAdjustFactory.h */,
 				9D449EA81E6EDD4100E7E80B /* ADJAdjustFactory.m */,
 				9D449EA91E6EDD4100E7E80B /* ADJAttribution.h */,
@@ -297,6 +303,10 @@
 				9D449ED61E6EDD4100E7E80B /* Adjust.m */,
 				9D449ED71E6EDD4100E7E80B /* ADJUtil.h */,
 				9D449ED81E6EDD4100E7E80B /* ADJUtil.m */,
+				6FCC85101F2794D600D6A0ED /* ADJReachability.h */,
+				6FCC85111F2794D600D6A0ED /* ADJReachability.m */,
+				9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */,
+				9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */,
 				9D449ED91E6EDD4100E7E80B /* Info.plist */,
 			);
 			name = Adjust;
@@ -373,7 +383,7 @@
 		9D10829C1CFDAF8E0050568B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9D1082A31CFDAF8E0050568B = {
@@ -438,6 +448,8 @@
 				9D449EE01E6EDD4100E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */,
 				9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */,
+				9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */,
+				6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */,
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,
 				9D10833D1CFDD8F00050568B /* WKWebViewController.m in Sources */,
 				9D449EE51E6EDD4100E7E80B /* ADJConfig.m in Sources */,
@@ -478,14 +490,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -525,14 +543,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

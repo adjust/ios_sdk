@@ -21,6 +21,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
 #import "ADJSessionParameters.h"
+#import "ADJUserDefaults.h"
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
@@ -57,13 +58,26 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 - (BOOL)isDisabled { return !self.enabled; }
 - (BOOL)isOffline { return self.offline; }
 - (BOOL)isOnline { return !self.offline; }
-- (BOOL)isBackground { return self.background; }
-- (BOOL)isForeground { return !self.background; }
-- (BOOL)isDelayStart { return self.delayStart; }
-- (BOOL)isToStartNow { return !self.delayStart; }
-- (BOOL)isToUpdatePackages { return self.updatePackages; }
+- (BOOL)isInBackground { return self.background; }
+- (BOOL)isInForeground { return !self.background; }
+- (BOOL)isInDelayedStart { return self.delayStart; }
+- (BOOL)isNotInDelayedStart { return !self.delayStart; }
+- (BOOL)itHasToUpdatePackages { return self.updatePackages; }
 - (BOOL)isFirstLaunch { return self.firstLaunch; }
-- (BOOL)hasSessionResponseNotProcessed { return !self.sessionResponseProcessed; }
+- (BOOL)hasSessionResponseNotBeenProcessed { return !self.sessionResponseProcessed; }
+
+@end
+
+@implementation ADJSavedPreLaunch
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    // online by default
+    self.offline = NO;
+    return self;
+}
 
 @end
 
@@ -102,17 +116,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 @synthesize attribution = _attribution;
 
 + (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-             sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-                                deviceToken:(NSData*)deviceToken
+                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
 {
     return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
-                       sessionParametersActionsArray:sessionParametersActionsArray
-                                          deviceToken:deviceToken];
+                                       savedPreLaunch:savedPreLaunch];
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
-         deviceToken:(NSData*)deviceToken
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
 {
     self = [super init];
     if (self == nil) return nil;
@@ -144,15 +155,21 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     self.internalState = [[ADJInternalState alloc] init];
 
-    // enabled by default
-    if (self.activityState == nil) {
-        self.internalState.enabled = YES;
-    } else {
-        self.internalState.enabled = self.activityState.enabled;
+    if (savedPreLaunch.enabled != nil) {
+        if (savedPreLaunch.preLaunchActionsArray == nil) {
+            savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
+        }
+
+        BOOL newEnabled = [savedPreLaunch.enabled boolValue];
+        [savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
+            [activityHandler setEnabledI:activityHandler enabled:newEnabled];
+        }];
     }
 
-    // online by default
-    self.internalState.offline = NO;
+    // check if SDK is enabled/disabled
+    self.internalState.enabled = savedPreLaunch.enabled != nil ? [savedPreLaunch.enabled boolValue] : YES;
+    // reads offline mode from pre launch
+    self.internalState.offline = savedPreLaunch.offline;
     // in the background by default
     self.internalState.background = YES;
     // delay start not configured by default
@@ -170,15 +187,19 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
-    self.deviceTokenData = deviceToken;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI initI:selfI
-        sessionParametersActionsArray:sessionParametersActionsArray];
+        preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
+
+    // self.deviceTokenData = savedPreLaunch.deviceTokenData;
+    if (self.activityState != nil) {
+        [self setDeviceToken:[ADJUserDefaults getPushToken]];
+    }
 
     [self addNotificationObserver];
 
@@ -284,62 +305,19 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    // compare with the saved or internal state
-    if (![self hasChangedState:[self isEnabled]
-                     nextState:enabled
-                   trueMessage:@"Adjust already enabled"
-                  falseMessage:@"Adjust already disabled"])
-    {
-        return;
-    }
-
-    // save new enabled state in internal state
-    self.internalState.enabled = enabled;
-
-    if (self.activityState == nil) {
-        [self updateState:!enabled
-           pausingMessage:@"Handlers will start as paused due to the SDK being disabled"
-     remainsPausedMessage:@"Handlers will still start as paused"
-         unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
-        return;
-    }
-
-    // save new enabled state in activity state
-    [self writeActivityStateS:self changesInStateBlock:^{
-        self.activityState.enabled = enabled;
-    }];
-
-    [self updateState:!enabled
-       pausingMessage:@"Pausing handlers due to SDK being disabled"
- remainsPausedMessage:@"Handlers remain paused"
-     unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setEnabledI:selfI enabled:enabled];
+                     }];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    // compare with the internal state
-    if (![self hasChangedState:[self.internalState isOffline]
-                     nextState:offline
-                   trueMessage:@"Adjust already in offline mode"
-                  falseMessage:@"Adjust already in online mode"])
-    {
-        return;
-    }
-
-    // save new offline state in internal state
-    self.internalState.offline = offline;
-
-    if (self.activityState == nil) {
-        [self updateState:offline
-           pausingMessage:@"Handlers will start paused due to SDK being offline"
-     remainsPausedMessage:@"Handlers will still start as paused"
-         unPausingMessage:@"Handlers will start as active due to SDK being online"];
-        return;
-    }
-
-    [self updateState:offline
-       pausingMessage:@"Pausing handlers to put SDK offline mode"
- remainsPausedMessage:@"Handlers remain paused"
-     unPausingMessage:@"Resuming handlers to put SDK in online mode"];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setOfflineModeI:selfI offline:offline];
+                     }];
 }
 
 - (BOOL)isEnabled {
@@ -351,50 +329,6 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         return nil;
     }
     return self.activityState.adid;
-}
-
-- (BOOL)hasChangedState:(BOOL)previousState
-              nextState:(BOOL)nextState
-            trueMessage:(NSString *)trueMessage
-           falseMessage:(NSString *)falseMessage
-{
-    if (previousState != nextState) {
-        return YES;
-    }
-
-    if (previousState) {
-        [self.logger debug:trueMessage];
-    } else {
-        [self.logger debug:falseMessage];
-    }
-
-    return NO;
-}
-
-- (void)updateState:(BOOL)pausingState
-     pausingMessage:(NSString *)pausingMessage
-remainsPausedMessage:(NSString *)remainsPausedMessage
-   unPausingMessage:(NSString *)unPausingMessage
-{
-    // it is changing from an active state to a pause state
-    if (pausingState) {
-        [self.logger info:pausingMessage];
-    }
-    // check if it's remaining in a pause state
-    else if ([self pausedI:self sdkClickHandlerOnly:NO]) {
-        // including the sdk click handler
-        if ([self pausedI:self sdkClickHandlerOnly:YES]) {
-            [self.logger info:remainsPausedMessage];
-        } else {
-            // or except it
-            [self.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
-        }
-    } else {
-        // it is changing from a pause state to an active state
-        [self.logger info:unPausingMessage];
-    }
-
-    [self updateHandlersStatusAndSend];
 }
 
 - (void)appWillOpenUrl:(NSURL*)url {
@@ -410,16 +344,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI setDeviceTokenI:selfI deviceToken:deviceToken];
-                     }];
-}
-
-- (void)setIadDate:(NSDate *)iAdImpressionDate
-   withPurchaseDate:(NSDate *)appPurchaseDate
-{
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI setIadDateI:selfI iAdImpressionDate:iAdImpressionDate withPurchaseDate:appPurchaseDate];
                      }];
 }
 
@@ -485,6 +409,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
           attributionDetails:(NSDictionary *)attributionDetails
  {
+     if (![selfI isEnabledI:selfI]) {
+         return;
+     }
+
      double now = [NSDate.date timeIntervalSince1970];
      if (selfI.activityState != nil) {
          double lastInterval = now - selfI.activityState.lastActivity;
@@ -494,11 +422,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                         initWithDeviceInfo:selfI.deviceInfo
                                         activityState:selfI.activityState
                                         config:selfI.adjustConfig
+                                        sessionParameters:self.sessionParameters
                                         createdAt:now];
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3" sessionParameters:selfI.sessionParameters];
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -511,16 +440,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
-    [self writeActivityStateS:self changesInStateBlock:^{
-        self.activityState.askingAttribution = askingAttribution;
-    }];
-}
-
-- (void)updateHandlersStatusAndSend {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI updateHandlersStatusAndSendI:selfI];
+                         [selfI setAskingAttributionI:selfI
+                                   askingAttribution:askingAttribution];
                      }];
 }
 
@@ -624,6 +548,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self teardownAttributionS:deleteState];
     [self teardownAllSessionParametersS:deleteState];
 
+    if (deleteState) {
+        [ADJUserDefaults clearAdjustStuff];
+    }
+
+    [ADJUtil teardown];
+
     self.internalQueue = nil;
     self.packageHandler = nil;
     self.attributionHandler = nil;
@@ -640,7 +570,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
-sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -669,6 +599,12 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         [selfI.logger info:@"Push token: '%@'", selfI.deviceTokenData];
         if (selfI.activityState != nil) {
             [selfI setDeviceToken:selfI.deviceTokenData];
+        }
+    } else {
+        if (selfI.activityState != nil) {
+            NSData *deviceToken = [ADJUserDefaults getPushToken];
+
+            [selfI setDeviceToken:deviceToken];
         }
     }
 
@@ -705,7 +641,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                                                          sdkClickHandlerOnly:NO]];
 
     // update session parameters in package queue
-    if ([selfI isToUpdatePackagesI:selfI]) {
+    if ([selfI itHasToUpdatePackagesI:selfI]) {
         [selfI updatePackagesI:selfI];
      }
 
@@ -714,6 +650,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                              initWithDeviceInfo:selfI.deviceInfo
                                              activityState:selfI.activityState
                                              config:selfI.adjustConfig
+                                             sessionParameters:selfI.sessionParameters
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
@@ -721,13 +658,13 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                                                         startsSending:[selfI toSendI:selfI
                                                                                  sdkClickHandlerOnly:NO]];
 
-    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerWithStartsPaused:selfI
-                                                                startsSending:[selfI toSendI:selfI
-                                                                        sdkClickHandlerOnly:YES]];
+    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerForActivityHandler:selfI
+                                                                  startsSending:[selfI toSendI:selfI
+                                                                           sdkClickHandlerOnly:YES]];
 
     [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
 
-    [selfI sessionParametersActionsI:selfI sessionParametersActionsArray:sessionParametersActionsArray];
+    [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
     [selfI startI:selfI];
 }
@@ -752,14 +689,23 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     // very first session
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
-        selfI.activityState.sessionCount = 1; // this is the first session
-        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
 
-        [selfI transferSessionPackageI:selfI now:now];
+        // selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
+        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:[ADJUserDefaults getPushToken]];
+
+        // track the first session package only if it's enabled
+        if ([selfI.internalState isEnabled]) {
+            selfI.activityState.sessionCount = 1; // this is the first session
+            [selfI transferSessionPackageI:selfI now:now];
+        }
+
         [selfI.activityState resetSessionAttributes:now];
         selfI.activityState.enabled = [selfI.internalState isEnabled];
-        selfI.activityState.updatePackages = [selfI.internalState isToUpdatePackages];
+        selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
+
         [selfI writeActivityStateI:selfI];
+        [ADJUserDefaults removePushToken];
+
         return;
     }
 
@@ -773,12 +719,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     // new session
     if (lastInterval > kSessionInterval) {
-        selfI.activityState.sessionCount++;
-        selfI.activityState.lastInterval = lastInterval;
-
-        [selfI transferSessionPackageI:selfI now:now];
-        [selfI.activityState resetSessionAttributes:now];
-        [selfI writeActivityStateI:selfI];
+        [self trackNewSessionI:now withActivityHandler:selfI];
         return;
     }
 
@@ -797,14 +738,26 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     [selfI.logger verbose:@"Time span since last activity too short for a new subsession"];
 }
 
+- (void)trackNewSessionI:(double)now withActivityHandler:(ADJActivityHandler *)selfI {
+    double lastInterval = now - selfI.activityState.lastActivity;
+
+    selfI.activityState.sessionCount++;
+    selfI.activityState.lastInterval = lastInterval;
+
+    [selfI transferSessionPackageI:selfI now:now];
+    [selfI.activityState resetSessionAttributes:now];
+    [selfI writeActivityStateI:selfI];
+}
+
 - (void)transferSessionPackageI:(ADJActivityHandler *)selfI
                             now:(double)now {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
                                          initWithDeviceInfo:selfI.deviceInfo
                                          activityState:selfI.activityState
                                          config:selfI.adjustConfig
+                                         sessionParameters:selfI.sessionParameters
                                          createdAt:now];
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:sessionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -815,7 +768,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     // if it's the first launch
     if ([selfI.internalState isFirstLaunch]) {
         // and it hasn't received the session response
-        if ([selfI.internalState hasSessionResponseNotProcessed]) {
+        if ([selfI.internalState hasSessionResponseNotBeenProcessed]) {
             return;
         }
     }
@@ -856,8 +809,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
                                        createdAt:now];
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event sessionParameters:selfI.sessionParameters isInDelay:[selfI.internalState isDelayStart]];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
+                                                             isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:eventPackage];
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -867,7 +822,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     // if it is in the background and it can send, start the background timer
-    if (selfI.adjustConfig.sendInBackground && [selfI.internalState isBackground]) {
+    if (selfI.adjustConfig.sendInBackground && [selfI.internalState isInBackground]) {
         [selfI startBackgroundTimerI:selfI];
     }
 
@@ -906,6 +861,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI attribution:sessionResponseData.attribution];
 
+    // mark install as tracked on success
+    if (sessionResponseData.success) {
+        [ADJUserDefaults setInstallTracked];
+    }
+
     // session success callback
     if (sessionResponseData.success
         && [selfI.adjustDelegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)])
@@ -933,7 +893,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                          withObject:sessionResponseData.attribution];
     }
 
-    self.internalState.sessionResponseProcessed = YES;
+    selfI.internalState.sessionResponseProcessed = YES;
 }
 
 - (void)launchSdkClickResponseTasksI:(ADJActivityHandler *)selfI
@@ -1032,9 +992,137 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     return YES;
 }
 
+- (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
+    // compare with the saved or internal state
+    if (![selfI hasChangedStateI:selfI
+                   previousState:[selfI isEnabled]
+                       nextState:enabled
+                     trueMessage:@"Adjust already enabled"
+                    falseMessage:@"Adjust already disabled"]) {
+        return;
+    }
+
+    // save new enabled state in internal state
+    selfI.internalState.enabled = enabled;
+
+    if (selfI.activityState == nil) {
+        [selfI checkStatusI:selfI
+               pausingState:!enabled
+              pausingMessage:@"Handlers will start as paused due to the SDK being disabled"
+        remainsPausedMessage:@"Handlers will still start as paused"
+            unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
+        return;
+    }
+
+    // Check if upon enabling install has been tracked.
+    if (enabled) {
+        if (![ADJUserDefaults getInstallTracked]) {
+            double now = [NSDate.date timeIntervalSince1970];
+            [self trackNewSessionI:now withActivityHandler:selfI];
+        }
+
+        NSData *deviceToken = [ADJUserDefaults getPushToken];
+
+        if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
+            [self setDeviceToken:deviceToken];
+        }
+    }
+
+    // save new enabled state in activity state
+    selfI.activityState.enabled = enabled;
+    [selfI writeActivityStateI:selfI];
+
+    [selfI checkStatusI:selfI
+           pausingState:!enabled
+          pausingMessage:@"Pausing handlers due to SDK being disabled"
+    remainsPausedMessage:@"Handlers remain paused"
+        unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+}
+
+- (void)setOfflineModeI:(ADJActivityHandler *)selfI
+                offline:(BOOL)offline {
+    // compare with the internal state
+    if (![selfI hasChangedStateI:selfI
+                   previousState:[selfI.internalState isOffline]
+                       nextState:offline
+                     trueMessage:@"Adjust already in offline mode"
+                    falseMessage:@"Adjust already in online mode"])
+    {
+        return;
+    }
+
+    // save new offline state in internal state
+    selfI.internalState.offline = offline;
+
+    if (selfI.activityState == nil) {
+        [selfI checkStatusI:selfI
+               pausingState:offline
+             pausingMessage:@"Handlers will start paused due to SDK being offline"
+       remainsPausedMessage:@"Handlers will still start as paused"
+           unPausingMessage:@"Handlers will start as active due to SDK being online"];
+        return;
+    }
+
+    [selfI checkStatusI:selfI
+           pausingState:offline
+         pausingMessage:@"Pausing handlers to put SDK offline mode"
+   remainsPausedMessage:@"Handlers remain paused"
+       unPausingMessage:@"Resuming handlers to put SDK in online mode"];
+}
+
+- (BOOL)hasChangedStateI:(ADJActivityHandler *)selfI
+           previousState:(BOOL)previousState
+               nextState:(BOOL)nextState
+             trueMessage:(NSString *)trueMessage
+            falseMessage:(NSString *)falseMessage
+{
+    if (previousState != nextState) {
+        return YES;
+    }
+
+    if (previousState) {
+        [selfI.logger debug:trueMessage];
+    } else {
+        [selfI.logger debug:falseMessage];
+    }
+
+    return NO;
+}
+
+- (void)checkStatusI:(ADJActivityHandler *)selfI
+        pausingState:(BOOL)pausingState
+      pausingMessage:(NSString *)pausingMessage
+remainsPausedMessage:(NSString *)remainsPausedMessage
+    unPausingMessage:(NSString *)unPausingMessage
+{
+    // it is changing from an active state to a pause state
+    if (pausingState) {
+        [selfI.logger info:pausingMessage];
+    }
+    // check if it's remaining in a pause state
+    else if ([selfI pausedI:selfI sdkClickHandlerOnly:NO]) {
+        // including the sdk click handler
+        if ([selfI pausedI:selfI sdkClickHandlerOnly:YES]) {
+            [selfI.logger info:remainsPausedMessage];
+        } else {
+            // or except it
+            [selfI.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
+        }
+    } else {
+        // it is changing from a pause state to an active state
+        [selfI.logger info:unPausingMessage];
+    }
+
+    [selfI updateHandlersStatusAndSendI:selfI];
+}
+
 - (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
                     url:(NSURL *)url {
     if ([ADJUtil isNull:url]) {
+        return;
+    }
+
+    if (![selfI isEnabledI:selfI]) {
         return;
     }
 
@@ -1062,13 +1150,14 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = [NSDate date];
     clickBuilder.deeplink = [url absoluteString];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink" sessionParameters:selfI.sessionParameters];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -1129,6 +1218,10 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)setDeviceTokenI:(ADJActivityHandler *)selfI
             deviceToken:(NSData *)deviceToken {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+
     NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
 
     if (deviceTokenString == nil) {
@@ -1145,48 +1238,25 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder * infoBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        createdAt:now];
+    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                     activityState:selfI.activityState
+                                                                            config:selfI.adjustConfig
+                                                                 sessionParameters:selfI.sessionParameters
+                                                                         createdAt:now];
 
-    ADJActivityPackage * infoPackage = [infoBuilder buildInfoPackage:@"push"];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.packageHandler addPackage:infoPackage];
-    [selfI.packageHandler sendFirstPackage];
-}
 
-- (void)setIadDateI:(ADJActivityHandler *)selfI
-  iAdImpressionDate:(NSDate *)iAdImpressionDate
-   withPurchaseDate:(NSDate *)appPurchaseDate
-{
-    if (iAdImpressionDate == nil) {
-        [self.logger debug:@"iAdImpressionDate not received"];
-        return;
+    // if push token was cached, remove it
+    [ADJUserDefaults removePushToken];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
     }
-
-    [self.logger debug:@"iAdImpressionDate received: %@", iAdImpressionDate];
-
-    double now = [NSDate.date timeIntervalSince1970];
-    if (selfI.activityState != nil) {
-        double lastInterval = now - selfI.activityState.lastActivity;
-        selfI.activityState.lastInterval = lastInterval;
-    }
-
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:self.deviceInfo
-                                       activityState:self.activityState
-                                       config:self.adjustConfig
-                                       createdAt:now];
-
-    clickBuilder.purchaseTime = appPurchaseDate;
-    clickBuilder.clickTime = iAdImpressionDate;
-
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad" sessionParameters:selfI.sessionParameters];
-    [self.sdkClickHandler sendSdkClick:clickPackage];
 }
-
 
 #pragma mark - private
 
@@ -1198,11 +1268,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 }
 
-- (BOOL)isToUpdatePackagesI:(ADJActivityHandler *)selfI {
+- (BOOL)itHasToUpdatePackagesI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
         return selfI.activityState.updatePackages;
     } else {
-        return [selfI.internalState isToUpdatePackages];
+        return [selfI.internalState itHasToUpdatePackages];
     }
 }
 
@@ -1231,20 +1301,11 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
 
 - (void)writeActivityStateI:(ADJActivityHandler *)selfI
 {
-    [selfI writeActivityStateS:selfI changesInStateBlock:nil];
-}
-
-- (void)writeActivityStateS:(ADJActivityHandler *)selfS
-        changesInStateBlock:(void (^)(void))changesInStateBlock
-{
     @synchronized ([ADJActivityState class]) {
-        if (selfS.activityState == nil) {
+        if (selfI.activityState == nil) {
             return;
         }
-        if (changesInStateBlock != nil) {
-            changesInStateBlock();
-        }
-        [ADJUtil writeObject:selfS.activityState filename:kActivityStateFilename objectName:@"Activity state"];
+        [ADJUtil writeObject:selfI.activityState fileName:kActivityStateFilename objectName:@"Activity state"];
     }
 }
 
@@ -1255,7 +1316,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kActivityStateFilename];
+            [ADJUtil deleteFileWithName:kActivityStateFilename];
         }
         self.activityState = nil;
     }
@@ -1266,7 +1327,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
         if (selfI.attribution == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.attribution filename:kAttributionFilename objectName:@"Attribution"];
+        [ADJUtil writeObject:selfI.attribution fileName:kAttributionFilename objectName:@"Attribution"];
     }
 }
 
@@ -1277,7 +1338,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kAttributionFilename];
+            [ADJUtil deleteFileWithName:kAttributionFilename];
         }
         self.attribution = nil;
     }
@@ -1302,7 +1363,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
-                    filename:kSessionCallbackParametersFilename
+                    fileName:kSessionCallbackParametersFilename
                   objectName:@"Session Callback parameters"];
     }
 }
@@ -1313,7 +1374,7 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
-                    filename:kSessionPartnerParametersFilename
+                    fileName:kSessionPartnerParametersFilename
                   objectName:@"Session Partner parameters"];
     }
 }
@@ -1324,8 +1385,8 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
             return;
         }
         if (deleteState) {
-            [ADJUtil deleteFile:kSessionCallbackParametersFilename];
-            [ADJUtil deleteFile:kSessionPartnerParametersFilename];
+            [ADJUtil deleteFileWithName:kSessionCallbackParametersFilename];
+            [ADJUtil deleteFileWithName:kSessionPartnerParametersFilename];
         }
         [self.sessionParameters.callbackParameters removeAllObjects];
         [self.sessionParameters.partnerParameters removeAllObjects];
@@ -1354,6 +1415,14 @@ sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
     }
 
     [selfI resumeSendingI:selfI];
+
+    // try to send if it's the first launch and it hasn't received the session response
+    //  even if event buffering is enabled
+    if ([selfI.internalState isFirstLaunch] &&
+        [selfI.internalState hasSessionResponseNotBeenProcessed])
+    {
+        [selfI.packageHandler sendFirstPackage];
+    }
 
     // try to send
     if (!selfI.adjustConfig.eventBufferingEnabled) {
@@ -1394,7 +1463,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // other handlers are paused if either:
     return [selfI.internalState isOffline] ||        // it's offline
             ![selfI isEnabledI:selfI] ||             // is disabled
-            [selfI.internalState isDelayStart];      // is in delayed start
+            [selfI.internalState isInDelayedStart];      // is in delayed start
 }
 
 - (BOOL)toSendI:(ADJActivityHandler *)selfI {
@@ -1415,7 +1484,14 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     // doesn't have the option -> depends on being on the background/foreground
-    return [selfI.internalState isForeground];
+    return [selfI.internalState isInForeground];
+}
+
+- (void)setAskingAttributionI:(ADJActivityHandler *)selfI
+            askingAttribution:(BOOL)askingAttribution
+{
+    selfI.activityState.askingAttribution = askingAttribution;
+    [selfI writeActivityStateI:selfI];
 }
 
 # pragma mark - timer
@@ -1484,12 +1560,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 #pragma mark - delay
 - (void)delayStartI:(ADJActivityHandler *)selfI {
     // it's not configured to start delayed or already finished
-    if ([selfI.internalState isToStartNow]) {
+    if ([selfI.internalState isNotInDelayedStart]) {
         return;
     }
 
     // the delay has already started
-    if ([selfI isToUpdatePackagesI:selfI]) {
+    if ([selfI itHasToUpdatePackagesI:selfI]) {
         return;
     }
 
@@ -1519,7 +1595,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)sendFirstPackagesI:(ADJActivityHandler *)selfI {
-    if ([selfI.internalState isToStartNow]) {
+    if ([selfI.internalState isNotInDelayedStart]) {
         [selfI.logger info:@"Start delay expired or never configured"];
         return;
     }
@@ -1672,13 +1748,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [selfI writeSessionPartnerParametersI:selfI];
 }
 
-- (void)sessionParametersActionsI:(ADJActivityHandler *)selfI
-    sessionParametersActionsArray:(NSArray*)sessionParametersActionsArray
+- (void)preLaunchActionsI:(ADJActivityHandler *)selfI
+    preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 {
-    if (sessionParametersActionsArray == nil) {
+    if (preLaunchActionsArray == nil) {
         return;
     }
-    for (activityHandlerBlockI activityHandlerActionI in sessionParametersActionsArray) {
+    for (activityHandlerBlockI activityHandlerActionI in preLaunchActionsArray) {
         activityHandlerActionI(selfI);
     }
 }
