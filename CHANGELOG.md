@@ -1,3 +1,9 @@
+### Version 4.12.1 (13th December 2017)
+#### Fixed
+- Fixed compatibility of Adjust SDK with apps that are already using `Reachability` class (https://github.com/adjust/ios_sdk/issues/315) (thanks to @fedetrim).
+
+---
+
 ### Version 4.12.0 (13th December 2017)
 #### Added
 - Added reading of MCC.
