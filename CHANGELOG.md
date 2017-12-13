@@ -1,4 +1,4 @@
-### Version 4.12.0 (12th December 2017)
+### Version 4.12.0 (13th December 2017)
 #### Added
 - Added reading of MCC.
 - Added reading of MNC.
