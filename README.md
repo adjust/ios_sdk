@@ -514,9 +514,9 @@ If nothing is set, event buffering is **disabled by default**.
 
 ### <a id="sdk-signature"></a> SDK signature
 
-The Adjust SDK Signature is enabled on a client-by-client basis. If you are interested in using this feature, please contact your account manager.
+The Adjust SDK signature is enabled on a client-by-client basis. If you are interested in using this feature, please contact your account manager.
 
-If the SDK Signature has already been enabled on your account and you have access to App Secrets in your Adjust Dashboard, please use the method below to integrate the SDK Signature into your app.
+If the SDK signature has already been enabled on your account and you have access to App Secrets in your Adjust Dashboard, please use the method below to integrate the SDK signature into your app.
 
 An App Secret is set by calling `setAppSecret` on your `AdjustConfig` instance:
 
