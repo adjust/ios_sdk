@@ -30,7 +30,7 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
    * [Event buffering](#event-buffering)
-   * [SDK Signature](#sdk-signature)
+   * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
       * [iOS Advertising Identifier](#di-idfa)
@@ -512,7 +512,7 @@ If your app makes heavy use of event tracking, you might want to delay some HTTP
 
 If nothing is set, event buffering is **disabled by default**.
 
-### <a id="sdk-signature"></a> SDK Signature
+### <a id="sdk-signature"></a> SDK signature
 
 The Adjust SDK Signature is enabled on a client-by-client basis. If you are interested in using this feature, please contact your account manager.
 
@@ -520,8 +520,8 @@ If the SDK Signature has already been enabled on your account and you have acces
 
 An App Secret is set by calling `setAppSecret` on your `AdjustConfig` instance:
 
-```java
-adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
+```objc
+[adjustConfig setAppSecret:secretId info1:info1 info2:info2 info3:info3 info4:info4];
 ```
 
 ### <a id="background-tracking"></a>Background tracking
