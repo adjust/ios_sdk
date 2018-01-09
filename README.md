@@ -304,7 +304,7 @@ You can read more about using URL callbacks, including a full list of available 
 
 ### <a id="partner-parameters"></a>Partner parameters
 
-You can also add parameters to be transmitted to network partners, which have been activated in youradjust dashboard.
+You can also add parameters to be transmitted to network partners, which have been activated in your Adjust dashboard.
 
 This works similarly to the callback parameters mentioned above, but can be added by calling the `addPartnerParameter` method on your `ADJEvent` instance.
 
