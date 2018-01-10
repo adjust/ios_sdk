@@ -377,7 +377,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
          objectName:(NSString *)objectName {
     NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
-    BOOL result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+    BOOL result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
 
     if (result == YES) {
         [ADJUtil excludeFromBackup:filePath];
