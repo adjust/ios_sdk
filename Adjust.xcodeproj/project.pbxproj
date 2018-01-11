@@ -726,6 +726,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F0841FB2007749C00568A31 /* AdjustUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9D7431E71EB9F9B700969F14 /* AdjustExampleTests */,
+				96E5E39B18BBB49E008E7B30 /* Adjust-Prefix.pch */,
+				96E5E39C18BBB49E008E7B30 /* AdjustTests-Info.plist */,
+				96E5E39D18BBB49E008E7B30 /* ADJActivityHandlerMock.h */,
+				96E5E39E18BBB49E008E7B30 /* ADJActivityHandlerMock.m */,
+				96E5E39F18BBB49E008E7B30 /* ADJActivityHandlerTests.m */,
+				96E5E3A018BBB49E008E7B30 /* ADJLoggerMock.h */,
+				96E5E3A118BBB49E008E7B30 /* ADJLoggerMock.m */,
+				96E5E3A218BBB49E008E7B30 /* ADJPackageHandlerMock.h */,
+				96E5E3A318BBB49E008E7B30 /* ADJPackageHandlerMock.m */,
+				96E5E3A418BBB49E008E7B30 /* ADJPackageHandlerTests.m */,
+				96E5E3A518BBB49E008E7B30 /* ADJRequestHandlerMock.h */,
+				96E5E3A618BBB49E008E7B30 /* ADJRequestHandlerMock.m */,
+				96A2D2371CEF3B2D00C39DE0 /* ADJRequestHandlerTests.m */,
+				96E5E3A818BBB49E008E7B30 /* ADJTestsUtil.h */,
+				96E5E3A918BBB49E008E7B30 /* ADJTestsUtil.m */,
+				96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */,
+				96E5E3AC18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */,
+				96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */,
+				96ED00371A38A4CD00209110 /* ADJAttributionHandlerMock.h */,
+				96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */,
+				96ED003C1A38A98C00209110 /* ADJAttributionChangedDelegate.h */,
+				96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */,
+				9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */,
+				9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */,
+				9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */,
+				9620EA4C1B06401B009673F1 /* ADJTest.h */,
+				9620EA4D1B06401B009673F1 /* ADJTest.m */,
+				9620EA4F1B065177009673F1 /* ADJPackageFields.h */,
+				9620EA501B065177009673F1 /* ADJPackageFields.m */,
+				96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */,
+				96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */,
+				96ED74FD1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.h */,
+				96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */,
+				967D06981CE2272500ECFCE3 /* ADJSessionState.h */,
+				967D06991CE2272500ECFCE3 /* ADJSessionState.m */,
+				96E7689F1CE6267D005D811C /* ADJDeeplinkDelegate.h */,
+				96E768A01CE6267D005D811C /* ADJDeeplinkDelegate.m */,
+				96E768A81CE6281F005D811C /* ADJTrackingDelegate.h */,
+				96E768A91CE6281F005D811C /* ADJTrackingDelegate.m */,
+				96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */,
+				96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */,
+				96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */,
+				96FC6E561D258272004482D8 /* ADJEndSessionState.h */,
+				96FC6E571D258272004482D8 /* ADJEndSessionState.m */,
+				9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */,
+				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
+			);
+			path = AdjustUnitTests;
+			sourceTree = "<group>";
+		};
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -881,53 +935,7 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D7431E71EB9F9B700969F14 /* AdjustExampleTests */,
-				96E5E39B18BBB49E008E7B30 /* Adjust-Prefix.pch */,
-				96E5E39C18BBB49E008E7B30 /* AdjustTests-Info.plist */,
-				96E5E39D18BBB49E008E7B30 /* ADJActivityHandlerMock.h */,
-				96E5E39E18BBB49E008E7B30 /* ADJActivityHandlerMock.m */,
-				96E5E39F18BBB49E008E7B30 /* ADJActivityHandlerTests.m */,
-				96E5E3A018BBB49E008E7B30 /* ADJLoggerMock.h */,
-				96E5E3A118BBB49E008E7B30 /* ADJLoggerMock.m */,
-				96E5E3A218BBB49E008E7B30 /* ADJPackageHandlerMock.h */,
-				96E5E3A318BBB49E008E7B30 /* ADJPackageHandlerMock.m */,
-				96E5E3A418BBB49E008E7B30 /* ADJPackageHandlerTests.m */,
-				96E5E3A518BBB49E008E7B30 /* ADJRequestHandlerMock.h */,
-				96E5E3A618BBB49E008E7B30 /* ADJRequestHandlerMock.m */,
-				96A2D2371CEF3B2D00C39DE0 /* ADJRequestHandlerTests.m */,
-				96E5E3A818BBB49E008E7B30 /* ADJTestsUtil.h */,
-				96E5E3A918BBB49E008E7B30 /* ADJTestsUtil.m */,
-				96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */,
-				96E5E3AC18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */,
-				96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */,
-				96ED00371A38A4CD00209110 /* ADJAttributionHandlerMock.h */,
-				96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */,
-				96ED003C1A38A98C00209110 /* ADJAttributionChangedDelegate.h */,
-				96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */,
-				9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */,
-				9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */,
-				9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */,
-				9620EA4C1B06401B009673F1 /* ADJTest.h */,
-				9620EA4D1B06401B009673F1 /* ADJTest.m */,
-				9620EA4F1B065177009673F1 /* ADJPackageFields.h */,
-				9620EA501B065177009673F1 /* ADJPackageFields.m */,
-				96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */,
-				96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */,
-				96ED74FD1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.h */,
-				96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */,
-				967D06981CE2272500ECFCE3 /* ADJSessionState.h */,
-				967D06991CE2272500ECFCE3 /* ADJSessionState.m */,
-				96E7689F1CE6267D005D811C /* ADJDeeplinkDelegate.h */,
-				96E768A01CE6267D005D811C /* ADJDeeplinkDelegate.m */,
-				96E768A81CE6281F005D811C /* ADJTrackingDelegate.h */,
-				96E768A91CE6281F005D811C /* ADJTrackingDelegate.m */,
-				96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */,
-				96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */,
-				96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */,
-				96FC6E561D258272004482D8 /* ADJEndSessionState.h */,
-				96FC6E571D258272004482D8 /* ADJEndSessionState.m */,
-				9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */,
-				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
+				6F0841FB2007749C00568A31 /* AdjustUnitTests */,
 			);
 			path = AdjustTests;
 			sourceTree = "<group>";
@@ -999,8 +1007,7 @@
 				9D7431F91EB9F9B700969F14 /* Info.plist */,
 				9D7431E81EB9F9B700969F14 /* Supporting Files */,
 			);
-			name = AdjustExampleTests;
-			path = ../AdjustExampleTests;
+			path = AdjustExampleTests;
 			sourceTree = "<group>";
 		};
 		9D7431E81EB9F9B700969F14 /* Supporting Files */ = {
