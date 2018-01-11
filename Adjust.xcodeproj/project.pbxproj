@@ -281,6 +281,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6F08421C2007766800568A31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F08420C2007766700568A31;
+			remoteInfo = AdjustTestLibrary;
+		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -376,6 +383,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6FCC84F71F278CF300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC84F81F278CF300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85021F27944600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -780,6 +788,14 @@
 			path = AdjustUnitTests;
 			sourceTree = "<group>";
 		};
+		6F0842192007766700568A31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F08421D2007766800568A31 /* libAdjustTestLibrary.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -935,6 +951,7 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
+				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
 				6F0841FB2007749C00568A31 /* AdjustUnitTests */,
 			);
 			path = AdjustTests;
@@ -1499,6 +1516,10 @@
 					ProductGroup = 9D449DCC1E6ED24400E7E80B /* Products */;
 					ProjectRef = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
 				},
+				{
+					ProductGroup = 6F0842192007766700568A31 /* Products */;
+					ProjectRef = 6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1514,6 +1535,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6F08421D2007766800568A31 /* libAdjustTestLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAdjustTestLibrary.a;
+			remoteRef = 6F08421C2007766800568A31 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
