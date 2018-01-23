@@ -204,7 +204,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)setEnabled:(BOOL)enabled;
 
-- (void)teardown:(BOOL)deleteState;
+- (void)teardown;
 
 - (void)appWillOpenUrl:(nonnull NSURL *)url;
 

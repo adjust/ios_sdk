@@ -133,7 +133,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 }
 
-- (void)teardown:(BOOL)deleteState {
+- (void)teardown {
     [ADJAdjustFactory.logger verbose:@"ADJPackageHandler teardown"];
     if (self.sendingSemaphore != nil) {
         dispatch_semaphore_signal(self.sendingSemaphore);
@@ -141,13 +141,21 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (self.requestHandler != nil) {
         [self.requestHandler teardown];
     }
-    [self teardownPackageQueueS:deleteState];
+    [self teardownPackageQueueS];
     self.internalQueue = nil;
     self.sendingSemaphore = nil;
     self.requestHandler = nil;
     self.backoffStrategy = nil;
     self.activityHandler = nil;
     self.logger = nil;
+}
+
++ (void)deleteState {
+    [ADJPackageHandler deletePackageQueue];
+}
+
++ (void)deletePackageQueue {
+    [ADJUtil deleteFileWithName:kPackageQueueFilename];
 }
 
 #pragma mark - internal
@@ -259,14 +267,10 @@ startsSending:(BOOL)startsSending
     }
 }
 
-- (void)teardownPackageQueueS:(BOOL)deleteState {
+- (void)teardownPackageQueueS {
     @synchronized ([ADJPackageHandler class]) {
         if (self.packageQueue == nil) {
             return;
-        }
-
-        if (deleteState) {
-            [ADJUtil deleteFileWithName:kPackageQueueFilename];
         }
 
         [self.packageQueue removeAllObjects];

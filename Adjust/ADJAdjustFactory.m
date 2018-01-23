@@ -196,7 +196,11 @@ static NSTimeInterval internalMaxDelayStart = -1;
     internalMaxDelayStart = maxDelayStart;
 }
 
-+ (void)teardown {
++ (void)teardown:(BOOL)deleteState {
+    if (deleteState) {
+        [ADJActivityHandler deleteState];
+        [ADJPackageHandler deleteState];
+    }
     internalPackageHandler = nil;
     internalRequestHandler = nil;
     internalActivityHandler = nil;
@@ -210,6 +214,7 @@ static NSTimeInterval internalMaxDelayStart = -1;
     intervalTimerStart = -1;
     packageHandlerBackoffStrategy = nil;
     sdkClickHandlerBackoffStrategy = nil;
+    internalTesting = NO;
     internalMaxDelayStart = -1;
 }
 @end

@@ -353,13 +353,13 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [self.activityHandler adid];
 }
 
-- (void)teardown:(BOOL)deleteState {
+- (void)teardown {
     if (self.activityHandler == nil) {
         [self.logger error:@"Adjust already down or not initialized"];
         return;
     }
 
-    [self.activityHandler teardown:deleteState];
+    [self.activityHandler teardown];
     self.activityHandler = nil;
 }
 

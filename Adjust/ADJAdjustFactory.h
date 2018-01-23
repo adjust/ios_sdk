@@ -55,5 +55,5 @@
 + (void)setTesting:(BOOL)testing;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 
-+ (void)teardown;
++ (void)teardown:(BOOL)deleteState;
 @end

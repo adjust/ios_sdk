@@ -90,7 +90,8 @@
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 
-- (void)teardown:(BOOL)deleteState;
+- (void)teardown;
++ (void)deleteState;
 @end
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
