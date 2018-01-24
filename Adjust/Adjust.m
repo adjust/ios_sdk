@@ -382,6 +382,22 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
     }
+    if (testOptions.timerIntervalInMilliseconds > 0) {
+        NSTimeInterval timerIntervalInSeconds = ((double)testOptions.timerIntervalInMilliseconds) / 1000.0;
+        [ADJAdjustFactory setTimerInterval:timerIntervalInSeconds];
+    }
+    if (testOptions.timerStartInMilliseconds > 0) {
+        NSTimeInterval timerStartInSeconds = ((double)testOptions.timerStartInMilliseconds) / 1000.0;
+        [ADJAdjustFactory setTimerStart:timerStartInSeconds];
+    }
+    if (testOptions.sessionIntervalInMilliseconds > 0) {
+        NSTimeInterval sessionIntervalInSeconds = ((double)testOptions.sessionIntervalInMilliseconds) / 1000.0;
+        [ADJAdjustFactory setSessionInterval:sessionIntervalInSeconds];
+    }
+    if (testOptions.subsessionIntervalInMilliseconds > 0) {
+        NSTimeInterval subsessionIntervalInSeconds = ((double)testOptions.subsessionIntervalInMilliseconds) / 1000.0;
+        [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
+    }
 }
 
 #pragma mark - Private & helper methods
