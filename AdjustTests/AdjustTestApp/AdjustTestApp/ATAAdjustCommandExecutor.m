@@ -121,10 +121,10 @@
             if ([teardownOption isEqualToString:@"resetTest"]) {
                 self.savedConfigs = [NSMutableDictionary dictionary];
                 self.savedEvents = [NSMutableDictionary dictionary];
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1];
+                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
             }
             if ([teardownOption isEqualToString:@"sdk"]) {
                 testOptions.teardown = YES;
@@ -133,10 +133,10 @@
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1];
+                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
             }
         }
     }

@@ -66,7 +66,7 @@ static NSString * internalBaseUrl = kBaseUrl;
 }
 
 + (double)sessionInterval {
-    if (internalSessionInterval == -1) {
+    if (internalSessionInterval < 0) {
         return 30 * 60;           // 30 minutes
     }
     return internalSessionInterval;
@@ -80,14 +80,14 @@ static NSString * internalBaseUrl = kBaseUrl;
 }
 
 + (NSTimeInterval)timerInterval {
-    if (internalTimerInterval == -1) {
+    if (internalTimerInterval < 0) {
         return 60;                // 1 minute
     }
     return internalTimerInterval;
 }
 
 + (NSTimeInterval)timerStart {
-    if (intervalTimerStart == -1) {
+    if (intervalTimerStart < 0) {
         return 60;                 // 1 minute
     }
     return intervalTimerStart;
@@ -137,7 +137,7 @@ static NSString * internalBaseUrl = kBaseUrl;
 }
 
 + (NSTimeInterval)maxDelayStart {
-    if (internalMaxDelayStart == -1) {
+    if (internalMaxDelayStart < 0) {
         return 10.0;               // 10 seconds
     }
     return internalMaxDelayStart;
