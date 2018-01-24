@@ -13,13 +13,12 @@
 
 @interface AdjustTestOptions : NSObject
 
-@property (nonatomic, copy) NSString *baseUrl;
-@property (nonatomic, copy) NSString *basePath;
-@property (nonatomic, assign) BOOL useTestConnectionOptions;
-@property (nonatomic, assign) NSInteger timerIntervalInMilliseconds;
-@property (nonatomic, assign) NSTimeInterval timerStartInMilliseconds;
-@property (nonatomic, assign) NSTimeInterval sessionIntervalInMilliseconds;
-@property (nonatomic, assign) NSTimeInterval subsessionIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSString *baseUrl;
+@property (nonatomic, copy, nullable) NSString *basePath;
+@property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
 
@@ -211,7 +210,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (nullable id)getInstance;
 
-+ (void)setTestOptions:(AdjustTestOptions *)testOptions;
++ (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
 
 - (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
 
