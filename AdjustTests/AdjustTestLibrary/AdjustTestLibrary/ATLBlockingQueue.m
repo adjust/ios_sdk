@@ -61,6 +61,8 @@
         [_queue removeObjectAtIndex:0];
         [_lock unlock];
     }];
+    [self.operationQueue waitUntilAllOperationsAreFinished];
+
     return object;
 }
 
