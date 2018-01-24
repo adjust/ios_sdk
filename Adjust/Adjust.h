@@ -11,6 +11,13 @@
 #import "ADJConfig.h"
 #import "ADJAttribution.h"
 
+@interface AdjustTestOptions : NSObject
+
+@property (nonatomic, copy) NSString *baseUrl;
+@property (nonatomic, copy) NSString *basePath;
+
+@end
+
 /**
  * Constants for our supported tracking environments
  */
@@ -197,6 +204,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (nullable id)getInstance;
 
++ (void)setTestOptions:(AdjustTestOptions *)testOptions;
 
 - (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
 

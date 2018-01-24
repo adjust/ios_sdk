@@ -41,6 +41,7 @@
 @property (nonatomic, copy) NSData *deviceTokenData;
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
+@property (nonatomic, copy) NSString *basePath;
 
 - (id)init;
 
@@ -89,6 +90,7 @@
 - (void)removeSessionPartnerParameter:(NSString *)key;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
+- (NSString *)getBasePath;
 
 - (void)teardown;
 + (void)deleteState;

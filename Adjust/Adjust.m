@@ -35,10 +35,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 #pragma mark - Object lifecycle methods
 
-+ (id)getInstance {
-    static Adjust *defaultInstance = nil;
-    static dispatch_once_t onceToken;
+static Adjust *defaultInstance = nil;
+static dispatch_once_t onceToken = 0;
 
++ (id)getInstance {
     dispatch_once(&onceToken, ^{
         defaultInstance = [[self alloc] init];
     });
@@ -147,6 +147,18 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (NSString *)adid {
     return [[Adjust getInstance] adid];
+}
+
++ (void)setTestOptions:(AdjustTestOptions *)testOptions {
+    if (testOptions.teardown) {
+        if (defaultInstance != nil) {
+            [defaultInstance teardown];
+        }
+        defaultInstance = nil;
+        onceToken = 0;
+        [ADJAdjustFactory teardown:testOptions.deleteState];
+    }
+    [[Adjust getInstance] setTestOptions:(AdjustTestOptions *)testOptions];
 }
 
 #pragma mark - Public instance methods
@@ -361,6 +373,15 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
     [self.activityHandler teardown];
     self.activityHandler = nil;
+}
+
+- (void)setTestOptions:(AdjustTestOptions *)testOptions {
+    if (testOptions.basePath != nil) {
+        self.savedPreLaunch.basePath = testOptions.basePath;
+    }
+    if (testOptions.baseUrl != nil) {
+        [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
+    }
 }
 
 #pragma mark - Private & helper methods

@@ -29,6 +29,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -49,6 +50,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
+    self.basePath = [activityHandler getBasePath];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -131,6 +133,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      block:^(ADJPackageHandler* selfI) {
                          [selfI updatePackagesI:selfI sessionParameters:sessionParametersCopy];
                      }];
+}
+
+- (NSString *)getBasePath {
+    return _basePath;
 }
 
 - (void)teardown {

@@ -59,8 +59,6 @@ typedef void (^selfInjectedBlock)(id);
 
 + (NSString *)idfa;
 
-+ (NSString *)baseUrl;
-
 + (NSString *)clientSdk;
 
 + (NSString *)getUpdateTime;

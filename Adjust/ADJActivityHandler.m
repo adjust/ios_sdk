@@ -101,6 +101,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 // copy for objects shared with the user
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, copy) NSData* deviceTokenData;
+@property (nonatomic, copy) NSString* basePath;
 
 @end
 
@@ -187,6 +188,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
+
+    if (savedPreLaunch.basePath != nil) {
+        self.basePath = savedPreLaunch.basePath;
+    }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -520,6 +525,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      block:^(ADJActivityHandler * selfI) {
                          [selfI resetSessionPartnerParametersI:selfI];
                      }];
+}
+
+- (NSString *)getBasePath {
+    return _basePath;
 }
 
 - (void)teardown

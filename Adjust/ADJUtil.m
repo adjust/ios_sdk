@@ -48,8 +48,6 @@ static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern       = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kOptionalRedirectPattern    = @"adjust_redirect=[^&#]*";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
-
-static NSString * const kBaseUrl                    = @"https://app.adjust.com";
 static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
 @implementation ADJUtil
@@ -160,10 +158,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
     userAgent = config.userAgent;
-}
-
-+ (NSString *)baseUrl {
-    return kBaseUrl;
 }
 
 + (NSString *)clientSdk {
@@ -653,7 +647,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSMutableURLRequest *)requestForPostPackage:(ADJActivityPackage *)activityPackage
                                        baseUrl:(NSURL *)baseUrl
                                      queueSize:(NSUInteger)queueSize {
-    NSURL *url = [NSURL URLWithString:activityPackage.path relativeToURL:baseUrl];
+    NSURL *url = [baseUrl URLByAppendingPathComponent:activityPackage.path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"POST";
