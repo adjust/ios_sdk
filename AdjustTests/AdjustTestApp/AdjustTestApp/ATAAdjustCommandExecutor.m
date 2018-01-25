@@ -362,6 +362,9 @@
 
     if ([parameters objectForKey:@"orderId"]) {
         NSString *transactionId = [parameters objectForKey:@"orderId"][0];
+        if (transactionId == (id)[NSNull null]) {
+            transactionId = nil;
+        }
         [adjustEvent setTransactionId:transactionId];
     }
 }
