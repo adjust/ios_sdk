@@ -12,7 +12,7 @@
 
 @interface ATAAdjustDelegate : NSObject<AdjustDelegate>
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary;
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath;
 
 - (void)swizzleAttributionCallback:(BOOL)swizzleAttributionCallback
             eventSucceededCallback:(BOOL)swizzleEventSucceededCallback

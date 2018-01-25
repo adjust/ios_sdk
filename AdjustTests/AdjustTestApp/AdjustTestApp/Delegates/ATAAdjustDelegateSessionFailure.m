@@ -11,12 +11,13 @@
 @interface ATAAdjustDelegateSessionFailure ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
 @implementation ATAAdjustDelegateSessionFailure
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary {
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath {
     self = [super init];
     
     if (nil == self) {
@@ -24,7 +25,8 @@
     }
     
     self.testLibrary = testLibrary;
-    
+    self.basePath = basePath;
+
     return self;
 }
 
@@ -49,7 +51,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
     
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 @end

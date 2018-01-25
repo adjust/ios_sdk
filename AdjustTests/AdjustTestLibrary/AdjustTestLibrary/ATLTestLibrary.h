@@ -42,7 +42,7 @@
 - (void)addInfoToSend:(NSString *)key
                 value:(NSString *)value;
 
-- (void)sendInfoToServer;
+- (void)sendInfoToServer:(NSString *)basePath;
 
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
 andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;

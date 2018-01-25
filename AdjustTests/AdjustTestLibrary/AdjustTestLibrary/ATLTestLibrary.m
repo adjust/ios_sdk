@@ -131,8 +131,8 @@ static NSURL * _baseUrl = nil;
     [self.infoToServer addInfoToSend:key value:value];
 }
 
-- (void)sendInfoToServer {
-    [self.infoToServer sendInfoToServer:self.currentBasePath];
+- (void)sendInfoToServer:(NSString *)basePath {
+    [self.infoToServer sendInfoToServer:basePath];
 }
 
 - (void)sendTestSessionI:(NSString *)clientSdk {

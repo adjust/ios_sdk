@@ -11,12 +11,13 @@
 @interface ATAAdjustDelegateAttribution ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
 @implementation ATAAdjustDelegateAttribution
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary {
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath {
     self = [super init];
     
     if (nil == self) {
@@ -24,6 +25,7 @@
     }
     
     self.testLibrary = testLibrary;
+    self.basePath = basePath;
 
     return self;
 }
@@ -41,7 +43,7 @@
     [self.testLibrary addInfoToSend:@"clickLabel" value:attribution.clickLabel];
     [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
     
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 @end

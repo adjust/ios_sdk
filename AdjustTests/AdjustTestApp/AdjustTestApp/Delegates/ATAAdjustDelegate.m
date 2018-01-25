@@ -12,12 +12,13 @@
 @interface ATAAdjustDelegate ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
 @implementation ATAAdjustDelegate
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary {
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath {
     self = [super init];
 
     if (nil == self) {
@@ -25,7 +26,8 @@
     }
 
     self.testLibrary = testLibrary;
-    
+    self.basePath = basePath;
+
     [self swizzleCallbackMethod:@selector(adjustAttributionChanged:)
                swizzledSelector:@selector(adjustAttributionChangedWannabeEmpty:)];
 
@@ -111,7 +113,7 @@
     [self.testLibrary addInfoToSend:@"clickLabel" value:attribution.clickLabel];
     [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
     
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 - (void)adjustEventTrackingSucceededWannabe:(ADJEventSuccess *)eventSuccessResponseData {
@@ -135,7 +137,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
 
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 - (void)adjustEventTrackingFailedWannabe:(ADJEventFailure *)eventFailureResponseData {
@@ -160,7 +162,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
 
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 - (void)adjustSessionTrackingSucceededWannabe:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -183,7 +185,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
     
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 - (void)adjustSessionTrackingFailedWananbe:(ADJSessionFailure *)sessionFailureResponseData {
@@ -207,7 +209,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
     
-    [self.testLibrary sendInfoToServer];
+    [self.testLibrary sendInfoToServer:self.basePath];
 }
 
 - (void)adjustAttributionChangedWannabeEmpty:(ADJAttribution *)attribution {

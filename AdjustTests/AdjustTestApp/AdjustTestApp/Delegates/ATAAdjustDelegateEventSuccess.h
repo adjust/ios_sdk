@@ -12,6 +12,6 @@
 
 @interface ATAAdjustDelegateEventSuccess : NSObject<AdjustDelegate>
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary;
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath;
 
 @end
