@@ -1215,6 +1215,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (void)launchInQueue:(dispatch_queue_t)queue
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block {
+    if (queue == nil) {
+        return;
+    }
     __weak __typeof__(selfInject) weakSelf = selfInject;
 
     dispatch_async(queue, ^{
