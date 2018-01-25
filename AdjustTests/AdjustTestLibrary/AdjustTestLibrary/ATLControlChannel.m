@@ -80,6 +80,11 @@ static NSString * const CONTROL_CONTINUE_PATH = @"/control_continue";
                              }];
 }
 - (void)readHeaders:(ATLHttpResponse *)httpResponse {
+    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation * operation) {
+        [self readHeadersI:httpResponse];
+    }];
+}
+- (void)readHeadersI:(ATLHttpResponse *)httpResponse {
     if (self.closed) {
         [ATLUtil debug:@"control channel already closed"];
         return;
@@ -88,6 +93,7 @@ static NSString * const CONTROL_CONTINUE_PATH = @"/control_continue";
     if ([httpResponse.headerFields objectForKey:TEST_CANCELTEST_HEADER]) {
         [ATLUtil debug:@"Test canceled due to %@", httpResponse.headerFields[TEST_CANCELTEST_HEADER]];
         [self.testLibrary resetTestLibrary];
+        [ATLUtil debug:@"control channel send readResponse to test library"];
         [self.testLibrary readResponse:httpResponse];
     }
 
