@@ -631,9 +631,20 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
                                        baseUrl:(NSURL *)baseUrl{
+    [ADJAdjustFactory.logger verbose:@"baseUrl: %@", baseUrl.absoluteString];
     NSString *parameters = [ADJUtil queryString:activityPackage.parameters];
-    NSString *relativePath = [NSString stringWithFormat:@"%@?%@", activityPackage.path, parameters];
-    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
+
+    NSURL *trueBaseUrl = [baseUrl baseURL];
+    [ADJAdjustFactory.logger verbose:@"trueBaseUrl: %@", trueBaseUrl.absoluteString];
+
+    NSString *basePath = [baseUrl path];
+    [ADJAdjustFactory.logger verbose:@"basePath: %@", basePath];
+
+    NSString *relativePath = [NSString stringWithFormat:@"%@%@?%@", basePath, activityPackage.path, parameters];
+    [ADJAdjustFactory.logger verbose:@"relativePath: %@", relativePath];
+
+    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:trueBaseUrl];
+    [ADJAdjustFactory.logger verbose:@"url: %@", url.absoluteString];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
@@ -651,6 +662,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"POST";
+
+    [ADJAdjustFactory.logger verbose:@"url: %@", url.absoluteString];
 
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
