@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSMutableDictionary *savedConfigs;
 @property (nonatomic, strong) NSMutableDictionary *savedEvents;
 @property (nonatomic, strong) NSObject<AdjustDelegate> *adjustDelegate;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -36,6 +37,8 @@
 
     self.savedConfigs = [NSMutableDictionary dictionary];
     self.savedEvents = [NSMutableDictionary dictionary];
+    self.adjustDelegate = nil;
+    self.basePath = nil;
 
     return self;
 }
@@ -87,9 +90,8 @@
 - (void)testOptions:(NSDictionary *)parameters {
     AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
     testOptions.baseUrl = baseUrl;
-    NSString * basePath = nil;
     if ([parameters objectForKey:@"basePath"]) {
-        basePath = [parameters objectForKey:@"basePath"][0];
+        self.basePath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
@@ -113,7 +115,7 @@
             NSString *teardownOption = teardownOptions[i];
             if ([teardownOption isEqualToString:@"resetSdk"]) {
                 testOptions.teardown = YES;
-                testOptions.basePath = basePath;
+                testOptions.basePath = self.basePath;
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
                 testOptions.deleteState = YES;
@@ -133,6 +135,8 @@
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
+                self.adjustDelegate = nil;
+                self.basePath = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
