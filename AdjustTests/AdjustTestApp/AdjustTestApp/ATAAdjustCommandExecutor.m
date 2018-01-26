@@ -181,6 +181,9 @@
 
     if ([parameters objectForKey:@"sdkPrefix"]) {
         NSString *sdkPrefix = [parameters objectForKey:@"sdkPrefix"][0];
+        if (sdkPrefix == (id)[NSNull null]) {
+            sdkPrefix = nil;
+        }
         [adjustConfig setSdkPrefix:sdkPrefix];
     }
 
