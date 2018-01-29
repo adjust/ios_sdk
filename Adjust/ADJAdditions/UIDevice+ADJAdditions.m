@@ -2,8 +2,8 @@
 //  UIDevice+ADJAdditions.m
 //  Adjust
 //
-//  Created by Christian Wellenbrock on 23.07.12.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2012.
+//  Copyright © 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "UIDevice+ADJAdditions.h"
@@ -27,17 +27,14 @@
 #if ADJUST_NO_IDFA
     return NO;
 #else
-
     // return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return NO;
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
     NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![class respondsToSelector:selManager]) {
@@ -52,7 +49,6 @@
     }
     BOOL enabled = (BOOL)[manager performSelector:selEnabled];
     return enabled;
-
 #pragma clang diagnostic pop
 #endif
 }
@@ -61,14 +57,12 @@
 #if ADJUST_NO_IDFA
     return @"";
 #else
-
     // return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return @"";
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
@@ -109,9 +103,7 @@
             result = @"";
         }
     };
-    [NSThread isMainThread] ?
-    resultRetrievalBlock() :
-    dispatch_sync(dispatch_get_main_queue(), resultRetrievalBlock);
+    [NSThread isMainThread] ? resultRetrievalBlock() : dispatch_sync(dispatch_get_main_queue(), resultRetrievalBlock);
     return result;
 #endif
 }
@@ -200,10 +192,8 @@
 
 - (BOOL)adjSetIadWithDetails:(ADJActivityHandler *)activityHandler
 ADClientSharedClientInstance:(id)ADClientSharedClientInstance
-                 retriesLeft:(int)retriesLeft
-{
+                 retriesLeft:(int)retriesLeft {
     SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
-
     if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
         return NO;
     }

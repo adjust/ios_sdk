@@ -2,9 +2,10 @@
 //  UIDevice+ADJAdditions.h
 //  Adjust
 //
-//  Created by Christian Wellenbrock on 23.07.12.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2012.
+//  Copyright © 2012-2018 Adjust GmbH. All rights reserved.
 //
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ADJActivityHandler.h"
