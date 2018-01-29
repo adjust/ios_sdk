@@ -159,12 +159,12 @@
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
-        [logger warn:@"iAd.framework not found in user's app (sharedClient method not found)"];
+        [logger warn:@"iAd framework not found in user's app (sharedClient method not found)"];
         return;
     }
     id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
     if (ADClientSharedClientInstance == nil) {
-        [logger warn:@"iAd.framework not found in user's app (ADClientSharedClientInstance is nil)"];
+        [logger warn:@"iAd framework not found in user's app (ADClientSharedClientInstance is nil)"];
         return;
     }
 
