@@ -184,16 +184,10 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     }
     [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
 
-    NSURL *url;
-    NSString * baseUrl = [ADJAdjustFactory baseUrl];
-    if (selfI.basePath != nil) {
-        //url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", sUrl, selfI.basePath]];
-        url = [NSURL URLWithString:selfI.basePath relativeToURL:[NSURL URLWithString:baseUrl]];
-    } else {
-        url = [NSURL URLWithString:@"/" relativeToURL:[NSURL URLWithString:baseUrl]];
-    }
+    NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
 
-    [ADJUtil sendGetRequest:url
+    [ADJUtil sendGetRequest:baseUrl
+                   basePath:selfI.basePath
          prefixErrorMessage:@"Failed to get attribution"
             activityPackage:selfI.attributionPackage
         responseDataHandler:^(ADJResponseData * responseData)

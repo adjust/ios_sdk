@@ -516,6 +516,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (void)sendGetRequest:(NSURL *)baseUrl
+              basePath:(NSString *)basePath
     prefixErrorMessage:(NSString *)prefixErrorMessage
        activityPackage:(ADJActivityPackage *)activityPackage
    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
@@ -523,7 +524,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
     NSString *secretId = [ADJUtil extractSecretId:activityPackage];
 
-    NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage baseUrl:baseUrl];
+    NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage baseUrl:baseUrl basePath:basePath];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
@@ -630,12 +631,17 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
-                                       baseUrl:(NSURL *)baseUrl{
+                                      baseUrl:(NSURL *)baseUrl
+                                     basePath:(NSString *)basePath
+{
     NSString *parameters = [ADJUtil queryString:activityPackage.parameters];
-    NSURL *trueBaseUrl = [baseUrl baseURL];
-    NSString *basePath = [baseUrl path];
-    NSString *relativePath = [NSString stringWithFormat:@"%@%@?%@", basePath, activityPackage.path, parameters];
-    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:trueBaseUrl];
+    NSString *relativePath;
+    if (basePath != nil) {
+        relativePath = [NSString stringWithFormat:@"%@%@?%@", basePath, activityPackage.path, parameters];
+    } else {
+        relativePath = [NSString stringWithFormat:@"%@?%@", activityPackage.path, parameters];
+    }
+    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
