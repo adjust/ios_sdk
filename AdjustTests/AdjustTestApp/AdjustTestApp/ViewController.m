@@ -30,8 +30,8 @@
 
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-    //[self.testLibrary setTests:@"current/Test_example"];
-    //[self.testLibrary setTests:@"current/Test_EventBuffering;current/Test_Event_Count"];
+    // [self.testLibrary addTestDirectory:@"current/sdkInfo"];
+    // [self.testLibrary addTest:@"current/appSecret/Test_AppSecret_no_secret"];
 
     [self startTestSession];
 }

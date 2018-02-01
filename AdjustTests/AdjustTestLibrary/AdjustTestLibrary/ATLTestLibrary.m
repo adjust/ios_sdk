@@ -26,7 +26,7 @@
 //@property (nonatomic, copy) NSString *baseUrl;
 @property (nonatomic, strong) ATLBlockingQueue *waitControlQueue;
 @property (nonatomic, strong) ATLControlChannel *controlChannel;
-@property (nonatomic, copy) NSString *testNames;
+@property (nonatomic, strong) NSMutableString *testNames;
 
 @property (nonatomic, strong) ATLTestInfo *infoToServer;
 
@@ -54,12 +54,29 @@ static NSURL * _baseUrl = nil;
     _baseUrl = [NSURL URLWithString:baseUrl];
     //self.baseUrl = baseUrl;
     self.commandDelegate = commandDelegate;
+    self.testNames = [[NSMutableString alloc] init];
     
     return self;
 }
 
-- (void)setTests:(NSString *)testNames {
-    self.testNames = testNames;
+- (void)addTest:(NSString *)testName {
+    [self.testNames appendString:testName];
+
+    if (![testName hasSuffix:@";"]) {
+        [self.testNames appendString:@";"];
+    }
+}
+
+- (void)addTestDirectory:(NSString *)testDirectory {
+    [self.testNames appendString:testDirectory];
+
+    if (![testDirectory hasSuffix:@"/"] || ![testDirectory hasSuffix:@"/;"]) {
+        [self.testNames appendString:@"/"];
+    }
+
+    if (![testDirectory hasSuffix:@";"]) {
+        [self.testNames appendString:@";"];
+    }
 }
 
 - (void)startTestSession:(NSString *)clientSdk {

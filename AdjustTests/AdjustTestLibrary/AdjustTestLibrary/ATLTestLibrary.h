@@ -28,7 +28,9 @@
 - (id)initWithBaseUrl:(NSString *)baseUrl
    andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
 
-- (void)setTests:(NSString *)testNames;
+- (void)addTest:(NSString *)testName;
+
+- (void)addTestDirectory:(NSString *)testDirectory;
 
 - (void)startTestSession:(NSString *)clientSdk;
 
