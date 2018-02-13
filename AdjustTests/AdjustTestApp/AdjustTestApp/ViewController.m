@@ -37,7 +37,7 @@
 }
 
 - (void)startTestSession {
-    [self.testLibrary startTestSession:@"ios4.12.1"];
+    [self.testLibrary startTestSession:@"ios4.12.2"];
 }
 
 - (void)didReceiveMemoryWarning {
