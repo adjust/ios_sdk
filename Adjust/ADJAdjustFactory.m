@@ -25,7 +25,7 @@ static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 
 static NSString * const kBaseUrl = @"https://app.adjust.com";
-static NSString * internalBaseUrl = kBaseUrl;
+static NSString * internalBaseUrl = @"https://app.adjust.com";
 
 @implementation ADJAdjustFactory
 
