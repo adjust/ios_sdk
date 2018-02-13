@@ -24,6 +24,9 @@ static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 
+static NSString * const kBaseUrl = @"https://app.adjust.com";
+static NSString * internalBaseUrl = @"https://app.adjust.com";
+
 @implementation ADJAdjustFactory
 
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
@@ -63,7 +66,7 @@ static NSTimeInterval internalMaxDelayStart = -1;
 }
 
 + (double)sessionInterval {
-    if (internalSessionInterval == -1) {
+    if (internalSessionInterval < 0) {
         return 30 * 60;           // 30 minutes
     }
     return internalSessionInterval;
@@ -77,14 +80,14 @@ static NSTimeInterval internalMaxDelayStart = -1;
 }
 
 + (NSTimeInterval)timerInterval {
-    if (internalTimerInterval == -1) {
+    if (internalTimerInterval < 0) {
         return 60;                // 1 minute
     }
     return internalTimerInterval;
 }
 
 + (NSTimeInterval)timerStart {
-    if (intervalTimerStart == -1) {
+    if (intervalTimerStart < 0) {
         return 60;                 // 1 minute
     }
     return intervalTimerStart;
@@ -134,10 +137,14 @@ static NSTimeInterval internalMaxDelayStart = -1;
 }
 
 + (NSTimeInterval)maxDelayStart {
-    if (internalMaxDelayStart == -1) {
+    if (internalMaxDelayStart < 0) {
         return 10.0;               // 10 seconds
     }
     return internalMaxDelayStart;
+}
+
++ (NSString *)baseUrl {
+    return internalBaseUrl;
 }
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
@@ -196,7 +203,15 @@ static NSTimeInterval internalMaxDelayStart = -1;
     internalMaxDelayStart = maxDelayStart;
 }
 
-+ (void)teardown {
++ (void)setBaseUrl:(NSString *)baseUrl {
+    internalBaseUrl = baseUrl;
+}
+
++ (void)teardown:(BOOL)deleteState {
+    if (deleteState) {
+        [ADJActivityHandler deleteState];
+        [ADJPackageHandler deleteState];
+    }
     internalPackageHandler = nil;
     internalRequestHandler = nil;
     internalActivityHandler = nil;
@@ -210,6 +225,8 @@ static NSTimeInterval internalMaxDelayStart = -1;
     intervalTimerStart = -1;
     packageHandlerBackoffStrategy = nil;
     sdkClickHandlerBackoffStrategy = nil;
+    internalTesting = NO;
     internalMaxDelayStart = -1;
+    internalBaseUrl = kBaseUrl;
 }
 @end

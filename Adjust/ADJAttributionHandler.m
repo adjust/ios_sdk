@@ -24,6 +24,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (nonatomic, strong) ADJTimerOnce *attributionTimer;
 @property (nonatomic, strong) ADJActivityPackage * attributionPackage;
 @property (atomic, assign) BOOL paused;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -50,6 +51,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.logger = ADJAdjustFactory.logger;
     self.attributionPackage = attributionPackage;
     self.paused = !startsSending;
+    self.basePath = [activityHandler getBasePath];
     __weak __typeof__(self) weakSelf = self;
     self.attributionTimer = [ADJTimerOnce timerWithBlock:^{
         __typeof__(self) strongSelf = weakSelf;
@@ -182,7 +184,10 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     }
     [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
 
-    [ADJUtil sendGetRequest:[NSURL URLWithString:ADJUtil.baseUrl]
+    NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
+
+    [ADJUtil sendGetRequest:baseUrl
+                   basePath:selfI.basePath
          prefixErrorMessage:@"Failed to get attribution"
             activityPackage:selfI.attributionPackage
         responseDataHandler:^(ADJResponseData * responseData)

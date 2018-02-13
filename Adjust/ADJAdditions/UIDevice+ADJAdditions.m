@@ -2,8 +2,8 @@
 //  UIDevice+ADJAdditions.m
 //  Adjust
 //
-//  Created by Christian Wellenbrock on 23.07.12.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2012.
+//  Copyright © 2012-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "UIDevice+ADJAdditions.h"
@@ -27,17 +27,14 @@
 #if ADJUST_NO_IDFA
     return NO;
 #else
-
     // return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return NO;
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
     NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![class respondsToSelector:selManager]) {
@@ -52,7 +49,6 @@
     }
     BOOL enabled = (BOOL)[manager performSelector:selEnabled];
     return enabled;
-
 #pragma clang diagnostic pop
 #endif
 }
@@ -61,14 +57,12 @@
 #if ADJUST_NO_IDFA
     return @"";
 #else
-
     // return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     if (class == nil) {
         return @"";
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
@@ -109,9 +103,7 @@
             result = @"";
         }
     };
-    [NSThread isMainThread] ?
-    resultRetrievalBlock() :
-    dispatch_sync(dispatch_get_main_queue(), resultRetrievalBlock);
+    [NSThread isMainThread] ? resultRetrievalBlock() : dispatch_sync(dispatch_get_main_queue(), resultRetrievalBlock);
     return result;
 #endif
 }
@@ -148,10 +140,8 @@
 }
 
 - (void)adjSetIad:(ADJActivityHandler *)activityHandler
-       triesV3Left:(int)triesV3Left
-{
+      triesV3Left:(int)triesV3Left {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
-    [logger debug:@"iAd with %d tries to read v3", triesV3Left];
 
 #if ADJUST_NO_IAD || TARGET_OS_TV
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
@@ -162,19 +152,24 @@
     // [[ADClient sharedClient] ...]
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
+        [logger warn:@"iAd framework not found in user's app (ADClientClass not found)"];
         return;
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
+        [logger warn:@"iAd framework not found in user's app (sharedClient method not found)"];
         return;
     }
     id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
-
     if (ADClientSharedClientInstance == nil) {
+        [logger warn:@"iAd framework not found in user's app (ADClientSharedClientInstance is nil)"];
         return;
     }
+
+    [logger debug:@"iAd framework successfully found in user's app"];
+    [logger debug:@"iAd with %d tries to read v3", triesV3Left];
 
     // if no tries for iad v3 left, stop trying
     if (triesV3Left == 0) {
@@ -183,8 +178,8 @@
     }
 
     BOOL isIadV3Avaliable = [self adjSetIadWithDetails:activityHandler
-                     ADClientSharedClientInstance:ADClientSharedClientInstance
-                                      retriesLeft:(triesV3Left - 1)];
+                          ADClientSharedClientInstance:ADClientSharedClientInstance
+                                           retriesLeft:(triesV3Left - 1)];
 
     // if iad v3 not available
     if (!isIadV3Avaliable) {
@@ -197,10 +192,8 @@
 
 - (BOOL)adjSetIadWithDetails:(ADJActivityHandler *)activityHandler
 ADClientSharedClientInstance:(id)ADClientSharedClientInstance
-                 retriesLeft:(int)retriesLeft
-{
+                 retriesLeft:(int)retriesLeft {
     SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
-
     if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
         return NO;
     }

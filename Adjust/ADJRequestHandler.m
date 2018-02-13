@@ -18,13 +18,13 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @interface ADJRequestHandler()
 
-@property (nonatomic, strong) NSURL *baseUrl;
-
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 
 @property (nonatomic, weak) id<ADJPackageHandler> packageHandler;
+
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -46,8 +46,8 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
     self.logger = ADJAdjustFactory.logger;
-    self.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
-    
+    self.basePath = [packageHandler getBasePath];
+
     return self;
 }
 
@@ -63,7 +63,6 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     [ADJAdjustFactory.logger verbose:@"ADJRequestHandler teardown"];
     
     self.logger = nil;
-    self.baseUrl = nil;
     self.internalQueue = nil;
     self.packageHandler = nil;
 }
@@ -71,7 +70,15 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 #pragma mark - Private & helper methods
 
 - (void)sendI:(ADJRequestHandler *)selfI activityPackage:(ADJActivityPackage *)activityPackage queueSize:(NSUInteger)queueSize {
-    [ADJUtil sendPostRequest:selfI.baseUrl
+    NSURL *url;
+    NSString * baseUrl = [ADJAdjustFactory baseUrl];
+    if (selfI.basePath != nil) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+    } else {
+        url = [NSURL URLWithString:baseUrl];
+    }
+
+    [ADJUtil sendPostRequest:url
                    queueSize:queueSize
           prefixErrorMessage:activityPackage.failureMessage
           suffixErrorMessage:@"Will retry later"

@@ -29,6 +29,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -49,6 +50,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
+    self.basePath = [activityHandler getBasePath];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -133,7 +135,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 }
 
-- (void)teardown:(BOOL)deleteState {
+- (NSString *)getBasePath {
+    return _basePath;
+}
+
+- (void)teardown {
     [ADJAdjustFactory.logger verbose:@"ADJPackageHandler teardown"];
     if (self.sendingSemaphore != nil) {
         dispatch_semaphore_signal(self.sendingSemaphore);
@@ -141,13 +147,21 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (self.requestHandler != nil) {
         [self.requestHandler teardown];
     }
-    [self teardownPackageQueueS:deleteState];
+    [self teardownPackageQueueS];
     self.internalQueue = nil;
     self.sendingSemaphore = nil;
     self.requestHandler = nil;
     self.backoffStrategy = nil;
     self.activityHandler = nil;
     self.logger = nil;
+}
+
++ (void)deleteState {
+    [ADJPackageHandler deletePackageQueue];
+}
+
++ (void)deletePackageQueue {
+    [ADJUtil deleteFileWithName:kPackageQueueFilename];
 }
 
 #pragma mark - internal
@@ -259,14 +273,10 @@ startsSending:(BOOL)startsSending
     }
 }
 
-- (void)teardownPackageQueueS:(BOOL)deleteState {
+- (void)teardownPackageQueueS {
     @synchronized ([ADJPackageHandler class]) {
         if (self.packageQueue == nil) {
             return;
-        }
-
-        if (deleteState) {
-            [ADJUtil deleteFileWithName:kPackageQueueFilename];
         }
 
         [self.packageQueue removeAllObjects];

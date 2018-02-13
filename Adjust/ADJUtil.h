@@ -46,6 +46,7 @@ typedef void (^selfInjectedBlock)(id);
                 block:(selfInjectedBlock)block;
 
 + (void)sendGetRequest:(NSURL *)baseUrl
+              basePath:(NSString *)basePath
     prefixErrorMessage:(NSString *)prefixErrorMessage
        activityPackage:(ADJActivityPackage *)activityPackage
    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
@@ -58,8 +59,6 @@ typedef void (^selfInjectedBlock)(id);
     responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
 
 + (NSString *)idfa;
-
-+ (NSString *)baseUrl;
 
 + (NSString *)clientSdk;
 

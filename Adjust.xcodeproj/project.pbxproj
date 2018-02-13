@@ -281,6 +281,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6F08421C2007766800568A31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F08420C2007766700568A31;
+			remoteInfo = AdjustTestLibrary;
+		};
+		6F084244200776A100568A31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F0842272007769F00568A31;
+			remoteInfo = AdjustTestApp;
+		};
 		9679922318BBAE2800394606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -376,6 +390,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
+		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
 		6FCC84F71F278CF300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC84F81F278CF300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85021F27944600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -726,6 +742,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F0841FB2007749C00568A31 /* AdjustUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9D7431E71EB9F9B700969F14 /* AdjustExampleTests */,
+				96E5E39B18BBB49E008E7B30 /* Adjust-Prefix.pch */,
+				96E5E39C18BBB49E008E7B30 /* AdjustTests-Info.plist */,
+				96E5E39D18BBB49E008E7B30 /* ADJActivityHandlerMock.h */,
+				96E5E39E18BBB49E008E7B30 /* ADJActivityHandlerMock.m */,
+				96E5E39F18BBB49E008E7B30 /* ADJActivityHandlerTests.m */,
+				96E5E3A018BBB49E008E7B30 /* ADJLoggerMock.h */,
+				96E5E3A118BBB49E008E7B30 /* ADJLoggerMock.m */,
+				96E5E3A218BBB49E008E7B30 /* ADJPackageHandlerMock.h */,
+				96E5E3A318BBB49E008E7B30 /* ADJPackageHandlerMock.m */,
+				96E5E3A418BBB49E008E7B30 /* ADJPackageHandlerTests.m */,
+				96E5E3A518BBB49E008E7B30 /* ADJRequestHandlerMock.h */,
+				96E5E3A618BBB49E008E7B30 /* ADJRequestHandlerMock.m */,
+				96A2D2371CEF3B2D00C39DE0 /* ADJRequestHandlerTests.m */,
+				96E5E3A818BBB49E008E7B30 /* ADJTestsUtil.h */,
+				96E5E3A918BBB49E008E7B30 /* ADJTestsUtil.m */,
+				96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */,
+				96E5E3AC18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */,
+				96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */,
+				96ED00371A38A4CD00209110 /* ADJAttributionHandlerMock.h */,
+				96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */,
+				96ED003C1A38A98C00209110 /* ADJAttributionChangedDelegate.h */,
+				96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */,
+				9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */,
+				9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */,
+				9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */,
+				9620EA4C1B06401B009673F1 /* ADJTest.h */,
+				9620EA4D1B06401B009673F1 /* ADJTest.m */,
+				9620EA4F1B065177009673F1 /* ADJPackageFields.h */,
+				9620EA501B065177009673F1 /* ADJPackageFields.m */,
+				96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */,
+				96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */,
+				96ED74FD1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.h */,
+				96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */,
+				967D06981CE2272500ECFCE3 /* ADJSessionState.h */,
+				967D06991CE2272500ECFCE3 /* ADJSessionState.m */,
+				96E7689F1CE6267D005D811C /* ADJDeeplinkDelegate.h */,
+				96E768A01CE6267D005D811C /* ADJDeeplinkDelegate.m */,
+				96E768A81CE6281F005D811C /* ADJTrackingDelegate.h */,
+				96E768A91CE6281F005D811C /* ADJTrackingDelegate.m */,
+				96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */,
+				96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */,
+				96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */,
+				96FC6E561D258272004482D8 /* ADJEndSessionState.h */,
+				96FC6E571D258272004482D8 /* ADJEndSessionState.m */,
+				9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */,
+				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
+			);
+			path = AdjustUnitTests;
+			sourceTree = "<group>";
+		};
+		6F0842192007766700568A31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F08421D2007766800568A31 /* libAdjustTestLibrary.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F084241200776A000568A31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F084245200776A100568A31 /* AdjustTestApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -881,53 +967,9 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D7431E71EB9F9B700969F14 /* AdjustExampleTests */,
-				96E5E39B18BBB49E008E7B30 /* Adjust-Prefix.pch */,
-				96E5E39C18BBB49E008E7B30 /* AdjustTests-Info.plist */,
-				96E5E39D18BBB49E008E7B30 /* ADJActivityHandlerMock.h */,
-				96E5E39E18BBB49E008E7B30 /* ADJActivityHandlerMock.m */,
-				96E5E39F18BBB49E008E7B30 /* ADJActivityHandlerTests.m */,
-				96E5E3A018BBB49E008E7B30 /* ADJLoggerMock.h */,
-				96E5E3A118BBB49E008E7B30 /* ADJLoggerMock.m */,
-				96E5E3A218BBB49E008E7B30 /* ADJPackageHandlerMock.h */,
-				96E5E3A318BBB49E008E7B30 /* ADJPackageHandlerMock.m */,
-				96E5E3A418BBB49E008E7B30 /* ADJPackageHandlerTests.m */,
-				96E5E3A518BBB49E008E7B30 /* ADJRequestHandlerMock.h */,
-				96E5E3A618BBB49E008E7B30 /* ADJRequestHandlerMock.m */,
-				96A2D2371CEF3B2D00C39DE0 /* ADJRequestHandlerTests.m */,
-				96E5E3A818BBB49E008E7B30 /* ADJTestsUtil.h */,
-				96E5E3A918BBB49E008E7B30 /* ADJTestsUtil.m */,
-				96E5E3AA18BBB49E008E7B30 /* InfoPlist.strings */,
-				96E5E3AC18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.h */,
-				96E5E3AD18BBB49E008E7B30 /* NSURLConnection+NSURLConnectionSynchronousLoadingMocking.m */,
-				96ED00371A38A4CD00209110 /* ADJAttributionHandlerMock.h */,
-				96ED00381A38A4CD00209110 /* ADJAttributionHandlerMock.m */,
-				96ED003C1A38A98C00209110 /* ADJAttributionChangedDelegate.h */,
-				96ED003D1A38A98C00209110 /* ADJAttributionChangedDelegate.m */,
-				9657BF6E1A3B029000CD6853 /* ADJAttributionHandlerTests.m */,
-				9620EA431B062D6F009673F1 /* ADJTestActivityPackage.h */,
-				9620EA441B062D6F009673F1 /* ADJTestActivityPackage.m */,
-				9620EA4C1B06401B009673F1 /* ADJTest.h */,
-				9620EA4D1B06401B009673F1 /* ADJTest.m */,
-				9620EA4F1B065177009673F1 /* ADJPackageFields.h */,
-				9620EA501B065177009673F1 /* ADJPackageFields.m */,
-				96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */,
-				96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */,
-				96ED74FD1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.h */,
-				96ED74FE1CD81B3E00C073B8 /* ADJSdkClickHandlerMock.m */,
-				967D06981CE2272500ECFCE3 /* ADJSessionState.h */,
-				967D06991CE2272500ECFCE3 /* ADJSessionState.m */,
-				96E7689F1CE6267D005D811C /* ADJDeeplinkDelegate.h */,
-				96E768A01CE6267D005D811C /* ADJDeeplinkDelegate.m */,
-				96E768A81CE6281F005D811C /* ADJTrackingDelegate.h */,
-				96E768A91CE6281F005D811C /* ADJTrackingDelegate.m */,
-				96A2D2251CEE0E6200C39DE0 /* ADJSdkClickHandlerTests.m */,
-				96FC6E4D1D256B81004482D8 /* ADJActivityHandlerConstructorState.h */,
-				96FC6E4E1D256B81004482D8 /* ADJActivityHandlerConstructorState.m */,
-				96FC6E561D258272004482D8 /* ADJEndSessionState.h */,
-				96FC6E571D258272004482D8 /* ADJEndSessionState.m */,
-				9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */,
-				9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */,
+				6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */,
+				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
+				6F0841FB2007749C00568A31 /* AdjustUnitTests */,
 			);
 			path = AdjustTests;
 			sourceTree = "<group>";
@@ -999,8 +1041,7 @@
 				9D7431F91EB9F9B700969F14 /* Info.plist */,
 				9D7431E81EB9F9B700969F14 /* Supporting Files */,
 			);
-			name = AdjustExampleTests;
-			path = ../AdjustExampleTests;
+			path = AdjustExampleTests;
 			sourceTree = "<group>";
 		};
 		9D7431E81EB9F9B700969F14 /* Supporting Files */ = {
@@ -1492,6 +1533,14 @@
 					ProductGroup = 9D449DCC1E6ED24400E7E80B /* Products */;
 					ProjectRef = 9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */;
 				},
+				{
+					ProductGroup = 6F084241200776A000568A31 /* Products */;
+					ProjectRef = 6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */;
+				},
+				{
+					ProductGroup = 6F0842192007766700568A31 /* Products */;
+					ProjectRef = 6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1507,6 +1556,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6F08421D2007766800568A31 /* libAdjustTestLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAdjustTestLibrary.a;
+			remoteRef = 6F08421C2007766800568A31 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6F084245200776A100568A31 /* AdjustTestApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = AdjustTestApp.app;
+			remoteRef = 6F084244200776A100568A31 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -2026,7 +2089,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2050,7 +2113,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2068,12 +2131,12 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
+				INFOPLIST_FILE = "AdjustTests/AdjustUnitTests/AdjustTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
@@ -2092,8 +2155,8 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/Adjust-Prefix.pch";
-				INFOPLIST_FILE = "AdjustTests/AdjustTests-Info.plist";
+				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
+				INFOPLIST_FILE = "AdjustTests/AdjustUnitTests/AdjustTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "adjust.${PRODUCT_NAME:rfc1034identifier}";

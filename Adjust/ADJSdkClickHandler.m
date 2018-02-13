@@ -22,8 +22,8 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
 @property (nonatomic, strong) ADJBackoffStrategy * backoffStrategy;
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, strong) NSMutableArray *packageQueue;
-@property (nonatomic, strong) NSURL *baseUrl;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
+@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -45,6 +45,7 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
     self.logger = ADJAdjustFactory.logger;
+    self.basePath = [activityHandler getBasePath];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -91,7 +92,6 @@ static const char * const kInternalQueueName    = "com.adjust.SdkClickQueue";
     self.logger = nil;
     self.backoffStrategy = nil;
     self.packageQueue = nil;
-    self.baseUrl = nil;
     self.activityHandler = nil;
 }
 
@@ -104,7 +104,6 @@ startsSending:(BOOL)startsSending
     selfI.paused = !startsSending;
     selfI.backoffStrategy = [ADJAdjustFactory sdkClickHandlerBackoffStrategy];
     selfI.packageQueue = [NSMutableArray array];
-    selfI.baseUrl = [NSURL URLWithString:ADJUtil.baseUrl];
 }
 
 - (void)sendSdkClickI:(ADJSdkClickHandler *)selfI
@@ -135,8 +134,16 @@ startsSending:(BOOL)startsSending
         return;
     }
 
+    NSURL *url;
+    NSString * baseUrl = [ADJAdjustFactory baseUrl];
+    if (selfI.basePath != nil) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+    } else {
+        url = [NSURL URLWithString:baseUrl];
+    }
+
     dispatch_block_t work = ^{
-        [ADJUtil sendPostRequest:selfI.baseUrl
+        [ADJUtil sendPostRequest:url
                        queueSize:queueSize - 1
               prefixErrorMessage:sdkClickPackage.failureMessage
               suffixErrorMessage:@"Will retry later"

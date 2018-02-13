@@ -101,6 +101,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 // copy for objects shared with the user
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, copy) NSData* deviceTokenData;
+@property (nonatomic, copy) NSString* basePath;
 
 @end
 
@@ -187,6 +188,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
+
+    if (savedPreLaunch.basePath != nil) {
+        self.basePath = savedPreLaunch.basePath;
+    }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -522,7 +527,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
-- (void)teardown:(BOOL)deleteState
+- (NSString *)getBasePath {
+    return _basePath;
+}
+
+- (void)teardown
 {
     [ADJAdjustFactory.logger verbose:@"ADJActivityHandler teardown"];
     [self removeNotificationObserver];
@@ -539,18 +548,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         [self.attributionHandler teardown];
     }
     if (self.packageHandler != nil) {
-        [self.packageHandler teardown:deleteState];
+        [self.packageHandler teardown];
     }
     if (self.sdkClickHandler != nil) {
         [self.sdkClickHandler teardown];
     }
-    [self teardownActivityStateS:deleteState];
-    [self teardownAttributionS:deleteState];
-    [self teardownAllSessionParametersS:deleteState];
-
-    if (deleteState) {
-        [ADJUserDefaults clearAdjustStuff];
-    }
+    [self teardownActivityStateS];
+    [self teardownAttributionS];
+    [self teardownAllSessionParametersS];
 
     [ADJUtil teardown];
 
@@ -567,6 +572,33 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.delayStartTimer = nil;
     self.logger = nil;
 }
+
++ (void)deleteState
+{
+    [ADJActivityHandler deleteActivityState];
+    [ADJActivityHandler deleteAttribution];
+    [ADJActivityHandler deleteSessionCallbackParameter];
+    [ADJActivityHandler deleteSessionPartnerParameter];
+
+    [ADJUserDefaults clearAdjustStuff];
+}
+
++ (void)deleteActivityState {
+    [ADJUtil deleteFileWithName:kActivityStateFilename];
+}
+
++ (void)deleteAttribution {
+    [ADJUtil deleteFileWithName:kAttributionFilename];
+}
+
++ (void)deleteSessionCallbackParameter {
+    [ADJUtil deleteFileWithName:kSessionCallbackParametersFilename];
+}
+
++ (void)deleteSessionPartnerParameter {
+    [ADJUtil deleteFileWithName:kSessionPartnerParametersFilename];
+}
+
 
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
@@ -1309,14 +1341,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)teardownActivityStateS:(BOOL)deleteState
+- (void)teardownActivityStateS
 {
     @synchronized ([ADJActivityState class]) {
         if (self.activityState == nil) {
             return;
-        }
-        if (deleteState) {
-            [ADJUtil deleteFileWithName:kActivityStateFilename];
         }
         self.activityState = nil;
     }
@@ -1331,14 +1360,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)teardownAttributionS:(BOOL)deleteState
+- (void)teardownAttributionS
 {
     @synchronized ([ADJAttribution class]) {
         if (self.attribution == nil) {
             return;
-        }
-        if (deleteState) {
-            [ADJUtil deleteFileWithName:kAttributionFilename];
         }
         self.attribution = nil;
     }
@@ -1379,14 +1405,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)teardownAllSessionParametersS:(BOOL)deleteState {
+- (void)teardownAllSessionParametersS {
     @synchronized ([ADJSessionParameters class]) {
         if (self.sessionParameters == nil) {
             return;
-        }
-        if (deleteState) {
-            [ADJUtil deleteFileWithName:kSessionCallbackParametersFilename];
-            [ADJUtil deleteFileWithName:kSessionPartnerParametersFilename];
         }
         [self.sessionParameters.callbackParameters removeAllObjects];
         [self.sessionParameters.partnerParameters removeAllObjects];

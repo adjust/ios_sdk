@@ -26,7 +26,10 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)updatePackages:(ADJSessionParameters *)sessionParameters;
-- (void)teardown:(BOOL)deleteState;
+- (NSString *)getBasePath;
+
+- (void)teardown;
++ (void)deleteState;
 @end
 
 @interface ADJPackageHandler : NSObject <ADJPackageHandler>

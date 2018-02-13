@@ -21,6 +21,9 @@
 NSString * const ADJEnvironmentSandbox      = @"sandbox";
 NSString * const ADJEnvironmentProduction   = @"production";
 
+@implementation AdjustTestOptions
+@end
+
 @interface Adjust()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
@@ -35,10 +38,10 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 #pragma mark - Object lifecycle methods
 
-+ (id)getInstance {
-    static Adjust *defaultInstance = nil;
-    static dispatch_once_t onceToken;
+static Adjust *defaultInstance = nil;
+static dispatch_once_t onceToken = 0;
 
++ (id)getInstance {
     dispatch_once(&onceToken, ^{
         defaultInstance = [[self alloc] init];
     });
@@ -147,6 +150,18 @@ NSString * const ADJEnvironmentProduction   = @"production";
 
 + (NSString *)adid {
     return [[Adjust getInstance] adid];
+}
+
++ (void)setTestOptions:(AdjustTestOptions *)testOptions {
+    if (testOptions.teardown) {
+        if (defaultInstance != nil) {
+            [defaultInstance teardown];
+        }
+        defaultInstance = nil;
+        onceToken = 0;
+        [ADJAdjustFactory teardown:testOptions.deleteState];
+    }
+    [[Adjust getInstance] setTestOptions:(AdjustTestOptions *)testOptions];
 }
 
 #pragma mark - Public instance methods
@@ -353,14 +368,39 @@ NSString * const ADJEnvironmentProduction   = @"production";
     return [self.activityHandler adid];
 }
 
-- (void)teardown:(BOOL)deleteState {
+- (void)teardown {
     if (self.activityHandler == nil) {
         [self.logger error:@"Adjust already down or not initialized"];
         return;
     }
 
-    [self.activityHandler teardown:deleteState];
+    [self.activityHandler teardown];
     self.activityHandler = nil;
+}
+
+- (void)setTestOptions:(AdjustTestOptions *)testOptions {
+    if (testOptions.basePath != nil) {
+        self.savedPreLaunch.basePath = testOptions.basePath;
+    }
+    if (testOptions.baseUrl != nil) {
+        [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
+    }
+    if (testOptions.timerIntervalInMilliseconds != nil) {
+        NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;
+        [ADJAdjustFactory setTimerInterval:timerIntervalInSeconds];
+    }
+    if (testOptions.timerStartInMilliseconds != nil) {
+        NSTimeInterval timerStartInSeconds = [testOptions.timerStartInMilliseconds intValue] / 1000.0;
+        [ADJAdjustFactory setTimerStart:timerStartInSeconds];
+    }
+    if (testOptions.sessionIntervalInMilliseconds != nil) {
+        NSTimeInterval sessionIntervalInSeconds = [testOptions.sessionIntervalInMilliseconds intValue] / 1000.0;
+        [ADJAdjustFactory setSessionInterval:sessionIntervalInSeconds];
+    }
+    if (testOptions.subsessionIntervalInMilliseconds != nil) {
+        NSTimeInterval subsessionIntervalInSeconds = [testOptions.subsessionIntervalInMilliseconds intValue] / 1000.0;
+        [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
+    }
 }
 
 #pragma mark - Private & helper methods

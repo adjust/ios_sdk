@@ -39,6 +39,7 @@
                                                     startsSending:(BOOL)startsSending;
 + (BOOL)testing;
 + (NSTimeInterval)maxDelayStart;
++ (NSString *)baseUrl;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -54,6 +55,7 @@
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
++ (void)setBaseUrl:(NSString *)baseUrl;
 
-+ (void)teardown;
++ (void)teardown:(BOOL)deleteState;
 @end
