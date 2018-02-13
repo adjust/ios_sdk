@@ -1,3 +1,12 @@
+### Version 4.12.2 (13th February 2018)
+#### Changed
+- Improved SDK logging to indicate the presence/absence of `iAd.framework` inside of the app.
+
+#### Fixed
+- Added handling of occasional `nil` file paths when attempting to write to file.
+
+---
+
 ### Version 4.12.1 (13th December 2017)
 #### Fixed
 - Fixed compatibility of Adjust SDK with apps that are already using `Reachability` class (https://github.com/adjust/ios_sdk/issues/315) (thanks to @fedetrim).
