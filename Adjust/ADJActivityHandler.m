@@ -704,6 +704,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     if (!isInactive) {
         [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
+        selfI.internalState.background = NO;
         [selfI startI:selfI];
     } else {
         [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
