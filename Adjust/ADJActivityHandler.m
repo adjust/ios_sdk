@@ -194,16 +194,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
-        [ADJUtil launchInQueue:self.internalQueue
-                    selfInject:self
-                         block:^(ADJActivityHandler * selfI) {
-                             [selfI initI:selfI
-                    preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray
-                               isInactive:isInactive];
-                         }];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI initI:selfI
+                preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
+                     }];
 
-    }];
 
     // self.deviceTokenData = savedPreLaunch.deviceTokenData;
     if (self.activityState != nil) {
@@ -606,7 +603,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
 preLaunchActionsArray:(NSArray*)preLaunchActionsArray
-   isInactive:(BOOL) isInactive
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -702,13 +698,17 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
-    if (!isInactive) {
-        [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
-        selfI.internalState.background = NO;
-        [selfI startI:selfI];
-    } else {
-        [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
-    }
+    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+        [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
+            if (!isInactive) {
+                [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
+                selfI.internalState.background = NO;
+                [selfI startI:selfI];
+            } else {
+                [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
+            }
+        }];
+    }];
 }
 
 - (void)startI:(ADJActivityHandler *)selfI {
