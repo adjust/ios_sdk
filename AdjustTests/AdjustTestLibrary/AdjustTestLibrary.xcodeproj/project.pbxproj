@@ -6,7 +6,27 @@
 	objectVersion = 48;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		20E71745203B162B0073AC91 /* AdjustTestLibraryStatic */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 20E71748203B162B0073AC91 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStatic" */;
+			buildPhases = (
+				20E71749203B163A0073AC91 /* Run Script */,
+			);
+			dependencies = (
+			);
+			name = AdjustTestLibraryStatic;
+			productName = UniversalLib;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842572007782600568A31 /* ATLTestLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20AC3040203C205D00CD9DA8 /* ATLTestInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842522007782500568A31 /* ATLTestInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842502007782500568A31 /* ATLControlChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842592007782600568A31 /* ATLConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842552007782500568A31 /* ATLUtilNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FFCFE732007AE0000467F01 /* ATLBlockingQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424D2007782500568A31 /* ATLControlChannel.m */; };
 		6F08425C2007782600568A31 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424F2007782500568A31 /* ATLTestLibrary.m */; };
 		6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842532007782500568A31 /* ATLTestInfo.m */; };
@@ -93,6 +113,22 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		20AC303E203C204600CD9DA8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20AC3040203C205D00CD9DA8 /* ATLTestInfo.h in Headers */,
+				20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */,
+				20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */,
+				20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */,
+				20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */,
+				20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		6F08420B2007766700568A31 /* AdjustTestLibrary */ = {
 			isa = PBXNativeTarget;
@@ -101,6 +137,7 @@
 				6F0842082007766700568A31 /* Sources */,
 				6F0842092007766700568A31 /* Frameworks */,
 				6F08420A2007766700568A31 /* CopyFiles */,
+				20AC303E203C204600CD9DA8 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -120,6 +157,10 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = adjust;
 				TargetAttributes = {
+					20E71745203B162B0073AC91 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					6F08420B2007766700568A31 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
@@ -139,9 +180,27 @@
 			projectRoot = "";
 			targets = (
 				6F08420B2007766700568A31 /* AdjustTestLibrary */,
+				20E71745203B162B0073AC91 /* AdjustTestLibraryStatic */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		20E71749203B163A0073AC91 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target ${PROJECT_NAME} ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target ${PROJECT_NAME} ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphonesimulator BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\nexport FRAMEWORK_LOC=\"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\"\nexport SOURCES_DIR=\"${BUILD_DIR}/../${PROJECT_NAME}\"\nexport STATIC_LIB_LOC=\"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\"\n\n# Delete framework if exists\nrm -rfv \"${FRAMEWORK_LOC}\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOC}/Headers\"\n\n# Copy all header files\nfind \"${SOURCES_DIR}/\" -name \"*.h\" -exec /bin/cp {} \"${FRAMEWORK_LOC}/Headers/\" \\;\n\n# Copy static library\n/bin/cp \"${STATIC_LIB_LOC}\" \"${FRAMEWORK_LOC}/${PROJECT_NAME}\"\n\necho \"Universal library can be found here:\"\necho \"${FRAMEWORK_LOC}\"\n\n# # Create the required symlinks\n# /bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n# /bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n# /bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n# \"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n#\n# # Copy the public headers into the framework\n# #/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n# \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6F0842082007766700568A31 /* Sources */ = {
@@ -160,6 +219,24 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		20E71746203B162B0073AC91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		20E71747203B162B0073AC91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		6F0842132007766700568A31 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -291,6 +368,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		20E71748203B162B0073AC91 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStatic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20E71746203B162B0073AC91 /* Debug */,
+				20E71747203B162B0073AC91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6F0842072007766700568A31 /* Build configuration list for PBXProject "AdjustTestLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
