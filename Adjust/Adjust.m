@@ -22,6 +22,25 @@ NSString * const ADJEnvironmentSandbox      = @"sandbox";
 NSString * const ADJEnvironmentProduction   = @"production";
 
 @implementation AdjustTestOptions
+
+-(id) init {
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    
+    self.timerIntervalInMilliseconds = nil;
+    self.timerStartInMilliseconds = nil;
+    self.sessionIntervalInMilliseconds = nil;
+    self.subsessionIntervalInMilliseconds = nil;
+    self.basePath = nil;
+    self.baseUrl = nil;
+    self.teardown = NO;
+    self.deleteState = NO;
+    
+    return self;
+}
+
 @end
 
 @interface Adjust()
