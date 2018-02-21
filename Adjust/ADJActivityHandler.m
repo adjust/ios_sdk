@@ -1263,6 +1263,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (![selfI isEnabledI:selfI]) {
         return;
     }
+    if (!selfI.activityState) {
+        return;
+    }
 
     NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
 
