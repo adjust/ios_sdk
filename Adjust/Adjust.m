@@ -22,7 +22,6 @@ NSString * const ADJEnvironmentSandbox      = @"sandbox";
 NSString * const ADJEnvironmentProduction   = @"production";
 
 @implementation AdjustTestOptions
-
 @end
 
 @interface Adjust()
