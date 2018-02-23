@@ -1,3 +1,13 @@
+### Version 4.12.3 (23rd February 2018)
+#### Added
+- Added `AdjustTestLibraryStatic` target to the project.
+
+#### Changed
+- Stopped creating session packages in case SDK is initialised in suspended app state.
+- Started to send install session package right away in case of delayed SDK initialisation.
+
+---
+
 ### Version 4.12.2 (13th February 2018)
 #### Changed
 - Improved SDK logging to indicate the presence/absence of `iAd.framework` inside of the app.
