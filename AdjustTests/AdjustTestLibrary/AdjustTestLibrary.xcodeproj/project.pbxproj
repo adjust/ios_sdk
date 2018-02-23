@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		20412650203FF86300CC40DB /* ATLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842542007782500568A31 /* ATLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842572007782600568A31 /* ATLTestLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3040203C205D00CD9DA8 /* ATLTestInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842522007782500568A31 /* ATLTestInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842502007782500568A31 /* ATLControlChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -134,6 +135,7 @@
 				20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */,
 				20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */,
 				20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */,
+				20412650203FF86300CC40DB /* ATLUtil.h in Headers */,
 				20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
