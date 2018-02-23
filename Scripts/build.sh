@@ -38,3 +38,7 @@ carthage build --no-skip-current
 
 # Copy build Carthage framework to Frameworks folder
 cp -R Carthage/Build/iOS/* Frameworks/Dynamic/
+
+# Build static AdjustTestLibrary.framework
+cd AdjustTests/AdjustTestLibrary
+xcodebuild -target AdjustTestLibraryStatic -configuration Debug clean build

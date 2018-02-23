@@ -198,8 +198,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI initI:selfI
-        preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
+                preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
+
 
     // self.deviceTokenData = savedPreLaunch.deviceTokenData;
     if (self.activityState != nil) {
@@ -599,7 +600,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [ADJUtil deleteFileWithName:kSessionPartnerParametersFilename];
 }
 
-
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
 preLaunchActionsArray:(NSArray*)preLaunchActionsArray
@@ -698,7 +698,17 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
-    [selfI startI:selfI];
+    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+        [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
+            if (!isInactive) {
+                [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
+                selfI.internalState.background = NO;
+                [selfI startI:selfI];
+            } else {
+                [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
+            }
+        }];
+    }];
 }
 
 - (void)startI:(ADJActivityHandler *)selfI {
@@ -1251,6 +1261,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)setDeviceTokenI:(ADJActivityHandler *)selfI
             deviceToken:(NSData *)deviceToken {
     if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (!selfI.activityState) {
         return;
     }
 

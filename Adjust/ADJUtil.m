@@ -41,7 +41,7 @@ static CTCarrier *carrier = nil;
 
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.12.2";
+static NSString * const kClientSdk                  = @"ios4.12.3";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1162,6 +1162,34 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         dispatch_async(dispatch_get_main_queue(), block);
     }
 }
+
++ (BOOL)isMainThread {
+    return [[NSThread currentThread] isMainThread];
+}
+
++ (BOOL)isInactive {
+    return [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive;
+}
+
++ (void)launchInMainThreadWithInactive:(isInactiveInjected)isInactiveblock {
+    dispatch_block_t block = ^void(void) {
+        __block BOOL isInactive = [ADJUtil isInactive];
+        isInactiveblock(isInactive);
+    };
+
+    if ([ADJUtil isMainThread]) {
+        block();
+        return;
+    }
+
+    if (ADJAdjustFactory.testing) {
+        [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
+    } else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
+
 
 + (BOOL)isValidParameter:(NSString *)attribute
            attributeType:(NSString *)attributeType
