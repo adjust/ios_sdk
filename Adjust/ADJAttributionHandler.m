@@ -98,7 +98,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
                 selfInject:self
                      block:^(ADJAttributionHandler* selfI) {
                          [selfI waitRequestAttributionWithDelayI:selfI
-                                               milliSecondsDelay:0];
+                                               milliSecondsDelay:0
+                                                isSdkAskingForIt:YES];
 
                      }];
 }
@@ -147,7 +148,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
         [selfI.activityHandler setAskingAttribution:YES];
 
         [selfI waitRequestAttributionWithDelayI:selfI
-                              milliSecondsDelay:[timerMilliseconds intValue]];
+                              milliSecondsDelay:[timerMilliseconds intValue]
+                               isSdkAskingForIt:NO];
 
         return;
     }
@@ -200,11 +202,17 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 
 - (void)waitRequestAttributionWithDelayI:(ADJAttributionHandler*)selfI
                        milliSecondsDelay:(int)milliSecondsDelay
-{
+                        isSdkAskingForIt:(BOOL)isSdkAsking {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
     NSTimeInterval nextAskIn = [selfI.attributionTimer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
+    }
+
+    if (isSdkAsking) {
+        [selfI.attributionPackage.parameters setObject:@"1" forKey:@"sdk_asking"];
+    } else {
+        [selfI.attributionPackage.parameters setObject:@"0" forKey:@"sdk_asking"];
     }
 
     if (milliSecondsDelay > 0) {
