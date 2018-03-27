@@ -210,9 +210,9 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     }
 
     if (isSdkAsking) {
-        [selfI.attributionPackage.parameters setObject:@"sdk" forKey:@"author"];
+        [selfI.attributionPackage.parameters setObject:@"sdk" forKey:@"initiated_by"];
     } else {
-        [selfI.attributionPackage.parameters setObject:@"backend" forKey:@"author"];
+        [selfI.attributionPackage.parameters setObject:@"backend" forKey:@"initiated_by"];
     }
 
     if (milliSecondsDelay > 0) {
