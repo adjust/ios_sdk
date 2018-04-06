@@ -206,6 +206,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)resetSessionPartnerParameters;
 
 /**
+ * @brief Give right user to be forgotten in accordance with GDPR law.
+ */
++ (void)gdprForgetMe;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
@@ -243,6 +248,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+
+- (void)gdprForgetMe;
 
 - (BOOL)isEnabled;
 

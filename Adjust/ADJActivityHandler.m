@@ -201,11 +201,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
 
-
+    /* Not needed, done already in initI:preLaunchActionsArray: method.
     // self.deviceTokenData = savedPreLaunch.deviceTokenData;
     if (self.activityState != nil) {
         [self setDeviceToken:[ADJUserDefaults getPushToken]];
     }
+    */
 
     [self addNotificationObserver];
 
@@ -350,6 +351,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI setDeviceTokenI:selfI deviceToken:deviceToken];
+                     }];
+}
+
+- (void)setGdprForgetMe {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setGdprForgetMeI:selfI];
                      }];
 }
 
@@ -635,9 +644,12 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     } else {
         if (selfI.activityState != nil) {
             NSData *deviceToken = [ADJUserDefaults getPushToken];
-
             [selfI setDeviceToken:deviceToken];
         }
+    }
+
+    if ([ADJUserDefaults getGdprForgetMe]) {
+        [selfI setGdprForgetMe];
     }
 
     selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
@@ -1298,6 +1310,27 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
         [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
+    // Send GDPR package
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *gdprBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                     activityState:selfI.activityState
+                                                                            config:selfI.adjustConfig
+                                                                 sessionParameters:selfI.sessionParameters
+                                                                         createdAt:now];
+
+    ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
+    [selfI.packageHandler addPackage:gdprPackage];
+
+    [ADJUserDefaults removeGdprForgetMe];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered gdpr %@", gdprPackage.suffix];
     } else {
         [selfI.packageHandler sendFirstPackage];
     }

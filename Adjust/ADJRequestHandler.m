@@ -24,6 +24,8 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @property (nonatomic, weak) id<ADJPackageHandler> packageHandler;
 
+@property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
+
 @property (nonatomic, copy) NSString *basePath;
 
 @end
@@ -32,11 +34,14 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 #pragma mark - Public methods
 
-+ (ADJRequestHandler *)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler {
-    return [[ADJRequestHandler alloc] initWithPackageHandler:packageHandler];
++ (ADJRequestHandler *)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+                              andActivityHandler:(id<ADJActivityHandler>)activityHandler {
+    return [[ADJRequestHandler alloc] initWithPackageHandler:packageHandler
+                                          andActivityHandler:activityHandler];
 }
 
-- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler {
+- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+          andActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];
     
     if (self == nil) {
@@ -45,6 +50,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
+    self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [packageHandler getBasePath];
 
@@ -89,7 +95,19 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
                  
                  return;
              }
-             
+
+             // Check if successfully sent package is GDPR forget me.
+             // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+             if (activityPackage.activityKind == ADJActivityKindGdpr) {
+                 if (responseData.success) {
+                     // TODO: Dummy string assumption, check with backend.
+                     // if ([responseData.message containsString:@"user forgotten"]) {
+                         [self.activityHandler setEnabled:NO];
+                         [self.packageHandler flush];
+                     // }
+                 }
+             }
+
              [selfI.packageHandler sendNextPackage:responseData];
          }];
 }

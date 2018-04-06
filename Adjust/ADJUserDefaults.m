@@ -9,6 +9,7 @@
 #import "ADJUserDefaults.h"
 
 static NSString * const PREFS_KEY_PUSH_TOKEN = @"adj_push_token";
+static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 
 @implementation ADJUserDefaults
@@ -36,6 +37,20 @@ static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 
 + (BOOL)getInstallTracked {
     return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_INSTALL_TRACKED];
+}
+
++ (void)setGdprForgetMe {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_GDPR_FORGET_ME];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (BOOL)getGdprForgetMe {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_GDPR_FORGET_ME];
+}
+
++ (void)removeGdprForgetMe {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)clearAdjustStuff {

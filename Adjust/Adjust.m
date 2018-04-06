@@ -144,6 +144,10 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] resetSessionPartnerParameters];
 }
 
++ (void)gdprForgetMe {
+    [[Adjust getInstance] gdprForgetMe];
+}
+
 + (ADJAttribution *)attribution {
     return [[Adjust getInstance] attribution];
 }
@@ -350,6 +354,16 @@ static dispatch_once_t onceToken = 0;
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler resetSessionPartnerParametersI:activityHandler];
     }];
+}
+
+- (void)gdprForgetMe {
+    [ADJUserDefaults setGdprForgetMe];
+
+    if ([self checkActivityHandler:@"GDPR forget me"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setGdprForgetMe];
+        }
+    }
 }
 
 - (ADJAttribution *)attribution {

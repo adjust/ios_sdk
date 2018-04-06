@@ -135,6 +135,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 }
 
+- (void)flush {
+    [self.packageQueue removeAllObjects];
+    [self writePackageQueueS:self];
+}
+
 - (NSString *)getBasePath {
     return _basePath;
 }
@@ -171,7 +176,8 @@ startsSending:(BOOL)startsSending
 {
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
-    selfI.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:selfI];
+    selfI.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:selfI
+                                                          andActivityHandler:selfI.activityHandler];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];
@@ -214,6 +220,10 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)sendNextI:(ADJPackageHandler *)selfI {
+    if ([selfI.packageQueue count] <= 0) {
+        return;
+    }
+
     [selfI.packageQueue removeObjectAtIndex:0];
     [selfI writePackageQueueS:selfI];
     dispatch_semaphore_signal(selfI.sendingSemaphore);

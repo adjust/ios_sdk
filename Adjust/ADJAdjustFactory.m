@@ -38,11 +38,14 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     return [internalPackageHandler initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
-+ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {
++ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler
+                                      andActivityHandler:(id<ADJActivityHandler>)activityHandler {
     if (internalRequestHandler == nil) {
-        return [ADJRequestHandler handlerWithPackageHandler:packageHandler];
+        return [ADJRequestHandler handlerWithPackageHandler:packageHandler
+                                         andActivityHandler:activityHandler];
     }
-    return [internalRequestHandler initWithPackageHandler:packageHandler];
+    return [internalRequestHandler initWithPackageHandler:packageHandler
+                                       andActivityHandler:activityHandler];
 }
 
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig

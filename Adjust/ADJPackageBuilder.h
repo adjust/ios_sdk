@@ -37,6 +37,8 @@
 
 - (ADJActivityPackage *)buildAttributionPackage;
 
+- (ADJActivityPackage *)buildGdprPackage;
+
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
