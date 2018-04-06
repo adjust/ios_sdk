@@ -1056,6 +1056,14 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         return;
     }
 
+    // If user is forgotten, forbid re-enabling.
+    if (enabled) {
+        if ([selfI isForgottenI:selfI]) {
+            [selfI.logger debug:@"Re-enabling SDK for forgotten user not allowed"];
+            return;
+        }
+    }
+
     // save new enabled state in internal state
     selfI.internalState.enabled = enabled;
 
@@ -1316,6 +1324,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
+    selfI.activityState.isForgotten = YES;
+    [selfI writeActivityStateI:selfI];
+
     // Send GDPR package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *gdprBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
@@ -1337,6 +1348,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 #pragma mark - private
+
+- (BOOL)isForgottenI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.isForgotten;
+    } else {
+        return NO;
+    }
+}
 
 - (BOOL)isEnabledI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
