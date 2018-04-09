@@ -99,13 +99,14 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
              // Check if successfully sent package is GDPR forget me.
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
              if (activityPackage.activityKind == ADJActivityKindGdpr) {
-                 if (responseData.success) {
+                 // TODO: For now accept all answers to GDPR type of package.
+                 // if (responseData.success) {
                      // TODO: Dummy string assumption, check with backend.
                      // if ([responseData.message containsString:@"user forgotten"]) {
                          [self.activityHandler setEnabled:NO];
                          [self.packageHandler flush];
                      // }
-                 }
+                 // }
              }
 
              [selfI.packageHandler sendNextPackage:responseData];
