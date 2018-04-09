@@ -221,12 +221,11 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)sendNextI:(ADJPackageHandler *)selfI {
-    if ([selfI.packageQueue count] <= 0) {
-        return;
+    if ([selfI.packageQueue count] > 0) {
+        [selfI.packageQueue removeObjectAtIndex:0];
+        [selfI writePackageQueueS:selfI];
     }
 
-    [selfI.packageQueue removeObjectAtIndex:0];
-    [selfI writePackageQueueS:selfI];
     dispatch_semaphore_signal(selfI.sendingSemaphore);
     [selfI sendFirstI:selfI];
 }
