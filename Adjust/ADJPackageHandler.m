@@ -136,8 +136,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)flush {
-    [self.packageQueue removeAllObjects];
-    [self writePackageQueueS:self];
+    [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJPackageHandler *selfI) {
+        [selfI flushI:selfI];
+    }];
 }
 
 - (NSString *)getBasePath {
@@ -257,6 +258,11 @@ startsSending:(BOOL)startsSending
                                forKey:@"partner_params"];
     }
 
+    [selfI writePackageQueueS:selfI];
+}
+
+- (void)flushI:(ADJPackageHandler *)selfI {
+    [selfI.packageQueue removeAllObjects];
     [selfI writePackageQueueS:selfI];
 }
 
