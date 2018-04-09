@@ -1091,6 +1091,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
             [self setDeviceToken:deviceToken];
         }
+        
+        if ([ADJUserDefaults getGdprForgetMe]) {
+            [selfI setGdprForgetMe];
+        }
     }
 
     // save new enabled state in activity state
