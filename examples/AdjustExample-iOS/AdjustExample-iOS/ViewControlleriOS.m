@@ -35,15 +35,9 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    for (int i = 0; i < 100; i += 1) {
-        ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-        [Adjust trackEvent:event];
+    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
 
-        if (i == 20) {
-            [Adjust gdprForgetMe];
-        }
-    }
-//    [Adjust gdprForgetMe];
+    [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
