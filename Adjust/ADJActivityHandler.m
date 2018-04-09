@@ -749,8 +749,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
-            selfI.activityState.sessionCount = 1; // this is the first session
-            [selfI transferSessionPackageI:selfI now:now];
+            // If user chose to be forgotten before install has ever tracked, don't track it.
+            if (![ADJUserDefaults getGdprForgetMe]) {
+                selfI.activityState.sessionCount = 1; // this is the first session
+                [selfI transferSessionPackageI:selfI now:now];
+            }
         }
 
         [selfI.activityState resetSessionAttributes:now];
