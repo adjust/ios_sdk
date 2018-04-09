@@ -84,6 +84,8 @@
         [self setPushToken:parameters];
     } else if ([methodName isEqualToString:@"openDeeplink"]) {
         [self openDeeplink:parameters];
+    } else if ([methodName isEqualToString:@"gdprForgetMe"]) {
+        [self gdprForgetMe:parameters];
     }
 }
 
@@ -464,6 +466,10 @@
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
     [Adjust appWillOpenUrl:deeplink];
+}
+
+- (void)gdprForgetMe:(NSDictionary *)parameters {
+    [Adjust gdprForgetMe];
 }
 
 @end
