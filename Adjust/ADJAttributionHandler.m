@@ -184,6 +184,10 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
         [selfI.logger debug:@"Attribution handler is paused"];
         return;
     }
+    if (selfI.activityHandler.isGdprForgotten) {
+        [selfI.logger debug:@"Attribution request won't be fired for forgotten user"];
+        return;
+    }
     [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
 
     NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
