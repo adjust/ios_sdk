@@ -1335,7 +1335,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
-    selfI.activityState.isForgotten = YES;
+    selfI.activityState.isGdprForgotten = YES;
     [selfI writeActivityStateI:selfI];
 
     // Send GDPR package
@@ -1370,7 +1370,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (BOOL)isGdprForgottenI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
-        return selfI.activityState.isForgotten;
+        return selfI.activityState.isGdprForgotten;
     } else {
         return NO;
     }

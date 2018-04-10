@@ -12,7 +12,7 @@
 
 // Persistent data
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, assign) BOOL isForgotten;
+@property (nonatomic, assign) BOOL isGdprForgotten;
 @property (nonatomic, assign) BOOL askingAttribution;
 
 @property (nonatomic, copy) NSString *uuid;
