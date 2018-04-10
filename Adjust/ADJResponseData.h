@@ -15,6 +15,10 @@
 #import "ADJSessionFailure.h"
 #import "ADJActivityPackage.h"
 
+typedef NS_ENUM(int, ADJTrackingState) {
+    ADJTrackingStateOptedOut = 1
+};
+
 @interface ADJResponseData : NSObject <NSCopying>
 
 @property (nonatomic, assign) ADJActivityKind activityKind;
@@ -28,6 +32,8 @@
 @property (nonatomic, assign) BOOL success;
 
 @property (nonatomic, assign) BOOL willRetry;
+
+@property (nonatomic, assign) ADJTrackingState trackingState;
 
 @property (nonatomic, strong) NSDictionary *jsonResponse;
 

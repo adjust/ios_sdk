@@ -96,17 +96,11 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
                  return;
              }
 
-             // Check if successfully sent package is GDPR forget me.
+             // Check if any package response contains information that user has opted out.
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
-             if (activityPackage.activityKind == ADJActivityKindGdpr) {
-                 // TODO: For now accept all answers to GDPR type of package.
-                 // if (responseData.success) {
-                     // TODO: Dummy string assumption, check with backend.
-                     // if ([responseData.message containsString:@"user forgotten"]) {
-                         [self.activityHandler setEnabled:NO];
-                         [self.packageHandler flush];
-                     // }
-                 // }
+             if (responseData.trackingState == ADJTrackingStateOptedOut) {
+                 [self.activityHandler setEnabled:NO];
+                 [self.packageHandler flush];
              }
 
              [selfI.packageHandler sendNextPackage:responseData];

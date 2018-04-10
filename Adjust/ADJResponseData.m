@@ -60,8 +60,8 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ success:%d willRetry:%d attribution:%@ json:%@",
-            self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.jsonResponse];
+    return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ success:%d willRetry:%d attribution:%@ trackingState:%d, json:%@",
+            self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.trackingState, self.jsonResponse];
 }
 
 #pragma mark - NSCopying
@@ -75,6 +75,7 @@
         copy.adid = [self.adid copyWithZone:zone];
         copy.success = self.success;
         copy.willRetry = self.willRetry;
+        copy.trackingState = self.trackingState;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
         copy.attribution = [self.attribution copyWithZone:zone];
     }

@@ -872,6 +872,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     responseData.timeStamp  = [responseData.jsonResponse objectForKey:@"timestamp"];
     responseData.adid       = [responseData.jsonResponse objectForKey:@"adid"];
 
+    NSString *trackingState = [responseData.jsonResponse objectForKey:@"tracking_state"];
+    if (trackingState != nil) {
+        if ([trackingState isEqualToString:@"opted_out"]) {
+            responseData.trackingState = ADJTrackingStateOptedOut;
+        }
+    }
+
     if (messageResponse == nil) {
         messageResponse = @"No message found";
     }
