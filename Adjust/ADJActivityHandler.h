@@ -67,6 +67,7 @@
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
+- (BOOL)isGdprForgotten;
 
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;

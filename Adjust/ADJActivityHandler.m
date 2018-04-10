@@ -331,6 +331,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     return [self isEnabledI:self];
 }
 
+- (BOOL)isGdprForgotten {
+    return [self isGdprForgottenI:self];
+}
+
 - (NSString *)adid {
     if (self.activityState == nil) {
         return nil;
@@ -1061,7 +1065,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     // If user is forgotten, forbid re-enabling.
     if (enabled) {
-        if ([selfI isForgottenI:selfI]) {
+        if ([selfI isGdprForgottenI:selfI]) {
             [selfI.logger debug:@"Re-enabling SDK for forgotten user not allowed"];
             return;
         }
@@ -1356,19 +1360,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 #pragma mark - private
 
-- (BOOL)isForgottenI:(ADJActivityHandler *)selfI {
-    if (selfI.activityState != nil) {
-        return selfI.activityState.isForgotten;
-    } else {
-        return NO;
-    }
-}
-
 - (BOOL)isEnabledI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
         return selfI.activityState.enabled;
     } else {
         return [selfI.internalState isEnabled];
+    }
+}
+
+- (BOOL)isGdprForgottenI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.isForgotten;
+    } else {
+        return NO;
     }
 }
 
