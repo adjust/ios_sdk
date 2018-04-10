@@ -122,6 +122,10 @@ startsSending:(BOOL)startsSending
     if (selfI.paused) return;
     NSUInteger queueSize = selfI.packageQueue.count;
     if (queueSize == 0) return;
+    if (selfI.activityHandler.isGdprForgotten) {
+        [selfI.logger debug:@"sdk_click request won't be fired for forgotten user"];
+        return;
+    }
 
     ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
     [self.packageQueue removeObjectAtIndex:0];
