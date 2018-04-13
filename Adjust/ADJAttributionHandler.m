@@ -198,6 +198,12 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
             activityPackage:selfI.attributionPackage
         responseDataHandler:^(ADJResponseData * responseData)
      {
+         // Check if any package response contains information that user has opted out.
+         // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+         if (responseData.trackingState == ADJTrackingStateOptedOut) {
+             [self.activityHandler trackingStateOptedOut];
+         }
+
          if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
              [selfI checkAttributionResponse:(ADJAttributionResponseData*)responseData];
          }

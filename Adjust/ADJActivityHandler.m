@@ -366,6 +366,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)trackingStateOptedOut {
+    [self setEnabled:NO];
+    [self.packageHandler flush];
+}
+
+
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
                   retriesLeft:(int)retriesLeft
