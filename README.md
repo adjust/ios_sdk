@@ -570,6 +570,8 @@ ADJAttribution *attribution = [Adjust attribution];
 
 ### <a id="push-token"></a>Push token
 
+Push tokens are used for Audience Builder and client callbacks, and they are required for uninstall and reinstall tracking.
+
 To send us the push notification token, add the following call to `Adjust` in the `didRegisterForRemoteNotificationsWithDeviceToken` of your app delegate:
 
 ```objc
@@ -577,8 +579,6 @@ To send us the push notification token, add the following call to `Adjust` in th
     [Adjust setDeviceToken:deviceToken];
 }
 ```
-
-Push tokens are used for the Adjust Audience Builder and client callbacks, and are required for the upcoming uninstall tracking feature.
 
 ### <a id="pre-installed-trackers"></a>Pre-installed trackers
 
