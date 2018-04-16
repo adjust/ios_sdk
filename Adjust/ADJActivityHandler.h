@@ -42,6 +42,7 @@
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *gdprPath;
 
 - (id)init;
 
@@ -93,6 +94,7 @@
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 - (NSString *)getBasePath;
+- (NSString *)getGdprPath;
 
 - (void)teardown;
 + (void)deleteState;

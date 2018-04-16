@@ -26,6 +26,8 @@ static NSTimeInterval internalMaxDelayStart = -1;
 
 static NSString * const kBaseUrl = @"https://app.adjust.com";
 static NSString * internalBaseUrl = @"https://app.adjust.com";
+static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
+static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
 
 @implementation ADJAdjustFactory
 
@@ -150,6 +152,10 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     return internalBaseUrl;
 }
 
++ (NSString *)gdprUrl {
+    return internalGdprUrl;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -210,6 +216,10 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     internalBaseUrl = baseUrl;
 }
 
++ (void)setGdprUrl:(NSString *)gdprUrl {
+    internalGdprUrl = gdprUrl;
+}
+
 + (void)teardown:(BOOL)deleteState {
     if (deleteState) {
         [ADJActivityHandler deleteState];
@@ -231,5 +241,6 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     internalTesting = NO;
     internalMaxDelayStart = -1;
     internalBaseUrl = kBaseUrl;
+    internalGdprUrl = kGdprUrl;
 }
 @end

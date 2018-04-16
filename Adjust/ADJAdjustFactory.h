@@ -41,6 +41,7 @@
 + (BOOL)testing;
 + (NSTimeInterval)maxDelayStart;
 + (NSString *)baseUrl;
++ (NSString *)gdprUrl;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -57,6 +58,7 @@
 + (void)setTesting:(BOOL)testing;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
++ (void)setGdprUrl:(NSString *)gdprUrl;
 
 + (void)teardown:(BOOL)deleteState;
 @end

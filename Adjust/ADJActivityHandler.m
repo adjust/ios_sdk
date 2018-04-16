@@ -102,6 +102,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, copy) NSData* deviceTokenData;
 @property (nonatomic, copy) NSString* basePath;
+@property (nonatomic, copy) NSString* gdprPath;
 
 @end
 
@@ -191,6 +192,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
     if (savedPreLaunch.basePath != nil) {
         self.basePath = savedPreLaunch.basePath;
+    }
+    if (savedPreLaunch.gdprPath != nil) {
+        self.gdprPath = savedPreLaunch.gdprPath;
     }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
@@ -549,6 +553,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (NSString *)getBasePath {
     return _basePath;
+}
+
+- (NSString *)getGdprPath {
+    return _gdprPath;
 }
 
 - (void)teardown

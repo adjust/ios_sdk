@@ -19,10 +19,11 @@
 
 @interface ATAAdjustCommandExecutor ()
 
+@property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *gdprPath;
 @property (nonatomic, strong) NSMutableDictionary *savedConfigs;
 @property (nonatomic, strong) NSMutableDictionary *savedEvents;
 @property (nonatomic, strong) NSObject<AdjustDelegate> *adjustDelegate;
-@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -39,6 +40,7 @@
     self.savedEvents = [NSMutableDictionary dictionary];
     self.adjustDelegate = nil;
     self.basePath = nil;
+    self.gdprPath = nil;
 
     return self;
 }
@@ -90,10 +92,13 @@
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
-    AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
+    AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
     testOptions.baseUrl = baseUrl;
+    testOptions.gdprUrl = gdprUrl;
+
     if ([parameters objectForKey:@"basePath"]) {
         self.basePath = [parameters objectForKey:@"basePath"][0];
+        self.gdprPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
@@ -118,6 +123,7 @@
             if ([teardownOption isEqualToString:@"resetSdk"]) {
                 testOptions.teardown = YES;
                 testOptions.basePath = self.basePath;
+                testOptions.gdprPath = self.gdprPath;
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
                 testOptions.deleteState = YES;
@@ -133,12 +139,14 @@
             if ([teardownOption isEqualToString:@"sdk"]) {
                 testOptions.teardown = YES;
                 testOptions.basePath = nil;
+                testOptions.gdprPath = nil;
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
                 self.basePath = nil;
+                self.gdprPath = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
@@ -146,6 +154,7 @@
             }
         }
     }
+
     [Adjust setTestOptions:testOptions];
 }
 

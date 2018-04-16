@@ -28,6 +28,8 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @property (nonatomic, copy) NSString *basePath;
 
+@property (nonatomic, copy) NSString *gdprPath;
+
 @end
 
 @implementation ADJRequestHandler
@@ -53,6 +55,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [packageHandler getBasePath];
+    self.gdprPath = [packageHandler getGdprPath];
 
     return self;
 }
@@ -77,11 +80,21 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 - (void)sendI:(ADJRequestHandler *)selfI activityPackage:(ADJActivityPackage *)activityPackage queueSize:(NSUInteger)queueSize {
     NSURL *url;
-    NSString * baseUrl = [ADJAdjustFactory baseUrl];
-    if (selfI.basePath != nil) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+
+    if (activityPackage.activityKind == ADJActivityKindGdpr) {
+        NSString *gdprUrl = [ADJAdjustFactory gdprUrl];
+        if (selfI.gdprPath != nil) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", gdprUrl, selfI.gdprPath]];
+        } else {
+            url = [NSURL URLWithString:gdprUrl];
+        }
     } else {
-        url = [NSURL URLWithString:baseUrl];
+        NSString *baseUrl = [ADJAdjustFactory baseUrl];
+        if (selfI.basePath != nil) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+        } else {
+            url = [NSURL URLWithString:baseUrl];
+        }
     }
 
     [ADJUtil sendPostRequest:url

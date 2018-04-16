@@ -28,6 +28,7 @@
 - (void)updatePackages:(ADJSessionParameters *)sessionParameters;
 - (void)flush;
 - (NSString *)getBasePath;
+- (NSString *)getGdprPath;
 
 - (void)teardown;
 + (void)deleteState;

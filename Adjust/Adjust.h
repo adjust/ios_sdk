@@ -14,7 +14,9 @@
 @interface AdjustTestOptions : NSObject
 
 @property (nonatomic, copy, nullable) NSString *baseUrl;
+@property (nonatomic, copy, nullable) NSString *gdprUrl;
 @property (nonatomic, copy, nullable) NSString *basePath;
+@property (nonatomic, copy, nullable) NSString *gdprPath;
 @property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;

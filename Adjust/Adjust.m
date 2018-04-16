@@ -396,8 +396,14 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.basePath != nil) {
         self.savedPreLaunch.basePath = testOptions.basePath;
     }
+    if (testOptions.gdprPath != nil) {
+        self.savedPreLaunch.gdprPath = testOptions.gdprPath;
+    }
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
+    }
+    if (testOptions.gdprUrl != nil) {
+        [ADJAdjustFactory setGdprUrl:testOptions.gdprUrl];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;
