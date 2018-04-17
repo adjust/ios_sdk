@@ -1352,6 +1352,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState.isGdprForgotten == YES) {
+        [ADJUserDefaults removeGdprForgetMe];
+        return;
+    }
+
     selfI.activityState.isGdprForgotten = YES;
     [selfI writeActivityStateI:selfI];
 
