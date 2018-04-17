@@ -370,9 +370,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
-- (void)trackingStateOptedOut {
-    [self setEnabled:NO];
-    [self.packageHandler flush];
+- (void)setTrackingStateOptedOut {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setTrackingStateOptedOutI:selfI];
+                     }];
 }
 
 
@@ -1370,6 +1373,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
+}
+
+- (void)setTrackingStateOptedOutI:(ADJActivityHandler *)selfI {
+    // In case of web opt out, once response from backend arrives isGdprForgotten field in this moment defaults to NO.
+    // Set it to YES regardless of state, since at this moment it should be YES.
+    selfI.activityState.isGdprForgotten = YES;
+    [selfI writeActivityStateI:selfI];
+
+    [selfI setEnabled:NO];
+    [selfI.packageHandler flush];
 }
 
 #pragma mark - private

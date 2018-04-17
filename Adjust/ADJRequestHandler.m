@@ -112,7 +112,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
              // Check if any package response contains information that user has opted out.
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
              if (responseData.trackingState == ADJTrackingStateOptedOut) {
-                 [self.activityHandler trackingStateOptedOut];
+                 [self.activityHandler setTrackingStateOptedOut];
              }
 
              [selfI.packageHandler sendNextPackage:responseData];
