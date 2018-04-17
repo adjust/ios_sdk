@@ -1100,6 +1100,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         return;
     }
 
+    // Save new enabled state in activity state.
+    selfI.activityState.enabled = enabled;
+    [selfI writeActivityStateI:selfI];
+
     // Check if upon enabling install has been tracked.
     if (enabled) {
         if (![ADJUserDefaults getInstallTracked]) {
@@ -1117,10 +1121,6 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             [selfI setGdprForgetMe];
         }
     }
-
-    // save new enabled state in activity state
-    selfI.activityState.enabled = enabled;
-    [selfI writeActivityStateI:selfI];
 
     [selfI checkStatusI:selfI
            pausingState:!enabled
