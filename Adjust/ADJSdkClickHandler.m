@@ -127,7 +127,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if (queueSize == 0) {
         return;
     }
-    if (selfI.activityHandler.isGdprForgotten) {
+    if ([selfI.activityHandler isGdprForgotten]) {
         [selfI.logger debug:@"sdk_click request won't be fired for forgotten user"];
         return;
     }
@@ -166,7 +166,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                  // Check if any package response contains information that user has opted out.
                  // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
                  if (responseData.trackingState == ADJTrackingStateOptedOut) {
-                     [self.activityHandler setTrackingStateOptedOut];
+                     [selfI.activityHandler setTrackingStateOptedOut];
                  }
 
                  [selfI.activityHandler finishedTracking:responseData];

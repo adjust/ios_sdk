@@ -184,7 +184,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
         [selfI.logger debug:@"Attribution handler is paused"];
         return;
     }
-    if (selfI.activityHandler.isGdprForgotten) {
+    if ([selfI.activityHandler isGdprForgotten]) {
         [selfI.logger debug:@"Attribution request won't be fired for forgotten user"];
         return;
     }
@@ -201,7 +201,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
          // Check if any package response contains information that user has opted out.
          // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
          if (responseData.trackingState == ADJTrackingStateOptedOut) {
-             [self.activityHandler setTrackingStateOptedOut];
+             [selfI.activityHandler setTrackingStateOptedOut];
          }
 
          if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {

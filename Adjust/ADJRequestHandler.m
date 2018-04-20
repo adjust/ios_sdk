@@ -74,6 +74,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.logger = nil;
     self.internalQueue = nil;
     self.packageHandler = nil;
+    self.activityHandler = nil;
 }
 
 #pragma mark - Private & helper methods
@@ -112,7 +113,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
              // Check if any package response contains information that user has opted out.
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
              if (responseData.trackingState == ADJTrackingStateOptedOut) {
-                 [self.activityHandler setTrackingStateOptedOut];
+                 [selfI.activityHandler setTrackingStateOptedOut];
              }
 
              [selfI.packageHandler sendNextPackage:responseData];
