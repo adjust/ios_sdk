@@ -2,19 +2,20 @@
 //  ViewController.m
 //  AdjustTestApp
 //
-//  Created by Pedro on 23.08.17.
-//  Copyright © 2017 adjust. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 23rd August 2017.
+//  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
-#import "ViewController.h"
 #import "Adjust.h"
+#import "ViewController.h"
 #import "ATLTestLibrary.h"
-#import "ATAAdjustCommandExecutor.h"
 #import "ADJAdjustFactory.h"
+#import "ATAAdjustCommandExecutor.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) ATLTestLibrary * testLibrary;
-@property (nonatomic, strong) ATAAdjustCommandExecutor * adjustCommandExecutor;
+
+@property (nonatomic, strong) ATLTestLibrary *testLibrary;
+@property (nonatomic, strong) ATAAdjustCommandExecutor *adjustCommandExecutor;
 
 @end
 
@@ -22,12 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
 
     self.adjustCommandExecutor = [[ATAAdjustCommandExecutor alloc] init];
-
-    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl andCommandDelegate:self.adjustCommandExecutor];
-
+    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
+                                           andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
     // [self.testLibrary addTestDirectory:@"current/sdkInfo"];
@@ -42,11 +41,10 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
 - (IBAction)restartTestClick:(UIButton *)sender {
     [self startTestSession];
 }
-
 
 @end

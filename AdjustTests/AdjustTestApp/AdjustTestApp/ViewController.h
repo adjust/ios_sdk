@@ -2,8 +2,8 @@
 //  ViewController.h
 //  AdjustTestApp
 //
-//  Created by Pedro on 23.08.17.
-//  Copyright © 2017 adjust. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 23rd August 2017.
+//  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

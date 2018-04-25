@@ -2,8 +2,8 @@
 //  ATAAdjustCommandExecutor.m
 //  AdjustTestApp
 //
-//  Created by Pedro da Silva (@nonelse) on 23rd August 2017.
-//  Copyright © 2017 Adjust GmbH. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 23rd August 2017.
+//  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -261,41 +261,36 @@
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-
+        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
+                                                                            andBasePath:self.basePath];
         // swizzleAttributionCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendSuccess"]) {
         NSLog(@"sessionCallbackSendSuccess detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                                               andBasePath:self.basePath];
         // swizzleSessionSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendFailure"]) {
         NSLog(@"sessionCallbackSendFailure detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
+                                                                               andBasePath:self.basePath];
         // swizzleSessionFailureCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendSuccess"]) {
         NSLog(@"eventCallbackSendSuccess detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                                             andBasePath:self.basePath];
         // swizzleEventSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendFailure"]) {
         NSLog(@"eventCallbackSendFailure detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
+                                                                             andBasePath:self.basePath];
         // swizzleEventFailureCallback = YES;
     }
 
@@ -314,7 +309,6 @@
     [self config:parameters];
 
     NSNumber *configNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"configName"]) {
         NSString *configName = [parameters objectForKey:@"configName"][0];
         NSString *configNumberS = [configName substringFromIndex:[configName length] - 1];
@@ -322,15 +316,12 @@
     }
 
     ADJConfig *adjustConfig = [self.savedConfigs objectForKey:configNumber];
-
     [Adjust appDidLaunch:adjustConfig];
-
     [self.savedConfigs removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
 - (void)event:(NSDictionary *)parameters {
     NSNumber *eventNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"eventName"]) {
         NSString *eventName = [parameters objectForKey:@"eventName"][0];
         NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
@@ -343,7 +334,6 @@
         adjustEvent = [self.savedEvents objectForKey:eventNumber];
     } else {
         NSString *eventToken = [parameters objectForKey:@"eventToken"][0];
-
         adjustEvent = [ADJEvent eventWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
@@ -352,7 +342,6 @@
         NSArray *currencyAndRevenue = [parameters objectForKey:@"revenue"];
         NSString *currency = currencyAndRevenue[0];
         double revenue = [currencyAndRevenue[1] doubleValue];
-
         [adjustEvent setRevenue:revenue currency:currency];
     }
 
@@ -387,7 +376,6 @@
     [self event:parameters];
 
     NSNumber *eventNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"eventName"]) {
         NSString *eventName = [parameters objectForKey:@"eventName"][0];
         NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
@@ -395,9 +383,7 @@
     }
 
     ADJEvent *adjustEvent = [self.savedEvents objectForKey:eventNumber];
-
     [Adjust trackEvent:adjustEvent];
-
     [self.savedEvents removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
