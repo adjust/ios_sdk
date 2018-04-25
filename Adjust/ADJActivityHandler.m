@@ -669,8 +669,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         }
     }
 
-    if ([ADJUserDefaults getGdprForgetMe]) {
-        [selfI setGdprForgetMe];
+    if (selfI.activityState != nil) {
+        if ([ADJUserDefaults getGdprForgetMe]) {
+            [selfI setGdprForgetMe];
+        }
     }
 
     selfI.foregroundTimer = [ADJTimerCycle timerWithBlock:^{
@@ -774,6 +776,8 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             if (![ADJUserDefaults getGdprForgetMe]) {
                 selfI.activityState.sessionCount = 1; // this is the first session
                 [selfI transferSessionPackageI:selfI now:now];
+            } else {
+                [selfI setGdprForgetMeI:selfI];
             }
         }
 
@@ -1352,6 +1356,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (!selfI.activityState) {
+        return;
+    }
     if (selfI.activityState.isGdprForgotten == YES) {
         [ADJUserDefaults removeGdprForgetMe];
         return;
