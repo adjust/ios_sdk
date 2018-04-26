@@ -860,6 +860,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSInteger statusCode = urlResponse.statusCode;
 
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
+
+    if (statusCode == 429) {
+        return responseData;
+    }
+
     [ADJUtil saveJsonResponse:data responseData:responseData];
 
     if ([ADJUtil isNull:responseData.jsonResponse]) {
