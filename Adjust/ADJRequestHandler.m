@@ -106,7 +106,6 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
          responseDataHandler:^(ADJResponseData *responseData) {
              if (responseData.jsonResponse == nil) {
                  [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
-                 
                  return;
              }
 
@@ -114,6 +113,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
              if (responseData.trackingState == ADJTrackingStateOptedOut) {
                  [selfI.activityHandler setTrackingStateOptedOut];
+                 return;
              }
 
              [selfI.packageHandler sendNextPackage:responseData];
