@@ -167,6 +167,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                  // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
                  if (responseData.trackingState == ADJTrackingStateOptedOut) {
                      [selfI.activityHandler setTrackingStateOptedOut];
+                     return;
                  }
 
                  [selfI.activityHandler finishedTracking:responseData];

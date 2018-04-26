@@ -202,6 +202,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
          // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
          if (responseData.trackingState == ADJTrackingStateOptedOut) {
              [selfI.activityHandler setTrackingStateOptedOut];
+             return;
          }
 
          if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
