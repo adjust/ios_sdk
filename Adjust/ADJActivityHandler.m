@@ -882,6 +882,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     if (![selfI isEnabledI:selfI]) return;
     if (![selfI checkEventI:selfI event:event]) return;
     if (![selfI checkTransactionIdI:selfI transactionId:event.transactionId]) return;
+    if (selfI.activityState.isGdprForgotten) { return; }
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -1318,6 +1319,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
     if (!selfI.activityState) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
         return;
     }
 
