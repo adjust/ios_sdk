@@ -821,11 +821,13 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 }
 
 - (void)trackNewSessionI:(double)now withActivityHandler:(ADJActivityHandler *)selfI {
-    double lastInterval = now - selfI.activityState.lastActivity;
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
 
+    double lastInterval = now - selfI.activityState.lastActivity;
     selfI.activityState.sessionCount++;
     selfI.activityState.lastInterval = lastInterval;
-
     [selfI transferSessionPackageI:selfI now:now];
     [selfI.activityState resetSessionAttributes:now];
     [selfI writeActivityStateI:selfI];
