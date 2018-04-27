@@ -104,15 +104,14 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
           suffixErrorMessage:@"Will retry later"
              activityPackage:activityPackage
          responseDataHandler:^(ADJResponseData *responseData) {
-             if (responseData.jsonResponse == nil) {
-                 [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
-                 return;
-             }
-
              // Check if any package response contains information that user has opted out.
              // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
              if (responseData.trackingState == ADJTrackingStateOptedOut) {
                  [selfI.activityHandler setTrackingStateOptedOut];
+                 return;
+             }
+             if (responseData.jsonResponse == nil) {
+                 [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
                  return;
              }
 

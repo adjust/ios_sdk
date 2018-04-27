@@ -156,17 +156,16 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
               suffixErrorMessage:@"Will retry later"
                  activityPackage:sdkClickPackage
              responseDataHandler:^(ADJResponseData *responseData) {
-                 if (responseData.jsonResponse == nil) {
-                     NSInteger retries = [sdkClickPackage increaseRetries];
-                     [selfI.logger error:@"Retrying sdk_click package for the %d time", retries];
-                     [selfI sendSdkClick:sdkClickPackage];
-                     return;
-                 }
-
                  // Check if any package response contains information that user has opted out.
                  // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
                  if (responseData.trackingState == ADJTrackingStateOptedOut) {
                      [selfI.activityHandler setTrackingStateOptedOut];
+                     return;
+                 }
+                 if (responseData.jsonResponse == nil) {
+                     NSInteger retries = [sdkClickPackage increaseRetries];
+                     [selfI.logger error:@"Retrying sdk_click package for the %d time", retries];
+                     [selfI sendSdkClick:sdkClickPackage];
                      return;
                  }
 
