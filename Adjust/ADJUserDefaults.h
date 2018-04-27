@@ -22,4 +22,10 @@
 
 + (BOOL)getInstallTracked;
 
++ (void)setGdprForgetMe;
+
++ (BOOL)getGdprForgetMe;
+
++ (void)removeGdprForgetMe;
+
 @end

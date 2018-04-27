@@ -2,8 +2,8 @@
 //  ATAAdjustCommandExecutor.m
 //  AdjustTestApp
 //
-//  Created by Pedro da Silva (@nonelse) on 23rd August 2017.
-//  Copyright © 2017 Adjust GmbH. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 23rd August 2017.
+//  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -19,10 +19,11 @@
 
 @interface ATAAdjustCommandExecutor ()
 
+@property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *gdprPath;
 @property (nonatomic, strong) NSMutableDictionary *savedConfigs;
 @property (nonatomic, strong) NSMutableDictionary *savedEvents;
 @property (nonatomic, strong) NSObject<AdjustDelegate> *adjustDelegate;
-@property (nonatomic, copy) NSString *basePath;
 
 @end
 
@@ -39,6 +40,7 @@
     self.savedEvents = [NSMutableDictionary dictionary];
     self.adjustDelegate = nil;
     self.basePath = nil;
+    self.gdprPath = nil;
 
     return self;
 }
@@ -84,14 +86,19 @@
         [self setPushToken:parameters];
     } else if ([methodName isEqualToString:@"openDeeplink"]) {
         [self openDeeplink:parameters];
+    } else if ([methodName isEqualToString:@"gdprForgetMe"]) {
+        [self gdprForgetMe:parameters];
     }
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
-    AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
+    AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
     testOptions.baseUrl = baseUrl;
+    testOptions.gdprUrl = gdprUrl;
+
     if ([parameters objectForKey:@"basePath"]) {
         self.basePath = [parameters objectForKey:@"basePath"][0];
+        self.gdprPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
@@ -116,6 +123,7 @@
             if ([teardownOption isEqualToString:@"resetSdk"]) {
                 testOptions.teardown = YES;
                 testOptions.basePath = self.basePath;
+                testOptions.gdprPath = self.gdprPath;
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
                 testOptions.deleteState = YES;
@@ -131,12 +139,14 @@
             if ([teardownOption isEqualToString:@"sdk"]) {
                 testOptions.teardown = YES;
                 testOptions.basePath = nil;
+                testOptions.gdprPath = nil;
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
                 self.basePath = nil;
+                self.gdprPath = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
@@ -144,6 +154,7 @@
             }
         }
     }
+
     [Adjust setTestOptions:testOptions];
 }
 
@@ -250,41 +261,36 @@
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-
+        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
+                                                                            andBasePath:self.basePath];
         // swizzleAttributionCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendSuccess"]) {
         NSLog(@"sessionCallbackSendSuccess detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                                               andBasePath:self.basePath];
         // swizzleSessionSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendFailure"]) {
         NSLog(@"sessionCallbackSendFailure detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
+                                                                               andBasePath:self.basePath];
         // swizzleSessionFailureCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendSuccess"]) {
         NSLog(@"eventCallbackSendSuccess detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                                             andBasePath:self.basePath];
         // swizzleEventSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendFailure"]) {
         NSLog(@"eventCallbackSendFailure detected");
-        
-        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary andBasePath:self.basePath];
-        
+        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
+                                                                             andBasePath:self.basePath];
         // swizzleEventFailureCallback = YES;
     }
 
@@ -303,7 +309,6 @@
     [self config:parameters];
 
     NSNumber *configNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"configName"]) {
         NSString *configName = [parameters objectForKey:@"configName"][0];
         NSString *configNumberS = [configName substringFromIndex:[configName length] - 1];
@@ -311,15 +316,12 @@
     }
 
     ADJConfig *adjustConfig = [self.savedConfigs objectForKey:configNumber];
-
     [Adjust appDidLaunch:adjustConfig];
-
     [self.savedConfigs removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
 - (void)event:(NSDictionary *)parameters {
     NSNumber *eventNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"eventName"]) {
         NSString *eventName = [parameters objectForKey:@"eventName"][0];
         NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
@@ -332,7 +334,6 @@
         adjustEvent = [self.savedEvents objectForKey:eventNumber];
     } else {
         NSString *eventToken = [parameters objectForKey:@"eventToken"][0];
-
         adjustEvent = [ADJEvent eventWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
@@ -341,7 +342,6 @@
         NSArray *currencyAndRevenue = [parameters objectForKey:@"revenue"];
         NSString *currency = currencyAndRevenue[0];
         double revenue = [currencyAndRevenue[1] doubleValue];
-
         [adjustEvent setRevenue:revenue currency:currency];
     }
 
@@ -376,7 +376,6 @@
     [self event:parameters];
 
     NSNumber *eventNumber = [NSNumber numberWithInt:0];
-
     if ([parameters objectForKey:@"eventName"]) {
         NSString *eventName = [parameters objectForKey:@"eventName"][0];
         NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
@@ -384,9 +383,7 @@
     }
 
     ADJEvent *adjustEvent = [self.savedEvents objectForKey:eventNumber];
-
     [Adjust trackEvent:adjustEvent];
-
     [self.savedEvents removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
@@ -464,6 +461,10 @@
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
     [Adjust appWillOpenUrl:deeplink];
+}
+
+- (void)gdprForgetMe:(NSDictionary *)parameters {
+    [Adjust gdprForgetMe];
 }
 
 @end

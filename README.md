@@ -1,6 +1,6 @@
 ## Summary
 
-This is the iOS SDK of adjust™. You can read more about adjust™ at [adjust.com].
+This is the iOS SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
 
 If your app is an app which uses web views you would like to use adjust tracking from Javascript code, please consult our [iOS web views SDK guide][ios-web-views-guide].
 
@@ -30,6 +30,7 @@ If your app is an app which uses web views you would like to use adjust tracking
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
    * [Event buffering](#event-buffering)
+   * [GDPR right to be forgotten](#gdpr-forget-me)
    * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
@@ -67,13 +68,13 @@ We will describe the steps to integrate the adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.12.3'
+pod 'Adjust', '~> 4.13.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.12.3'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.13.0'
 ```
 
 ---
@@ -511,6 +512,16 @@ If your app makes heavy use of event tracking, you might want to delay some HTTP
 ```
 
 If nothing is set, event buffering is **disabled by default**.
+
+### <a id="gdpr-forget-me"></a>GDPR right to be forgotten
+
+In accordance with article 17 of the EU's General Data Protection Regulation (GDPR), you can notify Adjust when a user has exercised their right to be forgotten. Calling the following method will instruct the Adjust SDK to communicate the user's choice to be forgotten to the Adjust backend:
+
+```objc
+[Adjust gdprForgetMe];
+```
+
+Upon receiving this information, Adjust will erase the user's data and the Adjust SDK will stop tracking the user. No requests from this device will be sent to Adjust in the future.
 
 ### <a id="sdk-signature"></a> SDK signature
 

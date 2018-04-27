@@ -98,7 +98,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
                 selfInject:self
                      block:^(ADJAttributionHandler* selfI) {
                          [selfI waitRequestAttributionWithDelayI:selfI
-                                               milliSecondsDelay:0];
+                                               milliSecondsDelay:0
+                                                isSdkAskingForIt:YES];
 
                      }];
 }
@@ -147,7 +148,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
         [selfI.activityHandler setAskingAttribution:YES];
 
         [selfI waitRequestAttributionWithDelayI:selfI
-                              milliSecondsDelay:[timerMilliseconds intValue]];
+                              milliSecondsDelay:[timerMilliseconds intValue]
+                               isSdkAskingForIt:NO];
 
         return;
     }
@@ -182,6 +184,10 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
         [selfI.logger debug:@"Attribution handler is paused"];
         return;
     }
+    if ([selfI.activityHandler isGdprForgotten]) {
+        [selfI.logger debug:@"Attribution request won't be fired for forgotten user"];
+        return;
+    }
     [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
 
     NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
@@ -192,6 +198,13 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
             activityPackage:selfI.attributionPackage
         responseDataHandler:^(ADJResponseData * responseData)
      {
+         // Check if any package response contains information that user has opted out.
+         // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+         if (responseData.trackingState == ADJTrackingStateOptedOut) {
+             [selfI.activityHandler setTrackingStateOptedOut];
+             return;
+         }
+
          if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
              [selfI checkAttributionResponse:(ADJAttributionResponseData*)responseData];
          }
@@ -200,11 +213,17 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 
 - (void)waitRequestAttributionWithDelayI:(ADJAttributionHandler*)selfI
                        milliSecondsDelay:(int)milliSecondsDelay
-{
+                        isSdkAskingForIt:(BOOL)isSdkAsking {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
     NSTimeInterval nextAskIn = [selfI.attributionTimer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
+    }
+
+    if (isSdkAsking) {
+        [selfI.attributionPackage.parameters setObject:@"sdk" forKey:@"initiated_by"];
+    } else {
+        [selfI.attributionPackage.parameters setObject:@"backend" forKey:@"initiated_by"];
     }
 
     if (milliSecondsDelay > 0) {

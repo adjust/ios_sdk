@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.12.3
+//  V4.13.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -14,7 +14,9 @@
 @interface AdjustTestOptions : NSObject
 
 @property (nonatomic, copy, nullable) NSString *baseUrl;
+@property (nonatomic, copy, nullable) NSString *gdprUrl;
 @property (nonatomic, copy, nullable) NSString *basePath;
+@property (nonatomic, copy, nullable) NSString *gdprPath;
 @property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
@@ -206,6 +208,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)resetSessionPartnerParameters;
 
 /**
+ * @brief Give right user to be forgotten in accordance with GDPR law.
+ */
++ (void)gdprForgetMe;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
@@ -243,6 +250,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+
+- (void)gdprForgetMe;
 
 - (BOOL)isEnabled;
 

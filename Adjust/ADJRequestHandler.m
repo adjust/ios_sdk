@@ -24,7 +24,11 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @property (nonatomic, weak) id<ADJPackageHandler> packageHandler;
 
+@property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
+
 @property (nonatomic, copy) NSString *basePath;
+
+@property (nonatomic, copy) NSString *gdprPath;
 
 @end
 
@@ -32,11 +36,14 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 #pragma mark - Public methods
 
-+ (ADJRequestHandler *)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler {
-    return [[ADJRequestHandler alloc] initWithPackageHandler:packageHandler];
++ (ADJRequestHandler *)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+                              andActivityHandler:(id<ADJActivityHandler>)activityHandler {
+    return [[ADJRequestHandler alloc] initWithPackageHandler:packageHandler
+                                          andActivityHandler:activityHandler];
 }
 
-- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler {
+- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+          andActivityHandler:(id<ADJActivityHandler>)activityHandler {
     self = [super init];
     
     if (self == nil) {
@@ -45,8 +52,10 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.packageHandler = packageHandler;
+    self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [packageHandler getBasePath];
+    self.gdprPath = [packageHandler getGdprPath];
 
     return self;
 }
@@ -65,17 +74,28 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.logger = nil;
     self.internalQueue = nil;
     self.packageHandler = nil;
+    self.activityHandler = nil;
 }
 
 #pragma mark - Private & helper methods
 
 - (void)sendI:(ADJRequestHandler *)selfI activityPackage:(ADJActivityPackage *)activityPackage queueSize:(NSUInteger)queueSize {
     NSURL *url;
-    NSString * baseUrl = [ADJAdjustFactory baseUrl];
-    if (selfI.basePath != nil) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+
+    if (activityPackage.activityKind == ADJActivityKindGdpr) {
+        NSString *gdprUrl = [ADJAdjustFactory gdprUrl];
+        if (selfI.gdprPath != nil) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", gdprUrl, selfI.gdprPath]];
+        } else {
+            url = [NSURL URLWithString:gdprUrl];
+        }
     } else {
-        url = [NSURL URLWithString:baseUrl];
+        NSString *baseUrl = [ADJAdjustFactory baseUrl];
+        if (selfI.basePath != nil) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
+        } else {
+            url = [NSURL URLWithString:baseUrl];
+        }
     }
 
     [ADJUtil sendPostRequest:url
@@ -84,12 +104,17 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
           suffixErrorMessage:@"Will retry later"
              activityPackage:activityPackage
          responseDataHandler:^(ADJResponseData *responseData) {
-             if (responseData.jsonResponse == nil) {
-                 [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
-                 
+             // Check if any package response contains information that user has opted out.
+             // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+             if (responseData.trackingState == ADJTrackingStateOptedOut) {
+                 [selfI.activityHandler setTrackingStateOptedOut];
                  return;
              }
-             
+             if (responseData.jsonResponse == nil) {
+                 [selfI.packageHandler closeFirstPackage:responseData activityPackage:activityPackage];
+                 return;
+             }
+
              [selfI.packageHandler sendNextPackage:responseData];
          }];
 }

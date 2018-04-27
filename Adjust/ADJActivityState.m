@@ -36,6 +36,7 @@ static NSString *appToken = nil;
     self.lastActivity       = -1;
     self.lastInterval       = -1;
     self.enabled            = YES;
+    self.isGdprForgotten    = NO;
     self.askingAttribution  = NO;
     self.deviceToken        = nil;
     self.transactionIds     = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
@@ -150,9 +151,9 @@ static NSString *appToken = nil;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@",
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d",
             self.eventCount, self.sessionCount, self.subsessionCount, self.askingAttribution, self.sessionLength,
-            self.timeSpent, self.lastActivity, self.deviceToken];
+            self.timeSpent, self.lastActivity, self.deviceToken, self.isGdprForgotten];
 }
 
 #pragma mark - NSCoding protocol methods
@@ -192,6 +193,12 @@ static NSString *appToken = nil;
         self.enabled = [decoder decodeBoolForKey:@"enabled"];
     } else {
         self.enabled = YES;
+    }
+
+    if ([decoder containsValueForKey:@"isGdprForgotten"]) {
+        self.isGdprForgotten = [decoder decodeBoolForKey:@"isGdprForgotten"];
+    } else {
+        self.isGdprForgotten = NO;
     }
     
     if ([decoder containsValueForKey:@"askingAttribution"]) {
@@ -233,6 +240,7 @@ static NSString *appToken = nil;
     [encoder encodeObject:self.uuid            forKey:@"uuid"];
     [encoder encodeObject:self.transactionIds  forKey:@"transactionIds"];
     [encoder encodeBool:self.enabled           forKey:@"enabled"];
+    [encoder encodeBool:self.isGdprForgotten   forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
     [encoder encodeObject:self.deviceToken     forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages    forKey:@"updatePackages"];
@@ -255,6 +263,7 @@ static NSString *appToken = nil;
         copy.lastInterval       = self.lastInterval;
         copy.eventCount         = self.eventCount;
         copy.enabled            = self.enabled;
+        copy.isGdprForgotten    = self.isGdprForgotten;
         copy.lastActivity       = self.lastActivity;
         copy.askingAttribution  = self.askingAttribution;
         copy.deviceToken        = [self.deviceToken copyWithZone:zone];

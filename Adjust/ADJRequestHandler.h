@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "ADJPackageHandler.h"
 
 @protocol ADJRequestHandler
 
-- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler;
+- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+          andActivityHandler:(id<ADJActivityHandler>)activityHandler;
 
-- (void)sendPackage:(ADJActivityPackage *)activityPackage queueSize:(NSUInteger)queueSize;
+- (void)sendPackage:(ADJActivityPackage *)activityPackage
+          queueSize:(NSUInteger)queueSize;
 
 - (void)teardown;
 
@@ -22,6 +23,7 @@
 
 @interface ADJRequestHandler : NSObject <ADJRequestHandler>
 
-+ (id<ADJRequestHandler>)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler;
++ (id<ADJRequestHandler>)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler
+                                andActivityHandler:(id<ADJActivityHandler>)activityHandler;
 
 @end

@@ -26,6 +26,8 @@ static NSTimeInterval internalMaxDelayStart = -1;
 
 static NSString * const kBaseUrl = @"https://app.adjust.com";
 static NSString * internalBaseUrl = @"https://app.adjust.com";
+static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
+static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
 
 @implementation ADJAdjustFactory
 
@@ -38,11 +40,14 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     return [internalPackageHandler initWithActivityHandler:activityHandler startsSending:startsSending];
 }
 
-+ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler {
++ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler
+                                      andActivityHandler:(id<ADJActivityHandler>)activityHandler {
     if (internalRequestHandler == nil) {
-        return [ADJRequestHandler handlerWithPackageHandler:packageHandler];
+        return [ADJRequestHandler handlerWithPackageHandler:packageHandler
+                                         andActivityHandler:activityHandler];
     }
-    return [internalRequestHandler initWithPackageHandler:packageHandler];
+    return [internalRequestHandler initWithPackageHandler:packageHandler
+                                       andActivityHandler:activityHandler];
 }
 
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
@@ -147,6 +152,10 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     return internalBaseUrl;
 }
 
++ (NSString *)gdprUrl {
+    return internalGdprUrl;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -207,6 +216,10 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     internalBaseUrl = baseUrl;
 }
 
++ (void)setGdprUrl:(NSString *)gdprUrl {
+    internalGdprUrl = gdprUrl;
+}
+
 + (void)teardown:(BOOL)deleteState {
     if (deleteState) {
         [ADJActivityHandler deleteState];
@@ -228,5 +241,6 @@ static NSString * internalBaseUrl = @"https://app.adjust.com";
     internalTesting = NO;
     internalMaxDelayStart = -1;
     internalBaseUrl = kBaseUrl;
+    internalGdprUrl = kGdprUrl;
 }
 @end

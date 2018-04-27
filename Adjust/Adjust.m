@@ -144,6 +144,10 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] resetSessionPartnerParameters];
 }
 
++ (void)gdprForgetMe {
+    [[Adjust getInstance] gdprForgetMe];
+}
+
 + (ADJAttribution *)attribution {
     return [[Adjust getInstance] attribution];
 }
@@ -352,6 +356,16 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
+- (void)gdprForgetMe {
+    [ADJUserDefaults setGdprForgetMe];
+
+    if ([self checkActivityHandler:@"GDPR forget me"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setGdprForgetMe];
+        }
+    }
+}
+
 - (ADJAttribution *)attribution {
     if (![self checkActivityHandler]) {
         return nil;
@@ -382,8 +396,14 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.basePath != nil) {
         self.savedPreLaunch.basePath = testOptions.basePath;
     }
+    if (testOptions.gdprPath != nil) {
+        self.savedPreLaunch.gdprPath = testOptions.gdprPath;
+    }
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
+    }
+    if (testOptions.gdprUrl != nil) {
+        [ADJAdjustFactory setGdprUrl:testOptions.gdprUrl];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;

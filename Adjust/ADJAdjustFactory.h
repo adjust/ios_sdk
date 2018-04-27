@@ -20,7 +20,8 @@
 
 + (id<ADJPackageHandler>)packageHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                             startsSending:(BOOL)startsSending;
-+ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler;
++ (id<ADJRequestHandler>)requestHandlerForPackageHandler:(id<ADJPackageHandler>)packageHandler
+                                      andActivityHandler:(id<ADJActivityHandler>)activityHandler;
 + (id<ADJActivityHandler>)activityHandlerWithConfig:(ADJConfig *)adjustConfig
                      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 + (id<ADJSdkClickHandler>)sdkClickHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
@@ -40,6 +41,7 @@
 + (BOOL)testing;
 + (NSTimeInterval)maxDelayStart;
 + (NSString *)baseUrl;
++ (NSString *)gdprUrl;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -56,6 +58,7 @@
 + (void)setTesting:(BOOL)testing;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
++ (void)setGdprUrl:(NSString *)gdprUrl;
 
 + (void)teardown:(BOOL)deleteState;
 @end

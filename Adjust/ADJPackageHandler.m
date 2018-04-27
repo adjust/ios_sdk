@@ -30,6 +30,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *gdprPath;
 
 @end
 
@@ -51,6 +52,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
     self.basePath = [activityHandler getBasePath];
+    self.gdprPath = [activityHandler getGdprPath];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -135,8 +137,18 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 }
 
+- (void)flush {
+    [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJPackageHandler *selfI) {
+        [selfI flushI:selfI];
+    }];
+}
+
 - (NSString *)getBasePath {
     return _basePath;
+}
+
+- (NSString *)getGdprPath {
+    return _gdprPath;
 }
 
 - (void)teardown {
@@ -171,7 +183,8 @@ startsSending:(BOOL)startsSending
 {
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
-    selfI.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:selfI];
+    selfI.requestHandler = [ADJAdjustFactory requestHandlerForPackageHandler:selfI
+                                                          andActivityHandler:selfI.activityHandler];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];
@@ -214,8 +227,11 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)sendNextI:(ADJPackageHandler *)selfI {
-    [selfI.packageQueue removeObjectAtIndex:0];
-    [selfI writePackageQueueS:selfI];
+    if ([selfI.packageQueue count] > 0) {
+        [selfI.packageQueue removeObjectAtIndex:0];
+        [selfI writePackageQueueS:selfI];
+    }
+
     dispatch_semaphore_signal(selfI.sendingSemaphore);
     [selfI sendFirstI:selfI];
 }
@@ -247,6 +263,11 @@ startsSending:(BOOL)startsSending
                                forKey:@"partner_params"];
     }
 
+    [selfI writePackageQueueS:selfI];
+}
+
+- (void)flushI:(ADJPackageHandler *)selfI {
+    [selfI.packageQueue removeAllObjects];
     [selfI writePackageQueueS:selfI];
 }
 

@@ -102,6 +102,7 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, copy) NSData* deviceTokenData;
 @property (nonatomic, copy) NSString* basePath;
+@property (nonatomic, copy) NSString* gdprPath;
 
 @end
 
@@ -192,6 +193,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (savedPreLaunch.basePath != nil) {
         self.basePath = savedPreLaunch.basePath;
     }
+    if (savedPreLaunch.gdprPath != nil) {
+        self.gdprPath = savedPreLaunch.gdprPath;
+    }
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -201,11 +205,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
                      }];
 
-
+    /* Not needed, done already in initI:preLaunchActionsArray: method.
     // self.deviceTokenData = savedPreLaunch.deviceTokenData;
     if (self.activityState != nil) {
         [self setDeviceToken:[ADJUserDefaults getPushToken]];
     }
+    */
 
     [self addNotificationObserver];
 
@@ -330,6 +335,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     return [self isEnabledI:self];
 }
 
+- (BOOL)isGdprForgotten {
+    return [self isGdprForgottenI:self];
+}
+
 - (NSString *)adid {
     if (self.activityState == nil) {
         return nil;
@@ -352,6 +361,23 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                          [selfI setDeviceTokenI:selfI deviceToken:deviceToken];
                      }];
 }
+
+- (void)setGdprForgetMe {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setGdprForgetMeI:selfI];
+                     }];
+}
+
+- (void)setTrackingStateOptedOut {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setTrackingStateOptedOutI:selfI];
+                     }];
+}
+
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
@@ -532,6 +558,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     return _basePath;
 }
 
+- (NSString *)getGdprPath {
+    return _gdprPath;
+}
+
 - (void)teardown
 {
     [ADJAdjustFactory.logger verbose:@"ADJActivityHandler teardown"];
@@ -635,8 +665,13 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     } else {
         if (selfI.activityState != nil) {
             NSData *deviceToken = [ADJUserDefaults getPushToken];
-
             [selfI setDeviceToken:deviceToken];
+        }
+    }
+
+    if (selfI.activityState != nil) {
+        if ([ADJUserDefaults getGdprForgetMe]) {
+            [selfI setGdprForgetMe];
         }
     }
 
@@ -737,8 +772,13 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
-            selfI.activityState.sessionCount = 1; // this is the first session
-            [selfI transferSessionPackageI:selfI now:now];
+            // If user chose to be forgotten before install has ever tracked, don't track it.
+            if (![ADJUserDefaults getGdprForgetMe]) {
+                selfI.activityState.sessionCount = 1; // this is the first session
+                [selfI transferSessionPackageI:selfI now:now];
+            } else {
+                [selfI setGdprForgetMeI:selfI];
+            }
         }
 
         [selfI.activityState resetSessionAttributes:now];
@@ -781,11 +821,13 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 }
 
 - (void)trackNewSessionI:(double)now withActivityHandler:(ADJActivityHandler *)selfI {
-    double lastInterval = now - selfI.activityState.lastActivity;
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
 
+    double lastInterval = now - selfI.activityState.lastActivity;
     selfI.activityState.sessionCount++;
     selfI.activityState.lastInterval = lastInterval;
-
     [selfI transferSessionPackageI:selfI now:now];
     [selfI.activityState resetSessionAttributes:now];
     [selfI writeActivityStateI:selfI];
@@ -840,6 +882,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     if (![selfI isEnabledI:selfI]) return;
     if (![selfI checkEventI:selfI event:event]) return;
     if (![selfI checkTransactionIdI:selfI transactionId:event.transactionId]) return;
+    if (selfI.activityState.isGdprForgotten) { return; }
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -1044,6 +1087,14 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         return;
     }
 
+    // If user is forgotten, forbid re-enabling.
+    if (enabled) {
+        if ([selfI isGdprForgottenI:selfI]) {
+            [selfI.logger debug:@"Re-enabling SDK for forgotten user not allowed"];
+            return;
+        }
+    }
+
     // save new enabled state in internal state
     selfI.internalState.enabled = enabled;
 
@@ -1055,6 +1106,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             unPausingMessage:@"Handlers will start as active due to the SDK being enabled"];
         return;
     }
+
+    // Save new enabled state in activity state.
+    selfI.activityState.enabled = enabled;
+    [selfI writeActivityStateI:selfI];
 
     // Check if upon enabling install has been tracked.
     if (enabled) {
@@ -1068,11 +1123,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
             [self setDeviceToken:deviceToken];
         }
+        
+        if ([ADJUserDefaults getGdprForgetMe]) {
+            [selfI setGdprForgetMe];
+        }
     }
-
-    // save new enabled state in activity state
-    selfI.activityState.enabled = enabled;
-    [selfI writeActivityStateI:selfI];
 
     [selfI checkStatusI:selfI
            pausingState:!enabled
@@ -1266,6 +1321,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (!selfI.activityState) {
         return;
     }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
 
     NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
 
@@ -1303,6 +1361,51 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (!selfI.activityState) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten == YES) {
+        [ADJUserDefaults removeGdprForgetMe];
+        return;
+    }
+
+    selfI.activityState.isGdprForgotten = YES;
+    [selfI writeActivityStateI:selfI];
+
+    // Send GDPR package
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *gdprBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                     activityState:selfI.activityState
+                                                                            config:selfI.adjustConfig
+                                                                 sessionParameters:selfI.sessionParameters
+                                                                         createdAt:now];
+
+    ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
+    [selfI.packageHandler addPackage:gdprPackage];
+
+    [ADJUserDefaults removeGdprForgetMe];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered gdpr %@", gdprPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)setTrackingStateOptedOutI:(ADJActivityHandler *)selfI {
+    // In case of web opt out, once response from backend arrives isGdprForgotten field in this moment defaults to NO.
+    // Set it to YES regardless of state, since at this moment it should be YES.
+    selfI.activityState.isGdprForgotten = YES;
+    [selfI writeActivityStateI:selfI];
+
+    [selfI setEnabled:NO];
+    [selfI.packageHandler flush];
+}
+
 #pragma mark - private
 
 - (BOOL)isEnabledI:(ADJActivityHandler *)selfI {
@@ -1310,6 +1413,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return selfI.activityState.enabled;
     } else {
         return [selfI.internalState isEnabled];
+    }
+}
+
+- (BOOL)isGdprForgottenI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.isGdprForgotten;
+    } else {
+        return NO;
     }
 }
 

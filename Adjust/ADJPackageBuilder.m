@@ -171,6 +171,19 @@
     return attributionPackage;
 }
 
+- (ADJActivityPackage *)buildGdprPackage {
+    NSMutableDictionary *parameters = [self idsParameters];
+    // [ADJPackageBuilder parameters:parameters setString:@"push" forKey:@"source"];
+
+    ADJActivityPackage *gdprPackage = [self defaultActivityPackage];
+    gdprPackage.path = @"/gdpr_forget_device";
+    gdprPackage.activityKind = ADJActivityKindGdpr;
+    gdprPackage.suffix = @"";
+    gdprPackage.parameters = parameters;
+
+    return gdprPackage;
+}
+
 #pragma mark - Private & helper methods
 
 - (ADJActivityPackage *)defaultActivityPackage {

@@ -41,7 +41,7 @@ static CTCarrier *carrier = nil;
 
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.12.3";
+static NSString * const kClientSdk                  = @"ios4.13.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -860,6 +860,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSInteger statusCode = urlResponse.statusCode;
 
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
+
+    if (statusCode == 429) {
+        [ADJAdjustFactory.logger error:@"Too frequent requests to the endpoint (429)"];
+        return responseData;
+    }
+
     [ADJUtil saveJsonResponse:data responseData:responseData];
 
     if ([ADJUtil isNull:responseData.jsonResponse]) {
@@ -871,6 +877,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     responseData.message    = messageResponse;
     responseData.timeStamp  = [responseData.jsonResponse objectForKey:@"timestamp"];
     responseData.adid       = [responseData.jsonResponse objectForKey:@"adid"];
+
+    NSString *trackingState = [responseData.jsonResponse objectForKey:@"tracking_state"];
+    if (trackingState != nil) {
+        if ([trackingState isEqualToString:@"opted_out"]) {
+            responseData.trackingState = ADJTrackingStateOptedOut;
+        }
+    }
 
     if (messageResponse == nil) {
         messageResponse = @"No message found";

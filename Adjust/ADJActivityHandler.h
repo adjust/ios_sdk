@@ -42,6 +42,7 @@
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *gdprPath;
 
 - (id)init;
 
@@ -67,10 +68,12 @@
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
+- (BOOL)isGdprForgotten;
 
 - (void)appWillOpenUrl:(NSURL*)url;
 - (void)setDeviceToken:(NSData *)deviceToken;
-
+- (void)setGdprForgetMe;
+- (void)setTrackingStateOptedOut;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
@@ -91,6 +94,7 @@
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
 - (NSString *)getBasePath;
+- (NSString *)getGdprPath;
 
 - (void)teardown;
 + (void)deleteState;
