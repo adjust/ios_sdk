@@ -862,6 +862,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
     if (statusCode == 429) {
+        [ADJAdjustFactory.logger error:@"Too frequent requests to the endpoint (429)"];
         return responseData;
     }
 
