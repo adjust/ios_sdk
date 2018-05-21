@@ -421,6 +421,10 @@ static dispatch_once_t onceToken = 0;
         NSTimeInterval subsessionIntervalInSeconds = [testOptions.subsessionIntervalInMilliseconds intValue] / 1000.0;
         [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
     }
+    if (testOptions.noBackoffWait) {
+        [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
+        [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
+    }
 }
 
 #pragma mark - Private & helper methods

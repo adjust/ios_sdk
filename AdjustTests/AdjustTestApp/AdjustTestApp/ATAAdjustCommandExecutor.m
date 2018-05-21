@@ -116,6 +116,13 @@
         NSString *subsessionIntervalMilliS = [parameters objectForKey:@"subsessionInterval"][0];
         testOptions.subsessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS];
     }
+    if ([parameters objectForKey:@"noBackoffWait"]) {
+        NSString *noBackoffWaitStr = [parameters objectForKey:@"noBackoffWait"][0];
+        testOptions.noBackoffWait = NO;
+        if ([noBackoffWaitStr isEqualToString:@"true"]) {
+            testOptions.noBackoffWait = YES;
+        }
+    }
     if ([parameters objectForKey:@"teardown"]) {
         NSArray *teardownOptions = [parameters objectForKey:@"teardown"];
         for (int i = 0; i < teardownOptions.count; i = i + 1) {

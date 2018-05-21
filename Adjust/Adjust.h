@@ -23,6 +23,7 @@
 @property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
+@property (nonatomic, assign) BOOL noBackoffWait;
 
 @end
 
