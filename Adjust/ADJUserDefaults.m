@@ -11,6 +11,7 @@
 static NSString * const PREFS_KEY_PUSH_TOKEN = @"adj_push_token";
 static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
+static NSString * const PREFS_KEY_DEEPLINK = @"adj_deeplink";
 
 @implementation ADJUserDefaults
 
@@ -53,10 +54,25 @@ static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)saveDeeplink:(NSURL *)deeplink {
+    [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSURL *)getDeeplink {
+    return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK];
+}
+
++ (void)removeDeeplink {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 + (void)clearAdjustStuff {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
