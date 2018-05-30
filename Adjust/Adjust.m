@@ -224,6 +224,7 @@ static dispatch_once_t onceToken = 0;
 
 - (void)appWillOpenUrl:(NSURL *)url {
     if (![self checkActivityHandler]) {
+        [ADJUserDefaults saveDeeplink:url];
         return;
     }
 

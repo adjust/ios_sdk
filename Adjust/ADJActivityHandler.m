@@ -758,6 +758,8 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     [selfI processSessionI:selfI];
 
     [selfI checkAttributionStateI:selfI];
+
+    [selfI processCachedDeeplinkI:selfI];
 }
 
 - (void)processSessionI:(ADJActivityHandler *)selfI {
@@ -863,6 +865,18 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     }
 
     [selfI.attributionHandler getAttribution];
+}
+
+- (void)processCachedDeeplinkI:(ADJActivityHandler *)selfI {
+    if (![selfI checkActivityStateI:selfI]) return;
+
+    NSURL *cachedDeeplink = [ADJUserDefaults getDeeplink];
+    if (cachedDeeplink == nil) {
+        return;
+    }
+
+    [selfI appWillOpenUrlI:selfI url:cachedDeeplink];
+    [ADJUserDefaults removeDeeplink];
 }
 
 - (void)endI:(ADJActivityHandler *)selfI {
