@@ -44,22 +44,22 @@
 {
     __block id object;
     [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation * operation) {
-        [_lock lock];
-        while (_queue.count == 0)
+        [self.lock lock];
+        while (self.queue.count == 0)
         {
             if (operation.cancelled) {
-                [_lock unlock];
+                [self.lock unlock];
                 return;
             }
-            [_lock wait];
+            [self.lock wait];
         }
         if (operation.cancelled) {
-            [_lock unlock];
+            [self.lock unlock];
             return;
         }
-        object = [_queue objectAtIndex:0];
-        [_queue removeObjectAtIndex:0];
-        [_lock unlock];
+        object = [self.queue objectAtIndex:0];
+        [self.queue removeObjectAtIndex:0];
+        [self.lock unlock];
     }];
     [self.operationQueue waitUntilAllOperationsAreFinished];
 
