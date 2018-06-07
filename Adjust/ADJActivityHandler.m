@@ -346,11 +346,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     return self.activityState.adid;
 }
 
-- (void)appWillOpenUrl:(NSURL*)url {
+- (void)appWillOpenUrl:(NSURL *)url withClickTime:(NSDate *)clickTime {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI appWillOpenUrlI:selfI url:url];
+                         [selfI appWillOpenUrlI:selfI url:url clickTime:clickTime];
                      }];
 }
 
@@ -870,12 +870,16 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 - (void)processCachedDeeplinkI:(ADJActivityHandler *)selfI {
     if (![selfI checkActivityStateI:selfI]) return;
 
-    NSURL *cachedDeeplink = [ADJUserDefaults getDeeplink];
-    if (cachedDeeplink == nil) {
+    NSURL *cachedDeeplinkUrl = [ADJUserDefaults getDeeplinkUrl];
+    if (cachedDeeplinkUrl == nil) {
+        return;
+    }
+    NSDate *cachedDeeplinkClickTime = [ADJUserDefaults getDeeplinkClickTime];
+    if (cachedDeeplinkClickTime == nil) {
         return;
     }
 
-    [selfI appWillOpenUrlI:selfI url:cachedDeeplink];
+    [selfI appWillOpenUrlI:selfI url:cachedDeeplinkUrl clickTime:cachedDeeplinkClickTime];
     [ADJUserDefaults removeDeeplink];
 }
 
@@ -1228,7 +1232,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
-                    url:(NSURL *)url {
+                    url:(NSURL *)url
+              clickTime:(NSDate *)clickTime {
     if ([ADJUtil isNull:url]) {
         return;
     }
@@ -1265,7 +1270,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
-    clickBuilder.clickTime = [NSDate date];
+    clickBuilder.clickTime = clickTime;
     clickBuilder.deeplink = [url absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];

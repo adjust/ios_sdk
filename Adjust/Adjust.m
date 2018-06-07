@@ -223,12 +223,13 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)appWillOpenUrl:(NSURL *)url {
+    NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
-        [ADJUserDefaults saveDeeplink:url];
+        [ADJUserDefaults saveDeeplinkUrl:url andClickTime:clickTime];
         return;
     }
 
-    [self.activityHandler appWillOpenUrl:url];
+    [self.activityHandler appWillOpenUrl:url withClickTime:clickTime];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {

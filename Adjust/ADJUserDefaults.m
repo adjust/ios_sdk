@@ -11,7 +11,8 @@
 static NSString * const PREFS_KEY_PUSH_TOKEN = @"adj_push_token";
 static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
-static NSString * const PREFS_KEY_DEEPLINK = @"adj_deeplink";
+static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
+static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_time";
 
 @implementation ADJUserDefaults
 
@@ -54,17 +55,23 @@ static NSString * const PREFS_KEY_DEEPLINK = @"adj_deeplink";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (void)saveDeeplink:(NSURL *)deeplink {
-    [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK];
++ (void)saveDeeplinkUrl:(NSURL *)deeplink andClickTime:(NSDate *)clickTime {
+    [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] setObject:clickTime forKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (NSURL *)getDeeplink {
-    return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK];
++ (NSURL *)getDeeplinkUrl {
+    return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK_URL];
+}
+
++ (NSDate *)getDeeplinkClickTime {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
 + (void)removeDeeplink {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -72,7 +79,8 @@ static NSString * const PREFS_KEY_DEEPLINK = @"adj_deeplink";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

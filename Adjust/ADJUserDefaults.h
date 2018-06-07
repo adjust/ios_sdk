@@ -26,9 +26,12 @@
 
 + (void)removeGdprForgetMe;
 
-+ (void)saveDeeplink:(NSURL *)deeplink;
++ (void)saveDeeplinkUrl:(NSURL *)deeplink
+           andClickTime:(NSDate *)clickTime;
 
-+ (NSURL *)getDeeplink;
++ (NSURL *)getDeeplinkUrl;
+
++ (NSDate *)getDeeplinkClickTime;
 
 + (void)removeDeeplink;
 
