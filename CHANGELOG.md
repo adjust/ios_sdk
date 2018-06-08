@@ -1,3 +1,9 @@
+### Version 4.14.0 (8th June 2018)
+#### Added
+- Added deep link caching in case `appWillOpenUrl` method is called before SDK is initialised.
+
+---
+
 ### Version 4.13.0 (27th April 2018)
 #### Added
 - Added `gdprForgetMe` method to `Adjust` interface to enable possibility for user to be forgotten in accordance with GDPR law.
