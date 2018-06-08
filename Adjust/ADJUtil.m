@@ -41,7 +41,7 @@ static CTCarrier *carrier = nil;
 
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.13.0";
+static NSString * const kClientSdk                  = @"ios4.14.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";

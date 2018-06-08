@@ -70,7 +70,7 @@
 - (BOOL)isEnabled;
 - (BOOL)isGdprForgotten;
 
-- (void)appWillOpenUrl:(NSURL*)url;
+- (void)appWillOpenUrl:(NSURL*)url withClickTime:(NSDate *)clickTime;
 - (void)setDeviceToken:(NSData *)deviceToken;
 - (void)setGdprForgetMe;
 - (void)setTrackingStateOptedOut;

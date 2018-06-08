@@ -14,8 +14,6 @@
 
 + (NSData *)getPushToken;
 
-+ (void)clearAdjustStuff;
-
 + (void)removePushToken;
 
 + (void)setInstallTracked;
@@ -27,5 +25,16 @@
 + (BOOL)getGdprForgetMe;
 
 + (void)removeGdprForgetMe;
+
++ (void)saveDeeplinkUrl:(NSURL *)deeplink
+           andClickTime:(NSDate *)clickTime;
+
++ (NSURL *)getDeeplinkUrl;
+
++ (NSDate *)getDeeplinkClickTime;
+
++ (void)removeDeeplink;
+
++ (void)clearAdjustStuff;
 
 @end

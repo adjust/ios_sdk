@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.13.0
+//  V4.14.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -23,6 +23,7 @@
 @property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
+@property (nonatomic, assign) BOOL noBackoffWait;
 
 @end
 
