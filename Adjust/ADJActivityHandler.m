@@ -1405,6 +1405,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (selfI.activityState.isGdprForgotten) {
         return;
     }
+    if (pushToken == nil) {
+        return;
+    }
     if ([pushToken isEqualToString:selfI.activityState.deviceToken]) {
         return;
     }
