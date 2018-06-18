@@ -362,6 +362,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)setPushToken:(NSString *)pushToken {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI setPushTokenI:selfI pushToken:pushToken];
+                     }];
+}
+
 - (void)setGdprForgetMe {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -664,8 +672,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         }
     } else {
         if (selfI.activityState != nil) {
-            NSData *deviceToken = [ADJUserDefaults getPushToken];
+            NSData *deviceToken = [ADJUserDefaults getPushTokenData];
             [selfI setDeviceToken:deviceToken];
+            NSString *pushToken = [ADJUserDefaults getPushTokenString];
+            [selfI setPushToken:pushToken];
         }
     }
 
@@ -770,7 +780,10 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         selfI.activityState = [[ADJActivityState alloc] init];
 
         // selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
-        selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:[ADJUserDefaults getPushToken]];
+        NSData *deviceToken = [ADJUserDefaults getPushTokenData];
+        NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
+        NSString *pushToken = [ADJUserDefaults getPushTokenString];
+        selfI.activityState.deviceToken = deviceTokenString != nil ? deviceTokenString : pushToken;
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
@@ -1135,13 +1148,14 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             double now = [NSDate.date timeIntervalSince1970];
             [self trackNewSessionI:now withActivityHandler:selfI];
         }
-
-        NSData *deviceToken = [ADJUserDefaults getPushToken];
-
+        NSData *deviceToken = [ADJUserDefaults getPushTokenData];
         if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
             [self setDeviceToken:deviceToken];
         }
-        
+        NSString *pushToken = [ADJUserDefaults getPushTokenString];
+        if (pushToken != nil && ![selfI.activityState.deviceToken isEqualToString:pushToken]) {
+            [self setPushToken:pushToken];
+        }
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
         }
@@ -1368,6 +1382,48 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
+    [selfI.packageHandler addPackage:infoPackage];
+
+    // if push token was cached, remove it
+    [ADJUserDefaults removePushToken];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)setPushTokenI:(ADJActivityHandler *)selfI
+            pushToken:(NSString *)pushToken {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (!selfI.activityState) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (pushToken == nil) {
+        return;
+    }
+    if ([pushToken isEqualToString:selfI.activityState.deviceToken]) {
+        return;
+    }
+
+    // save new push token
+    selfI.activityState.deviceToken = pushToken;
+    [selfI writeActivityStateI:selfI];
+
+    // send info package
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                     activityState:selfI.activityState
+                                                                            config:selfI.adjustConfig
+                                                                 sessionParameters:selfI.sessionParameters
+                                                                         createdAt:now];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
 
     // if push token was cached, remove it

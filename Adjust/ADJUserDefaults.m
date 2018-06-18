@@ -8,7 +8,8 @@
 
 #import "ADJUserDefaults.h"
 
-static NSString * const PREFS_KEY_PUSH_TOKEN = @"adj_push_token";
+static NSString * const PREFS_KEY_PUSH_TOKEN_DATA = @"adj_push_token";
+static NSString * const PREFS_KEY_PUSH_TOKEN_STRING = @"adj_push_token_string";
 static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
@@ -18,17 +19,27 @@ static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_tim
 
 #pragma mark - Public methods
 
-+ (void)savePushToken:(NSData *)pushToken {
-    [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN];
++ (void)savePushTokenData:(NSData *)pushToken {
+    [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (NSData *)getPushToken {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_PUSH_TOKEN];
++ (void)savePushTokenString:(NSString *)pushToken {
+    [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN_STRING];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSData *)getPushTokenData {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
+}
+
++ (NSString *)getPushTokenString {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
 }
 
 + (void)removePushToken {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -76,7 +87,8 @@ static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_tim
 }
 
 + (void)clearAdjustStuff {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];

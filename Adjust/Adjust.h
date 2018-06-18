@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.14.0
+//  V4.14.1
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -105,9 +105,17 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Set the device token used by push notifications.
  *
- * @param deviceToken Apple push notification token for iOS device.
+ * @param deviceToken Apple push notification token for iOS device as NSData.
  */
 + (void)setDeviceToken:(nonnull NSData *)deviceToken;
+
+/**
+ * @brief Set the device token used by push notifications.
+ *        This method is only used by Adjust non native SDKs. Don't use it anywhere else.
+ *
+ * @param pushToken Apple push notification token for iOS device as NSString.
+ */
++ (void)setPushToken:(nonnull NSString *)pushToken;
 
 /**
  * @brief Enable or disable offline mode. Activities won't be sent but they are saved when
@@ -233,6 +241,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)setOfflineMode:(BOOL)enabled;
 
 - (void)setDeviceToken:(nonnull NSData *)deviceToken;
+
+- (void)setPushToken:(nonnull NSString *)pushToken;
 
 - (void)sendFirstPackages;
 

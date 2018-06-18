@@ -1,3 +1,9 @@
+### Version 4.14.1 (18th June 2018)
+#### Added
+- Added `setPushToken:` method to `Adjust` interface to use push token as `NSString` data type. This method is intended only to be used by Adjust non native SDKs and you should not be using it in your native iOS app. Please, continue with usage of `setDeviceToken:` method as stated in `README`.
+
+---
+
 ### Version 4.14.0 (8th June 2018)
 #### Added
 - Added deep link caching in case `appWillOpenUrl` method is called before SDK is initialised.

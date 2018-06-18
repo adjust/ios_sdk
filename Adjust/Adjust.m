@@ -98,6 +98,10 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] setDeviceToken:deviceToken];
 }
 
++ (void)setPushToken:(NSString *)pushToken {
+    [[Adjust getInstance] setPushToken:pushToken];
+}
+
 + (void)setOfflineMode:(BOOL)enabled {
     [[Adjust getInstance] setOfflineMode:enabled];
 }
@@ -233,11 +237,21 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    [ADJUserDefaults savePushToken:deviceToken];
+    [ADJUserDefaults savePushTokenData:deviceToken];
 
     if ([self checkActivityHandler:@"device token"]) {
         if (self.activityHandler.isEnabled) {
             [self.activityHandler setDeviceToken:deviceToken];
+        }
+    }
+}
+
+- (void)setPushToken:(NSString *)pushToken {
+    [ADJUserDefaults savePushTokenString:pushToken];
+
+    if ([self checkActivityHandler:@"device token"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setPushToken:pushToken];
         }
     }
 }
