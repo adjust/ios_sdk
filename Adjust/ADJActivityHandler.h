@@ -72,6 +72,7 @@
 
 - (void)appWillOpenUrl:(NSURL*)url withClickTime:(NSDate *)clickTime;
 - (void)setDeviceToken:(NSData *)deviceToken;
+- (void)setPushToken:(NSString *)deviceToken;
 - (void)setGdprForgetMe;
 - (void)setTrackingStateOptedOut;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
