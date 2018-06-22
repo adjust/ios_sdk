@@ -42,6 +42,7 @@
 + (NSTimeInterval)maxDelayStart;
 + (NSString *)baseUrl;
 + (NSString *)gdprUrl;
++ (BOOL)iAdFrameworkEnabled;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
 + (void)setRequestHandler:(id<ADJRequestHandler>)requestHandler;
@@ -56,6 +57,7 @@
 + (void)setPackageHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
++ (void)setiAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;

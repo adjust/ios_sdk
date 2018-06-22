@@ -24,6 +24,7 @@
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
+@property (nonatomic, assign) BOOL iAdFrameworkEnabled;
 
 @end
 

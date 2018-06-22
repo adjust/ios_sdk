@@ -23,6 +23,7 @@ static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
+static BOOL internaliAdFrameworkEnabled = YES;
 
 static NSString * const kBaseUrl = @"https://app.adjust.com";
 static NSString * internalBaseUrl = @"https://app.adjust.com";
@@ -141,6 +142,10 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     return internalTesting;
 }
 
++ (BOOL)iAdFrameworkEnabled {
+    return internaliAdFrameworkEnabled;
+}
+
 + (NSTimeInterval)maxDelayStart {
     if (internalMaxDelayStart < 0) {
         return 10.0;               // 10 seconds
@@ -208,6 +213,10 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     internalTesting = testing;
 }
 
++ (void)setiAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled {
+    internaliAdFrameworkEnabled = iAdFrameworkEnabled;
+}
+
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart {
     internalMaxDelayStart = maxDelayStart;
 }
@@ -242,5 +251,6 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     internalMaxDelayStart = -1;
     internalBaseUrl = kBaseUrl;
     internalGdprUrl = kGdprUrl;
+    internaliAdFrameworkEnabled = YES;
 }
 @end

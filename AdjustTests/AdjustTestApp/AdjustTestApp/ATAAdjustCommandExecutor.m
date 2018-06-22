@@ -123,6 +123,13 @@
             testOptions.noBackoffWait = YES;
         }
     }
+    testOptions.iAdFrameworkEnabled = NO; // default value -> NO - iAd will not be used in test app by default
+    if ([parameters objectForKey:@"iAdFrameworkEnabled"]) {
+        NSString *iAdFrameworkEnabledStr = [parameters objectForKey:@"iAdFrameworkEnabled"][0];
+        if ([iAdFrameworkEnabledStr isEqualToString:@"true"]) {
+            testOptions.iAdFrameworkEnabled = YES;
+        }
+    }
     if ([parameters objectForKey:@"teardown"]) {
         NSArray *teardownOptions = [parameters objectForKey:@"teardown"];
         for (int i = 0; i < teardownOptions.count; i = i + 1) {
