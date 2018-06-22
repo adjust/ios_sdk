@@ -453,7 +453,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
          return;
      }
      
-     if (ADJAdjustFactory.iAdFrameworkEnabled) {
+     if (ADJAdjustFactory.iAdFrameworkEnabled == NO) {
          [self.logger verbose:@"Sending iAd details to server suppressed."];
          return;
      }
