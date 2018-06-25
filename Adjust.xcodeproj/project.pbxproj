@@ -214,7 +214,6 @@
 		9DF9C9441D6F3CA5008E362F /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C9051D6F3CA5008E362F /* Adjust.m */; };
 		9DF9C9451D6F3CA5008E362F /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C9061D6F3CA5008E362F /* ADJUtil.h */; };
 		9DF9C9461D6F3CA5008E362F /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C9071D6F3CA5008E362F /* ADJUtil.m */; };
-		9DF9C9471D6F3CA5008E362F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DF9C9081D6F3CA5008E362F /* Info.plist */; };
 		9DFA37B71C0F21D600782607 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFA37B51C0F21D600782607 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DFB06131D747070006D48FC /* AdjustSdkTv.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06121D747070006D48FC /* AdjustSdkTv.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DFB065A1D7470C0006D48FC /* ADJActivityHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB061A1D7470C0006D48FC /* ADJActivityHandler.h */; };
@@ -277,7 +276,6 @@
 		9DFB06951D7470C0006D48FC /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06561D7470C0006D48FC /* Adjust.m */; };
 		9DFB06961D7470C0006D48FC /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06571D7470C0006D48FC /* ADJUtil.h */; };
 		9DFB06971D7470C0006D48FC /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06581D7470C0006D48FC /* ADJUtil.m */; };
-		9DFB06981D7470C0006D48FC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DFB06591D7470C0006D48FC /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1644,7 +1642,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DF9C9471D6F3CA5008E362F /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1652,7 +1649,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DFB06981D7470C0006D48FC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
