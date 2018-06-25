@@ -44,7 +44,6 @@
 		6F3A5E8A2018CE14000AACD0 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E632018CE14000AACD0 /* ADJResponseData.m */; };
 		6F3A5E8B2018CE14000AACD0 /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E652018CE14000AACD0 /* ADJPackageBuilder.m */; };
 		6F3A5E8C2018CE14000AACD0 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E662018CE14000AACD0 /* ADJUserDefaults.m */; };
-		6F3A5E8D2018CE14000AACD0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F3A5E6A2018CE14000AACD0 /* Info.plist */; };
 		6F3A5E8E2018CE14000AACD0 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */; };
 		6F3A5E8F2018CE14000AACD0 /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E6D2018CE14000AACD0 /* ADJReachability.m */; };
 		6F3A5E9E2018CE3A000AACD0 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */; };
@@ -398,7 +397,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F3A5E8D2018CE14000AACD0 /* Info.plist in Resources */,
 				6F084237200776A000568A31 /* LaunchScreen.storyboard in Resources */,
 				6F0842342007769F00568A31 /* Assets.xcassets in Resources */,
 				6F0842322007769F00568A31 /* Main.storyboard in Resources */,

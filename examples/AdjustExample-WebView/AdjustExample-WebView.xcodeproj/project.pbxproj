@@ -52,7 +52,6 @@
 		9D449EF71E6EDD4100E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED41E6EDD4100E7E80B /* ADJTimerOnce.m */; };
 		9D449EF81E6EDD4100E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED61E6EDD4100E7E80B /* Adjust.m */; };
 		9D449EF91E6EDD4100E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED81E6EDD4100E7E80B /* ADJUtil.m */; };
-		9D449EFA1E6EDD4100E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449ED91E6EDD4100E7E80B /* Info.plist */; };
 		9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1881D07463800E5D222 /* WebViewJavascriptBridge.m */; };
 		9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18A1D07463800E5D222 /* WebViewJavascriptBridge_JS.m */; };
 		9D75F1981D07463800E5D222 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18C1D07463800E5D222 /* WebViewJavascriptBridgeBase.m */; };
@@ -421,7 +420,6 @@
 				9D75F19D1D07463800E5D222 /* adjust_config.js in Resources */,
 				9D75F19C1D07463800E5D222 /* adjust_event.js in Resources */,
 				9D75F19B1D07463800E5D222 /* adjust.js in Resources */,
-				9D449EFA1E6EDD4100E7E80B /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
