@@ -1,7 +1,22 @@
-function AdjustConfig(bridge, appToken, environment) {
-    this.bridge = bridge;
-    this.appToken = appToken;
-    this.environment = environment;
+function AdjustConfig(appToken, environment, legacy) {
+
+    if (arguments.length === 2) {
+        // new format does not require bridge as first parameter
+        this.appToken = appToken;
+        this.environment = environment;
+    } else if (arguments.length === 3) {
+        // new format with allowSuppressLogLevel
+        if (typeof(legacy) == typeof(true)) {
+            this.appToken = appToken;
+            this.environment = environment;
+            this.allowSuppressLogLevel = legacy;
+        } else {
+            // old format with first argument being the bridge instance
+            this.bridge = appToken;
+            this.appToken = environment;
+            this.environment = legacy;
+        }
+    }
 
     this.sdkPrefix = 'web-bridge4.9.1';
 
@@ -31,12 +46,15 @@ AdjustConfig.LogLevelWarn           = 'WARN',
 AdjustConfig.LogLevelError          = 'ERROR',
 AdjustConfig.LogLevelAssert         = 'ASSERT',
 
-AdjustConfig.prototype.getBridge = function() {
-    return this.bridge;
-};
-
-AdjustConfig.prototype.getAttributionCallback = function() {
-    return this.attributionCallback;
+AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithName) {
+    if (!this.callbacksMap) {
+        return;
+    }
+    var keysArray = Object.keys(this.callbacksMap);
+    for (var idx in keysArray) {
+        var key = keysArray[idx];
+        handleCallbackWithName(key, this.callbacksMap[key]);
+    }
 };
 
 AdjustConfig.prototype.getEventSuccessCallback = function() {

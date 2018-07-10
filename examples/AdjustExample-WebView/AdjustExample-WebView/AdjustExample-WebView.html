@@ -30,8 +30,7 @@
 		bridge.registerHandler('adjust_deeplink', function(data, responseCallback) {
 			alert('Deeplink:\n' + data)
 		})
-
-        var adjustConfig = new AdjustConfig(bridge, '2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox)
+        let adjustConfig = new AdjustConfig('2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox);
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose)
         adjustConfig.setOpenDeferredDeeplink(true)     // Just for test, is true by default.
 
