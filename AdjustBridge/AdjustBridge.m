@@ -194,58 +194,24 @@
 }
 
 - (void)loadWebViewBridge {
-    // Register for setting attribution callback method.
-    [self.bridgeRegister registerHandler:@"adjust_setAttributionCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_setCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
 
-        self.attributionCallback = responseCallback;
-    }];
-
-    // Register for setting event tracking success callback method.
-    [self.bridgeRegister registerHandler:@"adjust_setEventSuccessCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
+        if ([data isEqualToString:@"attributionCallback"]) {
+            self.attributionCallback = responseCallback;
+        } else if ([data isEqualToString:@"eventSuccessCallback"]) {
+            self.eventSuccessCallback = responseCallback;
+        } else if ([data isEqualToString:@"eventFailureCallback"]) {
+            self.eventFailureCallback = responseCallback;
+        } else if ([data isEqualToString:@"sessionSuccessCallback"]) {
+            self.sessionSuccessCallback = responseCallback;
+        } else if ([data isEqualToString:@"sessionFailureCallback"]) {
+            self.sessionFailureCallback = responseCallback;
+        } else if ([data isEqualToString:@"deferredDeeplinkCallback"]) {
+            self.deferredDeeplinkCallback = responseCallback;
         }
-
-        self.eventSuccessCallback = responseCallback;
-    }];
-
-    // Register for setting event tracking failure method.
-    [self.bridgeRegister registerHandler:@"adjust_setEventFailureCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        self.eventFailureCallback = responseCallback;
-    }];
-
-    // Register for setting session tracking success method.
-    [self.bridgeRegister registerHandler:@"adjust_setSessionSuccessCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        self.sessionSuccessCallback = responseCallback;
-    }];
-
-    // Register for setting session tracking failure method.
-    [self.bridgeRegister registerHandler:@"adjust_setSessionFailureCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        self.sessionFailureCallback = responseCallback;
-    }];
-
-    // Register for setting direct deeplink handler method.
-    [self.bridgeRegister registerHandler:@"adjust_setDeferredDeeplinkCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        self.deferredDeeplinkCallback = responseCallback;
     }];
 
     // Register for appDidLaunch method.

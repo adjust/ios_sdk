@@ -28,12 +28,7 @@ function AdjustConfig(appToken, environment, legacy) {
     this.eventBufferingEnabled = null;
     this.webBridgeLoggingEnabled = null;
 
-    this.attributionCallback = null;
-    this.eventSuccessCallback = null;
-    this.eventFailureCallback = null;
-    this.sessionSuccessCallback = null;
-    this.sessionFailureCallback = null;
-    this.deferredDeeplinkCallback = null;
+    this.callbacksMap = {};
 }
 
 AdjustConfig.EnvironmentSandbox     = 'sandbox';
@@ -55,26 +50,6 @@ AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithN
         var key = keysArray[idx];
         handleCallbackWithName(key, this.callbacksMap[key]);
     }
-};
-
-AdjustConfig.prototype.getEventSuccessCallback = function() {
-    return this.eventSuccessCallback;
-};
-
-AdjustConfig.prototype.getEventFailureCallback = function() {
-    return this.eventFailureCallback;
-};
-
-AdjustConfig.prototype.getSessionSuccessCallback = function() {
-    return this.sessionSuccessCallback;
-};
-
-AdjustConfig.prototype.getSessionFailureCallback = function() {
-    return this.sessionFailureCallback;
-};
-
-AdjustConfig.prototype.getDeferredDeeplinkCallback = function() {
-    return this.deferredDeeplinkCallback;
 };
 
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
@@ -106,27 +81,27 @@ AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
 };
 
 AdjustConfig.prototype.setAttributionCallback = function(callback) {
-    this.attributionCallback = callback;
+    this.callbacksMap['attributionCallback'] = callback;
 };
 
 AdjustConfig.prototype.setEventSuccessCallback = function(callback) {
-    this.eventSuccessCallback = callback;
+    this.callbacksMap['eventSuccessCallback'] = callback;
 };
 
 AdjustConfig.prototype.setEventFailureCallback = function(callback) {
-    this.eventFailureCallback = callback;
+    this.callbacksMap['eventFailureCallback'] = callback;
 };
 
 AdjustConfig.prototype.setSessionSuccessCallback = function(callback) {
-    this.sessionSuccessCallback = callback;
+    this.callbacksMap['sessionSuccessCallback'] = callback;
 };
 
 AdjustConfig.prototype.setSessionFailureCallback = function(callback) {
-    this.sessionFailureCallback = callback;
+    this.callbacksMap['sessionFailureCallback'] = callback;
 };
 
 AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
-    this.deferredDeeplinkCallback = callback;
+    this.callbacksMap['deferredDeeplinkCallback'] = callback;
 };
 
 module.exports = AdjustConfig;
