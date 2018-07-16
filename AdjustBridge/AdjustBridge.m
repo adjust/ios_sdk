@@ -13,7 +13,6 @@
 // (depends how you import the adjust SDK to your app)
 
 #import "AdjustBridge.h"
-#import "AdjustBridgeRegister.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 #import "ADJAdjustFactory.h"
@@ -46,8 +45,6 @@
 @property WVJBResponseCallback sessionFailureCallback;
 @property WVJBResponseCallback deferredDeeplinkCallback;
 
-@property (nonatomic, strong) id<AdjustBridgeRegister> bridgeRegister;
-
 @end
 
 @implementation AdjustBridge
@@ -61,7 +58,7 @@
         return nil;
     }
 
-    self.bridgeRegister = nil;
+    _bridgeRegister = nil;
 
     self.openDeferredDeeplink = YES;
 
@@ -176,7 +173,7 @@
     AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
     [uiBridgeRegister setWebViewDelegate:webViewDelegate];
     
-    self.bridgeRegister = uiBridgeRegister;
+    _bridgeRegister = uiBridgeRegister;
     [self loadWebViewBridge];
 }
 
@@ -190,11 +187,12 @@
     AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
     [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
     
-    self.bridgeRegister = wkBridgeRegister;
+    _bridgeRegister = wkBridgeRegister;
     [self loadWebViewBridge];
 }
 
 - (void)loadWebViewBridge {
+    // Register setCallback method to save callbacks before appDidLaunch
     [self.bridgeRegister registerHandler:@"adjust_setCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
@@ -356,10 +354,6 @@
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
         [[ADJAdjustFactory logger] warn:@"Function setDeviceToken has been replaced by setPushToken in web bridge"];
     }];
-}
-
-- (void)sendDeeplinkToWebView:(NSURL *)deeplink {
-    [self.bridgeRegister callHandler:@"adjust_deeplink" data:[deeplink absoluteString]];
 }
 
 #pragma mark - Private & helper methods

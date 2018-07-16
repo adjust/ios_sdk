@@ -46,18 +46,12 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     NSLog(@"application openURL %@", url);
 
-    [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
-    [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
-
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
-
-        [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
-        [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
     }
 
     return YES;
