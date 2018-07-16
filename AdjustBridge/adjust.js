@@ -16,6 +16,16 @@ var Adjust = {
             WebViewJavascriptBridge.callHandler('adjust_trackEvent', adjustEvent, null);
         }
     },
+    trackSubsessionStart: function() {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_trackSubsessionStart', null, null);
+        }
+    },
+    trackSubsessionEnd: function() {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_trackSubsessionEnd', null, null);
+        }
+    },
     setEnabled: function (enabled) {
         if (WebViewJavascriptBridge) {
             WebViewJavascriptBridge.callHandler('adjust_setEnabled', enabled, null);
@@ -48,6 +58,56 @@ var Adjust = {
     getIdfa: function (callback) {
         if (WebViewJavascriptBridge) {
             WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
+        }
+    },
+    getAdid: function (callback) {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
+        }
+    },
+    getAttribution: function (callback) {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_attribution', null, callback);
+        }
+    },
+    sendFirstPackages: function () {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_sendFirstPackages', null, null);
+        }
+    },
+    addSessionCallbackParameter: function (key, value) {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_addSessionCallbackParameter', {key: key, value: value}, null);
+        }
+    },
+    addSessionPartnerParameter: function (key, value) {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_addSessionPartnerParameter', {key: key, value: value}, null);
+        }
+    },
+    removeSessionCallbackParameter: function (key) {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_removeSessionCallbackParameter', key, null);
+        }
+    },
+    removeSessionPartnerParameter: function (key) {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_removeSessionPartnerParameter', key, null);
+        }
+    },
+    resetSessionCallbackParameters: function () {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_resetSessionCallbackParameters', null, null);
+        }
+    },
+    resetSessionPartnerParameters: function () {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_resetSessionPartnerParameters', null, null);
+        }
+    },
+    gdprForgetMe: function () {
+        if (WebViewJavascriptBridge != null) {
+            WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
         }
     },
 

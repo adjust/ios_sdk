@@ -196,8 +196,6 @@
             self.deferredDeeplinkCallback = responseCallback;
         }
     }];
-
-    // Register for appDidLaunch method.
     [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *appToken = [data objectForKey:@"appToken"];
         NSString *environment = [data objectForKey:@"environment"];
@@ -206,6 +204,15 @@
         NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
+        NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
+        NSNumber *delayStart = [data objectForKey:@"delayStart"];
+        NSString *userAgent = [data objectForKey:@"userAgent"];
+        NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
+        NSNumber *secretId = [data objectForKey:@"secretId"];
+        NSNumber *info1 = [data objectForKey:@"info1"];
+        NSNumber *info2 = [data objectForKey:@"info2"];
+        NSNumber *info3 = [data objectForKey:@"info3"];
+        NSNumber *info4 = [data objectForKey:@"info4"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
 
         ADJConfig *adjustConfig;
@@ -231,6 +238,32 @@
         }
         if ([self isFieldValid:eventBufferingEnabled]) {
             [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+        }
+        if ([self isFieldValid:sendInBackground]) {
+            [adjustConfig setSendInBackground:[sendInBackground boolValue]];
+        }
+        if ([self isFieldValid:delayStart]) {
+            [adjustConfig setDelayStart:[delayStart doubleValue]];
+        }
+        if ([self isFieldValid:userAgent]) {
+            [adjustConfig setUserAgent:userAgent];
+        }
+        if ([self isFieldValid:isDeviceKnown]) {
+            [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
+        }
+        BOOL isAppSecretDefined =
+            [self isFieldValid:secretId] &&
+            [self isFieldValid:info1] &&
+            [self isFieldValid:info2] &&
+            [self isFieldValid:info3] &&
+            [self isFieldValid:info4];
+
+        if (isAppSecretDefined) {
+            [adjustConfig setAppSecret:[secretId unsignedIntegerValue]
+                                 info1:[info1 unsignedIntegerValue]
+                                 info2:[info2 unsignedIntegerValue]
+                                 info3:[info3 unsignedIntegerValue]
+                                 info4:[info4 unsignedIntegerValue]];
         }
         if ([self isFieldValid:openDeferredDeeplink]) {
             self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
@@ -279,14 +312,18 @@
 
         [Adjust trackEvent:adjustEvent];
     }];
+    [self.bridgeRegister registerHandler:@"adjust_trackSubsessionStart" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust trackSubsessionStart];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_trackSubsessionEnd" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust trackSubsessionEnd];
+    }];
     [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSNumber class]]) {
             return;
         }
         [Adjust setEnabled:[(NSNumber *)data boolValue]];
     }];
-
-    // Register for isEnabled method.
     [self.bridgeRegister registerHandler:@"adjust_isEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
@@ -314,7 +351,64 @@
         }
         responseCallback([Adjust idfa]);
     }];
+    [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        responseCallback([Adjust adid]);
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_attribution" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        ADJAttribution * attribution = [Adjust attribution];
+        NSDictionary * attributionDictionary = nil;
+        if (attribution != nil) {
+            attributionDictionary = [attribution dictionary];
+        }
 
+        responseCallback(attributionDictionary);
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_sendFirstPackages" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust sendFirstPackages];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_addSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *key = [data objectForKey:@"key"];
+        NSString *value = [data objectForKey:@"value"];
+        [Adjust addSessionCallbackParameter:key value:value];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_addSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *key = [data objectForKey:@"key"];
+        NSString *value = [data objectForKey:@"value"];
+        [Adjust addSessionPartnerParameter:key value:value];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_removeSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust removeSessionCallbackParameter:(NSString *)data];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_removeSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust removeSessionPartnerParameter:(NSString *)data];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_resetSessionCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust resetSessionCallbackParameters];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_resetSessionPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust resetSessionPartnerParameters];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust gdprForgetMe];
+    }];
 
     // Method replaced by setPushToken
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {

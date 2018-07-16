@@ -9,11 +9,6 @@ function AdjustEvent(eventToken) {
     this.partnerParameters = [];
 }
 
-AdjustEvent.prototype.setRevenue = function(revenue, currency) {
-    this.revenue = revenue;
-    this.currency = currency;
-};
-
 AdjustEvent.prototype.addCallbackParameter = function(key, value) {
     this.callbackParameters.push(key);
     this.callbackParameters.push(value);
@@ -22,6 +17,11 @@ AdjustEvent.prototype.addCallbackParameter = function(key, value) {
 AdjustEvent.prototype.addPartnerParameter = function(key, value) {
     this.partnerParameters.push(key);
     this.partnerParameters.push(value);
+};
+
+AdjustEvent.prototype.setRevenue = function(revenue, currency) {
+    this.revenue = revenue;
+    this.currency = currency;
 };
 
 AdjustEvent.prototype.setTransactionId = function(transactionId) {

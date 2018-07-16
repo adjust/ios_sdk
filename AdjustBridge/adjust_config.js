@@ -19,14 +19,19 @@ function AdjustConfig(appToken, environment, legacy) {
     }
 
     this.sdkPrefix = 'web-bridge4.9.1';
-
-    this.logLevel = null;
     this.defaultTracker = null;
-
-    this.sendInBackground = null;
-    this.openDeferredDeeplink = null;
+    this.logLevel = null;
     this.eventBufferingEnabled = null;
-
+    this.sendInBackground = null;
+    this.delayStart = null;
+    this.userAgent = null;
+    this.isDeviceKnown = null;
+    this.secretId = null;
+    this.info1 = null;
+    this.info2 = null;
+    this.info3 = null;
+    this.info4 = null;
+    this.openDeferredDeeplink = null;
     this.callbacksMap = {};
 }
 
@@ -51,24 +56,40 @@ AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithN
     }
 };
 
+AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
+    this.sdkPrefix = sdkPrefix;
+};
+AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
+    this.defaultTracker = defaultTracker;
+};
+AdjustConfig.prototype.setLogLevel = function(logLevel) {
+    this.logLevel = logLevel;
+};
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
 AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
     this.sendInBackground = isEnabled;
 };
-AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
-    this.openDeferredDeeplink = shouldOpen;
+AdjustConfig.prototype.setDelayStart = function(delayStartInSeconds) {
+    this.delayStart = delayStartInSeconds;
 };
-AdjustConfig.prototype.setLogLevel = function(logLevel) {
-    this.logLevel = logLevel;
+AdjustConfig.prototype.setUserAgent = function(userAgent) {
+    this.userAgent = userAgent;
 };
-AdjustConfig.prototype.setProcessName = function(processName) {
-    this.processName = processName;
+AdjustConfig.prototype.setIsDeviceKnown = function(isDeviceKnown) {
+    this.isDeviceKnown = isDeviceKnown;
+};
+AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
+    this.secretId = secretId;
+    this.info1 = info1;
+    this.info2 = info2;
+    this.info3 = info3;
+    this.info4 = info4;
 };
 
-AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
-    this.defaultTracker = defaultTracker;
+AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
+    this.openDeferredDeeplink = shouldOpen;
 };
 
 AdjustConfig.prototype.setAttributionCallback = function(callback) {
