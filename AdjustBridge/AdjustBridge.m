@@ -17,21 +17,6 @@
 #import "WKWebViewJavascriptBridge.h"
 #import "ADJAdjustFactory.h"
 
-#define KEY_APP_TOKEN                   @"appToken"
-#define KEY_ENVIRONMENT                 @"environment"
-#define KEY_LOG_LEVEL                   @"logLevel"
-#define KEY_SDK_PREFIX                  @"sdkPrefix"
-#define KEY_DEFAULT_TRACKER             @"defaultTracker"
-#define KEY_SEND_IN_BACKGROUND          @"sendInBackground"
-#define KEY_OPEN_DEFERRED_DEEPLINK      @"openDeferredDeeplink"
-#define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
-#define KEY_EVENT_TOKEN                 @"eventToken"
-#define KEY_REVENUE                     @"revenue"
-#define KEY_CURRENCY                    @"currency"
-#define KEY_TRANSACTION_ID              @"transactionId"
-#define KEY_CALLBACK_PARAMETERS         @"callbackParameters"
-#define KEY_PARTNER_PARAMETERS          @"partnerParameters"
-
 @interface AdjustBridge() <AdjustDelegate>
 
 @property BOOL openDeferredDeeplink;
@@ -87,10 +72,10 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
+    [dictionary setValue:eventSuccessResponseData.message forKey:@"message"];
     [dictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
-    [dictionary setValue:eventSuccessResponseData.message forKey:@"message"];
+    [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
     [dictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
 
     self.eventSuccessCallback(dictionary);
@@ -103,12 +88,12 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-    [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
+    [dictionary setValue:eventFailureResponseData.message forKey:@"message"];
     [dictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
-    [dictionary setValue:eventFailureResponseData.message forKey:@"message"];
-    [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+    [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
     [dictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
+    [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
 
     self.eventFailureCallback(dictionary);
 }
@@ -120,9 +105,9 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
+    [dictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
     [dictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
-    [dictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
     [dictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
 
     self.sessionSuccessCallback(dictionary);
@@ -135,11 +120,11 @@
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
+    [dictionary setValue:sessionFailureResponseData.message forKey:@"message"];
     [dictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
-    [dictionary setValue:sessionFailureResponseData.message forKey:@"message"];
-    [dictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
     [dictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
+    [dictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
 
     self.sessionFailureCallback(dictionary);
 }
@@ -214,106 +199,91 @@
 
     // Register for appDidLaunch method.
     [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *appToken = [data objectForKey:KEY_APP_TOKEN];
-        NSString *environment = [data objectForKey:KEY_ENVIRONMENT];
-        NSString *logLevel = [data objectForKey:KEY_LOG_LEVEL];
-        NSString *sdkPrefix = [data objectForKey:KEY_SDK_PREFIX];
-        NSString *defaultTracker = [data objectForKey:KEY_DEFAULT_TRACKER];
-        NSNumber *sendInBackground = [data objectForKey:KEY_SEND_IN_BACKGROUND];
-        NSNumber *eventBufferingEnabled = [data objectForKey:KEY_EVENT_BUFFERING_ENABLED];
-        NSNumber *shouldOpenDeferredDeeplink = [data objectForKey:KEY_OPEN_DEFERRED_DEEPLINK];
+        NSString *appToken = [data objectForKey:@"appToken"];
+        NSString *environment = [data objectForKey:@"environment"];
+        NSString *allowSuppressLogLevel = [data objectForKey:@"allowSuppressLogLevel"];
+        NSString *sdkPrefix = [data objectForKey:@"sdkPrefix"];
+        NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
+        NSString *logLevel = [data objectForKey:@"logLevel"];
+        NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
+        NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
 
-        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
-
-        if ([adjustConfig isValid]) {
-            // Log level
-            if ([self isFieldValid:logLevel]) {
-                [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
-            }
-
-            // Sending in background
-            if ([self isFieldValid:sendInBackground]) {
-                [adjustConfig setSendInBackground:[sendInBackground boolValue]];
-            }
-
-            // Event buffering
-            if ([self isFieldValid:eventBufferingEnabled]) {
-                [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
-            }
-
-            // Deferred deeplink opening
-            if ([self isFieldValid:shouldOpenDeferredDeeplink]) {
-                self.openDeferredDeeplink = [shouldOpenDeferredDeeplink boolValue];
-            }
-
-            // SDK prefix
-            if ([self isFieldValid:sdkPrefix]) {
-                [adjustConfig setSdkPrefix:sdkPrefix];
-            }
-
-            // Default tracker
-            if ([self isFieldValid:defaultTracker]) {
-                [adjustConfig setDefaultTracker:defaultTracker];
-            }
-
-            // Attribution delegate
-            if (self.attributionCallback != nil || self.eventSuccessCallback != nil ||
-                self.eventFailureCallback != nil || self.sessionSuccessCallback != nil ||
-                self.sessionFailureCallback != nil || self.deferredDeeplinkCallback != nil) {
-                [adjustConfig setDelegate:self];
-            }
-
-            [Adjust appDidLaunch:adjustConfig];
-            [Adjust trackSubsessionStart];
+        ADJConfig *adjustConfig;
+        if ([self isFieldValid:allowSuppressLogLevel]) {
+            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:[allowSuppressLogLevel boolValue]];
+        } else {
+            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
         }
-    }];
 
-    // Register for trackEvent method.
+        // no need to continue if adjust config is not valid
+        if (![adjustConfig isValid]) {
+            return;
+        }
+
+        if ([self isFieldValid:sdkPrefix]) {
+            [adjustConfig setSdkPrefix:sdkPrefix];
+        }
+        if ([self isFieldValid:defaultTracker]) {
+            [adjustConfig setDefaultTracker:defaultTracker];
+        }
+        if ([self isFieldValid:logLevel]) {
+            [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
+        }
+        if ([self isFieldValid:eventBufferingEnabled]) {
+            [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+        }
+        if ([self isFieldValid:openDeferredDeeplink]) {
+            self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
+        }
+        // Set self as delegate if any callback is configured
+        // Change to swifle the methods in the future
+        if (self.attributionCallback != nil || self.eventSuccessCallback != nil ||
+            self.eventFailureCallback != nil || self.sessionSuccessCallback != nil ||
+            self.sessionFailureCallback != nil || self.deferredDeeplinkCallback != nil) {
+            [adjustConfig setDelegate:self];
+        }
+
+        [Adjust appDidLaunch:adjustConfig];
+        [Adjust trackSubsessionStart];
+    }];
     [self.bridgeRegister registerHandler:@"adjust_trackEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *eventToken = [data objectForKey:KEY_EVENT_TOKEN];
-        NSString *revenue = [data objectForKey:KEY_REVENUE];
-        NSString *currency = [data objectForKey:KEY_CURRENCY];
-        NSString *transactionId = [data objectForKey:KEY_TRANSACTION_ID];
+
+        NSString *eventToken = [data objectForKey:@"eventToken"];
+        NSString *revenue = [data objectForKey:@"revenue"];
+        NSString *currency = [data objectForKey:@"currency"];
+        NSString *transactionId = [data objectForKey:@"transactionId"];
+        id callbackParameters = [data objectForKey:@"callbackParameters"];
+        id partnerParameters = [data objectForKey:@"partnerParameters"];
 
         ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
 
-        if ([adjustEvent isValid]) {
-            // Revenue and currency
-            if ([self isFieldValid:revenue] || [self isFieldValid:currency]) {
-                double revenueValue = [revenue doubleValue];
-
-                [adjustEvent setRevenue:revenueValue currency:currency];
-            }
-
-            // Callback parameters
-            for (int i = 0; i < [[data objectForKey:KEY_CALLBACK_PARAMETERS] count]; i += 2) {
-                [adjustEvent addCallbackParameter:[[data objectForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:i]
-                                            value:[[data objectForKey:KEY_CALLBACK_PARAMETERS] objectAtIndex:(i+1)]];
-            }
-
-            // Partner parameters
-            for (int i = 0; i < [[data objectForKey:KEY_PARTNER_PARAMETERS] count]; i += 2) {
-                [adjustEvent addPartnerParameter:[[data objectForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:i]
-                                           value:[[data objectForKey:KEY_PARTNER_PARAMETERS] objectAtIndex:(i+1)]];
-            }
-
-            // Transaction ID
-            if ([self isFieldValid:transactionId]) {
-                [adjustEvent setTransactionId:transactionId];
-            }
-
-            [Adjust trackEvent:adjustEvent];
+        // no need to continue if adjust event is not valid
+        if (![adjustEvent isValid]) {
+            return;
         }
-    }];
+        if ([self isFieldValid:revenue] && [self isFieldValid:currency]) {
+            double revenueValue = [revenue doubleValue];
+            [adjustEvent setRevenue:revenueValue currency:currency];
+        }
+        if ([self isFieldValid:transactionId]) {
+            [adjustEvent setTransactionId:transactionId];
+        }
+        for (int i = 0; i < [callbackParameters count]; i += 2) {
+            [adjustEvent addCallbackParameter:[callbackParameters objectAtIndex:i]
+                                        value:[callbackParameters objectAtIndex:(i+1)]];
+        }
+        for (int i = 0; i < [partnerParameters count]; i += 2) {
+            [adjustEvent addPartnerParameter:[partnerParameters objectAtIndex:i]
+                                       value:[partnerParameters objectAtIndex:(i+1)]];
+        }
 
-    // Register for setOfflineMode method.
-    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(NSNumber *data, WVJBResponseCallback responseCallback) {
-        [Adjust setOfflineMode:[data boolValue]];
+        [Adjust trackEvent:adjustEvent];
     }];
-
-    // Register for setEnabled method.
-    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(NSNumber *data, WVJBResponseCallback responseCallback) {
-        [Adjust setEnabled:[data boolValue]];
+    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust setEnabled:[(NSNumber *)data boolValue]];
     }];
 
     // Register for isEnabled method.
@@ -323,11 +293,20 @@
         }
         responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
+    [self.bridgeRegister registerHandler:@"adjust_appWillOpenUrl" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
+    }];
     [self.bridgeRegister registerHandler:@"adjust_setPushToken" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust setPushToken:(NSString *)data];
+    }];
+    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust setOfflineMode:[(NSNumber *)data boolValue]];
     }];
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
@@ -336,10 +315,6 @@
         responseCallback([Adjust idfa]);
     }];
 
-    // Register for appWillOpenUrl method.
-    [self.bridgeRegister registerHandler:@"adjust_appWillOpenUrl" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
-    }];
 
     // Method replaced by setPushToken
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
