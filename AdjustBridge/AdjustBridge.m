@@ -25,7 +25,6 @@
 #define KEY_SEND_IN_BACKGROUND          @"sendInBackground"
 #define KEY_OPEN_DEFERRED_DEEPLINK      @"openDeferredDeeplink"
 #define KEY_EVENT_BUFFERING_ENABLED     @"eventBufferingEnabled"
-#define KEY_WEB_VIEW_LOGGING_ENABLED    @"webViewLoggingEnabled"
 #define KEY_EVENT_TOKEN                 @"eventToken"
 #define KEY_REVENUE                     @"revenue"
 #define KEY_CURRENCY                    @"currency"
@@ -222,7 +221,6 @@
         NSString *defaultTracker = [data objectForKey:KEY_DEFAULT_TRACKER];
         NSNumber *sendInBackground = [data objectForKey:KEY_SEND_IN_BACKGROUND];
         NSNumber *eventBufferingEnabled = [data objectForKey:KEY_EVENT_BUFFERING_ENABLED];
-        NSNumber *webViewLoggingEnabled = [data objectForKey:KEY_WEB_VIEW_LOGGING_ENABLED];
         NSNumber *shouldOpenDeferredDeeplink = [data objectForKey:KEY_OPEN_DEFERRED_DEEPLINK];
 
         ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
@@ -241,13 +239,6 @@
             // Event buffering
             if ([self isFieldValid:eventBufferingEnabled]) {
                 [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
-            }
-
-            // Web bridge logging
-            if ([self isFieldValid:webViewLoggingEnabled]) {
-                if ([eventBufferingEnabled boolValue]) {
-                    [WebViewJavascriptBridge enableLogging];
-                }
             }
 
             // Deferred deeplink opening

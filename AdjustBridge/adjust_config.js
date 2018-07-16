@@ -26,7 +26,6 @@ function AdjustConfig(appToken, environment, legacy) {
     this.sendInBackground = null;
     this.openDeferredDeeplink = null;
     this.eventBufferingEnabled = null;
-    this.webBridgeLoggingEnabled = null;
 
     this.callbacksMap = {};
 }
@@ -55,23 +54,15 @@ AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithN
 AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
     this.eventBufferingEnabled = isEnabled;
 };
-
 AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
     this.sendInBackground = isEnabled;
 };
-
 AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
     this.openDeferredDeeplink = shouldOpen;
 };
-
-AdjustConfig.prototype.setWebBridgeLoggingEnabled = function(isEnabled) {
-    this.webBridgeLoggingEnabled = isEnabled;
-};
-
 AdjustConfig.prototype.setLogLevel = function(logLevel) {
     this.logLevel = logLevel;
 };
-
 AdjustConfig.prototype.setProcessName = function(processName) {
     this.processName = processName;
 };
