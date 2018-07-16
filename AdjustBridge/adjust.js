@@ -15,13 +15,15 @@ var Adjust = {
             }
         }
     },
-
     trackEvent: function (adjustEvent) {
         if (WebViewJavascriptBridge != null) {
             WebViewJavascriptBridge.callHandler('adjust_trackEvent', adjustEvent, null)
+    },
+    setPushToken: function (pushToken) {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_setPushToken', pushToken, null);
         }
     },
-
     setOfflineMode: function(isOffline) {
         if (WebViewJavascriptBridge != null) {
             WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null)
@@ -53,6 +55,13 @@ var Adjust = {
     appWillOpenUrl: function (url) {
         if (WebViewJavascriptBridge != null) {
             WebViewJavascriptBridge.callHandler('adjust_appWillOpenUrl', url, null)
+        }
+    },
+
+    // metod replaced by setPushToken, that accepts a simple string
+    setDeviceToken: function (deviceToken) {
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);
         }
     }
 };

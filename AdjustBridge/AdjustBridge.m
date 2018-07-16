@@ -16,6 +16,7 @@
 #import "AdjustBridgeRegister.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
+#import "ADJAdjustFactory.h"
 
 #define KEY_APP_TOKEN                   @"appToken"
 #define KEY_ENVIRONMENT                 @"environment"
@@ -331,16 +332,18 @@
         if (responseCallback == nil) {
             return;
         }
-
         responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
-
-    // Register for IDFA method.
+    [self.bridgeRegister registerHandler:@"adjust_setPushToken" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust setPushToken:(NSString *)data];
+    }];
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
-
         responseCallback([Adjust idfa]);
     }];
 
@@ -349,9 +352,9 @@
         [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
     }];
 
-    // Register for setDeviceToken method.
+    // Method replaced by setPushToken
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust setDeviceToken:[data dataUsingEncoding:NSUTF8StringEncoding]];
+        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken has been replaced by setPushToken in web bridge"];
     }];
 }
 
