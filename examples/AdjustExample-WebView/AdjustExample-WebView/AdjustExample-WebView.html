@@ -73,7 +73,6 @@
         var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
         btnTrackSimpleEvent.onclick = function(e) {
             e.preventDefault()
-
             var adjustEvent = new AdjustEvent('g3mfiw')
             Adjust.trackEvent(adjustEvent)
         }
@@ -81,18 +80,14 @@
         var btnTrackRevenueEvent = document.getElementById('btnTrackRevenueEvent')
         btnTrackRevenueEvent.onclick = function(e) {
             e.preventDefault()
-
             var adjustEvent = new AdjustEvent('a4fd35')
             adjustEvent.setRevenue(0.01, 'EUR')
             Adjust.trackEvent(adjustEvent)
         }
 
         var btnTrackCallbackEvent = document.getElementById('btnTrackCallbackEvent')
-
         btnTrackCallbackEvent.onclick = function(e) {
-
             e.preventDefault()
-
             var adjustEvent = new AdjustEvent('34vgg9')
             adjustEvent.addCallbackParameter('key', 'value')
             adjustEvent.addCallbackParameter('x', 'y')
@@ -103,7 +98,6 @@
         var btnTrackPartnerEvent = document.getElementById('btnTrackPartnerEvent')
         btnTrackPartnerEvent.onclick = function(e) {
             e.preventDefault()
-
             var adjustEvent = new AdjustEvent('w788qs')
             adjustEvent.addPartnerParameter('foo', 'bar')
             adjustEvent.addPartnerParameter('x', 'y')
@@ -115,35 +109,30 @@
         var btnEnableOfflineMode = document.getElementById('btnEnableOfflineMode')
         btnEnableOfflineMode.onclick = function(e) {
             e.preventDefault()
-
             Adjust.setOfflineMode(true)
         }
 
         var btnDisableOfflineMode = document.getElementById('btnDisableOfflineMode')
         btnDisableOfflineMode.onclick = function(e) {
             e.preventDefault()
-
             Adjust.setOfflineMode(false)
         }
 
         var btnEnableSdk = document.getElementById('btnEnableSdk')
         btnEnableSdk.onclick = function(e) {
             e.preventDefault()
-
             Adjust.setEnabled(true)
         }
 
         var btnDisableSdk = document.getElementById('btnDisableSdk')
         btnDisableSdk.onclick = function(e) {
             e.preventDefault()
-
             Adjust.setEnabled(false)
         }
 
         var btnIsSdkEnabled = document.getElementById('btnIsSdkEnabled')
         btnIsSdkEnabled.onclick = function(e) {
             e.preventDefault()
-
             Adjust.isEnabled(function(isEnabled) {
                 alert('Is SDK enabled? ' + isEnabled)
             })
@@ -152,7 +141,6 @@
         var btnGetIdfa = document.getElementById('btnGetIdfa')
         btnGetIdfa.onclick = function(e) {
             e.preventDefault()
-
             Adjust.getIdfa(function(idfa) {
                 alert('IDFA\n' + idfa)
             })
