@@ -416,7 +416,7 @@
 
     // Method replaced by setPushToken
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken has been replaced by setPushToken: in web bridge"];
+        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken: has been replaced by setPushToken: in web bridge"];
     }];
 }
 
