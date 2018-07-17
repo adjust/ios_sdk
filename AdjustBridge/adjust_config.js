@@ -18,7 +18,7 @@ function AdjustConfig(appToken, environment, legacy) {
         }
     }
 
-    this.sdkPrefix = 'web-bridge4.9.1';
+    this.sdkPrefix = 'web-bridge4.14.0';
     this.defaultTracker = null;
     this.logLevel = null;
     this.eventBufferingEnabled = null;
