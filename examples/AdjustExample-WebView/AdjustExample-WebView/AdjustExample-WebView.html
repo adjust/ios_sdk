@@ -3,12 +3,12 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<style type='text/css'>
 		html { font-family:Helvetica; color:#222; }
-		h1 { color:steelblue; font-size:24px; margin-top:24px; }
+		h1 { color:steelblue; font-size:24px; margin-top:0px; }
 		button { margin:0 3px 10px; font-size:12px; }
 		.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
 	</style>
 </head><body>
-	<h1>Adjust Web View Demo</h1>
+	<h1 style="width:300px;height:35px;text-align:center;">Adjust Web View Demo</h1>
     <script type="text/javascript" src="adjust.js"></script>
     <script type="text/javascript" src="adjust_event.js"></script>
     <script type="text/javascript" src="adjust_config.js"></script>
@@ -159,16 +159,36 @@
         }
 	})
 	</script>
-	<div id='buttons'></div>
-        <button id='btnTrackSimpleEvent'>Track Simple event</button>
-        <button id='btnTrackRevenueEvent'>Track Revenue event</button>
-        <button id='btnTrackCallbackEvent'>Track Callback event</button>
-        <button id='btnTrackPartnerEvent'>Track Partner event</button>
-        <button id='btnEnableOfflineMode'>Enable Offline mode</button>
-        <button id='btnDisableOfflineMode'>Disable Offline mode</button>
-        <button id='btnEnableSdk'>Enable SDK</button>
-        <button id='btnDisableSdk'>Disable SDK</button>
-        <button id='btnIsSdkEnabled'>Is SDK Enabled?</button>
-        <button id='btnGetIdfa'>Get IDFA</button>
-    <div id='log'></div>
+    <div id='buttons'>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnTrackSimpleEvent'>Track Simple event</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnTrackRevenueEvent'>Track Revenue event</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnTrackCallbackEvent'>Track Callback event</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnTrackPartnerEvent'>Track Partner event</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnEnableOfflineMode'>Enable Offline mode</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnDisableOfflineMode'>Disable Offline mode</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnEnableSdk'>Enable SDK</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnDisableSdk'>Disable SDK</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnIsSdkEnabled'>Is SDK Enabled?</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnGetIdfa'>Get IDFA</button>
+        </div>
+    </div>
 </body></html>
