@@ -1,26 +1,24 @@
 //
 //  AdjustBridge.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 27/04/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
+//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
-// #import <AdjustSdk/Adjust.h>
 // In case of erroneous import statement try with:
 // #import <AdjustSdk/Adjust.h>
-// (depends how you import the adjust SDK to your app)
+// (depends how you import the Adjust SDK to your app)
 
 #import "AdjustBridge.h"
+#import "ADJAdjustFactory.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
-#import "ADJAdjustFactory.h"
 
 @interface AdjustBridge() <AdjustDelegate>
 
 @property BOOL openDeferredDeeplink;
-
 @property WVJBResponseCallback deeplinkCallback;
 @property WVJBResponseCallback attributionCallback;
 @property WVJBResponseCallback eventSuccessCallback;
@@ -37,15 +35,12 @@
 
 - (id)init {
     self = [super init];
-
     if (self == nil) {
         return nil;
     }
 
     _bridgeRegister = nil;
-
     self.openDeferredDeeplink = YES;
-
     self.attributionCallback = nil;
     self.eventSuccessCallback = nil;
     self.eventFailureCallback = nil;
@@ -61,7 +56,6 @@
     if (self.attributionCallback == nil) {
         return;
     }
-
     self.attributionCallback([attribution dictionary]);
 }
 
@@ -71,13 +65,11 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
     [dictionary setValue:eventSuccessResponseData.message forKey:@"message"];
     [dictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
     [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
     [dictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
-
     self.eventSuccessCallback(dictionary);
 }
 
@@ -87,14 +79,12 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
     [dictionary setValue:eventFailureResponseData.message forKey:@"message"];
     [dictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
     [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
     [dictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
     [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
-
     self.eventFailureCallback(dictionary);
 }
 
@@ -104,12 +94,10 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
     [dictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
     [dictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
     [dictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
-
     self.sessionSuccessCallback(dictionary);
 }
 
@@ -119,13 +107,11 @@
     }
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
     [dictionary setValue:sessionFailureResponseData.message forKey:@"message"];
     [dictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
     [dictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
     [dictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
-
     self.sessionFailureCallback(dictionary);
 }
 
@@ -133,7 +119,6 @@
     if (self.deferredDeeplinkCallback) {
         self.deferredDeeplinkCallback([deeplink absoluteString]);
     }
-
     return self.openDeferredDeeplink;
 }
 
@@ -156,7 +141,6 @@
 
     AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
     [uiBridgeRegister setWebViewDelegate:webViewDelegate];
-    
     _bridgeRegister = uiBridgeRegister;
     [self loadWebViewBridge];
 }
@@ -170,7 +154,6 @@
 
     AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
     [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
-    
     _bridgeRegister = wkBridgeRegister;
     [self loadWebViewBridge];
 }
@@ -196,6 +179,7 @@
             self.deferredDeeplinkCallback = responseCallback;
         }
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *appToken = [data objectForKey:@"appToken"];
         NSString *environment = [data objectForKey:@"environment"];
@@ -222,7 +206,7 @@
             adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
         }
 
-        // no need to continue if adjust config is not valid
+        // No need to continue if adjust config is not valid.
         if (![adjustConfig isValid]) {
             return;
         }
@@ -257,7 +241,6 @@
             [self isFieldValid:info2] &&
             [self isFieldValid:info3] &&
             [self isFieldValid:info4];
-
         if (isAppSecretDefined) {
             [adjustConfig setAppSecret:[secretId unsignedIntegerValue]
                                  info1:[info1 unsignedIntegerValue]
@@ -268,19 +251,22 @@
         if ([self isFieldValid:openDeferredDeeplink]) {
             self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
         }
-        // Set self as delegate if any callback is configured
-        // Change to swifle the methods in the future
-        if (self.attributionCallback != nil || self.eventSuccessCallback != nil ||
-            self.eventFailureCallback != nil || self.sessionSuccessCallback != nil ||
-            self.sessionFailureCallback != nil || self.deferredDeeplinkCallback != nil) {
+        // Set self as delegate if any callback is configured.
+        // Change to swifle the methods in the future.
+        if (self.attributionCallback != nil
+            || self.eventSuccessCallback != nil
+            || self.eventFailureCallback != nil
+            || self.sessionSuccessCallback != nil
+            || self.sessionFailureCallback != nil
+            || self.deferredDeeplinkCallback != nil) {
             [adjustConfig setDelegate:self];
         }
 
         [Adjust appDidLaunch:adjustConfig];
         [Adjust trackSubsessionStart];
     }];
-    [self.bridgeRegister registerHandler:@"adjust_trackEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
 
+    [self.bridgeRegister registerHandler:@"adjust_trackEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *eventToken = [data objectForKey:@"eventToken"];
         NSString *revenue = [data objectForKey:@"revenue"];
         NSString *currency = [data objectForKey:@"currency"];
@@ -289,11 +275,11 @@
         id partnerParameters = [data objectForKey:@"partnerParameters"];
 
         ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
-
-        // no need to continue if adjust event is not valid
+        // No need to continue if adjust event is not valid
         if (![adjustEvent isValid]) {
             return;
         }
+
         if ([self isFieldValid:revenue] && [self isFieldValid:currency]) {
             double revenueValue = [revenue doubleValue];
             [adjustEvent setRevenue:revenueValue currency:currency];
@@ -312,107 +298,125 @@
 
         [Adjust trackEvent:adjustEvent];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_trackSubsessionStart" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust trackSubsessionStart];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_trackSubsessionEnd" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust trackSubsessionEnd];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSNumber class]]) {
             return;
         }
         [Adjust setEnabled:[(NSNumber *)data boolValue]];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_isEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_appWillOpenUrl" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_setPushToken" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust setPushToken:(NSString *)data];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSNumber class]]) {
             return;
         }
         [Adjust setOfflineMode:[(NSNumber *)data boolValue]];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([Adjust idfa]);
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([Adjust adid]);
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_attribution" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
-        ADJAttribution * attribution = [Adjust attribution];
-        NSDictionary * attributionDictionary = nil;
+        ADJAttribution *attribution = [Adjust attribution];
+        NSDictionary *attributionDictionary = nil;
         if (attribution != nil) {
             attributionDictionary = [attribution dictionary];
         }
 
         responseCallback(attributionDictionary);
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_sendFirstPackages" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust sendFirstPackages];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_addSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *key = [data objectForKey:@"key"];
         NSString *value = [data objectForKey:@"value"];
         [Adjust addSessionCallbackParameter:key value:value];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_addSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *key = [data objectForKey:@"key"];
         NSString *value = [data objectForKey:@"value"];
         [Adjust addSessionPartnerParameter:key value:value];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_removeSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust removeSessionCallbackParameter:(NSString *)data];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_removeSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust removeSessionPartnerParameter:(NSString *)data];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_resetSessionCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust resetSessionCallbackParameters];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_resetSessionPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
         [Adjust resetSessionPartnerParameters];
     }];
+
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust gdprForgetMe];
     }];
 
     // Method replaced by setPushToken
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken has been replaced by setPushToken in web bridge"];
+        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken has been replaced by setPushToken: in web bridge"];
     }];
 }
 
@@ -422,11 +426,9 @@
     if (field == nil) {
         return NO;
     }
-    
     if ([field isKindOfClass:[NSNull class]]) {
         return NO;
     }
-    
     return YES;
 }
 

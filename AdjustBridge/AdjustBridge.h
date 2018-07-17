@@ -1,18 +1,18 @@
 //
 //  AdjustBridge.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 27/04/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
+//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import <Foundation/Foundation.h>
 
-#import "WKWebViewJavascriptBridge.h"
-#import "WebViewJavascriptBridge.h"
 #import "AdjustBridgeRegister.h"
+#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 
 @interface AdjustBridge : NSObject
 
