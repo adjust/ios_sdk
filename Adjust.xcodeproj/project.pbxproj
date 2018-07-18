@@ -302,6 +302,20 @@
 			remoteGlobalIDString = 9679920C18BBAE2800394606;
 			remoteInfo = Adjust;
 		};
+		9D01680320FF88DE0029CFFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D01676520FF81280029CFFF;
+			remoteInfo = "AdjustExample-iMessage";
+		};
+		9D01680520FF88DE0029CFFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D01676F20FF812B0029CFFF;
+			remoteInfo = "AdjustExample-iMessage MessagesExtension";
+		};
 		9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
@@ -527,6 +541,7 @@
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		96FDD75C1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+NSURLDataWithRequestMocking.h"; sourceTree = "<group>"; };
 		96FDD75D1C566C38009C402E /* NSURLSession+NSURLDataWithRequestMocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+NSURLDataWithRequestMocking.m"; sourceTree = "<group>"; };
+		9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iMessage.xcodeproj"; path = "examples/AdjustExample-iMessage/AdjustExample-iMessage.xcodeproj"; sourceTree = "<group>"; };
 		9D0C7D3D1D79B3FE009DDF4E /* ADJInitState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJInitState.h; sourceTree = "<group>"; };
 		9D0C7D3E1D79B3FE009DDF4E /* ADJInitState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJInitState.m; sourceTree = "<group>"; };
 		9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
@@ -974,6 +989,15 @@
 			path = AdjustTests;
 			sourceTree = "<group>";
 		};
+		9D0167FF20FF88DE0029CFFF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D01680420FF88DE0029CFFF /* AdjustExample-iMessage.app */,
+				9D01680620FF88DE0029CFFF /* AdjustExample-iMessage MessagesExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
 			isa = PBXGroup;
 			children = (
@@ -982,6 +1006,7 @@
 				9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */,
 				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
 				9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */,
+				9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */,
 			);
 			name = "Example Apps";
 			sourceTree = "<group>";
@@ -1514,6 +1539,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 9D0167FF20FF88DE0029CFFF /* Products */;
+					ProjectRef = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
+				},
+				{
 					ProductGroup = 9D449DAE1E6ED22900E7E80B /* Products */;
 					ProjectRef = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
 				},
@@ -1568,6 +1597,20 @@
 			fileType = wrapper.application;
 			path = AdjustTestApp.app;
 			remoteRef = 6F084244200776A100568A31 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D01680420FF88DE0029CFFF /* AdjustExample-iMessage.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-iMessage.app";
+			remoteRef = 9D01680320FF88DE0029CFFF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D01680620FF88DE0029CFFF /* AdjustExample-iMessage MessagesExtension.appex */ = {
+			isa = PBXReferenceProxy;
+			fileType = "wrapper.app-extension";
+			path = "AdjustExample-iMessage MessagesExtension.appex";
+			remoteRef = 9D01680520FF88DE0029CFFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
