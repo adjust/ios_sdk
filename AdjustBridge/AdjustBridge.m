@@ -325,7 +325,7 @@
         [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_setPushToken" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
@@ -412,11 +412,6 @@
 
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust gdprForgetMe];
-    }];
-
-    // Method replaced by setPushToken
-    [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [[ADJAdjustFactory logger] warn:@"Function setDeviceToken: has been replaced by setPushToken: in web bridge"];
     }];
 }
 

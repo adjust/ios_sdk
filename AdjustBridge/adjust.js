@@ -45,9 +45,9 @@ var Adjust = {
             WebViewJavascriptBridge.callHandler('adjust_appWillOpenUrl', url, null);
         }
     },
-    setPushToken: function (pushToken) {
+    setDeviceToken: function (deviceToken) {
         if (WebViewJavascriptBridge) {
-            WebViewJavascriptBridge.callHandler('adjust_setPushToken', pushToken, null);
+            WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);
         }
     },
     setOfflineMode: function(isOffline) {
@@ -108,13 +108,6 @@ var Adjust = {
     gdprForgetMe: function () {
         if (WebViewJavascriptBridge != null) {
             WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
-        }
-    },
-
-    // metod replaced by setPushToken, that accepts a simple string
-    setDeviceToken: function (deviceToken) {
-        if (WebViewJavascriptBridge) {
-            WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);
         }
     }
 };
