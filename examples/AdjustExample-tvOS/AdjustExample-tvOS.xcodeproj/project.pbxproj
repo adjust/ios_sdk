@@ -45,7 +45,6 @@
 		9D449F5C1E6EE6C500E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F391E6EE6C500E7E80B /* ADJTimerOnce.m */; };
 		9D449F5D1E6EE6C500E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3B1E6EE6C500E7E80B /* Adjust.m */; };
 		9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */; };
-		9D449F5F1E6EE6C500E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449F3E1E6EE6C500E7E80B /* Info.plist */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DD0E9CF1F459ECE00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */; };
 /* End PBXBuildFile section */
@@ -358,7 +357,6 @@
 			files = (
 				963909C21BCC0D8300A2E8A4 /* Assets.xcassets in Resources */,
 				963909C01BCC0D8300A2E8A4 /* Main.storyboard in Resources */,
-				9D449F5F1E6EE6C500E7E80B /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

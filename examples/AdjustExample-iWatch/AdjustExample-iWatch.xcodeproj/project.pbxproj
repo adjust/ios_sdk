@@ -39,7 +39,6 @@
 		9D449FC01E6EE72000E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F9D1E6EE72000E7E80B /* ADJTimerOnce.m */; };
 		9D449FC11E6EE72000E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F9F1E6EE72000E7E80B /* Adjust.m */; };
 		9D449FC21E6EE72000E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449FA11E6EE72000E7E80B /* ADJUtil.m */; };
-		9D449FC31E6EE72000E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449FA21E6EE72000E7E80B /* Info.plist */; };
 		9DD0E9C71F45949600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C61F45949600B2A759 /* ADJUserDefaults.m */; };
 		9DF7AC191CB4FEDB00D3591F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC181CB4FEDB00D3591F /* main.m */; };
 		9DF7AC1C1CB4FEDB00D3591F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC1B1CB4FEDB00D3591F /* AppDelegate.m */; };
@@ -502,7 +501,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D449FC31E6EE72000E7E80B /* Info.plist in Resources */,
 				9DF7AC271CB4FEDB00D3591F /* LaunchScreen.storyboard in Resources */,
 				9DF7AC241CB4FEDB00D3591F /* Assets.xcassets in Resources */,
 				9DF7AC221CB4FEDB00D3591F /* Main.storyboard in Resources */,

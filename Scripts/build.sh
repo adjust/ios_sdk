@@ -24,8 +24,9 @@ xcodebuild -target AdjustSdk -configuration Release clean build
 
 # Build tvOS AdjustSdkTV.framework
 # Build it for simulator and device
+# No clean when building appletvos since it wipes out appletvsimulator from build folder
 xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
-xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos clean build
+xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
 
 # Copy tvOS framework to destination
 cp -R build/Release-appletvos/AdjustSdkTv.framework Frameworks/tvOS

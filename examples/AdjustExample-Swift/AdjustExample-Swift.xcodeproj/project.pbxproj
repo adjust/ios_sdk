@@ -39,7 +39,6 @@
 		9D449E931E6EDC3D00E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E701E6EDC3D00E7E80B /* ADJTimerOnce.m */; };
 		9D449E941E6EDC3D00E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E721E6EDC3D00E7E80B /* Adjust.m */; };
 		9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E741E6EDC3D00E7E80B /* ADJUtil.m */; };
-		9D449E961E6EDC3D00E7E80B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D449E751E6EDC3D00E7E80B /* Info.plist */; };
 		9DD0E9C11F45879A00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */; };
 		9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */; };
 		9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */; };
@@ -327,7 +326,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D449E961E6EDC3D00E7E80B /* Info.plist in Resources */,
 				9DF7A9D01CB4ECA600D3591F /* LaunchScreen.storyboard in Resources */,
 				9DF7A9CD1CB4ECA600D3591F /* Assets.xcassets in Resources */,
 				9DF7A9CB1CB4ECA600D3591F /* Main.storyboard in Resources */,
