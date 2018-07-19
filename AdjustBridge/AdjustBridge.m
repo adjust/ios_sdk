@@ -288,12 +288,16 @@
             [adjustEvent setTransactionId:transactionId];
         }
         for (int i = 0; i < [callbackParameters count]; i += 2) {
-            [adjustEvent addCallbackParameter:[callbackParameters objectAtIndex:i]
-                                        value:[callbackParameters objectAtIndex:(i+1)]];
+            NSString * key = [[callbackParameters objectAtIndex:i] description];
+            NSString * value = [[callbackParameters objectAtIndex:(i + 1)] description];
+
+            [adjustEvent addCallbackParameter:key value:value];
         }
         for (int i = 0; i < [partnerParameters count]; i += 2) {
-            [adjustEvent addPartnerParameter:[partnerParameters objectAtIndex:i]
-                                       value:[partnerParameters objectAtIndex:(i+1)]];
+            NSString * key = [[partnerParameters objectAtIndex:i] description];
+            NSString * value = [[partnerParameters objectAtIndex:(i + 1)] description];
+
+            [adjustEvent addPartnerParameter:key value:value];
         }
 
         [Adjust trackEvent:adjustEvent];
