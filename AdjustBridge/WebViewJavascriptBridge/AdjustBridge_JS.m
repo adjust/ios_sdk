@@ -25,34 +25,22 @@ NSString * AdjustBridge_js() {
     #define __adj_wvjb_js_func__(x) #x
     // BEGIN preprocessorJSCode
     static NSString * preprocessorJSCode = @__adj_wvjb_js_func__(
-                                                             ;(function() {
-
+;(function() {
     if (window.Adjust) {
         return;
     }
-
     // copied from adjust.js
+
     window.Adjust = {
-        printObject: function(o) {
-            if (!o) {
-                return 'not true';
-            }
-            var out = '';
-            for (var p in o) {
-                out += p + ': ' + o[p] + '\n';
-            }
-            return out;
-        },
         appDidLaunch: function (adjustConfig) {
-            console.log("WebViewJavascriptBridge: " + this.printObject(WebViewJavascriptBridge));
-            console.log("adjustConfig: " + this.printObject(adjustConfig));
             if (WebViewJavascriptBridge) {
                 if (adjustConfig) {
                     adjustConfig.iterateConfiguredCallbacks(
-                                                            function(callbackName, callback) {
-                                                                WebViewJavascriptBridge.callHandler('adjust_setCallback', callbackName, callback);
-                                                            }
-                                                            );                WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
+                        function(callbackName, callback) {
+                            WebViewJavascriptBridge.callHandler('adjust_setCallback', callbackName, callback);
+                        }
+                    );
+                    WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
                 }
             }
         },
@@ -158,8 +146,7 @@ NSString * AdjustBridge_js() {
     };
 
     // copied from adjust_event.js
-
-    function AdjustEvent(eventToken) {
+    window.AdjustEvent = function (eventToken) {
         this.eventToken = eventToken;
 
         this.revenue = null;
@@ -168,7 +155,7 @@ NSString * AdjustBridge_js() {
 
         this.callbackParameters = [];
         this.partnerParameters = [];
-    }
+    };
 
     AdjustEvent.prototype.addCallbackParameter = function(key, value) {
         this.callbackParameters.push(key);
@@ -190,7 +177,7 @@ NSString * AdjustBridge_js() {
     };
 
     // copied from adjust_config.js
-    function AdjustConfig(appToken, environment, legacy) {
+    window.AdjustConfig = function (appToken, environment, legacy) {
 
         if (arguments.length === 2) {
             // New format does not require bridge as first parameter.
@@ -225,17 +212,16 @@ NSString * AdjustBridge_js() {
         this.info4 = null;
         this.openDeferredDeeplink = null;
         this.callbacksMap = {};
-    }
-
+    };
     AdjustConfig.EnvironmentSandbox     = 'sandbox';
     AdjustConfig.EnvironmentProduction  = 'production';
 
-    AdjustConfig.LogLevelVerbose        = 'VERBOSE',
-    AdjustConfig.LogLevelDebug          = 'DEBUG',
-    AdjustConfig.LogLevelInfo           = 'INFO',
-    AdjustConfig.LogLevelWarn           = 'WARN',
-    AdjustConfig.LogLevelError          = 'ERROR',
-    AdjustConfig.LogLevelAssert         = 'ASSERT',
+    AdjustConfig.LogLevelVerbose        = 'VERBOSE';
+    AdjustConfig.LogLevelDebug          = 'DEBUG';
+    AdjustConfig.LogLevelInfo           = 'INFO';
+    AdjustConfig.LogLevelWarn           = 'WARN';
+    AdjustConfig.LogLevelError          = 'ERROR';
+    AdjustConfig.LogLevelAssert         = 'ASSERT';
 
     AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithName) {
         if (!this.callbacksMap) {

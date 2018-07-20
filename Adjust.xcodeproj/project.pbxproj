@@ -627,9 +627,6 @@
 		9D7431F41EB9F9B700969F14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D7431F71EB9F9B700969F14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D7431F91EB9F9B700969F14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D75F1841D07460600E5D222 /* adjust_config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_config.js; sourceTree = "<group>"; };
-		9D75F1851D07460600E5D222 /* adjust_event.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust_event.js; sourceTree = "<group>"; };
-		9D75F1861D07460600E5D222 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DE354D22100726300D211C9 /* AdjustSdkIm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkIm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -976,9 +973,6 @@
 				9648C5F61CD1770300A3B049 /* AdjustBridge.m */,
 				968595EC1D0B25970011CA2B /* AdjustBridgeRegister.h */,
 				968595ED1D0B25970011CA2B /* AdjustBridgeRegister.m */,
-				9D75F1861D07460600E5D222 /* adjust.js */,
-				9D75F1851D07460600E5D222 /* adjust_event.js */,
-				9D75F1841D07460600E5D222 /* adjust_config.js */,
 				9648C5E51CD1765E00A3B049 /* WebViewJavascriptBridge */,
 			);
 			path = AdjustBridge;
