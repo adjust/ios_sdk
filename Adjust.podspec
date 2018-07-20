@@ -32,4 +32,9 @@ Pod::Spec.new do |s|
     tm.source_files = 'plugin/Trademob/*.{h,m}'
     tm.dependency 'Adjust/Core'
   end
+
+  s.subspec 'WebViewJavascriptBridge' do |wvjb|
+    wvjb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
+    wvjb.dependency 'Adjust/Core'
+  end
 end
