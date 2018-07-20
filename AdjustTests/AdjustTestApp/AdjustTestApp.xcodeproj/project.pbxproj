@@ -60,6 +60,7 @@
 		6FFCFE70200797D100467F01 /* ATAAdjustDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE66200797D000467F01 /* ATAAdjustDelegate.m */; };
 		6FFCFE71200797D100467F01 /* ATAAdjustDelegateEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE69200797D000467F01 /* ATAAdjustDelegateEventSuccess.m */; };
 		6FFCFE72200797D100467F01 /* ATAAdjustDelegateSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */; };
+		9D75AFDB210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -167,6 +168,8 @@
 		6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateSessionSuccess.m; sourceTree = "<group>"; };
 		6FFCFE6B200797D000467F01 /* ATAAdjustDelegateEventSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateEventSuccess.h; sourceTree = "<group>"; };
 		6FFCFE6C200797D000467F01 /* ATAAdjustDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegate.h; sourceTree = "<group>"; };
+		9D75AFD9210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateDeferredDeeplink.h; sourceTree = "<group>"; };
+		9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateDeferredDeeplink.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +339,8 @@
 				6FFCFE65200797D000467F01 /* ATAAdjustDelegateSessionFailure.m */,
 				6FFCFE67200797D000467F01 /* ATAAdjustDelegateSessionSuccess.h */,
 				6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */,
+				9D75AFD9210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.h */,
+				9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -441,6 +446,7 @@
 				6F3A5E6E2018CE14000AACD0 /* ADJDeviceInfo.m in Sources */,
 				6FFCFE5F2007978300467F01 /* ATAAdjustCommandExecutor.m in Sources */,
 				6F08422F2007769F00568A31 /* ViewController.m in Sources */,
+				9D75AFDB210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m in Sources */,
 				6F3A5E8A2018CE14000AACD0 /* ADJResponseData.m in Sources */,
 				6F08423A200776A000568A31 /* main.m in Sources */,
 				6F3A5E9E2018CE3A000AACD0 /* ATLTestInfo.m in Sources */,

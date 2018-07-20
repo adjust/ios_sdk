@@ -41,5 +41,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.adjust.AdjustTestApp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>adjust-test</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
