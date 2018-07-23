@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
 #import "AdjustBridge.h"
 
 @interface UIWebViewController : UINavigationController <UIWebViewDelegate>
 
 @property AdjustBridge *adjustBridge;
+@property JSContext *jsContext;
 
 @end
 

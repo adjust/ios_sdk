@@ -33,6 +33,11 @@
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadUIWebViewBridge:uiWebView webViewDelegate:self];
 
+    _jsContext = [uiWebView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    _jsContext[@"console"][@"log"] = ^(JSValue * msg) {
+        NSLog(@"JavaScript %@ log message: %@", [JSContext currentContext], msg);
+    };
+
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];
     NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
     NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];

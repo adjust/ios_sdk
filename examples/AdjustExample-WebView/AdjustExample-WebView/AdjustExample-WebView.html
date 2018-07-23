@@ -26,11 +26,12 @@
 
     setupWebViewJavascriptBridge(function(bridge) {
         let adjustConfig = new AdjustConfig('2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox);
-        adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose)
+        adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+
         adjustConfig.setOpenDeferredDeeplink(true)     // Just for test, is true by default.
 
         adjustConfig.setAttributionCallback(function(attribution) {
-            alert('Tracker token = ' + attribution.trackerToken + '\n' +
+            console.log('Tracker token = ' + attribution.trackerToken + '\n' +
                   'Tracker name = ' + attribution.trackerName + '\n' +
                   'Network = ' + attribution.network + '\n' +
                   'Campaign = ' + attribution.campaign + '\n' +
@@ -39,34 +40,34 @@
                   'Click label = ' + attribution.clickLabel)
         })
         adjustConfig.setEventSuccessCallback(function(eventSuccess) {
-            alert('Message = ' + eventSuccess.message + '\n' +
+            console.log('Message = ' + eventSuccess.message + '\n' +
                   'Timestamp = ' + eventSuccess.timestamp + '\n' +
                   'Adid = ' + eventSuccess.adid + '\n' +
                   'Event token = ' + eventSuccess.eventToken)
         })
         adjustConfig.setEventFailureCallback(function(eventFailure) {
-            alert('Message = ' + eventFailure.message + '\n' +
+            console.log('Message = ' + eventFailure.message + '\n' +
                   'Timestamp = ' + eventFailure.timestamp + '\n' +
                   'Adid = ' + eventFailure.adid + '\n' +
                   'Event token = ' + eventFailure.eventToken + '\n' +
                   'Will retry = ' + eventFailure.willRetry)
         })
         adjustConfig.setSessionSuccessCallback(function(sessionSuccess) {
-            alert('Message = ' + sessionSuccess.message + '\n' +
+            console.log('Message = ' + sessionSuccess.message + '\n' +
                   'Timestamp = ' + sessionSuccess.timestamp + '\n' +
                   'Adid = ' + sessionSuccess.adid)
         })
         adjustConfig.setSessionFailureCallback(function(sessionFailure) {
-            alert('Message = ' + sessionFailure.message + '\n' +
+            console.log('Message = ' + sessionFailure.message + '\n' +
                   'Timestamp = ' + sessionFailure.timestamp + '\n' +
                   'Adid = ' + sessionFailure.adid + '\n' +
                   'Will retry = ' + sessionFailure.willRetry)
         })
         adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
-            alert('Deferred deeplink:\n' + deferredDeeplink)
+            console.log('Deferred deeplink:\n' + deferredDeeplink)
         })
 
-        Adjust.appDidLaunch(adjustConfig)
+        Adjust.appDidLaunch(adjustConfig);
 
         var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
         btnTrackSimpleEvent.onclick = function(e) {
