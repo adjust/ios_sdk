@@ -8,13 +8,15 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
 
 ## Table of contents
 
+* [Example apps](#example-apps)
 * [Basic integration](#basic-integration)
-   * [Add native adjust iOS SDK](#native-add)
-   * [Add AdjustBridge to your project](#bridge-add)
+   * [Add the SDK with the web bridge to your project](#sdk-add)
+   * [Add iOS frameworks](#sdk-frameworks)
+   * [Integrate the SDK into your app](#sdk-integrate)
    * [Integrate AdjustBridge into your app](#bridge-integrate-app)
    * [Integrate AdjustBridge into your web view](#bridge-integrate-web)
    * [Basic setup](#basic-setup)
-   * [AdjustBridge logging](#bridge-logging)
+   * [Adjust logging](#adjust-logging)
    * [Build your app](#build-the-app)
 * [Additional features](#additional-features)
    * [Event tracking](#event-tracking)
@@ -48,6 +50,206 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
       * [Reattribution via deep links](#deeplinking-reattribution)
 
 * [License](#license)
+
+## <a id="example-apps"></a>Example apps
+
+There are example apps inside the [`examples` directory][examples] for [`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], [`tvOS`][example-tvos] and [`Apple Watch`][example-iwatch]. You can open any of these Xcode projects to see an example of how the adjust SDK can be integrated.
+
+## <a id="basic-integration">Basic integration
+
+We will describe the steps to integrate the adjust SDK into your iOS project. We are going to assume that you are using Xcode for your iOS development.
+
+### <a id="sdk-add"></a>Add the SDK with the web bridge to your project
+
+If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
+
+```ruby
+pod 'Adjust/WebViewJavascriptBridge', '~> 4.14.1'
+```
+
+---
+
+If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue from
+[this step](#sdk-frameworks):
+
+```ruby
+github "adjust/ios_sdk" "WebViewJavascriptBridge"
+```
+
+---
+
+You can also choose to integrate the adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the following archives:
+
+* `AdjustSdkStaticWVJB.framework.zip`
+* `AdjustSdkDynamicWVJB.framework.zip`
+
+Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
+
+### <a id="sdk-frameworks"></a>Add iOS frameworks
+
+1. Select your project in the Project Navigator
+2. In the left-hand side of the main view, select your target
+3. In the `Build Phases` tab, expand the `Link Binary with Libraries` group
+4. At the bottom of that section, select the `+` button
+5. Select the `AdSupport.framework`, then the `Add` button 
+6. Repeat the same steps to add the `iAd.framework` and `CoreTelephony.framework`
+7. Change the `Status` of the frameworks to `Optional`.
+
+### <a id="sdk-integrate"></a>Integrate the SDK into your app
+
+If you added the adjust SDK via a Pod repository, you should use one of the following import statements in the app delegate:
+
+```objc
+#import "Adjust.h"
+```
+
+or
+
+```objc
+#import <Adjust/Adjust.h>
+```
+
+---
+
+If you added the adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement in the app delegate:
+
+```objc
+#import <AdjustSdk/Adjust.h>
+```
+
+Next, we'll set up basic session tracking.
+
+### <a id="bridge-integrate-app">Integrate AdjustBridge into your app
+
+In the Project Navigator open the source file your View Controller. Add the `import` statement at the top of the file. In 
+the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the following calls to `AdjustBridge`:
+
+```objc
+#import "AdjustBridge.h"
+// Or #import <Adjust/AdjustBridge.h>
+// or #import <AdjustSdk/AdjustBridge.h>
+
+- (void)viewWillAppear:(BOOL)animated {
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    // or with WKWebView:
+    // WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+
+    // add @property (nonatomic, strong) AdjustBridge *adjustBridge; on your interface
+    self.adjustBridge = [[AdjustBridge alloc] init];
+    [self.adjustBridge loadUIWebViewBridge:webView];
+    // optionally you can add a web view delegate so that you can also capture its events
+    // [self.adjustBridge loadUIWebViewBridge:webView webViewDelegate:(UIWebViewDelegate*)self];
+    
+    // or with WKWebView:
+    // [self.adjustBridge loadWKWebViewBridge:webView];
+    // optionally you can add a web view delegate so that you can also capture its events
+    // [self.adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:(id<WKNavigationDelegate>)self];
+}
+
+// ...
+```
+
+![][bridge_init_objc]
+
+### <a id="bridge-integrate-web">Integrate AdjustBrige into your web view
+
+To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
+[README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the adjust iOS web 
+bridge:
+
+```js
+function setupWebViewJavascriptBridge(callback) {
+    if (window.WebViewJavascriptBridge) {
+        return callback(WebViewJavascriptBridge);
+    }
+
+    if (window.WVJBCallbacks) {
+        return window.WVJBCallbacks.push(callback);
+    }
+
+    window.WVJBCallbacks = [callback];
+
+    var WVJBIframe = document.createElement('iframe');
+    WVJBIframe.style.display = 'none';
+    WVJBIframe.src = 'https://__bridge_loaded__';
+    document.documentElement.appendChild(WVJBIframe);
+
+    setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+}
+```
+
+Take notice that the line `WVJBIframe.src = 'https://__bridge_loaded__';` was changed in version 4.11.6 from `WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';` due to a change in the  `WebViewJavascriptBridge` plugin.
+
+![][bridge_init_js]
+
+### <a id="basic-setup">Basic setup
+
+In the same HTML file, initialise the adjust SDK inside the `setupWebViewJavascriptBridge` callback:
+
+```js
+setupWebViewJavascriptBridge(function(bridge) {
+    // ...
+
+    var yourAppToken = yourAppToken;
+    var environment = AdjustConfig.EnvironmentSandbox;
+    var adjustConfig = new AdjustConfig(yourAppToken, environment);
+
+    Adjust.appDidLaunch(adjustConfig);
+
+    // ...
+});
+```
+
+**Note**: Initialising the adjust SDK like this is `very important`. Otherwise, you may encounter different kinds of issues as described in our [troubleshooting section](#ts-delayed-init).
+
+Replace `yourAppToken` with your app token. You can find this in your [dashboard].
+
+Depending on whether you build your app for testing or for production, you must set `environment` with one of these values:
+
+```js
+var environment = AdjustConfig.EnvironmentSandbox;
+var environment = AdjustConfig.EnvironmentProduction;
+```
+
+**Important:** This value should be set to `AdjustConfig.EnvironmentSandbox` if and only if you or someone else is testing your app. Make sure to set the environment to `AdjustConfig.EnvironmentProduction` just before you publish the app. Set it back to `AdjustConfig.EnvironmentSandbox` when you start developing and testing it again.
+
+We use this environment to distinguish between real traffic and test traffic from test devices. It is very important that you keep this value meaningful at all times! This is especially important if you are tracking revenue.
+
+### <a id="adjust-logging"></a>Adjust logging
+
+You can increase or decrease the amount of logs that you see during testing by calling `setLogLevel:` on your `ADJConfig` instance with one of the following parameters:
+
+```js
+adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose) // enable all logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelDebug)   // enable more logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelInfo)    // the default
+adjustConfig.setLogLevel(AdjustConfig.LogLevelWarn)    // disable info logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelError)   // disable warnings as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert)  // disable errors as well
+```
+
+If you don't want your app in production to display any logs coming from the adjust SDK, then you should select `AdjustConfig.LogLevelSuppress` and in addition to that, initialise `AdjustConfig` object with another constructor where you should enable suppress log level mode with `true` in the third parameter:
+
+```js
+setupWebViewJavascriptBridge(function(bridge) {
+    // ...
+
+    var yourAppToken = yourAppToken;
+    var environment = AdjustConfig.EnvironmentSandbox;
+    var adjustConfig = new AdjustConfig(yourAppToken, environment, true);
+
+    Adjust.appDidLaunch(adjustConfig);
+
+    // ...
+});
+```
+
+### <a id="build-the-app"></a>Build your app
+
+Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches for the first time, you should see the info log `Install tracked`.
+
+![][run]
+
 
 ## <a id="basic-integration">Basic integration
 
