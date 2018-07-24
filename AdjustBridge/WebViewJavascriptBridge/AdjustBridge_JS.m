@@ -29,8 +29,8 @@ NSString * AdjustBridge_js() {
     if (window.Adjust) {
         return;
     }
-    // copied from adjust.js
 
+    // copied from adjust.js
     window.Adjust = {
         appDidLaunch: function (adjustConfig) {
             if (WebViewJavascriptBridge) {
@@ -222,6 +222,7 @@ NSString * AdjustBridge_js() {
     AdjustConfig.LogLevelWarn           = 'WARN';
     AdjustConfig.LogLevelError          = 'ERROR';
     AdjustConfig.LogLevelAssert         = 'ASSERT';
+    AdjustConfig.LogLevelSuppress       = 'SUPPRESS';
 
     AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithName) {
         if (!this.callbacksMap) {
