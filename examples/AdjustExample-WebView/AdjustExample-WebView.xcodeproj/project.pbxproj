@@ -411,7 +411,6 @@
 				9D1082B41CFDAF8E0050568B /* Assets.xcassets in Resources */,
 				9D10833F1CFDDBF50050568B /* Default-568h@2x.png in Resources */,
 				9D1082C51CFDAFDA0050568B /* AdjustExample-WebView.html in Resources */,
-				9D449EFA1E6EDD4100E7E80B /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
