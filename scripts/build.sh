@@ -43,12 +43,6 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iMessage SDK framework and copying it to destination folder ... ${NC}"
-xcodebuild -target AdjustSdkIm -configuration Release clean build
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
-
-# ======================================== #
-
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding universal tvOS SDK framework (device + simulator) and copying it to destination folder ... ${NC}"
 xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
 xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos clean build
