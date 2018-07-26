@@ -44,7 +44,6 @@
 		9D01687220FF88F60029CFFF /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01684B20FF88F60029CFFF /* ADJResponseData.m */; };
 		9D01687320FF88F60029CFFF /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01684D20FF88F60029CFFF /* ADJPackageBuilder.m */; };
 		9D01687420FF88F60029CFFF /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01684E20FF88F60029CFFF /* ADJUserDefaults.m */; };
-		9D01687520FF88F60029CFFF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D01685220FF88F60029CFFF /* Info.plist */; };
 		9D01687620FF88F60029CFFF /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01685420FF88F60029CFFF /* ADJActivityHandler.m */; };
 		9D01687720FF88F60029CFFF /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01685520FF88F60029CFFF /* ADJReachability.m */; };
 /* End PBXBuildFile section */
@@ -147,7 +146,6 @@
 		9D01684F20FF88F60029CFFF /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
 		9D01685020FF88F60029CFFF /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
 		9D01685120FF88F60029CFFF /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
-		9D01685220FF88F60029CFFF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D01685320FF88F60029CFFF /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9D01685420FF88F60029CFFF /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D01685520FF88F60029CFFF /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
@@ -275,7 +273,6 @@
 				9D01684F20FF88F60029CFFF /* ADJBackoffStrategy.h */,
 				9D01685020FF88F60029CFFF /* ADJLogger.h */,
 				9D01685120FF88F60029CFFF /* ADJSessionParameters.h */,
-				9D01685220FF88F60029CFFF /* Info.plist */,
 				9D01685320FF88F60029CFFF /* ADJTimerCycle.h */,
 				9D01685420FF88F60029CFFF /* ADJActivityHandler.m */,
 				9D01685520FF88F60029CFFF /* ADJReachability.m */,
@@ -385,7 +382,6 @@
 			files = (
 				9D01677E20FF812C0029CFFF /* Assets.xcassets in Resources */,
 				9D01677C20FF812B0029CFFF /* MainInterface.storyboard in Resources */,
-				9D01687520FF88F60029CFFF /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
