@@ -32,7 +32,7 @@ mkdir -p frameworks/static
 mkdir -p frameworks/dynamic/ios
 mkdir -p frameworks/dynamic/tvos
 mkdir -p frameworks/dynamic/imessage
-mkdir -p frameworks/dynamic/wvjb
+mkdir -p frameworks/dynamic/webbridge
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
@@ -52,14 +52,14 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic iOS and tvOS SDK framework using Carthage ${NC}"
-
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving shared schemas to generate dynamic iOS and tvOS SDK framework using Carthage ... ${NC}"
 mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
-   Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWVJB.xcscheme .
+   Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOs and tvOS targets with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOS and tvOS targets with Carthage ... ${NC}"
 carthage build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
@@ -77,11 +77,11 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic iMessage SDK framework using Carthage ${NC}"
-
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving shared schemas to generate dynamic iMessage SDK framework using Carthage ... ${NC}"
 mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
    Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
 mv AdjustSdkIm.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
@@ -97,28 +97,28 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic WVJB SDK framework using Carthage ${NC}"
-
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving shared schemas to generate dynamic WebBridge SDK framework using Carthage ... ${NC}"
 mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
-mv AdjustSdkWVJB.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+mv AdjustSdkWebBridge.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WVJB target with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WebBridge target with Carthage ... ${NC}"
 carthage build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic WVJB SDK framework to destination folder ... ${NC}"
-mv Carthage/Build/iOS/* frameworks/dynamic/wvjb/
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic WebBridge SDK framework to destination folder ... ${NC}"
+mv Carthage/Build/iOS/* frameworks/dynamic/webbridge/
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas back ${NC}"
-
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving shared schemas back ... ${NC}"
 mv *.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
