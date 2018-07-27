@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "0940"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6FCD0DB4210757BE00465ACF"
-               BuildableName = "AdjustSdkWVJB.framework"
-               BlueprintName = "AdjustSdkWVJB"
+               BlueprintIdentifier = "9D0E2E01210B570600133B4F"
+               BuildableName = "AdjustSdkWebBridge.framework"
+               BlueprintName = "AdjustSdkWebBridge"
                ReferencedContainer = "container:Adjust.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6FCD0DB4210757BE00465ACF"
-            BuildableName = "AdjustSdkWVJB.framework"
-            BlueprintName = "AdjustSdkWVJB"
+            BlueprintIdentifier = "9D0E2E01210B570600133B4F"
+            BuildableName = "AdjustSdkWebBridge.framework"
+            BlueprintName = "AdjustSdkWebBridge"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6FCD0DB4210757BE00465ACF"
-            BuildableName = "AdjustSdkWVJB.framework"
-            BlueprintName = "AdjustSdkWVJB"
+            BlueprintIdentifier = "9D0E2E01210B570600133B4F"
+            BuildableName = "AdjustSdkWebBridge.framework"
+            BlueprintName = "AdjustSdkWebBridge"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
