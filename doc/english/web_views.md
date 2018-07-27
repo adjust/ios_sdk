@@ -149,8 +149,6 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 // ...
 ```
 
-![][bridge_init_objc]
-
 ### <a id="bridge-integrate-web">Integrate AdjustBrige into your web view
 
 To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
@@ -179,8 +177,6 @@ function setupWebViewJavascriptBridge(callback) {
 ```
 
 Take notice that the line `WVJBIframe.src = 'https://__bridge_loaded__';` was changed in version 4.11.6 from `WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';` due to a change in the  `WebViewJavascriptBridge` plugin.
-
-![][bridge_init_js]
 
 ### <a id="basic-setup">Basic setup
 
@@ -244,163 +240,10 @@ setupWebViewJavascriptBridge(function(bridge) {
 });
 ```
 
-### <a id="build-the-app"></a>Build your app
-
-Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches for the first time, you should see the info log `Install tracked`.
-
-![][run]
-
-
-## <a id="basic-integration">Basic integration
-
-### <a id="native-add">Add native adjust iOS SDK
-
-In oder to use adjust SDK in your web views, you need to add adjust's native iOS SDK to your app. To install adjust's native iOS SDK, follow the `Basic integration` chapter of our [iOS SDK README][basic_integration].
-
-### <a id="bridge-add">Add AdjustBridge to your project
-
-In Xcode's `Project Navigator` locate the `Supporting Files` group (or any other group of your choice). From Finder drag 
-the `AdjustBridge` subdirectory into Xcode's `Supporting Files` group.
-
-![][bridge_drag]
-
-In the dialog `Choose options for adding these files` make sure to check the checkbox to 
-`Copy items into destination group's folder` and select the upper radio button to `Create groups for any added folders`.
-
-![][bridge_add]
-
-### <a id="bridge-integrate-app">3. Integrate AdjustBridge into your app
-
-In the Project Navigator open the source file your View Controller. Add the `import` statement at the top of the file. In 
-the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the following calls to `AdjustBridge`:
-
-```objc
-#import "Adjust.h"
-// Or #import <AdjustSdk/Adjust.h>
-// (depends on the way you have chosen to add our native iOS SDK)
-// ...
-
-- (void)viewWillAppear:(BOOL)animated {
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    // or with WKWebView:
-    // WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
-
-    // add @property (nonatomic, strong) AdjustBridge *adjustBridge; on your interface
-    self.adjustBridge = [[AdjustBridge alloc] init];
-    [self.adjustBridge loadUIWebViewBridge:webView];
-    // optionally you can add a web view delegate so that you can also capture its events
-    // [self.adjustBridge loadUIWebViewBridge:webView webViewDelegate:(UIWebViewDelegate*)self];
-    
-    // or with WKWebView:
-    // [self.adjustBridge loadWKWebViewBridge:webView];
-    // optionally you can add a web view delegate so that you can also capture its events
-    // [self.adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:(id<WKNavigationDelegate>)self];
-}
-
-// ...
-```
-
-![][bridge_init_objc]
-
-### <a id="bridge-integrate-web">Integrate AdjustBrige into your web view
-
-To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
-[README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the adjust iOS web 
-bridge:
-
-```js
-function setupWebViewJavascriptBridge(callback) {
-    if (window.WebViewJavascriptBridge) {
-        return callback(WebViewJavascriptBridge);
-    }
-
-    if (window.WVJBCallbacks) {
-        return window.WVJBCallbacks.push(callback);
-    }
-
-    window.WVJBCallbacks = [callback];
-
-    var WVJBIframe = document.createElement('iframe');
-    WVJBIframe.style.display = 'none';
-    WVJBIframe.src = 'https://__bridge_loaded__';
-    document.documentElement.appendChild(WVJBIframe);
-
-    setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
-}
-
-setupWebViewJavascriptBridge(function(bridge) {
-    // AdjustBridge initialisation will be added in this method.
-})
-```
-
-Take notice that the line `WVJBIframe.src = 'https://__bridge_loaded__';` was changed in version 4.11.6 from `WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';` due to a change in the  `WebViewJavascriptBridge` plugin.
-
-![][bridge_init_js]
-
-### <a id="basic-setup">Basic setup
-
-In your HTML file, add references to the adjust Javascript files:
-
-```html
-<script type="text/javascript" src="adjust.js"></script>
-<script type="text/javascript" src="adjust_event.js"></script>
-<script type="text/javascript" src="adjust_config.js"></script>
-```
-
-Once you added references to Javascript files, you can use them in your HTML file to initialise the adjust SDK:
-
-```js
-setupWebViewJavascriptBridge(function(bridge) {
-    // ...
-
-    var yourAppToken = '{YourAppToken}'
-    var environment = AdjustConfig.EnvironmentSandbox
-    var adjustConfig = new AdjustConfig(bridge, yourAppToken, environment)
-
-    Adjust.appDidLaunch(adjustConfig)
-
-    // ...
-)}
-```
-
-![][bridge_init_js_xcode]
-
-Replace `{YourAppToken}` with your app token. You can find it in your [dashboard].
-
-Depending on whether you build your app for testing or for production, you must set `environment` with one of these values:
-
-```js
-var environment = AdjustConfig.EnvironmentSandbox
-var environment = AdjustConfig.EnvironmentProduction
-```
-
-**Important:** This value should be set to `AdjustConfig.EnvironmentSandbox` if and only if you or someone else is testing 
-your app. Make sure to set the environment to `AdjustConfig.EnvironmentProduction` just before you publish the app. Set it 
-back to `AdjustConfig.EnvironmentSandbox` when you start developing and testing it again.
-
-We use this environment to distinguish between real traffic and test traffic from test devices. It is very important that 
-you keep this value meaningful at all times! This is especially important if you are tracking revenue.
-
-### <a id="bridge-logging">AdjustBridge logging
-
-You can increase or decrease the amount of logs you see in tests by calling `setLogLevel` on your `AdjustConfig` instance 
-with one of the following parameters:
-
-```objc
-adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose) // enable all logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelDebug)   // enable more logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelInfo)    // the default
-adjustConfig.setLogLevel(AdjustConfig.LogLevelWarn)    // disable info logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelError)   // disable warnings as well
-adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert)  // disable errors as well
-```
-
 ### <a id="build-the-app">Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches
 for the first time, you should see the info log `Install tracked`.
-
-![][bridge_install_tracked]
 
 ## <a id="additional-features">Additional features
 
@@ -825,8 +668,6 @@ If your user already has the app installed and hits the tracker URL with deep li
 
 Deep linking on iOS 8 and earlier devices is being done with usage of a custom URL scheme setting. You need to pick a custom URL scheme name which your app will be in charge for opening. This scheme name will also be used in the adjust tracker URL as part of the `deep_link` parameter. In order to set this in your app, open your `Info.plist` file and add new `URL types` row to it. In there, as `URL identifier` write you app's bundle ID and under `URL schemes` add scheme name(s) which you want your app to handle. In the example below, we have chosen that our app should handle the `adjustExample` scheme name.
 
-![][custom-url-scheme]
-
 After this has been set up, your app will be opened after you click the adjust tracker URL with `deep_link` parameter which contains the scheme name which you have chosen. After app is opened, `openURL` method of your `AppDelegate` class will be triggered and the place where the content of the `deep_link` parameter from the tracker URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ```objc
@@ -852,8 +693,6 @@ Adjust is taking care of lots of things to do with universal links behind the sc
 Once you have successfully enabled the universal links feature in the dashboard, you need to do this in your app as well:
 
 After enabling `Associated Domains` for your app in Apple Developer Portal, you need to do the same thing in your app's Xcode project. After enabling `Assciated Domains`, add the universal link which was generated for you in the adjust dashboard in the `Domains` section by prefixing it with `applinks:` and make sure that you also remove the `http(s)` part of the universal link.
-
-![][associated-domains-applinks]
 
 After this has been set up, your app will be opened after you click the adjust tracker universal link. After app is opened, `continueUserActivity` method of your `AppDelegate` class will be triggered and the place where the content of the universal link URL will be delivered. If you want to access the content of the deep link, override this method.
 
@@ -976,13 +815,6 @@ Adjust.appWillOpenUrl(deeplinkUrl);
 [currency-conversion]:      https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 [event-tracking-guide]:     https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues
 [reattribution-deeplinks]:  https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
-
-[bridge_add]:             https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_add.png
-[bridge_drag]:            https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_drag.png
-[bridge_init_js]:         https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js.png
-[bridge_init_objc]:       https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_objc.png
-[bridge_init_js_xcode]:   https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_init_js_xcode.png
-[bridge_install_tracked]: https://raw.githubusercontent.com/adjust/sdks/master/Resources/ios/bridge/bridge_install_tracked.png
 
 ## <a id="license">License
 
