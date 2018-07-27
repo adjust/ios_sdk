@@ -1,14 +1,12 @@
 ## Summary
 
-This is the guide to the iOS SDK of adjust.com™ for iOS apps which are using web views. You can read more about adjust.com™ 
-at [adjust.com].
+This is the guide to the iOS SDK of Adjust™ for iOS apps which are using web views. You can read more about Adjust™  at [adjust.com].
 
-It provides a bridge from Javascript to native Objective-C calls (and vice versa) by using the 
-[WebViewJavascriptBridge][web_view_js_bridge] plugin. This plugin is also licensed under `MIT License`.
+It provides a bridge from Javascript to native Objective-C calls (and vice versa) by using the [WebViewJavascriptBridge][web_view_js_bridge] plugin. This plugin is also licensed under `MIT License`.
 
 ## Table of contents
 
-* [Example apps](#example-apps)
+* [Example app](#example-app)
 * [Basic integration](#basic-integration)
    * [Add the SDK with the web bridge to your project](#sdk-add)
    * [Add iOS frameworks](#sdk-frameworks)
@@ -48,16 +46,15 @@ It provides a bridge from Javascript to native Objective-C calls (and vice versa
       * [Deep linking on iOS 9 and later](#deeplinking-setup-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
-
 * [License](#license)
 
-## <a id="example-apps"></a>Example apps
+## <a id="example-app"></a>Example app
 
-There are example apps inside the [`examples` directory][examples] for [`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], [`tvOS`][example-tvos] and [`Apple Watch`][example-iwatch]. You can open any of these Xcode projects to see an example of how the adjust SDK can be integrated.
+In the repository, you can find an example [`iOS app with web view`][example-webview]. You can use this project to see how the Adjust SDK can be integrated.
 
-## <a id="basic-integration">Basic integration
+## <a id="basic-integration"></a>Basic integration
 
-We will describe the steps to integrate the adjust SDK into your iOS project. We are going to assume that you are using Xcode for your iOS development.
+We will describe the steps to integrate the Adjust SDK into your iOS project. We are going to assume that you are using Xcode for your iOS development.
 
 ### <a id="sdk-add"></a>Add the SDK with the web bridge to your project
 
@@ -69,8 +66,7 @@ pod 'Adjust/WebViewJavascriptBridge', '~> 4.14.1'
 
 ---
 
-If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue from
-[this step](#sdk-frameworks):
+If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue from [this step](#sdk-frameworks):
 
 ```ruby
 github "adjust/ios_sdk" "WebViewJavascriptBridge"
@@ -78,12 +74,12 @@ github "adjust/ios_sdk" "WebViewJavascriptBridge"
 
 ---
 
-You can also choose to integrate the adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the following archives:
+You can also choose to integrate the Adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the following archives:
 
-* `AdjustSdkStaticWVJB.framework.zip`
-* `AdjustSdkDynamicWVJB.framework.zip`
+* `AdjustSdkStaticWebBridge.framework.zip`
+* `AdjustSdkDynamicWebBridge.framework.zip`
 
-Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
+Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the Adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
 
 ### <a id="sdk-frameworks"></a>Add iOS frameworks
 
@@ -97,7 +93,7 @@ Since the release of iOS 8, Apple has introduced dynamic frameworks (also known 
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
-If you added the adjust SDK via a Pod repository, you should use one of the following import statements in the app delegate:
+If you added the Adjust SDK via a Pod repository, you should use one of the following import statements in the app delegate:
 
 ```objc
 #import "Adjust.h"
@@ -111,15 +107,15 @@ or
 
 ---
 
-If you added the adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement in the app delegate:
+If you added the Adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement in the app delegate:
 
 ```objc
-#import <AdjustSdk/Adjust.h>
+#import <AdjustSdkWebBridge/Adjust.h>
 ```
 
 Next, we'll set up basic session tracking.
 
-### <a id="bridge-integrate-app">Integrate AdjustBridge into your app
+### <a id="bridge-integrate-app"></a>Integrate AdjustBridge into your app
 
 In the Project Navigator open the source file your View Controller. Add the `import` statement at the top of the file. In 
 the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the following calls to `AdjustBridge`:
@@ -149,11 +145,9 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 // ...
 ```
 
-### <a id="bridge-integrate-web">Integrate AdjustBrige into your web view
+### <a id="bridge-integrate-web"></a>Integrate AdjustBrige into your web view
 
-To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin 
-[README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the adjust iOS web 
-bridge:
+To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin [README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the Adjust iOS web bridge:
 
 ```js
 function setupWebViewJavascriptBridge(callback) {
@@ -178,9 +172,9 @@ function setupWebViewJavascriptBridge(callback) {
 
 Take notice that the line `WVJBIframe.src = 'https://__bridge_loaded__';` was changed in version 4.11.6 from `WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';` due to a change in the  `WebViewJavascriptBridge` plugin.
 
-### <a id="basic-setup">Basic setup
+### <a id="basic-setup"></a>Basic setup
 
-In the same HTML file, initialise the adjust SDK inside the `setupWebViewJavascriptBridge` callback:
+In the same HTML file, initialise the Adjust SDK inside the `setupWebViewJavascriptBridge` callback:
 
 ```js
 setupWebViewJavascriptBridge(function(bridge) {
@@ -196,7 +190,7 @@ setupWebViewJavascriptBridge(function(bridge) {
 });
 ```
 
-**Note**: Initialising the adjust SDK like this is `very important`. Otherwise, you may encounter different kinds of issues as described in our [troubleshooting section](#ts-delayed-init).
+**Note**: Initialising the Adjust SDK like this is `very important`. Otherwise, you may encounter different kinds of issues as described in our [troubleshooting section](#ts-delayed-init).
 
 Replace `yourAppToken` with your app token. You can find this in your [dashboard].
 
@@ -216,15 +210,16 @@ We use this environment to distinguish between real traffic and test traffic fro
 You can increase or decrease the amount of logs that you see during testing by calling `setLogLevel:` on your `ADJConfig` instance with one of the following parameters:
 
 ```js
-adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose) // enable all logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelDebug)   // enable more logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelInfo)    // the default
-adjustConfig.setLogLevel(AdjustConfig.LogLevelWarn)    // disable info logging
-adjustConfig.setLogLevel(AdjustConfig.LogLevelError)   // disable warnings as well
-adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert)  // disable errors as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose)   // enable all logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelDebug)     // enable more logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelInfo)      // the default
+adjustConfig.setLogLevel(AdjustConfig.LogLevelWarn)      // disable info logging
+adjustConfig.setLogLevel(AdjustConfig.LogLevelError)     // disable warnings as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert)    // disable errors as well
+adjustConfig.setLogLevel(AdjustConfig.LogLevelSuppress)  // disable all logging
 ```
 
-If you don't want your app in production to display any logs coming from the adjust SDK, then you should select `AdjustConfig.LogLevelSuppress` and in addition to that, initialise `AdjustConfig` object with another constructor where you should enable suppress log level mode with `true` in the third parameter:
+If you don't want your app in production to display any logs coming from the Adjust SDK, then you should select `AdjustConfig.LogLevelSuppress` and in addition to that, initialise `AdjustConfig` object with another constructor where you should enable suppress log level mode with `true` in the third parameter:
 
 ```js
 setupWebViewJavascriptBridge(function(bridge) {
@@ -240,20 +235,18 @@ setupWebViewJavascriptBridge(function(bridge) {
 });
 ```
 
-### <a id="build-the-app">Build your app
+### <a id="build-the-app"></a>Build your app
 
 Build and run your app. If the build succeeds, you should carefully read the SDK logs in the console. After the app launches
 for the first time, you should see the info log `Install tracked`.
 
-## <a id="additional-features">Additional features
+## <a id="additional-features"></a>Additional features
 
-Once you integrate the adjust SDK into your project, you can take advantage of the following features.
+Once you integrate the Adjust SDK into your project, you can take advantage of the following features.
 
-### <a id="event-tracking">Event tracking
+### <a id="event-tracking"></a>Event tracking
 
-You can use adjust to track events. Let's say you want to track every tap on a particular button. You would create a new 
-event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's 
-`onclick` method you would then add the following lines to track the tap:
+You can use Adjust to track events. Let's say you want to track every tap on a particular button. You would create a new  event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's `onclick` method you would then add the following lines to track the tap:
 
 ```js
 var adjustEvent = new AdjustEvent('abc123');
@@ -264,22 +257,19 @@ When tapping the button you should now see `Event tracked` in the logs.
 
 The event instance can be used to configure the event even more before tracking it.
 
-#### <a id="revenue-tracking">Revenue tracking
+### <a id="revenue-tracking"></a>Revenue tracking
 
-If your users can generate revenue by tapping on advertisements or making in-app purchases you can track those revenues with
-events. Lets say a tap is worth one Euro cent. You could then track the revenue event like this:
+If your users can generate revenue by tapping on advertisements or making in-app purchases you can track those revenues with events. Lets say a tap is worth one Euro cent. You could then track the revenue event like this:
 
 ```js
 var adjustEvent = new AdjustEvent(eventToken);
 adjustEvent.setRevenue(0.01, 'EUR');
-
 Adjust.trackEvent(adjustEvent);
 ```
 
 This can be combined with callback parameters of course.
 
-When you set a currency token, adjust will automatically convert the incoming revenues into a reporting revenue of your 
-choice. Read more about [currency conversion here.][currency-conversion]
+When you set a currency token, Adjust will automatically convert the incoming revenues into a reporting revenue of your  choice. Read more about [currency conversion here.][currency-conversion]
 
 You can read more about revenue and event tracking in the [event tracking guide][event-tracking-guide].
 
@@ -287,20 +277,17 @@ You can read more about revenue and event tracking in the [event tracking guide]
 
 You can also pass in an optional transaction ID to avoid tracking duplicate revenues. The last ten transaction IDs are remembered and revenue events with duplicate transaction IDs are skipped. This is especially useful for in-app purchase tracking.
 
-If you have access to the transaction indentifier from the webview, you can pass it to the `setTransactionId` method on the adjust event object. That way you can avoid tracking revenue that is not actually being generated.
+If you have access to the transaction indentifier from the web view, you can pass it to the `setTransactionId` method on the Adjust event object. That way you can avoid tracking revenue that is not actually being generated.
 
-```objc
+```js
 var adjustEvent = new AdjustEvent(eventToken);
 adjustEvent.setTransactionId(transactionIdentifier);
-
 Adjust.trackEvent(adjustEvent);
 ```
 
-#### <a id="callback-parameters">Callback parameters
+### <a id="callback-parameters"></a>Callback parameters
 
-You can register a callback URL for your events in your [dashboard]. We will send a GET request to that URL whenever the 
-event gets tracked. You can add callback parameters to that event by calling `addCallbackParameter` on the event before 
-tracking it. We will then append these parameters to your callback URL.
+You can register a callback URL for your events in your [dashboard]. We will send a GET request to that URL whenever the event gets tracked. You can add callback parameters to that event by calling `addCallbackParameter` on the event before tracking it. We will then append these parameters to your callback URL.
 
 For example, suppose you have registered the URL `http://www.adjust.com/callback` then track an event like this:
 
@@ -308,7 +295,6 @@ For example, suppose you have registered the URL `http://www.adjust.com/callback
 var adjustEvent = new AdjustEvent(eventToken);
 adjustEvent.addCallbackParameter('key', 'value');
 adjustEvent.addCallbackParameter('foo', 'bar');
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -316,27 +302,20 @@ In that case we would track the event and send a request to:
 
     http://www.adjust.com/callback?key=value&foo=bar
 
-It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the 
-resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we 
-don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for 
-an event, these parameters won't even be read.
+It should be mentioned that we support a variety of placeholders like `{idfa}` that can be used as parameter values. In the resulting callback this placeholder would be replaced with the ID for Advertisers of the current device. Also note that we don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered a callback for an event, these parameters won't even be read.
 
-You can read more about using URL callbacks, including a full list of available values, in our 
-[callbacks guide][callbacks-guide].
+You can read more about using URL callbacks, including a full list of available values, in our [callbacks guide][callbacks-guide].
 
-#### <a id="partner-parameters">Partner parameters
+### <a id="partner-parameters"></a>Partner parameters
 
-You can also add parameters to be transmitted to network partners, for the integrations that have been activated in your 
-adjust dashboard.
+You can also add parameters to be transmitted to network partners, for the integrations that have been activated in your Adjust dashboard.
 
-This works similarly to the callback parameters mentioned above, but can be added by calling the `addPartnerParameter` 
-method on your `AdjustEvent` instance.
+This works similarly to the callback parameters mentioned above, but can be added by calling the `addPartnerParameter` method on your `AdjustEvent` instance.
 
 ```js
 var adjustEvent = new AdjustEvent('abc123');
 adjustEvent.addPartnerParameter('key', 'value');
 adjustEvent.addPartnerParameter('foo', 'bar');
-
 Adjust.trackEvent(adjustEvent);
 ```
 
@@ -344,13 +323,13 @@ You can read more about special partners and these integrations in our [guide to
 
 ### <a id="session-parameters"></a>Session parameters
 
-Some parameters are saved to be sent in every event and session of the adjust SDK. Once you have added any of these parameters, you don't need to add them every time, since they will be saved locally. If you add the same parameter twice, there will be no effect.
+Some parameters are saved to be sent in every event and session of the Adjust SDK. Once you have added any of these parameters, you don't need to add them every time, since they will be saved locally. If you add the same parameter twice, there will be no effect.
 
-If you want to send session parameters with the initial install event, they must be called before the Adjust SDK launches via `Adjust.appDidLaunch()`. If you need to send them with an install, but can only obtain the needed values after launch, it's possible to [delay](#delay-start) the first launch of the adjust SDK to allow this behavior.
+If you want to send session parameters with the initial install event, they must be called before the Adjust SDK launches via `Adjust.appDidLaunch()`. If you need to send them with an install, but can only obtain the needed values after launch, it's possible to [delay](#delay-start) the first launch of the Adjust SDK to allow this behavior.
 
 ### <a id="session-callback-parameters"></a>Session callback parameters
 
-The same callback parameters that are registered for [events](#callback-parameters) can be also saved to be sent in every event or session of the adjust SDK.
+The same callback parameters that are registered for [events](#callback-parameters) can be also saved to be sent in every event or session of the Adjust SDK.
 
 The session callback parameters have a similar interface of the event callback parameters. Instead of adding the key and it's value to an event, it's added through a call to `Adjust` method `addSessionCallbackParameter(key,value)`:
 
@@ -374,9 +353,9 @@ Adjust.resetSessionCallbackParameters();
 
 ### <a id="session-partner-parameters"></a>Session partner parameters
 
-In the same way that there is [session callback parameters](#session-callback-parameters) that are sent every in event or session of the adjust SDK, there is also session partner parameters.
+In the same way that there is [session callback parameters](#session-callback-parameters) that are sent every in event or session of the Adjust SDK, there is also session partner parameters.
 
-These will be transmitted to network partners, for the integrations that have been activated in your adjust [dashboard].
+These will be transmitted to network partners, for the integrations that have been activated in your Adjust [dashboard].
 
 The session partner parameters have a similar interface to the event partner parameters. Instead of adding the key and it's value to an event, it's added through a call to `Adjust` method `addSessionPartnerParameter:value:`:
 
@@ -400,7 +379,7 @@ Adjust.resetSessionPartnerParameters();
 
 ### <a id="delay-start"></a>Delay start
 
-Delaying the start of the adjust SDK allows your app some time to obtain session parameters, such as unique identifiers, to be send on install.
+Delaying the start of the Adjust SDK allows your app some time to obtain session parameters, such as unique identifiers, to be send on install.
 
 Set the initial delay time in seconds with the method `setDelayStart` in the `AdjustConfig` instance:
 
@@ -408,19 +387,17 @@ Set the initial delay time in seconds with the method `setDelayStart` in the `Ad
 adjustConfig.setDelayStart(5.5);
 ```
 
-In this case this will make the adjust SDK not send the initial install session and any event created for 5.5 seconds. After this time is expired or if you call `Adjust.sendFirstPackages()` in the meanwhile, every session parameter will be added to the delayed install session and events and the adjust SDK will resume as usual.
+In this case this will make the Adjust SDK not send the initial install session and any event created for 5.5 seconds. After this time is expired or if you call `Adjust.sendFirstPackages()` in the meanwhile, every session parameter will be added to the delayed install session and events and the Adjust SDK will resume as usual.
 
-**The maximum delay start time of the adjust SDK is 10 seconds**.
+**The maximum delay start time of the Adjust SDK is 10 seconds**.
 
-### <a id="attribution-callback">Attribution callback
+### <a id="attribution-callback"></a>Attribution callback
 
-You can register a callback method to be notified of attribution changes. Due to the different sources considered 
-for attribution, this information cannot by provided synchronously.
+You can register a callback method to be notified of attribution changes. Due to the different sources considered for attribution, this information cannot by provided synchronously.
 
 Please make sure to consider our [applicable attribution data policies][attribution-data].
 
-As the callback method is configured using the `AdjustConfig` instance, you should call `setAttributionCallback` before 
-calling `Adjust.appDidLaunch(adjustConfig)`.
+As the callback method is configured using the `AdjustConfig` instance, you should call `setAttributionCallback` before calling `Adjust.appDidLaunch(adjustConfig)`.
 
 ```js
 adjustConfig.setAttributionCallback(function(attribution) {
@@ -436,8 +413,7 @@ adjustConfig.setAttributionCallback(function(attribution) {
 });
 ```
 
-The callback method will get triggered when the SDK receives final attribution data. Within the callback you have access to 
-the `attribution` parameter. Here is a quick summary of its properties:
+The callback method will get triggered when the SDK receives final attribution data. Within the callback you have access to the `attribution` parameter. Here is a quick summary of its properties:
 
 - `var trackerToken` the tracker token of the current install.
 - `var trackerName` the tracker name of the current install.
@@ -450,11 +426,9 @@ the `attribution` parameter. Here is a quick summary of its properties:
 
 If any value is unavailable, it will not be part of the of the attribution object.
 
-### <a id="event-session-callbacks">Event and session callbacks
+### <a id="event-session-callbacks"></a>Event and session callbacks
 
-You can register a callback to be notified when events or sessions are tracked. There are four callbacks: one for tracking 
-successful events, one for tracking failed events, one for tracking successful sessions and one for tracking failed 
-sessions.
+You can register a callback to be notified when events or sessions are tracked. There are four callbacks: one for tracking successful events, one for tracking failed events, one for tracking successful sessions and one for tracking failed sessions.
 
 Follow these steps and implement the following callback methods to track successful events:
 
@@ -488,13 +462,11 @@ adjustConfig.setSessionFailureCallback(function(sessionFailure) {
 });
 ```
 
-The callback methods will be called after the SDK tries to send a package to the server. Within the callback methods you 
-have access to a response data object specifically for that callback. Here is a quick summary of the session response data 
-properties:
+The callback methods will be called after the SDK tries to send a package to the server. Within the callback methods you have access to a response data object specifically for that callback. Here is a quick summary of the session response data properties:
 
 - `var message` the message from the server or the error logged by the SDK.
 - `var timeStamp` timestamp from the server.
-- `var adid` a unique device identifier provided by adjust.
+- `var adid` a unique device identifier provided by Adjust.
 - `var jsonResponse` the JSON object with the response from the server.
 
 Both event response data objects contain:
@@ -505,17 +477,15 @@ And both event and session failed objects also contain:
 
 - `var willRetry` indicates there will be an attempt to resend the package at a later time.
 
-### <a id="disable-tracking">Disable tracking
+### <a id="disable-tracking"></a>Disable tracking
 
-You can disable the adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter 
-`false`. **This setting is remembered between sessions**, but it can only be activated after the first session.
+You can disable the Adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter `false`. **This setting is remembered between sessions**, but it can only be activated after the first session.
 
 ```js
 Adjust.setEnabled(false);
 ```
 
-<a id="is-enabled">You can check if the adjust SDK is currently enabled by calling the function `isEnabled`. It is always 
-possible to activate the adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
+<a id="is-enabled">You can check if the Adjust SDK is currently enabled by calling the function `isEnabled`. It is always possible to activate the Adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
 
 ```js
 Adjust.isEnabled(function(isEnabled) {
@@ -527,11 +497,9 @@ Adjust.isEnabled(function(isEnabled) {
 });
 ```
 
-### <a id="offline-mode">Offline mode
+### <a id="offline-mode"></a>Offline mode
 
-You can put the adjust SDK in offline mode to suspend transmission to our servers while retaining tracked data to be sent 
-later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in 
-offline mode.
+You can put the Adjust SDK in offline mode to suspend transmission to our servers while retaining tracked data to be sent later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in offline mode.
 
 You can activate offline mode by calling `setOfflineMode` with the parameter `true`.
 
@@ -539,16 +507,13 @@ You can activate offline mode by calling `setOfflineMode` with the parameter `tr
 Adjust.setOfflineMode(true);
 ```
 
-Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`. When the adjust SDK is put back in 
-online mode, all saved information is send to our servers with the correct time information.
+Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`. When the Adjust SDK is put back in online mode, all saved information is send to our servers with the correct time information.
 
-Unlike disabling tracking, this setting is **not remembered bettween sessions**. This means that the SDK is in online mode 
-whenever it is started, even if the app was terminated in offline mode.
+Unlike disabling tracking, this setting is **not remembered bettween sessions**. This means that the SDK is in online mode whenever it is started, even if the app was terminated in offline mode.
 
-### <a id="event-buffering">Event buffering
+### <a id="event-buffering"></a>Event buffering
 
-If your app makes heavy use of event tracking, you might want to delay some network requests in order to send them in one batch
-every minute. You can enable event buffering with your `AdjustConfig` instance:
+If your app makes heavy use of event tracking, you might want to delay some network requests in order to send them in one batch every minute. You can enable event buffering with your `AdjustConfig` instance:
 
 ```js
 adjustConfig.setEventBufferingEnabled(true);
@@ -576,10 +541,9 @@ An App Secret is set by calling `setAppSecret` on your `AdjustConfig` instance:
 adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
 ```
 
-### <a id="background-tracking">Background tracking
+### <a id="background-tracking"></a>Background tracking
 
-The default behaviour of the adjust SDK is to pause sending network requests while the app is in the background. You can change
-this behaviour in your `AdjustConfig` instance:
+The default behaviour of the Adjust SDK is to pause sending network requests while the app is in the background. You can change this behaviour in your `AdjustConfig` instance:
 
 ```js
 adjustConfig.setSendInBackground(true);
@@ -589,7 +553,7 @@ If nothing is set, sending in background is **disabled by default**.
 
 ### <a id="device-ids"></a>Device IDs
 
-The adjust SDK offers you possibility to obtain some of the device identifiers.
+The Adjust SDK offers you possibility to obtain some of the device identifiers.
 
 ### <a id="di-idfa"></a>iOS Advertising Identifier
 
@@ -605,13 +569,13 @@ Adjust.getIdfa(function(idfa) {
 
 ### <a id="di-adid"></a>Adjust device identifier
 
-For each device with your app installed, adjust backend generates unique **adjust device identifier** (**adid**). In order to obtain this identifier, you can make a call to the following method on the `Adjust` instance:
+For each device with your app installed, Adjust backend generates unique **adjust device identifier** (**adid**). In order to obtain this identifier, you can make a call to the following method on the `Adjust` instance:
 
 ```js
 var adid = Adjust.getAdid();
 ```
 
-**Note**: Information about the **adid** is available after the app's installation has been tracked by the adjust backend. From that moment on, the adjust SDK has information about the device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** before the SDK has been initialised and the installation of your app has been tracked successfully.
+**Note**: Information about the **adid** is available after the app's installation has been tracked by the Adjust backend. From that moment on, the Adjust SDK has information about the device **adid** and you can access it with this method. So, **it is not possible** to access the **adid** before the SDK has been initialised and the installation of your app has been tracked successfully.
 
 ### <a id="user-attribution"></a>User attribution
 
@@ -621,7 +585,7 @@ The attribution callback will be triggered as described in the [attribution call
 var attribution = Adjust.getAttribution();
 ```
 
-**Note**: Information about current attribution is available after app installation has been tracked by the adjust backend and attribution callback has been initially triggered. From that moment on, adjust SDK has information about your user's attribution and you can access it with this method. So, **it is not possible** to access user's attribution value before the SDK has been initialised and attribution callback has been initially triggered.
+**Note**: Information about current attribution is available after app installation has been tracked by the Adjust backend and attribution callback has been initially triggered. From that moment on, Adjust SDK has information about your user's attribution and you can access it with this method. So, **it is not possible** to access user's attribution value before the SDK has been initialised and attribution callback has been initially triggered.
 
 ### <a id="push-token"></a>Push token
 
@@ -635,7 +599,7 @@ To send us the push notification token, add the following call to `Adjust` in th
 }
 ```
 
-Or, if you have access to the push token from the webview, you can instead call the `setDeviceToken` method in the `Adjust` object in Javascript:
+Or, if you have access to the push token from the web view, you can instead call the `setDeviceToken` method in the `Adjust` object in Javascript:
 
 ```js
 Adjust.setDeviceToken(deviceToken);
@@ -658,7 +622,7 @@ If you want to use the Adjust SDK to recognize users that found your app pre-ins
 
 ### <a id="deeplinking"></a>Deep linking
 
-If you are using the adjust tracker URL with an option to deep link into your app from the URL, there is the possibility to get info about the deep link URL and its content. Hitting the URL can happen when the user has your app already installed (standard deep linking scenario) or if they don't have the app on their device (deferred deep linking scenario). Both of these scenarios are supported by the adjust SDK and in both cases the deep link URL will be provided to you after you app has been started after hitting the tracker URL. In order to use this feature in your app, you need to set it up properly.
+If you are using the Adjust tracker URL with an option to deep link into your app from the URL, there is the possibility to get info about the deep link URL and its content. Hitting the URL can happen when the user has your app already installed (standard deep linking scenario) or if they don't have the app on their device (deferred deep linking scenario). Both of these scenarios are supported by the Adjust SDK and in both cases the deep link URL will be provided to you after you app has been started after hitting the tracker URL. In order to use this feature in your app, you need to set it up properly.
 
 ### <a id="deeplinking-standard"></a>Standard deep linking scenario
 
@@ -666,9 +630,11 @@ If your user already has the app installed and hits the tracker URL with deep li
 
 ### <a id="deeplinking-setup-old"></a>Deep linking on iOS 8 and earlier
 
-Deep linking on iOS 8 and earlier devices is being done with usage of a custom URL scheme setting. You need to pick a custom URL scheme name which your app will be in charge for opening. This scheme name will also be used in the adjust tracker URL as part of the `deep_link` parameter. In order to set this in your app, open your `Info.plist` file and add new `URL types` row to it. In there, as `URL identifier` write you app's bundle ID and under `URL schemes` add scheme name(s) which you want your app to handle. In the example below, we have chosen that our app should handle the `adjustExample` scheme name.
+Deep linking on iOS 8 and earlier devices is being done with usage of a custom URL scheme setting. You need to pick a custom URL scheme name which your app will be in charge for opening. This scheme name will also be used in the Adjust tracker URL as part of the `deep_link` parameter. In order to set this in your app, open your `Info.plist` file and add new `URL types` row to it. In there, as `URL identifier` write you app's bundle ID and under `URL schemes` add scheme name(s) which you want your app to handle. In the example below, we have chosen that our app should handle the `adjustExample` scheme name.
 
-After this has been set up, your app will be opened after you click the adjust tracker URL with `deep_link` parameter which contains the scheme name which you have chosen. After app is opened, `openURL` method of your `AppDelegate` class will be triggered and the place where the content of the `deep_link` parameter from the tracker URL will be delivered. If you want to access the content of the deep link, override this method.
+![][custom-url-scheme]
+
+After this has been set up, your app will be opened after you click the Adjust tracker URL with `deep_link` parameter which contains the scheme name which you have chosen. After app is opened, `openURL` method of your `AppDelegate` class will be triggered and the place where the content of the `deep_link` parameter from the tracker URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ```objc
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
@@ -688,13 +654,15 @@ With this setup, you have successfully set up deep linking handling for iOS devi
 
 In order to set deep linking support for iOS 9 and later devices, you need to enable your app to handle Apple universal links. To find out more about universal links and how their setup looks like, you can check [here][universal-links].
 
-Adjust is taking care of lots of things to do with universal links behind the scenes. But, in order to support universal links with the adjust, you need to perform small setup for universal links in the adjust dashboard. For more information on that should be done, please consult our official [docs][universal-links-guide].
+Adjust is taking care of lots of things to do with universal links behind the scenes. But, in order to support universal links with the Adjust, you need to perform small setup for universal links in the Adjust dashboard. For more information on that should be done, please consult our official [docs][universal-links-guide].
 
 Once you have successfully enabled the universal links feature in the dashboard, you need to do this in your app as well:
 
-After enabling `Associated Domains` for your app in Apple Developer Portal, you need to do the same thing in your app's Xcode project. After enabling `Assciated Domains`, add the universal link which was generated for you in the adjust dashboard in the `Domains` section by prefixing it with `applinks:` and make sure that you also remove the `http(s)` part of the universal link.
+After enabling `Associated Domains` for your app in Apple Developer Portal, you need to do the same thing in your app's Xcode project. After enabling `Assciated Domains`, add the universal link which was generated for you in the Adjust dashboard in the `Domains` section by prefixing it with `applinks:` and make sure that you also remove the `http(s)` part of the universal link.
 
-After this has been set up, your app will be opened after you click the adjust tracker universal link. After app is opened, `continueUserActivity` method of your `AppDelegate` class will be triggered and the place where the content of the universal link URL will be delivered. If you want to access the content of the deep link, override this method.
+![][associated-domains-applinks]
+
+After this has been set up, your app will be opened after you click the Adjust tracker universal link. After app is opened, `continueUserActivity` method of your `AppDelegate` class will be triggered and the place where the content of the universal link URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ``` objc
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
@@ -743,9 +711,9 @@ adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
 ```
 The callback function will be called after the SDK receives a deffered deep link from our server and before opening it. 
 
-If this callback is not implemented, **the adjust SDK will always try to open the deep link by default**.
+If this callback is not implemented, **the Adjust SDK will always try to open the deep link by default**.
 
-With another setting on the `AdjustConfig` instance, you have the possibility to decide whether the adjust SDK will open this deeplink or not. You could, for example, not allow the SDK to open the deep link at the current moment, save it, and open it yourself later. You can do this by calling the `setOpenDeferredDeeplink` method:
+With another setting on the `AdjustConfig` instance, you have the possibility to decide whether the Adjust SDK will open this deeplink or not. You could, for example, not allow the SDK to open the deep link at the current moment, save it, and open it yourself later. You can do this by calling the `setOpenDeferredDeeplink` method:
 
 ```js
 // Default setting. The SDK will open the deeplink after the deferred deeplink callback
@@ -759,9 +727,9 @@ adjustConfig.setOpenDeferredDeeplink(false);
 
 Adjust enables you to run re-engagement campaigns with usage of deep links. For more information on how to do that, please check our [official docs][reattribution-with-deeplinks].
 
-If you are using this feature, in order for your user to be properly reattributed, you need to make one additional call to the adjust SDK in your app.
+If you are using this feature, in order for your user to be properly reattributed, you need to make one additional call to the Adjust SDK in your app.
 
-Once you have received deep link content information in your app, add a call to the `appWillOpenUrl` method. By making this call, the adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will be sent to the adjust backend. If your user should be reattributed due to a click on the adjust tracker URL with deep link content in it, you will see the [attribution callback](#attribution-callback) in your app being triggered with new attribution info for this user.
+Once you have received deep link content information in your app, add a call to the `appWillOpenUrl` method. By making this call, the Adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will be sent to the Adjust backend. If your user should be reattributed due to a click on the Adjust tracker URL with deep link content in it, you will see the [attribution callback](#attribution-callback) in your app being triggered with new attribution info for this user.
 
 The call to `appWillOpenUrl` should be done like this to support deep linking reattributions in all iOS versions:
 
@@ -795,7 +763,7 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
 }
 ```
 
-If you have access to the deeplink url in the webview, you can call the `appWillOpenUrl` method from the `Adjust` object from Javascript:
+If you have access to the deeplink url in the web view, you can call the `appWillOpenUrl` method from the `Adjust` object from Javascript:
 
 ```js
 Adjust.appWillOpenUrl(deeplinkUrl);
@@ -804,9 +772,11 @@ Adjust.appWillOpenUrl(deeplinkUrl);
 
 [dashboard]:  http://adjust.com
 [adjust.com]: http://adjust.com
+[releases]:   https://github.com/adjust/ios_sdk/releases
 
 [wvjsb_readme]:             https://github.com/marcuswestin/WebViewJavascriptBridge#usage
 [ios_sdk_ulinks]:           https://github.com/adjust/ios_sdk/#universal-links
+[example-webview]:          examples/AdjustExample-WebView
 [callbacks-guide]:          https://docs.adjust.com/en/callbacks
 [attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [special-partners]:         https://docs.adjust.com/en/special-partners
@@ -816,12 +786,14 @@ Adjust.appWillOpenUrl(deeplinkUrl);
 [event-tracking-guide]:     https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues
 [reattribution-deeplinks]:  https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
-## <a id="license">License
+[custom-url-scheme]:            https://raw.github.com/adjust/sdks/master/Resources/ios/custom-url-scheme.png
+[associated-domains-applinks]:  https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 
-The adjust SDK is licensed under the MIT License.
+## <a id="license"></a>License
 
-Copyright (c) 2012-2016 adjust GmbH,
-http://www.adjust.com
+The Adjust SDK is licensed under the MIT License.
+
+Copyright (c) 2012-2018 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
