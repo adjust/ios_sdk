@@ -20,19 +20,19 @@ cd ${ROOT_DIR}
 # ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Removing framework targets folders ... ${NC}"
-rm -rf ${ROOT_DIR}/frameworks/static
-rm -rf ${ROOT_DIR}/frameworks/dynamic
-rm -rf ${ROOT_DIR}/frameworks/tvos
-rm -rf ${ROOT_DIR}/frameworks/imessage
+rm -rf frameworks
+rm -rf Carthage
+rm -rf build
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Creating framework targets folders ... ${NC}"
-mkdir -p ${ROOT_DIR}/frameworks/static
-mkdir -p ${ROOT_DIR}/frameworks/dynamic
-mkdir -p ${ROOT_DIR}/frameworks/tvos
-mkdir -p ${ROOT_DIR}/frameworks/imessage
+mkdir -p frameworks/static
+mkdir -p frameworks/dynamic/ios
+mkdir -p frameworks/dynamic/tvos
+mkdir -p frameworks/dynamic/imessage
+mkdir -p frameworks/dynamic/wvjb
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
@@ -46,21 +46,79 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding universal tvOS SDK framework (device + simulator) and copying it to destination folder ... ${NC}"
 xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
 xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos clean build
-cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/tvos
-lipo -create -output frameworks/tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
+cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static
+lipo -create -output frameworks/static/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding shared dynamic targets with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic iOS and tvOS SDK framework using Carthage ${NC}"
+
+mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
+   Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWVJB.xcscheme .
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOs and tvOS targets with Carthage ... ${NC}"
 carthage build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Copying Carthage generated dynamic SDK framework to destination folder ... ${NC}"
-cp -Rv Carthage/Build/iOS/* frameworks/dynamic/
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic iOS SDK framework to destination folder ... ${NC}"
+mv Carthage/Build/iOS/* frameworks/dynamic/ios
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic tvOs SDK framework to destination folder ... ${NC}"
+mv Carthage/Build/tvOS/* frameworks/dynamic/tvos/
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic iMessage SDK framework using Carthage ${NC}"
+
+mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
+   Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
+mv AdjustSdkIm.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iMessage target with Carthage ... ${NC}"
+carthage build --no-skip-current
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic iMessage SDK framework to destination folder ... ${NC}"
+mv Carthage/Build/iOS/* frameworks/dynamic/imessage/
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas to generate dynamic WVJB SDK framework using Carthage ${NC}"
+
+mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
+mv AdjustSdkWVJB.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WVJB target with Carthage ... ${NC}"
+carthage build --no-skip-current
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic WVJB SDK framework to destination folder ... ${NC}"
+mv Carthage/Build/iOS/* frameworks/dynamic/wvjb/
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Moving Shared schemas back ${NC}"
+
+mv *.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
 
 # ======================================== #
 
