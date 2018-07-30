@@ -93,24 +93,18 @@ Since the release of iOS 8, Apple has introduced dynamic frameworks (also known 
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
 
-If you added the Adjust SDK via a Pod repository, you should use one of the following import statements in the app delegate:
+If you added the Adjust SDK via a Pod repository, you should use one of the following import statements in your app's source files:
 
 ```objc
-#import "Adjust.h"
-```
-
-or
-
-```objc
-#import <Adjust/Adjust.h>
+#import "AdjustBridge.h"
 ```
 
 ---
 
-If you added the Adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement in the app delegate:
+If you added the Adjust SDK as a static/dynamic framework or via Carthage, you should use the following import statement in your app's source files:
 
 ```objc
-#import <AdjustSdkWebBridge/Adjust.h>
+#import <AdjustSdkWebBridge/AdjustBridge.h>
 ```
 
 Next, we'll set up basic session tracking.
@@ -122,8 +116,7 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 
 ```objc
 #import "AdjustBridge.h"
-// Or #import <Adjust/AdjustBridge.h>
-// or #import <AdjustSdk/AdjustBridge.h>
+// or #import <AdjustSdkWebBridge/AdjustBridge.h>
 
 - (void)viewWillAppear:(BOOL)animated {
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
@@ -479,13 +472,13 @@ And both event and session failed objects also contain:
 
 ### <a id="disable-tracking"></a>Disable tracking
 
-You can disable the Adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter `false`. **This setting is remembered between sessions**, but it can only be activated after the first session.
+You can disable the Adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter `false`. **This setting is remembered between sessions**.
 
 ```js
 Adjust.setEnabled(false);
 ```
 
-<a id="is-enabled">You can check if the Adjust SDK is currently enabled by calling the function `isEnabled`. It is always possible to activate the Adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
+<a id="is-enabled">You can check if the Adjust SDK is currently enabled by calling the function `isEnabled`.
 
 ```js
 Adjust.isEnabled(function(isEnabled) {
@@ -496,6 +489,8 @@ Adjust.isEnabled(function(isEnabled) {
     }
 });
 ```
+
+It is always possible to activate the Adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
 
 ### <a id="offline-mode"></a>Offline mode
 
@@ -594,6 +589,9 @@ Push tokens are used for Audience Builder and client callbacks, and they are req
 To send us the push notification token, add the following call to `Adjust` in the `didRegisterForRemoteNotificationsWithDeviceToken` of your app delegate:
 
 ```objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [Adjust setDeviceToken:deviceToken];
 }
@@ -637,6 +635,9 @@ Deep linking on iOS 8 and earlier devices is being done with usage of a custom U
 After this has been set up, your app will be opened after you click the Adjust tracker URL with `deep_link` parameter which contains the scheme name which you have chosen. After app is opened, `openURL` method of your `AppDelegate` class will be triggered and the place where the content of the `deep_link` parameter from the tracker URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ```objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // url object contains your deep link content
@@ -665,6 +666,9 @@ After enabling `Associated Domains` for your app in Apple Developer Portal, you 
 After this has been set up, your app will be opened after you click the Adjust tracker universal link. After app is opened, `continueUserActivity` method of your `AppDelegate` class will be triggered and the place where the content of the universal link URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ``` objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
@@ -685,6 +689,9 @@ With this setup, you have successfully set up deep linking handling for iOS devi
 We provide a helper function that allows you to convert a universal link to an old style deep link URL, in case you had some custom logic in your code which was always expecting deep link info to arrive in old style custom URL scheme format. You can call this method with universal link and the custom URL scheme name which you would like to see your deep link prefixed with and we will generate the custom URL scheme deep link for you:
 
 ``` objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
@@ -734,6 +741,9 @@ Once you have received deep link content information in your app, add a call to 
 The call to `appWillOpenUrl` should be done like this to support deep linking reattributions in all iOS versions:
 
 ```objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // url object contains your deep link content
@@ -748,6 +758,9 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
 ```
 
 ``` objc
+#import "Adjust.h"
+// or #import <AdjustSdkWebBridge/Adjust.h>
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
@@ -772,11 +785,14 @@ Adjust.appWillOpenUrl(deeplinkUrl);
 
 [dashboard]:  http://adjust.com
 [adjust.com]: http://adjust.com
+
 [releases]:   https://github.com/adjust/ios_sdk/releases
+[carthage]:   https://github.com/Carthage/Carthage
+[cocoapods]:  http://cocoapods.org
 
 [wvjsb_readme]:             https://github.com/marcuswestin/WebViewJavascriptBridge#usage
 [ios_sdk_ulinks]:           https://github.com/adjust/ios_sdk/#universal-links
-[example-webview]:          examples/AdjustExample-WebView
+[example-webview]:          https://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-WebView
 [callbacks-guide]:          https://docs.adjust.com/en/callbacks
 [attribution-data]:         https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [special-partners]:         https://docs.adjust.com/en/special-partners
