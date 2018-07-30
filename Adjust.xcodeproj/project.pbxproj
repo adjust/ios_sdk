@@ -209,17 +209,17 @@
 		9D0E2EAC210B575600133B4F /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E59210B575600133B4F /* ADJActivityHandler.m */; };
 		9D0E2EAD210B575600133B4F /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5A210B575600133B4F /* ADJReachability.m */; };
 		9D0E2EAE210B575600133B4F /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5C210B575600133B4F /* AdjustBridge.m */; };
-		9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */; };
+		9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB0210B575600133B4F /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */; };
 		9D0E2EB1210B575600133B4F /* AdjustBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */; };
 		9D0E2EB2210B575600133B4F /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */; };
 		9D0E2EB3210B575600133B4F /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */; };
-		9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */; };
-		9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */; };
-		9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */; };
+		9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB7210B575600133B4F /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */; };
-		9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */; };
-		9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */; };
+		9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E69210B575600133B4F /* AdjustBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1829,12 +1829,17 @@
 			files = (
 				9D0E2E06210B570600133B4F /* AdjustSdkWebBridge.h in Headers */,
 				9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */,
+				9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */,
+				9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */,
+				9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */,
+				9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */,
+				9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */,
+				9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */,
 				9D0E2E6F210B575600133B4F /* Adjust.h in Headers */,
 				9D0E2E6B210B575600133B4F /* ADJConfig.h in Headers */,
 				9D0E2E8F210B575600133B4F /* ADJEvent.h in Headers */,
 				9D0E2E73210B575600133B4F /* ADJAttribution.h in Headers */,
 				9D0E2EA2210B575600133B4F /* ADJEventFailure.h in Headers */,
-				9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */,
 				9D0E2EA1210B575600133B4F /* ADJEventSuccess.h in Headers */,
 				9D0E2E9E210B575600133B4F /* ADJSessionFailure.h in Headers */,
 				9D0E2EA4210B575600133B4F /* ADJSessionSuccess.h in Headers */,
@@ -1845,22 +1850,17 @@
 				9D0E2E88210B575600133B4F /* ADJUserDefaults.h in Headers */,
 				9D0E2E8B210B575600133B4F /* ADJTimerOnce.h in Headers */,
 				9D0E2EAB210B575600133B4F /* ADJTimerCycle.h in Headers */,
-				9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */,
 				9D0E2E7A210B575600133B4F /* ADJResponseData.h in Headers */,
 				9D0E2E98210B575600133B4F /* NSString+ADJAdditions.h in Headers */,
 				9D0E2EA7210B575600133B4F /* ADJBackoffStrategy.h in Headers */,
 				9D0E2E8C210B575600133B4F /* ADJDeviceInfo.h in Headers */,
 				9D0E2E90210B575600133B4F /* ADJSdkClickHandler.h in Headers */,
-				9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */,
 				9D0E2E81210B575600133B4F /* ADJUtil.h in Headers */,
 				9D0E2E78210B575600133B4F /* ADJPackageHandler.h in Headers */,
 				9D0E2EA9210B575600133B4F /* ADJSessionParameters.h in Headers */,
-				9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */,
 				9D0E2E9B210B575600133B4F /* ADJRequestHandler.h in Headers */,
-				9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */,
 				9D0E2E94210B575600133B4F /* UIDevice+ADJAdditions.h in Headers */,
 				9D0E2E72210B575600133B4F /* ADJSystemProfile.h in Headers */,
-				9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */,
 				9D0E2E83210B575600133B4F /* ADJActivityHandler.h in Headers */,
 				9D0E2E79210B575600133B4F /* ADJPackageBuilder.h in Headers */,
 				9D0E2E70210B575600133B4F /* ADJActivityPackage.h in Headers */,
