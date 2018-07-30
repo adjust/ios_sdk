@@ -138,6 +138,9 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 // ...
 ```
 
+You also can make use of the WebViewJavascriptBridge library we include, by using the `bridgeRegister` property of the `AdjustBridge` instance.
+The register/call handler interface is similar to what WebViewJavascriptBridge does for ObjC. See [the library documentation](https://github.com/marcuswestin/WebViewJavascriptBridge#usage) for how to use it.
+
 ### <a id="bridge-integrate-web"></a>Integrate AdjustBrige into your web view
 
 To use the Javascript bridge on your web view, it must be configured like the `WebViewJavascriptBridge` plugin [README][wvjsb_readme] is advising in section `4`. Include the following Javascript code to intialize the Adjust iOS web bridge:
