@@ -1406,11 +1406,11 @@
 		9D0E2E5B210B575600133B4F /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
+				9D0E2E69210B575600133B4F /* AdjustBridge.h */,
 				9D0E2E5C210B575600133B4F /* AdjustBridge.m */,
 				9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */,
-				9D0E2E5E210B575600133B4F /* WebViewJavascriptBridge */,
-				9D0E2E69210B575600133B4F /* AdjustBridge.h */,
 				9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */,
+				9D0E2E5E210B575600133B4F /* WebViewJavascriptBridge */,
 			);
 			path = AdjustBridge;
 			sourceTree = SOURCE_ROOT;
@@ -1418,16 +1418,16 @@
 		9D0E2E5E210B575600133B4F /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
-				9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */,
-				9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */,
-				9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */,
-				9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */,
-				9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */,
-				9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */,
 				9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */,
+				9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */,
+				9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */,
 				9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */,
 				9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */,
+				9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */,
 				9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */,
+				9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */,
+				9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */,
+				9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */,
 			);
 			path = WebViewJavascriptBridge;
 			sourceTree = "<group>";

@@ -1,9 +1,9 @@
 //
 //  AdjustBridge_JS.m
-//  AdjustBridge
+//  Adjust SDK
 //
-//  Created by Pedro on 20.07.18.
-//  Copyright © 2018 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 20th July 2018.
+//  Copyright © 2018 Adjust GmbH. All rights reserved.
 //
 
 // This file including the header and format is copied with adaptions from

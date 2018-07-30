@@ -235,12 +235,11 @@
         if ([self isFieldValid:isDeviceKnown]) {
             [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
         }
-        BOOL isAppSecretDefined =
-            [self isFieldValid:secretId] &&
-            [self isFieldValid:info1] &&
-            [self isFieldValid:info2] &&
-            [self isFieldValid:info3] &&
-            [self isFieldValid:info4];
+        BOOL isAppSecretDefined = [self isFieldValid:secretId]
+        && [self isFieldValid:info1]
+        && [self isFieldValid:info2]
+        && [self isFieldValid:info3]
+        && [self isFieldValid:info4];
         if (isAppSecretDefined) {
             [adjustConfig setAppSecret:[secretId unsignedIntegerValue]
                                  info1:[info1 unsignedIntegerValue]
@@ -288,15 +287,13 @@
             [adjustEvent setTransactionId:transactionId];
         }
         for (int i = 0; i < [callbackParameters count]; i += 2) {
-            NSString * key = [[callbackParameters objectAtIndex:i] description];
-            NSString * value = [[callbackParameters objectAtIndex:(i + 1)] description];
-
+            NSString *key = [[callbackParameters objectAtIndex:i] description];
+            NSString *value = [[callbackParameters objectAtIndex:(i + 1)] description];
             [adjustEvent addCallbackParameter:key value:value];
         }
         for (int i = 0; i < [partnerParameters count]; i += 2) {
-            NSString * key = [[partnerParameters objectAtIndex:i] description];
-            NSString * value = [[partnerParameters objectAtIndex:(i + 1)] description];
-
+            NSString *key = [[partnerParameters objectAtIndex:i] description];
+            NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
             [adjustEvent addPartnerParameter:key value:value];
         }
 
