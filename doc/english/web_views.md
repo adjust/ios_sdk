@@ -61,7 +61,7 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust/WebViewJavascriptBridge', '~> 4.14.1'
+pod 'Adjust/WebBridge', '~> 4.14.2'
 ```
 
 ---
@@ -69,7 +69,7 @@ pod 'Adjust/WebViewJavascriptBridge', '~> 4.14.1'
 If you're using [Carthage][carthage], you can add following line to your `Cartfile` and continue from [this step](#sdk-frameworks):
 
 ```ruby
-github "adjust/ios_sdk" "WebViewJavascriptBridge"
+github "adjust/ios_sdk"
 ```
 
 ---
