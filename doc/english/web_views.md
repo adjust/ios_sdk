@@ -54,6 +54,8 @@ In the repository, you can find an example [`iOS app with web view`][example-web
 
 ## <a id="basic-integration"></a>Basic integration
 
+If you are migrating from the web view bridge sdk v4.9.1 or previous, please follow [this migration guide](web_view_migration.md) when updating to this new version.
+
 We will describe the steps to integrate the Adjust SDK into your iOS project. We are going to assume that you are using Xcode for your iOS development.
 
 ### <a id="sdk-add"></a>Add the SDK with the web bridge to your project
