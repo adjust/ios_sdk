@@ -464,7 +464,7 @@
             eventToken = self.fbPixelDefaultEventToken;
         }
         if (eventToken == nil) {
-            [[ADJAdjustFactory logger] debug:@"There is a also not a default event token configured, it won't be tracked"];
+            [[ADJAdjustFactory logger] debug:@"There is not a default event token configured or a mapping found for event named: '%@'. It won't be tracked as an adjust event", evtName];
             return;
         }
 
