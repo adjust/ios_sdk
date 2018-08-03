@@ -10,6 +10,42 @@
 
 static NSString * const kHandlerPrefix = @"adjust_";
 
+@interface AdjustBridgeRegister()
+
+@property (nonatomic, strong) WebViewJavascriptBridge *wvjb;
+@property BOOL isToAugmentHybridWebView;
+
+@end
+
+@implementation AdjustBridgeRegister
+
+- (id)initWithWebView:(id)webView {
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+
+    self.wvjb = [WebViewJavascriptBridge bridgeForWebView:webView];
+    self.isToAugmentHybridWebView = NO;
+    return self;
+}
+
+- (void)setWebViewDelegate:(id)webViewDelegate {
+    [self.wvjb setWebViewDelegate:webViewDelegate];
+}
+
+- (void)callHandler:(NSString *)handlerName data:(id)data {
+    [self.wvjb callHandler:handlerName data:data];
+}
+
+- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
+    [self.wvjb registerHandler:handlerName handler:handler];
+}
+
+
+@end
+/*
+
 @interface AdjustUIBridgeRegister()
 
 @property (nonatomic, strong) WebViewJavascriptBridge *uiBridge;
@@ -93,3 +129,4 @@ static NSString * const kHandlerPrefix = @"adjust_";
 }
 
 @end
+*/

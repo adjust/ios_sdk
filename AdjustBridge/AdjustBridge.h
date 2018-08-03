@@ -14,7 +14,7 @@
 
 @interface AdjustBridge : NSObject
 
-@property (nonatomic, strong, readonly) id<AdjustBridgeRegister> bridgeRegister;
+@property (nonatomic, strong, readonly) AdjustBridgeRegister * bridgeRegister;
 
 - (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView;
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView;

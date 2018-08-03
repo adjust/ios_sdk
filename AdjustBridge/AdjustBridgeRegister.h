@@ -9,10 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "WebViewJavascriptBridge.h"
 
+@interface AdjustBridgeRegister : NSObject
+
+- (id)initWithWebView:(id)webView;
+- (void)setWebViewDelegate:(id)webViewDelegate;
+
+- (void)callHandler:(NSString *)handlerName data:(id)data;
+- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
+
+@end
+/*
 @protocol AdjustBridgeRegister <NSObject>
 
 - (void)callHandler:(NSString *)handlerName data:(id)data;
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
+- (void)augmentHybridWebView;
++ (NSString *)AdjustBridge_js;
 
 @end
 
@@ -29,3 +41,4 @@
 - (void)setWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate;
 
 @end
+*/

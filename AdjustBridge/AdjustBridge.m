@@ -138,11 +138,12 @@
         // WebViewBridge already loaded.
         return;
     }
-
+/*
     AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
     [uiBridgeRegister setWebViewDelegate:webViewDelegate];
     _bridgeRegister = uiBridgeRegister;
-    [self loadWebViewBridge];
+ */
+    [self loadWebViewBridge:webView webViewDelegate:webViewDelegate];
 }
 
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView
@@ -151,14 +152,18 @@
         // WebViewBridge already loaded.
         return;
     }
-
+/*
     AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
     [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
     _bridgeRegister = wkBridgeRegister;
-    [self loadWebViewBridge];
+*/
+    [self loadWebViewBridge:wkWebView webViewDelegate:wkWebViewDelegate];
 }
 
-- (void)loadWebViewBridge {
+- (void)loadWebViewBridge:(id)webView webViewDelegate:(id)webViewDelegate {
+    _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWebView:webView];
+    [self.bridgeRegister setWebViewDelegate:webViewDelegate];
+
     // Register setCallback method to save callbacks before appDidLaunch
     [self.bridgeRegister registerHandler:@"adjust_setCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
