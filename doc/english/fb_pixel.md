@@ -109,14 +109,24 @@ Take notice that this would match when tracking the Facebook pixel events `fbq('
 `fbq('track', 'Purchase', ...);` respectively. Unfortunatly we do not have access to the mapping between the event name
 tracked in javascript and the event name used by the FB SDK. 
 
-Some don't even have a event name different mapping, so you will need to test the different Facebook Pixel event types 
-your app uses and see what event names they will be translated into our SDK. During tests you should be able to see a log
-like `Facebook Pixel event with name 'fb_mobile_search' tracked from Javascript`. To help you, we've colled the following 
-event name mappings that we found so far. Take note that, although unlikely, Facebook could change them, and likely add new
-ones in the future:
+To help you, we've colled the following event name mappings that we found so far:
+
+| Pixel event name | Corresponding Facebook app event name
+| ---------------- | -------------------------------------
+| ViewContent      | fb_mobile_content_view
+| Search           | fb_mobile_search
+| AddToCart        | fb_mobile_add_to_cart
+| AddToWishlist    | fb_mobile_add_to_wishlist
+| InitiateCheckout | fb_mobile_initiated_checkout
+| AddPaymentInfo   | fb_mobile_add_payment_info
+| Purchase         | fb_mobile_purchase
+| CompleteRegistration | fb_mobile_complete_registration
+
+This might not be an exaustive list, and it's possible that Facebook adds or updates the current listing.
+To make sure, during tests, check the adjust logs for warning like:
 
 ```
-TODO, table with even name mappings
+There is not a default event token configured or a mapping found for event named: 'fb_mobile_search'. It won't be tracked as an adjust event
 ```
 
 There is also the option to have a default adjust event to be used if a mapping is not configured. 
