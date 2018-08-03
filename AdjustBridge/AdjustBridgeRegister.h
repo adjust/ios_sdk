@@ -16,6 +16,7 @@
 
 - (void)callHandler:(NSString *)handlerName data:(id)data;
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
++ (NSString *)AdjustBridge_js;
 
 @end
 /*
