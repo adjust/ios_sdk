@@ -16,6 +16,7 @@
 
 - (void)callHandler:(NSString *)handlerName data:(id)data;
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
+- (void)augmentHybridWebView:(NSString *)fbAppId;
 + (NSString *)AdjustBridge_js;
 
 @end

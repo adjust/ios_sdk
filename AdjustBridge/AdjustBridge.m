@@ -26,6 +26,8 @@
 @property WVJBResponseCallback sessionSuccessCallback;
 @property WVJBResponseCallback sessionFailureCallback;
 @property WVJBResponseCallback deferredDeeplinkCallback;
+@property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
+@property (nonatomic, strong) NSMutableDictionary* fbPixelMapping;
 
 @end
 
@@ -46,6 +48,8 @@
     self.eventFailureCallback = nil;
     self.sessionSuccessCallback = nil;
     self.sessionFailureCallback = nil;
+    self.fbPixelDefaultEventToken = nil;
+    self.fbPixelMapping = nil;
 
     return self;
 }
@@ -123,6 +127,17 @@
 }
 
 #pragma mark - Public methods
+
+- (void)augmentHybridWebView {
+    NSString * fbAppId = [self getFbAppId];
+
+    if (fbAppId == nil) {
+        [[ADJAdjustFactory logger] error:@"FacebookAppID is not correctly configured in the pList"];
+        return;
+    }
+    [_bridgeRegister augmentHybridWebView:fbAppId];
+    [self registerAugmentedView];
+}
 
 - (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView {
     [self loadUIWebViewBridge:webView webViewDelegate:nil];
@@ -203,6 +218,8 @@
         NSNumber *info3 = [data objectForKey:@"info3"];
         NSNumber *info4 = [data objectForKey:@"info4"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
+        NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
+        id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -255,6 +272,18 @@
         if ([self isFieldValid:openDeferredDeeplink]) {
             self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
         }
+        if ([self isFieldValid:fbPixelDefaultEventToken]) {
+            self.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
+        }
+        if ([fbPixelMapping count] > 0) {
+            self.fbPixelMapping = [[NSMutableDictionary alloc] initWithCapacity:[fbPixelMapping count] / 2];
+        }
+        for (int i = 0; i < [fbPixelMapping count]; i += 2) {
+            NSString *key = [[fbPixelMapping objectAtIndex:i] description];
+            NSString *value = [[fbPixelMapping objectAtIndex:(i + 1)] description];
+            [self.fbPixelMapping setObject:value forKey:key];
+        }
+
         // Set self as delegate if any callback is configured.
         // Change to swifle the methods in the future.
         if (self.attributionCallback != nil
@@ -421,6 +450,50 @@
     }];
 }
 
+- (void)registerAugmentedView {
+    [self.bridgeRegister registerHandler:@"adjust_fbPixelEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *pixelID = [data objectForKey:@"pixelID"];
+        if (pixelID == nil) {
+            [[ADJAdjustFactory logger] error:@"Can't bridge an event without a referral Pixel ID. Check your webview Pixel configuration"];
+            return;
+        }
+        NSString *evtName = [data objectForKey:@"evtName"];
+        NSString *eventToken = [self getEventTokenFromFbPixelEventName:evtName];
+        if (eventToken == nil) {
+            [[ADJAdjustFactory logger] debug:@"No mapping found for the fb pixel event %@, trying to fall back to the default event token", evtName];
+            eventToken = self.fbPixelDefaultEventToken;
+        }
+        if (eventToken == nil) {
+            [[ADJAdjustFactory logger] debug:@"There is a also not a default event token configured, it won't be tracked"];
+            return;
+        }
+
+        ADJEvent * fbPixelEvent = [ADJEvent eventWithEventToken:eventToken];
+        if (![fbPixelEvent isValid]) {
+            return;
+        }
+
+        id customData = [data objectForKey:@"customData"];
+
+        [fbPixelEvent addPartnerParameter:@"_fb_pixel_referral_id" value:pixelID];
+        //[fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
+        if ([customData isKindOfClass:[NSString class]]) {
+            NSError *jsonParseError = nil;
+            NSDictionary * params =
+            [NSJSONSerialization JSONObjectWithData:[customData dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:NSJSONReadingMutableContainers
+                                              error:&jsonParseError
+             ];
+            [params enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                NSString * keyS = [key description];
+                NSString * valueS = [obj description];
+                [fbPixelEvent addPartnerParameter:keyS value:valueS];
+            }];
+        }
+        [Adjust trackEvent:fbPixelEvent];
+    }];
+}
+
 #pragma mark - Private & helper methods
 
 - (BOOL)isFieldValid:(NSObject *)field {
@@ -431,6 +504,26 @@
         return NO;
     }
     return YES;
+}
+
+- (NSString *)getFbAppId {
+    NSString * facebookLoggingOverrideAppID = [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
+
+    if (facebookLoggingOverrideAppID != nil) {
+        return facebookLoggingOverrideAppID;
+    }
+    return [self getValueFromBundleByKey:@"FacebookAppID"];
+}
+
+- (NSString *)getValueFromBundleByKey:(NSString *)key {
+    return [[[NSBundle mainBundle] objectForInfoDictionaryKey:key] copy];
+}
+
+- (NSString *)getEventTokenFromFbPixelEventName:(NSString *)fbPixelEventName {
+    if (self.fbPixelMapping == nil) {
+        return nil;
+    }
+    return [self.fbPixelMapping objectForKey:fbPixelEventName];
 }
 
 @end

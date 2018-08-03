@@ -10,10 +10,11 @@
 
 static NSString * const kHandlerPrefix = @"adjust_";
 
+static NSString * fbAppIdStatic = nil;
+
 @interface AdjustBridgeRegister()
 
 @property (nonatomic, strong) WebViewJavascriptBridge *wvjb;
-@property BOOL isToAugmentHybridWebView;
 
 @end
 
@@ -26,7 +27,6 @@ static NSString * const kHandlerPrefix = @"adjust_";
     }
 
     self.wvjb = [WebViewJavascriptBridge bridgeForWebView:webView];
-    self.isToAugmentHybridWebView = NO;
     return self;
 }
 
@@ -42,11 +42,41 @@ static NSString * const kHandlerPrefix = @"adjust_";
     [self.wvjb registerHandler:handlerName handler:handler];
 }
 
+- (void)augmentHybridWebView:(NSString *)fbAppId {
+    fbAppIdStatic = fbAppId;
+}
+
 + (NSString *)AdjustBridge_js {
-#define __adj_wvjb_js_func__(x) #x
-    // BEGIN preprocessorJSCode
-    static NSString * preprocessorJSCode =
-    @__adj_wvjb_js_func__(;(function() {
+    if (fbAppIdStatic != nil) {
+        return [NSString stringWithFormat:@"%@%@"
+                ,[AdjustBridgeRegister adjust_js]
+                ,[AdjustBridgeRegister augmented_js]];
+    } else {
+        return [AdjustBridgeRegister adjust_js];
+    }
+}
+
+#define __adj_js_func__(x) #x
+// BEGIN preprocessorJSCode
+
++ (NSString *)augmented_js {
+    return [NSString stringWithFormat:
+        @__adj_js_func__(;(function() {
+            window['fbmq_%@'] = {
+                'getProtocol' : function() {
+                    return 'fbmq-0.1';
+
+                },
+                'sendEvent': function(pixelID, evtName, customData) {
+                    Adjust.fbPixelEvent(pixelID, evtName, customData);
+                }
+            };
+        })();) // END preprocessorJSCode
+     , fbAppIdStatic];
+}
+
++ (NSString *)adjust_js {
+    static NSString * preprocessorJSCode = @__adj_js_func__(;(function() {
         if (window.Adjust) {
             return;
         }
@@ -163,6 +193,16 @@ static NSString * const kHandlerPrefix = @"adjust_";
             if (WebViewJavascriptBridge != null) {
                 WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
             }
+        },
+        fbPixelEvent: function (pixelID, evtName, customData) {
+            if (WebViewJavascriptBridge != null) {
+                WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
+                                                    {   pixelID: pixelID,
+                                                        evtName:evtName,
+                                                        customData: customData
+                                                    },
+                                                    null);
+            }
         }
         };
 
@@ -233,7 +273,8 @@ static NSString * const kHandlerPrefix = @"adjust_";
             this.info4 = null;
             this.openDeferredDeeplink = null;
             this.callbacksMap = {};
-            this.test = null;
+            this.fbPixelDefaultEventToken = null;
+            this.fbPixelMapping = [];
         };
         AdjustConfig.EnvironmentSandbox     = 'sandbox';
         AdjustConfig.EnvironmentProduction  = 'production';
@@ -317,13 +358,18 @@ static NSString * const kHandlerPrefix = @"adjust_";
             this.callbacksMap['deferredDeeplinkCallback'] = callback;
         };
 
-        AdjustConfig.prototype.setTest = function() {
-            this.test = true;
+        AdjustConfig.prototype.setFbPixelDefaultEventToken = function(fbPixelDefaultEventToken) {
+            this.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
+        };
+
+        AdjustConfig.prototype.addFbPixelMapping = function(fbEventNameKey, adjEventTokenValue) {
+            this.fbPixelMapping.push(fbEventNameKey);
+            this.fbPixelMapping.push(adjEventTokenValue);
         };
 
     })();); // END preprocessorJSCode
-
-#undef __adj_wvjb_js_func__
+    //, augmentedSection];
+#undef __adj_js_func__
     return preprocessorJSCode;
 }
 
