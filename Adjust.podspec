@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '6.0'
   s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
-  s.ios.weak_framework = 'AdSupport', 'iAd'
+  s.ios.weak_framework = 'AdSupport', 'iAd', 'CoreTelephony'
   s.tvos.weak_framework = 'AdSupport'
   s.requires_arc   = true
   s.default_subspec = 'Core'
@@ -33,8 +33,9 @@ Pod::Spec.new do |s|
     tm.dependency 'Adjust/Core'
   end
 
-  s.subspec 'WebBridge' do |wvjb|
-    wvjb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
-    wvjb.dependency 'Adjust/Core'
+  s.subspec 'WebBridge' do |wb|
+    wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
+    wb.dependency 'Adjust/Core'
+    wb.ios.deployment_target = '6.0'
   end
 end
