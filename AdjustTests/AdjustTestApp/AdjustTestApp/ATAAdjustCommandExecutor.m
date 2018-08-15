@@ -14,6 +14,7 @@
 #import "ATAAdjustDelegateEventSuccess.h"
 #import "ATAAdjustDelegateSessionSuccess.h"
 #import "ATAAdjustDelegateSessionFailure.h"
+#import "ATAAdjustDelegateDeferredDeeplink.h"
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
@@ -121,6 +122,13 @@
         testOptions.noBackoffWait = NO;
         if ([noBackoffWaitStr isEqualToString:@"true"]) {
             testOptions.noBackoffWait = YES;
+        }
+    }
+    testOptions.iAdFrameworkEnabled = NO; // default value -> NO - iAd will not be used in test app by default
+    if ([parameters objectForKey:@"iAdFrameworkEnabled"]) {
+        NSString *iAdFrameworkEnabledStr = [parameters objectForKey:@"iAdFrameworkEnabled"][0];
+        if ([iAdFrameworkEnabledStr isEqualToString:@"true"]) {
+            testOptions.iAdFrameworkEnabled = YES;
         }
     }
     if ([parameters objectForKey:@"teardown"]) {
@@ -257,58 +265,44 @@
         [adjustConfig setUserAgent:userAgent];
     }
 
-    /*
-    self.adjustDelegate = [[ATAAdjustDelegate alloc] initWithTestLibrary:self.testLibrary];
-    BOOL swizzleAttributionCallback = NO;
-    BOOL swizzleSessionSuccessCallback = NO;
-    BOOL swizzleSessionFailureCallback = NO;
-    BOOL swizzleEventSuccessCallback = NO;
-    BOOL swizzleEventFailureCallback = NO;
-     */
-
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
         self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
                                                                             andBasePath:self.basePath];
-        // swizzleAttributionCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendSuccess"]) {
         NSLog(@"sessionCallbackSendSuccess detected");
         self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
                                                                                andBasePath:self.basePath];
-        // swizzleSessionSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendFailure"]) {
         NSLog(@"sessionCallbackSendFailure detected");
         self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
                                                                                andBasePath:self.basePath];
-        // swizzleSessionFailureCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendSuccess"]) {
         NSLog(@"eventCallbackSendSuccess detected");
         self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
                                                                              andBasePath:self.basePath];
-        // swizzleEventSuccessCallback = YES;
     }
     
     if ([parameters objectForKey:@"eventCallbackSendFailure"]) {
         NSLog(@"eventCallbackSendFailure detected");
         self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
                                                                              andBasePath:self.basePath];
-        // swizzleEventFailureCallback = YES;
     }
 
-    /*
-    [self.adjustDelegate swizzleAttributionCallback:swizzleAttributionCallback
-                             eventSucceededCallback:swizzleEventSuccessCallback
-                                eventFailedCallback:swizzleEventFailureCallback
-                           sessionSucceededCallback:swizzleSessionSuccessCallback
-                              sessionFailedCallback:swizzleSessionFailureCallback];
-    [adjustConfig setDelegate:self.adjustDelegate];
-     */
+    if ([parameters objectForKey:@"deferredDeeplinkCallback"]) {
+        NSLog(@"deferredDeeplinkCallback detected");
+        NSString *shouldOpenDeeplinkS = [parameters objectForKey:@"deferredDeeplinkCallback"][0];
+        self.adjustDelegate = [[ATAAdjustDelegateDeferredDeeplink alloc] initWithTestLibrary:self.testLibrary
+                                                                                    basePath:self.basePath
+                                                                              andReturnValue:[shouldOpenDeeplinkS boolValue]];
+    }
+
     [adjustConfig setDelegate:self.adjustDelegate];
 }
 

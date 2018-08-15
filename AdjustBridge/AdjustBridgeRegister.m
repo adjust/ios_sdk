@@ -1,9 +1,9 @@
 //
 //  AdjustBridgeRegister.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 10/06/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 10th June 2016.
+//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "AdjustBridgeRegister.h"
@@ -24,13 +24,11 @@ static NSString * const kHandlerPrefix = @"adjust_";
 
 - (id)initWithUIWebView:(WVJB_WEBVIEW_TYPE *)uiWebView {
     self = [super init];
-
     if (self == nil) {
         return nil;
     }
 
     self.uiBridge = [WebViewJavascriptBridge bridgeForWebView:uiWebView];
-
     return self;
 }
 
@@ -42,7 +40,6 @@ static NSString * const kHandlerPrefix = @"adjust_";
     if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
         return;
     }
-
     [self.uiBridge registerHandler:handlerName handler:handler];
 }
 
@@ -50,7 +47,6 @@ static NSString * const kHandlerPrefix = @"adjust_";
     if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
         return;
     }
-
     [self.uiBridge callHandler:handlerName data:data];
 }
 
@@ -70,13 +66,11 @@ static NSString * const kHandlerPrefix = @"adjust_";
 
 - (id)initWithWKWebView:(WKWebView *)wkWebView {
     self = [super init];
-
     if (self == nil) {
         return nil;
     }
 
     self.wkBridge = [WebViewJavascriptBridge bridgeForWebView:wkWebView];
-
     return self;
 }
 
@@ -88,7 +82,6 @@ static NSString * const kHandlerPrefix = @"adjust_";
     if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
         return;
     }
-
     [self.wkBridge registerHandler:handlerName handler:handler];
 }
 
@@ -96,7 +89,6 @@ static NSString * const kHandlerPrefix = @"adjust_";
     if ([handlerName hasPrefix:kHandlerPrefix] == NO) {
         return;
     }
-
     [self.wkBridge callHandler:handlerName data:data];
 }
 

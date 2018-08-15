@@ -1,3 +1,14 @@
+### Version 4.14.2 (15th August 2018)
+#### Added
+- Added support for iMessage target.
+- Added iMessage framework to releases page.
+- Added Web Bridge framework to releases page.
+
+#### Changed
+- Updated web view SDK (`v4.14.0`) and way of how it's being added to your iOS apps with web views. Please, make sure to check iOS web views SDK guide for more details.
+
+---
+
 ### Version 4.14.1 (18th June 2018)
 #### Added
 - Added `setPushToken:` method to `Adjust` interface to use push token as `NSString` data type. This method is intended only to be used by Adjust non native SDKs and you should not be using it in your native iOS app. Please, continue with usage of `setDeviceToken:` method as stated in `README`.

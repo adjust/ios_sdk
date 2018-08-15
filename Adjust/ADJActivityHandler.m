@@ -452,6 +452,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
      if (![selfI isEnabledI:selfI]) {
          return;
      }
+     
+     if (ADJAdjustFactory.iAdFrameworkEnabled == NO) {
+         [self.logger verbose:@"Sending iAd details to server suppressed."];
+         return;
+     }
 
      double now = [NSDate.date timeIntervalSince1970];
      if (selfI.activityState != nil) {

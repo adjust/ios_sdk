@@ -1,15 +1,15 @@
 Pod::Spec.new do |s|
   s.name           = "Adjust"
-  s.version        = "4.14.1"
+  s.version        = "4.14.2"
   s.summary        = "This is the iOS SDK of adjust. You can read more about it at http://adjust.com."
   s.homepage       = "https://github.com/adjust/ios_sdk"
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Christian Wellenbrock" => "welle@adjust.com" }
-  s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.14.1" }
+  s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.14.2" }
   s.ios.deployment_target = '6.0'
   s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
-  s.ios.weak_framework = 'AdSupport', 'iAd'
+  s.ios.weak_framework = 'AdSupport', 'iAd', 'CoreTelephony'
   s.tvos.weak_framework = 'AdSupport'
   s.requires_arc   = true
   s.default_subspec = 'Core'
@@ -31,5 +31,11 @@ Pod::Spec.new do |s|
   s.subspec 'Trademob' do |tm|
     tm.source_files = 'plugin/Trademob/*.{h,m}'
     tm.dependency 'Adjust/Core'
+  end
+
+  s.subspec 'WebBridge' do |wb|
+    wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
+    wb.dependency 'Adjust/Core'
+    wb.ios.deployment_target = '6.0'
   end
 end

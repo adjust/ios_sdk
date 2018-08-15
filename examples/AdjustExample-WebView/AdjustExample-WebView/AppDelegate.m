@@ -6,6 +6,7 @@
 //  Copyright © 2016 adjust GmbH. All rights reserved.
 //
 
+#import "Adjust.h"
 #import "AppDelegate.h"
 #import "UIWebViewController.h"
 #import "WKWebViewController.h"
@@ -44,22 +45,14 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    NSLog(@"application openURL %@", url);
-
-    [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
-    [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:url];
-
+    [Adjust appWillOpenUrl:url];
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSLog(@"application continueUserActivity %@", [userActivity webpageURL]);
-
-        [self.uiWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
-        [self.wkWebViewExampleController.adjustBridge sendDeeplinkToWebView:[userActivity webpageURL]];
+        [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
-
     return YES;
 }
 

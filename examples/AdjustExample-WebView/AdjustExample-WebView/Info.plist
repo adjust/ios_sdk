@@ -25,7 +25,7 @@
 			<string>com.adjust.examples</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>adjustExample</string>
+				<string>adjust-example</string>
 			</array>
 		</dict>
 	</array>

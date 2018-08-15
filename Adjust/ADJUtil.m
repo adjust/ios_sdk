@@ -41,7 +41,7 @@ static CTCarrier *carrier = nil;
 
 static NSString *userAgent = nil;
 
-static NSString * const kClientSdk                  = @"ios4.14.1";
+static NSString * const kClientSdk                  = @"ios4.14.2";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1181,7 +1181,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (BOOL)isInactive {
+#if ADJUST_IM
+    // Assume iMessage extension app can't be started from background.
+    return NO;
+#else
     return [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive;
+#endif
 }
 
 + (void)launchInMainThreadWithInactive:(isInactiveInjected)isInactiveblock {
@@ -1298,6 +1303,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (void)launchDeepLinkMain:(NSURL *)deepLinkUrl {
+#if ADJUST_IM
+    // No deep linking in iMessage extension apps.
+    return;
+#else
     UIApplication *sharedUIApplication = [UIApplication sharedApplication];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
@@ -1340,6 +1349,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
         }
     }
+#endif
 }
 
 + (NSString *)convertDeviceToken:(NSData *)deviceToken {

@@ -1,9 +1,9 @@
 //
 //  AdjustWebViewJSBridge.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 10/06/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 10th June 2016.
+//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

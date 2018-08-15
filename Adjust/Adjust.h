@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.14.1
+//  V4.14.2
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -24,6 +24,7 @@
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
+@property (nonatomic, assign) BOOL iAdFrameworkEnabled;
 
 @end
 

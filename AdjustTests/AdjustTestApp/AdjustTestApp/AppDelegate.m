@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Adjust.h"
 
 @interface AppDelegate ()
 
@@ -39,6 +40,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+    [Adjust appWillOpenUrl:url];
+    return YES;
 }
 
 @end
