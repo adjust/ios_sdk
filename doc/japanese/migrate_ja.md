@@ -1,4 +1,4 @@
-## iOS用adjust SDKのv3.4.0からv4.14.2への移行
+## iOS用adjust SDKのv3.4.0からv4.14.3への移行
 
 ### 初期設定
 
