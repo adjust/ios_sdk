@@ -1,3 +1,13 @@
+### Version 4.14.3 (16th August 2018)
+#### Changed
+- Changed deployment target of iMessage dynamic framework target back to 8.0.
+- Changed deployment target of web bridge dynamic framework target back to 8.0.
+
+#### Fixed
+- Removed signing settings from dynamic framework targets (thanks to @Igor-Palaguta).
+
+---
+
 ### Version 4.14.2 (15th August 2018)
 #### Added
 - Added support for iMessage target.
