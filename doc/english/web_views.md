@@ -76,12 +76,7 @@ github "adjust/ios_sdk"
 
 ---
 
-You can also choose to integrate the Adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the following archives:
-
-* `AdjustSdkStaticWebBridge.framework.zip`
-* `AdjustSdkDynamicWebBridge.framework.zip`
-
-Since the release of iOS 8, Apple has introduced dynamic frameworks (also known as embedded frameworks). If your app is targeting iOS 8 or higher, you can use the Adjust SDK dynamic framework. Choose which framework you want to use – static or dynamic – and add it to your project.
+You can also choose to integrate the Adjust SDK by adding it to your project as a framework. On the [releases page][releases] you can find the `AdjustSdkWebBridge.framework.zip` which contains dynamic framework.
 
 ### <a id="sdk-frameworks"></a>Add iOS frameworks
 
@@ -90,7 +85,7 @@ Since the release of iOS 8, Apple has introduced dynamic frameworks (also known 
 3. In the `Build Phases` tab, expand the `Link Binary with Libraries` group
 4. At the bottom of that section, select the `+` button
 5. Select the `AdSupport.framework`, then the `Add` button 
-6. Repeat the same steps to add the `iAd.framework` and `CoreTelephony.framework`
+6. Repeat the same steps to add the `iAd.framework`, `CoreTelephony.framework` and `WebView.framework`
 7. Change the `Status` of the frameworks to `Optional`.
 
 ### <a id="sdk-integrate"></a>Integrate the SDK into your app
