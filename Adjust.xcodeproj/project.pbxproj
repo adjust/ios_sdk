@@ -516,6 +516,13 @@
 			remoteGlobalIDString = 9D7431E51EB9F9B700969F14;
 			remoteInfo = AdjustExampleTests;
 		};
+		9D9D1551212EB3D00081445E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D9D152E212EB3920081445E;
+			remoteInfo = "AdjustExample-FbPixel";
+		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -786,6 +793,7 @@
 		9D7431F41EB9F9B700969F14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D7431F71EB9F9B700969F14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D7431F91EB9F9B700969F14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-FbPixel.xcodeproj"; path = "examples/AdjustExample-FbPixel/AdjustExample-FbPixel.xcodeproj"; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DE354D22100726300D211C9 /* AdjustSdkIm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkIm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1434,6 +1442,7 @@
 				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
 				9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */,
 				9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */,
+				9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */,
 			);
 			name = "Example Apps";
 			sourceTree = "<group>";
@@ -1502,6 +1511,14 @@
 				9D7431E91EB9F9B700969F14 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9D9D154E212EB3D00081445E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D9D1552212EB3D00081445E /* AdjustExample-FbPixel.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9DE354D32100726300D211C9 /* AdjustSdkIm */ = {
@@ -2184,6 +2201,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 9D9D154E212EB3D00081445E /* Products */;
+					ProjectRef = 9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */;
+				},
+				{
 					ProductGroup = 9D0167FF20FF88DE0029CFFF /* Products */;
 					ProjectRef = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
 				},
@@ -2307,6 +2328,13 @@
 			fileType = wrapper.application;
 			path = "AdjustExample-WebView.app";
 			remoteRef = 9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9D9D1552212EB3D00081445E /* AdjustExample-FbPixel.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-FbPixel.app";
+			remoteRef = 9D9D1551212EB3D00081445E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
