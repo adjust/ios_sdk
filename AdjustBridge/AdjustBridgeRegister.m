@@ -9,7 +9,6 @@
 #import "AdjustBridgeRegister.h"
 
 static NSString * const kHandlerPrefix = @"adjust_";
-
 static NSString * fbAppIdStatic = nil;
 
 @interface AdjustBridgeRegister()
@@ -48,9 +47,9 @@ static NSString * fbAppIdStatic = nil;
 
 + (NSString *)AdjustBridge_js {
     if (fbAppIdStatic != nil) {
-        return [NSString stringWithFormat:@"%@%@"
-                ,[AdjustBridgeRegister adjust_js]
-                ,[AdjustBridgeRegister augmented_js]];
+        return [NSString stringWithFormat:@"%@%@",
+                [AdjustBridgeRegister adjust_js],
+                [AdjustBridgeRegister augmented_js]];
     } else {
         return [AdjustBridgeRegister adjust_js];
     }

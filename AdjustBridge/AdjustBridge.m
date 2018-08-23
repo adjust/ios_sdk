@@ -129,7 +129,7 @@
 #pragma mark - Public methods
 
 - (void)augmentHybridWebView {
-    NSString * fbAppId = [self getFbAppId];
+    NSString *fbAppId = [self getFbAppId];
 
     if (fbAppId == nil) {
         [[ADJAdjustFactory logger] error:@"FacebookAppID is not correctly configured in the pList"];
@@ -468,7 +468,7 @@
             return;
         }
 
-        ADJEvent * fbPixelEvent = [ADJEvent eventWithEventToken:eventToken];
+        ADJEvent *fbPixelEvent = [ADJEvent eventWithEventToken:eventToken];
         if (![fbPixelEvent isValid]) {
             return;
         }
@@ -476,17 +476,15 @@
         id customData = [data objectForKey:@"customData"];
 
         [fbPixelEvent addPartnerParameter:@"_fb_pixel_referral_id" value:pixelID];
-        //[fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
+        // [fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
         if ([customData isKindOfClass:[NSString class]]) {
             NSError *jsonParseError = nil;
-            NSDictionary * params =
-            [NSJSONSerialization JSONObjectWithData:[customData dataUsingEncoding:NSUTF8StringEncoding]
-                                            options:NSJSONReadingMutableContainers
-                                              error:&jsonParseError
-             ];
+            NSDictionary *params = [NSJSONSerialization JSONObjectWithData:[customData dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&jsonParseError];
             [params enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                NSString * keyS = [key description];
-                NSString * valueS = [obj description];
+                NSString *keyS = [key description];
+                NSString *valueS = [obj description];
                 [fbPixelEvent addPartnerParameter:keyS value:valueS];
             }];
         }
@@ -507,7 +505,7 @@
 }
 
 - (NSString *)getFbAppId {
-    NSString * facebookLoggingOverrideAppID = [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
+    NSString *facebookLoggingOverrideAppID = [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
 
     if (facebookLoggingOverrideAppID != nil) {
         return facebookLoggingOverrideAppID;
