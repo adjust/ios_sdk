@@ -371,6 +371,14 @@
         }
         [adjustEvent setTransactionId:transactionId];
     }
+
+    if ([parameters objectForKey:@"callbackId"]) {
+        NSString *callbackId = [parameters objectForKey:@"callbackId"][0];
+        if (callbackId == (id)[NSNull null]) {
+            callbackId = nil;
+        }
+        [adjustEvent setCallbackId:callbackId];
+    }
 }
 
 - (void)trackEvent:(NSDictionary *)parameters {
