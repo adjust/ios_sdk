@@ -29,6 +29,11 @@
 @property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
 
 /**
+ * @brief Custom user defined event ID.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *callbackId;
+
+/**
  * @brief Currency value.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *currency;
@@ -105,6 +110,14 @@
  * @param transactionId The identifier used to avoid duplicate revenue events.
  */
 - (void)setTransactionId:(nonnull NSString *)transactionId;
+
+/**
+ * @brief Set the custom user defined ID for the event which will be reported in
+ *        success/failure callbacks.
+ *
+ * @param callbackId Custom user defined identifier for the event
+ */
+- (void)setCallbackId:(nonnull NSString *)callbackId;
 
 /**
  * @brief Check if created adjust event object is valid.

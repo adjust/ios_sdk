@@ -31,6 +31,11 @@
 @property (nonatomic, copy) NSString *eventToken;
 
 /**
+ * @brief Event callback ID.
+ */
+@property (nonatomic, copy) NSString *callbackId;
+
+/**
  * @brief Backend response in JSON format.
  */
 @property (nonatomic, strong) NSDictionary *jsonResponse;

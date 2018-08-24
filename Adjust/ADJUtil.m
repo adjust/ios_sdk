@@ -630,6 +630,15 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return appSecret;
 }
 
++ (void)extractEventCallbackId:(ADJActivityPackage *)activityPackage {
+    NSString *eventCallbackId = [activityPackage.parameters objectForKey:@"event_callback_id"];
+    if (eventCallbackId == nil) {
+        return;
+    }
+
+    [activityPackage.parameters removeObjectForKey:@"event_callback_id"];
+}
+
 + (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
                                       baseUrl:(NSURL *)baseUrl
                                      basePath:(NSString *)basePath

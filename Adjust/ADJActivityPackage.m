@@ -15,7 +15,7 @@
 
 - (NSString *)extendedString {
     NSMutableString *builder = [NSMutableString string];
-    NSArray *excludedKeys = @[@"secret_id", @"app_secret"];
+    NSArray *excludedKeys = @[@"secret_id", @"app_secret", @"event_callback_id"];
 
     [builder appendFormat:@"Path:      %@\n", self.path];
     [builder appendFormat:@"ClientSdk: %@\n", self.clientSdk];

@@ -36,6 +36,7 @@
         copy.timeStamp = [self.timeStamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
         copy.eventToken = [self.eventToken copyWithZone:zone];
+        copy.callbackId = [self.callbackId copyWithZone:zone];
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
     }
 
@@ -45,11 +46,12 @@
 #pragma mark - NSObject protocol methods
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"Event Success msg:%@ time:%@ adid:%@ event:%@ json:%@",
+    return [NSString stringWithFormat: @"Event Success msg:%@ time:%@ adid:%@ event:%@ cid:%@ json:%@",
             self.message,
             self.timeStamp,
             self.adid,
             self.eventToken,
+            self.callbackId,
             self.jsonResponse];
 }
 
