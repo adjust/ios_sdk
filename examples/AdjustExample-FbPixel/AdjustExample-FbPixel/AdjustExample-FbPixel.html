@@ -62,7 +62,11 @@
         var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
         btnTrackSimpleEvent.onclick = function(e) {
             e.preventDefault()
-            config.fbid && fbq('track', 'Search', config.fbid.toString());
+                                 config.fbid && fbq('track', 'Search', {
+                                                    search_string: 'search_string_value',
+                                                    content_ids: ['123', '456'],
+                                                    content_type: 'content_type_value'
+                                                    });
         }
 
         var btnTrackRevenueEvent = document.getElementById('btnTrackRevenueEvent')
