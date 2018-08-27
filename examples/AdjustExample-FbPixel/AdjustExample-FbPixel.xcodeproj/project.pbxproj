@@ -46,7 +46,6 @@
 		9D9D15D6212EB4570081445E /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15A1212EB4560081445E /* ADJResponseData.m */; };
 		9D9D15D7212EB4570081445E /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15A3212EB4560081445E /* ADJPackageBuilder.m */; };
 		9D9D15D8212EB4570081445E /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15A4212EB4560081445E /* ADJUserDefaults.m */; };
-		9D9D15D9212EB4570081445E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D15A8212EB4560081445E /* Info.plist */; };
 		9D9D15DA212EB4570081445E /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15AA212EB4560081445E /* ADJActivityHandler.m */; };
 		9D9D15DB212EB4570081445E /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15AB212EB4560081445E /* ADJReachability.m */; };
 		9D9D15DC212EB4570081445E /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D15AD212EB4570081445E /* AdjustBridge.m */; };
@@ -135,7 +134,6 @@
 		9D9D15A5212EB4560081445E /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
 		9D9D15A6212EB4560081445E /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
 		9D9D15A7212EB4560081445E /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
-		9D9D15A8212EB4560081445E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D9D15A9212EB4560081445E /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9D9D15AA212EB4560081445E /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D9D15AB212EB4560081445E /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
@@ -289,7 +287,6 @@
 				9D9D15A5212EB4560081445E /* ADJBackoffStrategy.h */,
 				9D9D15A6212EB4560081445E /* ADJLogger.h */,
 				9D9D15A7212EB4560081445E /* ADJSessionParameters.h */,
-				9D9D15A8212EB4560081445E /* Info.plist */,
 				9D9D15A9212EB4560081445E /* ADJTimerCycle.h */,
 				9D9D15AA212EB4560081445E /* ADJActivityHandler.m */,
 				9D9D15AB212EB4560081445E /* ADJReachability.m */,
@@ -396,7 +393,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D9D15D9212EB4570081445E /* Info.plist in Resources */,
 				9D9D15E3212EB47C0081445E /* AdjustExample-FbPixel.html in Resources */,
 				9D9D153E212EB3940081445E /* LaunchScreen.storyboard in Resources */,
 				9D9D153B212EB3940081445E /* Assets.xcassets in Resources */,
