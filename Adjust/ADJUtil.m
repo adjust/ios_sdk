@@ -521,10 +521,17 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
        activityPackage:(ADJActivityPackage *)activityPackage
    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
 
-    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
-    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
+    NSMutableDictionary * parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
+    [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
-    NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage baseUrl:baseUrl basePath:basePath];
+    NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
+    NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
+
+    NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage.path
+                                                       clientSdk:activityPackage.clientSdk
+                                                      parameters:parametersCopy
+                                                         baseUrl:baseUrl
+                                                        basePath:basePath];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
@@ -556,10 +563,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         activityPackage:(ADJActivityPackage *)activityPackage
     responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
 
-    NSString *appSecret = [ADJUtil extractAppSecret:activityPackage];
-    NSString *secretId = [ADJUtil extractSecretId:activityPackage];
+    NSMutableDictionary * parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
+    [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
-    NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage baseUrl:baseUrl queueSize:queueSize];
+    NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
+    NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
+
+    NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage.path
+                                                        clientSdk:activityPackage.clientSdk
+                                                       parameters:parametersCopy
+                                                          baseUrl:baseUrl queueSize:queueSize];
 
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
@@ -606,26 +619,26 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 }
 
-+ (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage {
-    NSString *appSecret = [activityPackage.parameters objectForKey:@"app_secret"];
++ (NSString *)extractAppSecret:(NSMutableDictionary *)parameters {
+    NSString *appSecret = [parameters objectForKey:@"app_secret"];
 
     if (appSecret == nil) {
         return nil;
     }
 
-    [activityPackage.parameters removeObjectForKey:@"app_secret"];
+    [parameters removeObjectForKey:@"app_secret"];
 
     return appSecret;
 }
 
-+ (NSString *)extractSecretId:(ADJActivityPackage *)activityPackage {
-    NSString *appSecret = [activityPackage.parameters objectForKey:@"secret_id"];
++ (NSString *)extractSecretId:(NSMutableDictionary *)parameters {
+    NSString *appSecret = [parameters objectForKey:@"secret_id"];
 
     if (appSecret == nil) {
         return nil;
     }
 
-    [activityPackage.parameters removeObjectForKey:@"secret_id"];
+    [parameters removeObjectForKey:@"secret_id"];
 
     return appSecret;
 }
@@ -639,16 +652,18 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     [activityPackage.parameters removeObjectForKey:@"event_callback_id"];
 }
 
-+ (NSMutableURLRequest *)requestForGetPackage:(ADJActivityPackage *)activityPackage
++ (NSMutableURLRequest *)requestForGetPackage:(NSString *)path
+                                    clientSdk:(NSString *)clientSdk
+                                   parameters:(NSDictionary *)parameters
                                       baseUrl:(NSURL *)baseUrl
                                      basePath:(NSString *)basePath
 {
-    NSString *parameters = [ADJUtil queryString:activityPackage.parameters];
+    NSString *queryStringParameters = [ADJUtil queryString:parameters];
     NSString *relativePath;
     if (basePath != nil) {
-        relativePath = [NSString stringWithFormat:@"%@%@?%@", basePath, activityPackage.path, parameters];
+        relativePath = [NSString stringWithFormat:@"%@%@?%@", basePath, path, queryStringParameters];
     } else {
-        relativePath = [NSString stringWithFormat:@"%@?%@", activityPackage.path, parameters];
+        relativePath = [NSString stringWithFormat:@"%@?%@", path, queryStringParameters];
     }
     NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
 
@@ -656,22 +671,24 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"GET";
 
-    [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+    [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
 
     return request;
 }
 
-+ (NSMutableURLRequest *)requestForPostPackage:(ADJActivityPackage *)activityPackage
++ (NSMutableURLRequest *)requestForPostPackage:(NSString *)path
+                                     clientSdk:(NSString *)clientSdk
+                                    parameters:(NSDictionary *)parameters
                                        baseUrl:(NSURL *)baseUrl
                                      queueSize:(NSUInteger)queueSize {
-    NSURL *url = [baseUrl URLByAppendingPathComponent:activityPackage.path];
+    NSURL *url = [baseUrl URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"POST";
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:activityPackage.clientSdk forHTTPHeaderField:@"Client-Sdk"];
+    [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
 
-    NSString *bodyString = [ADJUtil queryString:activityPackage.parameters queueSize:queueSize];
+    NSString *bodyString = [ADJUtil queryString:parameters queueSize:queueSize];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     [request setHTTPBody:body];
 

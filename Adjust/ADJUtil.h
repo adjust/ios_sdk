@@ -112,8 +112,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSNumber *)readReachabilityFlags;
 
-+ (NSString *)extractAppSecret:(ADJActivityPackage *)activityPackage;
-
 #if !TARGET_OS_TV
 + (NSString *)readMCC;
 
