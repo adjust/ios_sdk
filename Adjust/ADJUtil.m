@@ -526,6 +526,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
     NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
+    [ADJUtil extractEventCallbackId:parametersCopy];
 
     NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage.path
                                                        clientSdk:activityPackage.clientSdk
@@ -568,6 +569,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
     NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
+    [ADJUtil extractEventCallbackId:parametersCopy];
 
     NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage.path
                                                         clientSdk:activityPackage.clientSdk
@@ -643,13 +645,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return appSecret;
 }
 
-+ (void)extractEventCallbackId:(ADJActivityPackage *)activityPackage {
-    NSString *eventCallbackId = [activityPackage.parameters objectForKey:@"event_callback_id"];
++ (void)extractEventCallbackId:(NSMutableDictionary *)parameters {
+    NSString *eventCallbackId = [parameters objectForKey:@"event_callback_id"];
     if (eventCallbackId == nil) {
         return;
     }
 
-    [activityPackage.parameters removeObjectForKey:@"event_callback_id"];
+    [parameters removeObjectForKey:@"event_callback_id"];
 }
 
 + (NSMutableURLRequest *)requestForGetPackage:(NSString *)path
