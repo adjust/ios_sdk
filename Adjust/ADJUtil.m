@@ -1,24 +1,23 @@
 //
 //  ADJUtil.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Christian Wellenbrock on 2013-07-05.
-//  Copyright (c) 2013 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 5th July 2013.
+//  Copyright (c) 2013-2018 Adjust GmbH. All rights reserved.
 //
 
 #include <math.h>
 #include <stdlib.h>
 #include <sys/xattr.h>
-
 #import <objc/message.h>
 
 #import "ADJUtil.h"
 #import "ADJLogger.h"
+#import "ADJReachability.h"
 #import "ADJResponseData.h"
 #import "ADJAdjustFactory.h"
 #import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJReachability.h"
 
 #if !TARGET_OS_TV
 #import <CoreTelephony/CTCarrier.h>
@@ -27,19 +26,18 @@
 
 static const double kRequestTimeout = 60;   // 60 seconds
 
+static NSString *userAgent = nil;
+static ADJReachability *reachability = nil;
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
-static ADJReachability *reachability = nil;
 
 #if !TARGET_OS_TV
-static CTTelephonyNetworkInfo *networkInfo = nil;
 static CTCarrier *carrier = nil;
+static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
-
-static NSString *userAgent = nil;
 
 static NSString * const kClientSdk                  = @"ios4.14.3";
 static NSString * const kDeeplinkParam              = @"deep_link=";
@@ -69,12 +67,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (void)teardown {
+    reachability = nil;
     universalLinkRegex = nil;
     secondsNumberFormatter = nil;
-    optionalRedirectRegex   = nil;
+    optionalRedirectRegex = nil;
     shortUniversalLinkRegex = nil;
     urlSessionConfiguration = nil;
-    reachability = nil;
 #if !TARGET_OS_TV
     networkInfo = nil;
     carrier = nil;
@@ -84,46 +82,37 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)initializeUniversalLinkRegex {
     NSError *error = NULL;
-
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kUniversalLinkPattern
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:&error];
-
     if ([ADJUtil isNotNull:error]) {
         [ADJAdjustFactory.logger error:@"Universal link regex rule error (%@)", [error description]];
         return;
     }
-
     universalLinkRegex = regex;
 }
 
 + (void)initializeShortUniversalLinkRegex {
     NSError *error = NULL;
-
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kShortUniversalLinkPattern
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:&error];
-
     if ([ADJUtil isNotNull:error]) {
         [ADJAdjustFactory.logger error:@"Short Universal link regex rule error (%@)", [error description]];
         return;
     }
-
     shortUniversalLinkRegex = regex;
 }
 
 + (void)initializeOptionalRedirectRegex {
     NSError *error = NULL;
-
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kOptionalRedirectPattern
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:&error];
-
     if ([ADJUtil isNotNull:error]) {
         [ADJAdjustFactory.logger error:@"Optional redirect regex rule error (%@)", [error description]];
         return;
     }
-
     optionalRedirectRegex = regex;
 }
 
@@ -166,11 +155,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (NSDateFormatter *)getDateFormatter {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-
     if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
         // http://stackoverflow.com/a/3339787
         NSString *calendarIdentifier;
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
         if (&NSCalendarIdentifierGregorian != NULL) {
@@ -183,10 +170,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             calendarIdentifier = NSGregorianCalendar;
 #pragma clang diagnostic pop
         }
-
         dateFormatter.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
-
     dateFormatter.locale = [NSLocale systemLocale];
     [dateFormatter setDateFormat:kDateFormat];
 
@@ -206,18 +191,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (&NSURLIsExcludedFromBackupKey == nil) {
         u_int8_t attrValue = 1;
         int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
-
         if (result != 0) {
             [logger debug:@"Failed to exclude '%@' from backup", url.lastPathComponent];
         }
     } else { // iOS 5.0 and higher
         // First try and remove the extended attribute if it is present
         ssize_t result = getxattr(filePath, attrName, NULL, sizeof(u_int8_t), 0, 0);
-
         if (result != -1) {
             // The attribute exists, we need to remove it
             int removeResult = removexattr(filePath, attrName, 0);
-
             if (removeResult == 0) {
                 [logger debug:@"Removed extended attribute on file '%@'", url];
             }
@@ -228,7 +210,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         BOOL success = [url setResourceValue:[NSNumber numberWithBool:YES]
                                       forKey:NSURLIsExcludedFromBackupKey
                                        error:&error];
-
         if (!success || error != nil) {
             [logger debug:@"Failed to exclude '%@' from backup (%@)", url.lastPathComponent, error.localizedDescription];
         }
@@ -243,11 +224,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (NSString *)formatDate:(NSDate *)value {
     NSDateFormatter *dateFormatter = [ADJUtil getDateFormatter];
-
     if (dateFormatter == nil) {
         return nil;
     }
-
     return [dateFormatter stringFromDate:value];
 }
 
@@ -258,19 +237,14 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     if (exception != nil) {
         NSString *message = [NSString stringWithFormat:@"Failed to parse json response. (%@)", exception.description];
-
         [ADJAdjustFactory.logger error:message];
         responseData.message = message;
-
         return;
     }
-
     if (error != nil) {
         NSString *message = [NSString stringWithFormat:@"Failed to parse json response. (%@)", error.localizedDescription];
-
         [ADJAdjustFactory.logger error:message];
         responseData.message = message;
-
         return;
     }
 
@@ -285,14 +259,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     NSDictionary *jsonDict = nil;
-
     @try {
         jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:error];
     } @catch (NSException *ex) {
         *exceptionPtr = ex;
         return nil;
     }
-
     return jsonDict;
 }
 
@@ -305,19 +277,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     @try {
         id appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
-
         if ([appSupportObject isKindOfClass:classToRead]) {
             // Successfully read object from Application Support folder, return it.
-
             if ([appSupportObject isKindOfClass:[NSArray class]]) {
                 [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [appSupportObject count]];
             } else {
                 [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, appSupportObject];
             }
-
             // Just in case check if old file exists in Documents folder and if yes, remove it.
             [ADJUtil deleteFileInPath:documentsFilePath];
-
             return appSupportObject;
         } else if (appSupportObject == nil) {
             // [[ADJAdjustFactory logger] verbose:@"%@ file not found", appSupportFilePath];
@@ -333,23 +301,18 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     // If in here, for some reason, reading of file from Application Support folder failed.
     // Let's check the Documents folder.
-
     @try {
         id documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
-
         if (documentsObject != nil) {
             // Successfully read object from Documents folder.
-
             if ([documentsObject isKindOfClass:[NSArray class]]) {
                 [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [documentsObject count]];
             } else {
                 [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
             }
-
             // Do the file migration.
             [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
             [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
-
             return documentsObject;
         } else if (documentsObject == nil) {
             // [[ADJAdjustFactory logger] verbose:@"%@ file not found", documentsFilePath];
@@ -362,7 +325,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
         [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder (%@)", fileName, ex];
     }
-    
     return nil;
 }
 
@@ -370,12 +332,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
            fileName:(NSString *)fileName
          objectName:(NSString *)objectName {
     NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
-
     BOOL result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-
     if (result == YES) {
         [ADJUtil excludeFromBackup:filePath];
-
         if ([object isKindOfClass:[NSArray class]]) {
             [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
         } else {
@@ -388,72 +347,54 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (BOOL)migrateFileFromPath:(NSString *)oldPath toPath:(NSString *)newPath {
     NSError *errorCopy;
-
     [[NSFileManager defaultManager] copyItemAtPath:oldPath toPath:newPath error:&errorCopy];
-
     if (errorCopy != nil) {
         [[ADJAdjustFactory logger] error:@"Error while copying from %@ to %@", oldPath, newPath];
         [[ADJAdjustFactory logger] error:[errorCopy description]];
-
         return NO;
     }
-
     // Migration successful.
     return YES;
 }
 
 + (NSString *)getFilePathInDocumentsDir:(NSString *)fileName {
     // Documents directory exists by default inside app bundle, no need to check for it's presence.
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDir = [paths objectAtIndex:0];
     NSString *filePath = [documentsDir stringByAppendingPathComponent:fileName];
-
     return filePath;
 }
 
 + (NSString *)getFilePathInAppSupportDir:(NSString *)fileName {
     // Application Support directory doesn't exist by default inside app bundle.
     // All Adjust files are going to be stored in Adjust sub-directory inside Application Support directory.
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *appSupportDir = [paths firstObject];
     NSString *adjustDirName = @"Adjust";
-
     if (![ADJUtil checkForDirectoryPresenceInPath:appSupportDir forFolder:[appSupportDir lastPathComponent]]) {
         return nil;
     }
-
     NSString *adjustDir = [appSupportDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", adjustDirName]];
-
     if (![ADJUtil checkForDirectoryPresenceInPath:adjustDir forFolder:adjustDirName]) {
         return nil;
     }
-
     NSString *filePath = [adjustDir stringByAppendingPathComponent:fileName];
-
     return filePath;
 }
 
 + (BOOL)checkForDirectoryPresenceInPath:(NSString *)path forFolder:(NSString *)folderName {
     // Check for presence of directory first.
     // If it doesn't exist, make one.
-
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", folderName];
-
         NSError *error;
-
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error];
-
         if (error != nil) {
             [[ADJAdjustFactory logger] error:@"Error while creating % directory", path];
             [[ADJAdjustFactory logger] error:[error description]];
-
             return NO;
         }
     }
-
     return YES;
 }
 
@@ -464,13 +405,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (NSString *)queryString:(NSDictionary *)parameters
                 queueSize:(NSUInteger)queueSize {
     NSMutableArray *pairs = [NSMutableArray array];
-
     for (NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
         NSString *escapedValue = [value adjUrlEncode];
         NSString *escapedKey = [key adjUrlEncode];
         NSString *pair = [NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue];
-
         [pairs addObject:pair];
     }
 
@@ -478,7 +417,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *dateString = [ADJUtil formatSeconds1970:now];
     NSString *escapedDate = [dateString adjUrlEncode];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
-
     [pairs addObject:sentAtPair];
 
     if (queueSize > 0) {
@@ -486,12 +424,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *queueSizeString = [NSString stringWithFormat:@"%lu", queueSizeNative];
         NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
         NSString *queueSizePair = [NSString stringWithFormat:@"%@=%@", @"queue_size", escapedQueueSize];
-
         [pairs addObject:queueSizePair];
     }
 
     NSString *queryString = [pairs componentsJoinedByString:@"&"];
-
     return queryString;
 }
 
@@ -507,7 +443,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
               systemErrorMessage:(NSString *)systemErrorMessage
               suffixErrorMessage:(NSString *)suffixErrorMessage {
     NSString *errorMessage = [NSString stringWithFormat:@"%@ (%@)", prefixErrorMessage, systemErrorMessage];
-    
     if (suffixErrorMessage == nil) {
         return errorMessage;
     } else {
@@ -520,8 +455,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     prefixErrorMessage:(NSString *)prefixErrorMessage
        activityPackage:(ADJActivityPackage *)activityPackage
    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-
-    NSMutableDictionary * parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
+    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
     [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
     NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
@@ -533,7 +467,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                                       parameters:parametersCopy
                                                          baseUrl:baseUrl
                                                         basePath:basePath];
-
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
          activityPackage:activityPackage
@@ -563,8 +496,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
     responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-
-    NSMutableDictionary * parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
+    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
     [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
     NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
@@ -575,7 +507,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                         clientSdk:activityPackage.clientSdk
                                                        parameters:parametersCopy
                                                           baseUrl:baseUrl queueSize:queueSize];
-
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:suffixErrorMessage
@@ -592,15 +523,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
           appSecret:(NSString *)appSecret
     activityPackage:(ADJActivityPackage *)activityPackage
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-
     NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret
                                                     secretId:secretId
                                              activityPackage:activityPackage];
-
     if (authHeader != nil) {
         [request setValue:authHeader forHTTPHeaderField:@"Authorization"];
     }
-
     if (userAgent != nil) {
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     }
@@ -623,25 +551,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
 + (NSString *)extractAppSecret:(NSMutableDictionary *)parameters {
     NSString *appSecret = [parameters objectForKey:@"app_secret"];
-
     if (appSecret == nil) {
         return nil;
     }
-
     [parameters removeObjectForKey:@"app_secret"];
-
     return appSecret;
 }
 
 + (NSString *)extractSecretId:(NSMutableDictionary *)parameters {
     NSString *appSecret = [parameters objectForKey:@"secret_id"];
-
     if (appSecret == nil) {
         return nil;
     }
-
     [parameters removeObjectForKey:@"secret_id"];
-
     return appSecret;
 }
 
@@ -650,7 +572,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (eventCallbackId == nil) {
         return;
     }
-
     [parameters removeObjectForKey:@"event_callback_id"];
 }
 
@@ -658,8 +579,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                     clientSdk:(NSString *)clientSdk
                                    parameters:(NSDictionary *)parameters
                                       baseUrl:(NSURL *)baseUrl
-                                     basePath:(NSString *)basePath
-{
+                                     basePath:(NSString *)basePath {
     NSString *queryStringParameters = [ADJUtil queryString:parameters];
     NSString *relativePath;
     if (basePath != nil) {
@@ -667,14 +587,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     } else {
         relativePath = [NSString stringWithFormat:@"%@?%@", path, queryStringParameters];
     }
-    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
 
+    NSURL *url = [NSURL URLWithString:relativePath relativeToURL:baseUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = kRequestTimeout;
     request.HTTPMethod = @"GET";
-
     [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
-
     return request;
 }
 
@@ -693,7 +611,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSString *bodyString = [ADJUtil queryString:parameters queueSize:queueSize];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     [request setHTTPBody:body];
-
     return request;
 }
 
@@ -706,31 +623,25 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     NSMutableDictionary *parameters = activityPackage.parameters;
     NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
-
-
     NSDictionary *signatureParameters = [ADJUtil buildSignatureParameters:parameters
                                                                 appSecret:appSecret
                                                             activityKindS:activityKindS];
-
     NSMutableString *fields = [[NSMutableString alloc] initWithCapacity:5];
     NSMutableString *clearSignature = [[NSMutableString alloc] initWithCapacity:5];
 
     // signature part of header
     for (NSDictionary *key in signatureParameters) {
         [fields appendFormat:@"%@ ", key];
-
         NSString *value = [signatureParameters objectForKey:key];
         [clearSignature appendString:value];
     }
 
-    NSString * secretIdHeader = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
-
+    NSString *secretIdHeader = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
     // algorithm part of header
-    NSString * algorithm = @"sha256";
-    NSString * signature = [clearSignature adjSha256];
-    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
-
-    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm];
+    NSString *algorithm = @"sha256";
+    NSString *signature = [clearSignature adjSha256];
+    NSString *signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
+    NSString *algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm];
     // fields part of header
     // Remove last empty space.
     if (fields.length > 0) {
@@ -738,13 +649,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     NSString *fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
-
     // putting it all together
-    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@", secretIdHeader, signatureHeader, algorithmHeader, fieldsHeader];
-
+    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
+                                     secretIdHeader,
+                                     signatureHeader,
+                                     algorithmHeader,
+                                     fieldsHeader];
     [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
-
-
     return authorizationHeader;
 }
 
@@ -753,20 +664,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                              activityKindS:(NSString *)activityKindS {
     NSString *activityKindName = @"activity_kind";
     NSString *activityKindValue = activityKindS;
-
     NSString *createdAtName = @"created_at";
     NSString *createdAtValue = [parameters objectForKey:createdAtName];
-
     NSString *deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
     NSString *deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
-
     NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:4];
 
     [ADJUtil checkAndAddEntry:signatureParameters key:@"app_secret" value:appSecret];
     [ADJUtil checkAndAddEntry:signatureParameters key:createdAtName value:createdAtValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:activityKindName value:activityKindValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:deviceIdentifierName value:deviceIdentifierValue];
-
     return signatureParameters;
 }
 
@@ -792,15 +699,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if ([parameters objectForKey:idfaName] != nil) {
         return idfaName;
     }
-
     if ([parameters objectForKey:persistentUUIDName] != nil) {
         return persistentUUIDName;
     }
-
     if ([parameters objectForKey:uuidName] != nil) {
         return uuidName;
     }
-
     return nil;
 }
 
@@ -810,7 +714,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                 activityPackage:(ADJActivityPackage *)activityPackage
             responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[ADJUtil getUrlSessionConfiguration]];
-
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -820,10 +723,8 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               prefixErrorMessage:prefixErrorMessage
                                                                               suffixErrorMessage:suffixErrorMessage
                                                                                  activityPackage:activityPackage];
-
                                       responseDataHandler(responseData);
                                   }];
-    
     [task resume];
     [session finishTasksAndInvalidate];
 }
@@ -835,21 +736,18 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     NSError *responseError = nil;
     NSHTTPURLResponse *urlResponse = nil;
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSData *data = [NSURLConnection sendSynchronousRequest:request
                                          returningResponse:&urlResponse
                                                      error:&responseError];
 #pragma clang diagnostic pop
-
     ADJResponseData *responseData = [ADJUtil completionHandler:data
                                                       response:(NSHTTPURLResponse *)urlResponse
                                                          error:responseError
                                             prefixErrorMessage:prefixErrorMessage
                                             suffixErrorMessage:suffixErrorMessage
                                                activityPackage:activityPackage];
-
     responseDataHandler(responseData);
 }
 
@@ -860,51 +758,41 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                     suffixErrorMessage:(NSString *)suffixErrorMessage
                        activityPackage:(ADJActivityPackage *)activityPackage {
     ADJResponseData *responseData = [ADJResponseData buildResponseData:activityPackage];
-
     // Connection error
     if (responseError != nil) {
         NSString *errorMessage = [ADJUtil formatErrorMessage:prefixErrorMessage
                                           systemErrorMessage:responseError.localizedDescription
                                           suffixErrorMessage:suffixErrorMessage];
-
         [ADJAdjustFactory.logger error:errorMessage];
         responseData.message = errorMessage;
-
         return responseData;
     }
-
     if ([ADJUtil isNull:data]) {
         NSString *errorMessage = [ADJUtil formatErrorMessage:prefixErrorMessage
                                           systemErrorMessage:@"empty error"
                                           suffixErrorMessage:suffixErrorMessage];
-
         [ADJAdjustFactory.logger error:errorMessage];
         responseData.message = errorMessage;
-
         return responseData;
     }
 
     NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = urlResponse.statusCode;
-
     [ADJAdjustFactory.logger verbose:@"Response: %@", responseString];
 
     if (statusCode == 429) {
         [ADJAdjustFactory.logger error:@"Too frequent requests to the endpoint (429)"];
         return responseData;
     }
-
     [ADJUtil saveJsonResponse:data responseData:responseData];
-
     if ([ADJUtil isNull:responseData.jsonResponse]) {
         return responseData;
     }
 
     NSString *messageResponse = [responseData.jsonResponse objectForKey:@"message"];
-
-    responseData.message    = messageResponse;
-    responseData.timeStamp  = [responseData.jsonResponse objectForKey:@"timestamp"];
-    responseData.adid       = [responseData.jsonResponse objectForKey:@"adid"];
+    responseData.message = messageResponse;
+    responseData.timeStamp = [responseData.jsonResponse objectForKey:@"timestamp"];
+    responseData.adid = [responseData.jsonResponse objectForKey:@"adid"];
 
     NSString *trackingState = [responseData.jsonResponse objectForKey:@"tracking_state"];
     if (trackingState != nil) {
@@ -912,28 +800,23 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             responseData.trackingState = ADJTrackingStateOptedOut;
         }
     }
-
     if (messageResponse == nil) {
         messageResponse = @"No message found";
     }
-
     if (statusCode == 200) {
         [ADJAdjustFactory.logger info:@"%@", messageResponse];
         responseData.success = YES;
     } else {
         [ADJAdjustFactory.logger error:@"%@", messageResponse];
     }
-
     return responseData;
 }
 
 // Convert all values to strings, if value is dictionary -> recursive call
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary {
     NSMutableDictionary *convertedDictionary = [[NSMutableDictionary alloc] initWithCapacity:dictionary.count];
-
     for (NSString *key in dictionary) {
         id value = [dictionary objectForKey:key];
-
         if ([value isKindOfClass:[NSDictionary class]]) {
             // Dictionary value, recursive call
             NSDictionary *dictionaryValue = [ADJUtil convertDictionaryValues:(NSDictionary *)value];
@@ -950,7 +833,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             [convertedDictionary setObject:stringValue forKey:key];
         }
     }
-
     return convertedDictionary;
 }
 
@@ -961,7 +843,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSString *)getUpdateTime {
     NSDate *updateTime = nil;
     id<ADJLogger> logger = ADJAdjustFactory.logger;
-
     @try {
         __autoreleasing NSError *error;
         NSString *infoPlistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
@@ -969,23 +850,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     } @catch (NSException *exception) {
         [logger error:@"Error while trying to check update date. Exception: %@", exception];
     }
-    
     return [ADJUtil formatDate:updateTime];
 }
 
 + (NSString *)getInstallTime {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
-
     NSDate *installTime = nil;
     NSString *pathToCheck = nil;
     NSSearchPathDirectory folderToCheck = NSDocumentDirectory;
 #if TARGET_OS_TV
     folderToCheck = NSCachesDirectory;
 #endif
-    
     @try {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(folderToCheck, NSUserDomainMask, YES);
-
         if (paths.count > 0) {
             pathToCheck = [paths objectAtIndex:0];
         } else {
@@ -993,12 +870,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             // Check app's bundle creation date instead.
             pathToCheck = [[NSBundle mainBundle] bundlePath];
         }
-
         installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
     } @catch (NSException *exception) {
         [logger error:@"Error while trying to check install date. Exception: %@", exception];
     }
-    
     return [ADJUtil formatDate:installTime];
 }
 
@@ -1009,47 +884,38 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [logger error:@"Received universal link is nil"];
         return nil;
     }
-
     if ([ADJUtil isNull:scheme] || [scheme length] == 0) {
         [logger warn:@"Non-empty scheme required, using the scheme \"AdjustUniversalScheme\""];
         scheme = kDefaultScheme;
     }
-
     NSString *urlString = [url absoluteString];
-
     if ([ADJUtil isNull:urlString]) {
         [logger error:@"Parsed universal link is nil"];
         return nil;
     }
-
     if (universalLinkRegex == nil) {
         [logger error:@"Universal link regex not correctly configured"];
         return nil;
     }
-
     if (shortUniversalLinkRegex == nil) {
         [logger error:@"Short Universal link regex not correctly configured"];
         return nil;
     }
 
     NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
-
     if ([matches count] == 0) {
         matches = [shortUniversalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
-        
         if ([matches count] == 0) {
             [logger error:@"Url doesn't match as universal link or short version"];
             return nil;
         }
     }
-
     if ([matches count] > 1) {
         [logger error:@"Url match as universal link multiple times"];
         return nil;
     }
 
     NSTextCheckingResult *match = matches[0];
-
     if ([match numberOfRanges] != 2) {
         [logger error:@"Wrong number of ranges matched"];
         return nil;
@@ -1058,16 +924,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSString *tailSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
     NSString *finalTailSubString = [ADJUtil removeOptionalRedirect:tailSubString];
     NSString *extractedUrlString = [NSString stringWithFormat:@"%@://%@", scheme, finalTailSubString];
-
     [logger info:@"Converted deeplink from universal link %@", extractedUrlString];
-
     NSURL *extractedUrl = [NSURL URLWithString:extractedUrlString];
-
     if ([ADJUtil isNull:extractedUrl]) {
         [logger error:@"Unable to parse converted deeplink from universal link %@", extractedUrlString];
         return nil;
     }
-
     return extractedUrl;
 }
 
@@ -1078,16 +940,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [ADJAdjustFactory.logger error:@"Remove Optional Redirect regex not correctly configured"];
         return tailSubString;
     }
-
     NSArray<NSTextCheckingResult *> *optionalRedirectmatches = [optionalRedirectRegex matchesInString:tailSubString
                                                                                               options:0
                                                                                                 range:NSMakeRange(0, [tailSubString length])];
-
     if ([optionalRedirectmatches count] == 0) {
         [logger debug:@"Universal link does not contain option adjust_redirect parameter"];
         return tailSubString;
     }
-
     if ([optionalRedirectmatches count] > 1) {
         [logger error:@"Universal link contains multiple option adjust_redirect parameters"];
         return tailSubString;
@@ -1095,38 +954,30 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     NSTextCheckingResult *redirectMatch = optionalRedirectmatches[0];
     NSRange redirectRange = [redirectMatch rangeAtIndex:0];
-
     NSString *beforeRedirect = [tailSubString substringToIndex:redirectRange.location];
     NSString *afterRedirect = [tailSubString substringFromIndex:(redirectRange.location + redirectRange.length)];
-
     if (beforeRedirect.length > 0 && afterRedirect.length > 0) {
         NSString *lastCharacterBeforeRedirect = [beforeRedirect substringFromIndex:beforeRedirect.length - 1];
         NSString *firstCharacterAfterRedirect = [afterRedirect substringToIndex:1];
-
         if ([@"&" isEqualToString:lastCharacterBeforeRedirect] &&
             [@"&" isEqualToString:firstCharacterAfterRedirect]) {
             beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
-
         if ([@"&" isEqualToString:lastCharacterBeforeRedirect] &&
             [@"#" isEqualToString:firstCharacterAfterRedirect]) {
             beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
-
         if ([@"?" isEqualToString:lastCharacterBeforeRedirect] &&
             [@"#" isEqualToString:firstCharacterAfterRedirect]) {
             beforeRedirect = [beforeRedirect substringToIndex:beforeRedirect.length - 1];
         }
-
         if ([@"?" isEqualToString:lastCharacterBeforeRedirect] &&
             [@"&" isEqualToString:firstCharacterAfterRedirect]) {
             afterRedirect = [afterRedirect substringFromIndex:1];
         }
-
     }
     
     NSString *removedRedirect = [NSString stringWithFormat:@"%@%@", beforeRedirect, afterRedirect];
-
     return removedRedirect;
 }
 
@@ -1135,26 +986,21 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (seconds < 0) {
         seconds = seconds * -1;
     }
-
     if (secondsNumberFormatter == nil) {
         return nil;
     }
-
     return [secondsNumberFormatter stringFromNumber:[NSNumber numberWithDouble:seconds]];
 }
 
 + (double)randomInRange:(double)minRange maxRange:(double)maxRange {
     static dispatch_once_t onceToken;
-
     dispatch_once(&onceToken, ^{
         srand48(arc4random());
     });
-
     double random = drand48();
     double range = maxRange - minRange;
     double scaled = random  * range;
     double shifted = scaled + minRange;
-
     return shifted;
 }
 
@@ -1166,19 +1012,14 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     // Start with base 0
     NSInteger base = retries - backoffStrategy.minRetries;
-
     // Get the exponential Time from the base: 1, 2, 4, 8, 16, ... * times the multiplier
     NSTimeInterval exponentialTime = pow(2.0, base) * backoffStrategy.secondMultiplier;
-
     // Limit the maximum allowed time to wait
     NSTimeInterval ceilingTime = MIN(exponentialTime, backoffStrategy.maxWait);
-
     // Add 1 to allow maximum value
     double randomRange = [ADJUtil randomInRange:backoffStrategy.minRange maxRange:backoffStrategy.maxRange];
-
     // Apply jitter factor
     NSTimeInterval waitingTime =  ceilingTime * randomRange;
-
     return waitingTime;
 }
 
@@ -1222,12 +1063,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         __block BOOL isInactive = [ADJUtil isInactive];
         isInactiveblock(isInactive);
     };
-
     if ([ADJUtil isMainThread]) {
         block();
         return;
     }
-
     if (ADJAdjustFactory.testing) {
         [ADJAdjustFactory.logger debug:@"Launching in the background for testing"];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
@@ -1236,7 +1075,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 }
 
-
 + (BOOL)isValidParameter:(NSString *)attribute
            attributeType:(NSString *)attributeType
            parameterName:(NSString *)parameterName {
@@ -1244,12 +1082,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [ADJAdjustFactory.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
         return NO;
     }
-
     if ([attribute isEqualToString:@""]) {
         [ADJAdjustFactory.logger error:@"%@ parameter %@ is empty", parameterName, attributeType];
         return NO;
     }
-
     return YES;
 }
 
@@ -1259,24 +1095,19 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (target == nil) {
         return source;
     }
-
     if (source == nil) {
         return target;
     }
 
     NSMutableDictionary *mergedParameters = [NSMutableDictionary dictionaryWithDictionary:target];
-    
     [source enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
         NSString *oldValue = [mergedParameters objectForKey:key];
-
         if (oldValue != nil) {
             [ADJAdjustFactory.logger warn:@"Key %@ with value %@ from %@ parameter was replaced by value %@",
              key, oldValue, parameterName, obj];
         }
-
         [mergedParameters setObject:obj forKey:key];
     }];
-
     return (NSDictionary *)mergedParameters;
 }
 
@@ -1287,14 +1118,11 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         return;
     }
     __weak __typeof__(selfInject) weakSelf = selfInject;
-
     dispatch_async(queue, ^{
         __typeof__(selfInject) strongSelf = weakSelf;
-
         if (strongSelf == nil) {
             return;
         }
-
         block(strongSelf);
     });
 }
@@ -1302,31 +1130,25 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (BOOL)deleteFileWithName:(NSString *)fileName {
     NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
     NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
-
     BOOL deletedDocumentsFilePath = [ADJUtil deleteFileInPath:documentsFilePath];
     BOOL deletedAppSupportFilePath = [ADJUtil deleteFileInPath:appSupportFilePath];
-
     return deletedDocumentsFilePath || deletedAppSupportFilePath;
 }
 
 + (BOOL)deleteFileInPath:(NSString *)filePath {
     NSError *error;
-
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
         return YES;
     }
 
     BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-
     if (!deleted) {
         [[ADJAdjustFactory logger] verbose:@"Unable to delete file at path %@", filePath];
     }
-
     if (error) {
         [[ADJAdjustFactory logger] error:@"Error while deleting file at path %@", filePath];
     }
-
     return deleted;
 }
 
@@ -1340,7 +1162,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     SEL openUrlSelector = @selector(openURL:options:completionHandler:);
 #pragma clang diagnostic pop
-
     if ([sharedUIApplication respondsToSelector:openUrlSelector]) {
         /*
          [sharedUIApplication openURL:deepLinkUrl options:@{} completionHandler:^(BOOL success) {
@@ -1349,20 +1170,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
          }
          }];
          */
-
         NSMethodSignature *methSig = [sharedUIApplication methodSignatureForSelector:openUrlSelector];
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methSig];
-
         [invocation setSelector: openUrlSelector];
         [invocation setTarget: sharedUIApplication];
-
         NSDictionary *emptyDictionary = @{};
         void (^completion)(BOOL) = ^(BOOL success) {
             if (!success) {
                 [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
             }
         };
-
         [invocation setArgument:&deepLinkUrl atIndex: 2];
         [invocation setArgument:&emptyDictionary atIndex: 3];
         [invocation setArgument:&completion atIndex: 4];
@@ -1372,7 +1189,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         BOOL success = [sharedUIApplication openURL:deepLinkUrl];
 #pragma clang diagnostic pop
-
         if (!success) {
             [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
         }
@@ -1392,7 +1208,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
-
     return deviceTokenString;
 }
 
@@ -1402,7 +1217,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     NSDictionary *details = [attributionDetails objectForKey:@"Version3.1"];
-    
     if ([ADJUtil isNull:details]) {
         return YES;
     }
@@ -1416,7 +1230,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy common fields for both iAd3 and Apple Search Ads"];
         return YES;
     }
-
     // Apple Search Ads fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
         [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] &&
@@ -1424,7 +1237,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy Apple Search Ads fields"];
         return NO;
     }
-
     // iAd3 fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
         [ADJUtil contains:details key:@"iad-creative-name" value:@"CreativeName"]) {
@@ -1439,11 +1251,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         key:(NSString *)key
         value:(NSString *)value {
     id readValue = [dictionary objectForKey:key];
-    
     if ([ADJUtil isNull:readValue]) {
         return NO;
     }
-    
     return [value isEqualToString:[readValue description]];
 }
 
@@ -1451,7 +1261,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (reachability == nil) {
         return nil;
     }
-
     return [reachability currentReachabilityFlags];
 }
 
@@ -1460,7 +1269,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (carrier == nil) {
         return nil;
     }
-
     return [carrier mobileCountryCode];
 }
 
@@ -1468,7 +1276,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (carrier == nil) {
         return nil;
     }
-
     return [carrier mobileNetworkCode];
 }
 
@@ -1476,18 +1283,14 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if (networkInfo == nil) {
         return nil;
     }
-
     SEL radioTechSelector = NSSelectorFromString(@"currentRadioAccessTechnology");
-
     if (![networkInfo respondsToSelector:radioTechSelector]) {
         return nil;
     }
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id radioTech = [networkInfo performSelector:radioTechSelector];
 #pragma clang diagnostic pop
-
     return radioTech;
 }
 #endif
