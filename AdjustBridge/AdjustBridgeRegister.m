@@ -215,6 +215,8 @@ static NSString * fbAppIdStatic = nil;
 
             this.callbackParameters = [];
             this.partnerParameters = [];
+
+            this.callbackId = null;
         };
 
         AdjustEvent.prototype.addCallbackParameter = function(key, value) {
@@ -234,6 +236,10 @@ static NSString * fbAppIdStatic = nil;
 
         AdjustEvent.prototype.setTransactionId = function(transactionId) {
             this.transactionId = transactionId;
+        };
+
+        AdjustEvent.prototype.setCallbackId = function(callbackId) {
+            this.callbackId = callbackId;
         };
 
         // copied from adjust_config.js

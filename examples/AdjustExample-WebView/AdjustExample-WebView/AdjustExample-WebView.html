@@ -43,6 +43,7 @@
             console.log('Message = ' + eventSuccess.message + '\n' +
                   'Timestamp = ' + eventSuccess.timestamp + '\n' +
                   'Adid = ' + eventSuccess.adid + '\n' +
+                  'CallbackId = ' + eventSuccess.callbackId + '\n' +
                   'Event token = ' + eventSuccess.eventToken)
         })
         adjustConfig.setEventFailureCallback(function(eventFailure) {
@@ -50,6 +51,7 @@
                   'Timestamp = ' + eventFailure.timestamp + '\n' +
                   'Adid = ' + eventFailure.adid + '\n' +
                   'Event token = ' + eventFailure.eventToken + '\n' +
+                  'CallbackId = ' + eventSuccess.callbackId + '\n' +
                   'Will retry = ' + eventFailure.willRetry)
         })
         adjustConfig.setSessionSuccessCallback(function(sessionSuccess) {

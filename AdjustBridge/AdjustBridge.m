@@ -73,6 +73,7 @@
     [dictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
     [dictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
     [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
+    [dictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
     [dictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
     self.eventSuccessCallback(dictionary);
 }
@@ -88,6 +89,7 @@
     [dictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
     [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
     [dictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
+    [dictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
     [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
     self.eventFailureCallback(dictionary);
 }
@@ -306,6 +308,7 @@
         NSString *transactionId = [data objectForKey:@"transactionId"];
         id callbackParameters = [data objectForKey:@"callbackParameters"];
         id partnerParameters = [data objectForKey:@"partnerParameters"];
+        NSString *callbackId = [data objectForKey:@"callbackId"];
 
         ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
         // No need to continue if adjust event is not valid
@@ -329,6 +332,9 @@
             NSString *key = [[partnerParameters objectAtIndex:i] description];
             NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
             [adjustEvent addPartnerParameter:key value:value];
+        }
+        if ([self isFieldValid:callbackId]) {
+            [adjustEvent setCallbackId:callbackId];
         }
 
         [Adjust trackEvent:adjustEvent];
