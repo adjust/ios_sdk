@@ -1,4 +1,4 @@
-### Version 4.15.0 (30th August 2018)
+### Version 4.15.0 (31st August 2018)
 #### Added
 - Added `setCallbackId` method on `ADJEvent` object for users to set custom ID on event object which will later be reported in event success/failure callbacks.
 - Added `callbackId` property to `ADJEventSuccess` class.
