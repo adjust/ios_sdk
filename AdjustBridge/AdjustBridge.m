@@ -19,15 +19,14 @@
 @interface AdjustBridge() <AdjustDelegate>
 
 @property BOOL openDeferredDeeplink;
-@property WVJBResponseCallback deeplinkCallback;
-@property WVJBResponseCallback attributionCallback;
-@property WVJBResponseCallback eventSuccessCallback;
-@property WVJBResponseCallback eventFailureCallback;
-@property WVJBResponseCallback sessionSuccessCallback;
-@property WVJBResponseCallback sessionFailureCallback;
-@property WVJBResponseCallback deferredDeeplinkCallback;
 @property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
 @property (nonatomic, strong) NSMutableDictionary* fbPixelMapping;
+@property (nonatomic, copy) NSString *attributionCallbackName;
+@property (nonatomic, copy) NSString *eventSuccessCallbackName;
+@property (nonatomic, copy) NSString *eventFailureCallbackName;
+@property (nonatomic, copy) NSString *sessionSuccessCallbackName;
+@property (nonatomic, copy) NSString *sessionFailureCallbackName;
+@property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
 
 @end
 
@@ -42,88 +41,84 @@
     }
 
     _bridgeRegister = nil;
-    self.openDeferredDeeplink = YES;
-    self.attributionCallback = nil;
-    self.eventSuccessCallback = nil;
-    self.eventFailureCallback = nil;
-    self.sessionSuccessCallback = nil;
-    self.sessionFailureCallback = nil;
-    self.fbPixelDefaultEventToken = nil;
-    self.fbPixelMapping = nil;
-
     return self;
 }
 
 #pragma mark - AdjustDelegate methods
 
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
-    if (self.attributionCallback == nil) {
+    if (self.attributionCallbackName == nil) {
         return;
     }
-    self.attributionCallback([attribution dictionary]);
+    [self.bridgeRegister callHandler:self.attributionCallbackName data:[attribution dictionary]];
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
-    if (self.eventSuccessCallback == nil) {
+    if (self.eventSuccessCallbackName == nil) {
         return;
     }
 
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:eventSuccessResponseData.message forKey:@"message"];
-    [dictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
-    [dictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
-    [dictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
-    [dictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
-    [dictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
-    self.eventSuccessCallback(dictionary);
+    NSMutableDictionary *eventSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.message forKey:@"message"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    [self.bridgeRegister callHandler:self.eventSuccessCallbackName data:eventSuccessResponseDataDictionary];
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
-    if (self.eventFailureCallback == nil) {
+    if (self.eventFailureCallbackName == nil) {
         return;
     }
 
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:eventFailureResponseData.message forKey:@"message"];
-    [dictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
-    [dictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
-    [dictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
-    [dictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
-    [dictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
-    [dictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
-    self.eventFailureCallback(dictionary);
+    NSMutableDictionary *eventFailureResponseDataDictionary = [NSMutableDictionary dictionary];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.message forKey:@"message"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
+
+    [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    [self.bridgeRegister callHandler:self.eventFailureCallbackName data:eventFailureResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
-    if (self.sessionSuccessCallback == nil) {
+    if (self.sessionSuccessCallbackName == nil) {
         return;
     }
 
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
-    [dictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
-    [dictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
-    [dictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
-    self.sessionSuccessCallback(dictionary);
+    NSMutableDictionary *sessionSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    [self.bridgeRegister callHandler:self.sessionSuccessCallbackName data:sessionSuccessResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
-    if (self.sessionFailureCallback == nil) {
+    if (self.sessionFailureCallbackName == nil) {
         return;
     }
 
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:sessionFailureResponseData.message forKey:@"message"];
-    [dictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
-    [dictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
-    [dictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
-    [dictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
-    self.sessionFailureCallback(dictionary);
+    NSMutableDictionary *sessionFailureResponseDataDictionary = [NSMutableDictionary dictionary];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.message forKey:@"message"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
+    [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    [self.bridgeRegister callHandler:self.sessionFailureCallbackName data:sessionFailureResponseDataDictionary];
 }
 
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
-    if (self.deferredDeeplinkCallback) {
-        self.deferredDeeplinkCallback([deeplink absoluteString]);
+    if (self.deferredDeeplinkCallbackName) {
+        [self.bridgeRegister callHandler:self.deferredDeeplinkCallbackName data:[deeplink absoluteString]];
     }
     return self.openDeferredDeeplink;
 }
@@ -181,27 +176,6 @@
     _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWebView:webView];
     [self.bridgeRegister setWebViewDelegate:webViewDelegate];
 
-    // Register setCallback method to save callbacks before appDidLaunch
-    [self.bridgeRegister registerHandler:@"adjust_setCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        if ([data isEqualToString:@"attributionCallback"]) {
-            self.attributionCallback = responseCallback;
-        } else if ([data isEqualToString:@"eventSuccessCallback"]) {
-            self.eventSuccessCallback = responseCallback;
-        } else if ([data isEqualToString:@"eventFailureCallback"]) {
-            self.eventFailureCallback = responseCallback;
-        } else if ([data isEqualToString:@"sessionSuccessCallback"]) {
-            self.sessionSuccessCallback = responseCallback;
-        } else if ([data isEqualToString:@"sessionFailureCallback"]) {
-            self.sessionFailureCallback = responseCallback;
-        } else if ([data isEqualToString:@"deferredDeeplinkCallback"]) {
-            self.deferredDeeplinkCallback = responseCallback;
-        }
-    }];
-
     [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *appToken = [data objectForKey:@"appToken"];
         NSString *environment = [data objectForKey:@"environment"];
@@ -222,6 +196,12 @@
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
+        NSString * attributionCallback = [data objectForKey:@"attributionCallback"];
+        NSString * eventSuccessCallback = [data objectForKey:@"eventSuccessCallback"];
+        NSString * eventFailureCallback = [data objectForKey:@"eventFailureCallback"];
+        NSString * sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
+        NSString * sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
+        NSString * deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -285,15 +265,34 @@
             NSString *value = [[fbPixelMapping objectAtIndex:(i + 1)] description];
             [self.fbPixelMapping setObject:value forKey:key];
         }
+        if ([self isFieldValid:attributionCallback]) {
+            self.attributionCallbackName = attributionCallback;
+        }
+        if ([self isFieldValid:eventSuccessCallback]) {
+            self.eventSuccessCallbackName = eventSuccessCallback;
+        }
+        if ([self isFieldValid:eventFailureCallback]) {
+            self.eventFailureCallbackName = eventFailureCallback;
+        }
+        if ([self isFieldValid:sessionSuccessCallback]) {
+            self.sessionSuccessCallbackName = sessionSuccessCallback;
+        }
+        if ([self isFieldValid:sessionFailureCallback]) {
+            self.sessionFailureCallbackName = sessionFailureCallback;
+        }
+        if ([self isFieldValid:deferredDeeplinkCallback]) {
+            self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
+        }
 
         // Set self as delegate if any callback is configured.
         // Change to swifle the methods in the future.
-        if (self.attributionCallback != nil
-            || self.eventSuccessCallback != nil
-            || self.eventFailureCallback != nil
-            || self.sessionSuccessCallback != nil
-            || self.sessionFailureCallback != nil
-            || self.deferredDeeplinkCallback != nil) {
+        if (self.attributionCallbackName != nil
+            || self.eventSuccessCallbackName != nil
+            || self.eventFailureCallbackName != nil
+            || self.sessionSuccessCallbackName != nil
+            || self.sessionFailureCallbackName != nil
+            || self.deferredDeeplinkCallbackName != nil)
+        {
             [adjustConfig setDelegate:self];
         }
 

@@ -85,11 +85,7 @@ static NSString * fbAppIdStatic = nil;
         appDidLaunch: function (adjustConfig) {
             if (WebViewJavascriptBridge) {
                 if (adjustConfig) {
-                    adjustConfig.iterateConfiguredCallbacks(
-                                                            function(callbackName, callback) {
-                                                                WebViewJavascriptBridge.callHandler('adjust_setCallback', callbackName, callback);
-                                                            }
-                                                            );
+                    adjustConfig.registerCallbackHandlers();
                     WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
                 }
             }
@@ -277,9 +273,14 @@ static NSString * fbAppIdStatic = nil;
             this.info3 = null;
             this.info4 = null;
             this.openDeferredDeeplink = null;
-            this.callbacksMap = {};
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
+            this.attributionCallback = null;
+            this.eventSuccessCallback = null;
+            this.eventFailureCallback = null;
+            this.sessionSuccessCallback = null;
+            this.sessionFailureCallback = null;
+            this.deferredDeeplinkCallback = null;
         };
         AdjustConfig.EnvironmentSandbox     = 'sandbox';
         AdjustConfig.EnvironmentProduction  = 'production';
@@ -292,15 +293,22 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelAssert         = 'ASSERT';
         AdjustConfig.LogLevelSuppress       = 'SUPPRESS';
 
-        AdjustConfig.prototype.iterateConfiguredCallbacks = function(handleCallbackWithName) {
-            if (!this.callbacksMap) {
-                return;
-            }
-            var keysArray = Object.keys(this.callbacksMap);
-            for (var idx in keysArray) {
-                var key = keysArray[idx];
-                handleCallbackWithName(key, this.callbacksMap[key]);
-            }
+        AdjustConfig.prototype.registerCallbackHandlers = function() {
+            var registerCallbackHandler = function (callbackName) {
+                var callback = this[callbackName];
+                if (!callback) {
+                    return;
+                }
+                var regiteredCallbackName = 'adjustJS_' + callbackName;
+                WebViewJavascriptBridge.registerHandler(regiteredCallbackName, callback);
+                this[callbackName] = regiteredCallbackName;
+            };
+            registerCallbackHandler.call(this, 'attributionCallback');
+            registerCallbackHandler.call(this, 'eventSuccessCallback');
+            registerCallbackHandler.call(this, 'eventFailureCallback');
+            registerCallbackHandler.call(this, 'sessionSuccessCallback');
+            registerCallbackHandler.call(this, 'sessionFailureCallback');
+            registerCallbackHandler.call(this, 'deferredDeeplinkCallback');
         };
 
         AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
@@ -340,27 +348,27 @@ static NSString * fbAppIdStatic = nil;
         };
 
         AdjustConfig.prototype.setAttributionCallback = function(callback) {
-            this.callbacksMap['attributionCallback'] = callback;
+            this.attributionCallback = callback;
         };
 
         AdjustConfig.prototype.setEventSuccessCallback = function(callback) {
-            this.callbacksMap['eventSuccessCallback'] = callback;
+            this.eventSuccessCallback = callback;
         };
 
         AdjustConfig.prototype.setEventFailureCallback = function(callback) {
-            this.callbacksMap['eventFailureCallback'] = callback;
+            this.eventFailureCallback = callback;
         };
 
         AdjustConfig.prototype.setSessionSuccessCallback = function(callback) {
-            this.callbacksMap['sessionSuccessCallback'] = callback;
+            this.sessionSuccessCallback = callback;
         };
 
         AdjustConfig.prototype.setSessionFailureCallback = function(callback) {
-            this.callbacksMap['sessionFailureCallback'] = callback;
+            this.sessionFailureCallback = callback;
         };
 
         AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
-            this.callbacksMap['deferredDeeplinkCallback'] = callback;
+            this.deferredDeeplinkCallback = callback;
         };
 
         AdjustConfig.prototype.setFbPixelDefaultEventToken = function(fbPixelDefaultEventToken) {
