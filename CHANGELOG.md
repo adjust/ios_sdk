@@ -1,3 +1,17 @@
+### Version 4.15.0 (30th August 2018)
+#### Added
+- Added `setCallbackId` method on `ADJEvent` object for users to set custom ID on event object which will later be reported in event success/failure callbacks.
+- Added `callbackId` property to `ADJEventSuccess` class.
+- Added `callbackId` property to `ADJEventFailure` class.
+- Added support for tracking Facebook Pixel events with iOS web view SDK.
+- Aligned feature set of iOS web view SDK with native iOS SDK.
+- Added example app which demonstrates how iOS web view SDK can be used to track Facebook Pixel events.
+
+#### Changed
+- SDK will now fire attribution request each time upon session tracking finished in case it lacks attribution info.
+
+---
+
 ### Version 4.14.3 (16th August 2018)
 #### Changed
 - Changed deployment target of iMessage dynamic framework target back to 8.0.
