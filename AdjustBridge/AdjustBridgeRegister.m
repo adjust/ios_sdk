@@ -259,7 +259,7 @@ static NSString * fbAppIdStatic = nil;
                 }
             }
 
-            this.sdkPrefix = 'web-bridge4.14.0';
+            this.sdkPrefix = 'web-bridge4.15.0';
             this.defaultTracker = null;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
