@@ -10,6 +10,9 @@
 #### Changed
 - SDK will now fire attribution request each time upon session tracking finished in case it lacks attribution info.
 
+#### Fixed
+- Web bridge callbacks can now be called more than once
+
 ---
 
 ### Version 4.14.3 (16th August 2018)
