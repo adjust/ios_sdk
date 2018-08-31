@@ -93,6 +93,10 @@
     _transactionId = transactionId;
 }
 
+- (void)setCallbackId:(NSString *)callbackId {
+    _callbackId = callbackId;
+}
+
 - (NSDictionary *) callbackParameters {
     return (NSDictionary *) self.callbackMutableParameters;
 }

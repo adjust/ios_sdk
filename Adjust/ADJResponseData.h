@@ -62,6 +62,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, copy) NSString *eventToken;
 
+@property (nonatomic, copy) NSString *callbackId;
+
 - (ADJEventSuccess *)successResponseData;
 
 - (ADJEventFailure *)failureResponseData;

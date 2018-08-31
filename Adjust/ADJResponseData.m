@@ -145,6 +145,7 @@
     }
 
     self.eventToken = [activityPackage.parameters objectForKey:@"event_token"];
+    self.callbackId = [activityPackage.parameters objectForKey:@"event_callback_id"];
 
     return self;
 }
@@ -156,6 +157,7 @@
     successResponseData.timeStamp = self.timeStamp;
     successResponseData.adid = self.adid;
     successResponseData.eventToken = self.eventToken;
+    successResponseData.callbackId = self.callbackId;
     successResponseData.jsonResponse = self.jsonResponse;
 
     return successResponseData;
@@ -168,6 +170,7 @@
     failureResponseData.timeStamp = self.timeStamp;
     failureResponseData.adid = self.adid;
     failureResponseData.eventToken = self.eventToken;
+    failureResponseData.callbackId = self.callbackId;
     failureResponseData.willRetry = self.willRetry;
     failureResponseData.jsonResponse = self.jsonResponse;
 

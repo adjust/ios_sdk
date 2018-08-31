@@ -1014,6 +1014,11 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                          withObject:sessionResponseData.attribution];
     }
 
+    // if attribution didn't update and it's still null -> ask for attribution
+    if (selfI.attribution == nil && selfI.activityState.askingAttribution == NO) {
+        [selfI.attributionHandler getAttribution];
+    }
+
     selfI.internalState.sessionResponseProcessed = YES;
 }
 

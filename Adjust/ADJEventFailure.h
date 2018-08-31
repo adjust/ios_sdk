@@ -31,6 +31,11 @@
 @property (nonatomic, copy) NSString * eventToken;
 
 /**
+ * @brief Event callback ID.
+ */
+@property (nonatomic, copy) NSString *callbackId;
+
+/**
  * @brief Information whether sending of the package will be retried or not.
  */
 @property (nonatomic, assign) BOOL willRetry;

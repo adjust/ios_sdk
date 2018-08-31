@@ -8,7 +8,8 @@
 #import <Foundation/Foundation.h>
 #import "WebViewJavascriptBridgeBase.h"
 #import "WebViewJavascriptBridge_JS.h"
-#import "AdjustBridge_JS.h"
+//#import "AdjustBridge_JS.h"
+#import "AdjustBridgeRegister.h"
 
 @implementation WebViewJavascriptBridgeBase {
     __weak id _webViewDelegate;
@@ -115,7 +116,8 @@ static int logMaxLength = 500;
     NSString *js = WebViewJavascriptBridge_js();
     [self _evaluateJavascript:js];
     // Added to inject adjust js code
-    NSString *adjust_js = AdjustBridge_js();
+    //NSString *adjust_js = AdjustBridge_js();
+    NSString *adjust_js = [AdjustBridgeRegister AdjustBridge_js];
     [self _evaluateJavascript:adjust_js];
     if (self.startupMessageQueue) {
         NSArray* queue = self.startupMessageQueue;

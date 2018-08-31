@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6FA69FEB2101EA2900FCD3B5 /* AdjustBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA69FEA2101EA2900FCD3B5 /* AdjustBridge_JS.m */; };
 		6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85111F2794D600D6A0ED /* ADJReachability.m */; };
 		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
@@ -63,8 +62,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6FA69FE92101EA2900FCD3B5 /* AdjustBridge_JS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge_JS.h; sourceTree = "<group>"; };
-		6FA69FEA2101EA2900FCD3B5 /* AdjustBridge_JS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge_JS.m; sourceTree = "<group>"; };
 		6FCC85101F2794D600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85111F2794D600D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
@@ -323,8 +320,6 @@
 		9D75F18F1D07463800E5D222 /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
-				6FA69FE92101EA2900FCD3B5 /* AdjustBridge_JS.h */,
-				6FA69FEA2101EA2900FCD3B5 /* AdjustBridge_JS.m */,
 				9D75F1871D07463800E5D222 /* WebViewJavascriptBridge.h */,
 				9D75F1881D07463800E5D222 /* WebViewJavascriptBridge.m */,
 				9D75F1891D07463800E5D222 /* WebViewJavascriptBridge_JS.h */,
@@ -445,7 +440,6 @@
 				9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */,
 				9D449EF21E6EDD4100E7E80B /* ADJSessionFailure.m in Sources */,
 				9D449EDD1E6EDD4100E7E80B /* ADJActivityState.m in Sources */,
-				6FA69FEB2101EA2900FCD3B5 /* AdjustBridge_JS.m in Sources */,
 				9D449EEB1E6EDD4100E7E80B /* ADJKeychain.m in Sources */,
 				9D449EE11E6EDD4100E7E80B /* ADJAdjustFactory.m in Sources */,
 				9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */,

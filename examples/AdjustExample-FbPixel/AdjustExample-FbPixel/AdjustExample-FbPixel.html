@@ -25,86 +25,73 @@
     }
 
     setupWebViewJavascriptBridge(function(bridge) {
+        // Set up Facebook Pixel stuff.
+        let config = {};
+        config = {
+            fbid: '891530151031248',
+            appid: '308873563017393',
+            domain: null,
+            fbqq: null
+        };
+
+        let fbqu = 'https://'
+        + (config.domain || 'connect.facebook.net')
+        + '/en_US/fbevents.js?'
+        + (config.fbqq || '');
+
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',fbqu);
+
+        // Please make sure to call 'init' method first.
+        config.fbid && fbq('init', config.fbid.toString());
+        // And right after 'init', make a call to 'set' method BEFORE performing any tracking!
+        config.fbid && fbq('set', 'mobileBridge', config.fbid.toString(), config.appid.toString());
+
         let adjustConfig = new AdjustConfig('2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox);
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
 
-        adjustConfig.setOpenDeferredDeeplink(true)     // Just for test, is true by default.
-
-        adjustConfig.setAttributionCallback(function(attribution) {
-            console.log('Tracker token = ' + attribution.trackerToken + '\n' +
-                  'Tracker name = ' + attribution.trackerName + '\n' +
-                  'Network = ' + attribution.network + '\n' +
-                  'Campaign = ' + attribution.campaign + '\n' +
-                  'Adgroup = ' + attribution.adgroup + '\n' +
-                  'Creative = ' + attribution.creative + '\n' +
-                  'Click label = ' + attribution.clickLabel)
-        })
-        adjustConfig.setEventSuccessCallback(function(eventSuccess) {
-            console.log('Message = ' + eventSuccess.message + '\n' +
-                  'Timestamp = ' + eventSuccess.timestamp + '\n' +
-                  'Adid = ' + eventSuccess.adid + '\n' +
-                  'CallbackId = ' + eventSuccess.callbackId + '\n' +
-                  'Event token = ' + eventSuccess.eventToken)
-        })
-        adjustConfig.setEventFailureCallback(function(eventFailure) {
-            console.log('Message = ' + eventFailure.message + '\n' +
-                  'Timestamp = ' + eventFailure.timestamp + '\n' +
-                  'Adid = ' + eventFailure.adid + '\n' +
-                  'Event token = ' + eventFailure.eventToken + '\n' +
-                  'CallbackId = ' + eventSuccess.callbackId + '\n' +
-                  'Will retry = ' + eventFailure.willRetry)
-        })
-        adjustConfig.setSessionSuccessCallback(function(sessionSuccess) {
-            console.log('Message = ' + sessionSuccess.message + '\n' +
-                  'Timestamp = ' + sessionSuccess.timestamp + '\n' +
-                  'Adid = ' + sessionSuccess.adid)
-        })
-        adjustConfig.setSessionFailureCallback(function(sessionFailure) {
-            console.log('Message = ' + sessionFailure.message + '\n' +
-                  'Timestamp = ' + sessionFailure.timestamp + '\n' +
-                  'Adid = ' + sessionFailure.adid + '\n' +
-                  'Will retry = ' + sessionFailure.willRetry)
-        })
-        adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
-            console.log('Deferred deeplink:\n' + deferredDeeplink)
-        })
+        // Set up Facebook Pixel mappings.
+        adjustConfig.addFbPixelMapping('fb_mobile_search', 'g3mfiw');
+        adjustConfig.addFbPixelMapping('fb_mobile_purchase', 'a4fd35');
+        adjustConfig.setFbPixelDefaultEventToken('34vgg9');
 
         Adjust.appDidLaunch(adjustConfig);
 
         var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
         btnTrackSimpleEvent.onclick = function(e) {
             e.preventDefault()
-            var adjustEvent = new AdjustEvent('g3mfiw')
-            Adjust.trackEvent(adjustEvent)
+                                 config.fbid && fbq('track', 'Search', {
+                                                    search_string: 'search_string_value',
+                                                    content_ids: ['123', '456'],
+                                                    content_type: 'content_type_value'
+                                                    });
         }
 
         var btnTrackRevenueEvent = document.getElementById('btnTrackRevenueEvent')
         btnTrackRevenueEvent.onclick = function(e) {
             e.preventDefault()
-            var adjustEvent = new AdjustEvent('a4fd35')
-            adjustEvent.setRevenue(0.01, 'EUR')
-            Adjust.trackEvent(adjustEvent)
+            // Track FB 'Purchase' event.
+            config.fbid && fbq('track', 'Purchase', {
+                                contents: [{
+                                     id: 'content_id_value_2q_10p',
+                                     quantity: 1,
+                                     item_price: 10}],});
         }
 
-        var btnTrackCallbackEvent = document.getElementById('btnTrackCallbackEvent')
+        var btnTrackCallbackEvent = document.getElementById('btnTrackNonExistingEventOne')
         btnTrackCallbackEvent.onclick = function(e) {
             e.preventDefault()
-            var adjustEvent = new AdjustEvent('34vgg9')
-            adjustEvent.addCallbackParameter('key', 'value')
-            adjustEvent.addCallbackParameter('x', 'y')
-            adjustEvent.addCallbackParameter('key', 'lock')
-            Adjust.trackEvent(adjustEvent)
+            // Track non existing FB event with no mapping (should default to predefined Adjust event token).
+            config.fbid && fbq('track', 'fb_no_mapping', config.fbid.toString());
         }
 
-        var btnTrackPartnerEvent = document.getElementById('btnTrackPartnerEvent')
+        var btnTrackPartnerEvent = document.getElementById('btnTrackNonExistingEventTwo')
         btnTrackPartnerEvent.onclick = function(e) {
             e.preventDefault()
-            var adjustEvent = new AdjustEvent('w788qs')
-            adjustEvent.addPartnerParameter('foo', 'bar')
-            adjustEvent.addPartnerParameter('x', 'y')
-            adjustEvent.addPartnerParameter('foo', 'foot')
-            adjustEvent.addPartnerParameter('x', 'z')
-            Adjust.trackEvent(adjustEvent);
+            // Track non existing FB event with no mapping (should default to predefined Adjust event token).
+            config.fbid && fbq('track', 'fb_no_mapping_again', config.fbid.toString());
         }
 
         var btnEnableOfflineMode = document.getElementById('btnEnableOfflineMode')
@@ -156,10 +143,10 @@
             <button id='btnTrackRevenueEvent'>Track Revenue event</button>
         </div>
         <div style="width:300px;height:35px;text-align:center;">
-            <button id='btnTrackCallbackEvent'>Track Callback event</button>
+            <button id='btnTrackNonExistingEventOne'>Track Non-Existing Event</button>
         </div>
         <div style="width:300px;height:35px;text-align:center;">
-            <button id='btnTrackPartnerEvent'>Track Partner event</button>
+            <button id='btnTrackNonExistingEventTwo'>Track Non-Existing Event</button>
         </div>
         <div style="width:300px;height:35px;text-align:center;">
             <button id='btnEnableOfflineMode'>Enable Offline mode</button>

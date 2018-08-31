@@ -38,6 +38,7 @@
     [self.testLibrary addInfoToSend:@"timestamp" value:eventFailureResponseData.timeStamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventFailureResponseData.eventToken];
+    [self.testLibrary addInfoToSend:@"callbackId" value:eventFailureResponseData.callbackId];
     [self.testLibrary addInfoToSend:@"willRetry" value:(eventFailureResponseData.willRetry ? @"true" : @"false")];
     
     NSError *error;

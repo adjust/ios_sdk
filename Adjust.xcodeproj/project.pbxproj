@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		6FA69FD72101E00100FCD3B5 /* AdjustBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA69FD62101E00100FCD3B5 /* AdjustBridge_JS.m */; };
 		6FCC85001F278CF300D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC84F71F278CF300D6A0ED /* ADJReachability.m */; };
 		6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCC84F81F278CF300D6A0ED /* ADJReachability.h */; };
 		6FCC85041F27945E00D6A0ED /* ADJReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCC85021F27944600D6A0ED /* ADJReachability.h */; };
@@ -211,12 +210,10 @@
 		9D0E2EAE210B575600133B4F /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5C210B575600133B4F /* AdjustBridge.m */; };
 		9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB0210B575600133B4F /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */; };
-		9D0E2EB1210B575600133B4F /* AdjustBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */; };
 		9D0E2EB2210B575600133B4F /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */; };
 		9D0E2EB3210B575600133B4F /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */; };
 		9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB7210B575600133B4F /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */; };
 		9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -519,6 +516,13 @@
 			remoteGlobalIDString = 9D7431E51EB9F9B700969F14;
 			remoteInfo = AdjustExampleTests;
 		};
+		9D9D1551212EB3D00081445E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D9D152E212EB3920081445E;
+			remoteInfo = "AdjustExample-FbPixel";
+		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9679920518BBAE2800394606 /* Project object */;
@@ -553,8 +557,6 @@
 /* Begin PBXFileReference section */
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
-		6FA69FD52101E00100FCD3B5 /* AdjustBridge_JS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge_JS.h; sourceTree = "<group>"; };
-		6FA69FD62101E00100FCD3B5 /* AdjustBridge_JS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge_JS.m; sourceTree = "<group>"; };
 		6FCC84F71F278CF300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC84F81F278CF300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85021F27944600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -791,6 +793,7 @@
 		9D7431F41EB9F9B700969F14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D7431F71EB9F9B700969F14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D7431F91EB9F9B700969F14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-FbPixel.xcodeproj"; path = "examples/AdjustExample-FbPixel/AdjustExample-FbPixel.xcodeproj"; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DE354D22100726300D211C9 /* AdjustSdkIm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkIm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1152,8 +1155,6 @@
 		9648C5E51CD1765E00A3B049 /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
-				6FA69FD52101E00100FCD3B5 /* AdjustBridge_JS.h */,
-				6FA69FD62101E00100FCD3B5 /* AdjustBridge_JS.m */,
 				9648C5E61CD1765E00A3B049 /* WebViewJavascriptBridge.h */,
 				9648C5E71CD1765E00A3B049 /* WebViewJavascriptBridge.m */,
 				9648C5E81CD1765E00A3B049 /* WebViewJavascriptBridge_JS.h */,
@@ -1441,6 +1442,7 @@
 				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
 				9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */,
 				9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */,
+				9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */,
 			);
 			name = "Example Apps";
 			sourceTree = "<group>";
@@ -1509,6 +1511,14 @@
 				9D7431E91EB9F9B700969F14 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9D9D154E212EB3D00081445E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D9D1552212EB3D00081445E /* AdjustExample-FbPixel.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9DE354D32100726300D211C9 /* AdjustSdkIm */ = {
@@ -1830,7 +1840,6 @@
 				9D0E2E06210B570600133B4F /* AdjustSdkWebBridge.h in Headers */,
 				9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */,
 				9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */,
-				9D0E2EB6210B575600133B4F /* AdjustBridge_JS.h in Headers */,
 				9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */,
 				9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */,
 				9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */,
@@ -2192,6 +2201,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 9D9D154E212EB3D00081445E /* Products */;
+					ProjectRef = 9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */;
+				},
+				{
 					ProductGroup = 9D0167FF20FF88DE0029CFFF /* Products */;
 					ProjectRef = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
 				},
@@ -2317,6 +2330,13 @@
 			remoteRef = 9D449DCF1E6ED24400E7E80B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9D9D1552212EB3D00081445E /* AdjustExample-FbPixel.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-FbPixel.app";
+			remoteRef = 9D9D1551212EB3D00081445E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2402,7 +2422,6 @@
 				961515A31CD2CB9D0022D336 /* WebViewJavascriptBridge.m in Sources */,
 				961515A41CD2CBA20022D336 /* WebViewJavascriptBridge_JS.m in Sources */,
 				961515A61CD2CBAC0022D336 /* WKWebViewJavascriptBridge.m in Sources */,
-				6FA69FD72101E00100FCD3B5 /* AdjustBridge_JS.m in Sources */,
 				961515A51CD2CBA80022D336 /* WebViewJavascriptBridgeBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2512,7 +2531,6 @@
 				9D0E2E6D210B575600133B4F /* ADJTimerOnce.m in Sources */,
 				9D0E2E77210B575600133B4F /* ADJEvent.m in Sources */,
 				9D0E2E8D210B575600133B4F /* ADJConfig.m in Sources */,
-				9D0E2EB1210B575600133B4F /* AdjustBridge_JS.m in Sources */,
 				9D0E2E6E210B575600133B4F /* ADJAttributionHandler.m in Sources */,
 				9D0E2E87210B575600133B4F /* ADJBackoffStrategy.m in Sources */,
 				9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */,

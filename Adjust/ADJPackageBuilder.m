@@ -75,6 +75,7 @@
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:event.currency forKey:@"currency"];
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
+    [ADJPackageBuilder parameters:parameters setString:event.callbackId forKey:@"event_callback_id"];
 
     if (!isInDelay) {
         NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.sessionParameters.callbackParameters
