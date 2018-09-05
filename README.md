@@ -539,7 +539,7 @@ The delegate functions will be called after the SDK tries to send a package to t
 Both event response data objects contain:
 
 - `NSString eventToken` the event token, if the package tracked was an event.
-- `NSString callbackid` the custom defined callback ID set on event object.
+- `NSString callbackId` the custom defined callback ID set on event object.
 
 If any value is unavailable, it will default to `nil`.
 
