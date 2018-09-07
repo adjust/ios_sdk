@@ -41,7 +41,18 @@
     }
 
     _bridgeRegister = nil;
+    [self resetAdjustBridge];
+
     return self;
+}
+
+- (void)resetAdjustBridge {
+    self.attributionCallbackName = nil;
+    self.eventSuccessCallbackName = nil;
+    self.eventFailureCallbackName = nil;
+    self.sessionSuccessCallbackName = nil;
+    self.sessionFailureCallbackName = nil;
+    self.deferredDeeplinkCallbackName = nil;
 }
 
 #pragma mark - AdjustDelegate methods
@@ -496,6 +507,9 @@
         }
         if ([self isFieldValid:teardown]) {
             testOptions.teardown = [teardown boolValue];
+            if (testOptions.teardown) {
+                [self resetAdjustBridge];
+            }
         }
         if ([self isFieldValid:deleteState]) {
             testOptions.deleteState = [deleteState boolValue];
