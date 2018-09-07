@@ -467,16 +467,10 @@
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_resetSessionCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
         [Adjust resetSessionCallbackParameters];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_resetSessionPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
         [Adjust resetSessionPartnerParameters];
     }];
 
