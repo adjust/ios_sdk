@@ -453,6 +453,63 @@
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust gdprForgetMe];
     }];
+
+    [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *baseUrl = [data objectForKey:@"baseUrl"];
+        NSString *gdprUrl = [data objectForKey:@"gdprUrl"];
+        NSString *basePath = [data objectForKey:@"basePath"];
+        NSString *gdprPath = [data objectForKey:@"gdprPath"];
+        NSNumber *timerIntervalInMilliseconds = [data objectForKey:@"timerIntervalInMilliseconds"];
+        NSNumber *timerStartInMilliseconds = [data objectForKey:@"timerStartInMilliseconds"];
+        NSNumber *sessionIntervalInMilliseconds = [data objectForKey:@"sessionIntervalInMilliseconds"];
+        NSNumber *subsessionIntervalInMilliseconds = [data objectForKey:@"subsessionIntervalInMilliseconds"];
+        NSNumber *teardown = [data objectForKey:@"teardown"];
+        NSNumber *deleteState = [data objectForKey:@"deleteState"];
+        NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
+        NSNumber *iAdFrameworkEnabled = [data objectForKey:@"iAdFrameworkEnabled"];
+
+        AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
+
+        if ([self isFieldValid:baseUrl]) {
+            testOptions.baseUrl = baseUrl;
+        }
+        if ([self isFieldValid:gdprUrl]) {
+            testOptions.gdprUrl = gdprUrl;
+        }
+        if ([self isFieldValid:basePath]) {
+            testOptions.basePath = basePath;
+        }
+        if ([self isFieldValid:gdprPath]) {
+            testOptions.gdprPath = gdprPath;
+        }
+        if ([self isFieldValid:timerIntervalInMilliseconds]) {
+            testOptions.timerIntervalInMilliseconds = timerIntervalInMilliseconds;
+        }
+        if ([self isFieldValid:timerStartInMilliseconds]) {
+            testOptions.timerStartInMilliseconds = timerStartInMilliseconds;
+        }
+        if ([self isFieldValid:sessionIntervalInMilliseconds]) {
+            testOptions.sessionIntervalInMilliseconds = sessionIntervalInMilliseconds;
+        }
+        if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
+            testOptions.subsessionIntervalInMilliseconds = subsessionIntervalInMilliseconds;
+        }
+        if ([self isFieldValid:teardown]) {
+            testOptions.teardown = [teardown boolValue];
+        }
+        if ([self isFieldValid:deleteState]) {
+            testOptions.deleteState = [deleteState boolValue];
+        }
+        if ([self isFieldValid:noBackoffWait]) {
+            testOptions.noBackoffWait = [noBackoffWait boolValue];
+        }
+        if ([self isFieldValid:iAdFrameworkEnabled]) {
+            testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+        }
+
+        [Adjust setTestOptions:testOptions];
+    }];
+
 }
 
 - (void)registerAugmentedView {
