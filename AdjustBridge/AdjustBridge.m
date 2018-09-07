@@ -75,7 +75,12 @@
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    NSString * jsonResponse = [self convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
+    if (jsonResponse == nil) {
+        jsonResponse = @"{}";
+    }
+    [eventSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self.bridgeRegister callHandler:self.eventSuccessCallbackName data:eventSuccessResponseDataDictionary];
 }
@@ -91,9 +96,13 @@
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
-
     [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    NSString * jsonResponse = [self convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
+    if (jsonResponse == nil) {
+        jsonResponse = @"{}";
+    }
+    [eventFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self.bridgeRegister callHandler:self.eventFailureCallbackName data:eventFailureResponseDataDictionary];
 }
@@ -107,7 +116,12 @@
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
-    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    NSString * jsonResponse = [self convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
+    if (jsonResponse == nil) {
+        jsonResponse = @"{}";
+    }
+    [sessionSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self.bridgeRegister callHandler:self.sessionSuccessCallbackName data:sessionSuccessResponseDataDictionary];
 }
@@ -122,7 +136,12 @@
     [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
     [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
     [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
-    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.jsonResponse forKey:@"jsonResponse"];
+
+    NSString * jsonResponse = [self convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
+    if (jsonResponse == nil) {
+        jsonResponse = @"{}";
+    }
+    [sessionFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self.bridgeRegister callHandler:self.sessionFailureCallbackName data:sessionFailureResponseDataDictionary];
 }
@@ -598,6 +617,24 @@
         return nil;
     }
     return [self.fbPixelMapping objectForKey:fbPixelEventName];
+}
+
+- (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary {
+    if (jsonDictionary == nil) {
+        return nil;
+    }
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+
+    if (!jsonData) {
+        NSLog(@"Unable to conver NSDictionary with JSON response to JSON string: %@", error);
+        return nil;
+    }
+
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return jsonString;
 }
 
 @end
