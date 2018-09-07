@@ -180,11 +180,7 @@
         // WebViewBridge already loaded.
         return;
     }
-/*
-    AdjustUIBridgeRegister *uiBridgeRegister = [AdjustUIBridgeRegister bridgeRegisterWithUIWebView:webView];
-    [uiBridgeRegister setWebViewDelegate:webViewDelegate];
-    _bridgeRegister = uiBridgeRegister;
- */
+
     [self loadWebViewBridge:webView webViewDelegate:webViewDelegate];
 }
 
@@ -194,11 +190,7 @@
         // WebViewBridge already loaded.
         return;
     }
-/*
-    AdjustWKBridgeRegister *wkBridgeRegister = [AdjustWKBridgeRegister bridgeRegisterWithWKWebView:wkWebView];
-    [wkBridgeRegister setWebViewDelegate:wkWebViewDelegate];
-    _bridgeRegister = wkBridgeRegister;
-*/
+
     [self loadWebViewBridge:wkWebView webViewDelegate:wkWebViewDelegate];
 }
 
