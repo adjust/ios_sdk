@@ -48,7 +48,6 @@
 		6F7AF75221187CFF00F730B2 /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF73021187CFF00F730B2 /* ADJReachability.m */; };
 		6F7AF76321187D0500F730B2 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75421187D0500F730B2 /* AdjustBridge.m */; };
 		6F7AF76421187D0500F730B2 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75721187D0500F730B2 /* WebViewJavascriptBridgeBase.m */; };
-		6F7AF76521187D0500F730B2 /* AdjustBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75821187D0500F730B2 /* AdjustBridge_JS.m */; };
 		6F7AF76621187D0500F730B2 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75921187D0500F730B2 /* WKWebViewJavascriptBridge.m */; };
 		6F7AF76721187D0500F730B2 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75A21187D0500F730B2 /* WebViewJavascriptBridge.m */; };
 		6F7AF76821187D0500F730B2 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF75E21187D0500F730B2 /* WebViewJavascriptBridge_JS.m */; };
@@ -141,12 +140,10 @@
 		6F7AF75421187D0500F730B2 /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		6F7AF75521187D0500F730B2 /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		6F7AF75721187D0500F730B2 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
-		6F7AF75821187D0500F730B2 /* AdjustBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge_JS.m; sourceTree = "<group>"; };
 		6F7AF75921187D0500F730B2 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		6F7AF75A21187D0500F730B2 /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		6F7AF75B21187D0500F730B2 /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
 		6F7AF75C21187D0500F730B2 /* WebViewJavascriptBridgeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridgeBase.h; sourceTree = "<group>"; };
-		6F7AF75D21187D0500F730B2 /* AdjustBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge_JS.h; sourceTree = "<group>"; };
 		6F7AF75E21187D0500F730B2 /* WebViewJavascriptBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS.m; sourceTree = "<group>"; };
 		6F7AF75F21187D0500F730B2 /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		6F7AF76021187D0500F730B2 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
@@ -209,7 +206,6 @@
 				6F7AF76A21187D1C00F730B2 /* AdjustTestLibrary */,
 				6F7AF75321187D0500F730B2 /* AdjustBridge */,
 				6F7AF6EC21187CFE00F730B2 /* Adjust */,
-				6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */,
 			);
 			path = AdjustWebBridgeTestApp;
 			sourceTree = "<group>";
@@ -299,11 +295,11 @@
 		6F7AF75321187D0500F730B2 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
+				6F7AF76121187D0500F730B2 /* AdjustBridge.h */,
 				6F7AF75421187D0500F730B2 /* AdjustBridge.m */,
 				6F7AF75521187D0500F730B2 /* AdjustBridgeRegister.h */,
-				6F7AF75621187D0500F730B2 /* WebViewJavascriptBridge */,
-				6F7AF76121187D0500F730B2 /* AdjustBridge.h */,
 				6F7AF76221187D0500F730B2 /* AdjustBridgeRegister.m */,
+				6F7AF75621187D0500F730B2 /* WebViewJavascriptBridge */,
 			);
 			name = AdjustBridge;
 			path = ../../../AdjustBridge;
@@ -313,12 +309,10 @@
 			isa = PBXGroup;
 			children = (
 				6F7AF75721187D0500F730B2 /* WebViewJavascriptBridgeBase.m */,
-				6F7AF75821187D0500F730B2 /* AdjustBridge_JS.m */,
 				6F7AF75921187D0500F730B2 /* WKWebViewJavascriptBridge.m */,
 				6F7AF75A21187D0500F730B2 /* WebViewJavascriptBridge.m */,
 				6F7AF75B21187D0500F730B2 /* WebViewJavascriptBridge_JS.h */,
 				6F7AF75C21187D0500F730B2 /* WebViewJavascriptBridgeBase.h */,
-				6F7AF75D21187D0500F730B2 /* AdjustBridge_JS.h */,
 				6F7AF75E21187D0500F730B2 /* WebViewJavascriptBridge_JS.m */,
 				6F7AF75F21187D0500F730B2 /* WebViewJavascriptBridge.h */,
 				6F7AF76021187D0500F730B2 /* WKWebViewJavascriptBridge.h */,
@@ -453,7 +447,6 @@
 				6F7AF74F21187CFF00F730B2 /* ADJUserDefaults.m in Sources */,
 				6F7AF77C21187D1C00F730B2 /* ATLTestLibrary.m in Sources */,
 				6F7AF77A21187D1C00F730B2 /* ATLControlChannel.m in Sources */,
-				6F7AF76521187D0500F730B2 /* AdjustBridge_JS.m in Sources */,
 				6F7AF77B21187D1C00F730B2 /* ATLUtilNetworking.m in Sources */,
 				6F7AF76921187D0500F730B2 /* AdjustBridgeRegister.m in Sources */,
 				6F7AF74B21187CFF00F730B2 /* ADJUtil.m in Sources */,
