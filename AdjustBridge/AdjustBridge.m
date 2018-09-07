@@ -219,10 +219,10 @@
         NSString *userAgent = [data objectForKey:@"userAgent"];
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
-        NSNumber *info1 = [data objectForKey:@"info1"];
-        NSNumber *info2 = [data objectForKey:@"info2"];
-        NSNumber *info3 = [data objectForKey:@"info3"];
-        NSNumber *info4 = [data objectForKey:@"info4"];
+        NSString *info1 = [data objectForKey:@"info1"];
+        NSString *info2 = [data objectForKey:@"info2"];
+        NSString *info3 = [data objectForKey:@"info3"];
+        NSString *info4 = [data objectForKey:@"info4"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
@@ -275,11 +275,11 @@
         && [self isFieldValid:info3]
         && [self isFieldValid:info4];
         if (isAppSecretDefined) {
-            [adjustConfig setAppSecret:[secretId unsignedIntegerValue]
-                                 info1:[info1 unsignedIntegerValue]
-                                 info2:[info2 unsignedIntegerValue]
-                                 info3:[info3 unsignedIntegerValue]
-                                 info4:[info4 unsignedIntegerValue]];
+            [adjustConfig setAppSecret:[[self fieldToNSNumber:secretId] unsignedIntegerValue]
+                                 info1:[[self fieldToNSNumber:info1] unsignedIntegerValue]
+                                 info2:[[self fieldToNSNumber:info2] unsignedIntegerValue]
+                                 info3:[[self fieldToNSNumber:info3] unsignedIntegerValue]
+                                 info4:[[self fieldToNSNumber:info4] unsignedIntegerValue]];
         }
         if ([self isFieldValid:openDeferredDeeplink]) {
             self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
@@ -635,6 +635,14 @@
 
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     return jsonString;
+}
+
+- (NSNumber *)fieldToNSNumber:(NSObject *)field {
+    if (![self isFieldValid:field]) {
+        return nil;
+    }
+    NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
+    return [formatString numberFromString:[field description]];
 }
 
 @end
