@@ -42,7 +42,6 @@
 
     _bridgeRegister = nil;
     [self resetAdjustBridge];
-
     return self;
 }
 
