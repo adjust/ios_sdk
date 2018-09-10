@@ -76,7 +76,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         testOptions.timerIntervalInMilliseconds = getFirstValue(params, 'timerInterval');
     }
     if ('timerStart' in params) {
-        testOptions.imerStartInMilliseconds = getFirstValue(params, 'timerStart');
+        testOptions.timerStartInMilliseconds = getFirstValue(params, 'timerStart');
     }
     if ('sessionInterval' in params) {
         testOptions.sessionIntervalInMilliseconds = getFirstValue(params, 'sessionInterval');
@@ -140,7 +140,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     Adjust.setTestOptions(testOptions);
 };
 
-AdjustCommandExecutor.prototype.testOptions = function(params) {
+AdjustCommandExecutor.prototype.config = function(params) {
     var configNumber = 0;
     if ('configName' in params) {
         var configName = getFirstValue(params, 'configName');
