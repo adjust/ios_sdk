@@ -1,5 +1,11 @@
 var localBaseUrl = 'http://127.0.0.1:8080';
 var localGdprUrl = 'http://127.0.0.1:8080';
+
+// local reference of the command executor
+// originally it was this.adjustCommandExecutor of TestLibraryBridge var
+// but for some reason, "this" on "startTestSession" was different in "adjustCommandExecutor"
+var localAdjustCommandExecutor;
+
 var TestLibraryBridge = {
     adjustCommandExecutor: function(commandRawJson) {
         console.log('TestLibraryBridge adjustCommandExecutor');
@@ -8,14 +14,18 @@ var TestLibraryBridge = {
         console.log('functionName: ' + command.functionName);
         console.log('params: ' + JSON.stringify(command.params));
 
-        this.adjustCommandExecutor[command.functionName](command.params);
+        // reflection based technique to call functions with the same name as the command function
+        localAdjustCommandExecutor[command.functionName](command.params);
     },
     startTestSession: function () {
         console.log('TestLibraryBridge startTestSession');
         if (WebViewJavascriptBridge) {
             console.log('TestLibraryBridge startTestSession callHandler');
+
+            localAdjustCommandExecutor = new AdjustCommandExecutor(localBaseUrl, localGdprUrl);
+            // register objc->JS function for commands
             WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
-            this.adjustCommandExecutor = new AdjustCommandExecutor(localBaseUrl, localGdprUrl);
+            // start test session in obj-c
             WebViewJavascriptBridge.callHandler('adjust_startTestSession', null, null);
         }
     }
