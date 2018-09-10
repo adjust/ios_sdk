@@ -26,7 +26,7 @@ var TestLibraryBridge = {
             // register objc->JS function for commands
             WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
             // start test session in obj-c
-            WebViewJavascriptBridge.callHandler('adjust_startTestSession', null, null);
+            WebViewJavascriptBridge.callHandler('adjustTLB_startTestSession', null, null);
         }
     }
 };
@@ -241,6 +241,10 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
 
     // TODO callbacks
+};
+
+var addInfoToSend = function(key, value) {
+    WebViewJavascriptBridge.callHandler('adjustTLB_addInfoToSend', {key: key, value: value}, null);
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {

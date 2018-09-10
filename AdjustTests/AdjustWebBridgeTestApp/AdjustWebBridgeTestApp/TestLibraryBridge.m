@@ -27,9 +27,9 @@
     self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
                                            andCommandDelegate:self];
 
-    [adjustBridgeRegister registerHandler:@"adjust_startTestSession" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [adjustBridgeRegister registerHandler:@"adjustTLB_startTestSession" handler:^(id data, WVJBResponseCallback responseCallback) {
 
-        NSLog(@"TestLibraryBridge adjust_startTestSession");
+        NSLog(@"TestLibraryBridge adjustTLB_startTestSession");
 
         //self.commandExecutorCallback = responseCallback;
 
@@ -40,6 +40,29 @@
 
         [self.testLibrary startTestSession:@"web-bridge4.14.0@ios4.14.2"];
 
+    }];
+
+    [adjustBridgeRegister registerHandler:@"adjustTLB_addInfoToSend" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"TestLibraryBridge adjustTLB_addInfoToSend");
+
+        NSString *key = [data objectForKey:@"key"];
+        NSString *value = [data objectForKey:@"value"];
+
+        [self.testLibrary addInfoToSend:key value:value];
+    }];
+
+    [adjustBridgeRegister registerHandler:@"adjustTLB_sendInfoToServer" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"TestLibraryBridge adjustTLB_sendInfoToServer");
+
+        if (![data isKindOfClass:[NSString class]]) {
+            NSLog(@"TestLibraryBridge adjustTLB_sendInfoToServer data not string %@", data);
+
+            return;
+        }
+
+        NSString * basePath = (NSString *)data;
+
+        [self.testLibrary sendInfoToServer:basePath];
     }];
 
     self.adjustBridgeRegister = adjustBridgeRegister;
