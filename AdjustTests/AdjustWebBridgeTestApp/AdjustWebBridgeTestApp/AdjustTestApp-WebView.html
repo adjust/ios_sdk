@@ -41,31 +41,10 @@
          var btnTrackSimpleEvent = document.getElementById('btnStartTestSession');
          btnTrackSimpleEvent.onclick = function(e) {
              e.preventDefault();
-             //alert('btnStartTestSession');
+             console.log('btnStartTestSession');
              TestLibraryBridge.startTestSession();
          };
-
-/*
-		bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
-			log('ObjC called testJavascriptHandler with', data)
-			var responseData = { 'Javascript Says':'Right back atcha!' }
-			log('JS responding with', responseData)
-			responseCallback(responseData)
-		})
-
-		document.body.appendChild(document.createElement('br'))
-
-		var callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
-		callbackButton.innerHTML = 'Fire testObjcCallback'
-		callbackButton.onclick = function(e) {
-			e.preventDefault()
-			log('JS calling handler "testObjcCallback"')
-			bridge.callHandler('testObjcCallback', {'foo': 'bar'}, function(response) {
-				log('JS got response', response)
-			})
-		}
-                                 */
-	})
+    });
 	</script>
 	<div id='buttons'>
         <div style="width:300px;height:35px;text-align:center;">

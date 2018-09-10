@@ -67,7 +67,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
 
     if ('basePath' in params) {
         var basePath = getFirstValue(params, 'basePath');
-        console.log('TestLibraryBridge hasOwnProperty basePath, first: ' basePath);
+        console.log('TestLibraryBridge hasOwnProperty basePath, first: ' + basePath);
         this.basePath = basePath;
         this.gdprPath = basePath;
     }
@@ -511,7 +511,6 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
     Adjust.appWillOpenUrl(deeplink);
 };
 
-
 //Util
 //======================
 function getValues(params, key) {
@@ -533,6 +532,5 @@ function getFirstValue(params, key) {
 
     return null;
 }
-
 
 module.exports = TestLibraryBridge;
