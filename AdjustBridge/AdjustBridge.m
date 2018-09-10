@@ -581,7 +581,10 @@
     if ([field isKindOfClass:[NSNull class]]) {
         return NO;
     }
-    return YES;
+    if ([[field description] length] == 0) {
+        return NO;
+    }
+    return !!field;
 }
 
 - (NSString *)getFbAppId {
