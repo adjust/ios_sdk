@@ -303,6 +303,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('timestamp', eventSuccessResponseData.timestamp);
                 addInfoToSend('adid', eventSuccessResponseData.adid);
                 addInfoToSend('eventToken', eventSuccessResponseData.eventToken);
+                addInfoToSend('callbackId', eventSuccessResponseData.callbackId);
                 addInfoToSend('jsonResponse', eventSuccessResponseData.jsonResponse);
 
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
@@ -320,6 +321,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('timestamp', eventFailureResponseData.timestamp);
                 addInfoToSend('adid', eventFailureResponseData.adid);
                 addInfoToSend('eventToken', eventFailureResponseData.eventToken);
+                addInfoToSend('callbackId', eventFailureResponseData.callbackId);
                 addInfoToSend('willRetry', eventFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', eventFailureResponseData.jsonResponse);
 
@@ -410,6 +412,11 @@ AdjustCommandExecutor.prototype.event = function(params) {
     if ('orderId' in params) {
         var orderId = getFirstValue(params, 'orderId');
         adjustEvent.setTransactionId(orderId);
+    }
+
+    if ('callbackId' in params) {
+        var callbackId = getFirstValue(params, 'callbackId');
+        adjustEvent.setCallbackId(callbackId);
     }
 };
 
