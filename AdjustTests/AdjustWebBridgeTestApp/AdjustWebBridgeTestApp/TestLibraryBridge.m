@@ -38,7 +38,7 @@
 
         [self.testLibrary addTest:@"current/event-buffering/Test_EventBuffering_sensitive_packets"];
 
-        [self.testLibrary startTestSession:@"web-bridge4.14.0@ios4.14.2"];
+        [self.testLibrary startTestSession:@"web-bridge4.15.0@ios4.15.0"];
 
     }];
 
