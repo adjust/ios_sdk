@@ -366,6 +366,152 @@ AdjustCommandExecutor.prototype.start = function(params) {
     delete this.savedConfigs[0];
 };
 
+AdjustCommandExecutor.prototype.event = function(params) {
+    var eventNumber = 0;
+    if ('eventName' in params) {
+        var eventName = getFirstValue(params, 'eventName');
+        eventNumber = parseInt(eventName.substr(eventName.length - 1))
+    }
+
+    var adjustEvent;
+    if (eventNumber in this.savedEvents) {
+        adjustEvent = this.savedEvents[eventNumber];
+    } else {
+        var eventToken = getFirstValue(params, 'eventToken');
+        adjustEvent = new AdjustEvent(eventToken);
+        this.savedEvents[eventNumber] = adjustEvent;
+    }
+
+    if ('revenue' in params) {
+        var revenueParams = getValues(params, 'revenue');
+        var currency = revenueParams[0];
+        var revenue = parseFloat(revenueParams[1]);
+        adjustEvent.setRevenue(revenue, currency);
+    }
+
+    if ('callbackParams' in params) {
+        var callbackParams = getValues(params, 'callbackParams');
+        for (var i = 0; i < callbackParams.length; i = i + 2) {
+            var key = callbackParams[i];
+            var value = callbackParams[i + 1];
+            adjustEvent.addCallbackParameter(key, value);
+        }
+    }
+
+    if ('partnerParams' in params) {
+        var partnerParams = getValues(params, 'partnerParams');
+        for (var i = 0; i < partnerParams.length; i = i + 2) {
+            var key = partnerParams[i];
+            var value = partnerParams[i + 1];
+            adjustEvent.addPartnerParameter(key, value);
+        }
+    }
+
+    if ('orderId' in params) {
+        var orderId = getFirstValue(params, 'orderId');
+        adjustEvent.setTransactionId(orderId);
+    }
+};
+
+AdjustCommandExecutor.prototype.trackEvent = function(params) {
+    this.event(params);
+    var eventNumber = 0;
+    if ('eventName' in params) {
+        var eventName = getFirstValue(params, 'eventName');
+        eventNumber = parseInt(eventName.substr(eventName.length - 1))
+    }
+
+    var adjustEvent = this.savedEvents[eventNumber];
+    Adjust.trackEvent(adjustEvent);
+
+    delete this.savedEvents[0];
+};
+
+AdjustCommandExecutor.prototype.pause = function(params) {
+    Adjust.trackSubsessionEnd();
+};
+
+AdjustCommandExecutor.prototype.resume = function(params) {
+    Adjust.trackSubsessionStart();
+};
+
+AdjustCommandExecutor.prototype.setEnabled = function(params) {
+    var enabled = getFirstValue(params, 'enabled') == 'true';
+    Adjust.setEnabled(enabled);
+};
+
+AdjustCommandExecutor.prototype.setOfflineMode = function(params) {
+    var enabled = getFirstValue(params, 'enabled') == 'true';
+    Adjust.setOfflineMode(enabled);
+};
+
+AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
+    Adjust.sendFirstPackages();
+};
+
+AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
+    Adjust.gdprForgetMe();
+};
+
+AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
+    var list = getValues(params, 'KeyValue');
+
+    for (var i = 0; i < list.length; i = i+2){
+        var key = list[i];
+        var value = list[i+1];
+
+        Adjust.addSessionCallbackParameter(key, value);
+    }
+};
+
+AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
+    var list = getValues(params, 'KeyValue');
+
+    for (var i = 0; i < list.length; i = i+2){
+        var key = list[i];
+        var value = list[i+1];
+
+        Adjust.addSessionPartnerParameter(key, value);
+    }
+};
+
+AdjustCommandExecutor.prototype.removeSessionCallbackParameter = function(params) {
+    var list = getValues(params, 'key');
+
+    for (var i = 0; i < list.length; i++) {
+        var key = list[i];
+        Adjust.removeSessionCallbackParameter(key);
+    }
+};
+
+AdjustCommandExecutor.prototype.removeSessionPartnerParameter = function(params) {
+    var list = getValues(params, 'key');
+
+    for (var i = 0; i < list.length; i++) {
+        var key = list[i];
+        Adjust.removeSessionPartnerParameter(key);
+    }
+};
+
+AdjustCommandExecutor.prototype.resetSessionCallbackParameters = function(params) {
+    Adjust.resetSessionCallbackParameters();
+};
+
+AdjustCommandExecutor.prototype.resetSessionPartnerParameters = function(params) {
+    Adjust.resetSessionPartnerParameters();
+};
+
+AdjustCommandExecutor.prototype.setPushToken = function(params) {
+    var token = getFirstValue(params, 'pushToken');
+    Adjust.setDeviceToken(token);
+};
+
+AdjustCommandExecutor.prototype.openDeeplink = function(params) {
+    var deeplink = getFirstValue(params, 'deeplink');
+    Adjust.appWillOpenUrl(deeplink);
+};
+
+
 //Util
 //======================
 function getValues(params, key) {
