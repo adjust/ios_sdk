@@ -10,8 +10,8 @@
 
 @interface TestLibraryBridge ()
 
-@property (nonatomic, strong) ATLTestLibrary *testLibrary;
 @property WVJBResponseCallback commandExecutorCallback;
+@property (nonatomic, strong) ATLTestLibrary *testLibrary;
 @property (nonatomic, weak) AdjustBridgeRegister * adjustBridgeRegister;
 
 @end
@@ -28,45 +28,31 @@
                                            andCommandDelegate:self];
 
     [adjustBridgeRegister registerHandler:@"adjustTLB_startTestSession" handler:^(id data, WVJBResponseCallback responseCallback) {
-
         NSLog(@"TestLibraryBridge adjustTLB_startTestSession");
-
-        //self.commandExecutorCallback = responseCallback;
-
+        // self.commandExecutorCallback = responseCallback;
         [self.adjustBridgeRegister callHandler:@"adjustjs_commandExecutor" data:@"test"];
-
-
-        [self.testLibrary addTest:@"current/event-buffering/Test_EventBuffering_sensitive_packets"];
-
         [self.testLibrary startTestSession:@"web-bridge4.15.0@ios4.15.0"];
-
     }];
 
     [adjustBridgeRegister registerHandler:@"adjustTLB_addInfoToSend" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"TestLibraryBridge adjustTLB_addInfoToSend");
-
         NSString *key = [data objectForKey:@"key"];
         NSString *value = [data objectForKey:@"value"];
-
         [self.testLibrary addInfoToSend:key value:value];
     }];
 
     [adjustBridgeRegister registerHandler:@"adjustTLB_sendInfoToServer" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"TestLibraryBridge adjustTLB_sendInfoToServer");
-
         if (![data isKindOfClass:[NSString class]]) {
             NSLog(@"TestLibraryBridge adjustTLB_sendInfoToServer data not string %@", data);
-
             return;
         }
 
-        NSString * basePath = (NSString *)data;
-
+        NSString *basePath = (NSString *)data;
         [self.testLibrary sendInfoToServer:basePath];
     }];
 
     self.adjustBridgeRegister = adjustBridgeRegister;
-
     NSLog(@"TestLibraryBridge initWithAdjustBridgeRegister");
     return self;
 }
@@ -76,7 +62,7 @@
     if (self.commandExecutorCallback == nil) {
         NSLog(@"TestLibraryBridge nil commandExecutorCallback");
     }
-    //self.commandExecutorCallback(json);
+    // self.commandExecutorCallback(json);
     [self.adjustBridgeRegister callHandler:@"adjustJS_commandExecutor" data:json];
 }
 
