@@ -565,8 +565,6 @@
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
 		6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustWebBridgeTestApp.xcodeproj; path = AdjustWebBridgeTestApp/AdjustWebBridgeTestApp.xcodeproj; sourceTree = "<group>"; };
-		6FA69FD52101E00100FCD3B5 /* AdjustBridge_JS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustBridge_JS.h; sourceTree = "<group>"; };
-		6FA69FD62101E00100FCD3B5 /* AdjustBridge_JS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge_JS.m; sourceTree = "<group>"; };
 		6FCC84F71F278CF300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC84F81F278CF300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85021F27944600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -1314,8 +1312,8 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
-				6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */,
 				6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */,
+				6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */,
 				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
 				6F0841FB2007749C00568A31 /* AdjustUnitTests */,
 			);

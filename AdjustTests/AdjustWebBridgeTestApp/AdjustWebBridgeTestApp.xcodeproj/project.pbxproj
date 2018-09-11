@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6F7AF62B211878BA00F730B2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF62A211878BA00F730B2 /* AppDelegate.m */; };
-		6F7AF62E211878BA00F730B2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF62D211878BA00F730B2 /* ViewController.m */; };
 		6F7AF631211878BA00F730B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF62F211878BA00F730B2 /* Main.storyboard */; };
 		6F7AF633211878BC00F730B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF632211878BC00F730B2 /* Assets.xcassets */; };
 		6F7AF636211878BC00F730B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF634211878BC00F730B2 /* LaunchScreen.storyboard */; };
@@ -74,8 +73,6 @@
 		6F7AF626211878B900F730B2 /* AdjustWebBridgeTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdjustWebBridgeTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F7AF629211878BA00F730B2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F7AF62A211878BA00F730B2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6F7AF62C211878BA00F730B2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6F7AF62D211878BA00F730B2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6F7AF630211878BA00F730B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6F7AF632211878BC00F730B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F7AF635211878BC00F730B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -225,14 +222,6 @@
 			children = (
 				6F7AF629211878BA00F730B2 /* AppDelegate.h */,
 				6F7AF62A211878BA00F730B2 /* AppDelegate.m */,
-				6F7AF62C211878BA00F730B2 /* ViewController.h */,
-				6F7AF62D211878BA00F730B2 /* ViewController.m */,
-				6F7AF62F211878BA00F730B2 /* Main.storyboard */,
-				6F7AF632211878BC00F730B2 /* Assets.xcassets */,
-				6F7AF634211878BC00F730B2 /* LaunchScreen.storyboard */,
-				6F7AF637211878BC00F730B2 /* Info.plist */,
-				6F7AF638211878BC00F730B2 /* main.m */,
-				6F7AF78C2118808300F730B2 /* AdjustTestApp-WebView.html */,
 				6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */,
 				6F7AF78E211888B500F730B2 /* TestLibraryBridge.h */,
 				6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */,
@@ -240,9 +229,15 @@
 				6F7AF78721187EA400F730B2 /* UIWebViewController.m */,
 				6F7AF78921187EC500F730B2 /* WKWebViewController.h */,
 				6F7AF78A21187EC500F730B2 /* WKWebViewController.m */,
-				6F7AF76A21187D1C00F730B2 /* AdjustTestLibrary */,
-				6F7AF75321187D0500F730B2 /* AdjustBridge */,
+				6F7AF78C2118808300F730B2 /* AdjustTestApp-WebView.html */,
+				6F7AF638211878BC00F730B2 /* main.m */,
+				6F7AF637211878BC00F730B2 /* Info.plist */,
+				6F7AF632211878BC00F730B2 /* Assets.xcassets */,
+				6F7AF62F211878BA00F730B2 /* Main.storyboard */,
+				6F7AF634211878BC00F730B2 /* LaunchScreen.storyboard */,
 				6F7AF6EC21187CFE00F730B2 /* Adjust */,
+				6F7AF75321187D0500F730B2 /* AdjustBridge */,
+				6F7AF76A21187D1C00F730B2 /* AdjustTestLibrary */,
 			);
 			path = AdjustWebBridgeTestApp;
 			sourceTree = "<group>";
@@ -465,7 +460,6 @@
 				6F7AF73621187CFF00F730B2 /* ADJSdkClickHandler.m in Sources */,
 				6F7AF74C21187CFF00F730B2 /* ADJAdjustFactory.m in Sources */,
 				6F7AF74721187CFF00F730B2 /* UIDevice+ADJAdditions.m in Sources */,
-				6F7AF62E211878BA00F730B2 /* ViewController.m in Sources */,
 				6F7AF790211888B500F730B2 /* TestLibraryBridge.m in Sources */,
 				6F7AF74D21187CFF00F730B2 /* ADJResponseData.m in Sources */,
 				6F7AF77D21187D1C00F730B2 /* ATLBlockingQueue.m in Sources */,

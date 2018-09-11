@@ -2,8 +2,8 @@
 //  WKWebViewController.m
 //  AdjustWebBridgeTestApp
 //
-//  Created by Pedro on 06.08.18.
-//  Copyright © 2018 adjust. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 6th August 2018.
+//  Copyright © 2018 Adjust GmbH. All rights reserved.
 //
 
 #import "WKWebViewController.h"
@@ -11,17 +11,18 @@
 
 @interface WKWebViewController ()
 
-@property WebViewJavascriptBridge* bridge;
+@property WebViewJavascriptBridge *bridge;
 
 @end
-
 
 @implementation WKWebViewController
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (_bridge) { return; }
+    if (_bridge) {
+        return;
+    }
 
-    WKWebView* webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
+    WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
     [WebViewJavascriptBridge enableLogging];
@@ -32,7 +33,6 @@
         NSLog(@"testObjcCallback called: %@", data);
         responseCallback(@"Response from testObjcCallback");
     }];
-
     [_bridge callHandler:@"testJavascriptHandler" data:@{ @"foo":@"before ready" }];
 
     [self renderButtons:webView];
@@ -47,8 +47,8 @@
     NSLog(@"webViewDidFinishLoad");
 }
 
-- (void)renderButtons:(WKWebView*)webView {
-    UIFont* font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+- (void)renderButtons:(WKWebView *)webView {
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
 
     UIButton *callbackButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [callbackButton setTitle:@"Call handler" forState:UIControlStateNormal];
@@ -57,7 +57,7 @@
     callbackButton.frame = CGRectMake(10, 400, 100, 35);
     callbackButton.titleLabel.font = font;
 
-    UIButton* reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [reloadButton setTitle:@"Reload webview" forState:UIControlStateNormal];
     [reloadButton addTarget:webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
     [self.view insertSubview:reloadButton aboveSubview:webView];
@@ -72,9 +72,9 @@
     }];
 }
 
-- (void)loadExamplePage:(WKWebView*)webView {
-    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
-    NSString* appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
+- (void)loadExamplePage:(WKWebView *)webView {
+    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustTestApp-WebView" ofType:@"html"];
+    NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
     NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
     [webView loadHTMLString:appHtml baseURL:baseURL];
 }

@@ -21,7 +21,6 @@ var TestLibraryBridge = {
         console.log('TestLibraryBridge startTestSession');
         if (WebViewJavascriptBridge) {
             console.log('TestLibraryBridge startTestSession callHandler');
-
             localAdjustCommandExecutor = new AdjustCommandExecutor(localBaseUrl, localGdprUrl);
             // register objc->JS function for commands
             WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
@@ -71,7 +70,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         this.basePath = basePath;
         this.gdprPath = basePath;
     }
-
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstValue(params, 'timerInterval');
     }
@@ -111,8 +109,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                     testOptions.deleteState = true;
                     break;
                 case 'resetTest':
-                    //TODOD reset configs
-                    //TODOD reset events
+                    // TODO: reset configs
+                    // TODO: reset events
                     testOptions.timerIntervalInMilliseconds = -1;
                     testOptions.timerStartInMilliseconds = -1;
                     testOptions.sessionIntervalInMilliseconds = -1;
@@ -124,9 +122,9 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                     testOptions.gdprPath = null;
                     break;
                 case 'test':
-                    //TODO null configs
-                    //TODO null events
-                    //TODO null delegate
+                    // TODO: null configs
+                    // TODO: null events
+                    // TODO: null delegate
                     this.basePath = null;
                     this.gdprPath = null;
                     testOptions.timerIntervalInMilliseconds = -1;
@@ -207,7 +205,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var info2    = appSecretArray[2].toString();
         var info3    = appSecretArray[3].toString();
         var info4    = appSecretArray[4].toString();
-
         adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
     }
 
@@ -254,7 +251,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('creative', attribution.creative);
                 addInfoToSend('clickLabel', attribution.click_label);
                 addInfoToSend('adid', attribution.adid);
-
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
             }
         );
@@ -270,7 +266,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('timestamp', sessionSuccessResponseData.timestamp);
                 addInfoToSend('adid', sessionSuccessResponseData.adid);
                 addInfoToSend('jsonResponse', sessionSuccessResponseData.jsonResponse);
-
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
             }
         );
@@ -287,7 +282,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('adid', sessionFailureResponseData.adid);
                 addInfoToSend('willRetry', sessionFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', sessionFailureResponseData.jsonResponse);
-
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
             }
         );
@@ -305,7 +299,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('eventToken', eventSuccessResponseData.eventToken);
                 addInfoToSend('callbackId', eventSuccessResponseData.callbackId);
                 addInfoToSend('jsonResponse', eventSuccessResponseData.jsonResponse);
-
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
             }
         );
@@ -324,7 +317,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('callbackId', eventFailureResponseData.callbackId);
                 addInfoToSend('willRetry', eventFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', eventFailureResponseData.jsonResponse);
-
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
             }
         );
@@ -466,7 +458,6 @@ AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
     for (var i = 0; i < list.length; i = i+2){
         var key = list[i];
         var value = list[i+1];
-
         Adjust.addSessionCallbackParameter(key, value);
     }
 };
@@ -477,7 +468,6 @@ AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
     for (var i = 0; i < list.length; i = i+2){
         var key = list[i];
         var value = list[i+1];
-
         Adjust.addSessionPartnerParameter(key, value);
     }
 };
@@ -518,8 +508,7 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
     Adjust.appWillOpenUrl(deeplink);
 };
 
-//Util
-//======================
+// Util
 function getValues(params, key) {
     if (key in params) {
         return params[key];
