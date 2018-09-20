@@ -75,7 +75,7 @@ static NSString * fbAppIdStatic = nil;
 }
 
 + (NSString *)adjust_js {
-    static NSString * preprocessorJSCode = @__adj_js_func__(;(function() {
+    static NSString *preprocessorJSCode = @__adj_js_func__(;(function() {
         if (window.Adjust) {
             return;
         }

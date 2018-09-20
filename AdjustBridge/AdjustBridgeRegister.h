@@ -11,12 +11,12 @@
 
 @interface AdjustBridgeRegister : NSObject
 
++ (NSString *)AdjustBridge_js;
+
 - (id)initWithWebView:(id)webView;
 - (void)setWebViewDelegate:(id)webViewDelegate;
-
 - (void)callHandler:(NSString *)handlerName data:(id)data;
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
 - (void)augmentHybridWebView:(NSString *)fbAppId;
-+ (NSString *)AdjustBridge_js;
 
 @end

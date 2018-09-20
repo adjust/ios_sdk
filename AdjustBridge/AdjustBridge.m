@@ -20,13 +20,13 @@
 
 @property BOOL openDeferredDeeplink;
 @property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
-@property (nonatomic, strong) NSMutableDictionary* fbPixelMapping;
 @property (nonatomic, copy) NSString *attributionCallbackName;
 @property (nonatomic, copy) NSString *eventSuccessCallbackName;
 @property (nonatomic, copy) NSString *eventFailureCallbackName;
 @property (nonatomic, copy) NSString *sessionSuccessCallbackName;
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
+@property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
 
 @end
 
@@ -75,7 +75,7 @@
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
 
-    NSString * jsonResponse = [self convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
+    NSString *jsonResponse = [self convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
@@ -97,7 +97,7 @@
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
     [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
 
-    NSString * jsonResponse = [self convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
+    NSString *jsonResponse = [self convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
@@ -116,7 +116,7 @@
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
 
-    NSString * jsonResponse = [self convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
+    NSString *jsonResponse = [self convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
@@ -136,7 +136,7 @@
     [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
     [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
 
-    NSString * jsonResponse = [self convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
+    NSString *jsonResponse = [self convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
@@ -217,12 +217,12 @@
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
-        NSString * attributionCallback = [data objectForKey:@"attributionCallback"];
-        NSString * eventSuccessCallback = [data objectForKey:@"eventSuccessCallback"];
-        NSString * eventFailureCallback = [data objectForKey:@"eventFailureCallback"];
-        NSString * sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
-        NSString * sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
-        NSString * deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
+        NSString *attributionCallback = [data objectForKey:@"attributionCallback"];
+        NSString *eventSuccessCallback = [data objectForKey:@"eventSuccessCallback"];
+        NSString *eventFailureCallback = [data objectForKey:@"eventFailureCallback"];
+        NSString *sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
+        NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
+        NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -306,14 +306,13 @@
         }
 
         // Set self as delegate if any callback is configured.
-        // Change to swifle the methods in the future.
+        // Change to swizzle the methods in the future.
         if (self.attributionCallbackName != nil
             || self.eventSuccessCallbackName != nil
             || self.eventFailureCallbackName != nil
             || self.sessionSuccessCallbackName != nil
             || self.sessionFailureCallbackName != nil
-            || self.deferredDeeplinkCallbackName != nil)
-        {
+            || self.deferredDeeplinkCallbackName != nil) {
             [adjustConfig setDelegate:self];
         }
 
@@ -418,6 +417,7 @@
         if (responseCallback == nil) {
             return;
         }
+
         ADJAttribution *attribution = [Adjust attribution];
         NSDictionary *attributionDictionary = nil;
         if (attribution != nil) {
@@ -483,7 +483,7 @@
         NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
         NSNumber *iAdFrameworkEnabled = [data objectForKey:@"iAdFrameworkEnabled"];
 
-        AdjustTestOptions * testOptions = [[AdjustTestOptions alloc] init];
+        AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
 
         if ([self isFieldValid:baseUrl]) {
             testOptions.baseUrl = baseUrl;
@@ -554,7 +554,6 @@
         }
 
         id customData = [data objectForKey:@"customData"];
-
         [fbPixelEvent addPartnerParameter:@"_fb_pixel_referral_id" value:pixelID];
         // [fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
         if ([customData isKindOfClass:[NSString class]]) {
@@ -589,10 +588,10 @@
 
 - (NSString *)getFbAppId {
     NSString *facebookLoggingOverrideAppID = [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
-
     if (facebookLoggingOverrideAppID != nil) {
         return facebookLoggingOverrideAppID;
     }
+
     return [self getValueFromBundleByKey:@"FacebookAppID"];
 }
 
@@ -604,6 +603,7 @@
     if (self.fbPixelMapping == nil) {
         return nil;
     }
+
     return [self.fbPixelMapping objectForKey:fbPixelEventName];
 }
 
@@ -611,11 +611,11 @@
     if (jsonDictionary == nil) {
         return nil;
     }
+
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];
-
     if (!jsonData) {
         NSLog(@"Unable to conver NSDictionary with JSON response to JSON string: %@", error);
         return nil;
