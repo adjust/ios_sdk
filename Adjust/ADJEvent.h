@@ -80,7 +80,7 @@ NS_SWIFT_NAME(Event)
  *       top of that you can add callback parameters to the following method that
  *       will be forwarded to these callbacks.
  */
-- (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value NS_SWIFT_NAME(addCallbackParameter(key:value:));
 
 /**
  * @brief Add a key-pair to be fowarded to a partner.
@@ -88,7 +88,7 @@ NS_SWIFT_NAME(Event)
  * @param key String key to be fowarded to the partner.
  * @param value String value of the key to be fowarded to the partner.
  */
-- (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value NS_SWIFT_NAME(addPartnerParameter(key:value:));
 
 /**
  * @brief Set the revenue and associated currency of the event.
@@ -100,7 +100,7 @@ NS_SWIFT_NAME(Event)
  * @note The event can contain some revenue. The amount revenue is measured in units.
  *       It must include a currency in the ISO 4217 format.
  */
-- (void)setRevenue:(double)amount currency:(nonnull NSString *)currency;
+- (void)setRevenue:(double)amount currency:(nonnull NSString *)currency NS_SWIFT_NAME(setRevenue(amount:currency:));
 
 /**
  * @brief Set the transaction ID of a In-App Purchases to avoid revenue duplications.

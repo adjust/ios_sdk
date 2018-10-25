@@ -30,30 +30,30 @@ class ViewControllerSwift: UIViewController {
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
         let event = Event(eventToken: "g3mfiw")
 
-        Adjust.trackEvent(event)
+        Adjust.track(event: event)
     }
 
     @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
         let event = Event(eventToken: "a4fd35")
-        event.setRevenue(0.99, currency: "EUR")
+        event.setRevenue(amount: 0.99, currency: "EUR")
 
-        Adjust.trackEvent(event)
+        Adjust.track(event: event)
     }
 
     @IBAction func btnTrackEventCallbackTapped(_sender: UIButton) {
         let event = Event(eventToken: "34vgg9")
-        event.addCallbackParameter("foo", value: "bar")
-        event.addCallbackParameter("key", value: "value")
+        event.addCallbackParameter(key: "foo", value: "bar")
+        event.addCallbackParameter(key: "key", value: "value")
 
-        Adjust.trackEvent(event)
+        Adjust.track(event: event)
     }
 
     @IBAction func btnTrackEventPartnerTapped(_sender: UIButton) {
         let event = Event(eventToken: "w788qs")
-        event.addPartnerParameter("foo", value: "bar")
-        event.addPartnerParameter("key", value: "value")
+        event.addPartnerParameter(key: "foo", value: "bar")
+        event.addPartnerParameter(key: "key", value: "value")
 
-        Adjust.trackEvent(event)
+        Adjust.track(event: event)
     }
 
     @IBAction func btnEnableOfflineModeTapped(_sender: UIButton) {
@@ -76,9 +76,9 @@ class ViewControllerSwift: UIViewController {
         let isSDKEnabled = Adjust.isEnabled()
 
         if (isSDKEnabled) {
-            NSLog("SDK is enabled!")
+            print("SDK is enabled!")
         } else {
-            NSLog("SDK is disabled")
+            print("SDK is disabled")
         }
     }
 }

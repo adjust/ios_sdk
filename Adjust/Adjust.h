@@ -48,7 +48,7 @@
  *                     be found it in your dashboard at http://adjust.com and should always
  *                     be 12 characters long.
  */
-+ (void)appDidLaunch:(nonnull ADJConfig *)adjustConfig;
++ (void)appDidLaunch:(nonnull ADJConfig *)adjustConfig NS_SWIFT_NAME(appDidLaunch(config:));
 
 /**
  * @brief Tell Adjust that a particular event has happened.
@@ -59,7 +59,7 @@
  *              that is created in the dashboard at http://adjust.com and should be six
  *              characters long.
  */
-+ (void)trackEvent:(nonnull ADJEvent *)event;
++ (void)trackEvent:(nonnull ADJEvent *)event NS_SWIFT_NAME(track(event:));
 
 /**
  * @brief Tell adjust that the application resumed.
@@ -154,7 +154,7 @@
  *
  * @return URL object in custom URL scheme style prefixed with given scheme name.
  */
-+ (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
++ (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme NS_SWIFT_NAME(convertUniversalLink(url:scheme:));
 
 /**
  * @brief Tell the adjust SDK to stop waiting for delayed initialisation timer to complete but rather to start
@@ -177,7 +177,7 @@
  * @param key Default callback parameter key.
  * @param value Default callback parameter value.
  */
-+ (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
++ (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value NS_SWIFT_NAME(addSessionCallbackParameter(key:value:));
 
 /**
  * @brief Add default partner parameter key-value pair which is going to be sent with each tracked session.
@@ -185,21 +185,21 @@
  * @param key Default partner parameter key.
  * @param value Default partner parameter value.
  */
-+ (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
++ (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value NS_SWIFT_NAME(addSessionPartnerParameter(key:value:));
 
 /**
  * @brief Remove default callback parameter from the session packages.
  *
  * @param key Default callback parameter key.
  */
-+ (void)removeSessionCallbackParameter:(nonnull NSString *)key;
++ (void)removeSessionCallbackParameter:(nonnull NSString *)key NS_SWIFT_NAME(removeSessionCallbackParameter(key:));
 
 /**
  * @brief Remove default partner parameter from the session packages.
  *
  * @param key Default partner parameter key.
  */
-+ (void)removeSessionPartnerParameter:(nonnull NSString *)key;
++ (void)removeSessionPartnerParameter:(nonnull NSString *)key NS_SWIFT_NAME(removeSessionPartnerParameter(key:));
 
 /**
  * @brief Remove all default callback parameters from the session packages.
