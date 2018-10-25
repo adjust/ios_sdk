@@ -11,6 +11,7 @@
 /**
  * @brief Adjust event class.
  */
+NS_SWIFT_NAME(Event)
 @interface ADJEvent : NSObject<NSCopying>
 
 /**

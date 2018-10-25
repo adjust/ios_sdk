@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_SWIFT_NAME(SessionSuccess)
 @interface ADJSessionSuccess : NSObject <NSCopying>
 
 /**

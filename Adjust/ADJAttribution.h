@@ -11,6 +11,7 @@
 /**
  * @brief Adjust attribution object.
  */
+NS_SWIFT_NAME(Attribution)
 @interface ADJAttribution : NSObject <NSCoding, NSCopying>
 
 /**

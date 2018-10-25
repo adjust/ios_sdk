@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, ADJSessionType) {
     ADJSessionTypeSession       = 1,
     ADJSessionTypeSubSession    = 2,
     ADJSessionTypeTimeTravel    = 3,
     ADJSessionTypeNonSession    = 4
-} ADJSessionType;
+};
 
 @interface ADJSessionState : NSObject
 

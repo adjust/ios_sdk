@@ -80,6 +80,7 @@
 /**
  * @brief Adjust configuration object class.
  */
+NS_SWIFT_NAME(Config)
 @interface ADJConfig : NSObject<NSCopying>
 
 /**

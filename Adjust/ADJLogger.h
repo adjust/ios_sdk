@@ -7,7 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, ADJLogLevel) {
     ADJLogLevelVerbose  = 1,
     ADJLogLevelDebug    = 2,
     ADJLogLevelInfo     = 3,
@@ -15,11 +15,12 @@ typedef enum {
     ADJLogLevelError    = 5,
     ADJLogLevelAssert   = 6,
     ADJLogLevelSuppress = 7
-} ADJLogLevel;
+} NS_SWIFT_NAME(LogLevel) ;
 
 /**
  * @brief Adjust logger protocol.
  */
+NS_SWIFT_NAME(LoggerProtocol)
 @protocol ADJLogger
 
 /**
@@ -70,6 +71,7 @@ typedef enum {
 /**
  * @brief Adjust logger class.
  */
+NS_SWIFT_NAME(Logger)
 @interface ADJLogger : NSObject<ADJLogger>
 
 /**

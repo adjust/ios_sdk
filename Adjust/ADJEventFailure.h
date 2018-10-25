@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_SWIFT_NAME(EventFailure)
 @interface ADJEventFailure : NSObject
 
 /**

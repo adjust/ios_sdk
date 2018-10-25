@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, ADJSessionResponseType) {
     ADJSessionResponseTypeNil = 0,
     ADJSessionResponseTypeConnError = 1,
     ADJSessionResponseTypeWrongJson = 2,
     ADJSessionResponseTypeEmptyJson = 3,
     ADJSessionResponseTypeServerError = 4,
     ADJSessionResponseTypeMessage = 5,
-} ADJSessionResponseType;
+};
 
 @interface NSURLSession(NSURLDataWithRequestMocking)
 
