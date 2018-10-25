@@ -62,9 +62,9 @@ NS_SWIFT_NAME(Attribution)
  * 
  * @return Adjust attribution object.
  */
-+ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
++ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary<NSString *, NSString *> *)jsonDict adid:(nonnull NSString *)adid NS_SWIFT_NAME(data(jsonDict:adid:));
 
-- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
+- (nullable id)initWithJsonDict:(nonnull NSDictionary<NSString *, NSString *> *)jsonDict adid:(nonnull NSString *)adid;
 
 /**
  * @brief Check if given attribution equals current one.
@@ -80,6 +80,6 @@ NS_SWIFT_NAME(Attribution)
  * 
  * @return Dictionary containing attribution as key-value pairs.
  */
-- (nullable NSDictionary *)dictionary;
+- (nonnull NSDictionary<NSString *, NSString *> *)dictionary;
 
 @end

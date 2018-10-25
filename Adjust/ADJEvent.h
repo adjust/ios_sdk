@@ -47,12 +47,12 @@ NS_SWIFT_NAME(Event)
 /**
  * @brief List of partner parameters.
  */
-@property (nonatomic, readonly, nonnull) NSDictionary *partnerParameters;
+@property (nonatomic, readonly, nonnull) NSDictionary<NSString *, NSString *> *partnerParameters;
 
 /**
  * @brief List of callback parameters.
  */
-@property (nonatomic, readonly, nonnull) NSDictionary *callbackParameters;
+@property (nonatomic, readonly, nonnull) NSDictionary<NSString *, NSString *> *callbackParameters;
 
 /**
  * @brief Is the given receipt empty.
@@ -65,9 +65,9 @@ NS_SWIFT_NAME(Event)
  * @param eventToken Event token that is created in the dashboard
  *                   at http://adjust.com and should be six characters long.
  */
-+ (nullable ADJEvent *)eventWithEventToken:(nonnull NSString *)eventToken;
++ (nonnull ADJEvent *)eventWithEventToken:(nonnull NSString *)eventToken;
 
-- (nullable id)initWithEventToken:(nonnull NSString *)eventToken;
+- (nonnull id)initWithEventToken:(nonnull NSString *)eventToken;
 
 /**
  * @brief Add a key-pair to a callback URL.
