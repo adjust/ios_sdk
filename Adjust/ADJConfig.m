@@ -32,7 +32,7 @@
     return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 }
 
-- (id)initWithAppToken:(NSString *)appToken
+- (instancetype)initWithAppToken:(NSString *)appToken
            environment:(NSString *)environment
 {
     return [self initWithAppToken:appToken
@@ -40,7 +40,7 @@
              allowSuppressLogLevel:NO];
 }
 
-- (id)initWithAppToken:(NSString *)appToken
+- (instancetype)initWithAppToken:(NSString *)appToken
            environment:(NSString *)environment
   allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
 {

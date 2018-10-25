@@ -188,10 +188,10 @@ NS_SWIFT_NAME(Config)
  *
  * @returns Adjust configuration object.
  */
-+ (nullable ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
-                               environment:(nonnull NSString *)environment;
++ (nonnull ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
+                              environment:(nonnull NSString *)environment;
 
-- (nullable id)initWithAppToken:(nonnull NSString *)appToken
+- (nonnull instancetype)initWithAppToken:(nonnull NSString *)appToken
                     environment:(nonnull NSString *)environment;
 
 /**
@@ -209,11 +209,11 @@ NS_SWIFT_NAME(Config)
  *
  * @returns Adjust configuration object.
  */
-+ (nullable ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
++ (nonnull ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
                                environment:(nonnull NSString *)environment
                      allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
-- (nullable id)initWithAppToken:(nonnull NSString *)appToken
+- (nonnull instancetype)initWithAppToken:(nonnull NSString *)appToken
                     environment:(nonnull NSString *)environment
           allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
