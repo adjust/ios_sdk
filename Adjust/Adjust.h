@@ -54,7 +54,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  *                     be found it in your dashboard at http://adjust.com and should always
  *                     be 12 characters long.
  */
-+ (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
++ (void)appDidLaunch:(nonnull ADJConfig *)adjustConfig;
 
 /**
  * @brief Tell Adjust that a particular event has happened.
@@ -65,7 +65,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  *              that is created in the dashboard at http://adjust.com and should be six
  *              characters long.
  */
-+ (void)trackEvent:(nullable ADJEvent *)event;
++ (void)trackEvent:(nonnull ADJEvent *)event;
 
 /**
  * @brief Tell adjust that the application resumed.
@@ -225,7 +225,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * Obtain singleton Adjust object.
  */
-+ (nullable id)getInstance;
++ (nonnull instancetype)getInstance;
 
 + (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
 
