@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Put the SDK in offline mode.
         // Adjust.setOfflineMode(true);
-        
+
         // Disable the SDK
         // Adjust.setEnabled(false);
 
