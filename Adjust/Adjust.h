@@ -29,12 +29,6 @@
 @end
 
 /**
- * Constants for our supported tracking environments
- */
-extern NSString * __nonnull const ADJEnvironmentSandbox;
-extern NSString * __nonnull const ADJEnvironmentProduction;
-
-/**
  * @brief The main interface to Adjust.
  *
  * @note Use the methods of this class to tell Adjust about the usage of your app.

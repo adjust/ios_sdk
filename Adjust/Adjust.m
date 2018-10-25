@@ -18,9 +18,6 @@
 // See README for details: https://github.com/adjust/ios_sdk/blob/master/README.md
 #endif
 
-NSString * const ADJEnvironmentSandbox      = @"sandbox";
-NSString * const ADJEnvironmentProduction   = @"production";
-
 @implementation AdjustTestOptions
 @end
 

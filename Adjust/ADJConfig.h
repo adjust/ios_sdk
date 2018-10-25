@@ -16,6 +16,13 @@
 #import "ADJSessionFailure.h"
 
 /**
+ * Constants for our supported tracking environments
+ */
+typedef NSString *const ADJEnvironment NS_SWIFT_NAME(Environment) NS_EXTENSIBLE_STRING_ENUM;
+FOUNDATION_EXPORT ADJEnvironment __nonnull const ADJEnvironmentSandbox;
+FOUNDATION_EXPORT ADJEnvironment __nonnull const ADJEnvironmentProduction;
+
+/**
  * @brief Optional delegate that will get informed about tracking results.
  */
 @protocol AdjustDelegate
@@ -189,10 +196,10 @@ NS_SWIFT_NAME(Config)
  * @returns Adjust configuration object.
  */
 + (nonnull ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
-                              environment:(nonnull NSString *)environment;
+                              environment:(nonnull ADJEnvironment)environment;
 
 - (nonnull instancetype)initWithAppToken:(nonnull NSString *)appToken
-                    environment:(nonnull NSString *)environment;
+                    environment:(nonnull ADJEnvironment)environment;
 
 /**
  * @brief Configuration object for the initialization of the Adjust SDK.
@@ -210,11 +217,11 @@ NS_SWIFT_NAME(Config)
  * @returns Adjust configuration object.
  */
 + (nonnull ADJConfig *)configWithAppToken:(nonnull NSString *)appToken
-                               environment:(nonnull NSString *)environment
+                               environment:(nonnull ADJEnvironment)environment
                      allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
 - (nonnull instancetype)initWithAppToken:(nonnull NSString *)appToken
-                    environment:(nonnull NSString *)environment
+                    environment:(nonnull ADJEnvironment)environment
           allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
 /**

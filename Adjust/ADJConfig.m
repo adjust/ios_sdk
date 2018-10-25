@@ -12,6 +12,9 @@
 #import "ADJUtil.h"
 #import "Adjust.h"
 
+ADJEnvironment ADJEnvironmentSandbox      = @"sandbox";
+ADJEnvironment ADJEnvironmentProduction   = @"production";
+
 @interface ADJConfig()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
@@ -21,19 +24,19 @@
 @implementation ADJConfig
 
 + (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment {
+                      environment:(ADJEnvironment)environment {
     return [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
 }
 
 + (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment
+                      environment:(ADJEnvironment)environment
              allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
 {
     return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 }
 
 - (instancetype)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment
+           environment:(ADJEnvironment)environment
 {
     return [self initWithAppToken:appToken
                       environment:environment
@@ -41,7 +44,7 @@
 }
 
 - (instancetype)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment
+           environment:(ADJEnvironment)environment
   allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
 {
     self = [super init];
@@ -71,7 +74,7 @@
 }
 
 - (void)setLogLevel:(ADJLogLevel)logLevel
-        environment:(NSString *)environment
+        environment:(ADJEnvironment)environment
 {
     [self.logger setLogLevel:logLevel
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
