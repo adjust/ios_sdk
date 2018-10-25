@@ -28,30 +28,30 @@ class ViewControllerSwift: UIViewController {
     }
 
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "g3mfiw");
+        let event = Event(eventToken: "g3mfiw");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "a4fd35")
-        event?.setRevenue(0.99, currency: "EUR");
+        let event = Event(eventToken: "a4fd35")
+        event.setRevenue(0.99, currency: "EUR");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventCallbackTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "34vgg9");
-        event?.addCallbackParameter("foo", value: "bar");
-        event?.addCallbackParameter("key", value: "value");
+        let event = Event(eventToken: "34vgg9");
+        event.addCallbackParameter("foo", value: "bar");
+        event.addCallbackParameter("key", value: "value");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventPartnerTapped(_sender: UIButton) {
-        let event = ADJEvent(eventToken: "w788qs");
-        event?.addPartnerParameter("foo", value: "bar");
-        event?.addPartnerParameter("key", value: "value");
+        let event = Event(eventToken: "w788qs");
+        event.addPartnerParameter("foo", value: "bar");
+        event.addPartnerParameter("key", value: "value");
 
         Adjust.trackEvent(event);
     }
