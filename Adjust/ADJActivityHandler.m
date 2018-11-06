@@ -8,7 +8,6 @@
 
 #import "ADJActivityPackage.h"
 #import "ADJActivityHandler.h"
-#import "ADJActivityState.h"
 #import "ADJPackageBuilder.h"
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
@@ -20,7 +19,6 @@
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
-#import "ADJSessionParameters.h"
 #import "ADJUserDefaults.h"
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
@@ -727,16 +725,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         [selfI updatePackagesI:selfI];
      }
 
-    double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                             initWithDeviceInfo:selfI.deviceInfo
-                                             activityState:selfI.activityState
-                                             config:selfI.adjustConfig
-                                             sessionParameters:selfI.sessionParameters
-                                             createdAt:now];
-    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
-                                                              withAttributionPackage:attributionPackage
                                                                         startsSending:[selfI toSendI:selfI
                                                                                  sdkClickHandlerOnly:NO]];
 

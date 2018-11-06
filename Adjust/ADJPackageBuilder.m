@@ -100,8 +100,8 @@
     return clickPackage;
 }
 
-- (ADJActivityPackage *)buildAttributionPackage {
-    NSMutableDictionary *parameters = [self getAttributionParameters];
+- (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy {
+    NSMutableDictionary *parameters = [self getAttributionParameters:initiatedBy];
     ADJActivityPackage *attributionPackage = [self defaultActivityPackage];
     attributionPackage.path = @"/attribution";
     attributionPackage.activityKind = ADJActivityKindAttribution;
@@ -398,7 +398,7 @@
     return parameters;
 }
 
-- (NSMutableDictionary *)getAttributionParameters {
+- (NSMutableDictionary *)getAttributionParameters:(NSString *)initiatedBy {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -409,6 +409,7 @@
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
+    [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
 

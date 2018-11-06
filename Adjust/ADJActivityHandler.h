@@ -8,6 +8,9 @@
 
 #import "Adjust.h"
 #import "ADJResponseData.h"
+#import "ADJActivityState.h"
+#import "ADJDeviceInfo.h"
+#import "ADJSessionParameters.h"
 
 @interface ADJInternalState : NSObject
 
@@ -83,7 +86,6 @@
                   retriesLeft:(int)retriesLeft;
 
 - (void)setOfflineMode:(BOOL)offline;
-- (ADJInternalState*) internalState;
 - (void)sendFirstPackages;
 
 - (void)addSessionCallbackParameter:(NSString *)key
@@ -96,6 +98,11 @@
 - (void)resetSessionPartnerParameters;
 - (NSString *)getBasePath;
 - (NSString *)getGdprPath;
+
+- (ADJDeviceInfo *)deviceInfo;
+- (ADJActivityState *)activityState;
+- (ADJConfig *)adjustConfig;
+- (ADJSessionParameters *)sessionParameters;
 
 - (void)teardown;
 + (void)deleteState;

@@ -43,7 +43,7 @@
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 
-- (ADJActivityPackage *)buildAttributionPackage;
+- (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;
 
 - (ADJActivityPackage *)buildGdprPackage;
 
