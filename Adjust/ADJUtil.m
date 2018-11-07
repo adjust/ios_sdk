@@ -1286,6 +1286,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     if ([[url absoluteString] length] == 0) {
         return NO;
     }
+    if (excludedDeeplinkRegex == nil) {
+        [ADJAdjustFactory.logger error:@"Excluded deep link regex not correctly configured"];
+        return NO;
+    }
 
     NSString *urlString = [url absoluteString];
     NSArray<NSTextCheckingResult *> *matches = [excludedDeeplinkRegex matchesInString:urlString
