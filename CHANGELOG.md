@@ -1,3 +1,9 @@
+### Version 4.16.0 (6th November 2018)
+#### Added
+- Added sending of UUID string with each attribution request.
+
+---
+
 ### Version 4.15.0 (31st August 2018)
 #### Added
 - Added `setCallbackId` method on `ADJEvent` object for users to set custom ID on event object which will later be reported in event success/failure callbacks.
