@@ -28,7 +28,6 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkWebBridgeVersionString[];
 #import <AdjustSdkWebBridge/ADJSessionFailure.h>
 
 // Exposing entire WebViewJavascriptBridge framework
-#import <AdjustSdkWebBridge/AdjustBridge_JS.h>
 #import <AdjustSdkWebBridge/WebViewJavascriptBridge.h>
 #import <AdjustSdkWebBridge/WebViewJavascriptBridge_JS.h>
 #import <AdjustSdkWebBridge/WebViewJavascriptBridgeBase.h>

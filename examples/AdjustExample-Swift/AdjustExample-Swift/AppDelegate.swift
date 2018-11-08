@@ -45,24 +45,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         return true
     }
 
-    func adjustAttributionChanged(_attribution: ADJAttribution) {
-        NSLog("adjust attribution %@", _attribution)
+    func adjustAttributionChanged(_ attribution: ADJAttribution?) {
+        NSLog("adjust attribution %@", attribution ?? "")
     }
 
-    func adjustEventTrackingSucceeded(_eventSuccessResponseData: ADJEventSuccess) {
-        NSLog("adjust event success %@", _eventSuccessResponseData)
+    func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?) {
+        NSLog("adjust event success %@", eventSuccessResponseData ?? "")
     }
 
-    func adjustEventTrackingFailed(_eventFailureResponseData: ADJEventFailure) {
-        NSLog("adjust event failure %@", _eventFailureResponseData)
+    func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?) {
+        NSLog("adjust event failure %@", eventFailureResponseData ?? "")
     }
 
-    func adjustSessionTrackingSucceeded(_sessionSuccessResponseData: ADJSessionSuccess) {
-        NSLog("adjust session success %@", _sessionSuccessResponseData)
+    func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?) {
+        NSLog("adjust session success %@", sessionSuccessResponseData ?? "")
     }
 
-    func adjustSessionTrackingFailed(_sessionFailureResponseData: ADJSessionFailure) {
-        NSLog("adjust session failure %@", _sessionFailureResponseData)
+    func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?) {
+        NSLog("adjust session failure %@", sessionFailureResponseData ?? "")
     }
 
     @objc func adjustDeeplinkResponse(_deeplink: NSURL!) -> Bool {

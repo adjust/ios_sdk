@@ -32,6 +32,7 @@ static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
+static NSRegularExpression *excludedDeeplinkRegex = nil;
 static NSURLSessionConfiguration *urlSessionConfiguration = nil;
 
 #if !TARGET_OS_TV
@@ -39,13 +40,14 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.15.0";
+static NSString * const kClientSdk                  = @"ios4.16.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern       = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kOptionalRedirectPattern    = @"adjust_redirect=[^&#]*";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.adj\\.st/?(.*)";
+static NSString * const kExcludedDeeplinksPattern   = @"^(fb|vk)[0-9]{5,}[^:]*://authorize.*access_token=.*";
 static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
 @implementation ADJUtil
@@ -59,6 +61,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeSecondsNumberFormatter];
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
+    [self initializeExcludedDeeplinkRegex];
     [self initializeUrlSessionConfiguration];
     [self initializeReachability];
 #if !TARGET_OS_TV
@@ -114,6 +117,18 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return;
     }
     optionalRedirectRegex = regex;
+}
+
++ (void)initializeExcludedDeeplinkRegex {
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kExcludedDeeplinksPattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    if ([ADJUtil isNotNull:error]) {
+        [ADJAdjustFactory.logger error:@"Excluded deep link regex rule error (%@)", [error description]];
+        return;
+    }
+    excludedDeeplinkRegex = regex;
 }
 
 + (void)initializeSecondsNumberFormatter {
@@ -1262,6 +1277,30 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         return nil;
     }
     return [reachability currentReachabilityFlags];
+}
+
++ (BOOL)isDeeplinkValid:(NSURL *)url {
+    if (url == nil) {
+        return NO;
+    }
+    if ([[url absoluteString] length] == 0) {
+        return NO;
+    }
+    if (excludedDeeplinkRegex == nil) {
+        [ADJAdjustFactory.logger error:@"Excluded deep link regex not correctly configured"];
+        return NO;
+    }
+
+    NSString *urlString = [url absoluteString];
+    NSArray<NSTextCheckingResult *> *matches = [excludedDeeplinkRegex matchesInString:urlString
+                                                                              options:0
+                                                                                range:NSMakeRange(0, [urlString length])];
+    if ([matches count] > 0) {
+        [ADJAdjustFactory.logger debug:[NSString stringWithFormat:@"Deep link (%@) processing skipped", urlString]];
+        return NO;
+    }
+
+    return YES;
 }
 
 #if !TARGET_OS_TV

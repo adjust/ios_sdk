@@ -12,6 +12,7 @@
 #import "ADJActivityHandler.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJTimerOnce.h"
+#import "ADJPackageBuilder.h"
 
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 static NSString   * const kAttributionTimerName   = @"Attribution timer";
@@ -22,25 +23,22 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) ADJTimerOnce *attributionTimer;
-@property (nonatomic, strong) ADJActivityPackage * attributionPackage;
 @property (atomic, assign) BOOL paused;
 @property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *lastInitiatedBy;
 
 @end
 
 @implementation ADJAttributionHandler
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                           startsSending:(BOOL)startsSending;
 {
     return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
-                                           withAttributionPackage:attributionPackage
                                                     startsSending:startsSending];
 }
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage
                 startsSending:(BOOL)startsSending;
 {
     self = [super init];
@@ -49,7 +47,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
-    self.attributionPackage = attributionPackage;
     self.paused = !startsSending;
     self.basePath = [activityHandler getBasePath];
     __weak __typeof__(self) weakSelf = self;
@@ -97,9 +94,9 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJAttributionHandler* selfI) {
+                         selfI.lastInitiatedBy = @"sdk";
                          [selfI waitRequestAttributionWithDelayI:selfI
-                                               milliSecondsDelay:0
-                                                isSdkAskingForIt:YES];
+                                               milliSecondsDelay:0];
 
                      }];
 }
@@ -147,9 +144,9 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     if (timerMilliseconds != nil) {
         [selfI.activityHandler setAskingAttribution:YES];
 
+        selfI.lastInitiatedBy = @"backend";
         [selfI waitRequestAttributionWithDelayI:selfI
-                              milliSecondsDelay:[timerMilliseconds intValue]
-                               isSdkAskingForIt:NO];
+                              milliSecondsDelay:[timerMilliseconds intValue]];
 
         return;
     }
@@ -188,14 +185,17 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
         [selfI.logger debug:@"Attribution request won't be fired for forgotten user"];
         return;
     }
-    [selfI.logger verbose:@"%@", selfI.attributionPackage.extendedString];
+
+    ADJActivityPackage* attributionPackage = [selfI buildAndGetAttributionPackageI:selfI];
+
+    [selfI.logger verbose:@"%@", attributionPackage.extendedString];
 
     NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
 
     [ADJUtil sendGetRequest:baseUrl
                    basePath:selfI.basePath
          prefixErrorMessage:@"Failed to get attribution"
-            activityPackage:selfI.attributionPackage
+            activityPackage:attributionPackage
         responseDataHandler:^(ADJResponseData * responseData)
      {
          // Check if any package response contains information that user has opted out.
@@ -212,18 +212,11 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 }
 
 - (void)waitRequestAttributionWithDelayI:(ADJAttributionHandler*)selfI
-                       milliSecondsDelay:(int)milliSecondsDelay
-                        isSdkAskingForIt:(BOOL)isSdkAsking {
+                       milliSecondsDelay:(int)milliSecondsDelay {
     NSTimeInterval secondsDelay = milliSecondsDelay / 1000;
     NSTimeInterval nextAskIn = [selfI.attributionTimer fireIn];
     if (nextAskIn > secondsDelay) {
         return;
-    }
-
-    if (isSdkAsking) {
-        [selfI.attributionPackage.parameters setObject:@"sdk" forKey:@"initiated_by"];
-    } else {
-        [selfI.attributionPackage.parameters setObject:@"backend" forKey:@"initiated_by"];
     }
 
     if (milliSecondsDelay > 0) {
@@ -232,6 +225,23 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 
     // set the new time the timer will fire in
     [selfI.attributionTimer startIn:secondsDelay];
+}
+
+- (ADJActivityPackage *)buildAndGetAttributionPackageI:(ADJAttributionHandler*)selfI
+{
+    double now = [NSDate.date timeIntervalSince1970];
+
+    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
+                                             initWithDeviceInfo:selfI.activityHandler.deviceInfo
+                                             activityState:selfI.activityHandler.activityState
+                                             config:selfI.activityHandler.adjustConfig
+                                             sessionParameters:selfI.activityHandler.sessionParameters
+                                             createdAt:now];
+    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];
+
+    selfI.lastInitiatedBy = nil;
+
+    return attributionPackage;
 }
 
 #pragma mark - private
@@ -246,7 +256,6 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     self.activityHandler = nil;
     self.logger = nil;
     self.attributionTimer = nil;
-    self.attributionPackage = nil;
 }
 
 @end

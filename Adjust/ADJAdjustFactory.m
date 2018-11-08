@@ -114,17 +114,14 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                           withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                                     startsSending:(BOOL)startsSending
 {
     if (internalAttributionHandler == nil) {
         return [ADJAttributionHandler handlerWithActivityHandler:activityHandler
-                                          withAttributionPackage:attributionPackage
                                                    startsSending:startsSending];
     }
 
     return [internalAttributionHandler initWithActivityHandler:activityHandler
-                                        withAttributionPackage:attributionPackage
                                                  startsSending:startsSending];
 }
 
