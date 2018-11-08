@@ -775,12 +775,10 @@
 		9D0E2E5C210B575600133B4F /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
-		9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge_JS.m; sourceTree = "<group>"; };
 		9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
 		9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridgeBase.h; sourceTree = "<group>"; };
-		9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge_JS.h; sourceTree = "<group>"; };
 		9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS.m; sourceTree = "<group>"; };
 		9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
@@ -1436,8 +1434,6 @@
 		9D0E2E5E210B575600133B4F /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
-				9D0E2E65210B575600133B4F /* AdjustBridge_JS.h */,
-				9D0E2E60210B575600133B4F /* AdjustBridge_JS.m */,
 				9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */,
 				9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */,
 				9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */,
