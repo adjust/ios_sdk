@@ -13,7 +13,6 @@
 @protocol ADJAttributionHandler
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-       withAttributionPackage:(ADJActivityPackage *) attributionPackage
                 startsSending:(BOOL)startsSending;
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
@@ -35,7 +34,6 @@
 @interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
 
 + (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                 withAttributionPackage:(ADJActivityPackage *) attributionPackage
                                           startsSending:(BOOL)startsSending;
 
 @end

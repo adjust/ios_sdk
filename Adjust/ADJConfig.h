@@ -26,6 +26,7 @@ FOUNDATION_EXPORT ADJEnvironment __nonnull const ADJEnvironmentProduction;
  * @brief Optional delegate that will get informed about tracking results.
  */
 @protocol AdjustDelegate
+
 @optional
 
 /**

@@ -8,7 +8,6 @@
 
 #import "ADJActivityPackage.h"
 #import "ADJActivityHandler.h"
-#import "ADJActivityState.h"
 #import "ADJPackageBuilder.h"
 #import "ADJPackageHandler.h"
 #import "ADJLogger.h"
@@ -20,7 +19,6 @@
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
-#import "ADJSessionParameters.h"
 #import "ADJUserDefaults.h"
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
@@ -727,16 +725,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         [selfI updatePackagesI:selfI];
      }
 
-    double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                             initWithDeviceInfo:selfI.deviceInfo
-                                             activityState:selfI.activityState
-                                             config:selfI.adjustConfig
-                                             sessionParameters:selfI.sessionParameters
-                                             createdAt:now];
-    ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage];
     selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
-                                                              withAttributionPackage:attributionPackage
                                                                         startsSending:[selfI toSendI:selfI
                                                                                  sdkClickHandlerOnly:NO]];
 
@@ -1258,40 +1247,35 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
                     url:(NSURL *)url
               clickTime:(NSDate *)clickTime {
-    if ([ADJUtil isNull:url]) {
-        return;
-    }
-
     if (![selfI isEnabledI:selfI]) {
         return;
     }
-
-    if ([[url absoluteString] length] == 0) {
+    if ([ADJUtil isNull:url]) {
+        return;
+    }
+    if (![ADJUtil isDeeplinkValid:url]) {
         return;
     }
 
-    NSArray* queryArray = [url.query componentsSeparatedByString:@"&"];
+    NSArray *queryArray = [url.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
         queryArray = @[];
     }
 
-    NSMutableDictionary* adjustDeepLinks = [NSMutableDictionary dictionary];
+    NSMutableDictionary *adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
-
-    for (NSString* fieldValuePair in queryArray) {
+    for (NSString *fieldValuePair in queryArray) {
         [selfI readDeeplinkQueryStringI:selfI queryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
     double lastInterval = now - selfI.activityState.lastActivity;
     selfI.activityState.lastInterval = lastInterval;
-
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:selfI.deviceInfo
-                                       activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       sessionParameters:selfI.sessionParameters
-                                       createdAt:now];
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                      activityState:selfI.activityState
+                                                                             config:selfI.adjustConfig
+                                                                  sessionParameters:selfI.sessionParameters
+                                                                          createdAt:now];
     clickBuilder.deeplinkParameters = adjustDeepLinks;
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;

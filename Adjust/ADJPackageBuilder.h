@@ -1,9 +1,9 @@
 //
 //  ADJPackageBuilder.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Christian Wellenbrock on 2013-07-03.
-//  Copyright (c) 2013 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 3rd July 2013.
+//  Copyright (c) 2013-2018 Adjust GmbH. All rights reserved.
 //
 
 #import "ADJEvent.h"
@@ -12,17 +12,18 @@
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
 #import "ADJSessionParameters.h"
-
 #import <Foundation/Foundation.h>
 
 @interface ADJPackageBuilder : NSObject
 
-@property (nonatomic, copy) NSDate *clickTime;
-@property (nonatomic, copy) NSDate *purchaseTime;
-
 @property (nonatomic, copy) NSString *deeplink;
 
+@property (nonatomic, copy) NSDate *clickTime;
+
+@property (nonatomic, copy) NSDate *purchaseTime;
+
 @property (nonatomic, strong) NSDictionary *attributionDetails;
+
 @property (nonatomic, strong) NSDictionary *deeplinkParameters;
 
 @property (nonatomic, copy) ADJAttribution *attribution;
@@ -35,19 +36,23 @@
 
 - (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildAttributionPackage;
-
-- (ADJActivityPackage *)buildGdprPackage;
-
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
-
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
-+ (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 
-+ (void)parameters:(NSMutableDictionary *)parameters setString:(NSString *)value forKey:(NSString *)key;
+- (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;
+
+- (ADJActivityPackage *)buildGdprPackage;
+
++ (void)parameters:(NSMutableDictionary *)parameters
+     setDictionary:(NSDictionary *)dictionary
+            forKey:(NSString *)key;
+
++ (void)parameters:(NSMutableDictionary *)parameters
+         setString:(NSString *)value
+            forKey:(NSString *)key;
 
 @end
