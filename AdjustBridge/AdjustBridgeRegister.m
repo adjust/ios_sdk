@@ -134,6 +134,11 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null);
                 }
             },
+            getSdkVersion: function (callback) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_sdkVersion', 'web-bridge4.16.0', callback);
+                }
+            },
             getIdfa: function (callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
