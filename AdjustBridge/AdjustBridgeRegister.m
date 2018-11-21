@@ -64,7 +64,6 @@ static NSString * fbAppIdStatic = nil;
             window['fbmq_%@'] = {
                 'getProtocol' : function() {
                     return 'fbmq-0.1';
-
                 },
                 'sendEvent': function(pixelID, evtName, customData) {
                     Adjust.fbPixelEvent(pixelID, evtName, customData);
@@ -80,7 +79,7 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
 
-        // copied from adjust.js
+        // Copied from adjust.js
         window.Adjust = {
             appDidLaunch: function (adjustConfig) {
                 if (WebViewJavascriptBridge) {
@@ -115,8 +114,7 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_isEnabled', null,
                                                         function(response) {
                                                             callback(new Boolean(response));
-                                                        }
-                                                        );
+                                                        });
                 }
             },
             appWillOpenUrl: function (url) {
@@ -197,7 +195,8 @@ static NSString * fbAppIdStatic = nil;
             fbPixelEvent: function (pixelID, evtName, customData) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
-                                                        {   pixelID: pixelID,
+                                                        {
+                                                            pixelID: pixelID,
                                                             evtName:evtName,
                                                             customData: customData
                                                         },
@@ -211,46 +210,38 @@ static NSString * fbAppIdStatic = nil;
             }
         };
 
-        // copied from adjust_event.js
+        // Copied from adjust_event.js
         window.AdjustEvent = function (eventToken) {
             this.eventToken = eventToken;
-
             this.revenue = null;
             this.currency = null;
             this.transactionId = null;
-
+            this.callbackId = null;
             this.callbackParameters = [];
             this.partnerParameters = [];
-
-            this.callbackId = null;
         };
 
         AdjustEvent.prototype.addCallbackParameter = function(key, value) {
             this.callbackParameters.push(key);
             this.callbackParameters.push(value);
         };
-
         AdjustEvent.prototype.addPartnerParameter = function(key, value) {
             this.partnerParameters.push(key);
             this.partnerParameters.push(value);
         };
-
         AdjustEvent.prototype.setRevenue = function(revenue, currency) {
             this.revenue = revenue;
             this.currency = currency;
         };
-
         AdjustEvent.prototype.setTransactionId = function(transactionId) {
             this.transactionId = transactionId;
         };
-
         AdjustEvent.prototype.setCallbackId = function(callbackId) {
             this.callbackId = callbackId;
         };
 
-        // copied from adjust_config.js
+        // Copied from adjust_config.js
         window.AdjustConfig = function (appToken, environment, legacy) {
-
             if (arguments.length === 2) {
                 // New format does not require bridge as first parameter.
                 this.appToken = appToken;
@@ -292,16 +283,17 @@ static NSString * fbAppIdStatic = nil;
             this.sessionFailureCallback = null;
             this.deferredDeeplinkCallback = null;
         };
-        AdjustConfig.EnvironmentSandbox     = 'sandbox';
-        AdjustConfig.EnvironmentProduction  = 'production';
 
-        AdjustConfig.LogLevelVerbose        = 'VERBOSE';
-        AdjustConfig.LogLevelDebug          = 'DEBUG';
-        AdjustConfig.LogLevelInfo           = 'INFO';
-        AdjustConfig.LogLevelWarn           = 'WARN';
-        AdjustConfig.LogLevelError          = 'ERROR';
-        AdjustConfig.LogLevelAssert         = 'ASSERT';
-        AdjustConfig.LogLevelSuppress       = 'SUPPRESS';
+        AdjustConfig.EnvironmentSandbox = 'sandbox';
+        AdjustConfig.EnvironmentProduction = 'production';
+
+        AdjustConfig.LogLevelVerbose = 'VERBOSE';
+        AdjustConfig.LogLevelDebug = 'DEBUG';
+        AdjustConfig.LogLevelInfo = 'INFO';
+        AdjustConfig.LogLevelWarn = 'WARN';
+        AdjustConfig.LogLevelError = 'ERROR';
+        AdjustConfig.LogLevelAssert = 'ASSERT';
+        AdjustConfig.LogLevelSuppress = 'SUPPRESS';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
             var registerCallbackHandler = function (callbackName) {
@@ -320,7 +312,6 @@ static NSString * fbAppIdStatic = nil;
             registerCallbackHandler.call(this, 'sessionFailureCallback');
             registerCallbackHandler.call(this, 'deferredDeeplinkCallback');
         };
-
         AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
             this.sdkPrefix = sdkPrefix;
         };
@@ -352,39 +343,30 @@ static NSString * fbAppIdStatic = nil;
             this.info3 = info3;
             this.info4 = info4;
         };
-
         AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
             this.openDeferredDeeplink = shouldOpen;
         };
-
         AdjustConfig.prototype.setAttributionCallback = function(callback) {
             this.attributionCallback = callback;
         };
-
         AdjustConfig.prototype.setEventSuccessCallback = function(callback) {
             this.eventSuccessCallback = callback;
         };
-
         AdjustConfig.prototype.setEventFailureCallback = function(callback) {
             this.eventFailureCallback = callback;
         };
-
         AdjustConfig.prototype.setSessionSuccessCallback = function(callback) {
             this.sessionSuccessCallback = callback;
         };
-
         AdjustConfig.prototype.setSessionFailureCallback = function(callback) {
             this.sessionFailureCallback = callback;
         };
-
         AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
             this.deferredDeeplinkCallback = callback;
         };
-
         AdjustConfig.prototype.setFbPixelDefaultEventToken = function(fbPixelDefaultEventToken) {
             this.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
         };
-
         AdjustConfig.prototype.addFbPixelMapping = function(fbEventNameKey, adjEventTokenValue) {
             this.fbPixelMapping.push(fbEventNameKey);
             this.fbPixelMapping.push(adjEventTokenValue);
