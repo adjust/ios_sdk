@@ -1303,6 +1303,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return YES;
 }
 
++ (NSString *)sdkVersion {
+    return kClientSdk;
+}
+
 #if !TARGET_OS_TV
 + (NSString *)readMCC {
     if (carrier == nil) {
