@@ -84,6 +84,7 @@ static NSString * fbAppIdStatic = nil;
             appDidLaunch: function (adjustConfig) {
                 if (WebViewJavascriptBridge) {
                     if (adjustConfig) {
+                        this.sdkPrefix = adjustConfig.getPrefix();
                         adjustConfig.registerCallbackHandlers();
                         WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
                     }
@@ -130,11 +131,6 @@ static NSString * fbAppIdStatic = nil;
             setOfflineMode: function(isOffline) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null);
-                }
-            },
-            getSdkVersion: function (callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_sdkVersion', 'web-bridge4.16.0', callback);
                 }
             },
             getIdfa: function (callback) {
@@ -203,6 +199,18 @@ static NSString * fbAppIdStatic = nil;
                                                         null);
                 }
             },
+            getSdkVersion: function (callback) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_sdkVersion', this.getSdkPrefix(), callback);
+                }
+            },
+            getSdkPrefix: function () {
+                if (this.sdkPrefix) {
+                    return this.sdkPrefix;
+                } else {
+                    return 'web-bridge4.16.0';
+                }
+            },
             setTestOptions: function (testOptions) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_setTestOptions', testOptions, null);
@@ -260,7 +268,7 @@ static NSString * fbAppIdStatic = nil;
                 }
             }
 
-            this.sdkPrefix = 'web-bridge4.16.0';
+            this.sdkPrefix = Adjust.getSdkPrefix();
             this.defaultTracker = null;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
@@ -311,6 +319,9 @@ static NSString * fbAppIdStatic = nil;
             registerCallbackHandler.call(this, 'sessionSuccessCallback');
             registerCallbackHandler.call(this, 'sessionFailureCallback');
             registerCallbackHandler.call(this, 'deferredDeeplinkCallback');
+        };
+        AdjustConfig.prototype.getSdkPrefix = function() {
+            return this.sdkPrefix;
         };
         AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
             this.sdkPrefix = sdkPrefix;

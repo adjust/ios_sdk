@@ -404,12 +404,9 @@
             return;
         }
 
-        if (data == nil) {
-            responseCallback([Adjust sdkVersion]);
-        } else {
-            NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", (NSString *)data, [Adjust sdkVersion]];
-            responseCallback(sdkVersion);
-        }
+        NSString * sdkPrefix = (NSString *)data;
+        NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
+        responseCallback(sdkVersion);
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
