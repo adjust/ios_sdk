@@ -84,7 +84,10 @@ static NSString * fbAppIdStatic = nil;
             appDidLaunch: function (adjustConfig) {
                 if (WebViewJavascriptBridge) {
                     if (adjustConfig) {
-                        this.sdkPrefix = adjustConfig.getPrefix();
+                        if (!adjustConfig.getSdkPrefix()) {
+                            adjustConfig.setSdkPrefix(this.getSdkPrefix());
+                        }
+                        this.sdkPrefix = adjustConfig.getSdkPrefix();
                         adjustConfig.registerCallbackHandlers();
                         WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
                     }
@@ -268,7 +271,7 @@ static NSString * fbAppIdStatic = nil;
                 }
             }
 
-            this.sdkPrefix = Adjust.getSdkPrefix();
+            this.sdkPrefix = null;
             this.defaultTracker = null;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
