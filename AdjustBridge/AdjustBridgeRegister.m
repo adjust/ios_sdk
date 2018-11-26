@@ -81,7 +81,7 @@ static NSString * fbAppIdStatic = nil;
 
         // Copied from adjust.js
         window.Adjust = {
-            appDidLaunch: function (adjustConfig) {
+            appDidLaunch: function(adjustConfig) {
                 if (WebViewJavascriptBridge) {
                     if (adjustConfig) {
                         if (!adjustConfig.getSdkPrefix()) {
@@ -93,7 +93,7 @@ static NSString * fbAppIdStatic = nil;
                     }
                 }
             },
-            trackEvent: function (adjustEvent) {
+            trackEvent: function(adjustEvent) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_trackEvent', adjustEvent, null);
                 }
@@ -108,12 +108,12 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackSubsessionEnd', null, null);
                 }
             },
-            setEnabled: function (enabled) {
+            setEnabled: function(enabled) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_setEnabled', enabled, null);
                 }
             },
-            isEnabled: function (callback) {
+            isEnabled: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_isEnabled', null,
                                                         function(response) {
@@ -121,12 +121,12 @@ static NSString * fbAppIdStatic = nil;
                                                         });
                 }
             },
-            appWillOpenUrl: function (url) {
+            appWillOpenUrl: function(url) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_appWillOpenUrl', url, null);
                 }
             },
-            setDeviceToken: function (deviceToken) {
+            setDeviceToken: function(deviceToken) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);
                 }
@@ -136,62 +136,62 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null);
                 }
             },
-            getIdfa: function (callback) {
+            getIdfa: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
                 }
             },
-            getAdid: function (callback) {
+            getAdid: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
                 }
             },
-            getAttribution: function (callback) {
+            getAttribution: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_attribution', null, callback);
                 }
             },
-            sendFirstPackages: function () {
+            sendFirstPackages: function() {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_sendFirstPackages', null, null);
                 }
             },
-            addSessionCallbackParameter: function (key, value) {
+            addSessionCallbackParameter: function(key, value) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_addSessionCallbackParameter', {key: key, value: value}, null);
                 }
             },
-            addSessionPartnerParameter: function (key, value) {
+            addSessionPartnerParameter: function(key, value) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_addSessionPartnerParameter', {key: key, value: value}, null);
                 }
             },
-            removeSessionCallbackParameter: function (key) {
+            removeSessionCallbackParameter: function(key) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_removeSessionCallbackParameter', key, null);
                 }
             },
-            removeSessionPartnerParameter: function (key) {
+            removeSessionPartnerParameter: function(key) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_removeSessionPartnerParameter', key, null);
                 }
             },
-            resetSessionCallbackParameters: function () {
+            resetSessionCallbackParameters: function() {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_resetSessionCallbackParameters', null, null);
                 }
             },
-            resetSessionPartnerParameters: function () {
+            resetSessionPartnerParameters: function() {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_resetSessionPartnerParameters', null, null);
                 }
             },
-            gdprForgetMe: function () {
+            gdprForgetMe: function() {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
                 }
             },
-            fbPixelEvent: function (pixelID, evtName, customData) {
+            fbPixelEvent: function(pixelID, evtName, customData) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
                                                         {
@@ -202,19 +202,19 @@ static NSString * fbAppIdStatic = nil;
                                                         null);
                 }
             },
-            getSdkVersion: function (callback) {
+            getSdkVersion: function(callback) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_sdkVersion', this.getSdkPrefix(), callback);
                 }
             },
-            getSdkPrefix: function () {
+            getSdkPrefix: function() {
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
                     return 'web-bridge4.16.0';
                 }
             },
-            setTestOptions: function (testOptions) {
+            setTestOptions: function(testOptions) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_setTestOptions', testOptions, null);
                 }
@@ -222,7 +222,7 @@ static NSString * fbAppIdStatic = nil;
         };
 
         // Copied from adjust_event.js
-        window.AdjustEvent = function (eventToken) {
+        window.AdjustEvent = function(eventToken) {
             this.eventToken = eventToken;
             this.revenue = null;
             this.currency = null;
@@ -252,7 +252,7 @@ static NSString * fbAppIdStatic = nil;
         };
 
         // Copied from adjust_config.js
-        window.AdjustConfig = function (appToken, environment, legacy) {
+        window.AdjustConfig = function(appToken, environment, legacy) {
             if (arguments.length === 2) {
                 // New format does not require bridge as first parameter.
                 this.appToken = appToken;
@@ -307,7 +307,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
-            var registerCallbackHandler = function (callbackName) {
+            var registerCallbackHandler = function(callbackName) {
                 var callback = this[callbackName];
                 if (!callback) {
                     return;

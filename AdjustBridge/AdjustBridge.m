@@ -404,7 +404,7 @@
             return;
         }
 
-        NSString * sdkPrefix = (NSString *)data;
+        NSString *sdkPrefix = (NSString *)data;
         NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
         responseCallback(sdkVersion);
     }];
