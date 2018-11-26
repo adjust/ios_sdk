@@ -25,7 +25,9 @@ var TestLibraryBridge = {
             // register objc->JS function for commands
             WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
             // start test session in obj-c
-            WebViewJavascriptBridge.callHandler('adjustTLB_startTestSession', null, null);
+            Adjust.getSdkVersion(function(sdkVersion)) {
+                WebViewJavascriptBridge.callHandler('adjustTLB_startTestSession', sdkVersion, null);
+            }
         }
     }
 };
