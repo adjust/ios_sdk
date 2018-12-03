@@ -15,10 +15,6 @@
 
 #import "ADJReachability.h"
 
-#pragma mark IPv6 Support
-
-NSString *kADJReachabilityChangedNotification = @"kNetworkReachabilityChangedNotification";
-
 #pragma mark - Supporting functions
 
 #define kShouldPrintReachabilityFlags 1
@@ -42,19 +38,6 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
           );
 #endif
 }
-
-
-static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void* info)
-{
-#pragma unused (target, flags)
-	NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
-	NSCAssert([(__bridge NSObject*) info isKindOfClass: [ADJReachability class]], @"info was wrong class in ReachabilityCallback");
-
-    ADJReachability* noteObject = (__bridge ADJReachability *)info;
-    // Post a notification to notify the client that the network reachability changed.
-    [[NSNotificationCenter defaultCenter] postNotificationName: kADJReachabilityChangedNotification object: noteObject];
-}
-
 
 #pragma mark - Reachability implementation
 
@@ -121,7 +104,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	BOOL returnValue = NO;
 	SCNetworkReachabilityContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
 
-	if (SCNetworkReachabilitySetCallback(_reachabilityRef, ReachabilityCallback, &context))
+	if (SCNetworkReachabilitySetCallback(_reachabilityRef, NULL, &context))
 	{
 		if (SCNetworkReachabilityScheduleWithRunLoop(_reachabilityRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode))
 		{
