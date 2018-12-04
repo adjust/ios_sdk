@@ -31,7 +31,7 @@
         NSLog(@"TestLibraryBridge adjustTLB_startTestSession");
         // self.commandExecutorCallback = responseCallback;
         [self.adjustBridgeRegister callHandler:@"adjustjs_commandExecutor" data:@"test"];
-        [self.testLibrary startTestSession:@"web-bridge4.16.0@ios4.16.0"];
+        [self.testLibrary startTestSession:(NSString *)data];
     }];
 
     [adjustBridgeRegister registerHandler:@"adjustTLB_addInfoToSend" handler:^(id data, WVJBResponseCallback responseCallback) {

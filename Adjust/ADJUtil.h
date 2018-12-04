@@ -114,6 +114,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)isDeeplinkValid:(NSURL *)url;
 
++ (NSString *)sdkVersion;
+
 #if !TARGET_OS_TV
 + (NSString *)readMCC;
 

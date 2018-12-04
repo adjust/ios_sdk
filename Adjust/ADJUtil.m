@@ -40,7 +40,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.16.0";
+static NSString * const kClientSdk                  = @"ios4.17.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1301,6 +1301,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 
     return YES;
+}
+
++ (NSString *)sdkVersion {
+    return kClientSdk;
 }
 
 #if !TARGET_OS_TV

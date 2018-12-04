@@ -399,6 +399,16 @@
         [Adjust setOfflineMode:[(NSNumber *)data boolValue]];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_sdkVersion" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+
+        NSString *sdkPrefix = (NSString *)data;
+        NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
+        responseCallback(sdkVersion);
+    }];
+
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
