@@ -1296,7 +1296,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               options:0
                                                                                 range:NSMakeRange(0, [urlString length])];
     if ([matches count] > 0) {
-        [ADJAdjustFactory.logger debug:[NSString stringWithFormat:@"Deep link (%@) processing skipped", urlString]];
+        [ADJAdjustFactory.logger debug:@"Deep link (%@) processing skipped", urlString];
         return NO;
     }
 
