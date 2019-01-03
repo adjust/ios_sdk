@@ -65,7 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         NSLog("adjust session failure %@", sessionFailureResponseData ?? "")
     }
 
-    @objc func adjustDeeplinkResponse(_deeplink: NSURL!) -> Bool {
+    func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
+        NSLog("adjust deferred deep link %@", deeplink?.absoluteString ?? "")
         return true
     }
 
