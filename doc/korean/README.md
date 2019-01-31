@@ -998,9 +998,9 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 [adjust.com]:  http://adjust.com
 
 [en-readme]:  ../../README.md
-[zh-readme]: ../chinese/ios_sdk_readme_zh.md
-[ja-readme]: ../japanese/ios_sdk_readme_ja.md
-[ko-readme]: ../korean/ios_sdk_readme_ko.md
+[zh-readme]:  ../chinese/README.md
+[ja-readme]:  ../japanese/README.md
+[ko-readme]:  ../korean/README.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
@@ -1053,7 +1053,7 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 
 Adjust SDK는 MIT 라이선스에 따라 사용이 허가됩니다.
 
-Copyright (c) 2012-2018 adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 이로써 본 소프트웨어와 관련 문서 파일(이하 "소프트웨어")의 복사본을 받는 사람에게는 아래 조건에 따라 소프트웨어를 제한 없이 다룰 수 있는 권한이 무료로 부여됩니다. 이 권한에는 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여할 권리와 소프트웨어를 제공 받은 사람이 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여하는 것을 허가할 수 있는 권리가 제한 없이 포함됩니다.
 

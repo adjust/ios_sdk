@@ -1047,10 +1047,10 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
 
-[en-readme]:  ../../README.md
-[zh-readme]: ../chinese/ios_sdk_readme_zh.md
-[ja-readme]: ../japanese/ios_sdk_readme_ja.md
-[ko-readme]: ../korean/ios_sdk_readme_ko.md
+[en-readme]:    ../../README.md
+[zh-readme]:    ../chinese/README.md
+[ja-readme]:    ../japanese/README.md
+[ko-readme]:    ../korean/README.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
@@ -1059,7 +1059,7 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [cocoapods]:   http://cocoapods.org
 [transition]:  http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 
-[example-tvos]:      examples/AdjustExample-tvOS
+[example-tvos]:       examples/AdjustExample-tvOS
 [example-iwatch]:     examples/AdjustExample-iWatch
 [example-imessage]:   examples/AdjustExample-iMessage
 [example-ios-objc]:   examples/AdjustExample-iOS
@@ -1095,7 +1095,7 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [xcode-associated-domains]:   https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
 [universal-links-dashboard]:  https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
 
-[associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
+[associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 
 
@@ -1103,8 +1103,7 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 
 adjust SDKはMITライセンスを適用しています。
 
-Copyright (c) 2012-2018 adjust GmbH,
-http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 以下に定める条件に従い、本ソフトウェアおよび関連文書のファイル（以下「ソフトウェア」）の複製を取得するすべての人に対し、
 ソフトウェアを無制限に扱うことを無償で許可します。これには、ソフトウェアの複製を使用、複写、変更、結合、掲載、頒布、サブライセンス、

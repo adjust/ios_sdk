@@ -998,10 +998,11 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
+
 [en-readme]:  ../../README.md
-[zh-readme]: ../chinese/ios_sdk_readme_zh.md
-[ja-readme]: ../japanese/ios_sdk_readme_ja.md
-[ko-readme]: ../korean/ios_sdk_readme_ko.md
+[zh-readme]:  ../chinese/README.md
+[ja-readme]:  ../japanese/README.md
+[ko-readme]:  ../korean/README.md
 
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
@@ -1046,15 +1047,14 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 [xcode-associated-domains]:   https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
 [universal-links-dashboard]:  https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
 
-[associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
+[associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 
 ## <a id="license">许可协议
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2017 adjust GmbH,
-http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
