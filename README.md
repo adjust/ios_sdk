@@ -4,6 +4,8 @@ This is the iOS SDK of Adjust™. You can read more about Adjust™ at [adjust.c
 
 If your app is an app which uses web views you would like to use adjust tracking from Javascript code, please consult our [iOS web views SDK guide][ios-web-views-guide].
 
+Read this in other languages: [English][en-readme], [中文][zh-readme], [日本語][ja-readme], [한국어][ko-readme].
+
 ## Table of contents
 
 * [Example apps](#example-apps)
@@ -994,6 +996,11 @@ If you are seing any value in the dashboard other than what you expected to be t
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
 
+[en-readme]:  README.md
+[zh-readme]:  doc/chinese/README.md
+[ja-readme]:  doc/japanese/README.md
+[ko-readme]:  doc/korean/README.md
+
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
 [carthage]:    https://github.com/Carthage/Carthage
@@ -1036,15 +1043,14 @@ If you are seing any value in the dashboard other than what you expected to be t
 [xcode-associated-domains]:   https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
 [universal-links-dashboard]:  https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
 
-[associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
+[associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 
 ## <a id="license"></a>License
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2018 adjust GmbH,
-http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
