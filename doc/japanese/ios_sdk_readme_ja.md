@@ -25,13 +25,13 @@ adjust SDKをiOSプロジェクトに連携する手順を説明します。
 [こちらの手順](#sdk-integrate)に進んでください。
 
 ```ruby
-pod 'Adjust', '~> 4.16.0'
+pod 'Adjust', '~> 4.17.1'
 ```
 
 または
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.16.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.17.1'
 ```
 
 ---
