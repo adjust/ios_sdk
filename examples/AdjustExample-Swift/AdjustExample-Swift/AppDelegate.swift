@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment: Environment = .sandbox
 
@@ -78,6 +78,7 @@ extension AppDelegate: AdjustDelegate {
     }
 
     func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
+        NSLog("adjust deferred deep link %@", deeplink?.absoluteString ?? "")
         return true
     }
 }

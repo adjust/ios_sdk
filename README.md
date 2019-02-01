@@ -4,6 +4,8 @@ This is the iOS SDK of Adjust™. You can read more about Adjust™ at [adjust.c
 
 If your app is an app which uses web views you would like to use adjust tracking from Javascript code, please consult our [iOS web views SDK guide][ios-web-views-guide].
 
+Read this in other languages: [English][en-readme], [中文][zh-readme], [日本語][ja-readme], [한국어][ko-readme].
+
 ## Table of contents
 
 * [Example apps](#example-apps)
@@ -70,13 +72,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.16.0'
+pod 'Adjust', '~> 4.17.1'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.16.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.17.1'
 ```
 
 ---
@@ -539,7 +541,7 @@ The delegate functions will be called after the SDK tries to send a package to t
 Both event response data objects contain:
 
 - `NSString eventToken` the event token, if the package tracked was an event.
-- `NSString callbackid` the custom defined callback ID set on event object.
+- `NSString callbackId` the custom defined callback ID set on event object.
 
 If any value is unavailable, it will default to `nil`.
 
@@ -925,7 +927,7 @@ In order to run the app installation scenario, you need to do following:
 
 ### <a id="ts-iad-sdk-click"></a>I'm seeing the "Unattributable SDK click ignored" message
 
-You may notice this message while testing your app in `sandbox` envoronment. It is related to some changes Apple introduced in `iAd.framework` version 3. With this, a user can be directed to your app from a click on iAd banner and this will cause our SDK to send an `sdk_click` package to the adjust backend informing it about the content of the clicked URL. For some reason, Apple decided that if the app was opened without clicking on iAd banner, they will artificially generate an iAd banner URL click with some random values. Our SDK won't be able to distinguish if the iAd banner click was genuine or artificially generated and will send an `sdk_click` package regardless to the adjust backend. If you have your log level set to `verbose` level, you will see this `sdk_click` package looking something like this:
+You may notice this message while testing your app in `sandbox` environment. It is related to some changes Apple introduced in `iAd.framework` version 3. With this, a user can be directed to your app from a click on iAd banner and this will cause our SDK to send an `sdk_click` package to the adjust backend informing it about the content of the clicked URL. For some reason, Apple decided that if the app was opened without clicking on iAd banner, they will artificially generate an iAd banner URL click with some random values. Our SDK won't be able to distinguish if the iAd banner click was genuine or artificially generated and will send an `sdk_click` package regardless to the adjust backend. If you have your log level set to `verbose`, you will see this `sdk_click` package looking something like this:
 
 ```
 [Adjust]d: Added package 1 (click)
@@ -994,6 +996,11 @@ If you are seing any value in the dashboard other than what you expected to be t
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
 
+[en-readme]:  README.md
+[zh-readme]:  doc/chinese/README.md
+[ja-readme]:  doc/japanese/README.md
+[ko-readme]:  doc/korean/README.md
+
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
 [carthage]:    https://github.com/Carthage/Carthage
@@ -1036,15 +1043,14 @@ If you are seing any value in the dashboard other than what you expected to be t
 [xcode-associated-domains]:   https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
 [universal-links-dashboard]:  https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
 
-[associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
+[associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 
 ## <a id="license"></a>License
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2018 adjust GmbH,
-http://www.adjust.com
+Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

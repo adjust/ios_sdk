@@ -40,7 +40,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.16.0";
+static NSString * const kClientSdk                  = @"ios4.17.1";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1296,11 +1296,15 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                                                               options:0
                                                                                 range:NSMakeRange(0, [urlString length])];
     if ([matches count] > 0) {
-        [ADJAdjustFactory.logger debug:[NSString stringWithFormat:@"Deep link (%@) processing skipped", urlString]];
+        [ADJAdjustFactory.logger debug:@"Deep link (%@) processing skipped", urlString];
         return NO;
     }
 
     return YES;
+}
+
++ (NSString *)sdkVersion {
+    return kClientSdk;
 }
 
 #if !TARGET_OS_TV

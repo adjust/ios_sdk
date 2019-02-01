@@ -1,3 +1,18 @@
+### Version 4.17.1 (10th December 2018)
+#### Fixed
+- Fixed issue with printing of certain skipped deep links to debug console output in sandbox mode (https://github.com/adjust/ios_sdk/issues/362).
+
+---
+
+### Version 4.17.0 (4th December 2018)
+#### Added
+- Added `sdkVersion` getter to `Adjust` interface to obtain current SDK version string.
+
+#### Changed
+- Removed posting of `kNetworkReachabilityChangedNotification` notification from forked `ADJReachability` class. In case you were using it, please rely only on obtaining it from official `Reachability` class.
+
+---
+
 ### Version 4.16.0 (7th November 2018)
 #### Added
 - Added sending of UUID string with each attribution request.

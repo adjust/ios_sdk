@@ -111,6 +111,10 @@ static dispatch_once_t onceToken = 0;
     return [[Adjust getInstance] idfa];
 }
 
++ (NSString *)sdkVersion {
+    return [[Adjust getInstance] sdkVersion];
+}
+
 + (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
     return [[Adjust getInstance] convertUniversalLink:url scheme:scheme];
 }
@@ -393,6 +397,10 @@ static dispatch_once_t onceToken = 0;
     }
 
     return [self.activityHandler adid];
+}
+
+- (NSString *)sdkVersion {
+    return [ADJUtil sdkVersion];
 }
 
 - (void)teardown {

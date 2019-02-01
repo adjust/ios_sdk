@@ -36,7 +36,7 @@
 }
 
 - (void)startTestSession {
-    [self.testLibrary startTestSession:@"ios4.16.0"];
+    [self.testLibrary startTestSession:[Adjust sdkVersion]];
 }
 
 - (void)didReceiveMemoryWarning {
