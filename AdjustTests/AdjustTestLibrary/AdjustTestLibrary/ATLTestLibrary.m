@@ -41,11 +41,15 @@ static NSURL * _baseUrl = nil;
 }
 
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
+                             andControlUrl:(NSString *)controlUrl
                         andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate {
     return [[ATLTestLibrary alloc] initWithBaseUrl:baseUrl
+                                     andControlUrl:controlUrl
                                 andCommandDelegate:commandDelegate];
 }
+
 - (id)initWithBaseUrl:(NSString *)baseUrl
+        andControlUrl:(NSString *)controlUrl
    andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
 {
     self = [super init];
@@ -56,7 +60,21 @@ static NSURL * _baseUrl = nil;
     self.commandDelegate = commandDelegate;
     self.testNames = [[NSMutableString alloc] init];
     
+    [self initializeWebSocketWithControlUrl:controlUrl];
+    
     return self;
+}
+
+- (void)initializeWebSocketWithControlUrl:(NSString *)controlUrl {
+    // create the NSURLRequest that will be sent as the handshake
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:controlUrl]];
+    
+    // create the socket and assign delegate
+    self.socket = [PSWebSocket clientSocketWithRequest:request];
+    self.socket.delegate = self;
+    
+    // open socket
+    [self.socket open];
 }
 
 - (void)addTest:(NSString *)testName {
@@ -320,4 +338,21 @@ static NSURL * _baseUrl = nil;
         [ATLUtil debug:@"sleep ended"];
     }
 }
+
+#pragma mark - PSWebSocketDelegate
+
+- (void)webSocketDidOpen:(PSWebSocket *)webSocket {
+    NSLog(@"The websocket handshake completed and is now open!");
+    [webSocket send:@"Hello world!"];
+}
+- (void)webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {
+    NSLog(@"The websocket received a message: %@", message);
+}
+- (void)webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error {
+    NSLog(@"The websocket handshake/connection failed with an error: %@", error);
+}
+- (void)webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+    NSLog(@"The websocket closed with code: %@, reason: %@, wasClean: %@", @(code), reason, (wasClean) ? @"YES" : @"NO");
+}
+
 @end

@@ -26,6 +26,7 @@
 
     self.adjustCommandExecutor = [[ATAAdjustCommandExecutor alloc] init];
     self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
+                                                andControlUrl:controlUrl
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 

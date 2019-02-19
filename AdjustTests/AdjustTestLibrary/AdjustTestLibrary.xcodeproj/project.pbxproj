@@ -29,6 +29,25 @@
 		20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842592007782600568A31 /* ATLConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842552007782500568A31 /* ATLUtilNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FFCFE732007AE0000467F01 /* ATLBlockingQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		524BAC7E221C4E0B00624F6C /* PocketSocket-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 52836B26221C4B2E00F24F12 /* PocketSocket-Prefix.pch */; };
+		524BAC7F221C4E0B00624F6C /* PSWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B34221C4B3000F24F12 /* PSWebSocket.h */; };
+		524BAC80221C4E0B00624F6C /* PSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B27221C4B2E00F24F12 /* PSWebSocket.m */; };
+		524BAC81221C4E0B00624F6C /* PSWebSocketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B29221C4B2E00F24F12 /* PSWebSocketBuffer.h */; };
+		524BAC82221C4E0B00624F6C /* PSWebSocketBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B37221C4B3000F24F12 /* PSWebSocketBuffer.m */; };
+		524BAC83221C4E0B00624F6C /* PSWebSocketDeflater.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B36221C4B3000F24F12 /* PSWebSocketDeflater.h */; };
+		524BAC84221C4E0B00624F6C /* PSWebSocketDeflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B30221C4B2F00F24F12 /* PSWebSocketDeflater.m */; };
+		524BAC85221C4E0B00624F6C /* PSWebSocketDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2E221C4B2F00F24F12 /* PSWebSocketDriver.h */; };
+		524BAC86221C4E0B00624F6C /* PSWebSocketDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2F221C4B2F00F24F12 /* PSWebSocketDriver.m */; };
+		524BAC87221C4E0B00624F6C /* PSWebSocketInflater.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B35221C4B3000F24F12 /* PSWebSocketInflater.h */; };
+		524BAC88221C4E0B00624F6C /* PSWebSocketInflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2B221C4B2F00F24F12 /* PSWebSocketInflater.m */; };
+		524BAC89221C4E0B00624F6C /* PSWebSocketInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2D221C4B2F00F24F12 /* PSWebSocketInternal.h */; };
+		524BAC8A221C4E0B00624F6C /* PSWebSocketNetworkThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2A221C4B2F00F24F12 /* PSWebSocketNetworkThread.h */; };
+		524BAC8B221C4E0B00624F6C /* PSWebSocketNetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B31221C4B2F00F24F12 /* PSWebSocketNetworkThread.m */; };
+		524BAC8C221C4E0B00624F6C /* PSWebSocketServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B32221C4B3000F24F12 /* PSWebSocketServer.h */; };
+		524BAC8D221C4E0B00624F6C /* PSWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2C221C4B2F00F24F12 /* PSWebSocketServer.m */; };
+		524BAC8E221C4E0B00624F6C /* PSWebSocketTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B33221C4B3000F24F12 /* PSWebSocketTypes.h */; };
+		524BAC8F221C4E0B00624F6C /* PSWebSocketUTF8Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */; };
+		524BAC90221C4E0B00624F6C /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */; };
 		6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424D2007782500568A31 /* ATLControlChannel.m */; };
 		6F08425C2007782600568A31 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424F2007782500568A31 /* ATLTestLibrary.m */; };
 		6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842532007782500568A31 /* ATLTestInfo.m */; };
@@ -60,6 +79,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		52836B26221C4B2E00F24F12 /* PocketSocket-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketSocket-Prefix.pch"; sourceTree = "<group>"; };
+		52836B27221C4B2E00F24F12 /* PSWebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocket.m; sourceTree = "<group>"; };
+		52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
+		52836B29221C4B2E00F24F12 /* PSWebSocketBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketBuffer.h; sourceTree = "<group>"; };
+		52836B2A221C4B2F00F24F12 /* PSWebSocketNetworkThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketNetworkThread.h; sourceTree = "<group>"; };
+		52836B2B221C4B2F00F24F12 /* PSWebSocketInflater.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketInflater.m; sourceTree = "<group>"; };
+		52836B2C221C4B2F00F24F12 /* PSWebSocketServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketServer.m; sourceTree = "<group>"; };
+		52836B2D221C4B2F00F24F12 /* PSWebSocketInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInternal.h; sourceTree = "<group>"; };
+		52836B2E221C4B2F00F24F12 /* PSWebSocketDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDriver.h; sourceTree = "<group>"; };
+		52836B2F221C4B2F00F24F12 /* PSWebSocketDriver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDriver.m; sourceTree = "<group>"; };
+		52836B30221C4B2F00F24F12 /* PSWebSocketDeflater.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDeflater.m; sourceTree = "<group>"; };
+		52836B31221C4B2F00F24F12 /* PSWebSocketNetworkThread.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketNetworkThread.m; sourceTree = "<group>"; };
+		52836B32221C4B3000F24F12 /* PSWebSocketServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketServer.h; sourceTree = "<group>"; };
+		52836B33221C4B3000F24F12 /* PSWebSocketTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketTypes.h; sourceTree = "<group>"; };
+		52836B34221C4B3000F24F12 /* PSWebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocket.h; sourceTree = "<group>"; };
+		52836B35221C4B3000F24F12 /* PSWebSocketInflater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInflater.h; sourceTree = "<group>"; };
+		52836B36221C4B3000F24F12 /* PSWebSocketDeflater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDeflater.h; sourceTree = "<group>"; };
+		52836B37221C4B3000F24F12 /* PSWebSocketBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketBuffer.m; sourceTree = "<group>"; };
+		52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketUTF8Decoder.h; sourceTree = "<group>"; };
 		6F08420C2007766700568A31 /* libAdjustTestLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustTestLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F08424D2007782500568A31 /* ATLControlChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLControlChannel.m; sourceTree = "<group>"; };
 		6F08424F2007782500568A31 /* ATLTestLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestLibrary.m; sourceTree = "<group>"; };
@@ -87,6 +125,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52836B25221C4B2E00F24F12 /* PocketSocket */ = {
+			isa = PBXGroup;
+			children = (
+				52836B26221C4B2E00F24F12 /* PocketSocket-Prefix.pch */,
+				52836B34221C4B3000F24F12 /* PSWebSocket.h */,
+				52836B27221C4B2E00F24F12 /* PSWebSocket.m */,
+				52836B29221C4B2E00F24F12 /* PSWebSocketBuffer.h */,
+				52836B37221C4B3000F24F12 /* PSWebSocketBuffer.m */,
+				52836B36221C4B3000F24F12 /* PSWebSocketDeflater.h */,
+				52836B30221C4B2F00F24F12 /* PSWebSocketDeflater.m */,
+				52836B2E221C4B2F00F24F12 /* PSWebSocketDriver.h */,
+				52836B2F221C4B2F00F24F12 /* PSWebSocketDriver.m */,
+				52836B35221C4B3000F24F12 /* PSWebSocketInflater.h */,
+				52836B2B221C4B2F00F24F12 /* PSWebSocketInflater.m */,
+				52836B2D221C4B2F00F24F12 /* PSWebSocketInternal.h */,
+				52836B2A221C4B2F00F24F12 /* PSWebSocketNetworkThread.h */,
+				52836B31221C4B2F00F24F12 /* PSWebSocketNetworkThread.m */,
+				52836B32221C4B3000F24F12 /* PSWebSocketServer.h */,
+				52836B2C221C4B2F00F24F12 /* PSWebSocketServer.m */,
+				52836B33221C4B3000F24F12 /* PSWebSocketTypes.h */,
+				52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */,
+				52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */,
+			);
+			path = PocketSocket;
+			sourceTree = "<group>";
+		};
 		6F0842032007766700568A31 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +170,7 @@
 		6F08420E2007766700568A31 /* AdjustTestLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				52836B25221C4B2E00F24F12 /* PocketSocket */,
 				6F0842592007782600568A31 /* ATLConstants.h */,
 				6F0842502007782500568A31 /* ATLControlChannel.h */,
 				6F08424D2007782500568A31 /* ATLControlChannel.m */,
@@ -130,13 +195,24 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524BAC83221C4E0B00624F6C /* PSWebSocketDeflater.h in Headers */,
+				524BAC8A221C4E0B00624F6C /* PSWebSocketNetworkThread.h in Headers */,
+				524BAC8E221C4E0B00624F6C /* PSWebSocketTypes.h in Headers */,
 				20AC3040203C205D00CD9DA8 /* ATLTestInfo.h in Headers */,
 				20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */,
+				524BAC7E221C4E0B00624F6C /* PocketSocket-Prefix.pch in Headers */,
+				524BAC81221C4E0B00624F6C /* PSWebSocketBuffer.h in Headers */,
+				524BAC8F221C4E0B00624F6C /* PSWebSocketUTF8Decoder.h in Headers */,
 				20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */,
+				524BAC7F221C4E0B00624F6C /* PSWebSocket.h in Headers */,
+				524BAC85221C4E0B00624F6C /* PSWebSocketDriver.h in Headers */,
 				20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */,
+				524BAC8C221C4E0B00624F6C /* PSWebSocketServer.h in Headers */,
 				20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */,
+				524BAC89221C4E0B00624F6C /* PSWebSocketInternal.h in Headers */,
 				20412650203FF86300CC40DB /* ATLUtil.h in Headers */,
 				20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */,
+				524BAC87221C4E0B00624F6C /* PSWebSocketInflater.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,9 +313,17 @@
 			files = (
 				6F08425C2007782600568A31 /* ATLTestLibrary.m in Sources */,
 				6F08425F2007782600568A31 /* ATLUtilNetworking.m in Sources */,
+				524BAC90221C4E0B00624F6C /* PSWebSocketUTF8Decoder.m in Sources */,
+				524BAC86221C4E0B00624F6C /* PSWebSocketDriver.m in Sources */,
+				524BAC8D221C4E0B00624F6C /* PSWebSocketServer.m in Sources */,
+				524BAC82221C4E0B00624F6C /* PSWebSocketBuffer.m in Sources */,
 				6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */,
+				524BAC8B221C4E0B00624F6C /* PSWebSocketNetworkThread.m in Sources */,
 				6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */,
+				524BAC84221C4E0B00624F6C /* PSWebSocketDeflater.m in Sources */,
+				524BAC88221C4E0B00624F6C /* PSWebSocketInflater.m in Sources */,
 				6FFCFE752007AE0000467F01 /* ATLBlockingQueue.m in Sources */,
+				524BAC80221C4E0B00624F6C /* PSWebSocket.m in Sources */,
 				6F08425E2007782600568A31 /* ATLUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
