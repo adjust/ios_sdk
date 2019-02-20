@@ -339,7 +339,12 @@
     if ([self.savedEvents objectForKey:eventNumber]) {
         adjustEvent = [self.savedEvents objectForKey:eventNumber];
     } else {
-        NSString *eventToken = [parameters objectForKey:@"eventToken"][0];
+        NSString *eventToken;
+        if ([[parameters objectForKey:@"eventToken"] count] == 0) {
+            eventToken = nil;
+        } else {
+            eventToken = [parameters objectForKey:@"eventToken"][0];
+        }
         adjustEvent = [ADJEvent eventWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
