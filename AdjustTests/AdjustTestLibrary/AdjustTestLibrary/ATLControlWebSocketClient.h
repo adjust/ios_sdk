@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)reconnectIfNeeded;
 
+- (void)sendInitTestSessionSignal:(NSString*)testSessionId;
+
 @end
 
 NS_ASSUME_NONNULL_END

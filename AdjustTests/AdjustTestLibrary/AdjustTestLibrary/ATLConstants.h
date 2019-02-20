@@ -22,6 +22,7 @@ static NSString * const WAIT_FOR_CONTROL        = @"control";
 static NSString * const WAIT_FOR_SLEEP          = @"sleep";
 static NSString * const BASE_PATH_PARAM         = @"basePath";
 static NSString * const TEST_NAME_PARAM         = @"basePath";
+static NSString * const TEST_SESSION_ID_HEADER  = @"Test-Session-Id";
 
 // web socket values
 static NSString * const SIGNAL_INFO                = @"info";

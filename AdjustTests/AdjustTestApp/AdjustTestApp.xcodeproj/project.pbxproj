@@ -58,7 +58,6 @@
 		6F3A5E8F2018CE14000AACD0 /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E6D2018CE14000AACD0 /* ADJReachability.m */; };
 		6F3A5E9E2018CE3A000AACD0 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */; };
 		6F3A5E9F2018CE3A000AACD0 /* ATLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E982018CE3A000AACD0 /* ATLUtil.m */; };
-		6F3A5EA02018CE3A000AACD0 /* ATLControlChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9A2018CE3A000AACD0 /* ATLControlChannel.m */; };
 		6F3A5EA12018CE3A000AACD0 /* ATLUtilNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */; };
 		6F3A5EA22018CE3A000AACD0 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */; };
 		6F3A5EA32018CE3A000AACD0 /* ATLBlockingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */; };
@@ -178,14 +177,12 @@
 		6F3A5E6D2018CE14000AACD0 /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestInfo.m; sourceTree = "<group>"; };
 		6F3A5E922018CE3A000AACD0 /* ATLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLUtil.h; sourceTree = "<group>"; };
-		6F3A5E932018CE3A000AACD0 /* ATLControlChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLControlChannel.h; sourceTree = "<group>"; };
 		6F3A5E942018CE3A000AACD0 /* ATLConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLConstants.h; sourceTree = "<group>"; };
 		6F3A5E952018CE3A000AACD0 /* ATLTestLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLTestLibrary.h; sourceTree = "<group>"; };
 		6F3A5E962018CE3A000AACD0 /* ATLUtilNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLUtilNetworking.h; sourceTree = "<group>"; };
 		6F3A5E972018CE3A000AACD0 /* ATLBlockingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLBlockingQueue.h; sourceTree = "<group>"; };
 		6F3A5E982018CE3A000AACD0 /* ATLUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLUtil.m; sourceTree = "<group>"; };
 		6F3A5E992018CE3A000AACD0 /* ATLTestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLTestInfo.h; sourceTree = "<group>"; };
-		6F3A5E9A2018CE3A000AACD0 /* ATLControlChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLControlChannel.m; sourceTree = "<group>"; };
 		6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLUtilNetworking.m; sourceTree = "<group>"; };
 		6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestLibrary.m; sourceTree = "<group>"; };
 		6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLBlockingQueue.m; sourceTree = "<group>"; };
@@ -373,14 +370,12 @@
 				524BACA2221C4EE800624F6C /* PSWebSocketUTF8Decoder.m */,
 				6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */,
 				6F3A5E922018CE3A000AACD0 /* ATLUtil.h */,
-				6F3A5E932018CE3A000AACD0 /* ATLControlChannel.h */,
 				6F3A5E942018CE3A000AACD0 /* ATLConstants.h */,
 				6F3A5E952018CE3A000AACD0 /* ATLTestLibrary.h */,
 				6F3A5E962018CE3A000AACD0 /* ATLUtilNetworking.h */,
 				6F3A5E972018CE3A000AACD0 /* ATLBlockingQueue.h */,
 				6F3A5E982018CE3A000AACD0 /* ATLUtil.m */,
 				6F3A5E992018CE3A000AACD0 /* ATLTestInfo.h */,
-				6F3A5E9A2018CE3A000AACD0 /* ATLControlChannel.m */,
 				6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */,
 				6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */,
 				6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */,
@@ -535,7 +530,6 @@
 				524BACA8221C4EE800624F6C /* PSWebSocketBuffer.m in Sources */,
 				6F3A5E792018CE14000AACD0 /* ADJSessionFailure.m in Sources */,
 				6F3A5EA22018CE3A000AACD0 /* ATLTestLibrary.m in Sources */,
-				6F3A5EA02018CE3A000AACD0 /* ATLControlChannel.m in Sources */,
 				6F3A5E842018CE14000AACD0 /* UIDevice+ADJAdditions.m in Sources */,
 				6F3A5EA12018CE3A000AACD0 /* ATLUtilNetworking.m in Sources */,
 				6F3A5E782018CE14000AACD0 /* ADJActivityState.m in Sources */,

@@ -176,6 +176,8 @@ static NSURL *_baseUrl = nil;
     
     [ATLUtilNetworking sendPostRequest:requestData
                         responseHandler:^(ATLHttpResponse *httpResponse) {
+                            NSString *testSessionId = httpResponse.headerFields[TEST_SESSION_ID_HEADER];
+                            [[self controlClient] sendInitTestSessionSignal:testSessionId];
                             [self readResponse:httpResponse];
                         }];
 }

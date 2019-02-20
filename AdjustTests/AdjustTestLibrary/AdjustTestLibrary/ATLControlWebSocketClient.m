@@ -47,6 +47,11 @@
     [self.socket open];
 }
 
+- (void)sendInitTestSessionSignal:(NSString*)testSessionId {
+    ATLControlSignal *initSignal = [[ATLControlSignal alloc] initWithSignalType:ATLSignalTypeInitTestSession andSignalValue:testSessionId];
+    [self.socket send:[initSignal toJson]];
+}
+
 #pragma mark - PSWebSocketDelegate
 
 - (void)webSocketDidOpen:(PSWebSocket *)webSocket {
@@ -82,7 +87,7 @@
 }
 
 - (void)webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    [ATLUtil debug:@"websocket closed with code: %@, reason: %@, wasClean: %@", @(code), reason, (wasClean) ? @"YES" : @"NO"];
+    [ATLUtil debug:@"[WebSocket] connection closed with code: %@, reason: %@, wasClean: %@", @(code), reason, (wasClean) ? @"YES" : @"NO"];
 }
 
 @end
