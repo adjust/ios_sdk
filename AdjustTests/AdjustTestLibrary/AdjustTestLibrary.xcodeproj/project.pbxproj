@@ -48,6 +48,10 @@
 		524BAC8E221C4E0B00624F6C /* PSWebSocketTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B33221C4B3000F24F12 /* PSWebSocketTypes.h */; };
 		524BAC8F221C4E0B00624F6C /* PSWebSocketUTF8Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */; };
 		524BAC90221C4E0B00624F6C /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */; };
+		524BACAE221D529900624F6C /* ATLControlWebSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 524BACAC221D529900624F6C /* ATLControlWebSocketClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		524BACAF221D529900624F6C /* ATLControlWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */; };
+		524BACB7221D5A3600624F6C /* ATLControlSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 524BACB5221D5A3600624F6C /* ATLControlSignal.h */; };
+		524BACB8221D5A3600624F6C /* ATLControlSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACB6221D5A3600624F6C /* ATLControlSignal.m */; };
 		6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424D2007782500568A31 /* ATLControlChannel.m */; };
 		6F08425C2007782600568A31 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424F2007782500568A31 /* ATLTestLibrary.m */; };
 		6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842532007782500568A31 /* ATLTestInfo.m */; };
@@ -79,6 +83,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		524BACAC221D529900624F6C /* ATLControlWebSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATLControlWebSocketClient.h; sourceTree = "<group>"; };
+		524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATLControlWebSocketClient.m; sourceTree = "<group>"; };
+		524BACB5221D5A3600624F6C /* ATLControlSignal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATLControlSignal.h; sourceTree = "<group>"; };
+		524BACB6221D5A3600624F6C /* ATLControlSignal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATLControlSignal.m; sourceTree = "<group>"; };
 		52836B26221C4B2E00F24F12 /* PocketSocket-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketSocket-Prefix.pch"; sourceTree = "<group>"; };
 		52836B27221C4B2E00F24F12 /* PSWebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocket.m; sourceTree = "<group>"; };
 		52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
@@ -184,6 +192,10 @@
 				6F0842582007782600568A31 /* ATLUtilNetworking.m */,
 				6FFCFE732007AE0000467F01 /* ATLBlockingQueue.h */,
 				6FFCFE742007AE0000467F01 /* ATLBlockingQueue.m */,
+				524BACAC221D529900624F6C /* ATLControlWebSocketClient.h */,
+				524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */,
+				524BACB5221D5A3600624F6C /* ATLControlSignal.h */,
+				524BACB6221D5A3600624F6C /* ATLControlSignal.m */,
 			);
 			path = AdjustTestLibrary;
 			sourceTree = "<group>";
@@ -195,6 +207,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524BACB7221D5A3600624F6C /* ATLControlSignal.h in Headers */,
 				524BAC83221C4E0B00624F6C /* PSWebSocketDeflater.h in Headers */,
 				524BAC8A221C4E0B00624F6C /* PSWebSocketNetworkThread.h in Headers */,
 				524BAC8E221C4E0B00624F6C /* PSWebSocketTypes.h in Headers */,
@@ -202,6 +215,7 @@
 				20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */,
 				524BAC7E221C4E0B00624F6C /* PocketSocket-Prefix.pch in Headers */,
 				524BAC81221C4E0B00624F6C /* PSWebSocketBuffer.h in Headers */,
+				524BACAE221D529900624F6C /* ATLControlWebSocketClient.h in Headers */,
 				524BAC8F221C4E0B00624F6C /* PSWebSocketUTF8Decoder.h in Headers */,
 				20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */,
 				524BAC7F221C4E0B00624F6C /* PSWebSocket.h in Headers */,
@@ -322,7 +336,9 @@
 				6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */,
 				524BAC84221C4E0B00624F6C /* PSWebSocketDeflater.m in Sources */,
 				524BAC88221C4E0B00624F6C /* PSWebSocketInflater.m in Sources */,
+				524BACAF221D529900624F6C /* ATLControlWebSocketClient.m in Sources */,
 				6FFCFE752007AE0000467F01 /* ATLBlockingQueue.m in Sources */,
+				524BACB8221D5A3600624F6C /* ATLControlSignal.m in Sources */,
 				524BAC80221C4E0B00624F6C /* PSWebSocket.m in Sources */,
 				6F08425E2007782600568A31 /* ATLUtil.m in Sources */,
 			);

@@ -15,6 +15,9 @@
 		524BACA9221C4EE800624F6C /* PSWebSocketNetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BAC9C221C4EE800624F6C /* PSWebSocketNetworkThread.m */; };
 		524BACAA221C4EE800624F6C /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACA2221C4EE800624F6C /* PSWebSocketUTF8Decoder.m */; };
 		524BACAB221C4EE800624F6C /* PSWebSocketDeflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACA3221C4EE800624F6C /* PSWebSocketDeflater.m */; };
+		524BACB2221D583700624F6C /* ATLControlWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACB0221D583700624F6C /* ATLControlWebSocketClient.m */; };
+		524BACB4221D593F00624F6C /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E332018CE14000AACD0 /* ADJKeychain.m */; };
+		524BACBB221D5B1200624F6C /* ATLControlSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACBA221D5B1200624F6C /* ATLControlSignal.m */; };
 		6F08422C2007769F00568A31 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08422B2007769F00568A31 /* AppDelegate.m */; };
 		6F08422F2007769F00568A31 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08422E2007769F00568A31 /* ViewController.m */; };
 		6F0842322007769F00568A31 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F0842302007769F00568A31 /* Main.storyboard */; };
@@ -25,7 +28,6 @@
 		6F3A5E6F2018CE14000AACD0 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E2C2018CE14000AACD0 /* ADJTimerOnce.m */; };
 		6F3A5E702018CE14000AACD0 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E2D2018CE14000AACD0 /* ADJAttributionHandler.m */; };
 		6F3A5E712018CE14000AACD0 /* ADJRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E302018CE14000AACD0 /* ADJRequestHandler.m */; };
-		6F3A5E722018CE14000AACD0 /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E332018CE14000AACD0 /* ADJKeychain.m */; };
 		6F3A5E732018CE14000AACD0 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E342018CE14000AACD0 /* ADJSdkClickHandler.m */; };
 		6F3A5E742018CE14000AACD0 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E362018CE14000AACD0 /* ADJEvent.m */; };
 		6F3A5E752018CE14000AACD0 /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E3A2018CE14000AACD0 /* ADJSessionSuccess.m */; };
@@ -93,6 +95,10 @@
 		524BACA1221C4EE800624F6C /* PSWebSocketTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PSWebSocketTypes.h; path = PocketSocket/PSWebSocketTypes.h; sourceTree = "<group>"; };
 		524BACA2221C4EE800624F6C /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PSWebSocketUTF8Decoder.m; path = PocketSocket/PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
 		524BACA3221C4EE800624F6C /* PSWebSocketDeflater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PSWebSocketDeflater.m; path = PocketSocket/PSWebSocketDeflater.m; sourceTree = "<group>"; };
+		524BACB0221D583700624F6C /* ATLControlWebSocketClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLControlWebSocketClient.m; sourceTree = "<group>"; };
+		524BACB1221D583700624F6C /* ATLControlWebSocketClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLControlWebSocketClient.h; sourceTree = "<group>"; };
+		524BACB9221D5B1200624F6C /* ATLControlSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLControlSignal.h; sourceTree = "<group>"; };
+		524BACBA221D5B1200624F6C /* ATLControlSignal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLControlSignal.m; sourceTree = "<group>"; };
 		6F0842272007769F00568A31 /* AdjustTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdjustTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F08422A2007769F00568A31 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F08422B2007769F00568A31 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -342,6 +348,10 @@
 		6F3A5E902018CE3A000AACD0 /* AdjustTestLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				524BACB9221D5B1200624F6C /* ATLControlSignal.h */,
+				524BACBA221D5B1200624F6C /* ATLControlSignal.m */,
+				524BACB1221D583700624F6C /* ATLControlWebSocketClient.h */,
+				524BACB0221D583700624F6C /* ATLControlWebSocketClient.m */,
 				524BAC9F221C4EE800624F6C /* PocketSocket-Prefix.pch */,
 				524BAC92221C4EE700624F6C /* PSWebSocket.h */,
 				524BAC94221C4EE700624F6C /* PSWebSocket.m */,
@@ -481,11 +491,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F3A5E722018CE14000AACD0 /* ADJKeychain.m in Sources */,
+				524BACB4221D593F00624F6C /* ADJKeychain.m in Sources */,
 				6F3A5E702018CE14000AACD0 /* ADJAttributionHandler.m in Sources */,
 				6F3A5E7A2018CE14000AACD0 /* ADJTimerCycle.m in Sources */,
 				6FFCFE6E200797D100467F01 /* ATAAdjustDelegateEventFailure.m in Sources */,
 				6F3A5E832018CE14000AACD0 /* NSData+ADJAdditions.m in Sources */,
+				524BACBB221D5B1200624F6C /* ATLControlSignal.m in Sources */,
 				6F3A5EA32018CE3A000AACD0 /* ATLBlockingQueue.m in Sources */,
 				6F3A5E712018CE14000AACD0 /* ADJRequestHandler.m in Sources */,
 				6F3A5E732018CE14000AACD0 /* ADJSdkClickHandler.m in Sources */,
@@ -498,6 +509,7 @@
 				6F3A5E7E2018CE14000AACD0 /* Adjust.m in Sources */,
 				6FFCFE6D200797D100467F01 /* ATAAdjustDelegateAttribution.m in Sources */,
 				6F3A5E7B2018CE14000AACD0 /* ADJSessionParameters.m in Sources */,
+				524BACB2221D583700624F6C /* ATLControlWebSocketClient.m in Sources */,
 				6F3A5E882018CE14000AACD0 /* ADJUtil.m in Sources */,
 				6F3A5E812018CE14000AACD0 /* ADJActivityKind.m in Sources */,
 				6F3A5E8B2018CE14000AACD0 /* ADJPackageBuilder.m in Sources */,

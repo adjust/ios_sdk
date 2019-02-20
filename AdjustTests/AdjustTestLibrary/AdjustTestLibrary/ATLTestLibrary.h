@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ATLUtilNetworking.h"
 #import "ATLBlockingQueue.h"
-#import "PocketSocket/PSWebSocket.h"
 
 @protocol AdjustCommandDelegate <NSObject>
 @optional
@@ -24,9 +23,7 @@
 - (void)executeCommandRawJson:(NSString *)json;
 @end
 
-@interface ATLTestLibrary : NSObject <PSWebSocketDelegate>
-
-@property (nonatomic, strong) PSWebSocket *socket;
+@interface ATLTestLibrary : NSObject
 
 - (id)initWithBaseUrl:(NSString *)baseUrl
         andControlUrl:(NSString *)controlUrl
