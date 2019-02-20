@@ -206,9 +206,14 @@
     }
 
     if ([parameters objectForKey:@"sdkPrefix"]) {
-        NSString *sdkPrefix = [parameters objectForKey:@"sdkPrefix"][0];
-        if (sdkPrefix == (id)[NSNull null]) {
+        NSString *sdkPrefix;
+        if ([[parameters objectForKey:@"sdkPrefix"] count] == 0) {
             sdkPrefix = nil;
+        } else {
+            sdkPrefix = [parameters objectForKey:@"sdkPrefix"][0];
+            if (sdkPrefix == (id)[NSNull null]) {
+                sdkPrefix = nil;
+            }
         }
         [adjustConfig setSdkPrefix:sdkPrefix];
     }
@@ -375,9 +380,14 @@
     }
 
     if ([parameters objectForKey:@"orderId"]) {
-        NSString *transactionId = [parameters objectForKey:@"orderId"][0];
-        if (transactionId == (id)[NSNull null]) {
+        NSString *transactionId;
+        if ([[parameters objectForKey:@"orderId"] count] == 0) {
             transactionId = nil;
+        } else {
+            transactionId = [parameters objectForKey:@"orderId"][0];
+            if (transactionId == (id)[NSNull null]) {
+                transactionId = nil;
+            }
         }
         [adjustEvent setTransactionId:transactionId];
     }
