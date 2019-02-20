@@ -39,7 +39,7 @@
 }
 
 - (void)reconnectIfNeeded {
-    if ([self.socket readyState] == PSWebSocketReadyStateOpen) {
+    if ([self.socket readyState] == PSWebSocketReadyStateOpen || [self.socket readyState] == PSWebSocketReadyStateConnecting) {
         return;
     }
     [ATLUtil debug:@"[WebSocket] reconnecting web socket client ..."];
@@ -65,11 +65,13 @@
     if ([incomingSignal getType] == ATLSignalTypeInfo) {
         [ATLUtil debug:@"[WebSocket] info from the server: %@", [incomingSignal getValue]];
     } else if ([incomingSignal getType] == ATLSignalTypeEndWait) {
-        [ATLUtil debug:@"[WebSocket] end wait signal recevied, reason: %@", [incomingSignal getValue]];
-        
+        NSString *reason = [incomingSignal getValue];
+        [ATLUtil debug:@"[WebSocket] end wait signal recevied, reason: %@", reason];
+        [[self testLibrary] signalEndWaitWithReason:reason];
     } else if ([incomingSignal getType] == ATLSignalTypeCancelCurrentTest) {
-        [ATLUtil debug:@"[WebSocket] cancel test recevied, reason: %@", [incomingSignal getValue]];
-        
+        NSString *reason = [incomingSignal getValue];
+        [ATLUtil debug:@"[WebSocket] cancel test recevied, reason: %@", reason];
+        [[self testLibrary] cancelTestAndGetNext];
     } else {
         [ATLUtil debug:@"[WebSocket] unknown signal received by the server. Value: %@", [incomingSignal getValue]];
     }

@@ -9,7 +9,6 @@
 #import "ATLTestLibrary.h"
 #import "ATLUtil.h"
 #import "ATLConstants.h"
-#import "ATLControlChannel.h"
 #import "ATLTestInfo.h"
 #import "ATLBlockingQueue.h"
 #import "ATLControlWebSocketClient.h"
@@ -19,7 +18,6 @@
 @property (nonatomic, strong) ATLControlWebSocketClient *controlClient;
 @property (nonatomic, weak, nullable) NSObject<AdjustCommandDelegate> *commandDelegate;
 @property (nonatomic, strong) ATLBlockingQueue *waitControlQueue;
-@property (nonatomic, strong) ATLControlChannel *controlChannel;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, copy) NSString *currentBasePath;
 @property (nonatomic, copy) NSString *currentTestName;
@@ -116,10 +114,6 @@ static NSURL *_baseUrl = nil;
         [self.waitControlQueue teardown];
     }
     self.waitControlQueue = nil;
-    if (self.controlChannel != nil) {
-        [self.controlChannel teardown];
-    }
-    self.controlChannel = nil;
     if (self.infoToServer != nil) {
         [self.infoToServer teardown];
     }
@@ -141,13 +135,28 @@ static NSURL *_baseUrl = nil;
 
 - (void)initTest {
     self.waitControlQueue = [[ATLBlockingQueue alloc] init];
-    self.controlChannel = [[ATLControlChannel alloc] initWithTestLibrary:self];
     self.infoToServer = [[ATLTestInfo alloc] initWithTestLibrary:self];
 }
 
 - (void)addInfoToSend:(NSString *)key
                 value:(NSString *)value {
     [self.infoToServer addInfoToSend:key value:value];
+}
+
+- (void)signalEndWaitWithReason:(NSString *)reason {
+    [[self waitControlQueue] enqueue:reason];
+}
+
+- (void)cancelTestAndGetNext {
+    [self resetTestLibrary];
+    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation *operation) {
+        ATLHttpRequest *requestData = [[ATLHttpRequest alloc] init];
+        requestData.path = [ATLUtilNetworking appendBasePath:self.currentBasePath path:@"/end_test_read_next"];
+        [ATLUtilNetworking sendPostRequest:requestData
+                           responseHandler:^(ATLHttpResponse *httpResponse) {
+                               [self readResponse:httpResponse];
+                           }];
+    }];
 }
 
 - (void)sendInfoToServer:(NSString *)basePath {

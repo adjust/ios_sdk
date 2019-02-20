@@ -25,7 +25,6 @@
 		20412650203FF86300CC40DB /* ATLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842542007782500568A31 /* ATLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842572007782600568A31 /* ATLTestLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3040203C205D00CD9DA8 /* ATLTestInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842522007782500568A31 /* ATLTestInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842502007782500568A31 /* ATLControlChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842592007782600568A31 /* ATLConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3043203C206600CD9DA8 /* ATLUtilNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842552007782500568A31 /* ATLUtilNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FFCFE732007AE0000467F01 /* ATLBlockingQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -52,7 +51,6 @@
 		524BACAF221D529900624F6C /* ATLControlWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */; };
 		524BACB7221D5A3600624F6C /* ATLControlSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 524BACB5221D5A3600624F6C /* ATLControlSignal.h */; };
 		524BACB8221D5A3600624F6C /* ATLControlSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACB6221D5A3600624F6C /* ATLControlSignal.m */; };
-		6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424D2007782500568A31 /* ATLControlChannel.m */; };
 		6F08425C2007782600568A31 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424F2007782500568A31 /* ATLTestLibrary.m */; };
 		6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842532007782500568A31 /* ATLTestInfo.m */; };
 		6F08425E2007782600568A31 /* ATLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842562007782500568A31 /* ATLUtil.m */; };
@@ -107,9 +105,7 @@
 		52836B37221C4B3000F24F12 /* PSWebSocketBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketBuffer.m; sourceTree = "<group>"; };
 		52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketUTF8Decoder.h; sourceTree = "<group>"; };
 		6F08420C2007766700568A31 /* libAdjustTestLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustTestLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F08424D2007782500568A31 /* ATLControlChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLControlChannel.m; sourceTree = "<group>"; };
 		6F08424F2007782500568A31 /* ATLTestLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestLibrary.m; sourceTree = "<group>"; };
-		6F0842502007782500568A31 /* ATLControlChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLControlChannel.h; sourceTree = "<group>"; };
 		6F0842522007782500568A31 /* ATLTestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLTestInfo.h; sourceTree = "<group>"; };
 		6F0842532007782500568A31 /* ATLTestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestInfo.m; sourceTree = "<group>"; };
 		6F0842542007782500568A31 /* ATLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLUtil.h; sourceTree = "<group>"; };
@@ -180,8 +176,6 @@
 			children = (
 				52836B25221C4B2E00F24F12 /* PocketSocket */,
 				6F0842592007782600568A31 /* ATLConstants.h */,
-				6F0842502007782500568A31 /* ATLControlChannel.h */,
-				6F08424D2007782500568A31 /* ATLControlChannel.m */,
 				6F0842522007782500568A31 /* ATLTestInfo.h */,
 				6F0842532007782500568A31 /* ATLTestInfo.m */,
 				6F0842572007782600568A31 /* ATLTestLibrary.h */,
@@ -225,7 +219,6 @@
 				20AC3044203C206800CD9DA8 /* ATLBlockingQueue.h in Headers */,
 				524BAC89221C4E0B00624F6C /* PSWebSocketInternal.h in Headers */,
 				20412650203FF86300CC40DB /* ATLUtil.h in Headers */,
-				20AC3041203C206100CD9DA8 /* ATLControlChannel.h in Headers */,
 				524BAC87221C4E0B00624F6C /* PSWebSocketInflater.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -333,7 +326,6 @@
 				524BAC82221C4E0B00624F6C /* PSWebSocketBuffer.m in Sources */,
 				6F08425D2007782600568A31 /* ATLTestInfo.m in Sources */,
 				524BAC8B221C4E0B00624F6C /* PSWebSocketNetworkThread.m in Sources */,
-				6F08425A2007782600568A31 /* ATLControlChannel.m in Sources */,
 				524BAC84221C4E0B00624F6C /* PSWebSocketDeflater.m in Sources */,
 				524BAC88221C4E0B00624F6C /* PSWebSocketInflater.m in Sources */,
 				524BACAF221D529900624F6C /* ATLControlWebSocketClient.m in Sources */,

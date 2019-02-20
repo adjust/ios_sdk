@@ -25,6 +25,10 @@
 
 @interface ATLTestLibrary : NSObject
 
+- (NSString *)currentBasePath;
+
+- (ATLBlockingQueue *)waitControlQueue;
+
 - (id)initWithBaseUrl:(NSString *)baseUrl
         andControlUrl:(NSString *)controlUrl
    andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
@@ -35,9 +39,6 @@
 
 - (void)startTestSession:(NSString *)clientSdk;
 
-- (NSString *)currentBasePath;
-- (ATLBlockingQueue *)waitControlQueue;
-
 - (void)resetTestLibrary;
 
 - (void)readResponse:(ATLHttpResponse *)httpResponse;
@@ -46,6 +47,10 @@
                 value:(NSString *)value;
 
 - (void)sendInfoToServer:(NSString *)basePath;
+
+- (void)signalEndWaitWithReason:(NSString *)reason;
+
+- (void)cancelTestAndGetNext;
 
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
                              andControlUrl:(NSString *)controlUrl
