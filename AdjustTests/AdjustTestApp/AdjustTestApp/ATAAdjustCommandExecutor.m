@@ -214,9 +214,14 @@
     }
 
     if ([parameters objectForKey:@"defaultTracker"]) {
-        NSString *defaultTracker = [parameters objectForKey:@"defaultTracker"][0];
-        if (defaultTracker == (id)[NSNull null]) {
+        NSString *defaultTracker;
+        if ([[parameters objectForKey:@"defaultTracker"] count] == 0) {
             defaultTracker = nil;
+        } else {
+            defaultTracker = [parameters objectForKey:@"defaultTracker"][0];
+            if (defaultTracker == (id)[NSNull null]) {
+                defaultTracker = nil;
+            }
         }
         [adjustConfig setDefaultTracker:defaultTracker];
     }
