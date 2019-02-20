@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "PocketSocket/PSWebSocket.h"
+#import "ATLTestLibrary.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ATLControlWebSocketClient : NSObject <PSWebSocketDelegate>
 
-@property (nonatomic, strong) PSWebSocket *socket;
+- (void)initializeWebSocketWithControlUrl:(NSString*)controlUrl
+                           andTestLibrary:(ATLTestLibrary*)testLibrary;
 
-- (void)initializeWebSocketWithControlUrl:(NSString *)controlUrl;
+- (void)reconnectIfNeeded;
 
 @end
 

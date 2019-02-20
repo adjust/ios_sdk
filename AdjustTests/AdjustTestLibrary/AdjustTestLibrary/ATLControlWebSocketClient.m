@@ -9,16 +9,24 @@
 #import "ATLControlWebSocketClient.h"
 #import "ATLControlSignal.h"
 #import "ATLUtil.h"
+#import "ATLConstants.h"
 
 @interface ATLControlWebSocketClient()
 
+@property (nonatomic, strong) PSWebSocket *socket;
+@property (nonatomic, weak) ATLTestLibrary *testLibrary;
 @property (nonatomic, copy) NSString *webSocketClientId;
 
 @end
 
 @implementation ATLControlWebSocketClient
 
-- (void)initializeWebSocketWithControlUrl:(NSString *)controlUrl {
+- (void)initializeWebSocketWithControlUrl:(NSString*)controlUrl
+                           andTestLibrary:(ATLTestLibrary*)testLibrary
+{
+    self.webSocketClientId = [[NSUUID UUID] UUIDString];
+    self.testLibrary = testLibrary;
+    
     // create the NSURLRequest that will be sent as the handshake
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:controlUrl]];
     
@@ -26,9 +34,16 @@
     self.socket = [PSWebSocket clientSocketWithRequest:request];
     self.socket.delegate = self;
     
-    self.webSocketClientId = [[NSUUID UUID] UUIDString];
-    
     // open socket
+    [self.socket open];
+}
+
+- (void)reconnectIfNeeded {
+    if ([self.socket readyState] == PSWebSocketReadyStateOpen) {
+        return;
+    }
+    [ATLUtil debug:@"[WebSocket] reconnecting web socket client ..."];
+    [NSThread sleepForTimeInterval:ONE_SECOND];
     [self.socket open];
 }
 
