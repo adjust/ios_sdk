@@ -52,6 +52,8 @@
 
 - (void)cancelTestAndGetNext;
 
+- (void)doNotExitAfterEnd;
+
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
                              andControlUrl:(NSString *)controlUrl
                         andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;

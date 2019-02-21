@@ -33,6 +33,7 @@
     // [self.testLibrary addTestDirectory:@"current/sdkInfo"];
     // [self.testLibrary addTest:@"current/appSecret/Test_AppSecret_no_secret"];
 
+    // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];
 }
 

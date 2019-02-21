@@ -12,10 +12,6 @@
 static int const ONE_SECOND = 1000;
 static int const ONE_MINUTE = 60 * ONE_SECOND;
 
-static NSString * const TEST_SCRIPT_HEADER      = @"TestScript";
-static NSString * const TEST_SESSION_END_HEADER = @"TestSessionEnd";
-static NSString * const TEST_CANCELTEST_HEADER  = @"CancelTest";
-static NSString * const TEST_ENDWAIT_HEADER     = @"EndWait";
 static NSString * const TEST_LIBRARY_CLASSNAME  = @"TestLibrary";
 static NSString * const ADJUST_CLASSNAME        = @"Adjust";
 static NSString * const WAIT_FOR_CONTROL        = @"control";

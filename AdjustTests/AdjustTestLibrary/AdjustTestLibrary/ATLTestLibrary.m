@@ -28,6 +28,7 @@
 
 @implementation ATLTestLibrary
 
+BOOL exitAfterEnd = YES;
 static NSURL *_baseUrl = nil;
 
 + (NSURL *)baseUrl {
@@ -288,7 +289,13 @@ static NSURL *_baseUrl = nil;
 
 - (void)endTestSessionI {
     [self teardown];
-    // TODO add exit after end
+    if (exitAfterEnd) {
+        exit(0);
+    }
+}
+
+- (void)doNotExitAfterEnd {
+    exitAfterEnd = false;
 }
 
 - (void)waitI:(NSDictionary *)params {
