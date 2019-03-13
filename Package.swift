@@ -13,9 +13,9 @@ let package = Package(
     targets: [
         .target(name: "AdjustSdk", dependencies: ["Core"]),
         .target(name: "Core", path: "Adjust"),
-        .target(name: "Sociomantic", path: "plugin/Sociomantic", dependencies: ["Core"]),
-        .target(name: "Criteo", path: "plugin/Criteo", dependencies: ["Core"]),
-        .target(name: "Trademob", path: "plugin/Trademob", dependencies: ["Core"]),
-        .target(name: "WebBridge", path: "AdjustBridge", dependencies: ["Core"]),
+        .target(name: "Sociomantic", dependencies: ["Core"], path: "plugin/Sociomantic"),
+        .target(name: "Criteo", dependencies: ["Core"], path: "plugin/Criteo"),
+        .target(name: "Trademob", dependencies: ["Core"], path: "plugin/Trademob"),
+        .target(name: "WebBridge", dependencies: ["Core"], path: "AdjustBridge"),
     ]
 )
