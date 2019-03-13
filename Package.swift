@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "WebBridge", targets: ["WebBridge"]),
     ],
     targets: [
-        .target(name: "AdjustSdk", dependencies: ["Core"]),
+        .target(name: "AdjustSdk", dependencies: ["Core"], path: "AdjustSdk"),
         .target(name: "Core", path: "Adjust"),
         .target(name: "Sociomantic", dependencies: ["Core"], path: "plugin/Sociomantic"),
         .target(name: "Criteo", dependencies: ["Core"], path: "plugin/Criteo"),
