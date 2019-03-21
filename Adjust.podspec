@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
   s.tvos.weak_framework = 'AdSupport'
   s.requires_arc   = true
   s.default_subspec = 'Core'
+  s.pod_target_xcconfig = { 'BITCODE_GENERATION_MODE' => 'bitcode' }
 
   s.subspec 'Core' do |co|
     co.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
