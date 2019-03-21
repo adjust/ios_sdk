@@ -45,7 +45,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding universal tvOS SDK framework (device + simulator) and copying it to destination folder ... ${NC}"
 xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
-xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos clean build
+xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
 cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static
 lipo -create -output frameworks/static/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
