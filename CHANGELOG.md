@@ -1,3 +1,12 @@
+### Version 4.17.2 (21st March 2019)
+#### Added
+- Added `modulemap` file to static framework target to make it usable from Swift apps (https://github.com/adjust/ios_sdk/issues/361).
+
+#### Fixed
+- Fixed issue with Adjust pod due to `BITCODE_GENERATION_MODE` option absence (https://github.com/adjust/ios_sdk/issues/368).
+
+---
+
 ### Version 4.17.1 (10th December 2018)
 #### Fixed
 - Fixed issue with printing of certain skipped deep links to debug console output in sandbox mode (https://github.com/adjust/ios_sdk/issues/362).
