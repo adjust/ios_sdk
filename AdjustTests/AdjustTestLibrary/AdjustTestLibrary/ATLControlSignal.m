@@ -97,8 +97,6 @@
     switch (signalType) {
         case ATLSignalTypeInfo:
             return SIGNAL_INFO;
-        case ATLSignalTypeInit:
-            return SIGNAL_INIT;
         case ATLSignalTypeEndWait:
             return SIGNAL_END_WAIT;
         case ATLSignalTypeUnknown:
@@ -115,8 +113,6 @@
 - (ATLSignalType)getSignalTypeByString:(NSString*)signalType {
     if ([signalType isEqualToString:SIGNAL_INFO]) {
         return ATLSignalTypeInfo;
-    } else if ([signalType isEqualToString:SIGNAL_INIT]) {
-        return ATLSignalTypeInit;
     } else if ([signalType isEqualToString:SIGNAL_END_WAIT]) {
         return ATLSignalTypeEndWait;
     } else if ([signalType isEqualToString:SIGNAL_CANCEL_CURRENT_TEST]) {

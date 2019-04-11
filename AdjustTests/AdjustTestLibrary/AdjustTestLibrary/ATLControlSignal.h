@@ -12,11 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef enum {
     ATLSignalTypeInfo               = 1,
-    ATLSignalTypeInit               = 2,
-    ATLSignalTypeInitTestSession    = 3,
-    ATLSignalTypeEndWait            = 4,
-    ATLSignalTypeCancelCurrentTest  = 5,
-    ATLSignalTypeUnknown            = 6
+    ATLSignalTypeInitTestSession    = 2,
+    ATLSignalTypeEndWait            = 3,
+    ATLSignalTypeCancelCurrentTest  = 4,
+    ATLSignalTypeUnknown            = 5
 } ATLSignalType;
 
 @interface ATLControlSignal : NSObject

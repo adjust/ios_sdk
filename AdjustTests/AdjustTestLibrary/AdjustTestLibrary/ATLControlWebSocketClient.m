@@ -15,7 +15,6 @@
 
 @property (nonatomic, strong) PSWebSocket *socket;
 @property (nonatomic, weak) ATLTestLibrary *testLibrary;
-@property (nonatomic, copy) NSString *webSocketClientId;
 
 @end
 
@@ -24,7 +23,6 @@
 - (void)initializeWebSocketWithControlUrl:(NSString*)controlUrl
                            andTestLibrary:(ATLTestLibrary*)testLibrary
 {
-    self.webSocketClientId = [[NSUUID UUID] UUIDString];
     self.testLibrary = testLibrary;
     
     // create the NSURLRequest that will be sent as the handshake
@@ -56,8 +54,6 @@
 
 - (void)webSocketDidOpen:(PSWebSocket *)webSocket {
     [ATLUtil debug:@"[WebSocket] connection opened with the server"];
-    ATLControlSignal *initSignal = [[ATLControlSignal alloc] initWithSignalType:ATLSignalTypeInit andSignalValue:self.webSocketClientId];
-    [webSocket send:[initSignal toJson]];
 }
 
 - (void)webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {
