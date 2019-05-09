@@ -1158,6 +1158,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
         }
+        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
     }
 
     [selfI checkStatusI:selfI
