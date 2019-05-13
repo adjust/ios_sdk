@@ -13,14 +13,15 @@
 #endif
 
 typedef NS_ENUM(int, ADJActivityKind) {
-    ADJActivityKindUnknown       = 0,
-    ADJActivityKindSession       = 1,
-    ADJActivityKindEvent         = 2,
-//  ADJActivityKindRevenue       = 3,
-    ADJActivityKindClick         = 4,
-    ADJActivityKindAttribution   = 5,
-    ADJActivityKindInfo          = 6,
-    ADJActivityKindGdpr          = 7
+    ADJActivityKindUnknown      = 0,
+    ADJActivityKindSession      = 1,
+    ADJActivityKindEvent        = 2,
+//  ADJActivityKindRevenue      = 3,
+    ADJActivityKindClick        = 4,
+    ADJActivityKindAttribution  = 5,
+    ADJActivityKindInfo         = 6,
+    ADJActivityKindGdpr         = 7,
+    ADJActivityKindAdRevenue    = 8
 };
 
 @interface ADJActivityKindUtil : NSObject
