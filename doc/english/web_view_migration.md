@@ -1,4 +1,4 @@
-## Migrate your Adjust web bridge SDK to v4.17.3 from v4.9.1 or earlier
+## Migrate your Adjust web bridge SDK to v4.18.0 from v4.9.1 or earlier
 
 ### Integration
 
