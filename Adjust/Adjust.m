@@ -21,6 +21,8 @@
 NSString * const ADJEnvironmentSandbox      = @"sandbox";
 NSString * const ADJEnvironmentProduction   = @"production";
 
+NSString * const ADJAdRevenueSourceMopub    = @"mopub";
+
 @implementation AdjustTestOptions
 @end
 

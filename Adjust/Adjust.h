@@ -35,6 +35,11 @@ extern NSString * __nonnull const ADJEnvironmentSandbox;
 extern NSString * __nonnull const ADJEnvironmentProduction;
 
 /**
+ * Constants for supported ad revenue sources.
+ */
+extern NSString * __nonnull const ADJAdRevenueSourceMopub;
+
+/**
  * @brief The main interface to Adjust.
  *
  * @note Use the methods of this class to tell Adjust about the usage of your app.
