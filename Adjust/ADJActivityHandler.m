@@ -565,8 +565,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
-- (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload {
-    
+- (void)trackAdRevenue:(NSString *)source payload:(NSData *)payload {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI adRevenueI:selfI source:source payload:payload];
+                     }];
 }
 
 - (NSString *)getBasePath {
@@ -941,6 +945,32 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     }
 
     [selfI writeActivityStateI:selfI];
+}
+
+- (void)adRevenueI:(ADJActivityHandler *)selfI
+            source:(NSString *)source
+           payload:(NSData *)payload {
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // Create and submit ad revenue package.
+    ADJPackageBuilder *adRevenueBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                          activityState:selfI.activityState
+                                                                                 config:selfI.adjustConfig
+                                                                      sessionParameters:selfI.sessionParameters
+                                                                              createdAt:now];
+    ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:source payload:payload];
+    [selfI.packageHandler addPackage:adRevenuePackage];
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
