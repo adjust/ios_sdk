@@ -565,6 +565,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload {
+    
+}
+
 - (NSString *)getBasePath {
     return _basePath;
 }

@@ -96,6 +96,7 @@
 - (void)removeSessionPartnerParameter:(NSString *)key;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
+- (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (NSString *)getBasePath;
 - (NSString *)getGdprPath;
 

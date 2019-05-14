@@ -230,6 +230,14 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)gdprForgetMe;
 
 /**
+ * @brief Track ad revenue for given source.
+ *
+ * @param source Ad revenue source.
+ * @param payload Ad revenue payload.
+ */
++ (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
@@ -271,6 +279,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)gdprForgetMe;
+
+- (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
 - (BOOL)isEnabled;
 

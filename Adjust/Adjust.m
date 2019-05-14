@@ -156,6 +156,10 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] gdprForgetMe];
 }
 
++ (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload {
+    [[Adjust getInstance] trackAdrevenue:source payload:payload];
+}
+
 + (ADJAttribution *)attribution {
     return [[Adjust getInstance] attribution];
 }
@@ -384,6 +388,14 @@ static dispatch_once_t onceToken = 0;
             [self.activityHandler setGdprForgetMe];
         }
     }
+}
+
+- (void)trackAdrevenue:(NSString *)source payload:(NSData *)payload {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler trackAdRevenue:source payload:payload];
 }
 
 - (ADJAttribution *)attribution {
