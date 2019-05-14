@@ -89,6 +89,8 @@
         [self openDeeplink:parameters];
     } else if ([methodName isEqualToString:@"gdprForgetMe"]) {
         [self gdprForgetMe:parameters];
+    } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
+        [self trackAdRevenue:parameters];
     }
 }
 
@@ -494,6 +496,13 @@
 
 - (void)gdprForgetMe:(NSDictionary *)parameters {
     [Adjust gdprForgetMe];
+}
+
+- (void)trackAdRevenue:(NSDictionary *)parameters {
+    NSString *sourceS = [parameters objectForKey:@"adRevenueSource"][0];
+    NSString *payloadS = [parameters objectForKey:@"adRevenueJsonString"][0];
+    NSData *payload = [payloadS dataUsingEncoding:NSUTF8StringEncoding];
+    [Adjust trackAdrevenue:sourceS payload:payload];
 }
 
 @end
