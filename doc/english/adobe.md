@@ -1,6 +1,6 @@
 ## Integrate Adjust with the Adobe SDK
 
-To integrate Adjust with all Adobe SDK tracked events, you must send your Adjust attribution data to the Adobe SDK after receiving the attribution response from our backend. Follow the steps in the [attribution callback][attribution-callback] chapter of our Android SDK guide to implement this. To use the Adobe SDK API, the callback method can be set as the following:
+To integrate Adjust with all Adobe SDK tracked events, you must send your Adjust attribution data to the Adobe SDK after receiving the attribution response from our backend. Follow the steps in the [attribution callback][attribution-callback] chapter of our iOS SDK guide to implement this. To use the Adobe SDK API, the callback method can be set as the following:
 
 ```objc
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
