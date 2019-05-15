@@ -108,6 +108,27 @@
 #endif
 }
 
+- (NSString *)adjFbAnonymousId {
+#if TARGET_OS_TV
+    return @"";
+#else
+    // return [FBSDKAppEventsUtility retrievePersistedAnonymousID];
+    Class class = NSClassFromString(@"FBSDKAppEventsUtility");
+    if (class == nil) {
+        return @"";
+    }
+    SEL selGetId = NSSelectorFromString(@"retrievePersistedAnonymousID");
+    if (![class respondsToSelector:selGetId]) {
+        return @"";
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+#pragma clang diagnostic pop
+    return fbAnonymousId;
+#endif
+}
+
 - (NSString *)adjDeviceType {
     NSString *type = [self.model stringByReplacingOccurrencesOfString:@" " withString:@""];
     return type;
