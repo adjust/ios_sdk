@@ -38,6 +38,23 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * Constants for supported ad revenue sources.
  */
 extern NSString * __nonnull const ADJAdRevenueSourceMopub;
+extern NSString * __nonnull const ADJAdRevenueSourceAdmob;
+extern NSString * __nonnull const ADJAdRevenueSourceFbNativeAd;
+extern NSString * __nonnull const ADJAdRevenueSourceIronsource;
+extern NSString * __nonnull const ADJAdRevenueSourceFyber;
+extern NSString * __nonnull const ADJAdRevenueSourceAerserv;
+extern NSString * __nonnull const ADJAdRevenueSourceAppodeal;
+extern NSString * __nonnull const ADJAdRevenueSourceAdincube;
+extern NSString * __nonnull const ADJAdRevenueSourceFusePowered;
+extern NSString * __nonnull const ADJAdRevenueSourceAddaptr;
+extern NSString * __nonnull const ADJAdRevenueSourceMillennialMeditation;
+extern NSString * __nonnull const ADJAdRevenueSourceFlurry;
+extern NSString * __nonnull const ADJAdRevenueSourceAdmost;
+extern NSString * __nonnull const ADJAdRevenueSourceDeltadna;
+extern NSString * __nonnull const ADJAdRevenueSourceUpsight;
+extern NSString * __nonnull const ADJAdRevenueSourceUnityads;
+extern NSString * __nonnull const ADJAdRevenueSourceAdtoapp;
+extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 
 /**
  * @brief The main interface to Adjust.

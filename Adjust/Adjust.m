@@ -18,10 +18,27 @@
 // See README for details: https://github.com/adjust/ios_sdk/blob/master/README.md
 #endif
 
-NSString * const ADJEnvironmentSandbox      = @"sandbox";
-NSString * const ADJEnvironmentProduction   = @"production";
+NSString * const ADJEnvironmentSandbox = @"sandbox";
+NSString * const ADJEnvironmentProduction = @"production";
 
-NSString * const ADJAdRevenueSourceMopub    = @"mopub";
+NSString * const ADJAdRevenueSourceMopub = @"mopub";
+NSString * const ADJAdRevenueSourceAdmob = @"admob";
+NSString * const ADJAdRevenueSourceFbNativeAd = @"facebook_native_ad";
+NSString * const ADJAdRevenueSourceIronsource = @"ironsource";
+NSString * const ADJAdRevenueSourceFyber = @"fyber";
+NSString * const ADJAdRevenueSourceAerserv = @"aerserv";
+NSString * const ADJAdRevenueSourceAppodeal = @"appodeal";
+NSString * const ADJAdRevenueSourceAdincube = @"adincube";
+NSString * const ADJAdRevenueSourceFusePowered = @"fusepowered";
+NSString * const ADJAdRevenueSourceAddaptr = @"addapptr";
+NSString * const ADJAdRevenueSourceMillennialMeditation = @"millennial_mediation";
+NSString * const ADJAdRevenueSourceFlurry = @"flurry";
+NSString * const ADJAdRevenueSourceAdmost = @"admost";
+NSString * const ADJAdRevenueSourceDeltadna = @"deltadna";
+NSString * const ADJAdRevenueSourceUpsight = @"upsight";
+NSString * const ADJAdRevenueSourceUnityads = @"unityads";
+NSString * const ADJAdRevenueSourceAdtoapp = @"adtoapp";
+NSString * const ADJAdRevenueSourceTapdaq = @"tapdaq";
 
 @implementation AdjustTestOptions
 @end
