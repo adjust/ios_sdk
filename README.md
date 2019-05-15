@@ -30,6 +30,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Session partner parameters](#session-partner-parameters)
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
+   * [Ad revenue tracking](#af-ad-revenue)
    * [Event and session callbacks](#event-session-callbacks)
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
@@ -498,6 +499,23 @@ The delegate function will be called after the SDK receives the final attributio
 - `NSString adid` the unique device identifier provided by attribution.
 
 If any value is unavailable, it will default to `nil`.
+
+### <a id="af-ad-revenue"></a>Ad revenue tracking
+
+You can track ad revenue information with Adjust SDK by ivoking following method:
+
+```objc
+[Adjust trackAdRevenue:source payload:payload];
+```
+
+Parameters of the method which you need to pass are:
+
+- `source` - `NSString` parameter which indicates the source of ad revenue info.
+- `payload` - `NSData` object which contains ad revenue JSON.
+
+Currently supported ad revenue sources:
+
+ - MoPub (use `ADJAdRevenueSourceMopub` constant as `source` parameter value).
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
