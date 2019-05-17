@@ -174,7 +174,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjFbAnonymousId forKey:@"fb_anon_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
@@ -241,7 +241,7 @@
     [ADJPackageBuilder parameters:parameters setString:event.callbackId forKey:@"event_callback_id"];
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjFbAnonymousId forKey:@"fb_anon_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
@@ -392,7 +392,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjFbAnonymousId forKey:@"fb_anon_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
