@@ -502,7 +502,7 @@ If any value is unavailable, it will default to `nil`.
 
 ### <a id="af-ad-revenue"></a>Ad revenue tracking
 
-You can track ad revenue information with Adjust SDK by ivoking following method:
+You can track ad revenue information with Adjust SDK by invoking following method:
 
 ```objc
 [Adjust trackAdRevenue:source payload:payload];
@@ -510,12 +510,12 @@ You can track ad revenue information with Adjust SDK by ivoking following method
 
 Parameters of the method which you need to pass are:
 
-- `source` - `NSString` parameter which indicates the source of ad revenue info.
+- `source` - `NSString` object which indicates the source of ad revenue info.
 - `payload` - `NSData` object which contains ad revenue JSON.
 
-Currently supported ad revenue sources:
+Currently we support the below `source` parameter values:
 
- - MoPub (use `ADJAdRevenueSourceMopub` constant as `source` parameter value).
+- `ADJAdRevenueSourceMopub` - representing MoPub mediation platform
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
