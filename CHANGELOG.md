@@ -1,3 +1,10 @@
+### Version 4.18.0 (xxth May 2018)
+#### Added
+- Added `trackAdRevenue:payload:` method to `Adjust` interface to allow tracking of ad revenue. With this release added support for `MoPub` ad revenue tracking.
+- Added reading of Facebook anonymous ID if available.
+
+---
+
 ### Version 4.17.3 (24th May 2019)
 #### Changed
 - SDK will check for iAd information upon re-enabling.
