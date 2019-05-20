@@ -175,8 +175,8 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] gdprForgetMe];
 }
 
-+ (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload {
-    [[Adjust getInstance] trackAdrevenue:source payload:payload];
++ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload {
+    [[Adjust getInstance] trackAdRevenue:source payload:payload];
 }
 
 + (ADJAttribution *)attribution {
@@ -409,7 +409,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)trackAdrevenue:(NSString *)source payload:(NSData *)payload {
+- (void)trackAdRevenue:(NSString *)source payload:(NSData *)payload {
     if (![self checkActivityHandler]) {
         return;
     }

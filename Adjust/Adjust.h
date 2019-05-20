@@ -257,7 +257,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  * @param source Ad revenue source.
  * @param payload Ad revenue payload.
  */
-+ (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
++ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
 /**
  * Obtain singleton Adjust object.
@@ -302,7 +302,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 
 - (void)gdprForgetMe;
 
-- (void)trackAdrevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
+- (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
 - (BOOL)isEnabled;
 
