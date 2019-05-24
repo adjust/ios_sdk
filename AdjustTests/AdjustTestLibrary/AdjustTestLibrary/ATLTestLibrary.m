@@ -9,52 +9,53 @@
 #import "ATLTestLibrary.h"
 #import "ATLUtil.h"
 #import "ATLConstants.h"
-#import "ATLControlChannel.h"
 #import "ATLTestInfo.h"
 #import "ATLBlockingQueue.h"
-
-//static const char * const kInternalQueueName     = "com.adjust.TestLibrary";
+#import "ATLControlWebSocketClient.h"
 
 @interface ATLTestLibrary()
 
+@property (nonatomic, strong) ATLControlWebSocketClient *controlClient;
 @property (nonatomic, weak, nullable) NSObject<AdjustCommandDelegate> *commandDelegate;
-//@property (nonatomic, strong) dispatch_queue_t internalQueue;
-@property (nonatomic, strong) NSOperationQueue* operationQueue;
-
+@property (nonatomic, strong) ATLBlockingQueue *waitControlQueue;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, copy) NSString *currentBasePath;
 @property (nonatomic, copy) NSString *currentTestName;
-//@property (nonatomic, copy) NSString *baseUrl;
-@property (nonatomic, strong) ATLBlockingQueue *waitControlQueue;
-@property (nonatomic, strong) ATLControlChannel *controlChannel;
 @property (nonatomic, strong) NSMutableString *testNames;
-
 @property (nonatomic, strong) ATLTestInfo *infoToServer;
 
 @end
 
 @implementation ATLTestLibrary
 
-static NSURL * _baseUrl = nil;
+BOOL exitAfterEnd = YES;
+static NSURL *_baseUrl = nil;
 
 + (NSURL *)baseUrl {
     return _baseUrl;
 }
 
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
+                             andControlUrl:(NSString *)controlUrl
                         andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate {
     return [[ATLTestLibrary alloc] initWithBaseUrl:baseUrl
+                                     andControlUrl:controlUrl
                                 andCommandDelegate:commandDelegate];
 }
+
 - (id)initWithBaseUrl:(NSString *)baseUrl
+        andControlUrl:(NSString *)controlUrl
    andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
 {
     self = [super init];
     if (self == nil) return nil;
     
     _baseUrl = [NSURL URLWithString:baseUrl];
-    //self.baseUrl = baseUrl;
     self.commandDelegate = commandDelegate;
     self.testNames = [[NSMutableString alloc] init];
+    
+    self.controlClient = [[ATLControlWebSocketClient alloc] init];
+    [self.controlClient initializeWebSocketWithControlUrl:controlUrl andTestLibrary:self];
     
     return self;
 }
@@ -80,15 +81,16 @@ static NSURL * _baseUrl = nil;
 }
 
 - (void)startTestSession:(NSString *)clientSdk {
+    // reconnect web socket client if disconnected
+    [self.controlClient reconnectIfNeeded];
     [self resetTestLibrary];
-    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation * operation) {
+    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation *operation) {
         [self sendTestSessionI:clientSdk];
     }];
 }
 
 - (void)resetTestLibrary {
     [self teardown];
-
     [self initTestLibrary];
 }
 
@@ -113,10 +115,6 @@ static NSURL * _baseUrl = nil;
         [self.waitControlQueue teardown];
     }
     self.waitControlQueue = nil;
-    if (self.controlChannel != nil) {
-        [self.controlChannel teardown];
-    }
-    self.controlChannel = nil;
     if (self.infoToServer != nil) {
         [self.infoToServer teardown];
     }
@@ -133,13 +131,11 @@ static NSURL * _baseUrl = nil;
 // reset for each test
 - (void)resetForNextTest {
     [self clearTest];
-
     [self initTest];
 }
 
 - (void)initTest {
     self.waitControlQueue = [[ATLBlockingQueue alloc] init];
-    self.controlChannel = [[ATLControlChannel alloc] initWithTestLibrary:self];
     self.infoToServer = [[ATLTestInfo alloc] initWithTestLibrary:self];
 }
 
@@ -148,14 +144,29 @@ static NSURL * _baseUrl = nil;
     [self.infoToServer addInfoToSend:key value:value];
 }
 
+- (void)signalEndWaitWithReason:(NSString *)reason {
+    [[self waitControlQueue] enqueue:reason];
+}
+
+- (void)cancelTestAndGetNext {
+    [self resetTestLibrary];
+    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation *operation) {
+        ATLHttpRequest *requestData = [[ATLHttpRequest alloc] init];
+        requestData.path = [ATLUtilNetworking appendBasePath:self.currentBasePath path:@"/end_test_read_next"];
+        [ATLUtilNetworking sendPostRequest:requestData
+                           responseHandler:^(ATLHttpResponse *httpResponse) {
+                               [self readResponse:httpResponse];
+                           }];
+    }];
+}
+
 - (void)sendInfoToServer:(NSString *)basePath {
     [self.infoToServer sendInfoToServer:basePath];
 }
 
 - (void)sendTestSessionI:(NSString *)clientSdk {
-    ATLHttpRequest * requestData = [[ATLHttpRequest alloc] init];
-
-    NSMutableDictionary * headerFields = [NSMutableDictionary dictionaryWithObjectsAndKeys:clientSdk, @"Client-SDK", nil];
+    ATLHttpRequest *requestData = [[ATLHttpRequest alloc] init];
+    NSMutableDictionary *headerFields = [NSMutableDictionary dictionaryWithObjectsAndKeys:clientSdk, @"Client-SDK", nil];
 
     if (self.testNames != nil) {
         [headerFields setObject:self.testNames forKey:@"Test-Names"];
@@ -166,15 +177,18 @@ static NSURL * _baseUrl = nil;
     
     [ATLUtilNetworking sendPostRequest:requestData
                         responseHandler:^(ATLHttpResponse *httpResponse) {
+                            NSString *testSessionId = httpResponse.headerFields[TEST_SESSION_ID_HEADER];
+                            [[self controlClient] sendInitTestSessionSignal:testSessionId];
                             [self readResponse:httpResponse];
                         }];
 }
 
 - (void)readResponse:(ATLHttpResponse *)httpResponse {
-    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation * operation) {
+    [ATLUtil addOperationAfterLast:self.operationQueue blockWithOperation:^(NSBlockOperation *operation) {
         [self readResponseI:operation httpResponse:httpResponse];
     }];
 }
+
 - (void)readResponseI:(NSBlockOperation *)operation
          httpResponse:(ATLHttpResponse *)httpResponse {
     if (httpResponse == nil) {
@@ -183,21 +197,23 @@ static NSURL * _baseUrl = nil;
     }
     [self execTestCommandsI:operation jsonFoundation:httpResponse.jsonFoundation];
 }
+
 - (void)execTestCommandsI:(NSBlockOperation *)operation
            jsonFoundation:(id)jsonFoundation {
-    NSArray * jsonArray = (NSArray *)jsonFoundation;
+    NSArray *jsonArray = (NSArray *)jsonFoundation;
     if (jsonArray == nil) {
         [ATLUtil debug:@"jsonArray is nil"];
         return;
     }
-    for (NSDictionary * testCommand in jsonArray) {
+    
+    for (NSDictionary *testCommand in jsonArray) {
         if (operation.cancelled) {
             [ATLUtil debug:@"command execution cancelled"];
             return;
         }
-        NSString * className = [testCommand objectForKey:@"className"];
-        NSString * functionName = [testCommand objectForKey:@"functionName"];
-        NSDictionary * params = [testCommand objectForKey:@"params"];
+        NSString *className = [testCommand objectForKey:@"className"];
+        NSString *functionName = [testCommand objectForKey:@"functionName"];
+        NSDictionary *params = [testCommand objectForKey:@"params"];
         [ATLUtil debug:@"className: %@, functionName: %@, params: %@", className, functionName, params];
 
         NSDate *timeBefore = [NSDate date];
@@ -236,27 +252,6 @@ static NSURL * _baseUrl = nil;
         [ATLUtil debug:@"seconds elapsed %f", timeElapsedSeconds];
     }
 }
-/*
-- (void)sendInfoToServerI {
-    [ATLUtil debug:@"sendInfoToServer"];
-
-    ATLHttpRequest * requestData = [[ATLHttpRequest alloc] init];
-
-    requestData.path = [ATLUtil appendBasePath:self.currentBasePath path:@"/test_info"];
-
-    if (self.infoToServer) {
-        requestData.bodyString = [ADJUtil queryString:self.infoToServer];
-    }
-
-    [ATLUtilNetworking sendPostRequest:requestData
-                       responseHandler:^(ATLHttpResponse *httpResponse) {
-                           self.infoToServer = nil;
-                           [self readHeaders:httpResponse];
-                       }];
-
-}
-*/
-
 
 - (void)execTestLibraryCommandI:(NSString *)functionName
                          params:(NSDictionary *)params {
@@ -276,21 +271,16 @@ static NSURL * _baseUrl = nil;
         self.currentBasePath = [params objectForKey:BASE_PATH_PARAM][0];
         [ATLUtil debug:@"current base path %@", self.currentBasePath];
     }
-
     if ([params objectForKey:TEST_NAME_PARAM]) {
         self.currentTestName = [params objectForKey:TEST_NAME_PARAM][0];
         [ATLUtil debug:@"current test name %@", self.currentTestName];
     }
-
     [self resetForNextTest];
 }
 
 - (void)endTestReadNextI {
-    ATLHttpRequest * requestData = [[ATLHttpRequest alloc] init];
-    // send end test request
+    ATLHttpRequest *requestData = [[ATLHttpRequest alloc] init];
     requestData.path = [ATLUtilNetworking appendBasePath:self.currentBasePath path:@"/end_test_read_next"];
-
-    // and process the next in the response
     [ATLUtilNetworking sendPostRequest:requestData
                        responseHandler:^(ATLHttpResponse *httpResponse) {
                            [self readResponse:httpResponse];
@@ -299,25 +289,29 @@ static NSURL * _baseUrl = nil;
 
 - (void)endTestSessionI {
     [self teardown];
-    // TODO add exit after end
+    if (exitAfterEnd) {
+        exit(0);
+    }
+}
+
+- (void)doNotExitAfterEnd {
+    exitAfterEnd = false;
 }
 
 - (void)waitI:(NSDictionary *)params {
     if ([params objectForKey:WAIT_FOR_CONTROL]) {
-        NSString * waitExpectedReason = [params objectForKey:WAIT_FOR_CONTROL][0];
+        NSString *waitExpectedReason = [params objectForKey:WAIT_FOR_CONTROL][0];
         [ATLUtil debug:@"wait for %@", waitExpectedReason];
-        NSString * endReason = [self.waitControlQueue dequeue];
+        NSString *endReason = [self.waitControlQueue dequeue];
         [ATLUtil debug:@"wait ended due to %@", endReason];
     }
-
     if ([params objectForKey:WAIT_FOR_SLEEP]) {
-        NSString * millisToSleepS = [params objectForKey:WAIT_FOR_SLEEP][0];
+        NSString *millisToSleepS = [params objectForKey:WAIT_FOR_SLEEP][0];
         [ATLUtil debug:@"sleep for %@", millisToSleepS];
-
         double secondsToSleep = [millisToSleepS intValue] / 1000;
         [NSThread sleepForTimeInterval:secondsToSleep];
-
         [ATLUtil debug:@"sleep ended"];
     }
 }
+
 @end

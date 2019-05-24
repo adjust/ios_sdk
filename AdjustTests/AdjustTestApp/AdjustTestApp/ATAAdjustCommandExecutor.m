@@ -206,17 +206,27 @@
     }
 
     if ([parameters objectForKey:@"sdkPrefix"]) {
-        NSString *sdkPrefix = [parameters objectForKey:@"sdkPrefix"][0];
-        if (sdkPrefix == (id)[NSNull null]) {
+        NSString *sdkPrefix;
+        if ([[parameters objectForKey:@"sdkPrefix"] count] == 0) {
             sdkPrefix = nil;
+        } else {
+            sdkPrefix = [parameters objectForKey:@"sdkPrefix"][0];
+            if (sdkPrefix == (id)[NSNull null]) {
+                sdkPrefix = nil;
+            }
         }
         [adjustConfig setSdkPrefix:sdkPrefix];
     }
 
     if ([parameters objectForKey:@"defaultTracker"]) {
-        NSString *defaultTracker = [parameters objectForKey:@"defaultTracker"][0];
-        if (defaultTracker == (id)[NSNull null]) {
+        NSString *defaultTracker;
+        if ([[parameters objectForKey:@"defaultTracker"] count] == 0) {
             defaultTracker = nil;
+        } else {
+            defaultTracker = [parameters objectForKey:@"defaultTracker"][0];
+            if (defaultTracker == (id)[NSNull null]) {
+                defaultTracker = nil;
+            }
         }
         [adjustConfig setDefaultTracker:defaultTracker];
     }
@@ -334,7 +344,12 @@
     if ([self.savedEvents objectForKey:eventNumber]) {
         adjustEvent = [self.savedEvents objectForKey:eventNumber];
     } else {
-        NSString *eventToken = [parameters objectForKey:@"eventToken"][0];
+        NSString *eventToken;
+        if ([[parameters objectForKey:@"eventToken"] count] == 0) {
+            eventToken = nil;
+        } else {
+            eventToken = [parameters objectForKey:@"eventToken"][0];
+        }
         adjustEvent = [ADJEvent eventWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
@@ -365,9 +380,14 @@
     }
 
     if ([parameters objectForKey:@"orderId"]) {
-        NSString *transactionId = [parameters objectForKey:@"orderId"][0];
-        if (transactionId == (id)[NSNull null]) {
+        NSString *transactionId;
+        if ([[parameters objectForKey:@"orderId"] count] == 0) {
             transactionId = nil;
+        } else {
+            transactionId = [parameters objectForKey:@"orderId"][0];
+            if (transactionId == (id)[NSNull null]) {
+                transactionId = nil;
+            }
         }
         [adjustEvent setTransactionId:transactionId];
     }
