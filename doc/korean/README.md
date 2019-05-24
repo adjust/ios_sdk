@@ -72,13 +72,13 @@ iOS 개발용 Xcode를 사용한다는 가정하에 iOS 프로젝트에 Adjust S
 [CocoaPods][cocoapods]를 사용하는 경우, 다음 내용을 `Podfile`에 추가한 후 [해당 단계](#sdk-integrate)를 완료하세요.
 
 ```ruby
-pod 'Adjust', '~> 4.17.2'
+pod 'Adjust', '~> 4.17.3'
 ```
 
 또는:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.17.2'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.17.3'
 ```
 
 ---
