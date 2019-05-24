@@ -1,3 +1,9 @@
+### Version 4.17.3 (24th May 2019)
+#### Changed
+- SDK will check for iAd information upon re-enabling.
+
+---
+
 ### Version 4.17.2 (21st March 2019)
 #### Added
 - Added `modulemap` file to static framework target to make it usable from Swift apps (https://github.com/adjust/ios_sdk/issues/361).
