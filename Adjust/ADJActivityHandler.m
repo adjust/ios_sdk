@@ -1051,6 +1051,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     }
 
     if (attributionResponseData.deeplink == nil) {
+        if ([selfI.adjustDelegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
+            [selfI.adjustDelegate adjustDeeplinkResponse:attributionResponseData.deeplink];
+        }
         return;
     }
 
