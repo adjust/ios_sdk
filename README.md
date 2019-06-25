@@ -515,7 +515,7 @@ Parameters of the method which you need to pass are:
 
 Currently we support the below `source` parameter values:
 
-- `ADJAdRevenueSourceMopub` - representing MoPub mediation platform
+- `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
@@ -1018,6 +1018,8 @@ If you are seing any value in the dashboard other than what you expected to be t
 [zh-readme]:  doc/chinese/README.md
 [ja-readme]:  doc/japanese/README.md
 [ko-readme]:  doc/korean/README.md
+
+[sdk2sdk-mopub]:  doc/english/sdk-to-sdk/mopub.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
