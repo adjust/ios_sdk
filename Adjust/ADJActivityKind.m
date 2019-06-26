@@ -25,6 +25,8 @@
         return ADJActivityKindInfo;
     } else if ([@"gdpr" isEqualToString:activityKindString]) {
         return ADJActivityKindGdpr;
+    } else if ([@"ad_revenue" isEqualToString:activityKindString]) {
+        return ADJActivityKindAdRevenue;
     } else {
         return ADJActivityKindUnknown;
     }
@@ -44,6 +46,8 @@
             return @"info";
         case ADJActivityKindGdpr:
             return @"gdpr";
+        case ADJActivityKindAdRevenue:
+            return @"ad_revenue";
         default:
             return @"unknown";
     }

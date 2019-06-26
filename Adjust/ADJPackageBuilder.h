@@ -41,6 +41,8 @@
 
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
+- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
 
 - (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;

@@ -382,7 +382,7 @@
 			};
 			buildConfigurationList = 9D10829F1CFDAF8E0050568B /* Build configuration list for PBXProject "AdjustExample-WebView" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

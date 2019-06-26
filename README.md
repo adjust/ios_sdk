@@ -30,6 +30,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Session partner parameters](#session-partner-parameters)
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
+   * [Ad revenue tracking](#ad-revenue)
    * [Event and session callbacks](#event-session-callbacks)
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
@@ -72,13 +73,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.17.3'
+pod 'Adjust', '~> 4.18.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.17.3'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.18.0'
 ```
 
 ---
@@ -498,6 +499,23 @@ The delegate function will be called after the SDK receives the final attributio
 - `NSString adid` the unique device identifier provided by attribution.
 
 If any value is unavailable, it will default to `nil`.
+
+### <a id="ad-revenue"></a>Ad revenue tracking
+
+You can track ad revenue information with Adjust SDK by invoking following method:
+
+```objc
+[Adjust trackAdRevenue:source payload:payload];
+```
+
+Parameters of the method which you need to pass are:
+
+- `source` - `NSString` object which indicates the source of ad revenue info.
+- `payload` - `NSData` object which contains ad revenue JSON.
+
+Currently we support the below `source` parameter values:
+
+- `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
@@ -1000,6 +1018,8 @@ If you are seing any value in the dashboard other than what you expected to be t
 [zh-readme]:  doc/chinese/README.md
 [ja-readme]:  doc/japanese/README.md
 [ko-readme]:  doc/korean/README.md
+
+[sdk2sdk-mopub]:  doc/english/sdk-to-sdk/mopub.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples

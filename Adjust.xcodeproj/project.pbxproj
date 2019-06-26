@@ -2209,7 +2209,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9615158E1CD2CB2C0022D336 = {
@@ -2244,7 +2244,7 @@
 			};
 			buildConfigurationList = 9679920818BBAE2800394606 /* Build configuration list for PBXProject "Adjust" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

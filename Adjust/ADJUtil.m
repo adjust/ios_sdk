@@ -40,7 +40,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.17.3";
+static NSString * const kClientSdk                  = @"ios4.18.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -677,18 +677,24 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSDictionary *)buildSignatureParameters:(NSMutableDictionary *)parameters
                                  appSecret:(NSString *)appSecret
                              activityKindS:(NSString *)activityKindS {
+    NSString *appSecretName = @"app_secret";
+    NSString *sourceName = @"source";
+    NSString *payloadName = @"payload";
     NSString *activityKindName = @"activity_kind";
     NSString *activityKindValue = activityKindS;
     NSString *createdAtName = @"created_at";
     NSString *createdAtValue = [parameters objectForKey:createdAtName];
     NSString *deviceIdentifierName = [ADJUtil getValidIdentifier:parameters];
     NSString *deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
-    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:4];
+    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
 
-    [ADJUtil checkAndAddEntry:signatureParameters key:@"app_secret" value:appSecret];
+    [ADJUtil checkAndAddEntry:signatureParameters key:appSecretName value:appSecret];
     [ADJUtil checkAndAddEntry:signatureParameters key:createdAtName value:createdAtValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:activityKindName value:activityKindValue];
     [ADJUtil checkAndAddEntry:signatureParameters key:deviceIdentifierName value:deviceIdentifierValue];
+    [ADJUtil checkAndAddEntry:signatureParameters key:sourceName value:parameters[sourceName]];
+    [ADJUtil checkAndAddEntry:signatureParameters key:payloadName value:parameters[payloadName]];
+
     return signatureParameters;
 }
 

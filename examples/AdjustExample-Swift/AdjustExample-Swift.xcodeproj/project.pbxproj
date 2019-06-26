@@ -303,7 +303,7 @@
 			};
 			buildConfigurationList = 9DF7A9BD1CB4ECA600D3591F /* Build configuration list for PBXProject "AdjustExample-Swift" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

@@ -36,6 +36,7 @@
 
     self.trackingEnabled  = UIDevice.currentDevice.adjTrackingEnabled;
     self.idForAdvertisers = UIDevice.currentDevice.adjIdForAdvertisers;
+    self.fbAnonymousId    = UIDevice.currentDevice.adjFbAnonymousId;
     self.fbAttributionId  = UIDevice.currentDevice.adjFbAttributionId;
     self.vendorId         = UIDevice.currentDevice.adjVendorId;
     self.bundeIdentifier  = [infoDictionary objectForKey:(NSString *)kCFBundleIdentifierKey];

@@ -105,17 +105,15 @@
     return (NSDictionary *) self.partnerMutableParameters;
 }
 
-- (BOOL) checkEventToken:(NSString *)eventToken {
+- (BOOL)checkEventToken:(NSString *)eventToken {
     if ([ADJUtil isNull:eventToken]) {
         [self.logger error:@"Missing Event Token"];
         return NO;
     }
-
-    if (eventToken.length != 6) {
-        [self.logger error:@"Malformed Event Token '%@'", eventToken];
+    if ([eventToken length] <= 0) {
+        [self.logger error:@"Event Token can't be empty"];
         return NO;
     }
-
     return YES;
 }
 

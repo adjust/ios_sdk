@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.17.3
+//  V4.18.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -33,6 +33,28 @@
  */
 extern NSString * __nonnull const ADJEnvironmentSandbox;
 extern NSString * __nonnull const ADJEnvironmentProduction;
+
+/**
+ * Constants for supported ad revenue sources.
+ */
+extern NSString * __nonnull const ADJAdRevenueSourceMopub;
+extern NSString * __nonnull const ADJAdRevenueSourceAdmob;
+extern NSString * __nonnull const ADJAdRevenueSourceFbNativeAd;
+extern NSString * __nonnull const ADJAdRevenueSourceIronsource;
+extern NSString * __nonnull const ADJAdRevenueSourceFyber;
+extern NSString * __nonnull const ADJAdRevenueSourceAerserv;
+extern NSString * __nonnull const ADJAdRevenueSourceAppodeal;
+extern NSString * __nonnull const ADJAdRevenueSourceAdincube;
+extern NSString * __nonnull const ADJAdRevenueSourceFusePowered;
+extern NSString * __nonnull const ADJAdRevenueSourceAddaptr;
+extern NSString * __nonnull const ADJAdRevenueSourceMillennialMeditation;
+extern NSString * __nonnull const ADJAdRevenueSourceFlurry;
+extern NSString * __nonnull const ADJAdRevenueSourceAdmost;
+extern NSString * __nonnull const ADJAdRevenueSourceDeltadna;
+extern NSString * __nonnull const ADJAdRevenueSourceUpsight;
+extern NSString * __nonnull const ADJAdRevenueSourceUnityads;
+extern NSString * __nonnull const ADJAdRevenueSourceAdtoapp;
+extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 
 /**
  * @brief The main interface to Adjust.
@@ -230,6 +252,14 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)gdprForgetMe;
 
 /**
+ * @brief Track ad revenue for given source.
+ *
+ * @param source Ad revenue source.
+ * @param payload Ad revenue payload.
+ */
++ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
@@ -271,6 +301,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)gdprForgetMe;
+
+- (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
 - (BOOL)isEnabled;
 

@@ -90,6 +90,16 @@
     return infoPackage;
 }
 
+- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
+    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
+    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
+    adRevenuePackage.path = @"/ad_revenue";
+    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
+    adRevenuePackage.suffix = @"";
+    adRevenuePackage.parameters = parameters;
+    return adRevenuePackage;
+}
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
@@ -164,6 +174,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
@@ -230,6 +241,7 @@
     [ADJPackageBuilder parameters:parameters setString:event.callbackId forKey:@"event_callback_id"];
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
@@ -323,6 +335,39 @@
     return parameters;
 }
 
+- (NSMutableDictionary *)getAdRevenueParameters:(NSString *)source payload:(NSData *)payload {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
+    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
+    [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
+    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
+    [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
+
+    if (self.adjustConfig.isDeviceKnown) {
+        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
+    }
+
+    if (self.activityState != nil) {
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
+        if (self.activityState.isPersisted) {
+            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
+        } else {
+            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
+        }
+    }
+
+    return parameters;
+}
+
+
 - (NSMutableDictionary *)getClickParameters:(NSString *)source {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
@@ -347,6 +392,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAttributionId forKey:@"fb_id"];
+    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
     [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
@@ -553,6 +599,15 @@
         return;
     }
     [ADJPackageBuilder parameters:parameters setInt:[value intValue] forKey:key];
+}
+
++ (void)parameters:(NSMutableDictionary *)parameters setData:(NSData *)value forKey:(NSString *)key {
+    if (value == nil) {
+        return;
+    }
+    [ADJPackageBuilder parameters:parameters
+                        setString:[[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]
+                           forKey:key];
 }
 
 @end
