@@ -2,7 +2,7 @@
 
 [Adjust iOS SDK 自述文件][ios-readme]
 
-[MoPub 安卓文档][mopub-docs]
+[MoPub iOS 文档][mopub-docs]
 
 此功能最低 SDK 版本要求：
 
