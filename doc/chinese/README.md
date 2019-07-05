@@ -30,6 +30,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [会话合作伙伴参数](#session-partner-parameters)
       * [延迟启动](#delay-start)
    * [归因回传](#attribution-callback)
+   * [广告收入跟踪](#ad-revenue)
    * [会话和事件回传](#event-session-callbacks)
    * [禁用跟踪](#disable-tracking)
    * [离线模式](#offline-mode)
@@ -500,6 +501,23 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 - `NSString adid` 归因提供的唯一设备ID
 
 当值不可用时，将默认为`nil`。
+
+### <a id="ad-revenue"></a>广告收入跟踪
+
+您可以通过调用以下方法，使用 Adjust SDK 对广告收入进行跟踪：
+
+```objc
+[Adjust trackAdRevenue:source payload:payload];
+```
+
+您需要传递的方法参数包括：
+
+- `source` - 表明广告收入来源信息的`NSString`对象。
+- `payload` - 包含广告收入 JSON 的`NSData`对象。
+
+目前，我们支持以下 `source` 参数值：
+
+- `ADJAdRevenueSourceMopub` - 代表 MoPub 广告聚合平台（更多相关信息，请查看 [集成指南][sdk2sdk-mopub]）
 
 ### <a id="event-session-callbacks">事件和会话回传
 
@@ -1004,6 +1022,7 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 [ja-readme]:  ../japanese/README.md
 [ko-readme]:  ../korean/README.md
 
+[sdk2sdk-mopub]:  ../chinese/sdk-to-sdk/mopub.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
@@ -1049,6 +1068,7 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 
 [associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
+
 
 ## <a id="license">许可协议
 
