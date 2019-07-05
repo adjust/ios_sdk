@@ -2,7 +2,7 @@
 
 [Adjust iOS SDK README][ios-readme]
 
-[MoPub Android documentation][mopub-docs]
+[MoPub iOS documentation][mopub-docs]
 
 本機能には以下のSDKバージョンとそれ以降のバージョンが必須となります：
 
