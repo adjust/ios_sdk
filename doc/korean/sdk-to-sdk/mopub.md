@@ -2,7 +2,7 @@
 
 [Adjust iOS SDK README][ios-readme]
 
-[MoPub Android 문서][mopub-docs]
+[MoPub iOS 문서][mopub-docs]
 
 이 기능에 필요한 최소 SDK 버전:
 
