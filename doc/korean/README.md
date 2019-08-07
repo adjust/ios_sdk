@@ -30,6 +30,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
         * [세션 파트너 파라미터](#session-partner-parameters)
         * [지연 시작](#delay-start)
    * [어트리뷰션 콜백](#attribution-callback)
+   * [광고 매출 트래킹](#ad-revenue)
    * [이벤트 및 세션 콜백](#event-session-callbacks)
    * [추적 비활성화](#disable-tracking)
    * [오프라인 모드](#offline-mode)
@@ -500,6 +501,23 @@ SDK에 최종 속성 데이터가 수신되면 델리게이트 함수가 호출�
 - `NSString adid` Adjust 기기 식별자.
 
 값을 사용할 수 없을 경우 `nil`로 기본 설정됩니다.
+
+### <a id="ad-revenue"></a>광고 매출 트래킹
+
+다음 메서드를 호출하여 Adjust SDK로 광고 매출 정보를 트래킹할 수 있습니다.
+
+```objc
+[Adjust trackAdRevenue:source payload:payload];
+```
+
+전달해야 하는 메서드 파라미터는 다음과 같습니다.
+
+- `source` - 광고 매출 정보의 소스를 나타내는`NSString` 객체
+- `payload` - 광고 매출 JSON을 포함하는  `NSData`  객체
+
+애드저스트는 현재 다음의 `source` 파라미터 값을 지원합니다.
+
+- `ADJAdRevenueSourceMopub` - MoPub 미디에이션 플랫폼을 나타냄(자세한 정보는 [연동 가이드][sdk2sdk-mopub] 확인)
 
 ### <a id="event-session-callbacks">이벤트 및 세션 콜백
 
@@ -1001,6 +1019,8 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 [zh-readme]:  ../chinese/README.md
 [ja-readme]:  ../japanese/README.md
 [ko-readme]:  ../korean/README.md
+
+[sdk2sdk-mopub]:  ../korean/sdk-to-sdk/mopub.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
