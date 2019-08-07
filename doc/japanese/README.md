@@ -498,6 +498,23 @@ adjust SDKのスタートを遅らせると、ユニークIDなどのセッシ�
 - `NSString clickLabel` 最新アトリビューションのクリックラベル
 - `NSString adid` adjustユニークID
 
+### <a id="ad-revenue"></a>広告収益の計測
+
+Adjust SDKを利用して、以下のメソッドを呼び出し広告収益情報を計測することができます。
+
+```objc
+[Adjust trackAdRevenue:source payload:payload];
+```
+
+Adjust SDKにパスするメソッドの引数は以下の通りです。
+
+- `source` - 広告収益情報のソースを指定する`NSString`オブジェクト
+- `payload` - 広告収益のJSONを格納する`NSData`オブジェクト
+
+現在、弊社は以下の`source`パラメータの値のみ対応しています。
+
+- `ADJAdRevenueSourceMopub` - メディエーションプラットフォームのMoPubを示します。（詳細は、[統合ガイド][sdk2sdk-mopub]を参照ください）
+
 #### <a id="event-session-callbacks">イベントとセッションのコールバック
 
 イベントとセッションの双方もしくはどちらかをトラッキングし、成功か失敗かの通知を受け取れるようデリゲートコールバックを登録することができます。
@@ -1051,6 +1068,8 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [zh-readme]:    ../chinese/README.md
 [ja-readme]:    ../japanese/README.md
 [ko-readme]:    ../korean/README.md
+
+[sdk2sdk-mopub]:  ../japanese/sdk-to-sdk/mopub.md
 
 [arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
 [examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
