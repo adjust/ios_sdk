@@ -2,15 +2,11 @@
 //  Constants.h
 //  AdjustExample-iOS
 //
-//  Created by Uglješa Erceg on 03/12/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 3rd December 2015.
+//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-
-extern NSString * const kParamIdfv;
-extern NSString * const kParamAppToken;
-extern NSString * const kBaseForgetUrl;
 
 extern NSString * const kAppToken;
 extern NSString * const kEventToken1;

@@ -2,8 +2,8 @@
 //  ViewControlleriOS.m
 //  AdjustExample-iOS
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -46,7 +46,7 @@
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
 
-    // Add revenue 1 cent of an euro.
+    // Add revenue 1 cent of an EURO.
     [event setRevenue:0.01 currency:@"EUR"];
 
     [Adjust trackEvent:event];
