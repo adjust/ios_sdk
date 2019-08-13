@@ -56,9 +56,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
 
     // Add callback parameters to this event.
-    [event addCallbackParameter:@"a" value:@"b"];
+    [event addCallbackParameter:@"foo" value:@"bar"];
     [event addCallbackParameter:@"key" value:@"value"];
-    [event addCallbackParameter:@"a" value:@"c"];
 
     [Adjust trackEvent:event];
 }
@@ -67,9 +66,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
 
     // Add partner parameteres to this event.
-    [event addPartnerParameter:@"x" value:@"y"];
     [event addPartnerParameter:@"foo" value:@"bar"];
-    [event addPartnerParameter:@"x" value:@"z"];
+    [event addPartnerParameter:@"key" value:@"value"];
 
     [Adjust trackEvent:event];
 }
