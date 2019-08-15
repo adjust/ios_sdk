@@ -46,7 +46,7 @@
 		9D449E2F1E6ED88F00E7E80B /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0B1E6ED88F00E7E80B /* ADJSdkClickHandler.m */; };
 		9D449E301E6ED88F00E7E80B /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0D1E6ED88F00E7E80B /* ADJKeychain.m */; };
 		9D449E311E6ED88F00E7E80B /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */; };
-		9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */; };
+		9DC95F261C104CEF00138E4B /* ViewControllerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControllerObjC.m */; };
 		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
 		9DD0E9BE1F457EF800B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */; };
 /* End PBXBuildFile section */
@@ -54,7 +54,7 @@
 /* Begin PBXFileReference section */
 		6FCC850A1F2794A300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC850B1F2794A300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
-		9639093C1BCBFCF300A2E8A4 /* AdjustExample-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9639093C1BCBFCF300A2E8A4 /* AdjustExample-ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		963909401BCBFCF300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909421BCBFCF300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		963909431BCBFCF300A2E8A4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -127,11 +127,11 @@
 		9D449E0D1E6ED88F00E7E80B /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
 		9D449E0E1E6ED88F00E7E80B /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
 		9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionParameters.m; sourceTree = "<group>"; };
-		9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControlleriOS.h; sourceTree = "<group>"; };
-		9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControlleriOS.m; sourceTree = "<group>"; };
+		9DC95F241C104CEF00138E4B /* ViewControllerObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerObjC.h; sourceTree = "<group>"; };
+		9DC95F251C104CEF00138E4B /* ViewControllerObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerObjC.m; sourceTree = "<group>"; };
 		9DC95F281C10515300138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F291C10515300138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		9DCA5CF01DD5B6BE000296B2 /* AdjustExample-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-iOS.entitlements"; sourceTree = "<group>"; };
+		9DCA5CF01DD5B6BE000296B2 /* AdjustExample-ObjC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-ObjC.entitlements"; sourceTree = "<group>"; };
 		9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,7 +152,7 @@
 		963909331BCBFCF300A2E8A4 = {
 			isa = PBXGroup;
 			children = (
-				9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */,
+				9639093E1BCBFCF300A2E8A4 /* AdjustExample-ObjC */,
 				9639093D1BCBFCF300A2E8A4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -160,28 +160,28 @@
 		9639093D1BCBFCF300A2E8A4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9639093C1BCBFCF300A2E8A4 /* AdjustExample-iOS.app */,
+				9639093C1BCBFCF300A2E8A4 /* AdjustExample-ObjC.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9639093E1BCBFCF300A2E8A4 /* AdjustExample-iOS */ = {
+		9639093E1BCBFCF300A2E8A4 /* AdjustExample-ObjC */ = {
 			isa = PBXGroup;
 			children = (
-				9DCA5CF01DD5B6BE000296B2 /* AdjustExample-iOS.entitlements */,
+				9DCA5CF01DD5B6BE000296B2 /* AdjustExample-ObjC.entitlements */,
 				9DC95F281C10515300138E4B /* Constants.h */,
 				9DC95F291C10515300138E4B /* Constants.m */,
 				963909421BCBFCF300A2E8A4 /* AppDelegate.h */,
 				963909431BCBFCF300A2E8A4 /* AppDelegate.m */,
-				9DC95F241C104CEF00138E4B /* ViewControlleriOS.h */,
-				9DC95F251C104CEF00138E4B /* ViewControlleriOS.m */,
+				9DC95F241C104CEF00138E4B /* ViewControllerObjC.h */,
+				9DC95F251C104CEF00138E4B /* ViewControllerObjC.m */,
 				963909481BCBFCF300A2E8A4 /* Main.storyboard */,
 				9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */,
 				9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */,
 				963909501BCBFCF300A2E8A4 /* Info.plist */,
 				9639093F1BCBFCF300A2E8A4 /* Supporting Files */,
 			);
-			path = "AdjustExample-iOS";
+			path = "AdjustExample-ObjC";
 			sourceTree = "<group>";
 		};
 		9639093F1BCBFCF300A2E8A4 /* Supporting Files */ = {
@@ -289,9 +289,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9639093B1BCBFCF300A2E8A4 /* AdjustExample-iOS */ = {
+		9639093B1BCBFCF300A2E8A4 /* AdjustExample-ObjC */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 963909531BCBFCF300A2E8A4 /* Build configuration list for PBXNativeTarget "AdjustExample-iOS" */;
+			buildConfigurationList = 963909531BCBFCF300A2E8A4 /* Build configuration list for PBXNativeTarget "AdjustExample-ObjC" */;
 			buildPhases = (
 				963909381BCBFCF300A2E8A4 /* Sources */,
 				963909391BCBFCF300A2E8A4 /* Frameworks */,
@@ -301,9 +301,9 @@
 			);
 			dependencies = (
 			);
-			name = "AdjustExample-iOS";
-			productName = "AdjustExample-iOS";
-			productReference = 9639093C1BCBFCF300A2E8A4 /* AdjustExample-iOS.app */;
+			name = "AdjustExample-ObjC";
+			productName = "AdjustExample-ObjC";
+			productReference = 9639093C1BCBFCF300A2E8A4 /* AdjustExample-ObjC.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -327,7 +327,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 963909371BCBFCF300A2E8A4 /* Build configuration list for PBXProject "AdjustExample-iOS" */;
+			buildConfigurationList = 963909371BCBFCF300A2E8A4 /* Build configuration list for PBXProject "AdjustExample-ObjC" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -340,7 +340,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9639093B1BCBFCF300A2E8A4 /* AdjustExample-iOS */,
+				9639093B1BCBFCF300A2E8A4 /* AdjustExample-ObjC */,
 			);
 		};
 /* End PBXProject section */
@@ -394,7 +394,7 @@
 				9D449E1A1E6ED88F00E7E80B /* ADJActivityState.m in Sources */,
 				9D449E251E6ED88F00E7E80B /* ADJConfig.m in Sources */,
 				9D449E161E6ED88F00E7E80B /* Adjust.m in Sources */,
-				9DC95F261C104CEF00138E4B /* ViewControlleriOS.m in Sources */,
+				9DC95F261C104CEF00138E4B /* ViewControllerObjC.m in Sources */,
 				9D449E2C1E6ED88F00E7E80B /* ADJEventFailure.m in Sources */,
 				9D449E1F1E6ED88F00E7E80B /* ADJRequestHandler.m in Sources */,
 				9D449E271E6ED88F00E7E80B /* ADJTimerCycle.m in Sources */,
@@ -532,13 +532,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
-				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AdjustExample-ObjC/AdjustExample-ObjC.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "AdjustExample-iOS/Info.plist";
+				INFOPLIST_FILE = "AdjustExample-ObjC/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
@@ -553,13 +553,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
-				CODE_SIGN_ENTITLEMENTS = "AdjustExample-iOS/AdjustExample-iOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AdjustExample-ObjC/AdjustExample-ObjC.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "AdjustExample-iOS/Info.plist";
+				INFOPLIST_FILE = "AdjustExample-ObjC/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
@@ -572,7 +572,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		963909371BCBFCF300A2E8A4 /* Build configuration list for PBXProject "AdjustExample-iOS" */ = {
+		963909371BCBFCF300A2E8A4 /* Build configuration list for PBXProject "AdjustExample-ObjC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				963909511BCBFCF300A2E8A4 /* Debug */,
@@ -581,7 +581,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		963909531BCBFCF300A2E8A4 /* Build configuration list for PBXNativeTarget "AdjustExample-iOS" */ = {
+		963909531BCBFCF300A2E8A4 /* Build configuration list for PBXNativeTarget "AdjustExample-ObjC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				963909541BCBFCF300A2E8A4 /* Debug */,

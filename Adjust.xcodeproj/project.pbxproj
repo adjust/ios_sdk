@@ -495,13 +495,6 @@
 			remoteGlobalIDString = 9D01676F20FF812B0029CFFF;
 			remoteInfo = "AdjustExample-iMessage MessagesExtension";
 		};
-		9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
-			remoteInfo = "AdjustExample-iOS";
-		};
 		9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
@@ -557,6 +550,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9D9D152E212EB3920081445E;
 			remoteInfo = "AdjustExample-FbPixel";
+		};
+		9DBE560B23054FCC0065E19C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9639093C1BCBFCF300A2E8A4;
+			remoteInfo = "AdjustExample-ObjC";
 		};
 		9DE7C8FF1AE68EF1001556E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -813,7 +813,6 @@
 		9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D0E2E69210B575600133B4F /* AdjustBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
 		9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
-		9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iOS.xcodeproj"; path = "examples/AdjustExample-iOS/AdjustExample-iOS.xcodeproj"; sourceTree = "<group>"; };
 		9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
 		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
 		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
@@ -829,6 +828,7 @@
 		9D7431F71EB9F9B700969F14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D7431F91EB9F9B700969F14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-FbPixel.xcodeproj"; path = "examples/AdjustExample-FbPixel/AdjustExample-FbPixel.xcodeproj"; sourceTree = "<group>"; };
+		9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-ObjC.xcodeproj"; path = "examples/AdjustExample-ObjC/AdjustExample-ObjC.xcodeproj"; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9DE354D22100726300D211C9 /* AdjustSdkIm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkIm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1490,7 +1490,7 @@
 		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
 			isa = PBXGroup;
 			children = (
-				9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */,
+				9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */,
 				9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */,
 				9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */,
 				9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */,
@@ -1499,14 +1499,6 @@
 				9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */,
 			);
 			name = "Example Apps";
-			sourceTree = "<group>";
-		};
-		9D449DAE1E6ED22900E7E80B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		9D449DB41E6ED23400E7E80B /* Products */ = {
@@ -1571,6 +1563,14 @@
 			isa = PBXGroup;
 			children = (
 				9D9D1552212EB3D00081445E /* AdjustExample-FbPixel.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9DBE560823054FCC0065E19C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9DBE560C23054FCC0065E19C /* AdjustExample-ObjC.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2209,7 +2209,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9615158E1CD2CB2C0022D336 = {
@@ -2263,12 +2263,12 @@
 					ProjectRef = 9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */;
 				},
 				{
-					ProductGroup = 9D449DAE1E6ED22900E7E80B /* Products */;
-					ProjectRef = 9D449DAD1E6ED22900E7E80B /* AdjustExample-iOS.xcodeproj */;
-				},
-				{
 					ProductGroup = 9D449DB41E6ED23400E7E80B /* Products */;
 					ProjectRef = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
+				},
+				{
+					ProductGroup = 9DBE560823054FCC0065E19C /* Products */;
+					ProjectRef = 9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */;
 				},
 				{
 					ProductGroup = 9D449DC01E6ED23900E7E80B /* Products */;
@@ -2378,13 +2378,6 @@
 			remoteRef = 9D01680520FF88DE0029CFFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9D449DB21E6ED22900E7E80B /* AdjustExample-iOS.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "AdjustExample-iOS.app";
-			remoteRef = 9D449DB11E6ED22900E7E80B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		9D449DBA1E6ED23400E7E80B /* AdjustExample-iWatch.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -2432,6 +2425,13 @@
 			fileType = wrapper.application;
 			path = "AdjustExample-FbPixel.app";
 			remoteRef = 9D9D1551212EB3D00081445E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9DBE560C23054FCC0065E19C /* AdjustExample-ObjC.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "AdjustExample-ObjC.app";
+			remoteRef = 9DBE560B23054FCC0065E19C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
