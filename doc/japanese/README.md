@@ -1078,11 +1078,11 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [cocoapods]:   http://cocoapods.org
 [transition]:  http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 
-[example-tvos]:       examples/AdjustExample-tvOS
-[example-iwatch]:     examples/AdjustExample-iWatch
-[example-imessage]:   examples/AdjustExample-iMessage
-[example-ios-objc]:   examples/AdjustExample-ObjC
-[example-ios-swift]:  examples/AdjustExample-Swift
+[example-tvos]:       ../../examples/AdjustExample-tvOS
+[example-iwatch]:     ../../examples/AdjustExample-iWatch
+[example-imessage]:   ../../examples/AdjustExample-iMessage
+[example-ios-objc]:   ../../examples/AdjustExample-ObjC
+[example-ios-swift]:  ../../examples/AdjustExample-Swift
 
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
 [event-tracking]:    https://docs.adjust.com/en/event-tracking
