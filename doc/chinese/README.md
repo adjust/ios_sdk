@@ -1040,7 +1040,7 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 
 [special-partners]:     https://docs.adjust.com/zh/special-partners
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-ObjC
 [example-ios-swift]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
 [example-imessage]:     https://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iMessage
 [ios-web-views-guide]:  https://github.com/adjust/ios_sdk/blob/master/doc/english/web_views.md
