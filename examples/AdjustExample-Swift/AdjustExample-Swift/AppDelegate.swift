@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  AdjustExample-Swift
 //
-//  Created by Uglješa Erceg on 06/04/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 6th April 2016.
+//  Copyright © 2016-2019 Adjust GmbH. All rights reserved.
 //
 
 import UIKit
@@ -15,23 +15,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment = ADJEnvironmentSandbox
-
         let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
 
-        // change the log level
+        // Change the log level.
         adjustConfig?.logLevel = ADJLogLevelVerbose
 
         // Enable event buffering.
-        // adjustConfig.eventBufferingEnabled = true
+        // adjustConfig?.eventBufferingEnabled = true
 
         // Set default tracker.
-        // adjustConfig.defaultTracker = "{TrackerToken}"
+        // adjustConfig?.defaultTracker = "{TrackerToken}"
 
         // Send in the background.
-        // adjustConfig.sendInBackground = true
-
-        // set an attribution delegate
+        // adjustConfig?.sendInBackground = true
+        
+        // Set delegate object.
         adjustConfig?.delegate = self
+        
+        // Delay the first session of the SDK.
+        // adjustConfig?.delayStart = 7
+        
+        // Add session callback parameters.
+        Adjust.addSessionCallbackParameter("obi", value: "wan")
+        Adjust.addSessionCallbackParameter("master", value: "yoda")
+        
+        // Add session partner parameters.
+        Adjust.addSessionPartnerParameter("darth", value: "vader")
+        Adjust.addSessionPartnerParameter("han", value: "solo")
+        
+        // Remove session callback parameter.
+        Adjust.removeSessionCallbackParameter("obi")
+        
+        // Remove session partner parameter.
+        Adjust.removeSessionPartnerParameter("han")
+        
+        // Remove all session callback parameters.
+        // Adjust.resetSessionCallbackParameters()
+        
+        // Remove all session partner parameters.
+        // Adjust.resetSessionPartnerParameters()
 
         // Initialise the SDK.
         Adjust.appDidLaunch(adjustConfig!)
@@ -41,54 +63,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         
         // Disable the SDK
         // Adjust.setEnabled(false);
+        
+        // Interrupt delayed start set with setDelayStart: method.
+        // Adjust.sendFirstPackages()
 
+        return true
+    }
+    
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        NSLog("Scheme based deep link opened an app: %@", url.absoluteString)
+        // Pass deep link to Adjust in order to potentially reattribute user.
+        Adjust.appWillOpen(url)
+        return true
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
+            NSLog("Universal link opened an app: %@", userActivity.webpageURL!.absoluteString)
+            // Pass deep link to Adjust in order to potentially reattribute user.
+            Adjust.appWillOpen(userActivity.webpageURL!)
+        }
         return true
     }
 
     func adjustAttributionChanged(_ attribution: ADJAttribution?) {
-        NSLog("adjust attribution %@", attribution ?? "")
+        NSLog("Attribution callback called!")
+        NSLog("Attribution: %@", attribution ?? "")
     }
 
     func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?) {
-        NSLog("adjust event success %@", eventSuccessResponseData ?? "")
+        NSLog("Event success callback called!")
+        NSLog("Event success data: %@", eventSuccessResponseData ?? "")
     }
 
     func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?) {
-        NSLog("adjust event failure %@", eventFailureResponseData ?? "")
+        NSLog("Event failure callback called!")
+        NSLog("Event failure data: %@", eventFailureResponseData ?? "")
     }
 
     func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?) {
-        NSLog("adjust session success %@", sessionSuccessResponseData ?? "")
+        NSLog("Session success callback called!")
+        NSLog("Session success data: %@", sessionSuccessResponseData ?? "")
     }
 
     func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?) {
-        NSLog("adjust session failure %@", sessionFailureResponseData ?? "")
+        NSLog("Session failure callback called!");
+        NSLog("Session failure data: %@", sessionFailureResponseData ?? "")
     }
 
     func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
-        NSLog("adjust deferred deep link %@", deeplink?.absoluteString ?? "")
+        NSLog("Deferred deep link callback called!")
+        NSLog("Deferred deep link URL: %@", deeplink?.absoluteString ?? "")
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 }
