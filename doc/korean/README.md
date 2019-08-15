@@ -1032,7 +1032,7 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 [example-tvos]:       examples/AdjustExample-tvOS
 [example-iwatch]:     examples/AdjustExample-iWatch
 [example-imessage]:   examples/AdjustExample-iMessage
-[example-ios-objc]:   examples/AdjustExample-iOS
+[example-ios-objc]:   examples/AdjustExample-ObjC
 [example-ios-swift]:  examples/AdjustExample-Swift
 
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
