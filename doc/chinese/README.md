@@ -1031,18 +1031,18 @@ Adjust SDK仅跟踪您要求它跟踪的内容。如果您添加收入至事件�
 [cocoapods]:   http://cocoapods.org
 [transition]:  http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
 
-[example-tvos]:      http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-tvOS
+[example-tvos]:       ../../examples/AdjustExample-tvOS
+[example-iwatch]:     ../../examples/AdjustExample-iWatch
+[example-imessage]:   ../../examples/AdjustExample-iMessage
+[example-ios-objc]:   ../../examples/AdjustExample-ObjC
+[example-ios-swift]:  ../../examples/AdjustExample-Swift
+
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
 [event-tracking]:    https://docs.adjust.com/zh/event-tracking
-[example-iwatch]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iWatch
 [callbacks-guide]:   https://docs.adjust.com/zh/callbacks
 [universal-links]:   https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
-
 [special-partners]:     https://docs.adjust.com/zh/special-partners
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
-[example-ios-swift]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
-[example-imessage]:     https://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iMessage
 [ios-web-views-guide]:  https://github.com/adjust/ios_sdk/blob/master/doc/english/web_views.md
 [currency-conversion]:  https://docs.adjust.com/zh/event-tracking/#tracking-purchases-in-different-currencies
 

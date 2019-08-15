@@ -1,16 +1,16 @@
 //
-//  ViewControlleriOS.m
-//  AdjustExample-iOS
+//  ViewControllerObjC.m
+//  AdjustExample-ObjC
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
 #import "Constants.h"
-#import "ViewControlleriOS.h"
+#import "ViewControllerObjC.h"
 
-@interface ViewControlleriOS ()
+@interface ViewControllerObjC ()
 
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackSimpleEvent;
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackRevenueEvent;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation ViewControlleriOS
+@implementation ViewControllerObjC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,7 +46,7 @@
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
 
-    // Add revenue 1 cent of an euro.
+    // Add revenue 1 cent of an EURO.
     [event setRevenue:0.01 currency:@"EUR"];
 
     [Adjust trackEvent:event];
@@ -56,9 +56,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
 
     // Add callback parameters to this event.
-    [event addCallbackParameter:@"a" value:@"b"];
+    [event addCallbackParameter:@"foo" value:@"bar"];
     [event addCallbackParameter:@"key" value:@"value"];
-    [event addCallbackParameter:@"a" value:@"c"];
 
     [Adjust trackEvent:event];
 }
@@ -67,9 +66,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
 
     // Add partner parameteres to this event.
-    [event addPartnerParameter:@"x" value:@"y"];
     [event addPartnerParameter:@"foo" value:@"bar"];
-    [event addPartnerParameter:@"x" value:@"z"];
+    [event addPartnerParameter:@"key" value:@"value"];
 
     [Adjust trackEvent:event];
 }

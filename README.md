@@ -1031,7 +1031,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 [example-tvos]:       examples/AdjustExample-tvOS
 [example-iwatch]:     examples/AdjustExample-iWatch
 [example-imessage]:   examples/AdjustExample-iMessage
-[example-ios-objc]:   examples/AdjustExample-iOS
+[example-ios-objc]:   examples/AdjustExample-ObjC
 [example-ios-swift]:  examples/AdjustExample-Swift
 
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix

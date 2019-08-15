@@ -1,9 +1,9 @@
 //
 //  AppDelegate.h
-//  AdjustExample-iOS
+//  AdjustExample-ObjC
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

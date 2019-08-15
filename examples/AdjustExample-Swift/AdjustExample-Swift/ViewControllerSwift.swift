@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  AdjustExample-Swift
 //
-//  Created by Uglješa Erceg on 06/04/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 6th April 2016.
+//  Copyright © 2016-2019 Adjust GmbH. All rights reserved.
 //
 
 import UIKit
@@ -30,18 +30,25 @@ class ViewControllerSwift: UIViewController {
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "g3mfiw");
 
+        // Attach callback ID to event.
+        event?.setCallbackId("RandomCallbackId")
+
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventRevenueTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "a4fd35")
-        event?.setRevenue(0.99, currency: "EUR");
+
+        // Add revenue 1 cent of an EURO.
+        event?.setRevenue(0.01, currency: "EUR");
 
         Adjust.trackEvent(event);
     }
 
     @IBAction func btnTrackEventCallbackTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "34vgg9");
+
+        // Add callback parameters to this event.
         event?.addCallbackParameter("foo", value: "bar");
         event?.addCallbackParameter("key", value: "value");
 
@@ -50,6 +57,8 @@ class ViewControllerSwift: UIViewController {
 
     @IBAction func btnTrackEventPartnerTapped(_sender: UIButton) {
         let event = ADJEvent(eventToken: "w788qs");
+
+        // Add partner parameteres to this event.
         event?.addPartnerParameter("foo", value: "bar");
         event?.addPartnerParameter("key", value: "value");
 
