@@ -1081,7 +1081,7 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 [example-tvos]:       examples/AdjustExample-tvOS
 [example-iwatch]:     examples/AdjustExample-iWatch
 [example-imessage]:   examples/AdjustExample-iMessage
-[example-ios-objc]:   examples/AdjustExample-iOS
+[example-ios-objc]:   examples/AdjustExample-ObjC
 [example-ios-swift]:  examples/AdjustExample-Swift
 
 [AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
