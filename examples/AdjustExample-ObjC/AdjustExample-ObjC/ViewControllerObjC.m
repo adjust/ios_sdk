@@ -1,6 +1,6 @@
 //
-//  ViewControlleriOS.m
-//  AdjustExample-iOS
+//  ViewControllerObjC.m
+//  AdjustExample-ObjC
 //
 //  Created by Pedro Filipe (@nonelse) on 12th October 2015.
 //  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
@@ -8,9 +8,9 @@
 
 #import "Adjust.h"
 #import "Constants.h"
-#import "ViewControlleriOS.h"
+#import "ViewControllerObjC.h"
 
-@interface ViewControlleriOS ()
+@interface ViewControllerObjC ()
 
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackSimpleEvent;
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackRevenueEvent;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation ViewControlleriOS
+@implementation ViewControllerObjC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
