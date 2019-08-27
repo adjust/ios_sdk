@@ -1211,25 +1211,33 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         BOOL success = [sharedUIApplication openURL:deepLinkUrl];
 #pragma clang diagnostic pop
         if (!success) {
-            [ADJAdjustFactory.logger error:@"Unable to open deep link (%@)", deepLinkUrl];
+            [ADJAdjustFactory.logger error:@"Unable to open deep link without completionHandler (%@)", deepLinkUrl];
         }
     }
 #endif
 }
 
+// adapted from https://stackoverflow.com/a/9084784
 + (NSString *)convertDeviceToken:(NSData *)deviceToken {
-    if (deviceToken == nil) {
-        return nil;;
+    NSUInteger dataLength  = [deviceToken length];
+
+    if (dataLength == 0) {
+        return nil;
     }
 
-    NSString *deviceTokenString = [deviceToken.description stringByTrimmingCharactersInSet:
-                                   [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    if (deviceTokenString == nil) {
-        return nil;;
+    const unsigned char *dataBuffer = (const unsigned char *)[deviceToken bytes];
+
+    if (!dataBuffer) {
+        return nil;
     }
 
-    deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    return deviceTokenString;
+    NSMutableString *hexString  = [NSMutableString stringWithCapacity:(dataLength * 2)];
+
+    for (int i = 0; i < dataLength; ++i) {
+        [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
+    }
+
+    return [NSString stringWithString:hexString];
 }
 
 + (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails {
