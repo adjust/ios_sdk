@@ -1,6 +1,6 @@
-### Version 4.18.1 (27th August 2019)
+### Version 4.18.1 (2nd September 2019)
 #### Fixed
-- Fixed device token parsing to string, changed in iOs 13, to work in all versions
+- Fixed device token parsing to string, changed in iOS 13.
 
 ---
 
