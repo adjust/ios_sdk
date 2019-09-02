@@ -1,3 +1,9 @@
+### Version 4.18.1 (2nd September 2019)
+#### Fixed
+- Fixed device token parsing to string, changed in iOS 13.
+
+---
+
 ### Version 4.18.0 (26th June 2019)
 #### Added
 - Added `trackAdRevenue:payload:` method to `Adjust` interface to allow tracking of ad revenue. With this release added support for `MoPub` ad revenue tracking.
