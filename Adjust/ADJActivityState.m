@@ -92,6 +92,7 @@ static NSString *appToken = nil;
 
             // Value written in keychain seems to have UUID format.
             self.uuid = persistedUuid;
+            self.isPersisted = YES;
             return;
         }
     }
@@ -100,7 +101,7 @@ static NSString *appToken = nil;
     // Since we don't have anything in the keychain, we'll use the passed UUID value.
     // Try to save that value to the keychain.
     self.uuid = uuid;
-    [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_uuid" inService:@"deviceInfo"];
+    self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_uuid" inService:@"deviceInfo"];
 }
 
 - (NSString *)generateUniqueKey {

@@ -125,7 +125,7 @@
 }
 
 - (void)keychainItemForKey:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
-    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassKey;
+    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
     keychainItem[(__bridge id)kSecAttrAccount] = key;
     keychainItem[(__bridge id)kSecAttrService] = service;
 }
