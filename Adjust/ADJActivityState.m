@@ -83,55 +83,25 @@ static NSString *appToken = nil;
 #pragma mark - Private & helper methods
 
 - (void)assignUuid:(NSString *)uuid {
-    // 1. Check if UUID is written to keychain in v2 way.
-    // 1.1 If yes, take stored UUID and send it to v1 check.
-    // 1.2 If not, take given UUID and send it to v1 check.
-    // v1 check:
-    // 2.1 If given UUID is found in v1 way, use it.
-    // 2.2 If given UUID is not found in v1 way, write it in v1 way and use it.
-
-    // First check if we have the key written with app's unique key name.
-    NSString *uniqueKey = [self generateUniqueKey];
-    NSString *persistedUuidUnique = [ADJKeychain valueForKeychainKeyV2:uniqueKey service:@"deviceInfo"];
-
-    if (persistedUuidUnique != nil) {
-        // Check if value has UUID format.
-        if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuidUnique]) {
-            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain v2 way"];
-
-            // If we read the key with v2 way, write it back in v1 way since in iOS 11, that's the only one that it works.
-            [self assignUuidOldMethod:persistedUuidUnique];
-        }
-    }
-
-    // At this point, UUID was not persisted in v2 way or if persisted, didn't have proper UUID format.
-    // Try the v1 way with given UUID.
-    [self assignUuidOldMethod:uuid];
-}
-
-- (void)assignUuidOldMethod:(NSString *)uuid {
-    NSString *persistedUuid = [ADJKeychain valueForKeychainKeyV1:@"adjust_persisted_uuid" service:@"deviceInfo"];
-
-    // Check if value exists in keychain.
+    NSString *persistedUuid = [ADJKeychain valueForKeychainKey:@"adjust_uuid" service:@"deviceInfo"];
+    
+    // Check if value exists in Keychain.
     if (persistedUuid != nil) {
         // Check if value has UUID format.
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
-            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain v1 way"];
+            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain"];
 
             // Value written in keychain seems to have UUID format.
             self.uuid = persistedUuid;
-            self.isPersisted = YES;
-
             return;
         }
     }
-
-    // At this point, UUID was not persisted in v1 way or if persisted, didn't have proper UUID format.
-
+    
+    // At this point, UUID was not persisted in Keychain or if persisted, didn't have proper UUID format.
     // Since we don't have anything in the keychain, we'll use the passed UUID value.
-    // Try to save that value to the keychain in v1 way and flag if successfully written.
+    // Try to save that value to the keychain.
     self.uuid = uuid;
-    self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_persisted_uuid" inService:@"deviceInfo"];
+    [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_uuid" inService:@"deviceInfo"];
 }
 
 - (NSString *)generateUniqueKey {
@@ -140,13 +110,11 @@ static NSString *appToken = nil;
     }
 
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-
     if (bundleIdentifier == nil) {
         return nil;
     }
 
     NSString *joinedKey = [NSString stringWithFormat:@"%@%@", bundleIdentifier, appToken];
-
     return [joinedKey adjSha1];
 }
 
