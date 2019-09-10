@@ -20,15 +20,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-    UITabBarController *tabBarController = [[UITabBarController alloc] init];
-
     self.wkWebViewExampleController = [[WKWebViewController alloc] init];
     self.wkWebViewExampleController.tabBarItem.title = @"WKWebView";
-    [tabBarController addChildViewController:self.wkWebViewExampleController];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = tabBarController;
+    self.window.rootViewController = self.wkWebViewExampleController;
     [self.window makeKeyAndVisible];
 
     return YES;
