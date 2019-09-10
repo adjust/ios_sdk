@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 
 @interface AdjustBridgeRegister : NSObject
 
 + (NSString *)AdjustBridge_js;
 
-- (id)initWithWebView:(id)webView;
-- (void)setWebViewDelegate:(id)webViewDelegate;
+- (id)initWithWKWebView:(WKWebView*)webView;
+- (void)setWKWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate;
 - (void)callHandler:(NSString *)handlerName data:(id)data;
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
 - (void)augmentHybridWebView:(NSString *)fbAppId;
