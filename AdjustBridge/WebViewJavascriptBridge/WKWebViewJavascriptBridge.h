@@ -5,12 +5,6 @@
 //  Copyright (c) 2014 @LokiMeyburg. All rights reserved.
 //
 
-#if (__MAC_OS_X_VERSION_MAX_ALLOWED > __MAC_10_9 || __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_1)
-#define supportsWKWebView
-#endif
-
-#if defined supportsWKWebView
-
 #import <Foundation/Foundation.h>
 #import "WebViewJavascriptBridgeBase.h"
 #import <WebKit/WebKit.h>
@@ -30,5 +24,3 @@
 - (void)disableJavscriptAlertBoxSafetyTimeout;
 
 @end
-
-#endif

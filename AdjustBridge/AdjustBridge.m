@@ -13,7 +13,6 @@
 
 #import "AdjustBridge.h"
 #import "ADJAdjustFactory.h"
-#import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 
 @interface AdjustBridge() <AdjustDelegate>

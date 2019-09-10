@@ -51,7 +51,6 @@
 		9D449EF71E6EDD4100E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED41E6EDD4100E7E80B /* ADJTimerOnce.m */; };
 		9D449EF81E6EDD4100E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED61E6EDD4100E7E80B /* Adjust.m */; };
 		9D449EF91E6EDD4100E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED81E6EDD4100E7E80B /* ADJUtil.m */; };
-		9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1881D07463800E5D222 /* WebViewJavascriptBridge.m */; };
 		9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18A1D07463800E5D222 /* WebViewJavascriptBridge_JS.m */; };
 		9D75F1981D07463800E5D222 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18C1D07463800E5D222 /* WebViewJavascriptBridgeBase.m */; };
 		9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18E1D07463800E5D222 /* WKWebViewJavascriptBridge.m */; };
@@ -425,7 +424,6 @@
 				9D449EF51E6EDD4100E7E80B /* ADJSystemProfile.m in Sources */,
 				9D449EE01E6EDD4100E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */,
-				9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */,
 				9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */,
 				6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */,
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,
