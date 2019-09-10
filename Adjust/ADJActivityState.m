@@ -88,7 +88,7 @@ static NSString *appToken = nil;
     if (persistedUuid != nil) {
         // Check if value has UUID format.
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
-            [[ADJAdjustFactory logger] verbose:@"Value found and read from the keychain"];
+            [[ADJAdjustFactory logger] verbose:@"Value read from the keychain"];
 
             // Value written in keychain seems to have UUID format.
             self.uuid = persistedUuid;
