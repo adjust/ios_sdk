@@ -25,6 +25,7 @@
     }
 
     self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
+                                                andControlUrl:controlUrl
                                            andCommandDelegate:self];
 
     [adjustBridgeRegister registerHandler:@"adjustTLB_startTestSession" handler:^(id data, WVJBResponseCallback responseCallback) {
