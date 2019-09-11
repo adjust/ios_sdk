@@ -1,3 +1,10 @@
+### Version 4.18.2 (11th September 2019)
+#### Changed
+- Removed methods from Adjust SDK web view bridge which are dealing with `UIWebView` objects to address `ITMS-90809`. Please, check web views [migration guide](doc/english/web_view_migration.md) to see how to migrate to `v4.18.2` and also check our [web view example app](examples/AdjustExample-WebView) to see how current Adjust web view SDK should be implemented.
+- Replaced deprecated API for better iOS 13 compatibility.
+
+---
+
 ### Version 4.18.1 (2nd September 2019)
 #### Fixed
 - Fixed device token parsing to string, changed in iOS 13.
