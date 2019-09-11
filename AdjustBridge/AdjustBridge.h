@@ -15,9 +15,7 @@
 
 @property (nonatomic, strong, readonly) AdjustBridgeRegister *bridgeRegister;
 
-- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView;
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView;
-- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate;
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate;
 - (void)augmentHybridWebView;
 

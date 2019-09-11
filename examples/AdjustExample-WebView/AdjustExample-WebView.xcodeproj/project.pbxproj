@@ -10,7 +10,6 @@
 		6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85111F2794D600D6A0ED /* ADJReachability.m */; };
 		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
-		9D1082AF1CFDAF8E0050568B /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */; };
 		9D1082B41CFDAF8E0050568B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082B31CFDAF8E0050568B /* Assets.xcassets */; };
 		9D1082C51CFDAFDA0050568B /* AdjustExample-WebView.html in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082C41CFDAFDA0050568B /* AdjustExample-WebView.html */; };
 		9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082C71CFDAFF30050568B /* WebKit.framework */; };
@@ -52,7 +51,6 @@
 		9D449EF71E6EDD4100E7E80B /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED41E6EDD4100E7E80B /* ADJTimerOnce.m */; };
 		9D449EF81E6EDD4100E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED61E6EDD4100E7E80B /* Adjust.m */; };
 		9D449EF91E6EDD4100E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449ED81E6EDD4100E7E80B /* ADJUtil.m */; };
-		9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1881D07463800E5D222 /* WebViewJavascriptBridge.m */; };
 		9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18A1D07463800E5D222 /* WebViewJavascriptBridge_JS.m */; };
 		9D75F1981D07463800E5D222 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18C1D07463800E5D222 /* WebViewJavascriptBridgeBase.m */; };
 		9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F18E1D07463800E5D222 /* WKWebViewJavascriptBridge.m */; };
@@ -68,8 +66,6 @@
 		968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A81CFDAF8E0050568B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		9D1082AD1CFDAF8E0050568B /* UIWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIWebViewController.h; sourceTree = "<group>"; };
-		9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIWebViewController.m; sourceTree = "<group>"; };
 		9D1082B31CFDAF8E0050568B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D1082B81CFDAF8E0050568B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D1082C41CFDAFDA0050568B /* AdjustExample-WebView.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AdjustExample-WebView.html"; sourceTree = "<group>"; };
@@ -198,8 +194,6 @@
 			children = (
 				9D9A99D81D0B699A0022FFCE /* AppDelegate.h */,
 				9D9A99D91D0B699A0022FFCE /* AppDelegate.m */,
-				9D1082AD1CFDAF8E0050568B /* UIWebViewController.h */,
-				9D1082AE1CFDAF8E0050568B /* UIWebViewController.m */,
 				9D10833B1CFDD8F00050568B /* WKWebViewController.h */,
 				9D10833C1CFDD8F00050568B /* WKWebViewController.m */,
 				9D1082B31CFDAF8E0050568B /* Assets.xcassets */,
@@ -425,13 +419,11 @@
 				9D449EF71E6EDD4100E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449EF81E6EDD4100E7E80B /* Adjust.m in Sources */,
 				9D449EDF1E6EDD4100E7E80B /* NSString+ADJAdditions.m in Sources */,
-				9D1082AF1CFDAF8E0050568B /* UIWebViewController.m in Sources */,
 				9D449EF31E6EDD4100E7E80B /* ADJSessionParameters.m in Sources */,
 				9D449EEC1E6EDD4100E7E80B /* ADJLogger.m in Sources */,
 				9D449EF51E6EDD4100E7E80B /* ADJSystemProfile.m in Sources */,
 				9D449EE01E6EDD4100E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */,
-				9D75F1961D07463800E5D222 /* WebViewJavascriptBridge.m in Sources */,
 				9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */,
 				6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */,
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,

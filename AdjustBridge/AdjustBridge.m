@@ -13,7 +13,6 @@
 
 #import "AdjustBridge.h"
 #import "ADJAdjustFactory.h"
-#import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 
 @interface AdjustBridge() <AdjustDelegate>
@@ -165,22 +164,8 @@
     [self registerAugmentedView];
 }
 
-- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView {
-    [self loadUIWebViewBridge:webView webViewDelegate:nil];
-}
-
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView {
     [self loadWKWebViewBridge:wkWebView wkWebViewDelegate:nil];
-}
-
-- (void)loadUIWebViewBridge:(WVJB_WEBVIEW_TYPE *)webView
-            webViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE *)webViewDelegate {
-    if (self.bridgeRegister != nil) {
-        // WebViewBridge already loaded.
-        return;
-    }
-
-    [self loadWebViewBridge:webView webViewDelegate:webViewDelegate];
 }
 
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView
@@ -190,12 +175,8 @@
         return;
     }
 
-    [self loadWebViewBridge:wkWebView webViewDelegate:wkWebViewDelegate];
-}
-
-- (void)loadWebViewBridge:(id)webView webViewDelegate:(id)webViewDelegate {
-    _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWebView:webView];
-    [self.bridgeRegister setWebViewDelegate:webViewDelegate];
+    _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWKWebView:wkWebView];
+    [self.bridgeRegister setWKWebViewDelegate:wkWebViewDelegate];
 
     [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *appToken = [data objectForKey:@"appToken"];

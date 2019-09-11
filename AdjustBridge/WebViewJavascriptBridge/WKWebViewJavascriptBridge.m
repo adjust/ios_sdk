@@ -8,8 +8,6 @@
 
 #import "WKWebViewJavascriptBridge.h"
 
-#if defined supportsWKWebView
-
 @implementation WKWebViewJavascriptBridge {
     __weak WKWebView* _webView;
     __weak id<WKNavigationDelegate> _webViewDelegate;
@@ -193,6 +191,3 @@
 
 
 @end
-
-
-#endif

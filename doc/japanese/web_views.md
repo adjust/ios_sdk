@@ -54,20 +54,16 @@ Xcodeのプロジェクトナビゲータから`Supporting Files`グループを
 プロジェクトナビゲータからView Controllerのソースファイルを開いてください。ファイル最上部に`import`の記述を追加してください。Web Viewデリゲートの`viewDidLoad`か`viewWillAppear`のメソッドで次の`AdjustBridge`のコールを追加してください。
 
 ```objc
-#import "Adjust.h"
-// Or #import <AdjustSdk/Adjust.h>
-// (depends on the way you have chosen to add our native iOS SDK)
-// ...
+#import "AdjustBridge.h"
+// or #import <AdjustSdkWebBridge/AdjustBridge.h>
 
 - (void)viewWillAppear:(BOOL)animated {
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    // or with WKWebView:
-    // WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
 
-    AdjustBridge *adjustBridge = [[AdjustBridge alloc] init];
-    [adjustBridge loadUIWebViewBridge:webView];
-    // or with WKWebView:
-    // [adjustBridge loadWKWebViewBridge:webView];
+    // add @property (nonatomic, strong) AdjustBridge *adjustBridge; on your interface
+    [self.adjustBridge loadWKWebViewBridge:webView];
+    // optionally you can add a web view delegate so that you can also capture its events
+    // [self.adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:(id<WKNavigationDelegate>)self];
 }
 
 // ...

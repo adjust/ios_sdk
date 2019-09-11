@@ -63,7 +63,7 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust/WebBridge', '~> 4.18.1'
+pod 'Adjust/WebBridge', '~> 4.18.2'
 ```
 
 ---
@@ -116,18 +116,10 @@ the `viewDidLoad` or `viewWillAppear` method of your Web View Delegate add the f
 // or #import <AdjustSdkWebBridge/AdjustBridge.h>
 
 - (void)viewWillAppear:(BOOL)animated {
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    // or with WKWebView:
-    // WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
 
     // add @property (nonatomic, strong) AdjustBridge *adjustBridge; on your interface
-    self.adjustBridge = [[AdjustBridge alloc] init];
-    [self.adjustBridge loadUIWebViewBridge:webView];
-    // optionally you can add a web view delegate so that you can also capture its events
-    // [self.adjustBridge loadUIWebViewBridge:webView webViewDelegate:(UIWebViewDelegate*)self];
-    
-    // or with WKWebView:
-    // [self.adjustBridge loadWKWebViewBridge:webView];
+    [self.adjustBridge loadWKWebViewBridge:webView];
     // optionally you can add a web view delegate so that you can also capture its events
     // [self.adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:(id<WKNavigationDelegate>)self];
 }

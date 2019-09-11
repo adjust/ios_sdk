@@ -13,32 +13,32 @@ static NSString * fbAppIdStatic = nil;
 
 @interface AdjustBridgeRegister()
 
-@property (nonatomic, strong) WebViewJavascriptBridge *wvjb;
+@property (nonatomic, strong) WKWebViewJavascriptBridge *wkwvjb;
 
 @end
 
 @implementation AdjustBridgeRegister
 
-- (id)initWithWebView:(id)webView {
+- (id)initWithWKWebView:(WKWebView*)webView {
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
-    self.wvjb = [WebViewJavascriptBridge bridgeForWebView:webView];
+    self.wkwvjb = [WKWebViewJavascriptBridge bridgeForWebView:webView];
     return self;
 }
 
-- (void)setWebViewDelegate:(id)webViewDelegate {
-    [self.wvjb setWebViewDelegate:webViewDelegate];
+- (void)setWKWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate {
+    [self.wkwvjb setWebViewDelegate:webViewDelegate];
 }
 
 - (void)callHandler:(NSString *)handlerName data:(id)data {
-    [self.wvjb callHandler:handlerName data:data];
+    [self.wkwvjb callHandler:handlerName data:data];
 }
 
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
-    [self.wvjb registerHandler:handlerName handler:handler];
+    [self.wkwvjb registerHandler:handlerName handler:handler];
 }
 
 - (void)augmentHybridWebView:(NSString *)fbAppId {
@@ -211,7 +211,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.18.1';
+                    return 'web-bridge4.18.2';
                 }
             },
             setTestOptions: function(testOptions) {
