@@ -210,11 +210,9 @@
 		9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB0210B575600133B4F /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */; };
 		9D0E2EB2210B575600133B4F /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */; };
-		9D0E2EB3210B575600133B4F /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */; };
 		9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB7210B575600133B4F /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */; };
-		9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E69210B575600133B4F /* AdjustBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */; };
@@ -802,11 +800,9 @@
 		9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
 		9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
-		9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
 		9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridgeBase.h; sourceTree = "<group>"; };
 		9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS.m; sourceTree = "<group>"; };
-		9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D0E2E69210B575600133B4F /* AdjustBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
 		9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
@@ -1472,8 +1468,6 @@
 			children = (
 				9D0E2E63210B575600133B4F /* WebViewJavascriptBridge_JS.h */,
 				9D0E2E66210B575600133B4F /* WebViewJavascriptBridge_JS.m */,
-				9D0E2E67210B575600133B4F /* WebViewJavascriptBridge.h */,
-				9D0E2E62210B575600133B4F /* WebViewJavascriptBridge.m */,
 				9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */,
 				9D0E2E61210B575600133B4F /* WKWebViewJavascriptBridge.m */,
 				9D0E2E64210B575600133B4F /* WebViewJavascriptBridgeBase.h */,
@@ -1889,7 +1883,6 @@
 				9D0E2E06210B570600133B4F /* AdjustSdkWebBridge.h in Headers */,
 				9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */,
 				9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */,
-				9D0E2EB8210B575600133B4F /* WebViewJavascriptBridge.h in Headers */,
 				9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */,
 				9D0E2EB4210B575600133B4F /* WebViewJavascriptBridge_JS.h in Headers */,
 				9D0E2EB5210B575600133B4F /* WebViewJavascriptBridgeBase.h in Headers */,
@@ -2596,7 +2589,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D0E2E93210B575600133B4F /* NSString+ADJAdditions.m in Sources */,
-				9D0E2EB3210B575600133B4F /* WebViewJavascriptBridge.m in Sources */,
 				9D0E2E7E210B575600133B4F /* ADJEventSuccess.m in Sources */,
 				9D0E2E7C210B575600133B4F /* ADJEventFailure.m in Sources */,
 				9D0E2E7F210B575600133B4F /* ADJActivityState.m in Sources */,
