@@ -1,4 +1,4 @@
-## Migrate your Adjust web bridge SDK to v4.18.2 from v4.18.1 or earlier
+## Migrate your Adjust web bridge SDK to v4.18.2 or later from v4.18.1 or earlier
 
 Prior to v4.18.2, Adjust web bridge SDK contained methods to inject `UIWebView` objects. To address Apple's warning to developers (ITMS-90809) about `UIWebView` class deprecation, we have removed methods from our bridge which were working with `UIWebView` objects and left only methods which accept `WKWebView` objects.
 
