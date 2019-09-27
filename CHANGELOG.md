@@ -1,3 +1,9 @@
+### Version 4.18.3 (27th September 2019)
+#### Changed
+- Removed reading of Facebook advertising identifier which sometimes caused blocking of the main thread.
+
+---
+
 ### Version 4.18.2 (11th September 2019)
 #### Changed
 - Removed methods from Adjust SDK web view bridge which are dealing with `UIWebView` objects to address `ITMS-90809`. Please, check web views [migration guide](doc/english/web_view_migration.md) to see how to migrate to `v4.18.2` and also check our [web view example app](examples/AdjustExample-WebView) to see how current Adjust web view SDK should be implemented.
