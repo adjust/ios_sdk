@@ -12,7 +12,6 @@
 
 @property (nonatomic, copy) NSString *idForAdvertisers;
 @property (nonatomic, copy) NSString *fbAnonymousId;
-@property (nonatomic, copy) NSString *fbAttributionId;
 @property (nonatomic, assign) BOOL trackingEnabled;
 @property (nonatomic, copy) NSString *vendorId;
 @property (nonatomic, copy) NSString *clientSdk;
