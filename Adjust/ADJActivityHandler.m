@@ -1337,6 +1337,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (value.length == 0) return NO;
 
     NSString* valueDecoded = [value adjUrlDecode];
+    if (!valueDecoded) return NO;
 
     NSString* keyWOutPrefix = [keyDecoded substringFromIndex:kAdjustPrefix.length];
     if (keyWOutPrefix.length == 0) return NO;
