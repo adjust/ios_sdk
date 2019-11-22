@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL isGdprForgotten;
 @property (nonatomic, assign) BOOL askingAttribution;
+@property (nonatomic, assign) BOOL isThirdPartySharingDisabled;
 
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, copy) NSString *deviceToken;

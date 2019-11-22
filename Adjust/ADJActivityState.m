@@ -37,6 +37,7 @@ static NSString *appToken = nil;
     self.enabled = YES;
     self.isGdprForgotten = NO;
     self.askingAttribution = NO;
+    self.isThirdPartySharingDisabled = NO;
     self.deviceToken = nil;
     self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.updatePackages = NO;
@@ -119,9 +120,11 @@ static NSString *appToken = nil;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d",
-            self.eventCount, self.sessionCount, self.subsessionCount, self.askingAttribution, self.sessionLength,
-            self.timeSpent, self.lastActivity, self.deviceToken, self.isGdprForgotten];
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d dtps:%d",
+            self.eventCount, self.sessionCount,
+            self.subsessionCount, self.askingAttribution, self.sessionLength,
+            self.timeSpent, self.lastActivity, self.deviceToken,
+            self.isGdprForgotten, self.isThirdPartySharingDisabled];
 }
 
 #pragma mark - NSCoding protocol methods
@@ -172,6 +175,12 @@ static NSString *appToken = nil;
         self.askingAttribution = NO;
     }
 
+    if ([decoder containsValueForKey:@"isThirdPartySharingDisabled"]) {
+        self.isThirdPartySharingDisabled = [decoder decodeBoolForKey:@"isThirdPartySharingDisabled"];
+    } else {
+        self.isThirdPartySharingDisabled = NO;
+    }
+
     if ([decoder containsValueForKey:@"deviceToken"]) {
         self.deviceToken = [decoder decodeObjectForKey:@"deviceToken"];
     }
@@ -207,6 +216,7 @@ static NSString *appToken = nil;
     [encoder encodeBool:self.enabled forKey:@"enabled"];
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
+    [encoder encodeBool:self.isThirdPartySharingDisabled forKey:@"isThirdPartySharingDisabled"];
     [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
     [encoder encodeObject:self.adid forKey:@"adid"];
@@ -231,6 +241,7 @@ static NSString *appToken = nil;
         copy.isGdprForgotten = self.isGdprForgotten;
         copy.lastActivity = self.lastActivity;
         copy.askingAttribution = self.askingAttribution;
+        copy.isThirdPartySharingDisabled = self.isThirdPartySharingDisabled;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
         copy.updatePackages = self.updatePackages;
     }

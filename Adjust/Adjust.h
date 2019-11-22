@@ -259,6 +259,9 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 + (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
+
++ (void)disableThirdPartySharing;
+
 /**
  * Obtain singleton Adjust object.
  */

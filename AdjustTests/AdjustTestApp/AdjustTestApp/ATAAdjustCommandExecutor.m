@@ -91,6 +91,8 @@
         [self gdprForgetMe:parameters];
     } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
         [self trackAdRevenue:parameters];
+    } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
+        [self disableThirdPartySharing:parameters];
     }
 }
 
@@ -503,6 +505,10 @@
     NSString *payloadS = [parameters objectForKey:@"adRevenueJsonString"][0];
     NSData *payload = [payloadS dataUsingEncoding:NSUTF8StringEncoding];
     [Adjust trackAdRevenue:sourceS payload:payload];
+}
+
+- (void)disableThirdPartySharing:(NSDictionary *)parameters {
+    [Adjust disableThirdPartySharing];
 }
 
 @end

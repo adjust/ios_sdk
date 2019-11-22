@@ -49,6 +49,8 @@
 
 - (ADJActivityPackage *)buildGdprPackage;
 
+- (ADJActivityPackage *)buildDisableThirdPartySharingPackage;
+
 + (void)parameters:(NSMutableDictionary *)parameters
      setDictionary:(NSDictionary *)dictionary
             forKey:(NSString *)key;

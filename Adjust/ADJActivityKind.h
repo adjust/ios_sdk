@@ -21,7 +21,8 @@ typedef NS_ENUM(int, ADJActivityKind) {
     ADJActivityKindAttribution  = 5,
     ADJActivityKindInfo         = 6,
     ADJActivityKindGdpr         = 7,
-    ADJActivityKindAdRevenue    = 8
+    ADJActivityKindAdRevenue    = 8,
+    ADJActivityKindDisableThirdPartySharing = 9
 };
 
 @interface ADJActivityKindUtil : NSObject
