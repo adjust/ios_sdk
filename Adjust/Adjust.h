@@ -259,7 +259,9 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 + (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
-
+/**
+ * @brief Give right user to disable sharing data to any third-party.
+ */
 + (void)disableThirdPartySharing;
 
 /**
