@@ -1248,7 +1248,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         }
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
-        } else {
+        } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
             [selfI disableThirdPartySharing];
         }
         [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
