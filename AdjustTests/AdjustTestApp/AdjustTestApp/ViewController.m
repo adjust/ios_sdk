@@ -30,8 +30,13 @@
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-    // [self.testLibrary addTestDirectory:@"current/sdkInfo"];
-    // [self.testLibrary addTest:@"current/appSecret/Test_AppSecret_no_secret"];
+    // [self.testLibrary addTestDirectory:@"current/third-party-sharing"];
+    // [self.testLibrary addTest:@"Test_GdprForgetMe_after_install_kill_before_install"];
+    // [self.testLibrary addTest:@"Test_GdprForgetMe_disable_enable"];
+    // [self.testLibrary addTest:@"Test_DisableThirdPartySharing_before_install"];
+    // [self.testLibrary addTest:@"Test_DisableThirdPartySharing_before_start_restart"];
+    // [self.testLibrary addTest:@"Test_DisableThirdPartySharing_between_create_and_resume"];
+    // [self.testLibrary addTest:@"Test_DisableThirdPartySharing_main_queue_order"];
 
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];

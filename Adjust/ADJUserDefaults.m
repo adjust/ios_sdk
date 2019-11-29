@@ -108,6 +108,7 @@ static NSString * const PREFS_KEY_DISABLE_THIRD_PARTY_SHARING = @"adj_disable_th
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
