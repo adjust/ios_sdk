@@ -98,6 +98,11 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackEvent', adjustEvent, null);
                 }
             },
+            trackAdRevenue: function(source, payload) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_trackAdRevenue', {source: source, payload: payload}, null);
+                }
+            },
             trackSubsessionStart: function() {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_trackSubsessionStart', null, null);
@@ -189,6 +194,11 @@ static NSString * fbAppIdStatic = nil;
             gdprForgetMe: function() {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
+                }
+            },
+            disableThirdPartySharing: function() {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_disableThirdPartySharing', null, null);
                 }
             },
             fbPixelEvent: function(pixelID, evtName, customData) {

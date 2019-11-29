@@ -459,6 +459,17 @@
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust gdprForgetMe];
     }];
+    
+    [self.bridgeRegister registerHandler:@"adjust_trackAdRevenue" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSString *source = [data objectForKey:@"source"];
+        NSString *payload = [data objectForKey:@"payload"];
+        NSData *dataPayload = [payload dataUsingEncoding:NSUTF8StringEncoding];
+        [Adjust trackAdRevenue:source payload:dataPayload];
+    }];
+    
+    [self.bridgeRegister registerHandler:@"adjust_disableThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust disableThirdPartySharing];
+    }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];
