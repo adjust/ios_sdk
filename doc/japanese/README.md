@@ -1091,7 +1091,7 @@ adjust SDKがトラッキングするよう設定された値が間違ってい�
 
 [special-partners]:     https://docs.adjust.com/en/special-partners
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[ios-web-views-guide]:  https://github.com/adjust/ios_sdk/blob/master/doc/japanese/web_views_ja.md
+[ios-web-views-guide]:  https://github.com/adjust/ios_sdk/blob/master/doc/japanese/web_views.md
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
 
 [universal-links-guide]:      https://docs.adjust.com/en/universal-links/

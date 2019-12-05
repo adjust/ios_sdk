@@ -63,7 +63,7 @@ fbq('set', 'mobileBridge', <YOUR_PIXEL_ID>, <YOUR_FB_APP_ID>);
 
 ### Web viewの拡大
 
-[iOS web view](web_views_ja.md) アプリの統合ガイドに従ってください。こちらはWeb view bridgeをロードするセクションです。（以下を参照）
+[iOS web view](web_views.md) アプリの統合ガイドに従ってください。こちらはWeb view bridgeをロードするセクションです。（以下を参照）
 
 
 ```objc
