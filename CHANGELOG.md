@@ -1,6 +1,6 @@
-### Version 4.19.0 (xxth December 2019)
+### Version 4.19.0 (9th December 2019)
 #### Added
-- Added `disableThirdPartySharing:` method to `Adjust` interface to allow disabling of data sharing with third parties outside of Adjust ecosystem.
+- Added `disableThirdPartySharing` method to `Adjust` interface to allow disabling of data sharing with third parties outside of Adjust ecosystem.
 
 ---
 
