@@ -573,6 +573,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)disableThirdPartySharing {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI disableThirdPartySharingI:selfI];
+                     }];
+}
+
 - (NSString *)getBasePath {
     return _basePath;
 }
@@ -790,11 +798,15 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
             // If user chose to be forgotten before install has ever tracked, don't track it.
-            if (![ADJUserDefaults getGdprForgetMe]) {
+            if ([ADJUserDefaults getGdprForgetMe]) {
+                [selfI setGdprForgetMeI:selfI];
+            } else {
+                // check if disable third party sharing request came, then send it first
+                if ([ADJUserDefaults getDisableThirdPartySharing]) {
+                    [selfI disableThirdPartySharingI:selfI];
+                }
                 selfI.activityState.sessionCount = 1; // this is the first session
                 [selfI transferSessionPackageI:selfI now:now];
-            } else {
-                [selfI setGdprForgetMeI:selfI];
             }
         }
 
@@ -804,6 +816,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
+        [ADJUserDefaults removeDisableThirdPartySharing];
 
         return;
     }
@@ -971,6 +984,50 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:source payload:payload];
     [selfI.packageHandler addPackage:adRevenuePackage];
     [selfI.packageHandler sendFirstPackage];
+}
+
+- (void)disableThirdPartySharingI:(ADJActivityHandler *)selfI {
+    // cache the disable third party sharing request, so that the request order maintains
+    // even this call returns before making server request
+    [ADJUserDefaults setDisableThirdPartySharing];
+
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (selfI.activityState.isThirdPartySharingDisabled) {
+        return;
+    }
+
+    selfI.activityState.isThirdPartySharingDisabled = YES;
+    [selfI writeActivityStateI:selfI];
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // build package
+    ADJPackageBuilder *dtpsBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
+                                       createdAt:now];
+
+    ADJActivityPackage *dtpsPackage = [dtpsBuilder buildDisableThirdPartySharingPackage];
+
+    [selfI.packageHandler addPackage:dtpsPackage];
+
+    [ADJUserDefaults removeDisableThirdPartySharing];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
@@ -1191,6 +1248,8 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         }
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
+        } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
+            [selfI disableThirdPartySharing];
         }
         [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
     }

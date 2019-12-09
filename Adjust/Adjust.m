@@ -179,6 +179,10 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] trackAdRevenue:source payload:payload];
 }
 
++ (void)disableThirdPartySharing {
+    [[Adjust getInstance] disableThirdPartySharing];
+}
+
 + (ADJAttribution *)attribution {
     return [[Adjust getInstance] attribution];
 }
@@ -415,6 +419,15 @@ static dispatch_once_t onceToken = 0;
     }
 
     [self.activityHandler trackAdRevenue:source payload:payload];
+}
+
+- (void)disableThirdPartySharing {
+    if (![self checkActivityHandler:@"disable third party sharing"]) {
+        [ADJUserDefaults setDisableThirdPartySharing];
+        return;
+    }
+
+    [self.activityHandler disableThirdPartySharing];
 }
 
 - (ADJAttribution *)attribution {

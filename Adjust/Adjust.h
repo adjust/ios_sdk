@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.18.3
+//  V4.19.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -258,6 +258,11 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  * @param payload Ad revenue payload.
  */
 + (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
+
+/**
+ * @brief Give right user to disable sharing data to any third-party.
+ */
++ (void)disableThirdPartySharing;
 
 /**
  * Obtain singleton Adjust object.

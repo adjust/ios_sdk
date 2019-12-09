@@ -36,6 +36,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Offline mode](#offline-mode)
    * [Event buffering](#event-buffering)
    * [GDPR right to be forgotten](#gdpr-forget-me)
+   * [Disable third-party sharing](#disable-third-party-sharing)
    * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
@@ -73,13 +74,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.18.3'
+pod 'Adjust', '~> 4.19.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.18.3'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.19.0'
 ```
 
 ---
@@ -611,6 +612,18 @@ In accordance with article 17 of the EU's General Data Protection Regulation (GD
 
 Upon receiving this information, Adjust will erase the user's data and the Adjust SDK will stop tracking the user. No requests from this device will be sent to Adjust in the future.
 
+### <a id="disable-third-party-sharing"></a>Disable third-party sharing
+
+You can now notify Adjust when a user has exercised their right to stop sharing their data with partners for marketing partners, but has allowed it to be shared for statistics purposes. 
+
+Call the following method to instruct the Adjust SDK to communicate the user's choice to disable data sharing to the Adjust backend:
+
+```objc
+[Adjust disableThirdPartySharing];
+```
+
+Upon receiving this information, Adjust will block the sharing of that specific user's data to partners and the Adjust SDK will continue to work as usual.
+
 ### <a id="sdk-signature"></a> SDK signature
 
 The Adjust SDK signature is enabled on a client-by-client basis. If you are interested in using this feature, please contact your account manager.
@@ -799,7 +812,7 @@ Follow the same steps and implement the following delegate callback function for
 }
 ```
 
-The callback function will be called after the SDK receives a deffered deep link from our server and before opening it. Within the callback function you have access to the deep link. The returned boolean value determines if the SDK will launch the deep link. You could, for example, not allow the SDK to open the deep link at the current moment, save it, and open it yourself later.
+The callback function will be called after the SDK receives a deferred deep link from our server and before opening it. Within the callback function you have access to the deep link. The returned boolean value determines if the SDK will launch the deep link. You could, for example, not allow the SDK to open the deep link at the current moment, save it, and open it yourself later.
 
 If this callback is not implemented, **the Adjust SDK will always try to open the deep link by default**.
 
