@@ -176,6 +176,11 @@
                info4:(NSUInteger)info4;
 
 /**
+ * @brief Default tracker to attribute organic installs to (optional).
+ */
+@property (nonatomic, copy, nullable) NSString *externalDeviceId;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can
