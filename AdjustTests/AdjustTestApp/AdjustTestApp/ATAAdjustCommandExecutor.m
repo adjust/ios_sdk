@@ -279,6 +279,11 @@
         [adjustConfig setUserAgent:userAgent];
     }
 
+    if ([parameters objectForKey:@"externalDeviceId"]) {
+        NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
+        [adjustConfig setExternalDeviceId:externalDeviceId];
+    }
+
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
         self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary

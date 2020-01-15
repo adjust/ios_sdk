@@ -184,6 +184,7 @@
         NSString *allowSuppressLogLevel = [data objectForKey:@"allowSuppressLogLevel"];
         NSString *sdkPrefix = [data objectForKey:@"sdkPrefix"];
         NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
+        NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
@@ -222,6 +223,9 @@
         }
         if ([self isFieldValid:defaultTracker]) {
             [adjustConfig setDefaultTracker:defaultTracker];
+        }
+        if ([self isFieldValid:externalDeviceId]) {
+            [adjustConfig setExternalDeviceId:externalDeviceId];
         }
         if ([self isFieldValid:logLevel]) {
             [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];

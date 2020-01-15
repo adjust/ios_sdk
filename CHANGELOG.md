@@ -1,3 +1,9 @@
+### Version 4.20.0 (15th January 2020)
+#### Added
+- Added external device ID support.
+
+---
+
 ### Version 4.19.0 (9th December 2019)
 #### Added
 - Added `disableThirdPartySharing` method to `Adjust` interface to allow disabling of data sharing with third parties outside of Adjust ecosystem.
