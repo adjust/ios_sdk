@@ -95,6 +95,8 @@
  */
 @property (nonatomic, copy, nullable) NSString *defaultTracker;
 
+@property (nonatomic, copy, nullable) NSString *externalDeviceId;
+
 /**
  * @brief Adjust app token.
  */
@@ -174,11 +176,6 @@
                info2:(NSUInteger)info2
                info3:(NSUInteger)info3
                info4:(NSUInteger)info4;
-
-/**
- * @brief Default tracker to attribute organic installs to (optional).
- */
-@property (nonatomic, copy, nullable) NSString *externalDeviceId;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.
