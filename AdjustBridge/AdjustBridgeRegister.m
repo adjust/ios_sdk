@@ -283,6 +283,7 @@ static NSString * fbAppIdStatic = nil;
 
             this.sdkPrefix = null;
             this.defaultTracker = null;
+            this.externalDeviceId = null;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
             this.sendInBackground = null;
@@ -341,6 +342,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
             this.defaultTracker = defaultTracker;
+        };
+        AdjustConfig.prototype.setExternalDeviceId = function(externalDeviceId) {
+            this.externalDeviceId = externalDeviceId;
         };
         AdjustConfig.prototype.setLogLevel = function(logLevel) {
             this.logLevel = logLevel;
