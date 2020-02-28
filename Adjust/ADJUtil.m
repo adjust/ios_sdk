@@ -347,16 +347,36 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
            fileName:(NSString *)fileName
          objectName:(NSString *)objectName {
     NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
-    BOOL result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-    if (result == YES) {
+
+    if (@available(iOS 11.0, *)) {
+        if (filePath == nil) {
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        }
+
         [ADJUtil excludeFromBackup:filePath];
-        if ([object isKindOfClass:[NSArray class]]) {
-            [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
-        } else {
-            [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+        NSError *errorArchiving = nil;
+        NSError *errorWriting = nil;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
+        if (errorArchiving != nil || data == nil) {
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        }
+
+        [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+        if (errorWriting != nil) {
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
         }
     } else {
-        [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        BOOL result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+        if (result == YES) {
+            [ADJUtil excludeFromBackup:filePath];
+            if ([object isKindOfClass:[NSArray class]]) {
+                [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+            } else {
+                [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+            }
+        } else {
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        }
     }
 }
 
