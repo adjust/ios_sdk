@@ -13,6 +13,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJBackoffStrategy.h"
 #import "ADJPackageBuilder.h"
+#import "ADJUserDefaults.h"
 
 static NSString   * const kPackageQueueFilename = @"AdjustIoPackageQueue";
 static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
@@ -25,7 +26,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, strong) dispatch_semaphore_t sendingSemaphore;
 @property (nonatomic, strong) id<ADJRequestHandler> requestHandler;
 @property (nonatomic, strong) NSMutableArray *packageQueue;
-@property (nonatomic, strong) ADJBackoffStrategy * backoffStrategy;
+@property (nonatomic, strong) ADJBackoffStrategy *backoffStrategy;
+@property (nonatomic, strong) ADJBackoffStrategy *backoffStrategyForInstallSession;
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
@@ -51,6 +53,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.backoffStrategy = [ADJAdjustFactory packageHandlerBackoffStrategy];
+    self.backoffStrategyForInstallSession = [ADJAdjustFactory installSessionBackoffStrategy];
     self.basePath = [activityHandler getBasePath];
     self.gdprPath = [activityHandler getGdprPath];
 
@@ -110,8 +113,13 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }
 
     NSInteger retries = [activityPackage increaseRetries];
-    NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
-    NSString * waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+    NSTimeInterval waitTime;
+    if ([activityPackage activityKind] == ADJActivityKindSession && [ADJUserDefaults getInstallTracked] == NO) {
+        waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategyForInstallSession];
+    } else {
+        waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+    }
+    NSString *waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
     [self.logger verbose:@"Waiting for %@ seconds before retrying the %d time", waitTimeFormatted, retries];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);

@@ -34,6 +34,7 @@
 + (NSTimeInterval)timerStart;
 + (ADJBackoffStrategy *)packageHandlerBackoffStrategy;
 + (ADJBackoffStrategy *)sdkClickHandlerBackoffStrategy;
++ (ADJBackoffStrategy *)installSessionBackoffStrategy;
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                                     startsSending:(BOOL)startsSending;

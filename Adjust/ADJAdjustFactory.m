@@ -21,6 +21,7 @@ static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
+static ADJBackoffStrategy * installSessionBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internaliAdFrameworkEnabled = YES;
@@ -111,6 +112,13 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
         return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
     }
     return sdkClickHandlerBackoffStrategy;
+}
+
++ (ADJBackoffStrategy *)installSessionBackoffStrategy {
+    if (installSessionBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
+    }
+    return installSessionBackoffStrategy;
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
