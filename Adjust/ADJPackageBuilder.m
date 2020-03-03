@@ -60,6 +60,9 @@
     sessionPackage.activityKind = ADJActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:sessionPackage];
+
     return sessionPackage;
 }
 
@@ -77,6 +80,8 @@
         eventPackage.partnerParameters = event.partnerParameters;
     }
 
+    [self signWithSigV2Plugin:eventPackage];
+
     return eventPackage;
 }
 
@@ -87,6 +92,9 @@
     infoPackage.activityKind = ADJActivityKindInfo;
     infoPackage.suffix = @"";
     infoPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:infoPackage];
+
     return infoPackage;
 }
 
@@ -97,6 +105,9 @@
     adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:adRevenuePackage];
+
     return adRevenuePackage;
 }
 
@@ -107,6 +118,9 @@
     clickPackage.activityKind = ADJActivityKindClick;
     clickPackage.suffix = @"";
     clickPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:clickPackage];
+
     return clickPackage;
 }
 
@@ -117,6 +131,9 @@
     attributionPackage.activityKind = ADJActivityKindAttribution;
     attributionPackage.suffix = @"";
     attributionPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:attributionPackage];
+
     return attributionPackage;
 }
 
@@ -127,6 +144,9 @@
     gdprPackage.activityKind = ADJActivityKindGdpr;
     gdprPackage.suffix = @"";
     gdprPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:gdprPackage];
+
     return gdprPackage;
 }
 
@@ -137,6 +157,9 @@
     dtpsPackage.activityKind = ADJActivityKindDisableThirdPartySharing;
     dtpsPackage.suffix = @"";
     dtpsPackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:dtpsPackage];
+
     return dtpsPackage;
 }
 
@@ -163,6 +186,37 @@
 }
 
 #pragma mark - Private & helper methods
+
+- (void)signWithSigV2Plugin:(ADJActivityPackage *)activityPackage {
+    Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return;
+    }
+
+    SEL signSEL = NSSelectorFromString(@"sign:withActivityKind:withSdkVersion:");
+    if (![signerClass respondsToSelector:signSEL]) {
+        return;
+    }
+
+    NSMutableDictionary * parameters = activityPackage.parameters;
+    const char * activityKindChar = [[ADJActivityKindUtil activityKindToString:activityPackage.activityKind] UTF8String];
+    const char * sdkVersionChar = [activityPackage.clientSdk UTF8String];
+    /*
+     [ADJSigner sign:parameters
+     withActivityKind:activityKindChar
+       withSdkVersion:sdkVersionChar];
+     */
+    NSMethodSignature *signMethodSignature = [signerClass methodSignatureForSelector:signSEL];
+    NSInvocation *signInvocation = [NSInvocation invocationWithMethodSignature:signMethodSignature];
+    [signInvocation setSelector: signSEL];
+    [signInvocation setTarget:signerClass];
+
+    [signInvocation setArgument:&parameters atIndex: 2];
+    [signInvocation setArgument:&activityKindChar atIndex: 3];
+    [signInvocation setArgument:&sdkVersionChar atIndex: 4];
+
+    [signInvocation invoke];
+}
 
 - (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
