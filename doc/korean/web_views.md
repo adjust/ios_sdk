@@ -6,13 +6,13 @@
 
 ## 목차
 
-* [앱 예시](#example-apps)
+* [앱 예시](#example-app)
 * [기본 연동](#basic-integration)
-   * [웹 브리지가있는 SDK를 프로젝트에 추가] (# sdk-add)
+   * [웹 브리지가있는 SDK를 프로젝트에 추가](#sdk-add)
    * [iOS 프레임워크 추가](#sdk-frameworks)
    * [앱에 SDK 연동](#sdk-integrate)
-   * [AdjustBridge를 앱에 연동] (# bridge-integrate-app)
-   * [AdjustBridge를 웹뷰에 연동] (# bridge-integrate-web)
+   * [AdjustBridge를 앱에 연동](#bridge-integrate-app)
+   * [AdjustBridge를 웹뷰에 연동](#bridge-integrate-web)
    * [기본 설정](#basic-setup)
    * [Adjust 로](#adjust-logging)
    * [앱 빌드하기](#build-the-app)
@@ -32,7 +32,7 @@
    * [오프라인 모드](#offline-mode)
    * [이벤트 버퍼링](#event-buffering)
    * [GDPR 잊혀질 권리(Right to be Forgotten)](#gdpr-forget-me)
-   * [타사 공유 비활성화] (# disable-third-party-sharing)
+   * [타사 공유 비활성화](#disable-third-party-sharing)
    * [SDK 서명](#sdk-signature)
    * [백그라운드 추적](#background-tracking)
    * [기기 ID](#device-ids)
@@ -63,7 +63,7 @@ iOS 개발용 Xcode를 사용한다는 가정하에 iOS 프로젝트에 Adjust S
 
 [CocoaPods][cocoapods]를 사용하는 경우, 다음 내용을 'Podfile'에 추가한 후 [해당 단계](#sdk-integrate)를 완료하세요.
 
-ruby
+```ruby
 pod 'Adjust/WebBridge', '~> 4.20.0'
 ```
 
@@ -77,7 +77,7 @@ github "adjust/ios_sdk"
 
 ---
 
-프로젝트에 Adjust SDK를 프레임워크로 추가하여 연동할 수도 있습니다. [releases page] [releases]에서`AdjustSdkWebBridge.framework.zip`을 찾을 수 있습니다 여기에는 동적 프레임이 포함되어 있습니다. \
+프로젝트에 Adjust SDK를 프레임워크로 추가하여 연동할 수도 있습니다. [releases page][releases]에서`AdjustSdkWebBridge.framework.zip`을 찾을 수 있습니다 여기에는 동적 프레임이 포함되어 있습니다. \
 
 ### <a id="sdk-frameworks"></a>iOS 프레임워크 추가
 
@@ -226,11 +226,11 @@ setupWebViewJavascriptBridge(function(bridge) {
 앱을 빌드하고 실행합니다. 빌드를 성공적으로 완료했다면, 콘솔에서 SDK 로그를 꼼꼼하게 살펴보시기 바랍니다. 앱이 시작된 후
 앱을 처음으로 출시한 경우, 'Install tracked' 로그 정보를 반드시 확인하세요.
 
-## 부가 기능
+## <a id="additional-features"></a>부가 기능
 
 Adjust SDK를 프로젝트에 연동하면 다음 기능을 활용할 수 있습니다.
 
-### 이벤트 추적
+### <a id="event-tracking"></a>이벤트 추적
 
 Adjust를 사용하여 이벤트를 트래킹할 수 있습니다. 특정 버튼에 대한 모든 탭을 트래킹하려는 경우를 가정해 보겠습니다. adjust 대시보드에서 이벤트 토큰을 생성합니다. 이는 'abc123'와 같은 형태입니다. 버튼의 'onclick' method에서 탭을 트래킹하기 위해 다음 줄을 추가합니다:
 
@@ -556,7 +556,7 @@ adjustConfig.setSendInBackground(true);
 
 Adjust SDK를 사용하면 일부 기기 식별자를 얻을 수 있습니다.
 
-### iOS 광고 식별자
+### <a id="di-idfa"></a>iOS 광고 식별자
 
 특정 서비스(예: Google Analytics)는 중복 보고를 방지하기 위해 기기 및 클라이언트 ID 통합을 요청합니다.
 
