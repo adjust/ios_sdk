@@ -503,9 +503,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
     [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
-    NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
-    NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
     [ADJUtil extractEventCallbackId:parametersCopy];
+
+    NSString * authorizationHeader = [ADJUtil buildAuthorizationHeader:parametersCopy activityKind:activityPackage.activityKind];
 
     NSMutableURLRequest *request = [ADJUtil requestForGetPackage:activityPackage.path
                                                        clientSdk:activityPackage.clientSdk
@@ -515,22 +515,19 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
          activityPackage:activityPackage
-                secretId:secretId
-               appSecret:appSecret
+     authorizationHeader:authorizationHeader
      responseDataHandler:responseDataHandler];
 }
 
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
     activityPackage:(ADJActivityPackage *)activityPackage
-           secretId:(NSString *)secretId
-          appSecret:(NSString *)appSecret
+authorizationHeader:(NSString *)authorizationHeader
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:nil
-                secretId:secretId
-               appSecret:appSecret
+     authorizationHeader:authorizationHeader
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
 }
@@ -540,13 +537,14 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
      prefixErrorMessage:(NSString *)prefixErrorMessage
      suffixErrorMessage:(NSString *)suffixErrorMessage
         activityPackage:(ADJActivityPackage *)activityPackage
-    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
+    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
+{
     NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc] initWithCapacity:[activityPackage.parameters count]];
     [parametersCopy addEntriesFromDictionary:activityPackage.parameters];
 
-    NSString *appSecret = [ADJUtil extractAppSecret:parametersCopy];
-    NSString *secretId = [ADJUtil extractSecretId:parametersCopy];
     [ADJUtil extractEventCallbackId:parametersCopy];
+
+    NSString * authorizationHeader = [ADJUtil buildAuthorizationHeader:parametersCopy activityKind:activityPackage.activityKind];
 
     NSMutableURLRequest *request = [ADJUtil requestForPostPackage:activityPackage.path
                                                         clientSdk:activityPackage.clientSdk
@@ -555,8 +553,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     [ADJUtil sendRequest:request
       prefixErrorMessage:prefixErrorMessage
       suffixErrorMessage:suffixErrorMessage
-                secretId:secretId
-               appSecret:appSecret
+     authorizationHeader:authorizationHeader
          activityPackage:activityPackage
      responseDataHandler:responseDataHandler];
 }
@@ -564,15 +561,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (void)sendRequest:(NSMutableURLRequest *)request
  prefixErrorMessage:(NSString *)prefixErrorMessage
  suffixErrorMessage:(NSString *)suffixErrorMessage
-           secretId:(NSString *)secretId
-          appSecret:(NSString *)appSecret
+authorizationHeader:(NSString *)authorizationHeader
     activityPackage:(ADJActivityPackage *)activityPackage
-responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler {
-    NSString *authHeader = [ADJUtil buildAuthorizationHeader:appSecret
-                                                    secretId:secretId
-                                             activityPackage:activityPackage];
-    if (authHeader != nil) {
-        [request setValue:authHeader forHTTPHeaderField:@"Authorization"];
+responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
+{
+    if (authorizationHeader != nil) {
+        [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
     }
     if (userAgent != nil) {
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
@@ -594,13 +588,24 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
 }
 
-+ (NSString *)extractAppSecret:(NSMutableDictionary *)parameters {
-    NSString *appSecret = [parameters objectForKey:@"app_secret"];
-    if (appSecret == nil) {
-        return nil;
++ (NSString *)buildAuthorizationHeader:(NSMutableDictionary *)parameters
+                          activityKind:(ADJActivityKind)activityKind
+{
+    NSString * secretId = [ADJUtil extractSecretId:parameters];
+    NSString * signature = [ADJUtil extractSignature:parameters];
+    NSString * headersId = [ADJUtil extractHeadersId:parameters];
+    NSString * authorizationHeader = [ADJUtil buildAuthorizationHeaderV2:signature
+                                                                secretId:secretId
+                                                               headersId:headersId];
+    if (authorizationHeader != nil) {
+        return authorizationHeader;
     }
-    [parameters removeObjectForKey:@"app_secret"];
-    return appSecret;
+
+    NSString * appSecret = [ADJUtil extractAppSecret:parameters];
+    return [ADJUtil buildAuthorizationHeaderV1:appSecret
+                                      secretId:secretId
+                                    parameters:parameters
+                                  activityKind:activityKind];
 }
 
 + (NSString *)extractSecretId:(NSMutableDictionary *)parameters {
@@ -610,6 +615,53 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     }
     [parameters removeObjectForKey:@"secret_id"];
     return appSecret;
+}
+
++ (NSString *)extractSignature:(NSMutableDictionary *)parameters {
+    NSString *appSecret = [parameters objectForKey:@"signature"];
+    if (appSecret == nil) {
+        return nil;
+    }
+    [parameters removeObjectForKey:@"signature"];
+    return appSecret;
+}
+
++ (NSString *)extractHeadersId:(NSMutableDictionary *)parameters {
+    NSString *appSecret = [parameters objectForKey:@"headers_id"];
+    if (appSecret == nil) {
+        return nil;
+    }
+    [parameters removeObjectForKey:@"headers_id"];
+    return appSecret;
+}
+
++ (NSString *)extractAppSecret:(NSMutableDictionary *)parameters {
+    NSString *appSecret = [parameters objectForKey:@"app_secret"];
+    if (appSecret == nil) {
+        return nil;
+    }
+    [parameters removeObjectForKey:@"app_secret"];
+    return appSecret;
+}
+
++ (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
+                                secretId:(NSString*)secretId
+                                headersId:(NSString*)headersId
+{
+    if (secretId == nil || signature == nil || headersId == nil) {
+        return nil;
+    }
+
+    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
+    NSString * secretIdHeader  = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
+    NSString * idHeader        = [NSString stringWithFormat:@"headers_id=\"%@\"", headersId];
+    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"adj1\""];
+
+    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
+            signatureHeader, secretIdHeader, algorithmHeader, idHeader];
+    [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
+
+    return authorizationHeader;
 }
 
 + (void)extractEventCallbackId:(NSMutableDictionary *)parameters {
@@ -659,15 +711,16 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     return request;
 }
 
-+ (NSString *)buildAuthorizationHeader:(NSString *)appSecret
++ (NSString *)buildAuthorizationHeaderV1:(NSString *)appSecret
                               secretId:(NSString *)secretId
-                       activityPackage:(ADJActivityPackage *)activityPackage {
+                              parameters:(NSMutableDictionary *)parameters
+                       activityKind:(ADJActivityKind)activityKind
+{
     if (appSecret == nil) {
         return nil;
     }
 
-    NSMutableDictionary *parameters = activityPackage.parameters;
-    NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityPackage.activityKind];
+    NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityKind];
     NSDictionary *signatureParameters = [ADJUtil buildSignatureParameters:parameters
                                                                 appSecret:appSecret
                                                             activityKindS:activityKindS];
