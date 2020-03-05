@@ -25,6 +25,8 @@
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
 @property (nonatomic, assign) BOOL iAdFrameworkEnabled;
+@property (nonatomic, assign) BOOL enableSigning;
+@property (nonatomic, assign) BOOL disableSigning;
 
 @end
 

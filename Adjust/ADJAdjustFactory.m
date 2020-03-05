@@ -234,6 +234,34 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     internalGdprUrl = gdprUrl;
 }
 
++ (void)enabledSigning {
+    Class signerClass = NSClassFromString(@"libyoga");
+    if (signerClass == nil) {
+        return;
+    }
+
+    SEL enabledSEL = NSSelectorFromString(@"enableSigning");
+    if (![signerClass respondsToSelector:enabledSEL]) {
+        return;
+    }
+
+    [signerClass performSelector:enabledSEL];
+}
+
++ (void)disableSigning {
+    Class signerClass = NSClassFromString(@"libyoga");
+    if (signerClass == nil) {
+        return;
+    }
+
+    SEL disableSEL = NSSelectorFromString(@"disableSigning");
+    if (![signerClass respondsToSelector:disableSEL]) {
+        return;
+    }
+
+    [signerClass performSelector:disableSEL];
+}
+
 + (void)teardown:(BOOL)deleteState {
     if (deleteState) {
         [ADJActivityHandler deleteState];

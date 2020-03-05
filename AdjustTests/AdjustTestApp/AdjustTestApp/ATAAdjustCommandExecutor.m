@@ -135,6 +135,20 @@
             testOptions.iAdFrameworkEnabled = YES;
         }
     }
+    if ([parameters objectForKey:@"enableSigning"]) {
+        NSString *enableSigningStr = [parameters objectForKey:@"enableSigning"][0];
+        testOptions.enableSigning = NO;
+        if ([enableSigningStr isEqualToString:@"true"]) {
+            testOptions.enableSigning = YES;
+        }
+    }
+    if ([parameters objectForKey:@"disableSigning"]) {
+        NSString *disableSigningStr = [parameters objectForKey:@"disableSigning"][0];
+        testOptions.disableSigning = NO;
+        if ([disableSigning isEqualToString:@"true"]) {
+            testOptions.disableSigning = YES;
+        }
+    }
     if ([parameters objectForKey:@"teardown"]) {
         NSArray *teardownOptions = [parameters objectForKey:@"teardown"];
         for (int i = 0; i < teardownOptions.count; i = i + 1) {

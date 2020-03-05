@@ -62,5 +62,8 @@
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;
 
++ (void)enableSigning;
++ (void)disableSigning;
+
 + (void)teardown:(BOOL)deleteState;
 @end
