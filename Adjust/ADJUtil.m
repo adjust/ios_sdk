@@ -346,37 +346,28 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
          objectName:(NSString *)objectName {
+    BOOL result;
     NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
     if (@available(iOS 11.0, *)) {
-        if (filePath == nil) {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
-        }
-
-        [ADJUtil excludeFromBackup:filePath];
         NSError *errorArchiving = nil;
         NSError *errorWriting = nil;
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-        if (errorArchiving != nil || data == nil) {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
-        }
-
         [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
-        if (errorWriting != nil) {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        result = (filePath != nil) && (errorArchiving == nil) && (errorWriting == nil);
+    } else {
+        result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+    }
+    
+    if (result == YES) {
+        [ADJUtil excludeFromBackup:filePath];
+        if ([object isKindOfClass:[NSArray class]]) {
+            [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+        } else {
+            [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
         }
     } else {
-        BOOL result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-        if (result == YES) {
-            [ADJUtil excludeFromBackup:filePath];
-            if ([object isKindOfClass:[NSArray class]]) {
-                [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
-            } else {
-                [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
-            }
-        } else {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
-        }
+        [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
     }
 }
 
