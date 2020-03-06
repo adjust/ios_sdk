@@ -566,6 +566,7 @@ authorizationHeader:(NSString *)authorizationHeader
 responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 {
     if (authorizationHeader != nil) {
+        [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
         [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
     }
     if (userAgent != nil) {
@@ -659,7 +660,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 
     NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
             signatureHeader, secretIdHeader, algorithmHeader, idHeader];
-    [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
 
     return authorizationHeader;
 }
@@ -753,7 +753,6 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                      signatureHeader,
                                      algorithmHeader,
                                      fieldsHeader];
-    [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
     return authorizationHeader;
 }
 
