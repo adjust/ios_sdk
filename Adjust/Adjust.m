@@ -495,7 +495,7 @@ static dispatch_once_t onceToken = 0;
     }
     
     if (testOptions.enableSigning) {
-        [ADJAdjustFactory enabledSigning];
+        [ADJAdjustFactory enableSigning];
     }
 
     if (testOptions.disableSigning) {

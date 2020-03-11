@@ -234,8 +234,8 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     internalGdprUrl = gdprUrl;
 }
 
-+ (void)enabledSigning {
-    Class signerClass = NSClassFromString(@"libyoga");
++ (void)enableSigning {
+    Class signerClass = NSClassFromString(@"ADJSigner");
     if (signerClass == nil) {
         return;
     }
@@ -245,11 +245,18 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
         return;
     }
 
-    [signerClass performSelector:enabledSEL];
+    IMP enableIMP = [signerClass methodForSelector:enabledSEL];
+    if (!enableIMP) {
+        return;
+    }
+
+    void (*enableFunc)(id, SEL) = (void *)enableIMP;
+
+    enableFunc(signerClass, enabledSEL);
 }
 
 + (void)disableSigning {
-    Class signerClass = NSClassFromString(@"libyoga");
+    Class signerClass = NSClassFromString(@"ADJSigner");
     if (signerClass == nil) {
         return;
     }
@@ -259,7 +266,14 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
         return;
     }
 
-    [signerClass performSelector:disableSEL];
+    IMP disableIMP = [signerClass methodForSelector:disableSEL];
+    if (!disableIMP) {
+        return;
+    }
+
+    void (*disableFunc)(id, SEL) = (void *)disableIMP;
+
+    disableFunc(signerClass, disableSEL);
 }
 
 + (void)teardown:(BOOL)deleteState {
