@@ -164,6 +164,7 @@
             if ([teardownOption isEqualToString:@"resetTest"]) {
                 self.savedConfigs = [NSMutableDictionary dictionary];
                 self.savedEvents = [NSMutableDictionary dictionary];
+                self.adjustDelegate = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
