@@ -145,7 +145,7 @@
     if ([parameters objectForKey:@"disableSigning"]) {
         NSString *disableSigningStr = [parameters objectForKey:@"disableSigning"][0];
         testOptions.disableSigning = NO;
-        if ([disableSigning isEqualToString:@"true"]) {
+        if ([disableSigningStr isEqualToString:@"true"]) {
             testOptions.disableSigning = YES;
         }
     }
