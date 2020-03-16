@@ -402,8 +402,9 @@
 
 - (NSMutableDictionary *)getAdRevenueParameters:(NSString *)source payload:(NSData *)payload {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    
-    [ADJPackageBuilder parameters:parameters setString:[ADJUtil getUpdateTime] forKey:@"app_updated_at"];
+
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
+    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundleVersion forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundleShortVersion forKey:@"app_version_short"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
