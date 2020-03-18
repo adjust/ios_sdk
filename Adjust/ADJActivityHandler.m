@@ -123,8 +123,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
-{
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch {
     self = [super init];
     if (self == nil) return nil;
 
@@ -136,6 +135,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (![adjustConfig isValid]) {
         [ADJAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
         return nil;
+    }
+    
+    // check if ASA and IDFA tracking were switched off and warn just in case
+    if (adjustConfig.allowIdfaReading == NO) {
+        [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
+    }
+    if (adjustConfig.allowiAdInfoReading == NO) {
+        [ADJAdjustFactory.logger warn:@"iAd info reading has been switched off"];
     }
 
     self.adjustConfig = adjustConfig;
