@@ -1,4 +1,4 @@
-### Version 4.21.0 (xxth March 2020)
+### Version 4.21.0 (19th March 2020)
 #### Added
 - Added support for signature library as a plugin.
 - Added more aggressive sending retry logic for install session package.
