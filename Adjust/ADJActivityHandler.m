@@ -40,7 +40,7 @@ static double kSessionInterval;
 static double kSubSessionInterval;
 
 // number of tries
-static const int kTryIadV3                       = 2;
+static const int kTryIadV3             = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 
 @implementation ADJInternalState
@@ -749,7 +749,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                   startsSending:[selfI toSendI:selfI
                                                                            sdkClickHandlerOnly:YES]];
 
-    [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+    if (self.adjustConfig.allowiAdInfoReading == YES) {
+        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+    }
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
@@ -1251,7 +1253,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
             [selfI disableThirdPartySharing];
         }
-        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        if (self.adjustConfig.allowiAdInfoReading == YES) {
+            [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        }
     }
 
     [selfI checkStatusI:selfI

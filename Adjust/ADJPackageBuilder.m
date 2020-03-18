@@ -240,7 +240,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
@@ -307,7 +309,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
@@ -378,7 +382,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
@@ -421,7 +427,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
@@ -489,7 +497,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
@@ -554,7 +564,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -593,7 +605,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
@@ -642,7 +656,9 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.fbAnonymousId forKey:@"fb_anon_id"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.machineModel forKey:@"hardware_name"];
-    [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
+    }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];

@@ -144,6 +144,16 @@
 @property (nonatomic, assign) BOOL sendInBackground;
 
 /**
+ * @brief Enables/disables reading of iAd framework data needed for ASA tracking.
+ */
+@property (nonatomic, assign) BOOL allowiAdInfoReading;
+
+/**
+ * @brief Enables/disables reading of IDFA parameter.
+ */
+@property (nonatomic, assign) BOOL allowIdfaReading;
+
+/**
  * @brief Enables delayed start of the SDK.
  */
 @property (nonatomic, assign) double delayStart;
