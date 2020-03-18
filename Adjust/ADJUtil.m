@@ -317,7 +317,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             }
         } else {
             // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder", fileName];
+            [[ADJAdjustFactory logger] warn:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
         }
     } @catch (NSException *ex) {
         // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
@@ -352,7 +352,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             return documentsObject;
         } else {
             // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder", fileName];
+            [[ADJAdjustFactory logger] warn:@"File %@ not found in Documents folder", fileName];
         }
     } @catch (NSException *ex) {
         // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
