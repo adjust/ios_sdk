@@ -288,6 +288,16 @@
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
         [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
     }
+    
+    if ([parameters objectForKey:@"allowIdfaReading"]) {
+        NSString *allowIdfaReadingS = [parameters objectForKey:@"allowIdfaReading"][0];
+        [adjustConfig setAllowIdfaReading:[allowIdfaReadingS boolValue]];
+    }
+
+    if ([parameters objectForKey:@"allowiAdInfoReading"]) {
+        NSString *allowiAdInfoReadingS = [parameters objectForKey:@"allowiAdInfoReading"][0];
+        [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReadingS boolValue]];
+    }
 
     if ([parameters objectForKey:@"userAgent"]) {
         NSString *userAgent = [parameters objectForKey:@"userAgent"][0];
