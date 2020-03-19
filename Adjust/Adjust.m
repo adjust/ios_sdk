@@ -494,6 +494,14 @@ static dispatch_once_t onceToken = 0;
         [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
     }
     
+    if (testOptions.enableSigning) {
+        [ADJAdjustFactory enableSigning];
+    }
+
+    if (testOptions.disableSigning) {
+        [ADJAdjustFactory disableSigning];
+    }
+
     [ADJAdjustFactory setiAdFrameworkEnabled:testOptions.iAdFrameworkEnabled];
 }
 

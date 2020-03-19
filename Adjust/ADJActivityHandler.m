@@ -40,7 +40,7 @@ static double kSessionInterval;
 static double kSubSessionInterval;
 
 // number of tries
-static const int kTryIadV3                       = 2;
+static const int kTryIadV3             = 2;
 static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 
 @implementation ADJInternalState
@@ -123,8 +123,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
-{
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch {
     self = [super init];
     if (self == nil) return nil;
 
@@ -136,6 +135,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (![adjustConfig isValid]) {
         [ADJAdjustFactory.logger error:@"AdjustConfig not initialized correctly"];
         return nil;
+    }
+    
+    // check if ASA and IDFA tracking were switched off and warn just in case
+    if (adjustConfig.allowIdfaReading == NO) {
+        [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
+    }
+    if (adjustConfig.allowiAdInfoReading == NO) {
+        [ADJAdjustFactory.logger warn:@"iAd info reading has been switched off"];
     }
 
     self.adjustConfig = adjustConfig;
@@ -749,7 +756,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                   startsSending:[selfI toSendI:selfI
                                                                            sdkClickHandlerOnly:YES]];
 
-    [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+    if (self.adjustConfig.allowiAdInfoReading == YES) {
+        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+    }
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
 
@@ -1251,7 +1260,9 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
             [selfI disableThirdPartySharing];
         }
-        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        if (self.adjustConfig.allowiAdInfoReading == YES) {
+            [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        }
     }
 
     [selfI checkStatusI:selfI
@@ -1396,6 +1407,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if (value.length == 0) return NO;
 
     NSString* valueDecoded = [value adjUrlDecode];
+    if (!valueDecoded) return NO;
 
     NSString* keyWOutPrefix = [keyDecoded substringFromIndex:kAdjustPrefix.length];
     if (keyWOutPrefix.length == 0) return NO;

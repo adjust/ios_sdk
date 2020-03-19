@@ -34,6 +34,7 @@
 + (NSTimeInterval)timerStart;
 + (ADJBackoffStrategy *)packageHandlerBackoffStrategy;
 + (ADJBackoffStrategy *)sdkClickHandlerBackoffStrategy;
++ (ADJBackoffStrategy *)installSessionBackoffStrategy;
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
                                                     startsSending:(BOOL)startsSending;
@@ -60,6 +61,9 @@
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;
+
++ (void)enableSigning;
++ (void)disableSigning;
 
 + (void)teardown:(BOOL)deleteState;
 @end

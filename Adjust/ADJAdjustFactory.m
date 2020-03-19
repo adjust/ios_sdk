@@ -21,6 +21,7 @@ static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
+static ADJBackoffStrategy * installSessionBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internaliAdFrameworkEnabled = YES;
@@ -111,6 +112,13 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
         return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
     }
     return sdkClickHandlerBackoffStrategy;
+}
+
++ (ADJBackoffStrategy *)installSessionBackoffStrategy {
+    if (installSessionBackoffStrategy == nil) {
+        return [ADJBackoffStrategy backoffStrategyWithType:ADJShortWait];
+    }
+    return installSessionBackoffStrategy;
 }
 
 + (id<ADJAttributionHandler>)attributionHandlerForActivityHandler:(id<ADJActivityHandler>)activityHandler
@@ -224,6 +232,48 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
 
 + (void)setGdprUrl:(NSString *)gdprUrl {
     internalGdprUrl = gdprUrl;
+}
+
++ (void)enableSigning {
+    Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return;
+    }
+
+    SEL enabledSEL = NSSelectorFromString(@"enableSigning");
+    if (![signerClass respondsToSelector:enabledSEL]) {
+        return;
+    }
+
+    IMP enableIMP = [signerClass methodForSelector:enabledSEL];
+    if (!enableIMP) {
+        return;
+    }
+
+    void (*enableFunc)(id, SEL) = (void *)enableIMP;
+
+    enableFunc(signerClass, enabledSEL);
+}
+
++ (void)disableSigning {
+    Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return;
+    }
+
+    SEL disableSEL = NSSelectorFromString(@"disableSigning");
+    if (![signerClass respondsToSelector:disableSEL]) {
+        return;
+    }
+
+    IMP disableIMP = [signerClass methodForSelector:disableSEL];
+    if (!disableIMP) {
+        return;
+    }
+
+    void (*disableFunc)(id, SEL) = (void *)disableIMP;
+
+    disableFunc(signerClass, disableSEL);
 }
 
 + (void)teardown:(BOOL)deleteState {

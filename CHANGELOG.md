@@ -1,3 +1,17 @@
+### Version 4.21.0 (19th March 2020)
+#### Added
+- Added support for signature library as a plugin.
+- Added more aggressive sending retry logic for install session package.
+- Added additional parameters to `ad_revenue` package payload.
+
+#### Changed
+- Replaced deprecated methods in iOS 13 for (un)archiving objects.
+
+#### Fixed
+- Added nullability check for `NSString` object returned by `adjUrlDecode` method (thanks to @marinofelipe).
+
+---
+
 ### Version 4.20.0 (15th January 2020)
 #### Added
 - Added external device ID support.

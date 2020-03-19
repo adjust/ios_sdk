@@ -135,6 +135,20 @@
             testOptions.iAdFrameworkEnabled = YES;
         }
     }
+    if ([parameters objectForKey:@"enableSigning"]) {
+        NSString *enableSigningStr = [parameters objectForKey:@"enableSigning"][0];
+        testOptions.enableSigning = NO;
+        if ([enableSigningStr isEqualToString:@"true"]) {
+            testOptions.enableSigning = YES;
+        }
+    }
+    if ([parameters objectForKey:@"disableSigning"]) {
+        NSString *disableSigningStr = [parameters objectForKey:@"disableSigning"][0];
+        testOptions.disableSigning = NO;
+        if ([disableSigningStr isEqualToString:@"true"]) {
+            testOptions.disableSigning = YES;
+        }
+    }
     if ([parameters objectForKey:@"teardown"]) {
         NSArray *teardownOptions = [parameters objectForKey:@"teardown"];
         for (int i = 0; i < teardownOptions.count; i = i + 1) {
@@ -150,6 +164,7 @@
             if ([teardownOption isEqualToString:@"resetTest"]) {
                 self.savedConfigs = [NSMutableDictionary dictionary];
                 self.savedEvents = [NSMutableDictionary dictionary];
+                self.adjustDelegate = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
@@ -272,6 +287,16 @@
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
         [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
+    }
+    
+    if ([parameters objectForKey:@"allowIdfaReading"]) {
+        NSString *allowIdfaReadingS = [parameters objectForKey:@"allowIdfaReading"][0];
+        [adjustConfig setAllowIdfaReading:[allowIdfaReadingS boolValue]];
+    }
+
+    if ([parameters objectForKey:@"allowiAdInfoReading"]) {
+        NSString *allowiAdInfoReadingS = [parameters objectForKey:@"allowiAdInfoReading"][0];
+        [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReadingS boolValue]];
     }
 
     if ([parameters objectForKey:@"userAgent"]) {
