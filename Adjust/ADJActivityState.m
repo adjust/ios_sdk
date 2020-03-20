@@ -105,20 +105,6 @@ static NSString *appToken = nil;
     self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_uuid" inService:@"deviceInfo"];
 }
 
-- (NSString *)generateUniqueKey {
-    if (appToken == nil) {
-        return nil;
-    }
-
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    if (bundleIdentifier == nil) {
-        return nil;
-    }
-
-    NSString *joinedKey = [NSString stringWithFormat:@"%@%@", bundleIdentifier, appToken];
-    return [joinedKey adjSha1];
-}
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d dtps:%d",
             self.eventCount, self.sessionCount,
