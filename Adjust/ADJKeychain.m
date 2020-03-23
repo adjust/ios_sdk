@@ -76,10 +76,10 @@
 
 - (OSStatus)setValueWithStatus:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     NSMutableDictionary *keychainItem;
-    
+
     keychainItem = [self keychainItemForKey:key service:service];
     keychainItem[(__bridge id)kSecValueData] = [value dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     return SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
 }
 
@@ -118,7 +118,7 @@
 - (NSMutableDictionary *)keychainItemForKey:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
 
-    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
+    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
     [self keychainItemForKey:keychainItem key:key service:service];
 
     return keychainItem;
