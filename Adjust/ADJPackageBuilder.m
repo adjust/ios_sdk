@@ -216,6 +216,32 @@
     [signInvocation setArgument:&sdkVersionChar atIndex: 4];
 
     [signInvocation invoke];
+
+    SEL getVersionSEL = NSSelectorFromString(@"getVersion");
+    if (![signerClass respondsToSelector:getVersionSEL]) {
+        return;
+    }
+    /*
+    NSString *signerVersion = [ADJSigner getVersion];
+     */
+    IMP getVersionIMP = [signerClass methodForSelector:getVersionSEL];
+    if (!getVersionIMP) {
+        return;
+    }
+
+    id (*getVersionFunc)(id, SEL) = (void *)getVersionIMP;
+
+    id signerVersion = getVersionFunc(signerClass, getVersionSEL);
+
+    if (![signerVersion isKindOfClass:[NSString class]]) {
+        return;
+    }
+
+    NSString *signerVersionString = (NSString *)signerVersion;
+    [ADJPackageBuilder parameters:parameters
+                           setString:signerVersionString
+                           forKey:@"native_version"];
+
 }
 
 - (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {

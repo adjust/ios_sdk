@@ -621,9 +621,12 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                             key:@"signature"];
     NSString *headersId = [ADJUtil extractEntry:parameters
                                             key:@"headers_id"];
+    NSString *nativeVersion = [ADJUtil extractEntry:parameters
+                                                key:@"native_version"];
     NSString *authorizationHeader = [ADJUtil buildAuthorizationHeaderV2:signature
                                                                 secretId:secretId
-                                                               headersId:headersId];
+                                                               headersId:headersId
+                                                          nativeVersion:nativeVersion];
     if (authorizationHeader != nil) {
         return authorizationHeader;
     }
@@ -647,8 +650,9 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 }
 
 + (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
-                                secretId:(NSString*)secretId
-                                headersId:(NSString*)headersId
+                                secretId:(NSString *)secretId
+                                headersId:(NSString *)headersId
+                           nativeVersion:(NSString *)nativeVersion
 {
     if (secretId == nil || signature == nil || headersId == nil) {
         return nil;
@@ -662,7 +666,10 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
             signatureHeader, secretIdHeader, algorithmHeader, idHeader];
 
-    return authorizationHeader;
+    if (nativeVersion == nil) {
+        return authorizationHeader;
+    }
+    return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
 }
 
 + (void)extractEventCallbackId:(NSMutableDictionary *)parameters {
