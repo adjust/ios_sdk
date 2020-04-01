@@ -24,6 +24,8 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 static const double kRequestTimeout = 60;   // 60 seconds
 
 static NSString *userAgent = nil;
@@ -292,12 +294,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // Try to read from Application Support directory first.
     @try {
         id appSupportObject;
-#if !TARGET_OS_TV
-        if (@available(iOS 11.0, *))
-#else
-        if (@available(tvOS 11.0, *))
-#endif
-        {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
             NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
             NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
             [unarchiver setRequiresSecureCoding:NO];
@@ -333,12 +330,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // Let's check the Documents folder.
     @try {
         id documentsObject;
-#if !TARGET_OS_TV
-        if (@available(iOS 11.0, *))
-#else
-        if (@available(tvOS 11.0, *))
-#endif
-        {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
             NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
             NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
             [unarchiver setRequiresSecureCoding:NO];
@@ -383,14 +375,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return;
     }
 
-#if !TARGET_OS_TV
-    if (@available(iOS 11.0, *))
-#else
-    if (@available(tvOS 11.0, *))
-#endif
-    {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
         NSError *errorArchiving = nil;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
+#pragma clang diagnostic pop
         if (data && errorArchiving == nil) {
             NSError *errorWriting = nil;
             result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
