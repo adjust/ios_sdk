@@ -615,57 +615,35 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
 + (NSString *)buildAuthorizationHeader:(NSMutableDictionary *)parameters
                           activityKind:(ADJActivityKind)activityKind
 {
-    NSString * secretId = [ADJUtil extractSecretId:parameters];
-    NSString * signature = [ADJUtil extractSignature:parameters];
-    NSString * headersId = [ADJUtil extractHeadersId:parameters];
-    NSString * authorizationHeader = [ADJUtil buildAuthorizationHeaderV2:signature
+    NSString *secretId = [ADJUtil extractEntry:parameters
+                                           key:@"secret_id"];
+    NSString *signature = [ADJUtil extractEntry:parameters
+                                            key:@"signature"];
+    NSString *headersId = [ADJUtil extractEntry:parameters
+                                            key:@"headers_id"];
+    NSString *authorizationHeader = [ADJUtil buildAuthorizationHeaderV2:signature
                                                                 secretId:secretId
                                                                headersId:headersId];
     if (authorizationHeader != nil) {
         return authorizationHeader;
     }
 
-    NSString * appSecret = [ADJUtil extractAppSecret:parameters];
+    NSString * appSecret = [ADJUtil extractEntry:parameters key:@"app_secret"];
     return [ADJUtil buildAuthorizationHeaderV1:appSecret
                                       secretId:secretId
                                     parameters:parameters
                                   activityKind:activityKind];
 }
 
-+ (NSString *)extractSecretId:(NSMutableDictionary *)parameters {
-    NSString *appSecret = [parameters objectForKey:@"secret_id"];
-    if (appSecret == nil) {
++ (NSString *)extractEntry:(NSMutableDictionary *)parameters
+                       key:(NSString *)key
+{
+    NSString *stringValue = [parameters objectForKey:key];
+    if (stringValue == nil) {
         return nil;
     }
-    [parameters removeObjectForKey:@"secret_id"];
-    return appSecret;
-}
-
-+ (NSString *)extractSignature:(NSMutableDictionary *)parameters {
-    NSString *appSecret = [parameters objectForKey:@"signature"];
-    if (appSecret == nil) {
-        return nil;
-    }
-    [parameters removeObjectForKey:@"signature"];
-    return appSecret;
-}
-
-+ (NSString *)extractHeadersId:(NSMutableDictionary *)parameters {
-    NSString *appSecret = [parameters objectForKey:@"headers_id"];
-    if (appSecret == nil) {
-        return nil;
-    }
-    [parameters removeObjectForKey:@"headers_id"];
-    return appSecret;
-}
-
-+ (NSString *)extractAppSecret:(NSMutableDictionary *)parameters {
-    NSString *appSecret = [parameters objectForKey:@"app_secret"];
-    if (appSecret == nil) {
-        return nil;
-    }
-    [parameters removeObjectForKey:@"app_secret"];
-    return appSecret;
+    [parameters removeObjectForKey:key];
+    return stringValue;
 }
 
 + (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
