@@ -378,6 +378,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     BOOL result;
     NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
+    if (!filePath) {
+        [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
+        return;
+    }
+
 #if !TARGET_OS_TV
     if (@available(iOS 11.0, *))
 #else
@@ -385,14 +390,16 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #endif
     {
         NSError *errorArchiving = nil;
-        NSError *errorWriting = nil;
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-        if (filePath != nil) {
-            [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+        if (data && errorArchiving == nil) {
+            NSError *errorWriting = nil;
+            result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+            result = result && (errorWriting == nil);
+        } else {
+            result = NO;
         }
-        result = (filePath != nil) && (errorArchiving == nil) && (errorWriting == nil);
     } else {
-        result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+        result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
     }
     if (result == YES) {
         [ADJUtil excludeFromBackup:filePath];
