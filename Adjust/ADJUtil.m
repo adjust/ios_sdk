@@ -384,7 +384,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSError *errorArchiving = nil;
         NSError *errorWriting = nil;
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-        [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+        if (filePath != nil) {
+            [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+        }
         result = (filePath != nil) && (errorArchiving == nil) && (errorWriting == nil);
     } else {
         result = (filePath != nil) && [NSKeyedArchiver archiveRootObject:object toFile:filePath];
