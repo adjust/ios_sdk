@@ -303,7 +303,7 @@
         [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -389,7 +389,7 @@
         [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -487,7 +487,7 @@
         }
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -566,7 +566,7 @@
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -717,7 +717,7 @@
         }
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
