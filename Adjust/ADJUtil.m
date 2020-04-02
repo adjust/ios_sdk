@@ -24,6 +24,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
 
+// https://stackoverflow.com/a/5337804/1498352
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 static const double kRequestTimeout = 60;   // 60 seconds
