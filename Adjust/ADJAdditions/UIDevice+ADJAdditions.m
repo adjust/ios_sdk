@@ -144,9 +144,14 @@
     return @"";
 }
 
-- (void)adjSetIad:(ADJActivityHandler *)activityHandler
-      triesV3Left:(int)triesV3Left {
+- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler
+           retriesLeft:(int)retriesLeft {
+    // if no tries for iad v3 left, stop trying
     id<ADJLogger> logger = [ADJAdjustFactory logger];
+    if (retriesLeft == 0) {
+        [logger warn:@"Reached maximum number of retries for getting iAd information"];
+        return;
+    }
 
 #if ADJUST_NO_IAD || TARGET_OS_TV
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
@@ -174,30 +179,23 @@
     }
 
     [logger debug:@"iAd framework successfully found in user's app"];
-    [logger debug:@"iAd with %d tries to read v3", triesV3Left];
+    [logger debug:@"Retries left to read iAd information: %d", retriesLeft];
 
-    // if no tries for iad v3 left, stop trying
-    if (triesV3Left == 0) {
-        [logger warn:@"Reached limit number of retry for iAd v3"];
-        return;
-    }
+    BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
+                                   adcClientSharedInstance:ADClientSharedClientInstance
+                                               retriesLeft:(retriesLeft - 1)];
 
-    BOOL isIadV3Avaliable = [self adjSetIadWithDetails:activityHandler
-                          ADClientSharedClientInstance:ADClientSharedClientInstance
-                                           retriesLeft:(triesV3Left - 1)];
-
-    // if iad v3 not available
-    if (!isIadV3Avaliable) {
-        [logger warn:@"iAd v3 not available"];
+    if (!iAdInformationAvailable) {
+        [logger warn:@"iAd information not available"];
         return;
     }
 #pragma clang diagnostic pop
 #endif
 }
 
-- (BOOL)adjSetIadWithDetails:(ADJActivityHandler *)activityHandler
-ADClientSharedClientInstance:(id)ADClientSharedClientInstance
-                 retriesLeft:(int)retriesLeft {
+- (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
+  adcClientSharedInstance:(id)ADClientSharedClientInstance
+              retriesLeft:(int)retriesLeft {
     SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
     if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
         return NO;
@@ -207,7 +205,9 @@ ADClientSharedClientInstance:(id)ADClientSharedClientInstance
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iadDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
-                                           [activityHandler setAttributionDetails:attributionDetails error:error retriesLeft:retriesLeft];
+                                           [activityHandler setAttributionDetails:attributionDetails
+                                                                            error:error
+                                                                      retriesLeft:retriesLeft];
                                        }];
 #pragma clang diagnostic pop
 

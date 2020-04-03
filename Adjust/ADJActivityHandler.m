@@ -38,10 +38,7 @@ static NSTimeInterval kForegroundTimerStart;
 static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
-
-// number of tries
-static const int kTryIadV3             = 2;
-static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
+static const int kiAdRetriesCount = 3;
 
 @implementation ADJInternalState
 
@@ -108,6 +105,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorUnknown = 0,
     AdjADClientErrorLimitAdTracking = 1,
+    AdjADClientErrorMissingData = 2,
+    AdjADClientErrorCorruptResponse = 3,
 };
 
 #pragma mark -
@@ -394,23 +393,47 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
-                  retriesLeft:(int)retriesLeft
-{
+                  retriesLeft:(int)retriesLeft {
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 
         if (retriesLeft < 0) {
-            [self.logger warn:@"Limit number of retry for iAd v3 surpassed"];
+            [self.logger warn:@"Number of retries to get iAd information surpassed"];
             return;
         }
 
-        if (error.code == AdjADClientErrorUnknown) {
-            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, kDelayRetryIad);
-            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [[UIDevice currentDevice] adjSetIad:self triesV3Left:retriesLeft];
-            });
+        // if first request was unsuccessful and ended up with one of the following error codes:
+        //      - AdjADClientErrorUnknown
+        //      - AdjADClientErrorMissingData
+        //      - AdjADClientErrorCorruptResponse
+        // apply following retry logic:
+        //      - 1st retry after 5 seconds
+        //      - 2nd retry after 2 seconds
+        //      - 3rd retry after 2 seconds
+        switch (error.code) {
+            case AdjADClientErrorUnknown:
+            case AdjADClientErrorMissingData:
+            case AdjADClientErrorCorruptResponse: {
+                int64_t iAdRetryDelay = 0;
+                switch (retriesLeft) {
+                    case 2:
+                        iAdRetryDelay = 5 * NSEC_PER_SEC;
+                        break;
+                    default:
+                        iAdRetryDelay = 2 * NSEC_PER_SEC;
+                        break;
+                }
+                dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
+                dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [[UIDevice currentDevice] adjCheckForiAd:self retriesLeft:retriesLeft];
+                });
+                return;
+            }
+            case AdjADClientErrorLimitAdTracking:
+                return;
+            default:
+                return;
         }
-        return;
     }
 
     // check if it's a valid attribution details
@@ -757,7 +780,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                            sdkClickHandlerOnly:YES]];
 
     if (self.adjustConfig.allowiAdInfoReading == YES) {
-        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        [[UIDevice currentDevice] adjCheckForiAd:selfI retriesLeft:kiAdRetriesCount];
     }
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
@@ -1261,7 +1284,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             [selfI disableThirdPartySharing];
         }
         if (self.adjustConfig.allowiAdInfoReading == YES) {
-            [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+            [[UIDevice currentDevice] adjCheckForiAd:selfI retriesLeft:kiAdRetriesCount];
         }
     }
 

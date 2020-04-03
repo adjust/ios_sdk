@@ -19,6 +19,6 @@
 - (NSString *)adjDeviceName;
 - (NSString *)adjCreateUuid;
 - (NSString *)adjVendorId;
-- (void)adjSetIad:(ADJActivityHandler *)activityHandler
-      triesV3Left:(int)triesV3Left;
+- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler
+           retriesLeft:(int)retriesLeft;
 @end
