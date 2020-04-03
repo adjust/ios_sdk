@@ -16,8 +16,6 @@
 
 @property (nonatomic, copy) NSString *clientSdk;
 
-@property (nonatomic, assign) NSInteger retries;
-
 @property (nonatomic, strong) NSMutableDictionary *parameters;
 
 @property (nonatomic, strong) NSDictionary *partnerParameters;
@@ -35,9 +33,5 @@
 - (NSString *)successMessage;
 
 - (NSString *)failureMessage;
-
-- (NSInteger)getRetries;
-
-- (NSInteger)increaseRetries;
 
 @end

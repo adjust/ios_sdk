@@ -42,16 +42,6 @@
     return builder;
 }
 
-- (NSInteger)getRetries {
-    return self.retries;
-}
-
-- (NSInteger)increaseRetries {
-    self.retries = self.retries + 1;
-    
-    return self.retries;
-}
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
 }
