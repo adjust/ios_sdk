@@ -288,119 +288,126 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class)classToRead {
-    NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
-    NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+           class:(Class)classToRead
+{
+    @synchronized([ADJUtil class]) {
+        NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
+        NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
-    // Try to read from Application Support directory first.
-    @try {
-        id appSupportObject;
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-            NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-            [unarchiver setRequiresSecureCoding:NO];
-            appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
-        } else {
-            appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
+        // Try to read from Application Support directory first.
+        @try {
+            id appSupportObject;
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+                NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+                [unarchiver setRequiresSecureCoding:NO];
+                appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+            } else {
+                appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
+            }
+
+            if (appSupportObject != nil) {
+                if ([appSupportObject isKindOfClass:classToRead]) {
+                    // Successfully read object from Application Support folder, return it.
+                    if ([appSupportObject isKindOfClass:[NSArray class]]) {
+                        [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [appSupportObject count]];
+                    } else {
+                        [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, appSupportObject];
+                    }
+
+                    // Just in case check if old file exists in Documents folder and if yes, remove it.
+                    [ADJUtil deleteFileInPath:documentsFilePath];
+
+                    return appSupportObject;
+                }
+            } else {
+                // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
+                [[ADJAdjustFactory logger] debug:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
+            }
+        } @catch (NSException *ex) {
+            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder (%@)", fileName, ex];
         }
-        
-        if (appSupportObject != nil) {
-            if ([appSupportObject isKindOfClass:classToRead]) {
-                // Successfully read object from Application Support folder, return it.
-                if ([appSupportObject isKindOfClass:[NSArray class]]) {
-                    [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [appSupportObject count]];
+
+        // If in here, for some reason, reading of file from Application Support folder failed.
+        // Let's check the Documents folder.
+        @try {
+            id documentsObject;
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+                NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+                [unarchiver setRequiresSecureCoding:NO];
+                documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+            } else {
+                documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
+            }
+
+            if (documentsObject != nil) {
+                // Successfully read object from Documents folder.
+                if ([documentsObject isKindOfClass:[NSArray class]]) {
+                    [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [documentsObject count]];
                 } else {
-                    [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, appSupportObject];
+                    [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
                 }
 
-                // Just in case check if old file exists in Documents folder and if yes, remove it.
-                [ADJUtil deleteFileInPath:documentsFilePath];
+                // Do the file migration.
+                [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
+                [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
 
-                return appSupportObject;
-            }
-        } else {
-            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
-            [[ADJAdjustFactory logger] debug:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
-        }
-    } @catch (NSException *ex) {
-        // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder (%@)", fileName, ex];
-    }
-
-    // If in here, for some reason, reading of file from Application Support folder failed.
-    // Let's check the Documents folder.
-    @try {
-        id documentsObject;
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-            NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-            [unarchiver setRequiresSecureCoding:NO];
-            documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
-        } else {
-            documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
-        }
-
-        if (documentsObject != nil) {
-            // Successfully read object from Documents folder.
-            if ([documentsObject isKindOfClass:[NSArray class]]) {
-                [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [documentsObject count]];
+                return documentsObject;
             } else {
-                [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
+                // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
+                [[ADJAdjustFactory logger] debug:@"File %@ not found in Documents folder", fileName];
             }
-
-            // Do the file migration.
-            [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
-            [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
-
-            return documentsObject;
-        } else {
-            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
-            [[ADJAdjustFactory logger] debug:@"File %@ not found in Documents folder", fileName];
+        } @catch (NSException *ex) {
+            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
+            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder (%@)", fileName, ex];
         }
-    } @catch (NSException *ex) {
-        // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
-        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder (%@)", fileName, ex];
-    }
 
-    return nil;
+        return nil;
+    }
 }
 
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
-         objectName:(NSString *)objectName {
-    BOOL result;
-    NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+         objectName:(NSString *)objectName
+{
+    @synchronized([ADJUtil class]) {
+        BOOL result;
+        NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
-    if (!filePath) {
-        [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
-        return;
-    }
+        if (!filePath) {
+            [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
+            return;
+        }
 
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-        NSError *errorArchiving = nil;
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            NSError *errorArchiving = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
 #pragma clang diagnostic pop
-        if (data && errorArchiving == nil) {
-            NSError *errorWriting = nil;
-            result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
-            result = result && (errorWriting == nil);
+            if (data && errorArchiving == nil) {
+                NSError *errorWriting = nil;
+                result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+                result = result && (errorWriting == nil);
+            } else {
+                result = NO;
+            }
         } else {
-            result = NO;
+            result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
         }
-    } else {
-        result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-    }
-    if (result == YES) {
-        [ADJUtil excludeFromBackup:filePath];
-        if ([object isKindOfClass:[NSArray class]]) {
-            [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+        if (result == YES) {
+            [ADJUtil excludeFromBackup:filePath];
+            if ([object isKindOfClass:[NSArray class]]) {
+                [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+            } else {
+                [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+            }
         } else {
-            [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
         }
-    } else {
-        [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+
     }
 }
 
