@@ -665,7 +665,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
             signatureHeader, secretIdHeader, algorithmHeader, idHeader];
 
     if (nativeVersion == nil) {
-        return authorizationHeader;
+        return [authorizationHeader stringByAppendingFormat:@",native_version=\"\""];
     }
     return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
 }
