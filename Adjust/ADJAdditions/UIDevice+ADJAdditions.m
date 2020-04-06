@@ -102,22 +102,28 @@
     // post FB SDK v6.0.0
     // return [FBSDKBasicUtility retrievePersistedAnonymousID];
     Class class = nil;
-    class = NSClassFromString(@"FBSDKBasicUtility");
-    if (class == nil) {
-        class = NSClassFromString(@"FBSDKAppEventsUtility");
-    }
-    if (class == nil) {
-        return @"";
-    }
     SEL selGetId = NSSelectorFromString(@"retrievePersistedAnonymousID");
-    if (![class respondsToSelector:selGetId]) {
-        return @"";
-    }
+    class = NSClassFromString(@"FBSDKBasicUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
 #pragma clang diagnostic pop
-    return fbAnonymousId;
+        }
+    }
+    class = NSClassFromString(@"FBSDKAppEventsUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
+#pragma clang diagnostic pop
+        }
+    }
+    return @"";
 #endif
 }
 
