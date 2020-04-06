@@ -97,8 +97,15 @@
 #if TARGET_OS_TV
     return @"";
 #else
+    // pre FB SDK v6.0.0
     // return [FBSDKAppEventsUtility retrievePersistedAnonymousID];
-    Class class = NSClassFromString(@"FBSDKAppEventsUtility");
+    // post FB SDK v6.0.0
+    // return [FBSDKBasicUtility retrievePersistedAnonymousID];
+    Class class = nil;
+    class = NSClassFromString(@"FBSDKBasicUtility");
+    if (class == nil) {
+        class = NSClassFromString(@"FBSDKAppEventsUtility");
+    }
     if (class == nil) {
         return @"";
     }
