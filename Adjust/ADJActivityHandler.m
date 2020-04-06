@@ -107,6 +107,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorLimitAdTracking = 1,
     AdjADClientErrorMissingData = 2,
     AdjADClientErrorCorruptResponse = 3,
+    AdjCustomErrorTimeout = 100,
 };
 
 #pragma mark -
@@ -406,6 +407,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         //      - AdjADClientErrorUnknown
         //      - AdjADClientErrorMissingData
         //      - AdjADClientErrorCorruptResponse
+        //      - AdjCustomErrorTimeout
         // apply following retry logic:
         //      - 1st retry after 5 seconds
         //      - 2nd retry after 2 seconds
@@ -413,7 +415,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         switch (error.code) {
             case AdjADClientErrorUnknown:
             case AdjADClientErrorMissingData:
-            case AdjADClientErrorCorruptResponse: {
+            case AdjADClientErrorCorruptResponse:
+            case AdjCustomErrorTimeout: {
                 int64_t iAdRetryDelay = 0;
                 switch (retriesLeft) {
                     case 2:

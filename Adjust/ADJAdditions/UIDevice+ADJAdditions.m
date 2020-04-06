@@ -19,6 +19,7 @@
 #import <iAd/iAd.h>
 #endif
 
+#import "ADJTimerOnce.h"
 #import "ADJAdjustFactory.h"
 
 @implementation UIDevice(ADJAdditions)
@@ -201,6 +202,16 @@
         return NO;
     }
 
+    ADJTimerOnce *iAdTimer = [ADJTimerOnce timerWithBlock:^{
+        NSError *iAdTimeoutError = [NSError errorWithDomain:@"com.adjust.sdk.iAd"
+                                                       code:100
+                                                   userInfo:@{@"Error reason": @"iAd request timed out"}];
+        [activityHandler setAttributionDetails:nil
+                                         error:iAdTimeoutError
+                                   retriesLeft:retriesLeft];
+    }
+                                                    queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                                                     name:@"iAdTimer"];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iadDetailsSelector
@@ -208,8 +219,10 @@
                                            [activityHandler setAttributionDetails:attributionDetails
                                                                             error:error
                                                                       retriesLeft:retriesLeft];
+                                           [iAdTimer cancel];
                                        }];
 #pragma clang diagnostic pop
+    [iAdTimer startIn:5.0];
 
     return YES;
 }
