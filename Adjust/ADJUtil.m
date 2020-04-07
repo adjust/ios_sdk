@@ -621,10 +621,13 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                             key:@"headers_id"];
     NSString *nativeVersion = [ADJUtil extractEntry:parameters
                                                 key:@"native_version"];
+    NSString *algorithm = [ADJUtil extractEntry:parameters
+                                                 key:@"algorithm"];
     NSString *authorizationHeader = [ADJUtil buildAuthorizationHeaderV2:signature
                                                                 secretId:secretId
                                                                headersId:headersId
-                                                          nativeVersion:nativeVersion];
+                                                          nativeVersion:nativeVersion
+                                                              algorithm:algorithm];
     if (authorizationHeader != nil) {
         return authorizationHeader;
     }
@@ -651,6 +654,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
                                 secretId:(NSString *)secretId
                                 headersId:(NSString *)headersId
                            nativeVersion:(NSString *)nativeVersion
+                               algorithm:(NSString *)algorithm
 {
     if (secretId == nil || signature == nil || headersId == nil) {
         return nil;
@@ -659,7 +663,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
     NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
     NSString * secretIdHeader  = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
     NSString * idHeader        = [NSString stringWithFormat:@"headers_id=\"%@\"", headersId];
-    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"adj1\""];
+    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm != nil ? algorithm : @"adj1"];
 
     NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
             signatureHeader, secretIdHeader, algorithmHeader, idHeader];
