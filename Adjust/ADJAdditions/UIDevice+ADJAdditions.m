@@ -159,13 +159,10 @@
 }
 
 - (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler
-           retriesLeft:(int)retriesLeft {
+       iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer
+{
     // if no tries for iad v3 left, stop trying
     id<ADJLogger> logger = [ADJAdjustFactory logger];
-    if (retriesLeft == 0) {
-        [logger warn:@"Reached maximum number of retries for getting iAd information"];
-        return;
-    }
 
 #if ADJUST_NO_IAD || TARGET_OS_TV
     [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
@@ -193,11 +190,10 @@
     }
 
     [logger debug:@"iAd framework successfully found in user's app"];
-    [logger debug:@"Retries left to read iAd information: %d", retriesLeft];
 
     BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
                                    adcClientSharedInstance:ADClientSharedClientInstance
-                                               retriesLeft:(retriesLeft - 1)];
+                                           iAdTimeoutTimer:iAdTimeoutTimer];
 
     if (!iAdInformationAvailable) {
         [logger warn:@"iAd information not available"];
@@ -209,33 +205,22 @@
 
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
   adcClientSharedInstance:(id)ADClientSharedClientInstance
-              retriesLeft:(int)retriesLeft {
+          iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer
+{
     SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
     if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
         return NO;
     }
 
-    ADJTimerOnce *iAdTimer = [ADJTimerOnce timerWithBlock:^{
-        NSError *iAdTimeoutError = [NSError errorWithDomain:@"com.adjust.sdk.iAd"
-                                                       code:100
-                                                   userInfo:@{@"Error reason": @"iAd request timed out"}];
-        [activityHandler setAttributionDetails:nil
-                                         error:iAdTimeoutError
-                                   retriesLeft:retriesLeft];
-    }
-                                                    queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                                                     name:@"iAdTimer"];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iadDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
                                            [activityHandler setAttributionDetails:attributionDetails
-                                                                            error:error
-                                                                      retriesLeft:retriesLeft];
-                                           [iAdTimer cancel];
+                                                                            error:error];
                                        }];
 #pragma clang diagnostic pop
-    [iAdTimer startIn:5.0];
+    [iAdTimeoutTimer startIn:5.0];
 
     return YES;
 }
