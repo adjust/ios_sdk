@@ -19,6 +19,7 @@
 #import <iAd/iAd.h>
 #endif
 
+#import "ADJTimerOnce.h"
 #import "ADJAdjustFactory.h"
 
 @implementation UIDevice(ADJAdditions)
@@ -96,20 +97,33 @@
 #if TARGET_OS_TV
     return @"";
 #else
+    // pre FB SDK v6.0.0
     // return [FBSDKAppEventsUtility retrievePersistedAnonymousID];
-    Class class = NSClassFromString(@"FBSDKAppEventsUtility");
-    if (class == nil) {
-        return @"";
-    }
+    // post FB SDK v6.0.0
+    // return [FBSDKBasicUtility retrievePersistedAnonymousID];
+    Class class = nil;
     SEL selGetId = NSSelectorFromString(@"retrievePersistedAnonymousID");
-    if (![class respondsToSelector:selGetId]) {
-        return @"";
-    }
+    class = NSClassFromString(@"FBSDKBasicUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
 #pragma clang diagnostic pop
-    return fbAnonymousId;
+        }
+    }
+    class = NSClassFromString(@"FBSDKAppEventsUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
+#pragma clang diagnostic pop
+        }
+    }
+    return @"";
 #endif
 }
 
@@ -144,8 +158,10 @@
     return @"";
 }
 
-- (void)adjSetIad:(ADJActivityHandler *)activityHandler
-      triesV3Left:(int)triesV3Left {
+- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler
+       iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer
+{
+    // if no tries for iad v3 left, stop trying
     id<ADJLogger> logger = [ADJAdjustFactory logger];
 
 #if ADJUST_NO_IAD || TARGET_OS_TV
@@ -174,42 +190,37 @@
     }
 
     [logger debug:@"iAd framework successfully found in user's app"];
-    [logger debug:@"iAd with %d tries to read v3", triesV3Left];
 
-    // if no tries for iad v3 left, stop trying
-    if (triesV3Left == 0) {
-        [logger warn:@"Reached limit number of retry for iAd v3"];
-        return;
-    }
+    BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
+                                   adcClientSharedInstance:ADClientSharedClientInstance
+                                           iAdTimeoutTimer:iAdTimeoutTimer];
 
-    BOOL isIadV3Avaliable = [self adjSetIadWithDetails:activityHandler
-                          ADClientSharedClientInstance:ADClientSharedClientInstance
-                                           retriesLeft:(triesV3Left - 1)];
-
-    // if iad v3 not available
-    if (!isIadV3Avaliable) {
-        [logger warn:@"iAd v3 not available"];
+    if (!iAdInformationAvailable) {
+        [logger warn:@"iAd information not available"];
         return;
     }
 #pragma clang diagnostic pop
 #endif
 }
 
-- (BOOL)adjSetIadWithDetails:(ADJActivityHandler *)activityHandler
-ADClientSharedClientInstance:(id)ADClientSharedClientInstance
-                 retriesLeft:(int)retriesLeft {
-    SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
-    if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
+- (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
+  adcClientSharedInstance:(id)ADClientSharedClientInstance
+          iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer
+{
+    SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
+    if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
         return NO;
     }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [ADClientSharedClientInstance performSelector:iadDetailsSelector
+    [ADClientSharedClientInstance performSelector:iAdDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
-                                           [activityHandler setAttributionDetails:attributionDetails error:error retriesLeft:retriesLeft];
+                                           [activityHandler setAttributionDetails:attributionDetails
+                                                                            error:error];
                                        }];
 #pragma clang diagnostic pop
+    [iAdTimeoutTimer startIn:5.0];
 
     return YES;
 }

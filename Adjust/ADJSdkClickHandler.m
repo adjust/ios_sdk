@@ -26,6 +26,8 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 
+@property (nonatomic, assign) NSInteger lastPackageRetriesCount;
+
 @end
 
 @implementation ADJSdkClickHandler
@@ -50,6 +52,7 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [activityHandler getBasePath];
+    self.lastPackageRetriesCount = 0;
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -159,15 +162,17 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                  // Check if any package response contains information that user has opted out.
                  // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
                  if (responseData.trackingState == ADJTrackingStateOptedOut) {
+                     selfI.lastPackageRetriesCount = 0;
                      [selfI.activityHandler setTrackingStateOptedOut];
                      return;
                  }
                  if (responseData.jsonResponse == nil) {
-                     NSInteger retries = [sdkClickPackage increaseRetries];
-                     [selfI.logger error:@"Retrying sdk_click package for the %d time", retries];
+                     selfI.lastPackageRetriesCount++;
+                     [selfI.logger error:@"Retrying sdk_click package for the %d time", selfI.lastPackageRetriesCount];
                      [selfI sendSdkClick:sdkClickPackage];
                      return;
                  }
+                 selfI.lastPackageRetriesCount = 0;
 
                  [selfI.activityHandler finishedTracking:responseData];
              }];
@@ -175,16 +180,15 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [selfI sendNextSdkClick];
     };
 
-    NSInteger retries = [sdkClickPackage retries];
-    if (retries <= 0) {
+    if (selfI.lastPackageRetriesCount <= 0) {
         work();
         return;
     }
 
-    NSTimeInterval waitTime = [ADJUtil waitingTime:retries backoffStrategy:self.backoffStrategy];
+    NSTimeInterval waitTime = [ADJUtil waitingTime:selfI.lastPackageRetriesCount backoffStrategy:self.backoffStrategy];
     NSString *waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
-    [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, retries];
+    [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, selfI.lastPackageRetriesCount];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 

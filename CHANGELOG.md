@@ -1,3 +1,17 @@
+### Version 4.21.1 (9th April 2020)
+#### Added
+- Added support for Mac Catalyst (thanks to @rjchatfield).
+
+#### Changed
+- Replaced `available` attribute with a macro for non native SDKs compatibility.
+- Synchronised writing to package queue.
+- Updated communication flow with `iAd.framework`.
+
+#### Fixed
+- Added nullability check for path being written onto (thanks to @sidepelican).
+
+---
+
 ### Version 4.21.0 (19th March 2020)
 #### Added
 - Added support for signature library as a plugin.

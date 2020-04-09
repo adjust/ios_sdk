@@ -216,6 +216,32 @@
     [signInvocation setArgument:&sdkVersionChar atIndex: 4];
 
     [signInvocation invoke];
+
+    SEL getVersionSEL = NSSelectorFromString(@"getVersion");
+    if (![signerClass respondsToSelector:getVersionSEL]) {
+        return;
+    }
+    /*
+    NSString *signerVersion = [ADJSigner getVersion];
+     */
+    IMP getVersionIMP = [signerClass methodForSelector:getVersionSEL];
+    if (!getVersionIMP) {
+        return;
+    }
+
+    id (*getVersionFunc)(id, SEL) = (void *)getVersionIMP;
+
+    id signerVersion = getVersionFunc(signerClass, getVersionSEL);
+
+    if (![signerVersion isKindOfClass:[NSString class]]) {
+        return;
+    }
+
+    NSString *signerVersionString = (NSString *)signerVersion;
+    [ADJPackageBuilder parameters:parameters
+                           setString:signerVersionString
+                           forKey:@"native_version"];
+
 }
 
 - (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {
@@ -277,7 +303,7 @@
         [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -363,7 +389,7 @@
         [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -461,7 +487,7 @@
         }
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -540,7 +566,7 @@
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];
@@ -691,7 +717,7 @@
         }
     }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMNC] forKey:@"mnc"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readCurrentRadioAccessTechnology] forKey:@"network_type"];

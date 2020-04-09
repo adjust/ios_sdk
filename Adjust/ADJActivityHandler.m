@@ -38,10 +38,7 @@ static NSTimeInterval kForegroundTimerStart;
 static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
-
-// number of tries
-static const int kTryIadV3             = 2;
-static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
+static const int kiAdRetriesCount = 3;
 
 @implementation ADJInternalState
 
@@ -89,6 +86,8 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 @property (nonatomic, strong) ADJActivityState *activityState;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
+@property (nonatomic, strong) ADJTimerOnce *iAdTimeoutTimer;
+@property (nonatomic, assign) NSInteger iAdRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
 @property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
@@ -108,6 +107,9 @@ static const uint64_t kDelayRetryIad   =  2 * NSEC_PER_SEC; // 1 second
 typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorUnknown = 0,
     AdjADClientErrorLimitAdTracking = 1,
+    AdjADClientErrorMissingData = 2,
+    AdjADClientErrorCorruptResponse = 3,
+    AdjCustomErrorTimeout = 100,
 };
 
 #pragma mark -
@@ -201,6 +203,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (savedPreLaunch.gdprPath != nil) {
         self.gdprPath = savedPreLaunch.gdprPath;
     }
+
+    self.iAdRetriesLeft = kiAdRetriesCount;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -394,23 +398,52 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
-                  retriesLeft:(int)retriesLeft
 {
+    [self.iAdTimeoutTimer cancel];
+
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 
-        if (retriesLeft < 0) {
-            [self.logger warn:@"Limit number of retry for iAd v3 surpassed"];
+        if (self.iAdRetriesLeft  < 0) {
+            [self.logger warn:@"Number of retries to get iAd information surpassed"];
             return;
         }
 
-        if (error.code == AdjADClientErrorUnknown) {
-            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, kDelayRetryIad);
-            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [[UIDevice currentDevice] adjSetIad:self triesV3Left:retriesLeft];
-            });
+        // if first request was unsuccessful and ended up with one of the following error codes:
+        //      - AdjADClientErrorUnknown
+        //      - AdjADClientErrorMissingData
+        //      - AdjADClientErrorCorruptResponse
+        //      - AdjCustomErrorTimeout
+        // apply following retry logic:
+        //      - 1st retry after 5 seconds
+        //      - 2nd retry after 2 seconds
+        //      - 3rd retry after 2 seconds
+        switch (error.code) {
+            case AdjADClientErrorUnknown:
+            case AdjADClientErrorMissingData:
+            case AdjADClientErrorCorruptResponse:
+            case AdjCustomErrorTimeout: {
+                int64_t iAdRetryDelay = 0;
+                switch (self.iAdRetriesLeft) {
+                    case 2:
+                        iAdRetryDelay = 5 * NSEC_PER_SEC;
+                        break;
+                    default:
+                        iAdRetryDelay = 2 * NSEC_PER_SEC;
+                        break;
+                }
+                self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
+                dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
+                dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [self checkForIad];
+                });
+                return;
+            }
+            case AdjADClientErrorLimitAdTracking:
+                return;
+            default:
+                return;
         }
-        return;
     }
 
     // check if it's a valid attribution details
@@ -603,6 +636,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (self.backgroundTimer != nil) {
         [self.backgroundTimer cancel];
     }
+    if (self.iAdTimeoutTimer != nil) {
+        [self.iAdTimeoutTimer cancel];
+    }
     if (self.foregroundTimer != nil) {
         [self.foregroundTimer cancel];
     }
@@ -630,6 +666,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.sdkClickHandler = nil;
     self.foregroundTimer = nil;
     self.backgroundTimer = nil;
+    self.iAdTimeoutTimer = nil;
     self.adjustDelegate = nil;
     self.adjustConfig = nil;
     self.internalState = nil;
@@ -757,7 +794,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                            sdkClickHandlerOnly:YES]];
 
     if (self.adjustConfig.allowiAdInfoReading == YES) {
-        [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+        [self checkForIad];
     }
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
@@ -1261,7 +1298,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
             [selfI disableThirdPartySharing];
         }
         if (self.adjustConfig.allowiAdInfoReading == YES) {
-            [[UIDevice currentDevice] adjSetIad:selfI triesV3Left:kTryIadV3];
+            [self checkForIad];
         }
     }
 
@@ -1270,6 +1307,25 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
           pausingMessage:@"Pausing handlers due to SDK being disabled"
     remainsPausedMessage:@"Handlers remain paused"
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+}
+
+- (void)checkForIad {
+    if (self.iAdTimeoutTimer == nil) {
+        self.iAdTimeoutTimer =
+            [ADJTimerOnce
+                timerWithBlock:^{
+                [self
+                    setAttributionDetails:nil
+                    error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
+                                              code:100
+                                          userInfo:@{@"Error reason": @"iAd request timed out"}]];
+
+            }
+             queue:self.internalQueue
+             name:@"iAdTimeoutTimer"];
+    }
+
+    [[UIDevice currentDevice] adjCheckForiAd:self iAdTimeoutTimer:self.iAdTimeoutTimer];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI

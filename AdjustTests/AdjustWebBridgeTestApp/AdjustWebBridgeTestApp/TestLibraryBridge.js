@@ -33,13 +33,13 @@ var TestLibraryBridge = {
 };
 
 var AdjustCommandExecutor = function(baseUrl, gdprUrl) {
-    this.baseUrl           = baseUrl;
-    this.gdprUrl           = gdprUrl;
-    this.basePath          = null;
-    this.gdprPath          = null;
-    this.savedEvents       = {};
-    this.savedConfigs      = {};
-    this.savedCommands     = [];
+    this.baseUrl = baseUrl;
+    this.gdprUrl = gdprUrl;
+    this.basePath = null;
+    this.gdprPath = null;
+    this.savedEvents = {};
+    this.savedConfigs = {};
+    this.savedCommands = [];
     this.nextToSendCounter = 0;
 };
 
@@ -85,12 +85,14 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         testOptions.subsessionIntervalInMilliseconds = getFirstValue(params, 'subsessionInterval');
     }
     if ('noBackoffWait' in params) {
-        testOptions.noBackoffWait = getFirstValue(params, 'noBackoffWait');
+        var noBackoffWait = getFirstValue(params, 'noBackoffWait');
+        testOptions.noBackoffWait = noBackoffWait == 'true';
     }
     // iAd will not be used in test app by default
     testOptions.iAdFrameworkEnabled = false;
     if ('iAdFrameworkEnabled' in params) {
-        testOptions.iAdFrameworkEnabled = getFirstValue(params, 'iAdFrameworkEnabled');
+        var iAdFrameworkEnabled = getFirstValue(params, 'iAdFrameworkEnabled');
+        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
     }
     if ('teardown' in params) {
         console.log('TestLibraryBridge hasOwnProperty teardown: ' + params['teardown']);
@@ -201,7 +203,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
     
     if ('externalDeviceId' in params) {
-        var defaultTracker = getFirstValue(params, 'externalDeviceId');
+        var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
 
@@ -225,6 +227,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var deviceKnownS = getFirstValue(params, 'deviceKnown');
         var deviceKnown = deviceKnownS == 'true';
         adjustConfig.setIsDeviceKnown(deviceKnown);
+    }
+    
+    if ('allowiAdInfoReading' in params) {
+        var allowiAdInfoReadingS = getFirstValue(params, 'allowiAdInfoReading');
+        var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
+        adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
+    }
+    
+    if ('allowIdfaReading' in params) {
+        var allowIdfaReadingS = getFirstValue(params, 'allowIdfaReading');
+        var allowIdfaReading = allowIdfaReadingS == 'true';
+        adjustConfig.setAllowIdfaReading(allowIdfaReading);
     }
 
     if ('eventBufferingEnabled' in params) {

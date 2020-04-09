@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ADJActivityHandler.h"
+#import "ADJTimerOnce.h"
 
 @interface UIDevice(ADJAdditions)
 
@@ -19,6 +20,6 @@
 - (NSString *)adjDeviceName;
 - (NSString *)adjCreateUuid;
 - (NSString *)adjVendorId;
-- (void)adjSetIad:(ADJActivityHandler *)activityHandler
-      triesV3Left:(int)triesV3Left;
+- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler
+       iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer;
 @end

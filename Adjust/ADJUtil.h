@@ -116,7 +116,7 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)sdkVersion;
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (NSString *)readMCC;
 
 + (NSString *)readMNC;
