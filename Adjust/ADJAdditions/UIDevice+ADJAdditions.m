@@ -207,14 +207,14 @@
   adcClientSharedInstance:(id)ADClientSharedClientInstance
           iAdTimeoutTimer:(ADJTimerOnce *)iAdTimeoutTimer
 {
-    SEL iadDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
-    if (![ADClientSharedClientInstance respondsToSelector:iadDetailsSelector]) {
+    SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
+    if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
         return NO;
     }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [ADClientSharedClientInstance performSelector:iadDetailsSelector
+    [ADClientSharedClientInstance performSelector:iAdDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
                                            [activityHandler setAttributionDetails:attributionDetails
                                                                             error:error];

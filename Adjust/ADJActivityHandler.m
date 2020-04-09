@@ -87,7 +87,7 @@ static const int kiAdRetriesCount = 3;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *iAdTimeoutTimer;
-@property (nonatomic, assign) NSInteger iadRetriesLeft;
+@property (nonatomic, assign) NSInteger iAdRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
 @property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
@@ -204,7 +204,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         self.gdprPath = savedPreLaunch.gdprPath;
     }
 
-    self.iadRetriesLeft = kiAdRetriesCount;
+    self.iAdRetriesLeft = kiAdRetriesCount;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     [ADJUtil launchInQueue:self.internalQueue
@@ -404,7 +404,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 
-        if (self.iadRetriesLeft  < 0) {
+        if (self.iAdRetriesLeft  < 0) {
             [self.logger warn:@"Number of retries to get iAd information surpassed"];
             return;
         }
@@ -424,7 +424,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
             case AdjADClientErrorCorruptResponse:
             case AdjCustomErrorTimeout: {
                 int64_t iAdRetryDelay = 0;
-                switch (self.iadRetriesLeft) {
+                switch (self.iAdRetriesLeft) {
                     case 2:
                         iAdRetryDelay = 5 * NSEC_PER_SEC;
                         break;
@@ -432,7 +432,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                         iAdRetryDelay = 2 * NSEC_PER_SEC;
                         break;
                 }
-                self.iadRetriesLeft = self.iadRetriesLeft - 1;
+                self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
                 dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
                 dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [self checkForIad];
