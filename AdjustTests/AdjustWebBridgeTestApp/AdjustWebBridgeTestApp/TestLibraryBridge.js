@@ -203,7 +203,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
     
     if ('externalDeviceId' in params) {
-        var defaultTracker = getFirstValue(params, 'externalDeviceId');
+        var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
 
