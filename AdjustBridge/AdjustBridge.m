@@ -191,6 +191,8 @@
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSString *userAgent = [data objectForKey:@"userAgent"];
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
+        NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
+        NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
         NSString *info1 = [data objectForKey:@"info1"];
         NSString *info2 = [data objectForKey:@"info2"];
@@ -244,6 +246,12 @@
         }
         if ([self isFieldValid:isDeviceKnown]) {
             [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
+        }
+        if ([self isFieldValid:allowiAdInfoReading]) {
+            [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
+        }
+        if ([self isFieldValid:allowIdfaReading]) {
+            [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
         }
         BOOL isAppSecretDefined = [self isFieldValid:secretId]
         && [self isFieldValid:info1]

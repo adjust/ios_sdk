@@ -290,6 +290,8 @@ static NSString * fbAppIdStatic = nil;
             this.delayStart = null;
             this.userAgent = null;
             this.isDeviceKnown = null;
+            this.allowiAdInfoReading = null;
+            this.allowIdfaReading = null;
             this.secretId = null;
             this.info1 = null;
             this.info2 = null;
@@ -363,6 +365,12 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setIsDeviceKnown = function(isDeviceKnown) {
             this.isDeviceKnown = isDeviceKnown;
+        };
+        AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
+            this.allowiAdInfoReading = allowiAdInfoReading;
+        };
+        AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
+            this.allowIdfaReading = allowIdfaReading;
         };
         AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
             this.secretId = secretId;
