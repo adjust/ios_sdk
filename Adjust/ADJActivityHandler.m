@@ -435,7 +435,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 self.iadRetriesLeft = self.iadRetriesLeft - 1;
                 dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
                 dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[UIDevice currentDevice] adjCheckForiAd:self iAdTimeoutTimer:self.iAdTimeoutTimer];
+                    [self checkForIad];
                 });
                 return;
             }
@@ -1310,7 +1310,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 }
 
 - (void)checkForIad {
-    if (self.iAdTimeoutTimer != nil) {
+    if (self.iAdTimeoutTimer == nil) {
         self.iAdTimeoutTimer =
             [ADJTimerOnce
                 timerWithBlock:^{
