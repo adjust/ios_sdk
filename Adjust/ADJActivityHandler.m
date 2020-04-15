@@ -400,8 +400,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
 {
-    [self.iAdTimeoutTimer cancel];
-
+    if (self.iAdTimeoutTimer) {
+        [self.iAdTimeoutTimer cancel];
+    }
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 

@@ -220,8 +220,9 @@
                                                                             error:error];
                                        }];
 #pragma clang diagnostic pop
-    [iAdTimeoutTimer startIn:5.0];
-
+    if (iAdTimeoutTimer) {
+        [iAdTimeoutTimer startIn:5.0];
+    }
     return YES;
 }
 
