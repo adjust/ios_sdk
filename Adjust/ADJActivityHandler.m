@@ -32,6 +32,7 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 static NSString   * const kForegroundTimerName   = @"Foreground timer";
 static NSString   * const kBackgroundTimerName   = @"Background timer";
 static NSString   * const kDelayStartTimerName   = @"Delay Start timer";
+static NSString   * const kiAdTimeoutTimerName   = @"iAd Timeout timer";
 
 static NSTimeInterval kForegroundTimerInterval;
 static NSTimeInterval kForegroundTimerStart;
@@ -399,8 +400,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
 {
-    [self.iAdTimeoutTimer cancel];
-
+    if (self.iAdTimeoutTimer) {
+        [self.iAdTimeoutTimer cancel];
+    }
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 
@@ -435,7 +437,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
                 dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
                 dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self checkForIad];
+                    [self checkForiAd];
                 });
                 return;
             }
@@ -793,8 +795,8 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                   startsSending:[selfI toSendI:selfI
                                                                            sdkClickHandlerOnly:YES]];
 
-    if (self.adjustConfig.allowiAdInfoReading == YES) {
-        [self checkForIad];
+    if (selfI.adjustConfig.allowiAdInfoReading == YES) {
+        [selfI checkForiAdI:selfI];
     }
 
     [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
@@ -1297,8 +1299,8 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
             [selfI disableThirdPartySharing];
         }
-        if (self.adjustConfig.allowiAdInfoReading == YES) {
-            [self checkForIad];
+        if (selfI.adjustConfig.allowiAdInfoReading == YES) {
+            [selfI checkForiAdI:selfI];
         }
     }
 
@@ -1309,23 +1311,30 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
 }
 
-- (void)checkForIad {
-    if (self.iAdTimeoutTimer == nil) {
-        self.iAdTimeoutTimer =
+- (void)checkForiAd {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler *selfI) {
+        [selfI checkForiAdI:selfI];
+    }];
+}
+
+- (void)checkForiAdI:(ADJActivityHandler *)selfI {
+    if (selfI.iAdTimeoutTimer == nil) {
+        selfI.iAdTimeoutTimer =
             [ADJTimerOnce
                 timerWithBlock:^{
-                [self
-                    setAttributionDetails:nil
-                    error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
-                                              code:100
-                                          userInfo:@{@"Error reason": @"iAd request timed out"}]];
+                [selfI setAttributionDetails:nil
+                                      error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
+                                                                code:100
+                                                            userInfo:@{@"Error reason": @"iAd request timed out"}]];
 
             }
-             queue:self.internalQueue
-             name:@"iAdTimeoutTimer"];
+             queue:selfI.internalQueue
+             name:kiAdTimeoutTimerName];
     }
 
-    [[UIDevice currentDevice] adjCheckForiAd:self iAdTimeoutTimer:self.iAdTimeoutTimer];
+    [[UIDevice currentDevice] adjCheckForiAd:selfI iAdTimeoutTimer:selfI.iAdTimeoutTimer];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI

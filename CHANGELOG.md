@@ -1,3 +1,9 @@
+### Version 4.21.2 (15th April 2020)
+#### Fixed
+- Added check for timer source and block existence prior to starting it.
+
+---
+
 ### Version 4.21.1 (9th April 2020)
 #### Added
 - Added support for Mac Catalyst (thanks to @rjchatfield).

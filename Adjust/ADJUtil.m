@@ -43,7 +43,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.21.1";
+static NSString * const kClientSdk                  = @"ios4.21.2";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -370,44 +370,45 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
-         objectName:(NSString *)objectName
-{
+         objectName:(NSString *)objectName {
     @synchronized([ADJUtil class]) {
-        BOOL result;
-        NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+        @try {
+            BOOL result;
+            NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
+            if (!filePath) {
+                [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
+                return;
+            }
 
-        if (!filePath) {
-            [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
-            return;
-        }
-
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-            NSError *errorArchiving = nil;
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+                NSError *errorArchiving = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
 #pragma clang diagnostic pop
-            if (data && errorArchiving == nil) {
-                NSError *errorWriting = nil;
-                result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
-                result = result && (errorWriting == nil);
+                if (data && errorArchiving == nil) {
+                    NSError *errorWriting = nil;
+                    result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+                    result = result && (errorWriting == nil);
+                } else {
+                    result = NO;
+                }
             } else {
-                result = NO;
+                result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
             }
-        } else {
-            result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-        }
-        if (result == YES) {
-            [ADJUtil excludeFromBackup:filePath];
-            if ([object isKindOfClass:[NSArray class]]) {
-                [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+            if (result == YES) {
+                [ADJUtil excludeFromBackup:filePath];
+                if ([object isKindOfClass:[NSArray class]]) {
+                    [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
+                } else {
+                    [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+                }
             } else {
-                [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
+                [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
             }
-        } else {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
+        } @catch (NSException *exception) {
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file (%@)", objectName, exception];
         }
-
     }
 }
 
