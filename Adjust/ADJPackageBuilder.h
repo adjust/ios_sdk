@@ -51,6 +51,9 @@
 
 - (ADJActivityPackage *)buildDisableThirdPartySharingPackage;
 
+- (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
+                                       isInDelay:(BOOL)isInDelay;
+
 + (void)parameters:(NSMutableDictionary *)parameters
      setDictionary:(NSDictionary *)dictionary
             forKey:(NSString *)key;

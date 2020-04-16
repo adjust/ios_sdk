@@ -71,6 +71,7 @@
 		9D1D8E9E219246E50088E3CF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9D219246E50088E3CF /* iAd.framework */; };
 		9D1D8EA0219246EA0088E3CF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9F219246EA0088E3CF /* AdSupport.framework */; };
 		9D1D8EA2219246EF0088E3CF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */; };
+		9D2F24082447DDCB00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */; };
 		9D75AFDB210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */; };
 /* End PBXBuildFile section */
 
@@ -203,6 +204,8 @@
 		9D1D8E9D219246E50088E3CF /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9D1D8E9F219246EA0088E3CF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		9D2F24062447DDCA00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
 		9D75AFD9210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateDeferredDeeplink.h; sourceTree = "<group>"; };
 		9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateDeferredDeeplink.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -324,6 +327,8 @@
 				6F3A5E6B2018CE14000AACD0 /* ADJTimerCycle.h */,
 				6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */,
 				6F3A5E6D2018CE14000AACD0 /* ADJReachability.m */,
+				9D2F24062447DDCA00B7CA90 /* ADJSubscription.h */,
+				9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -542,6 +547,7 @@
 				6F3A5E872018CE14000AACD0 /* ADJActivityPackage.m in Sources */,
 				6FFCFE71200797D100467F01 /* ATAAdjustDelegateEventSuccess.m in Sources */,
 				6F3A5E6F2018CE14000AACD0 /* ADJTimerOnce.m in Sources */,
+				9D2F24082447DDCB00B7CA90 /* ADJSubscription.m in Sources */,
 				6FFCFE6F200797D100467F01 /* ATAAdjustDelegateSessionFailure.m in Sources */,
 				6F3A5E7D2018CE14000AACD0 /* ADJBackoffStrategy.m in Sources */,
 				6F3A5E8F2018CE14000AACD0 /* ADJReachability.m in Sources */,

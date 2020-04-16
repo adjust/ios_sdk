@@ -29,6 +29,8 @@
         return ADJActivityKindAdRevenue;
     } else if ([@"disable_third_party_sharing" isEqualToString:activityKindString]) {
         return ADJActivityKindDisableThirdPartySharing;
+    } else if ([@"subscription" isEqualToString:activityKindString]) {
+        return ADJActivityKindSubscription;
     } else {
         return ADJActivityKindUnknown;
     }
@@ -52,6 +54,8 @@
             return @"ad_revenue";
         case ADJActivityKindDisableThirdPartySharing:
             return @"disable_third_party_sharing";
+        case ADJActivityKindSubscription:
+            return @"subscription";
         default:
             return @"unknown";
     }

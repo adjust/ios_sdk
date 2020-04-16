@@ -216,6 +216,16 @@
 		9D0E2EB9210B575600133B4F /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBA210B575600133B4F /* AdjustBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E69210B575600133B4F /* AdjustBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */; };
+		9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23E02447CE5C00B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D2F23E32447CE5C00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */; };
+		9D2F23F82447DCE800B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23F62447DCE800B7CA90 /* ADJSubscription.m */; };
+		9D2F23F92447DCE800B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23F72447DCE800B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D2F23FC2447DD2500B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23FA2447DD2500B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D2F23FD2447DD2500B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23FB2447DD2500B7CA90 /* ADJSubscription.m */; };
+		9D2F24002447DD3700B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23FE2447DD3600B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D2F24012447DD3700B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23FF2447DD3700B7CA90 /* ADJSubscription.m */; };
+		9D2F24042447DD6000B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24022447DD6000B7CA90 /* ADJSubscription.m */; };
+		9D2F24052447DD6000B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F24032447DD6000B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D7431EA1EB9F9B700969F14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431E91EB9F9B700969F14 /* main.m */; };
 		9D7431ED1EB9F9B700969F14 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431EC1EB9F9B700969F14 /* AppDelegate.m */; };
@@ -806,6 +816,16 @@
 		9D0E2E68210B575600133B4F /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		9D0E2E69210B575600133B4F /* AdjustBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridge.h; sourceTree = "<group>"; };
 		9D0E2E6A210B575600133B4F /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
+		9D2F23E02447CE5C00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F23F62447DCE800B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F23F72447DCE800B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F23FA2447DD2500B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F23FB2447DD2500B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F23FE2447DD3600B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F23FF2447DD3700B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F24022447DD6000B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F24032447DD6000B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
 		9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iWatch.xcodeproj"; path = "examples/AdjustExample-iWatch/AdjustExample-iWatch.xcodeproj"; sourceTree = "<group>"; };
 		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
 		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
@@ -1334,6 +1354,8 @@
 				6FCC84F71F278CF300D6A0ED /* ADJReachability.m */,
 				9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */,
 				9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */,
+				9D2F23E02447CE5C00B7CA90 /* ADJSubscription.h */,
+				9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -1434,6 +1456,8 @@
 				9D0E2E58210B575600133B4F /* ADJTimerCycle.h */,
 				9D0E2E59210B575600133B4F /* ADJActivityHandler.m */,
 				9D0E2E5A210B575600133B4F /* ADJReachability.m */,
+				9D2F24032447DD6000B7CA90 /* ADJSubscription.h */,
+				9D2F24022447DD6000B7CA90 /* ADJSubscription.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1638,6 +1662,8 @@
 				9DEAF0F2210072BC005CAEDB /* ADJTimerCycle.h */,
 				9DEAF0F3210072BC005CAEDB /* ADJActivityHandler.m */,
 				9DEAF0F4210072BC005CAEDB /* ADJReachability.m */,
+				9D2F23FA2447DD2500B7CA90 /* ADJSubscription.h */,
+				9D2F23FB2447DD2500B7CA90 /* ADJSubscription.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1717,6 +1743,8 @@
 				96B671131D788F4A0090A023 /* ADJSessionParameters.m */,
 				6FCC85021F27944600D6A0ED /* ADJReachability.h */,
 				6FCC85031F27944600D6A0ED /* ADJReachability.m */,
+				9D2F23F72447DCE800B7CA90 /* ADJSubscription.h */,
+				9D2F23F62447DCE800B7CA90 /* ADJSubscription.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1816,6 +1844,8 @@
 				96B671171D788F7A0090A023 /* ADJSessionParameters.m */,
 				6FCC85071F27948700D6A0ED /* ADJReachability.h */,
 				6FCC85061F27948700D6A0ED /* ADJReachability.m */,
+				9D2F23FE2447DD3600B7CA90 /* ADJSubscription.h */,
+				9D2F23FF2447DD3700B7CA90 /* ADJSubscription.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1845,6 +1875,7 @@
 				96BCFBD01AC9923F005A65C5 /* ADJConfig.h in Headers */,
 				9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */,
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
+				9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
 				9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */,
 				6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */,
@@ -1890,6 +1921,7 @@
 				9D0E2E6B210B575600133B4F /* ADJConfig.h in Headers */,
 				9D0E2E8F210B575600133B4F /* ADJEvent.h in Headers */,
 				9D0E2E73210B575600133B4F /* ADJAttribution.h in Headers */,
+				9D2F24052447DD6000B7CA90 /* ADJSubscription.h in Headers */,
 				9D0E2EA2210B575600133B4F /* ADJEventFailure.h in Headers */,
 				9D0E2EA1210B575600133B4F /* ADJEventSuccess.h in Headers */,
 				9D0E2E9E210B575600133B4F /* ADJSessionFailure.h in Headers */,
@@ -1931,6 +1963,7 @@
 				9DEAF0F9210072BC005CAEDB /* Adjust.h in Headers */,
 				9DEAF0F5210072BC005CAEDB /* ADJConfig.h in Headers */,
 				9DEAF119210072BC005CAEDB /* ADJEvent.h in Headers */,
+				9D2F23FC2447DD2500B7CA90 /* ADJSubscription.h in Headers */,
 				9DEAF0FD210072BC005CAEDB /* ADJAttribution.h in Headers */,
 				9DEAF12E210072BC005CAEDB /* ADJSessionSuccess.h in Headers */,
 				9DEAF128210072BC005CAEDB /* ADJSessionFailure.h in Headers */,
@@ -1973,6 +2006,7 @@
 				9DF9C91F1D6F3CA5008E362F /* ADJConfig.h in Headers */,
 				9DF9C92B1D6F3CA5008E362F /* ADJLogger.h in Headers */,
 				9DF9C9191D6F3CA5008E362F /* ADJAttribution.h in Headers */,
+				9D2F23F92447DCE800B7CA90 /* ADJSubscription.h in Headers */,
 				9DF9C9251D6F3CA5008E362F /* ADJEventFailure.h in Headers */,
 				9DF9C9271D6F3CA5008E362F /* ADJEventSuccess.h in Headers */,
 				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
@@ -2014,6 +2048,7 @@
 				9DFB06701D7470C0006D48FC /* ADJConfig.h in Headers */,
 				9DFB067C1D7470C0006D48FC /* ADJLogger.h in Headers */,
 				9DFB066A1D7470C0006D48FC /* ADJAttribution.h in Headers */,
+				9D2F24002447DD3700B7CA90 /* ADJSubscription.h in Headers */,
 				9DFB06761D7470C0006D48FC /* ADJEventFailure.h in Headers */,
 				9DFB06781D7470C0006D48FC /* ADJEventSuccess.h in Headers */,
 				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
@@ -2528,6 +2563,7 @@
 				96E5E39418BBB48A008E7B30 /* ADJPackageBuilder.m in Sources */,
 				6FCC85001F278CF300D6A0ED /* ADJReachability.m in Sources */,
 				96E5E39618BBB48A008E7B30 /* ADJRequestHandler.m in Sources */,
+				9D2F23E32447CE5C00B7CA90 /* ADJSubscription.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
 				965307F61A000DA400107FF9 /* ADJDeviceInfo.m in Sources */,
@@ -2614,6 +2650,7 @@
 				9D0E2E6D210B575600133B4F /* ADJTimerOnce.m in Sources */,
 				9D0E2E77210B575600133B4F /* ADJEvent.m in Sources */,
 				9D0E2E8D210B575600133B4F /* ADJConfig.m in Sources */,
+				9D2F24042447DD6000B7CA90 /* ADJSubscription.m in Sources */,
 				9D0E2E6E210B575600133B4F /* ADJAttributionHandler.m in Sources */,
 				9D0E2E87210B575600133B4F /* ADJBackoffStrategy.m in Sources */,
 				9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */,
@@ -2657,6 +2694,7 @@
 				9DEAF10A210072BC005CAEDB /* ADJSessionFailure.m in Sources */,
 				9DEAF121210072BC005CAEDB /* UIDevice+ADJAdditions.m in Sources */,
 				9DEAF105210072BC005CAEDB /* ADJSessionSuccess.m in Sources */,
+				9D2F23FD2447DD2500B7CA90 /* ADJSubscription.m in Sources */,
 				9DEAF124210072BC005CAEDB /* ADJSystemProfile.m in Sources */,
 				9DEAF0FB210072BC005CAEDB /* ADJRequestHandler.m in Sources */,
 				9DEAF11B210072BC005CAEDB /* ADJActivityKind.m in Sources */,
@@ -2697,6 +2735,7 @@
 				9DF9C92E1D6F3CA5008E362F /* ADJPackageBuilder.m in Sources */,
 				9DF9C9301D6F3CA5008E362F /* ADJPackageHandler.m in Sources */,
 				6FCC85051F27946100D6A0ED /* ADJReachability.m in Sources */,
+				9D2F23F82447DCE800B7CA90 /* ADJSubscription.m in Sources */,
 				9DF9C9321D6F3CA5008E362F /* ADJRequestHandler.m in Sources */,
 				9DF9C9461D6F3CA5008E362F /* ADJUtil.m in Sources */,
 				9DF9C9241D6F3CA5008E362F /* ADJEvent.m in Sources */,
@@ -2737,6 +2776,7 @@
 				9DFB067F1D7470C0006D48FC /* ADJPackageBuilder.m in Sources */,
 				9DFB06811D7470C0006D48FC /* ADJPackageHandler.m in Sources */,
 				6FCC85091F27949000D6A0ED /* ADJReachability.m in Sources */,
+				9D2F24012447DD3700B7CA90 /* ADJSubscription.m in Sources */,
 				9DFB06831D7470C0006D48FC /* ADJRequestHandler.m in Sources */,
 				9DFB06971D7470C0006D48FC /* ADJUtil.m in Sources */,
 				9DFB06751D7470C0006D48FC /* ADJEvent.m in Sources */,

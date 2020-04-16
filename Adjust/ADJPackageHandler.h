@@ -29,6 +29,7 @@
 - (void)flush;
 - (NSString *)getBasePath;
 - (NSString *)getGdprPath;
+- (NSString *)getSubscriptionPath;
 
 - (void)teardown;
 + (void)deleteState;

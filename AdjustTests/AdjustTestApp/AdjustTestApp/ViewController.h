@@ -10,6 +10,7 @@
 
 static NSString * baseUrl = @"http://127.0.0.1:8080";
 static NSString * gdprUrl = @"http://127.0.0.1:8080";
+static NSString * subscriptionUrl = @"http://127.0.0.1:8080";
 static NSString * controlUrl = @"ws://127.0.0.1:1987";
 
 @interface ViewController : UIViewController

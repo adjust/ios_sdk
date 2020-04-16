@@ -14,6 +14,7 @@
 		963909C01BCC0D8300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909BE1BCC0D8300A2E8A4 /* Main.storyboard */; };
 		963909C21BCC0D8300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963909C11BCC0D8300A2E8A4 /* Assets.xcassets */; };
 		963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */; };
 		9D449F3F1E6EE6C500E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EFE1E6EE6C500E7E80B /* ADJActivityHandler.m */; };
 		9D449F401E6EE6C500E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F001E6EE6C500E7E80B /* ADJActivityKind.m */; };
 		9D449F411E6EE6C500E7E80B /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F021E6EE6C500E7E80B /* ADJActivityPackage.m */; };
@@ -75,6 +76,8 @@
 		963909C11BCC0D8300A2E8A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		963909C31BCC0D8300A2E8A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F24132447DE1F00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
 		9D449EFD1E6EE6C400E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D449EFE1E6EE6C500E7E80B /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D449EFF1E6EE6C500E7E80B /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
@@ -262,6 +265,8 @@
 				6FCC85131F2794E800D6A0ED /* ADJReachability.m */,
 				9DD0E9CD1F459ECE00B2A759 /* ADJUserDefaults.h */,
 				9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */,
+				9D2F24132447DE1F00B7CA90 /* ADJSubscription.h */,
+				9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -371,6 +376,7 @@
 				9D449F4F1E6EE6C500E7E80B /* ADJEventSuccess.m in Sources */,
 				9D449F5B1E6EE6C500E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449F471E6EE6C500E7E80B /* ADJAttribution.m in Sources */,
+				9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */,
 				9D449F421E6EE6C500E7E80B /* ADJActivityState.m in Sources */,
 				9DC95F2F1C10596500138E4B /* Constants.m in Sources */,
 				963909BD1BCC0D8300A2E8A4 /* ViewControllertvOS.m in Sources */,

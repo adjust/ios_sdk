@@ -42,6 +42,7 @@
 + (NSTimeInterval)maxDelayStart;
 + (NSString *)baseUrl;
 + (NSString *)gdprUrl;
++ (NSString *)subscriptionUrl;
 + (BOOL)iAdFrameworkEnabled;
 
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler;
@@ -61,6 +62,7 @@
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;
++ (void)setSubscriptionUrl:(NSString *)subscriptionUrl;
 
 + (void)enableSigning;
 + (void)disableSigning;

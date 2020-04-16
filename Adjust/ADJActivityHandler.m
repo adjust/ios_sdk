@@ -99,6 +99,7 @@ static const int kiAdRetriesCount = 3;
 @property (nonatomic, copy) NSData* deviceTokenData;
 @property (nonatomic, copy) NSString* basePath;
 @property (nonatomic, copy) NSString* gdprPath;
+@property (nonatomic, copy) NSString* subscriptionPath;
 
 @end
 
@@ -200,6 +201,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
     if (savedPreLaunch.gdprPath != nil) {
         self.gdprPath = savedPreLaunch.gdprPath;
+    }
+    if (savedPreLaunch.subscriptionPath != nil) {
+        self.subscriptionPath = savedPreLaunch.subscriptionPath;
     }
 
     self.iAdRetriesLeft = kiAdRetriesCount;
@@ -607,6 +611,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)trackSubscription:(ADJSubscription *)subscription {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI trackSubscriptionI:selfI subscription:subscription];
+    }];
+}
+
 - (void)disableThirdPartySharing {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -621,6 +633,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 - (NSString *)getGdprPath {
     return _gdprPath;
+}
+
+- (NSString *)getSubscriptionPath {
+    return _subscriptionPath;
 }
 
 - (void)teardown
@@ -1019,6 +1035,32 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
                                                                               createdAt:now];
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:source payload:payload];
     [selfI.packageHandler addPackage:adRevenuePackage];
+    [selfI.packageHandler sendFirstPackage];
+}
+
+- (void)trackSubscriptionI:(ADJActivityHandler *)selfI
+              subscription:(ADJSubscription *)subscription {
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // Create and submit ad revenue package.
+    ADJPackageBuilder *subscriptionBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
+                                                                             activityState:selfI.activityState
+                                                                                    config:selfI.adjustConfig
+                                                                         sessionParameters:selfI.sessionParameters
+                                                                                 createdAt:now];
+    ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription
+                                                                                  isInDelay:[selfI.internalState isInDelayedStart]];
+    [selfI.packageHandler addPackage:subscriptionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
 

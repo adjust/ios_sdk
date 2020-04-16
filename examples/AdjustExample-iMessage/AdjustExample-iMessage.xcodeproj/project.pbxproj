@@ -46,6 +46,7 @@
 		9D01687420FF88F60029CFFF /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01684E20FF88F60029CFFF /* ADJUserDefaults.m */; };
 		9D01687620FF88F60029CFFF /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01685420FF88F60029CFFF /* ADJActivityHandler.m */; };
 		9D01687720FF88F60029CFFF /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01685520FF88F60029CFFF /* ADJReachability.m */; };
+		9D2F241A2447DE4700B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24192447DE4700B7CA90 /* ADJSubscription.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +150,8 @@
 		9D01685320FF88F60029CFFF /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9D01685420FF88F60029CFFF /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D01685520FF88F60029CFFF /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
+		9D2F24182447DE4700B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F24192447DE4700B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +279,8 @@
 				9D01685320FF88F60029CFFF /* ADJTimerCycle.h */,
 				9D01685420FF88F60029CFFF /* ADJActivityHandler.m */,
 				9D01685520FF88F60029CFFF /* ADJReachability.m */,
+				9D2F24182447DE4700B7CA90 /* ADJSubscription.h */,
+				9D2F24192447DE4700B7CA90 /* ADJSubscription.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -423,6 +428,7 @@
 				9D01686B20FF88F60029CFFF /* NSData+ADJAdditions.m in Sources */,
 				9D01685C20FF88F60029CFFF /* ADJEvent.m in Sources */,
 				9D01687320FF88F60029CFFF /* ADJPackageBuilder.m in Sources */,
+				9D2F241A2447DE4700B7CA90 /* ADJSubscription.m in Sources */,
 				9D01685620FF88F60029CFFF /* ADJDeviceInfo.m in Sources */,
 				9D01686620FF88F60029CFFF /* Adjust.m in Sources */,
 				9D01685D20FF88F60029CFFF /* ADJSessionSuccess.m in Sources */,

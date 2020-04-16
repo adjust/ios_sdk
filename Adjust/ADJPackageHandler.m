@@ -33,6 +33,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, copy) NSString *basePath;
 @property (nonatomic, copy) NSString *gdprPath;
+@property (nonatomic, copy) NSString *subscriptionPath;
 @property (nonatomic, assign) NSInteger lastPackageRetriesCount;
 
 @end
@@ -57,6 +58,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.backoffStrategyForInstallSession = [ADJAdjustFactory installSessionBackoffStrategy];
     self.basePath = [activityHandler getBasePath];
     self.gdprPath = [activityHandler getGdprPath];
+    self.subscriptionPath = [activityHandler getSubscriptionPath];
     self.lastPackageRetriesCount = 0;
 
     [ADJUtil launchInQueue:self.internalQueue
@@ -163,6 +165,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (NSString *)getGdprPath {
     return _gdprPath;
+}
+
+- (NSString *)getSubscriptionPath {
+    return _subscriptionPath;
 }
 
 - (void)teardown {

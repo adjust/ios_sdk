@@ -30,6 +30,8 @@ static NSString * const kBaseUrl = @"https://app.adjust.com";
 static NSString * internalBaseUrl = @"https://app.adjust.com";
 static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
 static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
+static NSString * const kSubscriptionUrl = @"https://staging-api-sub.adjust.com";
+static NSString * internalSubscriptionUrl = @"https://staging-api-sub.adjust.com";
 
 @implementation ADJAdjustFactory
 
@@ -166,6 +168,10 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
     return internalGdprUrl;
 }
 
++ (NSString *)subscriptionUrl {
+    return internalSubscriptionUrl;
+}
+
 + (void)setPackageHandler:(id<ADJPackageHandler>)packageHandler {
     internalPackageHandler = packageHandler;
 }
@@ -232,6 +238,10 @@ static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
 
 + (void)setGdprUrl:(NSString *)gdprUrl {
     internalGdprUrl = gdprUrl;
+}
+
++ (void)setSubscriptionUrl:(NSString *)subscriptionUrl {
+    internalSubscriptionUrl = subscriptionUrl;
 }
 
 + (void)enableSigning {

@@ -46,6 +46,7 @@
 		9D0F16CA2193F96F00F5140E /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F169E2193F96F00F5140E /* ADJUserDefaults.m */; };
 		9D0F16CC2193F96F00F5140E /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F16A42193F96F00F5140E /* ADJActivityHandler.m */; };
 		9D0F16CD2193F96F00F5140E /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F16A52193F96F00F5140E /* ADJReachability.m */; };
+		9D2F241D2447DE5A00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F241B2447DE5A00B7CA90 /* ADJSubscription.m */; };
 		9D9D1533212EB3920081445E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D1532212EB3920081445E /* AppDelegate.m */; };
 		9D9D1539212EB3920081445E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D1537212EB3920081445E /* Main.storyboard */; };
 		9D9D153B212EB3940081445E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153A212EB3940081445E /* Assets.xcassets */; };
@@ -139,6 +140,8 @@
 		9D0F16A32193F96F00F5140E /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9D0F16A42193F96F00F5140E /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D0F16A52193F96F00F5140E /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
+		9D2F241B2447DE5A00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F241C2447DE5A00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
 		9D9D152E212EB3920081445E /* AdjustExample-FbPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-FbPixel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9D1531212EB3920081445E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9D1532212EB3920081445E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -273,6 +276,8 @@
 				9D0F16A32193F96F00F5140E /* ADJTimerCycle.h */,
 				9D0F16A42193F96F00F5140E /* ADJActivityHandler.m */,
 				9D0F16A52193F96F00F5140E /* ADJReachability.m */,
+				9D2F241C2447DE5A00B7CA90 /* ADJSubscription.h */,
+				9D2F241B2447DE5A00B7CA90 /* ADJSubscription.m */,
 			);
 			name = Adjust;
 			path = ../../../../Adjust;
@@ -441,6 +446,7 @@
 				9D0F16BE2193F96F00F5140E /* ADJPackageHandler.m in Sources */,
 				9D0F16B72193F96F00F5140E /* ADJSessionFailure.m in Sources */,
 				9D0F16C22193F96F00F5140E /* UIDevice+ADJAdditions.m in Sources */,
+				9D2F241D2447DE5A00B7CA90 /* ADJSubscription.m in Sources */,
 				9D0F16B62193F96F00F5140E /* ADJActivityState.m in Sources */,
 				9D0F16CC2193F96F00F5140E /* ADJActivityHandler.m in Sources */,
 				9D0F16A72193F96F00F5140E /* WebViewJavascriptBridgeBase.m in Sources */,

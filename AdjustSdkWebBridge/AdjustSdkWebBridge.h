@@ -22,6 +22,7 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkWebBridgeVersionString[];
 #import <AdjustSdkWebBridge/ADJConfig.h>
 #import <AdjustSdkWebBridge/ADJLogger.h>
 #import <AdjustSdkWebBridge/ADJAttribution.h>
+#import <AdjustSdkWebBridge/ADJSubscription.h>
 #import <AdjustSdkWebBridge/ADJEventSuccess.h>
 #import <AdjustSdkWebBridge/ADJEventFailure.h>
 #import <AdjustSdkWebBridge/ADJSessionSuccess.h>

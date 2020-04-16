@@ -227,6 +227,10 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)trackSubscription:(nonnull ADJSubscription *)subscription {
+    [[Adjust getInstance] trackSubscription:subscription];
+}
+
 + (ADJAttribution *)attribution {
     @synchronized (self) {
         return [[Adjust getInstance] attribution];
@@ -480,6 +484,14 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler disableThirdPartySharing];
 }
 
+- (void)trackSubscription:(ADJSubscription *)subscription {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler trackSubscription:subscription];
+}
+
 - (ADJAttribution *)attribution {
     if (![self checkActivityHandler]) {
         return nil;
@@ -517,11 +529,17 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.gdprPath != nil) {
         self.savedPreLaunch.gdprPath = testOptions.gdprPath;
     }
+    if (testOptions.subscriptionPath != nil) {
+        self.savedPreLaunch.subscriptionPath = testOptions.subscriptionPath;
+    }
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
     }
     if (testOptions.gdprUrl != nil) {
         [ADJAdjustFactory setGdprUrl:testOptions.gdprUrl];
+    }
+    if (testOptions.subscriptionUrl != nil) {
+        [ADJAdjustFactory setSubscriptionUrl:testOptions.subscriptionUrl];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;

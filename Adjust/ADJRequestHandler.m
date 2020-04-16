@@ -30,6 +30,8 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
 
 @property (nonatomic, copy) NSString *gdprPath;
 
+@property (nonatomic, copy) NSString *subscriptionPath;
+
 @end
 
 @implementation ADJRequestHandler
@@ -56,6 +58,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [packageHandler getBasePath];
     self.gdprPath = [packageHandler getGdprPath];
+    self.gdprPath = [packageHandler getSubscriptionPath];
 
     return self;
 }
@@ -88,6 +91,13 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
             url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", gdprUrl, selfI.gdprPath]];
         } else {
             url = [NSURL URLWithString:gdprUrl];
+        }
+    } else if (activityPackage.activityKind == ADJActivityKindGdpr) {
+        NSString *subscriptionUrl = [ADJAdjustFactory subscriptionUrl];
+        if (selfI.subscriptionPath != nil) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", subscriptionUrl, selfI.subscriptionPath]];
+        } else {
+            url = [NSURL URLWithString:subscriptionUrl];
         }
     } else {
         NSString *baseUrl = [ADJAdjustFactory baseUrl];

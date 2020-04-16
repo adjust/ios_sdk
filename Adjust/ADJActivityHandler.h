@@ -46,6 +46,7 @@
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *basePath;
 @property (nonatomic, copy) NSString *gdprPath;
+@property (nonatomic, copy) NSString *subscriptionPath;
 
 - (id)init;
 
@@ -97,8 +98,10 @@
 - (void)resetSessionPartnerParameters;
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
+- (void)trackSubscription:(ADJSubscription *)subscription;
 - (NSString *)getBasePath;
 - (NSString *)getGdprPath;
+- (NSString *)getSubscriptionPath;
 
 - (ADJDeviceInfo *)deviceInfo;
 - (ADJActivityState *)activityState;
