@@ -92,7 +92,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
         } else {
             url = [NSURL URLWithString:gdprUrl];
         }
-    } else if (activityPackage.activityKind == ADJActivityKindGdpr) {
+    } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
         NSString *subscriptionUrl = [ADJAdjustFactory subscriptionUrl];
         if (selfI.subscriptionPath != nil) {
             url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", subscriptionUrl, selfI.subscriptionPath]];
