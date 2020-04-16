@@ -35,12 +35,18 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
+    ADJSubscription *subscription = [[ADJSubscription alloc]
+                                     initWithRevenue:6.66
+                                     currency:@"CAD"
+                                     transactionDate:1234567890
+                                     transactionId:@"random-transaction-id"
+                                     andReceipt:[@"random-receipt" dataUsingEncoding:NSUTF8StringEncoding]];
+    [subscription addCallbackParameter:@"foo" value:@"bar"];
+    [subscription addCallbackParameter:@"key" value:@"value"];
+    [subscription addPartnerParameter:@"foo" value:@"bar"];
+    [subscription addPartnerParameter:@"key" value:@"value"];
 
-    // Attach callback ID to event.
-    [event setCallbackId:@"RandomCallbackId"];
-
-    [Adjust trackEvent:event];
+    [Adjust trackSubscription:subscription];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
