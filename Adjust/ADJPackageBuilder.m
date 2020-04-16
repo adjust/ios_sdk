@@ -168,7 +168,7 @@
     NSMutableDictionary *parameters = [self getSubscriptionParameters:isInDelay forSubscriptionPackage:subscription];
     ADJActivityPackage *subscriptionPackage = [self defaultActivityPackage];
     subscriptionPackage.path = @"/v2/purchase";
-    subscriptionPackage.activityKind = ADJActivityKindEvent;
+    subscriptionPackage.activityKind = ADJActivityKindSubscription;
     subscriptionPackage.suffix = @"";
     subscriptionPackage.parameters = parameters;
 
