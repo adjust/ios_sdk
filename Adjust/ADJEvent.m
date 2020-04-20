@@ -10,11 +10,12 @@
 #import "ADJAdjustFactory.h"
 #import "ADJUtil.h"
 
-#pragma mark -
 @interface ADJEvent()
+
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, strong) NSMutableDictionary* callbackMutableParameters;
-@property (nonatomic, strong) NSMutableDictionary* partnerMutableParameters;
+@property (nonatomic, strong) NSMutableDictionary *callbackMutableParameters;
+@property (nonatomic, strong) NSMutableDictionary *partnerMutableParameters;
+
 @end
 
 @implementation ADJEvent
@@ -25,91 +26,100 @@
 
 - (id) initWithEventToken:(NSString *)eventToken {
     self = [super init];
-    if (self == nil) return nil;
+    if (self == nil) {
+        return nil;
+    }
 
     self.logger = ADJAdjustFactory.logger;
 
-    if (![self checkEventToken:eventToken]) return self;
+    if (![self checkEventToken:eventToken]) {
+        return self;
+    }
 
-    _eventToken = eventToken;
+    _eventToken = [[NSString alloc] initWithString:eventToken];
 
     return self;
 }
 
-- (void) addCallbackParameter:(NSString *)key
-                        value:(NSString *)value
-{
-    if (![ADJUtil isValidParameter:key
-                     attributeType:@"key"
-                     parameterName:@"Callback"]) return;
+- (void)addCallbackParameter:(NSString *)key value:(NSString *)value {
+    NSString *immutableKey = [NSString stringWithString:key];
+    NSString *immutableValue = [NSString stringWithString:value];
 
-    if (![ADJUtil isValidParameter:value
+    if (![ADJUtil isValidParameter:immutableKey
+                     attributeType:@"key"
+                     parameterName:@"Callback"]) {
+        return;
+    }
+    if (![ADJUtil isValidParameter:immutableValue
                      attributeType:@"value"
-                     parameterName:@"Callback"]) return;
+                     parameterName:@"Callback"]) {
+        return;
+    }
 
     @synchronized (self) {
         if (self.callbackMutableParameters == nil) {
             self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
         }
-
-        if ([self.callbackMutableParameters objectForKey:key]) {
-            [self.logger warn:@"key %@ was overwritten", key];
+        if ([self.callbackMutableParameters objectForKey:immutableKey]) {
+            [self.logger warn:@"Callback parameter key %@ was overwritten", immutableKey];
         }
-
-        [self.callbackMutableParameters setObject:value forKey:key];
+        [self.callbackMutableParameters setObject:immutableValue forKey:immutableKey];
     }
 }
 
-- (void) addPartnerParameter:(NSString *)key
-                       value:(NSString *)value {
+- (void)addPartnerParameter:(NSString *)key value:(NSString *)value {
+    NSString *immutableKey = [NSString stringWithString:key];
+    NSString *immutableValue = [NSString stringWithString:value];
 
-    if (![ADJUtil isValidParameter:key
+    if (![ADJUtil isValidParameter:immutableKey
                      attributeType:@"key"
-                     parameterName:@"Partner"]) return;
-
+                     parameterName:@"Partner"]) {
+        return;
+    }
     if (![ADJUtil isValidParameter:value
                      attributeType:@"value"
-                     parameterName:@"Partner"]) return;
+                     parameterName:@"Partner"]) {
+        return;
+    }
 
     @synchronized (self) {
         if (self.partnerMutableParameters == nil) {
             self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
         }
-
-        if ([self.partnerMutableParameters objectForKey:key]) {
-            [self.logger warn:@"key %@ was overwritten", key];
+        if ([self.partnerMutableParameters objectForKey:immutableKey]) {
+            [self.logger warn:@"Partner parameter key %@ was overwritten", immutableKey];
         }
-
-        [self.partnerMutableParameters setObject:value forKey:key];
+        [self.partnerMutableParameters setObject:immutableValue forKey:immutableKey];
     }
 }
 
-- (void) setRevenue:(double) amount currency:(NSString *)currency{
-    NSNumber * revenue = [NSNumber numberWithDouble:amount];
-
-    if (![self checkRevenue:revenue currency:currency]) return;
+- (void)setRevenue:(double)amount currency:(NSString *)currency {
+    NSNumber *revenue = [NSNumber numberWithDouble:amount];
+    if (![self checkRevenue:revenue currency:currency]) {
+        return;
+    }
 
     _revenue = revenue;
-    _currency = currency;
+    _currency = [NSString stringWithString:currency];
 }
 
-- (void) setTransactionId:(NSString *)transactionId {
-    _transactionId = transactionId;
+- (void)setTransactionId:(NSString *)transactionId {
+    _transactionId = [NSString stringWithString:transactionId];
 }
 
 - (void)setCallbackId:(NSString *)callbackId {
-    _callbackId = callbackId;
+    _callbackId = [NSString stringWithString:callbackId];
 }
 
-- (NSDictionary *) callbackParameters {
+- (NSDictionary *)callbackParameters {
     @synchronized (self) {
-        return (NSDictionary *) self.callbackMutableParameters;
+        return (NSDictionary *)self.callbackMutableParameters;
     }
 }
 
-- (NSDictionary *) partnerParameters {
+- (NSDictionary *)partnerParameters {
     @synchronized (self) {
-        return (NSDictionary *) self.partnerMutableParameters;
+        return (NSDictionary *)self.partnerMutableParameters;
     }
 }
 
@@ -125,21 +135,17 @@
     return YES;
 }
 
-- (BOOL) checkRevenue:(NSNumber*) revenue
-             currency:(NSString*) currency
-{
+- (BOOL)checkRevenue:(NSNumber *)revenue currency:(NSString *)currency {
     if (![ADJUtil isNull:revenue]) {
         double amount =  [revenue doubleValue];
         if (amount < 0.0) {
             [self.logger error:@"Invalid amount %.5f", amount];
             return NO;
         }
-
         if ([ADJUtil isNull:currency]) {
             [self.logger error:@"Currency must be set with revenue"];
             return NO;
         }
-
         if ([currency isEqualToString:@""]) {
             [self.logger error:@"Currency is empty"];
             return NO;
@@ -154,12 +160,14 @@
     return YES;
 }
 
-- (BOOL) isValid {
+- (BOOL)isValid {
     return self.eventToken != nil;
 }
 
-- (void) setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if (![self checkReceipt:receipt transactionId:transactionId]) return;
+- (void)setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
+    if (![self checkReceipt:receipt transactionId:transactionId]) {
+        return;
+    }
 
     if ([ADJUtil isNull:receipt] || [receipt length] == 0) {
         _emptyReceipt = YES;
@@ -168,7 +176,7 @@
     _transactionId = transactionId;
 }
 
-- (BOOL) checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
+- (BOOL)checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
     if ([ADJUtil isNotNull:receipt] && [ADJUtil isNull:transactionId]) {
         [self.logger error:@"Missing transactionId"];
         return NO;
@@ -176,9 +184,9 @@
     return YES;
 }
 
--(id)copyWithZone:(NSZone *)zone
-{
-    ADJEvent* copy = [[[self class] allocWithZone:zone] init];
+- (id)copyWithZone:(NSZone *)zone {
+    ADJEvent *copy = [[[self class] allocWithZone:zone] init];
+
     if (copy) {
         copy->_eventToken = [self.eventToken copyWithZone:zone];
         copy->_revenue = [self.revenue copyWithZone:zone];
@@ -189,6 +197,7 @@
         copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_emptyReceipt = self.emptyReceipt;
     }
+
     return copy;
 }
 
