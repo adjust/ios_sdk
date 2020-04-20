@@ -24,7 +24,7 @@
     return [[ADJEvent alloc] initWithEventToken:eventToken];
 }
 
-- (id) initWithEventToken:(NSString *)eventToken {
+- (id)initWithEventToken:(NSString *)eventToken {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -76,7 +76,7 @@
                      parameterName:@"Partner"]) {
         return;
     }
-    if (![ADJUtil isValidParameter:value
+    if (![ADJUtil isValidParameter:immutableValue
                      attributeType:@"value"
                      parameterName:@"Partner"]) {
         return;
