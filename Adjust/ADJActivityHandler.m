@@ -1446,7 +1446,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                              config:selfI.adjustConfig
                                                                   sessionParameters:selfI.sessionParameters
                                                                           createdAt:now];
-    clickBuilder.deeplinkParameters = adjustDeepLinks;
+    clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
     clickBuilder.deeplink = [url absoluteString];
