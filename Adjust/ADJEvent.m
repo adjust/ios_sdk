@@ -47,15 +47,17 @@
                      attributeType:@"value"
                      parameterName:@"Callback"]) return;
 
-    if (self.callbackMutableParameters == nil) {
-        self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
-    }
+    @synchronized (self) {
+        if (self.callbackMutableParameters == nil) {
+            self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
+        }
 
-    if ([self.callbackMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ was overwritten", key];
-    }
+        if ([self.callbackMutableParameters objectForKey:key]) {
+            [self.logger warn:@"key %@ was overwritten", key];
+        }
 
-    [self.callbackMutableParameters setObject:value forKey:key];
+        [self.callbackMutableParameters setObject:value forKey:key];
+    }
 }
 
 - (void) addPartnerParameter:(NSString *)key
@@ -69,15 +71,17 @@
                      attributeType:@"value"
                      parameterName:@"Partner"]) return;
 
-    if (self.partnerMutableParameters == nil) {
-        self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
-    }
+    @synchronized (self) {
+        if (self.partnerMutableParameters == nil) {
+            self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
+        }
 
-    if ([self.partnerMutableParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ was overwritten", key];
-    }
+        if ([self.partnerMutableParameters objectForKey:key]) {
+            [self.logger warn:@"key %@ was overwritten", key];
+        }
 
-    [self.partnerMutableParameters setObject:value forKey:key];
+        [self.partnerMutableParameters setObject:value forKey:key];
+    }
 }
 
 - (void) setRevenue:(double) amount currency:(NSString *)currency{
@@ -98,11 +102,15 @@
 }
 
 - (NSDictionary *) callbackParameters {
-    return (NSDictionary *) self.callbackMutableParameters;
+    @synchronized (self) {
+        return (NSDictionary *) self.callbackMutableParameters;
+    }
 }
 
 - (NSDictionary *) partnerParameters {
-    return (NSDictionary *) self.partnerMutableParameters;
+    @synchronized (self) {
+        return (NSDictionary *) self.partnerMutableParameters;
+    }
 }
 
 - (BOOL)checkEventToken:(NSString *)eventToken {
