@@ -1,3 +1,14 @@
+### Version 4.21.3 (21st April 2020)
+#### Changed
+- Added copying of each injected mutable property of `ADJEvent` class.
+- Sychronised access to callback/partner parameters in `ADJEvent` class.
+
+#### Fixed
+- Removed iAd timer.
+- Removed activity package mutation scenarios after package has been created.
+
+---
+
 ### Version 4.21.2 (15th April 2020)
 #### Fixed
 - Added check for timer source and block existence prior to starting it.
