@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.21.2
+//  V4.21.3
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
