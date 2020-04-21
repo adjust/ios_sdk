@@ -30,8 +30,8 @@ static NSString * const kBaseUrl = @"https://app.adjust.com";
 static NSString * internalBaseUrl = @"https://app.adjust.com";
 static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
 static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
-static NSString * const kSubscriptionUrl = @"https://staging-api-sub.adjust.com";
-static NSString * internalSubscriptionUrl = @"https://staging-api-sub.adjust.com";
+static NSString * const kSubscriptionUrl = @"https://subscription.adjust.com";
+static NSString * internalSubscriptionUrl = @"https://subscription.adjust.com";
 
 @implementation ADJAdjustFactory
 
