@@ -36,14 +36,14 @@
         return self;
     }
 
-    _eventToken = [[NSString alloc] initWithString:eventToken];
+    _eventToken = [eventToken copy];
 
     return self;
 }
 
 - (void)addCallbackParameter:(NSString *)key value:(NSString *)value {
-    NSString *immutableKey = [NSString stringWithString:key];
-    NSString *immutableValue = [NSString stringWithString:value];
+    NSString *immutableKey = [key copy];
+    NSString *immutableValue = [value copy];
 
     if (![ADJUtil isValidParameter:immutableKey
                      attributeType:@"key"
@@ -68,8 +68,8 @@
 }
 
 - (void)addPartnerParameter:(NSString *)key value:(NSString *)value {
-    NSString *immutableKey = [NSString stringWithString:key];
-    NSString *immutableValue = [NSString stringWithString:value];
+    NSString *immutableKey = [key copy];
+    NSString *immutableValue = [value copy];
 
     if (![ADJUtil isValidParameter:immutableKey
                      attributeType:@"key"
@@ -100,15 +100,15 @@
     }
 
     _revenue = revenue;
-    _currency = [NSString stringWithString:currency];
+    _currency = [currency copy];
 }
 
 - (void)setTransactionId:(NSString *)transactionId {
-    _transactionId = [NSString stringWithString:transactionId];
+    _transactionId = [transactionId copy];
 }
 
 - (void)setCallbackId:(NSString *)callbackId {
-    _callbackId = [NSString stringWithString:callbackId];
+    _callbackId = [callbackId copy];
 }
 
 - (NSDictionary *)callbackParameters {

@@ -1330,7 +1330,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
     }
 
-    return [NSString stringWithString:hexString];
+    return [hexString copy];
 }
 
 + (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails {
