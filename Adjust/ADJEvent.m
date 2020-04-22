@@ -42,21 +42,21 @@
 }
 
 - (void)addCallbackParameter:(NSString *)key value:(NSString *)value {
-    NSString *immutableKey = [key copy];
-    NSString *immutableValue = [value copy];
-
-    if (![ADJUtil isValidParameter:immutableKey
-                     attributeType:@"key"
-                     parameterName:@"Callback"]) {
-        return;
-    }
-    if (![ADJUtil isValidParameter:immutableValue
-                     attributeType:@"value"
-                     parameterName:@"Callback"]) {
-        return;
-    }
-
     @synchronized (self) {
+        NSString *immutableKey = [key copy];
+        NSString *immutableValue = [value copy];
+
+        if (![ADJUtil isValidParameter:immutableKey
+                         attributeType:@"key"
+                         parameterName:@"Callback"]) {
+            return;
+        }
+        if (![ADJUtil isValidParameter:immutableValue
+                         attributeType:@"value"
+                         parameterName:@"Callback"]) {
+            return;
+        }
+
         if (self.callbackMutableParameters == nil) {
             self.callbackMutableParameters = [[NSMutableDictionary alloc] init];
         }
@@ -68,21 +68,21 @@
 }
 
 - (void)addPartnerParameter:(NSString *)key value:(NSString *)value {
-    NSString *immutableKey = [key copy];
-    NSString *immutableValue = [value copy];
-
-    if (![ADJUtil isValidParameter:immutableKey
-                     attributeType:@"key"
-                     parameterName:@"Partner"]) {
-        return;
-    }
-    if (![ADJUtil isValidParameter:immutableValue
-                     attributeType:@"value"
-                     parameterName:@"Partner"]) {
-        return;
-    }
-
     @synchronized (self) {
+        NSString *immutableKey = [key copy];
+        NSString *immutableValue = [value copy];
+
+        if (![ADJUtil isValidParameter:immutableKey
+                         attributeType:@"key"
+                         parameterName:@"Partner"]) {
+            return;
+        }
+        if (![ADJUtil isValidParameter:immutableValue
+                         attributeType:@"value"
+                         parameterName:@"Partner"]) {
+            return;
+        }
+
         if (self.partnerMutableParameters == nil) {
             self.partnerMutableParameters = [[NSMutableDictionary alloc] init];
         }
@@ -100,15 +100,21 @@
     }
 
     _revenue = revenue;
-    _currency = [currency copy];
+    @synchronized (self) {
+        _currency = [currency copy];
+    }
 }
 
 - (void)setTransactionId:(NSString *)transactionId {
-    _transactionId = [transactionId copy];
+    @synchronized (self) {
+        _transactionId = [transactionId copy];
+    }
 }
 
 - (void)setCallbackId:(NSString *)callbackId {
-    _callbackId = [callbackId copy];
+    @synchronized (self) {
+        _callbackId = [callbackId copy];
+    }
 }
 
 - (NSDictionary *)callbackParameters {
