@@ -44,12 +44,27 @@
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-
-    // Add revenue 1 cent of an EURO.
-    [event setRevenue:0.01 currency:@"EUR"];
-
-    [Adjust trackEvent:event];
+    NSURL __block *url = [NSURL URLWithString:@"random-url"];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        // Add revenue 1 cent of an EURO.
+//        for (int i = 0; i < 30000; i += 1) {
+//            [event setRevenue:i currency:@"EUR"];
+//            [event setCallbackId:[NSString stringWithFormat:@"%@%d", @"random-id", i]];
+//            [event addCallbackParameter:@"foo" value:[NSString stringWithFormat:@"%@%d", @"bar", i]];
+//            [event addCallbackParameter:@"key" value:[NSString stringWithFormat:@"%@%d", @"value", i]];
+//        }
+//    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (int i = 0; i < 300; i += 1) {
+            [Adjust appWillOpenUrl:[NSURL URLWithString:[NSString stringWithFormat:@"random-url-%d", i]]];
+        }
+    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        // Add revenue 1 cent of an EURO.
+//        for (int i = 30000; i < 60000; i += 1) {
+//            url = [NSURL URLWithString:[NSString stringWithFormat:@"random-url-%d", i]];
+//        }
+//    });
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
