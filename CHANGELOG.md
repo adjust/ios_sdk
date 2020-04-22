@@ -1,7 +1,8 @@
 ### Version 4.21.3 (22nd April 2020)
 #### Changed
 - Added copying of each injected mutable property of `ADJEvent` class.
-- Sychronised access to callback/partner parameters in `ADJEvent` class.
+- Synchronised access to callback/partner parameters in `ADJEvent` class.
+- Synchronised access to public API methods in `Adjust` class.
 
 #### Fixed
 - Removed iAd timer.
