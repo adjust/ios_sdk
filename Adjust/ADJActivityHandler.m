@@ -32,7 +32,6 @@ static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
 static NSString   * const kForegroundTimerName   = @"Foreground timer";
 static NSString   * const kBackgroundTimerName   = @"Background timer";
 static NSString   * const kDelayStartTimerName   = @"Delay Start timer";
-static NSString   * const kiAdTimeoutTimerName   = @"iAd Timeout timer";
 
 static NSTimeInterval kForegroundTimerInterval;
 static NSTimeInterval kForegroundTimerStart;
@@ -87,7 +86,6 @@ static const int kiAdRetriesCount = 3;
 @property (nonatomic, strong) ADJActivityState *activityState;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
-@property (nonatomic, strong) ADJTimerOnce *iAdTimeoutTimer;
 @property (nonatomic, assign) NSInteger iAdRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
@@ -110,7 +108,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorLimitAdTracking = 1,
     AdjADClientErrorMissingData = 2,
     AdjADClientErrorCorruptResponse = 3,
-    AdjCustomErrorTimeout = 100,
 };
 
 #pragma mark -
@@ -400,9 +397,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
 {
-    if (self.iAdTimeoutTimer) {
-        [self.iAdTimeoutTimer cancel];
-    }
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read iAd details"];
 
@@ -415,7 +409,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         //      - AdjADClientErrorUnknown
         //      - AdjADClientErrorMissingData
         //      - AdjADClientErrorCorruptResponse
-        //      - AdjCustomErrorTimeout
         // apply following retry logic:
         //      - 1st retry after 5 seconds
         //      - 2nd retry after 2 seconds
@@ -423,8 +416,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         switch (error.code) {
             case AdjADClientErrorUnknown:
             case AdjADClientErrorMissingData:
-            case AdjADClientErrorCorruptResponse:
-            case AdjCustomErrorTimeout: {
+            case AdjADClientErrorCorruptResponse: {
                 int64_t iAdRetryDelay = 0;
                 switch (self.iAdRetriesLeft) {
                     case 2:
@@ -638,9 +630,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (self.backgroundTimer != nil) {
         [self.backgroundTimer cancel];
     }
-    if (self.iAdTimeoutTimer != nil) {
-        [self.iAdTimeoutTimer cancel];
-    }
     if (self.foregroundTimer != nil) {
         [self.foregroundTimer cancel];
     }
@@ -668,7 +657,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.sdkClickHandler = nil;
     self.foregroundTimer = nil;
     self.backgroundTimer = nil;
-    self.iAdTimeoutTimer = nil;
     self.adjustDelegate = nil;
     self.adjustConfig = nil;
     self.internalState = nil;
@@ -1320,21 +1308,7 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 }
 
 - (void)checkForiAdI:(ADJActivityHandler *)selfI {
-    if (selfI.iAdTimeoutTimer == nil) {
-        selfI.iAdTimeoutTimer =
-            [ADJTimerOnce
-                timerWithBlock:^{
-                [selfI setAttributionDetails:nil
-                                      error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
-                                                                code:100
-                                                            userInfo:@{@"Error reason": @"iAd request timed out"}]];
-
-            }
-             queue:selfI.internalQueue
-             name:kiAdTimeoutTimerName];
-    }
-
-    [[UIDevice currentDevice] adjCheckForiAd:selfI iAdTimeoutTimer:selfI.iAdTimeoutTimer];
+    [[UIDevice currentDevice] adjCheckForiAd:selfI];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI
@@ -1446,7 +1420,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                              config:selfI.adjustConfig
                                                                   sessionParameters:selfI.sessionParameters
                                                                           createdAt:now];
-    clickBuilder.deeplinkParameters = adjustDeepLinks;
+    clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
     clickBuilder.deeplink = [url absoluteString];

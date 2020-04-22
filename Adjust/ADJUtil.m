@@ -43,7 +43,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.21.2";
+static NSString * const kClientSdk                  = @"ios4.21.3";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1330,7 +1330,7 @@ responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler
         [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
     }
 
-    return [NSString stringWithString:hexString];
+    return [hexString copy];
 }
 
 + (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails {

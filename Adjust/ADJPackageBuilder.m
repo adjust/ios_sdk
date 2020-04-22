@@ -299,8 +299,8 @@
     }
 
     if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.callbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     }
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
@@ -368,11 +368,11 @@
     }
 
     if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.sessionParameters.callbackParameters
-                                                                   source:event.callbackParameters
+        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:[self.sessionParameters.callbackParameters copy]
+                                                                   source:[event.callbackParameters copy]
                                                             parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:self.sessionParameters.partnerParameters
-                                                                  source:event.partnerParameters
+        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:[self.sessionParameters.partnerParameters copy]
+                                                                  source:[event.partnerParameters copy]
                                                            parameterName:@"Partner"];
 
         [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
@@ -507,7 +507,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundleShortVersion forKey:@"app_version_short"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundeIdentifier forKey:@"bundle_id"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.callbackParameters forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"connectivity_type"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.countryCode forKey:@"country"];
@@ -535,7 +535,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
@@ -666,7 +666,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundleShortVersion forKey:@"app_version_short"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.bundeIdentifier forKey:@"bundle_id"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.callbackParameters forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setNumberInt:[ADJUtil readReachabilityFlags] forKey:@"connectivity_type"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.countryCode forKey:@"country"];
@@ -694,7 +694,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.sessionParameters.partnerParameters forKey:@"partner_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
