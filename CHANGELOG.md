@@ -1,4 +1,4 @@
-### Version 4.21.3 (21st April 2020)
+### Version 4.21.3 (22nd April 2020)
 #### Changed
 - Added copying of each injected mutable property of `ADJEvent` class.
 - Sychronised access to callback/partner parameters in `ADJEvent` class.
