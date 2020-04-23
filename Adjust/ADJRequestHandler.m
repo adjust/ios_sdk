@@ -58,7 +58,7 @@ static const char * const kInternalQueueName = "io.adjust.RequestQueue";
     self.logger = ADJAdjustFactory.logger;
     self.basePath = [packageHandler getBasePath];
     self.gdprPath = [packageHandler getGdprPath];
-    self.gdprPath = [packageHandler getSubscriptionPath];
+    self.subscriptionPath = [packageHandler getSubscriptionPath];
 
     return self;
 }
