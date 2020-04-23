@@ -228,7 +228,9 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription {
-    [[Adjust getInstance] trackSubscription:subscription];
+    @synchronized (self) {
+        [[Adjust getInstance] trackSubscription:subscription];
+    }
 }
 
 + (ADJAttribution *)attribution {
