@@ -22,9 +22,9 @@
 
 @property (nonatomic, copy, readonly, nonnull) NSString *billingStore;
 
-@property (nonatomic, readonly, nonnull) NSDictionary *partnerParameters;
+@property (nonatomic, copy, readonly, nonnull) NSDictionary *partnerParameters;
 
-@property (nonatomic, readonly, nonnull) NSDictionary *callbackParameters;
+@property (nonatomic, copy, readonly, nonnull) NSDictionary *callbackParameters;
 
 - (nullable id)initWithRevenue:(double)revenue
                       currency:(nonnull NSString *)currency

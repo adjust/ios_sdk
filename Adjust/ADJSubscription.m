@@ -121,6 +121,14 @@
     return YES;
 }
 
+- (nonnull NSDictionary *)callbackParameters {
+    return [self.mutableCallbackParameters copy];
+}
+
+- (nonnull NSDictionary *)partnerParameters {
+    return [self.mutablePartnerParameters copy];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     ADJSubscription *copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
