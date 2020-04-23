@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface ADJSubscription : NSObject<NSCopying>
 
 @property (nonatomic, copy, readonly, nonnull) NSNumber *revenue;
@@ -39,5 +37,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 @end
-
-NS_ASSUME_NONNULL_END

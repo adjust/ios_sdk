@@ -33,13 +33,13 @@
     }
 
     _revenue = [NSNumber numberWithDouble:revenue];
-    _currency = currency;
+    _currency = [currency copy];
     _transactionDate = [NSNumber numberWithDouble:transactionDate];
-    _transactionId = transactionId;
-    _receipt = receipt;
+    _transactionId = [transactionId copy];
+    _receipt = [receipt copy];
     _billingStore = @"iOS";
 
-    self.logger = ADJAdjustFactory.logger;
+    _logger = ADJAdjustFactory.logger;
     
     if (![self isValid]) {
         return nil;
@@ -48,7 +48,9 @@
     return self;
 }
 
-- (void)addCallbackParameter:(NSString *)key value:(NSString *)value {
+- (void)addCallbackParameter:(nonnull NSString *)key
+                       value:(nonnull NSString *)value
+{
     if (![ADJUtil isValidParameter:key
                      attributeType:@"key"
                      parameterName:@"Callback"]) {
@@ -71,7 +73,9 @@
     [self.mutableCallbackParameters setObject:value forKey:key];
 }
 
-- (void)addPartnerParameter:(NSString *)key value:(NSString *)value {
+- (void)addPartnerParameter:(nonnull NSString *)key
+                      value:(nonnull NSString *)value
+{
     if (![ADJUtil isValidParameter:key
                      attributeType:@"key"
                      parameterName:@"Partner"]) {
@@ -95,22 +99,22 @@
 }
 
 - (BOOL)isValid {
-    if (_revenue == nil) {
+    if (self.revenue == nil) {
         return NO;
     }
-    if (_currency == nil) {
+    if (self.currency == nil) {
         return NO;
     }
-    if (_transactionDate == nil) {
+    if (self.transactionDate == nil) {
         return NO;
     }
-    if (_transactionId == nil) {
+    if (self.transactionId == nil) {
         return NO;
     }
-    if (_receipt == nil) {
+    if (self.receipt == nil) {
         return NO;
     }
-    if (_billingStore == nil) {
+    if (self.billingStore == nil) {
         return NO;
     }
 
