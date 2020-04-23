@@ -298,7 +298,7 @@ static NSString * internalSubscriptionUrl = @"https://subscription.adjust.com";
     internalAttributionHandler = nil;
     internalSdkClickHandler = nil;
 
-    internalSessionInterval    = -1;
+    internalSessionInterval = -1;
     intervalSubsessionInterval = -1;
     internalTimerInterval = -1;
     intervalTimerStart = -1;
@@ -308,6 +308,7 @@ static NSString * internalSubscriptionUrl = @"https://subscription.adjust.com";
     internalMaxDelayStart = -1;
     internalBaseUrl = kBaseUrl;
     internalGdprUrl = kGdprUrl;
+    internalSubscriptionUrl = kSubscriptionUrl;
     internaliAdFrameworkEnabled = YES;
 }
 @end
