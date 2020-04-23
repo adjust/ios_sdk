@@ -62,15 +62,17 @@
         return;
     }
 
-    if (self.mutableCallbackParameters == nil) {
-        self.mutableCallbackParameters = [[NSMutableDictionary alloc] init];
-    }
+    @synchronized (self) {
+        if (self.mutableCallbackParameters == nil) {
+            self.mutableCallbackParameters = [[NSMutableDictionary alloc] init];
+        }
 
-    if ([self.mutableCallbackParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ was overwritten", key];
-    }
+        if ([self.mutableCallbackParameters objectForKey:key]) {
+            [self.logger warn:@"key %@ was overwritten", key];
+        }
 
-    [self.mutableCallbackParameters setObject:value forKey:key];
+        [self.mutableCallbackParameters setObject:value forKey:key];
+    }
 }
 
 - (void)addPartnerParameter:(nonnull NSString *)key
@@ -87,15 +89,17 @@
         return;
     }
 
-    if (self.mutablePartnerParameters == nil) {
-        self.mutablePartnerParameters = [[NSMutableDictionary alloc] init];
-    }
+    @synchronized (self) {
+        if (self.mutablePartnerParameters == nil) {
+            self.mutablePartnerParameters = [[NSMutableDictionary alloc] init];
+        }
 
-    if ([self.mutablePartnerParameters objectForKey:key]) {
-        [self.logger warn:@"key %@ was overwritten", key];
-    }
+        if ([self.mutablePartnerParameters objectForKey:key]) {
+            [self.logger warn:@"key %@ was overwritten", key];
+        }
 
-    [self.mutablePartnerParameters setObject:value forKey:key];
+        [self.mutablePartnerParameters setObject:value forKey:key];
+    }
 }
 
 - (BOOL)isValid {
