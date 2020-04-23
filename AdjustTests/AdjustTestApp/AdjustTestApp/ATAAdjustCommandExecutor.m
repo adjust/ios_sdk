@@ -95,7 +95,9 @@
         [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
         [self disableThirdPartySharing:parameters];
-    }
+    } else if ([methodName isEqualToString:@"trackSubscription"]) {
+           [self trackSubscription:parameters];
+   }
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
@@ -546,6 +548,59 @@
 
 - (void)disableThirdPartySharing:(NSDictionary *)parameters {
     [Adjust disableThirdPartySharing];
+}
+
+- (void)trackSubscription:(NSDictionary *)parameters {
+    double revenue = 0;
+    NSString *currency;
+    double transactionDate = 0;
+    NSString *transactionId;
+    NSData *receipt;
+
+    if ([parameters objectForKey:@"revenue"]) {
+        revenue = [[parameters objectForKey:@"revenue"][0] doubleValue];
+    }
+    if ([parameters objectForKey:@"currency"]) {
+        currency = [parameters objectForKey:@"currency"][0];
+    }
+    if ([parameters objectForKey:@"transactionDate"]) {
+        transactionDate = [[parameters objectForKey:@"transactionDate"][0] doubleValue];
+    }
+    if ([parameters objectForKey:@"transactionId"]) {
+        transactionId = [parameters objectForKey:@"transactionId"][0];
+    }
+    if ([parameters objectForKey:@"receipt"]) {
+        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
+        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
+    }
+
+    ADJSubscription *subscription =
+        [[ADJSubscription alloc]
+         initWithRevenue:revenue
+         currency:currency
+         transactionDate:transactionDate
+         transactionId:transactionId
+         andReceipt:receipt];
+
+    if ([parameters objectForKey:@"callbackParams"]) {
+        NSArray *callbackParams = [parameters objectForKey:@"callbackParams"];
+        for (int i = 0; i < callbackParams.count; i = i + 2) {
+            NSString *key = callbackParams[i];
+            NSString *value = callbackParams[i + 1];
+            [subscription addCallbackParameter:key value:value];
+        }
+    }
+
+    if ([parameters objectForKey:@"partnerParams"]) {
+        NSArray *partnerParams = [parameters objectForKey:@"partnerParams"];
+        for (int i = 0; i < partnerParams.count; i = i + 2) {
+            NSString *key = partnerParams[i];
+            NSString *value = partnerParams[i + 1];
+            [subscription addPartnerParameter:key value:value];
+        }
+    }
+
+    [Adjust trackSubscription:subscription];
 }
 
 @end
