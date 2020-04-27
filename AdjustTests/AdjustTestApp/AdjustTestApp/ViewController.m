@@ -31,7 +31,7 @@
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
     // [self.testLibrary addTestDirectory:@"current/third-party-sharing"];
-    // [self.testLibrary addTest:@"Test_GdprForgetMe_after_install_kill_before_install"];
+    [self.testLibrary addTest:@"Test_iOs_Subscription_subscription"];
 
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];

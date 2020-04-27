@@ -22,19 +22,19 @@
 
 @implementation ADJSubscription
 
-- (nullable id)initWithRevenue:(double)revenue
-                      currency:(nonnull NSString *)currency
-               transactionDate:(double)transactionDate
-                 transactionId:(nonnull NSString *)transactionId
-                    andReceipt:(nonnull NSData *)receipt {
+- (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
+                    currency:(nonnull NSString *)currency
+             transactionDate:(nonnull NSDate *)transactionDate
+               transactionId:(nonnull NSString *)transactionId
+                  andReceipt:(nonnull NSData *)receipt {
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
-    _revenue = [NSNumber numberWithDouble:revenue];
+    _price = [price copy];
     _currency = [currency copy];
-    _transactionDate = [NSNumber numberWithDouble:transactionDate];
+    _transactionDate = [transactionDate copy];
     _transactionId = [transactionId copy];
     _receipt = [receipt copy];
     _billingStore = @"iOS";
@@ -51,18 +51,18 @@
 - (void)addCallbackParameter:(nonnull NSString *)key
                        value:(nonnull NSString *)value
 {
-    if (![ADJUtil isValidParameter:key
-                     attributeType:@"key"
-                     parameterName:@"Callback"]) {
-        return;
-    }
-    if (![ADJUtil isValidParameter:value
-                     attributeType:@"value"
-                     parameterName:@"Callback"]) {
-        return;
-    }
-
     @synchronized (self) {
+        if (![ADJUtil isValidParameter:key
+                         attributeType:@"key"
+                         parameterName:@"Callback"]) {
+            return;
+        }
+        if (![ADJUtil isValidParameter:value
+                         attributeType:@"value"
+                         parameterName:@"Callback"]) {
+            return;
+        }
+
         if (self.mutableCallbackParameters == nil) {
             self.mutableCallbackParameters = [[NSMutableDictionary alloc] init];
         }
@@ -78,18 +78,18 @@
 - (void)addPartnerParameter:(nonnull NSString *)key
                       value:(nonnull NSString *)value
 {
-    if (![ADJUtil isValidParameter:key
-                     attributeType:@"key"
-                     parameterName:@"Partner"]) {
-        return;
-    }
-    if (![ADJUtil isValidParameter:value
-                     attributeType:@"value"
-                     parameterName:@"Partner"]) {
-        return;
-    }
-
     @synchronized (self) {
+        if (![ADJUtil isValidParameter:key
+                         attributeType:@"key"
+                         parameterName:@"Partner"]) {
+            return;
+        }
+        if (![ADJUtil isValidParameter:value
+                         attributeType:@"value"
+                         parameterName:@"Partner"]) {
+            return;
+        }
+
         if (self.mutablePartnerParameters == nil) {
             self.mutablePartnerParameters = [[NSMutableDictionary alloc] init];
         }
@@ -103,7 +103,7 @@
 }
 
 - (BOOL)isValid {
-    if (self.revenue == nil) {
+    if (self.price == nil) {
         return NO;
     }
     if (self.currency == nil) {
@@ -136,7 +136,7 @@
 - (id)copyWithZone:(NSZone *)zone {
     ADJSubscription *copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
-        copy->_revenue = [self.revenue copyWithZone:zone];
+        copy->_price = [self.price copyWithZone:zone];
         copy->_currency = [self.currency copyWithZone:zone];
         copy->_transactionDate = [self.receipt copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];

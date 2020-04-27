@@ -10,11 +10,11 @@
 
 @interface ADJSubscription : NSObject<NSCopying>
 
-@property (nonatomic, copy, readonly, nonnull) NSNumber *revenue;
+@property (nonatomic, copy, readonly, nonnull) NSDecimalNumber *price;
 
 @property (nonatomic, copy, readonly, nonnull) NSString *currency;
 
-@property (nonatomic, copy, readonly, nonnull) NSNumber *transactionDate;
+@property (nonatomic, copy, readonly, nonnull) NSDate *transactionDate;
 
 @property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
 
@@ -26,11 +26,11 @@
 
 @property (nonatomic, copy, readonly, nonnull) NSDictionary *callbackParameters;
 
-- (nullable id)initWithRevenue:(double)revenue
-                      currency:(nonnull NSString *)currency
-               transactionDate:(double)transactionDate
-                 transactionId:(nonnull NSString *)transactionId
-                    andReceipt:(nonnull NSData *)receipt;
+- (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
+                    currency:(nonnull NSString *)currency
+             transactionDate:(nonnull NSDate *)transactionDate
+               transactionId:(nonnull NSString *)transactionId
+                  andReceipt:(nonnull NSData *)receipt;
 
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 

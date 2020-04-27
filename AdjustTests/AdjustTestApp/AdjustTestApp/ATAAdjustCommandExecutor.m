@@ -551,20 +551,20 @@
 }
 
 - (void)trackSubscription:(NSDictionary *)parameters {
-    double revenue = 0;
+    NSDecimalNumber *price;
     NSString *currency;
-    double transactionDate = 0;
+    NSDate *transactionDate;
     NSString *transactionId;
     NSData *receipt;
 
     if ([parameters objectForKey:@"revenue"]) {
-        revenue = [[parameters objectForKey:@"revenue"][0] doubleValue];
+        price = [[NSDecimalNumber alloc] initWithDouble:[[parameters objectForKey:@"revenue"][0] doubleValue]];
     }
     if ([parameters objectForKey:@"currency"]) {
         currency = [parameters objectForKey:@"currency"][0];
     }
     if ([parameters objectForKey:@"transactionDate"]) {
-        transactionDate = [[parameters objectForKey:@"transactionDate"][0] doubleValue];
+        transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
     }
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
@@ -574,13 +574,11 @@
         receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
     }
 
-    ADJSubscription *subscription =
-        [[ADJSubscription alloc]
-         initWithRevenue:revenue
-         currency:currency
-         transactionDate:transactionDate
-         transactionId:transactionId
-         andReceipt:receipt];
+    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                                  currency:currency
+                                                           transactionDate:transactionDate
+                                                             transactionId:transactionId
+                                                                andReceipt:receipt];
 
     if ([parameters objectForKey:@"callbackParams"]) {
         NSArray *callbackParams = [parameters objectForKey:@"callbackParams"];

@@ -808,9 +808,9 @@
         [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
     }
     
-    [ADJPackageBuilder parameters:parameters setNumber:subscription.revenue forKey:@"revenue"];
+    [ADJPackageBuilder parameters:parameters setNumber:subscription.price forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:subscription.currency forKey:@"currency"];
-    [ADJPackageBuilder parameters:parameters setDate1970:[subscription.transactionDate doubleValue] forKey:@"transaction_date"];
+    [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.transactionId forKey:@"transaction_id"];
     [ADJPackageBuilder parameters:parameters setString:[subscription.receipt adjEncodeBase64] forKey:@"receipt"];
     [ADJPackageBuilder parameters:parameters setString:subscription.billingStore forKey:@"billing_store"];
