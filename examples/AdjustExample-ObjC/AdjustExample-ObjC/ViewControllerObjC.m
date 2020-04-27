@@ -35,42 +35,18 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    ADJSubscription *subscription = [[ADJSubscription alloc]
-                                     initWithRevenue:6.66
-                                     currency:@"CAD"
-                                     transactionDate:1234567890
-                                     transactionId:@"random-transaction-id"
-                                     andReceipt:[@"random-receipt" dataUsingEncoding:NSUTF8StringEncoding]];
-    [subscription addCallbackParameter:@"foo" value:@"bar"];
-    [subscription addCallbackParameter:@"key" value:@"value"];
-    [subscription addPartnerParameter:@"foo" value:@"bar"];
-    [subscription addPartnerParameter:@"key" value:@"value"];
+    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
 
-    [Adjust trackSubscription:subscription];
+    [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
-    NSURL __block *url = [NSURL URLWithString:@"random-url"];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        // Add revenue 1 cent of an EURO.
-//        for (int i = 0; i < 30000; i += 1) {
-//            [event setRevenue:i currency:@"EUR"];
-//            [event setCallbackId:[NSString stringWithFormat:@"%@%d", @"random-id", i]];
-//            [event addCallbackParameter:@"foo" value:[NSString stringWithFormat:@"%@%d", @"bar", i]];
-//            [event addCallbackParameter:@"key" value:[NSString stringWithFormat:@"%@%d", @"value", i]];
-//        }
-//    });
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (int i = 0; i < 300; i += 1) {
-            [Adjust appWillOpenUrl:[NSURL URLWithString:[NSString stringWithFormat:@"random-url-%d", i]]];
-        }
-    });
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        // Add revenue 1 cent of an EURO.
-//        for (int i = 30000; i < 60000; i += 1) {
-//            url = [NSURL URLWithString:[NSString stringWithFormat:@"random-url-%d", i]];
-//        }
-//    });
+    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
+
+    // Add revenue 1 cent of an EURO.
+    [event setRevenue:0.01 currency:@"EUR"];
+
+    [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
