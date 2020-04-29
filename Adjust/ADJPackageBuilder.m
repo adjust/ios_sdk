@@ -783,7 +783,6 @@
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
