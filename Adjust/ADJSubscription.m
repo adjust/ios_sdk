@@ -41,10 +41,6 @@
 
     _logger = ADJAdjustFactory.logger;
     
-    if (![self isValid]) {
-        return nil;
-    }
-    
     return self;
 }
 
@@ -102,29 +98,6 @@
     }
 }
 
-- (BOOL)isValid {
-    if (self.price == nil) {
-        return NO;
-    }
-    if (self.currency == nil) {
-        return NO;
-    }
-    if (self.transactionDate == nil) {
-        return NO;
-    }
-    if (self.transactionId == nil) {
-        return NO;
-    }
-    if (self.receipt == nil) {
-        return NO;
-    }
-    if (self.billingStore == nil) {
-        return NO;
-    }
-
-    return YES;
-}
-
 - (nonnull NSDictionary *)callbackParameters {
     return [self.mutableCallbackParameters copy];
 }
@@ -135,6 +108,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
     ADJSubscription *copy = [[[self class] allocWithZone:zone] init];
+
     if (copy) {
         copy->_price = [self.price copyWithZone:zone];
         copy->_currency = [self.currency copyWithZone:zone];
@@ -145,6 +119,7 @@
         copy.mutableCallbackParameters = [self.mutableCallbackParameters copyWithZone:zone];
         copy.mutablePartnerParameters = [self.mutablePartnerParameters copyWithZone:zone];
     }
+
     return copy;
 }
 
