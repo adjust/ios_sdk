@@ -769,7 +769,6 @@
         [ADJPackageBuilder parameters:parameters setString:UIDevice.currentDevice.adjIdForAdvertisers forKey:@"idfa"];
     }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
-    [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
