@@ -519,7 +519,7 @@ Currently we support the below `source` parameter values:
 
 - `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
 
-### <a id="af-subscriptions"></a>Subscriptions tracking
+### <a id="subscriptions"></a>Subscriptions tracking
 
 **Note**: This feature is available only in the native SDK v4.22.0 and above.
 
@@ -533,6 +533,9 @@ ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
                                                             andReceipt:receipt];
 [Adjust trackSubscription:subscription];
 ```
+
+
+Make sure to do this before making a call to `finishTransaction` in `paymentQueue:updatedTransaction` only if the state changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`.
 
 Subscription parameters you need to pass to the method are:
 
