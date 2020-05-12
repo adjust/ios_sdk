@@ -31,6 +31,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
    * [Ad revenue tracking](#ad-revenue)
+   * [Subscriptions tracking](#subscriptions)
    * [Event and session callbacks](#event-session-callbacks)
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
@@ -517,6 +518,29 @@ Parameters of the method which you need to pass are:
 Currently we support the below `source` parameter values:
 
 - `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
+
+### <a id="af-subscriptions"></a>Subscriptions tracking
+
+**Note**: This feature is available only in the native SDK v4.22.0 and above.
+
+You can track App Store subscriptions and verify their validity with Adjust SDK. After subscription has been successfully purchased, you need to make following call to Adjust SDK:
+
+```objc
+ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                              currency:currency
+                                                       transactionDate:transactionDate
+                                                         transactionId:transactionId
+                                                            andReceipt:receipt];
+[Adjust trackSubscription:subscription];
+```
+
+Subscription parameters you need to pass to the method are:
+
+- [price](https://developer.apple.com/documentation/storekit/skproduct/1506094-price?language=objc)
+- currency (you need to pass [currencyCode](https://developer.apple.com/documentation/foundation/nslocale/1642836-currencycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
+- [transactionDate](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411273-transactiondate?language=objc)
+- [transactionId](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411288-transactionidentifier?language=objc)
+- [receipt](https://developer.apple.com/documentation/foundation/nsbundle/1407276-appstorereceipturl)
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
