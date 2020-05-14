@@ -24,7 +24,6 @@
 
 - (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
                     currency:(nonnull NSString *)currency
-             transactionDate:(nonnull NSDate *)transactionDate
                transactionId:(nonnull NSString *)transactionId
                   andReceipt:(nonnull NSData *)receipt {
     self = [super init];
@@ -34,7 +33,6 @@
 
     _price = [price copy];
     _currency = [currency copy];
-    _transactionDate = [transactionDate copy];
     _transactionId = [transactionId copy];
     _receipt = [receipt copy];
     _billingStore = @"iOS";
@@ -44,16 +42,31 @@
     return self;
 }
 
+- (void)setTransactionDate:(NSDate *)transactionDate {
+    @synchronized (self) {
+        _transactionDate = [transactionDate copy];
+    }
+}
+
+- (void)setSalesRegion:(NSString *)salesRegion {
+    @synchronized (self) {
+        _salesRegion = [salesRegion copy];
+    }
+}
+
 - (void)addCallbackParameter:(nonnull NSString *)key
                        value:(nonnull NSString *)value
 {
     @synchronized (self) {
-        if (![ADJUtil isValidParameter:key
+        NSString *immutableKey = [key copy];
+        NSString *immutableValue = [value copy];
+
+        if (![ADJUtil isValidParameter:immutableKey
                          attributeType:@"key"
                          parameterName:@"Callback"]) {
             return;
         }
-        if (![ADJUtil isValidParameter:value
+        if (![ADJUtil isValidParameter:immutableValue
                          attributeType:@"value"
                          parameterName:@"Callback"]) {
             return;
@@ -63,11 +76,11 @@
             self.mutableCallbackParameters = [[NSMutableDictionary alloc] init];
         }
 
-        if ([self.mutableCallbackParameters objectForKey:key]) {
-            [self.logger warn:@"key %@ was overwritten", key];
+        if ([self.mutableCallbackParameters objectForKey:immutableKey]) {
+            [self.logger warn:@"key %@ was overwritten", immutableKey];
         }
 
-        [self.mutableCallbackParameters setObject:value forKey:key];
+        [self.mutableCallbackParameters setObject:immutableValue forKey:immutableKey];
     }
 }
 
@@ -75,12 +88,15 @@
                       value:(nonnull NSString *)value
 {
     @synchronized (self) {
-        if (![ADJUtil isValidParameter:key
+        NSString *immutableKey = [key copy];
+        NSString *immutableValue = [value copy];
+
+        if (![ADJUtil isValidParameter:immutableKey
                          attributeType:@"key"
                          parameterName:@"Partner"]) {
             return;
         }
-        if (![ADJUtil isValidParameter:value
+        if (![ADJUtil isValidParameter:immutableValue
                          attributeType:@"value"
                          parameterName:@"Partner"]) {
             return;
@@ -90,11 +106,11 @@
             self.mutablePartnerParameters = [[NSMutableDictionary alloc] init];
         }
 
-        if ([self.mutablePartnerParameters objectForKey:key]) {
-            [self.logger warn:@"key %@ was overwritten", key];
+        if ([self.mutablePartnerParameters objectForKey:immutableKey]) {
+            [self.logger warn:@"key %@ was overwritten", immutableKey];
         }
 
-        [self.mutablePartnerParameters setObject:value forKey:key];
+        [self.mutablePartnerParameters setObject:immutableValue forKey:immutableKey];
     }
 }
 

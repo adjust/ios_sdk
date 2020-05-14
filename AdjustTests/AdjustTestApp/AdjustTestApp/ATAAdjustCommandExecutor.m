@@ -553,18 +553,16 @@
 - (void)trackSubscription:(NSDictionary *)parameters {
     NSDecimalNumber *price;
     NSString *currency;
-    NSDate *transactionDate;
     NSString *transactionId;
     NSData *receipt;
+    NSDate *transactionDate;
+    NSString *salesRegion;
 
     if ([parameters objectForKey:@"revenue"]) {
         price = [[NSDecimalNumber alloc] initWithDouble:[[parameters objectForKey:@"revenue"][0] doubleValue]];
     }
     if ([parameters objectForKey:@"currency"]) {
         currency = [parameters objectForKey:@"currency"][0];
-    }
-    if ([parameters objectForKey:@"transactionDate"]) {
-        transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
     }
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
@@ -573,12 +571,19 @@
         NSString *receiptString = [parameters objectForKey:@"receipt"][0];
         receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
     }
+    if ([parameters objectForKey:@"transactionDate"]) {
+        transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
+    }
+    if ([parameters objectForKey:@"salesRegion"]) {
+        salesRegion = [parameters objectForKey:@"salesRegion"][0];
+    }
 
     ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
                                                                   currency:currency
-                                                           transactionDate:transactionDate
                                                              transactionId:transactionId
                                                                 andReceipt:receipt];
+    [subscription setTransactionDate:transactionDate];
+    [subscription setSalesRegion:salesRegion];
 
     if ([parameters objectForKey:@"callbackParams"]) {
         NSArray *callbackParams = [parameters objectForKey:@"callbackParams"];

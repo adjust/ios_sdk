@@ -808,10 +808,11 @@
     
     [ADJPackageBuilder parameters:parameters setNumber:subscription.price forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:subscription.currency forKey:@"currency"];
-    [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.transactionId forKey:@"transaction_id"];
     [ADJPackageBuilder parameters:parameters setString:[subscription.receipt adjEncodeBase64] forKey:@"receipt"];
     [ADJPackageBuilder parameters:parameters setString:subscription.billingStore forKey:@"billing_store"];
+    [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
+    [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil readMCC] forKey:@"mcc"];
