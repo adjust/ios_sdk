@@ -528,22 +528,46 @@ You can track App Store subscriptions and verify their validity with Adjust SDK.
 ```objc
 ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
                                                               currency:currency
-                                                       transactionDate:transactionDate
                                                          transactionId:transactionId
                                                             andReceipt:receipt];
+[subscription setTransactionDate:transactionDate];
+[subscription setSalesRegion:salesRegion];
+
 [Adjust trackSubscription:subscription];
 ```
 
 
 Make sure to do this before making a call to `finishTransaction` in `paymentQueue:updatedTransaction` only if the state changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`.
 
-Subscription parameters you need to pass to the method are:
+Subscription tracking parameters:
 
 - [price](https://developer.apple.com/documentation/storekit/skproduct/1506094-price?language=objc)
 - currency (you need to pass [currencyCode](https://developer.apple.com/documentation/foundation/nslocale/1642836-currencycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
-- [transactionDate](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411273-transactiondate?language=objc)
 - [transactionId](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411288-transactionidentifier?language=objc)
 - [receipt](https://developer.apple.com/documentation/foundation/nsbundle/1407276-appstorereceipturl)
+- [transactionDate](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411273-transactiondate?language=objc)
+- salesRegion (you need to pass [countryCode](https://developer.apple.com/documentation/foundation/nslocale/1643060-countrycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
+
+In same fashion like with event tracking, you can attach callback and partner parameters to subscription object as well:
+
+```objc
+ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                              currency:currency
+                                                         transactionId:transactionId
+                                                            andReceipt:receipt];
+[subscription setTransactionDate:transactionDate];
+[subscription setSalesRegion:salesRegion];
+
+// add callback parameters
+[subscription addCallbackParameter:@"key" value:@"value"];
+[subscription addCallbackParameter:@"foo" value:@"bar"];
+
+// add partner parameters
+[subscription addPartnerParameter:@"key" value:@"value"];
+[subscription addPartnerParameter:@"foo" value:@"bar"];
+
+[Adjust trackSubscription:subscription];
+```
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 
