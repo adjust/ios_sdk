@@ -12,6 +12,6 @@
 
 @interface ATAAdjustDelegateAttribution : NSObject<AdjustDelegate>
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath;
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andExtraPath:(NSString *)extraPath;
 
 @end

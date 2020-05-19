@@ -267,8 +267,9 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
-    self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig
-                                                        savedPreLaunch:self.savedPreLaunch];
+    self.activityHandler = [[ADJActivityHandler alloc]
+                                initWithConfig:adjustConfig
+                                savedPreLaunch:self.savedPreLaunch];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -525,14 +526,8 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)setTestOptions:(AdjustTestOptions *)testOptions {
-    if (testOptions.basePath != nil) {
-        self.savedPreLaunch.basePath = testOptions.basePath;
-    }
-    if (testOptions.gdprPath != nil) {
-        self.savedPreLaunch.gdprPath = testOptions.gdprPath;
-    }
-    if (testOptions.subscriptionPath != nil) {
-        self.savedPreLaunch.subscriptionPath = testOptions.subscriptionPath;
+    if (testOptions.extraPath != nil) {
+        self.savedPreLaunch.extraPath = testOptions.extraPath;
     }
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];

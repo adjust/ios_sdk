@@ -52,19 +52,6 @@ typedef void (^isInactiveInjected)(BOOL);
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
 
-+ (void)sendGetRequest:(NSURL *)baseUrl
-              basePath:(NSString *)basePath
-    prefixErrorMessage:(NSString *)prefixErrorMessage
-       activityPackage:(ADJActivityPackage *)activityPackage
-   responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
-
-+ (void)sendPostRequest:(NSURL *)baseUrl
-              queueSize:(NSUInteger)queueSize
-     prefixErrorMessage:(NSString *)prefixErrorMessage
-     suffixErrorMessage:(NSString *)suffixErrorMessage
-        activityPackage:(ADJActivityPackage *)activityPackage
-    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
-
 + (NSString *)idfa;
 
 + (NSString *)clientSdk;
@@ -81,6 +68,9 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)queryString:(NSDictionary *)parameters;
 
++ (NSString *)queryString:(NSDictionary *)parameters
+                queueSize:(NSUInteger)queueSize;
+
 + (NSString *)convertDeviceToken:(NSData *)deviceToken;
 
 + (BOOL)isNull:(id)value;
@@ -96,10 +86,6 @@ typedef void (^isInactiveInjected)(BOOL);
            parameterName:(NSString *)parameterName;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
-
-+ (NSDictionary *)buildJsonDict:(NSData *)jsonData
-                   exceptionPtr:(NSException **)exceptionPtr
-                       errorPtr:(NSError **)error;
 
 + (NSDictionary *)mergeParameters:(NSDictionary *)target
                            source:(NSDictionary *)source

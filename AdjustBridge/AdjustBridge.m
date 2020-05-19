@@ -486,8 +486,7 @@
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];
         NSString *gdprUrl = [data objectForKey:@"gdprUrl"];
-        NSString *basePath = [data objectForKey:@"basePath"];
-        NSString *gdprPath = [data objectForKey:@"gdprPath"];
+        NSString *extraPath = [data objectForKey:@"extraPath"];
         NSNumber *timerIntervalInMilliseconds = [data objectForKey:@"timerIntervalInMilliseconds"];
         NSNumber *timerStartInMilliseconds = [data objectForKey:@"timerStartInMilliseconds"];
         NSNumber *sessionIntervalInMilliseconds = [data objectForKey:@"sessionIntervalInMilliseconds"];
@@ -505,11 +504,8 @@
         if ([self isFieldValid:gdprUrl]) {
             testOptions.gdprUrl = gdprUrl;
         }
-        if ([self isFieldValid:basePath]) {
-            testOptions.basePath = basePath;
-        }
-        if ([self isFieldValid:gdprPath]) {
-            testOptions.gdprPath = gdprPath;
+        if ([self isFieldValid:extraPath]) {
+            testOptions.extraPath = extraPath;
         }
         if ([self isFieldValid:timerIntervalInMilliseconds]) {
             testOptions.timerIntervalInMilliseconds = timerIntervalInMilliseconds;

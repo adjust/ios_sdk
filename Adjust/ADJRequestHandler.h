@@ -7,23 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ADJPackageHandler.h"
+#import "ADJActivityPackage.h"
 
-@protocol ADJRequestHandler
-
-- (id)initWithPackageHandler:(id<ADJPackageHandler>)packageHandler
-          andActivityHandler:(id<ADJActivityHandler>)activityHandler;
-
-- (void)sendPackage:(ADJActivityPackage *)activityPackage
-          queueSize:(NSUInteger)queueSize;
-
-- (void)teardown;
-
+@protocol ADJResponseCallback <NSObject>
+- (void)responseCallback:(ADJResponseData *)responseData;
 @end
 
-@interface ADJRequestHandler : NSObject <ADJRequestHandler>
+@interface ADJRequestHandler : NSObject
 
-+ (id<ADJRequestHandler>)handlerWithPackageHandler:(id<ADJPackageHandler>)packageHandler
-                                andActivityHandler:(id<ADJActivityHandler>)activityHandler;
+- (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
+                     extraPath:(NSString *)extraPath
+                       baseUrl:(NSString *)baseUrl
+                       gdprUrl:(NSString *)gdprUrl
+               subscriptionUrl:(NSString *)subscriptionUrl
+                     userAgent:(NSString *)userAgent
+                requestTimeout:(double)requestTimeout;
+
+- (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
+        sendingParameters:(NSDictionary *)sendingParameters;
+
+- (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
+        sendingParameters:(NSDictionary *)sendingParameters;
 
 @end

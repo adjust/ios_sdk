@@ -20,9 +20,7 @@
 
 @interface ATAAdjustCommandExecutor ()
 
-@property (nonatomic, copy) NSString *basePath;
-@property (nonatomic, copy) NSString *gdprPath;
-@property (nonatomic, copy) NSString *subscriptionPath;
+@property (nonatomic, copy) NSString *extraPath;
 @property (nonatomic, strong) NSMutableDictionary *savedConfigs;
 @property (nonatomic, strong) NSMutableDictionary *savedEvents;
 @property (nonatomic, strong) NSObject<AdjustDelegate> *adjustDelegate;
@@ -41,9 +39,7 @@
     self.savedConfigs = [NSMutableDictionary dictionary];
     self.savedEvents = [NSMutableDictionary dictionary];
     self.adjustDelegate = nil;
-    self.basePath = nil;
-    self.gdprPath = nil;
-    self.subscriptionPath = nil;
+    self.extraPath = nil;
 
     return self;
 }
@@ -107,9 +103,7 @@
     testOptions.subscriptionUrl = subscriptionUrl;
 
     if ([parameters objectForKey:@"basePath"]) {
-        self.basePath = [parameters objectForKey:@"basePath"][0];
-        self.gdprPath = [parameters objectForKey:@"basePath"][0];
-        self.subscriptionPath = [parameters objectForKey:@"basePath"][0];
+        self.extraPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
@@ -161,9 +155,7 @@
             NSString *teardownOption = teardownOptions[i];
             if ([teardownOption isEqualToString:@"resetSdk"]) {
                 testOptions.teardown = YES;
-                testOptions.basePath = self.basePath;
-                testOptions.gdprPath = self.gdprPath;
-                testOptions.subscriptionPath = self.subscriptionPath;
+                testOptions.extraPath = self.extraPath;
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
                 testOptions.deleteState = YES;
@@ -179,17 +171,13 @@
             }
             if ([teardownOption isEqualToString:@"sdk"]) {
                 testOptions.teardown = YES;
-                testOptions.basePath = nil;
-                testOptions.gdprPath = nil;
-                testOptions.subscriptionPath = nil;
+                testOptions.extraPath = nil;
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
-                self.basePath = nil;
-                self.gdprPath = nil;
-                self.subscriptionPath = nil;
+                self.extraPath = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
@@ -320,40 +308,47 @@
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
-        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
-                                                                            andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
+                                                          andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendSuccess"]) {
         NSLog(@"sessionCallbackSendSuccess detected");
-        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
-                                                                               andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                             andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendFailure"]) {
         NSLog(@"sessionCallbackSendFailure detected");
-        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
-                                                                               andBasePath:self.basePath];
+        self.adjustDelegate =
+        [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
+                                                         andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"eventCallbackSendSuccess"]) {
         NSLog(@"eventCallbackSendSuccess detected");
-        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
-                                                                             andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                           andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"eventCallbackSendFailure"]) {
         NSLog(@"eventCallbackSendFailure detected");
-        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
-                                                                             andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
+                                                           andExtraPath:self.extraPath];
     }
 
     if ([parameters objectForKey:@"deferredDeeplinkCallback"]) {
         NSLog(@"deferredDeeplinkCallback detected");
         NSString *shouldOpenDeeplinkS = [parameters objectForKey:@"deferredDeeplinkCallback"][0];
-        self.adjustDelegate = [[ATAAdjustDelegateDeferredDeeplink alloc] initWithTestLibrary:self.testLibrary
-                                                                                    basePath:self.basePath
-                                                                              andReturnValue:[shouldOpenDeeplinkS boolValue]];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateDeferredDeeplink alloc]
+                initWithTestLibrary:self.testLibrary
+                extraPath:self.extraPath
+                andReturnValue:[shouldOpenDeeplinkS boolValue]];
     }
 
     [adjustConfig setDelegate:self.adjustDelegate];

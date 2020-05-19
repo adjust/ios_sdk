@@ -80,9 +80,9 @@ static const int kiAdRetriesCount = 3;
 @interface ADJActivityHandler()
 
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
-@property (nonatomic, strong) id<ADJPackageHandler> packageHandler;
-@property (nonatomic, strong) id<ADJAttributionHandler> attributionHandler;
-@property (nonatomic, strong) id<ADJSdkClickHandler> sdkClickHandler;
+@property (nonatomic, strong) ADJPackageHandler *packageHandler;
+@property (nonatomic, strong) ADJAttributionHandler *attributionHandler;
+@property (nonatomic, strong) ADJSdkClickHandler *sdkClickHandler;
 @property (nonatomic, strong) ADJActivityState *activityState;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
@@ -116,15 +116,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 @synthesize attribution = _attribution;
 
-+ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
-{
-    return [[ADJActivityHandler alloc] initWithConfig:adjustConfig
-                                       savedPreLaunch:savedPreLaunch];
-}
-
 - (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch {
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
+{
     self = [super init];
     if (self == nil) return nil;
 
@@ -196,16 +190,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
 
-    if (savedPreLaunch.basePath != nil) {
-        self.basePath = savedPreLaunch.basePath;
-    }
-    if (savedPreLaunch.gdprPath != nil) {
-        self.gdprPath = savedPreLaunch.gdprPath;
-    }
-    if (savedPreLaunch.subscriptionPath != nil) {
-        self.subscriptionPath = savedPreLaunch.subscriptionPath;
-    }
-
     self.iAdRetriesLeft = kiAdRetriesCount;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
@@ -213,7 +197,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI initI:selfI
-                preLaunchActionsArray:savedPreLaunch.preLaunchActionsArray];
+                     preLaunchActions:savedPreLaunch];
                      }];
 
     /* Not needed, done already in initI:preLaunchActionsArray: method.
@@ -709,7 +693,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
-preLaunchActionsArray:(NSArray*)preLaunchActionsArray
+preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -782,28 +766,37 @@ preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 
     [ADJUtil updateUrlSessionConfiguration:selfI.adjustConfig];
 
-    selfI.packageHandler = [ADJAdjustFactory packageHandlerForActivityHandler:selfI
-                                                                startsSending:[selfI toSendI:selfI
-                                                                         sdkClickHandlerOnly:NO]];
+    selfI.packageHandler = [[ADJPackageHandler alloc]
+                                initWithActivityHandler:selfI
+                                startsSending:
+                                    [selfI toSendI:selfI sdkClickHandlerOnly:NO]
+                                userAgent:selfI.adjustConfig.userAgent
+                                extraPath:preLaunchActions.extraPath];
 
     // update session parameters in package queue
     if ([selfI itHasToUpdatePackagesI:selfI]) {
         [selfI updatePackagesI:selfI];
      }
 
-    selfI.attributionHandler = [ADJAdjustFactory attributionHandlerForActivityHandler:selfI
-                                                                        startsSending:[selfI toSendI:selfI
-                                                                                 sdkClickHandlerOnly:NO]];
+    selfI.attributionHandler = [[ADJAttributionHandler alloc]
+                                    initWithActivityHandler:selfI
+                                    startsSending:
+                                        [selfI toSendI:selfI sdkClickHandlerOnly:NO]
+                                    userAgent:selfI.adjustConfig.userAgent
+                                    extraPath:preLaunchActions.extraPath];
 
-    selfI.sdkClickHandler = [ADJAdjustFactory sdkClickHandlerForActivityHandler:selfI
-                                                                  startsSending:[selfI toSendI:selfI
-                                                                           sdkClickHandlerOnly:YES]];
+    selfI.sdkClickHandler = [[ADJSdkClickHandler alloc]
+                                initWithActivityHandler:selfI
+                                startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
+                                userAgent:selfI.adjustConfig.userAgent
+                                extraPath:preLaunchActions.extraPath];
 
     if (selfI.adjustConfig.allowiAdInfoReading == YES) {
         [selfI checkForiAdI:selfI];
     }
 
-    [selfI preLaunchActionsI:selfI preLaunchActionsArray:preLaunchActionsArray];
+    [selfI preLaunchActionsI:selfI
+       preLaunchActionsArray:preLaunchActions.preLaunchActionsArray];
 
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
         [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {

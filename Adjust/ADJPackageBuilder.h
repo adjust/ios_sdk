@@ -62,4 +62,8 @@
          setString:(NSString *)value
             forKey:(NSString *)key;
 
++ (void)parameters:(NSMutableDictionary *)parameters
+            setInt:(int)value
+            forKey:(NSString *)key;
+
 @end
