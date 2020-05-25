@@ -1,3 +1,9 @@
+### Version 4.22.0 (xxth May 2020)
+#### Added
+- Added subscription tracking feature (`trackSubscription:` method added to `Adjust` API).
+
+---
+
 ### Version 4.21.3 (22nd April 2020)
 #### Changed
 - Added copying of each injected mutable property of `ADJEvent` class.
