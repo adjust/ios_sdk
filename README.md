@@ -536,8 +536,7 @@ ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
 [Adjust trackSubscription:subscription];
 ```
 
-
-Make sure to do this before making a call to `finishTransaction` in `paymentQueue:updatedTransaction` only if the state changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`.
+Only do this when the state has changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`. Then make a call to `finishTransaction` in `paymentQueue:updatedTransaction` .
 
 Subscription tracking parameters:
 
