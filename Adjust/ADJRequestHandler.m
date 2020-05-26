@@ -261,8 +261,6 @@ authorizationHeader:(NSString *)authorizationHeader
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
                            urlHostString, self.extraPath, path];
 
-    [self.logger debug:@"TORMV Post final url: %@", urlString];
-
     NSURL *url = [NSURL URLWithString:urlString];
     //NSURL *url = [baseUrl URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -309,8 +307,6 @@ authorizationHeader:(NSString *)authorizationHeader
     NSString *urlString =
         [NSString stringWithFormat:@"%@%@%@?%@",
             urlHostString, self.extraPath, path, queryStringParameters];
-
-    [self.logger debug:@"TORMV Get final url: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
 
