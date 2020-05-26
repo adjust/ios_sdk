@@ -237,7 +237,7 @@
         return nil;
     }
 
-    char *p = malloc(sizeof(char) * length);
+    char *p = calloc(1, sizeof(char) * length);
     if (p) {
         error = sysctlbyname(name, p, &length, NULL, 0);
     }
