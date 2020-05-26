@@ -135,7 +135,7 @@
 - (NSString *)adjDeviceName {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
-    char *name = malloc(size);
+    char *name = calloc(1, size);
     sysctlbyname("hw.machine", name, &size, NULL, 0);
     NSString *machine = [NSString stringWithUTF8String:name];
     free(name);
