@@ -31,7 +31,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
    * [Ad revenue tracking](#ad-revenue)
-   * [Subscriptions tracking](#subscriptions)
+   * [Subscription tracking](#subscriptions)
    * [Event and session callbacks](#event-session-callbacks)
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
@@ -519,11 +519,11 @@ Currently we support the below `source` parameter values:
 
 - `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
 
-### <a id="subscriptions"></a>Subscriptions tracking
+### <a id="subscriptions"></a>Subscription tracking
 
-**Note**: This feature is available only in the native SDK v4.22.0 and above.
+**Note**: This feature is only available in the native SDK v4.22.0 and above.
 
-You can track App Store subscriptions and verify their validity with Adjust SDK. After subscription has been successfully purchased, you need to make following call to Adjust SDK:
+You can track App Store subscriptions and verify their validity with the Adjust SDK. After a subscription has been successfully purchased, make the following call to the Adjust SDK:
 
 ```objc
 ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
@@ -548,7 +548,7 @@ Subscription tracking parameters:
 - [transactionDate](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411273-transactiondate?language=objc)
 - salesRegion (you need to pass [countryCode](https://developer.apple.com/documentation/foundation/nslocale/1643060-countrycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
 
-In same fashion like with event tracking, you can attach callback and partner parameters to subscription object as well:
+Just like with event tracking, you can attach callback and partner parameters to the subscription object as well:
 
 ```objc
 ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
