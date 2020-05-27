@@ -16,6 +16,7 @@
 #import "ADJBackoffStrategy.h"
 
 typedef void (^selfInjectedBlock)(id);
+typedef void (^synchronisedBlock)(void);
 typedef void (^isInactiveInjected)(BOOL);
 
 @interface ADJUtil : NSObject
@@ -42,7 +43,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
-         objectName:(NSString *)objectName;
+         objectName:(NSString *)objectName
+         syncObject:(id)syncObject;
 
 + (void)launchInMainThread:(NSObject *)receiver
                   selector:(SEL)selector
@@ -51,6 +53,9 @@ typedef void (^isInactiveInjected)(BOOL);
 + (void)launchInQueue:(dispatch_queue_t)queue
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
+
++ (void)launchSynchronisedWithObject:(id)synchronisationObject
+                               block:(synchronisedBlock)block;
 
 + (NSString *)idfa;
 

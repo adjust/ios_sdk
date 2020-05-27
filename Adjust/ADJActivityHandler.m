@@ -149,7 +149,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self.logger lockLogLevel];
 
     // inject app token be available in activity state
-    [ADJActivityState saveAppToken:adjustConfig.appToken];
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        [ADJActivityState saveAppToken:adjustConfig.appToken];
+    }];
 
     // read files to have sync values available
     [self readAttribution];
@@ -480,8 +483,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      double now = [NSDate.date timeIntervalSince1970];
      if (selfI.activityState != nil) {
-         double lastInterval = now - selfI.activityState.lastActivity;
-         selfI.activityState.lastInterval = lastInterval;
+         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                         block:^{
+             double lastInterval = now - selfI.activityState.lastActivity;
+             selfI.activityState.lastInterval = lastInterval;
+         }];
      }
      ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                         initWithDeviceInfo:selfI.deviceInfo
@@ -500,7 +506,10 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
              attributionDetails:(NSDictionary *)attributionDetails
 {
     // save new iAd details
-    selfI.activityState.attributionDetails = attributionDetails;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.attributionDetails = attributionDetails;
+    }];
     [selfI writeAttributionI:selfI];
 }
 
@@ -838,7 +847,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         NSData *deviceToken = [ADJUserDefaults getPushTokenData];
         NSString *deviceTokenString = [ADJUtil convertDeviceToken:deviceToken];
         NSString *pushToken = [ADJUserDefaults getPushTokenString];
-        selfI.activityState.deviceToken = deviceTokenString != nil ? deviceTokenString : pushToken;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.deviceToken = deviceTokenString != nil ? deviceTokenString : pushToken;
+        }];
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
@@ -850,14 +862,20 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 if ([ADJUserDefaults getDisableThirdPartySharing]) {
                     [selfI disableThirdPartySharingI:selfI];
                 }
-                selfI.activityState.sessionCount = 1; // this is the first session
+                [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                                block:^{
+                    selfI.activityState.sessionCount = 1; // this is the first session
+                }];
                 [selfI transferSessionPackageI:selfI now:now];
             }
         }
 
-        [selfI.activityState resetSessionAttributes:now];
-        selfI.activityState.enabled = [selfI.internalState isEnabled];
-        selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            [selfI.activityState resetSessionAttributes:now];
+            selfI.activityState.enabled = [selfI.internalState isEnabled];
+            selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
+        }];
 
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
@@ -869,7 +887,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     double lastInterval = now - selfI.activityState.lastActivity;
     if (lastInterval < 0) {
         [selfI.logger error:@"Time travel!"];
-        selfI.activityState.lastActivity = now;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.lastActivity = now;
+        }];
         [selfI writeActivityStateI:selfI];
         return;
     }
@@ -882,9 +903,12 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // new subsession
     if (lastInterval > kSubSessionInterval) {
-        selfI.activityState.subsessionCount++;
-        selfI.activityState.sessionLength += lastInterval;
-        selfI.activityState.lastActivity = now;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.subsessionCount++;
+            selfI.activityState.sessionLength += lastInterval;
+            selfI.activityState.lastActivity = now;
+        }];
         [selfI.logger verbose:@"Started subsession %d of session %d",
          selfI.activityState.subsessionCount,
          selfI.activityState.sessionCount];
@@ -901,10 +925,16 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     double lastInterval = now - selfI.activityState.lastActivity;
-    selfI.activityState.sessionCount++;
-    selfI.activityState.lastInterval = lastInterval;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.sessionCount++;
+        selfI.activityState.lastInterval = lastInterval;
+    }];
     [selfI transferSessionPackageI:selfI now:now];
-    [selfI.activityState resetSessionAttributes:now];
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        [selfI.activityState resetSessionAttributes:now];
+    }];
     [selfI writeActivityStateI:selfI];
 }
 
@@ -977,7 +1007,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     double now = [NSDate.date timeIntervalSince1970];
 
-    selfI.activityState.eventCount++;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.eventCount++;
+    }];
     [selfI updateActivityStateI:selfI now:now];
 
     // create and populate event package
@@ -1075,7 +1108,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    selfI.activityState.isThirdPartySharingDisabled = YES;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.isThirdPartySharingDisabled = YES;
+    }];
     [selfI writeActivityStateI:selfI];
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -1241,7 +1277,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    selfI.activityState.adid = adid;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.adid = adid;
+    }];
     [selfI writeActivityStateI:selfI];
 }
 
@@ -1300,7 +1339,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     // Save new enabled state in activity state.
-    selfI.activityState.enabled = enabled;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.enabled = enabled;
+    }];
     [selfI writeActivityStateI:selfI];
 
     // Check if upon enabling install has been tracked.
@@ -1448,8 +1490,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    double lastInterval = now - selfI.activityState.lastActivity;
-    selfI.activityState.lastInterval = lastInterval;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        double lastInterval = now - selfI.activityState.lastActivity;
+        selfI.activityState.lastInterval = lastInterval;
+    }];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithDeviceInfo:selfI.deviceInfo
                                                                       activityState:selfI.activityState
                                                                              config:selfI.adjustConfig
@@ -1543,7 +1588,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // save new push token
-    selfI.activityState.deviceToken = deviceTokenString;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.deviceToken = deviceTokenString;
+    }];
     [selfI writeActivityStateI:selfI];
 
     // send info package
@@ -1587,7 +1635,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // save new push token
-    selfI.activityState.deviceToken = pushToken;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.deviceToken = pushToken;
+    }];
     [selfI writeActivityStateI:selfI];
 
     // send info package
@@ -1622,7 +1673,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    selfI.activityState.isGdprForgotten = YES;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.isGdprForgotten = YES;
+    }];
     [selfI writeActivityStateI:selfI];
 
     // Send GDPR package
@@ -1648,7 +1702,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)setTrackingStateOptedOutI:(ADJActivityHandler *)selfI {
     // In case of web opt out, once response from backend arrives isGdprForgotten field in this moment defaults to NO.
     // Set it to YES regardless of state, since at this moment it should be YES.
-    selfI.activityState.isGdprForgotten = YES;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.isGdprForgotten = YES;
+    }];
     [selfI writeActivityStateI:selfI];
 
     [selfI setEnabled:NO];
@@ -1691,14 +1748,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // ignore late updates
     if (lastInterval > kSessionInterval) return NO;
 
-    selfI.activityState.lastActivity = now;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.lastActivity = now;
+    }];
 
     if (lastInterval < 0) {
         [selfI.logger error:@"Time travel!"];
         return YES;
     } else {
-        selfI.activityState.sessionLength += lastInterval;
-        selfI.activityState.timeSpent += lastInterval;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.sessionLength += lastInterval;
+            selfI.activityState.timeSpent += lastInterval;
+        }];
     }
 
     return YES;
@@ -1706,12 +1769,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)writeActivityStateI:(ADJActivityHandler *)selfI
 {
-    @synchronized ([ADJActivityState class]) {
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
         if (selfI.activityState == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.activityState fileName:kActivityStateFilename objectName:@"Activity state"];
-    }
+        [ADJUtil writeObject:selfI.activityState
+                    fileName:kActivityStateFilename
+                  objectName:@"Activity state"
+                  syncObject:[ADJActivityState class]];
+    }];
 }
 
 - (void)teardownActivityStateS
@@ -1729,7 +1796,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.attribution == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.attribution fileName:kAttributionFilename objectName:@"Attribution"];
+        [ADJUtil writeObject:selfI.attribution
+                    fileName:kAttributionFilename
+                  objectName:@"Attribution"
+                  syncObject:[ADJAttribution class]];
     }
 }
 
@@ -1744,10 +1814,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readActivityState {
-    [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
-    self.activityState = [ADJUtil readObject:kActivityStateFilename
-                                  objectName:@"Activity state"
-                                       class:[ADJActivityState class]];
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+        self.activityState = [ADJUtil readObject:kActivityStateFilename
+                                      objectName:@"Activity state"
+                                           class:[ADJActivityState class]];
+    }];
 }
 
 - (void)readAttribution {
@@ -1763,7 +1836,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         }
         [ADJUtil writeObject:selfI.sessionParameters.callbackParameters
                     fileName:kSessionCallbackParametersFilename
-                  objectName:@"Session Callback parameters"];
+                  objectName:@"Session Callback parameters"
+                  syncObject:[ADJSessionParameters class]];
     }
 }
 
@@ -1774,7 +1848,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         }
         [ADJUtil writeObject:selfI.sessionParameters.partnerParameters
                     fileName:kSessionPartnerParametersFilename
-                  objectName:@"Session Partner parameters"];
+                  objectName:@"Session Partner parameters"
+                  syncObject:[ADJSessionParameters class]];
     }
 }
 
@@ -1885,7 +1960,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 - (void)setAskingAttributionI:(ADJActivityHandler *)selfI
             askingAttribution:(BOOL)askingAttribution
 {
-    selfI.activityState.askingAttribution = askingAttribution;
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.askingAttribution = askingAttribution;
+    }];
     [selfI writeActivityStateI:selfI];
 }
 
@@ -1984,7 +2062,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     selfI.internalState.updatePackages = YES;
 
     if (selfI.activityState != nil) {
-        selfI.activityState.updatePackages = YES;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.updatePackages = YES;
+        }];
         [selfI writeActivityStateI:selfI];
     }
 }
@@ -2012,7 +2093,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // no longer needs to update packages
     selfI.internalState.updatePackages = NO;
     if (selfI.activityState != nil) {
-        selfI.activityState.updatePackages = NO;
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.updatePackages = NO;
+        }];
         [selfI writeActivityStateI:selfI];
     }
 }

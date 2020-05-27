@@ -319,7 +319,10 @@ startsSending:(BOOL)startsSending
             return;
         }
 
-        [ADJUtil writeObject:selfS.packageQueue fileName:kPackageQueueFilename objectName:@"Package queue"];
+        [ADJUtil writeObject:selfS.packageQueue
+                    fileName:kPackageQueueFilename
+                  objectName:@"Package queue"
+                  syncObject:[ADJPackageHandler class]];
     }
 }
 

@@ -315,8 +315,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
-         objectName:(NSString *)objectName {
-    @synchronized([ADJUtil class]) {
+         objectName:(NSString *)objectName
+         syncObject:(id)syncObject {
+    @synchronized(syncObject) {
         @try {
             BOOL result;
             NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
@@ -779,6 +780,13 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         }
         block(strongSelf);
     });
+}
+
++ (void)launchSynchronisedWithObject:(id)synchronisationObject
+                               block:(synchronisedBlock)block {
+    @synchronized (synchronisationObject) {
+        block();
+    }
 }
 
 + (BOOL)deleteFileWithName:(NSString *)fileName {
