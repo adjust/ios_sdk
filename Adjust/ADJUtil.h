@@ -25,7 +25,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class)classToRead;
+           class:(Class)classToRead
+      syncObject:(id)syncObject;
 
 + (void)excludeFromBackup:(NSString *)filename;
 

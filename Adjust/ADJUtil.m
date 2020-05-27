@@ -234,8 +234,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
            class:(Class)classToRead
+      syncObject:(id)syncObject
 {
-    @synchronized([ADJUtil class]) {
+    @synchronized(syncObject) {
         NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 

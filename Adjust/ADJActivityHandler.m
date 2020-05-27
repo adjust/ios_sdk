@@ -1819,14 +1819,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
         self.activityState = [ADJUtil readObject:kActivityStateFilename
                                       objectName:@"Activity state"
-                                           class:[ADJActivityState class]];
+                                           class:[ADJActivityState class]
+                                      syncObject:[ADJActivityState class]];
     }];
 }
 
 - (void)readAttribution {
     self.attribution = [ADJUtil readObject:kAttributionFilename
                                 objectName:@"Attribution"
-                                     class:[ADJAttribution class]];
+                                     class:[ADJAttribution class]
+                                syncObject:[ADJAttribution class]];
 }
 
 - (void)writeSessionCallbackParametersI:(ADJActivityHandler *)selfI {
@@ -1867,13 +1869,15 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)readSessionCallbackParametersI:(ADJActivityHandler *)selfI {
     selfI.sessionParameters.callbackParameters = [ADJUtil readObject:kSessionCallbackParametersFilename
                                                          objectName:@"Session Callback parameters"
-                                                              class:[NSDictionary class]];
+                                                              class:[NSDictionary class]
+                                                         syncObject:[ADJSessionParameters class]];
 }
 
 - (void)readSessionPartnerParametersI:(ADJActivityHandler *)selfI {
     selfI.sessionParameters.partnerParameters = [ADJUtil readObject:kSessionPartnerParametersFilename
                                                         objectName:@"Session Partner parameters"
-                                                             class:[NSDictionary class]];
+                                                             class:[NSDictionary class]
+                                                        syncObject:[ADJSessionParameters class]];
 }
 
 # pragma mark - handlers status
