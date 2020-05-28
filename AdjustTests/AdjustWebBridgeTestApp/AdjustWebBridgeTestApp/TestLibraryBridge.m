@@ -49,8 +49,8 @@
             return;
         }
 
-        NSString *basePath = (NSString *)data;
-        [self.testLibrary sendInfoToServer:basePath];
+        NSString *extraPath = (NSString *)data;
+        [self.testLibrary sendInfoToServer:extraPath];
     }];
 
     self.adjustBridgeRegister = adjustBridgeRegister;
