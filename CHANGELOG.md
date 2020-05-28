@@ -1,6 +1,10 @@
-### Version 4.22.0 (xxth May 2020)
+### Version 4.22.0 (28th May 2020)
 #### Added
-- Added subscription tracking feature (`trackSubscription:` method added to `Adjust` API).
+- Added subscription tracking feature.
+
+### Changed
+- Refactored networking part and moved it to request handler.
+- Added additional synchronisation in various cases of access to package queue and activity state.
 
 ---
 
