@@ -1,4 +1,4 @@
-### Version 4.22.0 (28th May 2020)
+### Version 4.22.0 (29th May 2020)
 #### Added
 - Added subscription tracking feature.
 
