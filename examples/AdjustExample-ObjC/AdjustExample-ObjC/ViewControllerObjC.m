@@ -37,9 +37,6 @@
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
 
-    // Attach callback ID to event.
-    [event setCallbackId:@"RandomCallbackId"];
-
     [Adjust trackEvent:event];
 }
 

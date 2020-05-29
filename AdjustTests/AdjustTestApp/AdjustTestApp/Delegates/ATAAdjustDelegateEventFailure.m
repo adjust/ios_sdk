@@ -11,13 +11,13 @@
 @interface ATAAdjustDelegateEventFailure ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
-@property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *extraPath;
 
 @end
 
 @implementation ATAAdjustDelegateEventFailure
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andBasePath:(NSString *)basePath {
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary andExtraPath:(NSString *)extraPath {
     self = [super init];
     
     if (nil == self) {
@@ -25,7 +25,7 @@
     }
     
     self.testLibrary = testLibrary;
-    self.basePath = basePath;
+    self.extraPath = extraPath;
 
     return self;
 }
@@ -53,7 +53,7 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
     
-    [self.testLibrary sendInfoToServer:self.basePath];
+    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end

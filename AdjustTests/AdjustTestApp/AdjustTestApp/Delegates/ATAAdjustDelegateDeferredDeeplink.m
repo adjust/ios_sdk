@@ -11,14 +11,14 @@
 @interface ATAAdjustDelegateDeferredDeeplink ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
-@property (nonatomic, copy) NSString *basePath;
+@property (nonatomic, copy) NSString *extraPath;
 @property (nonatomic, assign) BOOL returnValue;
 
 @end
 
 @implementation ATAAdjustDelegateDeferredDeeplink
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary basePath:(NSString *)basePath andReturnValue:(BOOL)returnValue {
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary extraPath:(NSString *)extraPath andReturnValue:(BOOL)returnValue {
     self = [super init];
 
     if (nil == self) {
@@ -26,7 +26,7 @@
     }
 
     self.testLibrary = testLibrary;
-    self.basePath = basePath;
+    self.extraPath = extraPath;
     self.returnValue = returnValue;
 
     return self;
@@ -37,7 +37,7 @@
     NSLog(@"Deep link: %@", deeplink);
 
     [self.testLibrary addInfoToSend:@"deeplink" value:[deeplink absoluteString]];
-    [self.testLibrary sendInfoToServer:self.basePath];
+    [self.testLibrary sendInfoToServer:self.extraPath];
 
     return self.returnValue;
 }

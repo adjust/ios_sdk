@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */; };
+		9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */; };
 		9D449E761E6EDC3D00E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */; };
 		9D449E771E6EDC3D00E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E371E6EDC3D00E7E80B /* ADJActivityKind.m */; };
 		9D449E781E6EDC3D00E7E80B /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E391E6EDC3D00E7E80B /* ADJActivityPackage.m */; };
@@ -52,6 +53,8 @@
 /* Begin PBXFileReference section */
 		6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
+		9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F240D2447DDF600B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
 		9D319B9823054502000E28A6 /* AdjustExample-Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-Swift.entitlements"; sourceTree = "<group>"; };
 		9D449E341E6EDC3D00E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 				6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */,
 				9DD0E9BF1F45879A00B2A759 /* ADJUserDefaults.h */,
 				9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */,
+				9D2F240D2447DDF600B7CA90 /* ADJSubscription.h */,
+				9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -365,6 +370,7 @@
 				9D449E841E6EDC3D00E7E80B /* ADJEvent.m in Sources */,
 				9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */,
 				9D449E7C1E6EDC3D00E7E80B /* UIDevice+ADJAdditions.m in Sources */,
+				9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */,
 				9D449E851E6EDC3D00E7E80B /* ADJEventFailure.m in Sources */,
 				9D449E7B1E6EDC3D00E7E80B /* NSString+ADJAdditions.m in Sources */,
 				9D449E7D1E6EDC3D00E7E80B /* ADJAdjustFactory.m in Sources */,

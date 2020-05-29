@@ -12,6 +12,6 @@
 
 @interface ATAAdjustDelegateDeferredDeeplink : NSObject<AdjustDelegate>
 
-- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary basePath:(NSString *)basePath andReturnValue:(BOOL)returnValue;
+- (id)initWithTestLibrary:(ATLTestLibrary *)testLibrary extraPath:(NSString *)extraPath andReturnValue:(BOOL)returnValue;
 
 @end

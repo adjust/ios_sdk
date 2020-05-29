@@ -51,12 +51,19 @@
 
 - (ADJActivityPackage *)buildDisableThirdPartySharingPackage;
 
+- (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
+                                       isInDelay:(BOOL)isInDelay;
+
 + (void)parameters:(NSMutableDictionary *)parameters
      setDictionary:(NSDictionary *)dictionary
             forKey:(NSString *)key;
 
 + (void)parameters:(NSMutableDictionary *)parameters
          setString:(NSString *)value
+            forKey:(NSString *)key;
+
++ (void)parameters:(NSMutableDictionary *)parameters
+            setInt:(int)value
             forKey:(NSString *)key;
 
 @end

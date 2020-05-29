@@ -16,6 +16,7 @@
 #import "ADJBackoffStrategy.h"
 
 typedef void (^selfInjectedBlock)(id);
+typedef void (^synchronisedBlock)(void);
 typedef void (^isInactiveInjected)(BOOL);
 
 @interface ADJUtil : NSObject
@@ -24,7 +25,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class)classToRead;
+           class:(Class)classToRead
+      syncObject:(id)syncObject;
 
 + (void)excludeFromBackup:(NSString *)filename;
 
@@ -42,7 +44,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (void)writeObject:(id)object
            fileName:(NSString *)fileName
-         objectName:(NSString *)objectName;
+         objectName:(NSString *)objectName
+         syncObject:(id)syncObject;
 
 + (void)launchInMainThread:(NSObject *)receiver
                   selector:(SEL)selector
@@ -52,18 +55,8 @@ typedef void (^isInactiveInjected)(BOOL);
            selfInject:(id)selfInject
                 block:(selfInjectedBlock)block;
 
-+ (void)sendGetRequest:(NSURL *)baseUrl
-              basePath:(NSString *)basePath
-    prefixErrorMessage:(NSString *)prefixErrorMessage
-       activityPackage:(ADJActivityPackage *)activityPackage
-   responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
-
-+ (void)sendPostRequest:(NSURL *)baseUrl
-              queueSize:(NSUInteger)queueSize
-     prefixErrorMessage:(NSString *)prefixErrorMessage
-     suffixErrorMessage:(NSString *)suffixErrorMessage
-        activityPackage:(ADJActivityPackage *)activityPackage
-    responseDataHandler:(void (^)(ADJResponseData *responseData))responseDataHandler;
++ (void)launchSynchronisedWithObject:(id)synchronisationObject
+                               block:(synchronisedBlock)block;
 
 + (NSString *)idfa;
 
@@ -81,6 +74,9 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)queryString:(NSDictionary *)parameters;
 
++ (NSString *)queryString:(NSDictionary *)parameters
+                queueSize:(NSUInteger)queueSize;
+
 + (NSString *)convertDeviceToken:(NSData *)deviceToken;
 
 + (BOOL)isNull:(id)value;
@@ -96,10 +92,6 @@ typedef void (^isInactiveInjected)(BOOL);
            parameterName:(NSString *)parameterName;
 
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary;
-
-+ (NSDictionary *)buildJsonDict:(NSData *)jsonData
-                   exceptionPtr:(NSException **)exceptionPtr
-                       errorPtr:(NSError **)error;
 
 + (NSDictionary *)mergeParameters:(NSDictionary *)target
                            source:(NSDictionary *)source

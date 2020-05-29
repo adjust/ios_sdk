@@ -20,8 +20,7 @@
 
 @interface ATAAdjustCommandExecutor ()
 
-@property (nonatomic, copy) NSString *basePath;
-@property (nonatomic, copy) NSString *gdprPath;
+@property (nonatomic, copy) NSString *extraPath;
 @property (nonatomic, strong) NSMutableDictionary *savedConfigs;
 @property (nonatomic, strong) NSMutableDictionary *savedEvents;
 @property (nonatomic, strong) NSObject<AdjustDelegate> *adjustDelegate;
@@ -40,8 +39,7 @@
     self.savedConfigs = [NSMutableDictionary dictionary];
     self.savedEvents = [NSMutableDictionary dictionary];
     self.adjustDelegate = nil;
-    self.basePath = nil;
-    self.gdprPath = nil;
+    self.extraPath = nil;
 
     return self;
 }
@@ -93,17 +91,19 @@
         [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
         [self disableThirdPartySharing:parameters];
-    }
+    } else if ([methodName isEqualToString:@"trackSubscription"]) {
+           [self trackSubscription:parameters];
+   }
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
     testOptions.baseUrl = baseUrl;
     testOptions.gdprUrl = gdprUrl;
+    testOptions.subscriptionUrl = subscriptionUrl;
 
     if ([parameters objectForKey:@"basePath"]) {
-        self.basePath = [parameters objectForKey:@"basePath"][0];
-        self.gdprPath = [parameters objectForKey:@"basePath"][0];
+        self.extraPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
@@ -155,8 +155,7 @@
             NSString *teardownOption = teardownOptions[i];
             if ([teardownOption isEqualToString:@"resetSdk"]) {
                 testOptions.teardown = YES;
-                testOptions.basePath = self.basePath;
-                testOptions.gdprPath = self.gdprPath;
+                testOptions.extraPath = self.extraPath;
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
                 testOptions.deleteState = YES;
@@ -172,15 +171,13 @@
             }
             if ([teardownOption isEqualToString:@"sdk"]) {
                 testOptions.teardown = YES;
-                testOptions.basePath = nil;
-                testOptions.gdprPath = nil;
+                testOptions.extraPath = nil;
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
-                self.basePath = nil;
-                self.gdprPath = nil;
+                self.extraPath = nil;
                 testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
                 testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
@@ -311,40 +308,47 @@
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");
-        self.adjustDelegate = [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
-                                                                            andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateAttribution alloc] initWithTestLibrary:self.testLibrary
+                                                          andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendSuccess"]) {
         NSLog(@"sessionCallbackSendSuccess detected");
-        self.adjustDelegate = [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
-                                                                               andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateSessionSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                             andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"sessionCallbackSendFailure"]) {
         NSLog(@"sessionCallbackSendFailure detected");
-        self.adjustDelegate = [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
-                                                                               andBasePath:self.basePath];
+        self.adjustDelegate =
+        [[ATAAdjustDelegateSessionFailure alloc] initWithTestLibrary:self.testLibrary
+                                                         andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"eventCallbackSendSuccess"]) {
         NSLog(@"eventCallbackSendSuccess detected");
-        self.adjustDelegate = [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
-                                                                             andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateEventSuccess alloc] initWithTestLibrary:self.testLibrary
+                                                           andExtraPath:self.extraPath];
     }
     
     if ([parameters objectForKey:@"eventCallbackSendFailure"]) {
         NSLog(@"eventCallbackSendFailure detected");
-        self.adjustDelegate = [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
-                                                                             andBasePath:self.basePath];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateEventFailure alloc] initWithTestLibrary:self.testLibrary
+                                                           andExtraPath:self.extraPath];
     }
 
     if ([parameters objectForKey:@"deferredDeeplinkCallback"]) {
         NSLog(@"deferredDeeplinkCallback detected");
         NSString *shouldOpenDeeplinkS = [parameters objectForKey:@"deferredDeeplinkCallback"][0];
-        self.adjustDelegate = [[ATAAdjustDelegateDeferredDeeplink alloc] initWithTestLibrary:self.testLibrary
-                                                                                    basePath:self.basePath
-                                                                              andReturnValue:[shouldOpenDeeplinkS boolValue]];
+        self.adjustDelegate =
+            [[ATAAdjustDelegateDeferredDeeplink alloc]
+                initWithTestLibrary:self.testLibrary
+                extraPath:self.extraPath
+                andReturnValue:[shouldOpenDeeplinkS boolValue]];
     }
 
     [adjustConfig setDelegate:self.adjustDelegate];
@@ -539,6 +543,62 @@
 
 - (void)disableThirdPartySharing:(NSDictionary *)parameters {
     [Adjust disableThirdPartySharing];
+}
+
+- (void)trackSubscription:(NSDictionary *)parameters {
+    NSDecimalNumber *price;
+    NSString *currency;
+    NSString *transactionId;
+    NSData *receipt;
+    NSDate *transactionDate;
+    NSString *salesRegion;
+
+    if ([parameters objectForKey:@"revenue"]) {
+        price = [[NSDecimalNumber alloc] initWithDouble:[[parameters objectForKey:@"revenue"][0] doubleValue]];
+    }
+    if ([parameters objectForKey:@"currency"]) {
+        currency = [parameters objectForKey:@"currency"][0];
+    }
+    if ([parameters objectForKey:@"transactionId"]) {
+        transactionId = [parameters objectForKey:@"transactionId"][0];
+    }
+    if ([parameters objectForKey:@"receipt"]) {
+        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
+        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    if ([parameters objectForKey:@"transactionDate"]) {
+        transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
+    }
+    if ([parameters objectForKey:@"salesRegion"]) {
+        salesRegion = [parameters objectForKey:@"salesRegion"][0];
+    }
+
+    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                                  currency:currency
+                                                             transactionId:transactionId
+                                                                andReceipt:receipt];
+    [subscription setTransactionDate:transactionDate];
+    [subscription setSalesRegion:salesRegion];
+
+    if ([parameters objectForKey:@"callbackParams"]) {
+        NSArray *callbackParams = [parameters objectForKey:@"callbackParams"];
+        for (int i = 0; i < callbackParams.count; i = i + 2) {
+            NSString *key = callbackParams[i];
+            NSString *value = callbackParams[i + 1];
+            [subscription addCallbackParameter:key value:value];
+        }
+    }
+
+    if ([parameters objectForKey:@"partnerParams"]) {
+        NSArray *partnerParams = [parameters objectForKey:@"partnerParams"];
+        for (int i = 0; i < partnerParams.count; i = i + 2) {
+            NSString *key = partnerParams[i];
+            NSString *value = partnerParams[i + 1];
+            [subscription addPartnerParameter:key value:value];
+        }
+    }
+
+    [Adjust trackSubscription:subscription];
 }
 
 @end

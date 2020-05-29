@@ -31,6 +31,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Delay start](#delay-start)
    * [Attribution callback](#attribution-callback)
    * [Ad revenue tracking](#ad-revenue)
+   * [Subscription tracking](#subscriptions)
    * [Event and session callbacks](#event-session-callbacks)
    * [Disable tracking](#disable-tracking)
    * [Offline mode](#offline-mode)
@@ -74,13 +75,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.21.3'
+pod 'Adjust', '~> 4.22.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.21.3'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.22.0'
 ```
 
 ---
@@ -517,6 +518,55 @@ Parameters of the method which you need to pass are:
 Currently we support the below `source` parameter values:
 
 - `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
+
+### <a id="subscriptions"></a>Subscription tracking
+
+**Note**: This feature is only available in the native SDK v4.22.0 and above.
+
+You can track App Store subscriptions and verify their validity with the Adjust SDK. After a subscription has been successfully purchased, make the following call to the Adjust SDK:
+
+```objc
+ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                              currency:currency
+                                                         transactionId:transactionId
+                                                            andReceipt:receipt];
+[subscription setTransactionDate:transactionDate];
+[subscription setSalesRegion:salesRegion];
+
+[Adjust trackSubscription:subscription];
+```
+
+Only do this when the state has changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`. Then make a call to `finishTransaction` in `paymentQueue:updatedTransaction` .
+
+Subscription tracking parameters:
+
+- [price](https://developer.apple.com/documentation/storekit/skproduct/1506094-price?language=objc)
+- currency (you need to pass [currencyCode](https://developer.apple.com/documentation/foundation/nslocale/1642836-currencycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
+- [transactionId](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411288-transactionidentifier?language=objc)
+- [receipt](https://developer.apple.com/documentation/foundation/nsbundle/1407276-appstorereceipturl)
+- [transactionDate](https://developer.apple.com/documentation/storekit/skpaymenttransaction/1411273-transactiondate?language=objc)
+- salesRegion (you need to pass [countryCode](https://developer.apple.com/documentation/foundation/nslocale/1643060-countrycode?language=objc) of the [priceLocale](https://developer.apple.com/documentation/storekit/skproduct/1506145-pricelocale?language=objc) object)
+
+Just like with event tracking, you can attach callback and partner parameters to the subscription object as well:
+
+```objc
+ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
+                                                              currency:currency
+                                                         transactionId:transactionId
+                                                            andReceipt:receipt];
+[subscription setTransactionDate:transactionDate];
+[subscription setSalesRegion:salesRegion];
+
+// add callback parameters
+[subscription addCallbackParameter:@"key" value:@"value"];
+[subscription addCallbackParameter:@"foo" value:@"bar"];
+
+// add partner parameters
+[subscription addPartnerParameter:@"key" value:@"value"];
+[subscription addPartnerParameter:@"foo" value:@"bar"];
+
+[Adjust trackSubscription:subscription];
+```
 
 ### <a id="event-session-callbacks"></a>Event and session callbacks
 

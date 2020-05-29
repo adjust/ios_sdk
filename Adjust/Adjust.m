@@ -227,6 +227,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)trackSubscription:(nonnull ADJSubscription *)subscription {
+    @synchronized (self) {
+        [[Adjust getInstance] trackSubscription:subscription];
+    }
+}
+
 + (ADJAttribution *)attribution {
     @synchronized (self) {
         return [[Adjust getInstance] attribution];
@@ -261,8 +267,9 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
-    self.activityHandler = [ADJAdjustFactory activityHandlerWithConfig:adjustConfig
-                                                        savedPreLaunch:self.savedPreLaunch];
+    self.activityHandler = [[ADJActivityHandler alloc]
+                                initWithConfig:adjustConfig
+                                savedPreLaunch:self.savedPreLaunch];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -480,6 +487,14 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler disableThirdPartySharing];
 }
 
+- (void)trackSubscription:(ADJSubscription *)subscription {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler trackSubscription:subscription];
+}
+
 - (ADJAttribution *)attribution {
     if (![self checkActivityHandler]) {
         return nil;
@@ -511,17 +526,17 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)setTestOptions:(AdjustTestOptions *)testOptions {
-    if (testOptions.basePath != nil) {
-        self.savedPreLaunch.basePath = testOptions.basePath;
-    }
-    if (testOptions.gdprPath != nil) {
-        self.savedPreLaunch.gdprPath = testOptions.gdprPath;
+    if (testOptions.extraPath != nil) {
+        self.savedPreLaunch.extraPath = testOptions.extraPath;
     }
     if (testOptions.baseUrl != nil) {
         [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
     }
     if (testOptions.gdprUrl != nil) {
         [ADJAdjustFactory setGdprUrl:testOptions.gdprUrl];
+    }
+    if (testOptions.subscriptionUrl != nil) {
+        [ADJAdjustFactory setSubscriptionUrl:testOptions.subscriptionUrl];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;

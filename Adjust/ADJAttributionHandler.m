@@ -13,6 +13,7 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJTimerOnce.h"
 #import "ADJPackageBuilder.h"
+#import "ADJUtil.h"
 
 static const char * const kInternalQueueName     = "com.adjust.AttributionQueue";
 static NSString   * const kAttributionTimerName   = @"Attribution timer";
@@ -20,35 +21,36 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @interface ADJAttributionHandler()
 
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
+@property (nonatomic, strong) ADJRequestHandler *requestHandler;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) ADJTimerOnce *attributionTimer;
 @property (atomic, assign) BOOL paused;
-@property (nonatomic, copy) NSString *basePath;
 @property (nonatomic, copy) NSString *lastInitiatedBy;
 
 @end
 
 @implementation ADJAttributionHandler
-
-+ (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                          startsSending:(BOOL)startsSending;
-{
-    return [[ADJAttributionHandler alloc] initWithActivityHandler:activityHandler
-                                                    startsSending:startsSending];
-}
-
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                startsSending:(BOOL)startsSending;
+                startsSending:(BOOL)startsSending
+                    userAgent:(NSString *)userAgent
+                    extraPath:(NSString *)extraPath
 {
     self = [super init];
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    self.requestHandler = [[ADJRequestHandler alloc]
+                                initWithResponseCallback:self
+                                extraPath:extraPath
+                                baseUrl:[ADJAdjustFactory baseUrl]
+                                gdprUrl:[ADJAdjustFactory gdprUrl]
+                                subscriptionUrl:[ADJAdjustFactory subscriptionUrl]
+                                userAgent:userAgent
+                                requestTimeout:[ADJAdjustFactory requestTimeout]];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.paused = !startsSending;
-    self.basePath = [activityHandler getBasePath];
     __weak __typeof__(self) weakSelf = self;
     self.attributionTimer = [ADJTimerOnce timerWithBlock:^{
         __typeof__(self) strongSelf = weakSelf;
@@ -190,25 +192,33 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 
     [selfI.logger verbose:@"%@", attributionPackage.extendedString];
 
-    NSURL * baseUrl = [NSURL URLWithString:[ADJAdjustFactory baseUrl]];
+    NSDictionary *sendingParameters = @{
+        @"sent_at": [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
+    };
 
-    [ADJUtil sendGetRequest:baseUrl
-                   basePath:selfI.basePath
-         prefixErrorMessage:@"Failed to get attribution"
-            activityPackage:attributionPackage
-        responseDataHandler:^(ADJResponseData * responseData)
-     {
-         // Check if any package response contains information that user has opted out.
-         // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
-         if (responseData.trackingState == ADJTrackingStateOptedOut) {
-             [selfI.activityHandler setTrackingStateOptedOut];
-             return;
-         }
+    [selfI.requestHandler sendPackageByGET:attributionPackage
+                        sendingParameters:sendingParameters];
+}
 
-         if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
-             [selfI checkAttributionResponse:(ADJAttributionResponseData*)responseData];
-         }
-     }];
+- (void)responseCallback:(ADJResponseData *)responseData {
+    if (responseData.jsonResponse) {
+        [self.logger debug:
+            @"Got attribution JSON response with message: %@", responseData.message];
+    } else {
+        [self.logger error:
+            @"Could not get attribution JSON response with message: %@", responseData.message];
+    }
+
+    // Check if any package response contains information that user has opted out.
+    // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+    if (responseData.trackingState == ADJTrackingStateOptedOut) {
+        [self.activityHandler setTrackingStateOptedOut];
+        return;
+    }
+
+    if ([responseData isKindOfClass:[ADJAttributionResponseData class]]) {
+        [self checkAttributionResponse:(ADJAttributionResponseData*)responseData];
+    }
 }
 
 - (void)waitRequestAttributionWithDelayI:(ADJAttributionHandler*)selfI
@@ -256,6 +266,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     self.activityHandler = nil;
     self.logger = nil;
     self.attributionTimer = nil;
+    self.requestHandler = nil;
 }
 
 @end

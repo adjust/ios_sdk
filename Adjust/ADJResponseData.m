@@ -11,13 +11,14 @@
 
 @implementation ADJResponseData
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     
     if (self == nil) {
         return nil;
     }
-    
+
     return self;
 }
 
@@ -42,9 +43,16 @@
             break;
         case ADJActivityKindClick:
             responseData = [[ADJSdkClickResponseData alloc] init];
+            responseData.sdkClickPackage = activityPackage;
             break;
         case ADJActivityKindEvent:
-            responseData = [[ADJEventResponseData alloc] initWithActivityPackage:activityPackage];
+            responseData = [[ADJEventResponseData alloc]
+                                initWithEventToken:
+                                    [activityPackage.parameters
+                                        objectForKey:@"event_token"]
+                                callbackId:
+                                    [activityPackage.parameters
+                                        objectForKey:@"event_callback_id"]];
             break;
         case ADJActivityKindAttribution:
             responseData = [[ADJAttributionResponseData alloc] init];
@@ -73,7 +81,6 @@
         copy.message = [self.message copyWithZone:zone];
         copy.timeStamp = [self.timeStamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
-        copy.success = self.success;
         copy.willRetry = self.willRetry;
         copy.trackingState = self.trackingState;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
@@ -86,16 +93,6 @@
 @end
 
 @implementation ADJSessionResponseData
-
-- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
-    self = [super init];
-
-    if (self == nil) {
-        return nil;
-    }
-
-    return self;
-}
 
 - (ADJSessionSuccess *)successResponseData {
     ADJSessionSuccess *successResponseData = [ADJSessionSuccess sessionSuccessResponseData];
@@ -133,19 +130,17 @@
 
 @implementation ADJEventResponseData
 
-+ (ADJEventResponseData *)responseDataWithActivityPackage:(ADJActivityPackage *)activityPackage {
-    return [[ADJEventResponseData alloc] initWithActivityPackage:activityPackage];
-}
-
-- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
+- (id)initWithEventToken:(NSString *)eventToken
+       callbackId:(NSString *)callbackId
+{
     self = [super init];
     
     if (self == nil) {
         return nil;
     }
 
-    self.eventToken = [activityPackage.parameters objectForKey:@"event_token"];
-    self.callbackId = [activityPackage.parameters objectForKey:@"event_callback_id"];
+    self.eventToken = eventToken;
+    self.callbackId = callbackId;
 
     return self;
 }
@@ -195,16 +190,6 @@
 @end
 
 @implementation ADJAttributionResponseData
-
-- (id)initWithActivityPackage:(ADJActivityPackage *)activityPackage {
-    self = [super init];
-
-    if (self == nil) {
-        return nil;
-    }
-
-    return self;
-}
 
 - (id)copyWithZone:(NSZone *)zone {
     ADJAttributionResponseData *copy = [super copyWithZone:zone];

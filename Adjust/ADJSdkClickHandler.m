@@ -16,9 +16,9 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 @interface ADJSdkClickHandler()
 
-@property (nonatomic, copy) NSString *basePath;
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
+@property (nonatomic, strong) ADJRequestHandler *requestHandler;
 
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, strong) ADJBackoffStrategy *backoffStrategy;
@@ -32,18 +32,13 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 @implementation ADJSdkClickHandler
 
-#pragma mark - Public class methods
-
-+ (id<ADJSdkClickHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                       startsSending:(BOOL)startsSending {
-    return [[ADJSdkClickHandler alloc] initWithActivityHandler:activityHandler
-                                                 startsSending:startsSending];
-}
-
 #pragma mark - Public instance methods
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                startsSending:(BOOL)startsSending {
+                startsSending:(BOOL)startsSending
+                    userAgent:(NSString *)userAgent
+                    extraPath:(NSString *)extraPath
+{
     self = [super init];
     if (self == nil) {
         return nil;
@@ -51,8 +46,16 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.logger = ADJAdjustFactory.logger;
-    self.basePath = [activityHandler getBasePath];
     self.lastPackageRetriesCount = 0;
+
+    self.requestHandler = [[ADJRequestHandler alloc]
+                           initWithResponseCallback:self
+                           extraPath:extraPath
+                           baseUrl:[ADJAdjustFactory baseUrl]
+                           gdprUrl:[ADJAdjustFactory gdprUrl]
+                           subscriptionUrl:[ADJAdjustFactory subscriptionUrl]
+                           userAgent:userAgent
+                           requestTimeout:[ADJAdjustFactory requestTimeout]];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -144,38 +147,13 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         return;
     }
 
-    NSURL *url;
-    NSString *baseUrl = [ADJAdjustFactory baseUrl];
-    if (selfI.basePath != nil) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, selfI.basePath]];
-    } else {
-        url = [NSURL URLWithString:baseUrl];
-    }
-
     dispatch_block_t work = ^{
-        [ADJUtil sendPostRequest:url
-                       queueSize:queueSize - 1
-              prefixErrorMessage:sdkClickPackage.failureMessage
-              suffixErrorMessage:@"Will retry later"
-                 activityPackage:sdkClickPackage
-             responseDataHandler:^(ADJResponseData *responseData) {
-                 // Check if any package response contains information that user has opted out.
-                 // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
-                 if (responseData.trackingState == ADJTrackingStateOptedOut) {
-                     selfI.lastPackageRetriesCount = 0;
-                     [selfI.activityHandler setTrackingStateOptedOut];
-                     return;
-                 }
-                 if (responseData.jsonResponse == nil) {
-                     selfI.lastPackageRetriesCount++;
-                     [selfI.logger error:@"Retrying sdk_click package for the %d time", selfI.lastPackageRetriesCount];
-                     [selfI sendSdkClick:sdkClickPackage];
-                     return;
-                 }
-                 selfI.lastPackageRetriesCount = 0;
+        NSDictionary *sendingParameters = @{
+            @"sent_at": [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
+        };
 
-                 [selfI.activityHandler finishedTracking:responseData];
-             }];
+        [selfI.requestHandler sendPackageByPOST:sdkClickPackage
+                              sendingParameters:sendingParameters];
 
         [selfI sendNextSdkClick];
     };
@@ -190,6 +168,32 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
     [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, selfI.lastPackageRetriesCount];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
+}
+
+- (void)responseCallback:(ADJResponseData *)responseData {
+    if (responseData.jsonResponse) {
+        [self.logger debug:
+            @"Got click JSON response with message: %@", responseData.message];
+    } else {
+        [self.logger error:
+            @"Could not get click JSON response with message: %@", responseData.message];
+    }
+    // Check if any package response contains information that user has opted out.
+    // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
+    if (responseData.trackingState == ADJTrackingStateOptedOut) {
+        self.lastPackageRetriesCount = 0;
+        [self.activityHandler setTrackingStateOptedOut];
+        return;
+    }
+    if (responseData.jsonResponse == nil) {
+        self.lastPackageRetriesCount++;
+        [self.logger error:@"Retrying sdk_click package for the %d time", self.lastPackageRetriesCount];
+        [self sendSdkClick:responseData.sdkClickPackage];
+        return;
+    }
+    self.lastPackageRetriesCount = 0;
+
+    [self.activityHandler finishedTracking:responseData];
 }
 
 @end

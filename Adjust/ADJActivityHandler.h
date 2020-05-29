@@ -44,8 +44,7 @@
 @property (nonatomic, copy) NSData *deviceTokenData;
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
-@property (nonatomic, copy) NSString *basePath;
-@property (nonatomic, copy) NSString *gdprPath;
+@property (nonatomic, copy) NSString *extraPath;
 
 - (id)init;
 
@@ -97,8 +96,7 @@
 - (void)resetSessionPartnerParameters;
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
-- (NSString *)getBasePath;
-- (NSString *)getGdprPath;
+- (void)trackSubscription:(ADJSubscription *)subscription;
 
 - (ADJDeviceInfo *)deviceInfo;
 - (ADJActivityState *)activityState;
@@ -111,8 +109,8 @@
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
-+ (id<ADJActivityHandler>)handlerWithConfig:(ADJConfig *)adjustConfig
-                             savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
+- (id)initWithConfig:(ADJConfig *)adjustConfig
+      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
                                  key:(NSString *)key

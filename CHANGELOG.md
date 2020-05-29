@@ -1,3 +1,13 @@
+### Version 4.22.0 (29th May 2020)
+#### Added
+- Added subscription tracking feature.
+
+### Changed
+- Refactored networking part and moved it to request handler.
+- Added additional synchronisation in various cases of access to package queue and activity state.
+
+---
+
 ### Version 4.21.3 (22nd April 2020)
 #### Changed
 - Added copying of each injected mutable property of `ADJEvent` class.

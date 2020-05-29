@@ -35,8 +35,7 @@ var TestLibraryBridge = {
 var AdjustCommandExecutor = function(baseUrl, gdprUrl) {
     this.baseUrl = baseUrl;
     this.gdprUrl = gdprUrl;
-    this.basePath = null;
-    this.gdprPath = null;
+    this.extraPath = null;
     this.savedEvents = {};
     this.savedConfigs = {};
     this.savedCommands = [];
@@ -50,8 +49,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     var TestOptions = function() {
         this.baseUrl = null;
         this.gdprUrl = null;
-        this.basePath = null;
-        this.gdprPath = null;
+        this.extraPath = null;
         this.timerIntervalInMilliseconds = null;
         this.timerStartInMilliseconds = null;
         this.sessionIntervalInMilliseconds = null;
@@ -67,10 +65,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     testOptions.gdprUrl = this.gdprUrl;
 
     if ('basePath' in params) {
-        var basePath = getFirstValue(params, 'basePath');
-        console.log('TestLibraryBridge hasOwnProperty basePath, first: ' + basePath);
-        this.basePath = basePath;
-        this.gdprPath = basePath;
+        this.extraPath = getFirstValue(params, 'basePath');
     }
     if ('timerInterval' in params) {
         testOptions.timerIntervalInMilliseconds = getFirstValue(params, 'timerInterval');
@@ -106,8 +101,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
             switch(teardownOption) {
                 case 'resetSdk':
                     testOptions.teardown = true;
-                    testOptions.basePath = this.basePath;
-                    testOptions.gdprPath = this.gdprPath;
+                    testOptions.extraPath = this.extraPath;
                     break;
                 case 'deleteState':
                     testOptions.deleteState = true;
@@ -122,15 +116,13 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
                     break;
                 case 'sdk':
                     testOptions.teardown = true;
-                    testOptions.basePath = null;
-                    testOptions.gdprPath = null;
+                    testOptions.extraPath = null;
                     break;
                 case 'test':
                     // TODO: null configs
                     // TODO: null events
                     // TODO: null delegate
-                    this.basePath = null;
-                    this.gdprPath = null;
+                    this.extraPath = null;
                     testOptions.timerIntervalInMilliseconds = -1;
                     testOptions.timerStartInMilliseconds = -1;
                     testOptions.sessionIntervalInMilliseconds = -1;
@@ -260,7 +252,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('attributionCallbackSendAll' in params) {
         console.log('AdjustCommandExecutor.prototype.config attributionCallbackSendAll');
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setAttributionCallback(
             function(attribution) {
                 console.log('attributionCallback: ' + JSON.stringify(attribution));
@@ -272,14 +264,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('creative', attribution.creative);
                 addInfoToSend('clickLabel', attribution.click_label);
                 addInfoToSend('adid', attribution.adid);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }
 
     if ('sessionCallbackSendSuccess' in params) {
         console.log('AdjustCommandExecutor.prototype.config sessionCallbackSendSuccess');
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setSessionSuccessCallback(
             function(sessionSuccessResponseData) {
                 console.log('sessionSuccessCallback: ' + JSON.stringify(sessionSuccessResponseData));
@@ -287,14 +279,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('timestamp', sessionSuccessResponseData.timestamp);
                 addInfoToSend('adid', sessionSuccessResponseData.adid);
                 addInfoToSend('jsonResponse', sessionSuccessResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }
 
     if ('sessionCallbackSendFailure' in params) {
         console.log('AdjustCommandExecutor.prototype.config sessionCallbackSendFailure');
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setSessionFailureCallback(
             function(sessionFailureResponseData) {
                 console.log('sessionFailureCallback: ' + JSON.stringify(sessionFailureResponseData));
@@ -303,14 +295,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('adid', sessionFailureResponseData.adid);
                 addInfoToSend('willRetry', sessionFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', sessionFailureResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }
 
     if ('eventCallbackSendSuccess' in params) {
         console.log('AdjustCommandExecutor.prototype.config eventCallbackSendSuccess');
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setEventSuccessCallback(
             function(eventSuccessResponseData) {
                 console.log('eventSuccessCallback: ' + JSON.stringify(eventSuccessResponseData));
@@ -320,14 +312,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('eventToken', eventSuccessResponseData.eventToken);
                 addInfoToSend('callbackId', eventSuccessResponseData.callbackId);
                 addInfoToSend('jsonResponse', eventSuccessResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }
 
     if ('eventCallbackSendFailure' in params) {
         console.log('AdjustCommandExecutor.prototype.config eventCallbackSendFailure');
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setEventFailureCallback(
             function(eventFailureResponseData) {
                 console.log('eventFailureCallback: ' + JSON.stringify(eventFailureResponseData));
@@ -338,7 +330,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('callbackId', eventFailureResponseData.callbackId);
                 addInfoToSend('willRetry', eventFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', eventFailureResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }
@@ -352,12 +344,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         if (shouldOpenDeeplinkS === 'false') {
             adjustConfig.setOpenDeferredDeeplink(false);
         }
-        var basePath = this.basePath;
+        var extraPath = this.extraPath;
         adjustConfig.setDeferredDeeplinkCallback(
             function(deeplink) {
                 console.log('deferredDeeplinkCallback: ' + JSON.stringify(deeplink));
                 addInfoToSend('deeplink', deeplink);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', basePath, null);
+                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
     }

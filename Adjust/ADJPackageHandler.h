@@ -12,31 +12,23 @@
 #import "ADJActivityHandler.h"
 #import "ADJResponseData.h"
 #import "ADJSessionParameters.h"
+#import "ADJRequestHandler.h"
 
-@protocol ADJPackageHandler
+@interface ADJPackageHandler : NSObject <ADJResponseCallback>
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                startsSending:(BOOL)startsSending;
+                startsSending:(BOOL)startsSending
+                    userAgent:(NSString *)userAgent
+                    extraPath:(NSString *)extraPath;
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;
-- (void)sendNextPackage:(ADJResponseData *)responseData;
-- (void)closeFirstPackage:(ADJResponseData *)responseData
-          activityPackage:(ADJActivityPackage *)activityPackage;
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)updatePackages:(ADJSessionParameters *)sessionParameters;
 - (void)flush;
-- (NSString *)getBasePath;
-- (NSString *)getGdprPath;
 
 - (void)teardown;
 + (void)deleteState;
-@end
-
-@interface ADJPackageHandler : NSObject <ADJPackageHandler>
-
-+ (id<ADJPackageHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                      startsSending:(BOOL)startsSending;
 
 @end

@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "ADJActivityHandler.h"
 #import "ADJActivityPackage.h"
+#import "ADJRequestHandler.h"
 
-@protocol ADJAttributionHandler
+@interface ADJAttributionHandler : NSObject <ADJResponseCallback>
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
-                startsSending:(BOOL)startsSending;
+                startsSending:(BOOL)startsSending
+                    userAgent:(NSString *)userAgent
+                    extraPath:(NSString *)extraPath;
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
 
@@ -28,12 +31,5 @@
 - (void)resumeSending;
 
 - (void)teardown;
-
-@end
-
-@interface ADJAttributionHandler : NSObject <ADJAttributionHandler>
-
-+ (id<ADJAttributionHandler>)handlerWithActivityHandler:(id<ADJActivityHandler>)activityHandler
-                                          startsSending:(BOOL)startsSending;
 
 @end
