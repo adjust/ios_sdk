@@ -1,5 +1,5 @@
 ### Version 4.22.1 (5th June 2020)
-#### Added
+#### Fixed
 - Fixed `copyWithZone:` method implementation in `ADJSubscription.m` (thanks to @atilimcetin).
 
 ---
