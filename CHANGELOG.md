@@ -1,3 +1,9 @@
+### Version 4.22.1 (5th June 2020)
+#### Added
+- Fixed `copyWithZone:` method implementation in `ADJSubscription.m` (thanks to @atilimcetin).
+
+---
+
 ### Version 4.22.0 (29th May 2020)
 #### Added
 - Added subscription tracking feature.
