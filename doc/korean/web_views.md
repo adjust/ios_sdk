@@ -109,7 +109,7 @@ Adjust SDK를 정적/동적 프레임 워크 또는 Carthage를 통해 추가 �
 
 ### <a id="bridge-integrate-app"></a>AdjustBridge를 앱에 연동하기
 
-프로젝트 네비게이터에서 소스 파일 View Controller를 엽니 다. 파일 맨 위에`import` 문구를 추가하십시오. 인도네시아 
+프로젝트 네비게이터에서 소스 파일 View Controller를 엽니 다. 파일 맨 위에`import` 문구를 추가하십시오.  
 Web View Delegate의`viewDidLoad` 또는`viewWillAppear` 메소드는`AdjustBridge`에 다음 호출을 추가합니다.
 
 ```objc
