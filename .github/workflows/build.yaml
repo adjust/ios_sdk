@@ -7,15 +7,6 @@ on:
   #     - v*
 name: Build framework
 jobs:
-  create_dirs:
-    name: Create dirs
-    steps:
-      - run: |
-          mkdir -p frameworks/static
-          mkdir -p frameworks/dynamic/ios
-          mkdir -p frameworks/dynamic/tvos
-          mkdir -p frameworks/dynamic/imessage
-          mkdir -p frameworks/dynamic/webbridge
   static:
     name: Build static
     runs-on: macOS-latest
@@ -37,9 +28,10 @@ jobs:
         uses: actions/checkout@master
       - name: Universal tvOS SDK
         run: |
+          mkdir -p frameworks/static_tvos
           cd ios_sdk_dev
           xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
           xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
-          cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static
-          lipo -create -output frameworks/static/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
+          cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
+          lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
 
