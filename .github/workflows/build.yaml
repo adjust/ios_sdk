@@ -11,11 +11,11 @@ jobs:
     name: Create dirs
     steps:
       - run: |
-        mkdir -p frameworks/static
-        mkdir -p frameworks/dynamic/ios
-        mkdir -p frameworks/dynamic/tvos
-        mkdir -p frameworks/dynamic/imessage
-        mkdir -p frameworks/dynamic/webbridge
+          mkdir -p frameworks/static
+          mkdir -p frameworks/dynamic/ios
+          mkdir -p frameworks/dynamic/tvos
+          mkdir -p frameworks/dynamic/imessage
+          mkdir -p frameworks/dynamic/webbridge
   static:
     name: Build static
     runs-on: macOS-latest
