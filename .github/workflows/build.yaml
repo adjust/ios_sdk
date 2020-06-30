@@ -11,23 +11,19 @@ jobs:
     name: Build static
     runs-on: macOS-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Build
         run: |
           mkdir -p frameworks/static
-          cd ios_sdk_dev
           xcodebuild -target AdjustStatic -configuration Release clean build
   tvOS:
     name: Build tvOS SDK
     runs-on: macOS-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Universal tvOS SDK
         run: |
           mkdir -p frameworks/static_tvos
-          cd ios_sdk_dev
           xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
           xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
