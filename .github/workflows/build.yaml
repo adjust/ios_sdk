@@ -10,7 +10,6 @@ jobs:
   static:
     name: Build static
     runs-on: macOS-latest
-    needs: create_dirs
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -22,7 +21,6 @@ jobs:
   tvOS:
     name: Build tvOS SDK
     runs-on: macOS-latest
-    needs: create_dirs
     steps:
       - name: Checkout
         uses: actions/checkout@master
