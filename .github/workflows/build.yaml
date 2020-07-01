@@ -17,7 +17,7 @@ jobs:
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
       - name: Upload files
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: static_framework
           path: frameworks/static/AdjustSdk.framework
@@ -34,7 +34,7 @@ jobs:
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
       - name: Upload files
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: universal_tvos
           path: frameworks/static_tvos/AdjustSdkTv.framework
@@ -53,12 +53,12 @@ jobs:
             Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
           carthage build --no-skip-current
       - name: Upload iOS
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: dynamic_ios
           path: Carthage/Build/iOS/*
       - name: Upload tvOS
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: dynamic_tvos
           path: Carthage/Build/tvOS/*
@@ -78,7 +78,7 @@ jobs:
           mv AdjustSdkIm.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
           carthage build --no-skip-current
       - name: Upload framework
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: dynamic_imessage
           path: Carthage/Build/iOS/*
@@ -97,7 +97,7 @@ jobs:
           mv AdjustSdkWebBridge.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
           carthage build --no-skip-current
       - name: Upload framework
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: dynamic_webbridge
           path: Carthage/Build/iOS/*
