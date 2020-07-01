@@ -16,6 +16,11 @@ jobs:
         run: |
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
+      - name: Upload files
+        uses: actions/upload-artifact@v1
+        with:
+          name: static_framework
+          path: frameworks/static/AdjustSdk.framework
   tvOS:
     name: Build tvOS SDK
     runs-on: macOS-latest
@@ -28,4 +33,72 @@ jobs:
           xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
+      - name: Upload files
+        uses: actions/upload-artifact@v1
+        with:
+          name: universal_tvos
+          path: frameworks/static_tvos/AdjustSdkTv.framework
+
+  dynamic_ios_tvos:
+    name: Build dynamic iOS and tvOS targets with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
+            Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
+          carthage build --no-skip-current
+      - name: Upload iOS
+        uses: actions/upload-artifact@v1
+        with:
+          name: dynamic_ios
+          path: Carthage/Build/iOS/*
+      - name: Upload tvOS
+        uses: actions/upload-artifact@v1
+        with:
+          name: dynamic_tvos
+          path: Carthage/Build/tvOS/*
+
+  dynamic_imessage:
+    name: Build dynamic iMessage target with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
+              Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
+          mv AdjustSdkIm.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+          carthage build --no-skip-current
+      - name: Upload framework
+        uses: actions/upload-artifact@v1
+        with:
+          name: dynamic_imessage
+          path: Carthage/Build/iOS/*
+
+  dynamic_webbridge:
+    name: Build dynamic WebBridge target with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
+          mv AdjustSdkWebBridge.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+          carthage build --no-skip-current
+      - name: Upload framework
+        uses: actions/upload-artifact@v1
+        with:
+          name: dynamic_webbridge
+          path: Carthage/Build/iOS/*
 
