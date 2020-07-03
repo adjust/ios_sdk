@@ -521,7 +521,9 @@ Currently we support the below `source` parameter values:
 
 ### <a id="subscriptions"></a>Subscription tracking
 
-**Note**: This feature is only available in the native SDK v4.22.0 and above.
+**Note**: This feature is only available in the native SDK v4.22.0 and above. We recommend using at least version 4.22.1. 
+
+**Important**: The following steps only set up subscription tracking within the SDK. To complete setup, certain app-specific information must be added within Adjust’s internal interface. An Adjust representative must take this action: please contact support@adjust.com or your Technical Account Manager. 
 
 You can track App Store subscriptions and verify their validity with the Adjust SDK. After a subscription has been successfully purchased, make the following call to the Adjust SDK:
 
