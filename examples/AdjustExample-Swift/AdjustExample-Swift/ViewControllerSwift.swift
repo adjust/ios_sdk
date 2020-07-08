@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AppTrackingTransparency
 
 class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnTrackEventSimple: UIButton?
@@ -25,6 +26,15 @@ class ViewControllerSwift: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func btnAskPermission(_sender: UIButton) {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { (status) in
+                print("authorized == \(status == .authorized)")
+                print("restricted == \(status == .restricted)")
+            }
+        }
     }
 
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
