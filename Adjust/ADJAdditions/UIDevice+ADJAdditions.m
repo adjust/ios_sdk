@@ -13,6 +13,7 @@
 
 #if !ADJUST_NO_IDFA
 #import <AdSupport/ASIdentifierManager.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 #endif
 
 #if !ADJUST_NO_IAD && !TARGET_OS_TV
@@ -24,25 +25,56 @@
 
 @implementation UIDevice(ADJAdditions)
 
+- (Class)adSupportManager {
+    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
+    Class class = NSClassFromString(className);
+    
+    return class;
+}
+
+- (Class)appTrackingManager {
+    NSString *className = [NSString adjJoin:@"A", @"T", @"tracking", @"manager", nil];
+    Class class = NSClassFromString(className);
+    
+    return class;
+}
+
 - (BOOL)adjTrackingEnabled {
 #if ADJUST_NO_IDFA
     return NO;
 #else
-    // return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
-    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
-    Class class = NSClassFromString(className);
-    if (class == nil) {
-        return NO;
-    }
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
-    SEL selManager = NSSelectorFromString(keyManager);
-    if (![class respondsToSelector:selManager]) {
+//     [ATTrackingManager trackingAuthorizationStatus];
+    Class appTrackingClass = [self appTrackingManager];
+    if (appTrackingClass != nil) {
+        NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
+        SEL selAuthorization = NSSelectorFromString(keyAuthorization);
+        if ([appTrackingClass respondsToSelector:selAuthorization]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+            ATTrackingManagerAuthorizationStatus status = (ATTrackingManagerAuthorizationStatus)[appTrackingClass performSelector:selAuthorization];
+            return status == ATTrackingManagerAuthorizationStatusAuthorized;
+#pragma clang diagnostic pop
+        }
+    }
+    
+    // Fallback iOS 13 and earlier versions
+    
+//     return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
+    Class adSupportClass = [self adSupportManager];
+    if (adSupportClass == nil) {
         return NO;
     }
-    id manager = [class performSelector:selManager];
 
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    SEL selManager = NSSelectorFromString(keyManager);
+    if (![adSupportClass respondsToSelector:selManager]) {
+        return NO;
+    }
+    id manager = [adSupportClass performSelector:selManager];
+    
     NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
     SEL selEnabled = NSSelectorFromString(keyEnabled);
     if (![manager respondsToSelector:selEnabled]) {
@@ -59,9 +91,8 @@
     return @"";
 #else
     // return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
-    Class class = NSClassFromString(className);
-    if (class == nil) {
+    Class adSupportClass = [self adSupportManager];
+    if (adSupportClass == nil) {
         return @"";
     }
 #pragma clang diagnostic push
@@ -69,10 +100,10 @@
 
     NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
-    if (![class respondsToSelector:selManager]) {
+    if (![adSupportClass respondsToSelector:selManager]) {
         return @"";
     }
-    id manager = [class performSelector:selManager];
+    id manager = [adSupportClass performSelector:selManager];
 
     NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
     SEL selIdentifier = NSSelectorFromString(keyIdentifier);
