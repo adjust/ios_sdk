@@ -109,6 +109,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorLimitAdTracking = 1,
     AdjADClientErrorMissingData = 2,
     AdjADClientErrorCorruptResponse = 3,
+    AdjCustomErrorTimeout = 100,
 };
 
 #pragma mark -
@@ -400,6 +401,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         //      - AdjADClientErrorUnknown
         //      - AdjADClientErrorMissingData
         //      - AdjADClientErrorCorruptResponse
+        //      - AdjCustomErrorTimeout
         // apply following retry logic:
         //      - 1st retry after 5 seconds
         //      - 2nd retry after 2 seconds
@@ -407,7 +409,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         switch (error.code) {
             case AdjADClientErrorUnknown:
             case AdjADClientErrorMissingData:
-            case AdjADClientErrorCorruptResponse: {
+            case AdjADClientErrorCorruptResponse:
+            case AdjCustomErrorTimeout: {
                 int64_t iAdRetryDelay = 0;
                 switch (self.iAdRetriesLeft) {
                     case 2:
@@ -1365,7 +1368,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI disableThirdPartySharing];
         }
         if (selfI.adjustConfig.allowiAdInfoReading == YES) {
-            [selfI checkForiAdI:selfI];
+            [selfI checkForiAd];
         }
     }
 
@@ -1377,15 +1380,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)checkForiAd {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler *selfI) {
-        [selfI checkForiAdI:selfI];
-    }];
-}
-
-- (void)checkForiAdI:(ADJActivityHandler *)selfI {
-    [[UIDevice currentDevice] adjCheckForiAd:selfI];
+    [[UIDevice currentDevice] adjCheckForiAd:self queue:self.internalQueue];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI
