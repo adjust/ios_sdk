@@ -13,6 +13,7 @@
 #import "ADJActivityPackage.h"
 #import "NSData+ADJAdditions.h"
 #import "UIDevice+ADJAdditions.h"
+#import "ADJUserDefaults.h"
 
 @interface ADJPackageBuilder()
 
@@ -113,6 +114,19 @@
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
+    
+    if ([clickSource isEqualToString:@"iad3"]) {
+        // send iAd errors in the parameters
+        NSDictionary<NSString *, NSNumber *> *iAdErrors = [ADJUserDefaults getiAdErrors];
+        if (iAdErrors) {
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:iAdErrors options:0 error:nil];
+            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            parameters[@"iad_errors"] = jsonStr;
+            
+            [ADJUserDefaults cleariAdErrors];
+        }
+    }
+    
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
     clickPackage.activityKind = ADJActivityKindClick;

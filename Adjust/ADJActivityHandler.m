@@ -411,6 +411,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
             case AdjADClientErrorMissingData:
             case AdjADClientErrorCorruptResponse:
             case AdjCustomErrorTimeout: {
+                
+                [self saveiAdErrorCode:error.code];
+                
                 int64_t iAdRetryDelay = 0;
                 switch (self.iAdRetriesLeft) {
                     case 2:
@@ -472,6 +475,26 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)saveiAdErrorCode:(NSInteger)code {
+    NSString *codeKey;
+    switch (code) {
+        case AdjADClientErrorUnknown:
+            codeKey = @"AdjADClientErrorUnknown";
+        case AdjADClientErrorMissingData:
+            codeKey = @"AdjADClientErrorMissingData";
+        case AdjADClientErrorCorruptResponse:
+            codeKey = @"AdjADClientErrorCorruptResponse";
+        case AdjCustomErrorTimeout:
+            codeKey = @"AdjCustomErrorTimeout";
+        default:
+            codeKey = @"";
+    }
+    
+    if (![codeKey isEqualToString:@""]) {
+        [ADJUserDefaults saveiAdErrorKey:codeKey];
+    }
+}
+
 - (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
           attributionDetails:(NSDictionary *)attributionDetails
  {
@@ -501,7 +524,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];     
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
