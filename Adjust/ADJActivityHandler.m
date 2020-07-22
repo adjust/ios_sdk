@@ -426,7 +426,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
                 dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
                 dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self checkForiAd];
+                    [self checkForiAdI:self];
                 });
                 return;
             }
@@ -1391,7 +1391,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI disableThirdPartySharing];
         }
         if (selfI.adjustConfig.allowiAdInfoReading == YES) {
-            [selfI checkForiAd];
+            [selfI checkForiAdI:selfI];
         }
     }
 
@@ -1402,8 +1402,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
 }
 
-- (void)checkForiAd {
-    [[UIDevice currentDevice] adjCheckForiAd:self queue:self.internalQueue];
+- (void)checkForiAdI:(ADJActivityHandler *)selfI {
+    [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI
