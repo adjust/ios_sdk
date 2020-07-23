@@ -115,15 +115,13 @@
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
     
-    if ([clickSource isEqualToString:@"iad3"]) {
+    if ([clickSource isEqualToString:ADJiAdPackageKey]) {
         // send iAd errors in the parameters
         NSDictionary<NSString *, NSNumber *> *iAdErrors = [ADJUserDefaults getiAdErrors];
         if (iAdErrors) {
             NSData *jsonData = [NSJSONSerialization dataWithJSONObject:iAdErrors options:0 error:nil];
             NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             parameters[@"iad_errors"] = jsonStr;
-            
-            [ADJUserDefaults cleariAdErrors];
         }
     }
     

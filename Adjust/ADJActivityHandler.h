@@ -127,3 +127,5 @@
 - (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
 
 @end
+
+extern NSString * const ADJiAdPackageKey;

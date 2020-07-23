@@ -21,6 +21,8 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJUserDefaults.h"
 
+NSString * const ADJiAdPackageKey = @"iad3";
+
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
@@ -263,6 +265,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
+    
+    if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
+        // received iAd click package response, clear the errors from UserDefaults
+        [ADJUserDefaults cleariAdErrors];
+    }
+    
     // redirect session responses to attribution handler to check for attribution information
     if ([responseData isKindOfClass:[ADJSessionResponseData class]]) {
         [self.attributionHandler checkSessionResponse:(ADJSessionResponseData*)responseData];
@@ -524,7 +532,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];     
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJiAdPackageKey];     
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
