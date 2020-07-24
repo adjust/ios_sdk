@@ -23,12 +23,10 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 
 + (void)savePushTokenData:(NSData *)pushToken {
     [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN_DATA];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)savePushTokenString:(NSString *)pushToken {
     [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:PREFS_KEY_PUSH_TOKEN_STRING];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (NSData *)getPushTokenData {
@@ -42,12 +40,10 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 + (void)removePushToken {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)setInstallTracked {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_INSTALL_TRACKED];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (BOOL)getInstallTracked {
@@ -56,7 +52,6 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 
 + (void)setGdprForgetMe {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_GDPR_FORGET_ME];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (BOOL)getGdprForgetMe {
@@ -65,13 +60,11 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 
 + (void)removeGdprForgetMe {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)saveDeeplinkUrl:(NSURL *)deeplink andClickTime:(NSDate *)clickTime {
     [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] setObject:clickTime forKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (NSURL *)getDeeplinkUrl {
@@ -85,12 +78,10 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 + (void)removeDeeplink {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)setDisableThirdPartySharing {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (BOOL)getDisableThirdPartySharing {
@@ -99,7 +90,6 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 
 + (void)removeDisableThirdPartySharing {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)saveiAdErrorKey:(NSString *)key {
@@ -138,7 +128,6 @@ static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
