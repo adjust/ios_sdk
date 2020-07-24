@@ -265,12 +265,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
-    
-    if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
-        // received iAd click package response, clear the errors from UserDefaults
-        [ADJUserDefaults cleariAdErrors];
-    }
-    
     // redirect session responses to attribution handler to check for attribution information
     if ([responseData isKindOfClass:[ADJSessionResponseData class]]) {
         [self.attributionHandler checkSessionResponse:(ADJSessionResponseData*)responseData];
