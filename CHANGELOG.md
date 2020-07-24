@@ -1,3 +1,9 @@
+### Version 4.22.2 (24th July 2020)
+#### Added
+- Added collection iAd framework communication errors metrics.
+
+---
+
 ### Version 4.22.1 (5th June 2020)
 #### Fixed
 - Fixed `copyWithZone:` method implementation in `ADJSubscription.m` (thanks to @atilimcetin).
