@@ -8,6 +8,7 @@
 
 import UIKit
 import AppTrackingTransparency
+import AdSupport
 
 class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnTrackEventSimple: UIButton?
@@ -31,7 +32,9 @@ class ViewControllerSwift: UIViewController {
     @IBAction func btnAskPermission(_sender: UIButton) {
         if #available(iOS 14, *) {
             ATTrackingManager.requestTrackingAuthorization { (status) in
+                print("IDFA == \(ASIdentifierManager.shared().advertisingIdentifier)")
                 print("authorized == \(status == .authorized)")
+                print("denied == \(status == .denied)")
                 print("restricted == \(status == .restricted)")
             }
         }
