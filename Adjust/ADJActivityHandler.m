@@ -488,14 +488,19 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     switch (code) {
         case AdjADClientErrorUnknown:
             codeKey = @"AdjADClientErrorUnknown";
+            break;
         case AdjADClientErrorMissingData:
             codeKey = @"AdjADClientErrorMissingData";
+            break;
         case AdjADClientErrorCorruptResponse:
             codeKey = @"AdjADClientErrorCorruptResponse";
+            break;
         case AdjCustomErrorTimeout:
             codeKey = @"AdjCustomErrorTimeout";
+            break;
         default:
             codeKey = @"";
+            break;
     }
     
     if (![codeKey isEqualToString:@""]) {
