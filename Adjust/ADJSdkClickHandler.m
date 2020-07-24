@@ -11,6 +11,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJSdkClickHandler.h"
 #import "ADJBackoffStrategy.h"
+#import "ADJUserDefaults.h"
 
 static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
@@ -192,6 +193,11 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         return;
     }
     self.lastPackageRetriesCount = 0;
+    
+    if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
+        // received iAd click package response, clear the errors from UserDefaults
+        [ADJUserDefaults cleariAdErrors];
+    }
 
     [self.activityHandler finishedTracking:responseData];
 }

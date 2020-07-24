@@ -21,6 +21,8 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJUserDefaults.h"
 
+NSString * const ADJiAdPackageKey = @"iad3";
+
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
@@ -109,6 +111,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     AdjADClientErrorLimitAdTracking = 1,
     AdjADClientErrorMissingData = 2,
     AdjADClientErrorCorruptResponse = 3,
+    AdjCustomErrorTimeout = 100,
 };
 
 #pragma mark -
@@ -400,6 +403,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         //      - AdjADClientErrorUnknown
         //      - AdjADClientErrorMissingData
         //      - AdjADClientErrorCorruptResponse
+        //      - AdjCustomErrorTimeout
         // apply following retry logic:
         //      - 1st retry after 5 seconds
         //      - 2nd retry after 2 seconds
@@ -407,7 +411,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         switch (error.code) {
             case AdjADClientErrorUnknown:
             case AdjADClientErrorMissingData:
-            case AdjADClientErrorCorruptResponse: {
+            case AdjADClientErrorCorruptResponse:
+            case AdjCustomErrorTimeout: {
+                
+                [self saveiAdErrorCode:error.code];
+                
                 int64_t iAdRetryDelay = 0;
                 switch (self.iAdRetriesLeft) {
                     case 2:
@@ -420,7 +428,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
                 dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
                 dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self checkForiAd];
+                    [self checkForiAdI:self];
                 });
                 return;
             }
@@ -469,6 +477,31 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)saveiAdErrorCode:(NSInteger)code {
+    NSString *codeKey;
+    switch (code) {
+        case AdjADClientErrorUnknown:
+            codeKey = @"AdjADClientErrorUnknown";
+            break;
+        case AdjADClientErrorMissingData:
+            codeKey = @"AdjADClientErrorMissingData";
+            break;
+        case AdjADClientErrorCorruptResponse:
+            codeKey = @"AdjADClientErrorCorruptResponse";
+            break;
+        case AdjCustomErrorTimeout:
+            codeKey = @"AdjCustomErrorTimeout";
+            break;
+        default:
+            codeKey = @"";
+            break;
+    }
+    
+    if (![codeKey isEqualToString:@""]) {
+        [ADJUserDefaults saveiAdErrorKey:codeKey];
+    }
+}
+
 - (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
           attributionDetails:(NSDictionary *)attributionDetails
  {
@@ -498,7 +531,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"iad3"];
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJiAdPackageKey];     
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -1376,16 +1409,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
 }
 
-- (void)checkForiAd {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler *selfI) {
-        [selfI checkForiAdI:selfI];
-    }];
-}
-
 - (void)checkForiAdI:(ADJActivityHandler *)selfI {
-    [[UIDevice currentDevice] adjCheckForiAd:selfI];
+    [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI

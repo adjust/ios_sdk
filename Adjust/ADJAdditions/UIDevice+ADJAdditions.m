@@ -158,7 +158,7 @@
     return @"";
 }
 
-- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler {
+- (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue {
     // if no tries for iad v3 left, stop trying
     id<ADJLogger> logger = [ADJAdjustFactory logger];
 
@@ -190,7 +190,8 @@
     [logger debug:@"iAd framework successfully found in user's app"];
 
     BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
-                                   adcClientSharedInstance:ADClientSharedClientInstance];
+                                   adcClientSharedInstance:ADClientSharedClientInstance
+                                    queue:queue];
 
     if (!iAdInformationAvailable) {
         [logger warn:@"iAd information not available"];
@@ -201,20 +202,50 @@
 }
 
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
-  adcClientSharedInstance:(id)ADClientSharedClientInstance {
+  adcClientSharedInstance:(id)ADClientSharedClientInstance
+                    queue:(dispatch_queue_t)queue {
     SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
     if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
         return NO;
     }
-
+    
+    __block Class lock = [ADJActivityHandler class];
+    __block BOOL completed = NO;
+    
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [ADClientSharedClientInstance performSelector:iAdDetailsSelector
                                        withObject:^(NSDictionary *attributionDetails, NSError *error) {
-                                           [activityHandler setAttributionDetails:attributionDetails
-                                                                            error:error];
-                                       }];
+        
+        @synchronized (lock) {
+            if (completed) {
+                return;
+            } else {
+                completed = YES;
+            }
+        }
+        
+        [activityHandler setAttributionDetails:attributionDetails
+                                         error:error];
+    }];
 #pragma clang diagnostic pop
+    
+    // 5 seconds of timeout
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), queue, ^{
+        @synchronized (lock) {
+            if (completed) {
+                return;
+            } else {
+                completed = YES;
+            }
+        }
+        
+        [activityHandler setAttributionDetails:nil
+                                         error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
+                                                                   code:100
+                                                               userInfo:@{@"Error reason": @"iAd request timed out"}]];
+    });
+    
     return YES;
 }
 
