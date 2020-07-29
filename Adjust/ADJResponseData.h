@@ -43,6 +43,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, strong) ADJActivityPackage *sdkClickPackage;
 
+@property (nonatomic, strong) ADJActivityPackage *sdkPackage;
+
 + (id)buildResponseData:(ADJActivityPackage *)activityPackage;
 
 @end

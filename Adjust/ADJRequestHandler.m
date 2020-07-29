@@ -14,6 +14,13 @@
 #import "ADJActivityPackage.h"
 #import "NSString+ADJAdditions.h"
 
+static NSString * const ADJAttemptDefaultURL = @"AttemptDefaultURL";
+static NSString * const ADJAttemptFallbackURL = @"AttemptFallbackURL";
+static NSString * const ADJAttemptRandomIP = @"AttemptRandomIP";
+
+static NSString * const ADJMethodGET = @"MethodGET";
+static NSString * const ADJMethodPOST = @"MethodPOST";
+
 @interface ADJRequestHandler()
 
 @property (nonatomic, copy) NSString *baseUrlString;
@@ -76,6 +83,26 @@
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
+    NSString *urlHostString;
+    if (activityPackage.activityKind == ADJActivityKindGdpr) {
+        urlHostString = self.gdrpUrlString;
+    } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
+        urlHostString = self.subscriptionUrlString;
+    } else {
+        urlHostString = self.baseUrlString;
+    }
+
+    [self sendPackageByPOST:activityPackage
+          sendingParameters:sendingParameters
+              urlHostString:urlHostString
+            attemptTypeInfo:ADJAttemptDefaultURL];
+}
+
+- (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
+        sendingParameters:(NSDictionary *)sendingParameters
+            urlHostString:(NSString *)urlHostString
+          attemptTypeInfo:(NSString *)attemptTypeInfo
+{
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
                                 copyItems:YES];
@@ -83,17 +110,11 @@
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    NSString *urlHostString;
-    if (activityKind == ADJActivityKindGdpr) {
-        urlHostString = self.gdrpUrlString;
-    } else if (activityKind == ADJActivityKindSubscription) {
-        urlHostString = self.subscriptionUrlString;
-    } else {
-        urlHostString = self.baseUrlString;
-    }
-
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParameters
+                                      copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
@@ -105,12 +126,27 @@
                   sendingParameters:sendingParameters];
 
     [self sendRequest:urlRequest
-     authorizationHeader:authorizationHeader
-         responseData:responseData];
+  authorizationHeader:authorizationHeader
+         responseData:responseData
+      attemptTypeInfo:attemptTypeInfo
+       methodTypeInfo:ADJMethodPOST];
 }
 
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
+{
+    NSString *urlHostString = self.baseUrlString;
+
+    [self sendPackageByGET:activityPackage
+         sendingParameters:sendingParameters
+             urlHostString:urlHostString
+           attemptTypeInfo:ADJAttemptDefaultURL];
+}
+
+- (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
+       sendingParameters:(NSDictionary *)sendingParameters
+           urlHostString:(NSString *)urlHostString
+         attemptTypeInfo:(NSString *)attemptTypeInfo
 {
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
@@ -121,6 +157,9 @@
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParameters
+                                      copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
@@ -128,18 +167,23 @@
         [self requestForGetPackage:path
                          clientSdk:clientSdk
                         parameters:parameters
-                     urlHostString:self.baseUrlString
+                     urlHostString:urlHostString
                  sendingParameters:sendingParameters];
 
     [self sendRequest:urlRequest
      authorizationHeader:authorizationHeader
-         responseData:responseData];
+         responseData:responseData
+      attemptTypeInfo:attemptTypeInfo
+       methodTypeInfo:ADJMethodGET];
 }
 
 #pragma mark Internal methods
 - (void)sendRequest:(NSMutableURLRequest *)request
 authorizationHeader:(NSString *)authorizationHeader
        responseData:(ADJResponseData *)responseData
+    attemptTypeInfo:(NSString *)attemptTypeInfo
+     methodTypeInfo:(NSString *)methodTypeInfo
+
 {
     if (authorizationHeader != nil) {
         [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
@@ -152,15 +196,22 @@ authorizationHeader:(NSString *)authorizationHeader
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
     if (NSURLSessionClass != nil) {
         [self sendNSURLSessionRequest:request
-                      responseData:responseData];
+                      responseData:responseData
+                      attemptTypeInfo:attemptTypeInfo
+                       methodTypeInfo:methodTypeInfo];
     } else {
         [self sendNSURLConnectionRequest:request
-                         responseData:responseData];
+                         responseData:responseData
+                         attemptTypeInfo:attemptTypeInfo
+                          methodTypeInfo:methodTypeInfo];
     }
 }
 
 - (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request
                    responseData:(ADJResponseData *)responseData
+                attemptTypeInfo:(NSString *)attemptTypeInfo
+                 methodTypeInfo:(NSString *)methodTypeInfo
+
 {
     NSURLSession *session = [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration];
     NSURLSessionDataTask *task =
@@ -172,6 +223,23 @@ authorizationHeader:(NSString *)authorizationHeader
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
+
+            if (responseData.jsonResponse != nil) {
+                [self.responseCallback responseCallback:responseData];
+                return;
+            } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
+                [self retryWithResponseData:responseData
+                            attemptTypeInfo:ADJAttemptFallbackURL
+                             methodTypeInfo:methodTypeInfo];
+                return;
+            } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
+                [self retryWithResponseData:responseData
+                            attemptTypeInfo:ADJAttemptRandomIP
+                             methodTypeInfo:methodTypeInfo];
+                return;
+            } else {
+                [self.responseCallback responseCallback:responseData];
+            }
         }];
     [task resume];
     [session finishTasksAndInvalidate];
@@ -179,6 +247,8 @@ authorizationHeader:(NSString *)authorizationHeader
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
                 responseData:(ADJResponseData *)responseData
+                   attemptTypeInfo:(NSString *)attemptTypeInfo
+                    methodTypeInfo:(NSString *)methodTypeInfo
 {
     dispatch_async
         (dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
@@ -195,7 +265,54 @@ authorizationHeader:(NSString *)authorizationHeader
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
+
+            if (responseData.jsonResponse != nil) {
+                [self.responseCallback responseCallback:responseData];
+                return;
+            } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
+                [self retryWithResponseData:responseData
+                            attemptTypeInfo:ADJAttemptFallbackURL
+                             methodTypeInfo:methodTypeInfo];
+                return;
+            } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
+                [self retryWithResponseData:responseData
+                            attemptTypeInfo:ADJAttemptRandomIP
+                             methodTypeInfo:methodTypeInfo];
+                return;
+            } else {
+                [self.responseCallback responseCallback:responseData];
+            }
         });
+}
+
+- (void)retryWithResponseData:(ADJResponseData *)responseData
+              attemptTypeInfo:(NSString *)attemptTypeInfo
+               methodTypeInfo:(NSString *)methodTypeInfo
+{
+    ADJActivityPackage *activityPackage = responseData.sdkPackage;
+    NSDictionary *sendingParameters = responseData.sendingParameters;
+
+    NSString *urlHostString;
+    // TODO change depending attemptTypeInfo
+    if (activityPackage.activityKind == ADJActivityKindGdpr) {
+        urlHostString = self.gdrpUrlString;
+    } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
+        urlHostString = self.subscriptionUrlString;
+    } else {
+        urlHostString = self.baseUrlString;
+    }
+
+    if (methodTypeInfo == ADJMethodGET) {
+        [self sendPackageByGET:activityPackage
+              sendingParameters:sendingParameters
+                 urlHostString:urlHostString
+                attemptTypeInfo:attemptTypeInfo];
+    } else {
+        [self sendPackageByPOST:activityPackage
+              sendingParameters:sendingParameters
+                urlHostString:urlHostString
+                attemptTypeInfo:attemptTypeInfo];
+    }
 }
 
 - (void)handleResponseWithData:(NSData *)data
@@ -206,12 +323,10 @@ authorizationHeader:(NSString *)authorizationHeader
     // Connection error
     if (responseError != nil) {
         responseData.message = responseError.description;
-        [self.responseCallback responseCallback:responseData];
         return;
     }
     if ([ADJUtil isNull:data]) {
         responseData.message = @"nil response data";
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
@@ -221,13 +336,11 @@ authorizationHeader:(NSString *)authorizationHeader
 
     if (statusCode == 429) {
         responseData.message = @"Too frequent requests to the endpoint (429)";
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
     [self saveJsonResponse:data responseData:responseData];
     if (responseData.jsonResponse == nil) {
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
@@ -246,8 +359,6 @@ authorizationHeader:(NSString *)authorizationHeader
     if (statusCode == 200) {
         responseData.success = YES;
     }
-
-    [self.responseCallback responseCallback:responseData];
 }
 #pragma mark - URL Request
 - (NSMutableURLRequest *)
