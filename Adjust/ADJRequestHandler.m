@@ -83,24 +83,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
-    NSString *urlHostString;
-    if (activityPackage.activityKind == ADJActivityKindGdpr) {
-        urlHostString = self.gdrpUrlString;
-    } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
-        urlHostString = self.subscriptionUrlString;
-    } else {
-        urlHostString = self.baseUrlString;
-    }
-
     [self sendPackageByPOST:activityPackage
           sendingParameters:sendingParameters
-              urlHostString:urlHostString
             attemptTypeInfo:ADJAttemptDefaultURL];
 }
 
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
-            urlHostString:(NSString *)urlHostString
           attemptTypeInfo:(NSString *)attemptTypeInfo
 {
     NSDictionary *parameters = [[NSDictionary alloc]
@@ -117,6 +106,21 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                       copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
+
+    NSString *urlHostString;
+    if (attemptTypeInfo == ADJAttemptFallbackURL) {
+        urlHostString = @"https://app.adjust.net.in";
+    } else if (attemptTypeInfo == ADJAttemptRandomIP) {
+        urlHostString = [ADJRequestHandler randomIpAddress];
+    } else {
+        if (activityPackage.activityKind == ADJActivityKindGdpr) {
+            urlHostString = self.gdrpUrlString;
+        } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
+            urlHostString = self.subscriptionUrlString;
+        } else {
+            urlHostString = self.baseUrlString;
+        }
+    }
 
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
@@ -135,17 +139,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
-    NSString *urlHostString = self.baseUrlString;
-
     [self sendPackageByGET:activityPackage
          sendingParameters:sendingParameters
-             urlHostString:urlHostString
            attemptTypeInfo:ADJAttemptDefaultURL];
 }
 
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
-           urlHostString:(NSString *)urlHostString
          attemptTypeInfo:(NSString *)attemptTypeInfo
 {
     NSDictionary *parameters = [[NSDictionary alloc]
@@ -162,6 +162,15 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                       copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
+
+    NSString *urlHostString;
+    if (attemptTypeInfo == ADJAttemptFallbackURL) {
+        urlHostString = @"https://app.adjust.net.in";
+    } else if (attemptTypeInfo == ADJAttemptRandomIP) {
+        urlHostString = [ADJRequestHandler randomIpAddress];
+    } else {
+        urlHostString = self.baseUrlString;
+    }
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
@@ -226,18 +235,23 @@ authorizationHeader:(NSString *)authorizationHeader
 
             if (responseData.jsonResponse != nil) {
                 [self.responseCallback responseCallback:responseData];
-                return;
             } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
+                // Failed attempt with DefaultURL
+                //  Retry with FallbackURL
                 [self retryWithResponseData:responseData
                             attemptTypeInfo:ADJAttemptFallbackURL
                              methodTypeInfo:methodTypeInfo];
                 return;
             } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
+                // Failed attempt with FallbackURL
+                //  Retry with RandomIP
                 [self retryWithResponseData:responseData
                             attemptTypeInfo:ADJAttemptRandomIP
                              methodTypeInfo:methodTypeInfo];
                 return;
             } else {
+                // Failed attempt with RandomIP
+                //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
         }];
@@ -268,21 +282,29 @@ authorizationHeader:(NSString *)authorizationHeader
 
             if (responseData.jsonResponse != nil) {
                 [self.responseCallback responseCallback:responseData];
-                return;
             } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
+                // Failed attempt with DefaultURL
+                //  Retry with FallbackURL
                 [self retryWithResponseData:responseData
                             attemptTypeInfo:ADJAttemptFallbackURL
                              methodTypeInfo:methodTypeInfo];
-                return;
             } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
+                // Failed attempt with FallbackURL
+                //  Retry with RandomIP
                 [self retryWithResponseData:responseData
                             attemptTypeInfo:ADJAttemptRandomIP
                              methodTypeInfo:methodTypeInfo];
-                return;
             } else {
+                // Failed attempt with RandomIP
+                //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
         });
+}
+
++ (NSString *)randomIpAddress {
+    // TODO get one of random ips
+    return @"http://185.151.204.6";
 }
 
 - (void)retryWithResponseData:(ADJResponseData *)responseData
@@ -292,25 +314,13 @@ authorizationHeader:(NSString *)authorizationHeader
     ADJActivityPackage *activityPackage = responseData.sdkPackage;
     NSDictionary *sendingParameters = responseData.sendingParameters;
 
-    NSString *urlHostString;
-    // TODO change depending attemptTypeInfo
-    if (activityPackage.activityKind == ADJActivityKindGdpr) {
-        urlHostString = self.gdrpUrlString;
-    } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
-        urlHostString = self.subscriptionUrlString;
-    } else {
-        urlHostString = self.baseUrlString;
-    }
-
     if (methodTypeInfo == ADJMethodGET) {
         [self sendPackageByGET:activityPackage
               sendingParameters:sendingParameters
-                 urlHostString:urlHostString
                 attemptTypeInfo:attemptTypeInfo];
     } else {
         [self sendPackageByPOST:activityPackage
               sendingParameters:sendingParameters
-                urlHostString:urlHostString
                 attemptTypeInfo:attemptTypeInfo];
     }
 }
