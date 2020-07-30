@@ -222,7 +222,10 @@ authorizationHeader:(NSString *)authorizationHeader
                  methodTypeInfo:(NSString *)methodTypeInfo
 
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration];
+    NSURLSession *session =
+        [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration
+                                      delegate:self delegateQueue:nil];
+
     NSURLSessionDataTask *task =
         [session dataTaskWithRequest:request
                    completionHandler:
@@ -255,8 +258,21 @@ authorizationHeader:(NSString *)authorizationHeader
                 [self.responseCallback responseCallback:responseData];
             }
         }];
+
     [task resume];
     [session finishTasksAndInvalidate];
+}
+
+- (void)
+    URLSession:(NSURLSession *)session
+    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+    completionHandler:
+        (void (^)
+            (NSURLSessionAuthChallengeDisposition disposition,
+             NSURLCredential * _Nullable credential))completionHandler
+{
+    completionHandler(NSURLSessionAuthChallengeUseCredential,
+                      [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
 }
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
@@ -274,12 +290,19 @@ authorizationHeader:(NSString *)authorizationHeader
             NSData *data = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&response
                                                              error:&error];
+/*
+            NSURLConnection *urlConnection =
+                [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [urlConnection start];
+*/
             #pragma clang diagnostic pop
             [self handleResponseWithData:data
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
 
+            [self.responseCallback responseCallback:responseData];
+/*
             if (responseData.jsonResponse != nil) {
                 [self.responseCallback responseCallback:responseData];
             } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
@@ -299,12 +322,24 @@ authorizationHeader:(NSString *)authorizationHeader
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
+ */
         });
+}
+
+- (void)connection:(NSURLConnection *)connection
+willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    if (challenge.previousFailureCount > 0) {
+        [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+    } else {
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+        [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+    }
 }
 
 + (NSString *)randomIpAddress {
     // TODO get one of random ips
-    return @"http://185.151.204.6";
+    return @"https://185.151.204.6";
 }
 
 - (void)retryWithResponseData:(ADJResponseData *)responseData

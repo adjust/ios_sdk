@@ -13,7 +13,10 @@
 - (void)responseCallback:(ADJResponseData *)responseData;
 @end
 
-@interface ADJRequestHandler : NSObject
+@interface ADJRequestHandler : NSObject<
+    NSURLSessionDelegate,
+    NSURLConnectionDelegate
+>
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                      extraPath:(NSString *)extraPath
