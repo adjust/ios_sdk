@@ -13,6 +13,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "NSString+ADJAdditions.h"
+#include <stdlib.h>
 
 static NSString * const ADJAttemptDefaultURL = @"AttemptDefaultURL";
 static NSString * const ADJAttemptFallbackURL = @"AttemptFallbackURL";
@@ -338,8 +339,8 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 }
 
 + (NSString *)randomIpAddress {
-    // TODO get one of random ips
-    return @"https://185.151.204.6";
+    uint32_t zeroToNine = arc4random_uniform(10);
+    return [NSString stringWithFormat:@"https://185.151.204.%u", zeroToNine + 6];
 }
 
 - (void)retryWithResponseData:(ADJResponseData *)responseData
@@ -417,6 +418,8 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
                            urlHostString, self.extraPath, path];
 
+    [self.logger verbose:@"requestForPostPackage with urlString: %@", urlString];
+
     NSURL *url = [NSURL URLWithString:urlString];
     //NSURL *url = [baseUrl URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -463,6 +466,8 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
     NSString *urlString =
         [NSString stringWithFormat:@"%@%@%@?%@",
             urlHostString, self.extraPath, path, queryStringParameters];
+
+    [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
 
