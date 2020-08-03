@@ -110,7 +110,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString *urlHostString;
     if (attemptTypeInfo == ADJAttemptFallbackURL) {
-        urlHostString = @"https://app.adjust.net.in";
+        if (activityPackage.activityKind == ADJActivityKindGdpr) {
+            urlHostString = @"https://gdpr.adjust.net.in";
+        } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
+            urlHostString = @"https://subscription.adjust.net.in";
+        } else {
+            urlHostString = @"https://app.adjust.net.in";
+        }
     } else if (attemptTypeInfo == ADJAttemptRandomIP) {
         urlHostString = [ADJRequestHandler randomIpAddress];
     } else {
