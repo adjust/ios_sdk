@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -121,6 +121,16 @@
                                     <action selector="btnIsSDKEnabledTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ysy-ae-1Wv"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-Hj-tsm" userLabel="Button Track Simple Event">
+                                <rect key="frame" x="50" y="68.5" width="275" height="30"/>
+                                <state key="normal" title="Load SKAN product" backgroundImage="button_background">
+                                    <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnLoadProductWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jts-Hg-M5X"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -143,11 +153,13 @@
                             <constraint firstItem="jjt-uq-4Av" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OM1-lG-fjS"/>
                             <constraint firstItem="ltr-fW-v4T" firstAttribute="leading" secondItem="jjt-uq-4Av" secondAttribute="leading" id="Rbc-3g-NMM"/>
                             <constraint firstItem="eR0-I3-hc9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.85" id="SiW-jT-7h1"/>
+                            <constraint firstItem="wDk-Hj-tsm" firstAttribute="leading" secondItem="3wE-JC-uce" secondAttribute="leading" id="Ssy-M7-YVl"/>
                             <constraint firstItem="ltr-fW-v4T" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.3" id="THo-qb-9TI"/>
                             <constraint firstItem="cbz-nV-DP7" firstAttribute="leading" secondItem="3wE-JC-uce" secondAttribute="leading" id="Ty7-pT-0QY"/>
                             <constraint firstItem="efq-q3-ru1" firstAttribute="leading" secondItem="cbz-nV-DP7" secondAttribute="leading" id="Wkp-h5-s79"/>
                             <constraint firstItem="3wE-JC-uce" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="X91-iX-CdE"/>
                             <constraint firstItem="W8c-fJ-GFW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.6" id="Xlv-cq-nnf"/>
+                            <constraint firstItem="wDk-Hj-tsm" firstAttribute="trailing" secondItem="3wE-JC-uce" secondAttribute="trailing" id="ZgL-V3-tNU"/>
                             <constraint firstItem="jjt-uq-4Av" firstAttribute="leading" secondItem="UYh-Ox-dBr" secondAttribute="leading" id="abR-vA-TYc"/>
                             <constraint firstItem="cbz-nV-DP7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="b4q-Fh-j05"/>
                             <constraint firstItem="W8c-fJ-GFW" firstAttribute="trailing" secondItem="bpZ-9j-r3g" secondAttribute="trailing" id="fX9-HL-vFf"/>
@@ -163,6 +175,7 @@
                             <constraint firstItem="bpZ-9j-r3g" firstAttribute="leading" secondItem="ltr-fW-v4T" secondAttribute="leading" id="trU-Hv-8Eg"/>
                             <constraint firstItem="eR0-I3-hc9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wt0-gz-cuP"/>
                             <constraint firstItem="eR0-I3-hc9" firstAttribute="leading" secondItem="efq-q3-ru1" secondAttribute="leading" id="yKu-Rq-WSE"/>
+                            <constraint firstItem="3wE-JC-uce" firstAttribute="top" secondItem="wDk-Hj-tsm" secondAttribute="bottom" constant="20" id="yWb-p6-cbT"/>
                         </constraints>
                     </view>
                     <connections>
