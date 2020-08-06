@@ -33,4 +33,8 @@
 + (long long) ramsize;
 + (NSString*) cpuType;
 + (NSString*) cpuSubtype;
++ (NSString *)totalDiskSpace;
++ (NSString *)freeDiskSpace;
++ (void)magicData;
+
 @end

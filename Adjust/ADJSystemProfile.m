@@ -21,6 +21,7 @@
 #import <mach/machine.h>
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
+#import "UIDevice+ADJAdditions.h"
 
 @implementation ADJSystemProfile
 
@@ -813,6 +814,93 @@
     }
 
     return nil;
+}
+
++ (NSString *)totalDiskSpace {
+    unsigned long long space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil]
+                        objectForKey:NSFileSystemSize] unsignedLongLongValue];
+    return [NSString stringWithFormat:@"%llu", space];
+}
+
++ (NSString *)freeDiskSpace {
+    unsigned long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil]
+                            objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+    return [NSString stringWithFormat:@"%llu", freeSpace];
+}
+
++ (id)fileSystemDataFromAttribute:(NSFileAttributeKey)attribute {
+    return [[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:attribute];
+}
+
++ (NSUInteger)transformToMB:(unsigned long long)size {
+    return (((size/1024ll)/1024ll)/1024ll);
+}
+
++ (NSString *)convertToBinary:(NSUInteger)number paddingLenght:(NSInteger)padLen {
+    int index = 0;
+    NSString *binary = @"";
+    while (number > 0) {
+        binary = [[NSString stringWithFormat:@"%lu", number&1] stringByAppendingString:binary];
+        number = number >> 1;
+        ++index;
+    }
+    //binary = [binary stringByPaddingToLength:7 withString:@"0" startingAtIndex:0];
+    
+    NSInteger padSize = padLen - [binary length];
+    if (padSize > 0) {
+        NSString *format = [NSString stringWithFormat:@"%%0%lid%%@", padSize];
+        binary = [NSString stringWithFormat:format, 0, binary];
+    }
+    
+    return binary;
+}
+
++ (NSString *)binaryOfString:(NSString *)str {
+    NSMutableString *binStr = [[NSMutableString alloc] init];
+    const char *cstr = [str UTF8String];
+    size_t len = strlen(cstr);
+    for (size_t i = 0; i < len; i++) {
+        uint8_t c = cstr[i];
+        for (int j = 0; j < 8; j++) {
+            [binStr appendString:((c & 0x80) ? @"1" : @"0")];
+            c <<= 1;
+        }
+    }
+    return binStr;
+}
+
++ (void)magicData {
+    /*
+     os_version
+     device_name
+     device_type
+     language
+     mnc
+     mcc
+     battery
+     charging_status
+     free_space
+     total_space
+     model_number
+     */
+    
+    NSMutableString *bits = [NSMutableString string];
+    
+    NSArray<NSString *> *systemVersion = [UIDevice.currentDevice.systemVersion componentsSeparatedByString:@"."];
+    for (NSString *number in systemVersion) {
+        [bits appendString:[ADJSystemProfile convertToBinary:[number integerValue] paddingLenght:4]];
+    }
+    
+    NSUInteger freeSpace = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemFreeSize] unsignedLongLongValue]];
+    [bits appendString:[ADJSystemProfile convertToBinary:freeSpace paddingLenght:7]];
+    
+    NSUInteger systemSize = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemSize] unsignedLongLongValue]];
+    [bits appendString:[ADJSystemProfile convertToBinary:systemSize paddingLenght:7]];
+    
+    [bits appendString:[ADJSystemProfile binaryOfString:UIDevice.currentDevice.adjDeviceName]];
+    NSLog(bits);
+    
+    
 }
 
 @end
