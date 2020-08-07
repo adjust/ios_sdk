@@ -39,6 +39,23 @@
     return class;
 }
 
+- (NSUInteger)adjATTStatus {
+    Class appTrackingClass = [self appTrackingManager];
+    if (appTrackingClass != nil) {
+        NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
+        SEL selAuthorization = NSSelectorFromString(keyAuthorization);
+        if ([appTrackingClass respondsToSelector:selAuthorization]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            return (NSUInteger)[appTrackingClass performSelector:selAuthorization];
+        }
+    }
+    
+    return (NSUInteger)ATTrackingManagerAuthorizationStatusNotDetermined;
+#pragma clang diagnostic pop
+}
+
 - (BOOL)adjTrackingEnabled {
 #if ADJUST_NO_IDFA
     return NO;

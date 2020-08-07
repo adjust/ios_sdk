@@ -13,6 +13,7 @@
 
 @interface UIDevice(ADJAdditions)
 
+- (NSUInteger)adjATTStatus;
 - (BOOL)adjTrackingEnabled;
 - (NSString *)adjIdForAdvertisers;
 - (NSString *)adjFbAnonymousId;
