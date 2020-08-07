@@ -311,7 +311,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }
@@ -385,7 +385,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }
@@ -510,7 +510,7 @@
     [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }
@@ -587,7 +587,7 @@
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }
@@ -750,7 +750,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }
@@ -814,7 +814,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
     if (@available(iOS 14, *)) {
-        [ADJPackageBuilder parameters:parameters setNumber:[NSNumber numberWithUnsignedLong:UIDevice.currentDevice.adjATTStatus] forKey:@"att_status"];
+        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
     }

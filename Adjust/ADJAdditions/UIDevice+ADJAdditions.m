@@ -39,7 +39,7 @@
     return class;
 }
 
-- (NSUInteger)adjATTStatus {
+- (int)adjATTStatus {
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass != nil) {
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
@@ -48,11 +48,11 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return (NSUInteger)[appTrackingClass performSelector:selAuthorization];
+            return (int)[appTrackingClass performSelector:selAuthorization];
         }
     }
     
-    return (NSUInteger)ATTrackingManagerAuthorizationStatusNotDetermined;
+    return (int)ATTrackingManagerAuthorizationStatusNotDetermined;
 #pragma clang diagnostic pop
 }
 
