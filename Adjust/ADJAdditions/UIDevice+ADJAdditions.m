@@ -13,7 +13,6 @@
 
 #if !ADJUST_NO_IDFA
 #import <AdSupport/ASIdentifierManager.h>
-#import <AppTrackingTransparency/AppTrackingTransparency.h>
 #endif
 
 #if !ADJUST_NO_IAD && !TARGET_OS_TV
@@ -52,7 +51,7 @@
         }
     }
     
-    return (int)ATTrackingManagerAuthorizationStatusNotDetermined;
+    return 0; // ATTrackingManagerAuthorizationStatusNotDetermined
 #pragma clang diagnostic pop
 }
 
@@ -60,24 +59,6 @@
 #if ADJUST_NO_IDFA
     return NO;
 #else
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-//     [ATTrackingManager trackingAuthorizationStatus];
-    Class appTrackingClass = [self appTrackingManager];
-    if (appTrackingClass != nil) {
-        NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
-        SEL selAuthorization = NSSelectorFromString(keyAuthorization);
-        if ([appTrackingClass respondsToSelector:selAuthorization]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability"
-            ATTrackingManagerAuthorizationStatus status = (ATTrackingManagerAuthorizationStatus)[appTrackingClass performSelector:selAuthorization];
-            return status == ATTrackingManagerAuthorizationStatusAuthorized;
-#pragma clang diagnostic pop
-        }
-    }
-    
-    // Fallback iOS 13 and earlier versions
     
 //     return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
     Class adSupportClass = [self adSupportManager];
@@ -90,6 +71,8 @@
     if (![adSupportClass respondsToSelector:selManager]) {
         return NO;
     }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id manager = [adSupportClass performSelector:selManager];
     
     NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
