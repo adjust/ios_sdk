@@ -310,7 +310,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
@@ -384,7 +384,7 @@
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
@@ -509,7 +509,7 @@
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
@@ -586,7 +586,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
@@ -749,7 +749,7 @@
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
@@ -813,7 +813,7 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (@available(iOS 14, *)) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
     } else {
         [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
