@@ -22,4 +22,6 @@
 - (NSString *)adjCreateUuid;
 - (NSString *)adjVendorId;
 - (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue;
+- (void)adjRegisterForSKANAttribution;
+
 @end

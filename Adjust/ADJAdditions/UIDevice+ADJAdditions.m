@@ -280,4 +280,22 @@
     return YES;
 }
 
+- (void)adjRegisterForSKANAttribution {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+    
+    Class skan = NSClassFromString(@"SKAdNetwork");
+    if (skan == nil) {
+        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        return;
+    }
+    
+    SEL registerAttributionSelector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
+    if ([skan respondsToSelector:registerAttributionSelector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [skan performSelector:registerAttributionSelector];
+#pragma clang diagnostic pop
+    }
+}
+
 @end
