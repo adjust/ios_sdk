@@ -22,6 +22,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 #import "UIDevice+ADJAdditions.h"
+#import "ADJUtil.h"
 
 @implementation ADJSystemProfile
 
@@ -833,10 +834,10 @@
 }
 
 + (NSUInteger)transformToMB:(unsigned long long)size {
-    return (((size/1024ll)/1024ll)/1024ll);
+    return round((((size/1024ll)/1024ll)/1024ll));
 }
 
-+ (NSString *)convertToBinary:(NSUInteger)number paddingLenght:(NSInteger)padLen {
++ (NSString *)convertToBinary:(NSUInteger)number paddingLength:(NSInteger)padLen {
     int index = 0;
     NSString *binary = @"";
     while (number > 0) {
@@ -855,7 +856,7 @@
     return binary;
 }
 
-+ (NSString *)binaryOfString:(NSString *)str {
++ (NSString *)binaryOfString:(NSString *)str paddingLength:(NSInteger)padLen {
     NSMutableString *binStr = [[NSMutableString alloc] init];
     const char *cstr = [str UTF8String];
     size_t len = strlen(cstr);
@@ -866,7 +867,23 @@
             c <<= 1;
         }
     }
+    
+    NSInteger padSize = padLen - [binStr length];
+    if (padSize > 0) {
+        NSString *format = [NSString stringWithFormat:@"%%0%lid%%@", padSize];
+        binStr = [NSMutableString stringWithFormat:format, 0, binStr];
+    }
+    
     return binStr;
+}
+
++ (NSString *)hexStringFromData:(NSData *)data {
+    const unsigned char *bytes = (const unsigned char *)data.bytes;
+    NSMutableString *hex = [NSMutableString new];
+    for (NSInteger i = 0; i < data.length; i++) {
+        [hex appendFormat:@"%02x", bytes[i]];
+    }
+    return [hex copy];
 }
 
 + (void)magicData {
@@ -888,19 +905,46 @@
     
     NSArray<NSString *> *systemVersion = [UIDevice.currentDevice.systemVersion componentsSeparatedByString:@"."];
     for (NSString *number in systemVersion) {
-        [bits appendString:[ADJSystemProfile convertToBinary:[number integerValue] paddingLenght:4]];
+        [bits appendString:[ADJSystemProfile convertToBinary:[number integerValue] paddingLength:4]];
     }
     
+    NSString *deviceName = UIDevice.currentDevice.adjDeviceName;
+    if (deviceName.length > 12) {
+        deviceName = [deviceName substringFromIndex:11];
+    }
+    [bits appendString:[ADJSystemProfile binaryOfString:deviceName paddingLength:87]];
+    
+    NSString *deviceType = UIDevice.currentDevice.adjDeviceType;
+    [bits appendString:[ADJSystemProfile binaryOfString:deviceType paddingLength:80]];
+    
+    NSLocale *locale = NSLocale.currentLocale;
+    NSString *languageCode = [locale objectForKey:NSLocaleLanguageCode];
+    [bits appendString:[ADJSystemProfile binaryOfString:languageCode paddingLength:88]];
+    
+    NSString *mnc = [ADJUtil readMNC];
+    if (mnc) {
+        [bits appendString:[ADJSystemProfile binaryOfString:mnc paddingLength:10]];
+    }
+    
+    NSString *mcc = [ADJUtil readMCC];
+    if (mcc) {
+        [bits appendString:[ADJSystemProfile binaryOfString:mcc paddingLength:10]];
+    }
+    
+    [bits appendString:[ADJSystemProfile convertToBinary:(UIDevice.currentDevice.batteryLevel * 100) paddingLength:0]];
+    [bits appendString:[ADJSystemProfile convertToBinary:(int)UIDevice.currentDevice.batteryState paddingLength:0]];
+    
     NSUInteger freeSpace = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemFreeSize] unsignedLongLongValue]];
-    [bits appendString:[ADJSystemProfile convertToBinary:freeSpace paddingLenght:7]];
+    [bits appendString:[ADJSystemProfile convertToBinary:freeSpace paddingLength:7]];
     
     NSUInteger systemSize = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemSize] unsignedLongLongValue]];
-    [bits appendString:[ADJSystemProfile convertToBinary:systemSize paddingLenght:7]];
+    [bits appendString:[ADJSystemProfile convertToBinary:systemSize paddingLength:7]];
     
-    [bits appendString:[ADJSystemProfile binaryOfString:UIDevice.currentDevice.adjDeviceName]];
-    NSLog(bits);
+    // TODO: what is the biggest value possible?
+    [bits appendString:[ADJSystemProfile binaryOfString:[ADJSystemProfile machineModel] paddingLength:48]];
     
     
+    // TODO: convert to hex
 }
 
 @end
