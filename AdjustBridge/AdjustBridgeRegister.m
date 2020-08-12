@@ -306,6 +306,7 @@ static NSString * fbAppIdStatic = nil;
             this.sessionSuccessCallback = null;
             this.sessionFailureCallback = null;
             this.deferredDeeplinkCallback = null;
+            this.urlStrategy = null;
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -318,6 +319,9 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelError = 'ERROR';
         AdjustConfig.LogLevelAssert = 'ASSERT';
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
+
+        AdjustConfig.IndiaUrlStrategy = 'IndiaUrlStrategy';
+        AdjustConfig.ChinaUrlStrategy = 'ChinaUrlStrategy';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
             var registerCallbackHandler = function(callbackName) {
@@ -406,6 +410,9 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.addFbPixelMapping = function(fbEventNameKey, adjEventTokenValue) {
             this.fbPixelMapping.push(fbEventNameKey);
             this.fbPixelMapping.push(adjEventTokenValue);
+        };
+        AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
+            this.urlStrategy = urlStrategy;
         };
 
     })();); // END preprocessorJSCode

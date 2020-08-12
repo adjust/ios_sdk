@@ -207,6 +207,7 @@
         NSString *sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
         NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
+        NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -307,6 +308,9 @@
             || self.sessionFailureCallbackName != nil
             || self.deferredDeeplinkCallbackName != nil) {
             [adjustConfig setDelegate:self];
+        }
+        if ([self isFieldValid:urlStrategy]) {
+            [adjustConfig setUrlStrategy:urlStrategy];
         }
 
         [Adjust appDidLaunch:adjustConfig];
