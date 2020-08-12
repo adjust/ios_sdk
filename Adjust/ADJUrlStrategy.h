@@ -13,7 +13,7 @@
 
 @property (nonatomic, readonly, copy) NSString *extraPath;
 
-- (instancetype)initWithUlrStrategyInfo:(NSString *)ulrStrategyInfo
+- (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
                               extraPath:(NSString *)extraPath;
 
 - (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind;

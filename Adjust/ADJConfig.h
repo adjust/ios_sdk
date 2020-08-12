@@ -195,7 +195,7 @@
 /**
  * @brief Adjust url strategy.
  */
-@property (nonatomic, copy, readwrite, nullable) NSString *ulrStrategy;
+@property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.
