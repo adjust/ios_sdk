@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE91124E4213900FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91024E4213800FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC85121F2794D900D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85111F2794D600D6A0ED /* ADJReachability.m */; };
 		968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 968595F01D0B2E630011CA2B /* AdjustBridgeRegister.m */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
@@ -61,6 +62,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FBEE90F24E4213800FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE91024E4213800FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC85101F2794D600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85111F2794D600D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		968595EF1D0B2E630011CA2B /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
@@ -298,6 +301,8 @@
 				9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */,
 				9D2F240F2447DE0A00B7CA90 /* ADJSubscription.h */,
 				9D2F24102447DE0A00B7CA90 /* ADJSubscription.m */,
+				6FBEE90F24E4213800FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE91024E4213800FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -416,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D449EE31E6EDD4100E7E80B /* ADJAttributionHandler.m in Sources */,
+				6FBEE91124E4213900FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D9A99DA1D0B699A0022FFCE /* AppDelegate.m in Sources */,
 				9D449EE41E6EDD4100E7E80B /* ADJBackoffStrategy.m in Sources */,
 				9D449EDA1E6EDD4100E7E80B /* ADJActivityHandler.m in Sources */,

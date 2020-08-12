@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE90B24E420FA00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE90924E420FA00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC850C1F2794AB00D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850A1F2794A300D6A0ED /* ADJReachability.m */; };
 		963909411BCBFCF300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909401BCBFCF300A2E8A4 /* main.m */; };
 		963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909431BCBFCF300A2E8A4 /* AppDelegate.m */; };
@@ -54,6 +55,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FBEE90924E420FA00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE90A24E420FA00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FCC850A1F2794A300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC850B1F2794A300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		9639093C1BCBFCF300A2E8A4 /* AdjustExample-ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -280,6 +283,8 @@
 				9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */,
 				9D2F24092447DDE100B7CA90 /* ADJSubscription.h */,
 				9D2F240A2447DDE100B7CA90 /* ADJSubscription.m */,
+				6FBEE90A24E420FA00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE90924E420FA00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -405,6 +410,7 @@
 				9D449E2D1E6ED88F00E7E80B /* ADJSystemProfile.m in Sources */,
 				9D449E261E6ED88F00E7E80B /* ADJTimerOnce.m in Sources */,
 				963909411BCBFCF300A2E8A4 /* main.m in Sources */,
+				6FBEE90B24E420FA00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D449E2B1E6ED88F00E7E80B /* ADJEventSuccess.m in Sources */,
 				9D449E211E6ED88F00E7E80B /* ADJEvent.m in Sources */,
 				9D449E2E1E6ED88F00E7E80B /* ADJBackoffStrategy.m in Sources */,

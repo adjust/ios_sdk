@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE91424E4214800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC85151F2794EC00D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85131F2794E800D6A0ED /* ADJReachability.m */; };
 		963909B71BCC0D8300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B61BCC0D8300A2E8A4 /* main.m */; };
 		963909BA1BCC0D8300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B91BCC0D8300A2E8A4 /* AppDelegate.m */; };
@@ -64,6 +65,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FBEE91224E4214800FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC85131F2794E800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC85141F2794E800D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		963909B21BCC0D8300A2E8A4 /* AdjustExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +270,8 @@
 				9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */,
 				9D2F24132447DE1F00B7CA90 /* ADJSubscription.h */,
 				9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */,
+				6FBEE91224E4214800FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -395,6 +400,7 @@
 				9D449F541E6EE6C500E7E80B /* ADJRequestHandler.m in Sources */,
 				9D449F4D1E6EE6C500E7E80B /* ADJEvent.m in Sources */,
 				963909B71BCC0D8300A2E8A4 /* main.m in Sources */,
+				6FBEE91424E4214800FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D449F501E6EE6C500E7E80B /* ADJKeychain.m in Sources */,
 				9D449F451E6EE6C500E7E80B /* UIDevice+ADJAdditions.m in Sources */,
 				9D449F5A1E6EE6C500E7E80B /* ADJSystemProfile.m in Sources */,

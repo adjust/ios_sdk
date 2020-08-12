@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE91724E4215E00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91624E4215E00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC85181F27950000D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85171F2794F800D6A0ED /* ADJReachability.m */; };
 		9D2F24172447DE3400B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24152447DE3400B7CA90 /* ADJSubscription.m */; };
 		9D449FA31E6EE72000E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F621E6EE72000E7E80B /* ADJActivityHandler.m */; };
@@ -106,6 +107,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FBEE91524E4215E00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE91624E4215E00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC85161F2794F800D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85171F2794F800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		9D2F24152447DE3400B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
@@ -295,6 +298,8 @@
 				9DD0E9C61F45949600B2A759 /* ADJUserDefaults.m */,
 				9D2F24162447DE3400B7CA90 /* ADJSubscription.h */,
 				9D2F24152447DE3400B7CA90 /* ADJSubscription.m */,
+				6FBEE91524E4215E00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE91624E4215E00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -566,6 +571,7 @@
 				9D449FBC1E6EE72000E7E80B /* ADJSessionParameters.m in Sources */,
 				9D449FB61E6EE72000E7E80B /* ADJPackageBuilder.m in Sources */,
 				9D449FBD1E6EE72000E7E80B /* ADJSessionSuccess.m in Sources */,
+				6FBEE91724E4215E00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D449FB51E6EE72000E7E80B /* ADJLogger.m in Sources */,
 				9D449FB91E6EE72000E7E80B /* ADJResponseData.m in Sources */,
 				9D449FB71E6EE72000E7E80B /* ADJPackageHandler.m in Sources */,
