@@ -208,6 +208,7 @@
         copy->_secretId = [self.secretId copyWithZone:zone];
         copy->_appSecret = [self.appSecret copyWithZone:zone];
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
+        copy->_ulrStrategy = [self.ulrStrategy copyWithZone:zone];
         // adjust delegate not copied
     }
 

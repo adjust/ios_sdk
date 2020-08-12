@@ -183,12 +183,15 @@ authorizationHeader:(NSString *)authorizationHeader
                                    error:error
                             responseData:responseData];
             if (responseData.jsonResponse != nil) {
+                [self.logger debug:@"succeeded with current url strategy"];
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
             } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+                [self.logger debug:@"failed with current url strategy, but it will retry with new"];
                 [self retryWithResponseData:responseData
                              methodTypeInfo:methodTypeInfo];
             } else {
+                [self.logger debug:@"failed with current url strategy and it will not retry"];
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
@@ -206,8 +209,17 @@ authorizationHeader:(NSString *)authorizationHeader
             (NSURLSessionAuthChallengeDisposition disposition,
              NSURLCredential * _Nullable credential))completionHandler
 {
+    /* Manual testing code to fail certain percentage of requests
+    uint32_t randomNumber = arc4random_uniform(3);
+    NSLog(@"URLSession:didReceiveChallenge:completionHandler: random number %d", randomNumber);
+    if (randomNumber != 0) {
+        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        return;
+    }
+     */
     completionHandler(NSURLSessionAuthChallengeUseCredential,
-                      [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+                  [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+
 }
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
@@ -232,12 +244,15 @@ authorizationHeader:(NSString *)authorizationHeader
                             responseData:responseData];
 
             if (responseData.jsonResponse != nil) {
+                [self.logger debug:@"succeeded with current url strategy"];
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
             } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+                [self.logger debug:@"failed with current url strategy, but it will retry with new"];
                 [self retryWithResponseData:responseData
                              methodTypeInfo:methodTypeInfo];
             } else {
+                [self.logger debug:@"failed with current url strategy and it will not retry"];
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }

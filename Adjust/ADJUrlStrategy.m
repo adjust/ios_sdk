@@ -151,7 +151,7 @@ static int const shiftChinaIp = 40;
                                 shiftValue:(int)shiftValue
 {
     uint32_t zeroToRange = arc4random_uniform(range);
-    return [NSString stringWithFormat:@"https://185.151.204.%u", zeroToRange + shiftValue];
+    return [NSString stringWithFormat:baseIpToFormat, zeroToRange + shiftValue];
 }
 
 - (void)resetAfterSuccess {
