@@ -15,19 +15,12 @@
 #import "NSString+ADJAdditions.h"
 #include <stdlib.h>
 
-static NSString * const ADJAttemptDefaultURL = @"AttemptDefaultURL";
-static NSString * const ADJAttemptFallbackURL = @"AttemptFallbackURL";
-static NSString * const ADJAttemptRandomIP = @"AttemptRandomIP";
-
 static NSString * const ADJMethodGET = @"MethodGET";
 static NSString * const ADJMethodPOST = @"MethodPOST";
 
 @interface ADJRequestHandler()
 
-@property (nonatomic, copy) NSString *baseUrlString;
-@property (nonatomic, copy) NSString *gdrpUrlString;
-@property (nonatomic, copy) NSString *subscriptionUrlString;
-@property (nonatomic, copy) NSString *extraPath;
+@property (nonatomic, strong) ADJUrlStrategy *urlStrategy;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, assign) double requestTimeout;
 @property (nonatomic, weak) id<ADJResponseCallback> responseCallback;
@@ -45,10 +38,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 #pragma mark - Public methods
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
-                     extraPath:(NSString *)extraPath
-                       baseUrl:(NSString *)baseUrl
-                       gdprUrl:(NSString *)gdprUrl
-               subscriptionUrl:(NSString *)subscriptionUrl
+                   urlStrategy:(ADJUrlStrategy *)urlStrategy
                      userAgent:(NSString *)userAgent
                 requestTimeout:(double)requestTimeout
 {
@@ -57,10 +47,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     if (self == nil) {
         return nil;
     }
-    self.baseUrlString = baseUrl;
-    self.gdrpUrlString = gdprUrl;
-    self.subscriptionUrlString = subscriptionUrl;
-    self.extraPath = extraPath ?: @"";
+    self.urlStrategy = urlStrategy;
     self.userAgent = userAgent;
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
@@ -84,15 +71,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
-    [self sendPackageByPOST:activityPackage
-          sendingParameters:sendingParameters
-            attemptTypeInfo:ADJAttemptDefaultURL];
-}
-
-- (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
-        sendingParameters:(NSDictionary *)sendingParameters
-          attemptTypeInfo:(NSString *)attemptTypeInfo
-{
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
                                 copyItems:YES];
@@ -108,27 +86,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
-    NSString *urlHostString;
-    if (attemptTypeInfo == ADJAttemptFallbackURL) {
-        if (activityPackage.activityKind == ADJActivityKindGdpr) {
-            urlHostString = @"https://gdpr.adjust.net.in";
-        } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
-            urlHostString = @"https://subscription.adjust.net.in";
-        } else {
-            urlHostString = @"https://app.adjust.net.in";
-        }
-    } else if (attemptTypeInfo == ADJAttemptRandomIP) {
-        urlHostString = [ADJRequestHandler randomIpAddress];
-    } else {
-        if (activityPackage.activityKind == ADJActivityKindGdpr) {
-            urlHostString = self.gdrpUrlString;
-        } else if (activityPackage.activityKind == ADJActivityKindSubscription) {
-            urlHostString = self.subscriptionUrlString;
-        } else {
-            urlHostString = self.baseUrlString;
-        }
-    }
-
+    NSString *urlHostString = [self.urlStrategy getUrlHostStringByPackageKind:
+                               activityPackage.activityKind];
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
                           clientSdk:clientSdk
@@ -139,21 +98,10 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     [self sendRequest:urlRequest
   authorizationHeader:authorizationHeader
          responseData:responseData
-      attemptTypeInfo:attemptTypeInfo
        methodTypeInfo:ADJMethodPOST];
 }
-
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
-{
-    [self sendPackageByGET:activityPackage
-         sendingParameters:sendingParameters
-           attemptTypeInfo:ADJAttemptDefaultURL];
-}
-
-- (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
-       sendingParameters:(NSDictionary *)sendingParameters
-         attemptTypeInfo:(NSString *)attemptTypeInfo
 {
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
@@ -168,16 +116,11 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                       initWithDictionary:sendingParameters
                                       copyItems:YES];
 
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
+    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters
+                                                       activityKind:activityKind];
 
-    NSString *urlHostString;
-    if (attemptTypeInfo == ADJAttemptFallbackURL) {
-        urlHostString = @"https://app.adjust.net.in";
-    } else if (attemptTypeInfo == ADJAttemptRandomIP) {
-        urlHostString = [ADJRequestHandler randomIpAddress];
-    } else {
-        urlHostString = self.baseUrlString;
-    }
+    NSString *urlHostString = [self.urlStrategy
+                               getUrlHostStringByPackageKind:activityPackage.activityKind];
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
@@ -189,7 +132,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     [self sendRequest:urlRequest
      authorizationHeader:authorizationHeader
          responseData:responseData
-      attemptTypeInfo:attemptTypeInfo
        methodTypeInfo:ADJMethodGET];
 }
 
@@ -197,7 +139,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendRequest:(NSMutableURLRequest *)request
 authorizationHeader:(NSString *)authorizationHeader
        responseData:(ADJResponseData *)responseData
-    attemptTypeInfo:(NSString *)attemptTypeInfo
      methodTypeInfo:(NSString *)methodTypeInfo
 
 {
@@ -213,19 +154,18 @@ authorizationHeader:(NSString *)authorizationHeader
     if (NSURLSessionClass != nil) {
         [self sendNSURLSessionRequest:request
                       responseData:responseData
-                      attemptTypeInfo:attemptTypeInfo
+                      //attemptTypeInfo:attemptTypeInfo
                        methodTypeInfo:methodTypeInfo];
     } else {
         [self sendNSURLConnectionRequest:request
                          responseData:responseData
-                         attemptTypeInfo:attemptTypeInfo
+                         //attemptTypeInfo:attemptTypeInfo
                           methodTypeInfo:methodTypeInfo];
     }
 }
 
 - (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request
                    responseData:(ADJResponseData *)responseData
-                attemptTypeInfo:(NSString *)attemptTypeInfo
                  methodTypeInfo:(NSString *)methodTypeInfo
 
 {
@@ -242,25 +182,13 @@ authorizationHeader:(NSString *)authorizationHeader
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
-
             if (responseData.jsonResponse != nil) {
+                [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
-            } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
-                // Failed attempt with DefaultURL
-                //  Retry with FallbackURL
+            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
                 [self retryWithResponseData:responseData
-                            attemptTypeInfo:ADJAttemptFallbackURL
                              methodTypeInfo:methodTypeInfo];
-                return;
-            } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
-                // Failed attempt with FallbackURL
-                //  Retry with RandomIP
-                [self retryWithResponseData:responseData
-                            attemptTypeInfo:ADJAttemptRandomIP
-                             methodTypeInfo:methodTypeInfo];
-                return;
             } else {
-                // Failed attempt with RandomIP
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
@@ -284,7 +212,6 @@ authorizationHeader:(NSString *)authorizationHeader
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
                 responseData:(ADJResponseData *)responseData
-                   attemptTypeInfo:(NSString *)attemptTypeInfo
                     methodTypeInfo:(NSString *)methodTypeInfo
 {
     dispatch_async
@@ -297,39 +224,23 @@ authorizationHeader:(NSString *)authorizationHeader
             NSData *data = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&response
                                                              error:&error];
-/*
-            NSURLConnection *urlConnection =
-                [[NSURLConnection alloc] initWithRequest:request delegate:self];
-            [urlConnection start];
-*/
             #pragma clang diagnostic pop
+
             [self handleResponseWithData:data
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
 
-            [self.responseCallback responseCallback:responseData];
-/*
             if (responseData.jsonResponse != nil) {
+                [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
-            } else if (attemptTypeInfo == ADJAttemptDefaultURL) {
-                // Failed attempt with DefaultURL
-                //  Retry with FallbackURL
+            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
                 [self retryWithResponseData:responseData
-                            attemptTypeInfo:ADJAttemptFallbackURL
-                             methodTypeInfo:methodTypeInfo];
-            } else if (attemptTypeInfo == ADJAttemptFallbackURL) {
-                // Failed attempt with FallbackURL
-                //  Retry with RandomIP
-                [self retryWithResponseData:responseData
-                            attemptTypeInfo:ADJAttemptRandomIP
                              methodTypeInfo:methodTypeInfo];
             } else {
-                // Failed attempt with RandomIP
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
- */
         });
 }
 
@@ -344,13 +255,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
     }
 }
 
-+ (NSString *)randomIpAddress {
-    uint32_t zeroToNine = arc4random_uniform(10);
-    return [NSString stringWithFormat:@"https://185.151.204.%u", zeroToNine + 6];
-}
-
 - (void)retryWithResponseData:(ADJResponseData *)responseData
-              attemptTypeInfo:(NSString *)attemptTypeInfo
                methodTypeInfo:(NSString *)methodTypeInfo
 {
     ADJActivityPackage *activityPackage = responseData.sdkPackage;
@@ -358,12 +263,10 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 
     if (methodTypeInfo == ADJMethodGET) {
         [self sendPackageByGET:activityPackage
-              sendingParameters:sendingParameters
-                attemptTypeInfo:attemptTypeInfo];
+             sendingParameters:sendingParameters];
     } else {
         [self sendPackageByPOST:activityPackage
-              sendingParameters:sendingParameters
-                attemptTypeInfo:attemptTypeInfo];
+              sendingParameters:sendingParameters];
     }
 }
 
@@ -382,7 +285,8 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
         return;
     }
 
-    NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
+    NSString *responseString = [[[NSString alloc]
+                                 initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = urlResponse.statusCode;
     [self.logger verbose:@"Response: %@", responseString];
 
@@ -422,7 +326,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
         (NSDictionary<NSString *, NSString *> *)sendingParameters
 {
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
-                           urlHostString, self.extraPath, path];
+                           urlHostString, self.urlStrategy.extraPath, path];
 
     [self.logger verbose:@"requestForPostPackage with urlString: %@", urlString];
 
@@ -471,7 +375,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 
     NSString *urlString =
         [NSString stringWithFormat:@"%@%@%@?%@",
-            urlHostString, self.extraPath, path, queryStringParameters];
+         urlHostString, self.urlStrategy.extraPath, path, queryStringParameters];
 
     [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
 

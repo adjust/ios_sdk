@@ -193,6 +193,11 @@
 - (void)deactivateSKAdNetworkHandling;
 
 /**
+ * @brief Adjust url strategy.
+ */
+@property (nonatomic, copy, readwrite, nullable) NSString *ulrStrategy;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can

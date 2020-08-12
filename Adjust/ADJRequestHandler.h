@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ADJActivityPackage.h"
+#import "ADJUrlStrategy.h"
 
 @protocol ADJResponseCallback <NSObject>
 - (void)responseCallback:(ADJResponseData *)responseData;
@@ -19,10 +20,13 @@
 >
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
+/*
                      extraPath:(NSString *)extraPath
                        baseUrl:(NSString *)baseUrl
                        gdprUrl:(NSString *)gdprUrl
                subscriptionUrl:(NSString *)subscriptionUrl
+*/
+                   urlStrategy:(ADJUrlStrategy *)urlStrategy
                      userAgent:(NSString *)userAgent
                 requestTimeout:(double)requestTimeout;
 

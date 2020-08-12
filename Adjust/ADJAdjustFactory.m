@@ -24,12 +24,9 @@ static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internaliAdFrameworkEnabled = YES;
 
-static NSString * const kBaseUrl = @"https://app.adjust.com";
-static NSString * internalBaseUrl = @"https://app.adjust.com";
-static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
-static NSString * internalGdprUrl = @"https://gdpr.adjust.com";
-static NSString * const kSubscriptionUrl = @"https://subscription.adjust.com";
-static NSString * internalSubscriptionUrl = @"https://subscription.adjust.com";
+static NSString * internalBaseUrl = nil;
+static NSString * internalGdprUrl = nil;
+static NSString * internalSubscriptionUrl = nil;
 
 @implementation ADJAdjustFactory
 
@@ -238,9 +235,9 @@ static NSString * internalSubscriptionUrl = @"https://subscription.adjust.com";
     sdkClickHandlerBackoffStrategy = nil;
     internalTesting = NO;
     internalMaxDelayStart = -1;
-    internalBaseUrl = kBaseUrl;
-    internalGdprUrl = kGdprUrl;
-    internalSubscriptionUrl = kSubscriptionUrl;
+    internalBaseUrl = nil;
+    internalGdprUrl = nil;
+    internalSubscriptionUrl = nil;
     internaliAdFrameworkEnabled = YES;
 }
 @end
