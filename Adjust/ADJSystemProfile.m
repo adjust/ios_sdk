@@ -26,22 +26,18 @@
 
 @implementation ADJSystemProfile
 
-+ (BOOL) is64bit
-{
++ (BOOL)is64bit {
     int error = 0;
     int value = 0;
     size_t length = sizeof(value);
 
     error = sysctlbyname("hw.cpu64bit_capable", &value, &length, NULL, 0);
-    
-    if(error != 0) {
+    if (error != 0) {
         error = sysctlbyname("hw.optional.x86_64", &value, &length, NULL, 0); //x86 specific
     }
-    
-    if(error != 0) {
+    if (error != 0) {
         error = sysctlbyname("hw.optional.64bitops", &value, &length, NULL, 0); //PPC specific
     }
-
     if (error != 0) {
         return NO;
     }
@@ -49,16 +45,15 @@
     return value == 1;
 }
 
-+ (NSString*) cpuFamily
-{
++ (NSString *)cpuFamily {
     int cpufamily = -1;
     size_t length = sizeof(cpufamily);
     int error = sysctlbyname("hw.cpufamily", &cpufamily, &length, NULL, 0);
-
     if (error != 0) {
         [ADJAdjustFactory.logger error:@"Failed to obtain CPU family (%d)", error];
         return nil;
     }
+
     switch (cpufamily)
     {
 #ifdef CPUFAMILY_UNKNOWN
@@ -170,22 +165,21 @@
             return @"CPUFAMILY_ARM_HURRICANE";
 #endif
     }
-    NSString * unknowCpuFamily = [NSString stringWithFormat:@"Unknown CPU family %d", cpufamily];
+    NSString *unknowCpuFamily = [NSString stringWithFormat:@"Unknown CPU family %d", cpufamily];
     [ADJAdjustFactory.logger warn:@"%@", unknowCpuFamily];
     return unknowCpuFamily;
 }
 /*
  original function
  operatingSystemVersionString should not be parsed
-  https://developer.apple.com/reference/foundation/nsprocessinfo/1408730-operatingsystemversionstring?language=objc
-+ (NSString*) osVersion
-{
+ https://developer.apple.com/reference/foundation/nsprocessinfo/1408730-operatingsystemversionstring?language=objc
++ (NSString*) osVersion {
     NSProcessInfo *info = [NSProcessInfo processInfo];
     if (info == nil) {
         return nil;
     }
+
     NSString *version = [info operatingSystemVersionString];
-    
     if ([version hasPrefix:@"Version "]) {
         version = [version substringFromIndex:8];
     }
@@ -193,13 +187,13 @@
     return version;
 }
 */
-+ (int) cpuCount
-{
+
++ (int)cpuCount {
     int error = 0;
     int value = 0;
     size_t length = sizeof(value);
     error = sysctlbyname("hw.ncpu", &value, &length, NULL, 0);
-    
+
     if (error != 0) {
         [ADJAdjustFactory.logger error:@"Failed to obtain CPU count (%d)", error];
         return 1;
@@ -208,39 +202,32 @@
     return value;
 }
 
-+ (NSString*) machineArch
-{
++ (NSString *)machineArch {
     return [ADJSystemProfile readSysctlbByNameString:"hw.machinearch" errorLog:@"Failed to obtain machine arch"];
 }
 
-+ (NSString*) machineModel
-{
++ (NSString *)machineModel {
     return [ADJSystemProfile readSysctlbByNameString:"hw.model" errorLog:@"Failed to obtain machine model"];
 }
 
-+ (NSString*) cpuBrand
-{
++ (NSString *)cpuBrand {
     return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.brand_string" errorLog:@"Failed to obtain CPU brand"];
 }
 
-+ (NSString*) cpuFeatures
-{
++ (NSString *)cpuFeatures {
     return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.features" errorLog:@"Failed to obtain CPU features"];
 }
 
-+ (NSString*) cpuVendor
-{
++ (NSString *)cpuVendor {
     return [ADJSystemProfile readSysctlbByNameString:"machdep.cpu.vendor" errorLog:@"Failed to obtain CPU vendor"];
 }
 
-+ (NSString*) osVersion
-{
++ (NSString *)osVersion {
     return [ADJSystemProfile readSysctlbByNameString:"kern.osversion" errorLog:@"Failed to obtain OS version"];
 }
 
-+ (NSString*) readSysctlbByNameString:(const char *)name
-                             errorLog:(NSString*)errorLog
-{
++ (NSString *)readSysctlbByNameString:(const char*)name
+                             errorLog:(NSString *)errorLog {
     int error = 0;
     size_t length = 0;
     error = sysctlbyname(name, NULL, &length, NULL, 0);
@@ -261,16 +248,12 @@
         return nil;
     }
 
-    NSString * result = [NSString stringWithUTF8String:p];
-
+    NSString *result = [NSString stringWithUTF8String:p];
     free(p);
-
     return result;
-
 }
 
-+ (NSString*) appleLanguage
-{
++ (NSString *)appleLanguage {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     NSArray *languages = [defs objectForKey:@"AppleLanguages"];
 
@@ -278,84 +261,72 @@
         [ADJAdjustFactory.logger error:@"Failed to obtain preferred language"];
         return nil;
     }
-    
+
     return [languages objectAtIndex:0];
 }
 
-+ (long long) cpuSpeed
-{
++ (long long)cpuSpeed {
     long long result = 0;
-
 	int error = 0;
-
     int64_t hertz = 0;
 	size_t size = sizeof(hertz);
 	int mib[2] = {CTL_HW, HW_CPU_FREQ};
 	
 	error = sysctl(mib, 2, &hertz, &size, NULL, 0);
-	
     if (error) {
         [ADJAdjustFactory.logger error:@"Failed to obtain CPU speed (%d)", error];
         return -1;
     }
-	
-	result = (long long)(hertz/1000000); // Convert to MHz
-    
+
+	result = (long long)(hertz/1000000); // convert to MHz
     return result;
 }
 
-+ (long long) ramsize
-{
++ (long long)ramsize {
     long long result = 0;
-
 	int error = 0;
     int64_t value = 0;
     size_t length = sizeof(value);
-	
+
     error = sysctlbyname("hw.memsize", &value, &length, NULL, 0);
 	if (error) {
         [ADJAdjustFactory.logger error:@"Failed to obtain RAM size (%d)", error];
         return -1;
 	}
+
 	const int64_t kBytesPerMebibyte = 1024*1024;
 	result = (long long)(value/kBytesPerMebibyte);
-    
     return result;
 }
 
 
-+ (NSString*) cpuType
-{
++ (NSString *)cpuType {
     int error = 0;
-
     int cputype = -1;
     size_t length = sizeof(cputype);
-    error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
 
+    error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
     if (error != 0) {
         [ADJAdjustFactory.logger error:@"Failed to obtain CPU type (%d)", error];
         return nil;
     }
 
-    NSString * cpuTypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:NO cpusubtype:0];
-
+    NSString *cpuTypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:NO cpusubtype:0];
     if (cpuTypeString != nil) {
         return cpuTypeString;
     }
 
-    NSString * unknowCpuType = [NSString stringWithFormat:@"Unknown CPU type %d", cputype];
+    NSString *unknowCpuType = [NSString stringWithFormat:@"Unknown CPU type %d", cputype];
     [ADJAdjustFactory.logger warn:@"%@", unknowCpuType];
     return unknowCpuType;
 }
 
-+ (NSString*) cpuSubtype
-{
++ (NSString *)cpuSubtype {
     int error = 0;
-
     int cputype = -1;
     size_t length = sizeof(cputype);
-    error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
 
+    error = sysctlbyname("hw.cputype", &cputype, &length, NULL, 0);
     if (error != 0) {
         [ADJAdjustFactory.logger error:@"Failed to obtain CPU type (%d)", error];
         return nil;
@@ -370,22 +341,19 @@
         return nil;
     }
 
-
-    NSString * cpuSubtypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:YES cpusubtype:cpuSubtype];
-
+    NSString *cpuSubtypeString = [ADJSystemProfile readCpuTypeSubtype:cputype readSubType:YES cpusubtype:cpuSubtype];
     if (cpuSubtypeString != nil) {
         return cpuSubtypeString;
     }
 
-    NSString * unknowCpuSubtype = [NSString stringWithFormat:@"Unknown CPU subtype %d", cpuSubtype];
+    NSString *unknowCpuSubtype = [NSString stringWithFormat:@"Unknown CPU subtype %d", cpuSubtype];
     [ADJAdjustFactory.logger warn:@"%@", unknowCpuSubtype];
     return unknowCpuSubtype;
 }
 
-+ (NSString*) readCpuTypeSubtype:(int)cputype
++ (NSString *)readCpuTypeSubtype:(int)cputype
                      readSubType:(BOOL)readSubType
-                      cpusubtype:(int)cpusubtype
-{
+                      cpusubtype:(int)cpusubtype {
     switch (cputype)
     {
 #ifdef CPU_TYPE_ANY
@@ -817,134 +785,57 @@
     return nil;
 }
 
-+ (NSString *)totalDiskSpace {
-    unsigned long long space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil]
-                        objectForKey:NSFileSystemSize] unsignedLongLongValue];
-    return [NSString stringWithFormat:@"%llu", space];
++ (int)totalDiskSpace {
+    long long totalSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
+                                                                                     error:nil]
+                             objectForKey:NSFileSystemSize] longLongValue];
+    int totalSpaceMB = (int)round((totalSpace * 1.0 / (1000 * 1000)));
+    return totalSpaceMB;
 }
 
-+ (NSString *)freeDiskSpace {
-    unsigned long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil]
-                            objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
-    return [NSString stringWithFormat:@"%llu", freeSpace];
++ (int)freeDiskSpace {
+    long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
+                                                                                    error:nil]
+                            objectForKey:NSFileSystemFreeSize] longLongValue];
+    int freeSpaceMB = (int)round((freeSpace * 1.0 / (1000 * 1000)));
+    return freeSpaceMB;
 }
 
-+ (id)fileSystemDataFromAttribute:(NSFileAttributeKey)attribute {
-    return [[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:attribute];
++ (NSUInteger)batteryLevel {
+    if (![[UIDevice currentDevice] isBatteryMonitoringEnabled]) {
+       [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+    }
+    NSUInteger batteryLevel = (NSUInteger)(UIDevice.currentDevice.batteryLevel * 100);
+    return batteryLevel;
 }
 
-+ (NSUInteger)transformToMB:(unsigned long long)size {
-    return round((((size/1024ll)/1024ll)/1024ll));
++ (NSUInteger)chargingStatus {
+    if (![[UIDevice currentDevice] isBatteryMonitoringEnabled]) {
+       [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+    }
+    NSUInteger chargingStatus = (NSUInteger)UIDevice.currentDevice.batteryState;
+    return chargingStatus;
 }
 
-+ (NSString *)convertToBinary:(NSUInteger)number paddingLength:(NSInteger)padLen {
-    int index = 0;
-    NSString *binary = @"";
-    while (number > 0) {
-        binary = [[NSString stringWithFormat:@"%lu", number&1] stringByAppendingString:binary];
-        number = number >> 1;
-        ++index;
-    }
-    //binary = [binary stringByPaddingToLength:7 withString:@"0" startingAtIndex:0];
-    
-    NSInteger padSize = padLen - [binary length];
-    if (padSize > 0) {
-        NSString *format = [NSString stringWithFormat:@"%%0%lid%%@", padSize];
-        binary = [NSString stringWithFormat:format, 0, binary];
-    }
-    
-    return binary;
++ (NSUInteger)systemUptime {
+    NSTimeInterval timeInterval = [[NSProcessInfo processInfo] systemUptime];
+    NSUInteger seconds = (NSUInteger)round(timeInterval);
+    return seconds;
 }
 
-+ (NSString *)binaryOfString:(NSString *)str paddingLength:(NSInteger)padLen {
-    NSMutableString *binStr = [[NSMutableString alloc] init];
-    const char *cstr = [str UTF8String];
-    size_t len = strlen(cstr);
-    for (size_t i = 0; i < len; i++) {
-        uint8_t c = cstr[i];
-        for (int j = 0; j < 8; j++) {
-            [binStr appendString:((c & 0x80) ? @"1" : @"0")];
-            c <<= 1;
-        }
++ (int)lastBootTime {
+    int MIB_SIZE = 2;
+    int mib[MIB_SIZE];
+    size_t size;
+    struct timeval boottime;
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_BOOTTIME;
+    size = sizeof(boottime);
+    if (sysctl(mib, MIB_SIZE, &boottime, &size, NULL, 0) != -1) {
+        NSDate *bootDate = [NSDate dateWithTimeIntervalSince1970:boottime.tv_sec];
+        return (int)round([bootDate timeIntervalSince1970]);
     }
-    
-    NSInteger padSize = padLen - [binStr length];
-    if (padSize > 0) {
-        NSString *format = [NSString stringWithFormat:@"%%0%lid%%@", padSize];
-        binStr = [NSMutableString stringWithFormat:format, 0, binStr];
-    }
-    
-    return binStr;
-}
-
-+ (NSString *)hexStringFromData:(NSData *)data {
-    const unsigned char *bytes = (const unsigned char *)data.bytes;
-    NSMutableString *hex = [NSMutableString new];
-    for (NSInteger i = 0; i < data.length; i++) {
-        [hex appendFormat:@"%02x", bytes[i]];
-    }
-    return [hex copy];
-}
-
-+ (void)magicData {
-    /*
-     os_version
-     device_name
-     device_type
-     language
-     mnc
-     mcc
-     battery
-     charging_status
-     free_space
-     total_space
-     model_number
-     */
-    
-    NSMutableString *bits = [NSMutableString string];
-    
-    NSArray<NSString *> *systemVersion = [UIDevice.currentDevice.systemVersion componentsSeparatedByString:@"."];
-    for (NSString *number in systemVersion) {
-        [bits appendString:[ADJSystemProfile convertToBinary:[number integerValue] paddingLength:4]];
-    }
-    
-    NSString *deviceName = UIDevice.currentDevice.adjDeviceName;
-    if (deviceName.length > 12) {
-        deviceName = [deviceName substringFromIndex:11];
-    }
-    [bits appendString:[ADJSystemProfile binaryOfString:deviceName paddingLength:87]];
-    
-    NSString *deviceType = UIDevice.currentDevice.adjDeviceType;
-    [bits appendString:[ADJSystemProfile binaryOfString:deviceType paddingLength:80]];
-    
-    NSLocale *locale = NSLocale.currentLocale;
-    NSString *languageCode = [locale objectForKey:NSLocaleLanguageCode];
-    [bits appendString:[ADJSystemProfile binaryOfString:languageCode paddingLength:88]];
-    
-    NSString *mnc = [ADJUtil readMNC];
-    if (mnc) {
-        [bits appendString:[ADJSystemProfile binaryOfString:mnc paddingLength:10]];
-    }
-    
-    NSString *mcc = [ADJUtil readMCC];
-    if (mcc) {
-        [bits appendString:[ADJSystemProfile binaryOfString:mcc paddingLength:10]];
-    }
-    
-    [bits appendString:[ADJSystemProfile convertToBinary:(UIDevice.currentDevice.batteryLevel * 100) paddingLength:0]];
-    [bits appendString:[ADJSystemProfile convertToBinary:(int)UIDevice.currentDevice.batteryState paddingLength:0]];
-    
-    NSUInteger freeSpace = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemFreeSize] unsignedLongLongValue]];
-    [bits appendString:[ADJSystemProfile convertToBinary:freeSpace paddingLength:7]];
-    
-    NSUInteger systemSize = [ADJSystemProfile transformToMB:[[ADJSystemProfile fileSystemDataFromAttribute:NSFileSystemSize] unsignedLongLongValue]];
-    [bits appendString:[ADJSystemProfile convertToBinary:systemSize paddingLength:7]];
-    
-    // TODO: what is the biggest value possible?
-    [bits appendString:[ADJSystemProfile binaryOfString:[ADJSystemProfile machineModel] paddingLength:48]];
-    
-    
-    // TODO: convert to hex
+    return 0;
 }
 
 @end

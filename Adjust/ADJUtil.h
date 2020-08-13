@@ -119,4 +119,11 @@ typedef void (^isInactiveInjected)(BOOL);
 + (NSString *)readCurrentRadioAccessTechnology;
 #endif
 
++ (NSString *)stringToBinaryString:(NSString *)str;
+
++ (NSString *)decimalToBinary:(NSUInteger)decInt;
+
++ (NSString *)enforceParameterLength:(NSString *)parameter
+                       withMaxlength:(int)maxLength;
+
 @end

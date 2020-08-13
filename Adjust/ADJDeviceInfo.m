@@ -50,8 +50,6 @@
     self.machineModel     = [ADJSystemProfile machineModel];
     self.cpuSubtype       = [ADJSystemProfile cpuSubtype];
     self.osBuild          = [ADJSystemProfile osVersion];
-    self.freeDiskSpace    = [ADJSystemProfile freeDiskSpace];
-    [ADJSystemProfile magicData];
     
     if (sdkPrefix == nil) {
         self.clientSdk        = ADJUtil.clientSdk;

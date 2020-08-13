@@ -20,21 +20,24 @@
 @interface ADJSystemProfile : NSObject
 
 + (BOOL) is64bit;
-+ (NSString*) cpuFamily;
-+ (NSString*) osVersion;
++ (NSString *)cpuFamily;
++ (NSString *)osVersion;
 + (int) cpuCount;
-+ (NSString*) machineArch;
-+ (NSString*) machineModel;
-+ (NSString*) cpuBrand;
-+ (NSString*) cpuFeatures;
-+ (NSString*) cpuVendor;
-+ (NSString*) appleLanguage;
-+ (long long) cpuSpeed;
-+ (long long) ramsize;
-+ (NSString*) cpuType;
-+ (NSString*) cpuSubtype;
-+ (NSString *)totalDiskSpace;
-+ (NSString *)freeDiskSpace;
-+ (void)magicData;
++ (NSString *)machineArch;
++ (NSString *)machineModel;
++ (NSString *)cpuBrand;
++ (NSString *)cpuFeatures;
++ (NSString *)cpuVendor;
++ (NSString *)appleLanguage;
++ (long long)cpuSpeed;
++ (long long)ramsize;
++ (NSString *)cpuType;
++ (NSString *)cpuSubtype;
++ (int)totalDiskSpace;
++ (int)freeDiskSpace;
++ (NSUInteger)batteryLevel;
++ (NSUInteger)chargingStatus;
++ (NSUInteger)systemUptime;
++ (int)lastBootTime;
 
 @end
