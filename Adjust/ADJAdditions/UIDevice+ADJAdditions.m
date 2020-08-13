@@ -52,7 +52,7 @@
         }
     }
     
-    return 0; // ATTrackingManagerAuthorizationStatusNotDetermined
+    return -1;
 }
 
 - (BOOL)adjTrackingEnabled {

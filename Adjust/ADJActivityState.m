@@ -41,6 +41,7 @@ static NSString *appToken = nil;
     self.deviceToken = nil;
     self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.updatePackages = NO;
+    self.trackingManagerAuthorizationStatus = -1;
 
     return self;
 }
@@ -199,6 +200,13 @@ static NSString *appToken = nil;
         self.attributionDetails = [decoder decodeObjectForKey:@"attributionDetails"];
     }
 
+    if ([decoder containsValueForKey:@"trackingManagerAuthorizationStatus"]) {
+        self.trackingManagerAuthorizationStatus =
+            [decoder decodeIntForKey:@"trackingManagerAuthorizationStatus"];
+    } else {
+        self.trackingManagerAuthorizationStatus = -1;
+    }
+
     self.lastInterval = -1;
 
     return self;
@@ -221,6 +229,8 @@ static NSString *appToken = nil;
     [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
     [encoder encodeObject:self.adid forKey:@"adid"];
     [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
+    [encoder encodeInt:self.trackingManagerAuthorizationStatus
+                   forKey:@"trackingManagerAuthorizationStatus"];
 }
 
 #pragma mark - NSCopying protocol methods
@@ -244,6 +254,7 @@ static NSString *appToken = nil;
         copy.isThirdPartySharingDisabled = self.isThirdPartySharingDisabled;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
         copy.updatePackages = self.updatePackages;
+        copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
     }
     
     return copy;

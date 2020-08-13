@@ -128,4 +128,18 @@
 
 @end
 
+@interface ADJTrackingStatusManager : NSObject
+
+- (instancetype)initWithActivityHandler:(ADJActivityHandler *)activityHandler;
+
+- (void)checkForNewAttStatus;
+- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
+
+- (BOOL)canGetAttStatus;
+
+@property (nonatomic, readonly, assign) BOOL trackingEnabled;
+@property (nonatomic, readonly, assign) int attStatus;
+
+@end
+
 extern NSString * const ADJiAdPackageKey;

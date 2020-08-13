@@ -27,6 +27,8 @@
 
 @property (nonatomic, weak) ADJSessionParameters *sessionParameters;
 
+@property (nonatomic, weak) ADJTrackingStatusManager *trackingStatusManager;
+
 @end
 
 @implementation ADJPackageBuilder
@@ -37,7 +39,9 @@
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
        sessionParameters:(ADJSessionParameters *)sessionParameters
-               createdAt:(double)createdAt {
+   trackingStatusManager:(ADJTrackingStatusManager *)trackingStatusManager
+               createdAt:(double)createdAt
+{
     self = [super init];
     if (self == nil) {
         return nil;
@@ -48,6 +52,7 @@
     self.adjustConfig = adjustConfig;
     self.activityState = activityState;
     self.sessionParameters = sessionParameters;
+    self.trackingStatusManager = trackingStatusManager;
 
     return self;
 }
@@ -309,11 +314,13 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
-    
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -384,10 +391,12 @@
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -509,10 +518,12 @@
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -586,10 +597,12 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -749,12 +762,14 @@
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
-    
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
@@ -813,10 +828,12 @@
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.systemVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjATTStatus forKey:@"att_status"];
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:UIDevice.currentDevice.adjTrackingEnabled forKey:@"tracking_enabled"];
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
     }
 
     if (self.adjustConfig.isDeviceKnown) {

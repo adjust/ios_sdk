@@ -13,6 +13,7 @@
 #import "ADJActivityPackage.h"
 #import "ADJSessionParameters.h"
 #import <Foundation/Foundation.h>
+#import "ADJActivityHandler.h"
 
 @interface ADJPackageBuilder : NSObject
 
@@ -32,6 +33,7 @@
            activityState:(ADJActivityState *)activityState
                   config:(ADJConfig *)adjustConfig
        sessionParameters:(ADJSessionParameters *)sessionParameters
+   trackingStatusManager:(ADJTrackingStatusManager *)trackingStatusManager
                createdAt:(double)createdAt;
 
 - (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
