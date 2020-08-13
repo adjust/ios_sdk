@@ -48,11 +48,11 @@
 #pragma clang diagnostic ignored "-Wunguarded-availability"
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             return (int)[appTrackingClass performSelector:selAuthorization];
+#pragma clang diagnostic pop
         }
     }
     
     return 0; // ATTrackingManagerAuthorizationStatusNotDetermined
-#pragma clang diagnostic pop
 }
 
 - (BOOL)adjTrackingEnabled {
