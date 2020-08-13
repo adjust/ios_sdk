@@ -187,6 +187,11 @@
                info3:(NSUInteger)info3
                info4:(NSUInteger)info4;
 
+
+@property (nonatomic, assign, readonly) BOOL isSKAdNetworkHandlingActive;
+
+- (void)inactivateSKAdNetworkHandling;
+
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
