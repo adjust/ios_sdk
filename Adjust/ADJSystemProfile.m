@@ -833,7 +833,7 @@
     size = sizeof(boottime);
     if (sysctl(mib, MIB_SIZE, &boottime, &size, NULL, 0) != -1) {
         NSDate *bootDate = [NSDate dateWithTimeIntervalSince1970:boottime.tv_sec];
-        return (int)round([bootDate timeIntervalSince1970]);
+        return (NSUInteger)round([bootDate timeIntervalSince1970]);
     }
     return 0;
 }
