@@ -116,8 +116,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
           sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
     [selfI checkAttributionI:selfI responseData:sessionResponseData];
     
-    [selfI checkConversionValueI:selfI responseData:sessionResponseData];
-
     [selfI.activityHandler launchSessionResponseTasks:sessionResponseData];
 }
 
@@ -125,8 +123,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
           sdkClickResponseData:(ADJSdkClickResponseData *)sdkClickResponseData {
     [selfI checkAttributionI:selfI responseData:sdkClickResponseData];
     
-    [selfI checkConversionValueI:selfI responseData:sdkClickResponseData];
-
     [selfI.activityHandler launchSdkClickResponseTasks:sdkClickResponseData];
 }
 
@@ -136,8 +132,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
     [selfI checkDeeplinkI:selfI attributionResponseData:attributionResponseData];
     
-    [selfI checkConversionValueI:selfI responseData:attributionResponseData];
-
     [selfI.activityHandler launchAttributionResponseTasks:attributionResponseData];
 }
 
@@ -163,19 +157,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
     NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
     responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution adid:responseData.adid];
-}
-
-- (void)checkConversionValueI:(ADJAttributionHandler*)selfI
-                 responseData:(ADJResponseData *)responseData {
-    if (responseData.jsonResponse == nil) {
-        return;
-    }
-    
-    NSNumber *conversionValue = [responseData.jsonResponse objectForKey:@"skadn_conv_value"];
-    
-    if (conversionValue) {
-        [selfI.activityHandler updateConversionValue:conversionValue];
-    }
 }
 
 - (void)checkDeeplinkI:(ADJAttributionHandler*)selfI

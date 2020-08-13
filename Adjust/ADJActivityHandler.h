@@ -98,8 +98,6 @@
 - (void)disableThirdPartySharing;
 - (void)trackSubscription:(ADJSubscription *)subscription;
 
-- (void)updateConversionValue:(NSNumber *)value;
-
 - (ADJDeviceInfo *)deviceInfo;
 - (ADJActivityState *)activityState;
 - (ADJConfig *)adjustConfig;
@@ -127,8 +125,6 @@
                                    key:(NSString *)key;
 - (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI;
 - (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
-
-- (void)updateConversionValue:(NSNumber *)value;
 
 @end
 
