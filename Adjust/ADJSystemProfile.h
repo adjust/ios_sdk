@@ -33,11 +33,11 @@
 + (long long)ramsize;
 + (NSString *)cpuType;
 + (NSString *)cpuSubtype;
-+ (int)totalDiskSpace;
-+ (int)freeDiskSpace;
++ (NSUInteger)totalDiskSpace;
++ (NSUInteger)freeDiskSpace;
 + (NSUInteger)batteryLevel;
 + (NSUInteger)chargingStatus;
 + (NSUInteger)systemUptime;
-+ (int)lastBootTime;
++ (NSUInteger)lastBootTime;
 
 @end

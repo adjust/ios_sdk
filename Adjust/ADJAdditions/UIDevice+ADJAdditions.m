@@ -282,17 +282,17 @@
     NSLog(@"[magic] battery level binary = %@", binaryBatteryLevelFormatted);
     
     int totalSpaceMaxSize = 24;
-    int totalSpace = [ADJSystemProfile totalDiskSpace];
+    NSUInteger totalSpace = [ADJSystemProfile totalDiskSpace];
     NSString *binaryTotalSpace = [ADJUtil decimalToBinary:totalSpace];
     NSString *binaryTotalSpaceFormatted = [ADJUtil enforceParameterLength:binaryTotalSpace withMaxlength:totalSpaceMaxSize];
-    NSLog(@"[magic] total space = %d", totalSpace);
+    NSLog(@"[magic] total space = %lu", (unsigned long)totalSpace);
     NSLog(@"[magic] total space binary = %@", binaryTotalSpaceFormatted);
     
     int freeSpaceMaxSize = 24;
-    int freeSpace = [ADJSystemProfile freeDiskSpace];
+    NSUInteger freeSpace = [ADJSystemProfile freeDiskSpace];
     NSString *binaryFreeSpace = [ADJUtil decimalToBinary:freeSpace];
     NSString *binaryFreeSpaceFormatted = [ADJUtil enforceParameterLength:binaryFreeSpace withMaxlength:freeSpaceMaxSize];
-    NSLog(@"[magic] free space = %d", freeSpace);
+    NSLog(@"[magic] free space = %lu", freeSpace);
     NSLog(@"[magic] free space binary = %@", binaryFreeSpaceFormatted);
     
     int systemUptimeMaxSize = 24;
@@ -303,10 +303,10 @@
     NSLog(@"[magic] system uptime binary = %@", binarySystemUptimeFormatted);
     
     int lastBootTimeMaxSize = 32;
-    int lastBootTime = [ADJSystemProfile lastBootTime];
+    NSUInteger lastBootTime = [ADJSystemProfile lastBootTime];
     NSString *binaryLastBootTime = [ADJUtil decimalToBinary:lastBootTime];
     NSString *binaryLastBootTimeFormatted = [ADJUtil enforceParameterLength:binaryLastBootTime withMaxlength:lastBootTimeMaxSize];
-    NSLog(@"[magic] last boot time = %d", lastBootTime);
+    NSLog(@"[magic] last boot time = %lu", lastBootTime);
     NSLog(@"[magic] last boot time binary = %@", binaryLastBootTimeFormatted);
     
     NSString *concatenated = [NSString stringWithFormat:@"%@%@%@%@%@%@%@%@%@%@%@%@%@",

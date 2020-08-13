@@ -785,19 +785,19 @@
     return nil;
 }
 
-+ (int)totalDiskSpace {
++ (NSUInteger)totalDiskSpace {
     long long totalSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
                                                                                      error:nil]
                              objectForKey:NSFileSystemSize] longLongValue];
-    int totalSpaceMB = (int)round((totalSpace * 1.0 / (1000 * 1000)));
+    NSUInteger totalSpaceMB = (NSUInteger)round((totalSpace * 1.0 / (1000 * 1000)));
     return totalSpaceMB;
 }
 
-+ (int)freeDiskSpace {
++ (NSUInteger)freeDiskSpace {
     long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
                                                                                     error:nil]
                             objectForKey:NSFileSystemFreeSize] longLongValue];
-    int freeSpaceMB = (int)round((freeSpace * 1.0 / (1000 * 1000)));
+    NSUInteger freeSpaceMB = (NSUInteger)round((freeSpace * 1.0 / (1000 * 1000)));
     return freeSpaceMB;
 }
 
@@ -823,7 +823,7 @@
     return seconds;
 }
 
-+ (int)lastBootTime {
++ (NSUInteger)lastBootTime {
     int MIB_SIZE = 2;
     int mib[MIB_SIZE];
     size_t size;
