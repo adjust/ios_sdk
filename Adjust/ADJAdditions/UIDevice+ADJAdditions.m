@@ -62,10 +62,12 @@
         return;
     }
     NSString *requestAuthorization = [NSString adjJoin:
-                                              @"request",
-                                              @"Tracking",
-                                              @"Authorization"
-                                              @"WithCompletionHandler:", nil];
+                                      @"request",
+                                      @"tracking",
+                                      @"authorization",
+                                      @"with",
+                                      @"completion",
+                                      @"handler:", nil];
     SEL selRequestAuthorization = NSSelectorFromString(requestAuthorization);
     if (![appTrackingClass respondsToSelector:selRequestAuthorization]) {
         return;
