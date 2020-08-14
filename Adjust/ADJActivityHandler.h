@@ -50,9 +50,13 @@
 
 @end
 
+@class ADJTrackingStatusManager;
+
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, copy) ADJAttribution *attribution;
+@property (nonatomic, strong) ADJTrackingStatusManager *trackingStatusManager;
+
 - (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
