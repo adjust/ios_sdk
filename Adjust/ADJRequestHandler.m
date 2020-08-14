@@ -168,8 +168,7 @@ authorizationHeader:(NSString *)authorizationHeader
 
 {
     NSURLSession *session =
-        [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration
-                                      delegate:self delegateQueue:nil];
+        [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration];
 
     NSURLSessionDataTask *task =
         [session dataTaskWithRequest:request
@@ -199,6 +198,8 @@ authorizationHeader:(NSString *)authorizationHeader
     [session finishTasksAndInvalidate];
 }
 
+/* Manual testing code to fail certain percentage of requests
+ // needs .h to comply with NSURLSessionDelegate
 - (void)
     URLSession:(NSURLSession *)session
     didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -207,22 +208,32 @@ authorizationHeader:(NSString *)authorizationHeader
             (NSURLSessionAuthChallengeDisposition disposition,
              NSURLCredential * _Nullable credential))completionHandler
 {
-    /* Manual testing code to fail certain percentage of requests
     uint32_t randomNumber = arc4random_uniform(2);
     NSLog(@"URLSession:didReceiveChallenge:completionHandler: random number %d", randomNumber);
     if (randomNumber != 0) {
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
         return;
     }
-     */
 
-    if (self.urlStrategy.usingIpAddress) {
-        completionHandler(NSURLSessionAuthChallengeUseCredential,
-                      [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
-    } else {
-        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-    }
+    //if (self.urlStrategy.usingIpAddress) {
+    //    completionHandler(NSURLSessionAuthChallengeUseCredential,
+    //                  [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+    //} else {
+    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+    //}
 }
+
+ - (void)connection:(NSURLConnection *)connection
+ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+ {
+     if (challenge.previousFailureCount > 0) {
+         [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+     } else {
+         NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+         [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+     }
+ }
+ */
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
                 responseData:(ADJResponseData *)responseData
@@ -259,17 +270,6 @@ authorizationHeader:(NSString *)authorizationHeader
                 [self.responseCallback responseCallback:responseData];
             }
         });
-}
-
-- (void)connection:(NSURLConnection *)connection
-willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-    if (challenge.previousFailureCount > 0) {
-        [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-    } else {
-        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-        [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
-    }
 }
 
 - (void)retryWithResponseData:(ADJResponseData *)responseData

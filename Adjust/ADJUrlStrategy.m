@@ -32,7 +32,6 @@ static NSString * const subscriptionChinaUrl = @"https://subscription.adjust.wor
 @property (nonatomic, copy) NSString *overridenGdprUrl;
 @property (nonatomic, copy) NSString *overridenSubscriptionUrl;
 
-@property (nonatomic, copy) NSString *cachedIp;
 @property (nonatomic, assign) BOOL wasLastAttemptSuccess;
 
 @property (nonatomic, assign) NSUInteger choiceIndex;
@@ -134,10 +133,6 @@ static NSString * const subscriptionChinaUrl = @"https://subscription.adjust.wor
 
     BOOL nextChoiceHasNotReturnedToStartingChoice = self.choiceIndex != self.startingChoiceIndex;
     return nextChoiceHasNotReturnedToStartingChoice;
-}
-
-- (BOOL)usingIpAddress {
-    return self.cachedIp != nil;
 }
 
 @end

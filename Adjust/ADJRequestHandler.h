@@ -14,10 +14,7 @@
 - (void)responseCallback:(ADJResponseData *)responseData;
 @end
 
-@interface ADJRequestHandler : NSObject<
-    NSURLSessionDelegate,
-    NSURLConnectionDelegate
->
+@interface ADJRequestHandler : NSObject
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
