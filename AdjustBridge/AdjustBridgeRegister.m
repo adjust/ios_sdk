@@ -320,8 +320,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelAssert = 'ASSERT';
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
 
-        AdjustConfig.IndiaUrlStrategy = 'IndiaUrlStrategy';
-        AdjustConfig.ChinaUrlStrategy = 'ChinaUrlStrategy';
+        AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
+        AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
             var registerCallbackHandler = function(callbackName) {

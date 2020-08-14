@@ -41,8 +41,8 @@ NSString * const ADJAdRevenueSourceUnityads = @"unityads";
 NSString * const ADJAdRevenueSourceAdtoapp = @"adtoapp";
 NSString * const ADJAdRevenueSourceTapdaq = @"tapdaq";
 
-NSString * const ADJIndiaUrlStrategy = @"IndiaUrlStrategy";
-NSString * const ADJChinaUrlStrategy = @"ChinaUrlStrategy";
+NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
+NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
 
 @implementation AdjustTestOptions
 @end

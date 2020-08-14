@@ -62,8 +62,8 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 /**
  * Constants for country apps url strategies.
  */
-extern NSString * __nonnull const ADJIndiaUrlStrategy;
-extern NSString * __nonnull const ADJChinaUrlStrategy;
+extern NSString * __nonnull const ADJUrlStrategyIndia;
+extern NSString * __nonnull const ADJUrlStrategyChina;
 
 /**
  * @brief The main interface to Adjust.
