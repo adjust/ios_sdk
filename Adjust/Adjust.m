@@ -12,6 +12,7 @@
 #import "ADJUserDefaults.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
+#import "UIDevice+ADJAdditions.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -230,6 +231,13 @@ static dispatch_once_t onceToken = 0;
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription {
     @synchronized (self) {
         [[Adjust getInstance] trackSubscription:subscription];
+    }
+}
+
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion
+{
+    @synchronized (self) {
+        [[Adjust getInstance] requestTrackingAuthorizationWithCompletionHandler:completion];
     }
 }
 
@@ -493,6 +501,22 @@ static dispatch_once_t onceToken = 0;
     }
 
     [self.activityHandler trackSubscription:subscription];
+}
+
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion
+{
+    [UIDevice.currentDevice requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status)
+    {
+        if (completion) {
+            completion(status);
+        }
+
+        if (![self checkActivityHandler:@"request Tracking Authorization"]) {
+            return;
+        }
+
+        [self.activityHandler updateAttStatusFromUserCallback:(int)status];
+    }];
 }
 
 - (ADJAttribution *)attribution {

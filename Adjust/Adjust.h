@@ -274,6 +274,8 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
 /**
  * Obtain singleton Adjust object.
  */
@@ -332,5 +334,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 - (nullable ADJAttribution *)attribution;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
+
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
 @end

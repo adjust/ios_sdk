@@ -55,6 +55,28 @@
     return -1;
 }
 
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion
+{
+    Class appTrackingClass = [self appTrackingManager];
+    if (appTrackingClass == nil) {
+        return;
+    }
+    NSString *requestAuthorization = [NSString adjJoin:
+                                              @"request",
+                                              @"Tracking",
+                                              @"Authorization"
+                                              @"WithCompletionHandler:", nil];
+    SEL selRequestAuthorization = NSSelectorFromString(requestAuthorization);
+    if (![appTrackingClass respondsToSelector:selRequestAuthorization]) {
+        return;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [appTrackingClass performSelector:selRequestAuthorization withObject:completion];
+#pragma clang diagnostic pop
+}
+
 - (BOOL)adjTrackingEnabled {
 #if ADJUST_NO_IDFA
     return NO;

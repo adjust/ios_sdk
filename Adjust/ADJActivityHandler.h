@@ -97,6 +97,7 @@
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
 - (void)trackSubscription:(ADJSubscription *)subscription;
+- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 
 - (ADJDeviceInfo *)deviceInfo;
 - (ADJActivityState *)activityState;
