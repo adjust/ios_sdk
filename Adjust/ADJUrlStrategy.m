@@ -8,6 +8,7 @@
 
 #import "ADJUrlStrategy.h"
 #import "Adjust.h"
+#import "ADJAdjustFactory.h"
 
 static NSString * const baseUrl = @"https://app.adjust.com";
 static NSString * const gdprUrl = @"https://gdpr.adjust.com";
@@ -63,6 +64,10 @@ static int const shiftChinaIp = 40;
     _gdprUrlChoicesArray = [ADJUrlStrategy gdprUrlChoicesWithWithUrlStrategyInfo:urlStrategyInfo];
     _subscriptionUrlChoicesArray = [ADJUrlStrategy
                                     subscriptionUrlChoicesWithWithUrlStrategyInfo:urlStrategyInfo];
+
+    _overridenBaseUrl = [ADJAdjustFactory baseUrl];
+    _overridenGdprUrl = [ADJAdjustFactory gdprUrl];
+    _overridenSubscriptionUrl = [ADJAdjustFactory subscriptionUrl];
 
     _cachedIp = nil;
     _wasLastAttemptSuccess = NO;
