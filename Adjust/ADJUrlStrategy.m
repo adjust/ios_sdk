@@ -22,17 +22,6 @@ static NSString * const baseChinaUrl = @"https://app.adjust.world";
 static NSString * const gdprChinaUrl = @"https://gdpr.adjust.world";
 static NSString * const subscriptionChinaUrl = @"https://subscription.adjust.world";
 
-static NSString * const randomIndiaIpAddressChoice = @"RandomIndiaIpAddress";
-static NSString * const randomChinaIpAddressChoice = @"RandomChinaIpAddress";
-
-static NSString * const baseIpToFormat = @"https://185.151.204.%u";
-
-static int const numberIndiaIps = 10;
-static int const shiftIndiaIp = 6;
-
-static int const numberChinaIps = 4;
-static int const shiftChinaIp = 40;
-
 @interface ADJUrlStrategy ()
 
 @property (nonatomic, copy) NSArray<NSString *> *baseUrlChoicesArray;
@@ -69,7 +58,6 @@ static int const shiftChinaIp = 40;
     _overridenGdprUrl = [ADJAdjustFactory gdprUrl];
     _overridenSubscriptionUrl = [ADJAdjustFactory subscriptionUrl];
 
-    _cachedIp = nil;
     _wasLastAttemptSuccess = NO;
 
     _choiceIndex = 0;
@@ -81,9 +69,9 @@ static int const shiftChinaIp = 40;
 + (NSArray<NSString *> *)baseUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJIndiaUrlStrategy]) {
-        return @[baseIndiaUrl, baseUrl, randomIndiaIpAddressChoice];
+        return @[baseIndiaUrl, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJChinaUrlStrategy]) {
-        return @[baseChinaUrl, baseUrl, randomChinaIpAddressChoice];
+        return @[baseChinaUrl, baseUrl];
     } else {
         return @[baseUrl, baseIndiaUrl, baseChinaUrl];
     }
@@ -92,9 +80,9 @@ static int const shiftChinaIp = 40;
 + (NSArray<NSString *> *)gdprUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJIndiaUrlStrategy]) {
-        return @[gdprIndiaUrl, gdprUrl, randomIndiaIpAddressChoice];
+        return @[gdprIndiaUrl, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJChinaUrlStrategy]) {
-        return @[gdprChinaUrl, gdprUrl, randomChinaIpAddressChoice];
+        return @[gdprChinaUrl, gdprUrl];
     } else {
         return @[gdprUrl, gdprIndiaUrl, gdprChinaUrl];
     }
@@ -103,9 +91,9 @@ static int const shiftChinaIp = 40;
 + (NSArray<NSString *> *)subscriptionUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJIndiaUrlStrategy]) {
-        return @[subscriptionIndiaUrl, subscriptionUrl, randomIndiaIpAddressChoice];
+        return @[subscriptionIndiaUrl, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJChinaUrlStrategy]) {
-        return @[subscriptionChinaUrl, subscriptionUrl, randomChinaIpAddressChoice];
+        return @[subscriptionChinaUrl, subscriptionUrl];
     } else {
         return @[subscriptionUrl, subscriptionIndiaUrl, subscriptionChinaUrl];
     }
@@ -114,53 +102,23 @@ static int const shiftChinaIp = 40;
 - (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind {
     if (activityKind == ADJActivityKindGdpr) {
         if (self.overridenGdprUrl != nil) {
-            self.cachedIp = nil;
             return self.overridenGdprUrl;
         } else {
-            return [self getChoosenUrlByArray:self.gdprUrlChoicesArray];
+            return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
         }
     } else if (activityKind == ADJActivityKindSubscription) {
         if (self.overridenSubscriptionUrl != nil) {
-            self.cachedIp = nil;
             return self.overridenSubscriptionUrl;
         } else {
-            return [self getChoosenUrlByArray:self.subscriptionUrlChoicesArray];
+            return [self.subscriptionUrlChoicesArray objectAtIndex:self.choiceIndex];
         }
     } else {
         if (self.overridenBaseUrl != nil) {
-            self.cachedIp = nil;
             return self.overridenBaseUrl;
         } else {
-            return [self getChoosenUrlByArray:self.baseUrlChoicesArray];
+            return [self.baseUrlChoicesArray objectAtIndex:self.choiceIndex];
         }
     }
-}
-
-- (NSString *)getChoosenUrlByArray:(NSArray<NSString *>*)urlChoiceArray {
-    NSString *choosenUrl = [urlChoiceArray objectAtIndex:self.choiceIndex];
-    if (choosenUrl == randomIndiaIpAddressChoice) {
-        if (!self.wasLastAttemptSuccess || self.cachedIp == nil) {
-            self.cachedIp = [ADJUrlStrategy randomIpAddressWithBaseValue:numberIndiaIps
-                                                              shiftValue:shiftIndiaIp];
-        }
-        return self.cachedIp;
-    } else if (choosenUrl == randomChinaIpAddressChoice) {
-        if (!self.wasLastAttemptSuccess || self.cachedIp == nil) {
-            self.cachedIp = [ADJUrlStrategy randomIpAddressWithBaseValue:numberChinaIps
-                                                              shiftValue:shiftChinaIp];
-        }
-        return self.cachedIp;
-    } else {
-        self.cachedIp = nil;
-        return choosenUrl;
-    }
-}
-
-+ (NSString *)randomIpAddressWithBaseValue:(int)range
-                                shiftValue:(int)shiftValue
-{
-    uint32_t zeroToRange = arc4random_uniform(range);
-    return [NSString stringWithFormat:baseIpToFormat, zeroToRange + shiftValue];
 }
 
 - (void)resetAfterSuccess {

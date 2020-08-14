@@ -154,12 +154,10 @@ authorizationHeader:(NSString *)authorizationHeader
     if (NSURLSessionClass != nil) {
         [self sendNSURLSessionRequest:request
                       responseData:responseData
-                      //attemptTypeInfo:attemptTypeInfo
                        methodTypeInfo:methodTypeInfo];
     } else {
         [self sendNSURLConnectionRequest:request
                          responseData:responseData
-                         //attemptTypeInfo:attemptTypeInfo
                           methodTypeInfo:methodTypeInfo];
     }
 }
