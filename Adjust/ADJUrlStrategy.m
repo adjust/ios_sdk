@@ -114,18 +114,21 @@ static int const shiftChinaIp = 40;
 - (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind {
     if (activityKind == ADJActivityKindGdpr) {
         if (self.overridenGdprUrl != nil) {
+            self.cachedIp = nil;
             return self.overridenGdprUrl;
         } else {
             return [self getChoosenUrlByArray:self.gdprUrlChoicesArray];
         }
     } else if (activityKind == ADJActivityKindSubscription) {
         if (self.overridenSubscriptionUrl != nil) {
+            self.cachedIp = nil;
             return self.overridenSubscriptionUrl;
         } else {
             return [self getChoosenUrlByArray:self.subscriptionUrlChoicesArray];
         }
     } else {
         if (self.overridenBaseUrl != nil) {
+            self.cachedIp = nil;
             return self.overridenBaseUrl;
         } else {
             return [self getChoosenUrlByArray:self.baseUrlChoicesArray];
@@ -148,6 +151,7 @@ static int const shiftChinaIp = 40;
         }
         return self.cachedIp;
     } else {
+        self.cachedIp = nil;
         return choosenUrl;
     }
 }
@@ -172,6 +176,10 @@ static int const shiftChinaIp = 40;
 
     BOOL nextChoiceHasNotReturnedToStartingChoice = self.choiceIndex != self.startingChoiceIndex;
     return nextChoiceHasNotReturnedToStartingChoice;
+}
+
+- (BOOL)usingIpAddress {
+    return self.cachedIp != nil;
 }
 
 @end

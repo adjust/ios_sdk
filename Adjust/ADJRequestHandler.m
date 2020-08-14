@@ -210,16 +210,20 @@ authorizationHeader:(NSString *)authorizationHeader
              NSURLCredential * _Nullable credential))completionHandler
 {
     /* Manual testing code to fail certain percentage of requests
-    uint32_t randomNumber = arc4random_uniform(3);
+    uint32_t randomNumber = arc4random_uniform(2);
     NSLog(@"URLSession:didReceiveChallenge:completionHandler: random number %d", randomNumber);
     if (randomNumber != 0) {
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
         return;
     }
      */
-    completionHandler(NSURLSessionAuthChallengeUseCredential,
-                  [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
 
+    if (self.urlStrategy.usingIpAddress) {
+        completionHandler(NSURLSessionAuthChallengeUseCredential,
+                      [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+    } else {
+        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+    }
 }
 
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request

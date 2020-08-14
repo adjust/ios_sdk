@@ -18,6 +18,8 @@
 
 - (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind;
 
+@property(nonatomic, assign, readonly) BOOL usingIpAddress;
+
 - (void)resetAfterSuccess;
 - (BOOL)shouldRetryAfterFailure;
 
