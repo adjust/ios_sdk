@@ -190,7 +190,7 @@
 
 @property (nonatomic, assign, readonly) BOOL isSKAdNetworkHandlingActive;
 
-- (void)inactivateSKAdNetworkHandling;
+- (void)deactivateSKAdNetworkHandling;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.

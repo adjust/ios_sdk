@@ -82,7 +82,7 @@
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
 }
 
-- (void)inactivateSKAdNetworkHandling {
+- (void)deactivateSKAdNetworkHandling {
     _isSKAdNetworkHandlingActive = NO;
 }
 
