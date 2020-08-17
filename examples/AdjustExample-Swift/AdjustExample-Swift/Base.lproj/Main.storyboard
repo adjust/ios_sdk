@@ -123,7 +123,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-Hj-tsm" userLabel="Button Track Simple Event">
                                 <rect key="frame" x="50" y="68.5" width="275" height="30"/>
-                                <state key="normal" title="Load SKAN product" backgroundImage="button_background">
+                                <state key="normal" title="Load SKAdNetwork product" backgroundImage="button_background">
                                     <color key="titleColor" red="0.61568627450000002" green="0.66666666669999997" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
