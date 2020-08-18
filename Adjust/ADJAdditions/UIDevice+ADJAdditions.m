@@ -215,20 +215,15 @@
 }
 
 - (NSString *)adjDeviceId:(ADJDeviceInfo *)deviceInfo {
-    // TODO: remove log outputs, for now helpful while debugging
     int languageMaxLength = 16;
     NSString *language = deviceInfo.languageCode;
     NSString *binaryLanguage = [ADJUtil stringToBinaryString:language];
     NSString *binaryLanguageFormatted = [ADJUtil enforceParameterLength:binaryLanguage withMaxlength:languageMaxLength];
-    NSLog(@"[magic] language = %@", language);
-    NSLog(@"[magic] language binary = %@", binaryLanguageFormatted);
     
     int hardwareNameMaxLength = 48;
     NSString *hardwareName = deviceInfo.machineModel;
     NSString *binaryHardwareName = [ADJUtil stringToBinaryString:hardwareName];
     NSString *binaryHardwareNameFormatted = [ADJUtil enforceParameterLength:binaryHardwareName withMaxlength:hardwareNameMaxLength];
-    NSLog(@"[magic] hardware name = %@", hardwareName);
-    NSLog(@"[magic] hardware name binary = %@", binaryHardwareNameFormatted);
     
     NSArray *versionParts = [deviceInfo.systemVersion componentsSeparatedByString:@"."];
     int osVersionMajor = [[versionParts objectAtIndex:0] intValue];
@@ -238,76 +233,54 @@
     int osVersionMajorMaxLength = 8;
     NSString *binaryOsVersionMajor = [ADJUtil decimalToBinaryString:osVersionMajor];
     NSString *binaryOsVersionMajorFormatted = [ADJUtil enforceParameterLength:binaryOsVersionMajor withMaxlength:osVersionMajorMaxLength];
-    NSLog(@"[magic] os version major = %d", osVersionMajor);
-    NSLog(@"[magic] os version major binary = %@", binaryOsVersionMajorFormatted);
     
     int osVersionMinorMaxLength = 8;
     NSString *binaryOsVersionMinor = [ADJUtil decimalToBinaryString:osVersionMinor];
     NSString *binaryOsVersionMinorFormatted = [ADJUtil enforceParameterLength:binaryOsVersionMinor withMaxlength:osVersionMinorMaxLength];
-    NSLog(@"[magic] os version minor = %d", osVersionMinor);
-    NSLog(@"[magic] os version minor binary = %@", binaryOsVersionMinorFormatted);
     
     int osVersionPatchMaxLength = 8;
     NSString *binaryOsVersionPatch = [ADJUtil decimalToBinaryString:osVersionPatch];
     NSString *binaryOsVersionPatchFormatted = [ADJUtil enforceParameterLength:binaryOsVersionPatch withMaxlength:osVersionPatchMaxLength];
-    NSLog(@"[magic] os version patch = %d", osVersionPatch);
-    NSLog(@"[magic] os version patch binary = %@", binaryOsVersionPatchFormatted);
 
     int mccMaxLength = 24;
     NSString *mcc = [ADJUtil readMCC];
     NSString *binaryMcc = [ADJUtil stringToBinaryString:mcc];
     NSString *binaryMccFormatted = [ADJUtil enforceParameterLength:binaryMcc withMaxlength:mccMaxLength];
-    NSLog(@"[magic] mcc = %@", mcc);
-    NSLog(@"[magic] mcc binary = %@", binaryMccFormatted);
 
     int mncMaxLength = 24;
     NSString *mnc = [ADJUtil readMNC];
     NSString *binaryMnc = [ADJUtil stringToBinaryString:mnc];
     NSString *binaryMncFormatted = [ADJUtil enforceParameterLength:binaryMnc withMaxlength:mncMaxLength];
-    NSLog(@"[magic] mnc = %@", mnc);
-    NSLog(@"[magic] mnc binary = %@", binaryMncFormatted);
     
     int chargingStatusMaxLength = 8;
     NSUInteger chargingStatus = [ADJSystemProfile chargingStatus];
     NSString *binaryChargingStatus = [ADJUtil decimalToBinaryString:chargingStatus];
     NSString *binaryChargingStatusFormatted = [ADJUtil enforceParameterLength:binaryChargingStatus withMaxlength:chargingStatusMaxLength];
-    NSLog(@"[magic] charging status = %lu", chargingStatus);
-    NSLog(@"[magic] charging status binary = %@", binaryChargingStatusFormatted);
     
     int batteryLevelMaxSize = 8;
     NSUInteger batteryLevel = [ADJSystemProfile batteryLevel];
     NSString *binaryBatteryLevel = [ADJUtil decimalToBinaryString:batteryLevel];
     NSString *binaryBatteryLevelFormatted = [ADJUtil enforceParameterLength:binaryBatteryLevel withMaxlength:batteryLevelMaxSize];
-    NSLog(@"[magic] battery level = %lu", batteryLevel);
-    NSLog(@"[magic] battery level binary = %@", binaryBatteryLevelFormatted);
     
     int totalSpaceMaxSize = 24;
     NSUInteger totalSpace = [ADJSystemProfile totalDiskSpace];
     NSString *binaryTotalSpace = [ADJUtil decimalToBinaryString:totalSpace];
     NSString *binaryTotalSpaceFormatted = [ADJUtil enforceParameterLength:binaryTotalSpace withMaxlength:totalSpaceMaxSize];
-    NSLog(@"[magic] total space = %lu", (unsigned long)totalSpace);
-    NSLog(@"[magic] total space binary = %@", binaryTotalSpaceFormatted);
     
     int freeSpaceMaxSize = 24;
     NSUInteger freeSpace = [ADJSystemProfile freeDiskSpace];
     NSString *binaryFreeSpace = [ADJUtil decimalToBinaryString:freeSpace];
     NSString *binaryFreeSpaceFormatted = [ADJUtil enforceParameterLength:binaryFreeSpace withMaxlength:freeSpaceMaxSize];
-    NSLog(@"[magic] free space = %lu", freeSpace);
-    NSLog(@"[magic] free space binary = %@", binaryFreeSpaceFormatted);
     
     int systemUptimeMaxSize = 24;
     NSUInteger systemUptime = [ADJSystemProfile systemUptime];
     NSString *binarySystemUptime = [ADJUtil decimalToBinaryString:systemUptime];
     NSString *binarySystemUptimeFormatted = [ADJUtil enforceParameterLength:binarySystemUptime withMaxlength:systemUptimeMaxSize];
-    NSLog(@"[magic] system uptime = %lu", systemUptime);
-    NSLog(@"[magic] system uptime binary = %@", binarySystemUptimeFormatted);
     
     int lastBootTimeMaxSize = 32;
     NSUInteger lastBootTime = [ADJSystemProfile lastBootTime];
     NSString *binaryLastBootTime = [ADJUtil decimalToBinaryString:lastBootTime];
     NSString *binaryLastBootTimeFormatted = [ADJUtil enforceParameterLength:binaryLastBootTime withMaxlength:lastBootTimeMaxSize];
-    NSLog(@"[magic] last boot time = %lu", lastBootTime);
-    NSLog(@"[magic] last boot time binary = %@", binaryLastBootTimeFormatted);
     
     NSString *concatenated = [NSString stringWithFormat:@"%@%@%@%@%@%@%@%@%@%@%@%@%@",
                               binaryLanguageFormatted,
@@ -323,7 +296,6 @@
                               binaryFreeSpaceFormatted,
                               binarySystemUptimeFormatted,
                               binaryLastBootTimeFormatted];
-    NSLog(@"[magic] concatenated: %@", concatenated);
 
     // make sure concatenated string length is multiple of 4
     if (concatenated.length % 4 != 0) {
