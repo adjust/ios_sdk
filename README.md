@@ -308,7 +308,7 @@ Adjust SDK offers the possibility to use it for requesting user authorization in
 - 2: `ATTrackingManagerAuthorizationStatusDenied`
 - 3: `ATTrackingManagerAuthorizationStatusAuthorized`
 
-In order to use this wrapper, you can call it similarly to this:
+To use this wrapper, you can call it as such:
 
 ```objc
 [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
