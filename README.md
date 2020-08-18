@@ -301,7 +301,7 @@ SDK has built in mechanism to receive an updated status after user gave an answe
 
 ### <a id="ata-wrapper"></a>App-tracking authorisation wrapper
 
-Adjust SDK offers a possibility to use it to request user authorization for accessing their app-related data. Adjust SDK has a wrapper built on top `requestTrackingAuthorizationWithCompletionHandler:` method for which you can as well define callback method to get information about user's choice. In addition to that, with usage of this wrapper, as soon as user made a choice in pop up dialog, next to communicating this choice back to your callback method, SDK will also inform backend about the choice. `NSUInteger` value will be delievered into your callback method with following meaning:
+Adjust SDK offers a possibility to use it to request user authorization for accessing their app-related data. Adjust SDK has a wrapper built on top [requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc) method for which you can as well define callback method to get information about user's choice. In addition to that, with usage of this wrapper, as soon as user made a choice in pop up dialog, next to communicating this choice back to your callback method, SDK will also inform backend about the choice. `NSUInteger` value will be delievered into your callback method with following meaning:
 
 - 0: `ATTrackingManagerAuthorizationStatusNotDetermined`
 - 1: `ATTrackingManagerAuthorizationStatusRestricted`
