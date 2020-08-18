@@ -306,17 +306,17 @@
         }
     }
     
-    NSString *magicParameter = @"";
+    NSString *mParameter = @"";
     for (NSUInteger i = 0; i < concatenated.length; i += 4) {
         // get fourplet substring
         NSString *fourplet = [concatenated substringWithRange:NSMakeRange(i, 4)];
         // convert fourplet to decimal number
         long decimalFourplet = strtol([fourplet UTF8String], NULL, 2);
         // append hex value of fourplet to final parameter
-        magicParameter = [magicParameter stringByAppendingString:[NSString stringWithFormat:@"%lX", decimalFourplet]];
+        mParameter = [mParameter stringByAppendingString:[NSString stringWithFormat:@"%lX", decimalFourplet]];
     }
     
-    return magicParameter;
+    return mParameter;
 }
 
 - (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue {
