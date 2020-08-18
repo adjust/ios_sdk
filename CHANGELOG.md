@@ -1,3 +1,14 @@
+### Version 4.23.0 (19th August 2020)
+#### Added
+- Added communication with SKAdNetwork framework by default on iOS 14.
+- Added method `deactivateSKAdNetworkHandling` to `ADJConfig` to switch off default communication with SKAdNetwork framework.
+- Added wrapper method `requestTrackingAuthorizationWithCompletionHandler:` to `Adjust` to allow immediate propagation of user's choice to backend.
+- Added handling of new iAd framework error codes introduced in iOS 14.
+- Added sending of value of user's conset to be tracked with each package.
+- Added `setUrlStrategy:` method in `ADJConfig` class to allow selection of URL strategy for specific market.
+
+---
+
 ### Version 4.22.2 (24th July 2020)
 #### Added
 - Added collection iAd framework communication errors metrics.
