@@ -823,6 +823,7 @@
     return seconds;
 }
 
+// https://stackoverflow.com/a/10331716/1498352
 + (NSUInteger)lastBootTime {
     int MIB_SIZE = 2;
     int mib[MIB_SIZE];
