@@ -960,22 +960,32 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return kClientSdk;
 }
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (NSString *)readMCC {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (carrier == nil) {
         return nil;
     }
     return [carrier mobileCountryCode];
+#endif
 }
 
 + (NSString *)readMNC {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (carrier == nil) {
         return nil;
     }
     return [carrier mobileNetworkCode];
+#endif
 }
 
 + (NSString *)readCurrentRadioAccessTechnology {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (networkInfo == nil) {
         return nil;
     }
@@ -988,8 +998,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     id radioTech = [networkInfo performSelector:radioTechSelector];
 #pragma clang diagnostic pop
     return radioTech;
-}
 #endif
+}
 
 + (NSString *)stringToBinaryString:(NSString *)str {
     if (str == nil) {

@@ -826,19 +826,27 @@
 }
 
 + (NSUInteger)batteryLevel {
+#if TARGET_OS_TV
+    return 0;
+#else
     if (![[UIDevice currentDevice] isBatteryMonitoringEnabled]) {
        [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
     }
     NSUInteger batteryLevel = (NSUInteger)(UIDevice.currentDevice.batteryLevel * 100);
     return batteryLevel;
+#endif
 }
 
 + (NSUInteger)chargingStatus {
+#if TARGET_OS_TV
+    return 0;
+#else
     if (![[UIDevice currentDevice] isBatteryMonitoringEnabled]) {
        [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
     }
     NSUInteger chargingStatus = (NSUInteger)UIDevice.currentDevice.batteryState;
     return chargingStatus;
+#endif
 }
 
 + (NSUInteger)systemUptime {
