@@ -68,9 +68,9 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
 + (NSArray<NSString *> *)baseUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[baseUrlIndia, baseUrl, randomIndiaIpAddressChoice];
+        return @[baseUrlIndia, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[baseUrlChina, baseUrl, randomChinaIpAddressChoice];
+        return @[baseUrlChina, baseUrl];
     } else {
         return @[baseUrl, baseUrlIndia, baseUrlChina];
     }
@@ -79,9 +79,9 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
 + (NSArray<NSString *> *)gdprUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[gdprUrlIndia, gdprUrl, randomIndiaIpAddressChoice];
+        return @[gdprUrlIndia, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[gdprUrlChina, gdprUrl, randomChinaIpAddressChoice];
+        return @[gdprUrlChina, gdprUrl];
     } else {
         return @[gdprUrl, gdprUrlIndia, gdprUrlChina];
     }
@@ -90,9 +90,9 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
 + (NSArray<NSString *> *)subscriptionUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
 {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[subscritionUrlIndia, subscriptionUrl, randomIndiaIpAddressChoice];
+        return @[subscritionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[subscritionUrlChina, subscriptionUrl, randomChinaIpAddressChoice];
+        return @[subscritionUrlChina, subscriptionUrl];
     } else {
         return @[subscriptionUrl, subscritionUrlIndia, subscritionUrlChina];
     }
