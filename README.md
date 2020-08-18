@@ -284,7 +284,7 @@ Once you integrate the Adjust SDK into your project, you can take advantage of t
 
 ### <a id="att-framework"></a>AppTrackingTransparency framework
 
-For each package sent, the Adjust backend receives one of the following four (4) states of consent to access to app-related data that can be used for tracking the user or the device:
+For each package sent, the Adjust backend receives one of the following four (4) states of consent for access to app-related data that can be used for tracking the user or the device:
 
 - Authorized
 - Denied
@@ -297,18 +297,18 @@ Before a device receives an authorization request for access to app-related data
 
 If authorization to use app tracking data is restricted, the returned status will be Restricted.
 
-SDK has built in mechanism to receive an updated status after user gave an answer to pop up dialog in case you are displaying this dialog on your own. As a convenience and fastest possible communication of new state of consent to backend, Adjust SDK offers a wrapper around app tracking authorisation method described in chapter below.
+The SDK has a built-in mechanism to receive an updated status after a user responds to the pop-up dialog, in case you don't want to customize your displayed dialog pop-up. To conveniently and efficiently communicate the new state of consent to the backend, Adjust SDK offers a wrapper around the app tracking authorization method described in the following chapter, App-tracking authorization wrapper.
 
 ### <a id="ata-wrapper"></a>App-tracking authorisation wrapper
 
-Adjust SDK offers a possibility to use it to request user authorization for accessing their app-related data. Adjust SDK has a wrapper built on top [requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc) method for which you can as well define callback method to get information about user's choice. In addition to that, with usage of this wrapper, as soon as user made a choice in pop up dialog, next to communicating this choice back to your callback method, SDK will also inform backend about the choice. `NSUInteger` value will be delievered into your callback method with following meaning:
+Adjust SDK offers the possibility to use it for requesting user authorization in accessing their app-related data. Adjust SDK has a wrapper built on top of the [requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc) method, where you can as well define the callback method to get information about a user's choice. Also, with the use of this wrapper, as soon as a user responds to the pop-up dialog, it's then communicated back using your callback method. The SDK will also inform the backend of the user's choice. The `NSUInteger` value will be delivered via your callback method with the following meaning:
 
 - 0: `ATTrackingManagerAuthorizationStatusNotDetermined`
 - 1: `ATTrackingManagerAuthorizationStatusRestricted`
 - 2: `ATTrackingManagerAuthorizationStatusDenied`
 - 3: `ATTrackingManagerAuthorizationStatusAuthorized`
 
-In order to use this wrapper, you can call it like this:
+In order to use this wrapper, you can call it similarly to this:
 
 ```objc
 [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
@@ -335,7 +335,7 @@ If you have implemented the Adjust iOS SDK v4.23.0 or above and your app is runn
 
 Conversion values can optionally be attached to callback parameters during callbacks.
 
-In case you don't want Adjust SDK to automatically communicate with SKAdNetwork, you can disable that by calling following method on configuration object:
+In case you don't want the Adjust SDK to automatically communicate with SKAdNetwork, you can disable that by calling the following method on configuration object:
 
 ```objc
 [adjustConfig deactivateSKAdNetworkHandling];
