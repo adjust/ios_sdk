@@ -604,6 +604,10 @@
             case CPU_SUBTYPE_ARM64_V8:
                 return @"CPU_SUBTYPE_ARM64_V8";
 #endif
+#ifdef CPU_SUBTYPE_ARM64E
+            case CPU_SUBTYPE_ARM64E:
+                return @"CPU_SUBTYPE_ARM64E";
+#endif
         }
             break;
 #endif
@@ -648,6 +652,10 @@
             case CPU_SUBTYPE_ARM_V7K:
                 return @"CPU_SUBTYPE_ARM_V7K";
 #endif
+#ifdef CPU_SUBTYPE_ARM_V8
+            case CPU_SUBTYPE_ARM_V8:
+                return @"CPU_SUBTYPE_ARM_V8";
+#endif
 #ifdef CPU_SUBTYPE_ARM_V6M
             case CPU_SUBTYPE_ARM_V6M:
                 return @"CPU_SUBTYPE_ARM_V6M";
@@ -660,9 +668,25 @@
             case CPU_SUBTYPE_ARM_V7EM:
                 return @"CPU_SUBTYPE_ARM_V7EM";
 #endif
-#ifdef CPU_SUBTYPE_ARM_V8
-            case CPU_SUBTYPE_ARM_V8:
-                return @"CPU_SUBTYPE_ARM_V8";
+#ifdef CPU_SUBTYPE_ARM_V8M
+            case CPU_SUBTYPE_ARM_V8M:
+                return @"CPU_SUBTYPE_ARM_V8M";
+#endif
+        }
+            break;
+#endif
+#ifdef CPU_TYPE_ARM64_32
+        case CPU_TYPE_ARM64_32:
+            if (!readSubType) return @"CPU_TYPE_ARM64_32";
+            switch (cpusubtype)
+        {
+#ifdef CPU_SUBTYPE_ARM64_32_ALL
+            case CPU_SUBTYPE_ARM64_32_ALL:
+                return @"CPU_SUBTYPE_ARM64_32_ALL";
+#endif
+#ifdef CPU_SUBTYPE_ARM64_32_V8
+            case CPU_SUBTYPE_ARM64_32_V8:
+                return @"CPU_SUBTYPE_ARM64_32_V8";
 #endif
         }
             break;
