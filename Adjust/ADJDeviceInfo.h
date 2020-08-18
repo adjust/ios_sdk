@@ -28,7 +28,6 @@
 @property (nonatomic, copy) NSString *cpuSubtype;
 @property (nonatomic, copy) NSString *installReceiptBase64;
 @property (nonatomic, copy) NSString *osBuild;
-@property (nonatomic, copy) NSString *freeDiskSpace;
 
 - (id)initWithSdkPrefix:(NSString *)sdkPrefix;
 + (ADJDeviceInfo *)deviceInfoWithSdkPrefix:(NSString *)sdkPrefix;
