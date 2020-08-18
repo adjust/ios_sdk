@@ -1008,7 +1008,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return binStr;
 }
 
-+ (NSString *)decimalToBinary:(NSUInteger)decInt {
++ (NSString *)decimalToBinaryString:(NSUInteger)decInt {
     if (decInt == 0) {
         return @"0";
     }

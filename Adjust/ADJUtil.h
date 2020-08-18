@@ -121,7 +121,7 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)stringToBinaryString:(NSString *)str;
 
-+ (NSString *)decimalToBinary:(NSUInteger)decInt;
++ (NSString *)decimalToBinaryString:(NSUInteger)decInt;
 
 + (NSString *)enforceParameterLength:(NSString *)parameter
                        withMaxlength:(int)maxLength;
