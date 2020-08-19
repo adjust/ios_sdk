@@ -15,6 +15,9 @@
 #import "ADJActivityPackage.h"
 #import "ADJBackoffStrategy.h"
 
+// https://stackoverflow.com/a/5337804/1498352
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 typedef void (^selfInjectedBlock)(id);
 typedef void (^synchronisedBlock)(void);
 typedef void (^isInactiveInjected)(BOOL);
@@ -108,12 +111,17 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)sdkVersion;
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (NSString *)readMCC;
 
 + (NSString *)readMNC;
 
 + (NSString *)readCurrentRadioAccessTechnology;
-#endif
+
++ (NSString *)stringToBinaryString:(NSString *)str;
+
++ (NSString *)decimalToBinaryString:(NSUInteger)decInt;
+
++ (NSString *)enforceParameterLength:(NSString *)parameter
+                       withMaxlength:(int)maxLength;
 
 @end

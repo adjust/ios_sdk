@@ -50,9 +50,13 @@
 
 @end
 
+@class ADJTrackingStatusManager;
+
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, copy) ADJAttribution *attribution;
+@property (nonatomic, strong) ADJTrackingStatusManager *trackingStatusManager;
+
 - (NSString *)adid;
 
 - (id)initWithConfig:(ADJConfig *)adjustConfig
@@ -97,6 +101,7 @@
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
 - (void)trackSubscription:(ADJSubscription *)subscription;
+- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 
 - (ADJDeviceInfo *)deviceInfo;
 - (ADJActivityState *)activityState;
@@ -125,6 +130,20 @@
                                    key:(NSString *)key;
 - (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI;
 - (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
+
+@end
+
+@interface ADJTrackingStatusManager : NSObject
+
+- (instancetype)initWithActivityHandler:(ADJActivityHandler *)activityHandler;
+
+- (void)checkForNewAttStatus;
+- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
+
+- (BOOL)canGetAttStatus;
+
+@property (nonatomic, readonly, assign) BOOL trackingEnabled;
+@property (nonatomic, readonly, assign) int attStatus;
 
 @end
 

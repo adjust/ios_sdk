@@ -23,6 +23,8 @@
 @property (nonatomic, copy) NSString *adid;
 @property (nonatomic, strong) NSDictionary *attributionDetails;
 
+@property (nonatomic, assign) int trackingManagerAuthorizationStatus;
+
 // Global counters
 @property (nonatomic, assign) int eventCount;
 @property (nonatomic, assign) int sessionCount;

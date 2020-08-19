@@ -62,6 +62,7 @@
             break;
     }
 
+    responseData.sdkPackage = activityPackage;
     responseData.activityKind = activityKind;
 
     return responseData;

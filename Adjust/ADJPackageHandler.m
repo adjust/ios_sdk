@@ -41,7 +41,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
                     userAgent:(NSString *)userAgent
-                    extraPath:(NSString *)extraPath
+                  urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
     if (self == nil) return nil;
@@ -58,7 +58,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      activityHandler:activityHandler
                        startsSending:startsSending
                           userAgent:userAgent
-                          extraPath:extraPath];
+                          urlStrategy:urlStrategy];
                      }];
 
     return self;
@@ -188,20 +188,18 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 #pragma mark - internal
-- (void)initI:(ADJPackageHandler *)selfI
-activityHandler:(id<ADJActivityHandler>)activityHandler
-startsSending:(BOOL)startsSending
-    userAgent:(NSString *)userAgent
-    extraPath:(NSString *)extraPath
+- (void)
+    initI:(ADJPackageHandler *)selfI
+        activityHandler:(id<ADJActivityHandler>)activityHandler
+        startsSending:(BOOL)startsSending
+        userAgent:(NSString *)userAgent
+        urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
     selfI.requestHandler = [[ADJRequestHandler alloc]
                                 initWithResponseCallback:self
-                                extraPath:extraPath
-                                baseUrl:[ADJAdjustFactory baseUrl]
-                                gdprUrl:[ADJAdjustFactory gdprUrl]
-                                subscriptionUrl:[ADJAdjustFactory subscriptionUrl]
+                                urlStrategy:urlStrategy
                                 userAgent:userAgent
                                 requestTimeout:[ADJAdjustFactory requestTimeout]];
     selfI.logger = ADJAdjustFactory.logger;

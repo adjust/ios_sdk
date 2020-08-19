@@ -10,13 +10,14 @@
 #import "ADJActivityHandler.h"
 #import "ADJActivityPackage.h"
 #import "ADJRequestHandler.h"
+#import "ADJUrlStrategy.h"
 
 @interface ADJAttributionHandler : NSObject <ADJResponseCallback>
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
                 startsSending:(BOOL)startsSending
                     userAgent:(NSString *)userAgent
-                    extraPath:(NSString *)extraPath;
+                  urlStrategy:(ADJUrlStrategy *)urlStrategy;
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;
 

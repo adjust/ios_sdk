@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.22.2
+//  V4.23.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -58,6 +58,12 @@ extern NSString * __nonnull const ADJAdRevenueSourceUpsight;
 extern NSString * __nonnull const ADJAdRevenueSourceUnityads;
 extern NSString * __nonnull const ADJAdRevenueSourceAdtoapp;
 extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
+
+/**
+ * Constants for country apps url strategies.
+ */
+extern NSString * __nonnull const ADJUrlStrategyIndia;
+extern NSString * __nonnull const ADJUrlStrategyChina;
 
 /**
  * @brief The main interface to Adjust.
@@ -274,6 +280,8 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
 /**
  * Obtain singleton Adjust object.
  */
@@ -332,5 +340,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
 - (nullable ADJAttribution *)attribution;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
+
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
 @end

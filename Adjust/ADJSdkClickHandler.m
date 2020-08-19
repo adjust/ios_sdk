@@ -38,7 +38,7 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
                     userAgent:(NSString *)userAgent
-                    extraPath:(NSString *)extraPath
+                  urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
     if (self == nil) {
@@ -51,10 +51,7 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
     self.requestHandler = [[ADJRequestHandler alloc]
                            initWithResponseCallback:self
-                           extraPath:extraPath
-                           baseUrl:[ADJAdjustFactory baseUrl]
-                           gdprUrl:[ADJAdjustFactory gdprUrl]
-                           subscriptionUrl:[ADJAdjustFactory subscriptionUrl]
+                           urlStrategy:urlStrategy
                            userAgent:userAgent
                            requestTimeout:[ADJAdjustFactory requestTimeout]];
 

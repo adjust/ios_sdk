@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE91A24E4218C00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91824E4218B00FEF3F1 /* ADJUrlStrategy.m */; };
 		9D01676920FF812B0029CFFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D01676820FF812B0029CFFF /* Assets.xcassets */; };
 		9D01677020FF812B0029CFFF /* AdjustExample-iMessage MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9D01676F20FF812B0029CFFF /* AdjustExample-iMessage MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9D01677520FF812B0029CFFF /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D01677420FF812B0029CFFF /* Messages.framework */; };
@@ -74,6 +75,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6FBEE91824E4218B00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE91924E4218B00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		9D01676520FF81280029CFFF /* AdjustExample-iMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-iMessage.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D01676820FF812B0029CFFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D01676A20FF812B0029CFFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -281,6 +284,8 @@
 				9D01685520FF88F60029CFFF /* ADJReachability.m */,
 				9D2F24182447DE4700B7CA90 /* ADJSubscription.h */,
 				9D2F24192447DE4700B7CA90 /* ADJSubscription.m */,
+				6FBEE91924E4218B00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE91824E4218B00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -413,6 +418,7 @@
 				9D01686720FF88F60029CFFF /* ADJConfig.m in Sources */,
 				9D01687720FF88F60029CFFF /* ADJReachability.m in Sources */,
 				9D01685A20FF88F60029CFFF /* ADJKeychain.m in Sources */,
+				6FBEE91A24E4218C00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D01686A20FF88F60029CFFF /* NSString+ADJAdditions.m in Sources */,
 				9D01687120FF88F60029CFFF /* ADJAdjustFactory.m in Sources */,
 				9D01687220FF88F60029CFFF /* ADJResponseData.m in Sources */,

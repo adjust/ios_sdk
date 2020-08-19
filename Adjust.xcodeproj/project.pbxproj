@@ -23,6 +23,18 @@
 
 /* Begin PBXBuildFile section */
 		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6FBEE8F324E2C26F00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE8F524E2C26F00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */; };
+		6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
+		6FBEE92724E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
+		6FBEE92824E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE92924E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE92C24E4230800FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92A24E4230700FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE92D24E4230800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92B24E4230700FEF3F1 /* ADJUrlStrategy.m */; };
+		6FBEE93024E4231400FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92E24E4231300FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE93124E4231400FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92F24E4231300FEF3F1 /* ADJUrlStrategy.m */; };
+		6FBEE93424E4232800FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */; };
+		6FBEE93524E4232800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC85001F278CF300D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC84F71F278CF300D6A0ED /* ADJReachability.m */; };
 		6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCC84F81F278CF300D6A0ED /* ADJReachability.h */; };
 		6FCC85041F27945E00D6A0ED /* ADJReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCC85021F27944600D6A0ED /* ADJReachability.h */; };
@@ -601,6 +613,16 @@
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
 		6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustWebBridgeTestApp.xcodeproj; path = AdjustWebBridgeTestApp/AdjustWebBridgeTestApp.xcodeproj; sourceTree = "<group>"; };
+		6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE92A24E4230700FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE92B24E4230700FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE92E24E4231300FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE92F24E4231300FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC84F71F278CF300D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		6FCC84F81F278CF300D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC85021F27944600D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -1356,6 +1378,8 @@
 				9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */,
 				9D2F23E02447CE5C00B7CA90 /* ADJSubscription.h */,
 				9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */,
+				6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -1458,6 +1482,8 @@
 				9D0E2E5A210B575600133B4F /* ADJReachability.m */,
 				9D2F24032447DD6000B7CA90 /* ADJSubscription.h */,
 				9D2F24022447DD6000B7CA90 /* ADJSubscription.m */,
+				6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1664,6 +1690,8 @@
 				9DEAF0F4210072BC005CAEDB /* ADJReachability.m */,
 				9D2F23FA2447DD2500B7CA90 /* ADJSubscription.h */,
 				9D2F23FB2447DD2500B7CA90 /* ADJSubscription.m */,
+				6FBEE92A24E4230700FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE92B24E4230700FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1745,6 +1773,8 @@
 				6FCC85031F27944600D6A0ED /* ADJReachability.m */,
 				9D2F23F72447DCE800B7CA90 /* ADJSubscription.h */,
 				9D2F23F62447DCE800B7CA90 /* ADJSubscription.m */,
+				6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1846,6 +1876,8 @@
 				6FCC85061F27948700D6A0ED /* ADJReachability.m */,
 				9D2F23FE2447DD3600B7CA90 /* ADJSubscription.h */,
 				9D2F23FF2447DD3700B7CA90 /* ADJSubscription.m */,
+				6FBEE92E24E4231300FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE92F24E4231300FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1873,10 +1905,12 @@
 				96BCFBCD1AC99231005A65C5 /* Adjust.h in Headers */,
 				96BCFBCE1AC99235005A65C5 /* ADJEvent.h in Headers */,
 				96BCFBD01AC9923F005A65C5 /* ADJConfig.h in Headers */,
+				6FBEE92824E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */,
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
 				9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
+				6FBEE8F324E2C26F00FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */,
 				6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */,
 				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
@@ -1937,6 +1971,7 @@
 				9D0E2E98210B575600133B4F /* NSString+ADJAdditions.h in Headers */,
 				9D0E2EA7210B575600133B4F /* ADJBackoffStrategy.h in Headers */,
 				9D0E2E8C210B575600133B4F /* ADJDeviceInfo.h in Headers */,
+				6FBEE93424E4232800FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9D0E2E90210B575600133B4F /* ADJSdkClickHandler.h in Headers */,
 				9D0E2E81210B575600133B4F /* ADJUtil.h in Headers */,
 				9D0E2E78210B575600133B4F /* ADJPackageHandler.h in Headers */,
@@ -1961,6 +1996,7 @@
 				9DE354D62100726300D211C9 /* AdjustSdkIm.h in Headers */,
 				9DEAF11C210072BC005CAEDB /* ADJKeychain.h in Headers */,
 				9DEAF0F9210072BC005CAEDB /* Adjust.h in Headers */,
+				6FBEE92C24E4230800FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9DEAF0F5210072BC005CAEDB /* ADJConfig.h in Headers */,
 				9DEAF119210072BC005CAEDB /* ADJEvent.h in Headers */,
 				9D2F23FC2447DD2500B7CA90 /* ADJSubscription.h in Headers */,
@@ -2003,6 +2039,7 @@
 				9DFA37B71C0F21D600782607 /* AdjustSdk.h in Headers */,
 				9DF9C9431D6F3CA5008E362F /* Adjust.h in Headers */,
 				9DF9C9231D6F3CA5008E362F /* ADJEvent.h in Headers */,
+				6FBEE92924E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9DF9C91F1D6F3CA5008E362F /* ADJConfig.h in Headers */,
 				9DF9C92B1D6F3CA5008E362F /* ADJLogger.h in Headers */,
 				9DF9C9191D6F3CA5008E362F /* ADJAttribution.h in Headers */,
@@ -2045,6 +2082,7 @@
 				9DFB06131D747070006D48FC /* AdjustSdkTv.h in Headers */,
 				9DFB06941D7470C0006D48FC /* Adjust.h in Headers */,
 				9DFB06741D7470C0006D48FC /* ADJEvent.h in Headers */,
+				6FBEE93024E4231400FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9DFB06701D7470C0006D48FC /* ADJConfig.h in Headers */,
 				9DFB067C1D7470C0006D48FC /* ADJLogger.h in Headers */,
 				9DFB066A1D7470C0006D48FC /* ADJAttribution.h in Headers */,
@@ -2565,12 +2603,14 @@
 				96E5E39618BBB48A008E7B30 /* ADJRequestHandler.m in Sources */,
 				9D2F23E32447CE5C00B7CA90 /* ADJSubscription.m in Sources */,
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
+				6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
 				965307F61A000DA400107FF9 /* ADJDeviceInfo.m in Sources */,
 				969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */,
 				969952D21A01309200928462 /* ADJAttribution.m in Sources */,
 				960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */,
 				96854A5A1B1F2779002B2874 /* ADJTimerOnce.m in Sources */,
+				6FBEE8F524E2C26F00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				96854A601B1F278C002B2874 /* ADJTimerCycle.m in Sources */,
 				96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */,
 				968173841C3C2D07002AE1DE /* ADJSessionSuccess.m in Sources */,
@@ -2656,6 +2696,7 @@
 				9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */,
 				9D0E2E84210B575600133B4F /* ADJTimerCycle.m in Sources */,
 				9D0E2E6C210B575600133B4F /* ADJDeviceInfo.m in Sources */,
+				6FBEE93524E4232800FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D0E2EA5210B575600133B4F /* ADJPackageBuilder.m in Sources */,
 				9D0E2EAD210B575600133B4F /* ADJReachability.m in Sources */,
 				9D0E2E99210B575600133B4F /* ADJAttribution.m in Sources */,
@@ -2702,6 +2743,7 @@
 				9DEAF118210072BC005CAEDB /* ADJPackageHandler.m in Sources */,
 				9DEAF110210072BC005CAEDB /* ADJLogger.m in Sources */,
 				9DEAF0F7210072BC005CAEDB /* ADJTimerOnce.m in Sources */,
+				6FBEE92D24E4230800FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9DEAF101210072BC005CAEDB /* ADJEvent.m in Sources */,
 				9DEAF117210072BC005CAEDB /* ADJConfig.m in Sources */,
 				9DEAF0F8210072BC005CAEDB /* ADJAttributionHandler.m in Sources */,
@@ -2743,6 +2785,7 @@
 				9DF9C91C1D6F3CA5008E362F /* ADJAttributionHandler.m in Sources */,
 				9DF9C91A1D6F3CA5008E362F /* ADJAttribution.m in Sources */,
 				9DF9C9201D6F3CA5008E362F /* ADJConfig.m in Sources */,
+				6FBEE92724E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9DF9C9401D6F3CA5008E362F /* ADJTimerOnce.m in Sources */,
 				9DF9C93E1D6F3CA5008E362F /* ADJTimerCycle.m in Sources */,
 				9DF9C9341D6F3CA5008E362F /* ADJResponseData.m in Sources */,
@@ -2784,6 +2827,7 @@
 				9DFB066D1D7470C0006D48FC /* ADJAttributionHandler.m in Sources */,
 				9DFB066B1D7470C0006D48FC /* ADJAttribution.m in Sources */,
 				9DFB06711D7470C0006D48FC /* ADJConfig.m in Sources */,
+				6FBEE93124E4231400FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9DFB06911D7470C0006D48FC /* ADJTimerOnce.m in Sources */,
 				9DFB068F1D7470C0006D48FC /* ADJTimerCycle.m in Sources */,
 				9DFB06851D7470C0006D48FC /* ADJResponseData.m in Sources */,

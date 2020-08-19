@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AppTrackingTransparency
+import AdSupport
 
 class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnTrackEventSimple: UIButton?
@@ -18,6 +20,14 @@ class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnEnableSDK: UIButton?
     @IBOutlet weak var btnDisableSDK: UIButton?
     @IBOutlet weak var btnIsSDKEnabled: UIButton?
+    
+    lazy var loadProductController: ProductLoadable? = {
+        if #available(iOS 14.0, *) {
+            return LoadProductController()
+        }
+        
+        return nil
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +35,24 @@ class ViewControllerSwift: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func btnAskPermission(_sender: UIButton) {
+        if #available(iOS 14, *) {
+            print("status notDetermined == \(ATTrackingManager.trackingAuthorizationStatus == .notDetermined)")
+            print("status authorized == \(ATTrackingManager.trackingAuthorizationStatus == .authorized)")
+            print("IDFA == \(ASIdentifierManager.shared().advertisingIdentifier)")
+            ATTrackingManager.requestTrackingAuthorization { (status) in
+                print("IDFA == \(ASIdentifierManager.shared().advertisingIdentifier)")
+                print("authorized == \(status == .authorized)")
+                print("denied == \(status == .denied)")
+                print("restricted == \(status == .restricted)")
+            }
+        }
+    }
+    
+    @IBAction func btnLoadProduct(_sender: UIButton) {
+        loadProductController?.loadProduct(from: self)
     }
 
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {

@@ -24,9 +24,6 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
 
-// https://stackoverflow.com/a/5337804/1498352
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-
 static NSString *userAgent = nil;
 static ADJReachability *reachability = nil;
 static NSRegularExpression *universalLinkRegex = nil;
@@ -40,7 +37,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.22.2";
+static NSString * const kClientSdk                  = @"ios4.23.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -963,22 +960,32 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return kClientSdk;
 }
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (NSString *)readMCC {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (carrier == nil) {
         return nil;
     }
     return [carrier mobileCountryCode];
+#endif
 }
 
 + (NSString *)readMNC {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (carrier == nil) {
         return nil;
     }
     return [carrier mobileNetworkCode];
+#endif
 }
 
 + (NSString *)readCurrentRadioAccessTechnology {
+#if TARGET_OS_TV || TARGET_OS_MACCATALYST
+    return nil;
+#else
     if (networkInfo == nil) {
         return nil;
     }
@@ -991,7 +998,70 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     id radioTech = [networkInfo performSelector:radioTechSelector];
 #pragma clang diagnostic pop
     return radioTech;
-}
 #endif
+}
+
++ (NSString *)stringToBinaryString:(NSString *)str {
+    if (str == nil) {
+        return nil;
+    }
+    NSMutableString *binStr = [[NSMutableString alloc] init];
+    const char *cstr = [str UTF8String];
+    size_t len = strlen(cstr);
+    for (size_t i = 0; i < len; i++) {
+        uint8_t c = cstr[i];
+        for (int j = 0; j < 8; j++) {
+            [binStr appendString:((c & 0x80) ? @"1" : @"0")];
+            c <<= 1;
+        }
+    }
+    return binStr;
+}
+
++ (NSString *)decimalToBinaryString:(NSUInteger)decInt {
+    if (decInt == 0) {
+        return @"0";
+    }
+    NSString *string = @"" ;
+    NSUInteger x = decInt;
+    while (x > 0) {
+        string = [[NSString stringWithFormat: @"%lu", x&1] stringByAppendingString:string];
+        x = x >> 1;
+    }
+    return string;
+}
+
++ (NSString *)enforceParameterLength:(NSString *)parameter
+                       withMaxlength:(int)maxLength {
+    if (parameter == nil) {
+        // failed to read parameter
+        // fill in with zeros
+        NSString *failed = @"";
+        for (int i = 0; i < maxLength; i += 1) {
+            failed = [failed stringByAppendingString:@"0"];
+        }
+        return failed;
+    }
+    if (parameter.length == maxLength) {
+        // all dandy
+        return parameter;
+    }
+    if (parameter.length > maxLength) {
+        // overflow
+        // in overflow case, fill parameter with all ones
+        NSString *stringOverflow = @"";
+        for (int i = 0; i < maxLength; i += 1) {
+            stringOverflow = [stringOverflow stringByAppendingString:@"1"];
+        }
+        return stringOverflow;
+    }
+    // parameter too short
+    // expand it with prepended zeros to fit the protocol
+    NSString *expandedParameter = [NSString stringWithString:parameter];
+    for (int i = 0; i < maxLength - parameter.length; i += 1) {
+        expandedParameter = [@"0" stringByAppendingString:expandedParameter];
+    }
+    return expandedParameter;
+}
 
 @end

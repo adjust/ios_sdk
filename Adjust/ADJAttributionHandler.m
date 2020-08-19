@@ -34,7 +34,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
                 startsSending:(BOOL)startsSending
                     userAgent:(NSString *)userAgent
-                    extraPath:(NSString *)extraPath
+                  urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
     if (self == nil) return nil;
@@ -42,10 +42,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.requestHandler = [[ADJRequestHandler alloc]
                                 initWithResponseCallback:self
-                                extraPath:extraPath
-                                baseUrl:[ADJAdjustFactory baseUrl]
-                                gdprUrl:[ADJAdjustFactory gdprUrl]
-                                subscriptionUrl:[ADJAdjustFactory subscriptionUrl]
+                                urlStrategy:urlStrategy
                                 userAgent:userAgent
                                 requestTimeout:[ADJAdjustFactory requestTimeout]];
     self.activityHandler = activityHandler;
@@ -115,14 +112,14 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 - (void)checkSessionResponseI:(ADJAttributionHandler*)selfI
           sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
     [selfI checkAttributionI:selfI responseData:sessionResponseData];
-
+    
     [selfI.activityHandler launchSessionResponseTasks:sessionResponseData];
 }
 
 - (void)checkSdkClickResponseI:(ADJAttributionHandler*)selfI
           sdkClickResponseData:(ADJSdkClickResponseData *)sdkClickResponseData {
     [selfI checkAttributionI:selfI responseData:sdkClickResponseData];
-
+    
     [selfI.activityHandler launchSdkClickResponseTasks:sdkClickResponseData];
 }
 
@@ -131,7 +128,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     [selfI checkAttributionI:selfI responseData:attributionResponseData];
 
     [selfI checkDeeplinkI:selfI attributionResponseData:attributionResponseData];
-
+    
     [selfI.activityHandler launchAttributionResponseTasks:attributionResponseData];
 }
 
@@ -246,6 +243,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
                                              activityState:selfI.activityHandler.activityState
                                              config:selfI.activityHandler.adjustConfig
                                              sessionParameters:selfI.activityHandler.sessionParameters
+                                             trackingStatusManager:selfI.activityHandler.trackingStatusManager
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];
 

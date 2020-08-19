@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE91D24E4219E00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91B24E4219D00FEF3F1 /* ADJUrlStrategy.m */; };
 		9D0F16A62193F96F00F5140E /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F16542193F96F00F5140E /* AdjustBridge.m */; };
 		9D0F16A72193F96F00F5140E /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F16572193F96F00F5140E /* WebViewJavascriptBridgeBase.m */; };
 		9D0F16A82193F96F00F5140E /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0F16582193F96F00F5140E /* WKWebViewJavascriptBridge.m */; };
@@ -61,6 +62,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FBEE91B24E4219D00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJUrlStrategy.m; path = ../../../Adjust/ADJUrlStrategy.m; sourceTree = "<group>"; };
+		6FBEE91C24E4219E00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJUrlStrategy.h; path = ../../../Adjust/ADJUrlStrategy.h; sourceTree = "<group>"; };
 		9D0F16542193F96F00F5140E /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		9D0F16552193F96F00F5140E /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		9D0F16572193F96F00F5140E /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
@@ -278,6 +281,8 @@
 				9D0F16A52193F96F00F5140E /* ADJReachability.m */,
 				9D2F241C2447DE5A00B7CA90 /* ADJSubscription.h */,
 				9D2F241B2447DE5A00B7CA90 /* ADJSubscription.m */,
+				6FBEE91C24E4219E00FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE91B24E4219D00FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../../Adjust;
@@ -421,6 +426,7 @@
 				9D0F16C12193F96F00F5140E /* NSData+ADJAdditions.m in Sources */,
 				9D0F16AF2193F96F00F5140E /* ADJRequestHandler.m in Sources */,
 				9D0F16B12193F96F00F5140E /* ADJSdkClickHandler.m in Sources */,
+				6FBEE91D24E4219E00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D0F16C72193F96F00F5140E /* ADJAdjustFactory.m in Sources */,
 				9D0F16C42193F96F00F5140E /* ADJSystemProfile.m in Sources */,
 				9D0F16C32193F96F00F5140E /* ADJAttribution.m in Sources */,

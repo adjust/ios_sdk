@@ -13,13 +13,14 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "NSString+ADJAdditions.h"
+#include <stdlib.h>
+
+static NSString * const ADJMethodGET = @"MethodGET";
+static NSString * const ADJMethodPOST = @"MethodPOST";
 
 @interface ADJRequestHandler()
 
-@property (nonatomic, copy) NSString *baseUrlString;
-@property (nonatomic, copy) NSString *gdrpUrlString;
-@property (nonatomic, copy) NSString *subscriptionUrlString;
-@property (nonatomic, copy) NSString *extraPath;
+@property (nonatomic, strong) ADJUrlStrategy *urlStrategy;
 @property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, assign) double requestTimeout;
 @property (nonatomic, weak) id<ADJResponseCallback> responseCallback;
@@ -37,10 +38,7 @@
 #pragma mark - Public methods
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
-                     extraPath:(NSString *)extraPath
-                       baseUrl:(NSString *)baseUrl
-                       gdprUrl:(NSString *)gdprUrl
-               subscriptionUrl:(NSString *)subscriptionUrl
+                   urlStrategy:(ADJUrlStrategy *)urlStrategy
                      userAgent:(NSString *)userAgent
                 requestTimeout:(double)requestTimeout
 {
@@ -49,10 +47,7 @@
     if (self == nil) {
         return nil;
     }
-    self.baseUrlString = baseUrl;
-    self.gdrpUrlString = gdprUrl;
-    self.subscriptionUrlString = subscriptionUrl;
-    self.extraPath = extraPath ?: @"";
+    self.urlStrategy = urlStrategy;
     self.userAgent = userAgent;
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
@@ -83,20 +78,16 @@
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    NSString *urlHostString;
-    if (activityKind == ADJActivityKindGdpr) {
-        urlHostString = self.gdrpUrlString;
-    } else if (activityKind == ADJActivityKindSubscription) {
-        urlHostString = self.subscriptionUrlString;
-    } else {
-        urlHostString = self.baseUrlString;
-    }
-
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParameters
+                                      copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
+    NSString *urlHostString = [self.urlStrategy getUrlHostStringByPackageKind:
+                               activityPackage.activityKind];
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
                           clientSdk:clientSdk
@@ -105,10 +96,10 @@
                   sendingParameters:sendingParameters];
 
     [self sendRequest:urlRequest
-     authorizationHeader:authorizationHeader
-         responseData:responseData];
+  authorizationHeader:authorizationHeader
+         responseData:responseData
+       methodTypeInfo:ADJMethodPOST];
 }
-
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
@@ -121,25 +112,35 @@
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParameters
+                                      copyItems:YES];
 
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
+    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters
+                                                       activityKind:activityKind];
+
+    NSString *urlHostString = [self.urlStrategy
+                               getUrlHostStringByPackageKind:activityPackage.activityKind];
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
                          clientSdk:clientSdk
                         parameters:parameters
-                     urlHostString:self.baseUrlString
+                     urlHostString:urlHostString
                  sendingParameters:sendingParameters];
 
     [self sendRequest:urlRequest
      authorizationHeader:authorizationHeader
-         responseData:responseData];
+         responseData:responseData
+       methodTypeInfo:ADJMethodGET];
 }
 
 #pragma mark Internal methods
 - (void)sendRequest:(NSMutableURLRequest *)request
 authorizationHeader:(NSString *)authorizationHeader
        responseData:(ADJResponseData *)responseData
+     methodTypeInfo:(NSString *)methodTypeInfo
+
 {
     if (authorizationHeader != nil) {
         [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
@@ -152,17 +153,23 @@ authorizationHeader:(NSString *)authorizationHeader
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");
     if (NSURLSessionClass != nil) {
         [self sendNSURLSessionRequest:request
-                      responseData:responseData];
+                      responseData:responseData
+                       methodTypeInfo:methodTypeInfo];
     } else {
         [self sendNSURLConnectionRequest:request
-                         responseData:responseData];
+                         responseData:responseData
+                          methodTypeInfo:methodTypeInfo];
     }
 }
 
 - (void)sendNSURLSessionRequest:(NSMutableURLRequest *)request
                    responseData:(ADJResponseData *)responseData
+                 methodTypeInfo:(NSString *)methodTypeInfo
+
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration];
+    NSURLSession *session =
+        [NSURLSession sessionWithConfiguration:self.defaultSessionConfiguration];
+
     NSURLSessionDataTask *task =
         [session dataTaskWithRequest:request
                    completionHandler:
@@ -172,13 +179,65 @@ authorizationHeader:(NSString *)authorizationHeader
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
+            if (responseData.jsonResponse != nil) {
+                [self.logger debug:@"succeeded with current url strategy"];
+                [self.urlStrategy resetAfterSuccess];
+                [self.responseCallback responseCallback:responseData];
+            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+                [self.logger debug:@"failed with current url strategy, but it will retry with new"];
+                [self retryWithResponseData:responseData
+                             methodTypeInfo:methodTypeInfo];
+            } else {
+                [self.logger debug:@"failed with current url strategy and it will not retry"];
+                //  Stop retrying with different type and return to caller
+                [self.responseCallback responseCallback:responseData];
+            }
         }];
+
     [task resume];
     [session finishTasksAndInvalidate];
 }
 
+/* Manual testing code to fail certain percentage of requests
+ // needs .h to comply with NSURLSessionDelegate
+- (void)
+    URLSession:(NSURLSession *)session
+    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+    completionHandler:
+        (void (^)
+            (NSURLSessionAuthChallengeDisposition disposition,
+             NSURLCredential * _Nullable credential))completionHandler
+{
+    uint32_t randomNumber = arc4random_uniform(2);
+    NSLog(@"URLSession:didReceiveChallenge:completionHandler: random number %d", randomNumber);
+    if (randomNumber != 0) {
+        completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        return;
+    }
+
+    //if (self.urlStrategy.usingIpAddress) {
+    //    completionHandler(NSURLSessionAuthChallengeUseCredential,
+    //                  [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+    //} else {
+    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+    //}
+}
+
+ - (void)connection:(NSURLConnection *)connection
+ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+ {
+     if (challenge.previousFailureCount > 0) {
+         [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+     } else {
+         NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+         [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+     }
+ }
+ */
+
 - (void)sendNSURLConnectionRequest:(NSMutableURLRequest *)request
                 responseData:(ADJResponseData *)responseData
+                    methodTypeInfo:(NSString *)methodTypeInfo
 {
     dispatch_async
         (dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
@@ -191,11 +250,41 @@ authorizationHeader:(NSString *)authorizationHeader
                                                  returningResponse:&response
                                                              error:&error];
             #pragma clang diagnostic pop
+
             [self handleResponseWithData:data
                                 response:(NSHTTPURLResponse *)response
                                    error:error
                             responseData:responseData];
+
+            if (responseData.jsonResponse != nil) {
+                [self.logger debug:@"succeeded with current url strategy"];
+                [self.urlStrategy resetAfterSuccess];
+                [self.responseCallback responseCallback:responseData];
+            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+                [self.logger debug:@"failed with current url strategy, but it will retry with new"];
+                [self retryWithResponseData:responseData
+                             methodTypeInfo:methodTypeInfo];
+            } else {
+                [self.logger debug:@"failed with current url strategy and it will not retry"];
+                //  Stop retrying with different type and return to caller
+                [self.responseCallback responseCallback:responseData];
+            }
         });
+}
+
+- (void)retryWithResponseData:(ADJResponseData *)responseData
+               methodTypeInfo:(NSString *)methodTypeInfo
+{
+    ADJActivityPackage *activityPackage = responseData.sdkPackage;
+    NSDictionary *sendingParameters = responseData.sendingParameters;
+
+    if (methodTypeInfo == ADJMethodGET) {
+        [self sendPackageByGET:activityPackage
+             sendingParameters:sendingParameters];
+    } else {
+        [self sendPackageByPOST:activityPackage
+              sendingParameters:sendingParameters];
+    }
 }
 
 - (void)handleResponseWithData:(NSData *)data
@@ -206,28 +295,25 @@ authorizationHeader:(NSString *)authorizationHeader
     // Connection error
     if (responseError != nil) {
         responseData.message = responseError.description;
-        [self.responseCallback responseCallback:responseData];
         return;
     }
     if ([ADJUtil isNull:data]) {
         responseData.message = @"nil response data";
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
-    NSString *responseString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
+    NSString *responseString = [[[NSString alloc]
+                                 initWithData:data encoding:NSUTF8StringEncoding] adjTrim];
     NSInteger statusCode = urlResponse.statusCode;
     [self.logger verbose:@"Response: %@", responseString];
 
     if (statusCode == 429) {
         responseData.message = @"Too frequent requests to the endpoint (429)";
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
     [self saveJsonResponse:data responseData:responseData];
     if (responseData.jsonResponse == nil) {
-        [self.responseCallback responseCallback:responseData];
         return;
     }
 
@@ -246,8 +332,6 @@ authorizationHeader:(NSString *)authorizationHeader
     if (statusCode == 200) {
         responseData.success = YES;
     }
-
-    [self.responseCallback responseCallback:responseData];
 }
 #pragma mark - URL Request
 - (NSMutableURLRequest *)
@@ -259,7 +343,9 @@ authorizationHeader:(NSString *)authorizationHeader
         (NSDictionary<NSString *, NSString *> *)sendingParameters
 {
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
-                           urlHostString, self.extraPath, path];
+                           urlHostString, self.urlStrategy.extraPath, path];
+
+    [self.logger verbose:@"requestForPostPackage with urlString: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
     //NSURL *url = [baseUrl URLByAppendingPathComponent:path];
@@ -306,7 +392,9 @@ authorizationHeader:(NSString *)authorizationHeader
 
     NSString *urlString =
         [NSString stringWithFormat:@"%@%@%@?%@",
-            urlHostString, self.extraPath, path, queryStringParameters];
+         urlHostString, self.urlStrategy.extraPath, path, queryStringParameters];
+
+    [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
 

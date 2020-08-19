@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FBEE90E24E4212600FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */; };
 		9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */; };
 		9D449E761E6EDC3D00E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E351E6EDC3D00E7E80B /* ADJActivityHandler.m */; };
@@ -48,9 +49,13 @@
 		9DF7A9D01CB4ECA600D3591F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9CE1CB4ECA600D3591F /* LaunchScreen.storyboard */; };
 		9DFB04C21D745B22006D48FC /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C11D745B22006D48FC /* iAd.framework */; };
 		9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C31D745B28006D48FC /* AdSupport.framework */; };
+		D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */; };
+		D731B41524DAAB5C0036F619 /* LoadProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731B41424DAAB5C0036F619 /* LoadProductController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
+		6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
 		6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
 		9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
@@ -130,6 +135,8 @@
 		9DF7A9DF1CB4F01B00D3591F /* AdjustExample-Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AdjustExample-Swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		9DFB04C11D745B22006D48FC /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9DFB04C31D745B28006D48FC /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		D731B41424DAAB5C0036F619 /* LoadProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadProductController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */,
 				9DFB04C21D745B22006D48FC /* iAd.framework in Frameworks */,
 				9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */,
 			);
@@ -211,6 +219,8 @@
 				9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */,
 				9D2F240D2447DDF600B7CA90 /* ADJSubscription.h */,
 				9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */,
+				6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */,
+				6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -234,6 +244,7 @@
 			children = (
 				9DF7A9C41CB4ECA600D3591F /* AdjustExample-Swift */,
 				9DF7A9C31CB4ECA600D3591F /* Products */,
+				D71BFB6E24CAD74A00878F3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -258,6 +269,7 @@
 				9DF7A9DF1CB4F01B00D3591F /* AdjustExample-Swift-Bridging-Header.h */,
 				9D449E331E6EDC3D00E7E80B /* Adjust */,
 				9DFB04C01D745B13006D48FC /* Frameworks */,
+				D731B41424DAAB5C0036F619 /* LoadProductController.swift */,
 			);
 			path = "AdjustExample-Swift";
 			sourceTree = "<group>";
@@ -267,6 +279,14 @@
 			children = (
 				9DFB04C11D745B22006D48FC /* iAd.framework */,
 				9DFB04C31D745B28006D48FC /* AdSupport.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D71BFB6E24CAD74A00878F3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -363,6 +383,7 @@
 				9D449E8A1E6EDC3D00E7E80B /* ADJPackageHandler.m in Sources */,
 				9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */,
 				9D449E7E1E6EDC3D00E7E80B /* ADJAttribution.m in Sources */,
+				6FBEE90E24E4212600FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9D449E831E6EDC3D00E7E80B /* ADJDeviceInfo.m in Sources */,
 				9D449E7F1E6EDC3D00E7E80B /* ADJAttributionHandler.m in Sources */,
 				6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */,
@@ -383,6 +404,7 @@
 				9D449E7A1E6EDC3D00E7E80B /* NSData+ADJAdditions.m in Sources */,
 				9D449E8D1E6EDC3D00E7E80B /* ADJSdkClickHandler.m in Sources */,
 				9D449E881E6EDC3D00E7E80B /* ADJLogger.m in Sources */,
+				D731B41524DAAB5C0036F619 /* LoadProductController.swift in Sources */,
 				9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */,
 				9D449E931E6EDC3D00E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449E801E6EDC3D00E7E80B /* ADJBackoffStrategy.m in Sources */,
