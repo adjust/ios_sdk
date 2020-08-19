@@ -18,6 +18,9 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Adjust日志](#adjust-logging)
    * [构建您的应用](#build-the-app)
 * [附加功能](#additional-features)
+   * [AppTrackingTransparency 框架](#att-framework)
+      * [应用跟踪授权包装器](#ata-wrapper)
+   * [SKAdNetwork 框架](#skadn-framework)
    * [事件跟踪](#event-tracking)
       * [收入跟踪](#revenue-tracking)
       * [收入重复数据删除](#revenue-deduplication)
@@ -106,15 +109,15 @@ github "adjust/ios_sdk"
 
 如果您正在使用`iMessage` 应用, 您可以使用Adjust SDK,也可使用我们的 IM 框架，该框架可从`AdjustSdkIm.framework.zip` 文档中提取。
 
-### <a id="sdk-frameworks"></a>添加iOS框架
+### <a id="sdk-frameworks"></a>添加 iOS 框架
 
-1. 在项目导航（Project Navigator）中选择您的项目
-2. 在主视图的左侧选择目标
-3. 在选项`Build Phases`（构建阶段）中，扩展组`Link Binary with Libraries`（将二进制与库连接）
-4. 在该部分底部点击`+`按钮
-5. 选择`AdSupport.framework`，点击`Add`按钮
-6. 除非您正在使用tvOS，否则重复同样步骤来添加`iAd.framework`和`CoreTelephony.framework`
-7. 将两个框架的`Status`均改为`Optional`
+如果您关联额外的 iOS 框架到应用中，Adjust SDK 将能获取更多的信息。请根据应用启用 Adjust SDK 功能的情况，添加下列框架：
+
+- `AdSupport.framework` - 如果您希望 SDK 能访问 IDFA 值和 (iOS 14 以前) LAT 信息，请添加该框架。
+- `iAd.framework` - 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架。
+- `CoreTelephony.framework`- 如果您希望 SDK 能辨识当前的无线接入技术，请添加该框架。
+- `StoreKit.framework`- 如果您希望访问 `SKAdNetwork` 框架，同时让 Adjust SDK 在 iOS 14 或未来版本的 iOS 中自动处理与该框架的通讯，请添加该框架。
+- `AppTrackingTransparency.framework` - 如果您希望 SDK 能在 iOS 14 或未来版本的 iOS 中包装用户的跟踪许可对话框，并访问用户跟踪许可的值，请添加该框架。
 
 ### <a id="sdk-integrate"></a>集成SDK至您的应用
 
@@ -276,6 +279,65 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ## <a id="additional-features">附加功能
 
 一旦您将Adjust SDK集成到您的项目中，您可以使用以下功能。
+
+### <a id="att-framework"></a>AppTrackingTransparency 框架
+
+每发送一个包，Adjust 的后端就会收到下列四 (4) 种许可状态之一，了解用户是否授权分享应用相关数据，用于用户或设备跟踪：
+
+- Authorized (授权)
+- Denied (拒绝)
+- Not Determined (待定)
+- Restricted (受限)
+
+如果设备收到了用于用户设备跟踪目的应用相关数据访问授权请求，那么返回的状态要么是 Authorized，要么是 Denied。
+
+如果设备尚未收到用于用户设备跟踪目的应用相关数据访问授权请求，那么返回的状态是 Not Determined。
+
+如果应用跟踪数据授权受限，那么返回的状态是 Restricted。
+
+如果您不需要自定义显示的弹出对话框，SDK 拥有内置机制可在用户回复弹出对话框后接收更新后的状态。为了简便、高效地向后端发送用户许可的新状态，Adjust SDK 会提供一个应用跟踪授权方法包装器，详情请参阅下一章节 "应用跟踪授权包装器"。
+
+### <a id="ata-wrapper"></a>应用跟踪授权包装器
+
+您可以使用 Adjust SDK 请求用户授权，让用户允许您访问他们的应用相关数据。基于 [requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc) 方法，Adjust SDK 打造了一个包装器，您可以定义回传方法，了解用户是否授予了数据跟踪许可。借助该包装器，只要用户回复弹出对话框，这一信息就能通过您定义的回传方式传递回来。SDK 也会通知后端用户的许可选择。`NSUInteger` 值将通过您的回传方法传递，不同值的含义如下：
+
+- 0: `ATTrackingManagerAuthorizationStatusNotDetermined` (授权状态待定)
+- 1: `ATTrackingManagerAuthorizationStatusRestricted` (授权状态受限)
+- 2: `ATTrackingManagerAuthorizationStatusDenied`(已拒绝)
+- 3: `ATTrackingManagerAuthorizationStatusAuthorized`(已授权)
+
+要使用该包装器，您可以按照下列方法进行调用：
+
+```objc
+[Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+    switch (status) {
+        case 0:
+            // ATTrackingManagerAuthorizationStatusNotDetermined case
+            break;
+        case 1:
+            // ATTrackingManagerAuthorizationStatusRestricted case
+            break;
+        case 2:
+            // ATTrackingManagerAuthorizationStatusDenied case
+            break;
+        case 3:
+            // ATTrackingManagerAuthorizationStatusAuthorized case
+            break;
+    }
+}];
+```
+
+### <a id="skadn-framework"></a>SKAdNetwork 框架
+
+如果您已经安装了 Adjust iOS SDK v4.23.0 或更新版本，且您的应用在 iOS 14 端运行，那么与 SKAdNetwork 之间的通讯会默认启用，但您可以自行禁用通讯。启用状态下，Adjust 会在 SDK 初始化时自动注册 SKAdNetwork 归因。如果您在 Adjust 控制面板中对事件进行了接收转化值设置，那么 Adjust 后端就会将转化值数据发送给 SDK。然后 SDK 会设定转化值。Adjust 收到 SKAdNetwork 回传数据后，会在控制面板中予以显示。 
+
+您也可以选择将转化值附加在回传上的回传参数中。
+
+如果您不希望 Adjust SDK 自动与 SKAdNetwork 通讯，可以针对配置对象调用如下方法：
+
+```objc
+[adjustConfig deactivateSKAdNetworkHandling];
+```
 
 ### <a id="event-tracking">事件跟踪
 
