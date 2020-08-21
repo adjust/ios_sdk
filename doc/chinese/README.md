@@ -331,8 +331,6 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 如果您已经安装了 Adjust iOS SDK v4.23.0 或更新版本，且您的应用在 iOS 14 端运行，那么与 SKAdNetwork 之间的通讯会默认启用，但您可以自行禁用通讯。启用状态下，Adjust 会在 SDK 初始化时自动注册 SKAdNetwork 归因。如果您在 Adjust 控制面板中对事件进行了接收转化值设置，那么 Adjust 后端就会将转化值数据发送给 SDK。然后 SDK 会设定转化值。Adjust 收到 SKAdNetwork 回传数据后，会在控制面板中予以显示。 
 
-您也可以选择将转化值附加在回传上的回传参数中。
-
 如果您不希望 Adjust SDK 自动与 SKAdNetwork 通讯，可以针对配置对象调用如下方法：
 
 ```objc

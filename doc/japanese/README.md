@@ -62,15 +62,15 @@ StaticかDynamicフレームワークを選択し、プロジェクトに追加�
 
 同様に`iMessage`アプリの場合もadjust SDKの利用が可能です。`AdjustSdkIm.framework.zip`アーカイブからIMフレームワークを展開してください。
 
-#### <a id="sdk-frameworks"></a>iOSフレームワークを追加する
+### <a id="sdk-frameworks"></a>iOSフレームワークを追加する
 
-1. プロジェクトナビゲータ上でプロジェクトを選択します。
-2. メインビューの左側にある該当ターゲットを選択します。
-3. `Build Phases`タブで、`Link Binary with Libraries`を開きます。
-4. そのセクションの最下部にある`+`ボタンをクリックします。
-5. `AdSupport.framework`を選び、`Add`をクリックします。
-6. tvOSを使用していない場合は、同じ手順を繰り返して`iAd.framework`と`CoreTelephony.framework`を追加してください。
-7. フレームワークの`Status`を`Optional`にしてください。
+アプリにiOSフレームワークを追加で連携した場合、Adjust SDKはその情報を呼び出し、取得することができます。iOSフレームワークに対応するAdjust SDKの機能を有効化するには、以下のフレームワークをアプリに追加してください。
+
+- `AdSupport.framework` - SDKがIDFA値および（iOS 14より前の）LAT情報を呼び出せるようにします。
+- `iAd.framework` - SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
+- `CoreTelephony.framework`- SDKが現在のRadio Access Technology（無線アクセス技術）を判別できるようにします。
+- `StoreKit.framework`- iOS 14またはそれ以降において、このフレームワークは「SKAdNetwork」のフレームワークにアクセスし、「SKAdNetwork」との通信をAdjust SDKで自動的に処理できるようにします。
+- `AppTrackingTransparency.framework` -iOS 14またはそれ以降において、このフレームワークはSDKがトラッキングに対するユーザー同意を確認するダイアログをラップし、ユーザーの許諾状況を示す値にアクセスできるようにします。
 
 #### <a id="sdk-integrate"></a>SDKをアプリに実装する
 
@@ -240,6 +240,64 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ### <a id="additional-feature">追加機能
 
 adjust SDKの実装ができたら、更に以下の機能を利用することができます。
+
+### <a id="att-framework"></a>AppTrackingTransparencyフレームワーク
+
+各パッケージが送信されるたびに、Adjustのバックエンドは、アプリ関連データへのアクセスに関するユーザーの許諾状況を表す、以下の4つの値のいずれかを受信します。
+
+- Authorized（承認）
+- Denied（拒否）
+- Not Determined（未決定）
+- Restricted（制限あり）
+
+デバイスがアプリ関連データへのアクセスに対するユーザーの許諾状況の承認リクエスト（ユーザーのデバイストラッキングに使用）を受信した後は、返されるステータスはAuthorizedあるいはDeniedになります。
+
+デバイスがアプリ関連データへのアクセスの承認リクエスト（ユーザーあるいはデバイスのトラッキングに使用）を受信する前は、返されるステータスはNot Determinedになります。
+
+アプリのトラッキングデータの使用が制限されている場合は、返されるステータスはRestrictedになります。
+
+表示されるポップアップダイアログのカスタマイズを希望しない場合のために、このSDKには、ユーザーがポップアップダイアログに応答した後に、更新ステータスを受信するメカニズムが組み込まれています。新しい許諾ステータスをバックエンドに簡単かつ効率的に伝達するために、Adjust SDKはアプリのトラッキング承認メソッドのラッパーを提供しています。次の項目の説明をご覧ください。
+
+### <a id="ata-wrapper"></a>アプリトラッキング承認ラッパー(App-tracking authorisation wrapper)
+
+Adjust SDKは、アプリトラッキング承認ラッパーを使用して、アプリ関連データへのアクセスに対するユーザーの許諾状況をリクエストすることができます。Adjust SDKには、[requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc)メソッドに基づいて構築されたラッパーが用意されており、ユーザーの選択についての情報を取得するためのコールバックメソッドを定義することもできます。また、このラッパーを使用することで、ユーザーがポップアップダイアログに応答すると、その内容がコールバックメソッドで直ちに伝達されます。SDKは、ユーザーの選択をバックエンドにも通知します。「NSUInteger」の値はコールバックメソッドによって伝達されます。値の意味は次のとおりです。
+
+- 0: `ATTrackingManagerAuthorizationStatusNotDetermined`（承認ステータスは「未決定」）
+- 1: `ATTrackingManagerAuthorizationStatusRestricted`（承認ステータスは「制限あり」）
+- 2: `ATTrackingManagerAuthorizationStatusDenied`（承認ステータスは「拒否」）
+- 3: `ATTrackingManagerAuthorizationStatusAuthorized`（承認ステータスは「承認」）
+
+このラッパーを使用するためには、次のように呼び出してください。
+
+```objc
+[Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+    switch (status) {
+        case 0:
+            // ATTrackingManagerAuthorizationStatusNotDetermined の場合
+            break;
+        case 1:
+            // ATTrackingManagerAuthorizationStatusRestricted の場合
+            break;
+        case 2:
+            // ATTrackingManagerAuthorizationStatusDenied の場合
+            break;
+        case 3:
+            // ATTrackingManagerAuthorizationStatusAuthorizedの場合
+            break;
+    }
+}];
+```
+
+### <a id="skadn-framework"></a>SKAdNetworkフレームワーク
+
+Adjust iOS SDK v4.23.0以上を実装済みであり、アプリがiOS14で実行されている場合、SKAdNetworkとの通信はデフォルトでONに設定されますが、選択によりOFFにすることもできます。ONに設定すると、SDKの初期化時にSKAdNetworkのアトリビューションがAdjustによって自動的に登録されます。conversion value（コンバージョン値）を受信するためにAdjust管理画面でイベントを設定する場合、conversaion valueのデータはAdjustバックエンドからSDKに送信されます。その後、SDKによってconversion valueが設定されます。SKAdNetworkコールバックデータをAdjustで受信した後、このデータが管理画面に表示されます。 
+
+Adjust SDKがSKAdNetworkと自動的に通信しないようにしたい場合は、設定オブジェクトで次のメソッドを呼び出すことによって通信を無効化できます。
+
+```objc
+[adjustConfig deactivateSKAdNetworkHandling];
+```
+
 
 #### <a id="event-tracking">イベントトラッキング
 

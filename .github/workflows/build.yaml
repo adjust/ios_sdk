@@ -1,7 +1,7 @@
 on:
-  create:
-    tags:
-      - v*
+  push:
+    branches:
+      - refs/tags/*
 name: Build framework
 jobs:
   static:
