@@ -18,6 +18,9 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Adjust 로](#adjust-logging)
    * [앱 빌드하기](#build-the-app)
 * [부가 기능](#additional-features)
+   * [AppTrackingTransparency framework](#att-framework)
+      * [App-tracking authorisation wrapper](#ata-wrapper)
+   * [SKAdNetwork framework](#skadn-framework)
    * [이벤트 추적](#event-tracking)
         * [매출 추적](#revenue-tracking)
         * [매출 중복 제거](#revenue-deduplication)
@@ -107,13 +110,13 @@ Apple은 iOS 8을 출시한 후, 임베디드 프레임워크로도 잘 알려�
 
 ### <a id="sdk-frameworks"></a>iOS 프레임워크 추가
 
-1. Project Navigator에서 프로젝트를 선택합니다.
-2. 메인 화면 좌측에서 타겟을 선택합니다.
-3. `Build Phases` 탭에서 `Link Binary with Libraries` 그룹을 확장합니다.
-4. 해당 섹션의 하단에서 `+` 버튼을 선택합니다.
-5. `AdSupport.framework`를 선택하고 `Add` 버튼을 클릭합니다. 
-6. tvOS를 사용하는 경우를 제외하고, 같은 단계를 반복하여 `iAd.framework`와 `CoreTelephony.framework`를 추가합니다.
-7. 프레임워크의 `Status`를 `Optional`로 변경합니다.
+추가 iOS 프레임워크를 앱에 연결할 경우 Adjust SDK가 추가 정보를 얻을 수 있습니다. Adjust SDK 기능을 활성화하려는 경우 앱의 SDK 기능 유무에 따라 다음 프레임워크를 추가하세요.
+
+- `AdSupport.framework` - SDK가 IDFA 값 및 (iOS 14 이전 버전) LAT 정보에 액세스하려면 이 프레임워크가 필요합니다.
+- `iAd.framework` - SDK가 실행 중인 ASA 캠페인에 대한 속성을 자동으로 처리하려면 이 프레임워크가 필요합니다.
+- `CoreTelephony.framework` - SDK가 현재의 무선 액세스 기술을 결정하려면 이 프레임워크가 필요합니다.
+- `StoreKit.framework` - `SKAdNetwork` 프레임워크에 액세스하고 Adjust SDK가 iOS 14 및 이후 버전에서 통신을 자동으로 처리하려면 이 프레임워크가 필요합니다.
+- `AppTrackingTranspaintency.framework` - iOS 14 및 이후 버전에서 SDK가 사용자의 추적 동의 다이얼로그를 래핑하고, 추적 여부에 대한 사용자의 동의 값에 대한 액세스를 위해 이 프레임워크가 필요합니다.
 
 ### <a id="sdk-integrate"></a>앱에 SDK 연동
 
@@ -275,6 +278,63 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 ## <a id="additional-features">부가 기능
 
 Adjust SDK를 프로젝트에 연동한 후에는 다음 기능을 사용할 수 있습니다.
+
+### <a id="att-framework"></a>AppTrackingTransparency 프레임워크
+
+전송된 각 패키지에 대해 Adjust 백엔드는 사용자 또는 기기를 추적하는 데 사용할 수 있는 앱 관련 데이터에 대한 액세스 동의를 다음 네 가지 상태 중 하나로 수신합니다.
+
+- Authorized
+- Denied
+- Not Determined
+- Restricted
+
+기기가 사용자 기기 추적에 사용되는 앱 관련 데이터에 대한 액세스를 승인하는 인증 요청을 수신한 후에는 Authorized 또는 Denied 상태가 반환됩니다.
+
+기기가 사용자 또는 기기를 추적하는 데 사용되는 앱 관련 데이터에 대한 액세스 인증 요청을 수신하기 전에는 Not Determined 상태가 반환됩니다.
+
+앱 추적 데이터 인증 권한이 제한되면 Restricted 상태가 반환됩니다.
+
+사용자에게 표시되는 대화 상자 팝업을 맞춤 설정하지 않으려는 경우, SDK에는 사용자가 대화 상자 팝업에 응답하면 업데이트된 상태를 수신하는 자체 메커니즘이 있습니다. 새로운 동의 상태를 백엔드에 편리하고 효율적으로 전달하기 위해 Adjust SDK는 다음 챕터 '앱 트래킹 인증 래퍼'에 설명된 앱 트래킹 인 메서드와 관련한 래퍼를 제공합니다.
+
+### <a id="ata-wrapper"></a>앱 트래킹 인증 래퍼
+
+Adjust SDK를 사용하면 앱 관련 데이터에 액세스하는 데 대한 사용자 인증을 요청할 수 있습니다. Adjust SDK에는 [requestTrackingAuthorizationWithCompletionHandler:](https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/3547037-requesttrackingauthorizationwith?language=objc) 상에 빌드된 래퍼가 있습니다. 여기서 콜백 메서드를 정의하여 사용자의 선택에 대한 정보를 얻을 수도 있습니다. 또한 이 래퍼를 사용하면 사용자가 팝업 대화 상자에 응답하는 즉시 콜백 메서드를 사용하여 다시 전달됩니다. 또한 SDK는 사용자의 선택 정보를 백엔드에 알립니다. `NSUInteger` 값은 다음과 같은 의미로 콜백 메서드를 통해 전달됩니다.
+
+- 0: `ATTrackingManagerAuthorizationStatusNotDetermined`
+- 1: `ATTrackingManagerAuthorizationStatusRestricted`
+- 2: `ATTrackingManagerAuthorizationStatusDenied`
+- 3: `ATTrackingManagerAuthorizationStatusAuthorized`
+
+이 래퍼를 사용하려면 다음과 같이 호출하면 됩니다:
+
+```objc
+[Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+    switch (status) {
+        case 0:
+            // ATTrackingManagerAuthorizationStatusNotDetermined case
+            break;
+        case 1:
+            // ATTrackingManagerAuthorizationStatusRestricted case
+            break;
+        case 2:
+            // ATTrackingManagerAuthorizationStatusDenied case
+            break;
+        case 3:
+            // ATTrackingManagerAuthorizationStatusAuthorized case
+            break;
+    }
+}];
+```
+
+### <a id="skadn-framework"></a>SKAdNetwork 프레임워크
+
+Adjust iOS SDK v4.23.0 이상을 설치했으며 iOS 14에서 앱을 실행하는 경우, SKAdNetwork와의 통신이 기본적으로 활성화되며 비활성화하도록 설정할 수 있습니다. 활성화하면 SDK가 실행될때 SKAdNetwork 어트리뷰션에 대해 Adjust가 자동으로 등록합니다. 이벤트가 Adjust 대시보드에서 전환 값을 수신하도록 설정된 경우, Adjust 백엔드가 전환 값 데이터를 SDK로 전송합니다. 그런 다음 SDK가 전환 값을 설정합니다. Adjust가 SKAdNetwork 콜백 데이터를 수신한 후에는 해당 정보가 대시보드에 표시됩니다. 
+
+Adjust SDK가 SKAdNetwork와 자동으로 통신하지 않도록 하려면 구성 객체에 대해 다음 메서드를 호출하여 해당 메서드를 사용하지 않도록 설정할 수 있습니다:
+
+```objc
+[adjustConfig deactivateSKAdNetworkHandling];
+```
 
 ### <a id="event-tracking">이벤트 추적
 
