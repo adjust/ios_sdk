@@ -112,7 +112,7 @@ If you are having `iMessage` app, you can use the Adjust SDK with it as well wit
 
 ### <a id="sdk-frameworks"></a>Add iOS frameworks
 
-Adjust SDK is able to get additional information in case you link additional iOS frameworks to your app. Please, add following frameworks in case you want to enable Adjust SDK features based on their presence in your app:
+Adjust SDK is able to get additional information in case you link additional iOS frameworks to your app. Please, add following frameworks in case you want to enable Adjust SDK features based on their presence in your app and mark them as optional:
 
 - `AdSupport.framework` - This framework is needed so that SDK can access to IDFA value and (prior to iOS 14) LAT information.
 - `iAd.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaings you might be running.
