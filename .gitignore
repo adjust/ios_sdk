@@ -30,3 +30,6 @@ Frameworks
 
 # Code style
 uncrustify.cfg
+
+#SPM
+.swiftpm/
