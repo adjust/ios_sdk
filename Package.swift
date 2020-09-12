@@ -15,7 +15,7 @@ let package = Package(
         .target(
             name: "Adjust",
             path: "Adjust",
-            exclude: ["info.plist"],
+            exclude: ["Info.plist"],
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("ADJAdditions")
