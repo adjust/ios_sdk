@@ -23,8 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		6FBEE8F324E2C26F00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */; };
-		6FBEE8F524E2C26F00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE92724E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE92824E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */; };
@@ -1910,7 +1908,6 @@
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
 				9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
-				6FBEE8F324E2C26F00FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */,
 				6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */,
 				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
@@ -2610,7 +2607,6 @@
 				969952D21A01309200928462 /* ADJAttribution.m in Sources */,
 				960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */,
 				96854A5A1B1F2779002B2874 /* ADJTimerOnce.m in Sources */,
-				6FBEE8F524E2C26F00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				96854A601B1F278C002B2874 /* ADJTimerCycle.m in Sources */,
 				96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */,
 				968173841C3C2D07002AE1DE /* ADJSessionSuccess.m in Sources */,
