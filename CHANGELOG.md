@@ -1,3 +1,10 @@
+### Version 4.23.1 (16th September 2020)
+#### Fixed
+- Fixed warning about storing negative value to `NSUInteger` data type.
+- Fixed duplicated `ADJURLStrategy` symbols error when using static framework.
+
+---
+
 ### Version 4.23.0 (19th August 2020)
 #### Added
 - Added communication with SKAdNetwork framework by default on iOS 14.
