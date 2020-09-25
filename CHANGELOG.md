@@ -1,3 +1,9 @@
+### Version 4.23.2 (28th September 2020)
+#### Added
+- Support for Swift Package Manager (thanks to @mstfy)
+
+---
+
 ### Version 4.23.1 (16th September 2020)
 #### Fixed
 - Fixed warning about storing negative value to `NSUInteger` data type.
