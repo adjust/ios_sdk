@@ -78,13 +78,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.23.1'
+pod 'Adjust', '~> 4.23.2'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.23.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.23.2'
 ```
 
 ---
@@ -93,6 +93,14 @@ If you're using [Carthage][carthage], you can add following line to your `Cartfi
 
 ```ruby
 github "adjust/ios_sdk"
+```
+
+---
+
+If you're using Swift Package Manager, you can add the repository address directly in Xcode going to `File > Swift Packages > Add Package Dependency` and continue from [this step](#sdk-frameworks):
+
+```
+https://github.com/adjust/ios_sdk
 ```
 
 ---
