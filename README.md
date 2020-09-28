@@ -852,8 +852,7 @@ Deep linking on iOS 8 and earlier devices is being done with usage of a custom U
 After this has been set up, your app will be opened after you click the adjust tracker URL with `deep_link` parameter which contains the scheme name which you have chosen. After app is opened, `openURL` method of your `AppDelegate` class will be triggered and the place where the content of the `deep_link` parameter from the tracker URL will be delivered. If you want to access the content of the deep link, override this method.
 
 ```objc
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
     // url object contains your deep link content
 
     // Apply your logic to determine the return value of this method
@@ -947,8 +946,7 @@ Once you have received deep link content information in your app, add a call to 
 The call to `appWillOpenUrl` should be done like this to support deep linking reattributions in all iOS versions:
 
 ```objc
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
     // url object contains your deep link content
     
     [Adjust appWillOpenUrl:url];
