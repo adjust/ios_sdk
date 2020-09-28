@@ -1,6 +1,6 @@
 ### Version 4.23.2 (28th September 2020)
 #### Added
-- Support for Swift Package Manager (thanks to @mstfy)
+- Added support for Swift Package Manager (thanks to @mstfy).
 
 ---
 

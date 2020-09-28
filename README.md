@@ -97,7 +97,7 @@ github "adjust/ios_sdk"
 
 ---
 
-If you're using Swift Package Manager, you can add the repository address directly in Xcode going to File > Swift Packages > Add Package Dependency and continue from [this step](#sdk-frameworks):
+If you're using Swift Package Manager, you can add the repository address directly in Xcode going to `File > Swift Packages > Add Package Dependency` and continue from [this step](#sdk-frameworks):
 
 ```
 https://github.com/adjust/ios_sdk
