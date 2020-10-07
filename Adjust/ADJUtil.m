@@ -401,7 +401,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSError *error;
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error];
         if (error != nil) {
-            [[ADJAdjustFactory logger] error:@"Error while creating % directory", path];
+            [[ADJAdjustFactory logger] error:@"Error while creating %@ directory", path];
             [[ADJAdjustFactory logger] error:[error description]];
             return NO;
         }
