@@ -240,7 +240,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Try to read from Application Support directory first.
         @try {
             id appSupportObject;
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
                 NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
                 [unarchiver setRequiresSecureCoding:NO];
@@ -276,7 +276,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Let's check the Documents folder.
         @try {
             id documentsObject;
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
                 NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
                 [unarchiver setRequiresSecureCoding:NO];
@@ -324,7 +324,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 return;
             }
 
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, *)) {
                 NSError *errorArchiving = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"

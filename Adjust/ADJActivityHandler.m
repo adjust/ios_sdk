@@ -2514,7 +2514,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 // public api
 - (BOOL)canGetAttStatus {
-    return SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0");
+    if (@available(iOS 14.0, *)) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)trackingEnabled {
