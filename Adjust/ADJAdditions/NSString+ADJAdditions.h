@@ -9,7 +9,6 @@
 
 @interface NSString(ADJAdditions)
 
-- (NSString *)adjSha1;
 - (NSString *)adjSha256;
 - (NSString *)adjTrim;
 - (NSString *)adjUrlEncode;
