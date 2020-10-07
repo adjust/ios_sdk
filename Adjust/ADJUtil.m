@@ -1025,19 +1025,19 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *string = @"" ;
     NSUInteger x = decInt;
     while (x > 0) {
-        string = [[NSString stringWithFormat: @"%lu", x&1] stringByAppendingString:string];
+        string = [[NSString stringWithFormat: @"%tu", x&1] stringByAppendingString:string];
         x = x >> 1;
     }
     return string;
 }
 
 + (NSString *)enforceParameterLength:(NSString *)parameter
-                       withMaxlength:(int)maxLength {
+                       withMaxlength:(NSUInteger)maxLength {
     if (parameter == nil) {
         // failed to read parameter
         // fill in with zeros
         NSString *failed = @"";
-        for (int i = 0; i < maxLength; i += 1) {
+        for (NSUInteger i = 0; i < maxLength; i += 1) {
             failed = [failed stringByAppendingString:@"0"];
         }
         return failed;
@@ -1050,7 +1050,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // overflow
         // in overflow case, fill parameter with all ones
         NSString *stringOverflow = @"";
-        for (int i = 0; i < maxLength; i += 1) {
+        for (NSUInteger i = 0; i < maxLength; i += 1) {
             stringOverflow = [stringOverflow stringByAppendingString:@"1"];
         }
         return stringOverflow;
@@ -1058,7 +1058,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // parameter too short
     // expand it with prepended zeros to fit the protocol
     NSString *expandedParameter = [NSString stringWithString:parameter];
-    for (int i = 0; i < maxLength - parameter.length; i += 1) {
+    for (NSUInteger i = 0; i < maxLength - parameter.length; i += 1) {
         expandedParameter = [@"0" stringByAppendingString:expandedParameter];
     }
     return expandedParameter;
