@@ -134,7 +134,17 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (void)initializeNetworkInfoAndCarrier {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    carrier = [networkInfo subscriberCellularProvider];
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"12.0")) {
+        NSString *currentRadioAccess = networkInfo.serviceCurrentRadioAccessTechnology.allKeys.firstObject;
+        if (currentRadioAccess) {
+            carrier = networkInfo.serviceSubscriberCellularProviders[currentRadioAccess];
+        }
+    }
+    
+    if (!carrier) {
+        carrier = [networkInfo subscriberCellularProvider];
+    }
 }
 #endif
 
