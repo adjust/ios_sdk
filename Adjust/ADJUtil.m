@@ -135,7 +135,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (void)initializeNetworkInfoAndCarrier {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"12.0")) {
+    if (@available(iOS 12.0, *)) {
         NSString *currentRadioAccess = networkInfo.serviceCurrentRadioAccessTechnology.allKeys.firstObject;
         if (currentRadioAccess) {
             carrier = networkInfo.serviceSubscriberCellularProviders[currentRadioAccess];
