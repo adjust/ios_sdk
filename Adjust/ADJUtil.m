@@ -143,7 +143,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
     
     if (!carrier) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         carrier = [networkInfo subscriberCellularProvider];
+#pragma clang diagnostic pop
     }
 }
 #endif
@@ -252,11 +255,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             id appSupportObject;
             if (@available(iOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-                [unarchiver setRequiresSecureCoding:NO];
-                appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                // API introduced in iOS 11.
+                appSupportObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
             } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                // API_DEPRECATED [2.0-12.0]
+                // "Use +unarchivedObjectOfClass:fromData:error: instead"
                 appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
+#pragma clang diagnostic pop
             }
 
             if (appSupportObject != nil) {
@@ -288,11 +295,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             id documentsObject;
             if (@available(iOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-                [unarchiver setRequiresSecureCoding:NO];
-                documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                // API introduced in iOS 11.
+                documentsObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
             } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                // API_DEPRECATED [2.0-12.0]
+                // "Use +unarchivedObjectOfClass:fromData:error: instead"
                 documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
+#pragma clang diagnostic pop
             }
 
             if (documentsObject != nil) {
@@ -336,10 +347,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
             if (@available(iOS 11.0, *)) {
                 NSError *errorArchiving = nil;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability"
+                // API introduced in iOS 11.
                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-#pragma clang diagnostic pop
                 if (data && errorArchiving == nil) {
                     NSError *errorWriting = nil;
                     result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
@@ -348,7 +357,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                     result = NO;
                 }
             } else {
+                // API_DEPRECATED [2.0-12.0]
+                // Use +archivedDataWithRootObject:requiringSecureCoding:error: and -writeToURL:options:error: instead
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+#pragma clang diagnostic pop
             }
             if (result == YES) {
                 [ADJUtil excludeFromBackup:filePath];
@@ -459,21 +473,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (BOOL)isNotNull:(id)value {
     return value != nil && value != (id)[NSNull null];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Convert all values to strings, if value is dictionary -> recursive call
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary {
