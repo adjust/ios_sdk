@@ -382,7 +382,7 @@ You can read more about revenue and event tracking in the [event tracking guide]
 
 You can also pass in an optional transaction ID to avoid tracking duplicate revenues. The last ten transaction IDs are remembered and revenue events with duplicate transaction IDs are skipped. This is especially useful for in-app purchase tracking. See an example below.
 
-If you want to track in-app purchases, please make sure to call `trackEvent` after `finishTransaction` in `paymentQueue:updatedTransaction` only if the state changed to `SKPaymentTransactionStatePurchased`. That way you can avoid tracking revenue that is not actually being generated.
+If you want to track in-app purchases, please make sure to call `trackEvent` after `finishTransaction` in `paymentQueue:updatedTransactions` only if the state changed to `SKPaymentTransactionStatePurchased`. That way you can avoid tracking revenue that is not actually being generated.
 
 ```objc
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
@@ -606,7 +606,7 @@ ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
 [Adjust trackSubscription:subscription];
 ```
 
-Only do this when the state has changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`. Then make a call to `finishTransaction` in `paymentQueue:updatedTransaction` .
+Only do this when the state has changed to `SKPaymentTransactionStatePurchased` or `SKPaymentTransactionStateRestored`. Then make a call to `finishTransaction` in `paymentQueue:updatedTransactions` .
 
 Subscription tracking parameters:
 
