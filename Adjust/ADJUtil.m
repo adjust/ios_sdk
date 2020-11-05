@@ -253,7 +253,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Try to read from Application Support directory first.
         @try {
             id appSupportObject;
-            if (@available(iOS 11.0, *)) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
                 // API introduced in iOS 11.
                 appSupportObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
@@ -293,7 +293,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Let's check the Documents folder.
         @try {
             id documentsObject;
-            if (@available(iOS 11.0, *)) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
                 // API introduced in iOS 11.
                 documentsObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
@@ -345,7 +345,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 return;
             }
 
-            if (@available(iOS 11.0, *)) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSError *errorArchiving = nil;
                 // API introduced in iOS 11.
                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];

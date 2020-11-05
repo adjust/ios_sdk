@@ -2514,7 +2514,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 // public api
 - (BOOL)canGetAttStatus {
-    if (@available(iOS 14.0, *)) {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
         return YES;
     }
     return NO;
