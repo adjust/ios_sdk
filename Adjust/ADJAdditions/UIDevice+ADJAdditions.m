@@ -349,9 +349,12 @@
     }
 
     [logger debug:@"iAd framework successfully found in user's app"];
+    
+    NSString *adSrvToken = [self adServicesAttributionToken];
 
     BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
                                    adcClientSharedInstance:ADClientSharedClientInstance
+                                    adServicesToken:adSrvToken
                                     queue:queue];
 
     if (!iAdInformationAvailable) {
@@ -362,8 +365,44 @@
 #endif
 }
 
+- (NSString *)adServicesAttributionToken {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+    
+    // [AAAttribution attributionTokenWithError:...]
+    Class attributionClass = NSClassFromString(@"AAAttribution");
+    if (attributionClass == nil) {
+        [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
+        return nil;
+    }
+    
+    SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
+    if (![attributionClass respondsToSelector:attributionTokenSelector]) {
+        return nil;
+    }
+    
+    NSMethodSignature *attributionTokenMethodSignature = [attributionClass methodSignatureForSelector:attributionTokenSelector];
+    NSInvocation *tokenInvocation = [NSInvocation invocationWithMethodSignature:attributionTokenMethodSignature];
+    [tokenInvocation setSelector:attributionTokenSelector];
+    [tokenInvocation setTarget:attributionClass];
+    
+    NSError *error = nil;
+    [tokenInvocation setArgument:&error atIndex:2];
+    [tokenInvocation invoke];
+    
+    if (error) {
+        [logger error:@"Error while retrieving AdServices attribution token: %@", error];
+        return nil;
+    }
+    
+    NSString *token = nil;
+    [tokenInvocation getReturnValue:&token];
+    
+    return token;
+}
+
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
   adcClientSharedInstance:(id)ADClientSharedClientInstance
+          adServicesToken:(NSString *)adServicesToken
                     queue:(dispatch_queue_t)queue {
     SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
     if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
@@ -386,7 +425,13 @@
             }
         }
         
-        [activityHandler setAttributionDetails:attributionDetails
+        NSMutableDictionary *mutableAttributionDetails = [attributionDetails mutableCopy];
+        
+        if (adServicesToken) {
+            [mutableAttributionDetails setObject:adServicesToken forKey:@"adServicesAttributionToken"];
+        }
+        
+        [activityHandler setAttributionDetails:mutableAttributionDetails
                                          error:error];
     }];
 #pragma clang diagnostic pop
