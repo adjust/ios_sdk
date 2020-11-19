@@ -2452,6 +2452,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [skAdNetwork performSelector:registerAttributionSelector];
 #pragma clang diagnostic pop
+        [logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
     }
 }
 
@@ -2488,6 +2489,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
         [conversionInvocation setArgument:&intValue atIndex:2];
         [conversionInvocation invoke];
+        
+        [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made"];
     }
 }
 
