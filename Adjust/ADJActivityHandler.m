@@ -2490,7 +2490,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [conversionInvocation setArgument:&intValue atIndex:2];
         [conversionInvocation invoke];
         
-        [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made"];
+        [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", intValue];
     }
 }
 
