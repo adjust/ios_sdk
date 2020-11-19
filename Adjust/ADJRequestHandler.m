@@ -345,7 +345,7 @@ authorizationHeader:(NSString *)authorizationHeader
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
                            urlHostString, self.urlStrategy.extraPath, path];
 
-    [self.logger verbose:@"Makig request to endpoint: %@", urlString];
+    [self.logger verbose:@"Sending request to endpoint: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
     //NSURL *url = [baseUrl URLByAppendingPathComponent:path];
