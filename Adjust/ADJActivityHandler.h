@@ -86,6 +86,7 @@
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error;
+- (void)setAdServicesAttributionToken:(NSString *)token;
 
 - (void)setOfflineMode:(BOOL)offline;
 - (void)sendFirstPackages;

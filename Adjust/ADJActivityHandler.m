@@ -23,6 +23,7 @@
 #import "ADJUrlStrategy.h"
 
 NSString * const ADJiAdPackageKey = @"iad3";
+NSString * const ADJAdServicesPackageKey = @"adServices";
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
@@ -400,6 +401,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)setAdServicesAttributionToken:(NSString *)token {
+    [self sendAppleAdClickPackage:self attributionDetails:@{@"adServicesAttributionToken": token} isAdServices:YES];
+}
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error
@@ -516,7 +520,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
+          attributionDetails:(NSDictionary *)attributionDetails {
+    [self sendAppleAdClickPackage:selfI attributionDetails:attributionDetails isAdServices:NO];
+}
+
+- (void)sendAppleAdClickPackage:(ADJActivityHandler *)selfI
           attributionDetails:(NSDictionary *)attributionDetails
+                isAdServices:(BOOL)isAdServices
  {
      if (![selfI isEnabledI:selfI]) {
          return;
@@ -545,7 +555,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJiAdPackageKey];     
+     NSString *source = (isAdServices ? ADJAdServicesPackageKey : ADJiAdPackageKey);
+     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:source];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
@@ -902,6 +913,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.adjustConfig.allowiAdInfoReading == YES) {
         [selfI checkForiAdI:selfI];
     }
+    
+    [selfI checkForAdServicesAttribution:selfI];
 
     [selfI.trackingStatusManager checkForNewAttStatus];
 
@@ -1498,6 +1511,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
 - (void)checkForiAdI:(ADJActivityHandler *)selfI {
     [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
+}
+
+- (void)checkForAdServicesAttribution:(ADJActivityHandler *)selfI {
+    [[UIDevice currentDevice] adjCheckForAdSericesAttribution:selfI];
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI

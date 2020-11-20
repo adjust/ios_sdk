@@ -319,6 +319,14 @@
     return mParameter;
 }
 
+- (void)adjCheckForAdSericesAttribution:(ADJActivityHandler *)activityHandler {
+    NSString *attributionToken = [self adServicesAttributionToken];
+    
+    if (attributionToken) {
+        [activityHandler setAdServicesAttributionToken:attributionToken];
+    }
+}
+
 - (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue {
     // if no tries for iad v3 left, stop trying
     id<ADJLogger> logger = [ADJAdjustFactory logger];
@@ -350,11 +358,8 @@
 
     [logger debug:@"iAd framework successfully found in user's app"];
     
-    NSString *adSrvToken = [self adServicesAttributionToken];
-
     BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
                                    adcClientSharedInstance:ADClientSharedClientInstance
-                                    adServicesToken:adSrvToken
                                     queue:queue];
 
     if (!iAdInformationAvailable) {
@@ -395,15 +400,15 @@
         return nil;
     }
     
-    NSString *token = nil;
-    [tokenInvocation getReturnValue:&token];
+    NSString * __unsafe_unretained tmpToken = nil;
+    [tokenInvocation getReturnValue:&tmpToken];
     
+    NSString *token = tmpToken;
     return token;
 }
 
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
   adcClientSharedInstance:(id)ADClientSharedClientInstance
-          adServicesToken:(NSString *)adServicesToken
                     queue:(dispatch_queue_t)queue {
     SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
     if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
@@ -426,13 +431,7 @@
             }
         }
         
-        NSMutableDictionary *mutableAttributionDetails = [attributionDetails mutableCopy];
-        
-        if (adServicesToken) {
-            [mutableAttributionDetails setObject:adServicesToken forKey:@"adServicesAttributionToken"];
-        }
-        
-        [activityHandler setAttributionDetails:mutableAttributionDetails
+        [activityHandler setAttributionDetails:attributionDetails
                                          error:error];
     }];
 #pragma clang diagnostic pop
