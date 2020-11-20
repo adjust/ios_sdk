@@ -385,8 +385,9 @@
     [tokenInvocation setSelector:attributionTokenSelector];
     [tokenInvocation setTarget:attributionClass];
     
-    NSError *error = nil;
-    [tokenInvocation setArgument:&error atIndex:2];
+    __autoreleasing NSError *error;
+    __autoreleasing NSError **errorPointer = &error;
+    [tokenInvocation setArgument:&errorPointer atIndex:2];
     [tokenInvocation invoke];
     
     if (error) {
