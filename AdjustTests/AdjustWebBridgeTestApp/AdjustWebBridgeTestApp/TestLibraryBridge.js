@@ -221,6 +221,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setIsDeviceKnown(deviceKnown);
     }
     
+    if ('needsCost' in params) {
+        var needsCostS = getFirstValue(params, 'needsCost');
+        var needsCost = needsCostS == 'true';
+        adjustConfig.setNeedsCost(needsCost);
+    }
+    
     if ('allowiAdInfoReading' in params) {
         var allowiAdInfoReadingS = getFirstValue(params, 'allowiAdInfoReading');
         var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
@@ -264,6 +270,9 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('creative', attribution.creative);
                 addInfoToSend('clickLabel', attribution.click_label);
                 addInfoToSend('adid', attribution.adid);
+                addInfoToSend('costType', attribution.costType);
+                addInfoToSend('costAmount', attribution.costAmount);
+                addInfoToSend('costCurrency', attribution.costCurrency);
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );

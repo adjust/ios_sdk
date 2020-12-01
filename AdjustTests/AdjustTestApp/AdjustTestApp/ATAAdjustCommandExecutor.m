@@ -275,6 +275,11 @@
         NSString *deviceKnownS = [parameters objectForKey:@"deviceKnown"][0];
         [adjustConfig setIsDeviceKnown:[deviceKnownS boolValue]];
     }
+    
+    if ([parameters objectForKey:@"needsCost"]) {
+        NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
+        [adjustConfig setNeedsCost:[needsCostS boolValue]];
+    }
 
     if ([parameters objectForKey:@"eventBufferingEnabled"]) {
         NSString *eventBufferingEnabledS = [parameters objectForKey:@"eventBufferingEnabled"][0];
