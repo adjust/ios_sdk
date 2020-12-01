@@ -244,8 +244,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
            class:(Class)classToRead
-      syncObject:(id)syncObject
-{
+      syncObject:(id)syncObject {
+#if TARGET_OS_TV
+    return nil;
+#endif
     @synchronized(syncObject) {
         NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
@@ -336,6 +338,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
            fileName:(NSString *)fileName
          objectName:(NSString *)objectName
          syncObject:(id)syncObject {
+#if TARGET_OS_TV
+    return;
+#endif
     @synchronized(syncObject) {
         @try {
             BOOL result;
