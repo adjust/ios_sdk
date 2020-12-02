@@ -258,7 +258,18 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
                 // API introduced in iOS 11.
-                appSupportObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
+                // TODO: delete if below works
+                // appSupportObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
+                NSError *errorUnarchiver = nil;
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
+                                                                                            error:&errorUnarchiver];
+                if (errorUnarchiver == nil) {
+                    [unarchiver setRequiresSecureCoding:NO];
+                    appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                } else {
+                    // TODO: try to make this error fit the logging flow; if not, remove it
+                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
+                }
             } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -298,7 +309,18 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
                 // API introduced in iOS 11.
-                documentsObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
+                // TODO: delete if below works
+                // documentsObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
+                NSError *errorUnarchiver = nil;
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
+                                                                                            error:&errorUnarchiver];
+                if (errorUnarchiver == nil) {
+                    [unarchiver setRequiresSecureCoding:NO];
+                    documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                } else {
+                    // TODO: try to make this error fit the logging flow; if not, remove it
+                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
+                }
             } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
