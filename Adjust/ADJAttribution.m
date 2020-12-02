@@ -73,7 +73,8 @@
     if (![NSString adjIsEqual:self.costType toString:attribution.costType]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.costAmount toString:attribution.costAmount]) {
+    // costAmount is of type NSNumber
+    if (![self.costAmount isEqualToNumber:attribution.costAmount]) {
         return NO;
     }
     if (![NSString adjIsEqual:self.costCurrency toString:attribution.costCurrency]) {
