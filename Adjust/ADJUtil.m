@@ -258,8 +258,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
                 // API introduced in iOS 11.
-                // TODO: delete if below works
-                // appSupportObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
                 NSError *errorUnarchiver = nil;
                 NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
                                                                                             error:&errorUnarchiver];
@@ -309,8 +307,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
                 // API introduced in iOS 11.
-                // TODO: delete if below works
-                // documentsObject = [NSKeyedUnarchiver unarchivedObjectOfClass:classToRead fromData:data error:nil];
                 NSError *errorUnarchiver = nil;
                 NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
                                                                                             error:&errorUnarchiver];
