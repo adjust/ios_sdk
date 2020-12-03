@@ -11,6 +11,7 @@
 #import "ADJConfig.h"
 #import "ADJAttribution.h"
 #import "ADJSubscription.h"
+#import "ADJThirdPartySharing.h"
 
 @interface AdjustTestOptions : NSObject
 
@@ -273,6 +274,10 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
  * @brief Give right user to disable sharing data to any third-party.
  */
 + (void)disableThirdPartySharing;
+
++ (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+
++ (void)trackMeasurementConsent:(BOOL)enabled;
 
 /**
  * @brief Track subscription.

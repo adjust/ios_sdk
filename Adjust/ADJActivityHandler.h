@@ -11,6 +11,7 @@
 #import "ADJActivityState.h"
 #import "ADJDeviceInfo.h"
 #import "ADJSessionParameters.h"
+#import "ADJThirdPartySharing.h"
 
 @interface ADJInternalState : NSObject
 
@@ -102,6 +103,8 @@
 - (void)resetSessionPartnerParameters;
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
+- (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+- (void)trackMeasurementConsent:(BOOL)enabled;
 - (void)trackSubscription:(ADJSubscription *)subscription;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 

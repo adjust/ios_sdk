@@ -734,6 +734,22 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                        [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
+                     }];
+}
+
+- (void)trackMeasurementConsent:(BOOL)enabled {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                        [selfI trackMeasurementConsentI:selfI enabled:enabled];
+                     }];
+}
+
 - (void)writeActivityState {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -1324,6 +1340,82 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
         [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)trackThirdPartySharingI:(ADJActivityHandler *)selfI
+                thirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing
+{
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (selfI.activityState.isThirdPartySharingDisabled) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // build package
+    ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:selfI.deviceInfo
+                                            activityState:selfI.activityState
+                                            config:selfI.adjustConfig
+                                            sessionParameters:selfI.sessionParameters
+                                            trackingStatusManager:self.trackingStatusManager
+                                            createdAt:now];
+
+    ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
+
+    [selfI.packageHandler addPackage:dtpsPackage];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)trackMeasurementConsentI:(ADJActivityHandler *)selfI
+                         enabled:(BOOL)enabled
+{
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (selfI.activityState.isThirdPartySharingDisabled) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // build package
+    ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
+                                        initWithDeviceInfo:selfI.deviceInfo
+                                            activityState:selfI.activityState
+                                            config:selfI.adjustConfig
+                                            sessionParameters:selfI.sessionParameters
+                                            trackingStatusManager:self.trackingStatusManager
+                                            createdAt:now];
+
+    ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsent:enabled];
+
+    [selfI.packageHandler addPackage:mcPackage];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", mcPackage.suffix];
     } else {
         [selfI.packageHandler sendFirstPackage];
     }

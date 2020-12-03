@@ -231,6 +231,18 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    @synchronized (self) {
+        [[Adjust getInstance] trackThirdPartySharing:thirdPartySharing];
+    }
+}
+
++ (void)trackMeasurementConsent:(BOOL)enabled {
+    @synchronized (self) {
+        [[Adjust getInstance] trackMeasurementConsent:enabled];
+    }
+}
+
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription {
     @synchronized (self) {
         [[Adjust getInstance] trackSubscription:subscription];
@@ -501,6 +513,22 @@ static dispatch_once_t onceToken = 0;
     }
 
     [self.activityHandler disableThirdPartySharing];
+}
+
+- (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler trackThirdPartySharing:thirdPartySharing];
+}
+
+- (void)trackMeasurementConsent:(BOOL)enabled {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler trackMeasurementConsent:enabled];
 }
 
 - (void)trackSubscription:(ADJSubscription *)subscription {
