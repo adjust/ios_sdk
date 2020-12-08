@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6F7AF625211878B900F730B2"
-               BuildableName = "AdjustWebBridgeTestApp.app"
-               BlueprintName = "AdjustWebBridgeTestApp"
-               ReferencedContainer = "container:AdjustWebBridgeTestApp.xcodeproj">
+               BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+               BuildableName = "AdjustExample-ObjC.app"
+               BlueprintName = "AdjustExample-ObjC"
+               ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,15 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6F7AF625211878B900F730B2"
-            BuildableName = "AdjustWebBridgeTestApp.app"
-            BlueprintName = "AdjustWebBridgeTestApp"
-            ReferencedContainer = "container:AdjustWebBridgeTestApp.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
@@ -53,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6F7AF625211878B900F730B2"
-            BuildableName = "AdjustWebBridgeTestApp.app"
-            BlueprintName = "AdjustWebBridgeTestApp"
-            ReferencedContainer = "container:AdjustWebBridgeTestApp.xcodeproj">
+            BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+            BuildableName = "AdjustExample-ObjC.app"
+            BlueprintName = "AdjustExample-ObjC"
+            ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -70,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6F7AF625211878B900F730B2"
-            BuildableName = "AdjustWebBridgeTestApp.app"
-            BlueprintName = "AdjustWebBridgeTestApp"
-            ReferencedContainer = "container:AdjustWebBridgeTestApp.xcodeproj">
+            BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+            BuildableName = "AdjustExample-ObjC.app"
+            BlueprintName = "AdjustExample-ObjC"
+            ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
