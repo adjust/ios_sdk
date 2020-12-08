@@ -67,7 +67,7 @@
         BOOL wasSuccessful = [self wasWritingSuccessful:value forKeychainKey:key inService:service];
 
         if (wasSuccessful) {
-            [[ADJAdjustFactory logger] verbose:@"Value successfully written to the keychain"];
+            [[ADJAdjustFactory logger] warn:@"Value successfully written to the keychain"];
         }
 
         return wasSuccessful;
@@ -77,7 +77,7 @@
 - (OSStatus)setValueWithStatus:(NSString *)value forKeychainKey:(NSString *)key inService:(NSString *)service {
     NSMutableDictionary *keychainItem;
     
-    keychainItem = [self keychainItemForKey:key service:service checkLegacy:NO];
+    keychainItem = [self keychainItemForKey:key service:service];
     keychainItem[(__bridge id)kSecValueData] = [value dataUsingEncoding:NSUTF8StringEncoding];
     
     return SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
@@ -86,28 +86,8 @@
 #pragma mark - Get Keychain item value
 
 - (NSString *)valueForKeychainKey:(NSString *)key service:(NSString *)service {
-    // try to get value in current way
-    // if found in current way, continue to use it
-    
-    // if value in current way not found, try to see if legacy value is present
-    // if legacy value found, write it in current way and continue to use it
-    // if legacy value not found, no value ever was written for this device
-    
-    NSMutableDictionary *keychainItem = [self keychainItemForKey:key service:service checkLegacy:NO];
-    NSString *keychainItemValue = [self valueForKeychainItem:keychainItem key:key service:service];
-    if (keychainItemValue == nil) {
-        NSString *legacyKey = @"adjust_persisted_uuid";
-        keychainItem = [self keychainItemForKey:legacyKey service:service checkLegacy:YES];
-        if (keychainItem != nil) {
-            // legacy value might exist at this point
-            keychainItemValue = [self valueForKeychainItem:keychainItem key:legacyKey service:service];
-            if (keychainItemValue != nil) {
-                [[ADJAdjustFactory logger] verbose:@"Writing legacy value to the keychain"];
-                [ADJKeychain setValue:keychainItemValue forKeychainKey:key inService:service];
-            }
-        }
-    }
-    return keychainItemValue;
+    NSMutableDictionary *keychainItem = [self keychainItemForKey:key service:service];
+    return [self valueForKeychainItem:keychainItem key:key service:service];
 }
 
 - (NSString *)valueForKeychainItem:(NSMutableDictionary *)keychainItem key:(NSString *)key service:(NSString *)service {
@@ -135,18 +115,12 @@
 
 #pragma mark - Build Keychain item
 
-- (NSMutableDictionary *)keychainItemForKey:(NSString *)key service:(NSString *)service checkLegacy:(BOOL)checkLegacy {
+- (NSMutableDictionary *)keychainItemForKey:(NSString *)key service:(NSString *)service {
     NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
-    if (checkLegacy == YES) {
-        CFStringRef *cStringSecAttrAccessibleAlways = [self getSecAttrAccessibleAlways];
-        if (!cStringSecAttrAccessibleAlways) {
-            return nil;
-        }
-        keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)(* cStringSecAttrAccessibleAlways);
-    } else {
-        keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
-    }
+
+    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
     [self keychainItemForKey:keychainItem key:key service:service];
+
     return keychainItem;
 }
 
@@ -165,17 +139,6 @@
     } else {
         return NO;
     }
-}
-
-#pragma mark - Backwards compatibility
-
-- (CFStringRef *)getSecAttrAccessibleAlways {
-    // check for constant presence
-    if (@available(iOS 13.0, *)) {
-        return nil;
-    }
-    CFStringRef *stringRef = dlsym(RTLD_SELF, "kSecAttrAccessibleAlways");
-    return stringRef;
 }
 
 @end
