@@ -1,4 +1,4 @@
-### Version 4.24.0 (8th December 2020)
+### Version 4.24.0 (9th December 2020)
 #### Added
 - Added possibility to get cost data information in attribution callback.
 - Added `setNeedsCost:` method to `ADJConfig` to indicate if cost data is needed in attribution callback (by default cost data will not be part of attribution callback if not enabled with this setter method).
