@@ -221,7 +221,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.23.2';
+                    return 'web-bridge4.24.0';
                 }
             },
             setTestOptions: function(testOptions) {
@@ -290,6 +290,7 @@ static NSString * fbAppIdStatic = nil;
             this.delayStart = null;
             this.userAgent = null;
             this.isDeviceKnown = null;
+            this.needsCost = null;
             this.allowiAdInfoReading = null;
             this.allowIdfaReading = null;
             this.secretId = null;
@@ -369,6 +370,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setIsDeviceKnown = function(isDeviceKnown) {
             this.isDeviceKnown = isDeviceKnown;
+        };
+        AdjustConfig.prototype.setNeedsCost = function(needsCost) {
+            this.needsCost = needsCost;
         };
         AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
             this.allowiAdInfoReading = allowiAdInfoReading;

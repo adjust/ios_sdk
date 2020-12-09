@@ -60,7 +60,8 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 # ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOS and tvOS targets with Carthage ... ${NC}"
-carthage build --no-skip-current
+#carthage build --no-skip-current
+./scripts/carthage_xcode12.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
@@ -86,7 +87,8 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 # ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iMessage target with Carthage ... ${NC}"
-carthage build --no-skip-current
+#carthage build --no-skip-current
+./scripts/carthage_xcode12.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
@@ -105,7 +107,8 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 # ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WebBridge target with Carthage ... ${NC}"
-carthage build --no-skip-current
+#carthage build --no-skip-current
+./scripts/carthage_xcode12.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #

@@ -210,10 +210,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 - (void)addI:(ADJPackageHandler *)selfI
      package:(ADJActivityPackage *)newPackage
 {
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
-        [selfI.packageQueue addObject:newPackage];
-    }];
+    [selfI.packageQueue addObject:newPackage];
+
     [selfI.logger debug:@"Added package %d (%@)", selfI.packageQueue.count, newPackage];
     [selfI.logger verbose:@"%@", newPackage.extendedString];
 
@@ -258,10 +256,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (void)sendNextI:(ADJPackageHandler *)selfI {
     if ([selfI.packageQueue count] > 0) {
-        [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                        block:^{
-            [selfI.packageQueue removeObjectAtIndex:0];
-        }];
+        [selfI.packageQueue removeObjectAtIndex:0];
         [selfI writePackageQueueS:selfI];
     }
 
@@ -276,57 +271,49 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [selfI.logger verbose:@"Session callback parameters: %@", sessionParameters.callbackParameters];
     [selfI.logger verbose:@"Session partner parameters: %@", sessionParameters.partnerParameters];
 
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
-        for (ADJActivityPackage * activityPackage in selfI.packageQueue) {
-            // callback parameters
-            NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
-                                                                        source:activityPackage.callbackParameters
-                                                                 parameterName:@"Callback"];
+    for (ADJActivityPackage * activityPackage in selfI.packageQueue) {
+        // callback parameters
+        NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
+                                                                    source:activityPackage.callbackParameters
+                                                             parameterName:@"Callback"];
 
-            [ADJPackageBuilder parameters:activityPackage.parameters
-                            setDictionary:mergedCallbackParameters
-                                   forKey:@"callback_params"];
+        [ADJPackageBuilder parameters:activityPackage.parameters
+                        setDictionary:mergedCallbackParameters
+                               forKey:@"callback_params"];
 
-            // partner parameters
-            NSDictionary * mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
-                                                                       source:activityPackage.partnerParameters
-                                                                parameterName:@"Partner"];
+        // partner parameters
+        NSDictionary * mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
+                                                                   source:activityPackage.partnerParameters
+                                                            parameterName:@"Partner"];
 
-            [ADJPackageBuilder parameters:activityPackage.parameters
-                            setDictionary:mergedPartnerParameters
-                                   forKey:@"partner_params"];
-        }
-    }];
+        [ADJPackageBuilder parameters:activityPackage.parameters
+                        setDictionary:mergedPartnerParameters
+                               forKey:@"partner_params"];
+    }
 
     [selfI writePackageQueueS:selfI];
 }
 
 - (void)flushI:(ADJPackageHandler *)selfI {
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
-        [selfI.packageQueue removeAllObjects];
-    }];
+    [selfI.packageQueue removeAllObjects];
     [selfI writePackageQueueS:selfI];
 }
 
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
-        [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
+    [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
+    
+    id object = [ADJUtil readObject:kPackageQueueFilename
+                         objectName:@"Package queue"
+                              class:[NSArray class]
+                         syncObject:[ADJPackageHandler class]];
+    
+    if (object != nil) {
+        selfI.packageQueue = object;
+    } else {
+        selfI.packageQueue = [NSMutableArray array];
+    }
 
-        id object = [ADJUtil readObject:kPackageQueueFilename
-                             objectName:@"Package queue"
-                                  class:[NSArray class]
-                             syncObject:[ADJPackageHandler class]];
-
-        if (object != nil) {
-            selfI.packageQueue = object;
-        } else {
-            selfI.packageQueue = [NSMutableArray array];
-        }
-    }];
 }
 
 - (void)writePackageQueueS:(ADJPackageHandler *)selfS {
@@ -334,25 +321,21 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         return;
     }
     
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
-        [ADJUtil writeObject:selfS.packageQueue
-                    fileName:kPackageQueueFilename
-                  objectName:@"Package queue"
-                  syncObject:[ADJPackageHandler class]];
-    }];
+    [ADJUtil writeObject:selfS.packageQueue
+                fileName:kPackageQueueFilename
+              objectName:@"Package queue"
+              syncObject:[ADJPackageHandler class]];
 }
 
 - (void)teardownPackageQueueS {
-    if (self.packageQueue == nil) {
-        return;
-    }
-    
-    [ADJUtil launchSynchronisedWithObject:[ADJPackageHandler class]
-                                    block:^{
+    @synchronized ([ADJPackageHandler class]) {
+        if (self.packageQueue == nil) {
+            return;
+        }
+        
         [self.packageQueue removeAllObjects];
         self.packageQueue = nil;
-    }];
+    }
 }
 
 - (void)dealloc {

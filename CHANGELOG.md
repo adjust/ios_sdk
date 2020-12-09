@@ -1,3 +1,20 @@
+### Version 4.24.0 (9th December 2020)
+#### Added
+- Added possibility to get cost data information in attribution callback.
+- Added `setNeedsCost:` method to `ADJConfig` to indicate if cost data is needed in attribution callback (by default cost data will not be part of attribution callback if not enabled with this setter method).
+- Enabled position dependent code generation.
+
+#### Changed
+- Improved logging.
+- Addressed Xcode warnings regarding deprecated API usage.
+- Removed some obsolete and unused API.
+
+#### Public PRs
+- Updated README (https://github.com/adjust/ios_sdk/pull/472).
+- Replaced `malloc` with more secure `calloc` calls (https://github.com/adjust/ios_sdk/pull/432).
+
+---
+
 ### Version 4.23.2 (28th September 2020)
 #### Added
 - Added support for Swift Package Manager (thanks to @mstfy).

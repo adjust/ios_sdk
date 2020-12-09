@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1200"
+   LastUpgradeVersion = "1220"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9DF7A9C11CB4ECA600D3591F"
-               BuildableName = "AdjustExample-Swift.app"
-               BlueprintName = "AdjustExample-Swift"
-               ReferencedContainer = "container:AdjustExample-Swift.xcodeproj">
+               BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+               BuildableName = "AdjustExample-ObjC.app"
+               BlueprintName = "AdjustExample-ObjC"
+               ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9DF7A9C11CB4ECA600D3591F"
-            BuildableName = "AdjustExample-Swift.app"
-            BlueprintName = "AdjustExample-Swift"
-            ReferencedContainer = "container:AdjustExample-Swift.xcodeproj">
+            BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+            BuildableName = "AdjustExample-ObjC.app"
+            BlueprintName = "AdjustExample-ObjC"
+            ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -61,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9DF7A9C11CB4ECA600D3591F"
-            BuildableName = "AdjustExample-Swift.app"
-            BlueprintName = "AdjustExample-Swift"
-            ReferencedContainer = "container:AdjustExample-Swift.xcodeproj">
+            BlueprintIdentifier = "9639093B1BCBFCF300A2E8A4"
+            BuildableName = "AdjustExample-ObjC.app"
+            BlueprintName = "AdjustExample-ObjC"
+            ReferencedContainer = "container:AdjustExample-ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

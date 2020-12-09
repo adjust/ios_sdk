@@ -37,7 +37,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.23.2";
+static NSString * const kClientSdk                  = @"ios4.24.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -134,7 +134,20 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
 + (void)initializeNetworkInfoAndCarrier {
     networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    carrier = [networkInfo subscriberCellularProvider];
+    
+    if (@available(iOS 12.0, *)) {
+        NSString *currentRadioAccess = networkInfo.serviceCurrentRadioAccessTechnology.allKeys.firstObject;
+        if (currentRadioAccess) {
+            carrier = networkInfo.serviceSubscriberCellularProviders[currentRadioAccess];
+        }
+    }
+    
+    if (!carrier) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        carrier = [networkInfo subscriberCellularProvider];
+#pragma clang diagnostic pop
+    }
 }
 #endif
 
@@ -231,8 +244,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
            class:(Class)classToRead
-      syncObject:(id)syncObject
-{
+      syncObject:(id)syncObject {
+#if TARGET_OS_TV
+    return nil;
+#endif
     @synchronized(syncObject) {
         NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
@@ -240,13 +255,26 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Try to read from Application Support directory first.
         @try {
             id appSupportObject;
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-                [unarchiver setRequiresSecureCoding:NO];
-                appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                // API introduced in iOS 11.
+                NSError *errorUnarchiver = nil;
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
+                                                                                            error:&errorUnarchiver];
+                if (errorUnarchiver == nil) {
+                    [unarchiver setRequiresSecureCoding:NO];
+                    appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                } else {
+                    // TODO: try to make this error fit the logging flow; if not, remove it
+                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
+                }
             } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                // API_DEPRECATED [2.0-12.0]
+                // "Use +unarchivedObjectOfClass:fromData:error: instead"
                 appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
+#pragma clang diagnostic pop
             }
 
             if (appSupportObject != nil) {
@@ -276,13 +304,26 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // Let's check the Documents folder.
         @try {
             id documentsObject;
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-                [unarchiver setRequiresSecureCoding:NO];
-                documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                // API introduced in iOS 11.
+                NSError *errorUnarchiver = nil;
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
+                                                                                            error:&errorUnarchiver];
+                if (errorUnarchiver == nil) {
+                    [unarchiver setRequiresSecureCoding:NO];
+                    documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
+                } else {
+                    // TODO: try to make this error fit the logging flow; if not, remove it
+                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
+                }
             } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                // API_DEPRECATED [2.0-12.0]
+                // "Use +unarchivedObjectOfClass:fromData:error: instead"
                 documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
+#pragma clang diagnostic pop
             }
 
             if (documentsObject != nil) {
@@ -315,6 +356,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
            fileName:(NSString *)fileName
          objectName:(NSString *)objectName
          syncObject:(id)syncObject {
+#if TARGET_OS_TV
+    return;
+#endif
     @synchronized(syncObject) {
         @try {
             BOOL result;
@@ -324,12 +368,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 return;
             }
 
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
+            if (@available(iOS 11.0, tvOS 11.0, *)) {
                 NSError *errorArchiving = nil;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability"
+                // API introduced in iOS 11.
                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-#pragma clang diagnostic pop
                 if (data && errorArchiving == nil) {
                     NSError *errorWriting = nil;
                     result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
@@ -338,7 +380,12 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                     result = NO;
                 }
             } else {
+                // API_DEPRECATED [2.0-12.0]
+                // Use +archivedDataWithRootObject:requiringSecureCoding:error: and -writeToURL:options:error: instead
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
+#pragma clang diagnostic pop
             }
             if (result == YES) {
                 [ADJUtil excludeFromBackup:filePath];
@@ -401,7 +448,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSError *error;
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error];
         if (error != nil) {
-            [[ADJAdjustFactory logger] error:@"Error while creating % directory", path];
+            [[ADJAdjustFactory logger] error:@"Error while creating %@ directory", path];
             [[ADJAdjustFactory logger] error:[error description]];
             return NO;
         }
@@ -449,21 +496,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (BOOL)isNotNull:(id)value {
     return value != nil && value != (id)[NSNull null];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Convert all values to strings, if value is dictionary -> recursive call
 + (NSDictionary *)convertDictionaryValues:(NSDictionary *)dictionary {
@@ -1025,19 +1057,19 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *string = @"" ;
     NSUInteger x = decInt;
     while (x > 0) {
-        string = [[NSString stringWithFormat: @"%lu", x&1] stringByAppendingString:string];
+        string = [[NSString stringWithFormat: @"%tu", x&1] stringByAppendingString:string];
         x = x >> 1;
     }
     return string;
 }
 
 + (NSString *)enforceParameterLength:(NSString *)parameter
-                       withMaxlength:(int)maxLength {
+                       withMaxlength:(NSUInteger)maxLength {
     if (parameter == nil) {
         // failed to read parameter
         // fill in with zeros
         NSString *failed = @"";
-        for (int i = 0; i < maxLength; i += 1) {
+        for (NSUInteger i = 0; i < maxLength; i += 1) {
             failed = [failed stringByAppendingString:@"0"];
         }
         return failed;
@@ -1050,7 +1082,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // overflow
         // in overflow case, fill parameter with all ones
         NSString *stringOverflow = @"";
-        for (int i = 0; i < maxLength; i += 1) {
+        for (NSUInteger i = 0; i < maxLength; i += 1) {
             stringOverflow = [stringOverflow stringByAppendingString:@"1"];
         }
         return stringOverflow;
@@ -1058,7 +1090,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // parameter too short
     // expand it with prepended zeros to fit the protocol
     NSString *expandedParameter = [NSString stringWithString:parameter];
-    for (int i = 0; i < maxLength - parameter.length; i += 1) {
+    for (NSUInteger i = 0; i < maxLength - parameter.length; i += 1) {
         expandedParameter = [@"0" stringByAppendingString:expandedParameter];
     }
     return expandedParameter;

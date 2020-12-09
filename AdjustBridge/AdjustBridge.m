@@ -191,6 +191,7 @@
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSString *userAgent = [data objectForKey:@"userAgent"];
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
+        NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
@@ -247,6 +248,9 @@
         }
         if ([self isFieldValid:isDeviceKnown]) {
             [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
+        }
+        if ([self isFieldValid:needsCost]) {
+            [adjustConfig setNeedsCost:[needsCost boolValue]];
         }
         if ([self isFieldValid:allowiAdInfoReading]) {
             [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];

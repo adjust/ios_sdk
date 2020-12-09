@@ -27,14 +27,12 @@
 
 + (ADJConfig *)configWithAppToken:(NSString *)appToken
                       environment:(NSString *)environment
-             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
-{
+             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
     return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
 }
 
 - (id)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment
-{
+           environment:(NSString *)environment {
     return [self initWithAppToken:appToken
                       environment:environment
              allowSuppressLogLevel:NO];
@@ -42,21 +40,26 @@
 
 - (id)initWithAppToken:(NSString *)appToken
            environment:(NSString *)environment
-  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel
-{
+  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
     self = [super init];
-    if (self == nil) return nil;
+    if (self == nil) {
+        return nil;
+    }
 
     self.logger = ADJAdjustFactory.logger;
-    // default values
+
     if (allowSuppressLogLevel && [ADJEnvironmentProduction isEqualToString:environment]) {
         [self setLogLevel:ADJLogLevelSuppress environment:environment];
     } else {
         [self setLogLevel:ADJLogLevelInfo environment:environment];
     }
 
-    if (![self checkEnvironment:environment]) return self;
-    if (![self checkAppToken:appToken]) return self;
+    if (![self checkEnvironment:environment]) {
+        return self;
+    }
+    if (![self checkAppToken:appToken]) {
+        return self;
+    }
 
     _appToken = appToken;
     _environment = environment;
@@ -76,8 +79,7 @@
 }
 
 - (void)setLogLevel:(ADJLogLevel)logLevel
-        environment:(NSString *)environment
-{
+        environment:(NSString *)environment {
     [self.logger setLogLevel:logLevel
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
 }
@@ -98,37 +100,31 @@
 
     if ([delegate respondsToSelector:@selector(adjustAttributionChanged:)]) {
         [self.logger debug:@"Delegate implements adjustAttributionChanged:"];
-
         hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
-
         hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingFailed:"];
-
         hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
-
         hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
-
         hasResponseDelegate = YES;
     }
 
     if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
         [self.logger debug:@"Delegate implements adjustDeeplinkResponse:"];
-
         // does not enable hasDelegate flag
         implementsDeeplinkCallback = YES;
     }
@@ -142,8 +138,7 @@
     _delegate = delegate;
 }
 
-- (BOOL)checkEnvironment:(NSString *)environment
-{
+- (BOOL)checkEnvironment:(NSString *)environment {
     if ([ADJUtil isNull:environment]) {
         [self.logger error:@"Missing environment"];
         return NO;
@@ -188,9 +183,8 @@
                    (unsigned long)info4];
 }
 
--(id)copyWithZone:(NSZone *)zone
-{
-    ADJConfig* copy = [[[self class] allocWithZone:zone] init];
+- (id)copyWithZone:(NSZone *)zone {
+    ADJConfig *copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
         copy->_appToken = [self.appToken copyWithZone:zone];
         copy->_environment = [self.environment copyWithZone:zone];
@@ -205,6 +199,7 @@
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;
+        copy.needsCost = self.needsCost;
         copy->_secretId = [self.secretId copyWithZone:zone];
         copy->_appSecret = [self.appSecret copyWithZone:zone];
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;

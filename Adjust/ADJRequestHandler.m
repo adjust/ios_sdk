@@ -143,7 +143,7 @@ authorizationHeader:(NSString *)authorizationHeader
 
 {
     if (authorizationHeader != nil) {
-        [ADJAdjustFactory.logger debug:@"authorizationHeader %@", authorizationHeader];
+        [ADJAdjustFactory.logger debug:@"Authorzation header content: %@", authorizationHeader];
         [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
     }
     if (self.userAgent != nil) {
@@ -180,15 +180,15 @@ authorizationHeader:(NSString *)authorizationHeader
                                    error:error
                             responseData:responseData];
             if (responseData.jsonResponse != nil) {
-                [self.logger debug:@"succeeded with current url strategy"];
+                [self.logger debug:@"Request succeeded with current URL strategy"];
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
             } else if ([self.urlStrategy shouldRetryAfterFailure]) {
-                [self.logger debug:@"failed with current url strategy, but it will retry with new"];
+                [self.logger debug:@"Request failed with current URL strategy, but it will be retried with new one"];
                 [self retryWithResponseData:responseData
                              methodTypeInfo:methodTypeInfo];
             } else {
-                [self.logger debug:@"failed with current url strategy and it will not retry"];
+                [self.logger debug:@"Request failed with current URL strategy and it will not be retried"];
                 //  Stop retrying with different type and return to caller
                 [self.responseCallback responseCallback:responseData];
             }
@@ -345,7 +345,7 @@ authorizationHeader:(NSString *)authorizationHeader
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
                            urlHostString, self.urlStrategy.extraPath, path];
 
-    [self.logger verbose:@"requestForPostPackage with urlString: %@", urlString];
+    [self.logger verbose:@"Sending request to endpoint: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
     //NSURL *url = [baseUrl URLByAppendingPathComponent:path];
@@ -394,7 +394,7 @@ authorizationHeader:(NSString *)authorizationHeader
         [NSString stringWithFormat:@"%@%@%@?%@",
          urlHostString, self.urlStrategy.extraPath, path, queryStringParameters];
 
-    [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
+    // [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
 
     NSURL *url = [NSURL URLWithString:urlString];
 
