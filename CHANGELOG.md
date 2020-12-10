@@ -2,7 +2,7 @@
 #### Added
 - Added possibility to get cost data information in attribution callback.
 - Added `setNeedsCost:` method to `ADJConfig` to indicate if cost data is needed in attribution callback (by default cost data will not be part of attribution callback if not enabled with this setter method).
-- Enabled position dependent code generation.
+- Enabled position independent code generation.
 
 #### Changed
 - Improved logging.
