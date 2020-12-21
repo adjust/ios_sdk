@@ -1103,7 +1103,7 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 
 [special-partners]:     https://docs.adjust.com/ko/special-partners
 [attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[ios-web-views-guide]:  doc/english/web_views.md
+[ios-web-views-guide]:  /web_views.md
 [currency-conversion]:  https://docs.adjust.com/ko/event-tracking/#part-7
 
 [universal-links-guide]:      https://docs.adjust.com/ko/universal-links/
