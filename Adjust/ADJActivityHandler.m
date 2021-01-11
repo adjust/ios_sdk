@@ -23,7 +23,7 @@
 #import "ADJUrlStrategy.h"
 
 NSString * const ADJiAdPackageKey = @"iad3";
-NSString * const ADJAdServicesPackageKey = @"adServices";
+NSString * const ADJAdServicesPackageKey = @"apple_ads";
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
@@ -402,7 +402,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)setAdServicesAttributionToken:(NSString *)token {
-    [self sendAppleAdClickPackage:self attributionDetails:@{@"adServicesAttributionToken": token} isAdServices:YES];
+    [self sendAppleAdClickPackage:self attributionDetails:@{@"attribution_token": token} isAdServices:YES];
 }
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
@@ -555,9 +555,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 
      clickBuilder.attributionDetails = attributionDetails;
 
-     NSString *source = (isAdServices ? ADJAdServicesPackageKey : ADJiAdPackageKey);
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:source];
-     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+     if (isAdServices) {
+         ADJActivityPackage *infoPackage = [clickBuilder buildInfoPackage:ADJAdServicesPackageKey];
+         [selfI.packageHandler addPackage:infoPackage];
+     } else {
+         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJiAdPackageKey];
+         [selfI.sdkClickHandler sendSdkClick:clickPackage];
+     }
 }
 
 - (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
@@ -913,8 +917,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.adjustConfig.allowiAdInfoReading == YES) {
         [selfI checkForiAdI:selfI];
     }
-    
-    [selfI checkForAdServicesAttribution:selfI];
 
     [selfI.trackingStatusManager checkForNewAttStatus];
 
@@ -1037,6 +1039,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.activityState.isGdprForgotten) {
         return;
     }
+    
+    [selfI checkForAdServicesAttribution:selfI];
 
     double lastInterval = now - selfI.activityState.lastActivity;
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
@@ -1514,7 +1518,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)checkForAdServicesAttribution:(ADJActivityHandler *)selfI {
-    [[UIDevice currentDevice] adjCheckForAdSericesAttribution:selfI];
+    if (selfI.attribution == nil) {
+        [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
+    }
 }
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI

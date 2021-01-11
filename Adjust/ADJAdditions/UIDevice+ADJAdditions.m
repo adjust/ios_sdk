@@ -319,7 +319,7 @@
     return mParameter;
 }
 
-- (void)adjCheckForAdSericesAttribution:(ADJActivityHandler *)activityHandler {
+- (void)adjCheckForAdServicesAttribution:(ADJActivityHandler *)activityHandler {
     NSString *attributionToken = [self adServicesAttributionToken];
     
     if (attributionToken) {
