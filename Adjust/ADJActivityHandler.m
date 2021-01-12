@@ -43,6 +43,7 @@ static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
 static const int kiAdRetriesCount = 3;
+static const int kAdServicesdRetriesCount = 1;
 
 @implementation ADJInternalState
 
@@ -91,6 +92,7 @@ static const int kiAdRetriesCount = 3;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, assign) NSInteger iAdRetriesLeft;
+@property (nonatomic, assign) NSInteger adServicesRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
 @property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
@@ -207,6 +209,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.internalState.sessionResponseProcessed = NO;
 
     self.iAdRetriesLeft = kiAdRetriesCount;
+    self.adServicesRetriesLeft = kAdServicesdRetriesCount;
 
     self.trackingStatusManager = [[ADJTrackingStatusManager alloc] initWithActivityHandler:self];
 
@@ -401,8 +404,25 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
-- (void)setAdServicesAttributionToken:(NSString *)token {
-    [self sendAppleAdClickPackage:self attributionDetails:@{@"attribution_token": token} isAdServices:YES];
+- (void)setAdServicesAttributionToken:(NSString *)token
+                                error:(NSError *)error {
+    if (![ADJUtil isNull:error]) {
+        [self.logger warn:@"Unable to read AdServices details"];
+        
+        // 3 == platform not supported
+        if (error.code != 3 && self.adServicesRetriesLeft > 0) {
+            self.adServicesRetriesLeft = self.adServicesRetriesLeft - 1;
+            // retry after 5 seconds
+            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self checkForAdServicesAttribution:self];
+            });
+        } else {
+            [self sendAppleAdClickPackage:self attributionDetails:@{@"error": @(error.code)} isAdServices:YES];
+        }
+    } else {
+        [self sendAppleAdClickPackage:self attributionDetails:@{@"attribution_token": token} isAdServices:YES];
+    }
 }
 
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
@@ -996,6 +1016,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
         [ADJUserDefaults removeDisableThirdPartySharing];
+        
+//        [selfI checkForAdServicesAttribution:selfI];
 
         return;
     }
