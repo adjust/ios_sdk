@@ -193,6 +193,7 @@
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
+        NSNumber *allowAdServicesReading = [data objectForKey:@"allowAdServicesReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
         NSString *info1 = [data objectForKey:@"info1"];

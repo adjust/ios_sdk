@@ -69,6 +69,7 @@
     self.eventBufferingEnabled = NO;
     self.allowIdfaReading = YES;
     self.allowiAdInfoReading = YES;
+    self.allowAdServicesReading = YES;
     _isSKAdNetworkHandlingActive = YES;
 
     return self;
@@ -195,6 +196,7 @@
         copy.sendInBackground = self.sendInBackground;
         copy.allowIdfaReading = self.allowIdfaReading;
         copy.allowiAdInfoReading = self.allowiAdInfoReading;
+        copy.allowAdServicesReading = self.allowAdServicesReading;
         copy.delayStart = self.delayStart;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];

@@ -1540,8 +1540,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)checkForAdServicesAttribution:(ADJActivityHandler *)selfI {
-    if (selfI.attribution == nil) {
-        [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
+    if (@available(iOS 14.3, tvOS 14.3, *)) {
+        if (selfI.adjustConfig.allowAdServicesReading == true && selfI.attribution == nil) {
+            [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
+        }
     }
 }
 
