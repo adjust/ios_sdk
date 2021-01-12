@@ -418,7 +418,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 [self checkForAdServicesAttribution:self];
             });
         } else {
-            [self sendAppleAdClickPackage:self attributionDetails:@{@"error": @(error.code)} isAdServices:YES];
+            [self sendAppleAdClickPackage:self attributionDetails:@{@"error_code": @(error.code)} isAdServices:YES];
         }
     } else {
         [self sendAppleAdClickPackage:self attributionDetails:@{@"attribution_token": token} isAdServices:YES];
@@ -1017,7 +1017,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [ADJUserDefaults removePushToken];
         [ADJUserDefaults removeDisableThirdPartySharing];
         
-//        [selfI checkForAdServicesAttribution:selfI];
+        [selfI checkForAdServicesAttribution:selfI];
 
         return;
     }
