@@ -151,6 +151,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (adjustConfig.allowiAdInfoReading == NO) {
         [ADJAdjustFactory.logger warn:@"iAd info reading has been switched off"];
     }
+    if (adjustConfig.allowAdServicesReading == NO) {
+        [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
+    }
 
     self.adjustConfig = adjustConfig;
     self.adjustDelegate = adjustConfig.delegate;
