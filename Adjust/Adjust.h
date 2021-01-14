@@ -73,6 +73,7 @@ extern NSString * __nonnull const ADJATTAuthorizationStatusNotDetermined;
 extern NSString * __nonnull const ADJATTAuthorizationStatusRestricted;
 extern NSString * __nonnull const ADJATTAuthorizationStatusDenied;
 extern NSString * __nonnull const ADJATTAuthorizationStatusAuthorized;
+extern NSString * __nonnull const ADJATTAuthorizationStatusNotAvailable;
 
 /**
  * @brief The main interface to Adjust.

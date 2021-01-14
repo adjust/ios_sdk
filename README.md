@@ -337,6 +337,17 @@ To use this wrapper, you can call it as such:
 }];
 ```
 
+#### Getting the current authorization status
+
+To get the current app tracking authorization status you can call `[Adjust appTrackingAuthorizationStatus]` that will return one of the following possibilities:
+
+* `ADJATTAuthorizationStatusNotDetermined`: The user hasn't been asked yet
+* `ADJATTAuthorizationStatusRestricted`: The user device is restricted
+* `ADJATTAuthorizationStatusDenied`: The user denied the authorization
+* `ADJATTAuthorizationStatusAuthorized`: The user authorized
+* `ADJATTAuthorizationStatusNotAvailable`: The status is not available
+
+
 ### <a id="skadn-framework"></a>SKAdNetwork framework
 
 If you have implemented the Adjust iOS SDK v4.23.0 or above and your app is running on iOS 14, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, Adjust automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the Adjust dashboard to receive conversion values, the Adjust backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After Adjust receives the SKAdNetwork callback data, it is then displayed in the dashboard.
