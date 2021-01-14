@@ -292,7 +292,7 @@ static NSString * fbAppIdStatic = nil;
             this.isDeviceKnown = null;
             this.needsCost = null;
             this.allowiAdInfoReading = null;
-            this.allowAdServicesReading = null;
+            this.allowAdServicesInfoReading = null;
             this.allowIdfaReading = null;
             this.secretId = null;
             this.info1 = null;
@@ -378,8 +378,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
             this.allowiAdInfoReading = allowiAdInfoReading;
         };
-        AdjustConfig.prototype.setAllowAdServicesReading = function(allowAdServicesReading) {
-            this.allowAdServicesReading = allowAdServicesReading;
+        AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
+            this.allowAdServicesInfoReading = allowAdServicesInfoReading;
         };
         AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
             this.allowIdfaReading = allowIdfaReading;

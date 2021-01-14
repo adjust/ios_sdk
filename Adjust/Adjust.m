@@ -595,6 +595,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     [ADJAdjustFactory setiAdFrameworkEnabled:testOptions.iAdFrameworkEnabled];
+    [ADJAdjustFactory setAdServicesFrameworkEnabled:testOptions.adServicesFrameworkEnabled];
 }
 
 #pragma mark - Private & helper methods

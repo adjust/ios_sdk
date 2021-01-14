@@ -151,7 +151,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     if (adjustConfig.allowiAdInfoReading == NO) {
         [ADJAdjustFactory.logger warn:@"iAd info reading has been switched off"];
     }
-    if (adjustConfig.allowAdServicesReading == NO) {
+    if (adjustConfig.allowAdServicesInfoReading == NO) {
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
     }
 
@@ -588,8 +588,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
          return;
      }
 
-     if (ADJAdjustFactory.iAdFrameworkEnabled == NO) {
-         [self.logger verbose:@"Sending Apple AdServices Attribution to server suppressed."];
+     if (ADJAdjustFactory.adServicesFrameworkEnabled == NO) {
+         [self.logger verbose:@"Sending AdServices attribution to server suppressed."];
          return;
      }
 
@@ -1574,7 +1574,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
 - (void)checkForAdServicesAttribution:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
-        if (selfI.adjustConfig.allowAdServicesReading == true && selfI.attribution == nil) {
+        if (selfI.adjustConfig.allowAdServicesInfoReading == true && selfI.attribution == nil) {
             [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
         }
     }

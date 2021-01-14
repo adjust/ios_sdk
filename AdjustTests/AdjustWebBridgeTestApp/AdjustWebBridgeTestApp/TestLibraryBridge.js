@@ -1,5 +1,9 @@
+// simulator
 var localBaseUrl = 'http://127.0.0.1:8080';
 var localGdprUrl = 'http://127.0.0.1:8080';
+// device
+// var localBaseUrl = 'http://192.168.86.37:8080';
+// var localGdprUrl = 'http://192.168.86.37:8080';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -58,6 +62,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         this.deleteState = null;
         this.noBackoffWait = null;
         this.iAdFrameworkEnabled = null;
+        this.adServicesFrameworkEnabled = null;
     };
 
     var testOptions = new TestOptions();
@@ -88,6 +93,12 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('iAdFrameworkEnabled' in params) {
         var iAdFrameworkEnabled = getFirstValue(params, 'iAdFrameworkEnabled');
         testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+    }
+    // AdServices will not be used in test app by default
+    testOptions.adServicesFrameworkEnabled = false;
+    if ('adServicesFrameworkEnabled' in params) {
+        var adServicesFrameworkEnabled = getFirstValue(params, 'adServicesFrameworkEnabled');
+        testOptions.adServicesFrameworkEnabled = adServicesFrameworkEnabled == 'true';
     }
     if ('teardown' in params) {
         console.log('TestLibraryBridge hasOwnProperty teardown: ' + params['teardown']);
@@ -233,10 +244,10 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
     }
     
-    if ('allowAdServicesReading' in params) {
-        var allowAdServicesReadingS = getFirstValue(params, 'allowAdServicesReading');
-        var allowAdServicesReading = allowAdServicesReadingS == 'true';
-        adjustConfig.setAllowAdServicesReading(allowAdServicesReading);
+    if ('allowAdServicesInfoReading' in params) {
+        var allowAdServicesInfoReadingS = getFirstValue(params, 'allowAdServicesInfoReading');
+        var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
+        adjustConfig.setAllowAdServicesInfoReading(allowAdServicesInfoReading);
     }
     
     if ('allowIdfaReading' in params) {
