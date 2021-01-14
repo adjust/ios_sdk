@@ -41,7 +41,9 @@
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
+                                   token:(NSString *)token
+                         errorCodeNumber:(NSNumber *)errorCodeNumber;
 
 - (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
 
