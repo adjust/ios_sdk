@@ -421,14 +421,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 [self checkForAdServicesAttributionI:self];
             });
         } else {
-            [self sendAppleAdClickPackage:self
-                                    token:nil
-                          errorCodeNumber:[NSNumber numberWithInteger:error.code]];
+            [self sendAdServicesInfoPackage:self
+                                      token:nil
+                            errorCodeNumber:[NSNumber numberWithInteger:error.code]];
         }
     } else {
-        [self sendAppleAdClickPackage:self
-                                token:token
-                      errorCodeNumber:nil];
+        [self sendAdServicesInfoPackage:self
+                                  token:token
+                        errorCodeNumber:nil];
     }
 }
 
@@ -580,9 +580,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (void)sendAppleAdClickPackage:(ADJActivityHandler *)selfI
-                          token:(NSString *)token
-                errorCodeNumber:(NSNumber *)errorCodeNumber
+- (void)sendAdServicesInfoPackage:(ADJActivityHandler *)selfI
+                            token:(NSString *)token
+                  errorCodeNumber:(NSNumber *)errorCodeNumber
  {
      if (![selfI isEnabledI:selfI]) {
          return;
@@ -601,16 +601,16 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
              selfI.activityState.lastInterval = lastInterval;
          }];
      }
-     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        sessionParameters:self.sessionParameters
-                                        trackingStatusManager:self.trackingStatusManager
-                                        createdAt:now];
+     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
+                                       initWithDeviceInfo:selfI.deviceInfo
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
+                                       sessionParameters:self.sessionParameters
+                                       trackingStatusManager:self.trackingStatusManager
+                                       createdAt:now];
 
      ADJActivityPackage *infoPackage =
-        [clickBuilder buildInfoPackage:ADJAdServicesPackageKey
+        [infoBuilder buildInfoPackage:ADJAdServicesPackageKey
                                  token:token
                        errorCodeNumber:errorCodeNumber];
      [selfI.packageHandler addPackage:infoPackage];
