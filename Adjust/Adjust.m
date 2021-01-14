@@ -44,6 +44,21 @@ NSString * const ADJAdRevenueSourceTapdaq = @"tapdaq";
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
 
+NSString * const ADJATTAuthorizationStatusNotDetermined = @"NotDetermined";
+NSString * const ADJATTAuthorizationStatusRestricted = @"Restricted";
+NSString * const ADJATTAuthorizationStatusDenied = @"Denied";
+NSString * const ADJATTAuthorizationStatusAuthorized = @"Authorized";
+NSString * const ADJATTAuthorizationStatusNotAvailable = @"NotAvailable";
+
+// copy from ATTrackingManagerAuthorizationStatus
+typedef NS_ENUM(NSInteger, AdjATTrackingManagerAuthorizationStatus) {
+    AdjATTrackingManagerAuthorizationStatusNotDetermined = 0,
+    AdjATTrackingManagerAuthorizationStatusRestricted,
+    AdjATTrackingManagerAuthorizationStatusDenied,
+    AdjATTrackingManagerAuthorizationStatusAuthorized
+};
+
+
 @implementation AdjustTestOptions
 @end
 
@@ -241,6 +256,28 @@ static dispatch_once_t onceToken = 0;
 {
     @synchronized (self) {
         [[Adjust getInstance] requestTrackingAuthorizationWithCompletionHandler:completion];
+    }
+}
+
++ (NSString *)appTrackingAuthorizationStatus {
+    int status = [[UIDevice currentDevice] adjATTStatus];
+    
+    switch (status) {
+        case AdjATTrackingManagerAuthorizationStatusAuthorized:
+            return ADJATTAuthorizationStatusAuthorized;
+            break;
+        case AdjATTrackingManagerAuthorizationStatusDenied:
+            return ADJATTAuthorizationStatusDenied;
+            break;
+        case AdjATTrackingManagerAuthorizationStatusRestricted:
+            return ADJATTAuthorizationStatusRestricted;
+            break;
+        case AdjATTrackingManagerAuthorizationStatusNotDetermined:
+            return ADJATTAuthorizationStatusNotDetermined;
+            break;
+        default:
+            return ADJATTAuthorizationStatusNotAvailable;
+            break;
     }
 }
 
