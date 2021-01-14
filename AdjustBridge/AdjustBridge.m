@@ -413,14 +413,32 @@
         NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
         responseCallback(sdkVersion);
     }];
-
+    
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([Adjust idfa]);
     }];
-
+    
+    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorization" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        
+        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            responseCallback([NSNumber numberWithUnsignedInteger:status]);
+        }];
+    }];
+    
+    [self.bridgeRegister registerHandler:@"adjust_appTrackingAuthorizationStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        
+        responseCallback([Adjust appTrackingAuthorizationStatus]);
+    }];
+    
     [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;

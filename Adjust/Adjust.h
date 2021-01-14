@@ -67,6 +67,14 @@ extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
 
 /**
+ * Constants for AppTrackingTransparency authorization status
+ */
+extern NSString * __nonnull const ADJATTAuthorizationStatusNotDetermined;
+extern NSString * __nonnull const ADJATTAuthorizationStatusRestricted;
+extern NSString * __nonnull const ADJATTAuthorizationStatusDenied;
+extern NSString * __nonnull const ADJATTAuthorizationStatusAuthorized;
+
+/**
  * @brief The main interface to Adjust.
  *
  * @note Use the methods of this class to tell Adjust about the usage of your app.
@@ -343,5 +351,7 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
 
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
++ (nonnull NSString *)appTrackingAuthorizationStatus;
 
 @end
