@@ -418,7 +418,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
             // retry after 5 seconds
             dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
             dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self checkForAdServicesAttribution:self];
+                [self checkForAdServicesAttributionI:self];
             });
         } else {
             [self sendAppleAdClickPackage:self
@@ -970,6 +970,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.adjustConfig.allowiAdInfoReading == YES) {
         [selfI checkForiAdI:selfI];
     }
+    
+    if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
+        [selfI checkForAdServicesAttributionI:selfI];
+    }
 
     [selfI.trackingStatusManager checkForNewAttStatus];
 
@@ -1049,8 +1053,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
         [ADJUserDefaults removeDisableThirdPartySharing];
-        
-        [selfI checkForAdServicesAttribution:selfI];
 
         return;
     }
@@ -1094,8 +1096,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.activityState.isGdprForgotten) {
         return;
     }
-    
-    [selfI checkForAdServicesAttribution:selfI];
+
+    [selfI checkForAdServicesAttributionI:selfI];
 
     double lastInterval = now - selfI.activityState.lastActivity;
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
@@ -1559,6 +1561,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         if (selfI.adjustConfig.allowiAdInfoReading == YES) {
             [selfI checkForiAdI:selfI];
         }
+        if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
+            [selfI checkForAdServicesAttributionI:selfI];
+        }
     }
 
     [selfI checkStatusI:selfI
@@ -1572,7 +1577,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
 }
 
-- (void)checkForAdServicesAttribution:(ADJActivityHandler *)selfI {
+- (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
         if (selfI.adjustConfig.allowAdServicesInfoReading == true && selfI.attribution == nil) {
             [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
