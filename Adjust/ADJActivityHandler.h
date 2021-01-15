@@ -46,6 +46,8 @@
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *extraPath;
+@property (nonatomic, strong) NSMutableArray *preLaunchAdjustThirdPartySharingArray;
+@property (nonatomic, copy) NSNumber *lastMeasurementConsentTracked;
 
 - (id)init;
 

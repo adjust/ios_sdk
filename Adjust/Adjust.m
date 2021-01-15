@@ -517,6 +517,13 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     if (![self checkActivityHandler]) {
+        if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
+            self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
+                [[NSMutableArray alloc] init];
+        }
+
+        [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:thirdPartySharing];
+
         return;
     }
 
@@ -525,6 +532,8 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
     if (![self checkActivityHandler]) {
+        self.savedPreLaunch.lastMeasurementConsentTracked = [NSNumber numberWithBool:enabled];
+
         return;
     }
 

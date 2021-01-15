@@ -102,6 +102,7 @@ static const int kAdServicesdRetriesCount = 1;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
 // copy for objects shared with the user
 @property (nonatomic, copy) ADJConfig *adjustConfig;
+@property (nonatomic, weak) ADJSavedPreLaunch *savedPreLaunch;
 @property (nonatomic, copy) NSData* deviceTokenData;
 @property (nonatomic, copy) NSString* basePath;
 @property (nonatomic, copy) NSString* gdprPath;
@@ -156,6 +157,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 
     self.adjustConfig = adjustConfig;
+    self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
 
     // init logger to be available everywhere
@@ -1051,6 +1053,25 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 if ([ADJUserDefaults getDisableThirdPartySharing]) {
                     [selfI disableThirdPartySharingI:selfI];
                 }
+                if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+                    [selfI.logger debug:
+                        @"TORMV very first session preLaunchAdjustThirdPartySharingArray != nil"];
+                    for (ADJThirdPartySharing *thirdPartySharing
+                         in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
+                    {
+                        [selfI trackThirdPartySharingI:selfI
+                                     thirdPartySharing:thirdPartySharing];
+                    }
+                }
+                if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
+                    [selfI.logger debug:
+                        @"TORMV very first session lastMeasurementConsentTracked %@",
+                        selfI.savedPreLaunch.lastMeasurementConsentTracked];
+                    [selfI
+                        trackMeasurementConsentI:selfI
+                        enabled:[selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+                }
+
                 [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                                 block:^{
                     selfI.activityState.sessionCount = 1; // this is the first session
@@ -1357,9 +1378,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.activityState.isGdprForgotten) {
         return;
     }
-    if (selfI.activityState.isThirdPartySharingDisabled) {
-        return;
-    }
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -1393,9 +1411,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
     if (selfI.activityState.isGdprForgotten) {
-        return;
-    }
-    if (selfI.activityState.isThirdPartySharingDisabled) {
         return;
     }
 
@@ -1647,8 +1662,28 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         }
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
-        } else if ([ADJUserDefaults getDisableThirdPartySharing]) {
-            [selfI disableThirdPartySharing];
+        } else {
+            if ([ADJUserDefaults getDisableThirdPartySharing]) {
+                [selfI disableThirdPartySharing];
+            }
+            if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+                [selfI.logger debug:
+                    @"TORMV setEnabledI preLaunchAdjustThirdPartySharingArray != nil"];
+                for (ADJThirdPartySharing *thirdPartySharing
+                     in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
+                {
+                    [selfI trackThirdPartySharing:thirdPartySharing];
+                }
+            }
+            if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
+                [selfI.logger debug:
+                    @"TORMV setEnabledI lastMeasurementConsentTracked %@",
+                    selfI.savedPreLaunch.lastMeasurementConsentTracked];
+                [selfI
+                    trackMeasurementConsent:
+                        [selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+            }
+
         }
         if (selfI.adjustConfig.allowiAdInfoReading == YES) {
             [selfI checkForiAdI:selfI];
