@@ -237,15 +237,16 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion
-{
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
     @synchronized (self) {
         [[Adjust getInstance] requestTrackingAuthorizationWithCompletionHandler:completion];
     }
 }
 
 + (int)appTrackingAuthorizationStatus {
-    return [[UIDevice currentDevice] adjATTStatus];
+    @synchronized (self) {
+        return [[Adjust getInstance] appTrackingAuthorizationStatus];
+    }
 }
 
 + (ADJAttribution *)attribution {
@@ -510,10 +511,8 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackSubscription:subscription];
 }
 
-- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion
-{
-    [UIDevice.currentDevice requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status)
-    {
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
+    [UIDevice.currentDevice requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
         if (completion) {
             completion(status);
         }
@@ -524,6 +523,10 @@ static dispatch_once_t onceToken = 0;
 
         [self.activityHandler updateAttStatusFromUserCallback:(int)status];
     }];
+}
+
+- (int)appTrackingAuthorizationStatus {
+    return [[UIDevice currentDevice] adjATTStatus];
 }
 
 - (ADJAttribution *)attribution {
