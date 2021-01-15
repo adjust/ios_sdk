@@ -436,7 +436,7 @@
             return;
         }
         
-        responseCallback([Adjust appTrackingAuthorizationStatus]);
+        responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
     }];
     
     [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
