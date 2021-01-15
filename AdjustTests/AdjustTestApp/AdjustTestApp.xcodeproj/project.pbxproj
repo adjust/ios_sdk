@@ -61,6 +61,7 @@
 		6F3A5EA12018CE3A000AACD0 /* ATLUtilNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */; };
 		6F3A5EA22018CE3A000AACD0 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */; };
 		6F3A5EA32018CE3A000AACD0 /* ATLBlockingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */; };
+		6F84510E25B1B1110004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84510C25B1B1100004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBEE92024E421B200FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91F24E421B200FEF3F1 /* ADJUrlStrategy.m */; };
 		6FFCFE5F2007978300467F01 /* ATAAdjustCommandExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE5D2007978300467F01 /* ATAAdjustCommandExecutor.m */; };
 		6FFCFE6D200797D100467F01 /* ATAAdjustDelegateAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE61200797D000467F01 /* ATAAdjustDelegateAttribution.m */; };
@@ -189,6 +190,8 @@
 		6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLUtilNetworking.m; sourceTree = "<group>"; };
 		6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestLibrary.m; sourceTree = "<group>"; };
 		6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLBlockingQueue.m; sourceTree = "<group>"; };
+		6F84510C25B1B1100004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		6F84510D25B1B1110004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FBEE91E24E421B200FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE91F24E421B200FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FFCFE5D2007978300467F01 /* ATAAdjustCommandExecutor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustCommandExecutor.m; sourceTree = "<group>"; };
@@ -337,6 +340,8 @@
 				9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */,
 				6FBEE91E24E421B200FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE91F24E421B200FEF3F1 /* ADJUrlStrategy.m */,
+				6F84510D25B1B1110004C7C0 /* ADJThirdPartySharing.h */,
+				6F84510C25B1B1100004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -527,6 +532,7 @@
 				524BACA6221C4EE800624F6C /* PSWebSocketServer.m in Sources */,
 				6F3A5E742018CE14000AACD0 /* ADJEvent.m in Sources */,
 				524BACA5221C4EE800624F6C /* PSWebSocket.m in Sources */,
+				6F84510E25B1B1110004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				6F3A5E822018CE14000AACD0 /* NSString+ADJAdditions.m in Sources */,
 				6F3A5E752018CE14000AACD0 /* ADJSessionSuccess.m in Sources */,
 				6FFCFE70200797D100467F01 /* ATAAdjustDelegate.m in Sources */,

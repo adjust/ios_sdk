@@ -70,6 +70,7 @@
 		6F7AF790211888B500F730B2 /* TestLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */; };
 		6F7AF7B02118949C00F730B2 /* TestLibraryBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */; };
 		6F7AF7BB2118992200F730B2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F7AF7BA2118992200F730B2 /* WebKit.framework */; };
+		6F84513125B1B14E0004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84513025B1B14E0004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBEE92324E421C800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92224E421C800FEF3F1 /* ADJUrlStrategy.m */; };
 		6FD0412C211C71D1008D42D0 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD0412B211C71D1008D42D0 /* iAd.framework */; };
 		6FD0412E211C71D9008D42D0 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD0412D211C71D9008D42D0 /* AdSupport.framework */; };
@@ -204,6 +205,8 @@
 		6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestLibraryBridge.m; sourceTree = "<group>"; };
 		6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TestLibraryBridge.js; sourceTree = "<group>"; };
 		6F7AF7BA2118992200F730B2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6F84512F25B1B14E0004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		6F84513025B1B14E0004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6FBEE92124E421C800FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE92224E421C800FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FD0412B211C71D1008D42D0 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -412,6 +415,8 @@
 				6F7AF73021187CFF00F730B2 /* ADJReachability.m */,
 				6FBEE92124E421C800FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE92224E421C800FEF3F1 /* ADJUrlStrategy.m */,
+				6F84512F25B1B14E0004C7C0 /* ADJThirdPartySharing.h */,
+				6F84513025B1B14E0004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -531,6 +536,7 @@
 				6F7AF74021187CFF00F730B2 /* ADJBackoffStrategy.m in Sources */,
 				6F6F75D92327C08B00F47E64 /* ATLBlockingQueue.m in Sources */,
 				6F7AF73421187CFF00F730B2 /* ADJRequestHandler.m in Sources */,
+				6F84513125B1B14E0004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				6F7AF73721187CFF00F730B2 /* ADJEvent.m in Sources */,
 				6F7AF74621187CFF00F730B2 /* NSData+ADJAdditions.m in Sources */,
 				6F6F75D82327C08B00F47E64 /* ATLTestLibrary.m in Sources */,

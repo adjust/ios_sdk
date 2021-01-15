@@ -18,6 +18,7 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkTvVersionString[];
 
 #import <AdjustSdkTv/Adjust.h>
 #import <AdjustSdkTv/ADJEvent.h>
+#import <AdjustSdkTv/ADJThirdPartySharing.h>
 #import <AdjustSdkTv/ADJConfig.h>
 #import <AdjustSdkTv/ADJLogger.h>
 #import <AdjustSdkTv/ADJAttribution.h>

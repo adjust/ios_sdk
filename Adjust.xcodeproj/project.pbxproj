@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */; };
+		6F84512525B1B1380004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBE0C6E2577CDAC00EC2CE0 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBE0C6C2577CDAC00EC2CE0 /* ADJThirdPartySharing.h */; };
 		6FBE0C6F2577CDAC00EC2CE0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBE0C6D2577CDAC00EC2CE0 /* ADJThirdPartySharing.m */; };
 		6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
@@ -613,6 +615,8 @@
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
 		6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustWebBridgeTestApp.xcodeproj; path = AdjustWebBridgeTestApp/AdjustWebBridgeTestApp.xcodeproj; sourceTree = "<group>"; };
+		6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6FBE0C6C2577CDAC00EC2CE0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FBE0C6D2577CDAC00EC2CE0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
@@ -1486,6 +1490,8 @@
 				9D2F24022447DD6000B7CA90 /* ADJSubscription.m */,
 				6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */,
+				6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */,
+				6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1964,6 +1970,7 @@
 				9D0E2E9E210B575600133B4F /* ADJSessionFailure.h in Headers */,
 				9D0E2EA4210B575600133B4F /* ADJSessionSuccess.h in Headers */,
 				9D0E2EA8210B575600133B4F /* ADJLogger.h in Headers */,
+				6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */,
 				9D0E2E92210B575600133B4F /* ADJKeychain.h in Headers */,
 				9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */,
 				9D0E2E76210B575600133B4F /* ADJActivityKind.h in Headers */,
@@ -2697,6 +2704,7 @@
 				9D0E2E6E210B575600133B4F /* ADJAttributionHandler.m in Sources */,
 				9D0E2E87210B575600133B4F /* ADJBackoffStrategy.m in Sources */,
 				9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */,
+				6F84512525B1B1380004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				9D0E2E84210B575600133B4F /* ADJTimerCycle.m in Sources */,
 				9D0E2E6C210B575600133B4F /* ADJDeviceInfo.m in Sources */,
 				6FBEE93524E4232800FEF3F1 /* ADJUrlStrategy.m in Sources */,

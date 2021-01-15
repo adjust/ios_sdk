@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F84513925B1B19E0004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBEE90E24E4212600FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */; };
 		9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */; };
@@ -55,6 +56,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		6F84513825B1B19E0004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 				9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */,
 				6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */,
+				6F84513825B1B19E0004C7C0 /* ADJThirdPartySharing.h */,
+				6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -412,6 +417,7 @@
 				9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */,
 				9D449E931E6EDC3D00E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449E801E6EDC3D00E7E80B /* ADJBackoffStrategy.m in Sources */,
+				6F84513925B1B19E0004C7C0 /* ADJThirdPartySharing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
