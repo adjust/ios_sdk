@@ -241,6 +241,8 @@
 		9D2F24042447DD6000B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24022447DD6000B7CA90 /* ADJSubscription.m */; };
 		9D2F24052447DD6000B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F24032447DD6000B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D651BF525B25A64006D69D6 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */; };
+		9D651BF625B25A64006D69D6 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */; };
 		9D7431EA1EB9F9B700969F14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431E91EB9F9B700969F14 /* main.m */; };
 		9D7431ED1EB9F9B700969F14 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431EC1EB9F9B700969F14 /* AppDelegate.m */; };
 		9D7431F01EB9F9B700969F14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431EF1EB9F9B700969F14 /* ViewController.m */; };
@@ -858,6 +860,8 @@
 		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
 		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
 		9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-WebView.xcodeproj"; path = "examples/AdjustExample-WebView/AdjustExample-WebView.xcodeproj"; sourceTree = "<group>"; };
+		9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		9D7431E61EB9F9B700969F14 /* AdjustExampleTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdjustExampleTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D7431E91EB9F9B700969F14 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D7431EB1EB9F9B700969F14 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1386,6 +1390,8 @@
 				9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */,
 				6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */,
+				9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */,
+				9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -1946,6 +1952,7 @@
 				965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */,
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
 				9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */,
+				9D651BF625B25A64006D69D6 /* ADJThirdPartySharing.h in Headers */,
 				96B671101D788EEC0090A023 /* ADJSessionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2609,6 +2616,7 @@
 				96E5E39218BBB48A008E7B30 /* ADJAdjustFactory.m in Sources */,
 				96E5E39318BBB48A008E7B30 /* ADJLogger.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* ADJPackageHandler.m in Sources */,
+				9D651BF525B25A64006D69D6 /* ADJThirdPartySharing.m in Sources */,
 				96E5E39418BBB48A008E7B30 /* ADJPackageBuilder.m in Sources */,
 				6FCC85001F278CF300D6A0ED /* ADJReachability.m in Sources */,
 				96E5E39618BBB48A008E7B30 /* ADJRequestHandler.m in Sources */,
