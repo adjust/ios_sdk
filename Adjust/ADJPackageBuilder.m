@@ -213,7 +213,7 @@
     NSMutableDictionary *parameters = [self getMeasurementConsentParameters:enabled];
     ADJActivityPackage *mcPackage = [self defaultActivityPackage];
     mcPackage.path = @"/measurement_consent";
-    mcPackage.activityKind = ADJActivityKindThirdPartySharing;
+    mcPackage.activityKind = ADJActivityKindMeasurementConsent;
     mcPackage.suffix = @"";
     mcPackage.parameters = parameters;
 
