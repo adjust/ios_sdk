@@ -20,6 +20,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
 * [Additional features](#additional-features)
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
+      * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
@@ -337,15 +338,15 @@ To use this wrapper, you can call it as such:
 }];
 ```
 
-#### Getting the current authorization status
+### <a id="ata-getter"></a>Get current authorisation status
 
 To get the current app tracking authorization status you can call `[Adjust appTrackingAuthorizationStatus]` that will return one of the following possibilities:
 
-* `ADJATTAuthorizationStatusNotDetermined`: The user hasn't been asked yet
-* `ADJATTAuthorizationStatusRestricted`: The user device is restricted
-* `ADJATTAuthorizationStatusDenied`: The user denied the authorization
-* `ADJATTAuthorizationStatusAuthorized`: The user authorized
-* `ADJATTAuthorizationStatusNotAvailable`: The status is not available
+* `0`: The user hasn't been asked yet
+* `1`: The user device is restricted
+* `2`: The user denied access to IDFA
+* `3`: The user authorized access to IDFA
+* `-1`: The status is not available
 
 
 ### <a id="skadn-framework"></a>SKAdNetwork framework
