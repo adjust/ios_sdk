@@ -91,6 +91,10 @@
         [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
         [self disableThirdPartySharing:parameters];
+    } else if ([methodName isEqualToString:@"thirdPartySharing"]) {
+        [self thirdPartySharing:parameters];
+    } else if ([methodName isEqualToString:@"measurementConsent"]) {
+        [self measurementConsent:parameters];
     } else if ([methodName isEqualToString:@"trackSubscription"]) {
            [self trackSubscription:parameters];
    }
@@ -560,6 +564,39 @@
 
 - (void)disableThirdPartySharing:(NSDictionary *)parameters {
     [Adjust disableThirdPartySharing];
+}
+
+- (void)thirdPartySharing:(NSDictionary *)parameters {
+    NSString *enableOrElseDisableS = [parameters objectForKey:@"enableOrElseDisable"][0];
+
+    NSNumber *enableOrElseDisable = nil;
+    if ([enableOrElseDisableS isEqualToString:@"true"]) {
+        enableOrElseDisable = [NSNumber numberWithBool:YES];
+    }
+    if ([enableOrElseDisableS isEqualToString:@"false"]) {
+        enableOrElseDisable = [NSNumber numberWithBool:NO];
+    }
+
+    ADJThirdPartySharing *adjustThirdPartySharing =
+        [[ADJThirdPartySharing alloc]
+            initWithEnableOrElseDisableNumberBool:enableOrElseDisable];
+
+    if ([parameters objectForKey:@"granularOptions"]) {
+        NSArray *granularOptions = [parameters objectForKey:@"granularOptions"];
+        for (int i = 0; i < granularOptions.count; i = i + 3) {
+            NSString *partnerName = granularOptions[i];
+            NSString *key = granularOptions[i + 1];
+            NSString *value = granularOptions[i + 2];
+            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+    }
+
+    [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+}
+
+- (void)measurementConsent:(NSDictionary *)parameters {
+    NSString *enableOrElseDisableS = [parameters objectForKey:@"enableOrElseDisable"][0];
+    [Adjust trackMeasurementConsent:[enableOrElseDisableS boolValue]];
 }
 
 - (void)trackSubscription:(NSDictionary *)parameters {
