@@ -740,16 +740,31 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                        [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
-                     }];
+        BOOL tracked =
+            [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
+        if (! tracked) {
+            if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
+                self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
+                    [[NSMutableArray alloc] init];
+            }
+
+            [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray
+                addObject:thirdPartySharing];
+        }
+    }];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                        [selfI trackMeasurementConsentI:selfI enabled:enabled];
-                     }];
+        BOOL tracked =
+            [selfI trackMeasurementConsentI:selfI enabled:enabled];
+        if (! tracked) {
+            selfI.savedPreLaunch.lastMeasurementConsentTracked =
+                [NSNumber numberWithBool:enabled];
+        }
+    }];
 }
 
 - (void)writeActivityState {
@@ -1054,22 +1069,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                     [selfI disableThirdPartySharingI:selfI];
                 }
                 if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
-                    [selfI.logger debug:
-                        @"TORMV very first session preLaunchAdjustThirdPartySharingArray != nil"];
                     for (ADJThirdPartySharing *thirdPartySharing
                          in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
                     {
                         [selfI trackThirdPartySharingI:selfI
                                      thirdPartySharing:thirdPartySharing];
                     }
+
+                    selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
                 }
                 if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
-                    [selfI.logger debug:
-                        @"TORMV very first session lastMeasurementConsentTracked %@",
-                        selfI.savedPreLaunch.lastMeasurementConsentTracked];
                     [selfI
                         trackMeasurementConsentI:selfI
                         enabled:[selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+
+                    selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
                 }
 
                 [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
@@ -1366,17 +1380,17 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 }
 
-- (void)trackThirdPartySharingI:(ADJActivityHandler *)selfI
+- (BOOL)trackThirdPartySharingI:(ADJActivityHandler *)selfI
                 thirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing
 {
     if (!selfI.activityState) {
-        return;
+        return NO;
     }
     if (![selfI isEnabledI:selfI]) {
-        return;
+        return NO;
     }
     if (selfI.activityState.isGdprForgotten) {
-        return;
+        return NO;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -1399,19 +1413,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
+
+    return YES;
 }
 
-- (void)trackMeasurementConsentI:(ADJActivityHandler *)selfI
+- (BOOL)trackMeasurementConsentI:(ADJActivityHandler *)selfI
                          enabled:(BOOL)enabled
 {
     if (!selfI.activityState) {
-        return;
+        return NO;
     }
     if (![selfI isEnabledI:selfI]) {
-        return;
+        return NO;
     }
     if (selfI.activityState.isGdprForgotten) {
-        return;
+        return NO;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -1434,6 +1450,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
+
+    return YES;
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
@@ -1667,21 +1685,20 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 [selfI disableThirdPartySharing];
             }
             if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
-                [selfI.logger debug:
-                    @"TORMV setEnabledI preLaunchAdjustThirdPartySharingArray != nil"];
                 for (ADJThirdPartySharing *thirdPartySharing
                      in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
                 {
                     [selfI trackThirdPartySharing:thirdPartySharing];
                 }
+
+                selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
             }
             if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
-                [selfI.logger debug:
-                    @"TORMV setEnabledI lastMeasurementConsentTracked %@",
-                    selfI.savedPreLaunch.lastMeasurementConsentTracked];
                 [selfI
                     trackMeasurementConsent:
                         [selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+
+                selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
             }
 
         }
