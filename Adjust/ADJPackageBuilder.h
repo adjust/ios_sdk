@@ -58,7 +58,7 @@
 
 - (ADJActivityPackage *)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
-- (ADJActivityPackage *)buildMeasurementConsent:(BOOL)enabled;
+- (ADJActivityPackage *)buildMeasurementConsentPackage:(BOOL)enabled;
 
 - (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
                                        isInDelay:(BOOL)isInDelay;

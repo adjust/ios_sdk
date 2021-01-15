@@ -1441,7 +1441,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                             trackingStatusManager:self.trackingStatusManager
                                             createdAt:now];
 
-    ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsent:enabled];
+    ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsentPackage:enabled];
 
     [selfI.packageHandler addPackage:mcPackage];
 

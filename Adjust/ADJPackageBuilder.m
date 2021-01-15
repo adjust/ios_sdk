@@ -209,7 +209,7 @@
     return tpsPackage;
 }
 
-- (ADJActivityPackage *)buildMeasurementConsent:(BOOL)enabled {
+- (ADJActivityPackage *)buildMeasurementConsentPackage:(BOOL)enabled {
     NSMutableDictionary *parameters = [self getMeasurementConsentParameters:enabled];
     ADJActivityPackage *mcPackage = [self defaultActivityPackage];
     mcPackage.path = @"/measurement_consent";
