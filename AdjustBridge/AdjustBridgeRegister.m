@@ -146,12 +146,12 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
                 }
                 },
-            requestTrackingAuthorization: function(callback) {
+            requestTrackingAuthorizationWithCompletionHandler: function(callback) {
                 if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_requestTrackingAuthorization', null, callback);
+                    WebViewJavascriptBridge.callHandler('adjust_requestTrackingAuthorizationWithCompletionHandler', null, callback);
                 }
             },
-            appTrackingAuthorizationStatus: function(callback) {
+            getAppTrackingAuthorizationStatus: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_appTrackingAuthorizationStatus', null, callback);
                 }

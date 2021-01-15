@@ -421,7 +421,7 @@
         responseCallback([Adjust idfa]);
     }];
     
-    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorization" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
