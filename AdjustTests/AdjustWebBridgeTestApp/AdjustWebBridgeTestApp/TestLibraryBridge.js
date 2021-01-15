@@ -561,6 +561,37 @@ AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
     Adjust.disableThirdPartySharing();
 };
 
+AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
+    var enableOrElseDisableS = getFirstValue(params, 'enableOrElseDisable');
+
+    var enableOrElseDisable = null;
+    if (enableOrElseDisableS == 'true') {
+        enableOrElseDisable = true;
+    }
+    if (enableOrElseDisableS == 'false') {
+        enableOrElseDisable = false;
+    }
+
+    var adjustThirdPartySharing = new AdjustThirdPartySharing(enableOrElseDisable);
+
+    if ('granularOptions' in params) {
+        var granularOptions = getValues(params, 'granularOptions');
+        for (var i = 0; i < granularOptions.length; i = i + 3) {
+            var partnerName = granularOptions[i];
+            var key = granularOptions[i + 1];
+            var value = granularOptions[i + 2];
+            adjustThirdPartySharing.addGranularOption(partnerName, key, value);
+        }
+    }
+
+    Adjust.trackMeasurementConsent(adjustThirdPartySharing);
+};
+
+AdjustCommandExecutor.prototype.measurementConsent = function(params) {
+    var consentMeasurement = getFirstValue(params, 'enableOrElseDisable') == 'true';
+    Adjust.trackMeasurementConsent(consentMeasurement);
+};
+
 // Util
 function getValues(params, key) {
     if (key in params) {

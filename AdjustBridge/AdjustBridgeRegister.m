@@ -211,6 +211,16 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_disableThirdPartySharing', null, null);
                 }
             },
+            trackThirdPartySharing: function(adjustThirdPartySharing) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_trackThirdPartySharing', adjustThirdPartySharing, null);
+                }
+            },
+            trackMeasurementConsent: function(consentMeasurement) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_trackMeasurementConsent', consentMeasurement, null);
+                }
+            },
             fbPixelEvent: function(pixelID, evtName, customData) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
@@ -269,6 +279,17 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustEvent.prototype.setCallbackId = function(callbackId) {
             this.callbackId = callbackId;
+        };
+
+        window.AdjustThirdPartySharing = function(enableOrElseDisable) {
+            this.enableOrElseDisable = enableOrElseDisable;
+            this.granularOptions = [];
+        };
+
+        AdjustThirdPartySharing.prototype.addGranularOption = function(partnerName, key, value) {
+            this.granularOptions.push(partnerName);
+            this.granularOptions.push(key);
+            this.granularOptions.push(value);
         };
 
         // Copied from adjust_config.js

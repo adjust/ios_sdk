@@ -513,6 +513,34 @@
         [Adjust disableThirdPartySharing];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
+        id enableOrElseDisableO = [data objectForKey:@"enableOrElseDisable"];
+        id granularOptions = [data objectForKey:@"granularOptions"];
+
+        NSNumber *enableOrElseDisable = nil;
+        if ([enableOrElseDisableO isKindOfClass:[NSNumber class]]) {
+            enableOrElseDisable = (NSNumber *)enableOrElseDisable;
+        }
+
+        ADJThirdPartySharing *adjustThirdPartySharing =
+            [[ADJThirdPartySharing alloc]
+                initWithEnableOrElseDisableNumberBool:enableOrElseDisable];
+
+        for (int i = 0; i < [granularOptions count]; i += 3) {
+            NSString *partnerName = [[granularOptions objectAtIndex:i] description];
+            NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
+            NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
+            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+
+        [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_disableThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust disableThirdPartySharing];
+    }];
+
+
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];
         NSString *gdprUrl = [data objectForKey:@"gdprUrl"];
