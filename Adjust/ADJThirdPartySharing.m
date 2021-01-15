@@ -7,42 +7,40 @@
 //
 
 #import "ADJThirdPartySharing.h"
-
-@interface ADJThirdPartySharing () @end
+#import "ADJAdjustFactory.h"
 
 @implementation ADJThirdPartySharing
 
-- (id)init {
+- (nullable id)initWithEnableOrElseDisableNumberBool:
+    (nullable NSNumber *)enableOrElseDisableNumberBool
+{
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
     _granularOptions = [[NSMutableDictionary alloc] init];
-    _enable = nil;
+    _enable = enableOrElseDisableNumberBool;
 
     return self;
 }
 
-- (void)addGranularOption:(NSString *)partnerName
-                      key:(NSString *)key
-                      value:(NSString *)value
+- (void)addGranularOption:(nonnull NSString *)partnerName
+                      key:(nonnull NSString *)key
+                    value:(nonnull NSString *)value
 {
-    NSMutableDictionary *partnerOptions = [granularOptions objectForKey:partnerName];
+    if (partnerName == nil || key == nil || value == nil) {
+        [ADJAdjustFactory.logger error:@"Cannot add granular option with any nil value"];
+        return;
+    }
+
+    NSMutableDictionary *partnerOptions = [self.granularOptions objectForKey:partnerName];
     if (partnerOptions == nil) {
         partnerOptions = [[NSMutableDictionary alloc] init];
-        [granularOptions setObject:partnerOptions forKey:partnerName];
+        [self.granularOptions setObject:partnerOptions forKey:partnerName];
     }
 
     [partnerOptions setObject:value forKey:key];
-}
-
-- (void)enableThirdPartySharing {
-    self.enable = [NSNumber numberWithBool:YES];
-}
-
-- (void)diableThirdPartySharing {
-    self.enable = [NSNumber numberWithBool:NO];
 }
 
 @end
