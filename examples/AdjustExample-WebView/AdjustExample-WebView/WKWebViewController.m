@@ -29,6 +29,7 @@
 - (void)loadWKWebView {
     WKWebView *webView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
+    webView.UIDelegate = self;
     [self.view addSubview:webView];
 
     _adjustBridge = [[AdjustBridge alloc] init];
@@ -42,6 +43,18 @@
 
 - (void)callWkHandler:(id)sender {
     
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action) {
+                                                          completionHandler();
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:^{}];
 }
 
 @end

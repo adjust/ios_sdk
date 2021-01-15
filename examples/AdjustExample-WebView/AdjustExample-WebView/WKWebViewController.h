@@ -11,7 +11,7 @@
 
 #import "AdjustBridge.h"
 
-@interface WKWebViewController : UINavigationController<WKNavigationDelegate>
+@interface WKWebViewController : UINavigationController<WKNavigationDelegate, WKUIDelegate>
 
 @property AdjustBridge *adjustBridge;
 
