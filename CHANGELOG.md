@@ -1,3 +1,11 @@
+### Version 4.25.0 (16th January 2021)
+#### Added
+- Added support for Apple Search Ads attribution with usage of `AdServices.framework`.
+- Added `appTrackingAuthorizationStatus` getter to `Adjust` instance to be able to get current app tracking status.
+- Added improved measurement consent management and third party sharing system.
+
+---
+
 ### Version 4.24.0 (9th December 2020)
 #### Added
 - Added possibility to get cost data information in attribution callback.
