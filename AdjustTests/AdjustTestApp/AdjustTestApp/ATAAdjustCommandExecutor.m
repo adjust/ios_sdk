@@ -567,19 +567,18 @@
 }
 
 - (void)thirdPartySharing:(NSDictionary *)parameters {
-    NSString *enableOrElseDisableS = [parameters objectForKey:@"enableOrElseDisable"][0];
+    NSString *isEnabledS = [parameters objectForKey:@"isEnabled"][0];
 
-    NSNumber *enableOrElseDisable = nil;
-    if ([enableOrElseDisableS isEqualToString:@"true"]) {
-        enableOrElseDisable = [NSNumber numberWithBool:YES];
+    NSNumber *isEnabled = nil;
+    if ([isEnabledS isEqualToString:@"true"]) {
+        isEnabled = [NSNumber numberWithBool:YES];
     }
-    if ([enableOrElseDisableS isEqualToString:@"false"]) {
-        enableOrElseDisable = [NSNumber numberWithBool:NO];
+    if ([isEnabledS isEqualToString:@"false"]) {
+        isEnabled = [NSNumber numberWithBool:NO];
     }
 
     ADJThirdPartySharing *adjustThirdPartySharing =
-        [[ADJThirdPartySharing alloc]
-            initWithEnableOrElseDisableNumberBool:enableOrElseDisable];
+        [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
 
     if ([parameters objectForKey:@"granularOptions"]) {
         NSArray *granularOptions = [parameters objectForKey:@"granularOptions"];
@@ -595,8 +594,8 @@
 }
 
 - (void)measurementConsent:(NSDictionary *)parameters {
-    NSString *enableOrElseDisableS = [parameters objectForKey:@"enableOrElseDisable"][0];
-    [Adjust trackMeasurementConsent:[enableOrElseDisableS boolValue]];
+    NSString *isEnabledS = [parameters objectForKey:@"isEnabled"][0];
+    [Adjust trackMeasurementConsent:[isEnabledS boolValue]];
 }
 
 - (void)trackSubscription:(NSDictionary *)parameters {

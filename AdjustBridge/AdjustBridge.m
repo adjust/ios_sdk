@@ -514,17 +514,16 @@
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
-        id enableOrElseDisableO = [data objectForKey:@"enableOrElseDisable"];
+        id isEnabledO = [data objectForKey:@"isEnabled"];
         id granularOptions = [data objectForKey:@"granularOptions"];
 
-        NSNumber *enableOrElseDisable = nil;
-        if ([enableOrElseDisableO isKindOfClass:[NSNumber class]]) {
-            enableOrElseDisable = (NSNumber *)enableOrElseDisable;
+        NSNumber *isEnabled = nil;
+        if ([isEnabledO isKindOfClass:[NSNumber class]]) {
+            isEnabled = (NSNumber *)isEnabledO;
         }
 
         ADJThirdPartySharing *adjustThirdPartySharing =
-            [[ADJThirdPartySharing alloc]
-                initWithEnableOrElseDisableNumberBool:enableOrElseDisable];
+            [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
 
         for (int i = 0; i < [granularOptions count]; i += 3) {
             NSString *partnerName = [[granularOptions objectAtIndex:i] description];

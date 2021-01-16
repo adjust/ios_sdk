@@ -11,16 +11,14 @@
 
 @implementation ADJThirdPartySharing
 
-- (nullable id)initWithEnableOrElseDisableNumberBool:
-    (nullable NSNumber *)enableOrElseDisableNumberBool
-{
+- (nullable id)initWithIsEnabledNumberBool:(nullable NSNumber *)isEnabledNumberBool {
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
     _granularOptions = [[NSMutableDictionary alloc] init];
-    _enable = enableOrElseDisableNumberBool;
+    _enabled = isEnabledNumberBool;
 
     return self;
 }

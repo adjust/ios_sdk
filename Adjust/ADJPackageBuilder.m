@@ -985,8 +985,8 @@
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
 
     // Third Party Sharing
-    if (thirdPartySharing.enable != nil) {
-        NSString *enableValue = thirdPartySharing.enable.boolValue ? @"enable" : @"disable";
+    if (thirdPartySharing.enabled != nil) {
+        NSString *enableValue = thirdPartySharing.enabled.boolValue ? @"enable" : @"disable";
         [ADJPackageBuilder parameters:parameters setString:enableValue forKey:@"sharing"];
     }
     [ADJPackageBuilder parameters:parameters

@@ -281,8 +281,9 @@ static NSString * fbAppIdStatic = nil;
             this.callbackId = callbackId;
         };
 
-        window.AdjustThirdPartySharing = function(enableOrElseDisable) {
-            this.enableOrElseDisable = enableOrElseDisable;
+        // Adjust Third Party Sharing
+        window.AdjustThirdPartySharing = function(isEnabled) {
+            this.isEnabled = isEnabled;
             this.granularOptions = [];
         };
 

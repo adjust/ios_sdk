@@ -10,13 +10,13 @@
 
 @interface ADJThirdPartySharing : NSObject
 
-- (nullable id)initWithEnableOrElseDisableNumberBool:(nullable NSNumber *)enableOrElseDisableNumberBool;
+- (nullable id)initWithIsEnabledNumberBool:(nullable NSNumber *)isEnabledNumberBool;
 
 - (void)addGranularOption:(nonnull NSString *)partnerName
                       key:(nonnull NSString *)key
                     value:(nonnull NSString *)value;
 
-@property (nonatomic, nullable, readonly, strong) NSNumber *enable;
+@property (nonatomic, nullable, readonly, strong) NSNumber *enabled;
 @property (nonatomic, nonnull, readonly, strong) NSMutableDictionary *granularOptions;
 
 @end
