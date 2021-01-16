@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F84513925B1B19E0004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBEE90E24E4212600FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC850F1F2794C600D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC850E1F2794BE00D6A0ED /* ADJReachability.m */; };
 		9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */; };
@@ -51,9 +52,12 @@
 		9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C31D745B28006D48FC /* AdSupport.framework */; };
 		D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */; };
 		D731B41524DAAB5C0036F619 /* LoadProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731B41424DAAB5C0036F619 /* LoadProductController.swift */; };
+		D758F83A2567BD3700F885BD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D758F8392567BD3700F885BD /* AdServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		6F84513825B1B19E0004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC850D1F2794BE00D6A0ED /* ADJReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJReachability.h; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 		9DFB04C31D745B28006D48FC /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		D731B41424DAAB5C0036F619 /* LoadProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadProductController.swift; sourceTree = "<group>"; };
+		D758F8392567BD3700F885BD /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */,
+				D758F83A2567BD3700F885BD /* AdServices.framework in Frameworks */,
 				9DFB04C21D745B22006D48FC /* iAd.framework in Frameworks */,
 				9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */,
 			);
@@ -221,6 +227,8 @@
 				9D2F240C2447DDF600B7CA90 /* ADJSubscription.m */,
 				6FBEE90C24E4212500FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE90D24E4212600FEF3F1 /* ADJUrlStrategy.m */,
+				6F84513825B1B19E0004C7C0 /* ADJThirdPartySharing.h */,
+				6F84513725B1B19E0004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -286,6 +294,7 @@
 		D71BFB6E24CAD74A00878F3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D758F8392567BD3700F885BD /* AdServices.framework */,
 				D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */,
 			);
 			name = Frameworks;
@@ -408,6 +417,7 @@
 				9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */,
 				9D449E931E6EDC3D00E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449E801E6EDC3D00E7E80B /* ADJBackoffStrategy.m in Sources */,
+				6F84513925B1B19E0004C7C0 /* ADJThirdPartySharing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

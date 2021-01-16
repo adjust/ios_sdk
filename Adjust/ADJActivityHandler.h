@@ -11,6 +11,7 @@
 #import "ADJActivityState.h"
 #import "ADJDeviceInfo.h"
 #import "ADJSessionParameters.h"
+#import "ADJThirdPartySharing.h"
 
 @interface ADJInternalState : NSObject
 
@@ -45,6 +46,8 @@
 @property (nonatomic, copy) NSNumber *enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *extraPath;
+@property (nonatomic, strong) NSMutableArray *preLaunchAdjustThirdPartySharingArray;
+@property (nonatomic, copy) NSNumber *lastMeasurementConsentTracked;
 
 - (id)init;
 
@@ -86,6 +89,8 @@
 - (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
 - (void)setAttributionDetails:(NSDictionary *)attributionDetails
                         error:(NSError *)error;
+- (void)setAdServicesAttributionToken:(NSString *)token
+                                error:(NSError *)error;
 
 - (void)setOfflineMode:(BOOL)offline;
 - (void)sendFirstPackages;
@@ -100,6 +105,8 @@
 - (void)resetSessionPartnerParameters;
 - (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
 - (void)disableThirdPartySharing;
+- (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+- (void)trackMeasurementConsent:(BOOL)enabled;
 - (void)trackSubscription:(ADJSubscription *)subscription;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 

@@ -349,7 +349,7 @@
     }
 
     [logger debug:@"iAd framework successfully found in user's app"];
-
+    
     BOOL iAdInformationAvailable = [self setiAdWithDetails:activityHandler
                                    adcClientSharedInstance:ADClientSharedClientInstance
                                     queue:queue];
@@ -360,6 +360,52 @@
     }
 #pragma clang diagnostic pop
 #endif
+}
+
+- (void)adjCheckForAdServicesAttribution:(ADJActivityHandler *)activityHandler {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+    
+    // [AAAttribution attributionTokenWithError:...]
+    Class attributionClass = NSClassFromString(@"AAAttribution");
+    if (attributionClass == nil) {
+        [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
+        [activityHandler setAdServicesAttributionToken:nil
+                                                 error:[NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                                                           code:100
+                                                                       userInfo:@{@"Error reason": @"AdServices framework not found"}]];
+        return;
+    }
+    
+    SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
+    if (![attributionClass respondsToSelector:attributionTokenSelector]) {
+        [activityHandler setAdServicesAttributionToken:nil
+                                                 error:[NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                                                           code:100
+                                                                       userInfo:@{@"Error reason": @"AdServices framework not found"}]];
+        return;
+    }
+    
+    NSMethodSignature *attributionTokenMethodSignature = [attributionClass methodSignatureForSelector:attributionTokenSelector];
+    NSInvocation *tokenInvocation = [NSInvocation invocationWithMethodSignature:attributionTokenMethodSignature];
+    [tokenInvocation setSelector:attributionTokenSelector];
+    [tokenInvocation setTarget:attributionClass];
+    
+    __autoreleasing NSError *error;
+    __autoreleasing NSError **errorPointer = &error;
+    [tokenInvocation setArgument:&errorPointer atIndex:2];
+    [tokenInvocation invoke];
+    
+    if (error) {
+        [logger error:@"Error while retrieving AdServices attribution token: %@", error];
+        [activityHandler setAdServicesAttributionToken:nil error:error];
+        return;
+    }
+    
+    NSString * __unsafe_unretained tmpToken = nil;
+    [tokenInvocation getReturnValue:&tmpToken];
+    
+    NSString *token = tmpToken;
+    [activityHandler setAdServicesAttributionToken:token error:nil];
 }
 
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler

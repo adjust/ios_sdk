@@ -20,6 +20,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
 * [Additional features](#additional-features)
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
+      * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
@@ -78,13 +79,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.24.0'
+pod 'Adjust', '~> 4.25.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.24.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.25.0'
 ```
 
 ---
@@ -336,6 +337,17 @@ To use this wrapper, you can call it as such:
     }
 }];
 ```
+
+### <a id="ata-getter"></a>Get current authorisation status
+
+To get the current app tracking authorization status you can call `[Adjust appTrackingAuthorizationStatus]` that will return one of the following possibilities:
+
+* `0`: The user hasn't been asked yet
+* `1`: The user device is restricted
+* `2`: The user denied access to IDFA
+* `3`: The user authorized access to IDFA
+* `-1`: The status is not available
+
 
 ### <a id="skadn-framework"></a>SKAdNetwork framework
 

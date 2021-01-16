@@ -14,6 +14,7 @@
 #import "ADJSessionParameters.h"
 #import <Foundation/Foundation.h>
 #import "ADJActivityHandler.h"
+#import "ADJThirdPartySharing.h"
 
 @interface ADJPackageBuilder : NSObject
 
@@ -41,7 +42,9 @@
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
+                                   token:(NSString *)token
+                         errorCodeNumber:(NSNumber *)errorCodeNumber;
 
 - (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
 
@@ -52,6 +55,10 @@
 - (ADJActivityPackage *)buildGdprPackage;
 
 - (ADJActivityPackage *)buildDisableThirdPartySharingPackage;
+
+- (ADJActivityPackage *)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+
+- (ADJActivityPackage *)buildMeasurementConsentPackage:(BOOL)enabled;
 
 - (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
                                        isInDelay:(BOOL)isInDelay;

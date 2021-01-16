@@ -149,6 +149,11 @@
 @property (nonatomic, assign) BOOL allowiAdInfoReading;
 
 /**
+ * @brief Enables/disables reading of AdServices framework data needed for attribution.
+ */
+@property (nonatomic, assign) BOOL allowAdServicesInfoReading;
+
+/**
  * @brief Enables/disables reading of IDFA parameter.
  */
 @property (nonatomic, assign) BOOL allowIdfaReading;

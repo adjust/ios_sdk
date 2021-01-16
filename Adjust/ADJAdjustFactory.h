@@ -30,6 +30,7 @@
 + (NSString *)gdprUrl;
 + (NSString *)subscriptionUrl;
 + (BOOL)iAdFrameworkEnabled;
++ (BOOL)adServicesFrameworkEnabled;
 
 + (void)setLogger:(id<ADJLogger>)logger;
 + (void)setSessionInterval:(double)sessionInterval;
@@ -41,6 +42,7 @@
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
 + (void)setiAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled;
++ (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;

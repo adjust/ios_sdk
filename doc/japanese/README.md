@@ -25,13 +25,13 @@ adjust SDKをiOSプロジェクトに連携する手順を説明します。
 [こちらの手順](#sdk-integrate)に進んでください。
 
 ```ruby
-pod 'Adjust', '~> 4.24.0'
+pod 'Adjust', '~> 4.25.0'
 ```
 
 または
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.24.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.25.0'
 ```
 
 ---
@@ -707,7 +707,7 @@ NSString *idfa = [Adjust idfa];
 }
 ```
 
-#### <a id="pre-installed-trackers">プレインストールのトラッカー
+#### <a id="pre-installed-trackers">プリインストールトラッカー
 
 すでにアプリをインストールしたことのあるユーザーをadjust SDKを使って識別したい場合は、次の手順で設定を行ってください。
 
@@ -773,7 +773,7 @@ iOS 8以前の端末でのディープリンキングはカスタムURLスキー
 
 これで、iOS 8以前の端末へのディープリンクの設定は完了です。
 
-##### <a id="deeplinking-setup-new"> iOS 9以前でのディープリンキング
+##### <a id="deeplinking-setup-new"> iOS 9以降でのディープリンキング
 
 iOS 9以降の端末へディープリンクを対応させるためには、Appleのユニバーサルリンクを有効化させる必要があります。
 ユニバーサルリンクについて、それらの設定については[こちら][universal-links]をご確認ください。

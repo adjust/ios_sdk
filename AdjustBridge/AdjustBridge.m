@@ -193,6 +193,7 @@
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
+        NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
         NSString *info1 = [data objectForKey:@"info1"];
@@ -254,6 +255,9 @@
         }
         if ([self isFieldValid:allowiAdInfoReading]) {
             [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
+        }
+        if ([self isFieldValid:allowAdServicesInfoReading]) {
+            [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
         }
         if ([self isFieldValid:allowIdfaReading]) {
             [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
@@ -409,14 +413,32 @@
         NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
         responseCallback(sdkVersion);
     }];
-
+    
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([Adjust idfa]);
     }];
-
+    
+    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        
+        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            responseCallback([NSNumber numberWithUnsignedInteger:status]);
+        }];
+    }];
+    
+    [self.bridgeRegister registerHandler:@"adjust_appTrackingAuthorizationStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        
+        responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
+    }];
+    
     [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
@@ -491,6 +513,36 @@
         [Adjust disableThirdPartySharing];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
+        id isEnabledO = [data objectForKey:@"isEnabled"];
+        id granularOptions = [data objectForKey:@"granularOptions"];
+
+        NSNumber *isEnabled = nil;
+        if ([isEnabledO isKindOfClass:[NSNumber class]]) {
+            isEnabled = (NSNumber *)isEnabledO;
+        }
+
+        ADJThirdPartySharing *adjustThirdPartySharing =
+            [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+
+        for (int i = 0; i < [granularOptions count]; i += 3) {
+            NSString *partnerName = [[granularOptions objectAtIndex:i] description];
+            NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
+            NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
+            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+
+        [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_trackMeasurementConsent" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
+    }];
+
+
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];
         NSString *gdprUrl = [data objectForKey:@"gdprUrl"];
@@ -503,6 +555,7 @@
         NSNumber *deleteState = [data objectForKey:@"deleteState"];
         NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
         NSNumber *iAdFrameworkEnabled = [data objectForKey:@"iAdFrameworkEnabled"];
+        NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
 
         AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
 
@@ -541,6 +594,9 @@
         }
         if ([self isFieldValid:iAdFrameworkEnabled]) {
             testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
+        }
+        if ([self isFieldValid:adServicesFrameworkEnabled]) {
+            testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
         }
 
         [Adjust setTestOptions:testOptions];

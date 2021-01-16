@@ -138,7 +138,7 @@
                 alert('Is SDK enabled? ' + isEnabled)
             })
         }
-
+        
         var btnGetIdfa = document.getElementById('btnGetIdfa')
         btnGetIdfa.onclick = function(e) {
             e.preventDefault()
@@ -146,6 +146,15 @@
                 alert('IDFA\n' + idfa)
             })
         }
+        
+        var btnAskTrackingPermission = document.getElementById('btnAskTrackingPermission')
+        btnAskTrackingPermission.onclick = function(e) {
+            e.preventDefault()
+            Adjust.requestTrackingAuthorization(function(status) {
+                alert('Tracking permission status\n' + status)
+            })
+        }
+        
 	})
 	</script>
     <div id='buttons'>
@@ -178,6 +187,9 @@
         </div>
         <div style="width:300px;height:35px;text-align:center;">
             <button id='btnGetIdfa'>Get IDFA</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnAskTrackingPermission'>Ask tracking permission</button>
         </div>
     </div>
 </body></html>

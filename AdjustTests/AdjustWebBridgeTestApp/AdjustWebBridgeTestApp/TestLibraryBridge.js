@@ -1,5 +1,9 @@
+// simulator
 var localBaseUrl = 'http://127.0.0.1:8080';
 var localGdprUrl = 'http://127.0.0.1:8080';
+// device
+// var localBaseUrl = 'http://192.168.86.37:8080';
+// var localGdprUrl = 'http://192.168.86.37:8080';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -58,6 +62,7 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         this.deleteState = null;
         this.noBackoffWait = null;
         this.iAdFrameworkEnabled = null;
+        this.adServicesFrameworkEnabled = null;
     };
 
     var testOptions = new TestOptions();
@@ -88,6 +93,12 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('iAdFrameworkEnabled' in params) {
         var iAdFrameworkEnabled = getFirstValue(params, 'iAdFrameworkEnabled');
         testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
+    }
+    // AdServices will not be used in test app by default
+    testOptions.adServicesFrameworkEnabled = false;
+    if ('adServicesFrameworkEnabled' in params) {
+        var adServicesFrameworkEnabled = getFirstValue(params, 'adServicesFrameworkEnabled');
+        testOptions.adServicesFrameworkEnabled = adServicesFrameworkEnabled == 'true';
     }
     if ('teardown' in params) {
         console.log('TestLibraryBridge hasOwnProperty teardown: ' + params['teardown']);
@@ -231,6 +242,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var allowiAdInfoReadingS = getFirstValue(params, 'allowiAdInfoReading');
         var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
         adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
+    }
+    
+    if ('allowAdServicesInfoReading' in params) {
+        var allowAdServicesInfoReadingS = getFirstValue(params, 'allowAdServicesInfoReading');
+        var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
+        adjustConfig.setAllowAdServicesInfoReading(allowAdServicesInfoReading);
     }
     
     if ('allowIdfaReading' in params) {
@@ -542,6 +559,37 @@ AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
 
 AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
     Adjust.disableThirdPartySharing();
+};
+
+AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
+    var isEnabledS = getFirstValue(params, 'isEnabled');
+
+    var isEnabled = null;
+    if (isEnabledS == 'true') {
+        isEnabled = true;
+    }
+    if (isEnabledS == 'false') {
+        isEnabled = false;
+    }
+
+    var adjustThirdPartySharing = new AdjustThirdPartySharing(isEnabled);
+
+    if ('granularOptions' in params) {
+        var granularOptions = getValues(params, 'granularOptions');
+        for (var i = 0; i < granularOptions.length; i = i + 3) {
+            var partnerName = granularOptions[i];
+            var key = granularOptions[i + 1];
+            var value = granularOptions[i + 2];
+            adjustThirdPartySharing.addGranularOption(partnerName, key, value);
+        }
+    }
+
+    Adjust.trackThirdPartySharing(adjustThirdPartySharing);
+};
+
+AdjustCommandExecutor.prototype.measurementConsent = function(params) {
+    var consentMeasurement = getFirstValue(params, 'isEnabled') == 'true';
+    Adjust.trackMeasurementConsent(consentMeasurement);
 };
 
 // Util

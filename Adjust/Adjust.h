@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.24.0
+//  V4.25.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -11,6 +11,7 @@
 #import "ADJConfig.h"
 #import "ADJAttribution.h"
 #import "ADJSubscription.h"
+#import "ADJThirdPartySharing.h"
 
 @interface AdjustTestOptions : NSObject
 
@@ -26,6 +27,7 @@
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
 @property (nonatomic, assign) BOOL iAdFrameworkEnabled;
+@property (nonatomic, assign) BOOL adServicesFrameworkEnabled;
 @property (nonatomic, assign) BOOL enableSigning;
 @property (nonatomic, assign) BOOL disableSigning;
 
@@ -273,6 +275,10 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
  */
 + (void)disableThirdPartySharing;
 
++ (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+
++ (void)trackMeasurementConsent:(BOOL)enabled;
+
 /**
  * @brief Track subscription.
  *
@@ -281,6 +287,8 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
++ (int)appTrackingAuthorizationStatus;
 
 /**
  * Obtain singleton Adjust object.
@@ -342,5 +350,7 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
 
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
+- (int)appTrackingAuthorizationStatus;
 
 @end

@@ -23,6 +23,10 @@
 
 /* Begin PBXBuildFile section */
 		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F84512525B1B1380004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */; };
+		6FBE0C6E2577CDAC00EC2CE0 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBE0C6C2577CDAC00EC2CE0 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6FBE0C6F2577CDAC00EC2CE0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBE0C6D2577CDAC00EC2CE0 /* ADJThirdPartySharing.m */; };
 		6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE92724E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE92824E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */; };
@@ -237,6 +241,12 @@
 		9D2F24042447DD6000B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24022447DD6000B7CA90 /* ADJSubscription.m */; };
 		9D2F24052447DD6000B7CA90 /* ADJSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F24032447DD6000B7CA90 /* ADJSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D651BF525B25A64006D69D6 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */; };
+		9D651BF625B25A64006D69D6 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D651C8825B26DF5006D69D6 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D651C8625B26DF4006D69D6 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D651C8925B26DF5006D69D6 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D651C8725B26DF5006D69D6 /* ADJThirdPartySharing.m */; };
+		9D651C9525B26E1B006D69D6 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D651C9325B26E1B006D69D6 /* ADJThirdPartySharing.m */; };
+		9D651C9625B26E1B006D69D6 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D651C9425B26E1B006D69D6 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D7431EA1EB9F9B700969F14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431E91EB9F9B700969F14 /* main.m */; };
 		9D7431ED1EB9F9B700969F14 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431EC1EB9F9B700969F14 /* AppDelegate.m */; };
 		9D7431F01EB9F9B700969F14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7431EF1EB9F9B700969F14 /* ViewController.m */; };
@@ -611,6 +621,10 @@
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
 		6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustWebBridgeTestApp.xcodeproj; path = AdjustWebBridgeTestApp/AdjustWebBridgeTestApp.xcodeproj; sourceTree = "<group>"; };
+		6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		6FBE0C6C2577CDAC00EC2CE0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		6FBE0C6D2577CDAC00EC2CE0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
@@ -850,6 +864,12 @@
 		9D449DBF1E6ED23900E7E80B /* AdjustExample-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-Swift.xcodeproj"; path = "examples/AdjustExample-Swift/AdjustExample-Swift.xcodeproj"; sourceTree = "<group>"; };
 		9D449DC51E6ED24000E7E80B /* AdjustExample-tvOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-tvOS.xcodeproj"; path = "examples/AdjustExample-tvOS/AdjustExample-tvOS.xcodeproj"; sourceTree = "<group>"; };
 		9D449DCB1E6ED24400E7E80B /* AdjustExample-WebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-WebView.xcodeproj"; path = "examples/AdjustExample-WebView/AdjustExample-WebView.xcodeproj"; sourceTree = "<group>"; };
+		9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		9D651C8625B26DF4006D69D6 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		9D651C8725B26DF5006D69D6 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		9D651C9325B26E1B006D69D6 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		9D651C9425B26E1B006D69D6 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		9D7431E61EB9F9B700969F14 /* AdjustExampleTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdjustExampleTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D7431E91EB9F9B700969F14 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D7431EB1EB9F9B700969F14 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1378,6 +1398,8 @@
 				9D2F23E12447CE5C00B7CA90 /* ADJSubscription.m */,
 				6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */,
+				9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */,
+				9D651BE125B25A64006D69D6 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -1482,6 +1504,8 @@
 				9D2F24022447DD6000B7CA90 /* ADJSubscription.m */,
 				6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */,
+				6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */,
+				6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1690,6 +1714,8 @@
 				9D2F23FB2447DD2500B7CA90 /* ADJSubscription.m */,
 				6FBEE92A24E4230700FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE92B24E4230700FEF3F1 /* ADJUrlStrategy.m */,
+				9D651C8625B26DF4006D69D6 /* ADJThirdPartySharing.h */,
+				9D651C8725B26DF5006D69D6 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1773,6 +1799,8 @@
 				9D2F23F62447DCE800B7CA90 /* ADJSubscription.m */,
 				6FBEE92524E422EB00FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE92424E422EB00FEF3F1 /* ADJUrlStrategy.m */,
+				6FBE0C6C2577CDAC00EC2CE0 /* ADJThirdPartySharing.h */,
+				6FBE0C6D2577CDAC00EC2CE0 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1876,6 +1904,8 @@
 				9D2F23FF2447DD3700B7CA90 /* ADJSubscription.m */,
 				6FBEE92E24E4231300FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE92F24E4231300FEF3F1 /* ADJUrlStrategy.m */,
+				9D651C9425B26E1B006D69D6 /* ADJThirdPartySharing.h */,
+				9D651C9325B26E1B006D69D6 /* ADJThirdPartySharing.m */,
 			);
 			path = Adjust;
 			sourceTree = SOURCE_ROOT;
@@ -1908,11 +1938,12 @@
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
 				9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
-				9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */,
-				6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */,
-				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
 				968173871C3C2D36002AE1DE /* ADJSessionFailure.h in Headers */,
 				968173831C3C2D07002AE1DE /* ADJSessionSuccess.h in Headers */,
+				9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */,
+				6FCC85011F278CF300D6A0ED /* ADJReachability.h in Headers */,
+				9D651BF625B25A64006D69D6 /* ADJThirdPartySharing.h in Headers */,
+				96BCFBD41AC99338005A65C5 /* NSData+ADJAdditions.h in Headers */,
 				96BCFBD21AC99332005A65C5 /* NSString+ADJAdditions.h in Headers */,
 				96BCFBD31AC99336005A65C5 /* UIDevice+ADJAdditions.h in Headers */,
 				96BCFBD51AC9933E005A65C5 /* ADJActivityHandler.h in Headers */,
@@ -1958,6 +1989,7 @@
 				9D0E2E9E210B575600133B4F /* ADJSessionFailure.h in Headers */,
 				9D0E2EA4210B575600133B4F /* ADJSessionSuccess.h in Headers */,
 				9D0E2EA8210B575600133B4F /* ADJLogger.h in Headers */,
+				6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */,
 				9D0E2E92210B575600133B4F /* ADJKeychain.h in Headers */,
 				9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */,
 				9D0E2E76210B575600133B4F /* ADJActivityKind.h in Headers */,
@@ -1999,10 +2031,11 @@
 				9D2F23FC2447DD2500B7CA90 /* ADJSubscription.h in Headers */,
 				9DEAF0FD210072BC005CAEDB /* ADJAttribution.h in Headers */,
 				9DEAF12E210072BC005CAEDB /* ADJSessionSuccess.h in Headers */,
+				9DEAF132210072BC005CAEDB /* ADJLogger.h in Headers */,
+				9DEAF12C210072BC005CAEDB /* ADJEventFailure.h in Headers */,
 				9DEAF128210072BC005CAEDB /* ADJSessionFailure.h in Headers */,
 				9DEAF12B210072BC005CAEDB /* ADJEventSuccess.h in Headers */,
-				9DEAF12C210072BC005CAEDB /* ADJEventFailure.h in Headers */,
-				9DEAF132210072BC005CAEDB /* ADJLogger.h in Headers */,
+				9D651C8825B26DF5006D69D6 /* ADJThirdPartySharing.h in Headers */,
 				9DEAF107210072BC005CAEDB /* ADJAdjustFactory.h in Headers */,
 				9DEAF100210072BC005CAEDB /* ADJActivityKind.h in Headers */,
 				9DEAF112210072BC005CAEDB /* ADJUserDefaults.h in Headers */,
@@ -2043,8 +2076,9 @@
 				9D2F23F92447DCE800B7CA90 /* ADJSubscription.h in Headers */,
 				9DF9C9251D6F3CA5008E362F /* ADJEventFailure.h in Headers */,
 				9DF9C9271D6F3CA5008E362F /* ADJEventSuccess.h in Headers */,
-				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
 				9DF9C9391D6F3CA5008E362F /* ADJSessionSuccess.h in Headers */,
+				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
+				6FBE0C6E2577CDAC00EC2CE0 /* ADJThirdPartySharing.h in Headers */,
 				9DDF24431F7BE4BA001C1A70 /* ADJUserDefaults.h in Headers */,
 				6FCC85041F27945E00D6A0ED /* ADJReachability.h in Headers */,
 				9DF9C9111D6F3CA5008E362F /* NSData+ADJAdditions.h in Headers */,
@@ -2086,8 +2120,9 @@
 				9D2F24002447DD3700B7CA90 /* ADJSubscription.h in Headers */,
 				9DFB06761D7470C0006D48FC /* ADJEventFailure.h in Headers */,
 				9DFB06781D7470C0006D48FC /* ADJEventSuccess.h in Headers */,
-				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
 				9DFB068A1D7470C0006D48FC /* ADJSessionSuccess.h in Headers */,
+				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
+				9D651C9625B26E1B006D69D6 /* ADJThirdPartySharing.h in Headers */,
 				9DDF24451F7BE4E7001C1A70 /* ADJUserDefaults.h in Headers */,
 				6FCC85081F27948C00D6A0ED /* ADJReachability.h in Headers */,
 				9DFB06621D7470C0006D48FC /* NSData+ADJAdditions.h in Headers */,
@@ -2595,6 +2630,7 @@
 				96E5E39218BBB48A008E7B30 /* ADJAdjustFactory.m in Sources */,
 				96E5E39318BBB48A008E7B30 /* ADJLogger.m in Sources */,
 				96E5E39518BBB48A008E7B30 /* ADJPackageHandler.m in Sources */,
+				9D651BF525B25A64006D69D6 /* ADJThirdPartySharing.m in Sources */,
 				96E5E39418BBB48A008E7B30 /* ADJPackageBuilder.m in Sources */,
 				6FCC85001F278CF300D6A0ED /* ADJReachability.m in Sources */,
 				96E5E39618BBB48A008E7B30 /* ADJRequestHandler.m in Sources */,
@@ -2690,6 +2726,7 @@
 				9D0E2E6E210B575600133B4F /* ADJAttributionHandler.m in Sources */,
 				9D0E2E87210B575600133B4F /* ADJBackoffStrategy.m in Sources */,
 				9D0E2EBB210B575600133B4F /* AdjustBridgeRegister.m in Sources */,
+				6F84512525B1B1380004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				9D0E2E84210B575600133B4F /* ADJTimerCycle.m in Sources */,
 				9D0E2E6C210B575600133B4F /* ADJDeviceInfo.m in Sources */,
 				6FBEE93524E4232800FEF3F1 /* ADJUrlStrategy.m in Sources */,
@@ -2728,6 +2765,7 @@
 				9DEAF113210072BC005CAEDB /* Adjust.m in Sources */,
 				9DEAF136210072BC005CAEDB /* ADJActivityHandler.m in Sources */,
 				9DEAF0FE210072BC005CAEDB /* ADJKeychain.m in Sources */,
+				9D651C8925B26DF5006D69D6 /* ADJThirdPartySharing.m in Sources */,
 				9DEAF10A210072BC005CAEDB /* ADJSessionFailure.m in Sources */,
 				9DEAF121210072BC005CAEDB /* UIDevice+ADJAdditions.m in Sources */,
 				9DEAF105210072BC005CAEDB /* ADJSessionSuccess.m in Sources */,
@@ -2770,6 +2808,7 @@
 				9DF9C9101D6F3CA5008E362F /* ADJActivityState.m in Sources */,
 				9DF9C9181D6F3CA5008E362F /* ADJAdjustFactory.m in Sources */,
 				9DF9C92C1D6F3CA5008E362F /* ADJLogger.m in Sources */,
+				6FBE0C6F2577CDAC00EC2CE0 /* ADJThirdPartySharing.m in Sources */,
 				9DF9C92E1D6F3CA5008E362F /* ADJPackageBuilder.m in Sources */,
 				9DF9C9301D6F3CA5008E362F /* ADJPackageHandler.m in Sources */,
 				6FCC85051F27946100D6A0ED /* ADJReachability.m in Sources */,
@@ -2812,6 +2851,7 @@
 				9DFB06611D7470C0006D48FC /* ADJActivityState.m in Sources */,
 				9DFB06691D7470C0006D48FC /* ADJAdjustFactory.m in Sources */,
 				9DFB067D1D7470C0006D48FC /* ADJLogger.m in Sources */,
+				9D651C9525B26E1B006D69D6 /* ADJThirdPartySharing.m in Sources */,
 				9DFB067F1D7470C0006D48FC /* ADJPackageBuilder.m in Sources */,
 				9DFB06811D7470C0006D48FC /* ADJPackageHandler.m in Sources */,
 				6FCC85091F27949000D6A0ED /* ADJReachability.m in Sources */,

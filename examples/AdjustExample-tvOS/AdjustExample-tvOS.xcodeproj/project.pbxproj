@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F84514125B1B1C80004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */; };
 		6FBEE91424E4214800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */; };
 		6FCC85151F2794EC00D6A0ED /* ADJReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCC85131F2794E800D6A0ED /* ADJReachability.m */; };
 		963909B71BCC0D8300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B61BCC0D8300A2E8A4 /* main.m */; };
@@ -65,6 +66,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		6F84514025B1B1C80004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FBEE91224E4214800FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
 		6FCC85131F2794E800D6A0ED /* ADJReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJReachability.m; sourceTree = "<group>"; };
@@ -272,6 +275,8 @@
 				9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */,
 				6FBEE91224E4214800FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */,
+				6F84514025B1B1C80004C7C0 /* ADJThirdPartySharing.h */,
+				6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -382,6 +387,7 @@
 				9D449F5B1E6EE6C500E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449F471E6EE6C500E7E80B /* ADJAttribution.m in Sources */,
 				9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */,
+				6F84514125B1B1C80004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				9D449F421E6EE6C500E7E80B /* ADJActivityState.m in Sources */,
 				9DC95F2F1C10596500138E4B /* Constants.m in Sources */,
 				963909BD1BCC0D8300A2E8A4 /* ViewControllertvOS.m in Sources */,
