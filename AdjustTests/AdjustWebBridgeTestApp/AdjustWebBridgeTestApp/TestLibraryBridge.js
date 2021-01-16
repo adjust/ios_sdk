@@ -584,7 +584,7 @@ AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
         }
     }
 
-    Adjust.trackMeasurementConsent(adjustThirdPartySharing);
+    Adjust.trackThirdPartySharing(adjustThirdPartySharing);
 };
 
 AdjustCommandExecutor.prototype.measurementConsent = function(params) {
