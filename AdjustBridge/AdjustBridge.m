@@ -535,8 +535,11 @@
         [Adjust trackThirdPartySharing:adjustThirdPartySharing];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_disableThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust disableThirdPartySharing];
+    [self.bridgeRegister registerHandler:@"adjust_trackMeasurementConsent" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
     }];
 
 
