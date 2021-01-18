@@ -1,3 +1,9 @@
+### Version 4.25.1 (18th January 2021)
+#### Fixed
+- Fixed missing header error for SPM users from v4.25.0.
+
+---
+
 ### Version 4.25.0 (16th January 2021)
 #### Added
 - Added support for Apple Search Ads attribution with usage of `AdServices.framework`.
