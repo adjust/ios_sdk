@@ -580,8 +580,13 @@ The delegate function will be called after the SDK receives the final attributio
 - `NSString creative` the creative grouping level of the current attribution.
 - `NSString clickLabel` the click label of the current attribution.
 - `NSString adid` the unique device identifier provided by attribution.
+- `NSString costType` the cost type string.
+- `NSNumber costAmount` the cost amount.
+- `NSString costCurrency` the cost currency string.
 
 If any value is unavailable, it will default to `nil`.
+
+Note: The cost data - `costType`, `costAmount` & `costCurrency` are only available when configured in `ADJConfig` by calling `setNeedsCost:` method. If not configured or configured, but not being part of the attribution, these fields will have value `nil`. This feature is available in SDK v4.24.0 and above.
 
 ### <a id="ad-revenue"></a>Ad revenue tracking
 
@@ -1214,7 +1219,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2019 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-2021 Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
