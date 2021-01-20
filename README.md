@@ -124,7 +124,8 @@ If you are having `iMessage` app, you can use the Adjust SDK with it as well wit
 Adjust SDK is able to get additional information in case you link additional iOS frameworks to your app. Please, add following frameworks in case you want to enable Adjust SDK features based on their presence in your app and mark them as optional:
 
 - `AdSupport.framework` - This framework is needed so that SDK can access to IDFA value and (prior to iOS 14) LAT information.
-- `iAd.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaings you might be running.
+- `iAd.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaings you might be running (to be deprecated in the future in favour of `AdServices.framework`).
+- `AdServices.framework` - This framework is needed so that SDK can automatically handle attribution for ASA campaings you might be running.
 - `CoreTelephony.framework` - This framework is needed so that SDK can determine current radio access technology.
 - `StoreKit.framework` - This framework is needed for access to `SKAdNetwork` framework and for Adjust SDK to handle communication with it automatically in iOS 14 or later.
 - `AppTrackingTransparency.framework` - This framework is needed in iOS 14 and later for SDK to be able to wrap user's tracking consent dialog and access to value of the user's consent to be tracked or not.
