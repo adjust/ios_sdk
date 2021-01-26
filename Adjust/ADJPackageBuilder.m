@@ -91,19 +91,6 @@
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
-    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
-    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
-    adRevenuePackage.path = @"/ad_revenue";
-    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
-    adRevenuePackage.suffix = @"";
-    adRevenuePackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:adRevenuePackage];
-
-    return adRevenuePackage;
-}
-
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
 {
     NSMutableDictionary *parameters = [self getInfoParameters:infoSource];
@@ -117,6 +104,19 @@
     [self signWithSigV2Plugin:infoPackage];
 
     return infoPackage;
+}
+
+- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
+    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
+    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
+    adRevenuePackage.path = @"/ad_revenue";
+    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
+    adRevenuePackage.suffix = @"";
+    adRevenuePackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:adRevenuePackage];
+
+    return adRevenuePackage;
 }
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
