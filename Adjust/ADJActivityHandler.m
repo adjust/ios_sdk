@@ -423,12 +423,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 [self checkForAdServicesAttributionI:self];
             });
         } else {
-            [self sendAdServicesInfoPackage:self
+            [self sendAdServicesClickPackage:self
                                       token:nil
                             errorCodeNumber:[NSNumber numberWithInteger:error.code]];
         }
     } else {
-        [self sendAdServicesInfoPackage:self
+        [self sendAdServicesClickPackage:self
                                   token:token
                         errorCodeNumber:nil];
     }
@@ -582,7 +582,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (void)sendAdServicesInfoPackage:(ADJActivityHandler *)selfI
+- (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
                             token:(NSString *)token
                   errorCodeNumber:(NSNumber *)errorCodeNumber
  {
@@ -612,7 +612,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                        createdAt:now];
 
      ADJActivityPackage *infoPackage =
-        [infoBuilder buildInfoPackage:ADJAdServicesPackageKey
+        [infoBuilder buildClickPackage:ADJAdServicesPackageKey
                                  token:token
                        errorCodeNumber:errorCodeNumber];
      [selfI.packageHandler addPackage:infoPackage];

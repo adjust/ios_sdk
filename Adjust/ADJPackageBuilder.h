@@ -49,6 +49,9 @@
 - (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                    token:(NSString *)token
+                          errorCodeNumber:(NSNumber *)errorCodeNumber;
 
 - (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;
 

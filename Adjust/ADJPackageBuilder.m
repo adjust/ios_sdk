@@ -91,6 +91,19 @@
     return eventPackage;
 }
 
+- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
+    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
+    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
+    adRevenuePackage.path = @"/ad_revenue";
+    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
+    adRevenuePackage.suffix = @"";
+    adRevenuePackage.parameters = parameters;
+
+    [self signWithSigV2Plugin:adRevenuePackage];
+
+    return adRevenuePackage;
+}
+
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
                                    token:(NSString *)token
                          errorCodeNumber:(NSNumber *)errorCodeNumber
@@ -119,21 +132,35 @@
     return infoPackage;
 }
 
-- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
-    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
-    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
-    adRevenuePackage.path = @"/ad_revenue";
-    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
-    adRevenuePackage.suffix = @"";
-    adRevenuePackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:adRevenuePackage];
-
-    return adRevenuePackage;
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
+    return [self buildClickPackage:clickSource extraParameters:nil];
 }
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource {
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                    token:(NSString *)token
+                          errorCodeNumber:(NSNumber *)errorCodeNumber {
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    if (token != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:token
+                               forKey:@"attribution_token"];
+    }
+    if (errorCodeNumber != nil) {
+        [ADJPackageBuilder parameters:parameters
+                               setInt:errorCodeNumber.intValue
+                               forKey:@"error_code"];
+    }
+    
+    return [self buildClickPackage:clickSource extraParameters:parameters];
+}
+
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource extraParameters:(NSDictionary *)extraParameters {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
+    if (extraParameters != nil) {
+        [parameters addEntriesFromDictionary:extraParameters];
+    }
     
     if ([clickSource isEqualToString:ADJiAdPackageKey]) {
         // send iAd errors in the parameters
