@@ -793,8 +793,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
     [selfI.packageHandler addPackage:infoPackage];
     
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -1948,8 +1947,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.packageHandler addPackage:infoPackage];
 
@@ -1998,8 +1996,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
 
     // if push token was cached, remove it

@@ -105,21 +105,8 @@
 }
 
 - (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
-                                   token:(NSString *)token
-                         errorCodeNumber:(NSNumber *)errorCodeNumber
 {
     NSMutableDictionary *parameters = [self getInfoParameters:infoSource];
-
-    if (token != nil) {
-        [ADJPackageBuilder parameters:parameters
-                            setString:token
-                               forKey:@"attribution_token"];
-    }
-    if (errorCodeNumber != nil) {
-        [ADJPackageBuilder parameters:parameters
-                               setInt:errorCodeNumber.intValue
-                               forKey:@"error_code"];
-    }
 
     ADJActivityPackage *infoPackage = [self defaultActivityPackage];
     infoPackage.path = @"/sdk_info";

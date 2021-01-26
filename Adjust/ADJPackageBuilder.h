@@ -42,13 +42,12 @@
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
-                                   token:(NSString *)token
-                         errorCodeNumber:(NSNumber *)errorCodeNumber;
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
 - (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
                                     token:(NSString *)token
                           errorCodeNumber:(NSNumber *)errorCodeNumber;
