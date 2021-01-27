@@ -615,7 +615,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
         [clickBuilder buildClickPackage:ADJAdServicesPackageKey
                                   token:token
                         errorCodeNumber:errorCodeNumber];
-     [selfI.packageHandler addPackage:clickPackage];
+     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
