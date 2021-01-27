@@ -80,3 +80,5 @@
 + (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage;
 
 @end
+
+extern NSString * const kAttributionTokenParameter;

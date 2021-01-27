@@ -13,6 +13,7 @@
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
 #import "ADJPackageBuilder.h"
+#import "UIDevice+ADJAdditions.h"
 
 static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
@@ -151,7 +152,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [ADJUserDefaults setAdServicesTracked];
         
         // refresh token
-        
+        NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
+        [ADJPackageBuilder parameters:sdkClickPackage.parameters
+                            setString:token
+                               forKey:kAttributionTokenParameter];
     }
 
     dispatch_block_t work = ^{
