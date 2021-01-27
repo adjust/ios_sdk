@@ -1720,10 +1720,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
 }
 
+- (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
+    if (selfI.adjustConfig.allowAdServicesInfoReading == NO) {
+        return NO;
+    }
+    
+    // Fetch if no attribution && not sent to backend yet
+    return (selfI.attribution == nil && ![ADJUserDefaults getAdServicesTracked]);
+}
+
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
-        if (selfI.adjustConfig.allowAdServicesInfoReading == YES && selfI.attribution == nil) {
-            [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
+        if ([selfI shouldFetchAdServicesI:selfI]) {
+            NSError *error = nil;
+            NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:&error];
+            [selfI setAdServicesAttributionToken:token error:error];
         }
     }
 }
