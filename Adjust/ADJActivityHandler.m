@@ -583,8 +583,8 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
 }
 
 - (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
-                            token:(NSString *)token
-                  errorCodeNumber:(NSNumber *)errorCodeNumber
+                             token:(NSString *)token
+                   errorCodeNumber:(NSNumber *)errorCodeNumber
  {
      if (![selfI isEnabledI:selfI]) {
          return;
@@ -603,7 +603,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
              selfI.activityState.lastInterval = lastInterval;
          }];
      }
-     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
+     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
@@ -611,11 +611,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                        trackingStatusManager:self.trackingStatusManager
                                        createdAt:now];
 
-     ADJActivityPackage *infoPackage =
-        [infoBuilder buildClickPackage:ADJAdServicesPackageKey
-                                 token:token
-                       errorCodeNumber:errorCodeNumber];
-     [selfI.packageHandler addPackage:infoPackage];
+     ADJActivityPackage *clickPackage =
+        [clickBuilder buildClickPackage:ADJAdServicesPackageKey
+                                  token:token
+                        errorCodeNumber:errorCodeNumber];
+     [selfI.packageHandler addPackage:clickPackage];
 }
 
 - (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
