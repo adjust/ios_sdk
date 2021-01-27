@@ -77,4 +77,6 @@
             setInt:(int)value
             forKey:(NSString *)key;
 
++ (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage;
+
 @end

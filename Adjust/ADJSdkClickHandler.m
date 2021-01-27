@@ -12,6 +12,7 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
+#import "ADJPackageBuilder.h"
 
 static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
@@ -143,6 +144,14 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [selfI.logger error:@"Failed to read sdk_click package"];
         [selfI sendNextSdkClick];
         return;
+    }
+    
+    if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
+        // set as tracked
+        [ADJUserDefaults setAdServicesTracked];
+        
+        // refresh token
+        
     }
 
     dispatch_block_t work = ^{

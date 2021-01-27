@@ -1306,4 +1306,9 @@
                            forKey:key];
 }
 
++ (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage {
+    NSString *source = activityPackage.parameters[@"source"];
+    return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
+}
+
 @end

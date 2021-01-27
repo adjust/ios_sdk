@@ -155,3 +155,4 @@
 @end
 
 extern NSString * const ADJiAdPackageKey;
+extern NSString * const ADJAdServicesPackageKey;
