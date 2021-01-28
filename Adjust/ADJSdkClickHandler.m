@@ -148,9 +148,6 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
     
     if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
-        // set as tracked
-        [ADJUserDefaults setAdServicesTracked];
-        
         // refresh token
         NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
         [ADJPackageBuilder parameters:sdkClickPackage.parameters
@@ -207,6 +204,11 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
         // received iAd click package response, clear the errors from UserDefaults
         [ADJUserDefaults cleariAdErrors];
+    }
+    
+    if ([ADJPackageBuilder isAdServicesPackage:responseData.sdkClickPackage]) {
+        // set as tracked
+        [ADJUserDefaults setAdServicesTracked];
     }
 
     [self.activityHandler finishedTracking:responseData];
