@@ -15,7 +15,7 @@
 #import "UIDevice+ADJAdditions.h"
 #import "ADJUserDefaults.h"
 
-NSString * const kAttributionTokenParameter = @"attribution_token";
+NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 @interface ADJPackageBuilder()
 
@@ -134,7 +134,7 @@ NSString * const kAttributionTokenParameter = @"attribution_token";
     if (token != nil) {
         [ADJPackageBuilder parameters:parameters
                             setString:token
-                               forKey:kAttributionTokenParameter];
+                               forKey:ADJAttributionTokenParameter];
     }
     if (errorCodeNumber != nil) {
         [ADJPackageBuilder parameters:parameters

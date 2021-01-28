@@ -150,9 +150,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
         // refresh token
         NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
+        // TODO create new sdk click package
         [ADJPackageBuilder parameters:sdkClickPackage.parameters
                             setString:token
-                               forKey:kAttributionTokenParameter];
+                               forKey:ADJAttributionTokenParameter];
     }
 
     dispatch_block_t work = ^{
