@@ -1725,8 +1725,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return NO;
     }
     
-    // Fetch if no attribution && not sent to backend yet
-    return (selfI.attribution == nil && ![ADJUserDefaults getAdServicesTracked]);
+    // Fetch if no attribution OR not sent to backend yet
+    return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
 }
 
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
