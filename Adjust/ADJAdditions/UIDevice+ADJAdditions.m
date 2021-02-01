@@ -362,27 +362,30 @@
 #endif
 }
 
-- (void)adjCheckForAdServicesAttribution:(ADJActivityHandler *)activityHandler {
+- (NSString *)adjFetchAdServicesAttribution:(NSError **)errorPtr {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     
     // [AAAttribution attributionTokenWithError:...]
     Class attributionClass = NSClassFromString(@"AAAttribution");
     if (attributionClass == nil) {
         [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
-        [activityHandler setAdServicesAttributionToken:nil
-                                                 error:[NSError errorWithDomain:@"com.adjust.sdk.adServices"
-                                                                           code:100
-                                                                       userInfo:@{@"Error reason": @"AdServices framework not found"}]];
-        return;
+        
+        if (errorPtr) {
+            *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                            code:100
+                                        userInfo:@{@"Error reason": @"AdServices framework not found"}];
+        }
+        return nil;
     }
     
     SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
     if (![attributionClass respondsToSelector:attributionTokenSelector]) {
-        [activityHandler setAdServicesAttributionToken:nil
-                                                 error:[NSError errorWithDomain:@"com.adjust.sdk.adServices"
-                                                                           code:100
-                                                                       userInfo:@{@"Error reason": @"AdServices framework not found"}]];
-        return;
+        if (errorPtr) {
+            *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                            code:100
+                                        userInfo:@{@"Error reason": @"AdServices framework not found"}];
+        }
+        return nil;
     }
     
     NSMethodSignature *attributionTokenMethodSignature = [attributionClass methodSignatureForSelector:attributionTokenSelector];
@@ -397,15 +400,17 @@
     
     if (error) {
         [logger error:@"Error while retrieving AdServices attribution token: %@", error];
-        [activityHandler setAdServicesAttributionToken:nil error:error];
-        return;
+        if (errorPtr) {
+            *errorPtr = error;
+        }
+        return nil;
     }
     
     NSString * __unsafe_unretained tmpToken = nil;
     [tokenInvocation getReturnValue:&tmpToken];
     
     NSString *token = tmpToken;
-    [activityHandler setAdServicesAttributionToken:token error:nil];
+    return token;
 }
 
 - (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler

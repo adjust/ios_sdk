@@ -42,13 +42,15 @@
 - (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
-                                   token:(NSString *)token
-                         errorCodeNumber:(NSNumber *)errorCodeNumber;
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
 
 - (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                    token:(NSString *)token
+                          errorCodeNumber:(NSNumber *)errorCodeNumber;
 
 - (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;
 
@@ -75,4 +77,12 @@
             setInt:(int)value
             forKey:(NSString *)key;
 
++ (void)parameters:(NSMutableDictionary *)parameters
+       setDate1970:(double)value
+            forKey:(NSString *)key;
+
++ (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage;
+
 @end
+// TODO change to ADJ...
+extern NSString * const ADJAttributionTokenParameter;

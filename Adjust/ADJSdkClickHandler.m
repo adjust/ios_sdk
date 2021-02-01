@@ -12,6 +12,8 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
+#import "ADJPackageBuilder.h"
+#import "UIDevice+ADJAdditions.h"
 
 static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
@@ -144,6 +146,23 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [selfI sendNextSdkClick];
         return;
     }
+    
+    if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
+        // refresh token
+        NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
+        
+        if (token != nil && ![sdkClickPackage.parameters[ADJAttributionTokenParameter] isEqualToString:token]) {
+            // update token
+            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+                                setString:token
+                                   forKey:ADJAttributionTokenParameter];
+            
+            // update created_at
+            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+                              setDate1970:[NSDate.date timeIntervalSince1970]
+                                   forKey:@"created_at"];
+        }
+    }
 
     dispatch_block_t work = ^{
         NSDictionary *sendingParameters = @{
@@ -194,6 +213,13 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
         // received iAd click package response, clear the errors from UserDefaults
         [ADJUserDefaults cleariAdErrors];
+        [self.logger info:@"Received iAd click response"];
+    }
+    
+    if ([ADJPackageBuilder isAdServicesPackage:responseData.sdkClickPackage]) {
+        // set as tracked
+        [ADJUserDefaults setAdServicesTracked];
+        [self.logger info:@"Received Apple Ads click response"];
     }
 
     [self.activityHandler finishedTracking:responseData];

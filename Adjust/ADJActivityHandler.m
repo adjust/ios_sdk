@@ -423,12 +423,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                 [self checkForAdServicesAttributionI:self];
             });
         } else {
-            [self sendAdServicesInfoPackage:self
+            [self sendAdServicesClickPackage:self
                                       token:nil
                             errorCodeNumber:[NSNumber numberWithInteger:error.code]];
         }
     } else {
-        [self sendAdServicesInfoPackage:self
+        [self sendAdServicesClickPackage:self
                                   token:token
                         errorCodeNumber:nil];
     }
@@ -582,9 +582,9 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
-- (void)sendAdServicesInfoPackage:(ADJActivityHandler *)selfI
-                            token:(NSString *)token
-                  errorCodeNumber:(NSNumber *)errorCodeNumber
+- (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
+                             token:(NSString *)token
+                   errorCodeNumber:(NSNumber *)errorCodeNumber
  {
      if (![selfI isEnabledI:selfI]) {
          return;
@@ -603,7 +603,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
              selfI.activityState.lastInterval = lastInterval;
          }];
      }
-     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
+     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithDeviceInfo:selfI.deviceInfo
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
@@ -611,11 +611,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                        trackingStatusManager:self.trackingStatusManager
                                        createdAt:now];
 
-     ADJActivityPackage *infoPackage =
-        [infoBuilder buildInfoPackage:ADJAdServicesPackageKey
-                                 token:token
-                       errorCodeNumber:errorCodeNumber];
-     [selfI.packageHandler addPackage:infoPackage];
+     ADJActivityPackage *clickPackage =
+        [clickBuilder buildClickPackage:ADJAdServicesPackageKey
+                                  token:token
+                        errorCodeNumber:errorCodeNumber];
+     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
@@ -793,8 +793,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
     [selfI.packageHandler addPackage:infoPackage];
     
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -1721,10 +1720,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
 }
 
+- (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
+    if (selfI.adjustConfig.allowAdServicesInfoReading == NO) {
+        return NO;
+    }
+    
+    // Fetch if no attribution OR not sent to backend yet
+    return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
+}
+
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
-        if (selfI.adjustConfig.allowAdServicesInfoReading == YES && selfI.attribution == nil) {
-            [[UIDevice currentDevice] adjCheckForAdServicesAttribution:selfI];
+        if ([selfI shouldFetchAdServicesI:selfI]) {
+            NSError *error = nil;
+            NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:&error];
+            [selfI setAdServicesAttributionToken:token error:error];
         }
     }
 }
@@ -1948,8 +1958,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.packageHandler addPackage:infoPackage];
 
@@ -1998,8 +2007,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"
-                                       token:nil errorCodeNumber:nil];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
 
     // if push token was cached, remove it

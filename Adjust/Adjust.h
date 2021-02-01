@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.25.1
+//  V4.25.2
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -45,6 +45,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 extern NSString * __nonnull const ADJAdRevenueSourceMopub;
 extern NSString * __nonnull const ADJAdRevenueSourceAdmob;
 extern NSString * __nonnull const ADJAdRevenueSourceFbNativeAd;
+extern NSString * __nonnull const ADJAdRevenueSourceFbAudienceNetwork;
 extern NSString * __nonnull const ADJAdRevenueSourceIronsource;
 extern NSString * __nonnull const ADJAdRevenueSourceFyber;
 extern NSString * __nonnull const ADJAdRevenueSourceAerserv;
