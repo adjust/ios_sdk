@@ -150,10 +150,18 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
         // refresh token
         NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
-        // TODO create new sdk click package
-        [ADJPackageBuilder parameters:sdkClickPackage.parameters
-                            setString:token
-                               forKey:ADJAttributionTokenParameter];
+        
+        if (token != nil && ![sdkClickPackage.parameters[ADJAttributionTokenParameter] isEqualToString:token]) {
+            // update token
+            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+                                setString:token
+                                   forKey:ADJAttributionTokenParameter];
+            
+            // update created_at
+            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+                              setDate1970:[NSDate.date timeIntervalSince1970]
+                                   forKey:@"created_at"];
+        }
     }
 
     dispatch_block_t work = ^{

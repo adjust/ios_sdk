@@ -77,6 +77,10 @@
             setInt:(int)value
             forKey:(NSString *)key;
 
++ (void)parameters:(NSMutableDictionary *)parameters
+       setDate1970:(double)value
+            forKey:(NSString *)key;
+
 + (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage;
 
 @end
