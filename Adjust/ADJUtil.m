@@ -1096,4 +1096,29 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return expandedParameter;
 }
 
+- (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+    
+    Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
+    if (skAdNetwork == nil) {
+        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        return;
+    }
+    
+    SEL updateConversionValueSelector = NSSelectorFromString(@"updateConversionValue:");
+    if ([skAdNetwork respondsToSelector:updateConversionValueSelector]) {
+        NSInteger intValue = [conversionValue integerValue];
+        
+        NSMethodSignature *conversionValueMethodSignature = [skAdNetwork methodSignatureForSelector:updateConversionValueSelector];
+        NSInvocation *conversionInvocation = [NSInvocation invocationWithMethodSignature:conversionValueMethodSignature];
+        [conversionInvocation setSelector:updateConversionValueSelector];
+        [conversionInvocation setTarget:skAdNetwork];
+
+        [conversionInvocation setArgument:&intValue atIndex:2];
+        [conversionInvocation invoke];
+        
+        [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", intValue];
+    }
+}
+
 @end

@@ -262,6 +262,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue {
+    @synchronized (self) {
+        [[Adjust getInstance] updateSkAdNetworkConversionValue:conversionValue];
+    }
+}
+
 + (ADJAttribution *)attribution {
     @synchronized (self) {
         return [[Adjust getInstance] attribution];
@@ -563,6 +569,10 @@ static dispatch_once_t onceToken = 0;
 
 - (int)appTrackingAuthorizationStatus {
     return [[UIDevice currentDevice] adjATTStatus];
+}
+
+- (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue {
+    [ADJUtil updateSkAdNetworkConversionValue:[NSNumber numberWithInteger:conversionValue]];
 }
 
 - (ADJAttribution *)attribution {

@@ -291,6 +291,8 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 
 + (int)appTrackingAuthorizationStatus;
 
++ (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue;
+
 /**
  * Obtain singleton Adjust object.
  */
@@ -353,5 +355,7 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
 - (int)appTrackingAuthorizationStatus;
+
+- (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue;
 
 @end
