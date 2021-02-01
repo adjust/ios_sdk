@@ -45,6 +45,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 extern NSString * __nonnull const ADJAdRevenueSourceMopub;
 extern NSString * __nonnull const ADJAdRevenueSourceAdmob;
 extern NSString * __nonnull const ADJAdRevenueSourceFbNativeAd;
+extern NSString * __nonnull const ADJAdRevenueSourceFbAudienceNetwork;
 extern NSString * __nonnull const ADJAdRevenueSourceIronsource;
 extern NSString * __nonnull const ADJAdRevenueSourceFyber;
 extern NSString * __nonnull const ADJAdRevenueSourceAerserv;

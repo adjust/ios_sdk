@@ -25,6 +25,7 @@ NSString * const ADJEnvironmentProduction = @"production";
 NSString * const ADJAdRevenueSourceMopub = @"mopub";
 NSString * const ADJAdRevenueSourceAdmob = @"admob";
 NSString * const ADJAdRevenueSourceFbNativeAd = @"facebook_native_ad";
+NSString * const ADJAdRevenueSourceFbAudienceNetwork = @"facebook_audience_network";
 NSString * const ADJAdRevenueSourceIronsource = @"ironsource";
 NSString * const ADJAdRevenueSourceFyber = @"fyber";
 NSString * const ADJAdRevenueSourceAerserv = @"aerserv";
