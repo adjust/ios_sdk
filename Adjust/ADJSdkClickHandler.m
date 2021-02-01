@@ -205,11 +205,13 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
         // received iAd click package response, clear the errors from UserDefaults
         [ADJUserDefaults cleariAdErrors];
+        [self.logger info:@"Received iAd click response"];
     }
     
     if ([ADJPackageBuilder isAdServicesPackage:responseData.sdkClickPackage]) {
         // set as tracked
         [ADJUserDefaults setAdServicesTracked];
+        [self.logger info:@"Received Apple Ads click response"];
     }
 
     [self.activityHandler finishedTracking:responseData];
