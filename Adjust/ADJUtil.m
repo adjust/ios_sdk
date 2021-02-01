@@ -1096,7 +1096,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return expandedParameter;
 }
 
-- (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
++ (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     
     Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
