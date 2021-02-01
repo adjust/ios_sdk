@@ -262,9 +262,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue {
++ (void)updateConversionValue:(NSInteger)conversionValue {
     @synchronized (self) {
-        [[Adjust getInstance] updateSkAdNetworkConversionValue:conversionValue];
+        [[Adjust getInstance] updateConversionValue:conversionValue];
     }
 }
 
@@ -571,7 +571,7 @@ static dispatch_once_t onceToken = 0;
     return [[UIDevice currentDevice] adjATTStatus];
 }
 
-- (void)updateSkAdNetworkConversionValue:(NSInteger)conversionValue {
+- (void)updateConversionValue:(NSInteger)conversionValue {
     [ADJUtil updateSkAdNetworkConversionValue:[NSNumber numberWithInteger:conversionValue]];
 }
 
