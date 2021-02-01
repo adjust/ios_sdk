@@ -1,9 +1,6 @@
-### Version 4.25.2 (01st February 2021)
+### Version 4.25.2 (1st February 2021)
 #### Added
-- Added Facebook Audience Network as new revenue source
-
-#### Changed
-- Improved logic for Apple Search Ads attribution
+- Added Facebook audience network ad revenue source string.
 
 ---
 
