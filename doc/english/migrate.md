@@ -1,4 +1,4 @@
-## Migrate your Adjust SDK for iOS to v4.25.2 from v3.4.0
+## Migrate your Adjust SDK for iOS to v4.26.0 from v3.4.0
 
 ### Initial setup
 
