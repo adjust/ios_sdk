@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.25.2
+//  V4.26.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -291,6 +291,8 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 
 + (int)appTrackingAuthorizationStatus;
 
++ (void)updateConversionValue:(NSInteger)conversionValue;
+
 /**
  * Obtain singleton Adjust object.
  */
@@ -353,5 +355,7 @@ extern NSString * __nonnull const ADJUrlStrategyChina;
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
 - (int)appTrackingAuthorizationStatus;
+
+- (void)updateConversionValue:(NSInteger)conversionValue;
 
 @end

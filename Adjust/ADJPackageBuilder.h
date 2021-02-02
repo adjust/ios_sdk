@@ -18,71 +18,71 @@
 
 @interface ADJPackageBuilder : NSObject
 
-@property (nonatomic, copy) NSString *deeplink;
+@property (nonatomic, copy) NSString * _Nullable deeplink;
 
-@property (nonatomic, copy) NSDate *clickTime;
+@property (nonatomic, copy) NSDate * _Nullable clickTime;
 
-@property (nonatomic, copy) NSDate *purchaseTime;
+@property (nonatomic, copy) NSDate * _Nullable purchaseTime;
 
-@property (nonatomic, strong) NSDictionary *attributionDetails;
+@property (nonatomic, strong) NSDictionary * _Nullable attributionDetails;
 
-@property (nonatomic, strong) NSDictionary *deeplinkParameters;
+@property (nonatomic, strong) NSDictionary * _Nullable deeplinkParameters;
 
-@property (nonatomic, copy) ADJAttribution *attribution;
+@property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 
-- (id)initWithDeviceInfo:(ADJDeviceInfo *)deviceInfo
-           activityState:(ADJActivityState *)activityState
-                  config:(ADJConfig *)adjustConfig
-       sessionParameters:(ADJSessionParameters *)sessionParameters
-   trackingStatusManager:(ADJTrackingStatusManager *)trackingStatusManager
-               createdAt:(double)createdAt;
+- (id _Nullable)initWithDeviceInfo:(ADJDeviceInfo * _Nullable)deviceInfo
+                     activityState:(ADJActivityState * _Nullable)activityState
+                            config:(ADJConfig * _Nullable)adjustConfig
+                 sessionParameters:(ADJSessionParameters * _Nullable)sessionParameters
+             trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
+                         createdAt:(double)createdAt;
 
-- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildSessionPackage:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
+- (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event
                                 isInDelay:(BOOL)isInDelay;
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource;
+- (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
-- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload;
+- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(NSString * _Nullable)source payload:(NSData * _Nullable)payload;
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource;
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource;
 
-- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
-                                    token:(NSString *)token
-                          errorCodeNumber:(NSNumber *)errorCodeNumber;
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
+                                    token:(NSString * _Nullable)token
+                          errorCodeNumber:(NSNumber * _Nullable)errorCodeNumber;
 
-- (ADJActivityPackage *)buildAttributionPackage:(NSString *)initiatedBy;
+- (ADJActivityPackage * _Nullable)buildAttributionPackage:(NSString * _Nullable)initiatedBy;
 
-- (ADJActivityPackage *)buildGdprPackage;
+- (ADJActivityPackage * _Nullable)buildGdprPackage;
 
-- (ADJActivityPackage *)buildDisableThirdPartySharingPackage;
+- (ADJActivityPackage * _Nullable)buildDisableThirdPartySharingPackage;
 
-- (ADJActivityPackage *)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+- (ADJActivityPackage * _Nullable)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
-- (ADJActivityPackage *)buildMeasurementConsentPackage:(BOOL)enabled;
+- (ADJActivityPackage * _Nullable)buildMeasurementConsentPackage:(BOOL)enabled;
 
-- (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
-                                       isInDelay:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildSubscriptionPackage:( ADJSubscription * _Nullable)subscription
+                                                 isInDelay:(BOOL)isInDelay;
 
-+ (void)parameters:(NSMutableDictionary *)parameters
-     setDictionary:(NSDictionary *)dictionary
-            forKey:(NSString *)key;
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
+     setDictionary:(NSDictionary * _Nullable)dictionary
+            forKey:(NSString * _Nullable)key;
 
-+ (void)parameters:(NSMutableDictionary *)parameters
-         setString:(NSString *)value
-            forKey:(NSString *)key;
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
+         setString:(NSString * _Nullable)value
+            forKey:(NSString * _Nullable)key;
 
-+ (void)parameters:(NSMutableDictionary *)parameters
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
             setInt:(int)value
-            forKey:(NSString *)key;
+            forKey:(NSString * _Nullable)key;
 
-+ (void)parameters:(NSMutableDictionary *)parameters
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
        setDate1970:(double)value
-            forKey:(NSString *)key;
+            forKey:(NSString * _Nullable)key;
 
-+ (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage;
++ (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
 @end
 // TODO change to ADJ...
-extern NSString * const ADJAttributionTokenParameter;
+extern NSString * _Nullable const ADJAttributionTokenParameter;

@@ -37,7 +37,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.25.2";
+static NSString * const kClientSdk                  = @"ios4.26.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1094,6 +1094,31 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         expandedParameter = [@"0" stringByAppendingString:expandedParameter];
     }
     return expandedParameter;
+}
+
++ (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+    
+    Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
+    if (skAdNetwork == nil) {
+        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        return;
+    }
+    
+    SEL updateConversionValueSelector = NSSelectorFromString(@"updateConversionValue:");
+    if ([skAdNetwork respondsToSelector:updateConversionValueSelector]) {
+        NSInteger intValue = [conversionValue integerValue];
+        
+        NSMethodSignature *conversionValueMethodSignature = [skAdNetwork methodSignatureForSelector:updateConversionValueSelector];
+        NSInvocation *conversionInvocation = [NSInvocation invocationWithMethodSignature:conversionValueMethodSignature];
+        [conversionInvocation setSelector:updateConversionValueSelector];
+        [conversionInvocation setTarget:skAdNetwork];
+
+        [conversionInvocation setArgument:&intValue atIndex:2];
+        [conversionInvocation invoke];
+        
+        [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", intValue];
+    }
 }
 
 @end

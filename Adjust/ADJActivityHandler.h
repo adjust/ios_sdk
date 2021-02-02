@@ -23,7 +23,7 @@
 @property (nonatomic, assign) BOOL firstLaunch;
 @property (nonatomic, assign) BOOL sessionResponseProcessed;
 
-- (id)init;
+- (_Nullable id)init;
 
 - (BOOL)isEnabled;
 - (BOOL)isDisabled;
@@ -41,15 +41,15 @@
 
 @interface ADJSavedPreLaunch : NSObject
 
-@property (nonatomic, strong) NSMutableArray *preLaunchActionsArray;
-@property (nonatomic, copy) NSData *deviceTokenData;
-@property (nonatomic, copy) NSNumber *enabled;
+@property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
+@property (nonatomic, copy) NSData *_Nullable deviceTokenData;
+@property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
-@property (nonatomic, copy) NSString *extraPath;
-@property (nonatomic, strong) NSMutableArray *preLaunchAdjustThirdPartySharingArray;
-@property (nonatomic, copy) NSNumber *lastMeasurementConsentTracked;
+@property (nonatomic, copy) NSString *_Nullable extraPath;
+@property (nonatomic, strong) NSMutableArray *_Nullable preLaunchAdjustThirdPartySharingArray;
+@property (nonatomic, copy) NSNumber *_Nullable lastMeasurementConsentTracked;
 
-- (id)init;
+- (id _Nullable)init;
 
 @end
 
@@ -57,63 +57,66 @@
 
 @protocol ADJActivityHandler <NSObject>
 
-@property (nonatomic, copy) ADJAttribution *attribution;
-@property (nonatomic, strong) ADJTrackingStatusManager *trackingStatusManager;
+@property (nonatomic, copy) ADJAttribution * _Nullable attribution;
+@property (nonatomic, strong) ADJTrackingStatusManager * _Nullable trackingStatusManager;
 
-- (NSString *)adid;
+- (NSString *_Nullable)adid;
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
+- (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
+                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
 
-- (void)trackEvent:(ADJEvent *)event;
+- (void)trackEvent:(ADJEvent * _Nullable)event;
 
-- (void)finishedTracking:(ADJResponseData *)responseData;
-- (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData;
-- (void)launchSessionResponseTasks:(ADJSessionResponseData *)sessionResponseData;
-- (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData *)sdkClickResponseData;
-- (void)launchAttributionResponseTasks:(ADJAttributionResponseData *)attributionResponseData;
+- (void)finishedTracking:(ADJResponseData * _Nullable)responseData;
+- (void)launchEventResponseTasks:(ADJEventResponseData * _Nullable)eventResponseData;
+- (void)launchSessionResponseTasks:(ADJSessionResponseData * _Nullable)sessionResponseData;
+- (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData * _Nullable)sdkClickResponseData;
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData * _Nullable)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (BOOL)isGdprForgotten;
 
-- (void)appWillOpenUrl:(NSURL*)url withClickTime:(NSDate *)clickTime;
-- (void)setDeviceToken:(NSData *)deviceToken;
-- (void)setPushToken:(NSString *)deviceToken;
+- (void)appWillOpenUrl:(NSURL * _Nullable)url
+         withClickTime:(NSDate * _Nullable)clickTime;
+- (void)setDeviceToken:(NSData * _Nullable)deviceToken;
+- (void)setPushToken:(NSString * _Nullable)deviceToken;
 - (void)setGdprForgetMe;
 - (void)setTrackingStateOptedOut;
 - (void)setAskingAttribution:(BOOL)askingAttribution;
 
-- (BOOL)updateAttributionI:(id<ADJActivityHandler>)selfI attribution:(ADJAttribution *)attribution;
-- (void)setAttributionDetails:(NSDictionary *)attributionDetails
-                        error:(NSError *)error;
-- (void)setAdServicesAttributionToken:(NSString *)token
-                                error:(NSError *)error;
+- (BOOL)updateAttributionI:(id<ADJActivityHandler> _Nullable)selfI
+               attribution:(ADJAttribution * _Nullable)attribution;
+- (void)setAttributionDetails:(NSDictionary * _Nullable)attributionDetails
+                        error:(NSError * _Nullable)error;
+- (void)setAdServicesAttributionToken:(NSString * _Nullable)token
+                                error:(NSError * _Nullable)error;
 
 - (void)setOfflineMode:(BOOL)offline;
 - (void)sendFirstPackages;
 
-- (void)addSessionCallbackParameter:(NSString *)key
-                              value:(NSString *)value;
-- (void)addSessionPartnerParameter:(NSString *)key
-                             value:(NSString *)value;
-- (void)removeSessionCallbackParameter:(NSString *)key;
-- (void)removeSessionPartnerParameter:(NSString *)key;
+- (void)addSessionCallbackParameter:(NSString * _Nullable)key
+                              value:(NSString * _Nullable)value;
+- (void)addSessionPartnerParameter:(NSString * _Nullable)key
+                             value:(NSString * _Nullable)value;
+- (void)removeSessionCallbackParameter:(NSString * _Nullable)key;
+- (void)removeSessionPartnerParameter:(NSString * _Nullable)key;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
-- (void)trackAdRevenue:(NSString *)soruce payload:(NSData *)payload;
+- (void)trackAdRevenue:(NSString * _Nullable)soruce
+               payload:(NSData * _Nullable)payload;
 - (void)disableThirdPartySharing;
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 - (void)trackMeasurementConsent:(BOOL)enabled;
-- (void)trackSubscription:(ADJSubscription *)subscription;
+- (void)trackSubscription:(ADJSubscription * _Nullable)subscription;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 
-- (ADJDeviceInfo *)deviceInfo;
-- (ADJActivityState *)activityState;
-- (ADJConfig *)adjustConfig;
-- (ADJSessionParameters *)sessionParameters;
+- (ADJDeviceInfo * _Nullable)deviceInfo;
+- (ADJActivityState * _Nullable)activityState;
+- (ADJConfig * _Nullable)adjustConfig;
+- (ADJSessionParameters * _Nullable)sessionParameters;
 
 - (void)teardown;
 + (void)deleteState;
@@ -121,28 +124,28 @@
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch;
+- (id _Nullable)initWithConfig:(ADJConfig * _Nullable)adjustConfig
+                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch;
 
-- (void)addSessionCallbackParameterI:(ADJActivityHandler *)selfI
-                                 key:(NSString *)key
-                               value:(NSString *)value;
+- (void)addSessionCallbackParameterI:(ADJActivityHandler * _Nullable)selfI
+                                 key:(NSString * _Nullable)key
+                               value:(NSString * _Nullable)value;
 
-- (void)addSessionPartnerParameterI:(ADJActivityHandler *)selfI
-                                key:(NSString *)key
-                              value:(NSString *)value;
-- (void)removeSessionCallbackParameterI:(ADJActivityHandler *)selfI
-                                    key:(NSString *)key;
-- (void)removeSessionPartnerParameterI:(ADJActivityHandler *)selfI
-                                   key:(NSString *)key;
-- (void)resetSessionCallbackParametersI:(ADJActivityHandler *)selfI;
-- (void)resetSessionPartnerParametersI:(ADJActivityHandler *)selfI;
+- (void)addSessionPartnerParameterI:(ADJActivityHandler * _Nullable)selfI
+                                key:(NSString * _Nullable)key
+                              value:(NSString * _Nullable)value;
+- (void)removeSessionCallbackParameterI:(ADJActivityHandler * _Nullable)selfI
+                                    key:(NSString * _Nullable)key;
+- (void)removeSessionPartnerParameterI:(ADJActivityHandler * _Nullable)selfI
+                                   key:(NSString * _Nullable)key;
+- (void)resetSessionCallbackParametersI:(ADJActivityHandler * _Nullable)selfI;
+- (void)resetSessionPartnerParametersI:(ADJActivityHandler * _Nullable)selfI;
 
 @end
 
 @interface ADJTrackingStatusManager : NSObject
 
-- (instancetype)initWithActivityHandler:(ADJActivityHandler *)activityHandler;
+- (instancetype _Nullable)initWithActivityHandler:(ADJActivityHandler * _Nullable)activityHandler;
 
 - (void)checkForNewAttStatus;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
@@ -154,5 +157,5 @@
 
 @end
 
-extern NSString * const ADJiAdPackageKey;
-extern NSString * const ADJAdServicesPackageKey;
+extern NSString * _Nullable const ADJiAdPackageKey;
+extern NSString * _Nullable const ADJAdServicesPackageKey;

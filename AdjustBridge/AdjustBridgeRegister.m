@@ -156,6 +156,11 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_appTrackingAuthorizationStatus', null, callback);
                 }
             },
+            updateConversionValue: function(conversionValue) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValue', conversionValue, null);
+                }
+            },
             getAdid: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
@@ -241,7 +246,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.25.2';
+                    return 'web-bridge4.26.0';
                 }
             },
             setTestOptions: function(testOptions) {

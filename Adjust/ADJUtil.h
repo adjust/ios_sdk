@@ -121,4 +121,6 @@ typedef void (^isInactiveInjected)(BOOL);
 + (NSString *)enforceParameterLength:(NSString *)parameter
                        withMaxlength:(NSUInteger)maxLength;
 
++ (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue;
+
 @end

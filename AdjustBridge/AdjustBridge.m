@@ -439,6 +439,13 @@
         responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
     }];
     
+    [self.bridgeRegister registerHandler:@"adjust_updateConversionValue" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (![data isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust updateConversionValue:[(NSNumber *)data integerValue]];
+    }];
+    
     [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
