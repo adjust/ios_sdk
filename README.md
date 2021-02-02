@@ -22,6 +22,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [App-tracking authorisation wrapper](#ata-wrapper)
       * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
+      * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
@@ -358,6 +359,14 @@ In case you don't want the Adjust SDK to automatically communicate with SKAdNetw
 
 ```objc
 [adjustConfig deactivateSKAdNetworkHandling];
+```
+
+### <a id="skadn-update-conversion-value"></a>Update SKAdNetwork conversion value
+
+As of iOS SDK v4.26.0 you can use Adjust SDK wrapper method `updateConversionValue:` to update SKAdNetwork conversion value for your user:
+
+```objc
+[Adjust updateConversionValue:6];
 ```
 
 ### <a id="event-tracking"></a>Event tracking
