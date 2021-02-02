@@ -156,6 +156,11 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_appTrackingAuthorizationStatus', null, callback);
                 }
             },
+            updateConversionValue: function(conversionValue) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValue', conversionValue, null);
+                }
+            },
             getAdid: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
