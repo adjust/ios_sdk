@@ -42,7 +42,9 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Offline mode](#offline-mode)
    * [Event buffering](#event-buffering)
    * [GDPR right to be forgotten](#gdpr-forget-me)
+   * [Third-party sharing](#third-party-sharing)
    * [Disable third-party sharing](#disable-third-party-sharing)
+   * [Enable third-party sharing](#enable-third-party-sharing)
    * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
@@ -759,9 +761,11 @@ In accordance with article 17 of the EU's General Data Protection Regulation (GD
 
 Upon receiving this information, Adjust will erase the user's data and the Adjust SDK will stop tracking the user. No requests from this device will be sent to Adjust in the future.
 
-### <a id="disable-third-party-sharing"></a>Disable third-party sharing
+## <a id="third-party-sharing"></a>Third-party sharing for specific users
 
-You can now notify Adjust when a user has exercised their right to stop sharing their data with partners for marketing partners, but has allowed it to be shared for statistics purposes. 
+You can notify Adjust when a user disables, enables, and re-enables data sharing with third-party partners.
+
+### <a id="disable-third-party-sharing"></a>Disable third-party sharing for specific users
 
 Call the following method to instruct the Adjust SDK to communicate the user's choice to disable data sharing to the Adjust backend:
 
@@ -770,6 +774,18 @@ Call the following method to instruct the Adjust SDK to communicate the user's c
 ```
 
 Upon receiving this information, Adjust will block the sharing of that specific user's data to partners and the Adjust SDK will continue to work as usual.
+
+### <a id="enable-third-party-sharing">Enable or re-enable third-party sharing for specific users</a>
+
+Call the following method to instruct the Adjust SDK to communicate the user's choice to share data or change data sharing, to the Adjust backend:
+
+
+
+Upon receiving this information, Adjust changes sharing the specific user's data to partners. The Adjust SDK will continue to work as expected.
+
+Call the following method to instruct the Adjust SDK to send the granular options to the Adjust backend:
+
+
 
 ### <a id="sdk-signature"></a> SDK signature
 
