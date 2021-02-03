@@ -43,8 +43,9 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Event buffering](#event-buffering)
    * [GDPR right to be forgotten](#gdpr-forget-me)
    * [Third-party sharing](#third-party-sharing)
-   * [Disable third-party sharing](#disable-third-party-sharing)
-   * [Enable third-party sharing](#enable-third-party-sharing)
+      * [Disable third-party sharing](#disable-third-party-sharing)
+      * [Enable third-party sharing](#enable-third-party-sharing)
+   * [Measurement consent](#measurement-consent)
    * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
@@ -779,13 +780,32 @@ Upon receiving this information, Adjust will block the sharing of that specific 
 
 Call the following method to instruct the Adjust SDK to communicate the user's choice to share data or change data sharing, to the Adjust backend:
 
-
+```objc
+ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:YES];
+[Adjust trackThirdPartySharing:adjustThirdPartySharing];
+```
 
 Upon receiving this information, Adjust changes sharing the specific user's data to partners. The Adjust SDK will continue to work as expected.
 
 Call the following method to instruct the Adjust SDK to send the granular options to the Adjust backend:
 
+```objc
+ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:nil];
+[adjustThirdPartySharing addGranularOption:@"PartnerA" key:@"foo" value:@"bar"];
+[Adjust trackThirdPartySharing:adjustThirdPartySharing];
+```
 
+### <a id="measurement-consent"></a>Consent measurement for specific users
+
+You can notify Adjust when a user exercises their right to change data sharing with partners for marketing purposes, but they allow data sharing for statistical purposes. 
+
+Call the following method to instruct the Adjust SDK to communicate the user's choice to change data sharing, to the Adjust backend:
+
+```objc
+[Adjust trackMeasurementConsent:YES];
+```
+
+Upon receiving this information, Adjust changes sharing the specific user's data to partners. The Adjust SDK will continue to work as expected.
 
 ### <a id="sdk-signature"></a> SDK signature
 
