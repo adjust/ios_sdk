@@ -47,13 +47,6 @@ static const int kAdServicesdRetriesCount = 1;
 
 @implementation ADJInternalState
 
-- (id)init {
-    self = [super init];
-    if (self == nil) return nil;
-
-    return self;
-}
-
 - (BOOL)isEnabled { return self.enabled; }
 - (BOOL)isDisabled { return !self.enabled; }
 - (BOOL)isOffline { return self.offline; }
@@ -72,10 +65,10 @@ static const int kAdServicesdRetriesCount = 1;
 
 - (id)init {
     self = [super init];
-    if (self == nil) return nil;
-
-    // online by default
-    self.offline = NO;
+    if (self) {
+        // online by default
+        self.offline = NO;
+    }
     return self;
 }
 
