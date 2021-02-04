@@ -264,9 +264,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (dictionary.count == 0) {
         return;
     }
-    if (dictionary.count == 0) {
-        return;
-    }
 
     NSDictionary *convertedDictionary = [ADJUtil convertDictionaryValues:dictionary];
     [ADJPackageBuilder parameters:parameters setDictionaryJson:convertedDictionary forKey:key];
