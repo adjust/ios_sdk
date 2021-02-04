@@ -242,6 +242,7 @@ static NSString * internalSubscriptionUrl = nil;
     internalRequestTimeout = -1;
     packageHandlerBackoffStrategy = nil;
     sdkClickHandlerBackoffStrategy = nil;
+    installSessionBackoffStrategy = nil;
     internalTesting = NO;
     internalMaxDelayStart = -1;
     internalBaseUrl = nil;
