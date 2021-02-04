@@ -248,8 +248,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     subscriptionPackage.parameters = parameters;
 
     if (isInDelay) {
-        subscriptionPackage.callbackParameters = subscriptionPackage.callbackParameters;
-        subscriptionPackage.partnerParameters = subscriptionPackage.partnerParameters;
+        subscriptionPackage.callbackParameters = subscription.callbackParameters;
+        subscriptionPackage.partnerParameters = subscription.partnerParameters;
     }
 
     [self signWithSigV2Plugin:subscriptionPackage];
