@@ -771,7 +771,8 @@ You can notify Adjust when a user disables, enables, and re-enables data sharing
 Call the following method to instruct the Adjust SDK to communicate the user's choice to disable data sharing to the Adjust backend:
 
 ```objc
-[Adjust disableThirdPartySharing];
+ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:NO];
+[Adjust trackThirdPartySharing:adjustThirdPartySharing];
 ```
 
 Upon receiving this information, Adjust will block the sharing of that specific user's data to partners and the Adjust SDK will continue to work as usual.
