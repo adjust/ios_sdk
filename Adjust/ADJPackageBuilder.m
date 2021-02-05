@@ -248,8 +248,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     subscriptionPackage.parameters = parameters;
 
     if (isInDelay) {
-        subscriptionPackage.callbackParameters = subscriptionPackage.callbackParameters;
-        subscriptionPackage.partnerParameters = subscriptionPackage.partnerParameters;
+        subscriptionPackage.callbackParameters = subscription.callbackParameters;
+        subscriptionPackage.partnerParameters = subscription.partnerParameters;
     }
 
     [self signWithSigV2Plugin:subscriptionPackage];
@@ -259,9 +259,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key {
     if (dictionary == nil) {
-        return;
-    }
-    if (dictionary.count == 0) {
         return;
     }
     if (dictionary.count == 0) {

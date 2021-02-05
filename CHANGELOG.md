@@ -1,3 +1,10 @@
+### Version 4.26.1 (5th February 2021)
+
+#### Fixed
+- Fixed nullability warnings.
+
+---
+
 ### Version 4.26.0 (3rd February 2021)
 #### Added
 - Added wrapper method `updateConversionValue:` method to `Adjust` API to allow updating SKAdNetwork conversion value via SDK API.

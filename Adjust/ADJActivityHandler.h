@@ -23,8 +23,6 @@
 @property (nonatomic, assign) BOOL firstLaunch;
 @property (nonatomic, assign) BOOL sessionResponseProcessed;
 
-- (_Nullable id)init;
-
 - (BOOL)isEnabled;
 - (BOOL)isDisabled;
 - (BOOL)isOffline;
@@ -49,7 +47,7 @@
 @property (nonatomic, strong) NSMutableArray *_Nullable preLaunchAdjustThirdPartySharingArray;
 @property (nonatomic, copy) NSNumber *_Nullable lastMeasurementConsentTracked;
 
-- (id _Nullable)init;
+- (nonnull id)init;
 
 @end
 
