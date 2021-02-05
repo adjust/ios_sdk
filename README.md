@@ -45,7 +45,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Third-party sharing](#third-party-sharing)
       * [Disable third-party sharing](#disable-third-party-sharing)
       * [Enable third-party sharing](#enable-third-party-sharing)
-   * [Measurement consent](#measurement-consent)
+   * [Consent measurement](#measurement-consent)
    * [SDK signature](#sdk-signature)
    * [Background tracking](#background-tracking)
    * [Device IDs](#device-ids)
@@ -771,7 +771,7 @@ You can notify Adjust when a user disables, enables, and re-enables data sharing
 Call the following method to instruct the Adjust SDK to communicate the user's choice to disable data sharing to the Adjust backend:
 
 ```objc
-ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:NO];
+ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:@NO];
 [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 ```
 
@@ -782,7 +782,7 @@ Upon receiving this information, Adjust will block the sharing of that specific 
 Call the following method to instruct the Adjust SDK to communicate the user's choice to share data or change data sharing, to the Adjust backend:
 
 ```objc
-ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:YES];
+ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:@YES];
 [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 ```
 
@@ -798,9 +798,9 @@ ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] in
 
 ### <a id="measurement-consent"></a>Consent measurement for specific users
 
-You can notify Adjust when a user exercises their right to change data sharing with partners for marketing purposes, but they allow data sharing for statistical purposes. 
+To enable or disable the Data Privacy settings in the Adjust Dashboard, including the consent expiry period and the user data retention period, you need to implement the below method.
 
-Call the following method to instruct the Adjust SDK to communicate the user's choice to change data sharing, to the Adjust backend:
+Call the following method to instruct the Adjust SDK to communicate the Data Privacy settings, to the Adjust backend:
 
 ```objc
 [Adjust trackMeasurementConsent:YES];
