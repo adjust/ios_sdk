@@ -111,12 +111,13 @@ github "adjust/ios_sdk"
 
 ### <a id="sdk-frameworks"></a>添加 iOS 框架
 
-如果您关联额外的 iOS 框架到应用中，Adjust SDK 将能获取更多的信息。请根据应用启用 Adjust SDK 功能的情况，添加下列框架：
+如果您关联额外的 iOS 框架到应用中，Adjust SDK 将能获取更多的信息。请根据应用启用 Adjust SDK 功能的情况，添加下列框架，并将其标记为 "可选" (optional)：
 
-- `AdSupport.framework` - 如果您希望 SDK 能访问 IDFA 值和 (iOS 14 以前) LAT 信息，请添加该框架。
-- `iAd.framework` - 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架。
-- `CoreTelephony.framework`- 如果您希望 SDK 能辨识当前的无线接入技术，请添加该框架。
-- `StoreKit.framework`- 如果您希望访问 `SKAdNetwork` 框架，同时让 Adjust SDK 在 iOS 14 或未来版本的 iOS 中自动处理与该框架的通讯，请添加该框架。
+- `AdSupport.framework` - 请务必添加该框架，让SDK 能访问 IDFA 值和 (iOS 14 以前的) LAT 信息。
+- `iAd.framework` - 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架 (未来将替换为 `AdServices.framework`)。
+- `AdServices.framework`- 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架。
+- `CoreTelephony.framework`- 如果您希望 SDK 能辨识当前的无线接入技术 (radio access)，请添加该框架。
+- `StoreKit.framework`- 如果您希望访问 `SKAdNetwork` 框架，同时让 Adjust SDK 在 iOS 14 或未来版本的 iOS 中自动处理与`SKAdNetwork` 的通讯，请添加该框架。
 - `AppTrackingTransparency.framework` - 如果您希望 SDK 能在 iOS 14 或未来版本的 iOS 中包装用户的跟踪许可对话框，并访问用户跟踪许可的值，请添加该框架。
 
 ### <a id="sdk-integrate"></a>集成SDK至您的应用
