@@ -183,7 +183,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         }
         dateFormatter.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
-    dateFormatter.locale = [NSLocale systemLocale];
+    // TODO: remove after testing
+    // dateFormatter.locale = [NSLocale systemLocale];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     [dateFormatter setDateFormat:kDateFormat];
 
     return dateFormatter;
