@@ -22,6 +22,18 @@ static NSString * const baseUrlChina = @"https://app.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
 static NSString * const subscritionUrlChina = @"https://subscription.adjust.world";
 
+static NSString * const baseUrlEU = @"https://app.eu.adjust.net";
+static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.net";
+static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.net";
+
+static NSString * const baseUrlTR = @"https://app.tr.adjust.net";
+static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.net";
+static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.net";
+
+static NSString * const baseUrlUS = @"https://app.us.adjust.net";
+static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.net";
+static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.net";
+
 @interface ADJUrlStrategy ()
 
 @property (nonatomic, copy) NSArray<NSString *> *baseUrlChoicesArray;
@@ -71,6 +83,12 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
         return @[baseUrlIndia, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[baseUrlChina, baseUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
+        return @[baseUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[baseUrlTR];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
+        return @[baseUrlUS];
     } else {
         return @[baseUrl, baseUrlIndia, baseUrlChina];
     }
@@ -82,6 +100,12 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
         return @[gdprUrlIndia, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[gdprUrlChina, gdprUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
+        return @[gdprUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[gdprUrlTR];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
+        return @[gdprUrlUS];
     } else {
         return @[gdprUrl, gdprUrlIndia, gdprUrlChina];
     }
@@ -93,6 +117,12 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
         return @[subscritionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[subscritionUrlChina, subscriptionUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
+        return @[subscriptionUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[subscriptionUrlTR];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
+        return @[subscriptionUrlUS];
     } else {
         return @[subscriptionUrl, subscritionUrlIndia, subscritionUrlChina];
     }

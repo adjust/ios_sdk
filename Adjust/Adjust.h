@@ -67,6 +67,9 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
+extern NSString * __nonnull const ADJDataResidencyEU;
+extern NSString * __nonnull const ADJDataResidencyTR;
+extern NSString * __nonnull const ADJDataResidencyUS;
 
 /**
  * @brief The main interface to Adjust.
