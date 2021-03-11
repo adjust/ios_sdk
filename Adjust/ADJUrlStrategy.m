@@ -22,17 +22,17 @@ static NSString * const baseUrlChina = @"https://app.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
 static NSString * const subscritionUrlChina = @"https://subscription.adjust.world";
 
-static NSString * const baseUrlEU = @"https://app.eu.adjust.net";
-static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.net";
-static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.net";
+static NSString * const baseUrlEU = @"https://app.eu.adjust.com";
+static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.com";
+static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.com";
 
-static NSString * const baseUrlTR = @"https://app.tr.adjust.net";
-static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.net";
-static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.net";
+static NSString * const baseUrlTR = @"https://app.tr.adjust.com";
+static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.com";
+static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.com";
 
-static NSString * const baseUrlUS = @"https://app.us.adjust.net";
-static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.net";
-static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.net";
+static NSString * const baseUrlUS = @"https://app.us.adjust.com";
+static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
+static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
 
 @interface ADJUrlStrategy ()
 
