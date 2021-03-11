@@ -19,6 +19,6 @@
 - (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind;
 
 - (void)resetAfterSuccess;
-- (BOOL)shouldRetryAfterFailure;
+- (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;
 
 @end

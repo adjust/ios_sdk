@@ -183,7 +183,7 @@ authorizationHeader:(NSString *)authorizationHeader
                 [self.logger debug:@"Request succeeded with current URL strategy"];
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
-            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+            } else if ([self.urlStrategy shouldRetryAfterFailure:responseData.activityKind]) {
                 [self.logger debug:@"Request failed with current URL strategy, but it will be retried with new one"];
                 [self retryWithResponseData:responseData
                              methodTypeInfo:methodTypeInfo];
@@ -260,7 +260,7 @@ authorizationHeader:(NSString *)authorizationHeader
                 [self.logger debug:@"succeeded with current url strategy"];
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
-            } else if ([self.urlStrategy shouldRetryAfterFailure]) {
+            } else if ([self.urlStrategy shouldRetryAfterFailure:responseData.activityKind]) {
                 [self.logger debug:@"failed with current url strategy, but it will retry with new"];
                 [self retryWithResponseData:responseData
                              methodTypeInfo:methodTypeInfo];

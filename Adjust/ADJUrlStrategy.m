@@ -125,11 +125,20 @@ static NSString * const subscritionUrlChina = @"https://subscription.adjust.worl
     self.wasLastAttemptSuccess = YES;
 }
 
-- (BOOL)shouldRetryAfterFailure {
-    NSUInteger nextChoiceIndex = (self.choiceIndex + 1) % self.baseUrlChoicesArray.count;
-    self.choiceIndex = nextChoiceIndex;
-
+- (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind {
     self.wasLastAttemptSuccess = NO;
+
+    NSUInteger choiceListSize;
+    if (activityKind == ADJActivityKindGdpr) {
+        choiceListSize = [_gdprUrlChoicesArray count];
+    } else if (activityKind == ADJActivityKindSubscription) {
+        choiceListSize = [_subscriptionUrlChoicesArray count];
+    } else {
+        choiceListSize = [_baseUrlChoicesArray count];
+    }
+
+    NSUInteger nextChoiceIndex = (self.choiceIndex + 1) % choiceListSize;
+    self.choiceIndex = nextChoiceIndex;
 
     BOOL nextChoiceHasNotReturnedToStartingChoice = self.choiceIndex != self.startingChoiceIndex;
     return nextChoiceHasNotReturnedToStartingChoice;
