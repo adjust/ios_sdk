@@ -1,3 +1,13 @@
+### Version 4.27.0 (17th March 2021)
+
+#### Added
+- Added data residency feature. Support for EU data residency region is added. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyEU` parameter.
+
+#### Changed
+- Changed the measurement consent parameter name from `sharing` to `measurement`.
+
+---
+
 ### Version 4.26.1 (5th February 2021)
 
 #### Fixed
