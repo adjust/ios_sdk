@@ -393,6 +393,9 @@ authorizationHeader:(NSString *)authorizationHeader
     NSString *urlString =
         [NSString stringWithFormat:@"%@%@%@?%@",
          urlHostString, self.urlStrategy.extraPath, path, queryStringParameters];
+    
+    [self.logger verbose:@"Sending request to endpoint: %@",
+     [NSString stringWithFormat:@"%@%@%@", urlHostString, self.urlStrategy.extraPath, path]];
 
     // [self.logger verbose:@"requestForGetPackage with urlString: %@", urlString];
 
