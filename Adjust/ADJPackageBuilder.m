@@ -1088,7 +1088,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSString *enableValue = enabled ? @"enable" : @"disable";
     [ADJPackageBuilder parameters:parameters
                         setString:enableValue
-                           forKey:@"sharing"];
+                           forKey:@"measurement"];
 
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus

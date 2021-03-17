@@ -25,13 +25,13 @@ adjust SDKをiOSプロジェクトに連携する手順を説明します。
 [こちらの手順](#sdk-integrate)に進んでください。
 
 ```ruby
-pod 'Adjust', '~> 4.26.1'
+pod 'Adjust', '~> 4.27.0'
 ```
 
 または
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.26.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.27.0'
 ```
 
 ---
@@ -68,6 +68,7 @@ StaticかDynamicフレームワークを選択し、プロジェクトに追加�
 
 - `AdSupport.framework` - SDKがIDFA値および（iOS 14より前の）LAT情報を呼び出せるようにします。
 - `iAd.framework` - SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
+- `AdServices.framework`- SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
 - `CoreTelephony.framework`- SDKが現在のRadio Access Technology（無線アクセス技術）を判別できるようにします。
 - `StoreKit.framework`- iOS 14またはそれ以降において、このフレームワークは「SKAdNetwork」のフレームワークにアクセスし、「SKAdNetwork」との通信をAdjust SDKで自動的に処理できるようにします。
 - `AppTrackingTransparency.framework` -iOS 14またはそれ以降において、このフレームワークはSDKがトラッキングに対するユーザー同意を確認するダイアログをラップし、ユーザーの許諾状況を示す値にアクセスできるようにします。

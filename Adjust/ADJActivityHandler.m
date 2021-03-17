@@ -1725,9 +1725,11 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
         if ([selfI shouldFetchAdServicesI:selfI]) {
-            NSError *error = nil;
-            NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:&error];
-            [selfI setAdServicesAttributionToken:token error:error];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSError *error = nil;
+                NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:&error];
+                [selfI setAdServicesAttributionToken:token error:error];
+            });
         }
     }
 }

@@ -103,50 +103,39 @@ setupWebViewJavascriptBridge(function(bridge) {
 
 ![][bridge_init_js]
 
-### <a id="basic-setup">Basic setup
+### <a id="basic-setup">基本設定
 
-HTMLファイル内でadjust Javascriptファイルへの参照を追加してください。
-
-```html
-<script type="text/javascript" src="adjust.js"></script>
-<script type="text/javascript" src="adjust_event.js"></script>
-<script type="text/javascript" src="adjust_config.js"></script>
-```
-
-Javascriptファイルへの参照を追加すると、HTMLファイル内で使えるようになり、adjust SDKを初期化することができます。
-
+同じHTMLファイルから、`setupWebViewJavascriptBridge`コールバック内でAdjust SDKを初期化してください。
 
 ```js
 setupWebViewJavascriptBridge(function(bridge) {
     // ...
 
-    var yourAppToken = '{YourAppToken}'
-    var environment = AdjustConfig.EnvironmentSandbox
-    var adjustConfig = new AdjustConfig(bridge, yourAppToken, environment)
+    var yourAppToken = yourAppToken;
+    var environment = AdjustConfig.EnvironmentSandbox;
+    var adjustConfig = new AdjustConfig(yourAppToken, environment);
 
-    Adjust.appDidLaunch(adjustConfig)
+    Adjust.appDidLaunch(adjustConfig);
 
     // ...
-)}
+});
 ```
 
-![][bridge_init_js_xcode]
+**注**: Adjust SDKをこの手順に沿って初期化することが非常に重要です。この方法をとらない場合、問題が発生するおそれがありますのでご注意ください。
 
-`{YourAppToken}`にアプリトークンを入力してください。これはダッシュボードで確認できます。
+`yourAppToken` にアプリトークンを入れてください。これはAdjust管理画面で確認することができます。
 
-テスト用か本番用かによって、`environment`を以下のいずれかの値に設定してください。
+テスト用かあるいは本番用かによって、environmentを以下のいずれかの値に設定してください。
 
 ```js
-var environment = AdjustConfig.EnvironmentSandbox
-var environment = AdjustConfig.EnvironmentProduction
+var environment = AdjustConfig.EnvironmentSandbox;
+var environment = AdjustConfig.EnvironmentProduction;
 ```
 
-**重要** この値はどなたかがアプリをテストしている時に限り`AdjustConfig.EnvironmentSandbox`に設定する必要があります。
-アプリを提出する前に、`AdjustConfig.EnvironmentProduction`になっていることを確認してください。
-再び開発しテストをする時に`AdjustConfig.EnvironmentSandbox`に戻してください。
+**重要**: この値はアプリをテストしている時に限り`AdjustConfig.EnvironmentSandbox` に設定する必要があります。 アプリを提出する前に、`AdjustConfig.EnvironmentProduction` になっていることを確認
+してください。 再び開発しテストをする時に`AdjustConfig.EnvironmentSandbox`に戻してください。
 
-adjustはこの変数を使って実際のトラフィックとテストのトラフィックを判別しています。
-この値は常に正しく設定することが重要です。収益データをトラッキングする際は特にご留意ください。
+Adjustはこのenvironmentを使って実際のトラフィックとテストのトラフィックを判別しています。 この値は常に正しく設定することが重要です。収益データをトラッキングする際は特にご留意ください。
 
 ### <a id="bridge-logging">AdjustBridgeログ
 

@@ -76,13 +76,13 @@ iOS 개발용 Xcode를 사용한다는 가정하에 iOS 프로젝트에 Adjust S
 [CocoaPods][cocoapods]를 사용하는 경우, 다음 내용을 `Podfile`에 추가한 후 [해당 단계](#sdk-integrate)를 완료하세요.
 
 ```ruby
-pod 'Adjust', '~> 4.26.1'
+pod 'Adjust', '~> 4.27.0'
 ```
 
 또는:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.26.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.27.0'
 ```
 
 ---
@@ -110,10 +110,11 @@ Apple은 iOS 8을 출시한 후, 임베디드 프레임워크로도 잘 알려�
 
 ### <a id="sdk-frameworks"></a>iOS 프레임워크 추가
 
-추가 iOS 프레임워크를 앱에 연결할 경우 Adjust SDK가 추가 정보를 얻을 수 있습니다. Adjust SDK 기능을 활성화하려는 경우 앱의 SDK 기능 유무에 따라 다음 프레임워크를 추가하세요.
+추가 iOS 프레임워크를 앱에 연결할 경우 애드저스트 SDK가 추가 정보를 얻을 수 있습니다. 애드저스트 SDK 기능을 활성화하려는 경우 앱의 SDK 기능 유무에 따라 다음의 프레임워크를 추가하고 이를 선택으로 설정하시기 바랍니다.
 
 - `AdSupport.framework` - SDK가 IDFA 값 및 (iOS 14 이전 버전) LAT 정보에 액세스하려면 이 프레임워크가 필요합니다.
-- `iAd.framework` - SDK가 실행 중인 ASA 캠페인에 대한 속성을 자동으로 처리하려면 이 프레임워크가 필요합니다.
+- `iAd.framework` - SDK가 자동으로 ASA 캠페인에 대한 어트리뷰션을 처리하려면 본 프레임워크가 필요합니다. (이후 `AdServices.framework`를 위해 지원 중지 예정)
+- `AdServices.framework` - SDK가 자동으로 ASA 캠페인에 대한 어트리뷰션을 처리하려면 본 프레임워크가 필요합니다.
 - `CoreTelephony.framework` - SDK가 현재의 무선 액세스 기술을 결정하려면 이 프레임워크가 필요합니다.
 - `StoreKit.framework` - `SKAdNetwork` 프레임워크에 액세스하고 Adjust SDK가 iOS 14 및 이후 버전에서 통신을 자동으로 처리하려면 이 프레임워크가 필요합니다.
 - `AppTrackingTranspaintency.framework` - iOS 14 및 이후 버전에서 SDK가 사용자의 추적 동의 다이얼로그를 래핑하고, 추적 여부에 대한 사용자의 동의 값에 대한 액세스를 위해 이 프레임워크가 필요합니다.

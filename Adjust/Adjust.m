@@ -44,6 +44,7 @@ NSString * const ADJAdRevenueSourceTapdaq = @"tapdaq";
 
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
+NSString * const ADJDataResidencyEU = @"DataResidencyEU";
 
 @implementation AdjustTestOptions
 @end

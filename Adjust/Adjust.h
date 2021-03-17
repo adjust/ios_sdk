@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.26.1
+//  V4.27.0
 //  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
 //  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
@@ -67,6 +67,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
  */
 extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
+extern NSString * __nonnull const ADJDataResidencyEU;
 
 /**
  * @brief The main interface to Adjust.
