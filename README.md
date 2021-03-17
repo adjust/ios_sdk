@@ -60,6 +60,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Deep linking on iOS 9 and later](#deeplinking-setup-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
+   * [Data residency](#data-residency)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
    * [I'm seeing "Adjust requires ARC" error](#ts-arc)
@@ -1037,6 +1038,12 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
     // return NO;
 }
 ```
+
+### <a id="data-residency"></a>Data residency
+
+In order to enable data residency feature, make sure to make a call to `setUrlStrategy:` method of the `ADJConfig` instance with one of the following constants:
+
+- `ADJDataResidencyEU` for EU data residency region.
 
 ## <a id="troubleshooting"></a>Troubleshooting
 
