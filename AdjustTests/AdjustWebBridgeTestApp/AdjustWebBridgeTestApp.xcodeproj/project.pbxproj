@@ -77,6 +77,7 @@
 		6FD04130211C71E8008D42D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD0412F211C71E8008D42D0 /* Foundation.framework */; };
 		6FD04132211C71EF008D42D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD04131211C71EE008D42D0 /* UIKit.framework */; };
 		9DAA5C6C25B0F81F00C718DD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAA5C6B25B0F81F00C718DD /* AdServices.framework */; };
+		9DF3822D260E9BC90033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3822C260E9BC90033F5A1 /* NSNumber+ADJAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -214,6 +215,8 @@
 		6FD0412F211C71E8008D42D0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6FD04131211C71EE008D42D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DAA5C6B25B0F81F00C718DD /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		9DF3822B260E9BC90033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
+		9DF3822C260E9BC90033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -425,6 +428,8 @@
 		6F7AF71521187CFE00F730B2 /* ADJAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				9DF3822B260E9BC90033F5A1 /* NSNumber+ADJAdditions.h */,
+				9DF3822C260E9BC90033F5A1 /* NSNumber+ADJAdditions.m */,
 				6F7AF71621187CFE00F730B2 /* NSString+ADJAdditions.m */,
 				6F7AF71721187CFE00F730B2 /* UIDevice+ADJAdditions.h */,
 				6F7AF71821187CFE00F730B2 /* NSData+ADJAdditions.m */,
@@ -541,6 +546,7 @@
 				6F7AF74621187CFF00F730B2 /* NSData+ADJAdditions.m in Sources */,
 				6F6F75D82327C08B00F47E64 /* ATLTestLibrary.m in Sources */,
 				6F6F75D42327C08B00F47E64 /* PSWebSocketNetworkThread.m in Sources */,
+				9DF3822D260E9BC90033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
 				6F7AF74321187CFF00F730B2 /* ADJPackageHandler.m in Sources */,
 				6F6F75D02327C08B00F47E64 /* PSWebSocketDeflater.m in Sources */,
 				6F6F75A323279D4D00F47E64 /* WebViewJavascriptBridgeBase.m in Sources */,

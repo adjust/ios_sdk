@@ -30,8 +30,8 @@
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-     //[self.testLibrary addTestDirectory:@"event-callbacks"];
-    //[self.testLibrary addTest:@"Test_AdRevenue_ad_revenue"];
+    // [self.testLibrary addTestDirectory:@"event-callbacks"];
+    // [self.testLibrary addTest:@"Test_AdRevenue_ad_revenue"];
 
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];

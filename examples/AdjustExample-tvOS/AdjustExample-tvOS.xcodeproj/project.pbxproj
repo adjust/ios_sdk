@@ -50,6 +50,7 @@
 		9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DD0E9CF1F459ECE00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */; };
+		9DF3823D260E9E000033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3823C260E9E000033F5A1 /* NSNumber+ADJAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -150,6 +151,8 @@
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DD0E9CD1F459ECE00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
+		9DF3823B260E9E000033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
+		9DF3823C260E9E000033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,6 +288,8 @@
 		9D449F051E6EE6C500E7E80B /* ADJAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				9DF3823B260E9E000033F5A1 /* NSNumber+ADJAdditions.h */,
+				9DF3823C260E9E000033F5A1 /* NSNumber+ADJAdditions.m */,
 				9D449F061E6EE6C500E7E80B /* NSData+ADJAdditions.h */,
 				9D449F071E6EE6C500E7E80B /* NSData+ADJAdditions.m */,
 				9D449F081E6EE6C500E7E80B /* NSString+ADJAdditions.h */,
@@ -386,6 +391,7 @@
 				9D449F4F1E6EE6C500E7E80B /* ADJEventSuccess.m in Sources */,
 				9D449F5B1E6EE6C500E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449F471E6EE6C500E7E80B /* ADJAttribution.m in Sources */,
+				9DF3823D260E9E000033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
 				9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */,
 				6F84514125B1B1C80004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				9D449F421E6EE6C500E7E80B /* ADJActivityState.m in Sources */,
