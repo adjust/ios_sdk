@@ -60,6 +60,7 @@
 		9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75F1911D07463800E5D222 /* AdjustBridge.m */; };
 		9D9A99DA1D0B699A0022FFCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9A99D91D0B699A0022FFCE /* AppDelegate.m */; };
 		9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */; };
+		9DF38239260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF38237260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m */; };
 		D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */; };
 /* End PBXBuildFile section */
 
@@ -164,6 +165,8 @@
 		9D9A99D91D0B699A0022FFCE /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
+		9DF38237260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
+		9DF38238260E9DDE0033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
 		D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -320,6 +323,8 @@
 		9D449EA01E6EDD4100E7E80B /* ADJAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				9DF38238260E9DDE0033F5A1 /* NSNumber+ADJAdditions.h */,
+				9DF38237260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m */,
 				9D449EA11E6EDD4100E7E80B /* NSData+ADJAdditions.h */,
 				9D449EA21E6EDD4100E7E80B /* NSData+ADJAdditions.m */,
 				9D449EA31E6EDD4100E7E80B /* NSString+ADJAdditions.h */,
@@ -458,6 +463,7 @@
 				9D75F1991D07463800E5D222 /* WKWebViewJavascriptBridge.m in Sources */,
 				9D10833D1CFDD8F00050568B /* WKWebViewController.m in Sources */,
 				9D449EE51E6EDD4100E7E80B /* ADJConfig.m in Sources */,
+				9DF38239260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
 				9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */,
 				9D449EF21E6EDD4100E7E80B /* ADJSessionFailure.m in Sources */,
 				9D449EDD1E6EDD4100E7E80B /* ADJActivityState.m in Sources */,

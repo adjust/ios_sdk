@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 adjust GmbH. All rights reserved.
 //
 
+#import "ADJUtil.h"
 #import "ADJAttribution.h"
 #import "NSString+ADJAdditions.h"
-#import "ADJUtil.h"
+#import "NSNumber+ADJAdditions.h"
 
 @implementation ADJAttribution
 
@@ -73,8 +74,7 @@
     if (![NSString adjIsEqual:self.costType toString:attribution.costType]) {
         return NO;
     }
-    // costAmount is of type NSNumber
-    if (![self.costAmount isEqualToNumber:attribution.costAmount]) {
+    if (![NSNumber adjIsEqual:self.costAmount toNumber:attribution.costAmount]) {
         return NO;
     }
     if (![NSString adjIsEqual:self.costCurrency toString:attribution.costCurrency]) {

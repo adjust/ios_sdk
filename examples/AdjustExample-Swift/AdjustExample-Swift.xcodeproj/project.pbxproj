@@ -43,6 +43,7 @@
 		9D449E941E6EDC3D00E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E721E6EDC3D00E7E80B /* Adjust.m */; };
 		9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E741E6EDC3D00E7E80B /* ADJUtil.m */; };
 		9DD0E9C11F45879A00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */; };
+		9DF38235260E9DC20033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF38233260E9DC20033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF7A9C61CB4ECA600D3591F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */; };
 		9DF7A9C81CB4ECA600D3591F /* ViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */; };
 		9DF7A9CB1CB4ECA600D3591F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C91CB4ECA600D3591F /* Main.storyboard */; };
@@ -129,6 +130,8 @@
 		9D449E741E6EDC3D00E7E80B /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
 		9DD0E9BF1F45879A00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9C01F45879A00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
+		9DF38233260E9DC20033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
+		9DF38234260E9DC20033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
 		9DF7A9C21CB4ECA600D3591F /* AdjustExample-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF7A9C51CB4ECA600D3591F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DF7A9C71CB4ECA600D3591F /* ViewControllerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSwift.swift; sourceTree = "<group>"; };
@@ -237,6 +240,8 @@
 		9D449E3C1E6EDC3D00E7E80B /* ADJAdditions */ = {
 			isa = PBXGroup;
 			children = (
+				9DF38234260E9DC20033F5A1 /* NSNumber+ADJAdditions.h */,
+				9DF38233260E9DC20033F5A1 /* NSNumber+ADJAdditions.m */,
 				9D449E3D1E6EDC3D00E7E80B /* NSData+ADJAdditions.h */,
 				9D449E3E1E6EDC3D00E7E80B /* NSData+ADJAdditions.m */,
 				9D449E3F1E6EDC3D00E7E80B /* NSString+ADJAdditions.h */,
@@ -400,6 +405,7 @@
 				9D449E841E6EDC3D00E7E80B /* ADJEvent.m in Sources */,
 				9D449E951E6EDC3D00E7E80B /* ADJUtil.m in Sources */,
 				9D449E7C1E6EDC3D00E7E80B /* UIDevice+ADJAdditions.m in Sources */,
+				9DF38235260E9DC20033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
 				9D2F240E2447DDF600B7CA90 /* ADJSubscription.m in Sources */,
 				9D449E851E6EDC3D00E7E80B /* ADJEventFailure.m in Sources */,
 				9D449E7B1E6EDC3D00E7E80B /* NSString+ADJAdditions.m in Sources */,
