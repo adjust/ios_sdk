@@ -1,5 +1,10 @@
-### Version 4.27.0 (17th March 2021)
+### Version 4.27.1 (27th February 2021)
+#### Fixed
+- Fixed attribution value comparison logic which might cause same attribution value to be delivered into attribution callback.
 
+---
+
+### Version 4.27.0 (17th March 2021)
 #### Added
 - Added data residency feature. Support for EU data residency region is added. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyEU` parameter.
 
@@ -9,7 +14,6 @@
 ---
 
 ### Version 4.26.1 (5th February 2021)
-
 #### Fixed
 - Fixed nullability warnings.
 
