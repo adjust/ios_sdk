@@ -975,8 +975,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
     // Apple Search Ads fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
-        [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] &&
-        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"]) {
+        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"] && (
+            [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] ||
+            [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdGroupName"]
+        )) {
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy Apple Search Ads fields"];
         return NO;
     }
