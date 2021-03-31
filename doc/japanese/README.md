@@ -62,16 +62,16 @@ StaticかDynamicフレームワークを選択し、プロジェクトに追加�
 
 同様に`iMessage`アプリの場合もadjust SDKの利用が可能です。`AdjustSdkIm.framework.zip`アーカイブからIMフレームワークを展開してください。
 
-### <a id="sdk-frameworks"></a>iOSフレームワークを追加する
+### <a id="sdk-frameworks"></a>iOS frameworksを追加する
 
-アプリにiOSフレームワークを追加で連携した場合、Adjust SDKはその情報を呼び出し、取得することができます。iOSフレームワークに対応するAdjust SDKの機能を有効化するには、以下のフレームワークをアプリに追加してください。
+アプリにiOS frameworksを追加で連携した場合、Adjust SDKはその情報を呼び出し、取得することができます。iOS frameworksに対応するAdjust SDKの機能を有効化し、それらの機能をオプションとしてマークするには、以下の frameworksをアプリに追加してください。
 
-- `AdSupport.framework` - SDKがIDFA値および（iOS 14より前の）LAT情報を呼び出せるようにします。
-- `iAd.framework` - SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
+- `AdSupport.framework` - SDKがIDFA値および（iOS 14より前の）LAT(Limited Ad Tracking)情報を呼び出せるようにします。
+- `iAd.framework` - SDKが配信中のASA（Apple Search Ads）キャンペーンのアトリビューションを自動的に処理できるようにします（将来的には廃止されて`AdServices.framework`に置き換わる予定です）。
 - `AdServices.framework`- SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
 - `CoreTelephony.framework`- SDKが現在のRadio Access Technology（無線アクセス技術）を判別できるようにします。
-- `StoreKit.framework`- iOS 14またはそれ以降において、このフレームワークは「SKAdNetwork」のフレームワークにアクセスし、「SKAdNetwork」との通信をAdjust SDKで自動的に処理できるようにします。
-- `AppTrackingTransparency.framework` -iOS 14またはそれ以降において、このフレームワークはSDKがトラッキングに対するユーザー同意を確認するダイアログをラップし、ユーザーの許諾状況を示す値にアクセスできるようにします。
+- `StoreKit.framework`- iOS 14またはそれ以降において、このframeworkは` SKAdNetwork` のframeworkにアクセスし、「SKAdNetwork」との通信をAdjust SDKで自動的に処理できるようにします。
+- `AppTrackingTransparency.framework` -iOS 14またはそれ以降において、このframeworkはSDKがトラッキングに対するユーザー同意を確認するダイアログをラップし、ユーザーの許諾状況を示す値にアクセスできるようにします。
 
 #### <a id="sdk-integrate"></a>SDKをアプリに実装する
 
