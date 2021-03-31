@@ -20,6 +20,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
 * [부가 기능](#additional-features)
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
+      * [현재 승인 상태 받기](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
    * [이벤트 추적](#event-tracking)
         * [매출 추적](#revenue-tracking)
@@ -326,6 +327,16 @@ Adjust SDK를 사용하면 앱 관련 데이터에 액세스하는 데 대한 �
     }
 }];
 ```
+### <a id="ata-getter"></a>현재 승인 상태 받기
+
+현재 앱의 트래킹 승인 상태를 받으려면, `[Adjust appTrackingAuthorizationStatus]`를 호출하시기 바랍니다. 반환 값은 다음과 같습니다.
+
+* `0`: 유저가 아직 승인 요청을 받지 않음
+* `1`: 유저 기기가 제한됨
+* `2`: 유저가 IDFA 액세스를 거부함
+* `3`: 유저가 IDFA 액세스를 승인함
+* `-1`: 상태를 확인할 수 없음
+
 
 ### <a id="skadn-framework"></a>SKAdNetwork 프레임워크
 
