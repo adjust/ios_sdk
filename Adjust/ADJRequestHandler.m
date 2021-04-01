@@ -562,14 +562,10 @@ authorizationHeader:(NSString *)authorizationHeader
 
 - (NSString *)getValidIdentifier:(NSDictionary *)parameters {
     NSString *idfaName = @"idfa";
-    NSString *persistentUUIDName = @"persistent_ios_uuid";
     NSString *uuidName = @"ios_uuid";
 
     if ([parameters objectForKey:idfaName] != nil) {
         return idfaName;
-    }
-    if ([parameters objectForKey:persistentUUIDName] != nil) {
-        return persistentUUIDName;
     }
     if ([parameters objectForKey:uuidName] != nil) {
         return uuidName;

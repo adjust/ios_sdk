@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 
-#import "ADJKeychain.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
 #import "UIDevice+ADJAdditions.h"
@@ -84,26 +83,7 @@ static NSString *appToken = nil;
 #pragma mark - Private & helper methods
 
 - (void)assignUuid:(NSString *)uuid {
-    NSString *persistedUuid = [ADJKeychain valueForKeychainKey:@"adjust_uuid" service:@"deviceInfo"];
-
-    // Check if value exists in Keychain.
-    if (persistedUuid != nil) {
-        // Check if value has UUID format.
-        if ((bool)[[NSUUID alloc] initWithUUIDString:persistedUuid]) {
-            [[ADJAdjustFactory logger] verbose:@"Value read from the keychain"];
-
-            // Value written in keychain seems to have UUID format.
-            self.uuid = persistedUuid;
-            self.isPersisted = YES;
-            return;
-        }
-    }
-
-    // At this point, UUID was not persisted in Keychain or if persisted, didn't have proper UUID format.
-    // Since we don't have anything in the keychain, we'll use the passed UUID value.
-    // Try to save that value to the keychain.
     self.uuid = uuid;
-    self.isPersisted = [ADJKeychain setValue:self.uuid forKeychainKey:@"adjust_uuid" inService:@"deviceInfo"];
 }
 
 - (NSString *)description {

@@ -21,7 +21,6 @@
 - (NSString *)adjDeviceName;
 - (NSString *)adjCreateUuid;
 - (NSString *)adjVendorId;
-- (NSString *)adjDeviceId:(ADJDeviceInfo *)deviceInfo;
 - (void)adjCheckForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue;
 - (NSString *)adjFetchAdServicesAttribution:(NSError **)errorPtr;
 

@@ -16,7 +16,6 @@
 		524BACAA221C4EE800624F6C /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACA2221C4EE800624F6C /* PSWebSocketUTF8Decoder.m */; };
 		524BACAB221C4EE800624F6C /* PSWebSocketDeflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACA3221C4EE800624F6C /* PSWebSocketDeflater.m */; };
 		524BACB2221D583700624F6C /* ATLControlWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACB0221D583700624F6C /* ATLControlWebSocketClient.m */; };
-		524BACB4221D593F00624F6C /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E332018CE14000AACD0 /* ADJKeychain.m */; };
 		524BACBB221D5B1200624F6C /* ATLControlSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACBA221D5B1200624F6C /* ATLControlSignal.m */; };
 		6F08422C2007769F00568A31 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08422B2007769F00568A31 /* AppDelegate.m */; };
 		6F08422F2007769F00568A31 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08422E2007769F00568A31 /* ViewController.m */; };
@@ -122,7 +121,6 @@
 		6F3A5E302018CE14000AACD0 /* ADJRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJRequestHandler.m; sourceTree = "<group>"; };
 		6F3A5E312018CE14000AACD0 /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
 		6F3A5E322018CE14000AACD0 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
-		6F3A5E332018CE14000AACD0 /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
 		6F3A5E342018CE14000AACD0 /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
 		6F3A5E352018CE14000AACD0 /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
 		6F3A5E362018CE14000AACD0 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
@@ -152,7 +150,6 @@
 		6F3A5E4E2018CE14000AACD0 /* ADJEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEvent.h; sourceTree = "<group>"; };
 		6F3A5E4F2018CE14000AACD0 /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
 		6F3A5E502018CE14000AACD0 /* ADJActivityKind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityKind.m; sourceTree = "<group>"; };
-		6F3A5E512018CE14000AACD0 /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
 		6F3A5E532018CE14000AACD0 /* NSString+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ADJAdditions.m"; sourceTree = "<group>"; };
 		6F3A5E542018CE14000AACD0 /* UIDevice+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ADJAdditions.h"; sourceTree = "<group>"; };
 		6F3A5E552018CE14000AACD0 /* NSData+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ADJAdditions.m"; sourceTree = "<group>"; };
@@ -286,7 +283,6 @@
 				6F3A5E302018CE14000AACD0 /* ADJRequestHandler.m */,
 				6F3A5E312018CE14000AACD0 /* ADJSystemProfile.h */,
 				6F3A5E322018CE14000AACD0 /* ADJAttribution.h */,
-				6F3A5E332018CE14000AACD0 /* ADJKeychain.m */,
 				6F3A5E342018CE14000AACD0 /* ADJSdkClickHandler.m */,
 				6F3A5E352018CE14000AACD0 /* ADJActivityKind.h */,
 				6F3A5E362018CE14000AACD0 /* ADJEvent.m */,
@@ -316,7 +312,6 @@
 				6F3A5E4E2018CE14000AACD0 /* ADJEvent.h */,
 				6F3A5E4F2018CE14000AACD0 /* ADJSdkClickHandler.h */,
 				6F3A5E502018CE14000AACD0 /* ADJActivityKind.m */,
-				6F3A5E512018CE14000AACD0 /* ADJKeychain.h */,
 				6F3A5E522018CE14000AACD0 /* ADJAdditions */,
 				6F3A5E592018CE14000AACD0 /* ADJAttribution.m */,
 				6F3A5E5A2018CE14000AACD0 /* ADJSystemProfile.m */,
@@ -510,7 +505,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				524BACB4221D593F00624F6C /* ADJKeychain.m in Sources */,
 				6F3A5E702018CE14000AACD0 /* ADJAttributionHandler.m in Sources */,
 				6F3A5E7A2018CE14000AACD0 /* ADJTimerCycle.m in Sources */,
 				6FFCFE6E200797D100467F01 /* ATAAdjustDelegateEventFailure.m in Sources */,

@@ -1,3 +1,9 @@
+### Version 4.28.0 (1th April 2021)
+#### Changed
+- Removed legacy code.
+
+---
+
 ### Version 4.27.1 (27th March 2021)
 #### Fixed
 - Fixed attribution value comparison logic which might cause same attribution value to be delivered into attribution callback.

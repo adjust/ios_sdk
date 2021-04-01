@@ -37,7 +37,7 @@ static CTCarrier *carrier = nil;
 static CTTelephonyNetworkInfo *networkInfo = nil;
 #endif
 
-static NSString * const kClientSdk                  = @"ios4.27.1";
+static NSString * const kClientSdk                  = @"ios4.28.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1031,69 +1031,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic pop
     return radioTech;
 #endif
-}
-
-+ (NSString *)stringToBinaryString:(NSString *)str {
-    if (str == nil) {
-        return nil;
-    }
-    NSMutableString *binStr = [[NSMutableString alloc] init];
-    const char *cstr = [str UTF8String];
-    size_t len = strlen(cstr);
-    for (size_t i = 0; i < len; i++) {
-        uint8_t c = cstr[i];
-        for (int j = 0; j < 8; j++) {
-            [binStr appendString:((c & 0x80) ? @"1" : @"0")];
-            c <<= 1;
-        }
-    }
-    return binStr;
-}
-
-+ (NSString *)decimalToBinaryString:(NSUInteger)decInt {
-    if (decInt == 0) {
-        return @"0";
-    }
-    NSString *string = @"" ;
-    NSUInteger x = decInt;
-    while (x > 0) {
-        string = [[NSString stringWithFormat: @"%tu", x&1] stringByAppendingString:string];
-        x = x >> 1;
-    }
-    return string;
-}
-
-+ (NSString *)enforceParameterLength:(NSString *)parameter
-                       withMaxlength:(NSUInteger)maxLength {
-    if (parameter == nil) {
-        // failed to read parameter
-        // fill in with zeros
-        NSString *failed = @"";
-        for (NSUInteger i = 0; i < maxLength; i += 1) {
-            failed = [failed stringByAppendingString:@"0"];
-        }
-        return failed;
-    }
-    if (parameter.length == maxLength) {
-        // all dandy
-        return parameter;
-    }
-    if (parameter.length > maxLength) {
-        // overflow
-        // in overflow case, fill parameter with all ones
-        NSString *stringOverflow = @"";
-        for (NSUInteger i = 0; i < maxLength; i += 1) {
-            stringOverflow = [stringOverflow stringByAppendingString:@"1"];
-        }
-        return stringOverflow;
-    }
-    // parameter too short
-    // expand it with prepended zeros to fit the protocol
-    NSString *expandedParameter = [NSString stringWithString:parameter];
-    for (NSUInteger i = 0; i < maxLength - parameter.length; i += 1) {
-        expandedParameter = [@"0" stringByAppendingString:expandedParameter];
-    }
-    return expandedParameter;
 }
 
 + (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
