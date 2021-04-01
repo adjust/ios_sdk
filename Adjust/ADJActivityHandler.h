@@ -9,7 +9,7 @@
 #import "Adjust.h"
 #import "ADJResponseData.h"
 #import "ADJActivityState.h"
-#import "ADJDeviceInfo.h"
+#import "ADJPackageParams.h"
 #import "ADJSessionParameters.h"
 #import "ADJThirdPartySharing.h"
 
@@ -110,8 +110,9 @@
 - (void)trackMeasurementConsent:(BOOL)enabled;
 - (void)trackSubscription:(ADJSubscription * _Nullable)subscription;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
+- (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 
-- (ADJDeviceInfo * _Nullable)deviceInfo;
+- (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
 - (ADJConfig * _Nullable)adjustConfig;
 - (ADJSessionParameters * _Nullable)sessionParameters;

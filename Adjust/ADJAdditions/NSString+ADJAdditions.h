@@ -1,10 +1,11 @@
 //
 //  NSString+ADJAdditions.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Christian Wellenbrock on 23.07.12.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2012.
+//  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
+
 #import <Foundation/Foundation.h>
 
 @interface NSString(ADJAdditions)
@@ -13,7 +14,6 @@
 - (NSString *)adjTrim;
 - (NSString *)adjUrlEncode;
 - (NSString *)adjUrlDecode;
-- (NSString *)adjRemoveColons;
 
 + (NSString *)adjJoin:(NSString *)strings, ...;
 + (BOOL) adjIsEqual:(NSString *)first toString:(NSString *)second;

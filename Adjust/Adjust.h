@@ -1,10 +1,10 @@
 //
 //  Adjust.h
-//  Adjust
+//  Adjust SDK
 //
-//  V4.28.0
-//  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
-//  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
+//  V4.29.0
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
+//  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
 
 #import "ADJEvent.h"
@@ -12,6 +12,7 @@
 #import "ADJAttribution.h"
 #import "ADJSubscription.h"
 #import "ADJThirdPartySharing.h"
+#import "ADJAdRevenue.h"
 
 @interface AdjustTestOptions : NSObject
 
@@ -34,7 +35,7 @@
 @end
 
 /**
- * Constants for our supported tracking environments
+ * Constants for our supported tracking environments.
  */
 extern NSString * __nonnull const ADJEnvironmentSandbox;
 extern NSString * __nonnull const ADJEnvironmentProduction;
@@ -42,32 +43,18 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * Constants for supported ad revenue sources.
  */
+extern NSString * __nonnull const ADJAdRevenueSourceAppLovinMAX;
 extern NSString * __nonnull const ADJAdRevenueSourceMopub;
-extern NSString * __nonnull const ADJAdRevenueSourceAdmob;
-extern NSString * __nonnull const ADJAdRevenueSourceFbNativeAd;
-extern NSString * __nonnull const ADJAdRevenueSourceFbAudienceNetwork;
-extern NSString * __nonnull const ADJAdRevenueSourceIronsource;
-extern NSString * __nonnull const ADJAdRevenueSourceFyber;
-extern NSString * __nonnull const ADJAdRevenueSourceAerserv;
-extern NSString * __nonnull const ADJAdRevenueSourceAppodeal;
-extern NSString * __nonnull const ADJAdRevenueSourceAdincube;
-extern NSString * __nonnull const ADJAdRevenueSourceFusePowered;
-extern NSString * __nonnull const ADJAdRevenueSourceAddaptr;
-extern NSString * __nonnull const ADJAdRevenueSourceMillennialMeditation;
-extern NSString * __nonnull const ADJAdRevenueSourceFlurry;
-extern NSString * __nonnull const ADJAdRevenueSourceAdmost;
-extern NSString * __nonnull const ADJAdRevenueSourceDeltadna;
-extern NSString * __nonnull const ADJAdRevenueSourceUpsight;
-extern NSString * __nonnull const ADJAdRevenueSourceUnityads;
-extern NSString * __nonnull const ADJAdRevenueSourceAdtoapp;
-extern NSString * __nonnull const ADJAdRevenueSourceTapdaq;
+extern NSString * __nonnull const ADJAdRevenueSourceAdMob;
+extern NSString * __nonnull const ADJAdRevenueSourceIronSource;
 
 /**
- * Constants for country apps url strategies.
+ * Constants for country app's URL strategies.
  */
 extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
 extern NSString * __nonnull const ADJDataResidencyEU;
+extern NSString * __nonnull const ADJDataResidencyTR;
 
 /**
  * @brief The main interface to Adjust.
@@ -277,9 +264,26 @@ extern NSString * __nonnull const ADJDataResidencyEU;
  */
 + (void)disableThirdPartySharing;
 
+/**
+ * @brief Track third paty sharing with possibility to allow or disallow it.
+ *
+ * @param thirdPartySharing Third party sharing choice.
+ */
 + (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
+/**
+ * @brief Track measurement consent.
+ *
+ * @param enabled Value of the consent.
+ */
 + (void)trackMeasurementConsent:(BOOL)enabled;
+
+/**
+ * @brief Track ad revenue.
+ *
+ * @param adRevenue Ad revenue object instance containing all the relevant ad revenue tracking data.
+ */
++ (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
 
 /**
  * @brief Track subscription.
@@ -288,18 +292,36 @@ extern NSString * __nonnull const ADJDataResidencyEU;
  */
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 
+/**
+ * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method.
+ *
+ * @param completion Block which value of tracking authorization status will be delivered to.
+ */
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
+/**
+ * @brief Getter for app tracking authorization status.
+ *
+ * return Value of app tracking authorization status.
+ */
 + (int)appTrackingAuthorizationStatus;
 
+/**
+ * @brief Adjust wrapper for updateConversionValue: method.
+ *
+ * @param conversionValue Conversion value you would like SDK to set for given user.
+ */
 + (void)updateConversionValue:(NSInteger)conversionValue;
+
+/**
+ * @brief Method used for internal testing only. Don't use it in production.
+ */
++ (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
 
 /**
  * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
-
-+ (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
 
 - (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
 
@@ -358,5 +380,11 @@ extern NSString * __nonnull const ADJDataResidencyEU;
 - (int)appTrackingAuthorizationStatus;
 
 - (void)updateConversionValue:(NSInteger)conversionValue;
+
+- (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+
+- (void)trackMeasurementConsent:(BOOL)enabled;
+
+- (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
 
 @end

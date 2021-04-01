@@ -8,7 +8,6 @@
 
 #import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
-#import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
 
 static const int kTransactionIdCount = 10;
@@ -24,7 +23,7 @@ static NSString *appToken = nil;
         return nil;
     }
 
-    [self assignUuid:[UIDevice.currentDevice adjCreateUuid]];
+    [self assignRandomToken];
 
     self.eventCount = 0;
     self.sessionCount = 0;
@@ -82,8 +81,8 @@ static NSString *appToken = nil;
 
 #pragma mark - Private & helper methods
 
-- (void)assignUuid:(NSString *)uuid {
-    self.uuid = uuid;
+- (void)assignRandomToken {
+    self.dedupeToken = [[NSUUID UUID] UUIDString];
 }
 
 - (NSString *)description {
@@ -111,10 +110,10 @@ static NSString *appToken = nil;
     
     // Default values for migrating devices.
     if ([decoder containsValueForKey:@"uuid"]) {
-        [self assignUuid:[decoder decodeObjectForKey:@"uuid"]];
+        self.dedupeToken = [decoder decodeObjectForKey:@"uuid"];
     }
-    if (self.uuid == nil) {
-        [self assignUuid:[UIDevice.currentDevice adjCreateUuid]];
+    if (self.dedupeToken == nil) {
+        [self assignRandomToken];
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
@@ -185,7 +184,7 @@ static NSString *appToken = nil;
     [encoder encodeDouble:self.sessionLength forKey:@"sessionLength"];
     [encoder encodeDouble:self.timeSpent forKey:@"timeSpent"];
     [encoder encodeDouble:self.lastActivity forKey:@"lastActivity"];
-    [encoder encodeObject:self.uuid forKey:@"uuid"];
+    [encoder encodeObject:self.dedupeToken forKey:@"uuid"];
     [encoder encodeObject:self.transactionIds forKey:@"transactionIds"];
     [encoder encodeBool:self.enabled forKey:@"enabled"];
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
@@ -210,7 +209,7 @@ static NSString *appToken = nil;
         copy.subsessionCount = self.subsessionCount;
         copy.sessionLength = self.sessionLength;
         copy.timeSpent = self.timeSpent;
-        copy.uuid = [self.uuid copyWithZone:zone];
+        copy.dedupeToken = [self.dedupeToken copyWithZone:zone];
         copy.lastInterval = self.lastInterval;
         copy.eventCount = self.eventCount;
         copy.enabled = self.enabled;

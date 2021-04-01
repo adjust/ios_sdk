@@ -13,7 +13,6 @@
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
 #import "ADJPackageBuilder.h"
-#import "UIDevice+ADJAdditions.h"
 
 static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
@@ -149,7 +148,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     
     if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
         // refresh token
-        NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:nil];
+        NSString *token = [ADJUtil fetchAdServicesAttribution:nil];
         
         if (token != nil && ![sdkClickPackage.parameters[ADJAttributionTokenParameter] isEqualToString:token]) {
             // update token

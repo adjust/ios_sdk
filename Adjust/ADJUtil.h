@@ -1,9 +1,9 @@
 //
 //  ADJUtil.h
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Christian Wellenbrock on 2013-07-05.
-//  Copyright (c) 2013 adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 5th July 2013.
+//  Copyright (c) 2013-2021 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,6 +14,7 @@
 #import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJBackoffStrategy.h"
+#import "ADJActivityHandler.h"
 
 typedef void (^selfInjectedBlock)(id);
 typedef void (^synchronisedBlock)(void);
@@ -58,13 +59,7 @@ typedef void (^isInactiveInjected)(BOOL);
 + (void)launchSynchronisedWithObject:(id)synchronisationObject
                                block:(synchronisedBlock)block;
 
-+ (NSString *)idfa;
-
 + (NSString *)clientSdk;
-
-+ (NSString *)getUpdateTime;
-
-+ (NSString *)getInstallTime;
 
 + (NSString *)formatDate:(NSDate *)value;
 
@@ -102,18 +97,50 @@ typedef void (^isInactiveInjected)(BOOL);
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 
-+ (NSNumber *)readReachabilityFlags;
-
 + (BOOL)isDeeplinkValid:(NSURL *)url;
 
 + (NSString *)sdkVersion;
 
-+ (NSString *)readMCC;
-
-+ (NSString *)readMNC;
-
-+ (NSString *)readCurrentRadioAccessTechnology;
-
 + (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue;
+
++ (Class)adSupportManager;
+
++ (Class)appTrackingManager;
+
++ (BOOL)trackingEnabled;
+
++ (NSString *)idfa;
+
++ (NSString *)idfv;
+
++ (NSString *)fbAnonymousId;
+
++ (NSString *)deviceType;
+
++ (NSString *)deviceName;
+
++ (NSUInteger)startedAt;
+
++ (int)attStatus;
+
++ (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
+
++ (void)checkForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue;
+
++ (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
+   adClientSharedInstance:(id)ADClientSharedClientInstance
+                    queue:(dispatch_queue_t)queue;
+
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
+
++ (NSString *)bundleIdentifier;
+
++ (NSString *)buildNumber;
+
++ (NSString *)versionNumber;
+
++ (NSString *)osVersion;
+
++ (NSString *)installedAt;
 
 @end

@@ -25,7 +25,7 @@
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, copy) NSString *defaultTracker;
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
-// ADJDeviceInfo
+// ADJPackageParams
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *pushToken;
 // ADJEvent

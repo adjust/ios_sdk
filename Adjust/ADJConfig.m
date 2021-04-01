@@ -129,6 +129,11 @@
         // does not enable hasDelegate flag
         implementsDeeplinkCallback = YES;
     }
+    
+    if ([delegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
+        [self.logger debug:@"Delegate implements adjustConversionValueUpdated:"];
+        hasResponseDelegate = YES;
+    }
 
     if (!(hasResponseDelegate || implementsDeeplinkCallback)) {
         [self.logger error:@"Delegate does not implement any optional method"];

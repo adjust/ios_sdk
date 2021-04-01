@@ -239,7 +239,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     double now = [NSDate.date timeIntervalSince1970];
 
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                             initWithDeviceInfo:selfI.activityHandler.deviceInfo
+                                             initWithPackageParams:selfI.activityHandler.packageParams
                                              activityState:selfI.activityHandler.activityState
                                              config:selfI.activityHandler.adjustConfig
                                              sessionParameters:selfI.activityHandler.sessionParameters
