@@ -114,13 +114,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)readCurrentRadioAccessTechnology;
 
-+ (NSString *)stringToBinaryString:(NSString *)str;
-
-+ (NSString *)decimalToBinaryString:(NSUInteger)decInt;
-
-+ (NSString *)enforceParameterLength:(NSString *)parameter
-                       withMaxlength:(NSUInteger)maxLength;
-
 + (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue;
 
 @end

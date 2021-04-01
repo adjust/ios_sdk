@@ -60,7 +60,6 @@
 		9DF38337260E9EB50033F5A1 /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382D0260E9EB40033F5A1 /* ADJTimerOnce.m */; };
 		9DF38338260E9EB50033F5A1 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382D1260E9EB40033F5A1 /* ADJAttributionHandler.m */; };
 		9DF38339260E9EB50033F5A1 /* ADJRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382D4260E9EB40033F5A1 /* ADJRequestHandler.m */; };
-		9DF3833A260E9EB50033F5A1 /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382D8260E9EB40033F5A1 /* ADJKeychain.m */; };
 		9DF3833B260E9EB50033F5A1 /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382D9260E9EB40033F5A1 /* ADJSdkClickHandler.m */; };
 		9DF3833C260E9EB50033F5A1 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382DB260E9EB40033F5A1 /* ADJEvent.m */; };
 		9DF3833D260E9EB50033F5A1 /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF382E0260E9EB40033F5A1 /* ADJSessionSuccess.m */; };
@@ -202,7 +201,6 @@
 		9DF382D5260E9EB40033F5A1 /* ADJSystemProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSystemProfile.h; sourceTree = "<group>"; };
 		9DF382D6260E9EB40033F5A1 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		9DF382D7260E9EB40033F5A1 /* ADJAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAttribution.h; sourceTree = "<group>"; };
-		9DF382D8260E9EB40033F5A1 /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
 		9DF382D9260E9EB40033F5A1 /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
 		9DF382DA260E9EB40033F5A1 /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
 		9DF382DB260E9EB40033F5A1 /* ADJEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEvent.m; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 		9DF38301260E9EB40033F5A1 /* ADJEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEvent.h; sourceTree = "<group>"; };
 		9DF38302260E9EB40033F5A1 /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
 		9DF38303260E9EB40033F5A1 /* ADJActivityKind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityKind.m; sourceTree = "<group>"; };
-		9DF38304260E9EB40033F5A1 /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
 		9DF38306260E9EB40033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
 		9DF38307260E9EB40033F5A1 /* NSString+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF38308260E9EB40033F5A1 /* UIDevice+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ADJAdditions.h"; sourceTree = "<group>"; };
@@ -481,7 +478,6 @@
 				9DF382D5260E9EB40033F5A1 /* ADJSystemProfile.h */,
 				9DF382D6260E9EB40033F5A1 /* ADJThirdPartySharing.h */,
 				9DF382D7260E9EB40033F5A1 /* ADJAttribution.h */,
-				9DF382D8260E9EB40033F5A1 /* ADJKeychain.m */,
 				9DF382D9260E9EB40033F5A1 /* ADJSdkClickHandler.m */,
 				9DF382DA260E9EB40033F5A1 /* ADJActivityKind.h */,
 				9DF382DB260E9EB40033F5A1 /* ADJEvent.m */,
@@ -514,7 +510,6 @@
 				9DF38301260E9EB40033F5A1 /* ADJEvent.h */,
 				9DF38302260E9EB40033F5A1 /* ADJSdkClickHandler.h */,
 				9DF38303260E9EB40033F5A1 /* ADJActivityKind.m */,
-				9DF38304260E9EB40033F5A1 /* ADJKeychain.h */,
 				9DF38305260E9EB40033F5A1 /* ADJAdditions */,
 				9DF3830E260E9EB40033F5A1 /* ADJAttribution.m */,
 				9DF3830F260E9EB40033F5A1 /* ADJThirdPartySharing.m */,
@@ -701,7 +696,6 @@
 				9DF38347260E9EB50033F5A1 /* ADJConfig.m in Sources */,
 				9D9D15E8212EB5230081445E /* UIWebViewController.m in Sources */,
 				9DF38336260E9EB50033F5A1 /* ADJDeviceInfo.m in Sources */,
-				9DF3833A260E9EB50033F5A1 /* ADJKeychain.m in Sources */,
 				9DF382A8260E9E660033F5A1 /* ADJSdkClickHandler.m in Sources */,
 				9D9D15E9212EB5230081445E /* WKWebViewController.m in Sources */,
 				9DF3834C260E9EB50033F5A1 /* NSNumber+ADJAdditions.m in Sources */,

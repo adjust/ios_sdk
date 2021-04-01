@@ -339,8 +339,6 @@
 		9DF38210260E9B740033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3820E260E9B740033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF3821C260E9B8D0033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3821A260E9B8D0033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF3821D260E9B8D0033F5A1 /* NSNumber+ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF3821B260E9B8D0033F5A1 /* NSNumber+ADJAdditions.h */; };
-		9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8B11D6ED228008E362F /* ADJKeychain.h */; };
-		9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8B21D6ED228008E362F /* ADJKeychain.m */; };
 		9DF9C9091D6F3CA5008E362F /* ADJActivityHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8C91D6F3CA5008E362F /* ADJActivityHandler.h */; };
 		9DF9C90A1D6F3CA5008E362F /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8CA1D6F3CA5008E362F /* ADJActivityHandler.m */; };
 		9DF9C90B1D6F3CA5008E362F /* ADJActivityKind.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8CB1D6F3CA5008E362F /* ADJActivityKind.h */; };
@@ -974,8 +972,6 @@
 		9DF3820E260E9B740033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF3821A260E9B8D0033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF3821B260E9B8D0033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
-		9DF9C8B11D6ED228008E362F /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
-		9DF9C8B21D6ED228008E362F /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
 		9DF9C8C91D6F3CA5008E362F /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9DF9C8CA1D6F3CA5008E362F /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9DF9C8CB1D6F3CA5008E362F /* ADJActivityKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityKind.h; sourceTree = "<group>"; };
@@ -1408,8 +1404,6 @@
 				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
 				96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */,
 				96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */,
-				9DF9C8B11D6ED228008E362F /* ADJKeychain.h */,
-				9DF9C8B21D6ED228008E362F /* ADJKeychain.m */,
 				96B6710E1D788EEC0090A023 /* ADJSessionParameters.h */,
 				96B6710F1D788EEC0090A023 /* ADJSessionParameters.m */,
 				6FCC84F81F278CF300D6A0ED /* ADJReachability.h */,
@@ -1995,7 +1989,6 @@
 				96164D8C1CCA4DEA009431AB /* ADJSystemProfile.h in Headers */,
 				965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */,
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
-				9DF9C8B31D6ED228008E362F /* ADJKeychain.h in Headers */,
 				96B671101D788EEC0090A023 /* ADJSessionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2687,7 +2680,6 @@
 				96164D8D1CCA4DEA009431AB /* ADJSystemProfile.m in Sources */,
 				965B7F311CC78F6600098639 /* ADJBackoffStrategy.m in Sources */,
 				96164D731CC8FA73009431AB /* ADJSdkClickHandler.m in Sources */,
-				9DF9C8B41D6ED228008E362F /* ADJKeychain.m in Sources */,
 				96B671111D788EEC0090A023 /* ADJSessionParameters.m in Sources */,
 				9DD0E9AF1F44690B00B2A759 /* ADJUserDefaults.m in Sources */,
 				9DF381BC260E990B0033F5A1 /* NSNumber+ADJAdditions.m in Sources */,

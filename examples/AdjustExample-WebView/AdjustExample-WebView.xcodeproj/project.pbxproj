@@ -39,7 +39,6 @@
 		9D449EE81E6EDD4100E7E80B /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EB61E6EDD4100E7E80B /* ADJEvent.m */; };
 		9D449EE91E6EDD4100E7E80B /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EB81E6EDD4100E7E80B /* ADJEventFailure.m */; };
 		9D449EEA1E6EDD4100E7E80B /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EBA1E6EDD4100E7E80B /* ADJEventSuccess.m */; };
-		9D449EEB1E6EDD4100E7E80B /* ADJKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EBC1E6EDD4100E7E80B /* ADJKeychain.m */; };
 		9D449EEC1E6EDD4100E7E80B /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EBE1E6EDD4100E7E80B /* ADJLogger.m */; };
 		9D449EED1E6EDD4100E7E80B /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EC01E6EDD4100E7E80B /* ADJPackageBuilder.m */; };
 		9D449EEE1E6EDD4100E7E80B /* ADJPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EC21E6EDD4100E7E80B /* ADJPackageHandler.m */; };
@@ -121,8 +120,6 @@
 		9D449EB81E6EDD4100E7E80B /* ADJEventFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEventFailure.m; sourceTree = "<group>"; };
 		9D449EB91E6EDD4100E7E80B /* ADJEventSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEventSuccess.h; sourceTree = "<group>"; };
 		9D449EBA1E6EDD4100E7E80B /* ADJEventSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJEventSuccess.m; sourceTree = "<group>"; };
-		9D449EBB1E6EDD4100E7E80B /* ADJKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJKeychain.h; sourceTree = "<group>"; };
-		9D449EBC1E6EDD4100E7E80B /* ADJKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJKeychain.m; sourceTree = "<group>"; };
 		9D449EBD1E6EDD4100E7E80B /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
 		9D449EBE1E6EDD4100E7E80B /* ADJLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLogger.m; sourceTree = "<group>"; };
 		9D449EBF1E6EDD4100E7E80B /* ADJPackageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPackageBuilder.h; sourceTree = "<group>"; };
@@ -275,8 +272,6 @@
 				9D449EB81E6EDD4100E7E80B /* ADJEventFailure.m */,
 				9D449EB91E6EDD4100E7E80B /* ADJEventSuccess.h */,
 				9D449EBA1E6EDD4100E7E80B /* ADJEventSuccess.m */,
-				9D449EBB1E6EDD4100E7E80B /* ADJKeychain.h */,
-				9D449EBC1E6EDD4100E7E80B /* ADJKeychain.m */,
 				9D449EBD1E6EDD4100E7E80B /* ADJLogger.h */,
 				9D449EBE1E6EDD4100E7E80B /* ADJLogger.m */,
 				9D449EBF1E6EDD4100E7E80B /* ADJPackageBuilder.h */,
@@ -467,7 +462,6 @@
 				9D75F19A1D07463800E5D222 /* AdjustBridge.m in Sources */,
 				9D449EF21E6EDD4100E7E80B /* ADJSessionFailure.m in Sources */,
 				9D449EDD1E6EDD4100E7E80B /* ADJActivityState.m in Sources */,
-				9D449EEB1E6EDD4100E7E80B /* ADJKeychain.m in Sources */,
 				9D449EE11E6EDD4100E7E80B /* ADJAdjustFactory.m in Sources */,
 				9D75F1971D07463800E5D222 /* WebViewJavascriptBridge_JS.m in Sources */,
 				968595F11D0B2E630011CA2B /* AdjustBridgeRegister.m in Sources */,

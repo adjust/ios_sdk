@@ -364,7 +364,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -393,11 +392,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     if (!isInDelay) {
@@ -444,7 +439,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -474,11 +468,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     if (!isInDelay) {
@@ -545,7 +535,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -578,11 +567,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     if (self.attribution != nil) {
@@ -629,7 +614,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -660,11 +644,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
@@ -710,7 +690,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -743,11 +722,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     if (self.attribution != nil) {
@@ -787,7 +762,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -810,11 +784,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     return parameters;
@@ -840,7 +810,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -863,11 +832,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     return parameters;
@@ -906,7 +871,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -938,11 +902,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
@@ -987,7 +947,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -1025,11 +984,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
@@ -1074,7 +1029,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.installReceiptBase64 forKey:@"install_receipt"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -1109,11 +1063,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
 #if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
@@ -1150,7 +1100,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.vendorId forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:[ADJUtil getInstallTime] forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.languageCode forKey:@"language"];
-    [ADJPackageBuilder parameters:parameters setString:[[UIDevice currentDevice] adjDeviceId:_deviceInfo] forKey:@"m"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osBuild forKey:@"os_build"];
     [ADJPackageBuilder parameters:parameters setString:self.deviceInfo.osName forKey:@"os_name"];
@@ -1178,11 +1127,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"persistent_ios_uuid"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
-        }
+        [ADJPackageBuilder parameters:parameters setString:self.activityState.uuid forKey:@"ios_uuid"];
     }
 
     if (!isInDelay) {
