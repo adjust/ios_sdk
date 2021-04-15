@@ -88,4 +88,19 @@
     [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
 }
 
+#pragma mark - NSCopying protocol methods
+- (id)copyWithZone:(nullable NSZone *)zone {
+    ADJActivityPackage *copy = [[ADJActivityPackage alloc] init];
+
+    copy.path = self.path;
+    copy.clientSdk = self.clientSdk;
+    copy.parameters = [self.parameters mutableCopyWithZone:zone];
+    copy.partnerParameters = [self.partnerParameters copyWithZone:zone];
+    copy.callbackParameters = [self.callbackParameters copyWithZone:zone];
+    copy.suffix = self.suffix;
+    copy.activityKind = self.activityKind;
+
+    return copy;
+}
+
 @end

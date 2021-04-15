@@ -320,8 +320,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     if (selfS.packageQueue == nil) {
         return;
     }
-    
-    [ADJUtil writeObject:selfS.packageQueue
+
+    NSMutableArray *queueCopy = [[NSMutableArray alloc] initWithArray:selfS.packageQueue
+                                                            copyItems:YES];
+
+    [ADJUtil writeObject:queueCopy
                 fileName:kPackageQueueFilename
               objectName:@"Package queue"
               syncObject:[ADJPackageHandler class]];

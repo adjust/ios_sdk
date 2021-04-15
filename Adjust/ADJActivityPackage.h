@@ -8,7 +8,7 @@
 
 #import "ADJActivityKind.h"
 
-@interface ADJActivityPackage : NSObject <NSCoding>
+@interface ADJActivityPackage : NSObject <NSCoding, NSCopying>
 
 // Data
 
