@@ -124,6 +124,11 @@
     return YES;
 }
 
+- (void)adjustConversionValueUpdated:(NSNumber *)conversionValue {
+    NSLog(@"Conversion value updated callback called!");
+    NSLog(@"Conversion value: %@", conversionValue);
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
 }
 

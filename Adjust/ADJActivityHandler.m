@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 adjust GmbH. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "ADJActivityPackage.h"
 #import "ADJActivityHandler.h"
 #import "ADJPackageBuilder.h"
@@ -14,7 +16,6 @@
 #import "ADJTimerCycle.h"
 #import "ADJTimerOnce.h"
 #import "ADJUtil.h"
-#import "UIDevice+ADJAdditions.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
 #import "NSString+ADJAdditions.h"
@@ -87,7 +88,7 @@ static const int kAdServicesdRetriesCount = 1;
 @property (nonatomic, assign) NSInteger iAdRetriesLeft;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
-@property (nonatomic, strong) ADJDeviceInfo *deviceInfo;
+@property (nonatomic, strong) ADJPackageParams *packageParams;
 @property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
 @property (nonatomic, strong) ADJSessionParameters *sessionParameters;
 // weak for object that Activity Handler does not "own"
@@ -562,7 +563,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
          }];
      }
      ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
+                                        initWithPackageParams:selfI.packageParams
                                         activityState:selfI.activityState
                                         config:selfI.adjustConfig
                                         sessionParameters:self.sessionParameters
@@ -597,7 +598,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
          }];
      }
      ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:selfI.deviceInfo
+                                        initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
                                        sessionParameters:self.sessionParameters
@@ -760,6 +761,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }];
 }
 
+- (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI trackAdRevenueI:selfI adRevenue:adRevenue];
+    }];
+}
+
 - (void)writeActivityState {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -779,7 +788,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     double now = [NSDate.date timeIntervalSince1970];
 
     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                            initWithDeviceInfo:selfI.deviceInfo
+                                      initWithPackageParams:selfI.packageParams
                                                 activityState:selfI.activityState
                                                 config:selfI.adjustConfig
                                                 sessionParameters:selfI.sessionParameters
@@ -845,7 +854,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     self.adjustDelegate = nil;
     self.adjustConfig = nil;
     self.internalState = nil;
-    self.deviceInfo = nil;
+    self.packageParams = nil;
     self.delayStartTimer = nil;
     self.logger = nil;
 }
@@ -888,7 +897,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     kForegroundTimerInterval = ADJAdjustFactory.timerInterval;
     kBackgroundTimerInterval = ADJAdjustFactory.timerInterval;
 
-    selfI.deviceInfo = [ADJDeviceInfo deviceInfoWithSdkPrefix:selfI.adjustConfig.sdkPrefix];
+    selfI.packageParams = [ADJPackageParams packageParamsWithSdkPrefix:selfI.adjustConfig.sdkPrefix];
 
     // read files that are accessed only in Internal sections
     selfI.sessionParameters = [[ADJSessionParameters alloc] init];
@@ -1159,7 +1168,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)transferSessionPackageI:(ADJActivityHandler *)selfI
                             now:(double)now {
     ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
-                                         initWithDeviceInfo:selfI.deviceInfo
+                                         initWithPackageParams:selfI.packageParams
                                          activityState:selfI.activityState
                                          config:selfI.adjustConfig
                                          sessionParameters:selfI.sessionParameters
@@ -1234,7 +1243,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
-                                       initWithDeviceInfo:selfI.deviceInfo
+                                       initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
                                        sessionParameters:selfI.sessionParameters
@@ -1275,7 +1284,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // Create and submit ad revenue package.
     ADJPackageBuilder *adRevenueBuilder = [[ADJPackageBuilder alloc]
-                                               initWithDeviceInfo:selfI.deviceInfo
+                                           initWithPackageParams:selfI.packageParams
                                                    activityState:selfI.activityState
                                                    config:selfI.adjustConfig
                                                    sessionParameters:selfI.sessionParameters
@@ -1307,7 +1316,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // Create and submit ad revenue package.
     ADJPackageBuilder *subscriptionBuilder = [[ADJPackageBuilder alloc]
-                                                initWithDeviceInfo:selfI.deviceInfo
+                                              initWithPackageParams:selfI.packageParams
                                                     activityState:selfI.activityState
                                                     config:selfI.adjustConfig
                                                     sessionParameters:selfI.sessionParameters
@@ -1352,7 +1361,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // build package
     ADJPackageBuilder *dtpsBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
+                                      initWithPackageParams:selfI.packageParams
                                             activityState:selfI.activityState
                                             config:selfI.adjustConfig
                                             sessionParameters:selfI.sessionParameters
@@ -1389,7 +1398,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // build package
     ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
+                                     initWithPackageParams:selfI.packageParams
                                             activityState:selfI.activityState
                                             config:selfI.adjustConfig
                                             sessionParameters:selfI.sessionParameters
@@ -1426,7 +1435,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // build package
     ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
+                                     initWithPackageParams:selfI.packageParams
                                             activityState:selfI.activityState
                                             config:selfI.adjustConfig
                                             sessionParameters:selfI.sessionParameters
@@ -1444,6 +1453,42 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     return YES;
+}
+
+- (void)trackAdRevenueI:(ADJActivityHandler *)selfI
+              adRevenue:(ADJAdRevenue *)adRevenue
+{
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (![selfI checkAdRevenueI:selfI adRevenue:adRevenue]) {
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // Create and submit ad revenue package.
+    ADJPackageBuilder *adRevenueBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                                                          activityState:selfI.activityState
+                                                                                 config:selfI.adjustConfig
+                                                                      sessionParameters:selfI.sessionParameters
+                                                                  trackingStatusManager:self.trackingStatusManager
+                                                                              createdAt:now];
+
+    ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue
+                                                                         isInDelay:[selfI.internalState isInDelayedStart]];
+    [selfI.packageHandler addPackage:adRevenuePackage];
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", adRevenuePackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
@@ -1710,7 +1755,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)checkForiAdI:(ADJActivityHandler *)selfI {
-    [[UIDevice currentDevice] adjCheckForiAd:selfI queue:selfI.internalQueue];
+    [ADJUtil checkForiAd:selfI queue:selfI.internalQueue];
 }
 
 - (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
@@ -1727,7 +1772,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         if ([selfI shouldFetchAdServicesI:selfI]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSError *error = nil;
-                NSString *token = [[UIDevice currentDevice] adjFetchAdServicesAttribution:&error];
+                NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
                 [selfI setAdServicesAttributionToken:token error:error];
             });
         }
@@ -1842,7 +1887,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         selfI.activityState.lastInterval = lastInterval;
     }];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                            initWithDeviceInfo:selfI.deviceInfo
+                                       initWithPackageParams:selfI.packageParams
                                                 activityState:selfI.activityState
                                                 config:selfI.adjustConfig
                                                 sessionParameters:selfI.sessionParameters
@@ -1946,7 +1991,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                            initWithDeviceInfo:selfI.deviceInfo
+                                      initWithPackageParams:selfI.packageParams
                                                 activityState:selfI.activityState
                                                 config:selfI.adjustConfig
                                                 sessionParameters:selfI.sessionParameters
@@ -1995,7 +2040,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                            initWithDeviceInfo:selfI.deviceInfo
+                                      initWithPackageParams:selfI.packageParams
                                                 activityState:selfI.activityState
                                                 config:selfI.adjustConfig
                                                 sessionParameters:selfI.sessionParameters
@@ -2036,7 +2081,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // Send GDPR package
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *gdprBuilder = [[ADJPackageBuilder alloc]
-                                        initWithDeviceInfo:selfI.deviceInfo
+                                      initWithPackageParams:selfI.packageParams
                                             activityState:selfI.activityState
                                             config:selfI.adjustConfig
                                             sessionParameters:selfI.sessionParameters
@@ -2668,6 +2713,21 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return YES;
 }
 
+- (BOOL)checkAdRevenueI:(ADJActivityHandler *)selfI
+              adRevenue:(ADJAdRevenue *)adRevenue {
+    if (adRevenue == nil) {
+        [selfI.logger error:@"Ad revenue missing"];
+        return NO;
+    }
+
+    if (![adRevenue isValid]) {
+        [selfI.logger error:@"Ad revenue not initialized correctly"];
+        return NO;
+    }
+
+    return YES;
+}
+
 - (void)registerForSKAdNetworkAttribution {
     if (!self.adjustConfig.isSKAdNetworkHandlingActive) {
         return;
@@ -2705,6 +2765,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
     
     [ADJUtil updateSkAdNetworkConversionValue:conversionValue];
+
+    if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
+        [self.logger debug:@"Launching conversion value updated delegate"];
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustConversionValueUpdated:)
+                         withObject:conversionValue];
+    }
 }
 
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
@@ -2737,37 +2804,28 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (BOOL)trackingEnabled {
-    return UIDevice.currentDevice.adjTrackingEnabled;
+    return [ADJUtil trackingEnabled];
 }
 
 - (int)attStatus {
-    int readAttStatus = UIDevice.currentDevice.adjATTStatus;
-
+    int readAttStatus = [ADJUtil attStatus];
     [self updateAttStatus:readAttStatus];
-
-    // does not need to track AttStatus update, since it will be send with package
-
     return readAttStatus;
 }
 
 - (void)checkForNewAttStatus {
-    int readAttStatus = UIDevice.currentDevice.adjATTStatus;
-
+    int readAttStatus = [ADJUtil attStatus];
     BOOL didUpdateAttStatus = [self updateAttStatus:readAttStatus];
-
     if (!didUpdateAttStatus) {
         return;
     }
-
     [self.activityHandler trackAttStatusUpdate];
 }
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
     BOOL didUpdateAttStatus = [self updateAttStatus:newAttStatusFromUser];
-
     if (!didUpdateAttStatus) {
         return;
     }
-
     [self.activityHandler trackAttStatusUpdate];
 }
 

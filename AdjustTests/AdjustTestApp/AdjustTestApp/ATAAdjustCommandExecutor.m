@@ -96,8 +96,10 @@
     } else if ([methodName isEqualToString:@"measurementConsent"]) {
         [self measurementConsent:parameters];
     } else if ([methodName isEqualToString:@"trackSubscription"]) {
-           [self trackSubscription:parameters];
-   }
+        [self trackSubscription:parameters];
+    } else if ([methodName isEqualToString:@"trackAdRevenueV2"]) {
+        [self trackAdRevenueV2:parameters];
+    }
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
@@ -652,6 +654,63 @@
     }
 
     [Adjust trackSubscription:subscription];
+}
+
+- (void)trackAdRevenueV2:(NSDictionary *)parameters {
+    NSString *source = nil;
+    if ([parameters objectForKey:@"adRevenueSource"]) {
+        if ([[parameters objectForKey:@"adRevenueSource"] count] > 0) {
+            source = [parameters objectForKey:@"adRevenueSource"][0];
+        }
+    }
+    ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:source];
+    
+    if ([parameters objectForKey:@"revenue"]) {
+        NSArray *currencyAndRevenue = [parameters objectForKey:@"revenue"];
+        NSString *currency = currencyAndRevenue[0];
+        double revenue = [currencyAndRevenue[1] doubleValue];
+        [adRevenue setRevenue:revenue currency:currency];
+    }
+    
+    if ([parameters objectForKey:@"adImpressionsCount"]) {
+        int adImpressionsCount = [[parameters objectForKey:@"adImpressionsCount"][0] intValue];
+        [adRevenue setAdImpressionsCount:adImpressionsCount];
+    }
+    
+    if ([parameters objectForKey:@"adRevenueUnit"]) {
+        NSString *adRevenueUnit = [parameters objectForKey:@"adRevenueUnit"][0];
+        [adRevenue setAdRevenueUnit:adRevenueUnit];
+    }
+    
+    if ([parameters objectForKey:@"adRevenuePlacement"]) {
+        NSString *adRevenuePlacement = [parameters objectForKey:@"adRevenuePlacement"][0];
+        [adRevenue setAdRevenuePlacement:adRevenuePlacement];
+    }
+    
+    if ([parameters objectForKey:@"adRevenueNetwork"]) {
+        NSString *adRevenueNetwork = [parameters objectForKey:@"adRevenueNetwork"][0];
+        [adRevenue setAdRevenueNetwork:adRevenueNetwork];
+    }
+    
+    if ([parameters objectForKey:@"callbackParams"]) {
+        NSArray *callbackParams = [parameters objectForKey:@"callbackParams"];
+        for (int i = 0; i < callbackParams.count; i = i + 2) {
+            NSString *key = callbackParams[i];
+            NSString *value = callbackParams[i + 1];
+            [adRevenue addCallbackParameter:key value:value];
+        }
+    }
+
+    if ([parameters objectForKey:@"partnerParams"]) {
+        NSArray *partnerParams = [parameters objectForKey:@"partnerParams"];
+        for (int i = 0; i < partnerParams.count; i = i + 2) {
+            NSString *key = partnerParams[i];
+            NSString *value = partnerParams[i + 1];
+            [adRevenue addPartnerParameter:key value:value];
+        }
+    }
+    
+    [Adjust trackAdRevenue:adRevenue];
 }
 
 @end

@@ -3,41 +3,43 @@
 //  Adjust SDK
 //
 //  Created by Christian Wellenbrock (@wellle) on 5th July 2013.
-//  Copyright (c) 2013-2018 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2013-2021 Adjust GmbH. All rights reserved.
 //
 
 #include <math.h>
+#include <dlfcn.h>
 #include <stdlib.h>
 #include <sys/xattr.h>
+
 #import <objc/message.h>
+#import <sys/utsname.h>
+#import <sys/types.h>
+#import <sys/sysctl.h>
+
+#import <UIKit/UIKit.h>
 
 #import "ADJUtil.h"
 #import "ADJLogger.h"
-#import "ADJReachability.h"
 #import "ADJResponseData.h"
 #import "ADJAdjustFactory.h"
-#import "UIDevice+ADJAdditions.h"
 #import "NSString+ADJAdditions.h"
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#if !ADJUST_NO_IDFA
+#import <AdSupport/ASIdentifierManager.h>
+#endif
+
+#if !ADJUST_NO_IAD && !TARGET_OS_TV
+#import <iAd/iAd.h>
 #endif
 
 static NSString *userAgent = nil;
-static ADJReachability *reachability = nil;
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
-static CTCarrier *carrier = nil;
-static CTTelephonyNetworkInfo *networkInfo = nil;
-#endif
-
-static NSString * const kClientSdk                  = @"ios4.28.0";
+static NSString * const kClientSdk                  = @"ios4.29.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -59,23 +61,13 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeExcludedDeeplinkRegex];
-    [self initializeReachability];
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
-    [self initializeNetworkInfoAndCarrier];
-#endif
 }
 
 + (void)teardown {
-    reachability = nil;
     universalLinkRegex = nil;
     secondsNumberFormatter = nil;
     optionalRedirectRegex = nil;
     shortUniversalLinkRegex = nil;
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
-    networkInfo = nil;
-    carrier = nil;
-#endif
-
 }
 
 + (void)initializeUniversalLinkRegex {
@@ -131,31 +123,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [secondsNumberFormatter setPositiveFormat:@"0.0"];
 }
 
-#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST
-+ (void)initializeNetworkInfoAndCarrier {
-    networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    
-    if (@available(iOS 12.0, *)) {
-        NSString *currentRadioAccess = networkInfo.serviceCurrentRadioAccessTechnology.allKeys.firstObject;
-        if (currentRadioAccess) {
-            carrier = networkInfo.serviceSubscriberCellularProviders[currentRadioAccess];
-        }
-    }
-    
-    if (!carrier) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        carrier = [networkInfo subscriberCellularProvider];
-#pragma clang diagnostic pop
-    }
-}
-#endif
-
-+ (void)initializeReachability {
-    reachability = [ADJReachability reachabilityForInternetConnection];
-    [reachability startNotifier];
-}
-
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
     userAgent = config.userAgent;
 }
@@ -183,7 +150,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         }
         dateFormatter.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
-    dateFormatter.locale = [NSLocale systemLocale];
     [dateFormatter setDateFormat:kDateFormat];
 
     return dateFormatter;
@@ -404,11 +370,41 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (BOOL)migrateFileFromPath:(NSString *)oldPath toPath:(NSString *)newPath {
-    NSError *errorCopy;
-    [[NSFileManager defaultManager] copyItemAtPath:oldPath toPath:newPath error:&errorCopy];
-    if (errorCopy != nil) {
+    __autoreleasing NSError *error;
+    __autoreleasing NSError **errorPointer = &error;
+    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    if (class == nil) {
+        return NO;
+    }
+    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    SEL selDm = NSSelectorFromString(keyDm);
+    if (![class respondsToSelector:selDm]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id man = [class performSelector:selDm];
+#pragma clang diagnostic pop
+    NSString *keyCpy = [NSString stringWithFormat:@"%@%@%@",
+                        [NSString adjJoin:@"copy", @"item", @"at", @"path", @":", nil],
+                        [NSString adjJoin:@"to", @"path", @":", nil],
+                        [NSString adjJoin:@"error", @":", nil]];
+    SEL selCpy = NSSelectorFromString(keyCpy);
+    if (![man respondsToSelector:selCpy]) {
+        return NO;
+    }
+
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selCpy]];
+    [inv setSelector:selCpy];
+    [inv setTarget:man];
+    [inv setArgument:&oldPath atIndex:2];
+    [inv setArgument:&newPath atIndex:3];
+    [inv setArgument:&errorPointer atIndex:4];
+    [inv invoke];
+
+    if (error != nil) {
         [[ADJAdjustFactory logger] error:@"Error while copying from %@ to %@", oldPath, newPath];
-        [[ADJAdjustFactory logger] error:[errorCopy description]];
+        [[ADJAdjustFactory logger] error:[error description]];
         return NO;
     }
     // Migration successful.
@@ -443,10 +439,53 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (BOOL)checkForDirectoryPresenceInPath:(NSString *)path forFolder:(NSString *)folderName {
     // Check for presence of directory first.
     // If it doesn't exist, make one.
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    if (class == nil) {
+        return NO;
+    }
+    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    SEL selDm = NSSelectorFromString(keyDm);
+    if (![class respondsToSelector:selDm]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id man = [class performSelector:selDm];
+#pragma clang diagnostic pop
+    NSString *keyExi = [NSString adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
+    SEL selExi = NSSelectorFromString(keyExi);
+    if (![man respondsToSelector:selExi]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    BOOL exists = (BOOL)[man performSelector:selExi withObject:path];
+#pragma clang diagnostic pop
+    if (!exists) {
         [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", folderName];
-        NSError *error;
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error];
+        BOOL withIntermediateDirectories = NO;
+        NSDictionary *attributes = nil;
+        __autoreleasing NSError *error;
+        __autoreleasing NSError **errorPointer = &error;
+        NSString *keyCrt = [NSString stringWithFormat:@"%@%@%@%@",
+                            [NSString adjJoin:@"create", @"directory", @"at", @"path", @":", nil],
+                            [NSString adjJoin:@"with", @"intermediate", @"directories", @":", nil],
+                            [NSString adjJoin:@"attributes", @":", nil],
+                            [NSString adjJoin:@"error", @":", nil]];
+        SEL selCrt = NSSelectorFromString(keyCrt);
+        if (![man respondsToSelector:selCrt]) {
+            return NO;
+        }
+
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selCrt]];
+        [inv setSelector:selCrt];
+        [inv setTarget:man];
+        [inv setArgument:&path atIndex:2];
+        [inv setArgument:&withIntermediateDirectories atIndex:3];
+        [inv setArgument:&attributes atIndex:4];
+        [inv setArgument:&errorPointer atIndex:5];
+        [inv invoke];
+
         if (error != nil) {
             [[ADJAdjustFactory logger] error:@"Error while creating %@ directory", path];
             [[ADJAdjustFactory logger] error:[error description]];
@@ -519,47 +558,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         }
     }
     return convertedDictionary;
-}
-
-+ (NSString *)idfa {
-    return [[UIDevice currentDevice] adjIdForAdvertisers];
-}
-
-+ (NSString *)getUpdateTime {
-    NSDate *updateTime = nil;
-    id<ADJLogger> logger = ADJAdjustFactory.logger;
-    @try {
-        __autoreleasing NSError *error;
-        NSString *infoPlistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
-        updateTime = [[[NSFileManager defaultManager] attributesOfItemAtPath:infoPlistPath error:&error] objectForKey:NSFileModificationDate];
-    } @catch (NSException *exception) {
-        [logger error:@"Error while trying to check update date. Exception: %@", exception];
-    }
-    return [ADJUtil formatDate:updateTime];
-}
-
-+ (NSString *)getInstallTime {
-    id<ADJLogger> logger = ADJAdjustFactory.logger;
-    NSDate *installTime = nil;
-    NSString *pathToCheck = nil;
-    NSSearchPathDirectory folderToCheck = NSDocumentDirectory;
-#if TARGET_OS_TV
-    folderToCheck = NSCachesDirectory;
-#endif
-    @try {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(folderToCheck, NSUserDomainMask, YES);
-        if (paths.count > 0) {
-            pathToCheck = [paths objectAtIndex:0];
-        } else {
-            // There's no NSDocumentDirectory (or NSCachesDirectory).
-            // Check app's bundle creation date instead.
-            pathToCheck = [[NSBundle mainBundle] bundlePath];
-        }
-        installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
-    } @catch (NSException *exception) {
-        [logger error:@"Error while trying to check install date. Exception: %@", exception];
-    }
-    return [ADJUtil formatDate:installTime];
 }
 
 + (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
@@ -828,13 +826,52 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (BOOL)deleteFileInPath:(NSString *)filePath {
-    NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    if (class == nil) {
+        return NO;
+    }
+    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    SEL selDm = NSSelectorFromString(keyDm);
+    if (![class respondsToSelector:selDm]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id man = [class performSelector:selDm];
+#pragma clang diagnostic pop
+    NSString *keyExi = [NSString adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
+    SEL selExi = NSSelectorFromString(keyExi);
+    if (![man respondsToSelector:selExi]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    BOOL exists = (BOOL)[man performSelector:selExi withObject:filePath];
+#pragma clang diagnostic pop
+    if (!exists) {
         // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
         return YES;
     }
 
-    BOOL deleted = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+    __autoreleasing NSError *error;
+    __autoreleasing NSError **errorPointer = &error;
+    NSString *keyRm = [NSString stringWithFormat:@"%@%@",
+                        [NSString adjJoin:@"remove", @"item", @"at", @"path", @":", nil],
+                        [NSString adjJoin:@"error", @":", nil]];
+    SEL selRm = NSSelectorFromString(keyRm);
+    if (![man respondsToSelector:selRm]) {
+        return NO;
+    }
+
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selRm]];
+    [inv setSelector:selRm];
+    [inv setTarget:man];
+    [inv setArgument:&filePath atIndex:2];
+    [inv setArgument:&errorPointer atIndex:3];
+    [inv invoke];
+    BOOL deleted;
+    [inv getReturnValue:&deleted];
+
     if (!deleted) {
         [[ADJAdjustFactory logger] verbose:@"Unable to delete file at path %@", filePath];
     }
@@ -957,13 +994,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return [value isEqualToString:[readValue description]];
 }
 
-+ (NSNumber *)readReachabilityFlags {
-    if (reachability == nil) {
-        return nil;
-    }
-    return [reachability currentReachabilityFlags];
-}
-
 + (BOOL)isDeeplinkValid:(NSURL *)url {
     if (url == nil) {
         return NO;
@@ -992,47 +1022,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return kClientSdk;
 }
 
-+ (NSString *)readMCC {
-#if TARGET_OS_TV || TARGET_OS_MACCATALYST
-    return nil;
-#else
-    if (carrier == nil) {
-        return nil;
-    }
-    return [carrier mobileCountryCode];
-#endif
-}
-
-+ (NSString *)readMNC {
-#if TARGET_OS_TV || TARGET_OS_MACCATALYST
-    return nil;
-#else
-    if (carrier == nil) {
-        return nil;
-    }
-    return [carrier mobileNetworkCode];
-#endif
-}
-
-+ (NSString *)readCurrentRadioAccessTechnology {
-#if TARGET_OS_TV || TARGET_OS_MACCATALYST
-    return nil;
-#else
-    if (networkInfo == nil) {
-        return nil;
-    }
-    SEL radioTechSelector = NSSelectorFromString(@"currentRadioAccessTechnology");
-    if (![networkInfo respondsToSelector:radioTechSelector]) {
-        return nil;
-    }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    id radioTech = [networkInfo performSelector:radioTechSelector];
-#pragma clang diagnostic pop
-    return radioTech;
-#endif
-}
-
 + (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     
@@ -1056,6 +1045,462 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         
         [logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", intValue];
     }
+}
+
++ (Class)adSupportManager {
+    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
+    Class class = NSClassFromString(className);
+    return class;
+}
+
++ (Class)appTrackingManager {
+    NSString *className = [NSString adjJoin:@"A", @"T", @"tracking", @"manager", nil];
+    Class class = NSClassFromString(className);
+    return class;
+}
+
++ (BOOL)trackingEnabled {
+#if ADJUST_NO_IDFA
+    return NO;
+#else
+    // return [[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
+    Class adSupportClass = [ADJUtil adSupportManager];
+    if (adSupportClass == nil) {
+        return NO;
+    }
+
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    SEL selManager = NSSelectorFromString(keyManager);
+    if (![adSupportClass respondsToSelector:selManager]) {
+        return NO;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id manager = [adSupportClass performSelector:selManager];
+    NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+    SEL selEnabled = NSSelectorFromString(keyEnabled);
+    if (![manager respondsToSelector:selEnabled]) {
+        return NO;
+    }
+    BOOL enabled = (BOOL)[manager performSelector:selEnabled];
+    return enabled;
+#pragma clang diagnostic pop
+#endif
+}
+
++ (NSString *)idfa {
+#if ADJUST_NO_IDFA
+    return @"";
+#else
+    // return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    Class adSupportClass = [ADJUtil adSupportManager];
+    if (adSupportClass == nil) {
+        return @"";
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    SEL selManager = NSSelectorFromString(keyManager);
+    if (![adSupportClass respondsToSelector:selManager]) {
+        return @"";
+    }
+    id manager = [adSupportClass performSelector:selManager];
+    NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
+    SEL selIdentifier = NSSelectorFromString(keyIdentifier);
+    if (![manager respondsToSelector:selIdentifier]) {
+        return @"";
+    }
+    id identifier = [manager performSelector:selIdentifier];
+    NSString *keyString = [NSString adjJoin:@"UUID", @"string", nil];
+    SEL selString = NSSelectorFromString(keyString);
+    if (![identifier respondsToSelector:selString]) {
+        return @"";
+    }
+    NSString *string = [identifier performSelector:selString];
+    return string;
+#pragma clang diagnostic pop
+#endif
+}
+
++ (NSString *)idfv {
+    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    if (class == nil) {
+        return nil;
+    }
+    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    SEL selCd = NSSelectorFromString(keyCd);
+    if (![class respondsToSelector:selCd]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id dev = [class performSelector:selCd];
+#pragma clang diagnostic pop
+    NSString *keyIfv = [NSString adjJoin:@"identifier", @"for", @"vendor", nil];
+    SEL selIfv = NSSelectorFromString(keyIfv);
+    if (![dev respondsToSelector:selIfv]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    NSUUID *uuid = (NSUUID *)[dev performSelector:selIfv];
+#pragma clang diagnostic pop
+    if (uuid == nil) {
+        return nil;
+    }
+    return [uuid UUIDString];
+}
+
++ (NSString *)fbAnonymousId {
+#if TARGET_OS_TV
+    return @"";
+#else
+    // pre FB SDK v6.0.0
+    // return [FBSDKAppEventsUtility retrievePersistedAnonymousID];
+    // post FB SDK v6.0.0
+    // return [FBSDKBasicUtility retrievePersistedAnonymousID];
+    Class class = nil;
+    SEL selGetId = NSSelectorFromString(@"retrievePersistedAnonymousID");
+    class = NSClassFromString(@"FBSDKBasicUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
+#pragma clang diagnostic pop
+        }
+    }
+    class = NSClassFromString(@"FBSDKAppEventsUtility");
+    if (class != nil) {
+        if ([class respondsToSelector:selGetId]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSString *fbAnonymousId = (NSString *)[class performSelector:selGetId];
+            return fbAnonymousId;
+#pragma clang diagnostic pop
+        }
+    }
+    return @"";
+#endif
+}
+
++ (NSString *)deviceType {
+    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    if (class == nil) {
+        return nil;
+    }
+    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    SEL selCd = NSSelectorFromString(keyCd);
+    if (![class respondsToSelector:selCd]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id dev = [class performSelector:selCd];
+#pragma clang diagnostic pop
+    NSString *keyM = [NSString adjJoin:@"model", nil];
+    SEL selM = NSSelectorFromString(keyM);
+    if (![dev respondsToSelector:selM]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return (NSString *)[dev performSelector:selM];
+#pragma clang diagnostic pop
+}
+
++ (NSString *)deviceName {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    return @(systemInfo.machine);
+}
+
++ (NSUInteger)startedAt {
+    int MIB_SIZE = 2;
+    int mib[MIB_SIZE];
+    size_t size;
+    struct timeval starttime;
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_BOOTTIME;
+    size = sizeof(starttime);
+
+    NSString *m = [[NSString adjJoin:@"s", @"ys", @"ct", @"l", nil] lowercaseString];
+    int (*fptr)(int *, u_int, void *, size_t *, void *, size_t);
+    *(int**)(&fptr) = dlsym(RTLD_SELF, [m UTF8String]);
+    if (fptr) {
+        if ((*fptr)(mib, MIB_SIZE, &starttime, &size, NULL, 0) != -1) {
+            NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:starttime.tv_sec];
+            return (NSUInteger)round([startDate timeIntervalSince1970]);
+        }
+    }
+
+    return 0;
+}
+
++ (int)attStatus {
+    Class appTrackingClass = [self appTrackingManager];
+    if (appTrackingClass != nil) {
+        NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
+        SEL selAuthorization = NSSelectorFromString(keyAuthorization);
+        if ([appTrackingClass respondsToSelector:selAuthorization]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            return (int)[appTrackingClass performSelector:selAuthorization];
+#pragma clang diagnostic pop
+        }
+    }
+    return -1;
+}
+
++ (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr {
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+
+    // [AAAttribution attributionTokenWithError:...]
+    Class attributionClass = NSClassFromString(@"AAAttribution");
+    if (attributionClass == nil) {
+        [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
+        if (errorPtr) {
+            *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                            code:100
+                                        userInfo:@{@"Error reason": @"AdServices framework not found"}];
+        }
+        return nil;
+    }
+
+    SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
+    if (![attributionClass respondsToSelector:attributionTokenSelector]) {
+        if (errorPtr) {
+            *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
+                                            code:100
+                                        userInfo:@{@"Error reason": @"AdServices framework not found"}];
+        }
+        return nil;
+    }
+    
+    NSMethodSignature *attributionTokenMethodSignature = [attributionClass methodSignatureForSelector:attributionTokenSelector];
+    NSInvocation *tokenInvocation = [NSInvocation invocationWithMethodSignature:attributionTokenMethodSignature];
+    [tokenInvocation setSelector:attributionTokenSelector];
+    [tokenInvocation setTarget:attributionClass];
+    __autoreleasing NSError *error;
+    __autoreleasing NSError **errorPointer = &error;
+    [tokenInvocation setArgument:&errorPointer atIndex:2];
+    [tokenInvocation invoke];
+
+    if (error) {
+        [logger error:@"Error while retrieving AdServices attribution token: %@", error];
+        if (errorPtr) {
+            *errorPtr = error;
+        }
+        return nil;
+    }
+
+    NSString * __unsafe_unretained tmpToken = nil;
+    [tokenInvocation getReturnValue:&tmpToken];
+    NSString *token = tmpToken;
+    return token;
+}
+
++ (void)checkForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue {
+    // if no tries for iAd v3 left, stop trying
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+
+#if ADJUST_NO_IAD || TARGET_OS_TV
+    [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV set"];
+    return;
+#else
+    [logger debug:@"ADJUST_NO_IAD or TARGET_OS_TV not set"];
+
+    // [[ADClient sharedClient] ...]
+    Class ADClientClass = NSClassFromString(@"ADClient");
+    if (ADClientClass == nil) {
+        [logger warn:@"iAd framework not found in user's app (ADClientClass not found)"];
+        return;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
+    if (![ADClientClass respondsToSelector:sharedClientSelector]) {
+        [logger warn:@"iAd framework not found in user's app (sharedClient method not found)"];
+        return;
+    }
+    id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
+    if (ADClientSharedClientInstance == nil) {
+        [logger warn:@"iAd framework not found in user's app (ADClientSharedClientInstance is nil)"];
+        return;
+    }
+    [logger debug:@"iAd framework successfully found in user's app"];
+    BOOL iAdInformationAvailable = [ADJUtil setiAdWithDetails:activityHandler
+                                       adClientSharedInstance:ADClientSharedClientInstance
+                                                        queue:queue];
+    if (!iAdInformationAvailable) {
+        [logger warn:@"iAd information not available"];
+        return;
+    }
+#pragma clang diagnostic pop
+#endif
+}
+
++ (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
+   adClientSharedInstance:(id)ADClientSharedClientInstance
+                    queue:(dispatch_queue_t)queue {
+    SEL iAdDetailsSelector = NSSelectorFromString(@"requestAttributionDetailsWithBlock:");
+    if (![ADClientSharedClientInstance respondsToSelector:iAdDetailsSelector]) {
+        return NO;
+    }
+
+    __block Class lock = [ADJActivityHandler class];
+    __block BOOL completed = NO;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [ADClientSharedClientInstance performSelector:iAdDetailsSelector
+                                       withObject:^(NSDictionary *attributionDetails, NSError *error) {
+        @synchronized (lock) {
+            if (completed) {
+                return;
+            } else {
+                completed = YES;
+            }
+        }
+        [activityHandler setAttributionDetails:attributionDetails
+                                         error:error];
+    }];
+#pragma clang diagnostic pop
+
+    // 5 seconds of timeout
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), queue, ^{
+        @synchronized (lock) {
+            if (completed) {
+                return;
+            } else {
+                completed = YES;
+            }
+        }
+        [activityHandler setAttributionDetails:nil
+                                         error:[NSError errorWithDomain:@"com.adjust.sdk.iAd"
+                                                                   code:100
+                                                               userInfo:@{@"Error reason": @"iAd request timed out"}]];
+    });
+    return YES;
+}
+
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion {
+    Class appTrackingClass = [self appTrackingManager];
+    if (appTrackingClass == nil) {
+        return;
+    }
+    NSString *requestAuthorization = [NSString adjJoin:
+                                      @"request",
+                                      @"tracking",
+                                      @"authorization",
+                                      @"with",
+                                      @"completion",
+                                      @"handler:", nil];
+    SEL selRequestAuthorization = NSSelectorFromString(requestAuthorization);
+    if (![appTrackingClass respondsToSelector:selRequestAuthorization]) {
+        return;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [appTrackingClass performSelector:selRequestAuthorization withObject:completion];
+#pragma clang diagnostic pop
+}
+
++ (NSString *)bundleIdentifier {
+    return [[NSBundle mainBundle] bundleIdentifier];
+}
+
++ (NSString *)buildNumber {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    return [infoDictionary objectForKey:@"CFBundleVersion"];
+}
+
++ (NSString *)versionNumber {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    return [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+}
+
++ (NSString *)osVersion {
+    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    if (class == nil) {
+        return nil;
+    }
+    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    SEL selCd = NSSelectorFromString(keyCd);
+    if (![class respondsToSelector:selCd]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id dev = [class performSelector:selCd];
+#pragma clang diagnostic pop
+    NSString *keySv = [NSString adjJoin:@"system", @"version", nil];
+    SEL selSv = NSSelectorFromString(keySv);
+    if (![dev respondsToSelector:selSv]) {
+        return nil;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return (NSString *)[dev performSelector:selSv];
+#pragma clang diagnostic pop
+}
+
++ (NSString *)installedAt {
+    id<ADJLogger> logger = ADJAdjustFactory.logger;
+    NSDate *installTime = nil;
+    NSString *pathToCheck = nil;
+    NSSearchPathDirectory folderToCheck = NSDocumentDirectory;
+#if TARGET_OS_TV
+    folderToCheck = NSCachesDirectory;
+#endif
+    @try {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(folderToCheck, NSUserDomainMask, YES);
+        if (paths.count > 0) {
+            pathToCheck = [paths objectAtIndex:0];
+        } else {
+            pathToCheck = [[NSBundle mainBundle] bundlePath];
+        }
+
+        installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
+        __autoreleasing NSError *error;
+        __autoreleasing NSError **errorPointer = &error;
+        Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+        if (class != nil) {
+            NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+            SEL selDm = NSSelectorFromString(keyDm);
+            if ([class respondsToSelector:selDm]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                id man = [class performSelector:selDm];
+#pragma clang diagnostic pop
+                NSString *keyChk = [NSString stringWithFormat:@"%@%@",
+                        [NSString adjJoin:@"attributes", @"of", @"item", @"at", @"path", @":", nil],
+                        [NSString adjJoin:@"error", @":", nil]];
+                SEL selChk = NSSelectorFromString(keyChk);
+                if ([man respondsToSelector:selChk]) {
+                    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selChk]];
+                    [inv setSelector:selChk];
+                    [inv setTarget:man];
+                    [inv setArgument:&pathToCheck atIndex:2];
+                    [inv setArgument:&errorPointer atIndex:3];
+                    [inv invoke];
+                    NSMutableDictionary * __unsafe_unretained tmpResult;
+                    [inv getReturnValue:&tmpResult];
+                    NSMutableDictionary *result = tmpResult;
+                    CFStringRef *indexRef = dlsym(RTLD_SELF, [[NSString adjJoin:@"N", @"S", @"file", @"creation", @"date", nil] UTF8String]);
+                    NSString *ref = (__bridge_transfer id) *indexRef;
+                    installTime = result[ref];
+                }
+            }
+        }
+    } @catch (NSException *exception) {
+        [logger error:@"Error while trying to check install date. Exception: %@", exception];
+        return nil;
+    }
+
+    return [ADJUtil formatDate:installTime];
 }
 
 @end

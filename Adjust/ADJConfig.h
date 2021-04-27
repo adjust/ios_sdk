@@ -76,6 +76,13 @@
  */
 - (BOOL)adjustDeeplinkResponse:(nullable NSURL *)deeplink;
 
+/**
+ * @brief Optional delegate method that gets called when Adjust SDK sets conversion value for the user.
+ *
+ * @param conversionValue Conversion value used by Adjust SDK to invoke updateConversionValue: API.
+ */
+- (void)adjustConversionValueUpdated:(nullable NSNumber *)conversionValue;
+
 @end
 
 /**

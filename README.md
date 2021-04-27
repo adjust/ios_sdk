@@ -23,6 +23,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Get current authorisation status](#ata-getter)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
+      * [Conversion value updated callback](#skadn-cv-updated-callback)
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
@@ -60,7 +61,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Deep linking on iOS 9 and later](#deeplinking-setup-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
-   * [Data residency](#data-residency)
+   * [[beta] Data residency](#data-residency)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
    * [I'm seeing "Adjust requires ARC" error](#ts-arc)
@@ -84,13 +85,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.28.0'
+pod 'Adjust', '~> 4.29.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.28.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.0'
 ```
 
 ---
@@ -373,6 +374,17 @@ As of iOS SDK v4.26.0 you can use Adjust SDK wrapper method `updateConversionVal
 [Adjust updateConversionValue:6];
 ```
 
+### <a id="skadn-cv-updated-callback"></a>Conversion value updated callback
+
+You can register callback to get notified each time when Adjust SDK updates conversion value for the user. You need to implement `AdjustDelegate` protocol, implement optional `adjustConversionValueUpdated:` method:
+
+```objc
+- (void)adjustConversionValueUpdated:(NSNumber *)conversionValue {
+    NSLog(@"Conversion value updated callback called!");
+    NSLog(@"Conversion value: %@", conversionValue);
+}
+```
+
 ### <a id="event-tracking"></a>Event tracking
 
 You can use adjust to track events. Lets say you want to track every tap on a particular button. You would create a new event token in your [dashboard], which has an associated event token - looking something like `abc123`. In your button's `buttonDown` method you would then add the following lines to track the tap:
@@ -603,20 +615,36 @@ Note: The cost data - `costType`, `costAmount` & `costCurrency` are only availab
 
 ### <a id="ad-revenue"></a>Ad revenue tracking
 
-You can track ad revenue information with Adjust SDK by invoking following method:
+**Note**: This ad revenue tracking API is available only in the native SDK v4.29.0 and above.
+
+You can track ad revenue information with Adjust SDK by invoking the following method:
 
 ```objc
+// initilise ADJAdRevenue instance with appropriate ad revenue source
+ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:source];
+// pass revenue and currency values
+[adRevenue setRevenue:1.6 currency:@"USD"];
+// pass optional parameters
+[adRevenue setAdImpressionsCount:adImpressionsCount];
+[adRevenue setAdRevenueUnit:adRevenueUnit];
+[adRevenue setAdRevenuePlacement:adRevenuePlacement];
+[adRevenue setAdRevenueNetwork:adRevenueNetwork];
+// attach callback and/or partner parameter if needed
+[adRevenue addCallbackParameter:key value:value];
+[adRevenue addPartnerParameter:key value:value];
+
+// track ad revenue
 [Adjust trackAdRevenue:source payload:payload];
 ```
 
-Parameters of the method which you need to pass are:
-
-- `source` - `NSString` object which indicates the source of ad revenue info.
-- `payload` - `NSData` object which contains ad revenue JSON.
-
 Currently we support the below `source` parameter values:
 
-- `ADJAdRevenueSourceMopub` - representing MoPub mediation platform (for more information, check [integration guide][sdk2sdk-mopub])
+- `ADJAdRevenueSourceAppLovinMAX` - representing AppLovin MAX platform.
+- `ADJAdRevenueSourceMopub` - representing MoPub platform.
+- `ADJAdRevenueSourceAdMob` - representing AdMob platform.
+- `ADJAdRevenueSourceIronSource` - representing IronSource platform.
+
+**Note**: Additional documentation which explains detailed integration with every of the supported sources will be provided outside of this README. Also, in order to use this feature, additional setup is needed for your app in Adjust dashboard, so make sure to get in touch with our support team to make sure that everything is set up correctly before you start to use this feature.
 
 ### <a id="subscriptions"></a>Subscription tracking
 
@@ -1039,11 +1067,16 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
 }
 ```
 
-### <a id="data-residency"></a>Data residency
+### <a id="data-residency"></a>[beta] Data residency
 
 In order to enable data residency feature, make sure to make a call to `setUrlStrategy:` method of the `ADJConfig` instance with one of the following constants:
 
-- `ADJDataResidencyEU` for EU data residency region.
+```objc
+[adjustConfig setUrlStrategy:ADJDataResidencyEU]; // for EU data residency region
+[adjustConfig setUrlStrategy:ADJDataResidencyTR]; // for Turkey data residency region
+```
+
+**Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.
 
 ## <a id="troubleshooting"></a>Troubleshooting
 

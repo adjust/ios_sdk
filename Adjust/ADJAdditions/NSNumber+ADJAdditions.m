@@ -1,6 +1,6 @@
 //
 //  NSNumber+ADJAdditions.m
-//  Adjust
+//  Adjust SDK
 //
 //  Created by Uglješa Erceg (@uerceg) on 26th March 2021.
 //  Copyright (c) 2021 Adjust GmbH. All rights reserved.
@@ -14,7 +14,6 @@
     if (first == nil && second == nil) {
         return YES;
     }
-
     return [first isEqualToNumber:second];
 }
 

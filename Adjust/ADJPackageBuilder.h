@@ -8,7 +8,7 @@
 
 #import "ADJEvent.h"
 #import "ADJConfig.h"
-#import "ADJDeviceInfo.h"
+#import "ADJPackageParams.h"
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
 #import "ADJSessionParameters.h"
@@ -30,12 +30,12 @@
 
 @property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 
-- (id _Nullable)initWithDeviceInfo:(ADJDeviceInfo * _Nullable)deviceInfo
-                     activityState:(ADJActivityState * _Nullable)activityState
-                            config:(ADJConfig * _Nullable)adjustConfig
-                 sessionParameters:(ADJSessionParameters * _Nullable)sessionParameters
-             trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
-                         createdAt:(double)createdAt;
+- (id _Nullable)initWithPackageParams:(ADJPackageParams * _Nullable)packageParams
+                        activityState:(ADJActivityState * _Nullable)activityState
+                               config:(ADJConfig * _Nullable)adjustConfig
+                    sessionParameters:(ADJSessionParameters * _Nullable)sessionParameters
+                trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
+                            createdAt:(double)createdAt;
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage:(BOOL)isInDelay;
 
@@ -44,13 +44,14 @@
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
-- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(NSString * _Nullable)source payload:(NSData * _Nullable)payload;
+- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(NSString * _Nullable)source
+                                                payload:(NSData * _Nullable)payload;
 
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource;
 
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
-                                    token:(NSString * _Nullable)token
-                          errorCodeNumber:(NSNumber * _Nullable)errorCodeNumber;
+                                              token:(NSString * _Nullable)token
+                                    errorCodeNumber:(NSNumber * _Nullable)errorCodeNumber;
 
 - (ADJActivityPackage * _Nullable)buildAttributionPackage:(NSString * _Nullable)initiatedBy;
 
@@ -64,6 +65,9 @@
 
 - (ADJActivityPackage * _Nullable)buildSubscriptionPackage:( ADJSubscription * _Nullable)subscription
                                                  isInDelay:(BOOL)isInDelay;
+
+- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(ADJAdRevenue * _Nullable)adRevenue
+                                              isInDelay:(BOOL)isInDelay;
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
      setDictionary:(NSDictionary * _Nullable)dictionary

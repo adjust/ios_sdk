@@ -77,40 +77,43 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
     return self;
 }
 
-+ (NSArray<NSString *> *)baseUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
-{
++ (NSArray<NSString *> *)baseUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[baseUrlIndia, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[baseUrlChina, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[baseUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[baseUrlTR];
     } else {
         return @[baseUrl, baseUrlIndia, baseUrlChina];
     }
 }
 
-+ (NSArray<NSString *> *)gdprUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
-{
++ (NSArray<NSString *> *)gdprUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[gdprUrlIndia, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[gdprUrlChina, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[gdprUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[gdprUrlTR];
     } else {
         return @[gdprUrl, gdprUrlIndia, gdprUrlChina];
     }
 }
 
-+ (NSArray<NSString *> *)subscriptionUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo
-{
++ (NSArray<NSString *> *)subscriptionUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[subscritionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[subscritionUrlChina, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[subscriptionUrlEU];
+    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
+        return @[subscriptionUrlTR];
     } else {
         return @[subscriptionUrl, subscritionUrlIndia, subscritionUrlChina];
     }

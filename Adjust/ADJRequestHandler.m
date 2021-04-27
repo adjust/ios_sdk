@@ -562,13 +562,13 @@ authorizationHeader:(NSString *)authorizationHeader
 
 - (NSString *)getValidIdentifier:(NSDictionary *)parameters {
     NSString *idfaName = @"idfa";
-    NSString *uuidName = @"ios_uuid";
+    NSString *randomTokenName = @"random_token";
 
     if ([parameters objectForKey:idfaName] != nil) {
         return idfaName;
     }
-    if ([parameters objectForKey:uuidName] != nil) {
-        return uuidName;
+    if ([parameters objectForKey:randomTokenName] != nil) {
+        return randomTokenName;
     }
     return nil;
 }

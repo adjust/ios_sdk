@@ -1,9 +1,9 @@
 //
 //  NSData+ADJAdditions.h
-//  adjust
+//  Adjust SDK
 //
-//  Created by Pedro Filipe on 26/03/15.
-//  Copyright (c) 2015 adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 26th March 2015.
+//  Copyright (c) 2015-2021 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

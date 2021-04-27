@@ -1,9 +1,9 @@
 //
 //  Adjust.m
-//  Adjust
+//  Adjust SDK
 //
-//  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
-//  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
+//  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -12,7 +12,6 @@
 #import "ADJUserDefaults.h"
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
-#import "UIDevice+ADJAdditions.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -22,29 +21,16 @@
 NSString * const ADJEnvironmentSandbox = @"sandbox";
 NSString * const ADJEnvironmentProduction = @"production";
 
+NSString * const ADJAdRevenueSourceAppLovinMAX = @"applovin_max_sdk";
 NSString * const ADJAdRevenueSourceMopub = @"mopub";
-NSString * const ADJAdRevenueSourceAdmob = @"admob";
-NSString * const ADJAdRevenueSourceFbNativeAd = @"facebook_native_ad";
-NSString * const ADJAdRevenueSourceFbAudienceNetwork = @"facebook_audience_network";
-NSString * const ADJAdRevenueSourceIronsource = @"ironsource";
-NSString * const ADJAdRevenueSourceFyber = @"fyber";
-NSString * const ADJAdRevenueSourceAerserv = @"aerserv";
-NSString * const ADJAdRevenueSourceAppodeal = @"appodeal";
-NSString * const ADJAdRevenueSourceAdincube = @"adincube";
-NSString * const ADJAdRevenueSourceFusePowered = @"fusepowered";
-NSString * const ADJAdRevenueSourceAddaptr = @"addapptr";
-NSString * const ADJAdRevenueSourceMillennialMeditation = @"millennial_mediation";
-NSString * const ADJAdRevenueSourceFlurry = @"flurry";
-NSString * const ADJAdRevenueSourceAdmost = @"admost";
-NSString * const ADJAdRevenueSourceDeltadna = @"deltadna";
-NSString * const ADJAdRevenueSourceUpsight = @"upsight";
-NSString * const ADJAdRevenueSourceUnityads = @"unityads";
-NSString * const ADJAdRevenueSourceAdtoapp = @"adtoapp";
-NSString * const ADJAdRevenueSourceTapdaq = @"tapdaq";
+NSString * const ADJAdRevenueSourceAdMob = @"admob_sdk";
+NSString * const ADJAdRevenueSourceIronSource = @"ironsource_sdk";
 
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
+
 NSString * const ADJDataResidencyEU = @"DataResidencyEU";
+NSString * const ADJDataResidencyTR = @"DataResidencyTR";
 
 @implementation AdjustTestOptions
 @end
@@ -70,13 +56,11 @@ static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
         defaultInstance = [[self alloc] init];
     });
-
     return defaultInstance;
 }
 
 - (id)init {
     self = [super init];
-
     if (self == nil) {
         return nil;
     }
@@ -84,7 +68,6 @@ static dispatch_once_t onceToken = 0;
     self.activityHandler = nil;
     self.logger = [ADJAdjustFactory logger];
     self.savedPreLaunch = [[ADJSavedPreLaunch alloc] init];
-
     return self;
 }
 
@@ -269,6 +252,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
+    @synchronized (self) {
+        [[Adjust getInstance] trackAdRevenue:adRevenue];
+    }
+}
+
 + (ADJAttribution *)attribution {
     @synchronized (self) {
         return [[Adjust getInstance] attribution];
@@ -302,7 +291,6 @@ static dispatch_once_t onceToken = 0;
         [self.logger error:@"Adjust already initialized"];
         return;
     }
-
     self.activityHandler = [[ADJActivityHandler alloc]
                                 initWithConfig:adjustConfig
                                 savedPreLaunch:self.savedPreLaunch];
@@ -312,7 +300,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler trackEvent:event];
 }
 
@@ -320,7 +307,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler applicationDidBecomeActive];
 }
 
@@ -328,7 +314,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler applicationWillResignActive];
 }
 
@@ -346,7 +331,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return [self isInstanceEnabled];
     }
-
     return [self.activityHandler isEnabled];
 }
 
@@ -356,7 +340,6 @@ static dispatch_once_t onceToken = 0;
         [ADJUserDefaults saveDeeplinkUrl:url andClickTime:clickTime];
         return;
     }
-
     [self.activityHandler appWillOpenUrl:url withClickTime:clickTime];
 }
 
@@ -402,7 +385,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler sendFirstPackages];
 }
 
@@ -411,11 +393,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler addSessionCallbackParameter:key value:value];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler addSessionCallbackParameterI:activityHandler key:key value:value];
     }];
@@ -426,11 +406,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler addSessionPartnerParameter:key value:value];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler addSessionPartnerParameterI:activityHandler key:key value:value];
     }];
@@ -441,11 +419,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler removeSessionCallbackParameter:key];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeSessionCallbackParameterI:activityHandler key:key];
     }];
@@ -456,11 +432,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler removeSessionPartnerParameter:key];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
     }];
@@ -471,11 +445,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler resetSessionCallbackParameters];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler resetSessionCallbackParametersI:activityHandler];
     }];
@@ -486,11 +458,9 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler resetSessionPartnerParameters];
         return;
     }
-
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
-
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler resetSessionPartnerParametersI:activityHandler];
     }];
@@ -498,7 +468,6 @@ static dispatch_once_t onceToken = 0;
 
 - (void)gdprForgetMe {
     [ADJUserDefaults setGdprForgetMe];
-
     if ([self checkActivityHandler:@"GDPR forget me"]) {
         if (self.activityHandler.isEnabled) {
             [self.activityHandler setGdprForgetMe];
@@ -510,7 +479,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler trackAdRevenue:source payload:payload];
 }
 
@@ -519,7 +487,6 @@ static dispatch_once_t onceToken = 0;
         [ADJUserDefaults setDisableThirdPartySharing];
         return;
     }
-
     [self.activityHandler disableThirdPartySharing];
 }
 
@@ -529,11 +496,9 @@ static dispatch_once_t onceToken = 0;
             self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
                 [[NSMutableArray alloc] init];
         }
-
         [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:thirdPartySharing];
         return;
     }
-
     [self.activityHandler trackThirdPartySharing:thirdPartySharing];
 }
 
@@ -542,7 +507,6 @@ static dispatch_once_t onceToken = 0;
         self.savedPreLaunch.lastMeasurementConsentTracked = [NSNumber numberWithBool:enabled];
         return;
     }
-
     [self.activityHandler trackMeasurementConsent:enabled];
 }
 
@@ -550,37 +514,40 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return;
     }
-
     [self.activityHandler trackSubscription:subscription];
 }
 
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
-    [UIDevice.currentDevice requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+    [ADJUtil requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
         if (completion) {
             completion(status);
         }
-
         if (![self checkActivityHandler:@"request Tracking Authorization"]) {
             return;
         }
-
         [self.activityHandler updateAttStatusFromUserCallback:(int)status];
     }];
 }
 
 - (int)appTrackingAuthorizationStatus {
-    return [[UIDevice currentDevice] adjATTStatus];
+    return [ADJUtil attStatus];
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
     [ADJUtil updateSkAdNetworkConversionValue:[NSNumber numberWithInteger:conversionValue]];
 }
 
+- (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+    [self.activityHandler trackAdRevenue:adRevenue];
+}
+
 - (ADJAttribution *)attribution {
     if (![self checkActivityHandler]) {
         return nil;
     }
-
     return [self.activityHandler attribution];
 }
 
@@ -588,7 +555,6 @@ static dispatch_once_t onceToken = 0;
     if (![self checkActivityHandler]) {
         return nil;
     }
-
     return [self.activityHandler adid];
 }
 
@@ -601,7 +567,6 @@ static dispatch_once_t onceToken = 0;
         [self.logger error:@"Adjust already down or not initialized"];
         return;
     }
-
     [self.activityHandler teardown];
     self.activityHandler = nil;
 }
@@ -639,11 +604,9 @@ static dispatch_once_t onceToken = 0;
         [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
         [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
     }
-    
     if (testOptions.enableSigning) {
         [ADJAdjustFactory enableSigning];
     }
-
     if (testOptions.disableSigning) {
         [ADJAdjustFactory disableSigning];
     }
@@ -675,7 +638,6 @@ static dispatch_once_t onceToken = 0;
         } else {
             [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
         }
-
         return NO;
     } else {
         return YES;
