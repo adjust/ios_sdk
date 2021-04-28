@@ -76,13 +76,13 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
 如果您正在使用[CocoaPods][cocoapods],您可以将以下代码行添加至 `Podfile`，然后继续进行[此步骤](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.29.0'
+pod 'Adjust', '~> 4.29.1'
 ```
 
 或:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.0'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.1'
 ```
 
 ---
