@@ -1,3 +1,9 @@
+### Version 4.29.1 (28th April 2021)
+#### Fixed
+- Fixed missing header error for SPM users from v4.29.0.
+
+---
+
 ### Version 4.29.0 (27th April 2021)
 #### Added
 - Added `adjustConversionValueUpdated:` callback which can be used to get information when Adjust SDK updates conversion value for the user.
