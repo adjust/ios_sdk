@@ -61,6 +61,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Deep linking on iOS 9 and later](#deeplinking-setup-new)
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
+      * [Link resolution](#link-resolution)
    * [[beta] Data residency](#data-residency)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
@@ -1065,6 +1066,32 @@ The call to `appWillOpenUrl` should be done like this to support deep linking re
     // or
     // return NO;
 }
+```
+
+### <a id="link-resolution"></a>Link resolution
+
+If you are serving deep links from an Email Service Provider (ESP) and need to track clicks through a custom tracking link, you can use the `resolveLinkWithUrl` method of the  `ADJLinkResolution` class to resolve the link. This ensures that you record the interaction with your email tracking campaigns when a deep link is opened in your application.
+
+The `resolveLinkWithUrl` method takes the following parameters:
+
+- `url` - the deep link that opened the application
+- `resolveUrlSuffixArray` - the custom domains of the configured campaigns that need to be resolved
+- `callback` - the callback that will contain the final URL
+
+If the link received does not belong to any of the domains specified in the `resolveUrlSuffixArray`, the callback will forward the deep link URL as is. If the link does contain one of the domains specified, the SDK will attempt to resolve the link and return the resulting deep link to the `callback` parameter. The returned deep link can also be reattributed in the Adjust SDK using the `[Adjust appWillOpenUrl:]` method.
+
+> **Note**: The SDK will automatically follow up to three redirects when attempting to resolve the URL. It will return the latest URL it has followed as the `callback` URL, meaning that if there are more than three redirects to follow the **third redirect URL** will be returned.
+
+**Example**
+
+``` objc
+[ADJLinkResolution
+    resolveLinkWithUrl:url
+    resolveUrlSuffixArray:@[@"example.com"]
+    callback:^(NSURL * _Nullable resolvedLink)
+    {
+        [Adjust appWillOpenUrl:resolvedLink];
+    }];
 ```
 
 ### <a id="data-residency"></a>[beta] Data residency
