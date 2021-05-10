@@ -1084,7 +1084,7 @@ If the link received does not belong to any of the domains specified in the `res
 
 **Example**
 
-``` objc
+```objc
 [ADJLinkResolution
     resolveLinkWithUrl:url
     resolveUrlSuffixArray:@[@"example.com"]
