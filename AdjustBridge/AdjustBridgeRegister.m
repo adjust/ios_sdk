@@ -363,6 +363,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
         AdjustConfig.DataResidencyEU = 'DataResidencyEU';
         AdjustConfig.DataResidencyTR = 'DataResidencyTR';
+        AdjustConfig.DataResidencyUS = 'DataResidencyUS';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
             var registerCallbackHandler = function(callbackName) {
