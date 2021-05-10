@@ -13,23 +13,24 @@
    * [添加 SDK 至您的项目](#sdk-add)
    * [添加 iOS 框架](#sdk-frameworks)
    * [集成 SDK 至您的应用](#sdk-integrate)
-   * [基本设置](#basic-setup)
+   * [基本设置](#qs-basic-setup)
       * [iMessage 的特定设置](#basic-setup-imessage)
-   * [Adjust 日志](#qs-adjust-logging)
+   * [Adjust 日志](#adjust-logging)
    * [构建您的应用](#build-the-app)
-* [附加功能](#additional-features)
+* [附加功能](#additional-feature)
    * [AppTrackingTransparency 框架](#att-framework)
       * [应用跟踪授权包装器](#ata-wrapper)
       * [了解当前授权状态](#ata-getter)
    * [SKAdNetwork 框架](#skadn-framework)
       * [更新 SKAdNetwork 转化值](#skadn-update-conversion-value)
+      * [转化值更新回传](#skadn-cv-updated-callback)
    * [事件跟踪](#event-tracking)
       * [收入跟踪](#revenue-tracking)
       * [收入数据去重](#revenue-deduplication)
       * [应用内收入验证](#iap-verification)
       * [回传参数](#callback-parameters)
       * [合作伙伴参数](#partner-parameters)
-      * [回传标识符](#callback-id)
+      * [回传标识符](#cp-event-callback-id)
    * [会话参数](#session-parameters)
       * [会话回传参数](#session-callback-parameters)
       * [会话合作伙伴参数](#session-partner-parameters)
@@ -50,7 +51,7 @@
    * [后台跟踪](#background-tracking)
    * [设备 ID](#device-ids)
       * [iOS 广告标识符](#di-idfa)
-      * [Adjust 设备 ID](#di-adid)
+      * [Adjust 设备 ID](#adid)
    * [用户归因](#user-attribution)
    * [推送标签 (Push token)](#push-token)
    * [预安装跟踪码](#pre-installed-trackers)
@@ -60,6 +61,7 @@
       * [iOS 9 及以上版本的深度链接设置](#deeplinking-setup-new)
       * [延迟深度链接场景](#deeplinking-deferred)
       * [通过深度链接的再归因](#deeplinking-reattribution)
+   * [[beta] 数据驻留](#data-residency)
 * [问题排查](#troubleshooting)
    * [SDK 延迟初始化问题](#ts-delayed-init)
    * [显示 "Adjust requires ARC" 出错信息](#ts-arc)
@@ -83,13 +85,13 @@
 如果您正在使用 [CocoaPods][cocoapods]，可以将以下代码行添加至 `Podfile`，然后继续进行[此步骤](#sdk-integrate)：
 
 ```ruby
-pod 'Adjust', '~> 4.26.1'
+pod 'Adjust', '~> 4.29.1'
 ```
 
 或：
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.26.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.1'
 ```
 
 ---
@@ -128,8 +130,8 @@ https://github.com/adjust/ios_sdk
 如果您关联额外的 iOS 框架到应用中，Adjust SDK 将能获取更多的信息。请根据应用启用 Adjust SDK 功能的情况，添加下列框架，并将其标记为 "可选" (optional)：
 
 - `AdSupport.framework` - 请务必添加该框架，让 SDK 能访问 IDFA 值和 (iOS 14 以前的) LAT 信息。
-- `iAd.framework` - 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架 (未来将替换为 `AdServices.framework`)。
-- `AdServices.framework`- 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架。
+- `iAd.framework` - 如果您希望 SDK 自动处理您的 ASA 推广活动归因数据，请添加该框架。
+- `AdServices.framework`- 对于 iOS 14.3 及以上的设备，该框架允许 SDK 自动处理 ASA 推广活动归因数据。使用 Apple Ads 归因 API 时必须采用该框架。
 - `CoreTelephony.framework`- 如果您希望 SDK 能辨识当前的无线接入技术 (radio access)，请添加该框架。
 - `StoreKit.framework`- 如果您希望访问 `SKAdNetwork` 框架，同时让 Adjust SDK 在 iOS 14 或未来版本的 iOS 中自动处理与`SKAdNetwork` 的通讯，请添加该框架。
 - `AppTrackingTransparency.framework` - 如果您希望 SDK 能在 iOS 14 或未来版本的 iOS 中包装用户的跟踪许可对话框，并访问用户跟踪许可的值，请添加该框架。
@@ -174,7 +176,7 @@ https://github.com/adjust/ios_sdk
 
 接下来，我们将设置基本会话跟踪。
 
-### <a id="basic-setup"></a>基本设置
+### <a id="qs-basic-setup"></a>基本设置
 
 在项目导航 (Project Navigator) 中，打开您的应用委托 (application delegate) 源文件。在文件顶部添加 `import` (import) 语句，然后在应用委托的 `didFinishLaunching` 或 `didFinishLaunchingWithOptions` 方法中，将以下调用添加至 `Adjust`：
 
@@ -292,7 +294,7 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 ![][run]
 
-## <a id="additional-features">附加功能
+## <a id="additional-feature">附加功能
 
 将 Adjust SDK 集成到项目中后，您即可利用以下功能。
 
@@ -370,6 +372,17 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 ```objc
 [Adjust updateConversionValue:6];
+```
+
+### <a id="skadn-cv-updated-callback"></a>转化值更新回传
+
+您可以注册回传，在每次 Adjust SDK 更新用户转化值时获得通知。请安装 `AdjustDelegate` 协议，以及可选的 `adjustConversionValueUpdated:` 方法：
+
+```objc
+- (void)adjustConversionValueUpdated:(NSNumber *)conversionValue {
+    NSLog(@"Conversion value updated callback called!");
+    NSLog(@"Conversion value: %@", conversionValue);
+}
 ```
 
 ### <a id="event-tracking"></a>事件跟踪
@@ -472,7 +485,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 您可以在我们的 [特殊合作伙伴指南][special-partners] 中进一步了解特殊合作伙伴以及这些集成的信息。
 
-### <a id="callback-id"></a>回传标识符
+### <a id="cp-event-callback-id"></a>回传标识符
 
 您还可为想要跟踪的每个事件添加自定义字符串 ID。此 ID 将在之后的事件成功和/或事件失败回传中被报告，以便您及时了解哪些事件跟踪成功或者失败。您可通过调用 `ADJEvent` 实例上的 `setCallbackId` 方法来设置此标识符：
 
@@ -602,20 +615,36 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 ### <a id="ad-revenue"></a>广告收入跟踪
 
+**注意**：该广告收入跟踪 API 仅适用于原生 SDK v.29.0 及更高版本。
+
 您可以通过调用以下方法，使用 Adjust SDK 对广告收入进行跟踪：
 
 ```objc
+// initilise ADJAdRevenue instance with appropriate ad revenue source
+ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:source];
+// pass revenue and currency values
+[adRevenue setRevenue:1.6currency:@"USD"];
+// pass optional parameters
+[adRevenue setAdImpressionsCount:adImpressionsCount];
+[adRevenue setAdRevenueUnit:adRevenueUnit];
+[adRevenue setAdRevenuePlacement:adRevenuePlacement];
+[adRevenue setAdRevenueNetwork:adRevenueNetwork];
+// attach callback and/or partner parameter if needed
+[adRevenue addCallbackParameter:key value:value];
+[adRevenue addPartnerParameter:key value:value];
+
+// track ad revenue
 [Adjust trackAdRevenue:source payload:payload];
 ```
 
-您需要传递的方法参数包括：
-
-- `source` - 表明广告收入信息来源的` NSString` 对象。
-- `payload` - 包含广告收入 JSON 的 `NSData` 对象。
-
 目前，我们支持以下 `source` 参数值：
 
-- `ADJAdRevenueSourceMopub` - 代表 MoPub 广告聚合平台 (更多相关信息，请查看[集成指南][sdk2sdk-mopub])
+- `ADJAdRevenueSourceAppLovinMAX` - representing AppLovin MAX platform.
+- `ADJAdRevenueSourceMopub` - representing MoPub platform.
+- `ADJAdRevenueSourceAdMob` - representing AdMob platform.
+- `ADJAdRevenueSourceIronSource` - representing IronSource platform.
+
+**请注意**：会有独立于本 REDME 之外的文档，解释每个受支持来源的详细集成信息。此外，要使用该功能，您需要在 Adjust 控制面板中进行额外的应用设置。因此，请务必联系我们的支持团队，在启用功能前确保一切设置妥当。
 
 ### <a id="subscriptions"></a>订阅跟踪
 
@@ -822,7 +851,6 @@ Adjust SDK 签名功能是按客户逐一启用的。如果您希望使用该功
 
 ### <a id="background-tracking"></a>后台跟踪
 
-
 Adjust SDK 的默认行为是当应用处于后台时暂停发送 HTTP 请求。您可以在 `AdjustConfig` 实例中更改此设置：
 
 ```objc
@@ -845,7 +873,7 @@ Adjust SDK 支持您获取一些设备 ID。
 NSString *idfa = [Adjust idfa];
 ```
 
-### <a id="di-adid"></a>Adjust 设备 ID
+### <a id="adid"></a>Adjust 设备 ID
 
 Adjust 后台将为每一台安装了您应用的设备生成一个唯一的 **Adjust 设备 ID** (**adid**)。您可以在 `Adjust` 示例上调用下列方法，获得该 ID：
 
@@ -908,7 +936,7 @@ ADJAttribution *attribution = [Adjust attribution];
 
 如果用户已经安装了您的应用，并点击了带有深度链接信息的跟踪链接，您的应用将被打开，深度链接的内容将被发送至应用，这样您就可以解析它们并决定下一步动作。自 iOS 9 推出后，Apple 已经改变了在应用程序中处理深度链接的方式。取决于您希望在应用中使用哪种场景 (或者您希望同时使用两种场景以支持更广泛的设备)，您需要设置应用以处理以下一种或两种场景。
 
-### <a id="deeplinking-setup-new"></a>iOS 8 及以下版本的深度链接设置
+### <a id="deeplinking-setup-old"></a>iOS 8 及以下版本的深度链接设置
 
 iOS 8 及以下版本设备上的深度链接是通过使用自定义 URL 方案设置的。您需要选择一个由您的应用负责开启的自定义 URL 方案名。该方案名也将作为 deep_link (深度链接) 参数的一部分被用于 Adjust 跟踪链接。打开您的 `Info.plist` 文件，添加新的 `URL types` 行，以在您的应用中设置 URL 方案名。在 `URL identifier` 输入您的应用 `bundle ID`，于 `URL schemes` 下添加您希望在应用中处理的方案名称。在以下例子中，我们已经选择应用程序处理以 `adjustExample` 命名的方案。
 
@@ -929,7 +957,7 @@ iOS 8 及以下版本设备上的深度链接是通过使用自定义 URL 方案
 
 通过以上设置，您已经成功为 iOS 8 及以下版本的 iOS 设备设置深度链接。
 
-### <a id="deeplinking-setup-old"></a>iOS 9 及以上版本的深度链接设置
+### <a id="deeplinking-setup-new"></a>iOS 9 及以上版本的深度链接设置
 
 为 iOS 9 及以上版本设备设置深度链接，您需要启用您的应用处理 Apple 通用链接的功能。查看[这里][universal-links]，了解更多关于通用链接及其设置的相关信息。
 
@@ -1038,6 +1066,17 @@ Adjust 支持您使用深度链接进行交互推广活动。请查看我们的[
     // return NO;
 }
 ```
+
+### <a id="data-residency"></a>[beta] 数据驻留
+
+要启用数据驻留功能，请务必通过以下常量之一调用`ADJConfig` 实例中的 `setUrlStrategy:` 方法 ：
+
+```objc
+[adjustConfig setUrlStrategy:ADJDataResidencyEU]; // for EU data residency region
+[adjustConfig setUrlStrategy:ADJDataResidencyTR]; // for Turkey data residency region
+```
+
+**注意:** 该功能当前尚处于 BETA 测试阶段。如果您希望启用该功能，请联系您的客户经理，或发送邮件至 support@adjust.com。为避免 SDK 流量丢失，请务必在启用该功能设置前联系我们的支持团队，保证该功能已为您的应用启用。
 
 ## <a id="troubleshooting"></a>问题排查
 
@@ -1205,7 +1244,6 @@ Adjust SDK 仅跟踪您要求它跟踪的内容。如果您添加收入至事件
 ```
 
 如果您在控制面板中看到任何您不期望被跟踪的值，**请务必检查您决定量值的逻辑**。
-
 
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
