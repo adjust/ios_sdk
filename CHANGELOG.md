@@ -1,3 +1,12 @@
+### Version 4.29.2 (12th May 2021)
+#### Added
+- [beta] Added data residency support for US region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyUS` parameter.
+
+#### Fixed
+- Removed 5 decimal places formatting for ad revenue value.
+
+---
+
 ### Version 4.29.1 (28th April 2021)
 #### Fixed
 - Fixed missing header error for SPM users from v4.29.0.
@@ -7,7 +16,7 @@
 ### Version 4.29.0 (27th April 2021)
 #### Added
 - Added `adjustConversionValueUpdated:` callback which can be used to get information when Adjust SDK updates conversion value for the user.
-- [beta] Added data residency support for Turkey region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `AdjustConfig.ADJDataResidencyTR` parameter.
+- [beta] Added data residency support for Turkey region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyTR` parameter.
 - Added `trackAdRevenue:` method to `Adjust` interface to allow tracking of ad revenue by passing `ADJAdRevenue` object as parameter. 
 - Added support for `AppLovin MAX` ad revenue tracking.
 
