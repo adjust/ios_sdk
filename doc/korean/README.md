@@ -84,13 +84,13 @@ iOS 개발용 Xcode를 사용한다는 가정하에 iOS 프로젝트에 Adjust S
 
 [CocoaPods][cocoapods]를 사용하는 경우, 다음 내용을 `Podfile`에 추가한 후 [해당 단계](#sdk-integrate)를 완료하세요.
 
-ruby
+```ruby
 pod `Adjust`, `~> 4.29.1`
 ```
 
 또는:
 
-ruby
+```ruby
 pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.1'
 ```
 
@@ -98,7 +98,7 @@ pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.1'
 
 [Carthage][carthage]를 사용하는 경우, 다음 내용을 `Cartfile`에 추가한 후 [해당 단계](#sdk-frameworks)를 완료하세요.
 
-ruby
+```ruby
 github "adjust/ios_sdk"
 ```
 
