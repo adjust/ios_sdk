@@ -1101,6 +1101,7 @@ In order to enable data residency feature, make sure to make a call to `setUrlSt
 ```objc
 [adjustConfig setUrlStrategy:ADJDataResidencyEU]; // for EU data residency region
 [adjustConfig setUrlStrategy:ADJDataResidencyTR]; // for Turkey data residency region
+[adjustConfig setUrlStrategy:ADJDataResidencyUS]; // for US data residency region
 ```
 
 **Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.

@@ -36,17 +36,22 @@
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-
     [Adjust trackEvent:event];
+    [Adjust setPushToken:@"random-token"];
+    [Adjust appWillOpenUrl:[NSURL URLWithString:@"random-url://"]];
+    [Adjust disableThirdPartySharing];
+    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:[NSDecimalNumber numberWithDouble:6.66] currency:@"CAD" transactionId:@"random-transaction-id" andReceipt:[@"random-receipt" dataUsingEncoding:NSUTF8StringEncoding]];
+    [Adjust trackSubscription:subscription];
+    [Adjust trackMeasurementConsent:YES];
+    ADJThirdPartySharing *thirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:@NO];
+    [Adjust trackThirdPartySharing:thirdPartySharing];
+    ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:ADJAdRevenueSourceAppLovinMAX];
+    [adRevenue setRevenue:6.66 currency:@"CAD"];
+    [Adjust trackAdRevenue:adRevenue];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-
-    // Add revenue 1 cent of an EURO.
-    [event setRevenue:0.01 currency:@"EUR"];
-
-    [Adjust trackEvent:event];
+    [Adjust gdprForgetMe];
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
