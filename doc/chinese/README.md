@@ -85,13 +85,13 @@
 如果您正在使用 [CocoaPods][cocoapods]，可以将以下代码行添加至 `Podfile`，然后继续进行[此步骤](#sdk-integrate)：
 
 ```ruby
-pod 'Adjust', '~> 4.29.1'
+pod 'Adjust', '~> 4.29.2'
 ```
 
 或：
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.1'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.2'
 ```
 
 ---
