@@ -457,10 +457,16 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![man respondsToSelector:selExi]) {
         return NO;
     }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    BOOL exists = (BOOL)[man performSelector:selExi withObject:path];
-#pragma clang diagnostic pop
+    
+    NSInvocation *invMan = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selExi]];
+    [invMan setSelector:selExi];
+    [invMan setTarget:man];
+    [invMan setArgument:&path atIndex:2];
+    [invMan invoke];
+    
+    BOOL exists;
+    [invMan getReturnValue:&exists];
+    
     if (!exists) {
         [[ADJAdjustFactory logger] debug:@"%@ directory not present and will be created", folderName];
         BOOL withIntermediateDirectories = NO;
