@@ -58,8 +58,6 @@
     
     // Remove all session partner parameters.
     // [Adjust resetSessionPartnerParameters];
-    
-    [adjustConfig setUrlStrategy:ADJDataResidencyUS];
 
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
