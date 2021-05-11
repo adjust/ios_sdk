@@ -1080,7 +1080,7 @@ The `resolveLinkWithUrl` method takes the following parameters:
 
 If the link received does not belong to any of the domains specified in the `resolveUrlSuffixArray`, the callback will forward the deep link URL as is. If the link does contain one of the domains specified, the SDK will attempt to resolve the link and return the resulting deep link to the `callback` parameter. The returned deep link can also be reattributed in the Adjust SDK using the `[Adjust appWillOpenUrl:]` method.
 
-> **Note**: The SDK will automatically follow up to three redirects when attempting to resolve the URL. It will return the latest URL it has followed as the `callback` URL, meaning that if there are more than three redirects to follow the **third redirect URL** will be returned.
+> **Note**: The SDK will automatically follow up to ten redirects when attempting to resolve the URL. It will return the latest URL it has followed as the `callback` URL, meaning that if there are more than ten redirects to follow the **third redirect URL** will be returned.
 
 **Example**
 
