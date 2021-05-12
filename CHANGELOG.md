@@ -1,6 +1,7 @@
 ### Version 4.29.2 (12th May 2021)
 #### Added
 - [beta] Added data residency support for US region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyUS` parameter.
+- Added helper class `ADJLinkResolution` to assist with resolution of links which are wrapping Adjust deep link.
 
 #### Fixed
 - Removed 5 decimal places formatting for ad revenue value.
