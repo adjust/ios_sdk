@@ -8,7 +8,7 @@
 
 #import "ADJLinkResolution.h"
 
-static NSUInteger kMaxRecursions = 3;
+static NSUInteger kMaxRecursions = 10;
 
 @interface ADJLinkResolutionDelegate : NSObject<NSURLSessionTaskDelegate>
 

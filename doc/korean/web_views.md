@@ -64,7 +64,7 @@ iOS 개발용 Xcode를 사용한다는 가정하에 iOS 프로젝트에 Adjust S
 [CocoaPods][cocoapods]를 사용하는 경우, 다음 내용을 'Podfile'에 추가한 후 [해당 단계](#sdk-integrate)를 완료하세요.
 
 ```ruby
-pod 'Adjust/WebBridge', '~> 4.29.1'
+pod 'Adjust/WebBridge', '~> 4.29.2'
 ```
 
 ---

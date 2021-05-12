@@ -647,7 +647,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
     [ADJPackageBuilder parameters:parameters setString:adRevenue.source forKey:@"source"];
-    [ADJPackageBuilder parameters:parameters setNumber:adRevenue.revenue forKey:@"revenue"];
+    [ADJPackageBuilder parameters:parameters setNumberWithoutRounding:adRevenue.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:adRevenue.currency forKey:@"currency"];
     [ADJPackageBuilder parameters:parameters setNumberInt:adRevenue.adImpressionsCount forKey:@"ad_impressions_count"];
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenueNetwork forKey:@"ad_revenue_network"];
@@ -1205,6 +1205,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         return;
     }
     NSString *numberString = [NSString stringWithFormat:@"%.5f", [value doubleValue]];
+    [ADJPackageBuilder parameters:parameters setString:numberString forKey:key];
+}
+
++ (void)parameters:(NSMutableDictionary *)parameters setNumberWithoutRounding:(NSNumber *)value forKey:(NSString *)key {
+    if (value == nil) {
+        return;
+    }
+    NSString *numberString = [value stringValue];
     [ADJPackageBuilder parameters:parameters setString:numberString forKey:key];
 }
 
