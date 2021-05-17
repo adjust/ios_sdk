@@ -17,12 +17,13 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [iMessage固有の設定](#basic-setup-imessage)
    * [Adjustログ](#adjust-logging)
    * [アプリのビルド](#build-the-app)
-* [追加機能](#additional-feature)
+* [追加機能](#additional-features)
    * [AppTrackingTransparency framework](#att-framework)
       * [アプリトラッキング承認ラッパー](#ata-wrapper)
       * [現在の承認ステータスを取得](#ata-getter)
    * [SKAdNetwork frameworks](#skadn-framework)
       * [SKAdNetworkのconversion valueを更新](#skadn-update-conversion-value)
+      * [Conversion value更新コールバック](#skadn-cv-updated-callback)
    * [イベントトラッキング](#event-tracking)
       * [収益のトラッキング](#revenue-tracking)
       * [収益の重複排除](#revenue-deduplication)
@@ -60,6 +61,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [iOS 9およびそれ以降のバージョンでのディープリンク](#deeplinking-setup-old)
       * [ディファードディープリンク](#deeplinking-deferred)
       * [ディープリンクを介したリアトリビューション](#deeplinking-reattribution)
+   * [[ベータ版]データレジデンシー](#data-residency)
 * [トラブルシューティング](#troubleshooting)
    * [SDK初期化時の問題](#ts-delayed-init)
    * ["Adjust requires ARC"というエラーが表示される](#ts-arc)
@@ -128,8 +130,8 @@ iOS 8リリース以降、Appleはdynamic frameworks（embedded frameworks）を
 iOS frameworksに対応したAdjust SDKの機能を利用する際は、以下のframeworkをXcodeに追加してください。
 
 - `AdSupport.framework` - SDKがIDFA値および（iOS 14より前の）LAT(Limited Ad Tracking)情報を呼び出します。
-- `iAd.framework` - SDKが配信中のASA（Apple Search Ads）キャンペーンのアトリビューションを自動的に処理します。（今後、廃止され`AdServices.framework`に置き換わる予定です）。
-- `AdServices.framework`- SDKがASAキャンペーンのアトリビューションを自動的に処理します。
+- `iAd.framework` - SDKが実行中のASAキャンペーンのアトリビューションを自動的に処理できるようにします。
+- `AdServices.framework` - iOS 14.3以降を実行するデバイスの場合、SDKがASAキャンペーンのアトリビューションを自動的に処理できるようになります。Apple Ads Attribution APIを利用する際に必要です。
 - `CoreTelephony.framework`- SDKが現在のRadio Access Technology（無線アクセス技術）を判別します。
 - `StoreKit.framework`- iOS 14またはそれ以降において、このframeworkは` SKAdNetwork` のframeworkにアクセスし、「SKAdNetwork」との通信をAdjust SDKで自動的に処理します。
 - `AppTrackingTransparency.framework` -iOS 14またはそれ以降において、このframeworkはSDKがトラッキングに対するユーザー同意を確認するダイアログをラップし、ユーザーの許諾状況を示す値にアクセスします。
@@ -218,7 +220,7 @@ Sandbox環境で計測された数値はSandboxレポートに表示されます
 
 **SDKをフレームワークとして追加する:** iMessageアプリケーションに`AdjustSdkIm.framework`を追加した後、`Build Phases`プロジェクト設定で`New Copy Files Phase`を追加します。AdjustSdkIm.framework`をFrameworks`フォルダにコピーするを選択してください。
 
-**セッショントラッキング：** セッショントラッキングをiMessageアプリで正しく機能させるためには、追加の実装ステップを1回実行します。標準のiOSアプリでは、Adjust SDKはiOSシステム通知に自動的に登録され、アプリがいつ入力されたか、フォアグラウンドになったかを知ることができます。これはiMessageアプリの場合には該当しないため、iMessageアプリビューコントローラの`trackSubsessionStart`メソッドと`trackSubsessionEnd`メソッドへの明示的な呼び出しを追加する必要があります。これにより、アプリがフォアグラウンドあるかどうかをSDKに認識させることができます。
+**セッショントラッキング:** セッショントラッキングをiMessageアプリで正しく機能させるためには、追加の実装ステップを1回実行します。標準のiOSアプリでは、Adjust SDKはiOSシステム通知に自動的に登録され、アプリがいつ入力されたか、フォアグラウンドになったかを知ることができます。これはiMessageアプリの場合には該当しないため、iMessageアプリビューコントローラの`trackSubsessionStart`メソッドと`trackSubsessionEnd`メソッドへの明示的な呼び出しを追加する必要があります。これにより、アプリがフォアグラウンドあるかどうかをSDKに認識させることができます。
 
 `didBecomeActiveWithConversation`のメソッド中に`trackSubsessionStart`を追加します。
 
@@ -250,7 +252,7 @@ Add call to `trackSubsessionEnd` inside of `willResignActiveWithConversation:` m
 
 このセットを使用すると、Adjust SDKはiMessageアプリ内でセッションのトラッキングを正常に行うことができます。
 
-注意：書き込んだiOSアプリとiMessageの拡張機能は、異なるメモリ空間で動作しており、バンドルIDも異なります。２つの場所で同じアプリトークンを使用してAdjust SDKを初期化すると、相互が認識しない2つの独立したインスタンスが生成され、ダッシュボードのデータが混在してしまうことがあります。これを避けるためには、iMessageアプリをAdjust管理画面に新規追加し、登録済みのiOSアプリと異なるアプリトークンを使ってSDKを初期化してください。
+**注意:** 書き込んだiOSアプリとiMessageの拡張機能は、異なるメモリ空間で動作しており、バンドルIDも異なります。２つの場所で同じアプリトークンを使用してAdjust SDKを初期化すると、相互が認識しない2つの独立したインスタンスが生成され、ダッシュボードのデータが混在してしまうことがあります。これを避けるためには、iMessageアプリをAdjust管理画面に新規追加し、登録済みのiOSアプリと異なるアプリトークンを使ってSDKを初期化してください。
 
 ### <a id="adjust-logging"></a>Adjustログ
 
@@ -372,6 +374,17 @@ iOS SDK v4.26.0では、Adjust SDKラッパーメソッド`updateConversionValue
 [Adjust updateConversionValue:6];
 ```
 
+### <a id="skadn-cv-updated-callback"></a>Conversion value更新コールバック
+
+コールバックを登録すると、Adjust SDKがユーザーのconversion valueを更新するたびに通知を受けることができます。`AdjustDelegate`プロトコルを実装し、オプションの`adjustConversionValueUpdated:`メソッドを実装する必要があります。
+
+```objc
+- (void)adjustConversionValueUpdated:(NSNumber *)conversionValue {
+    NSLog(@"Conversion value updated callback called!");
+    NSLog(@"Conversion value: %@", conversionValue);
+}
+```
+
 ### <a id="event-tracking"></a>イベントトラッキング
 
 Adjustではアプリ内イベントの計測も可能です。ここでは、特定のボタンに対するすべてのタップを計測する場合について説明します。[管理画面]で新しいイベントトークンを作成し、`abc123`というイベントトークンが発行されたとします。次に、ボタンの`buttonDown`メソッドで以下のコードを追加してタップを計測します。
@@ -401,7 +414,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 通貨コードを設定すると、Adjustは計測された課金金額を設定されたレポート通貨に自動換算します。[通貨換算についての詳細はこちら][currency-conversion]をご覧ください。
 
-収益とイベントトラッキングの詳細については、[イベントトラッキングガイド][tracking-purchases-and-revenues] をご覧ください。
+収益とイベントトラッキングの詳細については、[イベントトラッキングガイド](https://help.adjust.com/ja/article/app-events#tracking-purchases-and-revenues)をご覧ください。
 
 ### <a id="revenue-deduplication"></a>収益の重複排除
 
@@ -602,20 +615,36 @@ Adjustの[該当するアトリビューションデータポリシー][attribut
 
 ### <a id="ad-revenue"></a>広告収益のトラッキング
 
-Adjust SDKを利用して、以下のメソッドを呼び出し広告収益情報をトラッキングできます。
+**注**：この広告収益計測APIは、ネイティブのSDK v4.29.0以降のみ利用可能です。
+
+Adjust SDKを利用して、以下のメソッドを呼び出し広告収益情報を計測することができます。
 
 ```objc
+// initilise ADJAdRevenue instance with appropriate ad revenue source
+ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:source];
+// pass revenue and currency values
+[adRevenue setRevenue:1.6currency:@"USD"];
+// pass optional parameters
+[adRevenue setAdImpressionsCount:adImpressionsCount];
+[adRevenue setAdRevenueUnit:adRevenueUnit];
+[adRevenue setAdRevenuePlacement:adRevenuePlacement];
+[adRevenue setAdRevenueNetwork:adRevenueNetwork];
+// attach callback and/or partner parameter if needed
+[adRevenue addCallbackParameter:key value:value];
+[adRevenue addPartnerParameter:key value:value];
+
+// track ad revenue
 [Adjust trackAdRevenue:source payload:payload];
 ```
 
-Adjust SDKにパスするメソッドの引数は以下の通りです。
-
-- `source` - 広告収益情報のソースを指定する`NSString`オブジェクト
-- `payload` - 広告収益のJSONを格納する`NSData`オブジェクト
-
 現在、Adjustは以下の`source`パラメーターの値のみ対応しています。
 
-- `ADJAdRevenueSourceMopub` - メディエーションプラットフォームのMoPubを示します（詳細は、[統合ガイド][sdk2sdk-mopub]を参照ください）。
+- `ADJAdRevenueSourceAppLovinMAX` - AppLovin MAXプラットフォームを示します。
+- `ADJAdRevenueSourceMopub` - MoPubプラットフォームを示します。
+- `ADJAdRevenueSourceAdMob` - AdMobプラットフォームを示します。
+- `ADJAdRevenueSourceIronSource` - IronSourceプラットフォームを示します。
+
+**注**：サポートされているすべてのソースとの連携の詳細については、このREADME以外にも追加のドキュメントが用意されます。また、この機能を利用するには、Adjust管理画面でのアプリの追加設定が必要となりますので、利用する前に必ずサポートチームに連絡し、すべての設定が正しく行われていることを確認してください。
 
 ### <a id="subscriptions"></a>サブスクリプショントラッキング
 
@@ -1038,6 +1067,17 @@ Adjustはディープリンクを使ったリエンゲージメントキャン�
 }
 ```
 
+### <a id="data-residency"></a>[ベータ版]データレジデンシー
+
+データ所在地機能を有効にするには、`ADJConfig`インスタンスの`setUrlStrategy:`メソッドに、以下のいずれかの定数を指定して呼び出します：
+
+```objc
+[adjustConfig setUrlStrategy:ADJDataResidencyEU]; // for EU data residency region
+[adjustConfig setUrlStrategy:ADJDataResidencyTR]; // for Turkey data residency region
+```
+
+**注：** 現在、この機能はベータテスト段階です。この機能の利用をご希望の場合は、担当のアカウントマネージャーもしくはsupport@adjust.comまでお問い合わせください。この設定を有効にすると、SDKのトラフィックが遮断されるため、この機能がアプリで有効になっていることをサポートチームに確認する前に、この設定を有効にしないでください。
+
 ## <a id="troubleshooting"></a>よくある質問
 
 ### <a id="ts-delayed-init"></a>SDK初期化時の問題
@@ -1204,7 +1244,6 @@ Adjust SDKは、実装された通りにイベントを計測します。収益�
 ```
 
 計測されるべきでない値がレポート画面に表示されている場合は、**金額の値を決定するロジックを確認してください**。
-
 
 [dashboard]:   http://adjust.com
 [adjust.com]:  http://adjust.com
