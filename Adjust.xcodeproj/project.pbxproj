@@ -346,7 +346,7 @@
 		9DF9C9121D6F3CA5008E362F /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8D31D6F3CA5008E362F /* NSData+ADJAdditions.m */; };
 		9DF9C9131D6F3CA5008E362F /* NSString+ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8D41D6F3CA5008E362F /* NSString+ADJAdditions.h */; };
 		9DF9C9141D6F3CA5008E362F /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8D51D6F3CA5008E362F /* NSString+ADJAdditions.m */; };
-		9DF9C9171D6F3CA5008E362F /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8D81D6F3CA5008E362F /* ADJAdjustFactory.h */; };
+		9DF9C9171D6F3CA5008E362F /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8D81D6F3CA5008E362F /* ADJAdjustFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DF9C9181D6F3CA5008E362F /* ADJAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8D91D6F3CA5008E362F /* ADJAdjustFactory.m */; };
 		9DF9C9191D6F3CA5008E362F /* ADJAttribution.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF9C8DA1D6F3CA5008E362F /* ADJAttribution.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DF9C91A1D6F3CA5008E362F /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF9C8DB1D6F3CA5008E362F /* ADJAttribution.m */; };
@@ -2046,6 +2046,7 @@
 				9DF9C9371D6F3CA5008E362F /* ADJSessionFailure.h in Headers */,
 				6FBE0C6E2577CDAC00EC2CE0 /* ADJThirdPartySharing.h in Headers */,
 				6FAB786B2636DC8400773869 /* ADJLinkResolution.h in Headers */,
+				9DF9C9171D6F3CA5008E362F /* ADJAdjustFactory.h in Headers */,
 				9DF92D872630ED3D000FC3FC /* ADJPackageParams.h in Headers */,
 				9D3A2AC62626501D00BD6E44 /* ADJAdRevenue.h in Headers */,
 				9DDF24431F7BE4BA001C1A70 /* ADJUserDefaults.h in Headers */,
@@ -2056,7 +2057,6 @@
 				9DF9C90D1D6F3CA5008E362F /* ADJActivityPackage.h in Headers */,
 				9DF9C90F1D6F3CA5008E362F /* ADJActivityState.h in Headers */,
 				9DF381F6260E9AF50033F5A1 /* NSNumber+ADJAdditions.h in Headers */,
-				9DF9C9171D6F3CA5008E362F /* ADJAdjustFactory.h in Headers */,
 				9DF9C92D1D6F3CA5008E362F /* ADJPackageBuilder.h in Headers */,
 				9DF9C92F1D6F3CA5008E362F /* ADJPackageHandler.h in Headers */,
 				9DF9C9311D6F3CA5008E362F /* ADJRequestHandler.h in Headers */,
