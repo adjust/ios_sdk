@@ -29,3 +29,4 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkImVersionString[];
 #import <AdjustSdkIm/ADJSessionFailure.h>
 #import <AdjustSdkIm/ADJAdRevenue.h>
 #import <AdjustSdkIm/ADJLinkResolution.h>
+#import <AdjustSdkIm/ADJAdjustFactory.h>

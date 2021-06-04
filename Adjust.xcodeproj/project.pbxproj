@@ -166,7 +166,7 @@
 		9D0E2E7A210B575600133B4F /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E26210B575600133B4F /* ADJResponseData.h */; };
 		9D0E2E7B210B575600133B4F /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E27210B575600133B4F /* ADJSessionSuccess.m */; };
 		9D0E2E7C210B575600133B4F /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E28210B575600133B4F /* ADJEventFailure.m */; };
-		9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E29210B575600133B4F /* ADJAdjustFactory.h */; };
+		9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E29210B575600133B4F /* ADJAdjustFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2E7E210B575600133B4F /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E2A210B575600133B4F /* ADJEventSuccess.m */; };
 		9D0E2E7F210B575600133B4F /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E2B210B575600133B4F /* ADJActivityState.m */; };
 		9D0E2E80210B575600133B4F /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E2C210B575600133B4F /* ADJSessionFailure.m */; };
@@ -275,7 +275,7 @@
 		9DEAF104210072BC005CAEDB /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEAF0C0210072BC005CAEDB /* ADJResponseData.h */; };
 		9DEAF105210072BC005CAEDB /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0C1210072BC005CAEDB /* ADJSessionSuccess.m */; };
 		9DEAF106210072BC005CAEDB /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0C2210072BC005CAEDB /* ADJEventFailure.m */; };
-		9DEAF107210072BC005CAEDB /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEAF0C3210072BC005CAEDB /* ADJAdjustFactory.h */; };
+		9DEAF107210072BC005CAEDB /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEAF0C3210072BC005CAEDB /* ADJAdjustFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DEAF108210072BC005CAEDB /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0C4210072BC005CAEDB /* ADJEventSuccess.m */; };
 		9DEAF109210072BC005CAEDB /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0C5210072BC005CAEDB /* ADJActivityState.m */; };
 		9DEAF10A210072BC005CAEDB /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0C6210072BC005CAEDB /* ADJSessionFailure.m */; };
@@ -396,7 +396,7 @@
 		9DFB06631D7470C0006D48FC /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06241D7470C0006D48FC /* NSData+ADJAdditions.m */; };
 		9DFB06641D7470C0006D48FC /* NSString+ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06251D7470C0006D48FC /* NSString+ADJAdditions.h */; };
 		9DFB06651D7470C0006D48FC /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB06261D7470C0006D48FC /* NSString+ADJAdditions.m */; };
-		9DFB06681D7470C0006D48FC /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06291D7470C0006D48FC /* ADJAdjustFactory.h */; };
+		9DFB06681D7470C0006D48FC /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06291D7470C0006D48FC /* ADJAdjustFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DFB06691D7470C0006D48FC /* ADJAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB062A1D7470C0006D48FC /* ADJAdjustFactory.m */; };
 		9DFB066A1D7470C0006D48FC /* ADJAttribution.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB062B1D7470C0006D48FC /* ADJAttribution.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DFB066B1D7470C0006D48FC /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFB062C1D7470C0006D48FC /* ADJAttribution.m */; };
@@ -1959,9 +1959,9 @@
 				9D0E2EA4210B575600133B4F /* ADJSessionSuccess.h in Headers */,
 				9D0E2EA8210B575600133B4F /* ADJLogger.h in Headers */,
 				6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */,
+				9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */,
 				6FAB78932636DCE700773869 /* ADJLinkResolution.h in Headers */,
 				9D3A2AD1262650C300BD6E44 /* ADJAdRevenue.h in Headers */,
-				9D0E2E7D210B575600133B4F /* ADJAdjustFactory.h in Headers */,
 				9D0E2E76210B575600133B4F /* ADJActivityKind.h in Headers */,
 				9D0E2E88210B575600133B4F /* ADJUserDefaults.h in Headers */,
 				9D0E2E8B210B575600133B4F /* ADJTimerOnce.h in Headers */,
@@ -2003,9 +2003,9 @@
 				9DEAF12B210072BC005CAEDB /* ADJEventSuccess.h in Headers */,
 				9D651C8825B26DF5006D69D6 /* ADJThirdPartySharing.h in Headers */,
 				6FAB78782636DCB600773869 /* ADJLinkResolution.h in Headers */,
+				9DEAF107210072BC005CAEDB /* ADJAdjustFactory.h in Headers */,
 				9DF92D8B2630ED59000FC3FC /* ADJPackageParams.h in Headers */,
 				9D3A2AC92626505800BD6E44 /* ADJAdRevenue.h in Headers */,
-				9DEAF107210072BC005CAEDB /* ADJAdjustFactory.h in Headers */,
 				9DEAF100210072BC005CAEDB /* ADJActivityKind.h in Headers */,
 				9DEAF112210072BC005CAEDB /* ADJUserDefaults.h in Headers */,
 				9DEAF115210072BC005CAEDB /* ADJTimerOnce.h in Headers */,
@@ -2089,6 +2089,7 @@
 				9DFB06881D7470C0006D48FC /* ADJSessionFailure.h in Headers */,
 				9D651C9625B26E1B006D69D6 /* ADJThirdPartySharing.h in Headers */,
 				6FAB78852636DCCD00773869 /* ADJLinkResolution.h in Headers */,
+				9DFB06681D7470C0006D48FC /* ADJAdjustFactory.h in Headers */,
 				9D3A2ACD2626508F00BD6E44 /* ADJAdRevenue.h in Headers */,
 				9DDF24451F7BE4E7001C1A70 /* ADJUserDefaults.h in Headers */,
 				9DFB06621D7470C0006D48FC /* NSData+ADJAdditions.h in Headers */,
@@ -2098,7 +2099,6 @@
 				9DFB065E1D7470C0006D48FC /* ADJActivityPackage.h in Headers */,
 				9DFB06601D7470C0006D48FC /* ADJActivityState.h in Headers */,
 				9DF3820F260E9B740033F5A1 /* NSNumber+ADJAdditions.h in Headers */,
-				9DFB06681D7470C0006D48FC /* ADJAdjustFactory.h in Headers */,
 				9DFB067E1D7470C0006D48FC /* ADJPackageBuilder.h in Headers */,
 				9DFB06801D7470C0006D48FC /* ADJPackageHandler.h in Headers */,
 				9DFB06821D7470C0006D48FC /* ADJRequestHandler.h in Headers */,
