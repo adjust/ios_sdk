@@ -322,7 +322,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * Obtain singleton Adjust object.
  */
-+ (nullable id)getInstance;
++ (nullable instancetype)getInstance;
 
 - (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
 
