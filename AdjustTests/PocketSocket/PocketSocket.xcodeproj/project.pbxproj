@@ -375,7 +375,7 @@
 		EEE5E30218B37DD500BAE47A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Zwopple Limited";
 				TargetAttributes = {
 					EE453D0E1CABF60300A2EA13 = {

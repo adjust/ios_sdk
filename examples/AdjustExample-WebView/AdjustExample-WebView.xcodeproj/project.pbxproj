@@ -387,7 +387,7 @@
 		9D10829C1CFDAF8E0050568B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "adjust GmbH";
 				TargetAttributes = {
 					9D1082A31CFDAF8E0050568B = {
