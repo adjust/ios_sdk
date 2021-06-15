@@ -32,30 +32,30 @@
 
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
-    
+
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-    
+
     // Delay the first session of the SDK.
     // [adjustConfig setDelayStart:7];
-    
+
     // Add session callback parameters.
     [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
     [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-    
+
     // Add session partner parameters.
     [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
     [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-    
+
     // Remove session callback parameter.
     [Adjust removeSessionCallbackParameter:@"sp_key"];
-    
+
     // Remove session partner parameter.
     [Adjust removeSessionPartnerParameter:@"sp_foo"];
-    
+
     // Remove all session callback parameters.
     // [Adjust resetSessionCallbackParameters];
-    
+
     // Remove all session partner parameters.
     // [Adjust resetSessionPartnerParameters];
 
@@ -67,7 +67,7 @@
 
     // Disable the SDK.
     // [Adjust setEnabled:NO];
-    
+
     // Interrupt delayed start set with setDelayStart: method.
     // [Adjust sendFirstPackages];
     

@@ -1509,4 +1509,62 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return [ADJUtil formatDate:installTime];
 }
 
++ (NSString *)generateRandomUuid {
+    CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef stringRef = CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+    NSString *uuidString = (__bridge_transfer NSString*)stringRef;
+    NSString *lowerUuid = [uuidString lowercaseString];
+    CFRelease(newUniqueId);
+    return lowerUuid;
+}
+
++ (NSString *)getPersistedRandomToken {
+    NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
+    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
+    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
+    keychainItem[(__bridge id)kSecAttrAccount] = @"adjust_uuid";
+    keychainItem[(__bridge id)kSecAttrService] = @"deviceInfo";
+    if (!keychainItem) {
+        return nil;
+    }
+
+    keychainItem[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
+    keychainItem[(__bridge id)kSecReturnAttributes] = (__bridge id)kCFBooleanTrue;
+    CFDictionaryRef result = nil;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)keychainItem, (CFTypeRef *)&result);
+    if (status != noErr) {
+        return nil;
+    }
+
+    NSDictionary *resultDict = (__bridge_transfer NSDictionary *)result;
+    NSData *data = resultDict[(__bridge id)kSecValueData];
+    if (!data) {
+        return nil;
+    }
+
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
++ (BOOL)setPersistedRandomToken:(NSString *)randomToken {
+    NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
+    keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
+    keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
+    keychainItem[(__bridge id)kSecAttrAccount] = @"adjust_uuid";
+    keychainItem[(__bridge id)kSecAttrService] = @"deviceInfo";
+    keychainItem[(__bridge id)kSecValueData] = [randomToken dataUsingEncoding:NSUTF8StringEncoding];
+    OSStatus status = SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
+    if (status != noErr) {
+        [[ADJAdjustFactory logger] warn:@"Primary dedupe token unsuccessfully written"];
+        return NO;
+    } else {
+        NSString *persistedRandomToken = [ADJUtil getPersistedRandomToken];
+        if ([randomToken isEqualToString:persistedRandomToken]) {
+            [[ADJAdjustFactory logger] debug:@"Primary dedupe token successfully written"];
+            return YES;
+        } else {
+            return NO;
+        }
+    }
+}
+
 @end
