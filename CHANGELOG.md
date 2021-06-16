@@ -1,3 +1,9 @@
+### Version 4.29.3 (16th June 2021)
+#### Fixed
+- Fixed compile time errors with Xcode 13 beta (thanks to @yhkaplan).
+
+---
+
 ### Version 4.29.2 (12th May 2021)
 #### Added
 - [beta] Added data residency support for US region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyUS` parameter.

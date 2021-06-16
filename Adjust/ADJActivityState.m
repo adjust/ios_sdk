@@ -9,6 +9,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJUtil.h"
 
 static const int kTransactionIdCount = 10;
 static NSString *appToken = nil;
@@ -23,7 +24,7 @@ static NSString *appToken = nil;
         return nil;
     }
 
-    [self assignRandomToken];
+    [self assignRandomToken:[ADJUtil generateRandomUuid]];
 
     self.eventCount = 0;
     self.sessionCount = 0;
@@ -81,8 +82,20 @@ static NSString *appToken = nil;
 
 #pragma mark - Private & helper methods
 
-- (void)assignRandomToken {
-    self.dedupeToken = [[NSUUID UUID] UUIDString];
+- (void)assignRandomToken:(NSString *)randomToken {
+    // self.secondaryDedupeToken = [[NSUUID UUID] UUIDString];
+    NSString *persistedDedupeToken = [ADJUtil getPersistedRandomToken];
+    if (persistedDedupeToken != nil) {
+        if ((bool)[[NSUUID alloc] initWithUUIDString:persistedDedupeToken]) {
+            [[ADJAdjustFactory logger] verbose:@"Primary dedupe token successfully read"];
+            self.dedupeToken = persistedDedupeToken;
+            self.isPersisted = YES;
+            return;
+        }
+    }
+    
+    self.dedupeToken = randomToken;
+    self.isPersisted = [ADJUtil setPersistedRandomToken:self.dedupeToken];
 }
 
 - (NSString *)description {
@@ -110,10 +123,10 @@ static NSString *appToken = nil;
     
     // Default values for migrating devices.
     if ([decoder containsValueForKey:@"uuid"]) {
-        self.dedupeToken = [decoder decodeObjectForKey:@"uuid"];
+        [self assignRandomToken:[decoder decodeObjectForKey:@"uuid"]];
     }
     if (self.dedupeToken == nil) {
-        [self assignRandomToken];
+        [self assignRandomToken:[ADJUtil generateRandomUuid]];
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {

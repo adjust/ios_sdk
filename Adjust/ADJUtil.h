@@ -143,4 +143,10 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)installedAt;
 
++ (NSString *)generateRandomUuid;
+
++ (NSString *)getPersistedRandomToken;
+
++ (BOOL)setPersistedRandomToken:(NSString *)randomToken;
+
 @end
