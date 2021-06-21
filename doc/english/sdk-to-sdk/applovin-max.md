@@ -13,8 +13,7 @@ If you want to track your ad revenue with the AppLovin MAX SDK, you can use our 
 ### Example
 
 ```objc
-- (void)didPayRevenueForAd:(MAAd *)ad
-{
+- (void)didPayRevenueForAd:(MAAd *)ad {
     ADJAdRevenue *adjustAdRevenue = [[ADJAdRevenue alloc] initWithSource:ADJAdRevenueSourceAppLovinMAX];
 
     adjustAdRevenue.setRevenue(ad.revenue, "USD");
