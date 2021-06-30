@@ -1,3 +1,12 @@
+**This guide is being retired.**
+
+This README file will be retired shortly. The SDK documentation can now be found on our help center:
+
+* [English][en-helpcenter]
+* [中文][zh-helpcenter]
+* [日本語][ja-helpcenter]
+* [한국어][ko-helpcenter]
+
 ## Summary
 
 This is the iOS SDK of Adjust™. You can read more about Adjust™ at [adjust.com].
@@ -1281,6 +1290,11 @@ If you are seing any value in the dashboard other than what you expected to be t
 [zh-readme]:  doc/chinese/README.md
 [ja-readme]:  doc/japanese/README.md
 [ko-readme]:  doc/korean/README.md
+  
+[en-helpcenter]: https://help.adjust.com/en/developer/ios-sdk-documentation
+[zh-helpcenter]: https://help.adjust.com/zh/developer/ios-sdk-documentation
+[ja-helpcenter]: https://help.adjust.com/ja/developer/ios-sdk-documentation
+[ko-helpcenter]: https://help.adjust.com/ko/developer/ios-sdk-documentation
 
 [sdk2sdk-mopub]:  doc/english/sdk-to-sdk/mopub.md
 
