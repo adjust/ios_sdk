@@ -1158,12 +1158,20 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)addIdfaIfPossibleToParameters:(NSMutableDictionary *)parameters {
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        NSString *idfa = [ADJUtil idfa];
-        if (idfa.length > 0 && [idfa compare:@"00000000-0000-0000-0000-000000000000"] != NSOrderedSame) {
-            [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
-        }
+    if (! self.adjustConfig.allowIdfaReading) {
+        return;
     }
+
+    NSString *idfa = [ADJUtil idfa];
+
+    if (idfa == nil
+        || idfa.length == 0
+        || [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
+    {
+        return;
+    }
+
+    [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }
 
 - (ADJActivityPackage *)defaultActivityPackage {
