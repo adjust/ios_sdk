@@ -61,6 +61,7 @@
       * [iOS 9 及以上版本的深度链接设置](#deeplinking-setup-new)
       * [延迟深度链接场景](#deeplinking-deferred)
       * [通过深度链接的再归因](#deeplinking-reattribution)
+      * [链接解析](#link-resolution)
    * [[beta] 数据驻留](#data-residency)
 * [问题排查](#troubleshooting)
    * [SDK 延迟初始化问题](#ts-delayed-init)
@@ -1067,6 +1068,32 @@ Adjust 支持您使用深度链接进行交互推广活动。请查看我们的[
 }
 ```
 
+### <a id="link-resolution"></a>链接解析
+
+通过电子邮件服务提供商 (ESP) 投放深度链接且需要使用自定义跟踪链接来跟踪点击时，可以使用 `ADJLinkResolution` 类的 `resolveLinkWithUrl` 方法进行链接解析。这样，当用户在应用中打开深度链接时，您就能记录用户与电子邮件推广活动的互动了。
+
+`resolveLinkWithUrl` 方法携带下列参数：
+
+- `url` - 打开应用的深度链接
+- `resolveUrlSuffixArray` - 需要解析的、已设置推广活动的自定义域名
+- `callback` - 将包含最终 URL 的回传
+
+如果接收到的链接不属于 `resolveUrlSuffixArray` 中指定的任何域名，那么回传就会原样转发深度链接 URL；如果链接包含所指定的域名，那么 SDK 就会尝试解析链接，并将解析得出的深度链接返回至 `callback` 参数。您也可以使用 [`Adjust appWillOpenUrl:]` 方法，在 Adjust SDK 中针对返回的深度链接进行再归因。
+
+> **请注意**：在尝试解析 URL 时，SDK 会自动追溯最多 3 个重定向 (redirect)，并将其中最新的 URL 返回为 `回传` URL，也就是说，如果要追溯的重定向超过 3 个，那么 SDK 就会返回 **第 3 个重定向 URL**。
+
+**示例**
+
+```objc
+[ADJLinkResolution
+    resolveLinkWithUrl:url
+    resolveUrlSuffixArray:@[@"example.com"]
+    callback:^(NSURL * _Nullable resolvedLink)
+    {
+        [Adjust appWillOpenUrl:resolvedLink];
+    }];
+```  
+  
 ### <a id="data-residency"></a>[beta] 数据驻留
 
 要启用数据驻留功能，请务必通过以下常量之一调用`ADJConfig` 实例中的 `setUrlStrategy:` 方法 ：
