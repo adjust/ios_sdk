@@ -83,7 +83,6 @@ static NSString *appToken = nil;
 #pragma mark - Private & helper methods
 
 - (void)assignRandomToken:(NSString *)randomToken {
-    // self.secondaryDedupeToken = [[NSUUID UUID] UUIDString];
     NSString *persistedDedupeToken = [ADJUtil getPersistedRandomToken];
     if (persistedDedupeToken != nil) {
         if ((bool)[[NSUUID alloc] initWithUUIDString:persistedDedupeToken]) {
