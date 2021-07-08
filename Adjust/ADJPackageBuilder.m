@@ -364,9 +364,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -431,9 +429,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -518,9 +514,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -589,9 +583,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -651,9 +643,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -735,9 +725,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -804,9 +792,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
@@ -857,9 +843,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -915,9 +899,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -982,9 +964,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1055,9 +1035,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1119,9 +1097,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    if (self.adjustConfig.allowIdfaReading == YES) {
-        [ADJPackageBuilder parameters:parameters setString:[ADJUtil idfa] forKey:@"idfa"];
-    }
+    [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1179,6 +1155,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
 
     return parameters;
+}
+
+- (void)addIdfaIfPossibleToParameters:(NSMutableDictionary *)parameters {
+    if (self.adjustConfig.allowIdfaReading == YES) {
+        NSString *idfa = [ADJUtil idfa];
+        if (idfa.length > 0 && [idfa compare:@"00000000-0000-0000-0000-000000000000"] != NSOrderedSame) {
+            [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
+        }
+    }
 }
 
 - (ADJActivityPackage *)defaultActivityPackage {
