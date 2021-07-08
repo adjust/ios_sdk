@@ -61,6 +61,7 @@ Adjust™의 iOS SDK에 관한 문서입니다. [adjust.com]에서 Adjust™에 
       * [iOS 9 이후 버전에서의 딥링크](#deeplinking-setup-new)
       * [지연 딥링크(deferred deeplink) 시나리오](#deeplinking-deferred)
       * [딥링크를 통한 리어트리뷰션( reattribution)](#deeplinking-reattribution)
+      * [Link resolution](#link-resolution)
    * [베타 Data residency](#data-residency)
 * [문제 해결](#troubleshooting)
    * [지연 SDK 초기화 관련 문제](#ts-delayed-init)
@@ -1067,6 +1068,32 @@ Adjust를 사용하면 립링크를 사용하여 리인게이지먼트(재유입
 }
 ```
 
+### <a id="link-resolution"></a>Link resolution
+
+이메일 서비스 제공자(ESP)로부터 딥링크를 제공하고 커스텀 트래킹 링크를 통해 클릭을 트래킹해야 하는 경우, `ADJLinkResolution` 클래스의 `resolveLinkWithUrl` 메서드를 사용하여 링크를 해석할 수 있습니다. 이를 통해 딥링크가 앱에서 열렸을 때 이메일 트래킹 캠페인과의 교류를 기록할 수 있습니다.
+
+`resolveLinkWithUrl` 메서드는 다음의 파라미터를 사용합니다:
+
+- `url` - 앱을 연 딥링크
+- `resolveUrlSuffixArray` - 해석되어야 하는 구성된 캠페인의 커스텀 도메인
+- `callback`- 최총 URL을 포함하게 될 콜백
+
+수신한 링크가 `resolveUrlSuffixArray`에 명시된 도메인에 속하지 않는 경우, 해당 콜백은 딥링크 URL을 그대로 전달합니다. 링크가 명시된 도메인을 포함하는 경우, SDK는 링크 해석을 시도하고, `callback` 파라미터로 결과 딥링크를 반환합니다. 반환된 딥링크는 또한 `[Adjust appWillOpenUrl:]` 메서드를 사용하여 Adjust SDK에서 리어트리뷰션 될 수 있습니다.
+
+> **참고**: SDK는 URL 해석을 시도할 때 자동으로 최대 3개의 리다이렉트를 따릅니다. SDK는 `callback` URL의 가장 마지막 URL을 반환하는데, 이는 따라야 할 리다이렉트가 3개 이상인 경우 **3번째 리다이렉트 URL이** 반환됨을 의미합니다.
+
+**예시**
+
+```objc
+[ADJLinkResolution
+    resolveLinkWithUrl:url
+    resolveUrlSuffixArray:@[@"example.com"]
+    callback:^(NSURL * _Nullable resolvedLink)
+    {
+        [Adjust appWillOpenUrl:resolvedLink];
+    }];
+```  
+  
 ### <a id="data-residency"></a>[베타] 데이터 레지던시
 
 데이터 레지던시 기능을 활성화하려면, 다음의 상수 중 1개와 함께 `ADJConfig` 인스턴스의 `setUrlStrategy:` 메서드를 호출하시기 바랍니다.
