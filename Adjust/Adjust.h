@@ -13,6 +13,7 @@
 #import "ADJSubscription.h"
 #import "ADJThirdPartySharing.h"
 #import "ADJAdRevenue.h"
+#import "ADJLinkResolution.h"
 
 @interface AdjustTestOptions : NSObject
 
