@@ -102,6 +102,8 @@ static const int kAdServicesdRetriesCount = 1;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
 
+- (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
+
 @end
 
 // copy from ADClientError
