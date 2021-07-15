@@ -852,7 +852,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    BOOL exists = (BOOL)[man performSelector:selExi withObject:filePath];
+    BOOL exists = [[man performSelector:selExi withObject:filePath] boolValue];
 #pragma clang diagnostic pop
     if (!exists) {
         // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
@@ -1090,7 +1090,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![manager respondsToSelector:selEnabled]) {
         return NO;
     }
-    BOOL enabled = (BOOL)[manager performSelector:selEnabled];
+    BOOL enabled = [[manager performSelector:selEnabled] boolValue];
     return enabled;
 #pragma clang diagnostic pop
 #endif
@@ -1255,7 +1255,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return (int)[appTrackingClass performSelector:selAuthorization];
+            return [[appTrackingClass performSelector:selAuthorization] intValue];
 #pragma clang diagnostic pop
         }
     }
