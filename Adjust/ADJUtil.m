@@ -133,20 +133,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (NSDateFormatter *)getDateFormatter {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSString *calendarIdentifier;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
-    if (&NSCalendarIdentifierGregorian != NULL) {
-#pragma clang diagnostic pop
-        calendarIdentifier = NSCalendarIdentifierGregorian;
-    } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        calendarIdentifier = NSGregorianCalendar;
-#pragma clang diagnostic pop
-    }
-    [dateFormatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:calendarIdentifier]];
+    [dateFormatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian]];
     [dateFormatter setDateFormat:kDateFormat];
 
     Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"locale", nil]);
