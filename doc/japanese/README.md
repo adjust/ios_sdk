@@ -1,3 +1,12 @@
+**このガイドはまもなく廃止されます。**
+
+このREADMEファイルはまもなく廃止されます。SDKのドキュメントはAdjustヘルプセンターに掲載されています。以下のリンクよりご覧ください。
+
+* [English][en-helpcenter]
+* [中文][zh-helpcenter]
+* [日本語][ja-helpcenter]
+* [한국어][ko-helpcenter]
+
 ## 概要
 
 これはネイティブAdjust™iOS SDKガイドです。Adjust™については[adjust.com]をご覧ください。
@@ -1328,6 +1337,11 @@ Adjust SDKは、実装された通りにイベントを計測します。収益�
 [associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 [tracking-purchases-and-revenues]: https://help.adjust.com/ja/article/app-events#tracking-purchases-and-revenues
+  
+[en-helpcenter]: https://help.adjust.com/en/developer/ios-sdk-documentation
+[zh-helpcenter]: https://help.adjust.com/zh/developer/ios-sdk-documentation
+[ja-helpcenter]: https://help.adjust.com/ja/developer/ios-sdk-documentation
+[ko-helpcenter]: https://help.adjust.com/ko/developer/ios-sdk-documentation
 
 ## <a id="license"></a>ライセンス
 
