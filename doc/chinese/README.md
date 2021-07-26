@@ -1,3 +1,12 @@
+**该指南即将过期。**
+
+该自述文件即将过期。现在，您可以前往我们的帮助中心查看此 SDK 文档。
+
+* [English][en-helpcenter]
+* [中文][zh-helpcenter]
+* [日本語][ja-helpcenter]
+* [한국어][ko-helpcenter]
+
 ## 摘要
 
 这是 Adjust™ 的 iOS SDK 包。您可以在 [adjust.com] 了解更多有关 Adjust™ 的信息。
@@ -1326,6 +1335,11 @@ Adjust SDK 仅跟踪您要求它跟踪的内容。如果您添加收入至事件
 
 [associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
+  
+[en-helpcenter]: https://help.adjust.com/en/developer/ios-sdk-documentation
+[zh-helpcenter]: https://help.adjust.com/zh/developer/ios-sdk-documentation
+[ja-helpcenter]: https://help.adjust.com/ja/developer/ios-sdk-documentation
+[ko-helpcenter]: https://help.adjust.com/ko/developer/ios-sdk-documentation
 
 ## <a id="license"></a>License
 
