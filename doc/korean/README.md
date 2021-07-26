@@ -1,3 +1,12 @@
+**본 가이드는 만료되었습니다.**
+
+본 README 파일은 얼마 후 만료될 예정입니다. 당사 헬프 센터에서 SDK 문서를 열람하실 수 있습니다.
+
+* [English][en-helpcenter]
+* [中文][zh-helpcenter]
+* [日本語][ja-helpcenter]
+* [한국어][ko-helpcenter]
+
 ## 요약
 
 Adjust™의 iOS SDK에 관한 문서입니다. [adjust.com]에서 Adjust™에 대한 정보를 더 자세히 알아보세요.
@@ -1328,6 +1337,11 @@ Adjust SDK는 사용자의 설정에 따라 트래킹합니다. 이벤트에 매
 
 [associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
+  
+[en-helpcenter]: https://help.adjust.com/en/developer/ios-sdk-documentation
+[zh-helpcenter]: https://help.adjust.com/zh/developer/ios-sdk-documentation
+[ja-helpcenter]: https://help.adjust.com/ja/developer/ios-sdk-documentation
+[ko-helpcenter]: https://help.adjust.com/ko/developer/ios-sdk-documentation
 
 ## <a id="license">라이선스
 
