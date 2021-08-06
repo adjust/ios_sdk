@@ -28,8 +28,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @property (atomic, assign) BOOL paused;
 @property (nonatomic, copy) NSString *lastInitiatedBy;
 
-- (void)checkAttributionResponseI:(ADJAttributionHandler*)selfI attributionResponseData:(ADJAttributionResponseData *)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
-
 @end
 
 @implementation ADJAttributionHandler

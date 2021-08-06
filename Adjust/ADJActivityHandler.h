@@ -72,7 +72,7 @@
 - (void)launchEventResponseTasks:(ADJEventResponseData * _Nullable)eventResponseData;
 - (void)launchSessionResponseTasks:(ADJSessionResponseData * _Nullable)sessionResponseData;
 - (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData * _Nullable)sdkClickResponseData;
-- (void)launchAttributionResponseTasks:(ADJAttributionResponseData * _Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
+- (void)launchAttributionResponseTasks:(ADJAttributionResponseData * _Nullable)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
 - (BOOL)isEnabled;
 - (BOOL)isGdprForgotten;

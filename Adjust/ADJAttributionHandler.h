@@ -23,7 +23,7 @@
 
 - (void)checkSdkClickResponse:(ADJSdkClickResponseData *)sdkClickResponseData;
 
-- (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
+- (void)checkAttributionResponse:(ADJAttributionResponseData *)attributionResponseData;
 
 - (void)getAttribution;
 
