@@ -1,3 +1,12 @@
+### Version 4.29.4 (6th August 2021)
+#### Fixed
+- Fixed new Xcode 13 beta compile time errors for extensions targets (https://github.com/adjust/ios_sdk/pull/559).
+- Improved dummy iAd attribution responses filtering (https://github.com/adjust/ios_sdk/pull/524).
+- Fixed SPM warnnings about `ADJLinkResolution.h` not being part of umbrella header (https://github.com/adjust/ios_sdk/pull/557).
+- Fixed some static code analysis warnings (https://github.com/adjust/ios_sdk/pull/558).
+
+---
+
 ### Version 4.29.3 (16th June 2021)
 #### Fixed
 - Fixed compile time errors with Xcode 13 beta (thanks to @yhkaplan).
