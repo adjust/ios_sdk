@@ -847,13 +847,25 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![man respondsToSelector:selExi]) {
         return NO;
     }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    BOOL exists = [[man performSelector:selExi withObject:filePath] boolValue];
-#pragma clang diagnostic pop
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+//    BOOL exists = [[man performSelector:selExi withObject:filePath] boolValue];
+//#pragma clang diagnostic pop
+//    if (!exists) {
+//        // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
+//        return YES;
+//    }
+
+    NSMethodSignature *msExi = [man methodSignatureForSelector:selExi];
+    NSInvocation *invExi = [NSInvocation invocationWithMethodSignature:msExi];
+    [invExi setSelector:selExi];
+    [invExi setTarget:man];
+    [invExi setArgument:&filePath atIndex:2];
+    [invExi invoke];
+    BOOL exists;
+    [invExi getReturnValue:&exists];
     if (!exists) {
-        // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
-        return YES;
+        return NO;
     }
 
     __autoreleasing NSError *error;
@@ -1087,7 +1099,16 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![manager respondsToSelector:selEnabled]) {
         return NO;
     }
-    BOOL enabled = [[manager performSelector:selEnabled] boolValue];
+    // BOOL enabled = [[manager performSelector:selEnabled] boolValue];
+    // return enabled;
+    
+    NSMethodSignature *msEnabled = [manager methodSignatureForSelector:selEnabled];
+    NSInvocation *invEnabled = [NSInvocation invocationWithMethodSignature:msEnabled];
+    [invEnabled setSelector:selEnabled];
+    [invEnabled setTarget:manager];
+    [invEnabled invoke];
+    BOOL enabled;
+    [invEnabled getReturnValue:&enabled];
     return enabled;
 #pragma clang diagnostic pop
 #endif
@@ -1249,11 +1270,19 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
         SEL selAuthorization = NSSelectorFromString(keyAuthorization);
         if ([appTrackingClass respondsToSelector:selAuthorization]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability"
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return [[appTrackingClass performSelector:selAuthorization] intValue];
-#pragma clang diagnostic pop
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wunguarded-availability"
+//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+//            return [[appTrackingClass performSelector:selAuthorization] intValue];
+//#pragma clang diagnostic pop
+            NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
+            NSInvocation *invAuthorization = [NSInvocation invocationWithMethodSignature:msAuthorization];
+            [invAuthorization setSelector:selAuthorization];
+            [invAuthorization invokeWithTarget:appTrackingClass];
+            [invAuthorization invoke];
+            NSUInteger status;
+            [invAuthorization getReturnValue:&status];
+            return (int)status;
         }
     }
     return -1;
