@@ -865,7 +865,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     BOOL exists;
     [invExi getReturnValue:&exists];
     if (!exists) {
-        return NO;
+        return YES;
     }
 
     __autoreleasing NSError *error;
