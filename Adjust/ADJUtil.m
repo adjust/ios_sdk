@@ -1036,7 +1036,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     
     Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
     if (skAdNetwork == nil) {
-        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        [logger warn:@"StoreKit framework not found in the app (SKAdNetwork not found)"];
         return;
     }
     
@@ -1279,7 +1279,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // [AAAttribution attributionTokenWithError:...]
     Class attributionClass = NSClassFromString(@"AAAttribution");
     if (attributionClass == nil) {
-        [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
+        [logger warn:@"AdServices framework not found in the app (AAAttribution class not found)"];
         if (errorPtr) {
             *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
                                             code:100
@@ -1290,6 +1290,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
     if (![attributionClass respondsToSelector:attributionTokenSelector]) {
+        [logger warn:@"AdServices framework not found in the app (attributionTokenWithError: method not found)"];
         if (errorPtr) {
             *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
                                             code:100
@@ -1315,6 +1316,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return nil;
     }
 
+    [logger debug:@"AdServices framework successfully found in the app"];
     NSString * __unsafe_unretained tmpToken = nil;
     [tokenInvocation getReturnValue:&tmpToken];
     NSString *token = tmpToken;
@@ -1334,22 +1336,22 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // [[ADClient sharedClient] ...]
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
-        [logger warn:@"iAd framework not found in user's app (ADClientClass not found)"];
+        [logger warn:@"iAd framework not found in the app (ADClientClass not found)"];
         return;
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
-        [logger warn:@"iAd framework not found in user's app (sharedClient method not found)"];
+        [logger warn:@"iAd framework not found in the app (sharedClient method not found)"];
         return;
     }
     id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
     if (ADClientSharedClientInstance == nil) {
-        [logger warn:@"iAd framework not found in user's app (ADClientSharedClientInstance is nil)"];
+        [logger warn:@"iAd framework not found in the app (ADClientSharedClientInstance is nil)"];
         return;
     }
-    [logger debug:@"iAd framework successfully found in user's app"];
+    [logger debug:@"iAd framework successfully found in the app"];
     BOOL iAdInformationAvailable = [ADJUtil setiAdWithDetails:activityHandler
                                        adClientSharedInstance:ADClientSharedClientInstance
                                                         queue:queue];
