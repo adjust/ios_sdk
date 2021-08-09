@@ -1,4 +1,4 @@
-### Version 4.29.4 (6th August 2021)
+### Version 4.29.4 (9th August 2021)
 #### Fixed
 - Fixed new Xcode 13 beta compile time errors for extensions targets (https://github.com/adjust/ios_sdk/pull/559).
 - Improved dummy iAd attribution responses filtering (https://github.com/adjust/ios_sdk/pull/524).
