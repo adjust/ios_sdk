@@ -847,14 +847,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![man respondsToSelector:selExi]) {
         return NO;
     }
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-//    BOOL exists = [[man performSelector:selExi withObject:filePath] boolValue];
-//#pragma clang diagnostic pop
-//    if (!exists) {
-//        // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
-//        return YES;
-//    }
 
     NSMethodSignature *msExi = [man methodSignatureForSelector:selExi];
     NSInvocation *invExi = [NSInvocation invocationWithMethodSignature:msExi];
@@ -1099,8 +1091,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![manager respondsToSelector:selEnabled]) {
         return NO;
     }
-    // BOOL enabled = [[manager performSelector:selEnabled] boolValue];
-    // return enabled;
     
     NSMethodSignature *msEnabled = [manager methodSignatureForSelector:selEnabled];
     NSInvocation *invEnabled = [NSInvocation invocationWithMethodSignature:msEnabled];
@@ -1270,11 +1260,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
         SEL selAuthorization = NSSelectorFromString(keyAuthorization);
         if ([appTrackingClass respondsToSelector:selAuthorization]) {
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wunguarded-availability"
-//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-//            return [[appTrackingClass performSelector:selAuthorization] intValue];
-//#pragma clang diagnostic pop
             NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
             NSInvocation *invAuthorization = [NSInvocation invocationWithMethodSignature:msAuthorization];
             [invAuthorization setSelector:selAuthorization];
