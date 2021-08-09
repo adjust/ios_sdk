@@ -71,6 +71,13 @@
     // Interrupt delayed start set with setDelayStart: method.
     // [Adjust sendFirstPackages];
     
+    // Show ATT dialog.
+    if (@available(iOS 14, *)) {
+        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            // Process users' response.
+        }];
+    }
+    
     return YES;
 }
 

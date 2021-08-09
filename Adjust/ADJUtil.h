@@ -31,13 +31,13 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (void)excludeFromBackup:(NSString *)filename;
 
-+ (void)launchDeepLinkMain:(NSURL *)deepLinkUrl;
++ (void)launchDeepLinkMain:(NSURL *)deepLinkUrl NS_EXTENSION_UNAVAILABLE_IOS("");
 
 + (void)launchInMainThread:(dispatch_block_t)block;
 
 + (BOOL)isMainThread;
 
-+ (BOOL)isInactive;
++ (BOOL)isInactive NS_EXTENSION_UNAVAILABLE_IOS("");
 
 + (void)launchInMainThreadWithInactive:(isInactiveInjected)isInactiveblock;
 

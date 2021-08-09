@@ -1,3 +1,12 @@
+**このガイドはまもなく廃止されます。**
+
+このREADMEファイルはまもなく廃止されます。SDKのドキュメントはAdjustヘルプセンターに掲載されています。以下のリンクよりご覧ください。
+
+* [English][en-helpcenter]
+* [中文][zh-helpcenter]
+* [日本語][ja-helpcenter]
+* [한국어][ko-helpcenter]
+
 ## 概要
 
 これはネイティブAdjust™iOS SDKガイドです。Adjust™については[adjust.com]をご覧ください。
@@ -61,6 +70,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [iOS 9およびそれ以降のバージョンでのディープリンク](#deeplinking-setup-old)
       * [ディファードディープリンク](#deeplinking-deferred)
       * [ディープリンクを介したリアトリビューション](#deeplinking-reattribution)
+      * [リンクのresolution](#link-resolution)
    * [[ベータ版]データレジデンシー](#data-residency)
 * [トラブルシューティング](#troubleshooting)
    * [SDK初期化時の問題](#ts-delayed-init)
@@ -85,13 +95,13 @@ Adjust SDKをiOSプロジェクトに導入する手順を説明します。Xcod
 [CocoaPods][cocoapods]を使用している場合は、Podfile`に下記のコードを追加し、[こちらの手順](#sdk-integrate)に進んでください。
 
 ```ruby
-pod 'Adjust', '~> 4.29.3'
+pod 'Adjust', '~> 4.29.4'
 ```
 
 または
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.3'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.4'
 ```
 
 ---
@@ -1067,6 +1077,32 @@ Adjustはディープリンクを使ったリエンゲージメントキャン�
 }
 ```
 
+### <a id="link-resolution"></a>リンクのresolution (解析と変換）
+
+Emailサービスプロバイダー（ESP）独自のカスタムトラッキングリンク経由でディープリンクを使用したり、クリックを計測する必要がある場合は、`ADJLinkResolution`クラスの`resolveLinkWithUrl`メソッドを使用してリンクをresolve（解析し、変換すること）します。これにより、アプリでディープリンクが開かれた時に、メール計測キャンペーンとのインタラクションを記録できます。
+
+`resolveLinkWithUrl`メソッドでは、以下のパラメーターが使用できます。
+
+- `url` - アプリを起動したディープリンク
+- `resolveUrlSuffixArray` - リンクの解析が必要な、設定済みキャンペーンのカスタムドメイン
+- `callback` - 最終的なURLを含むコールバック
+
+受信したリンクが`resolveUrlSuffixArray`で指定されたドメインのいずれにも属さない場合、コールバックはディープリンクURLをそのまま転送します。リンクが指定されたドメインのいずれかを含む場合、SDKはリンクの解析を試み、`callback`パラメーターにディープリンクを返します。返されたディープリンクは、`[Adjust appWillOpenUrl:]`メソッドを使ってAdjust SDKでリアトリビュートすることも可能です。
+
+> **注**: URLの解析と変換が行われると、SDKは自動的に最大3つのリダイレクトをフォローします。さらに、SDKはフォローした最新のURLを`callback` URLとして返します。つまり、フォローするリダイレクトが3つを超える場合は**3つ目のリダイレクトURL**が返されます。
+
+**例**
+
+```objc
+[ADJLinkResolution
+    resolveLinkWithUrl:url
+    resolveUrlSuffixArray:@[@"example.com"]
+    callback:^(NSURL * _Nullable resolvedLink)
+    {
+        [Adjust appWillOpenUrl:resolvedLink];
+    }];
+```
+  
 ### <a id="data-residency"></a>[ベータ版]データレジデンシー
 
 データ所在地機能を有効にするには、`ADJConfig`インスタンスの`setUrlStrategy:`メソッドに、以下のいずれかの定数を指定して呼び出します：
@@ -1301,6 +1337,11 @@ Adjust SDKは、実装された通りにイベントを計測します。収益�
 [associated-domains-applinks]:      https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
 [universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
 [tracking-purchases-and-revenues]: https://help.adjust.com/ja/article/app-events#tracking-purchases-and-revenues
+  
+[en-helpcenter]: https://help.adjust.com/en/developer/ios-sdk-documentation
+[zh-helpcenter]: https://help.adjust.com/zh/developer/ios-sdk-documentation
+[ja-helpcenter]: https://help.adjust.com/ja/developer/ios-sdk-documentation
+[ko-helpcenter]: https://help.adjust.com/ko/developer/ios-sdk-documentation
 
 ## <a id="license"></a>ライセンス
 

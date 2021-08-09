@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.29.3
+//  V4.29.4
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -13,6 +13,7 @@
 #import "ADJSubscription.h"
 #import "ADJThirdPartySharing.h"
 #import "ADJAdRevenue.h"
+#import "ADJLinkResolution.h"
 
 @interface AdjustTestOptions : NSObject
 

@@ -102,6 +102,9 @@ static const int kAdServicesdRetriesCount = 1;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
 
+- (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
+            responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
+
 @end
 
 // copy from ADClientError
@@ -1764,6 +1767,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
     
     // Fetch if no attribution OR not sent to backend yet
+    if ([ADJUserDefaults getAdServicesTracked]) {
+        [selfI.logger debug:@"AdServices attribution info already read"];
+    }
     return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
 }
 
@@ -2736,7 +2742,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     
     Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
     if (skAdNetwork == nil) {
-        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        [logger warn:@"StoreKit framework not found in the app (SKAdNetwork not found)"];
         return;
     }
     

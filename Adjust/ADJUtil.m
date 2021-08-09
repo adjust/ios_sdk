@@ -39,7 +39,7 @@ static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios4.29.3";
+static NSString * const kClientSdk                  = @"ios4.29.4";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -133,24 +133,21 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (NSDateFormatter *)getDateFormatter {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    if ([NSCalendar instancesRespondToSelector:@selector(calendarWithIdentifier:)]) {
-        // http://stackoverflow.com/a/3339787
-        NSString *calendarIdentifier;
+    [dateFormatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian]];
+    [dateFormatter setDateFormat:kDateFormat];
+
+    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"locale", nil]);
+    if (class != nil) {
+        NSString *keyLwli = [NSString adjJoin:@"locale", @"with", @"locale", @"identifier:", nil];
+        SEL selLwli = NSSelectorFromString(keyLwli);
+        if ([class respondsToSelector:selLwli]) {
 #pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
-        if (&NSCalendarIdentifierGregorian != NULL) {
-#pragma clang diagnostic pop
-            calendarIdentifier = NSCalendarIdentifierGregorian;
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            calendarIdentifier = NSGregorianCalendar;
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id loc = [class performSelector:selLwli withObject:@"en_US"];
+            [dateFormatter setLocale:loc];
 #pragma clang diagnostic pop
         }
-        dateFormatter.calendar = [NSCalendar calendarWithIdentifier:calendarIdentifier];
     }
-    [dateFormatter setDateFormat:kDateFormat];
 
     return dateFormatter;
 }
@@ -850,12 +847,16 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![man respondsToSelector:selExi]) {
         return NO;
     }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    BOOL exists = (BOOL)[man performSelector:selExi withObject:filePath];
-#pragma clang diagnostic pop
+
+    NSMethodSignature *msExi = [man methodSignatureForSelector:selExi];
+    NSInvocation *invExi = [NSInvocation invocationWithMethodSignature:msExi];
+    [invExi setSelector:selExi];
+    [invExi setTarget:man];
+    [invExi setArgument:&filePath atIndex:2];
+    [invExi invoke];
+    BOOL exists;
+    [invExi getReturnValue:&exists];
     if (!exists) {
-        // [[ADJAdjustFactory logger] verbose:@"File does not exist at path %@", filePath];
         return YES;
     }
 
@@ -975,8 +976,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
     // Apple Search Ads fields
     if ([ADJUtil contains:details key:@"iad-adgroup-id" value:@"1234567890"] &&
-        [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] &&
-        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"]) {
+        [ADJUtil contains:details key:@"iad-keyword" value:@"Keyword"] && (
+            [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdgroupName"] ||
+            [ADJUtil contains:details key:@"iad-adgroup-name" value:@"AdGroupName"]
+        )) {
         [ADJAdjustFactory.logger debug:@"iAd attribution details has dummy Apple Search Ads fields"];
         return NO;
     }
@@ -1033,7 +1036,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     
     Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
     if (skAdNetwork == nil) {
-        [logger warn:@"StoreKit framework not found in user's app (SKAdNetwork not found)"];
+        [logger warn:@"StoreKit framework not found in the app (SKAdNetwork not found)"];
         return;
     }
     
@@ -1088,7 +1091,14 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (![manager respondsToSelector:selEnabled]) {
         return NO;
     }
-    BOOL enabled = (BOOL)[manager performSelector:selEnabled];
+    
+    NSMethodSignature *msEnabled = [manager methodSignatureForSelector:selEnabled];
+    NSInvocation *invEnabled = [NSInvocation invocationWithMethodSignature:msEnabled];
+    [invEnabled setSelector:selEnabled];
+    [invEnabled setTarget:manager];
+    [invEnabled invoke];
+    BOOL enabled;
+    [invEnabled getReturnValue:&enabled];
     return enabled;
 #pragma clang diagnostic pop
 #endif
@@ -1250,11 +1260,14 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
         SEL selAuthorization = NSSelectorFromString(keyAuthorization);
         if ([appTrackingClass respondsToSelector:selAuthorization]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability"
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return (int)[appTrackingClass performSelector:selAuthorization];
-#pragma clang diagnostic pop
+            NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
+            NSInvocation *invAuthorization = [NSInvocation invocationWithMethodSignature:msAuthorization];
+            [invAuthorization setSelector:selAuthorization];
+            [invAuthorization invokeWithTarget:appTrackingClass];
+            [invAuthorization invoke];
+            NSUInteger status;
+            [invAuthorization getReturnValue:&status];
+            return (int)status;
         }
     }
     return -1;
@@ -1266,7 +1279,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // [AAAttribution attributionTokenWithError:...]
     Class attributionClass = NSClassFromString(@"AAAttribution");
     if (attributionClass == nil) {
-        [logger warn:@"AdServices framework not found in user's app (AAAttribution not found)"];
+        [logger warn:@"AdServices framework not found in the app (AAAttribution class not found)"];
         if (errorPtr) {
             *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
                                             code:100
@@ -1277,6 +1290,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     SEL attributionTokenSelector = NSSelectorFromString(@"attributionTokenWithError:");
     if (![attributionClass respondsToSelector:attributionTokenSelector]) {
+        [logger warn:@"AdServices framework not found in the app (attributionTokenWithError: method not found)"];
         if (errorPtr) {
             *errorPtr = [NSError errorWithDomain:@"com.adjust.sdk.adServices"
                                             code:100
@@ -1302,6 +1316,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return nil;
     }
 
+    [logger debug:@"AdServices framework successfully found in the app"];
     NSString * __unsafe_unretained tmpToken = nil;
     [tokenInvocation getReturnValue:&tmpToken];
     NSString *token = tmpToken;
@@ -1321,22 +1336,22 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     // [[ADClient sharedClient] ...]
     Class ADClientClass = NSClassFromString(@"ADClient");
     if (ADClientClass == nil) {
-        [logger warn:@"iAd framework not found in user's app (ADClientClass not found)"];
+        [logger warn:@"iAd framework not found in the app (ADClientClass not found)"];
         return;
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     SEL sharedClientSelector = NSSelectorFromString(@"sharedClient");
     if (![ADClientClass respondsToSelector:sharedClientSelector]) {
-        [logger warn:@"iAd framework not found in user's app (sharedClient method not found)"];
+        [logger warn:@"iAd framework not found in the app (sharedClient method not found)"];
         return;
     }
     id ADClientSharedClientInstance = [ADClientClass performSelector:sharedClientSelector];
     if (ADClientSharedClientInstance == nil) {
-        [logger warn:@"iAd framework not found in user's app (ADClientSharedClientInstance is nil)"];
+        [logger warn:@"iAd framework not found in the app (ADClientSharedClientInstance is nil)"];
         return;
     }
-    [logger debug:@"iAd framework successfully found in user's app"];
+    [logger debug:@"iAd framework successfully found in the app"];
     BOOL iAdInformationAvailable = [ADJUtil setiAdWithDetails:activityHandler
                                        adClientSharedInstance:ADClientSharedClientInstance
                                                         queue:queue];
@@ -1469,7 +1484,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             pathToCheck = [[NSBundle mainBundle] bundlePath];
         }
 
-        installTime = [[NSFileManager defaultManager] attributesOfItemAtPath:pathToCheck error:nil][NSFileCreationDate];
         __autoreleasing NSError *error;
         __autoreleasing NSError **errorPointer = &error;
         Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
