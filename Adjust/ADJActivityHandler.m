@@ -172,8 +172,12 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self readAttribution];
     [self readActivityState];
     
-    // register SKAdNetwork attribution
-    [self registerForSKAdNetworkAttribution];
+    // register SKAdNetwork attribution if we haven't already
+    if ([ADJUserDefaults getSkadRegisterCallTimestamp] == nil) {
+        [self registerForSKAdNetworkAttribution];
+    } else {
+        [ADJAdjustFactory.logger debug:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method already made for this install"];
+    }
 
     self.internalState = [[ADJInternalState alloc] init];
 
@@ -2753,6 +2757,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [skAdNetwork performSelector:registerAttributionSelector];
 #pragma clang diagnostic pop
         [logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
+        
+        // store timestamp of when register call was successfully made
+        NSDate *callTime = [NSDate date];
+        [ADJUserDefaults saveSkadRegisterCallTimestamp:callTime];
     }
 }
 

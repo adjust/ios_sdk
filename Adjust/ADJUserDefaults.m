@@ -17,6 +17,7 @@ static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_tim
 static NSString * const PREFS_KEY_DISABLE_THIRD_PARTY_SHARING = @"adj_disable_third_party_sharing";
 static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
+static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
 
 @implementation ADJUserDefaults
 
@@ -129,6 +130,14 @@ static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked"
     return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_ADSERVICES_TRACKED];
 }
 
++ (void)saveSkadRegisterCallTimestamp:(NSDate *)callTime {
+    [[NSUserDefaults standardUserDefaults] setObject:callTime forKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
+}
+
++ (NSDate *)getSkadRegisterCallTimestamp {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
+}
+
 + (void)clearAdjustStuff {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
@@ -139,6 +148,7 @@ static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked"
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_IAD_ERRORS];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
 }
 
 @end
