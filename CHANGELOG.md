@@ -1,3 +1,12 @@
+### Version 4.29.5 (19th August 2021)
+#### Added
+- Added sending of information when was the call to `registerAppForAdNetworkAttribution` method made.
+
+#### Fixed
+- Fixed issue with insufficient buffer size for storing SDK prefix (https://github.com/adjust/react_native_sdk/issues/140).
+
+---
+
 ### Version 4.29.4 (9th August 2021)
 #### Fixed
 - Fixed new Xcode 13 beta compile time errors for extensions targets (https://github.com/adjust/ios_sdk/pull/559).
