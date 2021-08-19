@@ -1008,14 +1008,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                 userAgent:selfI.adjustConfig.userAgent
                                 urlStrategy:sdkClickHandlerUrlStrategy];
 
-    if (selfI.adjustConfig.allowiAdInfoReading == YES) {
-        [selfI checkForiAdI:selfI];
-    }
-    
-    if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
-        [selfI checkForAdServicesAttributionI:selfI];
-    }
-
     [selfI.trackingStatusManager checkForNewAttStatus];
 
     [selfI preLaunchActionsI:selfI
@@ -1108,6 +1100,13 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             selfI.activityState.enabled = [selfI.internalState isEnabled];
             selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
         }];
+
+        if (selfI.adjustConfig.allowiAdInfoReading == YES) {
+            [selfI checkForiAdI:selfI];
+        }
+        if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
+            [selfI checkForAdServicesAttributionI:selfI];
+        }
 
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
