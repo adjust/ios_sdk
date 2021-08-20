@@ -48,10 +48,17 @@
 + (void)clearAdjustStuff;
 
 + (void)saveiAdErrorKey:(NSString *)key;
+
 + (NSDictionary<NSString *, NSNumber *> *)getiAdErrors;
+
 + (void)cleariAdErrors;
 
 + (void)setAdServicesTracked;
+
 + (BOOL)getAdServicesTracked;
+
++ (void)saveSkadRegisterCallTimestamp:(NSDate *)callTime;
+
++ (NSDate *)getSkadRegisterCallTimestamp;
 
 @end

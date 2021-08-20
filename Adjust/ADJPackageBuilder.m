@@ -307,7 +307,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
 
     // Stack allocated strings to ensure their lifetime stays until the next iteration
-    static char activityKind[51], sdkVersion[21];
+    static char activityKind[64], sdkVersion[64];
     strncpy(activityKind, activityKindChar, strlen(activityKindChar) + 1);
     strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
 
@@ -381,6 +381,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
     if ([self.trackingStatusManager canGetAttStatus]) {
@@ -447,6 +448,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
     if ([self.trackingStatusManager canGetAttStatus]) {
@@ -534,6 +536,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     
@@ -600,6 +603,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
@@ -660,6 +664,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
     [ADJPackageBuilder parameters:parameters setString:adRevenue.source forKey:@"source"];
@@ -745,6 +750,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     
@@ -810,6 +816,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -860,6 +867,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
     if (self.adjustConfig.isDeviceKnown) {
@@ -919,6 +927,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
     if ([self.trackingStatusManager canGetAttStatus]) {
@@ -984,6 +993,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
     // Third Party Sharing
@@ -1055,6 +1065,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
     // Measurement Consent
@@ -1114,6 +1125,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
+    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
     if ([self.trackingStatusManager canGetAttStatus]) {
