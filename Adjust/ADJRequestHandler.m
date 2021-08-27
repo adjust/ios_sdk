@@ -143,7 +143,7 @@ authorizationHeader:(NSString *)authorizationHeader
 
 {
     if (authorizationHeader != nil) {
-        [ADJAdjustFactory.logger debug:@"Authorzation header content: %@", authorizationHeader];
+        [ADJAdjustFactory.logger debug:@"Authorization header content: %@", authorizationHeader];
         [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
     }
     if (self.userAgent != nil) {
