@@ -371,7 +371,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -417,6 +416,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
         [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -435,7 +449,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:event.callbackId forKey:@"event_callback_id"];
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
@@ -501,6 +514,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:receiptBase64 forKey:@"receipt"];
         [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -523,7 +551,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -575,6 +602,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative forKey:@"creative"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -593,7 +635,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -636,6 +677,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -654,7 +710,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -715,6 +770,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -737,7 +807,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -789,6 +858,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative forKey:@"creative"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -806,7 +890,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
@@ -841,6 +924,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -858,7 +956,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [self addIdfaIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
@@ -892,6 +989,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -914,7 +1026,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -958,6 +1069,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -980,7 +1106,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -1030,6 +1155,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -1052,7 +1192,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -1099,6 +1238,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
@@ -1115,7 +1269,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
     [self addIdfaIfPossibleToParameters:parameters];
@@ -1175,6 +1328,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:subscription.billingStore forKey:@"billing_store"];
     [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
+    
+    // feature flags
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 
     return parameters;
 }
