@@ -416,21 +416,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
         [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -514,21 +501,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:receiptBase64 forKey:@"receipt"];
         [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -602,21 +576,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative forKey:@"creative"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -677,21 +638,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -770,21 +718,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -858,21 +793,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative forKey:@"creative"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -924,21 +846,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -989,21 +898,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -1069,21 +965,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -1155,21 +1038,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -1238,21 +1108,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
         }
     }
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -1328,21 +1185,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:subscription.billingStore forKey:@"billing_store"];
     [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
-    
-    // feature flags
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled forKey:@"event_buffering_enabled"];
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
-    }
-    if (self.adjustConfig.allowIdfaReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
-    }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
-    }
+
+    [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
 }
@@ -1362,6 +1206,24 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
+}
+
+- (void)injectFeatureFlagsWithParameters:(NSMutableDictionary *)parameters {
+    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled
+                           forKey:@"event_buffering_enabled"];
+
+    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
+    }
+    if (self.adjustConfig.allowIdfaReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
+    }
+    if (self.adjustConfig.allowiAdInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
+    }
+    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
 }
 
 - (ADJActivityPackage *)defaultActivityPackage {
