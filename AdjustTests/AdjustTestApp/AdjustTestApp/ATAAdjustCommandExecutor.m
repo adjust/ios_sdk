@@ -318,6 +318,13 @@
         NSString *allowAdServicesInfoReadingS = [parameters objectForKey:@"allowAdServicesInfoReading"][0];
         [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReadingS boolValue]];
     }
+    
+    if ([parameters objectForKey:@"allowSkAdNetworkHandling"]) {
+        NSString *allowSkAdNetworkHandlingS = [parameters objectForKey:@"allowSkAdNetworkHandling"][0];
+        if ([allowSkAdNetworkHandlingS boolValue] == NO) {
+            [adjustConfig deactivateSKAdNetworkHandling];
+        }
+    }
 
     if ([parameters objectForKey:@"userAgent"]) {
         NSString *userAgent = [parameters objectForKey:@"userAgent"][0];

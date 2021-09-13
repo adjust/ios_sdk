@@ -52,6 +52,12 @@
         NSString *extraPath = (NSString *)data;
         [self.testLibrary sendInfoToServer:extraPath];
     }];
+    
+    [adjustBridgeRegister registerHandler:@"adjustTLB_addTestDirectory" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"TestLibraryBridge adjustTLB_addTestDirectory");
+        NSString *directoryName = [data objectForKey:@"directoryName"];
+        [self.testLibrary addTestDirectory:directoryName];
+    }];
 
     self.adjustBridgeRegister = adjustBridgeRegister;
     NSLog(@"TestLibraryBridge initWithAdjustBridgeRegister");
