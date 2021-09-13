@@ -195,6 +195,7 @@
         NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
+        NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
         NSNumber *secretId = [data objectForKey:@"secretId"];
         NSString *info1 = [data objectForKey:@"info1"];
         NSString *info2 = [data objectForKey:@"info2"];
@@ -261,6 +262,11 @@
         }
         if ([self isFieldValid:allowIdfaReading]) {
             [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+        }
+        if ([self isFieldValid:allowSkAdNetworkHandling]) {
+            if ([allowSkAdNetworkHandling boolValue] == NO) {
+                [adjustConfig deactivateSKAdNetworkHandling];
+            }
         }
         BOOL isAppSecretDefined = [self isFieldValid:secretId]
         && [self isFieldValid:info1]

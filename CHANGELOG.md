@@ -1,3 +1,10 @@
+### Version 4.29.6 (13th September 2021)
+#### Added
+- Added support for AdMost ad revenue source.
+- Added sending of various feature flags.
+
+---
+
 ### Version 4.29.5 (19th August 2021)
 #### Added
 - Added sending of information when was the call to `registerAppForAdNetworkAttribution` method made.
