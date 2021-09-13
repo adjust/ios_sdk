@@ -2,8 +2,8 @@
 var localBaseUrl = 'http://127.0.0.1:8080';
 var localGdprUrl = 'http://127.0.0.1:8080';
 // device
-// var localBaseUrl = 'http://192.168.86.75:8080';
-// var localGdprUrl = 'http://192.168.86.75:8080';
+// var localBaseUrl = 'http://192.168.86.65:8080';
+// var localGdprUrl = 'http://192.168.86.65:8080';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -33,6 +33,12 @@ var TestLibraryBridge = {
                 WebViewJavascriptBridge.callHandler('adjustTLB_startTestSession', sdkVersion, null);
             });
         }
+    },
+    addTestDirectory: function(directoryName) {
+        WebViewJavascriptBridge.callHandler('adjustTLB_addTestDirectory', {directoryName: directoryName}, null);
+    },
+    addTest: function(testName) {
+        WebViewJavascriptBridge.callHandler('adjustTLB_addTest', {testName: testName}, null);
     }
 };
 
@@ -254,6 +260,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var allowIdfaReadingS = getFirstValue(params, 'allowIdfaReading');
         var allowIdfaReading = allowIdfaReadingS == 'true';
         adjustConfig.setAllowIdfaReading(allowIdfaReading);
+    }
+    
+    if ('allowSkAdNetworkHandling' in params) {
+        var allowSkAdNetworkHandlingS = getFirstValue(params, 'allowSkAdNetworkHandling');
+        var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
+        if (allowSkAdNetworkHandling == false) {
+            adjustConfig.deactivateSkAdNetworkHandling();
+        }
     }
 
     if ('eventBufferingEnabled' in params) {

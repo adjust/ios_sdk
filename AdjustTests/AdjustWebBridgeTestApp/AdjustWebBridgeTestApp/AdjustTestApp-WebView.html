@@ -38,12 +38,13 @@
 			else { log.appendChild(el) }
 		}
 
-         var btnTrackSimpleEvent = document.getElementById('btnStartTestSession');
-         btnTrackSimpleEvent.onclick = function(e) {
-             e.preventDefault();
-             console.log('btnStartTestSession');
-             TestLibraryBridge.startTestSession();
-         };
+        var btnTrackSimpleEvent = document.getElementById('btnStartTestSession');
+        btnTrackSimpleEvent.onclick = function(e) {
+            e.preventDefault();
+            console.log('btnStartTestSession');
+            // TestLibraryBridge.addTestDirectory('parameters');
+            TestLibraryBridge.startTestSession();
+        };
     });
 	</script>
 	<div id='buttons'>
