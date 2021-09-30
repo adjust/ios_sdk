@@ -111,7 +111,7 @@
     if (webView != _webView) { return; }
 
     __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
-    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:didCommitNavigation::)]) {
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:didCommitNavigation:)]) {
         [strongDelegate webView:webView didCommitNavigation:navigation];
     }
 }
