@@ -36,7 +36,6 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [Event tracking](#event-tracking)
       * [Revenue tracking](#revenue-tracking)
       * [Revenue deduplication](#revenue-deduplication)
-      * [In-App Purchase verification](#iap-verification)
       * [Callback parameters](#callback-parameters)
       * [Partner parameters](#partner-parameters)
       * [Callback identifier](#callback-id)
@@ -450,10 +449,6 @@ If you want to track in-app purchases, please make sure to call `trackEvent` aft
     }
 }
 ```
-
-### <a id="iap-verification"></a>In-App Purchase verification
-
-If you want to check the validity of In-App Purchases made in your app using Purchase Verification, adjust's server side receipt verification tool, then check out our iOS purchase SDK and read more about it [here][ios-purchase-verification].
 
 ### <a id="callback-parameters"></a>Callback parameters
 
