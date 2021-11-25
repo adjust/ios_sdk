@@ -26,7 +26,8 @@ Pods
 *.orig
 
 # Adjust
-Frameworks
+frameworks
+xcframeworks
 
 # Code style
 uncrustify.cfg
