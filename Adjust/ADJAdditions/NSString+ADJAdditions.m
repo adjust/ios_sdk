@@ -36,7 +36,10 @@
 }
 
 - (NSString *)adjUrlEncode {
-    return [self stringByAddingPercentEncodingWithAllowedCharacters: [NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSMutableCharacterSet *urlQueryKeyValueAllowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    [urlQueryKeyValueAllowedCharacterSet removeCharactersInString:@"!*'\"();:@&=+$,/?%#[]% "];
+    
+    return [self stringByAddingPercentEncodingWithAllowedCharacters: urlQueryKeyValueAllowedCharacterSet];
 }
 
 - (NSString *)adjUrlDecode {
