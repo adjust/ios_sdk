@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Christian Wellenbrock" => "welle@adjust.com" }
   s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.29.6" }
-  s.ios.deployment_target = '6.0'
+  s.ios.deployment_target = '9.0'
   s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
   s.ios.weak_framework = 'AdSupport', 'iAd', 'CoreTelephony'
@@ -37,6 +37,6 @@ Pod::Spec.new do |s|
   s.subspec 'WebBridge' do |wb|
     wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
     wb.dependency 'Adjust/Core'
-    wb.ios.deployment_target = '6.0'
+    wb.ios.deployment_target = '9.0'
   end
 end
