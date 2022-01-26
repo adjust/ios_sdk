@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary        = "This is the iOS SDK of adjust. You can read more about it at http://adjust.com."
   s.homepage       = "https://github.com/adjust/ios_sdk"
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
-  s.author         = { "Christian Wellenbrock" => "welle@adjust.com" }
+  s.author         = { "Adjust GmbH" => "sdk@adjust.com" }
   s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.29.6" }
   s.ios.deployment_target = '9.0'
   s.tvos.deployment_target = '9.0'
