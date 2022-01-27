@@ -6,6 +6,6 @@ target 'AdjustExample-Swift' do
   use_frameworks!
   
   # Pods for AdjustExample-Swift
-  pod 'Adjust'
+  pod 'Adjust', path: "../../"
   
 end

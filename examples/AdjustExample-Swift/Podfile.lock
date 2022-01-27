@@ -4,15 +4,15 @@ PODS:
   - Adjust/Core (4.29.6)
 
 DEPENDENCIES:
-  - Adjust
+  - Adjust (from `../../`)
 
-SPEC REPOS:
-  trunk:
-    - Adjust
+EXTERNAL SOURCES:
+  Adjust:
+    :path: "../../"
 
 SPEC CHECKSUMS:
   Adjust: 94f1c99429fb2a7ebe530294fd66a88d63a54922
 
-PODFILE CHECKSUM: 6b25031e468af64491a54d0d5199a38ce2a0ca2b
+PODFILE CHECKSUM: 4c79da456db9adb90cdd42adc7f721c7bb6490cd
 
 COCOAPODS: 1.11.2
