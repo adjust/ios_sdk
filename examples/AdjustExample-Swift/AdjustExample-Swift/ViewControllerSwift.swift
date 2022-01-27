@@ -6,9 +6,10 @@
 //  Copyright © 2016-2019 Adjust GmbH. All rights reserved.
 //
 
-import UIKit
 import AppTrackingTransparency
 import AdSupport
+import Adjust
+import UIKit
 
 class ViewControllerSwift: UIViewController {
     

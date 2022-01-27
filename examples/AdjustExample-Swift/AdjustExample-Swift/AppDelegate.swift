@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Adjust
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
