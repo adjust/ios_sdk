@@ -52,17 +52,17 @@ class LoadProductController: NSObject, ProductLoadable {
             semaphore.signal()
         })
         task.resume()
-
+        
         semaphore.wait()
         
         let parameters: [String: Any] = [SKStoreProductParameterITunesItemIdentifier: NSNumber(integerLiteral: Int(product.id)!),
-                                         SKStoreProductParameterAdNetworkIdentifier: product.adNetworkId,
-                                         SKStoreProductParameterAdNetworkCampaignIdentifier: NSNumber(integerLiteral: Int(product.campaignId)!),
-                                         SKStoreProductParameterAdNetworkTimestamp: NSNumber(value: Int(product.timestamp)!),
-                                         SKStoreProductParameterAdNetworkNonce: NSUUID(uuidString: product.nonce),
-                                         SKStoreProductParameterAdNetworkSourceAppStoreIdentifier: product.sourceAppId,
-                                         SKStoreProductParameterAdNetworkVersion: version,
-                                         SKStoreProductParameterAdNetworkAttributionSignature: product.signature]
+                                          SKStoreProductParameterAdNetworkIdentifier: product.adNetworkId,
+                                  SKStoreProductParameterAdNetworkCampaignIdentifier: NSNumber(integerLiteral: Int(product.campaignId)!),
+                                           SKStoreProductParameterAdNetworkTimestamp: NSNumber(value: Int(product.timestamp)!),
+                                               SKStoreProductParameterAdNetworkNonce: NSUUID(uuidString: product.nonce),
+                            SKStoreProductParameterAdNetworkSourceAppStoreIdentifier: product.sourceAppId,
+                                             SKStoreProductParameterAdNetworkVersion: version,
+                                SKStoreProductParameterAdNetworkAttributionSignature: product.signature]
         
         
         store.loadProduct(withParameters: parameters) { (result, error) in
@@ -75,7 +75,7 @@ class LoadProductController: NSObject, ProductLoadable {
         }
         
     }
-
+    
 }
 
 protocol URLQueryParameterStringConvertible {
@@ -88,13 +88,13 @@ extension Dictionary : URLQueryParameterStringConvertible {
      example, if the input is @{@"day":@"Tuesday", @"month":@"January"}, the output
      string will be @"day=Tuesday&month=January".
      @return The computed parameters string.
-    */
+     */
     var queryParameters: String {
         var parts: [String] = []
         for (key, value) in self {
             let part = String(format: "%@=%@",
-                String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
-                String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+                              String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
+                              String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
             parts.append(part as String)
         }
         return parts.joined(separator: "&")
@@ -107,7 +107,7 @@ extension URL {
      Creates a new URL by adding the given query parameters.
      @param parametersDictionary The query parameter dictionary to add.
      @return A new URL.
-    */
+     */
     func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
         let URLString : String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
