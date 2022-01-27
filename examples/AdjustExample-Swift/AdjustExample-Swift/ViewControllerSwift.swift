@@ -23,13 +23,6 @@ class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnDisableSDK: UIButton?
     @IBOutlet weak var btnIsSDKEnabled: UIButton?
     
-    lazy var loadProductController: ProductLoadable? = {
-        if #available(iOS 14.0, *) {
-            return LoadProductController()
-        }
-        
-        return nil
-    }()
     
     // MARK: - View lifecycle methods
     
@@ -55,10 +48,6 @@ class ViewControllerSwift: UIViewController {
                 print("restricted == \(status == .restricted)")
             }
         }
-    }
-    
-    @IBAction func btnLoadProduct(_sender: UIButton) {
-        loadProductController?.loadProduct(from: self)
     }
     
     @IBAction func btnTrackEventSimpleTapped(_sender: UIButton) {
