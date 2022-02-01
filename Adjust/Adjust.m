@@ -26,6 +26,7 @@ NSString * const ADJAdRevenueSourceMopub = @"mopub";
 NSString * const ADJAdRevenueSourceAdMob = @"admob_sdk";
 NSString * const ADJAdRevenueSourceIronSource = @"ironsource_sdk";
 NSString * const ADJAdRevenueSourceAdMost = @"admost_sdk";
+NSString * const ADJAdRevenueSourceUnity = @"unity_sdk";
 
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
