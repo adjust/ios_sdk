@@ -49,6 +49,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceMopub;
 extern NSString * __nonnull const ADJAdRevenueSourceAdMob;
 extern NSString * __nonnull const ADJAdRevenueSourceIronSource;
 extern NSString * __nonnull const ADJAdRevenueSourceAdMost;
+extern NSString * __nonnull const ADJAdRevenueSourceUnity;
 
 /**
  * Constants for country app's URL strategies.
