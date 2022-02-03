@@ -36,36 +36,36 @@
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-
+    
     // Add revenue 1 cent of an EURO.
     [event setRevenue:0.01 currency:@"EUR"];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
-
+    
     // Add callback parameters to this event.
     [event addCallbackParameter:@"foo" value:@"bar"];
     [event addCallbackParameter:@"key" value:@"value"];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackPartnerEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
-
+    
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];
     [event addPartnerParameter:@"key" value:@"value"];
-
+    
     [Adjust trackEvent:event];
 }
 
@@ -87,18 +87,18 @@
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
     NSString *message;
-
+    
     if ([Adjust isEnabled]) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
-
+    
     UIAlertView *alert = [[UIAlertView alloc ]initWithTitle:@"Is SDK Enabled?"
-                                                     message:message
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
