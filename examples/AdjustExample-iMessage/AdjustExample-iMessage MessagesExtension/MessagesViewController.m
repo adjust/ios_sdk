@@ -19,31 +19,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         // Configure adjust SDK.
         NSString *yourAppToken = @"2fm9gkqubvpc";
         NSString *environment = ADJEnvironmentSandbox;
         ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-
+        
         // Change the log level.
         [adjustConfig setLogLevel:ADJLogLevelVerbose];
-
+        
         // Add session callback parameters.
         [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
         [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-
+        
         // Add session partner parameters.
         [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
         [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-
+        
         // Remove session callback parameter.
         [Adjust removeSessionCallbackParameter:@"sp_key"];
-
+        
         // Remove session partner parameter.
         [Adjust removeSessionPartnerParameter:@"sp_foo"];
-
+        
         // Initialise the SDK.
         [Adjust appDidLaunch:adjustConfig];
     });
@@ -60,7 +60,7 @@
     // This will happen when the extension is about to present UI.
     
     // Use this method to configure the extension and restore previously stored state.
-
+    
     [Adjust trackSubsessionStart];
 }
 
@@ -72,7 +72,7 @@
     // Use this method to release shared resources, save user data, invalidate timers,
     // and store enough state information to restore your extension to its current state
     // in case it is terminated later.
-
+    
     [Adjust trackSubsessionEnd];
 }
 
