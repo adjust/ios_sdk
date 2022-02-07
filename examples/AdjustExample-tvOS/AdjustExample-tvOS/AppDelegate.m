@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
+    
     // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
@@ -72,7 +72,7 @@
     
     // Interrupt delayed start set with setDelayStart: method.
     // [Adjust sendFirstPackages];
-
+    
     return YES;
 }
 
