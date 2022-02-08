@@ -21,19 +21,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[AdjustTrackingHelper sharedInstance] initialize:self];
     [[AdjustLoggingHelper sharedInstance] logText:@"Method ""didFinishLaunchingWithOptions"" finished!"];
-
+    
     if ([WCSession isSupported]) {
         WCSession *session = [WCSession defaultSession];
         session.delegate = self;
         [session activateSession];
     }
-
+    
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     [Adjust appWillOpenUrl:url];
-
+    
     return YES;
 }
 
@@ -44,39 +44,39 @@
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
     if ([[message objectForKey:@"request"] isEqualToString:@"event_simple"]) {
         NSLog(@"Received request from Apple Watch to track simple event.");
-
+        
         [[AdjustTrackingHelper sharedInstance] trackSimpleEvent];
-
+        
         NSDictionary *response = @{@"response" : @"ack"};
         replyHandler(response);
-
+        
         [[AdjustLoggingHelper sharedInstance] logText:@"Simple event tracked!"];
     } else if ([[message objectForKey:@"request"] isEqualToString:@"event_revenue"]) {
         NSLog(@"Received request from Apple Watch to track revenue event.");
-
+        
         [[AdjustTrackingHelper sharedInstance] trackRevenueEvent];
-
+        
         NSDictionary *response = @{@"response" : @"ack"};
         replyHandler(response);
-
+        
         [[AdjustLoggingHelper sharedInstance] logText:@"Revenue event tracked!"];
     } else if ([[message objectForKey:@"request"] isEqualToString:@"event_callback"]) {
         NSLog(@"Received request from Apple Watch to track simple event.");
-
+        
         [[AdjustTrackingHelper sharedInstance] trackCallbackEvent];
-
+        
         NSDictionary *response = @{@"response" : @"ack"};
         replyHandler(response);
-
+        
         [[AdjustLoggingHelper sharedInstance] logText:@"Callback event tracked!"];
     } else if ([[message objectForKey:@"request"] isEqualToString:@"event_partner"]) {
         NSLog(@"Received request from Apple Watch to track simple event.");
-
+        
         [[AdjustTrackingHelper sharedInstance] trackPartnerEvent];
-
+        
         NSDictionary *response = @{@"response" : @"ack"};
         replyHandler(response);
-
+        
         [[AdjustLoggingHelper sharedInstance] logText:@"Partner event tracked!"];
     }
 }
