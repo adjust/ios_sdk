@@ -46,10 +46,6 @@
     // [webView loadHTMLString:appHtml baseURL:baseURL];
 }
 
-- (void)callWkHandler:(id)sender {
-    
-}
-
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
                                                                              message:nil
