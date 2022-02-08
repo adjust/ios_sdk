@@ -1,3 +1,12 @@
+### Version 4.29.7 (8th February 2022)
+#### Added
+- Added support for `Unity` ad revenue tracking.
+
+#### Changed
+- Updated iOS deployment target to `9.0`.
+
+---
+
 ### Version 4.29.6 (13th September 2021)
 #### Added
 - Added support for AdMost ad revenue source.
