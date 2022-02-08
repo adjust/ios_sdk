@@ -1,6 +1,7 @@
-### Version 4.29.7 (8th February 2022)
+### Version 4.29.7 (9th February 2022)
 #### Added
 - Added support for `Unity` ad revenue tracking.
+- Added support for `Helium Chartboost` ad revenue tracking.
 
 #### Changed
 - Updated iOS deployment target to `9.0`.
