@@ -94,13 +94,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.29.6'
+pod 'Adjust', '~> 4.29.7'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.6'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.7'
 ```
 
 ---
@@ -1342,7 +1342,7 @@ If you are seing any value in the dashboard other than what you expected to be t
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2012-2021 Adjust GmbH, http://www.adjust.com
+Copyright (c) 2012-Present Adjust GmbH, http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
