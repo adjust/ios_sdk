@@ -31,7 +31,7 @@
     webView.navigationDelegate = self;
     webView.UIDelegate = self;
     [self.view addSubview:webView];
-
+    
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:self];
 
@@ -57,8 +57,8 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action) {
-                                                          completionHandler();
-                                                      }]];
+        completionHandler();
+    }]];
     [self presentViewController:alertController animated:YES completion:^{}];
 }
 
