@@ -70,6 +70,18 @@ function generateBCSymbolsCommand() {
   echo $BCSYMBOLMAP_COMMANDS
 }
 
+
+XCODE12PLUS=0 
+product_version=$(xcodebuild -version)
+xcode_version=( ${product_version//./ } )
+xcode="${xcode_version[0]}"
+major="${xcode_version[1]}"
+minor="${xcode_version[2]}"
+echo "${xcode}.${major}.${minor}"
+if [[ $major > 11 ]]; then
+  XCODE12PLUS=1
+fi
+
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 build_archive "${SCHEMA_NAME__ADJUST_IOS}" "iphoneos" "generic/platform=iOS" "${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}"
 build_archive "${SCHEMA_NAME__ADJUST_IOS}" "iphonesimulator" "generic/platform=iOS Simulator" "${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}"
@@ -84,18 +96,31 @@ echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 echo "XCFramework: Creating XCFramework for AdjustSdk and AdjustSdkTv..."
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 
-xcodebuild -create-xcframework \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IOS}.dSYM" \
-${IOS_BCSYMBOLS} \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IOS}.dSYM" \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_TV}.dSYM" \
-${TV_BCSYMBOLS} \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_TV}.dSYM" \
--output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IOS_TV}"
+if [[ $XCODE12PLUS > 0 ]]; then
+
+    xcodebuild -create-xcframework \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IOS}.dSYM" \
+    ${IOS_BCSYMBOLS} \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IOS}.dSYM" \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_TV}.dSYM" \
+    ${TV_BCSYMBOLS} \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_TV}.dSYM" \
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IOS_TV}"
+
+else
+
+    xcodebuild -create-xcframework \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IOS}" \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_TV}" \
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IOS_TV}"
+
+fi
 
 
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
@@ -109,13 +134,25 @@ echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 echo "XCFramework: Creating XCFramework for AdjustSdkIm..."
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 
-xcodebuild -create-xcframework \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IM}.dSYM" \
-${IM_IOS_BCSYMBOLS} \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IM}.dSYM" \
--output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IM}"
+if [[ $XCODE12PLUS > 0 ]]; then
+
+  xcodebuild -create-xcframework \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
+  -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IM}.dSYM" \
+  ${IM_IOS_BCSYMBOLS} \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
+  -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_IM}.dSYM" \
+  -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IM}"
+
+else
+
+  xcodebuild -create-xcframework \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_IM}" \
+  -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IM}"
+
+fi
+
 
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 build_archive "${SCHEMA_NAME__ADJUST_WEB_BRIDGE}" "iphoneos" "generic/platform=iOS" "${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}"
@@ -128,13 +165,24 @@ echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 echo "XCFramework: Creating XCFramework for AdjustSdkWebBridge..."
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 
-xcodebuild -create-xcframework \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}.dSYM" \
-${WEB_IOS_BCSYMBOLS} \
--framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
--debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}.dSYM" \
--output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__WEB_BRIDGE}"
+if [[ $XCODE12PLUS > 0 ]]; then
+
+  xcodebuild -create-xcframework \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
+  -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}.dSYM" \
+  ${WEB_IOS_BCSYMBOLS} \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
+  -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/dSYMs/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}.dSYM" \
+  -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__WEB_BRIDGE}"
+
+else
+
+  xcodebuild -create-xcframework \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
+  -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME__ADJUST_WEB_BRIDGE}" \
+  -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__WEB_BRIDGE}"
+
+fi
 
 echo "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 echo "XCFramework: Buiding static XCFramework for iOS..."
@@ -150,7 +198,19 @@ xcodebuild -configuration Release \
 -sdk iphoneos \
 build
 
+xcodebuild -configuration Release \
+-target AdjustSdkTvStatic \
+-sdk appletvsimulator \
+build
+
+xcodebuild -configuration Release \
+-target AdjustSdkTvStatic \
+-sdk appletvos \
+build
+
 xcodebuild -create-xcframework \
 -library build/Release-iphoneos/libAdjust.a -headers build/Release-iphoneos/include \
 -library build/Release-iphonesimulator/libAdjust.a -headers build/Release-iphonesimulator/include \
+-library build/Release-appletvos/libAdjustSdkTvStatic.a -headers build/Release-appletvos/include \
+-library build/Release-appletvsimulator/libAdjustSdkTvStatic.a -headers build/Release-appletvsimulator/include \
 -output "./${XCF_OUTPUT_FOLDER}/${XCF_NAME__IOS_STATIC}"
