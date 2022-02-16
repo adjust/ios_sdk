@@ -8,7 +8,7 @@
 
 #import "WKWebViewController.h"
 
-@interface WKWebViewController ()
+@interface WKWebViewController ()<WKNavigationDelegate>
 
 @end
 
@@ -32,14 +32,12 @@
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:wkWebView wkWebViewDelegate:self];
     [_adjustBridge augmentHybridWebView];
-
-
+    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"AdjustExample-FbPixel" ofType:@"html"];
     NSURL *url = [NSURL fileURLWithPath:path];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [wkWebView loadRequest:request];
     [self.view addSubview:wkWebView];
-
 }
 
 @end
