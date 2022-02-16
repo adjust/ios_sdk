@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07AF832327BD3CBF00C5DD9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07AF832227BD3CBF00C5DD9E /* Main.storyboard */; };
 		6FAB78C12636DDC400773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */; };
 		9D9D1533212EB3920081445E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D1532212EB3920081445E /* AppDelegate.m */; };
 		9D9D153B212EB3940081445E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153A212EB3940081445E /* Assets.xcassets */; };
@@ -59,12 +60,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07AF832227BD3CBF00C5DD9E /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLinkResolution.m; sourceTree = "<group>"; };
 		6FAB78C02636DDC400773869 /* ADJLinkResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLinkResolution.h; sourceTree = "<group>"; };
 		9D9D152E212EB3920081445E /* AdjustExample-FbPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-FbPixel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9D1531212EB3920081445E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9D1532212EB3920081445E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9D9D1538212EB3920081445E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D9D153A212EB3940081445E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D9D153D212EB3940081445E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D9D153F212EB3940081445E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -194,8 +195,8 @@
 				9D9D1532212EB3920081445E /* AppDelegate.m */,
 				9D9D15E7212EB5230081445E /* WKWebViewController.h */,
 				9D9D15E6212EB5230081445E /* WKWebViewController.m */,
-				9D9D1537212EB3920081445E /* Main.storyboard */,
 				9D9D153A212EB3940081445E /* Assets.xcassets */,
+				07AF832227BD3CBF00C5DD9E /* Main.storyboard */,
 				9D9D153C212EB3940081445E /* LaunchScreen.storyboard */,
 				9D9D153F212EB3940081445E /* Info.plist */,
 				9D9D1540212EB3940081445E /* main.m */,
@@ -389,6 +390,7 @@
 				9D9D15E3212EB47C0081445E /* AdjustExample-FbPixel.html in Resources */,
 				9D9D153E212EB3940081445E /* LaunchScreen.storyboard in Resources */,
 				9D9D153B212EB3940081445E /* Assets.xcassets in Resources */,
+				07AF832327BD3CBF00C5DD9E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,14 +450,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		9D9D1537212EB3920081445E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9D9D1538212EB3920081445E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9D9D153C212EB3940081445E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

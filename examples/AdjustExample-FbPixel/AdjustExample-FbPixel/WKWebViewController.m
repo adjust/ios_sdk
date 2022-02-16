@@ -27,27 +27,19 @@
 }
 
 - (void)loadWKWebView {
-    WKWebView *wkWebView = [[NSClassFromString(@"WKWebView") alloc] initWithFrame:self.view.bounds];
-    wkWebView.navigationDelegate = self;
-    [self.view addSubview:wkWebView];
-
+    
+    WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:self.view.frame];
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:wkWebView wkWebViewDelegate:self];
     [_adjustBridge augmentHybridWebView];
-    
-    _jsContext = [wkWebView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    _jsContext[@"console"][@"log"] = ^(JSValue * msg) {
-        NSLog(@"JavaScript %@ log message: %@", [JSContext currentContext], msg);
-    };
 
-    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-FbPixel" ofType:@"html"];
-    NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
-    NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
-    [wkWebView loadHTMLString:appHtml baseURL:baseURL];
-}
 
-- (void)callWkHandler:(id)sender {
-    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"AdjustExample-FbPixel" ofType:@"html"];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [wkWebView loadRequest:request];
+    [self.view addSubview:wkWebView];
+
 }
 
 @end

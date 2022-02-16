@@ -12,7 +12,7 @@
 
 #import "AdjustBridge.h"
 
-@interface WKWebViewController : UINavigationController<WKNavigationDelegate>
+@interface WKWebViewController : UIViewController
 
 @property AdjustBridge *adjustBridge;
 @property JSContext *jsContext;
