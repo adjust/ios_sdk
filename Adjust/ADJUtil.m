@@ -332,6 +332,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             }
 
             if (@available(iOS 11.0, tvOS 11.0, *)) {
+              @autoreleasepool {
                 NSError *errorArchiving = nil;
                 // API introduced in iOS 11.
                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
@@ -342,6 +343,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 } else {
                     result = NO;
                 }
+              }
             } else {
                 // API_DEPRECATED [2.0-12.0]
                 // Use +archivedDataWithRootObject:requiringSecureCoding:error: and -writeToURL:options:error: instead
