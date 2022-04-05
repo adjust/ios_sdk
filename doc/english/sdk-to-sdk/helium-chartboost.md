@@ -24,7 +24,7 @@ If you want to track your ad revenue with the Helium SDK, you can use our SDK-to
     NSNumber *ad_revenue = [json objectForKey:@"ad_revenue"];
     NSString *currency_type = [json objectForKey:@"currency_type"];
     ADJAdRevenue *adjustAdRevenue = [[ADJAdRevenue alloc] initWithSource:ADJAdRevenueSourceHeliumChartboost];
-    [adjustAdRevenue setRevenue:ad_revenue currency:currency_type];
+    [adjustAdRevenue setRevenue:[ad_revenue doubleValue] currency:currency_type];
     // optional fields
     NSString *network_name = [json objectForKey:@"network_name"];     // Helium demand network name
     NSString *placement_name = [json objectForKey:@"placement_name"]; // Helium placement name
