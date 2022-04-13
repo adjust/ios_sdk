@@ -19,18 +19,19 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL toSend;
 //@property (nonatomic, assign) BOOL paused;
+@property (nonatomic, assign) ADJSessionType sessionType;
+@property (nonatomic, copy) NSString * delayStart;
 @property (nonatomic, assign) NSInteger sessionCount;
 @property (nonatomic, assign) NSInteger subsessionCount;
-@property (nonatomic, assign) ADJSessionType sessionType;
 @property (nonatomic, assign) NSInteger eventCount;
 @property (nonatomic, copy) NSNumber * getAttributionIsCalled;
 @property (nonatomic, assign) BOOL timerAlreadyStarted;
 @property (nonatomic, assign) BOOL eventBufferingIsEnabled;
+@property (nonatomic, assign) BOOL coppaCompliantEnabled;
 @property (nonatomic, assign) BOOL foregroundTimerStarts;
 @property (nonatomic, assign) BOOL foregroundTimerAlreadyStarted;
 @property (nonatomic, assign) BOOL sendInBackgroundConfigured;
 @property (nonatomic, assign) BOOL sdkClickHandlerAlsoPauses;
-@property (nonatomic, copy) NSString * delayStart;
 @property (nonatomic, assign) BOOL activityStateCreated;
 @property (nonatomic, assign) BOOL startSubSession;
 
@@ -45,6 +46,7 @@ int eventCount = 0;
 Boolean getAttributionIsCalled = null;
 Boolean timerAlreadyStarted = false;
 boolean eventBufferingIsEnabled = false;
+boolean coppaCompliantEnabled = false;
 boolean foregroundTimerStarts = true;
 boolean foregroundTimerAlreadyStarted = false;
 */

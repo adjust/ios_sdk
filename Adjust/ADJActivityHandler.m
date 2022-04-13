@@ -914,7 +914,13 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.adjustConfig.eventBufferingEnabled)  {
         [selfI.logger info:@"Event buffering is enabled"];
     }
-
+    
+    if (![ADJUtil canReadIDFA:selfI.adjustConfig]) {
+        if (selfI.adjustConfig.coppaCompliantEnabled) {
+            [selfI.logger info:@"Cannot read Advertising ID with COPPA enabled"];
+        }
+    }
+    
     if (selfI.adjustConfig.defaultTracker != nil) {
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
@@ -1034,6 +1040,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     [selfI updateHandlersStatusAndSendI:selfI];
+    
+    [selfI processCoppaComplianceI:selfI];
 
     [selfI processSessionI:selfI];
 
@@ -1064,6 +1072,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             if ([ADJUserDefaults getGdprForgetMe]) {
                 [selfI setGdprForgetMeI:selfI];
             } else {
+                [selfI processCoppaComplianceI:selfI];
+                
                 // check if disable third party sharing request came, then send it first
                 if ([ADJUserDefaults getDisableThirdPartySharing]) {
                     [selfI disableThirdPartySharingI:selfI];
@@ -1354,6 +1364,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
     if (selfI.activityState.isThirdPartySharingDisabled) {
+        return;
+    }
+    if (selfI.adjustConfig.coppaCompliantEnabled) {
+        [selfI.logger warn:@"Call to disable third party sharing API ignored, already done when COPPA enabled"];
         return;
     }
 
@@ -1724,6 +1738,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
         } else {
+            [selfI processCoppaComplianceI:selfI];
             if ([ADJUserDefaults getDisableThirdPartySharing]) {
                 [selfI disableThirdPartySharing];
             }
@@ -2791,6 +2806,78 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
 }
 
+- (void)processCoppaComplianceI:(ADJActivityHandler *)selfI  {
+    if (!selfI.adjustConfig.coppaCompliantEnabled) {
+        [self resetThirdPartySharingCoppaActivityStateI:selfI];
+        return;
+    }
+    [self disableThirdPartySharingForCoppaEnabledI:selfI];
+}
+
+- (void)disableThirdPartySharingForCoppaEnabledI:(ADJActivityHandler *)selfI {
+    
+    if (![selfI shouldDisableThirdPartySharingWhenCoppaEnabled:selfI]) {
+        return;
+    }
+        
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        selfI.activityState.isThirdPartySharingDisabledForCoppa = YES;
+    }];
+    [selfI writeActivityStateI:selfI];
+
+    double now = [NSDate.date timeIntervalSince1970];
+
+    // build package
+    ADJPackageBuilder *dtpsBuilder = [[ADJPackageBuilder alloc]
+                                      initWithPackageParams:selfI.packageParams
+                                            activityState:selfI.activityState
+                                            config:selfI.adjustConfig
+                                            sessionParameters:selfI.sessionParameters
+                                            trackingStatusManager:self.trackingStatusManager
+                                            createdAt:now];
+
+    ADJActivityPackage *dtpsPackage = [dtpsBuilder buildDisableThirdPartySharingPackage];
+
+    [selfI.packageHandler addPackage:dtpsPackage];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
+- (void)resetThirdPartySharingCoppaActivityStateI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState == nil) {
+        return;
+    }
+    
+    if(selfI.activityState.isThirdPartySharingDisabledForCoppa) {
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.isThirdPartySharingDisabledForCoppa = NO;
+        }];
+        [selfI writeActivityStateI:selfI];
+    }
+}
+
+- (BOOL)shouldDisableThirdPartySharingWhenCoppaEnabled:(ADJActivityHandler *)selfI {
+    if (selfI.activityState == nil) {
+        return NO;
+    }
+    
+    if (![selfI isEnabledI:selfI]) {
+        return NO;
+    }
+    
+    if (selfI.activityState.isGdprForgotten) {
+        return NO;
+    }
+    
+    return selfI.activityState.isThirdPartySharingDisabledForCoppa;
+}
+
 @end
 
 @interface ADJTrackingStatusManager ()
@@ -2864,4 +2951,5 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     return YES;
 }
+
 @end

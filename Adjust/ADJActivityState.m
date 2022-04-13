@@ -37,6 +37,7 @@ static NSString *appToken = nil;
     self.isGdprForgotten = NO;
     self.askingAttribution = NO;
     self.isThirdPartySharingDisabled = NO;
+    self.isThirdPartySharingDisabledForCoppa = NO;
     self.deviceToken = nil;
     self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.updatePackages = NO;
@@ -102,7 +103,7 @@ static NSString *appToken = nil;
             self.eventCount, self.sessionCount,
             self.subsessionCount, self.askingAttribution, self.sessionLength,
             self.timeSpent, self.lastActivity, self.deviceToken,
-            self.isGdprForgotten, self.isThirdPartySharingDisabled, self.trackingManagerAuthorizationStatus];
+            self.isGdprForgotten, self.isThirdPartySharingDisabled, self.isThirdPartySharingDisabledForCoppa, self.trackingManagerAuthorizationStatus];
 }
 
 #pragma mark - NSCoding protocol methods
@@ -158,6 +159,12 @@ static NSString *appToken = nil;
     } else {
         self.isThirdPartySharingDisabled = NO;
     }
+    
+    if ([decoder containsValueForKey:@"isThirdPartySharingDisabledForCoppa"]) {
+        self.isThirdPartySharingDisabledForCoppa = [decoder decodeBoolForKey:@"isThirdPartySharingDisabledForCoppa"];
+    } else {
+        self.isThirdPartySharingDisabledForCoppa = NO;
+    }
 
     if ([decoder containsValueForKey:@"deviceToken"]) {
         self.deviceToken = [decoder decodeObjectForKey:@"deviceToken"];
@@ -202,6 +209,7 @@ static NSString *appToken = nil;
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
     [encoder encodeBool:self.isThirdPartySharingDisabled forKey:@"isThirdPartySharingDisabled"];
+    [encoder encodeBool:self.isThirdPartySharingDisabledForCoppa forKey:@"isThirdPartySharingDisabledForCoppa"];
     [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
     [encoder encodeObject:self.adid forKey:@"adid"];

@@ -1196,6 +1196,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         return;
     }
 
+    if (![ADJUtil canReadIDFA:self.adjustConfig]) {
+        return;
+    }
+    
     NSString *idfa = [ADJUtil idfa];
 
     if (idfa == nil
@@ -1211,7 +1215,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)injectFeatureFlagsWithParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled
                            forKey:@"event_buffering_enabled"];
-
+    if (self.adjustConfig.coppaCompliantEnabled == YES) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_coppa"];
+    }
     if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
     }

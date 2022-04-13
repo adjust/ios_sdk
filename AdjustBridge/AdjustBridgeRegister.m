@@ -323,6 +323,7 @@ static NSString * fbAppIdStatic = nil;
             this.externalDeviceId = null;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
+            this.coppaCompliantEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
             this.userAgent = null;
@@ -400,6 +401,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
             this.eventBufferingEnabled = isEnabled;
+        };
+        AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
+            this.coppaCompliantEnabled = isEnabled;
         };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;

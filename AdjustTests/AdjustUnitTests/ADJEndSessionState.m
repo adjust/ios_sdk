@@ -18,6 +18,7 @@
     self.pausing = YES;
     self.updateActivityState = YES;
     self.eventBufferingEnabled = NO;
+    self.coppaCompliantEnabled = NO;
     self.checkOnPause = NO;
     self.forgroundAlreadySuspended = NO;
     self.backgroundTimerStarts = NO;

@@ -298,6 +298,11 @@
         NSString *eventBufferingEnabledS = [parameters objectForKey:@"eventBufferingEnabled"][0];
         [adjustConfig setEventBufferingEnabled:[eventBufferingEnabledS boolValue]];
     }
+    
+    if ([parameters objectForKey:@"coppaCompliantEnabled"]) {
+        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliantEnabled"][0];
+        [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
+    }
 
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];

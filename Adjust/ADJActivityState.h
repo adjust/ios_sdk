@@ -15,6 +15,7 @@
 @property (nonatomic, assign) BOOL isGdprForgotten;
 @property (nonatomic, assign) BOOL askingAttribution;
 @property (nonatomic, assign) BOOL isThirdPartySharingDisabled;
+@property (nonatomic, assign) BOOL isThirdPartySharingDisabledForCoppa;
 
 @property (nonatomic, copy) NSString *dedupeToken;
 @property (nonatomic, copy) NSString *deviceToken;
