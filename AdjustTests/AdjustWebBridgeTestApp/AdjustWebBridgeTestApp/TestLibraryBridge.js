@@ -275,6 +275,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var eventBufferingEnabled = eventBufferingEnabledS == 'true';
         adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
     }
+    
+    if ('coppaCompliantEnabled' in params) {
+        var coppaCompliantEnabledS = getFirstValue(params, 'coppaCompliantEnabled');
+        var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
+        adjustConfig.setcoppaCompliantEnabled(coppaCompliantEnabled);
+    }
 
     if ('sendInBackground' in params) {
         var sendInBackgroundS = getFirstValue(params, 'sendInBackground');

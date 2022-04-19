@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *sdkPrefix;
 @property (nonatomic, copy) NSString *defaultTracker;
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
+@property (nonatomic, assign) BOOL coppaCompliantEnabled;
 // ADJPackageParams
 @property (nonatomic, copy) NSString *clientSdk;
 @property (nonatomic, copy) NSString *pushToken;

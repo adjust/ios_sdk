@@ -311,6 +311,9 @@
     // event_buffering_enabled
     NSString * eventBufferingEnabledString = [NSString stringWithFormat:@"%d",fields.eventBufferingEnabled];
     apspEquals(@"event_buffering_enabled", eventBufferingEnabledString);
+    // coppa_compliant_enabled
+    NSString * coppaCompliantEnabledString = [NSString stringWithFormat:@"%d",fields.coppaCompliantEnabled];
+    apspEquals(@"coppa_compliant_enabled", coppaCompliantEnabledString);
 }
 
 - (void)testActivityState:(ADJActivityPackage *)package
