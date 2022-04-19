@@ -1195,10 +1195,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (! self.adjustConfig.allowIdfaReading) {
         return;
     }
-
-    if (![ADJUtil canReadIDFA:self.adjustConfig]) {
-        return;
-    }
     
     NSString *idfa = [ADJUtil idfa];
 

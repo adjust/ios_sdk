@@ -1581,11 +1581,4 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 }
 
-+ (BOOL)canReadIDFA:(ADJConfig *)adjustConfig {
-    if (adjustConfig.coppaCompliantEnabled) {
-        return NO;
-    }
-    return YES;
-}
-
 @end

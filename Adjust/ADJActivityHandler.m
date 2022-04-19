@@ -915,12 +915,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [selfI.logger info:@"Event buffering is enabled"];
     }
     
-    if (![ADJUtil canReadIDFA:selfI.adjustConfig]) {
-        if (selfI.adjustConfig.coppaCompliantEnabled) {
-            [selfI.logger info:@"Cannot read Advertising ID with COPPA enabled"];
-        }
-    }
-    
     if (selfI.adjustConfig.defaultTracker != nil) {
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }

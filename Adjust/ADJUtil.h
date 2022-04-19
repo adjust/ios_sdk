@@ -149,6 +149,4 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)setPersistedRandomToken:(NSString *)randomToken;
 
-+ (BOOL)canReadIDFA:(ADJConfig *)adjustConfig;
-
 @end
