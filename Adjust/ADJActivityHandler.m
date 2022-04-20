@@ -776,6 +776,14 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }];
 }
 
+- (void)checkForNewAttStatus {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI checkForNewAttStatusI:selfI];
+    }];
+}
+
 - (void)writeActivityState {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -1507,6 +1515,23 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
+}
+
+- (void)checkForNewAttStatusI:(ADJActivityHandler *)selfI {
+    if (!selfI.activityState) {
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+    if (!selfI.trackingStatusManager) {
+        return;
+    }
+    
+    [selfI.trackingStatusManager checkForNewAttStatus];
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI

@@ -274,6 +274,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)checkForNewAttStatus {
+    @synchronized (self) {
+        [[Adjust getInstance] checkForNewAttStatus];
+    }
+}
+
 + (void)setTestOptions:(AdjustTestOptions *)testOptions {
     @synchronized (self) {
         if (testOptions.teardown) {
@@ -564,6 +570,14 @@ static dispatch_once_t onceToken = 0;
 
 - (NSString *)sdkVersion {
     return [ADJUtil sdkVersion];
+}
+
+- (void)checkForNewAttStatus {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+    
+    [self.activityHandler checkForNewAttStatus];
 }
 
 - (void)teardown {

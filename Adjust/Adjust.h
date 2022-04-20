@@ -319,6 +319,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)updateConversionValue:(NSInteger)conversionValue;
 
 /**
+ * @brief Instruct to Adjust SDK to check current state of att_status.
+ */
++ (void)checkForNewAttStatus;
+
+/**
  * @brief Method used for internal testing only. Don't use it in production.
  */
 + (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
@@ -391,5 +396,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)trackMeasurementConsent:(BOOL)enabled;
 
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
+
+- (void)checkForNewAttStatus;
 
 @end
