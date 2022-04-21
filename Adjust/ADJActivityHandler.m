@@ -2809,7 +2809,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)disableThirdPartySharingForCoppaEnabledI:(ADJActivityHandler *)selfI {
-    
     if (![selfI shouldDisableThirdPartySharingWhenCoppaEnabled:selfI]) {
         return;
     }
@@ -2869,7 +2868,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return NO;
     }
     
-    return selfI.activityState.isThirdPartySharingDisabledForCoppa;
+    return !selfI.activityState.isThirdPartySharingDisabledForCoppa;
 }
 
 @end

@@ -38,6 +38,9 @@
 
     // Delay the first session of the SDK.
     // [adjustConfig setDelayStart:7];
+    
+    // Enable COPPA Compliance.
+     [adjustConfig setCoppaCompliantEnabled:NO];
 
     // Add session callback parameters.
     [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];

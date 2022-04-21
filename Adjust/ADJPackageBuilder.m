@@ -1198,7 +1198,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         return;
     }
     
-    if (!self.adjustConfig.coppaCompliantEnabled) {
+    if (self.adjustConfig.coppaCompliantEnabled) {
         [logger info:@"Cannot read IDFA with COPPA enabled"];
         return;
     }
@@ -1218,7 +1218,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     
-    if (!self.adjustConfig.coppaCompliantEnabled) {
+    if (self.adjustConfig.coppaCompliantEnabled) {
         [logger info:@"Cannot read IDFV with COPPA enabled"];
         return;
     }
