@@ -1407,6 +1407,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.activityState.isGdprForgotten) {
         return NO;
     }
+    if (selfI.adjustConfig.coppaCompliantEnabled) {
+        [selfI.logger warn:@"Calling third party sharing API not allowed when COPPA enabled"];
+        return NO;
+    }
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -2805,6 +2809,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [self resetThirdPartySharingCoppaActivityStateI:selfI];
         return;
     }
+    
     [self disableThirdPartySharingForCoppaEnabledI:selfI];
 }
 
@@ -2812,30 +2817,30 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (![selfI shouldDisableThirdPartySharingWhenCoppaEnabled:selfI]) {
         return;
     }
-        
+    
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
         selfI.activityState.isThirdPartySharingDisabledForCoppa = YES;
     }];
     [selfI writeActivityStateI:selfI];
-
+    
     double now = [NSDate.date timeIntervalSince1970];
-
+    
     // build package
-    ADJPackageBuilder *dtpsBuilder = [[ADJPackageBuilder alloc]
+    ADJPackageBuilder *dtpscBuilder = [[ADJPackageBuilder alloc]
                                       initWithPackageParams:selfI.packageParams
-                                            activityState:selfI.activityState
-                                            config:selfI.adjustConfig
-                                            sessionParameters:selfI.sessionParameters
-                                            trackingStatusManager:self.trackingStatusManager
-                                            createdAt:now];
-
-    ADJActivityPackage *dtpsPackage = [dtpsBuilder buildDisableThirdPartySharingPackage];
-
-    [selfI.packageHandler addPackage:dtpsPackage];
-
+                                      activityState:selfI.activityState
+                                      config:selfI.adjustConfig
+                                      sessionParameters:selfI.sessionParameters
+                                      trackingStatusManager:self.trackingStatusManager
+                                      createdAt:now];
+    
+    ADJActivityPackage *dtpscPackage = [dtpscBuilder buildDisableThirdPartySharingPackage];
+    
+    [selfI.packageHandler addPackage:dtpscPackage];
+    
     if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
+        [selfI.logger info:@"Buffered event %@", dtpscPackage.suffix];
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
@@ -2859,11 +2864,9 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (selfI.activityState == nil) {
         return NO;
     }
-    
     if (![selfI isEnabledI:selfI]) {
         return NO;
     }
-    
     if (selfI.activityState.isGdprForgotten) {
         return NO;
     }

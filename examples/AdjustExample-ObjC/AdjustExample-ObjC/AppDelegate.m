@@ -32,7 +32,7 @@
 
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
-
+    
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
 
@@ -40,8 +40,9 @@
     // [adjustConfig setDelayStart:7];
     
     // Enable COPPA Compliance.
-     [adjustConfig setCoppaCompliantEnabled:NO];
+     [adjustConfig setCoppaCompliantEnabled:YES];
 
+    
     // Add session callback parameters.
     [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
     [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
