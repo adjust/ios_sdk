@@ -95,13 +95,13 @@ Adjust SDKをiOSプロジェクトに導入する手順を説明します。Xcod
 [CocoaPods][cocoapods]を使用している場合は、Podfile`に下記のコードを追加し、[こちらの手順](#sdk-integrate)に進んでください。
 
 ```ruby
-pod 'Adjust', '~> 4.29.7'
+pod 'Adjust', '~> 4.30.0'
 ```
 
 または
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.7'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.30.0'
 ```
 
 ---
