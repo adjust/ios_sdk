@@ -299,8 +299,8 @@
         [adjustConfig setEventBufferingEnabled:[eventBufferingEnabledS boolValue]];
     }
     
-    if ([parameters objectForKey:@"coppaCompliantEnabled"]) {
-        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliantEnabled"][0];
+    if ([parameters objectForKey:@"coppaCompliant"]) {
+        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
         [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
     }
 
