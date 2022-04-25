@@ -237,6 +237,7 @@ static NSString *appToken = nil;
         copy.lastActivity = self.lastActivity;
         copy.askingAttribution = self.askingAttribution;
         copy.isThirdPartySharingDisabled = self.isThirdPartySharingDisabled;
+        copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
         copy.updatePackages = self.updatePackages;
         copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;

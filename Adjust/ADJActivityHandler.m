@@ -1036,7 +1036,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI updateHandlersStatusAndSendI:selfI];
     
     [selfI processCoppaComplianceI:selfI];
-
+    
     [selfI processSessionI:selfI];
 
     [selfI checkAttributionStateI:selfI];
@@ -2804,7 +2804,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
 }
 
-- (void)processCoppaComplianceI:(ADJActivityHandler *)selfI  {
+- (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
     if (!selfI.adjustConfig.coppaCompliantEnabled) {
         [self resetThirdPartySharingCoppaActivityStateI:selfI];
         return;
@@ -2824,23 +2824,25 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }];
     [selfI writeActivityStateI:selfI];
     
+    ADJThirdPartySharing *thirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:false];
+    
     double now = [NSDate.date timeIntervalSince1970];
     
     // build package
-    ADJPackageBuilder *dtpscBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      sessionParameters:selfI.sessionParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      createdAt:now];
+    ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
+                                     initWithPackageParams:selfI.packageParams
+                                     activityState:selfI.activityState
+                                     config:selfI.adjustConfig
+                                     sessionParameters:selfI.sessionParameters
+                                     trackingStatusManager:self.trackingStatusManager
+                                     createdAt:now];
     
-    ADJActivityPackage *dtpscPackage = [dtpscBuilder buildDisableThirdPartySharingPackage];
+    ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
     
-    [selfI.packageHandler addPackage:dtpscPackage];
+    [selfI.packageHandler addPackage:dtpsPackage];
     
     if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", dtpscPackage.suffix];
+        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
