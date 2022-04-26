@@ -241,7 +241,7 @@
             [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
         }
         if ([self isFieldValid:coppaCompliantEnabled]) {
-            [adjustConfig setEventBufferingEnabled:[coppaCompliantEnabled boolValue]];
+            [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
         }
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];
