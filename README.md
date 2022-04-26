@@ -71,6 +71,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Reattribution via deep links](#deeplinking-reattribution)
       * [Link resolution](#link-resolution)
    * [[beta] Data residency](#data-residency)
+   * [COPPA compliance](#af-coppa-compliance)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
    * [I'm seeing "Adjust requires ARC" error](#ts-arc)
@@ -1108,7 +1109,42 @@ In order to enable data residency feature, make sure to make a call to `setUrlSt
 [adjustConfig setUrlStrategy:ADJDataResidencyUS]; // for US data residency region
 ```
 
-**Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.
+**Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.setCoppaCompliantEnabled
+
+### <a id="af-coppa-compliance"></a>COPPA compliance
+
+By default Adjust SDK doesn't mark app as COPPA compliant. In order to mark your app as COPPA compliant, make sure to call `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
+
+<table>
+<tr>
+<td>
+<b>Native App SDK</b>
+</td>
+</tr>
+<tr>
+<td>
+
+```objc
+[adjustConfig setCoppaCompliantEnabled:YES];
+```
+</td>
+</tr>
+<tr>
+<td>
+<b>Web View SDK</b>
+</td>
+</tr>
+<tr>
+<td>
+
+```js
+adjustConfig.setCoppaCompliantEnabled(true);
+```
+</td>
+</tr>
+</table>
+
+**Note:** By enabling this feature, third-party sharing will be automatically disabled for the users. If later during the app lifetime you decide not to mark app as COPPA compliant anymore, third-party sharing **will not be automatically re-enabled**. Instead, next to not marking your app as COPPA compliant anymore, you will need to explicitly re-enable third-party sharing in case you want to do that.
 
 ## <a id="troubleshooting"></a>Troubleshooting
 
