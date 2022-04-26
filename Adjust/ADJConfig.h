@@ -256,8 +256,13 @@
                     environment:(nonnull NSString *)environment
           allowSuppressLogLevel:(BOOL)allowSuppressLogLevel;
 
+/**
+ * @brief Check if adjust configuration object is valid.
+ *
+ * @return Boolean indicating whether adjust config object is valid or not.
+ */
 - (BOOL)isValid;
-
+ 
 /**
  * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
  */
