@@ -259,7 +259,7 @@
 - (BOOL)isValid;
 
 /**
- * @brief
+ * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
  */
 @property (nonatomic, assign) BOOL coppaCompliantEnabled;
 
