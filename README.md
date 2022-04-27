@@ -648,7 +648,11 @@ Currently we support the below `source` parameter values:
 - `ADJAdRevenueSourceAppLovinMAX` - representing AppLovin MAX platform.
 - `ADJAdRevenueSourceMopub` - representing MoPub platform.
 - `ADJAdRevenueSourceAdMob` - representing AdMob platform.
-- `ADJAdRevenueSourceIronSource` - representing IronSource platform.
+- `ADJAdRevenueSourceIronSource` - representing IronSource platform. 
+- `ADJAdRevenueSourceAdMost`- representing AdMost platform.
+- `ADJAdRevenueSourceUnity` - representing Unity platform.
+- `ADJAdRevenueSourceHeliumChartboost` - representing Helium Chartboost platform.
+- `ADJAdRevenueSourcePublisher` - representing Generic platform.
 
 **Note**: Additional documentation which explains detailed integration with every of the supported sources will be provided outside of this README. Also, in order to use this feature, additional setup is needed for your app in Adjust dashboard, so make sure to get in touch with our support team to make sure that everything is set up correctly before you start to use this feature.
 
