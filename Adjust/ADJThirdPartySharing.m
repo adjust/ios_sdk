@@ -27,7 +27,9 @@
                       key:(nonnull NSString *)key
                     value:(nonnull NSString *)value
 {
-    if (partnerName == nil || key == nil || value == nil) {
+    if (partnerName == nil || [partnerName isEqual:[NSNull null]] ||
+        key == nil || [key isEqual:[NSNull null]] ||
+        value == nil || [value isEqual:[NSNull null]]) {
         [ADJAdjustFactory.logger error:@"Cannot add granular option with any nil value"];
         return;
     }
