@@ -400,6 +400,7 @@
     }
 
     ADJConfig *adjustConfig = [self.savedConfigs objectForKey:configNumber];
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];
     [Adjust appDidLaunch:adjustConfig];
     [self.savedConfigs removeObjectForKey:[NSNumber numberWithInt:0]];
 }
