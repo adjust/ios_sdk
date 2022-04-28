@@ -1746,18 +1746,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     // Check if upon enabling install has been tracked.
     if (enabled) {
-        if (![ADJUserDefaults getInstallTracked]) {
-            double now = [NSDate.date timeIntervalSince1970];
-            [self trackNewSessionI:now withActivityHandler:selfI];
-        }
-        NSData *deviceToken = [ADJUserDefaults getPushTokenData];
-        if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
-            [self setDeviceToken:deviceToken];
-        }
-        NSString *pushToken = [ADJUserDefaults getPushTokenString];
-        if (pushToken != nil && ![selfI.activityState.deviceToken isEqualToString:pushToken]) {
-            [self setPushToken:pushToken];
-        }
         if ([ADJUserDefaults getGdprForgetMe]) {
             [selfI setGdprForgetMe];
         } else {
@@ -1782,6 +1770,19 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
             }
 
+        }
+
+        if (![ADJUserDefaults getInstallTracked]) {
+            double now = [NSDate.date timeIntervalSince1970];
+            [self trackNewSessionI:now withActivityHandler:selfI];
+        }
+        NSData *deviceToken = [ADJUserDefaults getPushTokenData];
+        if (deviceToken != nil && ![selfI.activityState.deviceToken isEqualToString:[ADJUtil convertDeviceToken:deviceToken]]) {
+            [self setDeviceToken:deviceToken];
+        }
+        NSString *pushToken = [ADJUserDefaults getPushTokenString];
+        if (pushToken != nil && ![selfI.activityState.deviceToken isEqualToString:pushToken]) {
+            [self setPushToken:pushToken];
         }
         if (selfI.adjustConfig.allowiAdInfoReading == YES) {
             [selfI checkForiAdI:selfI];
