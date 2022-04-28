@@ -1757,7 +1757,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 for (ADJThirdPartySharing *thirdPartySharing
                      in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
                 {
-                    [selfI trackThirdPartySharing:thirdPartySharing];
+                    [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
                 }
 
                 selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
