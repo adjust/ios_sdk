@@ -58,6 +58,12 @@
         NSString *directoryName = [data objectForKey:@"directoryName"];
         [self.testLibrary addTestDirectory:directoryName];
     }];
+    
+    [adjustBridgeRegister registerHandler:@"adjustTLB_addTest" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"TestLibraryBridge adjustTLB_addTest");
+        NSString *testName = [data objectForKey:@"testName"];
+        [self.testLibrary addTest:testName];
+    }];
 
     self.adjustBridgeRegister = adjustBridgeRegister;
     NSLog(@"TestLibraryBridge initWithAdjustBridgeRegister");
