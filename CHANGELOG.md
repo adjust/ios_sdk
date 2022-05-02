@@ -4,6 +4,9 @@
 - Added `checkForNewAttStatus` into Adjust API whose purpose is to allow users to instruct to SDK to check if att_status might have changed in the meantime.
 - Added support for `Generic` ad revenue tracking.
 
+#### Fixed
+-  Fixed wrong ATT dialog method signature in iOS web bridge
+
 ---
 
 ### Version 4.29.7 (8th February 2022)
