@@ -279,7 +279,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('coppaCompliant' in params) {
         var coppaCompliantEnabledS = getFirstValue(params, 'coppaCompliant');
         var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
-        adjustConfig.setcoppaCompliantEnabled(coppaCompliantEnabled);
+        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
     }
 
     if ('sendInBackground' in params) {
