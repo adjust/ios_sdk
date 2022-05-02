@@ -2850,7 +2850,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }];
     [selfI writeActivityStateI:selfI];
     
-    ADJThirdPartySharing *thirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:false];
+    ADJThirdPartySharing *thirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:[NSNumber numberWithBool:NO]];
     
     double now = [NSDate.date timeIntervalSince1970];
     
