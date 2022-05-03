@@ -70,7 +70,8 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
       * [Link resolution](#link-resolution)
-   * [[beta] Data residency](#data-residency)
+   * [Data residency](#data-residency)
+   * [COPPA compliance](#af-coppa-compliance)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
    * [I'm seeing "Adjust requires ARC" error](#ts-arc)
@@ -94,13 +95,13 @@ We will describe the steps to integrate the Adjust SDK into your iOS project. We
 If you're using [CocoaPods][cocoapods], you can add the following line to your `Podfile` and continue from [this step](#sdk-integrate):
 
 ```ruby
-pod 'Adjust', '~> 4.29.7'
+pod 'Adjust', '~> 4.30.0'
 ```
 
 or:
 
 ```ruby
-pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.29.7'
+pod 'Adjust', :git => 'https://github.com/adjust/ios_sdk.git', :tag => 'v4.30.0'
 ```
 
 ---
@@ -647,7 +648,11 @@ Currently we support the below `source` parameter values:
 - `ADJAdRevenueSourceAppLovinMAX` - representing AppLovin MAX platform.
 - `ADJAdRevenueSourceMopub` - representing MoPub platform.
 - `ADJAdRevenueSourceAdMob` - representing AdMob platform.
-- `ADJAdRevenueSourceIronSource` - representing IronSource platform.
+- `ADJAdRevenueSourceIronSource` - representing IronSource platform. 
+- `ADJAdRevenueSourceAdMost`- representing AdMost platform.
+- `ADJAdRevenueSourceUnity` - representing Unity platform.
+- `ADJAdRevenueSourceHeliumChartboost` - representing Helium Chartboost platform.
+- `ADJAdRevenueSourcePublisher` - representing Generic platform.
 
 **Note**: Additional documentation which explains detailed integration with every of the supported sources will be provided outside of this README. Also, in order to use this feature, additional setup is needed for your app in Adjust dashboard, so make sure to get in touch with our support team to make sure that everything is set up correctly before you start to use this feature.
 
@@ -1098,7 +1103,7 @@ If the link received does not belong to any of the domains specified in the `res
     }];
 ```
 
-### <a id="data-residency"></a>[beta] Data residency
+### <a id="data-residency"></a>Data residency
 
 In order to enable data residency feature, make sure to make a call to `setUrlStrategy:` method of the `ADJConfig` instance with one of the following constants:
 
@@ -1108,7 +1113,42 @@ In order to enable data residency feature, make sure to make a call to `setUrlSt
 [adjustConfig setUrlStrategy:ADJDataResidencyUS]; // for US data residency region
 ```
 
-**Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.
+**Note:** Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.
+
+### <a id="af-coppa-compliance"></a>COPPA compliance
+
+By default Adjust SDK doesn't mark app as COPPA compliant. In order to mark your app as COPPA compliant, make sure to call `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`:
+
+<table>
+<tr>
+<td>
+<b>Native App SDK</b>
+</td>
+</tr>
+<tr>
+<td>
+
+```objc
+[adjustConfig setCoppaCompliantEnabled:YES];
+```
+</td>
+</tr>
+<tr>
+<td>
+<b>Web View SDK</b>
+</td>
+</tr>
+<tr>
+<td>
+
+```js
+adjustConfig.setCoppaCompliantEnabled(true);
+```
+</td>
+</tr>
+</table>
+
+**Note:** By enabling this feature, third-party sharing will be automatically disabled for the users. If later during the app lifetime you decide not to mark app as COPPA compliant anymore, third-party sharing **will not be automatically re-enabled**. Instead, next to not marking your app as COPPA compliant anymore, you will need to explicitly re-enable third-party sharing in case you want to do that.
 
 ## <a id="troubleshooting"></a>Troubleshooting
 

@@ -122,6 +122,9 @@
 
     // buffer events
     config.eventBufferingEnabled = YES;
+    
+    // buffer COPPA compliant flag
+    config.coppaCompliantEnabled = YES;
 
     // set default tracker
     [config setDefaultTracker:@"default1234tracker"];
@@ -266,6 +269,7 @@
 
     firstSessionPackageFields.defaultTracker = @"default1234tracker";
     firstSessionPackageFields.eventBufferingEnabled = 1;
+    firstSessionPackageFields.coppaCompliantEnabled = 1;
 
     // test first session
     [self testPackageSession:sessionPackage fields:firstSessionPackageFields sessionCount:@"1"];
@@ -284,6 +288,7 @@
     firstPackageFields.partnerParameters = @"{\"keyPartner\":\"valuePartner2\",\"fooPartner\":\"barPartner\"}";
     firstPackageFields.suffix = @"(0.00100 EUR, 'event1')";
     firstPackageFields.eventBufferingEnabled = 1;
+    firstPackageFields.coppaCompliantEnabled = 1;
 
     // test first event
     [self testEventPackage:firstEventPackage fields:firstPackageFields eventToken:@"event1"];

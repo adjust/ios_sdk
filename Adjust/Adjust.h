@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.29.7
+//  V4.30.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -51,6 +51,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceIronSource;
 extern NSString * __nonnull const ADJAdRevenueSourceAdMost;
 extern NSString * __nonnull const ADJAdRevenueSourceUnity;
 extern NSString * __nonnull const ADJAdRevenueSourceHeliumChartboost;
+extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
 
 /**
  * Constants for country app's URL strategies.
@@ -319,6 +320,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)updateConversionValue:(NSInteger)conversionValue;
 
 /**
+ * @brief Instruct to Adjust SDK to check current state of att_status.
+ */
++ (void)checkForNewAttStatus;
+
+/**
  * @brief Method used for internal testing only. Don't use it in production.
  */
 + (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
@@ -391,5 +397,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)trackMeasurementConsent:(BOOL)enabled;
 
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
+
+- (void)checkForNewAttStatus;
 
 @end

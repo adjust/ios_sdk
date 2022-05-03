@@ -23,6 +23,7 @@
     self.getAttributionIsCalled = nil;
     self.timerAlreadyStarted = NO;
     self.eventBufferingIsEnabled = NO;
+    self.coppaCompliantEnabled = NO;
     self.foregroundTimerStarts = YES;
     self.foregroundTimerAlreadyStarted = NO;
     self.sdkClickHandlerAlsoPauses = YES;

@@ -25,6 +25,7 @@
     self.delayStartConfigured = NO;
     self.updatePackages = NO;
     self.activityStateAlreadyCreated = NO;
+    self.coppaCompliantEnabled = NO;
     self.readCallbackParameters = nil;
     self.readPartnerParameters = nil;
     self.foregroundTimerStart = 60;

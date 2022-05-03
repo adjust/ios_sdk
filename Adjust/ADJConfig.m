@@ -67,6 +67,7 @@
     // default values
     self.sendInBackground = NO;
     self.eventBufferingEnabled = NO;
+    self.coppaCompliantEnabled = NO;
     self.allowIdfaReading = YES;
     self.allowiAdInfoReading = YES;
     self.allowAdServicesInfoReading = YES;
@@ -203,6 +204,7 @@
         copy.allowiAdInfoReading = self.allowiAdInfoReading;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
         copy.delayStart = self.delayStart;
+        copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.isDeviceKnown = self.isDeviceKnown;

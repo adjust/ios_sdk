@@ -298,6 +298,11 @@
         NSString *eventBufferingEnabledS = [parameters objectForKey:@"eventBufferingEnabled"][0];
         [adjustConfig setEventBufferingEnabled:[eventBufferingEnabledS boolValue]];
     }
+    
+    if ([parameters objectForKey:@"coppaCompliant"]) {
+        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
+        [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
+    }
 
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
@@ -395,6 +400,7 @@
     }
 
     ADJConfig *adjustConfig = [self.savedConfigs objectForKey:configNumber];
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];
     [Adjust appDidLaunch:adjustConfig];
     [self.savedConfigs removeObjectForKey:[NSNumber numberWithInt:0]];
 }

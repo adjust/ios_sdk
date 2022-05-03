@@ -187,6 +187,7 @@
         NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
+        NSNumber *coppaCompliantEnabled = [data objectForKey:@"coppaCompliantEnabled"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSString *userAgent = [data objectForKey:@"userAgent"];
@@ -238,6 +239,9 @@
         }
         if ([self isFieldValid:eventBufferingEnabled]) {
             [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
+        }
+        if ([self isFieldValid:coppaCompliantEnabled]) {
+            [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
         }
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];

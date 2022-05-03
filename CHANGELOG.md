@@ -1,3 +1,14 @@
+### Version 4.30.0 (3rd May 2022)
+#### Added
+- Added ability to mark your app as COPPA compliant. You can enable this setting by calling `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`.
+- Added `checkForNewAttStatus` into Adjust API whose purpose is to allow users to instruct to SDK to check if `att_status` might have changed in the meantime.
+- Added support for `Generic` ad revenue tracking.
+
+#### Fixed
+- Fixed wrong ATT dialog method signature in iOS web bridge.
+
+---
+
 ### Version 4.29.7 (8th February 2022)
 #### Added
 - Added support for `Unity` ad revenue tracking.

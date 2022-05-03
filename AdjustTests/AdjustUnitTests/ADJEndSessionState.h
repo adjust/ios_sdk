@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL pausing;
 @property (nonatomic, assign) BOOL updateActivityState;
 @property (nonatomic, assign) BOOL eventBufferingEnabled;
+@property (nonatomic, assign) BOOL coppaCompliantEnabled;
 @property (nonatomic, assign) BOOL checkOnPause;
 @property (nonatomic, assign) BOOL forgroundAlreadySuspended;
 @property (nonatomic, assign) BOOL backgroundTimerStarts;
