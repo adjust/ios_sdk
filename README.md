@@ -30,6 +30,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
    * [AppTrackingTransparency framework](#att-framework)
       * [App-tracking authorisation wrapper](#ata-wrapper)
       * [Get current authorisation status](#ata-getter)
+      * [Check for ATT status change](#att-status-change)
    * [SKAdNetwork framework](#skadn-framework)
       * [Update SKAdNetwork conversion value](#skadn-update-conversion-value)
       * [Conversion value updated callback](#skadn-cv-updated-callback)
@@ -365,6 +366,13 @@ To get the current app tracking authorization status you can call `[Adjust appTr
 * `3`: The user authorized access to IDFA
 * `-1`: The status is not available
 
+### <a id="att-status-change"></a>Check for ATT status change
+
+In cases where you are not using [Adjust app-tracking authorization wrapper](#ata-wrapper), Adjust SDK will not be able to know immediately upon answering the dialog what is the new value of app-tracking status. In situations like this, if you would want Adjust SDK to read the new app-tracking status value and communicate it to our backend, make sure to make a call to this method:
+
+```objc
+[Adjust checkForNewAttStatus];
+```
 
 ### <a id="skadn-framework"></a>SKAdNetwork framework
 
