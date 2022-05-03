@@ -70,7 +70,7 @@ Read this in other languages: [English][en-readme], [中文][zh-readme], [日本
       * [Deferred deep linking scenario](#deeplinking-deferred)
       * [Reattribution via deep links](#deeplinking-reattribution)
       * [Link resolution](#link-resolution)
-   * [[beta] Data residency](#data-residency)
+   * [Data residency](#data-residency)
    * [COPPA compliance](#af-coppa-compliance)
 * [Troubleshooting](#troubleshooting)
    * [Issues with delayed SDK initialisation](#ts-delayed-init)
@@ -1103,7 +1103,7 @@ If the link received does not belong to any of the domains specified in the `res
     }];
 ```
 
-### <a id="data-residency"></a>[beta] Data residency
+### <a id="data-residency"></a>Data residency
 
 In order to enable data residency feature, make sure to make a call to `setUrlStrategy:` method of the `ADJConfig` instance with one of the following constants:
 
@@ -1113,7 +1113,7 @@ In order to enable data residency feature, make sure to make a call to `setUrlSt
 [adjustConfig setUrlStrategy:ADJDataResidencyUS]; // for US data residency region
 ```
 
-**Note:** This feature is currently in beta testing phase. If you are interested in getting access to it, please contact your dedicated account manager or write an email to support@adjust.com. Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.setCoppaCompliantEnabled
+**Note:** Please, do not turn this setting on before making sure with the support team that this feature is enabled for your app because otherwise SDK traffic will get dropped.
 
 ### <a id="af-coppa-compliance"></a>COPPA compliance
 
