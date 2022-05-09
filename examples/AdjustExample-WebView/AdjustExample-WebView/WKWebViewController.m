@@ -34,11 +34,9 @@
 
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:self];
-
-    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];
-    NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
-    NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
-    [webView loadHTMLString:appHtml baseURL:baseURL];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://adjustweb.neocities.org"]];
+    [webView loadRequest:request];
 }
 
 - (void)callWkHandler:(id)sender {
