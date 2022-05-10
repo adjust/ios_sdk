@@ -27,7 +27,6 @@ Pods
 
 # Adjust
 frameworks
-xcframeworks
 sdk_distribution
 
 # Code style
