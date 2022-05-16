@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+#
+# IMPORTANT:
+#
+# => This script should be called from the [SOURCE_ROOT]/ folder, i.e. "ios_sdk_dev/".
+#
+# => To build all variants, run the following:
+# ./scripts/build_frameworks.sh -all
+#
+# => The output results can be found in [SOURCE_ROOT]/sdk_distribution, i.e. "ios_sdk_dev/sdk_distribution"
+#
+
 
 set -e
 
