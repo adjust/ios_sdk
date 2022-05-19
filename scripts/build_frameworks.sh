@@ -4,10 +4,18 @@
 #
 # => This script should be called from the [SOURCE_ROOT]/ folder, i.e. "ios_sdk_dev/".
 #
-# => To build all variants, run the following:
+# => The output results can be found in [SOURCE_ROOT]/sdk_distribution, i.e. "ios_sdk_dev/sdk_distribution"
+#
+# => EXAMPLES:
+#
+# 1. To build all variants, run the following:
 # ./scripts/build_frameworks.sh -all
 #
-# => The output results can be found in [SOURCE_ROOT]/sdk_distribution, i.e. "ios_sdk_dev/sdk_distribution"
+# The following command has the same result as "-all" flag usage:
+# ./scripts/build_frameworks.sh -fs -fd -xs -xd -ios -tv -im -web
+#
+# 2. To build static frameworks and xcframeworks for iOS and tvOS only:
+# ./scripts/build_frameworks.sh -fs -xs -ios -tv
 #
 
 
