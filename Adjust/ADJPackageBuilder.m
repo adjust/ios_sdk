@@ -159,6 +159,18 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return [self buildClickPackage:clickSource extraParameters:parameters];
 }
 
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
+                                             reftag:(NSString * _Nullable)reftag {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (reftag != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:reftag
+                               forKey:@"reftag"];
+    }
+
+    return [self buildClickPackage:clickSource extraParameters:parameters];
+}
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource extraParameters:(NSDictionary *)extraParameters {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
     if (extraParameters != nil) {

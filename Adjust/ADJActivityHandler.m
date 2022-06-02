@@ -1103,6 +1103,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                     selfI.activityState.sessionCount = 1; // this is the first session
                 }];
                 [selfI transferSessionPackageI:selfI now:now];
+                
+                // check for deferred deep link info inside of the pasteboard
+                [selfI checkPasteboardI:selfI];
             }
         }
 
@@ -1770,6 +1773,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
             }
 
+            // check for deferred deep link info inside of the pasteboard
+            [selfI checkPasteboardI:selfI];
         }
 
         if (![ADJUserDefaults getInstallTracked]) {
@@ -2159,6 +2164,51 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [selfI setEnabled:NO];
     [selfI.packageHandler flush];
+}
+
+- (void)checkPasteboardI:(ADJActivityHandler *)selfI {
+    // TODO: add logs for each return case
+    // check if feature is enabled
+    if (selfI.adjustConfig.checkPasteboard == NO) {
+        return;
+    }
+    // check pasteboard only upon install
+    if ([ADJUserDefaults getPasteboardChecked] == YES) {
+        return;
+    }
+
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    // check if there are any strings
+    if ([pasteboard hasStrings] == NO) {
+        return;
+    }
+    
+    NSString *pasteboardReftag = [pasteboard string]; // TODO: or check [pasteboard strings]
+    NSString *reftagRaw = [pasteboardReftag copy]; // TODO: assumption right now
+    NSArray *reftagParts = [reftagRaw componentsSeparatedByString:@"="];
+    if ([reftagParts count] != 2) {
+        return;
+    }
+    NSString *reftagKey = reftagParts[0];
+    if (![reftagKey isEqualToString:@"adjust_reftag"]) {
+        return;
+    }
+    NSString *reftagValue = reftagParts[1];
+    
+    // send sdk_click
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                                                         activityState:selfI.activityState
+                                                                                config:selfI.adjustConfig
+                                                                     sessionParameters:selfI.sessionParameters
+                                                                 trackingStatusManager:self.trackingStatusManager
+                                                                             createdAt:now];
+
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag" reftag:reftagValue];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
+
+    // mark pasteboard as checked
+    [ADJUserDefaults setPasteboardChecked];
 }
 
 #pragma mark - private

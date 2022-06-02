@@ -215,6 +215,11 @@
 @property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
 
 /**
+ * @brief Enables deferred deep link pasteboard check.
+ */
+@property (nonatomic, assign) BOOL checkPasteboard;
+
+/**
  * @brief Get configuration object for the initialization of the Adjust SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can
