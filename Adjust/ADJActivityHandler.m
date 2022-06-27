@@ -2183,18 +2183,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
     
-    NSString *pasteboardReftag = [pasteboard string]; // TODO: or check [pasteboard strings]
-    NSString *reftagRaw = [pasteboardReftag copy]; // TODO: assumption right now
-    NSArray *reftagParts = [reftagRaw componentsSeparatedByString:@"="];
-    if ([reftagParts count] != 2) {
-        return;
-    }
-    NSString *reftagKey = reftagParts[0];
-    if (![reftagKey isEqualToString:@"adjust_reftag"]) {
-        return;
-    }
-    NSString *reftagValue = reftagParts[1];
-    
+    NSString *pasteboardString = [[pasteboard string] copy]; // TODO: or check [pasteboard strings]
+
     // send sdk_click
     double now = [NSDate.date timeIntervalSince1970];
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
@@ -2204,7 +2194,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                  trackingStatusManager:self.trackingStatusManager
                                                                              createdAt:now];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag" reftag:reftagValue];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag" reftag:pasteboardString];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     // mark pasteboard as checked
