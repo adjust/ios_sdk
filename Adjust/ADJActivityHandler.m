@@ -2176,6 +2176,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if ([ADJUserDefaults getPasteboardChecked] == YES) {
         return;
     }
+    if (selfI.internalState.isFirstLaunch == NO) {
+        return;
+    }
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     // check if there are any strings
