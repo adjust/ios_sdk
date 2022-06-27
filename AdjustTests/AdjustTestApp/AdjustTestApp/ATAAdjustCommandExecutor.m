@@ -229,10 +229,10 @@
     }
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = nil;
+    pasteboard.URL = nil;
     NSString *pasteboardContent = [parameters objectForKey:@"pasteboard"][0];
     if (pasteboardContent != nil) {
-        pasteboard.string = pasteboardContent;
+        pasteboard.URL = [NSURL URLWithString:pasteboardContent];
     }
 
     if ([parameters objectForKey:@"logLevel"]) {
