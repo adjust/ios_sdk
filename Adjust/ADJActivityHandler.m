@@ -2179,11 +2179,22 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     // check if there are any strings
-    if ([pasteboard hasStrings] == NO) {
+    if ([pasteboard hasURLs] == NO) {
         return;
     }
+
+    // TODO: add exception for tvOs and watchOs
+    NSURL *pasteboardUrl = [pasteboard URL];
     
-    NSString *pasteboardString = [[pasteboard string] copy]; // TODO: or check [pasteboard strings]
+    if (pasteboardUrl == nil) {
+        return;
+    }
+
+    NSString *pasteboardUrlString = [pasteboardUrl absoluteString];
+
+    if (pasteboardUrlString == nil) {
+        return;
+    }
 
     // send sdk_click
     double now = [NSDate.date timeIntervalSince1970];
@@ -2194,7 +2205,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                  trackingStatusManager:self.trackingStatusManager
                                                                              createdAt:now];
 
-    clickBuilder.reftag = pasteboardString;
+    clickBuilder.reftag = pasteboardUrlString;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
