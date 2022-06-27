@@ -2194,7 +2194,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                  trackingStatusManager:self.trackingStatusManager
                                                                              createdAt:now];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag" reftag:pasteboardString];
+    clickBuilder.reftag = pasteboardString;
+
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     // mark pasteboard as checked

@@ -55,9 +55,6 @@
                                               token:(NSString * _Nullable)token
                                     errorCodeNumber:(NSNumber * _Nullable)errorCodeNumber;
 
-- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
-                                             reftag:(NSString * _Nullable)reftag;
-
 - (ADJActivityPackage * _Nullable)buildAttributionPackage:(NSString * _Nullable)initiatedBy;
 
 - (ADJActivityPackage * _Nullable)buildGdprPackage;
