@@ -2207,7 +2207,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     clickBuilder.reftag = pasteboardUrlString;
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"reftag"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     // mark pasteboard as checked
