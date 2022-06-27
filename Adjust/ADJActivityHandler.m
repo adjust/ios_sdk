@@ -2205,6 +2205,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                  trackingStatusManager:self.trackingStatusManager
                                                                              createdAt:now];
 
+    clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
     clickBuilder.reftag = pasteboardUrlString;
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
