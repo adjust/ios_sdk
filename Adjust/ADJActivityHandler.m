@@ -1104,8 +1104,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 }];
                 [selfI transferSessionPackageI:selfI now:now];
                 
-                // check for deferred deep link info inside of the pasteboard
-                [selfI checkPasteboardI:selfI];
+                [selfI checkLinkMeI:selfI];
             }
         }
 
@@ -1773,8 +1772,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
             }
 
-            // check for deferred deep link info inside of the pasteboard
-            [selfI checkPasteboardI:selfI];
+            [selfI checkLinkMeI:selfI];
         }
 
         if (![ADJUserDefaults getInstallTracked]) {
@@ -2166,14 +2164,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI.packageHandler flush];
 }
 
-- (void)checkPasteboardI:(ADJActivityHandler *)selfI {
+- (void)checkLinkMeI:(ADJActivityHandler *)selfI {
     // TODO: add logs for each return case
-    // check if feature is enabled
-    if (selfI.adjustConfig.checkPasteboard == NO) {
+    if (selfI.adjustConfig.allowLinkMe == NO) {
         return;
     }
-    // check pasteboard only upon install
-    if ([ADJUserDefaults getPasteboardChecked] == YES) {
+    if ([ADJUserDefaults getLinkMeChecked] == YES) {
         return;
     }
     if (selfI.internalState.isFirstLaunch == NO) {
@@ -2181,20 +2177,17 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    // check if there are any strings
     if ([pasteboard hasURLs] == NO) {
         return;
     }
 
     // TODO: add exception for tvOs and watchOs
     NSURL *pasteboardUrl = [pasteboard URL];
-    
     if (pasteboardUrl == nil) {
         return;
     }
 
     NSString *pasteboardUrlString = [pasteboardUrl absoluteString];
-
     if (pasteboardUrlString == nil) {
         return;
     }
@@ -2214,8 +2207,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
-    // mark pasteboard as checked
-    [ADJUserDefaults setPasteboardChecked];
+    [ADJUserDefaults setLinkMeChecked];
 }
 
 #pragma mark - private

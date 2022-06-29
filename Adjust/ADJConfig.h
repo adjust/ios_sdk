@@ -215,9 +215,9 @@
 @property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
 
 /**
- * @brief Enables deferred deep link pasteboard check.
+ * @brief Enables/disables linkMe
  */
-@property (nonatomic, assign) BOOL checkPasteboard;
+@property (nonatomic, assign) BOOL allowLinkMe;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.

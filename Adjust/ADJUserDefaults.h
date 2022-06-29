@@ -61,8 +61,8 @@
 
 + (NSDate *)getSkadRegisterCallTimestamp;
 
-+ (void)setPasteboardChecked;
++ (void)setLinkMeChecked;
 
-+ (BOOL)getPasteboardChecked;
++ (BOOL)getLinkMeChecked;
 
 @end

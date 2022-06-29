@@ -18,7 +18,7 @@ static NSString * const PREFS_KEY_DISABLE_THIRD_PARTY_SHARING = @"adj_disable_th
 static NSString * const PREFS_KEY_IAD_ERRORS = @"adj_iad_errors";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
 static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
-static NSString * const PREFS_KEY_PASTEBOARD_CHECKED = @"adj_pastebord_checked";
+static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 
 @implementation ADJUserDefaults
 
@@ -139,12 +139,12 @@ static NSString * const PREFS_KEY_PASTEBOARD_CHECKED = @"adj_pastebord_checked";
     return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
 }
 
-+ (void)setPasteboardChecked {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_PASTEBOARD_CHECKED];
++ (void)setLinkMeChecked {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_LINK_ME_CHECKED];
 }
 
-+ (BOOL)getPasteboardChecked {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_PASTEBOARD_CHECKED];
++ (BOOL)getLinkMeChecked {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_LINK_ME_CHECKED];
 }
 
 + (void)clearAdjustStuff {
@@ -158,7 +158,7 @@ static NSString * const PREFS_KEY_PASTEBOARD_CHECKED = @"adj_pastebord_checked";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_IAD_ERRORS];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PASTEBOARD_CHECKED];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LINK_ME_CHECKED];
 }
 
 @end
