@@ -2165,30 +2165,35 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)checkLinkMeI:(ADJActivityHandler *)selfI {
-    // TODO: add logs for each return case
     if (selfI.adjustConfig.allowLinkMe == NO) {
+        [self.logger debug:@"linkMe not allowed by client"];
         return;
     }
     if ([ADJUserDefaults getLinkMeChecked] == YES) {
+        [self.logger debug:@"linkMe already checked"];
         return;
     }
     if (selfI.internalState.isFirstLaunch == NO) {
+        [self.logger debug:@"linkMe only valid for install"];
         return;
     }
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if ([pasteboard hasURLs] == NO) {
+        [self.logger debug:@"linkMe general board not found"];
         return;
     }
 
     // TODO: add exception for tvOs and watchOs
     NSURL *pasteboardUrl = [pasteboard URL];
     if (pasteboardUrl == nil) {
+        [self.logger debug:@"linkMe url not found"];
         return;
     }
 
     NSString *pasteboardUrlString = [pasteboardUrl absoluteString];
     if (pasteboardUrlString == nil) {
+        [self.logger debug:@"linkMe url could not be converted to string"];
         return;
     }
 
