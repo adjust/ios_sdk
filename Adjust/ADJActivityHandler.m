@@ -2165,7 +2165,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)checkLinkMeI:(ADJActivityHandler *)selfI {
-    if (selfI.adjustConfig.allowLinkMe == NO) {
+    if (selfI.adjustConfig.linkMeEnabled == NO) {
         [self.logger debug:@"linkMe not allowed by client"];
         return;
     }

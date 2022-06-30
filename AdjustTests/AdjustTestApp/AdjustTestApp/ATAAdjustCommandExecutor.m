@@ -350,7 +350,7 @@
     
     if ([parameters objectForKey:@"checkPasteboard"]) {
         NSString *checkPasteboardS = [parameters objectForKey:@"checkPasteboard"][0];
-        [adjustConfig setAllowLinkMe:[checkPasteboardS boolValue]];
+        [adjustConfig setLinkMeEnabled:[checkPasteboardS boolValue]];
     }
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {

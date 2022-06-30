@@ -217,7 +217,7 @@
 /**
  * @brief Enables/disables linkMe
  */
-@property (nonatomic, assign) BOOL allowLinkMe;
+@property (nonatomic, assign) BOOL linkMeEnabled;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.

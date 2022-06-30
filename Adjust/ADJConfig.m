@@ -71,7 +71,7 @@
     self.allowIdfaReading = YES;
     self.allowiAdInfoReading = YES;
     self.allowAdServicesInfoReading = YES;
-    self.allowLinkMe = NO;
+    self.linkMeEnabled = NO;
     _isSKAdNetworkHandlingActive = YES;
 
     return self;
@@ -214,7 +214,7 @@
         copy->_appSecret = [self.appSecret copyWithZone:zone];
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
         copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
-        copy.allowLinkMe = self.allowLinkMe;
+        copy.linkMeEnabled = self.linkMeEnabled;
         // adjust delegate not copied
     }
 
