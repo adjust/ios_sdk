@@ -2205,11 +2205,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                      sessionParameters:selfI.sessionParameters
                                                                  trackingStatusManager:self.trackingStatusManager
                                                                              createdAt:now];
-
     clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
-    clickBuilder.reftag = pasteboardUrlString;
-
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"linkme" linkMeUrl:pasteboardUrlString];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     [ADJUserDefaults setLinkMeChecked];
