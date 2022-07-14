@@ -167,7 +167,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (linkMeUrl != nil) {
         [ADJPackageBuilder parameters:parameters
                             setString:linkMeUrl
-                               forKey:@"linkme_url"];
+                               forKey:@"content"];
     }
 
     return [self buildClickPackage:clickSource extraParameters:parameters];
