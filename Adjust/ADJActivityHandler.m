@@ -1016,6 +1016,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                 userAgent:selfI.adjustConfig.userAgent
                                 urlStrategy:sdkClickHandlerUrlStrategy];
 
+    [selfI checkLinkMeI:selfI];
     [selfI.trackingStatusManager checkForNewAttStatus];
 
     [selfI preLaunchActionsI:selfI
@@ -1103,8 +1104,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                     selfI.activityState.sessionCount = 1; // this is the first session
                 }];
                 [selfI transferSessionPackageI:selfI now:now];
-                
-                [selfI checkLinkMeI:selfI];
             }
         }
 
