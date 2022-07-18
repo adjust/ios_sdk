@@ -2214,6 +2214,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [selfI.sdkClickHandler sendSdkClick:clickPackage];
         
         [ADJUserDefaults setLinkMeChecked];
+    } else {
+        [self.logger warn:@"LinkMe feature is supported on iOS 15.0 and above"];
     }
 #endif
 }
