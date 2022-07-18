@@ -1,3 +1,10 @@
+### Version 4.31.0 (18th July 2022)
+#### Added
+- Added support for `LinkMe` feature.
+- Added ability to build SDKs as `xcframework`s.
+
+---
+
 ### Version 4.30.0 (3rd May 2022)
 #### Added
 - Added ability to mark your app as COPPA compliant. You can enable this setting by calling `setCoppaCompliantEnabled` method of `AdjustConfig` instance with boolean parameter `true`.

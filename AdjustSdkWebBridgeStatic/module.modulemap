@@ -1,0 +1,6 @@
+framework module AdjustSdkWebBridge {
+  umbrella header "AdjustSdkWebBridge.h"
+
+  export *
+  module * { export * }
+}

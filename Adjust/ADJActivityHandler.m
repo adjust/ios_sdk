@@ -1016,6 +1016,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                 userAgent:selfI.adjustConfig.userAgent
                                 urlStrategy:sdkClickHandlerUrlStrategy];
 
+    [selfI checkLinkMeI:selfI];
     [selfI.trackingStatusManager checkForNewAttStatus];
 
     [selfI preLaunchActionsI:selfI
@@ -1770,6 +1771,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
             }
 
+            [selfI checkLinkMeI:selfI];
         }
 
         if (![ADJUserDefaults getInstallTracked]) {
@@ -2159,6 +2161,63 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [selfI setEnabled:NO];
     [selfI.packageHandler flush];
+}
+
+- (void)checkLinkMeI:(ADJActivityHandler *)selfI {
+#if TARGET_OS_IOS
+    if (@available(iOS 15.0, *)) {
+        if (selfI.adjustConfig.linkMeEnabled == NO) {
+            [self.logger debug:@"LinkMe not allowed by client"];
+            return;
+        }
+        if ([ADJUserDefaults getLinkMeChecked] == YES) {
+            [self.logger debug:@"LinkMe already checked"];
+            return;
+        }
+        if (selfI.internalState.isFirstLaunch == NO) {
+            [self.logger debug:@"LinkMe only valid for install"];
+            return;
+        }
+        if ([ADJUserDefaults getGdprForgetMe]) {
+            [self.logger debug:@"LinkMe not happening for GDPR forgotten user"];
+            return;
+        }
+        
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        if ([pasteboard hasURLs] == NO) {
+            [self.logger debug:@"LinkMe general board not found"];
+            return;
+        }
+        
+        NSURL *pasteboardUrl = [pasteboard URL];
+        if (pasteboardUrl == nil) {
+            [self.logger debug:@"LinkMe content not found"];
+            return;
+        }
+        
+        NSString *pasteboardUrlString = [pasteboardUrl absoluteString];
+        if (pasteboardUrlString == nil) {
+            [self.logger debug:@"LinkMe content could not be converted to string"];
+            return;
+        }
+        
+        // send sdk_click
+        double now = [NSDate.date timeIntervalSince1970];
+        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                                                             activityState:selfI.activityState
+                                                                                    config:selfI.adjustConfig
+                                                                         sessionParameters:selfI.sessionParameters
+                                                                     trackingStatusManager:self.trackingStatusManager
+                                                                                 createdAt:now];
+        clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
+        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"linkme" linkMeUrl:pasteboardUrlString];
+        [selfI.sdkClickHandler sendSdkClick:clickPackage];
+        
+        [ADJUserDefaults setLinkMeChecked];
+    } else {
+        [self.logger warn:@"LinkMe feature is supported on iOS 15.0 and above"];
+    }
+#endif
 }
 
 #pragma mark - private

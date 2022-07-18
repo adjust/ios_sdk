@@ -26,7 +26,8 @@ Pods
 *.orig
 
 # Adjust
-Frameworks
+frameworks
+sdk_distribution
 
 # Code style
 uncrustify.cfg

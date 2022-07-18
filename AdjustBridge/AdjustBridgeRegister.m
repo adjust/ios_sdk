@@ -246,7 +246,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.30.0';
+                    return 'web-bridge4.31.0';
                 }
             },
             setTestOptions: function(testOptions) {
@@ -324,6 +324,7 @@ static NSString * fbAppIdStatic = nil;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
             this.coppaCompliantEnabled = null;
+            this.linkMeEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
             this.userAgent = null;
@@ -404,6 +405,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
             this.coppaCompliantEnabled = isEnabled;
+        };
+        AdjustConfig.prototype.setLinkMeEnabled = function(isEnabled) {
+            this.linkMeEnabled = isEnabled;
         };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;

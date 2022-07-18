@@ -227,6 +227,13 @@
         adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
         [self.savedConfigs setObject:adjustConfig forKey:configNumber];
     }
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.URL = nil;
+    NSString *pasteboardContent = [parameters objectForKey:@"pasteboard"][0];
+    if (pasteboardContent != nil) {
+        pasteboard.URL = [NSURL URLWithString:pasteboardContent];
+    }
 
     if ([parameters objectForKey:@"logLevel"]) {
         NSString *logLevelS = [parameters objectForKey:@"logLevel"][0];
@@ -339,6 +346,11 @@
     if ([parameters objectForKey:@"externalDeviceId"]) {
         NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
         [adjustConfig setExternalDeviceId:externalDeviceId];
+    }
+    
+    if ([parameters objectForKey:@"checkPasteboard"]) {
+        NSString *checkPasteboardS = [parameters objectForKey:@"checkPasteboard"][0];
+        [adjustConfig setLinkMeEnabled:[checkPasteboardS boolValue]];
     }
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {

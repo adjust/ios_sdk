@@ -61,4 +61,8 @@
 
 + (NSDate *)getSkadRegisterCallTimestamp;
 
++ (void)setLinkMeChecked;
+
++ (BOOL)getLinkMeChecked;
+
 @end

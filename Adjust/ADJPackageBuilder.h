@@ -20,6 +20,8 @@
 
 @property (nonatomic, copy) NSString * _Nullable deeplink;
 
+@property (nonatomic, copy) NSString * _Nullable reftag;
+
 @property (nonatomic, copy) NSDate * _Nullable clickTime;
 
 @property (nonatomic, copy) NSDate * _Nullable purchaseTime;
@@ -52,6 +54,9 @@
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
                                               token:(NSString * _Nullable)token
                                     errorCodeNumber:(NSNumber * _Nullable)errorCodeNumber;
+
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
+                                          linkMeUrl:(NSString * _Nullable)linkMeUrl;
 
 - (ADJActivityPackage * _Nullable)buildAttributionPackage:(NSString * _Nullable)initiatedBy;
 

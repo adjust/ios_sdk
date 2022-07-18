@@ -159,6 +159,20 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return [self buildClickPackage:clickSource extraParameters:parameters];
 }
 
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                linkMeUrl:(NSString * _Nullable)linkMeUrl {
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    if (linkMeUrl != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:linkMeUrl
+                               forKey:@"content"];
+    }
+
+    return [self buildClickPackage:clickSource extraParameters:parameters];
+}
+
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource extraParameters:(NSDictionary *)extraParameters {
     NSMutableDictionary *parameters = [self getClickParameters:clickSource];
     if (extraParameters != nil) {
@@ -451,6 +465,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     
+    if (event.transactionId) {
+        [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"deduplication_id"];
+    }
+    
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
                                forKey:@"att_status"];
@@ -520,6 +538,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
@@ -737,6 +756,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
@@ -917,6 +937,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
@@ -984,6 +1005,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
@@ -1057,6 +1079,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
     [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
     [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
+    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
     [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
