@@ -20,16 +20,16 @@
     NSString *appToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
-
+    
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-
+    
     // Enable event buffering.
     // [adjustConfig setEventBufferingEnabled:YES];
-
+    
     // Set default tracker.
     // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
-
+    
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
     
@@ -38,6 +38,7 @@
     
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
+    [adjustConfig setLinkMeEnabled:YES];
 
     // Delay the first session of the SDK.
     // [adjustConfig setDelayStart:7];
