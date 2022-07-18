@@ -30,7 +30,7 @@
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-    [self.testLibrary addTestDirectory:@"pasteboard"];
+    // [self.testLibrary addTestDirectory:@"event-callbacks"];
     // [self.testLibrary addTest:@"Test_Parameters"];
 
     // [self.testLibrary doNotExitAfterEnd];

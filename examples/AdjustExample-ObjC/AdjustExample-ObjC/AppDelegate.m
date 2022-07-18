@@ -61,8 +61,6 @@
 
     // Remove all session partner parameters.
     // [Adjust resetSessionPartnerParameters];
-    
-    [adjustConfig setLinkMeEnabled:YES];
 
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
