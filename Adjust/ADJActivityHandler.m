@@ -2165,34 +2165,38 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)checkLinkMeI:(ADJActivityHandler *)selfI {
     if (selfI.adjustConfig.linkMeEnabled == NO) {
-        [self.logger debug:@"linkMe not allowed by client"];
+        [self.logger debug:@"LinkMe not allowed by client"];
         return;
     }
     if ([ADJUserDefaults getLinkMeChecked] == YES) {
-        [self.logger debug:@"linkMe already checked"];
+        [self.logger debug:@"LinkMe already checked"];
         return;
     }
     if (selfI.internalState.isFirstLaunch == NO) {
-        [self.logger debug:@"linkMe only valid for install"];
+        [self.logger debug:@"LinkMe only valid for install"];
+        return;
+    }
+    if ([ADJUserDefaults getGdprForgetMe]) {
+        [self.logger debug:@"LinkMe not happening for GDPR forgotten user"];
         return;
     }
 
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     if ([pasteboard hasURLs] == NO) {
-        [self.logger debug:@"linkMe general board not found"];
+        [self.logger debug:@"LinkMe general board not found"];
         return;
     }
 
     // TODO: add exception for tvOs and watchOs
     NSURL *pasteboardUrl = [pasteboard URL];
     if (pasteboardUrl == nil) {
-        [self.logger debug:@"linkMe url not found"];
+        [self.logger debug:@"LinkMe content not found"];
         return;
     }
 
     NSString *pasteboardUrlString = [pasteboardUrl absoluteString];
     if (pasteboardUrlString == nil) {
-        [self.logger debug:@"linkMe url could not be converted to string"];
+        [self.logger debug:@"LinkMe content could not be converted to string"];
         return;
     }
 
