@@ -2164,6 +2164,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)checkLinkMeI:(ADJActivityHandler *)selfI {
+#if TARGET_OS_IOS
     if (selfI.adjustConfig.linkMeEnabled == NO) {
         [self.logger debug:@"LinkMe not allowed by client"];
         return;
@@ -2213,6 +2214,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     [ADJUserDefaults setLinkMeChecked];
+#endif
 }
 
 #pragma mark - private
