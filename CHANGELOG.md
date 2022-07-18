@@ -1,7 +1,7 @@
-### Version 4.31.0 (xxth July 2022)
+### Version 4.31.0 (18th July 2022)
 #### Added
 - Added support for `LinkMe` feature.
-- Started shipping SDKs as `xcframework`s on release page.
+- Added ability to build SDKs as `xcframework`s.
 
 ---
 
