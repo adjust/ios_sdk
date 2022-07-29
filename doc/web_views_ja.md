@@ -1,3 +1,0 @@
-
-
-WebviewのREADMEは移動しました。[こちら](https://github.com/adjust/ios_sdk/blob/master/doc/japanese/web_views.md) をご覧ください。
