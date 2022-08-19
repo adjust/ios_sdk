@@ -18,8 +18,9 @@
         return nil;
     }
 
-    _granularOptions = [[NSMutableDictionary alloc] init];
     _enabled = isEnabledNumberBool;
+    _granularOptions = [[NSMutableDictionary alloc] init];
+    _partnerSharingSettings = [[NSMutableDictionary alloc] init];
 
     return self;
 }
@@ -39,6 +40,23 @@
     }
 
     [partnerOptions setObject:value forKey:key];
+}
+
+- (void)addPartnerSharingSetting:(nonnull NSString *)partnerName
+                             key:(nonnull NSString *)key
+                           value:(BOOL)value {
+    if ([ADJUtil isNull:partnerName] || [ADJUtil isNull:key]) {
+        [ADJAdjustFactory.logger error:@"Cannot add partner sharing setting with any nil value"];
+        return;
+    }
+
+    NSMutableDictionary *partnerSharingSetting = [self.partnerSharingSettings objectForKey:partnerName];
+    if (partnerSharingSetting == nil) {
+        partnerSharingSetting = [[NSMutableDictionary alloc] init];
+        [self.partnerSharingSettings setObject:partnerSharingSetting forKey:partnerName];
+    }
+    
+    [partnerSharingSetting setObject:[NSNumber numberWithBool:value] forKey:key];
 }
 
 @end

@@ -618,6 +618,16 @@
             [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
         }
     }
+    
+    if ([parameters objectForKey:@"partnerSharingSettings"]) {
+        NSArray *partnerSharingSettings = [parameters objectForKey:@"partnerSharingSettings"];
+        for (int i = 0; i < partnerSharingSettings.count; i = i + 3) {
+            NSString *partnerName = partnerSharingSettings[i];
+            NSString *key = partnerSharingSettings[i + 1];
+            NSString *value = partnerSharingSettings[i + 2];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
+        }
+    }
 
     [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 }
