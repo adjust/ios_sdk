@@ -226,6 +226,11 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackMeasurementConsent', consentMeasurement, null);
                 }
             },
+            checkForNewAttStatus: function() {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_checkForNewAttStatus', null, null);
+                }
+            },
             getLastDeeplink: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_lastDeeplink', null, callback);

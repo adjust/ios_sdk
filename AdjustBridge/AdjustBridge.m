@@ -563,6 +563,10 @@
         [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_checkForNewAttStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust checkForNewAttStatus];
+    }];
+
     [self.bridgeRegister registerHandler:@"adjust_lastDeeplink" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
