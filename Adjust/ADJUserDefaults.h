@@ -65,4 +65,8 @@
 
 + (BOOL)getLinkMeChecked;
 
++ (void)cacheDeeplinkUrl:(NSURL *)deeplink;
+
++ (NSURL *)getCachedDeeplinkUrl;
+
 @end

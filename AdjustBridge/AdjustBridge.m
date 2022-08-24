@@ -563,6 +563,13 @@
         [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_lastDeeplink" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        NSURL *lastDeeplink = [Adjust lastDeeplink];
+        responseCallback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
+    }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];
