@@ -1,3 +1,10 @@
+### Version 4.32.0 (7th September 2022)
+#### Added
+- Added partner sharing settings to the third party sharing feature.
+- Added `lastDeeplink` getter to `Adjust` API to be able to get last tracked deep link by the SDK.
+
+---
+
 ### Version 4.31.0 (18th July 2022)
 #### Added
 - Added support for `LinkMe` feature.
