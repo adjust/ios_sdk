@@ -99,6 +99,8 @@
         [self trackSubscription:parameters];
     } else if ([methodName isEqualToString:@"trackAdRevenueV2"]) {
         [self trackAdRevenueV2:parameters];
+    } else if ([methodName isEqualToString:@"getLastDeeplink"]) {
+        [self getLastDeeplink:parameters];
     }
 }
 
@@ -736,6 +738,16 @@
     }
     
     [Adjust trackAdRevenue:adRevenue];
+}
+
+- (void)getLastDeeplink:(NSDictionary *)parameters {
+    NSURL * lastDeeplink = [Adjust lastDeeplink];
+
+    NSString * lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
+
+    [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+
+    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end
