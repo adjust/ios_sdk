@@ -99,6 +99,8 @@
         [self trackSubscription:parameters];
     } else if ([methodName isEqualToString:@"trackAdRevenueV2"]) {
         [self trackAdRevenueV2:parameters];
+    } else if ([methodName isEqualToString:@"getLastDeeplink"]) {
+        [self getLastDeeplink:parameters];
     }
 }
 
@@ -616,6 +618,16 @@
             [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
         }
     }
+    
+    if ([parameters objectForKey:@"partnerSharingSettings"]) {
+        NSArray *partnerSharingSettings = [parameters objectForKey:@"partnerSharingSettings"];
+        for (int i = 0; i < partnerSharingSettings.count; i = i + 3) {
+            NSString *partnerName = partnerSharingSettings[i];
+            NSString *key = partnerSharingSettings[i + 1];
+            NSString *value = partnerSharingSettings[i + 2];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:[value boolValue]];
+        }
+    }
 
     [Adjust trackThirdPartySharing:adjustThirdPartySharing];
 }
@@ -736,6 +748,16 @@
     }
     
     [Adjust trackAdRevenue:adRevenue];
+}
+
+- (void)getLastDeeplink:(NSDictionary *)parameters {
+    NSURL * lastDeeplink = [Adjust lastDeeplink];
+
+    NSString * lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
+
+    [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+
+    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end

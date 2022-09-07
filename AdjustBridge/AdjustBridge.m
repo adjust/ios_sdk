@@ -537,20 +537,25 @@
     [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
         id isEnabledO = [data objectForKey:@"isEnabled"];
         id granularOptions = [data objectForKey:@"granularOptions"];
+        id partnerSharingSettings = [data objectForKey:@"partnerSharingSettings"];
 
         NSNumber *isEnabled = nil;
         if ([isEnabledO isKindOfClass:[NSNumber class]]) {
             isEnabled = (NSNumber *)isEnabledO;
         }
-
         ADJThirdPartySharing *adjustThirdPartySharing =
             [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
-
         for (int i = 0; i < [granularOptions count]; i += 3) {
             NSString *partnerName = [[granularOptions objectAtIndex:i] description];
             NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
             NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
             [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+        }
+        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
+            NSString *partnerName = [[partnerSharingSettings objectAtIndex:i] description];
+            NSString *key = [[partnerSharingSettings objectAtIndex:(i + 1)] description];
+            BOOL value = [[partnerSharingSettings objectAtIndex:(i + 2)] boolValue];
+            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:value];
         }
 
         [Adjust trackThirdPartySharing:adjustThirdPartySharing];
@@ -563,6 +568,17 @@
         [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
     }];
 
+    [self.bridgeRegister registerHandler:@"adjust_checkForNewAttStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust checkForNewAttStatus];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_lastDeeplink" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        NSURL *lastDeeplink = [Adjust lastDeeplink];
+        responseCallback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
+    }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *baseUrl = [data objectForKey:@"baseUrl"];

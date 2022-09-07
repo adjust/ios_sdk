@@ -281,6 +281,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (NSURL *)lastDeeplink {
+    @synchronized (self) {
+        return [[Adjust getInstance] lastDeeplink];
+    }
+}
+
 + (void)setTestOptions:(AdjustTestOptions *)testOptions {
     @synchronized (self) {
         if (testOptions.teardown) {
@@ -346,6 +352,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)appWillOpenUrl:(NSURL *)url {
+    [ADJUserDefaults cacheDeeplinkUrl:url];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
         [ADJUserDefaults saveDeeplinkUrl:url andClickTime:clickTime];
@@ -579,6 +586,10 @@ static dispatch_once_t onceToken = 0;
     }
     
     [self.activityHandler checkForNewAttStatus];
+}
+
+- (NSURL *)lastDeeplink {
+    return [ADJUserDefaults getCachedDeeplinkUrl];
 }
 
 - (void)teardown {

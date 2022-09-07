@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.31.0
+//  V4.32.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -308,7 +308,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * @brief Getter for app tracking authorization status.
  *
- * return Value of app tracking authorization status.
+ * @return Value of app tracking authorization status.
  */
 + (int)appTrackingAuthorizationStatus;
 
@@ -323,6 +323,13 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @brief Instruct to Adjust SDK to check current state of att_status.
  */
 + (void)checkForNewAttStatus;
+
+/**
+ * @brief Get the last deep link which has opened the app.
+ *
+ * @return Last deep link which has opened the app.
+ */
++ (nullable NSURL *)lastDeeplink;
 
 /**
  * @brief Method used for internal testing only. Don't use it in production.
@@ -399,5 +406,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
 
 - (void)checkForNewAttStatus;
+
+- (nullable NSURL *)lastDeeplink;
 
 @end

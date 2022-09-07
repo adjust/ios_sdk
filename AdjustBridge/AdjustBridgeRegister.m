@@ -226,6 +226,16 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackMeasurementConsent', consentMeasurement, null);
                 }
             },
+            checkForNewAttStatus: function() {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_checkForNewAttStatus', null, null);
+                }
+            },
+            getLastDeeplink: function(callback) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_lastDeeplink', null, callback);
+                }
+            },
             fbPixelEvent: function(pixelID, evtName, customData) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
@@ -246,7 +256,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.31.0';
+                    return 'web-bridge4.32.0';
                 }
             },
             setTestOptions: function(testOptions) {
@@ -290,12 +300,17 @@ static NSString * fbAppIdStatic = nil;
         window.AdjustThirdPartySharing = function(isEnabled) {
             this.isEnabled = isEnabled;
             this.granularOptions = [];
+            this.partnerSharingSettings = [];
         };
-
         AdjustThirdPartySharing.prototype.addGranularOption = function(partnerName, key, value) {
             this.granularOptions.push(partnerName);
             this.granularOptions.push(key);
             this.granularOptions.push(value);
+        };
+        AdjustThirdPartySharing.prototype.addPartnerSharingSetting = function(partnerName, key, value) {
+            this.partnerSharingSettings.push(partnerName);
+            this.partnerSharingSettings.push(key);
+            this.partnerSharingSettings.push(value);
         };
 
         // Copied from adjust_config.js

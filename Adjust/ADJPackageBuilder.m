@@ -1034,6 +1034,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters
                 setDictionaryJson:thirdPartySharing.granularOptions
                            forKey:@"granular_third_party_sharing_options"];
+    [ADJPackageBuilder parameters:parameters
+                setDictionaryJson:thirdPartySharing.partnerSharingSettings
+                           forKey:@"partner_sharing_settings"];
 
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus

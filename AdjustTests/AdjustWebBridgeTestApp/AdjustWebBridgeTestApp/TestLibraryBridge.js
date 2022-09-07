@@ -593,7 +593,6 @@ AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
     }
 
     var adjustThirdPartySharing = new AdjustThirdPartySharing(isEnabled);
-
     if ('granularOptions' in params) {
         var granularOptions = getValues(params, 'granularOptions');
         for (var i = 0; i < granularOptions.length; i = i + 3) {
@@ -601,6 +600,15 @@ AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
             var key = granularOptions[i + 1];
             var value = granularOptions[i + 2];
             adjustThirdPartySharing.addGranularOption(partnerName, key, value);
+        }
+    }
+    if ('partnerSharingSettings' in params) {
+        var partnerSharingSettings = getValues(params, 'partnerSharingSettings');
+        for (var i = 0; i < partnerSharingSettings.length; i = i + 3) {
+            var partnerName = partnerSharingSettings[i];
+            var key = partnerSharingSettings[i + 1];
+            var value = partnerSharingSettings[i + 2];
+            adjustThirdPartySharing.addPartnerSharingSetting(partnerName, key, value);
         }
     }
 
