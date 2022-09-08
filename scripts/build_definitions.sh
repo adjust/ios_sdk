@@ -181,8 +181,8 @@ Usage: $0 [options]
 	XCF_FRM_ZIP_NAME__TV_STATIC="AdjustSdk-tvOS-Static"
 	XCF_FRM_ZIP_NAME__IM_DYNAMIC="AdjustSdk-iMessage-Dynamic"
 	XCF_FRM_ZIP_NAME__IM_STATIC="AdjustSdk-iMessage-Static"
-	XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-iOS-Dynamic"
-	XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-iOS-Static"
+	XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
+	XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-Static"
 
 
 	# previous builds artefacts cleanup 
