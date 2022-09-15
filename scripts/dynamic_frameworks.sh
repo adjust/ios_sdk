@@ -41,6 +41,7 @@ then
   zip -r -X "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}"
   cd -
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping iOS SDK framework build ... ${NC}"
@@ -69,6 +70,7 @@ then
   zip -r -X "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}"
   cd -
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__TV_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__TV_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping tvOS SDK framework build ... ${NC}"
@@ -98,6 +100,7 @@ then
   zip -r -X "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}"
   cd -
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IM_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IM_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping iMessage SDK framework build ... ${NC}"
@@ -127,6 +130,7 @@ then
   zip -r -X "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}"
   cd -
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping WebBridge SDK framework build ... ${NC}"

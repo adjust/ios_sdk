@@ -238,7 +238,6 @@ Usage: $0 [options]
 
 	  cd "$input_folder"
 	  zip -r -X "$output_file" "$input_file"
-	  rm -rf "$input_file"
 	  cd -
 	}
 
@@ -337,6 +336,7 @@ Usage: $0 [options]
 	  zip -r -X "$zip_file_name" "$framework_name.framework"
 	  cd -
 	  mv "$build_root_folder/$target_scheme/universal/$zip_file_name" "$output_folder"
+	  mv "$build_root_folder/$target_scheme/universal/$framework_name.framework" "$output_folder"
 	  rm -rf "$build_root_folder/$target_scheme"
 
 	}
