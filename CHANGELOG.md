@@ -1,3 +1,10 @@
+### Version 4.32.1 (26th September 2022)
+#### Fixed
+- Fixed memory issue when continuously writing to a file (https://github.com/adjust/ios_sdk/pull/626).
+- Added missing `WKNavigationDelegate`'s missing `didCommitNavigation` method handling inside of the `WKWebViewJavascriptBridge` (https://github.com/adjust/ios_sdk/pull/570).
+
+---
+
 ### Version 4.32.0 (7th September 2022)
 #### Added
 - Added partner sharing settings to the third party sharing feature.

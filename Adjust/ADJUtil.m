@@ -39,7 +39,7 @@ static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios4.32.0";
+static NSString * const kClientSdk                  = @"ios4.32.1";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -332,15 +332,17 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             }
 
             if (@available(iOS 11.0, tvOS 11.0, *)) {
-                NSError *errorArchiving = nil;
-                // API introduced in iOS 11.
-                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-                if (data && errorArchiving == nil) {
-                    NSError *errorWriting = nil;
-                    result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
-                    result = result && (errorWriting == nil);
-                } else {
-                    result = NO;
+                @autoreleasepool {
+                    NSError *errorArchiving = nil;
+                    // API introduced in iOS 11.
+                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
+                    if (data && errorArchiving == nil) {
+                        NSError *errorWriting = nil;
+                        result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
+                        result = result && (errorWriting == nil);
+                    } else {
+                        result = NO;
+                    }
                 }
             } else {
                 // API_DEPRECATED [2.0-12.0]

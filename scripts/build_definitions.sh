@@ -181,8 +181,8 @@ Usage: $0 [options]
 	XCF_FRM_ZIP_NAME__TV_STATIC="AdjustSdk-tvOS-Static"
 	XCF_FRM_ZIP_NAME__IM_DYNAMIC="AdjustSdk-iMessage-Dynamic"
 	XCF_FRM_ZIP_NAME__IM_STATIC="AdjustSdk-iMessage-Static"
-	XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-iOS-Dynamic"
-	XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-iOS-Static"
+	XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
+	XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-Static"
 
 
 	# previous builds artefacts cleanup 
@@ -237,8 +237,7 @@ Usage: $0 [options]
 	  local output_file="$3"
 
 	  cd "$input_folder"
-	  zip -r -X "$output_file" "$input_file"
-	  rm -rf "$input_file"
+	  zip -r -X -y "$output_file" "$input_file"
 	  cd -
 	}
 
@@ -254,6 +253,8 @@ Usage: $0 [options]
 	  XCODE12PLUS=1
 	fi
 
+	SDK_VERSION=$(head -n 1 VERSION)
+	echo "$SDK_VERSION"
 
 	# Build, Lipo an Zip framework function
 	function build_static_fat_framework() {
@@ -334,9 +335,10 @@ Usage: $0 [options]
 	  fi
 	  
 	  cd "$build_root_folder/$target_scheme/universal"
-	  zip -r -X "$zip_file_name" "$framework_name.framework"
+	  zip -r -X -y "$zip_file_name" "$framework_name.framework"
 	  cd -
 	  mv "$build_root_folder/$target_scheme/universal/$zip_file_name" "$output_folder"
+	  mv "$build_root_folder/$target_scheme/universal/$framework_name.framework" "$output_folder"
 	  rm -rf "$build_root_folder/$target_scheme"
 
 	}
