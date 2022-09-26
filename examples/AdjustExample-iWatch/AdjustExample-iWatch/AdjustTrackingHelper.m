@@ -2,8 +2,8 @@
 //  AdjustTrackingHelper.m
 //  AdjustExample-iWatch
 //
-//  Created by Uglješa Erceg on 29/04/15.
-//  Copyright (c) 2015 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 6th April 2016
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -34,9 +34,6 @@
     
     // Enable event buffering.
     // [adjustConfig setEventBufferingEnabled:YES];
-    
-    // Disable MAC MD5 tracking.
-    // [adjustConfig setMacMd5TrackingEnabled:NO];
     
     // Set default tracker.
     // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
@@ -71,7 +68,7 @@
 - (void)trackCallbackEvent {
     ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
     
-    // Add callback parameters to this parameter.
+    // Add callback parameters to this event.
     [event addCallbackParameter:@"key" value:@"value"];
     
     [Adjust trackEvent:event];
@@ -80,7 +77,7 @@
 - (void)trackPartnerEvent {
     ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
     
-    // Add partner parameteres to all events and sessions.
+    // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];
     
     [Adjust trackEvent:event];

@@ -3,7 +3,7 @@
 //  AdjustExample-ObjC
 //
 //  Created by Pedro Filipe (@nonelse) on 12th October 2015.
-//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Constants.h"
@@ -36,9 +36,11 @@
     // Enable COPPA compliance.
     // [adjustConfig setCoppaCompliantEnabled:YES];
     
+    // Enable LinkMe feature.
+    // [adjustConfig setLinkMeEnabled:YES];
+    
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-    [adjustConfig setLinkMeEnabled:YES];
 
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
@@ -77,13 +79,6 @@
     
     // Interrupt delayed start set with setDelayStart: method.
     // [Adjust sendFirstPackages];
-    
-    // Show ATT dialog.
-    if (@available(iOS 14, *)) {
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-            // Process users' response.
-        }];
-    }
     
     return YES;
 }
@@ -153,6 +148,12 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Show ATT dialog.
+    if (@available(iOS 14, *)) {
+        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            // Process user's response.
+        }];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

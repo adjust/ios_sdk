@@ -2,8 +2,8 @@
 //  ViewControllertvOS.m
 //  AdjustExample-tvOS
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -89,19 +89,16 @@
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
     NSString *message;
-    
     if ([Adjust isEnabled]) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
     
-    UIAlertController *alert =
-    [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
-                                        message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
+                                                                   message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {}];
-    
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }

@@ -3,7 +3,7 @@
 //  AdjustExample-ObjC
 //
 //  Created by Pedro Filipe (@nonelse) on 12th October 2015.
-//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -36,36 +36,36 @@
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-    
+
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-    
+
     // Add revenue 1 cent of an EURO.
     [event setRevenue:0.01 currency:@"EUR"];
-    
+
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
-    
+
     // Add callback parameters to this event.
     [event addCallbackParameter:@"foo" value:@"bar"];
     [event addCallbackParameter:@"key" value:@"value"];
-    
+
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackPartnerEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
-    
+
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];
     [event addPartnerParameter:@"key" value:@"value"];
-    
+
     [Adjust trackEvent:event];
 }
 
@@ -87,20 +87,17 @@
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
     NSString *message;
-    
     if ([Adjust isEnabled]) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {}];
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
