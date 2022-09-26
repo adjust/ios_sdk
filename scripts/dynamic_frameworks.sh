@@ -38,9 +38,9 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic iOS SDK framework to destination folder ... ${NC}"
   cd "Carthage/Build"
   mv "iOS" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}"
-  zip -r -X "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}"
+  zip -r -X "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}"
   cd -
-  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
@@ -67,9 +67,9 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic tvOS SDK framework to destination folder ... ${NC}"
   cd "Carthage/Build"
   mv "tvOS" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}"
-  zip -r -X "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}"
+  zip -r -X "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}"
   cd -
-  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__TV_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__TV_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
@@ -97,9 +97,9 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic iMessage SDK framework to destination folder ... ${NC}"
   cd "Carthage/Build"
   mv "iOS" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}"
-  zip -r -X "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}"
+  zip -r -X "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}"
   cd -
-  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IM_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IM_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__IM_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 
@@ -127,9 +127,9 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Move Carthage generated dynamic WebBridge SDK framework to destination folder ... ${NC}"
   cd "Carthage/Build"
   mv "iOS" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}"
-  zip -r -X "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}.framework.zip" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}"
+  zip -r -X "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}"
   cd -
-  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}.framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
+  mv "Carthage/Build/${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".framework.zip" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   mv "Carthage/Build/${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 else 

@@ -253,6 +253,8 @@ Usage: $0 [options]
 	  XCODE12PLUS=1
 	fi
 
+    SDK_VERSION=$(head -n 1 VERSION)
+    echo "$SDK_VERSION"
 
 	# Build, Lipo an Zip framework function
 	function build_static_fat_framework() {
