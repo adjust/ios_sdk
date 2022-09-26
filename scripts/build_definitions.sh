@@ -237,7 +237,7 @@ Usage: $0 [options]
 	  local output_file="$3"
 
 	  cd "$input_folder"
-	  zip -r -X "$output_file" "$input_file"
+	  zip -r -X -y "$output_file" "$input_file"
 	  cd -
 	}
 
@@ -333,7 +333,7 @@ Usage: $0 [options]
 	  fi
 	  
 	  cd "$build_root_folder/$target_scheme/universal"
-	  zip -r -X "$zip_file_name" "$framework_name.framework"
+	  zip -r -X -y "$zip_file_name" "$framework_name.framework"
 	  cd -
 	  mv "$build_root_folder/$target_scheme/universal/$zip_file_name" "$output_folder"
 	  mv "$build_root_folder/$target_scheme/universal/$framework_name.framework" "$output_folder"
