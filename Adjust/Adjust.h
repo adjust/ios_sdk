@@ -313,11 +313,44 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (int)appTrackingAuthorizationStatus;
 
 /**
- * @brief Adjust wrapper for updateConversionValue: method.
+ * @brief Adjust wrapper for SKAdNetwork's updateConversionValue: method.
  *
  * @param conversionValue Conversion value you would like SDK to set for given user.
  */
 + (void)updateConversionValue:(NSInteger)conversionValue;
+
+/**
+ * @brief Adjust wrapper for SKAdNetwork's updatePostbackConversionValue:completionHandler: method.
+ *
+ * @param conversionValue Conversion value you would like SDK to set for given user.
+ * @param completion Completion handler you can provide to catch and handle any errors.
+ */
++ (void)updatePostbackConversionValue:(NSInteger)conversionValue
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+
+/**
+ * @brief Adjust wrapper for SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method.
+ *
+ * @param fineValue Conversion value you would like SDK to set for given user.
+ * @param coarseValue One of the possible SKAdNetworkCoarseConversionValue values.
+ * @param completion Completion handler you can provide to catch and handle any errors.
+ */
++ (void)updatePostbackConversionValue:(NSInteger)fineValue
+                          coarseValue:(nonnull NSString *)coarseValue
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+
+/**
+ * @brief Adjust wrapper for SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method.
+ *
+ * @param fineValue Conversion value you would like SDK to set for given user.
+ * @param coarseValue One of the possible SKAdNetworkCoarseConversionValue values.
+ * @param lockWindow A Boolean value that indicates whether to send the postback before the conversion window ends.
+ * @param completion Completion handler you can provide to catch and handle any errors.
+ */
++ (void)updatePostbackConversionValue:(NSInteger)fineValue
+                          coarseValue:(nonnull NSString *)coarseValue
+                           lockWindow:(BOOL)lockWindow
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 /**
  * @brief Instruct to Adjust SDK to check current state of att_status.
@@ -398,6 +431,18 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (int)appTrackingAuthorizationStatus;
 
 - (void)updateConversionValue:(NSInteger)conversionValue;
+
+- (void)updatePostbackConversionValue:(NSInteger)conversionValue
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+
+- (void)updatePostbackConversionValue:(NSInteger)fineValue
+                          coarseValue:(nonnull NSString *)coarseValue
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+
+- (void)updatePostbackConversionValue:(NSInteger)fineValue
+                          coarseValue:(nonnull NSString *)coarseValue
+                           lockWindow:(BOOL)lockWindow
+                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
