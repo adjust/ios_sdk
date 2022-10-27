@@ -663,6 +663,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                      }];
 }
 
+- (void)resetDeeplink {
+    [self.logger debug:@"Deeplink clicked on the app"];
+    [ADJUserDefaults clearAdjustStuff];
+}
+
 - (void)addSessionCallbackParameter:(NSString *)key
                               value:(NSString *)value {
     [ADJUtil launchInQueue:self.internalQueue
@@ -2599,6 +2604,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     selfI.delayStartTimer = nil;
     // update the status and try to send first package
     [selfI updateHandlersStatusAndSendI:selfI];
+}
+
+- (void)resetDeeplinkI:(ADJActivityHandler *)selfI {
+    [ADJUserDefaults clearAdjustStuff];
 }
 
 - (void)updatePackagesI:(ADJActivityHandler *)selfI {

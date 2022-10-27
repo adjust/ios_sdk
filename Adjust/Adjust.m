@@ -167,6 +167,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)resetDeeplink {
+    @synchronized (self) {
+        [[Adjust getInstance] resetDeeplink];
+    }
+}
+
 + (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value {
     @synchronized (self) {
         [[Adjust getInstance] addSessionCallbackParameter:[key copy] value:[value copy]];
@@ -404,6 +410,13 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     [self.activityHandler sendFirstPackages];
+}
+
+- (void)resetDeeplink {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+    [self.activityHandler resetDeeplink];
 }
 
 - (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value {

@@ -204,6 +204,12 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  */
 + (void)sendFirstPackages;
 
+
+/**
+ * @brief clear app cache of previous deeplink used
+ */
++ (void)resetDeeplink;
+
 /**
  * @brief Tell adjust to send the request to Google and check if the installation
  *        belongs to Google AdWords campaign.
@@ -358,6 +364,8 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)setPushToken:(nonnull NSString *)pushToken;
 
 - (void)sendFirstPackages;
+
+- (void)resetDeeplink;
 
 - (void)trackSubsessionEnd;
 

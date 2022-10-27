@@ -94,6 +94,7 @@
 
 - (void)setOfflineMode:(BOOL)offline;
 - (void)sendFirstPackages;
+- (void)resetDeeplink;
 
 - (void)addSessionCallbackParameter:(NSString * _Nullable)key
                               value:(NSString * _Nullable)value;
