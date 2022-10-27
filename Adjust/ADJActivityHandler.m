@@ -2843,6 +2843,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     NSNumber *conversionValue = [responseData.jsonResponse objectForKey:@"skadn_conv_value"];
     if (!conversionValue) {
         // TODO: double check if this validation still makes sense
+        // TODO: add some logs
         return;
     }
 
@@ -2856,11 +2857,21 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                                 lockWindow:lockWindow
                                          completionHandler:^(BOOL success) {
         if (success) {
+            // ping old callback if implemented
             if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
-                [self.logger debug:@"Launching conversion value updated delegate"];
+                [self.logger debug:@"Launching adjustConversionValueUpdated: delegate"];
                 [ADJUtil launchInMainThread:self.adjustDelegate
                                    selector:@selector(adjustConversionValueUpdated:)
                                  withObject:conversionValue];
+            }
+            // ping new callback if implemented
+            if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:coarseValue:lockWindow:)]) {
+                [self.logger debug:@"Launching adjustConversionValueUpdated:coarseValue:lockWindow: delegate"];
+                [ADJUtil launchInMainThread:^{
+                    [self.adjustDelegate adjustConversionValueUpdated:conversionValue
+                                                          coarseValue:coarseValue
+                                                           lockWindow:lockWindow];
+                }];
             }
         }
     }];
