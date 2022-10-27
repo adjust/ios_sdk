@@ -6,6 +6,8 @@
 //  Copyright © 2022 Adjust GmbH. All rights reserved.
 //
 
+#include <dlfcn.h>
+
 #import "ADJSKAdNetwork.h"
 #import "ADJUserDefaults.h"
 #import "ADJAdjustFactory.h"
@@ -125,8 +127,10 @@
     }
     if (@available(iOS 16.1, *)) {
         // register with 4.0 method
-        // TODO: use proper low constant value once in Xcode 14.1 RC2
-        [self updatePostbackConversionValue:0 coarseValue:@"low" lockWindow:NO completionHandler:^(NSError * _Nonnull error) {
+        [self updatePostbackConversionValue:0
+                                coarseValue:[self getSkAdNetworkCoarseConversionValue:@"low"]
+                                 lockWindow:NO
+                          completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed"];
                 [self.logger error:@"Description: %@", error.localizedDescription];
@@ -137,7 +141,8 @@
             }
         }];
     } else if (@available(iOS 15.4, *)) {
-        [self updatePostbackConversionValue:0 completionHandler:^(NSError * _Nonnull error) {
+        [self updatePostbackConversionValue:0
+                          completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0 as part of register call failed"];
                 [self.logger error:@"Description: %@", error.localizedDescription];
@@ -160,8 +165,10 @@
     // TODO: do we need validation for conversionValue?
     if (coarseValue != nil && lockWindow != nil) {
         // 4.0 world
-        // TODO: use proper low constant value once in Xcode 14.1 RC2
-        [self updatePostbackConversionValue:conversionValue coarseValue:coarseValue lockWindow:[lockWindow boolValue] completionHandler:^(NSError * _Nonnull error) {
+        [self updatePostbackConversionValue:conversionValue
+                                coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                 lockWindow:[lockWindow boolValue]
+                          completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed", conversionValue, coarseValue, [lockWindow boolValue]];
                 [self.logger error:@"Description: %@", error.localizedDescription];
@@ -175,7 +182,8 @@
     } else {
         // pre 4.0 world
         if (@available(iOS 15.4, *)) {
-            [self updatePostbackConversionValue:conversionValue completionHandler:^(NSError * _Nonnull error) {
+            [self updatePostbackConversionValue:conversionValue
+                              completionHandler:^(NSError * _Nonnull error) {
                 if (error) {
                     [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed", conversionValue];
                     [self.logger error:@"Description: %@", error.localizedDescription];
@@ -209,6 +217,25 @@
 - (void)writeSkAdNetworkRegisterCallTimestamp {
     NSDate *callTime = [NSDate date];
     [ADJUserDefaults saveSkadRegisterCallTimestamp:callTime];
+}
+
+- (NSString *)getSkAdNetworkCoarseConversionValue:(NSString *)adjustCoarseValue {
+    if (@available(iOS 16.1, *)) {
+        if ([adjustCoarseValue isEqualToString:@"low"]) {
+            NSString * __autoreleasing *lowValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueLow");
+            return *lowValue;
+        } else if ([adjustCoarseValue isEqualToString:@"medium"]) {
+            NSString * __autoreleasing *mediumValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueMedium");
+            return *mediumValue;
+        } else if ([adjustCoarseValue isEqualToString:@"high"]) {
+            NSString * __autoreleasing *highValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueHigh");
+            return *highValue;
+        } else {
+            return nil;
+        }
+    } else {
+        return nil;
+    }
 }
 
 @end
