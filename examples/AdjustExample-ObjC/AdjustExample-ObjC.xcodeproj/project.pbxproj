@@ -50,6 +50,7 @@
 		9DC95F261C104CEF00138E4B /* ViewControllerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F251C104CEF00138E4B /* ViewControllerObjC.m */; };
 		9DC95F2A1C10515300138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F291C10515300138E4B /* Constants.m */; };
 		9DD0E9BE1F457EF800B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */; };
+		9DD7199C290A9E8B00762C02 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD7199B290A9E8B00762C02 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DF38231260E9DAD0033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF38230260E9DAD0033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF92D992630EDCD000FC3FC /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF92D982630EDCD000FC3FC /* ADJPackageParams.m */; };
 		D799022C24C093AA00C7D11C /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D799022B24C093AA00C7D11C /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -139,6 +140,7 @@
 		9DCA5CF01DD5B6BE000296B2 /* AdjustExample-ObjC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AdjustExample-ObjC.entitlements"; sourceTree = "<group>"; };
 		9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
+		9DD7199B290A9E8B00762C02 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk/System/iOSSupport/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		9DF3822F260E9DAD0033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
 		9DF38230260E9DAD0033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF92D972630EDCD000FC3FC /* ADJPackageParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPackageParams.h; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			files = (
 				D799022C24C093AA00C7D11C /* AppTrackingTransparency.framework in Frameworks */,
 				9DAA5C6725AFA4B600C718DD /* AdServices.framework in Frameworks */,
+				9DD7199C290A9E8B00762C02 /* StoreKit.framework in Frameworks */,
 				9639095F1BCBFD3B00A2E8A4 /* iAd.framework in Frameworks */,
 				963909611BCBFD4200A2E8A4 /* AdSupport.framework in Frameworks */,
 			);
@@ -306,6 +309,7 @@
 		D799022A24C093AA00C7D11C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9DD7199B290A9E8B00762C02 /* StoreKit.framework */,
 				9DAA5C6625AFA4B600C718DD /* AdServices.framework */,
 				D799022B24C093AA00C7D11C /* AppTrackingTransparency.framework */,
 			);
