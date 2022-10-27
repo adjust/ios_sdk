@@ -552,7 +552,8 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
-    [ADJUtil updateSkAdNetworkConversionValue:[NSNumber numberWithInteger:conversionValue]];
+    // TODO: fix this + expose all the SKAdNetwork methods from ADJSKAdNetwork class
+    // [ADJUtil updateSkAdNetworkConversionValue:[NSNumber numberWithInteger:conversionValue]];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {

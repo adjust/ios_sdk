@@ -22,6 +22,7 @@
 #import "ADJSdkClickHandler.h"
 #import "ADJUserDefaults.h"
 #import "ADJUrlStrategy.h"
+#import "ADJSKAdNetwork.h"
 
 NSString * const ADJiAdPackageKey = @"iad3";
 NSString * const ADJAdServicesPackageKey = @"apple_ads";
@@ -173,11 +174,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self readActivityState];
     
     // register SKAdNetwork attribution if we haven't already
-    if ([ADJUserDefaults getSkadRegisterCallTimestamp] == nil) {
-        [self registerForSKAdNetworkAttribution];
-    } else {
-        [ADJAdjustFactory.logger debug:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method already made for this install"];
-    }
+    [[ADJSKAdNetwork getInstance] adjRegister];
 
     self.internalState = [[ADJInternalState alloc] init];
 
@@ -2835,32 +2832,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return YES;
 }
 
-- (void)registerForSKAdNetworkAttribution {
-    if (!self.adjustConfig.isSKAdNetworkHandlingActive) {
-        return;
-    }
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    
-    Class skAdNetwork = NSClassFromString(@"SKAdNetwork");
-    if (skAdNetwork == nil) {
-        [logger warn:@"StoreKit framework not found in the app (SKAdNetwork not found)"];
-        return;
-    }
-    
-    SEL registerAttributionSelector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
-    if ([skAdNetwork respondsToSelector:registerAttributionSelector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [skAdNetwork performSelector:registerAttributionSelector];
-#pragma clang diagnostic pop
-        [logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
-        
-        // store timestamp of when register call was successfully made
-        NSDate *callTime = [NSDate date];
-        [ADJUserDefaults saveSkadRegisterCallTimestamp:callTime];
-    }
-}
-
 - (void)checkConversionValue:(ADJResponseData *)responseData {
     if (!self.adjustConfig.isSKAdNetworkHandlingActive) {
         return;
@@ -2870,19 +2841,29 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     NSNumber *conversionValue = [responseData.jsonResponse objectForKey:@"skadn_conv_value"];
-
     if (!conversionValue) {
+        // TODO: double check if this validation still makes sense
         return;
     }
-    
-    [ADJUtil updateSkAdNetworkConversionValue:conversionValue];
 
-    if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
-        [self.logger debug:@"Launching conversion value updated delegate"];
-        [ADJUtil launchInMainThread:self.adjustDelegate
-                           selector:@selector(adjustConversionValueUpdated:)
-                         withObject:conversionValue];
-    }
+    // TODO: agree on parameter names with backend
+    // TODO: make sure to properly map extracted coarse value with values of possible coarse constants
+    NSString *coarseValue = [responseData.jsonResponse objectForKey:@"skadn_coarse_value"];
+    NSNumber *lockWindow = [responseData.jsonResponse objectForKey:@"skadn_lock_window"];
+
+    [[ADJSKAdNetwork getInstance] adjUpdateConversionValue:[conversionValue intValue]
+                                               coarseValue:coarseValue
+                                                lockWindow:lockWindow
+                                         completionHandler:^(BOOL success) {
+        if (success) {
+            if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
+                [self.logger debug:@"Launching conversion value updated delegate"];
+                [ADJUtil launchInMainThread:self.adjustDelegate
+                                   selector:@selector(adjustConversionValueUpdated:)
+                                 withObject:conversionValue];
+            }
+        }
+    }];
 }
 
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {

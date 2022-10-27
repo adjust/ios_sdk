@@ -101,8 +101,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)sdkVersion;
 
-+ (void)updateSkAdNetworkConversionValue:(NSNumber *)conversionValue;
-
 + (Class)adSupportManager;
 
 + (Class)appTrackingManager;

@@ -523,6 +523,8 @@
 		9DEAF133210072BC005CAEDB /* ADJSessionParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEAF0F0210072BC005CAEDB /* ADJSessionParameters.h */; };
 		9DEAF135210072BC005CAEDB /* ADJTimerCycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEAF0F2210072BC005CAEDB /* ADJTimerCycle.h */; };
 		9DEAF136210072BC005CAEDB /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAF0F3210072BC005CAEDB /* ADJActivityHandler.m */; };
+		9DF212D42909E86A0056D579 /* ADJSKAdNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */; };
+		9DF212D52909E86A0056D579 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
 		9DF381BC260E990B0033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF381A8260E990B0033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF381BD260E990B0033F5A1 /* NSNumber+ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF381BB260E990B0033F5A1 /* NSNumber+ADJAdditions.h */; };
 		9DF381F5260E9AF50033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF381F3260E9AF50033F5A1 /* NSNumber+ADJAdditions.m */; };
@@ -1248,6 +1250,8 @@
 		9DEAF0F0210072BC005CAEDB /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
 		9DEAF0F2210072BC005CAEDB /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9DEAF0F3210072BC005CAEDB /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
+		9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
+		9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJSKAdNetwork.m; sourceTree = "<group>"; };
 		9DF381A8260E990B0033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF381BB260E990B0033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
 		9DF381F3260E9AF50033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
@@ -1767,6 +1771,8 @@
 				9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */,
 				6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */,
 				6FAB784B2636DC0E00773869 /* ADJLinkResolution.m */,
+				9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */,
+				9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */,
 			);
 			path = Adjust;
 			sourceTree = "<group>";
@@ -2295,6 +2301,7 @@
 				6FBEE92824E422EB00FEF3F1 /* ADJUrlStrategy.h in Headers */,
 				9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */,
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
+				9DF212D42909E86A0056D579 /* ADJSKAdNetwork.h in Headers */,
 				9DF381BD260E990B0033F5A1 /* NSNumber+ADJAdditions.h in Headers */,
 				9D2F23E22447CE5C00B7CA90 /* ADJSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
@@ -3341,6 +3348,7 @@
 				96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */,
 				6FBEE92624E422EB00FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				9609BC6A19EEA55800E02303 /* ADJEvent.m in Sources */,
+				9DF212D52909E86A0056D579 /* ADJSKAdNetwork.m in Sources */,
 				969952CF1A012F5300928462 /* ADJAttributionHandler.m in Sources */,
 				969952D21A01309200928462 /* ADJAttribution.m in Sources */,
 				960A8BB91A029A8000F2BB95 /* ADJConfig.m in Sources */,
