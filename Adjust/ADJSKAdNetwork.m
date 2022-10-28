@@ -132,9 +132,8 @@
                                  lockWindow:NO
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed"];
-                [self.logger error:@"Description: %@", error.localizedDescription];
-                // TODO: communicate this to backend
+                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed\nDescription: %@", error.localizedDescription];
+                // TBD: communicate this to backend
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call"];
                 [self writeSkAdNetworkRegisterCallTimestamp];
@@ -144,9 +143,8 @@
         [self updatePostbackConversionValue:0
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
-                [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed"];
-                [self.logger error:@"Description: %@", error.localizedDescription];
-                // TODO: communicate this to backend
+                [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed\nDescription: %@", error.localizedDescription];
+                // TBD: communicate this to backend
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call"];
                 [self writeSkAdNetworkRegisterCallTimestamp];
@@ -170,9 +168,8 @@
                                  lockWindow:[lockWindow boolValue]
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed", conversionValue, coarseValue, [lockWindow boolValue]];
-                [self.logger error:@"Description: %@", error.localizedDescription];
-                // TODO: communicate this to backend
+                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
+                // TBD: communicate this to backend
                 success(NO);
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
@@ -185,9 +182,8 @@
             [self updatePostbackConversionValue:conversionValue
                               completionHandler:^(NSError * _Nonnull error) {
                 if (error) {
-                    [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed", conversionValue];
-                    [self.logger error:@"Description: %@", error.localizedDescription];
-                    // TODO: communicate this to backend
+                    [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                    // TBD: communicate this to backend
                     success(NO);
                 } else {
                     [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
