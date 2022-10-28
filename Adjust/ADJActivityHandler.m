@@ -174,7 +174,11 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self readActivityState];
     
     // register SKAdNetwork attribution if we haven't already
-    [[ADJSKAdNetwork getInstance] adjRegister];
+    [[ADJSKAdNetwork getInstance] adjRegisterWithCompletionHandler:^(NSError * _Nonnull error) {
+        if (error) {
+            // TODO: handle error
+        }
+    }];
 
     self.internalState = [[ADJInternalState alloc] init];
 
@@ -2855,8 +2859,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [[ADJSKAdNetwork getInstance] adjUpdateConversionValue:[conversionValue intValue]
                                                coarseValue:coarseValue
                                                 lockWindow:lockWindow
-                                         completionHandler:^(BOOL success) {
-        if (success) {
+                                         completionHandler:^(NSError *error) {
+        if (error) {
+            // TODO: handle error
+        } else {
             // ping old callback if implemented
             if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
                 [self.logger debug:@"Launching adjustConversionValueUpdated: delegate"];

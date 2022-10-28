@@ -120,9 +120,10 @@
 
 #pragma mark - Adjust helper methods
 
-- (void)adjRegister {
+- (void)adjRegisterWithCompletionHandler:(void (^)(NSError *error))callback {
     if ([ADJUserDefaults getSkadRegisterCallTimestamp] != nil) {
         [self.logger debug:@"Call to register app with SKAdNetwork already made for this install"];
+        callback(nil);
         return;
     }
     if (@available(iOS 16.1, *)) {
@@ -133,33 +134,37 @@
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed\nDescription: %@", error.localizedDescription];
-                // TBD: communicate this to backend
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call"];
                 [self writeSkAdNetworkRegisterCallTimestamp];
             }
+            callback(error);
         }];
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:0
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed\nDescription: %@", error.localizedDescription];
-                // TBD: communicate this to backend
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call"];
                 [self writeSkAdNetworkRegisterCallTimestamp];
             }
+            callback(error);
         }];
     } else if (@available(iOS 14.0, *)) {
         [self registerAppForAdNetworkAttribution];
         [self writeSkAdNetworkRegisterCallTimestamp];
+        callback(nil);
+    } else {
+        // TODO: add unexpected case error log
+        callback(nil);
     }
 }
 
 - (void)adjUpdateConversionValue:(NSInteger)conversionValue
                      coarseValue:(NSString *)coarseValue
                       lockWindow:(NSNumber *)lockWindow
-               completionHandler:(void (^)(BOOL success))success {
+               completionHandler:(void (^)(NSError *error))callback {
     // TODO: do we need validation for conversionValue?
     if (coarseValue != nil && lockWindow != nil) {
         // 4.0 world
@@ -169,12 +174,10 @@
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
-                // TBD: communicate this to backend
-                success(NO);
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
-                success(YES);
             }
+            callback(error);
         }];
     } else {
         // pre 4.0 world
@@ -183,19 +186,17 @@
                               completionHandler:^(NSError * _Nonnull error) {
                 if (error) {
                     [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
-                    // TBD: communicate this to backend
-                    success(NO);
                 } else {
                     [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
-                    success(YES);
                 }
+                callback(error);
             }];
         } else if (@available(iOS 14.0, *)) {
             [self updateConversionValue:conversionValue];
-            success(YES);
+            callback(nil);
         } else {
             // TODO: add unexpected case error log
-            success(NO);
+            callback(nil);
         }
     }
 }
