@@ -144,7 +144,7 @@
         [self updatePostbackConversionValue:0
                           completionHandler:^(NSError * _Nonnull error) {
             if (error) {
-                [self.logger error:@"Call to updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0 as part of register call failed"];
+                [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed"];
                 [self.logger error:@"Description: %@", error.localizedDescription];
                 // TODO: communicate this to backend
             } else {
