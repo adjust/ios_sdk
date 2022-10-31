@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07AF832327BD3CBF00C5DD9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07AF832227BD3CBF00C5DD9E /* Main.storyboard */; };
 		6FAB78C12636DDC400773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */; };
+		9D49D17A290FEC2E00042345 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D49D179290FEC2E00042345 /* ADJSKAdNetwork.m */; };
 		9D9D1533212EB3920081445E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D1532212EB3920081445E /* AppDelegate.m */; };
 		9D9D153B212EB3940081445E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153A212EB3940081445E /* Assets.xcassets */; };
 		9D9D153E212EB3940081445E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153C212EB3940081445E /* LaunchScreen.storyboard */; };
@@ -63,6 +64,8 @@
 		07AF832227BD3CBF00C5DD9E /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLinkResolution.m; sourceTree = "<group>"; };
 		6FAB78C02636DDC400773869 /* ADJLinkResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLinkResolution.h; sourceTree = "<group>"; };
+		9D49D178290FEC2E00042345 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
+		9D49D179290FEC2E00042345 /* ADJSKAdNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSKAdNetwork.m; sourceTree = "<group>"; };
 		9D9D152E212EB3920081445E /* AdjustExample-FbPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-FbPixel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9D1531212EB3920081445E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9D1532212EB3920081445E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -286,6 +289,8 @@
 				9DF92F032630F377000FC3FC /* ADJPackageParams.m */,
 				6FAB78C02636DDC400773869 /* ADJLinkResolution.h */,
 				6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */,
+				9D49D178290FEC2E00042345 /* ADJSKAdNetwork.h */,
+				9D49D179290FEC2E00042345 /* ADJSKAdNetwork.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -432,6 +437,7 @@
 				9DF92F102630F377000FC3FC /* ADJSessionParameters.m in Sources */,
 				9DF92F062630F377000FC3FC /* ADJAttributionHandler.m in Sources */,
 				9DF92F1A2630F377000FC3FC /* ADJAttribution.m in Sources */,
+				9D49D17A290FEC2E00042345 /* ADJSKAdNetwork.m in Sources */,
 				9DF92F0F2630F377000FC3FC /* ADJTimerCycle.m in Sources */,
 				9DF92FB12630F3A1000FC3FC /* WebViewJavascriptBridge_JS.m in Sources */,
 				9DF92F0E2630F377000FC3FC /* ADJSessionFailure.m in Sources */,
