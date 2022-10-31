@@ -136,7 +136,6 @@
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed\nDescription: %@", error.localizedDescription];
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call"];
-                [self writeSkAdNetworkRegisterCallTimestamp];
             }
             callback(error);
         }];
@@ -147,25 +146,24 @@
                 [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed\nDescription: %@", error.localizedDescription];
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call"];
-                [self writeSkAdNetworkRegisterCallTimestamp];
             }
             callback(error);
         }];
     } else if (@available(iOS 14.0, *)) {
         [self registerAppForAdNetworkAttribution];
-        [self writeSkAdNetworkRegisterCallTimestamp];
         callback(nil);
     } else {
         [self.logger error:@"SKAdNetwork API not available on this iOS version"];
         callback(nil);
     }
+
+    [self writeSkAdNetworkRegisterCallTimestamp];
 }
 
 - (void)adjUpdateConversionValue:(NSInteger)conversionValue
                      coarseValue:(NSString *)coarseValue
                       lockWindow:(NSNumber *)lockWindow
                completionHandler:(void (^)(NSError *error))callback {
-    // TODO: do we need validation for conversionValue?
     if (coarseValue != nil && lockWindow != nil) {
         // 4.0 world
         [self updatePostbackConversionValue:conversionValue
