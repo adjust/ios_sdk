@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     // register SKAdNetwork attribution if we haven't already
     [[ADJSKAdNetwork getInstance] adjRegisterWithCompletionHandler:^(NSError * _Nonnull error) {
         if (error) {
-            // TODO: handle error
+            // handle error
         }
     }];
 
@@ -2846,13 +2846,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     NSNumber *conversionValue = [responseData.jsonResponse objectForKey:@"skadn_conv_value"];
     if (!conversionValue) {
-        // TODO: double check if this validation still makes sense
-        // TODO: add some logs
+        //
         return;
     }
 
-    // TODO: agree on parameter names with backend
-    // TODO: make sure to properly map extracted coarse value with values of possible coarse constants
     NSString *coarseValue = [responseData.jsonResponse objectForKey:@"skadn_coarse_value"];
     NSNumber *lockWindow = [responseData.jsonResponse objectForKey:@"skadn_lock_window"];
 
@@ -2861,7 +2858,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                                 lockWindow:lockWindow
                                          completionHandler:^(NSError *error) {
         if (error) {
-            // TODO: handle error
+            // handle error
         } else {
             // ping old callback if implemented
             if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {

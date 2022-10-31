@@ -156,7 +156,7 @@
         [self writeSkAdNetworkRegisterCallTimestamp];
         callback(nil);
     } else {
-        // TODO: add unexpected case error log
+        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
         callback(nil);
     }
 }
@@ -195,7 +195,7 @@
             [self updateConversionValue:conversionValue];
             callback(nil);
         } else {
-            // TODO: add unexpected case error log
+            [self.logger error:@"SKAdNetwork API not available on this iOS version"];
             callback(nil);
         }
     }
