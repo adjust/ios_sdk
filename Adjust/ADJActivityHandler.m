@@ -2846,7 +2846,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     NSNumber *conversionValue = [responseData.jsonResponse objectForKey:@"skadn_conv_value"];
     if (!conversionValue) {
-        //
         return;
     }
 

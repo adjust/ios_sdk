@@ -126,37 +126,8 @@
         callback(nil);
         return;
     }
-    if (@available(iOS 16.1, *)) {
-        // register with 4.0 method
-        [self updatePostbackConversionValue:0
-                                coarseValue:[self getSkAdNetworkCoarseConversionValue:@"low"]
-                                 lockWindow:NO
-                          completionHandler:^(NSError * _Nonnull error) {
-            if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call failed\nDescription: %@", error.localizedDescription];
-            } else {
-                [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: 0, coarse value: low, lock window: NO as part of register call"];
-            }
-            callback(error);
-        }];
-    } else if (@available(iOS 15.4, *)) {
-        [self updatePostbackConversionValue:0
-                          completionHandler:^(NSError * _Nonnull error) {
-            if (error) {
-                [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call failed\nDescription: %@", error.localizedDescription];
-            } else {
-                [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: 0 as part of register call"];
-            }
-            callback(error);
-        }];
-    } else if (@available(iOS 14.0, *)) {
-        [self registerAppForAdNetworkAttribution];
-        callback(nil);
-    } else {
-        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        callback(nil);
-    }
-
+    [self registerAppForAdNetworkAttribution];
+    callback(nil);
     [self writeSkAdNetworkRegisterCallTimestamp];
 }
 
