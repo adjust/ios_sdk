@@ -22,6 +22,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0A67F1D92919641D00AC684A /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
+		0A67F1DA2919641E00AC684A /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
+		0A67F1DB2919641F00AC684A /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
+		0A67F1DC2919642000AC684A /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
 		0AB1C97627DD450D00509231 /* AdjustSdk.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1C97327DD450D00509231 /* AdjustSdk.h */; };
 		0AB1C99727DD4A9500509231 /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CD2BDD1A13BFC600A40AFB /* NSString+ADJAdditions.m */; };
 		0AB1C99827DD4B3100509231 /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C93DF41AC47F2E00B53F56 /* NSData+ADJAdditions.m */; };
@@ -3191,6 +3195,7 @@
 				0AB1C9A727DD4B3200509231 /* ADJAttributionHandler.m in Sources */,
 				0AB1C9A827DD4B3200509231 /* ADJAttribution.m in Sources */,
 				0AB1C9A927DD4B3200509231 /* ADJConfig.m in Sources */,
+				0A67F1D92919641D00AC684A /* ADJSKAdNetwork.m in Sources */,
 				0AB1C9AA27DD4B3200509231 /* ADJTimerOnce.m in Sources */,
 				0AB1C9AB27DD4B3200509231 /* ADJTimerCycle.m in Sources */,
 				0AB1C9AC27DD4B3200509231 /* ADJResponseData.m in Sources */,
@@ -3233,6 +3238,7 @@
 				0AB1CA3F27DF49CC00509231 /* ADJAttributionHandler.m in Sources */,
 				0AB1CA4027DF49CC00509231 /* ADJAttribution.m in Sources */,
 				0AB1CA4127DF49CC00509231 /* ADJConfig.m in Sources */,
+				0A67F1DA2919641E00AC684A /* ADJSKAdNetwork.m in Sources */,
 				0AB1CA4227DF49CC00509231 /* ADJTimerOnce.m in Sources */,
 				0AB1CA4327DF49CC00509231 /* ADJTimerCycle.m in Sources */,
 				0AB1CA4427DF49CC00509231 /* ADJResponseData.m in Sources */,
@@ -3275,6 +3281,7 @@
 				0AB1CA8227DF61F200509231 /* ADJAttributionHandler.m in Sources */,
 				0AB1CA8327DF61F200509231 /* ADJAttribution.m in Sources */,
 				0AB1CA8427DF61F200509231 /* ADJConfig.m in Sources */,
+				0A67F1DB2919641F00AC684A /* ADJSKAdNetwork.m in Sources */,
 				0AB1CA8527DF61F200509231 /* ADJTimerOnce.m in Sources */,
 				0AB1CA8627DF61F200509231 /* ADJTimerCycle.m in Sources */,
 				0AB1CA8727DF61F200509231 /* ADJResponseData.m in Sources */,
@@ -3326,6 +3333,7 @@
 				0AB1CB2227DF68C100509231 /* ADJEventFailure.m in Sources */,
 				0AB1CB2327DF68C100509231 /* ADJBackoffStrategy.m in Sources */,
 				0AB1CB2427DF68C100509231 /* ADJSdkClickHandler.m in Sources */,
+				0A67F1DC2919642000AC684A /* ADJSKAdNetwork.m in Sources */,
 				0AB1CB2527DF68C100509231 /* ADJSessionParameters.m in Sources */,
 				0AB1CB2627DF68C100509231 /* ADJUserDefaults.m in Sources */,
 				0AB1CB2727DF68C100509231 /* ADJSubscription.m in Sources */,
