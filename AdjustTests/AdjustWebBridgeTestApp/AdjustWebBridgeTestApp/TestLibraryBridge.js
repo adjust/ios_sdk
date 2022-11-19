@@ -1,9 +1,9 @@
 // simulator
-var localBaseUrl = 'http://127.0.0.1:8080';
-var localGdprUrl = 'http://127.0.0.1:8080';
+//var localBaseUrl = 'http://127.0.0.1:8080';
+//var localGdprUrl = 'http://127.0.0.1:8080';
 // device
-// var localBaseUrl = 'http://192.168.86.65:8080';
-// var localGdprUrl = 'http://192.168.86.65:8080';
+ var localBaseUrl = 'http://192.168.86.44:8080';
+ var localGdprUrl = 'http://192.168.86.44:8080';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
