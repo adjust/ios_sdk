@@ -60,10 +60,10 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
 
     _extraPath = extraPath ?: @"";
 
-    _baseUrlChoicesArray = [ADJUrlStrategy baseUrlChoicesWithWithUrlStrategyInfo:urlStrategyInfo];
-    _gdprUrlChoicesArray = [ADJUrlStrategy gdprUrlChoicesWithWithUrlStrategyInfo:urlStrategyInfo];
+    _baseUrlChoicesArray = [ADJUrlStrategy baseUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
+    _gdprUrlChoicesArray = [ADJUrlStrategy gdprUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
     _subscriptionUrlChoicesArray = [ADJUrlStrategy
-                                    subscriptionUrlChoicesWithWithUrlStrategyInfo:urlStrategyInfo];
+                                    subscriptionUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
 
     _overridenBaseUrl = [ADJAdjustFactory baseUrl];
     _overridenGdprUrl = [ADJAdjustFactory gdprUrl];
@@ -77,7 +77,7 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
     return self;
 }
 
-+ (NSArray<NSString *> *)baseUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
++ (NSArray<NSString *> *)baseUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[baseUrlIndia, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
@@ -93,7 +93,7 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
     }
 }
 
-+ (NSArray<NSString *> *)gdprUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
++ (NSArray<NSString *> *)gdprUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[gdprUrlIndia, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
@@ -109,7 +109,7 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
     }
 }
 
-+ (NSArray<NSString *> *)subscriptionUrlChoicesWithWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
++ (NSArray<NSString *> *)subscriptionUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
         return @[subscritionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {

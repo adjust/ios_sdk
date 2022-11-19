@@ -2,8 +2,8 @@
 //  WKWebViewController.m
 //  AdjustExample-WebView
 //
-//  Created by Uglješa Erceg on 31/05/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 31st May 2016.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import "WKWebViewController.h"
@@ -31,7 +31,7 @@
     webView.navigationDelegate = self;
     webView.UIDelegate = self;
     [self.view addSubview:webView];
-
+    
     _adjustBridge = [[AdjustBridge alloc] init];
     [_adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:self];
 
@@ -46,10 +46,6 @@
     // [webView loadHTMLString:appHtml baseURL:baseURL];
 }
 
-- (void)callWkHandler:(id)sender {
-    
-}
-
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
                                                                              message:nil
@@ -57,8 +53,8 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action) {
-                                                          completionHandler();
-                                                      }]];
+        completionHandler();
+    }]];
     [self presentViewController:alertController animated:YES completion:^{}];
 }
 

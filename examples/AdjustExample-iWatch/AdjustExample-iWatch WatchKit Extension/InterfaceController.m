@@ -2,8 +2,8 @@
 //  InterfaceController.m
 //  AdjustExample-iWatch WatchKit Extension
 //
-//  Created by Uglješa Erceg on 06/04/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 6th April 2016
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import "TableRowController.h"
@@ -17,7 +17,6 @@
 @property (nonatomic, weak) IBOutlet WKInterfaceTable *wkTblEventTable;
 
 @end
-
 
 @implementation InterfaceController
 

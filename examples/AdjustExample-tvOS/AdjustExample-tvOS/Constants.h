@@ -2,8 +2,8 @@
 //  Constants.h
 //  AdjustExample-tvOS
 //
-//  Created by Uglješa Erceg on 03/12/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 3rd December 2015.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

@@ -3,29 +3,30 @@
 //  AdjustExample-Swift
 //
 //  Created by Uglješa Erceg (@uerceg) on 6th April 2016.
-//  Copyright © 2016-2019 Adjust GmbH. All rights reserved.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 import UIKit
+import Adjust
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment = ADJEnvironmentSandbox
         let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
-
+        
         // Change the log level.
         adjustConfig?.logLevel = ADJLogLevelVerbose
-
+        
         // Enable event buffering.
         // adjustConfig?.eventBufferingEnabled = true
-
+        
         // Set default tracker.
         // adjustConfig?.defaultTracker = "{TrackerToken}"
-
+        
         // Send in the background.
         // adjustConfig?.sendInBackground = true
         
@@ -57,10 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         
         // Remove all session partner parameters.
         // Adjust.resetSessionPartnerParameters()
-
+        
         // Initialise the SDK.
         Adjust.appDidLaunch(adjustConfig!)
-
+        
         // Put the SDK in offline mode.
         // Adjust.setOfflineMode(true);
         
@@ -69,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         
         // Interrupt delayed start set with setDelayStart: method.
         // Adjust.sendFirstPackages()
-
+        
         return true
     }
     
@@ -88,38 +89,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         }
         return true
     }
-
+    
     func adjustAttributionChanged(_ attribution: ADJAttribution?) {
         NSLog("Attribution callback called!")
         NSLog("Attribution: %@", attribution ?? "")
     }
-
+    
     func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?) {
         NSLog("Event success callback called!")
         NSLog("Event success data: %@", eventSuccessResponseData ?? "")
     }
-
+    
     func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?) {
         NSLog("Event failure callback called!")
         NSLog("Event failure data: %@", eventFailureResponseData ?? "")
     }
-
+    
     func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?) {
         NSLog("Session success callback called!")
         NSLog("Session success data: %@", sessionSuccessResponseData ?? "")
     }
-
+    
     func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?) {
         NSLog("Session failure callback called!");
         NSLog("Session failure data: %@", sessionFailureResponseData ?? "")
     }
-
+    
     func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
         NSLog("Deferred deep link callback called!")
         NSLog("Deferred deep link URL: %@", deeplink?.absoluteString ?? "")
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
     }
     
@@ -130,6 +131,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        // Show ATT dialog.
+        Adjust.requestTrackingAuthorization { status in
+            switch status {
+            case 0:
+                // ATTrackingManagerAuthorizationStatusNotDetermined case
+                break
+            case 1:
+                // ATTrackingManagerAuthorizationStatusRestricted case
+                break
+            case 2:
+                // ATTrackingManagerAuthorizationStatusDenied case
+                break
+            case 3:
+                // ATTrackingManagerAuthorizationStatusAuthorized case
+                break
+            default:
+                break
+            }
+        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

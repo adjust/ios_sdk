@@ -2,8 +2,8 @@
 //  AppDelegate.m
 //  AdjustExample-FbPixel
 //
-//  Created by Uglješa Erceg on 23.08.18.
-//  Copyright © 2018 Adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 23rd August 2018.
+//  Copyright © 2018-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -18,15 +18,7 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.wkWebViewExampleController = [[WKWebViewController alloc] init];
-    self.wkWebViewExampleController.tabBarItem.title = @"WKWebView";
-
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.wkWebViewExampleController;
-    [self.window makeKeyAndVisible];
-
     return YES;
 }
 

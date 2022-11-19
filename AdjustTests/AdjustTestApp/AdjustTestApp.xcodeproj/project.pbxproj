@@ -66,6 +66,7 @@
 		6FFCFE70200797D100467F01 /* ATAAdjustDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE66200797D000467F01 /* ATAAdjustDelegate.m */; };
 		6FFCFE71200797D100467F01 /* ATAAdjustDelegateEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE69200797D000467F01 /* ATAAdjustDelegateEventSuccess.m */; };
 		6FFCFE72200797D100467F01 /* ATAAdjustDelegateSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */; };
+		9D0B5C162929787B007009C1 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0B5C142929787B007009C1 /* ADJSKAdNetwork.m */; };
 		9D1D8E9E219246E50088E3CF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9D219246E50088E3CF /* iAd.framework */; };
 		9D1D8EA0219246EA0088E3CF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9F219246EA0088E3CF /* AdSupport.framework */; };
 		9D1D8EA2219246EF0088E3CF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */; };
@@ -199,6 +200,8 @@
 		6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateSessionSuccess.m; sourceTree = "<group>"; };
 		6FFCFE6B200797D000467F01 /* ATAAdjustDelegateEventSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateEventSuccess.h; sourceTree = "<group>"; };
 		6FFCFE6C200797D000467F01 /* ATAAdjustDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegate.h; sourceTree = "<group>"; };
+		9D0B5C142929787B007009C1 /* ADJSKAdNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSKAdNetwork.m; sourceTree = "<group>"; };
+		9D0B5C152929787B007009C1 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
 		9D1D8E9D219246E50088E3CF /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9D1D8E9F219246EA0088E3CF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -271,6 +274,8 @@
 		6F3A5E292018CE14000AACD0 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				9D0B5C152929787B007009C1 /* ADJSKAdNetwork.h */,
+				9D0B5C142929787B007009C1 /* ADJSKAdNetwork.m */,
 				9D3A2AC126263AFB00BD6E44 /* ADJAdRevenue.h */,
 				9D3A2AC026263AFB00BD6E44 /* ADJAdRevenue.m */,
 				6F3A5E2A2018CE14000AACD0 /* ADJConfig.h */,
@@ -507,6 +512,7 @@
 				6F3A5E832018CE14000AACD0 /* NSData+ADJAdditions.m in Sources */,
 				524BACBB221D5B1200624F6C /* ATLControlSignal.m in Sources */,
 				6F3A5EA32018CE3A000AACD0 /* ATLBlockingQueue.m in Sources */,
+				9D0B5C162929787B007009C1 /* ADJSKAdNetwork.m in Sources */,
 				6F3A5E712018CE14000AACD0 /* ADJRequestHandler.m in Sources */,
 				6F3A5E732018CE14000AACD0 /* ADJSdkClickHandler.m in Sources */,
 				6F3A5E892018CE14000AACD0 /* ADJAdjustFactory.m in Sources */,

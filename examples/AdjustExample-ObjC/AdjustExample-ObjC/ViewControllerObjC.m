@@ -3,7 +3,7 @@
 //  AdjustExample-ObjC
 //
 //  Created by Pedro Filipe (@nonelse) on 12th October 2015.
-//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -87,19 +87,19 @@
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
     NSString *message;
-
     if ([Adjust isEnabled]) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
 
-    UIAlertView *alert = [[UIAlertView alloc ]initWithTitle:@"Is SDK Enabled?"
-                                                     message:message
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {}];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

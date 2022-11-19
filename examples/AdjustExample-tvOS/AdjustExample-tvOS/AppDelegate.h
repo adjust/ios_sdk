@@ -2,8 +2,8 @@
 //  AppDelegate.h
 //  AdjustExample-tvOS
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,7 +13,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
 
 @end
 

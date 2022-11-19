@@ -2,8 +2,8 @@
 //  ViewControllertvOS.m
 //  AdjustExample-tvOS
 //
-//  Created by Pedro Filipe on 12/10/15.
-//  Copyright © 2015 adjust. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 12th October 2015.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -36,38 +36,38 @@
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-
+    
     // Add revenue 1 cent of an euro.
     [event setRevenue:0.01 currency:@"EUR"];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
-
+    
     // Add callback parameters to this event.
     [event addCallbackParameter:@"a" value:@"b"];
     [event addCallbackParameter:@"key" value:@"value"];
     [event addCallbackParameter:@"a" value:@"c"];
-
+    
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackPartnerEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
-
+    
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"x" value:@"y"];
     [event addPartnerParameter:@"foo" value:@"bar"];
     [event addPartnerParameter:@"x" value:@"z"];
-
+    
     [Adjust trackEvent:event];
 }
 
@@ -89,20 +89,16 @@
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
     NSString *message;
-
     if ([Adjust isEnabled]) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
-
-    UIAlertController *alert =
-    [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
-                                        message:message
-                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
+                                                                   message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {}];
-    
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }

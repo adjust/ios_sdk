@@ -3,7 +3,7 @@
 //  AdjustExample-ObjC
 //
 //  Created by Pedro Filipe (@nonelse) on 12th October 2015.
-//  Copyright © 2015-2019 Adjust GmbH. All rights reserved.
+//  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Constants.h"
@@ -36,56 +36,54 @@
     // Enable COPPA compliance.
     // [adjustConfig setCoppaCompliantEnabled:YES];
     
+    // Enable LinkMe feature.
+    // [adjustConfig setLinkMeEnabled:YES];
+    
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-    [adjustConfig setLinkMeEnabled:YES];
 
+    // Set an attribution delegate.
+    [adjustConfig setDelegate:self];
+    
     // Delay the first session of the SDK.
     // [adjustConfig setDelayStart:7];
     
     // Add session callback parameters.
     [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
     [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-
+    
     // Add session partner parameters.
     [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
     [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-
+    
     // Remove session callback parameter.
     [Adjust removeSessionCallbackParameter:@"sp_key"];
-
+    
     // Remove session partner parameter.
     [Adjust removeSessionPartnerParameter:@"sp_foo"];
-
+    
     // Remove all session callback parameters.
     // [Adjust resetSessionCallbackParameters];
-
+    
     // Remove all session partner parameters.
     // [Adjust resetSessionPartnerParameters];
-
+    
     // Initialise the SDK.
     [Adjust appDidLaunch:adjustConfig];
-
+    
     // Put the SDK in offline mode.
     // [Adjust setOfflineMode:YES];
-
+    
     // Disable the SDK.
     // [Adjust setEnabled:NO];
-
+    
     // Interrupt delayed start set with setDelayStart: method.
     // [Adjust sendFirstPackages];
-    
-    // Show ATT dialog.
-    if (@available(iOS 14, *)) {
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-            // Process users' response.
-        }];
-    }
     
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"Scheme based deep link opened an app: %@", url);
     // Pass deep link to Adjust in order to potentially reattribute user.
     [Adjust appWillOpenUrl:url];
@@ -150,6 +148,12 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Show ATT dialog.
+    if (@available(iOS 14, *)) {
+        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            // Process user's response.
+        }];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

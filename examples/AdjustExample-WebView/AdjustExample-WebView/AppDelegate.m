@@ -2,8 +2,8 @@
 //  AppDelegate.m
 //  AdjustExample-WebView
 //
-//  Created by Uglješa Erceg on 31/05/16.
-//  Copyright © 2016 adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on 31st May 2016.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import "Adjust.h"
@@ -18,19 +18,18 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.wkWebViewExampleController = [[WKWebViewController alloc] init];
     self.wkWebViewExampleController.tabBarItem.title = @"WKWebView";
-
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.wkWebViewExampleController;
     [self.window makeKeyAndVisible];
-
+    
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     [Adjust appWillOpenUrl:url];
     return YES;
 }
