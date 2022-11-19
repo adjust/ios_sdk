@@ -1,3 +1,9 @@
+### Version 4.33.0 (November 19th 2021)
+#### Added
+- Added support for SKAdNetwork 4.0.
+
+---
+
 ### Version 4.32.1 (26th September 2022)
 #### Fixed
 - Fixed memory issue when continuously writing to a file (https://github.com/adjust/ios_sdk/pull/626).
