@@ -161,6 +161,25 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_updateConversionValue', conversionValue, null);
                 }
             },
+            updateConversionValueWithCallback: function(conversionValue, callback) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCompletionHandler', conversionValue, callback);
+                }
+            },
+            updateConversionValueWithCoarseValueAndCallback: function(conversionValue, coarseValue, callback) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCoarseValueCompletionHandler',
+                                                        {conversionValue: conversionValue, coarseValue: coarseValue},
+                                                        callback);
+                }
+            },
+            updateConversionValueWithCoarseValueLockWindowAndCallback: function(conversionValue, coarseValue, lockWindow, callback) {
+                if (WebViewJavascriptBridge != null) {
+                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCoarseValueLockWindowCompletionHandler',
+                                                        {conversionValue: conversionValue, coarseValue: coarseValue},
+                                                        callback);
+                }
+            },
             getAdid: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
