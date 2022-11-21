@@ -22,6 +22,10 @@ static NSString * const baseUrlChina = @"https://app.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
 static NSString * const subscritionUrlChina = @"https://subscription.adjust.world";
 
+static NSString * const baseUrlCn = @"https://app.adjust.cn";
+static NSString * const gdprUrlCn = @"https://gdpr.adjust.com";
+static NSString * const subscriptionUrlCn = @"https://subscription.adjust.com";
+
 static NSString * const baseUrlEU = @"https://app.eu.adjust.com";
 static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.com";
 static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.com";
@@ -82,6 +86,8 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
         return @[baseUrlIndia, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[baseUrlChina, baseUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[baseUrlCn, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[baseUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -98,6 +104,8 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
         return @[gdprUrlIndia, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[gdprUrlChina, gdprUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[gdprUrlCn, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[gdprUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -114,6 +122,8 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
         return @[subscritionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[subscritionUrlChina, subscriptionUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[subscritionUrlCn, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[subscriptionUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
