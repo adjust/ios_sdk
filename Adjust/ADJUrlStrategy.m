@@ -16,11 +16,11 @@ static NSString * const subscriptionUrl = @"https://subscription.adjust.com";
 
 static NSString * const baseUrlIndia = @"https://app.adjust.net.in";
 static NSString * const gdprUrlIndia = @"https://gdpr.adjust.net.in";
-static NSString * const subscritionUrlIndia = @"https://subscription.adjust.net.in";
+static NSString * const subscriptionUrlIndia = @"https://subscription.adjust.net.in";
 
 static NSString * const baseUrlChina = @"https://app.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
-static NSString * const subscritionUrlChina = @"https://subscription.adjust.world";
+static NSString * const subscriptionUrlChina = @"https://subscription.adjust.world";
 
 static NSString * const baseUrlCn = @"https://app.adjust.cn";
 static NSString * const gdprUrlCn = @"https://gdpr.adjust.com";
@@ -119,11 +119,11 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
 
 + (NSArray<NSString *> *)subscriptionUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[subscritionUrlIndia, subscriptionUrl];
+        return @[subscriptionUrlIndia, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[subscritionUrlChina, subscriptionUrl];
+        return @[subscriptionUrlChina, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[subscritionUrlCn, subscriptionUrl];
+        return @[subscriptionUrlCn, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[subscriptionUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -131,7 +131,7 @@ static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
         return @[subscriptionUrlUS];
     } else {
-        return @[subscriptionUrl, subscritionUrlIndia, subscritionUrlChina];
+        return @[subscriptionUrl, subscriptionUrlIndia, subscriptionUrlChina];
     }
 }
 
