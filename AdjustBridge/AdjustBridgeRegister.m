@@ -275,7 +275,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.33.0';
+                    return 'web-bridge4.33.1';
                 }
             },
             setTestOptions: function(testOptions) {
@@ -398,6 +398,7 @@ static NSString * fbAppIdStatic = nil;
 
         AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
         AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
+        AdjustConfig.UrlStrategyCn = 'UrlStrategyCn';
         AdjustConfig.DataResidencyEU = 'DataResidencyEU';
         AdjustConfig.DataResidencyTR = 'DataResidencyTR';
         AdjustConfig.DataResidencyUS = 'DataResidencyUS';

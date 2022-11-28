@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.33.0
+//  V4.33.1
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -58,6 +58,7 @@ extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
  */
 extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
+extern NSString * __nonnull const ADJUrlStrategyCn;
 extern NSString * __nonnull const ADJDataResidencyEU;
 extern NSString * __nonnull const ADJDataResidencyTR;
 extern NSString * __nonnull const ADJDataResidencyUS;
