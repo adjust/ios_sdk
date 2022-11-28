@@ -1,3 +1,10 @@
+### Version 4.33.1 (28th November 2022)
+#### Added
+- Added support for setting a new China URL Strategy. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJUrlStrategyCn` parameter.
+- Added support to `convertUniversalLink:scheme:` method to be able to parse data residency universal links.
+
+---
+
 ### Version 4.33.0 (November 19th 2021)
 #### Added
 - Added support for SKAdNetwork 4.0.
