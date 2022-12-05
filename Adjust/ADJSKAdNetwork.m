@@ -238,7 +238,7 @@
 }
 
 - (Class)getSKAdNetworkClass {
-  return NSClassFromString(@"SKAdNetwork");
+    return NSClassFromString(@"SKAdNetwork");
 }
 
 @end
