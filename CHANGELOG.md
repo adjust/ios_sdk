@@ -1,3 +1,9 @@
+### Version 4.33.2 (5th December 2022)
+#### Fixed
+- Added additional checks to make sure that non-existing selectors for given platform don't attempt to be executed (https://github.com/adjust/ios_sdk/issues/641).
+
+---
+
 ### Version 4.33.1 (28th November 2022)
 #### Added
 - Added support for setting a new China URL Strategy. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJUrlStrategyCn` parameter.
@@ -5,7 +11,7 @@
 
 ---
 
-### Version 4.33.0 (November 19th 2021)
+### Version 4.33.0 (November 19th 2022)
 #### Added
 - Added support for SKAdNetwork 4.0.
 
