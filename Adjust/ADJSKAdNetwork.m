@@ -59,7 +59,7 @@
 
 - (void)registerAppForAdNetworkAttribution {
     if (@available(iOS 14.0, *)) {
-        if ([self isStoreKitAvailable]) {
+        if ([self isApiAvailable:self.selRegisterAppForAdNetworkAttribution]) {
             ((id (*)(id, SEL))[self.clsSkAdNetwork methodForSelector:self.selRegisterAppForAdNetworkAttribution])(self.clsSkAdNetwork, self.selRegisterAppForAdNetworkAttribution);
             [self.logger debug:@"Called SKAdNetwork's registerAppForAdNetworkAttribution method"];
         }
@@ -70,7 +70,7 @@
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
     if (@available(iOS 14.0, *)) {
-        if ([self isStoreKitAvailable]) {
+        if ([self isApiAvailable:self.selUpdateConversionValue]) {
             ((id (*)(id, SEL, NSInteger))[self.clsSkAdNetwork methodForSelector:self.selUpdateConversionValue])(self.clsSkAdNetwork, self.selUpdateConversionValue, conversionValue);
             [self.logger verbose:@"Called SKAdNetwork's updateConversionValue: method made with conversion value: %d", conversionValue];
         }
@@ -82,7 +82,7 @@
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 15.4, *)) {
-        if ([self isStoreKitAvailable]) {
+        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCompletionHandler]) {
             ((id (*)(id, SEL, NSInteger, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCompletionHandler, conversionValue, completion);
             // call is made, success / failure will be checked and logged inside of the completion block
         }
@@ -95,7 +95,7 @@
                           coarseValue:(NSString *)coarseValue
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 16.1, *)) {
-        if ([self isStoreKitAvailable]) {
+        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler]) {
             ((id (*)(id, SEL, NSInteger, NSString *, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueCompletionHandler, fineValue, coarseValue, completion);
             // call is made, success / failure will be checked and logged inside of the completion block
         }
@@ -109,7 +109,7 @@
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 16.1, *)) {
-        if ([self isStoreKitAvailable]) {
+        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler]) {
             ((id (*)(id, SEL, NSInteger, NSString *, BOOL, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler, fineValue, coarseValue, lockWindow, completion);
             // call is made, success / failure will be checked and logged inside of the completion block
         }
@@ -172,9 +172,14 @@
 
 #pragma mark - Private
 
-- (BOOL)isStoreKitAvailable {
+- (BOOL)isApiAvailable:(SEL)selector {
     if (self.clsSkAdNetwork == nil) {
         [self.logger warn:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
+        return NO;
+    }
+    IMP imp = [self.clsSkAdNetwork methodForSelector:selector];
+    if (imp == nil) {
+        [self.logger warn:@"%@ method implementation not found", selector];
         return NO;
     }
     return YES;
