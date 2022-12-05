@@ -174,11 +174,13 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     [self readActivityState];
     
     // register SKAdNetwork attribution if we haven't already
-    [[ADJSKAdNetwork getInstance] adjRegisterWithCompletionHandler:^(NSError * _Nonnull error) {
-        if (error) {
-            // handle error
-        }
-    }];
+    if (self.adjustConfig.isSKAdNetworkHandlingActive) {
+        [[ADJSKAdNetwork getInstance] adjRegisterWithCompletionHandler:^(NSError * _Nonnull error) {
+            if (error) {
+                // handle error
+            }
+        }];
+    }
 
     self.internalState = [[ADJInternalState alloc] init];
 
