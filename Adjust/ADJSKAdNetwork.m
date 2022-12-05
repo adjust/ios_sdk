@@ -16,12 +16,6 @@
 @interface ADJSKAdNetwork()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, strong) Class clsSkAdNetwork;
-@property (nonatomic, assign) SEL selRegisterAppForAdNetworkAttribution;
-@property (nonatomic, assign) SEL selUpdateConversionValue;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCompletionHandler;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCoarseValueCompletionHandler;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler;
 
 @end
 
@@ -45,12 +39,6 @@
     }
 
     self.logger = [ADJAdjustFactory logger];
-    self.clsSkAdNetwork = NSClassFromString(@"SKAdNetwork");
-    self.selRegisterAppForAdNetworkAttribution = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
-    self.selUpdateConversionValue = NSSelectorFromString(@"updateConversionValue:");
-    self.selUpdatePostbackConversionValueCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
-    self.selUpdatePostbackConversionValueCoarseValueCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
-    self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
 
     return self;
 }
@@ -58,12 +46,14 @@
 #pragma mark - SKAdNetwork API
 
 - (void)registerAppForAdNetworkAttribution {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
     if (@available(iOS 14.0, *)) {
-        if ([self isApiAvailable:self.selRegisterAppForAdNetworkAttribution]) {
-            NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selRegisterAppForAdNetworkAttribution];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:self.selRegisterAppForAdNetworkAttribution];
-            [invocation setTarget:self.clsSkAdNetwork];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
             [invocation invoke];
             [self.logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
         }
@@ -73,12 +63,14 @@
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(@"updateConversionValue:");
     if (@available(iOS 14.0, *)) {
-        if ([self isApiAvailable:self.selUpdateConversionValue]) {
-            NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdateConversionValue];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:self.selUpdateConversionValue];
-            [invocation setTarget:self.clsSkAdNetwork];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
             [invocation setArgument:&conversionValue atIndex:2];
             [invocation invoke];
             [self.logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", conversionValue];
@@ -90,12 +82,14 @@
 
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
     if (@available(iOS 15.4, *)) {
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCompletionHandler]) {
-            NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCompletionHandler];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:self.selUpdatePostbackConversionValueCompletionHandler];
-            [invocation setTarget:self.clsSkAdNetwork];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
             [invocation setArgument:&conversionValue atIndex:2];
             [invocation setArgument:&completion atIndex:3];
             [invocation invoke];
@@ -108,12 +102,14 @@
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
     if (@available(iOS 16.1, *)) {
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler]) {
-            NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler];
-            [invocation setTarget:self.clsSkAdNetwork];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
             [invocation setArgument:&fineValue atIndex:2];
             [invocation setArgument:&coarseValue atIndex:3];
             [invocation setArgument:&completion atIndex:4];
@@ -128,12 +124,14 @@
                           coarseValue:(NSString *)coarseValue
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
     if (@available(iOS 16.1, *)) {
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler]) {
-            NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler];
-            [invocation setTarget:self.clsSkAdNetwork];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
             [invocation setArgument:&fineValue atIndex:2];
             [invocation setArgument:&coarseValue atIndex:3];
             [invocation setArgument:&lockWindow atIndex:4];
@@ -199,12 +197,16 @@
 
 #pragma mark - Private
 
-- (BOOL)isApiAvailable:(SEL)selector {
-    if (self.clsSkAdNetwork == nil) {
+- (BOOL)isApiAvailableForClass:(Class)class andSelector:(SEL)selector {
+    if (class == nil) {
         [self.logger warn:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return NO;
     }
-    if ([self.clsSkAdNetwork respondsToSelector:selector] == NO) {
+    if (!selector) {
+        [self.logger warn:@"Selector for given method was not found"];
+        return NO;
+    }
+    if ([class respondsToSelector:selector] == NO) {
         [self.logger warn:@"%@ method implementation not found", selector];
         return NO;
     }
