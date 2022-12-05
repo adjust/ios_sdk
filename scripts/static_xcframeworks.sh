@@ -23,6 +23,7 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
+  xcodebuild clean
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] 
   then  
@@ -109,6 +110,8 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for iOS (iMessage)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
+  xcodebuild clean
+
   xcodebuild -configuration Release \
   -target ${SCHEMA_NAME__ADJUST_IM_STATIC} \
   -sdk iphonesimulator \
@@ -137,7 +140,7 @@ fi
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 if [[ $BUILD_TARGET_WEB_BRIDGE -eq 1 ]]
-then  
+then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for iOS (WebBridge)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"

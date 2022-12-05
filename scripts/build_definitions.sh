@@ -184,10 +184,31 @@ Usage: $0 [options]
 	XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
 	XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-Static"
 
+	# Xcode version impacts the way we build frameworks
+	XCODE12PLUS=0
+	XCODE14PLUS=0
+	product_version=$(xcodebuild -version)
+	xcode_version=( ${product_version//./ } )
+	xcode="${xcode_version[0]}"
+	major="${xcode_version[1]}"
+	minor="${xcode_version[2]}"
+	echo "${xcode}.${major}.${minor}"
+	if [[ $major > 11 ]]; then
+	  XCODE12PLUS=1
+	fi
+	if [[ $major > 13 ]]; then
+	  XCODE14PLUS=1
+	fi
+
+	SDK_VERSION=$(head -n 1 VERSION)
+	echo "$SDK_VERSION"
 
 	# previous builds artefacts cleanup 
 	rm -rf ${XCF_OUTPUT_FOLDER}
 	mkdir ${XCF_OUTPUT_FOLDER}
+
+	# previous xcode build folder cleanup
+	xcodebuild clean
 
 	function build_archive() {
 	  # Prameters:
@@ -220,12 +241,14 @@ Usage: $0 [options]
 	  # 1 - Archive name
 	  # 2 - Archive location folder
 	  #echo "XCFramework: Generating BCSymbolMap paths command from $1 ..."
-
-	  BCSYMBOLMAP_PATHS=("$(pwd -P)"/$2/$1.xcarchive/BCSymbolMaps/*)
-	  BCSYMBOLMAP_COMMANDS=""
-	  for path in "${BCSYMBOLMAP_PATHS[@]}"; do
-	    BCSYMBOLMAP_COMMANDS="$BCSYMBOLMAP_COMMANDS -debug-symbols $path "
-	  done
+	  BCSYMBOLMAP_PATHS=" "
+	  if [[ $XCODE14PLUS == 0 ]]; then
+	    BCSYMBOLMAP_PATHS=("$(pwd -P)"/$2/$1.xcarchive/BCSymbolMaps/*)
+	    BCSYMBOLMAP_COMMANDS=""
+	    for path in "${BCSYMBOLMAP_PATHS[@]}"; do
+	      BCSYMBOLMAP_COMMANDS="$BCSYMBOLMAP_COMMANDS -debug-symbols $path "
+	    done
+	  fi
 	  echo $BCSYMBOLMAP_COMMANDS
 	}
 
@@ -286,12 +309,21 @@ Usage: $0 [options]
 	  xcodebuild clean
 
 	  if [[ $os == "ios" ]]; then
-	    
-	    xcodebuild -configuration Release \
-	    -target "$target_scheme" \
-	    -sdk iphonesimulator \
-	    -arch x86_64 -arch i386 \
-	    build
+
+	    if [[ $XCODE14PLUS > 0 ]]; then
+	      # Xcode14 dropped 32-bit support, so we have to drop 'i386' arc.
+	      xcodebuild -configuration Release \
+	      -target "$target_scheme" \
+	      -sdk iphonesimulator \
+	      -arch x86_64 \
+	      build
+	    else
+	      xcodebuild -configuration Release \
+	      -target "$target_scheme" \
+	      -sdk iphonesimulator \
+	      -arch x86_64 -arch i386 \
+	      build
+	    fi
 
 	    xcodebuild -configuration Release \
 	    -target "$target_scheme" \
