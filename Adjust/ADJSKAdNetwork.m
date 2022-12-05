@@ -207,7 +207,7 @@
         return NO;
     }
     if ([class respondsToSelector:selector] == NO) {
-        [self.logger warn:@"%@ method implementation not found", selector];
+        [self.logger warn:@"%@ method implementation not found", NSStringFromSelector(selector)];
         return NO;
     }
     return YES;
