@@ -46,7 +46,7 @@
 #pragma mark - SKAdNetwork API
 
 - (void)registerAppForAdNetworkAttribution {
-    Class class = NSClassFromString(@"SKAdNetwork");
+    Class class = [self getSKAdNetworkClass];
     SEL selector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
     if (@available(iOS 14.0, *)) {
         if ([self isApiAvailableForClass:class andSelector:selector]) {
@@ -63,7 +63,7 @@
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
-    Class class = NSClassFromString(@"SKAdNetwork");
+    Class class = [self getSKAdNetworkClass];
     SEL selector = NSSelectorFromString(@"updateConversionValue:");
     if (@available(iOS 14.0, *)) {
         if ([self isApiAvailableForClass:class andSelector:selector]) {
@@ -82,7 +82,7 @@
 
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                     completionHandler:(void (^)(NSError *error))completion {
-    Class class = NSClassFromString(@"SKAdNetwork");
+    Class class = [self getSKAdNetworkClass];
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
     if (@available(iOS 15.4, *)) {
         if ([self isApiAvailableForClass:class andSelector:selector]) {
@@ -102,7 +102,7 @@
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                     completionHandler:(void (^)(NSError *error))completion {
-    Class class = NSClassFromString(@"SKAdNetwork");
+    Class class = [self getSKAdNetworkClass];
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
     if (@available(iOS 16.1, *)) {
         if ([self isApiAvailableForClass:class andSelector:selector]) {
@@ -124,7 +124,7 @@
                           coarseValue:(NSString *)coarseValue
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion {
-    Class class = NSClassFromString(@"SKAdNetwork");
+    Class class = [self getSKAdNetworkClass];
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
     if (@available(iOS 16.1, *)) {
         if ([self isApiAvailableForClass:class andSelector:selector]) {
@@ -235,6 +235,10 @@
     } else {
         return nil;
     }
+}
+
+- (Class)getSKAdNetworkClass {
+  return NSClassFromString(@"SKAdNetwork");
 }
 
 @end
