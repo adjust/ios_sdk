@@ -59,12 +59,6 @@
 
 - (void)registerAppForAdNetworkAttribution {
     if (@available(iOS 14.0, *)) {
-        /*
-        if ([self isApiAvailable:self.selRegisterAppForAdNetworkAttribution]) {
-            ((id (*)(id, SEL))[self.clsSkAdNetwork methodForSelector:self.selRegisterAppForAdNetworkAttribution])(self.clsSkAdNetwork, self.selRegisterAppForAdNetworkAttribution);
-            [self.logger debug:@"Called SKAdNetwork's registerAppForAdNetworkAttribution method"];
-        }
-         */
         if ([self isApiAvailable:self.selRegisterAppForAdNetworkAttribution]) {
             NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selRegisterAppForAdNetworkAttribution];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
@@ -80,12 +74,6 @@
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
     if (@available(iOS 14.0, *)) {
-        /*
-        if ([self isApiAvailable:self.selUpdateConversionValue]) {
-            ((id (*)(id, SEL, NSInteger))[self.clsSkAdNetwork methodForSelector:self.selUpdateConversionValue])(self.clsSkAdNetwork, self.selUpdateConversionValue, conversionValue);
-            [self.logger verbose:@"Called SKAdNetwork's updateConversionValue: method made with conversion value: %d", conversionValue];
-        }
-         */
         if ([self isApiAvailable:self.selUpdateConversionValue]) {
             NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdateConversionValue];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
@@ -103,12 +91,6 @@
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 15.4, *)) {
-        /*
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCompletionHandler]) {
-            ((id (*)(id, SEL, NSInteger, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCompletionHandler, conversionValue, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
-        }
-         */
         if ([self isApiAvailable:self.selUpdatePostbackConversionValueCompletionHandler]) {
             NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCompletionHandler];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
@@ -127,12 +109,6 @@
                           coarseValue:(NSString *)coarseValue
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 16.1, *)) {
-        /*
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler]) {
-            ((id (*)(id, SEL, NSInteger, NSString *, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueCompletionHandler, fineValue, coarseValue, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
-        }
-         */
         if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler]) {
             NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
@@ -153,12 +129,6 @@
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion {
     if (@available(iOS 16.1, *)) {
-        /*
-        if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler]) {
-            ((id (*)(id, SEL, NSInteger, NSString *, BOOL, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler, fineValue, coarseValue, lockWindow, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
-        }
-         */
         if ([self isApiAvailable:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler]) {
             NSMethodSignature *methodSignature = [self.clsSkAdNetwork methodSignatureForSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
