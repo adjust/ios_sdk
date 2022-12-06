@@ -1,4 +1,4 @@
-### Version 4.33.2 (5th December 2022)
+### Version 4.33.2 (6th December 2022)
 #### Fixed
 - Added additional checks to make sure that non-existing selectors for given platform don't attempt to be executed (https://github.com/adjust/ios_sdk/issues/641).
 
