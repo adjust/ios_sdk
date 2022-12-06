@@ -16,12 +16,6 @@
 @interface ADJSKAdNetwork()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, strong) Class clsSkAdNetwork;
-@property (nonatomic, assign) SEL selRegisterAppForAdNetworkAttribution;
-@property (nonatomic, assign) SEL selUpdateConversionValue;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCompletionHandler;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCoarseValueCompletionHandler;
-@property (nonatomic, assign) SEL selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler;
 
 @end
 
@@ -45,12 +39,6 @@
     }
 
     self.logger = [ADJAdjustFactory logger];
-    self.clsSkAdNetwork = NSClassFromString(@"SKAdNetwork");
-    self.selRegisterAppForAdNetworkAttribution = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
-    self.selUpdateConversionValue = NSSelectorFromString(@"updateConversionValue:");
-    self.selUpdatePostbackConversionValueCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
-    self.selUpdatePostbackConversionValueCoarseValueCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
-    self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
 
     return self;
 }
@@ -58,10 +46,16 @@
 #pragma mark - SKAdNetwork API
 
 - (void)registerAppForAdNetworkAttribution {
+    Class class = [self getSKAdNetworkClass];
+    SEL selector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
     if (@available(iOS 14.0, *)) {
-        if ([self isStoreKitAvailable]) {
-            ((id (*)(id, SEL))[self.clsSkAdNetwork methodForSelector:self.selRegisterAppForAdNetworkAttribution])(self.clsSkAdNetwork, self.selRegisterAppForAdNetworkAttribution);
-            [self.logger debug:@"Called SKAdNetwork's registerAppForAdNetworkAttribution method"];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
+            [invocation invoke];
+            [self.logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
         }
     } else {
         [self.logger warn:@"SKAdNetwork's registerAppForAdNetworkAttribution method not available for this operating system version"];
@@ -69,10 +63,17 @@
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue {
+    Class class = [self getSKAdNetworkClass];
+    SEL selector = NSSelectorFromString(@"updateConversionValue:");
     if (@available(iOS 14.0, *)) {
-        if ([self isStoreKitAvailable]) {
-            ((id (*)(id, SEL, NSInteger))[self.clsSkAdNetwork methodForSelector:self.selUpdateConversionValue])(self.clsSkAdNetwork, self.selUpdateConversionValue, conversionValue);
-            [self.logger verbose:@"Called SKAdNetwork's updateConversionValue: method made with conversion value: %d", conversionValue];
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
+            [invocation setArgument:&conversionValue atIndex:2];
+            [invocation invoke];
+            [self.logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", conversionValue];
         }
     } else {
         [self.logger warn:@"SKAdNetwork's updateConversionValue: method not available for this operating system version"];
@@ -81,10 +82,17 @@
 
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = [self getSKAdNetworkClass];
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
     if (@available(iOS 15.4, *)) {
-        if ([self isStoreKitAvailable]) {
-            ((id (*)(id, SEL, NSInteger, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCompletionHandler, conversionValue, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
+            [invocation setArgument:&conversionValue atIndex:2];
+            [invocation setArgument:&completion atIndex:3];
+            [invocation invoke];
         }
     } else {
         [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:completionHandler: method not available for this operating system version"];
@@ -94,10 +102,18 @@
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = [self getSKAdNetworkClass];
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
     if (@available(iOS 16.1, *)) {
-        if ([self isStoreKitAvailable]) {
-            ((id (*)(id, SEL, NSInteger, NSString *, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueCompletionHandler, fineValue, coarseValue, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
+            [invocation setArgument:&fineValue atIndex:2];
+            [invocation setArgument:&coarseValue atIndex:3];
+            [invocation setArgument:&completion atIndex:4];
+            [invocation invoke];
         }
     } else {
         [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method not available for this operating system version"];
@@ -108,10 +124,19 @@
                           coarseValue:(NSString *)coarseValue
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion {
+    Class class = [self getSKAdNetworkClass];
+    SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
     if (@available(iOS 16.1, *)) {
-        if ([self isStoreKitAvailable]) {
-            ((id (*)(id, SEL, NSInteger, NSString *, BOOL, void (^)(NSError *error)))[self.clsSkAdNetwork methodForSelector:self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler])(self.clsSkAdNetwork, self.selUpdatePostbackConversionValueCoarseValueLockWindowCompletionHandler, fineValue, coarseValue, lockWindow, completion);
-            // call is made, success / failure will be checked and logged inside of the completion block
+        if ([self isApiAvailableForClass:class andSelector:selector]) {
+            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setSelector:selector];
+            [invocation setTarget:class];
+            [invocation setArgument:&fineValue atIndex:2];
+            [invocation setArgument:&coarseValue atIndex:3];
+            [invocation setArgument:&lockWindow atIndex:4];
+            [invocation setArgument:&completion atIndex:5];
+            [invocation invoke];
         }
     } else {
         [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method not available for this operating system version"];
@@ -172,9 +197,17 @@
 
 #pragma mark - Private
 
-- (BOOL)isStoreKitAvailable {
-    if (self.clsSkAdNetwork == nil) {
+- (BOOL)isApiAvailableForClass:(Class)class andSelector:(SEL)selector {
+    if (class == nil) {
         [self.logger warn:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
+        return NO;
+    }
+    if (!selector) {
+        [self.logger warn:@"Selector for given method was not found"];
+        return NO;
+    }
+    if ([class respondsToSelector:selector] == NO) {
+        [self.logger warn:@"%@ method implementation not found", NSStringFromSelector(selector)];
         return NO;
     }
     return YES;
@@ -202,6 +235,10 @@
     } else {
         return nil;
     }
+}
+
+- (Class)getSKAdNetworkClass {
+    return NSClassFromString(@"SKAdNetwork");
 }
 
 @end
