@@ -213,7 +213,7 @@
     }
     return YES;
 #else
-    [self.logger warn:@"%@ method implementation not available for tvOS platform", NSStringFromSelector(selector)];
+    [self.logger debug:@"%@ method implementation not available for tvOS platform", NSStringFromSelector(selector)];
     return NO;
 #endif
 }
