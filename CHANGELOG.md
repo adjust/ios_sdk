@@ -1,3 +1,9 @@
+### Version 4.33.3 (29th December 2022)
+#### Fixed
+- Excluded SKAdNetwork flow from being executed on tvOS target (https://github.com/adjust/ios_sdk/issues/647).
+
+---
+
 ### Version 4.33.2 (6th December 2022)
 #### Fixed
 - Added additional checks to make sure that non-existing selectors for given platform don't attempt to be executed (https://github.com/adjust/ios_sdk/issues/641).
