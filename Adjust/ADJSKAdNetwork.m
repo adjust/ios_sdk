@@ -198,6 +198,7 @@
 #pragma mark - Private
 
 - (BOOL)isApiAvailableForClass:(Class)class andSelector:(SEL)selector {
+#if !(TARGET_OS_TV)
     if (class == nil) {
         [self.logger warn:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return NO;
@@ -211,6 +212,10 @@
         return NO;
     }
     return YES;
+#else
+    [self.logger debug:@"%@ method implementation not available for tvOS platform", NSStringFromSelector(selector)];
+    return NO;
+#endif
 }
 
 - (void)writeSkAdNetworkRegisterCallTimestamp {
@@ -219,6 +224,7 @@
 }
 
 - (NSString *)getSkAdNetworkCoarseConversionValue:(NSString *)adjustCoarseValue {
+#if !(TARGET_OS_TV)
     if (@available(iOS 16.1, *)) {
         if ([adjustCoarseValue isEqualToString:@"low"]) {
             NSString * __autoreleasing *lowValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueLow");
@@ -235,6 +241,9 @@
     } else {
         return nil;
     }
+#else
+    return nil;
+#endif
 }
 
 - (Class)getSKAdNetworkClass {
