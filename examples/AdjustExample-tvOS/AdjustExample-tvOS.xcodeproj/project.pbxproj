@@ -46,6 +46,7 @@
 		9D449F5D1E6EE6C500E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3B1E6EE6C500E7E80B /* Adjust.m */; };
 		9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */; };
 		9D49D171290FEBFC00042345 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D49D170290FEBFC00042345 /* ADJSKAdNetwork.m */; };
+		9D5C9632295D96260021602B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5C9631295D96260021602B /* StoreKit.framework */; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DD0E9CF1F459ECE00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */; };
 		9DF3823D260E9E000033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3823C260E9E000033F5A1 /* NSNumber+ADJAdditions.m */; };
@@ -142,6 +143,7 @@
 		9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUtil.m; sourceTree = "<group>"; };
 		9D49D16F290FEBFC00042345 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
 		9D49D170290FEBFC00042345 /* ADJSKAdNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSKAdNetwork.m; sourceTree = "<group>"; };
+		9D5C9631295D96260021602B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9DC95F2D1C10596500138E4B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9DC95F2E1C10596500138E4B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		9DD0E9CD1F459ECE00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */,
+				9D5C9632295D96260021602B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +172,7 @@
 			children = (
 				963909B41BCC0D8300A2E8A4 /* AdjustExample-tvOS */,
 				963909B31BCC0D8300A2E8A4 /* Products */,
+				9D5C9630295D96250021602B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -293,6 +297,14 @@
 				9D449F091E6EE6C500E7E80B /* NSString+ADJAdditions.m */,
 			);
 			path = ADJAdditions;
+			sourceTree = "<group>";
+		};
+		9D5C9630295D96250021602B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9D5C9631295D96260021602B /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9DF7ACCA1CB50DB700D3591F /* Frameworks */ = {
