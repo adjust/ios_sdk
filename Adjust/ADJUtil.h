@@ -139,4 +139,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)setPersistedRandomToken:(NSString *)randomToken;
 
++ (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
+
 @end

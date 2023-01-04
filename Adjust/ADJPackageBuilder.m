@@ -71,6 +71,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     sessionPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:sessionPackage];
+    sessionPackage.parameters = [ADJUtil deepCopyOfDictionary:sessionPackage.parameters];
 
     return sessionPackage;
 }
@@ -85,19 +86,18 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     eventPackage.parameters = parameters;
 
     if (isInDelay) {
-        eventPackage.callbackParameters = event.callbackParameters;
-        eventPackage.partnerParameters = event.partnerParameters;
+        eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
+        eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
     }
 
     [self signWithSigV2Plugin:eventPackage];
+    eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
 
     return eventPackage;
 }
 
-- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource
-{
+- (ADJActivityPackage *)buildInfoPackage:(NSString *)infoSource {
     NSMutableDictionary *parameters = [self getInfoParameters:infoSource];
-
     ADJActivityPackage *infoPackage = [self defaultActivityPackage];
     infoPackage.path = @"/sdk_info";
     infoPackage.activityKind = ADJActivityKindInfo;
@@ -105,6 +105,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     infoPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:infoPackage];
+    infoPackage.parameters = [ADJUtil deepCopyOfDictionary:infoPackage.parameters];
 
     return infoPackage;
 }
@@ -118,6 +119,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.parameters = parameters;
 
     [self signWithSigV2Plugin:adRevenuePackage];
+    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
 }
@@ -130,7 +132,13 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
 
+    if (isInDelay) {
+        adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
+        adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
+    }
+
     [self signWithSigV2Plugin:adRevenuePackage];
+    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
 }
@@ -142,7 +150,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
                                     token:(NSString *)token
                           errorCodeNumber:(NSNumber *)errorCodeNumber {
-
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     if (token != nil) {
@@ -161,9 +168,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 - (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
                                 linkMeUrl:(NSString * _Nullable)linkMeUrl {
-
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    
+
     if (linkMeUrl != nil) {
         [ADJPackageBuilder parameters:parameters
                             setString:linkMeUrl
@@ -186,6 +192,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     clickPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:clickPackage];
+    clickPackage.parameters = [ADJUtil deepCopyOfDictionary:clickPackage.parameters];
 
     return clickPackage;
 }
@@ -199,6 +206,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     attributionPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:attributionPackage];
+    attributionPackage.parameters = [ADJUtil deepCopyOfDictionary:attributionPackage.parameters];
 
     return attributionPackage;
 }
@@ -212,6 +220,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     gdprPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:gdprPackage];
+    gdprPackage.parameters = [ADJUtil deepCopyOfDictionary:gdprPackage.parameters];
 
     return gdprPackage;
 }
@@ -225,6 +234,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     dtpsPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:dtpsPackage];
+    dtpsPackage.parameters = [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters];
 
     return dtpsPackage;
 }
@@ -239,6 +249,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     tpsPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:tpsPackage];
+    tpsPackage.parameters = [ADJUtil deepCopyOfDictionary:tpsPackage.parameters];
 
     return tpsPackage;
 }
@@ -252,6 +263,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     mcPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:mcPackage];
+    mcPackage.parameters = [ADJUtil deepCopyOfDictionary:mcPackage.parameters];
 
     return mcPackage;
 }
@@ -266,11 +278,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     subscriptionPackage.parameters = parameters;
 
     if (isInDelay) {
-        subscriptionPackage.callbackParameters = subscription.callbackParameters;
-        subscriptionPackage.partnerParameters = subscription.partnerParameters;
+        subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
+        subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
     }
 
     [self signWithSigV2Plugin:subscriptionPackage];
+    subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
 
     return subscriptionPackage;
 }
