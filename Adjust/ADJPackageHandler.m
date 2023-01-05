@@ -265,32 +265,36 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)updatePackagesI:(ADJPackageHandler *)selfI
-      sessionParameters:(ADJSessionParameters *)sessionParameters
-{
+      sessionParameters:(ADJSessionParameters *)sessionParameters {
     [selfI.logger debug:@"Updating package handler queue"];
     [selfI.logger verbose:@"Session callback parameters: %@", sessionParameters.callbackParameters];
     [selfI.logger verbose:@"Session partner parameters: %@", sessionParameters.partnerParameters];
 
-    for (ADJActivityPackage * activityPackage in selfI.packageQueue) {
-        // callback parameters
-        NSDictionary * mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
-                                                                    source:activityPackage.callbackParameters
-                                                             parameterName:@"Callback"];
+    // create package queue copy for new state of array
+    NSMutableArray *packageQueueCopy = [NSMutableArray array];
 
+    for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
+        // callback parameters
+        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
+                                                                   source:activityPackage.callbackParameters
+                                                            parameterName:@"Callback"];
         [ADJPackageBuilder parameters:activityPackage.parameters
                         setDictionary:mergedCallbackParameters
                                forKey:@"callback_params"];
 
         // partner parameters
-        NSDictionary * mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
-                                                                   source:activityPackage.partnerParameters
-                                                            parameterName:@"Partner"];
-
+        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
+                                                                  source:activityPackage.partnerParameters
+                                                           parameterName:@"Partner"];
         [ADJPackageBuilder parameters:activityPackage.parameters
                         setDictionary:mergedPartnerParameters
                                forKey:@"partner_params"];
+        // add to copy queue
+        [packageQueueCopy addObject:activityPackage];
     }
 
+    // write package queue copy
+    selfI.packageQueue = packageQueueCopy;
     [selfI writePackageQueueS:selfI];
 }
 
