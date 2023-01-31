@@ -136,13 +136,6 @@
             testOptions.noBackoffWait = YES;
         }
     }
-    testOptions.iAdFrameworkEnabled = NO; // default value -> NO - iAd will not be used in test app by default
-    if ([parameters objectForKey:@"iAdFrameworkEnabled"]) {
-        NSString *iAdFrameworkEnabledStr = [parameters objectForKey:@"iAdFrameworkEnabled"][0];
-        if ([iAdFrameworkEnabledStr isEqualToString:@"true"]) {
-            testOptions.iAdFrameworkEnabled = YES;
-        }
-    }
     testOptions.adServicesFrameworkEnabled = NO; // default value -> NO - AdServices will not be used in test app by default
     if ([parameters objectForKey:@"adServicesFrameworkEnabled"]) {
         NSString *adServicesFrameworkEnabledStr = [parameters objectForKey:@"adServicesFrameworkEnabled"][0];
