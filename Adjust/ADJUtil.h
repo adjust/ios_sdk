@@ -123,12 +123,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 
-+ (void)checkForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue;
-
-+ (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
-   adClientSharedInstance:(id)ADClientSharedClientInstance
-                    queue:(dispatch_queue_t)queue;
-
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
 
 + (NSString *)bundleIdentifier;

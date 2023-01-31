@@ -87,8 +87,6 @@
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler> _Nullable)selfI
                attribution:(ADJAttribution * _Nullable)attribution;
-- (void)setAttributionDetails:(NSDictionary * _Nullable)attributionDetails
-                        error:(NSError * _Nullable)error;
 - (void)setAdServicesAttributionToken:(NSString * _Nullable)token
                                 error:(NSError * _Nullable)error;
 
@@ -157,5 +155,4 @@
 
 @end
 
-extern NSString * _Nullable const ADJiAdPackageKey;
 extern NSString * _Nullable const ADJAdServicesPackageKey;

@@ -96,34 +96,6 @@ static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cache
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
 }
 
-+ (void)saveiAdErrorKey:(NSString *)key {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    NSMutableDictionary<NSString *, NSNumber *> *errors = [[userDefaults dictionaryForKey:PREFS_KEY_IAD_ERRORS] mutableCopy];
-    if (errors) {
-        NSNumber *value = errors[key];
-        if (!value) {
-            value = @(1);
-        } else {
-            value = @([value integerValue] + 1);
-        }
-        
-        errors[key] = value;
-    } else {
-        errors[key] = @(1);
-    }
-    
-    [userDefaults setObject:errors forKey:PREFS_KEY_IAD_ERRORS];
-}
-
-+ (NSDictionary<NSString *, NSNumber *> *)getiAdErrors {
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:PREFS_KEY_IAD_ERRORS];
-}
-
-+ (void)cleariAdErrors {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_IAD_ERRORS];
-}
-
 + (void)setAdServicesTracked {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_ADSERVICES_TRACKED];
 }

@@ -697,7 +697,6 @@ static dispatch_once_t onceToken = 0;
         [ADJAdjustFactory disableSigning];
     }
 
-    [ADJAdjustFactory setiAdFrameworkEnabled:testOptions.iAdFrameworkEnabled];
     [ADJAdjustFactory setAdServicesFrameworkEnabled:testOptions.adServicesFrameworkEnabled];
 }
 

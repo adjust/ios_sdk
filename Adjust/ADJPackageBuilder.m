@@ -179,16 +179,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [parameters addEntriesFromDictionary:extraParameters];
     }
     
-    if ([clickSource isEqualToString:ADJiAdPackageKey]) {
-        // send iAd errors in the parameters
-        NSDictionary<NSString *, NSNumber *> *iAdErrors = [ADJUserDefaults getiAdErrors];
-        if (iAdErrors) {
-            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:iAdErrors options:0 error:nil];
-            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            parameters[@"iad_errors"] = jsonStr;
-        }
-    }
-    
     ADJActivityPackage *clickPackage = [self defaultActivityPackage];
     clickPackage.path = @"/sdk_click";
     clickPackage.activityKind = ADJActivityKindClick;
@@ -1262,9 +1252,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
     if (self.adjustConfig.allowIdfaReading == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
-    }
-    if (self.adjustConfig.allowiAdInfoReading == NO) {
-        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_iad_disabled"];
     }
     if (self.adjustConfig.allowAdServicesInfoReading == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
