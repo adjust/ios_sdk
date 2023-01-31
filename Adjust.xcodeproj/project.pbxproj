@@ -2613,7 +2613,7 @@
 		9679920518BBAE2800394606 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = "Adjust GmbH";
 				TargetAttributes = {
 					0AB1C97027DD450D00509231 = {

@@ -46,7 +46,7 @@
 		9D449F5D1E6EE6C500E7E80B /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3B1E6EE6C500E7E80B /* Adjust.m */; };
 		9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F3D1E6EE6C500E7E80B /* ADJUtil.m */; };
 		9D49D171290FEBFC00042345 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D49D170290FEBFC00042345 /* ADJSKAdNetwork.m */; };
-		9D5C9632295D96260021602B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5C9631295D96260021602B /* StoreKit.framework */; };
+		9D5C9632295D96260021602B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5C9631295D96260021602B /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DC95F2F1C10596500138E4B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC95F2E1C10596500138E4B /* Constants.m */; };
 		9DD0E9CF1F459ECE00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9CE1F459ECE00B2A759 /* ADJUserDefaults.m */; };
 		9DF3823D260E9E000033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF3823C260E9E000033F5A1 /* NSNumber+ADJAdditions.m */; };
