@@ -316,11 +316,6 @@
         [adjustConfig setAllowIdfaReading:[allowIdfaReadingS boolValue]];
     }
 
-    if ([parameters objectForKey:@"allowiAdInfoReading"]) {
-        NSString *allowiAdInfoReadingS = [parameters objectForKey:@"allowiAdInfoReading"][0];
-        [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReadingS boolValue]];
-    }
-
     if ([parameters objectForKey:@"allowAdServicesInfoReading"]) {
         NSString *allowAdServicesInfoReadingS = [parameters objectForKey:@"allowAdServicesInfoReading"][0];
         [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReadingS boolValue]];

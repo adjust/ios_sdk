@@ -22,7 +22,6 @@ static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * installSessionBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
-static BOOL internaliAdFrameworkEnabled = YES;
 static BOOL internalAdServicesFrameworkEnabled = YES;
 
 static NSString * internalBaseUrl = nil;
@@ -99,10 +98,6 @@ static NSString * internalSubscriptionUrl = nil;
     return internalTesting;
 }
 
-+ (BOOL)iAdFrameworkEnabled {
-    return internaliAdFrameworkEnabled;
-}
-
 + (BOOL)adServicesFrameworkEnabled {
     return internalAdServicesFrameworkEnabled;
 }
@@ -160,10 +155,6 @@ static NSString * internalSubscriptionUrl = nil;
 
 + (void)setTesting:(BOOL)testing {
     internalTesting = testing;
-}
-
-+ (void)setiAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled {
-    internaliAdFrameworkEnabled = iAdFrameworkEnabled;
 }
 
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled {
@@ -248,7 +239,6 @@ static NSString * internalSubscriptionUrl = nil;
     internalBaseUrl = nil;
     internalGdprUrl = nil;
     internalSubscriptionUrl = nil;
-    internaliAdFrameworkEnabled = YES;
     internalAdServicesFrameworkEnabled = YES;
 }
 @end

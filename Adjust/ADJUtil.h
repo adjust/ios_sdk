@@ -80,8 +80,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)deleteFileWithName:(NSString *)filename;
 
-+ (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails;
-
 + (BOOL)isValidParameter:(NSString *)attribute
            attributeType:(NSString *)attributeType
            parameterName:(NSString *)parameterName;

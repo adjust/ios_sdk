@@ -194,7 +194,6 @@
         NSString *userAgent = [data objectForKey:@"userAgent"];
         NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
-        NSNumber *allowiAdInfoReading = [data objectForKey:@"allowiAdInfoReading"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
@@ -261,9 +260,6 @@
         }
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];
-        }
-        if ([self isFieldValid:allowiAdInfoReading]) {
-            [adjustConfig setAllowiAdInfoReading:[allowiAdInfoReading boolValue]];
         }
         if ([self isFieldValid:allowAdServicesInfoReading]) {
             [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
@@ -632,7 +628,6 @@
         NSNumber *teardown = [data objectForKey:@"teardown"];
         NSNumber *deleteState = [data objectForKey:@"deleteState"];
         NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
-        NSNumber *iAdFrameworkEnabled = [data objectForKey:@"iAdFrameworkEnabled"];
         NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
 
         AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
@@ -669,9 +664,6 @@
         }
         if ([self isFieldValid:noBackoffWait]) {
             testOptions.noBackoffWait = [noBackoffWait boolValue];
-        }
-        if ([self isFieldValid:iAdFrameworkEnabled]) {
-            testOptions.iAdFrameworkEnabled = [iAdFrameworkEnabled boolValue];
         }
         if ([self isFieldValid:adServicesFrameworkEnabled]) {
             testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
