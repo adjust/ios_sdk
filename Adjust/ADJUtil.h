@@ -80,8 +80,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)deleteFileWithName:(NSString *)filename;
 
-+ (BOOL)checkAttributionDetails:(NSDictionary *)attributionDetails;
-
 + (BOOL)isValidParameter:(NSString *)attribute
            attributeType:(NSString *)attributeType
            parameterName:(NSString *)parameterName;
@@ -123,12 +121,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 
-+ (void)checkForiAd:(ADJActivityHandler *)activityHandler queue:(dispatch_queue_t)queue;
-
-+ (BOOL)setiAdWithDetails:(ADJActivityHandler *)activityHandler
-   adClientSharedInstance:(id)ADClientSharedClientInstance
-                    queue:(dispatch_queue_t)queue;
-
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
 
 + (NSString *)bundleIdentifier;
@@ -146,5 +138,7 @@ typedef void (^isInactiveInjected)(BOOL);
 + (NSString *)getPersistedRandomToken;
 
 + (BOOL)setPersistedRandomToken:(NSString *)randomToken;
+
++ (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
 
 @end

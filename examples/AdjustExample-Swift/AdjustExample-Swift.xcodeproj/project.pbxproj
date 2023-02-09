@@ -13,10 +13,9 @@
 		9DF7A9CB1CB4ECA600D3591F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9C91CB4ECA600D3591F /* Main.storyboard */; };
 		9DF7A9CD1CB4ECA600D3591F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9CC1CB4ECA600D3591F /* Assets.xcassets */; };
 		9DF7A9D01CB4ECA600D3591F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7A9CE1CB4ECA600D3591F /* LaunchScreen.storyboard */; };
-		9DFB04C21D745B22006D48FC /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C11D745B22006D48FC /* iAd.framework */; };
-		9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C31D745B28006D48FC /* AdSupport.framework */; };
-		D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */; };
-		D758F83A2567BD3700F885BD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D758F8392567BD3700F885BD /* AdServices.framework */; };
+		9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04C31D745B28006D48FC /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71BFB6F24CAD74A00878F3E /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D758F83A2567BD3700F885BD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D758F8392567BD3700F885BD /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +43,6 @@
 			files = (
 				D71BFB7024CAD74A00878F3E /* AppTrackingTransparency.framework in Frameworks */,
 				D758F83A2567BD3700F885BD /* AdServices.framework in Frameworks */,
-				9DFB04C21D745B22006D48FC /* iAd.framework in Frameworks */,
 				9DFB04C41D745B28006D48FC /* AdSupport.framework in Frameworks */,
 				7254358CD9E958A7B4064280 /* Pods_AdjustExample_Swift.framework in Frameworks */,
 			);

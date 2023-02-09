@@ -14,7 +14,6 @@
 		9D9D153B212EB3940081445E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153A212EB3940081445E /* Assets.xcassets */; };
 		9D9D153E212EB3940081445E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D153C212EB3940081445E /* LaunchScreen.storyboard */; };
 		9D9D1541212EB3940081445E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D1540212EB3940081445E /* main.m */; };
-		9D9D1561212EB4080081445E /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9D1560212EB4080081445E /* iAd.framework */; };
 		9D9D1563212EB40D0081445E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9D1562212EB40D0081445E /* AdSupport.framework */; };
 		9D9D1565212EB4130081445E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9D1564212EB4130081445E /* WebKit.framework */; };
 		9D9D15E3212EB47C0081445E /* AdjustExample-FbPixel.html in Resources */ = {isa = PBXBuildFile; fileRef = 9D9D15E2212EB47C0081445E /* AdjustExample-FbPixel.html */; };
@@ -165,9 +164,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D9D1561212EB4080081445E /* iAd.framework in Frameworks */,
-				9D9D1565212EB4130081445E /* WebKit.framework in Frameworks */,
 				9D9D1563212EB40D0081445E /* AdSupport.framework in Frameworks */,
+				9D9D1565212EB4130081445E /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

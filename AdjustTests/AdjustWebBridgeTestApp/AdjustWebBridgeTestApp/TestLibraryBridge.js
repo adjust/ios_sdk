@@ -67,7 +67,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         this.teardown = null;
         this.deleteState = null;
         this.noBackoffWait = null;
-        this.iAdFrameworkEnabled = null;
         this.adServicesFrameworkEnabled = null;
     };
 
@@ -93,12 +92,6 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     if ('noBackoffWait' in params) {
         var noBackoffWait = getFirstValue(params, 'noBackoffWait');
         testOptions.noBackoffWait = noBackoffWait == 'true';
-    }
-    // iAd will not be used in test app by default
-    testOptions.iAdFrameworkEnabled = false;
-    if ('iAdFrameworkEnabled' in params) {
-        var iAdFrameworkEnabled = getFirstValue(params, 'iAdFrameworkEnabled');
-        testOptions.iAdFrameworkEnabled = iAdFrameworkEnabled == 'true';
     }
     // AdServices will not be used in test app by default
     testOptions.adServicesFrameworkEnabled = false;
@@ -242,12 +235,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var needsCostS = getFirstValue(params, 'needsCost');
         var needsCost = needsCostS == 'true';
         adjustConfig.setNeedsCost(needsCost);
-    }
-    
-    if ('allowiAdInfoReading' in params) {
-        var allowiAdInfoReadingS = getFirstValue(params, 'allowiAdInfoReading');
-        var allowiAdInfoReading = allowiAdInfoReadingS == 'true';
-        adjustConfig.setAllowiAdInfoReading(allowiAdInfoReading);
     }
     
     if ('allowAdServicesInfoReading' in params) {

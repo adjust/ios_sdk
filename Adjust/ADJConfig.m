@@ -69,7 +69,6 @@
     self.eventBufferingEnabled = NO;
     self.coppaCompliantEnabled = NO;
     self.allowIdfaReading = YES;
-    self.allowiAdInfoReading = YES;
     self.allowAdServicesInfoReading = YES;
     self.linkMeEnabled = NO;
     _isSKAdNetworkHandlingActive = YES;
@@ -202,7 +201,6 @@
         copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.sendInBackground = self.sendInBackground;
         copy.allowIdfaReading = self.allowIdfaReading;
-        copy.allowiAdInfoReading = self.allowiAdInfoReading;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
         copy.delayStart = self.delayStart;
         copy.coppaCompliantEnabled = self.coppaCompliantEnabled;

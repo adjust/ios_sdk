@@ -61,7 +61,6 @@
 		9DF7ACC91CB5032900D3591F /* TableRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7ACC71CB5032900D3591F /* TableRowController.m */; };
 		9DF92DA52630EE8E000FC3FC /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF92DA42630EE8E000FC3FC /* ADJPackageParams.m */; };
 		9DFB04D01D745D5C006D48FC /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04CF1D745D5C006D48FC /* CoreFoundation.framework */; };
-		9DFB04D21D745D60006D48FC /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04D11D745D60006D48FC /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DFB04D41D745D65006D48FC /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFB04D31D745D65006D48FC /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -219,7 +218,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DFB04D21D745D60006D48FC /* iAd.framework in Frameworks */,
 				9DFB04D41D745D65006D48FC /* AdSupport.framework in Frameworks */,
 				9DFB04D01D745D5C006D48FC /* CoreFoundation.framework in Frameworks */,
 			);

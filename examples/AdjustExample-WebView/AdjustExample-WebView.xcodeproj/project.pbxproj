@@ -14,14 +14,13 @@
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
 		9D1082B41CFDAF8E0050568B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082B31CFDAF8E0050568B /* Assets.xcassets */; };
 		9D1082C51CFDAFDA0050568B /* AdjustExample-WebView.html in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082C41CFDAFDA0050568B /* AdjustExample-WebView.html */; };
-		9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082C71CFDAFF30050568B /* WebKit.framework */; };
-		9D1082CA1CFDAFF60050568B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082C91CFDAFF60050568B /* iAd.framework */; };
-		9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082CB1CFDAFFB0050568B /* AdSupport.framework */; };
-		9D10833A1CFDBD9F0050568B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083391CFDBD9F0050568B /* CoreGraphics.framework */; };
+		9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082C71CFDAFF30050568B /* WebKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1082CB1CFDAFFB0050568B /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9D10833A1CFDBD9F0050568B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083391CFDBD9F0050568B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9D10833D1CFDD8F00050568B /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D10833C1CFDD8F00050568B /* WKWebViewController.m */; };
 		9D10833F1CFDDBF50050568B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D10833E1CFDDBF50050568B /* Default-568h@2x.png */; };
-		9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083401CFDE2470050568B /* UIKit.framework */; };
-		9D1083431CFDE29A0050568B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083421CFDE29A0050568B /* Foundation.framework */; };
+		9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083401CFDE2470050568B /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		9D1083431CFDE29A0050568B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083421CFDE29A0050568B /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9D2F24112447DE0A00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24102447DE0A00B7CA90 /* ADJSubscription.m */; };
 		9D3A2ADE2626514300BD6E44 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2ADC2626514300BD6E44 /* ADJAdRevenue.m */; };
 		9D449EDA1E6EDD4100E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E991E6EDD4100E7E80B /* ADJActivityHandler.m */; };
@@ -60,7 +59,7 @@
 		9DD0E9C41F4587C600B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */; };
 		9DF38239260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF38237260E9DDE0033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF92D9F2630EE54000FC3FC /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF92D9E2630EE54000FC3FC /* ADJPackageParams.m */; };
-		D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */; };
+		D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -172,12 +171,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D1082CA1CFDAFF60050568B /* iAd.framework in Frameworks */,
+				9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */,
+				D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */,
 				9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */,
 				9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */,
-				9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */,
 				9D1083431CFDE29A0050568B /* Foundation.framework in Frameworks */,
-				D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */,
 				9D10833A1CFDBD9F0050568B /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

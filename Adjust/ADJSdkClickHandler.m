@@ -209,12 +209,6 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
     self.lastPackageRetriesCount = 0;
     
-    if ([responseData.sdkClickPackage.parameters.allValues containsObject:ADJiAdPackageKey]) {
-        // received iAd click package response, clear the errors from UserDefaults
-        [ADJUserDefaults cleariAdErrors];
-        [self.logger info:@"Received iAd click response"];
-    }
-    
     if ([ADJPackageBuilder isAdServicesPackage:responseData.sdkClickPackage]) {
         // set as tracked
         [ADJUserDefaults setAdServicesTracked];

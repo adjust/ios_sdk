@@ -24,7 +24,6 @@
 #import "ADJUrlStrategy.h"
 #import "ADJSKAdNetwork.h"
 
-NSString * const ADJiAdPackageKey = @"iad3";
 NSString * const ADJAdServicesPackageKey = @"apple_ads";
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
@@ -44,7 +43,6 @@ static NSTimeInterval kForegroundTimerStart;
 static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
-static const int kiAdRetriesCount = 3;
 static const int kAdServicesdRetriesCount = 1;
 
 @implementation ADJInternalState
@@ -86,7 +84,6 @@ static const int kAdServicesdRetriesCount = 1;
 @property (nonatomic, strong) ADJActivityState *activityState;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
-@property (nonatomic, assign) NSInteger iAdRetriesLeft;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJPackageParams *packageParams;
@@ -107,19 +104,6 @@ static const int kAdServicesdRetriesCount = 1;
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
 
 @end
-
-// copy from ADClientError
-typedef NS_ENUM(NSInteger, AdjADClientError) {
-    AdjADClientErrorUnknown = 0,
-    AdjADClientErrorTrackingRestrictedOrDenied = 1,
-    AdjADClientErrorMissingData = 2,
-    AdjADClientErrorCorruptResponse = 3,
-    AdjADClientErrorRequestClientError = 4,
-    AdjADClientErrorRequestServerError = 5,
-    AdjADClientErrorRequestNetworkError = 6,
-    AdjADClientErrorUnsupportedPlatform = 7,
-    AdjCustomErrorTimeout = 100,
-};
 
 #pragma mark -
 @implementation ADJActivityHandler
@@ -146,9 +130,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     // check if ASA and IDFA tracking were switched off and warn just in case
     if (adjustConfig.allowIdfaReading == NO) {
         [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
-    }
-    if (adjustConfig.allowiAdInfoReading == NO) {
-        [ADJAdjustFactory.logger warn:@"iAd info reading has been switched off"];
     }
     if (adjustConfig.allowAdServicesInfoReading == NO) {
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
@@ -217,7 +198,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
 
-    self.iAdRetriesLeft = kiAdRetriesCount;
     self.adServicesRetriesLeft = kAdServicesdRetriesCount;
 
     self.trackingStatusManager = [[ADJTrackingStatusManager alloc] initWithActivityHandler:self];
@@ -438,154 +418,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
     }
 }
 
-- (void)setAttributionDetails:(NSDictionary *)attributionDetails
-                        error:(NSError *)error
-{
-    if (![ADJUtil isNull:error]) {
-        [self.logger warn:@"Unable to read iAd details"];
-
-        if (self.iAdRetriesLeft  < 0) {
-            [self.logger warn:@"Number of retries to get iAd information surpassed"];
-            return;
-        }
-
-        switch (error.code) {
-            // if first request was unsuccessful and ended up with one of the following error codes:
-            // apply following retry logic:
-            //      - 1st retry after 5 seconds
-            //      - 2nd retry after 2 seconds
-            //      - 3rd retry after 2 seconds
-            case AdjADClientErrorUnknown:
-            case AdjADClientErrorMissingData:
-            case AdjADClientErrorCorruptResponse:
-            case AdjADClientErrorRequestClientError:
-            case AdjADClientErrorRequestServerError:
-            case AdjADClientErrorRequestNetworkError:
-            case AdjCustomErrorTimeout: {
-                
-                [self saveiAdErrorCode:error.code];
-                
-                int64_t iAdRetryDelay = 0;
-                switch (self.iAdRetriesLeft) {
-                    case 2:
-                        iAdRetryDelay = 5 * NSEC_PER_SEC;
-                        break;
-                    default:
-                        iAdRetryDelay = 2 * NSEC_PER_SEC;
-                        break;
-                }
-                self.iAdRetriesLeft = self.iAdRetriesLeft - 1;
-                dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, iAdRetryDelay);
-                dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self checkForiAdI:self];
-                });
-                return;
-            }
-            case AdjADClientErrorTrackingRestrictedOrDenied:
-            case AdjADClientErrorUnsupportedPlatform:
-                return;
-            default:
-                return;
-        }
-    }
-
-    // check if it's a valid attribution details
-    if (![ADJUtil checkAttributionDetails:attributionDetails]) {
-        return;
-    }
-
-    // send immediately if there is no previous attribution details
-    if (self.activityState == nil ||
-        self.activityState.attributionDetails == nil)
-    {
-        // send immediately
-        [self sendIad3ClickPackage:self attributionDetails:attributionDetails];
-        // save in the background queue
-        [ADJUtil launchInQueue:self.internalQueue
-                    selfInject:self
-                         block:^(ADJActivityHandler * selfI) {
-                             [selfI saveAttributionDetailsI:selfI
-                                         attributionDetails:attributionDetails];
-
-                         }];
-        return;
-    }
-
-    // check if new updates previous written one
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         if ([attributionDetails isEqualToDictionary:selfI.activityState.attributionDetails]) {
-                             return;
-                         }
-
-                         [selfI sendIad3ClickPackage:selfI attributionDetails:attributionDetails];
-
-                         // save new iAd details
-                         [selfI saveAttributionDetailsI:selfI
-                                     attributionDetails:attributionDetails];
-                     }];
-}
-
-- (void)saveiAdErrorCode:(NSInteger)code {
-    NSString *codeKey;
-    switch (code) {
-        case AdjADClientErrorUnknown:
-            codeKey = @"AdjADClientErrorUnknown";
-            break;
-        case AdjADClientErrorMissingData:
-            codeKey = @"AdjADClientErrorMissingData";
-            break;
-        case AdjADClientErrorCorruptResponse:
-            codeKey = @"AdjADClientErrorCorruptResponse";
-            break;
-        case AdjCustomErrorTimeout:
-            codeKey = @"AdjCustomErrorTimeout";
-            break;
-        default:
-            codeKey = @"";
-            break;
-    }
-    
-    if (![codeKey isEqualToString:@""]) {
-        [ADJUserDefaults saveiAdErrorKey:codeKey];
-    }
-}
-
-- (void)sendIad3ClickPackage:(ADJActivityHandler *)selfI
-          attributionDetails:(NSDictionary *)attributionDetails
- {
-     if (![selfI isEnabledI:selfI]) {
-         return;
-     }
-
-     if (ADJAdjustFactory.iAdFrameworkEnabled == NO) {
-         [self.logger verbose:@"Sending iAd details to server suppressed."];
-         return;
-     }
-
-     double now = [NSDate.date timeIntervalSince1970];
-     if (selfI.activityState != nil) {
-         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                         block:^{
-             double lastInterval = now - selfI.activityState.lastActivity;
-             selfI.activityState.lastInterval = lastInterval;
-         }];
-     }
-     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithPackageParams:selfI.packageParams
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        sessionParameters:self.sessionParameters
-                                        trackingStatusManager:self.trackingStatusManager
-                                        createdAt:now];
-
-     clickBuilder.attributionDetails = attributionDetails;
-
-     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJiAdPackageKey];
-     [selfI.sdkClickHandler sendSdkClick:clickPackage];
-}
-
 - (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
                              token:(NSString *)token
                    errorCodeNumber:(NSNumber *)errorCodeNumber
@@ -620,17 +452,6 @@ typedef NS_ENUM(NSInteger, AdjADClientError) {
                                   token:token
                         errorCodeNumber:errorCodeNumber];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
-}
-
-- (void)saveAttributionDetailsI:(ADJActivityHandler *)selfI
-             attributionDetails:(NSDictionary *)attributionDetails
-{
-    // save new iAd details
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.attributionDetails = attributionDetails;
-    }];
-    [selfI writeAttributionI:selfI];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -1117,9 +938,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
         }];
 
-        if (selfI.adjustConfig.allowiAdInfoReading == YES) {
-            [selfI checkForiAdI:selfI];
-        }
         if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
@@ -1789,9 +1607,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         if (pushToken != nil && ![selfI.activityState.deviceToken isEqualToString:pushToken]) {
             [self setPushToken:pushToken];
         }
-        if (selfI.adjustConfig.allowiAdInfoReading == YES) {
-            [selfI checkForiAdI:selfI];
-        }
         if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
@@ -1802,10 +1617,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
           pausingMessage:@"Pausing handlers due to SDK being disabled"
     remainsPausedMessage:@"Handlers remain paused"
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
-}
-
-- (void)checkForiAdI:(ADJActivityHandler *)selfI {
-    [ADJUtil checkForiAd:selfI queue:selfI.internalQueue];
 }
 
 - (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {

@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.33.3
+//  V4.33.4
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -28,7 +28,6 @@
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
-@property (nonatomic, assign) BOOL iAdFrameworkEnabled;
 @property (nonatomic, assign) BOOL adServicesFrameworkEnabled;
 @property (nonatomic, assign) BOOL enableSigning;
 @property (nonatomic, assign) BOOL disableSigning;

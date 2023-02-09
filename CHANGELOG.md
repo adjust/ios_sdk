@@ -1,3 +1,9 @@
+### Version 4.33.4 (9th February 2023)
+#### Changed
+- Removed usage of `iAd.framework` logic. As of February 7th 2023 the iAd framework has stopped attributing downloads from Apple Ads campaigns.
+
+---
+
 ### Version 4.33.3 (29th December 2022)
 #### Fixed
 - Excluded SKAdNetwork flow from being executed on tvOS target (https://github.com/adjust/ios_sdk/issues/647).

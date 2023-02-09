@@ -166,7 +166,7 @@
 /**
  * @brief Enables/disables reading of iAd framework data needed for ASA tracking.
  */
-@property (nonatomic, assign) BOOL allowiAdInfoReading;
+@property (nonatomic, assign) BOOL allowiAdInfoReading DEPRECATED_MSG_ATTRIBUTE("Apple Search Ads attribution with usage of iAd.framework has been sunset by Apple as of February 7th 2023");
 
 /**
  * @brief Enables/disables reading of AdServices framework data needed for attribution.
