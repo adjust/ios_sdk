@@ -1,4 +1,4 @@
-### Version 4.33.4 (8th February 2023)
+### Version 4.33.4 (9th February 2023)
 #### Changed
 - Removed usage of `iAd.framework` logic. As of February 7th 2023 the iAd framework has stopped attributing downloads from Apple Ads campaigns.
 
