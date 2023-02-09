@@ -233,7 +233,6 @@
 		0AB1CB4027DF69B700509231 /* WebViewJavascriptBridge_JS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9648C5E81CD1765E00A3B049 /* WebViewJavascriptBridge_JS.h */; };
 		0AB1CB4127DF69B700509231 /* WebViewJavascriptBridgeBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9648C5EA1CD1765E00A3B049 /* WebViewJavascriptBridgeBase.h */; };
 		0AB1CB4227DF69B700509231 /* WKWebViewJavascriptBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9648C5EC1CD1765E00A3B049 /* WKWebViewJavascriptBridge.h */; };
-		2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6F84512425B1B1380004C7C0 /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F84511025B1B1380004C7C0 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F84512525B1B1380004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84512325B1B1380004C7C0 /* ADJThirdPartySharing.m */; };
 		6FAB784C2636DC0E00773869 /* ADJLinkResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -258,7 +257,6 @@
 		6FBEE93124E4231400FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE92F24E4231300FEF3F1 /* ADJUrlStrategy.m */; };
 		6FBEE93424E4232800FEF3F1 /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE93224E4232800FEF3F1 /* ADJUrlStrategy.h */; };
 		6FBEE93524E4232800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE93324E4232800FEF3F1 /* ADJUrlStrategy.m */; };
-		9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 9601CAE21C74B70600670879 /* ADJEventSuccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9601CAE51C74B70600670879 /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9601CAE31C74B70600670879 /* ADJEventSuccess.m */; };
@@ -277,9 +275,7 @@
 		96164D731CC8FA73009431AB /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96164D711CC8FA73009431AB /* ADJSdkClickHandler.m */; };
 		96164D841CCA4D10009431AB /* ADJSdkClickHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 96164D701CC8FA73009431AB /* ADJSdkClickHandler.h */; };
 		96164D861CCA4D27009431AB /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
-		96325E89190E892000A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E86190E5CE400A97911 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96325E84190E5CD900A97911 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */; };
 		965B7F311CC78F6600098639 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */; };
@@ -1362,8 +1358,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2067002A1F18BDC700B4FDE1 /* CoreTelephony.framework in Frameworks */,
-				96325E89190E892000A97911 /* iAd.framework in Frameworks */,
 				9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */,
 				96325E8A190E892600A97911 /* AdSupport.framework in Frameworks */,
 				9679921118BBAE2800394606 /* Foundation.framework in Frameworks */,
@@ -1375,10 +1369,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9679922518BBAE2800394606 /* libAdjust.a in Frameworks */,
-				96325E8B190E8D6200A97911 /* iAd.framework in Frameworks */,
 				96325E8C190E8D6B00A97911 /* AdSupport.framework in Frameworks */,
 				9679922018BBAE2800394606 /* Foundation.framework in Frameworks */,
-				9601C1A01A31DD8900A9AE21 /* CoreTelephony.framework in Frameworks */,
 				9601C1A31A31DE0D00A9AE21 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
