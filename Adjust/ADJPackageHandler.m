@@ -118,6 +118,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     self.lastPackageRetriesCount++;
 
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPackageHandler* selfI) {
+                         [selfI writePackageQueueS:selfI];
+                     }];
+
     NSTimeInterval waitTime;
     if (responseData.activityKind == ADJActivityKindSession && [ADJUserDefaults getInstallTracked] == NO) {
         waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount backoffStrategy:self.backoffStrategyForInstallSession];
@@ -251,6 +257,16 @@ startsSending:(BOOL)startsSending
     [ADJPackageBuilder parameters:sendingParameters
                         setString:[ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
                            forKey:@"sent_at"];
+
+    [ADJPackageBuilder parameters:sendingParameters
+                           setInt:(int)activityPackage.errorCount
+                           forKey:@"error_count"];
+    [ADJPackageBuilder parameters:sendingParameters
+                        setString:activityPackage.firstErrorMessage
+                           forKey:@"first_error"];
+    [ADJPackageBuilder parameters:sendingParameters
+                        setString:activityPackage.lastErrorMessage
+                           forKey:@"last_error"];
 
     [selfI.requestHandler sendPackageByPOST:activityPackage
                           sendingParameters:[sendingParameters copy]];

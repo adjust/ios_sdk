@@ -60,6 +60,16 @@
     return [NSString stringWithFormat:@"Failed to track %@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
 }
 
+- (void)addError:(NSString *)errorMessage {
+    self.errorCount = self.errorCount + 1;
+
+    if (self.firstErrorMessage == nil) {
+        self.firstErrorMessage = errorMessage;
+    } else {
+        self.lastErrorMessage = errorMessage;
+    }
+}
+
 #pragma mark - NSCoding protocol methods
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -79,6 +89,13 @@
     NSString *kindString = [decoder decodeObjectForKey:@"kind"];
     self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
+    id errorCountObject = [decoder decodeObjectForKey:@"errorCount"];
+    if (errorCountObject != nil && [errorCountObject isKindOfClass:[NSNumber class]]) {
+        self.errorCount = ((NSNumber *) errorCountObject).unsignedIntegerValue;
+    }
+    self.firstErrorMessage = [decoder decodeObjectForKey:@"firstErrorMessage"];
+    self.lastErrorMessage = [decoder decodeObjectForKey:@"lastErrorMessage"];
+
     return self;
 }
 
@@ -92,6 +109,9 @@
     [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:self.callbackParameters forKey:@"callbackParameters"];
     [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
+    [encoder encodeObject:@(self.errorCount) forKey:@"errorCount"];
+    [encoder encodeObject:self.firstErrorMessage forKey:@"firstErrorMessage"];
+    [encoder encodeObject:self.lastErrorMessage forKey:@"lastErrorMessage"];
 }
 
 @end
