@@ -57,6 +57,10 @@
         case ADJActivityKindAttribution:
             responseData = [[ADJAttributionResponseData alloc] init];
             break;
+        case ADJActivityKindPurchaseVerification:
+            responseData = [[ADJPurchaseVerificationResponseData alloc] init];
+            responseData.purchaseVerificationPackage = activityPackage;
+            break;
         default:
             responseData = [[ADJResponseData alloc] init];
             break;
@@ -126,6 +130,10 @@
 @end
 
 @implementation ADJSdkClickResponseData
+
+@end
+
+@implementation ADJPurchaseVerificationResponseData
 
 @end
 

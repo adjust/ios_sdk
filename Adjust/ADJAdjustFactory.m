@@ -27,6 +27,7 @@ static BOOL internalAdServicesFrameworkEnabled = YES;
 static NSString * internalBaseUrl = nil;
 static NSString * internalGdprUrl = nil;
 static NSString * internalSubscriptionUrl = nil;
+static NSString * internalPurchaseVerificationUrl = nil;
 
 @implementation ADJAdjustFactory
 
@@ -121,6 +122,10 @@ static NSString * internalSubscriptionUrl = nil;
     return internalSubscriptionUrl;
 }
 
++ (NSString *)purchaseVerificationUrl {
+    return internalPurchaseVerificationUrl;
+}
+
 + (void)setLogger:(id<ADJLogger>)logger {
     internalLogger = logger;
 }
@@ -175,6 +180,10 @@ static NSString * internalSubscriptionUrl = nil;
 
 + (void)setSubscriptionUrl:(NSString *)subscriptionUrl {
     internalSubscriptionUrl = subscriptionUrl;
+}
+
++ (void)setPurchaseVerificationUrl:(NSString *)purchaseVerificationUrl {
+    internalPurchaseVerificationUrl = purchaseVerificationUrl;
 }
 
 + (void)enableSigning {
@@ -239,6 +248,7 @@ static NSString * internalSubscriptionUrl = nil;
     internalBaseUrl = nil;
     internalGdprUrl = nil;
     internalSubscriptionUrl = nil;
+    internalPurchaseVerificationUrl = nil;
     internalAdServicesFrameworkEnabled = YES;
 }
 @end

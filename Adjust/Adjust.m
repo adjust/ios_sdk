@@ -319,6 +319,13 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)verifyPurchase:(nonnull ADJPurchase *)purchase
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    @synchronized (self) {
+        [[Adjust getInstance] verifyPurchase:purchase completionHandler:completionHandler];
+    }
+}
+
 + (void)setTestOptions:(AdjustTestOptions *)testOptions {
     @synchronized (self) {
         if (testOptions.teardown) {
@@ -648,6 +655,14 @@ static dispatch_once_t onceToken = 0;
     return [ADJUserDefaults getCachedDeeplinkUrl];
 }
 
+- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+    [self.activityHandler verifyPurchase:purchase completionHandler:completionHandler];
+}
+
 - (void)teardown {
     if (self.activityHandler == nil) {
         [self.logger error:@"Adjust already down or not initialized"];
@@ -669,6 +684,9 @@ static dispatch_once_t onceToken = 0;
     }
     if (testOptions.subscriptionUrl != nil) {
         [ADJAdjustFactory setSubscriptionUrl:testOptions.subscriptionUrl];
+    }
+    if (testOptions.purchaseVerificationUrl != nil) {
+        [ADJAdjustFactory setPurchaseVerificationUrl:testOptions.purchaseVerificationUrl];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;

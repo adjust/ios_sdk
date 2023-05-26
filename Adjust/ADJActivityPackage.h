@@ -22,6 +22,8 @@
 
 @property (nonatomic, strong) NSDictionary *callbackParameters;
 
+@property (nonatomic, copy) void (^responseBlock)(id);
+
 // Logs
 
 @property (nonatomic, copy) NSString *suffix;

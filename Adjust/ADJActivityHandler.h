@@ -114,6 +114,8 @@
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)checkForNewAttStatus;
+- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
