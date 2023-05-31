@@ -1446,7 +1446,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                                                             createdAt:now];
 
     ADJActivityPackage *purchaseVerificationPackage = [purchaseVerificationBuilder buildPurchaseVerificationPackage:purchase];
-    purchaseVerificationPackage.responseBlock = completionHandler;
+    purchaseVerificationPackage.purchaseVerificationCallback = completionHandler;
     [selfI.purchaseVerificationHandler sendPurchaseVerificationPackage:purchaseVerificationPackage];
 }
 

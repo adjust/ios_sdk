@@ -172,13 +172,13 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         verificationResult.verificationStatus = responseData.jsonResponse[@"verification_status"];
         verificationResult.code = [(NSNumber *)responseData.jsonResponse[@"code"] intValue];
         verificationResult.message = responseData.jsonResponse[@"message"];
-        responseData.purchaseVerificationPackage.responseBlock(verificationResult);
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
     } else {
         [self.logger error:
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
         // TODO: handle invalid JSON error case
         // TODO: handle all the remaining error cases
-        responseData.purchaseVerificationPackage.responseBlock(nil);
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(nil);
     }
     // Check if any package response contains information that user has opted out.
     // If yes, disable SDK and flush any potentially stored packages that happened afterwards.

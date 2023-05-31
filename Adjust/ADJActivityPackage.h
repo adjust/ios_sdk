@@ -22,7 +22,7 @@
 
 @property (nonatomic, strong) NSDictionary *callbackParameters;
 
-@property (nonatomic, copy) void (^responseBlock)(id);
+@property (nonatomic, copy) void (^purchaseVerificationCallback)(id);
 
 // Logs
 
