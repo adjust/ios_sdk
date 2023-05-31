@@ -180,7 +180,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         verificationResult.verificationStatus = @"not_verified";
         verificationResult.code = 101;
         verificationResult.message = responseData.message;
-        responseData.purchaseVerificationPackage.purchaseVerificationCallback(nil);
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
     }
     // Check if any package response contains information that user has opted out.
     // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
