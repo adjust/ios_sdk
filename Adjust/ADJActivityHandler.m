@@ -1431,7 +1431,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [selfI.logger warn:@"Purchase verification aborted because purchase instance is null"];
         ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
         verificationResult.verificationStatus = @"not_verified";
-        verificationResult.code = 100;
+        verificationResult.code = 101;
         verificationResult.message = @"Purchase verification aborted because purchase instance is null";
         completionHandler(verificationResult);
         return;
