@@ -1420,12 +1420,15 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                purchase:(nonnull ADJPurchase *)purchase
       completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     if (![selfI isEnabledI:selfI]) {
+        [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
         return;
     }
     if ([ADJUtil isNull:purchase]) {
+        [selfI.logger warn:@"Purchase verification aborted because purchase instance is null"];
         return;
     }
     if ([ADJUtil isNull:completionHandler]) {
+        [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
         return;
     }
 
