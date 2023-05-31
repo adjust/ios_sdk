@@ -176,8 +176,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     } else {
         [self.logger error:
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
-        // TODO: handle invalid JSON error case
-        // TODO: handle all the remaining error cases
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = @"not_verified";
+        verificationResult.code = 101;
+        verificationResult.message = responseData.message;
         responseData.purchaseVerificationPackage.purchaseVerificationCallback(nil);
     }
     // Check if any package response contains information that user has opted out.
