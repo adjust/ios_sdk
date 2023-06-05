@@ -105,6 +105,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 @property (nonatomic, copy) NSString* basePath;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
+@property (nonatomic, copy) NSString* purchaseVerificationPath;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
@@ -685,6 +686,10 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 
 - (NSString *)getSubscriptionPath {
     return _subscriptionPath;
+}
+
+- (NSString *)getPurchaseVerificationPath {
+    return _purchaseVerificationPath;
 }
 
 - (void)teardown

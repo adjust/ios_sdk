@@ -109,6 +109,7 @@
     testOptions.baseUrl = baseUrl;
     testOptions.gdprUrl = gdprUrl;
     testOptions.subscriptionUrl = subscriptionUrl;
+    testOptions.purchaseVerificationUrl = purchaseVerificationUrl;
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];
