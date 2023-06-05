@@ -178,7 +178,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
         ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
         verificationResult.verificationStatus = @"not_verified";
-        verificationResult.code = 101;
+        verificationResult.code = 102;
         verificationResult.message = responseData.message;
         responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
     }

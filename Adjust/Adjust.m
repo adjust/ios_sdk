@@ -658,6 +658,13 @@ static dispatch_once_t onceToken = 0;
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     if (![self checkActivityHandler]) {
+        if (completionHandler != nil) {
+            ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
+            result.verificationStatus = @"not_verified";
+            result.code = 100;
+            result.message = @"SDK needs to be initialized before making purchase verification request";
+            completionHandler(result);
+        }
         return;
     }
     [self.activityHandler verifyPurchase:purchase completionHandler:completionHandler];
