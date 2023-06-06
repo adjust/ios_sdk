@@ -478,6 +478,28 @@
         }
         [adjustEvent setCallbackId:callbackId];
     }
+
+    if ([parameters objectForKey:@"productId"]) {
+        NSString *productId = [parameters objectForKey:@"productId"][0];
+        if (productId == (id)[NSNull null]) {
+            productId = nil;
+        }
+        [adjustEvent setProductId:productId];
+    }
+
+    if ([parameters objectForKey:@"transactionId"]) {
+        NSString *transactionId = [parameters objectForKey:@"transactionId"][0];
+        if (transactionId == (id)[NSNull null]) {
+            transactionId = nil;
+        }
+        [adjustEvent setTransactionId:transactionId];
+    }
+
+    if ([parameters objectForKey:@"receipt"]) {
+        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
+        NSData *receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
+        [adjustEvent setReceipt:receipt];
+    }
 }
 
 - (void)trackEvent:(NSDictionary *)parameters {

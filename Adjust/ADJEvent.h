@@ -59,6 +59,11 @@
 @property (nonatomic, assign, readonly) BOOL emptyReceipt;
 
 /**
+ * @brief IAP product ID.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *productId;
+
+/**
  * @brief Create Event object with event token.
  *
  * @param eventToken Event token that is created in the dashboard
@@ -118,6 +123,20 @@
  * @param callbackId Custom user defined identifier for the event
  */
 - (void)setCallbackId:(nonnull NSString *)callbackId;
+
+/**
+ * @brief Set the product ID of a In-App Purchases to perform IAP verification.
+ *
+ * @param productId The product ID of the purchased item.
+ */
+- (void)setProductId:(NSString * _Nonnull)productId;
+
+/**
+ * @brief Set the receipt of a In-App Purchases to perform IAP verification.
+ *
+ * @param receipt The receipt obtained after successful IAP.
+ */
+- (void)setReceipt:(NSData * _Nonnull)receipt;
 
 /**
  * @brief Check if created adjust event object is valid.
