@@ -259,7 +259,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     ADJActivityPackage *purchaseVerificationPackage = [self defaultActivityPackage];
-    // TODO: update this
     purchaseVerificationPackage.path = @"/verify";
     purchaseVerificationPackage.activityKind = ADJActivityKindPurchaseVerification;
     purchaseVerificationPackage.suffix = @"";
@@ -510,7 +509,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    // TODO: long time ago deprecated way of purchase verification, to be removed
+    // FYI: long time ago deprecated way of purchase verification, to be removed
     // if (event.emptyReceipt) {
     //     NSString *emptyReceipt = @"empty";
     //     [ADJPackageBuilder parameters:parameters setString:emptyReceipt forKey:@"receipt"];
@@ -520,7 +519,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     //     [ADJPackageBuilder parameters:parameters setString:receiptBase64 forKey:@"receipt"];
     //     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     // }
-    // TODO: event.transactionId being historically used for deduplication + for IAP verification
+    // FYI: event.transactionId being historically used for deduplication + for IAP verification
     // if (event.transactionId) {
     //     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"deduplication_id"];
     // }
@@ -1292,7 +1291,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
-    [ADJPackageBuilder parameters:parameters setString:@"ios_purchase2.0.0" forKey:@"sdk_version"]; // TODO: to be removed after backend update
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
