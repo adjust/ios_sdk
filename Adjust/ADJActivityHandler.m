@@ -1424,6 +1424,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)verifyPurchaseI:(ADJActivityHandler *)selfI
                purchase:(nonnull ADJPurchase *)purchase
       completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    if ([selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyTR]) {
+        [selfI.logger warn:@"Purchase verification not available for Turkey data residency region right now"];
+        return;
+    }
     if (![selfI isEnabledI:selfI]) {
         [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
         return;
