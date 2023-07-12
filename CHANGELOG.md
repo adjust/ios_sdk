@@ -1,6 +1,6 @@
 ### Version 4.33.5 (11th July 2023)
 #### Changed
-- Randmization method changed - dropped usage of `drand48()`
+- Replaced the usage of `drand48()` with `arc4random_uniform` method.
 
 ---
 
