@@ -35,7 +35,7 @@ static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios4.33.4";
+static NSString * const kClientSdk                  = @"ios4.33.5";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -677,15 +677,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (double)randomInRange:(double)minRange maxRange:(double)maxRange {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        srand48(arc4random());
-    });
-    double random = drand48();
     double range = maxRange - minRange;
-    double scaled = random  * range;
-    double shifted = scaled + minRange;
-    return shifted;
+    return minRange + (range * arc4random_uniform(100)*1.0/100);
 }
 
 + (NSTimeInterval)waitingTime:(NSInteger)retries

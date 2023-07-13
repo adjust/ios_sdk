@@ -1,3 +1,9 @@
+### Version 4.33.5 (13th July 2023)
+#### Changed
+- Replaced the usage of `drand48()` with `arc4random_uniform` method.
+
+---
+
 ### Version 4.33.4 (9th February 2023)
 #### Changed
 - Removed usage of `iAd.framework` logic. As of February 7th 2023 the iAd framework has stopped attributing downloads from Apple Ads campaigns.
@@ -122,7 +128,7 @@
 #### Added
 - Added `adjustConversionValueUpdated:` callback which can be used to get information when Adjust SDK updates conversion value for the user.
 - [beta] Added data residency support for Turkey region. You can choose this setting by calling `setUrlStrategy:` method of `ADJConfig` instance with `ADJDataResidencyTR` parameter.
-- Added `trackAdRevenue:` method to `Adjust` interface to allow tracking of ad revenue by passing `ADJAdRevenue` object as parameter. 
+- Added `trackAdRevenue:` method to `Adjust` interface to allow tracking of ad revenue by passing `ADJAdRevenue` object as parameter.
 - Added support for `AppLovin MAX` ad revenue tracking.
 
 #### Changed
@@ -600,7 +606,7 @@
 - Accessing private properties directly when copying.
 - Removed static framework build with no Bitcode support from releases page.
 - Updated docs.
- 
+
 #### Fixed
 - Allow foreground/background timer to work in offline mode.
 - Use `synchronized` blocks to prevent write deadlock/contention.
@@ -644,7 +650,7 @@
 ---
 
 ### Version 4.8.0 (25th July 2016)
-#### Added 
+#### Added
 - Added tracking support for native web apps (no SDK version change).
 
 ### Changed
@@ -653,7 +659,7 @@
 ---
 
 ### Version 4.8.0 (18th July 2016)
-#### Added 
+#### Added
 - Added `sendAdWordsRequest` method on `Adjust` instance to support AdWords Search and Mobile Web tracking.
 
 ---
