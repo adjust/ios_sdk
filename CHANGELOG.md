@@ -1,3 +1,9 @@
+### Version 4.33.6 (25th July 2023)
+#### Fixed
+- Fixed memory leak occurrences when tracking events (https://github.com/adjust/ios_sdk/issues/668).
+
+---
+
 ### Version 4.33.5 (13th July 2023)
 #### Changed
 - Replaced the usage of `drand48()` with `arc4random_uniform` method.

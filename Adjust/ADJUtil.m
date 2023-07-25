@@ -35,7 +35,7 @@ static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios4.33.5";
+static NSString * const kClientSdk                  = @"ios4.33.6";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1191,7 +1191,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
             NSInvocation *invAuthorization = [NSInvocation invocationWithMethodSignature:msAuthorization];
             [invAuthorization setSelector:selAuthorization];
-            [invAuthorization invokeWithTarget:appTrackingClass];
+            [invAuthorization setTarget:appTrackingClass];
             [invAuthorization invoke];
             NSUInteger status;
             [invAuthorization getReturnValue:&status];
@@ -1431,9 +1431,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return nil;
     }
 
-    NSMutableDictionary *deepCopy = (__bridge NSMutableDictionary *)CFPropertyListCreateDeepCopy(NULL,
-                                                                                                 (__bridge CFDictionaryRef)dictionary,
-                                                                                                 kCFPropertyListMutableContainersAndLeaves);
+    NSMutableDictionary *deepCopy =
+    (NSMutableDictionary *)CFBridgingRelease(CFPropertyListCreateDeepCopy(kCFAllocatorDefault,
+                                                                          (CFDictionaryRef)dictionary,
+                                                                          kCFPropertyListMutableContainersAndLeaves));
     return deepCopy;
 }
 
