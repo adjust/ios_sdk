@@ -1432,8 +1432,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 
     NSMutableDictionary *deepCopy =
-    (NSMutableDictionary *)CFBridgingRelease(CFPropertyListCreateDeepCopy(NULL,
-                                                                          (__bridge CFDictionaryRef)dictionary,
+    (NSMutableDictionary *)CFBridgingRelease(CFPropertyListCreateDeepCopy(kCFAllocatorDefault,
+                                                                          (CFDictionaryRef)dictionary,
                                                                           kCFPropertyListMutableContainersAndLeaves));
     return deepCopy;
 }
