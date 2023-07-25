@@ -1191,7 +1191,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
             NSInvocation *invAuthorization = [NSInvocation invocationWithMethodSignature:msAuthorization];
             [invAuthorization setSelector:selAuthorization];
-            [invAuthorization invokeWithTarget:appTrackingClass];
+            [invAuthorization setTarget:appTrackingClass];
             [invAuthorization invoke];
             NSUInteger status;
             [invAuthorization getReturnValue:&status];
