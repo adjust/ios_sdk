@@ -71,8 +71,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     sessionPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:sessionPackage];
-    // sessionPackage.parameters = [ADJUtil deepCopyOfDictionary:sessionPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:sessionPackage.parameters toDictionary:sessionPackage.parameters];
+    sessionPackage.parameters = [ADJUtil deepCopyOfDictionary:sessionPackage.parameters];
 
     return sessionPackage;
 }
@@ -87,15 +86,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     eventPackage.parameters = parameters;
 
     if (isInDelay) {
-        //eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
-        //eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
-        [ADJUtil deepCopyOfDictionary:eventPackage.callbackParameters toDictionary:eventPackage.callbackParameters];
-        [ADJUtil deepCopyOfDictionary:eventPackage.partnerParameters toDictionary:eventPackage.partnerParameters];
+        eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
+        eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
     }
 
     [self signWithSigV2Plugin:eventPackage];
-    // eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:eventPackage.parameters toDictionary:eventPackage.parameters];
+    eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
 
     return eventPackage;
 }
@@ -109,8 +105,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     infoPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:infoPackage];
-    //infoPackage.parameters = [ADJUtil deepCopyOfDictionary:infoPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:infoPackage.parameters toDictionary:infoPackage.parameters];
+    infoPackage.parameters = [ADJUtil deepCopyOfDictionary:infoPackage.parameters];
 
     return infoPackage;
 }
@@ -124,8 +119,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.parameters = parameters;
 
     [self signWithSigV2Plugin:adRevenuePackage];
-    //adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
-    [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters toDictionary:adRevenuePackage.parameters];
+    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
 }
@@ -139,15 +133,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.parameters = parameters;
 
     if (isInDelay) {
-        //adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
-        //adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
-        [ADJUtil deepCopyOfDictionary:adRevenuePackage.callbackParameters toDictionary:adRevenue.callbackParameters];
-        [ADJUtil deepCopyOfDictionary:adRevenuePackage.partnerParameters toDictionary:adRevenue.partnerParameters];
+        adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
+        adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
     }
 
     [self signWithSigV2Plugin:adRevenuePackage];
-    //adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
-    [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters toDictionary:adRevenuePackage.parameters];
+    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
 }
@@ -201,8 +192,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     clickPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:clickPackage];
-    //clickPackage.parameters = [ADJUtil deepCopyOfDictionary:clickPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:clickPackage.parameters toDictionary:clickPackage.parameters];
+    clickPackage.parameters = [ADJUtil deepCopyOfDictionary:clickPackage.parameters];
 
     return clickPackage;
 }
@@ -216,8 +206,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     attributionPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:attributionPackage];
-    //attributionPackage.parameters = [ADJUtil deepCopyOfDictionary:attributionPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:attributionPackage.parameters toDictionary:attributionPackage.parameters];
+    attributionPackage.parameters = [ADJUtil deepCopyOfDictionary:attributionPackage.parameters];
 
     return attributionPackage;
 }
@@ -231,8 +220,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     gdprPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:gdprPackage];
-    //gdprPackage.parameters = [ADJUtil deepCopyOfDictionary:gdprPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:gdprPackage.parameters toDictionary:gdprPackage.parameters];
+    gdprPackage.parameters = [ADJUtil deepCopyOfDictionary:gdprPackage.parameters];
 
     return gdprPackage;
 }
@@ -246,8 +234,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     dtpsPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:dtpsPackage];
-    //dtpsPackage.parameters = [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters toDictionary:dtpsPackage.parameters];
+    dtpsPackage.parameters = [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters];
 
     return dtpsPackage;
 }
@@ -262,8 +249,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     tpsPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:tpsPackage];
-    //tpsPackage.parameters = [ADJUtil deepCopyOfDictionary:tpsPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:tpsPackage.parameters toDictionary:tpsPackage.parameters];
+    tpsPackage.parameters = [ADJUtil deepCopyOfDictionary:tpsPackage.parameters];
 
     return tpsPackage;
 }
@@ -277,8 +263,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     mcPackage.parameters = parameters;
 
     [self signWithSigV2Plugin:mcPackage];
-    //mcPackage.parameters = [ADJUtil deepCopyOfDictionary:mcPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:mcPackage.parameters toDictionary:mcPackage.parameters];
+    mcPackage.parameters = [ADJUtil deepCopyOfDictionary:mcPackage.parameters];
 
     return mcPackage;
 }
@@ -293,15 +278,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     subscriptionPackage.parameters = parameters;
 
     if (isInDelay) {
-        //subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
-        //subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
-        [ADJUtil deepCopyOfDictionary:subscriptionPackage.callbackParameters toDictionary:subscriptionPackage.callbackParameters];
-        [ADJUtil deepCopyOfDictionary:subscriptionPackage.partnerParameters toDictionary:subscriptionPackage.partnerParameters];
+        subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
+        subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
     }
 
     [self signWithSigV2Plugin:subscriptionPackage];
-    //subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
-    [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters toDictionary:subscriptionPackage.parameters];
+    subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
 
     return subscriptionPackage;
 }

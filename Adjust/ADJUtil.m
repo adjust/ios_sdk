@@ -1431,22 +1431,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return nil;
     }
 
-    NSMutableDictionary *deepCopy = (__bridge NSMutableDictionary *)CFPropertyListCreateDeepCopy(NULL,
-                                                                                                 (__bridge CFDictionaryRef)dictionary,
-                                                                                                 kCFPropertyListMutableContainersAndLeaves);
+    NSMutableDictionary *deepCopy =
+    (NSMutableDictionary *)CFBridgingRelease(CFPropertyListCreateDeepCopy(NULL,
+                                                                          (__bridge CFDictionaryRef)dictionary,
+                                                                          kCFPropertyListMutableContainersAndLeaves));
     return deepCopy;
-}
-
-+ (void)deepCopyOfDictionary:(NSDictionary *)source toDictionary:(NSDictionary *)destination {
-    if (source == nil) {
-        return;
-    }
-
-    NSMutableDictionary *deepCopy = (__bridge NSMutableDictionary *)CFPropertyListCreateDeepCopy(NULL,
-                                                                                                 (__bridge CFDictionaryRef)source,
-                                                                                                 kCFPropertyListMutableContainersAndLeaves);
-    destination = deepCopy;
-    CFRelease((__bridge CFTypeRef)(deepCopy));
 }
 
 @end
