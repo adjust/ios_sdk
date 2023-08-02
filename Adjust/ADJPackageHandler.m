@@ -54,12 +54,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler * selfI) {
-                         [selfI initI:selfI
-                     activityHandler:activityHandler
-                       startsSending:startsSending
-                          userAgent:userAgent
-                          urlStrategy:urlStrategy];
-                     }];
+        [selfI initI:selfI
+     activityHandler:activityHandler
+       startsSending:startsSending
+           userAgent:userAgent
+         urlStrategy:urlStrategy];
+    }];
 
     return self;
 }
@@ -68,16 +68,16 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-                         [selfI addI:selfI package:package];
-                     }];
+        [selfI addI:selfI package:package];
+    }];
 }
 
 - (void)sendFirstPackage {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-                         [selfI sendFirstI:selfI];
-                     }];
+        [selfI sendFirstI:selfI];
+    }];
 }
 
 - (void)responseCallback:(ADJResponseData *)responseData {
@@ -105,8 +105,8 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-                         [selfI sendNextI:selfI];
-                     }];
+        [selfI sendNextI:selfI];
+    }];
 
     [self.activityHandler finishedTracking:responseData];
 }
@@ -127,16 +127,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     NSString *waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
 
     [self.logger verbose:@"Waiting for %@ seconds before retrying the %d time", waitTimeFormatted, self.lastPackageRetriesCount];
-    dispatch_after
-        (dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)),
-         self.internalQueue,
-         ^{
-            [self.logger verbose:@"Package handler finished waiting"];
-
-            dispatch_semaphore_signal(self.sendingSemaphore);
-
-            [self sendFirstPackage];
-        });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, ^{
+        [self.logger verbose:@"Package handler finished waiting"];
+        dispatch_semaphore_signal(self.sendingSemaphore);
+        [self sendFirstPackage];
+    });
 }
 
 - (void)pauseSending {
@@ -147,16 +142,23 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)updatePackages:(ADJSessionParameters *)sessionParameters
-{
+- (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters {
     // make copy to prevent possible Activity Handler changes of it
     ADJSessionParameters * sessionParametersCopy = [sessionParameters copy];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-                         [selfI updatePackagesI:selfI sessionParameters:sessionParametersCopy];
-                     }];
+        [selfI updatePackagesI:selfI sessionParameters:sessionParametersCopy];
+    }];
+}
+
+- (void)updatePackagesWithAttStatus:(int)attStatus idfa:(NSString *)idfa {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPackageHandler* selfI) {
+        [selfI updatePackagesI:selfI withAttStatus:attStatus idfa:idfa];
+    }];
 }
 
 - (void)flush {
@@ -188,20 +190,19 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 #pragma mark - internal
-- (void)
-    initI:(ADJPackageHandler *)selfI
-        activityHandler:(id<ADJActivityHandler>)activityHandler
-        startsSending:(BOOL)startsSending
-        userAgent:(NSString *)userAgent
-        urlStrategy:(ADJUrlStrategy *)urlStrategy
-{
+- (void)initI:(ADJPackageHandler *)selfI
+activityHandler:(id<ADJActivityHandler>)activityHandler
+startsSending:(BOOL)startsSending
+    userAgent:(NSString *)userAgent
+  urlStrategy:(ADJUrlStrategy *)urlStrategy {
+
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
     selfI.requestHandler = [[ADJRequestHandler alloc]
-                                initWithResponseCallback:self
-                                urlStrategy:urlStrategy
-                                userAgent:userAgent
-                                requestTimeout:[ADJAdjustFactory requestTimeout]];
+                            initWithResponseCallback:self
+                            urlStrategy:urlStrategy
+                            userAgent:userAgent
+                            requestTimeout:[ADJAdjustFactory requestTimeout]];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];
@@ -289,6 +290,32 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         [ADJPackageBuilder parameters:activityPackage.parameters
                         setDictionary:mergedPartnerParameters
                                forKey:@"partner_params"];
+        // add to copy queue
+        [packageQueueCopy addObject:activityPackage];
+    }
+
+    // write package queue copy
+    selfI.packageQueue = packageQueueCopy;
+    [selfI writePackageQueueS:selfI];
+}
+
+- (void)updatePackagesI:(ADJPackageHandler *)selfI
+          withAttStatus:(int)attStatus
+                   idfa:(NSString *)idfa {
+
+    [selfI.logger debug:@"Updating package handler queue"];
+    [selfI.logger verbose:@"ATT Status %ld", (long)attStatus];
+    [selfI.logger verbose:@"IDFA: %@", idfa];
+
+    // create package queue copy for new state of array
+    NSMutableArray *packageQueueCopy = [NSMutableArray array];
+
+    for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
+        [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
+        [ADJPackageBuilder addIdfa:idfa
+                      toParameters:activityPackage.parameters
+                        withConfig:self.activityHandler.adjustConfig
+                            logger:[ADJAdjustFactory logger]];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }

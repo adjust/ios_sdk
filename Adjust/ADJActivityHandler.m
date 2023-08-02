@@ -28,15 +28,16 @@ NSString * const ADJAdServicesPackageKey = @"apple_ads";
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
-static NSString   * const kActivityStateFilename = @"AdjustIoActivityState";
-static NSString   * const kAttributionFilename   = @"AdjustIoAttribution";
-static NSString   * const kSessionCallbackParametersFilename   = @"AdjustSessionCallbackParameters";
-static NSString   * const kSessionPartnerParametersFilename    = @"AdjustSessionPartnerParameters";
-static NSString   * const kAdjustPrefix          = @"adjust_";
-static const char * const kInternalQueueName     = "io.adjust.ActivityQueue";
-static NSString   * const kForegroundTimerName   = @"Foreground timer";
-static NSString   * const kBackgroundTimerName   = @"Background timer";
-static NSString   * const kDelayStartTimerName   = @"Delay Start timer";
+static NSString   * const kActivityStateFilename                = @"AdjustIoActivityState";
+static NSString   * const kAttributionFilename                  = @"AdjustIoAttribution";
+static NSString   * const kSessionCallbackParametersFilename    = @"AdjustSessionCallbackParameters";
+static NSString   * const kSessionPartnerParametersFilename     = @"AdjustSessionPartnerParameters";
+static NSString   * const kAdjustPrefix                         = @"adjust_";
+static const char * const kInternalQueueName                    = "io.adjust.ActivityQueue";
+static const char * const kWaitingForAttQueueName               = "io.adjust.WaitingForAttQueue";
+static NSString   * const kForegroundTimerName                  = @"Foreground timer";
+static NSString   * const kBackgroundTimerName                  = @"Background timer";
+static NSString   * const kDelayStartTimerName                  = @"Delay Start timer";
 
 static NSTimeInterval kForegroundTimerInterval;
 static NSTimeInterval kForegroundTimerStart;
@@ -44,6 +45,7 @@ static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
 static const int kAdServicesdRetriesCount = 1;
+const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 
 @implementation ADJInternalState
 
@@ -56,8 +58,10 @@ static const int kAdServicesdRetriesCount = 1;
 - (BOOL)isInDelayedStart { return self.delayStart; }
 - (BOOL)isNotInDelayedStart { return !self.delayStart; }
 - (BOOL)itHasToUpdatePackages { return self.updatePackages; }
+- (BOOL)itHasToUpdatePackagesAttData { return self.updatePackagesAttData; }
 - (BOOL)isFirstLaunch { return self.firstLaunch; }
 - (BOOL)hasSessionResponseNotBeenProcessed { return !self.sessionResponseProcessed; }
+- (BOOL)isWaitingForAttStatus { return self.waitingForAttStatus;}
 
 @end
 
@@ -187,8 +191,10 @@ static const int kAdServicesdRetriesCount = 1;
     // does not need to update packages by default
     if (self.activityState == nil) {
         self.internalState.updatePackages = NO;
+        self.internalState.updatePackagesAttData = NO;
     } else {
         self.internalState.updatePackages = self.activityState.updatePackages;
+        self.internalState.updatePackagesAttData = self.activityState.updatePackagesAttData;
     }
     if (self.activityState == nil) {
         self.internalState.firstLaunch = YES;
@@ -228,15 +234,18 @@ static const int kAdServicesdRetriesCount = 1;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI delayStartI:selfI];
 
-                         [selfI stopBackgroundTimerI:selfI];
+                        [selfI delayStartI:selfI];
 
-                         [selfI startForegroundTimerI:selfI];
+                        [selfI activateWaitingForAttStatusI:selfI];
 
-                         [selfI.logger verbose:@"Subsession start"];
+                        [selfI stopBackgroundTimerI:selfI];
 
-                         [selfI startI:selfI];
+                        [selfI startForegroundTimerI:selfI];
+
+                        [selfI.logger verbose:@"Subsession start"];
+
+                        [selfI startI:selfI];
                      }];
 }
 
@@ -246,13 +255,16 @@ static const int kAdServicesdRetriesCount = 1;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI stopForegroundTimerI:selfI];
 
-                         [selfI startBackgroundTimerI:selfI];
+                        [selfI pauseWaitingForAttStatusI:selfI];
 
-                         [selfI.logger verbose:@"Subsession end"];
+                        [selfI stopForegroundTimerI:selfI];
 
-                         [selfI endI:selfI];
+                        [selfI startBackgroundTimerI:selfI];
+
+                        [selfI.logger verbose:@"Subsession end"];
+
+                        [selfI endI:selfI];
                      }];
 }
 
@@ -485,6 +497,14 @@ static const int kAdServicesdRetriesCount = 1;
                      block:^(ADJActivityHandler * selfI) {
                          [selfI sendFirstPackagesI:selfI];
                      }];
+}
+
+- (void)resumeActivityFromWaitingForAttStatus {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI resumeActivityFromWaitingForAttStatusI:selfI];
+    }];
 }
 
 - (void)addSessionCallbackParameter:(NSString *)key
@@ -797,6 +817,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                         name:kDelayStartTimerName];
     }
 
+    // Update Waiting for ATT status state - should be done before the package handler is created.
+    selfI.internalState.waitingForAttStatus = [selfI.trackingStatusManager shouldWaitForAttStatus];
+
     [ADJUtil updateUrlSessionConfiguration:selfI.adjustConfig];
 
     ADJUrlStrategy *packageHandlerUrlStrategy =
@@ -814,8 +837,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     // update session parameters in package queue
     if ([selfI itHasToUpdatePackagesI:selfI]) {
         [selfI updatePackagesI:selfI];
-     }
-
+    }
 
     ADJUrlStrategy *attributionHandlerUrlStrategy =
         [[ADJUrlStrategy alloc]
@@ -839,6 +861,25 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                 startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
                                 userAgent:selfI.adjustConfig.userAgent
                                 urlStrategy:sdkClickHandlerUrlStrategy];
+
+
+    // Update ATT status and idfa ,if necessary, in packages and sdk_click package queues.
+    // This should be done after `packageHandler` and `sdkClickHandler` are created.
+    if (selfI.internalState.waitingForAttStatus) {
+        selfI.internalState.updatePackagesAttData = YES;
+        if (selfI.activityState != nil) {
+            [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                            block:^{
+                selfI.activityState.updatePackagesAttData = YES;
+            }];
+            [selfI writeActivityStateI:selfI];
+        }
+    } else {
+        // update ATT Data in package queue
+        if ([selfI itHasToUpdatePackagesAttDataI:selfI]) {
+            [selfI updatePackagesAttStatusAndIdfaI:selfI];
+        }
+    }
 
     [selfI checkLinkMeI:selfI];
     [selfI.trackingStatusManager checkForNewAttStatus];
@@ -936,6 +977,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI.activityState resetSessionAttributes:now];
             selfI.activityState.enabled = [selfI.internalState isEnabled];
             selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
+            selfI.activityState.updatePackagesAttData = [selfI.internalState itHasToUpdatePackagesAttData];
         }];
 
         if (selfI.adjustConfig.allowAdServicesInfoReading == YES) {
@@ -2060,6 +2102,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (BOOL)itHasToUpdatePackagesAttDataI:(ADJActivityHandler *)selfI {
+    if (selfI.activityState != nil) {
+        return selfI.activityState.updatePackagesAttData;
+    } else {
+        return [selfI.internalState itHasToUpdatePackagesAttData];
+    }
+}
+
 // returns whether or not the activity state should be written
 - (BOOL)updateActivityStateI:(ADJActivityHandler *)selfI
                          now:(double)now {
@@ -2244,22 +2294,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI.sdkClickHandler resumeSending];
 }
 
-- (BOOL)pausedI:(ADJActivityHandler *)selfI {
-    return [selfI pausedI:selfI sdkClickHandlerOnly:NO];
-}
-
-- (BOOL)pausedI:(ADJActivityHandler *)selfI
-sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
-{
+- (BOOL)pausedI:(ADJActivityHandler *)selfI sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly {
     if (sdkClickHandlerOnly) {
         // sdk click handler is paused if either:
-        return [selfI.internalState isOffline] ||    // it's offline
-         ![selfI isEnabledI:selfI];                  // is disabled
+        return [selfI.internalState isOffline]              // it's offline
+        || ![selfI isEnabledI:selfI]                        // is disabled
+        || [selfI.internalState isWaitingForAttStatus];     // Waiting for ATT status
     }
     // other handlers are paused if either:
-    return [selfI.internalState isOffline] ||        // it's offline
-            ![selfI isEnabledI:selfI] ||             // is disabled
-            [selfI.internalState isInDelayedStart];      // is in delayed start
+    return [selfI.internalState isOffline]                  // it's offline
+    || ![selfI isEnabledI:selfI]                            // is disabled
+    || [selfI.internalState isInDelayedStart]               // is in delayed start
+    || [selfI.internalState isWaitingForAttStatus];         // Waiting for ATT status
 }
 
 - (BOOL)toSendI:(ADJActivityHandler *)selfI {
@@ -2417,13 +2463,57 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)updatePackagesI:(ADJActivityHandler *)selfI {
     // update activity packages
-    [selfI.packageHandler updatePackages:selfI.sessionParameters];
+    [selfI.packageHandler updatePackagesWithSessionParams:selfI.sessionParameters];
     // no longer needs to update packages
     selfI.internalState.updatePackages = NO;
     if (selfI.activityState != nil) {
         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                         block:^{
             selfI.activityState.updatePackages = NO;
+        }];
+        [selfI writeActivityStateI:selfI];
+    }
+}
+
+#pragma mark - waiting for ATT status
+
+- (void)activateWaitingForAttStatusI:(ADJActivityHandler *)selfI {
+    if (![selfI.internalState isWaitingForAttStatus]) {
+        return;
+    }
+    [selfI.trackingStatusManager setAppInActiveState:YES];
+}
+
+- (void)pauseWaitingForAttStatusI:(ADJActivityHandler *)selfI {
+    if (![selfI.internalState isWaitingForAttStatus]) {
+        return;
+    }
+    [selfI.trackingStatusManager setAppInActiveState:NO];
+}
+
+- (void)resumeActivityFromWaitingForAttStatusI:(ADJActivityHandler *)selfI  {
+    // update packages in queue
+    [selfI updatePackagesAttStatusAndIdfaI:selfI];
+    // update waiting for ATT status flag
+    selfI.internalState.waitingForAttStatus = NO;
+    // update the status and try to send first package
+    [selfI updateHandlersStatusAndSendI:selfI];
+}
+
+- (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
+    // update activity packages
+    int attStatus = [ADJUtil attStatus];
+    if (attStatus != 0) {
+        NSString *idfa = [ADJUtil idfa];
+        [selfI.packageHandler updatePackagesWithAttStatus:attStatus idfa:idfa];
+        [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus idfa:idfa];
+    }
+
+    selfI.internalState.updatePackagesAttData = NO;
+    if (selfI.activityState != nil) {
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            selfI.activityState.updatePackagesAttData = NO;
         }];
         [selfI writeActivityStateI:selfI];
     }
@@ -2771,9 +2861,9 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 @end
 
 @interface ADJTrackingStatusManager ()
-
 @property (nonatomic, readonly, weak) ADJActivityHandler *activityHandler;
-
+@property (nonatomic, assign) BOOL activeState;
+@property (nonatomic, strong) dispatch_queue_t waitingForAttQueue;
 @end
 
 @implementation ADJTrackingStatusManager
@@ -2782,6 +2872,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     self = [super init];
 
     _activityHandler = activityHandler;
+    _waitingForAttQueue = dispatch_queue_create(kWaitingForAttQueueName, DISPATCH_QUEUE_SERIAL);
 
     return self;
 }
@@ -2805,18 +2896,18 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)checkForNewAttStatus {
     int readAttStatus = [ADJUtil attStatus];
-    BOOL didUpdateAttStatus = [self updateAttStatus:readAttStatus];
-    if (!didUpdateAttStatus) {
-        return;
-    }
-    [self.activityHandler trackAttStatusUpdate];
+    [self updateAttStatusWithStatus:readAttStatus];
 }
+
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    BOOL didUpdateAttStatus = [self updateAttStatus:newAttStatusFromUser];
-    if (!didUpdateAttStatus) {
-        return;
+    [self updateAttStatusWithStatus:newAttStatusFromUser];
+}
+
+- (void)updateAttStatusWithStatus:(int)status {
+    BOOL statusHasBeenUpdated = [self updateAttStatus:status];
+    if (statusHasBeenUpdated) {
+        [self.activityHandler trackAttStatusUpdate];
     }
-    [self.activityHandler trackAttStatusUpdate];
 }
 
 // internal methods
@@ -2840,6 +2931,93 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [self.activityHandler writeActivityState];
 
     return YES;
+}
+
+
+- (void)setAppInActiveState:(BOOL)activeState {
+    dispatch_async(self.waitingForAttQueue, ^{
+        self.activeState = activeState;
+        if (self.activeState) {
+            [self startWaitingForAttStatus];
+        }
+    });
+}
+
+- (BOOL)shouldWaitForAttStatus {
+    if (![self canGetAttStatus]) {
+        return NO;
+    }
+
+    // check current ATT status
+    int attStatus = [ADJUtil attStatus];
+
+    // return if the status is not ATTrackingManagerAuthorizationStatusNotDetermined
+    if (attStatus != 0) {
+        // Delete att_waiting_seconds key from UserDefaults.
+        [ADJUserDefaults removeAttWaitingRemainingSeconds];
+        return NO;
+    }
+
+    BOOL keyExists = [ADJUserDefaults attWaitingRemainingSecondsKeyExists];
+    // check ATT timeout configuration
+    if (self.activityHandler.adjustConfig.attStatusWaitingTimeout == 0) {
+        // ATT timmeout is not configured in ADJConfig for current SDK running session.
+        // Already existing NSUserDefaults key means ATT timeout was configured in the previous SDK initialization.
+        // Setting `0` to the NSUserDefaults key for skipping ATT waiting configuration in next SDK initializations,
+        // no matter it is confgured in Adjust configuration or not.
+        if (keyExists) {
+            [ADJUserDefaults setAttWaitingRemainingSeconds:0];
+        }
+        return NO;
+    }
+
+    // Setting timeout value limited to 120 seconds.
+    NSUInteger timeoutSec = (self.activityHandler.adjustConfig.attStatusWaitingTimeout <= kWaitingForAttStatusLimitSeconds) ?
+    self.activityHandler.adjustConfig.attStatusWaitingTimeout : kWaitingForAttStatusLimitSeconds;
+    if (keyExists && [ADJUserDefaults getAttWaitingRemainingSeconds] == 0) {
+        // Existing NSUserDefaults key with `0` value means:
+        // OR timeout has elapsed and user didn't succeed to invoke ATT dialog during this time
+        // OR SDK already has been initialized without AttTimeout.
+        // We are skipping this ATT status waiting logic.
+        return NO;
+    }
+
+    // NSUserDefaults key doesn't exist means => first SDK init with timeout configured).
+    // OR
+    // NSUserDefaults key exists with value > 0 means => application was killed before the timeout has been elapsed.
+
+    // We have to set the configured waiting timeout and start ATT status monitoring logic.
+    [ADJUserDefaults setAttWaitingRemainingSeconds:timeoutSec];
+    return YES;
+}
+
+- (void)startWaitingForAttStatus {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), self.waitingForAttQueue, ^{
+        [self checkAttStatusPeriodic];
+    });
+}
+
+- (void)checkAttStatusPeriodic {
+    if (!self.activeState) {
+        return;
+    }
+    // check current ATT status
+    int attStatus = [ADJUtil attStatus];
+    if (attStatus != 0) {
+        [ADJUserDefaults removeAttWaitingRemainingSeconds];
+        [self.activityHandler resumeActivityFromWaitingForAttStatus];
+        return;
+    }
+
+    NSUInteger seconds = [ADJUserDefaults getAttWaitingRemainingSeconds];
+    if (seconds == 0) {
+        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed - NO ATT STATUS FOUND"];
+        [self.activityHandler resumeActivityFromWaitingForAttStatus];
+        return;
+    }
+
+    [ADJUserDefaults setAttWaitingRemainingSeconds:seconds-=1];
+    [self startWaitingForAttStatus];
 }
 
 @end

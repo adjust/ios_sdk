@@ -27,7 +27,8 @@
 - (void)sendFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)updatePackages:(ADJSessionParameters *)sessionParameters;
+- (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters;
+- (void)updatePackagesWithAttStatus:(int)attStatus idfa:(NSString *)idfa;
 - (void)flush;
 
 - (void)teardown;

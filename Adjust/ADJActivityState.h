@@ -20,6 +20,7 @@
 @property (nonatomic, copy) NSString *dedupeToken;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, assign) BOOL updatePackages;
+@property (nonatomic, assign) BOOL updatePackagesAttData;
 
 @property (nonatomic, copy) NSString *adid;
 @property (nonatomic, strong) NSDictionary *attributionDetails;
