@@ -153,11 +153,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }];
 }
 
-- (void)updatePackagesWithAttStatus:(int)attStatus idfa:(NSString *)idfa {
+- (void)updatePackagesWithIdfaAndAttStatus:(int)attStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesI:selfI withAttStatus:attStatus idfa:idfa];
+        [selfI updatePackagesI:selfI withIdfaAndAttStatus:attStatus];
     }];
 }
 
@@ -300,12 +300,10 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)updatePackagesI:(ADJPackageHandler *)selfI
-          withAttStatus:(int)attStatus
-                   idfa:(NSString *)idfa {
+          withIdfaAndAttStatus:(int)attStatus {
 
     [selfI.logger debug:@"Updating package handler queue"];
     [selfI.logger verbose:@"ATT Status %ld", (long)attStatus];
-    [selfI.logger verbose:@"IDFA: %@", idfa];
 
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];

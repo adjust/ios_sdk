@@ -2504,9 +2504,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // update activity packages
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
-        NSString *idfa = [ADJUtil idfa];
-        [selfI.packageHandler updatePackagesWithAttStatus:attStatus idfa:idfa];
-        [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus idfa:idfa];
+        [selfI.packageHandler updatePackagesWithIdfaAndAttStatus:attStatus];
+        [selfI.sdkClickHandler updatePackagesWithIdfaAndAttStatus:attStatus];
     }
 
     selfI.internalState.updatePackagesAttData = NO;

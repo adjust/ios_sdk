@@ -28,7 +28,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters;
-- (void)updatePackagesWithAttStatus:(int)attStatus idfa:(NSString *)idfa;
+- (void)updatePackagesWithIdfaAndAttStatus:(int)attStatus;
 - (void)flush;
 
 - (void)teardown;
