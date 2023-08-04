@@ -3015,7 +3015,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-    [ADJUserDefaults setAttWaitingRemainingSeconds:seconds-=1];
+    [ADJUserDefaults setAttWaitingRemainingSeconds:(seconds-1)];
     [self startWaitingForAttStatus];
 }
 
