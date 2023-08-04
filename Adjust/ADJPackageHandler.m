@@ -312,10 +312,9 @@ startsSending:(BOOL)startsSending
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
-        [ADJPackageBuilder addIdfa:idfa
-                      toParameters:activityPackage.parameters
-                        withConfig:self.activityHandler.adjustConfig
-                            logger:[ADJAdjustFactory logger]];
+        [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
+                                    withConfig:self.activityHandler.adjustConfig
+                                        logger:[ADJAdjustFactory logger]];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }
