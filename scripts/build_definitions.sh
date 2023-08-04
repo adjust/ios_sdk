@@ -230,6 +230,8 @@ Usage: $0 [options]
 	  -sdk "$target_sdk" \
 	  -destination "$platform_destination" \
 	  -archivePath "$output_path" \
+      CODE_SIGN_STYLE="Manual" \
+      CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	  SKIP_INSTALL=NO \
 	  BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
 	  GCC_GENERATE_DEBUGGING_SYMBOLS=YES
@@ -316,6 +318,8 @@ Usage: $0 [options]
 	      -target "$target_scheme" \
 	      -sdk iphonesimulator \
 	      -arch x86_64 \
+          CODE_SIGN_STYLE="Manual" \
+          CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	      build
 	    else
 	      xcodebuild -configuration Release \
@@ -328,6 +332,8 @@ Usage: $0 [options]
 	    xcodebuild -configuration Release \
 	    -target "$target_scheme" \
 	    -sdk iphoneos \
+        CODE_SIGN_STYLE="Manual" \
+        CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	    build
 
 	    ditto "./$build_root_folder/$target_scheme/iphoneos/$framework_name.framework" "./$build_root_folder/$target_scheme/universal/$framework_name.framework"

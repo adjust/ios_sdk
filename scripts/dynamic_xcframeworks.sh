@@ -219,6 +219,10 @@ then
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
+  codesign -s "Apple Distribution: adeven GmbH (QGUGW9AUMK)" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+  codesign -s "Apple Distribution: adeven GmbH (QGUGW9AUMK)" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
+  codesign -s "Apple Distribution: adeven GmbH (QGUGW9AUMK)" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
+
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic XCFrameworks build - END... ${NC}"
