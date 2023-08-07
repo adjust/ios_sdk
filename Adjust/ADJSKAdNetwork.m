@@ -151,8 +151,27 @@
         callback(nil);
         return;
     }
-    [self registerAppForAdNetworkAttribution];
-    callback(nil);
+
+    if (@available(iOS 16.1, *)) {
+        [self updatePostbackConversionValue:0
+                                coarseValue:[self getSkAdNetworkCoarseConversionValue:@"low"]
+                                 lockWindow:NO
+                          completionHandler:^(NSError * _Nonnull error) {
+            callback(error);
+        }];
+    } else if (@available(iOS 15.4, *)) {
+        [self updatePostbackConversionValue:0
+                          completionHandler:^(NSError * _Nonnull error) {
+            callback(error);
+        }];
+    } else if (@available(iOS 14.0, *)) {
+        [self registerAppForAdNetworkAttribution];
+        callback(nil);
+    } else {
+        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
+        callback(nil);
+    }
+
     [self writeSkAdNetworkRegisterCallTimestamp];
 }
 
