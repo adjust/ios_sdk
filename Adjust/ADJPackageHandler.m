@@ -153,11 +153,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatus:(int)attStatus {
+- (void)updatePackagesWithIdfaAndAttStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesI:selfI withIdfaAndAttStatus:attStatus];
+        [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
     }];
 }
 
@@ -299,9 +299,9 @@ startsSending:(BOOL)startsSending
     [selfI writePackageQueueS:selfI];
 }
 
-- (void)updatePackagesI:(ADJPackageHandler *)selfI
-          withIdfaAndAttStatus:(int)attStatus {
+- (void)updatePackagesWithIdfaAndAttStatusI:(ADJPackageHandler *)selfI {
 
+    int attStatus = [ADJUtil attStatus];
     [selfI.logger debug:@"Updating package handler queue"];
     [selfI.logger verbose:@"ATT Status %ld", (long)attStatus];
 

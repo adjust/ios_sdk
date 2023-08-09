@@ -91,11 +91,11 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
                      }];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatus:(int)attStatus {
+- (void)updatePackagesWithIdfaAndAttStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJSdkClickHandler *selfI) {
-        [selfI updatePackagesI:selfI withIdfaAndAttStatus:attStatus];
+        [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
     }];
 }
 
@@ -194,8 +194,9 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
-- (void)updatePackagesI:(ADJSdkClickHandler *)selfI
-   withIdfaAndAttStatus:(int)attStatus {
+- (void)updatePackagesWithIdfaAndAttStatusI:(ADJSdkClickHandler *)selfI {
+
+    int attStatus = [ADJUtil attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus

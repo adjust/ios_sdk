@@ -21,7 +21,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage;
-- (void)updatePackagesWithIdfaAndAttStatus:(int)attStatus;
+- (void)updatePackagesWithIdfaAndAttStatus;
 - (void)teardown;
 
 @end
