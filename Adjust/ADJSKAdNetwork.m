@@ -179,22 +179,39 @@
                      coarseValue:(NSString *)coarseValue
                       lockWindow:(NSNumber *)lockWindow
                completionHandler:(void (^)(NSError *error))callback {
-    if (coarseValue != nil && lockWindow != nil) {
-        // 4.0 world
-        [self updatePostbackConversionValue:conversionValue
-                                coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
-                                 lockWindow:[lockWindow boolValue]
-                          completionHandler:^(NSError * _Nonnull error) {
-            if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
-            } else {
-                [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
-            }
-            callback(error);
-        }];
+    // let's make sure first that the conversionValue makes sense
+    if (conversionValue < 0) {
+        callback(nil);
     } else {
-        // pre 4.0 world
-        if (@available(iOS 15.4, *)) {
+        if (@available(iOS 16.1, *)) {
+            // let's check if coarseValue and lockWindow make sense
+            if (coarseValue != nil && lockWindow != nil) {
+                // they do
+                [self updatePostbackConversionValue:conversionValue
+                                        coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                         lockWindow:[lockWindow boolValue]
+                                  completionHandler:^(NSError * _Nonnull error) {
+                    if (error) {
+                        [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
+                    } else {
+                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
+                    }
+                    callback(error);
+                }];
+            } else {
+                // they don't, let's make sure to update conversion value with a
+                // call to updatePostbackConversionValue:completionHandler: method
+                [self updatePostbackConversionValue:conversionValue
+                                  completionHandler:^(NSError * _Nonnull error) {
+                    if (error) {
+                        [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                    } else {
+                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                    }
+                    callback(error);
+                }];
+            }
+        } else if (@available(iOS 15.4, *)) {
             [self updatePostbackConversionValue:conversionValue
                               completionHandler:^(NSError * _Nonnull error) {
                 if (error) {
