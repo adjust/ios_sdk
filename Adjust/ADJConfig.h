@@ -186,7 +186,7 @@
 /**
  * @brief Define how many seconds to wait for ATT status before sending the first data.
  */
-@property (nonatomic, assign) NSUInteger attStatusWaitingTimeout;
+@property (nonatomic, assign) NSUInteger attConsentWaitingInterval;
 
 /**
  * @brief User agent for the requests.

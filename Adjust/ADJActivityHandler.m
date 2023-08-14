@@ -2959,7 +2959,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     BOOL keyExists = [ADJUserDefaults attWaitingRemainingSecondsKeyExists];
     // check ATT timeout configuration
-    if (self.activityHandler.adjustConfig.attStatusWaitingTimeout == 0) {
+    if (self.activityHandler.adjustConfig.attConsentWaitingInterval == 0) {
         // ATT timmeout is not configured in ADJConfig for current SDK running session.
         // Already existing NSUserDefaults key means ATT timeout was configured in the previous SDK initialization.
         // Setting `0` to the NSUserDefaults key for skipping ATT waiting configuration in next SDK initializations,
@@ -2971,8 +2971,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     // Setting timeout value limited to 120 seconds.
-    NSUInteger timeoutSec = (self.activityHandler.adjustConfig.attStatusWaitingTimeout <= kWaitingForAttStatusLimitSeconds) ?
-    self.activityHandler.adjustConfig.attStatusWaitingTimeout : kWaitingForAttStatusLimitSeconds;
+    NSUInteger timeoutSec = (self.activityHandler.adjustConfig.attConsentWaitingInterval <= kWaitingForAttStatusLimitSeconds) ?
+    self.activityHandler.adjustConfig.attConsentWaitingInterval : kWaitingForAttStatusLimitSeconds;
     if (keyExists && [ADJUserDefaults getAttWaitingRemainingSeconds] == 0) {
         // Existing NSUserDefaults key with `0` value means:
         // OR timeout has elapsed and user didn't succeed to invoke ATT dialog during this time
