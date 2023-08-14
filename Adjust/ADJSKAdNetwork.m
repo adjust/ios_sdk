@@ -182,11 +182,14 @@
     // let's make sure first that the conversionValue makes sense
     if (conversionValue < 0) {
         callback(nil);
-    } else {
-        if (@available(iOS 16.1, *)) {
-            // let's check if coarseValue and lockWindow make sense
-            if (coarseValue != nil && lockWindow != nil) {
-                // they do
+        return;
+    }
+
+    if (@available(iOS 16.1, *)) {
+        // let's check if coarseValue and lockWindow make sense
+        if (coarseValue != nil) {
+            if (lockWindow != nil) {
+                // they do both
                 [self updatePostbackConversionValue:conversionValue
                                         coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                          lockWindow:[lockWindow boolValue]
@@ -199,35 +202,47 @@
                     callback(error);
                 }];
             } else {
-                // they don't, let's make sure to update conversion value with a
-                // call to updatePostbackConversionValue:completionHandler: method
+                // Only coarse value is received
                 [self updatePostbackConversionValue:conversionValue
+                                        coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                   completionHandler:^(NSError * _Nonnull error) {
                     if (error) {
-                        [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                        [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@ failed\nDescription: %@", conversionValue, coarseValue, error.localizedDescription];
                     } else {
-                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
                     }
                     callback(error);
                 }];
             }
-        } else if (@available(iOS 15.4, *)) {
+        } else {
+            // they don't, let's make sure to update conversion value with a
+            // call to updatePostbackConversionValue:completionHandler: method
             [self updatePostbackConversionValue:conversionValue
                               completionHandler:^(NSError * _Nonnull error) {
                 if (error) {
-                    [self.logger error:@"Call to updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                    [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
                 } else {
                     [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
                 }
                 callback(error);
             }];
-        } else if (@available(iOS 14.0, *)) {
-            [self updateConversionValue:conversionValue];
-            callback(nil);
-        } else {
-            [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-            callback(nil);
         }
+    } else if (@available(iOS 15.4, *)) {
+        [self updatePostbackConversionValue:conversionValue
+                          completionHandler:^(NSError * _Nonnull error) {
+            if (error) {
+                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+            } else {
+                [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+            }
+            callback(error);
+        }];
+    } else if (@available(iOS 14.0, *)) {
+        [self updateConversionValue:conversionValue];
+        callback(nil);
+    } else {
+        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
+        callback(nil);
     }
 }
 
