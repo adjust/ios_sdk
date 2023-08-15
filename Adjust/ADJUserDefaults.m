@@ -19,7 +19,7 @@ static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked"
 static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
 static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cached";
-static NSString * const PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS = @"adj_att_timeout_remaining_seconds";
+static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_waiting_remaining_seconds";
 
 @implementation ADJUserDefaults
 
@@ -129,21 +129,21 @@ static NSString * const PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS = @"adj_att_time
 }
 
 + (BOOL)attWaitingRemainingSecondsKeyExists {
-    return (nil != [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS]);
+    return (nil != [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS]);
 }
 
 + (void)setAttWaitingRemainingSeconds:(NSUInteger)seconds {
-    [[NSUserDefaults standardUserDefaults] setInteger:seconds forKey:PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS];
+    [[NSUserDefaults standardUserDefaults] setInteger:seconds forKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
 }
 
 + (NSUInteger)getAttWaitingRemainingSeconds {
-    NSInteger iSeconds = [[NSUserDefaults standardUserDefaults] integerForKey:PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS];
+    NSInteger iSeconds = [[NSUserDefaults standardUserDefaults] integerForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
     NSUInteger uiSeconds = (iSeconds < 0) ? 0 : iSeconds;
     return uiSeconds;
 }
 
 + (void)removeAttWaitingRemainingSeconds {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
 }
 
 + (void)clearAdjustStuff {
@@ -158,7 +158,7 @@ static NSString * const PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS = @"adj_att_time
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LINK_ME_CHECKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL_CACHED];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_TIMEOUT_REMAINING_SECONDS];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
 }
 
 @end
