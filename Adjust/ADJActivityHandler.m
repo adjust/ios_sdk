@@ -875,13 +875,18 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
              extraPath:preLaunchActions.extraPath];
 
     selfI.sdkClickHandler = [[ADJSdkClickHandler alloc]
-                                initWithActivityHandler:selfI
-                                startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
-                                userAgent:selfI.adjustConfig.userAgent
-                                urlStrategy:sdkClickHandlerUrlStrategy];
+                             initWithActivityHandler:selfI
+                             startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
+                             userAgent:selfI.adjustConfig.userAgent
+                             urlStrategy:sdkClickHandlerUrlStrategy];
+    selfI.purchaseVerificationHandler = [[ADJPurchaseVerificationHandler alloc]
+                                         initWithActivityHandler:selfI
+                                         startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
+                                         userAgent:selfI.adjustConfig.userAgent
+                                         urlStrategy:sdkClickHandlerUrlStrategy];
 
-    // Update ATT status and idfa ,if necessary, in packages and sdk_click package queues.
-    // This should be done after `packageHandler` and `sdkClickHandler` are created.
+    // Update ATT status and IDFA, if necessary, in packages and sdk_click/verify packages queues.
+    // This should be done after packageHandler, sdkClickHandler and purchaseVerificationHandler are created.
     if (selfI.internalState.waitingForAttStatus) {
         selfI.internalState.updatePackagesAttData = YES;
         if (selfI.activityState != nil) {
@@ -897,12 +902,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI updatePackagesAttStatusAndIdfaI:selfI];
         }
     }
-
-    selfI.purchaseVerificationHandler = [[ADJPurchaseVerificationHandler alloc]
-                            initWithActivityHandler:selfI
-                                startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
-                                userAgent:selfI.adjustConfig.userAgent
-                                urlStrategy:sdkClickHandlerUrlStrategy];
 
     [selfI checkLinkMeI:selfI];
     [selfI.trackingStatusManager checkForNewAttStatus];
@@ -2577,6 +2576,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (attStatus != 0) {
         [selfI.packageHandler updatePackagesWithIdfaAndAttStatus];
         [selfI.sdkClickHandler updatePackagesWithIdfaAndAttStatus];
+        [selfI.purchaseVerificationHandler updatePackagesWithIdfaAndAttStatus];
     }
 
     selfI.internalState.updatePackagesAttData = NO;
