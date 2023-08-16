@@ -35,18 +35,8 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    // ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-    // [Adjust trackEvent:event];
-
-    ADJPurchase *purchase = [[ADJPurchase alloc] initWithTransactionId:@"transaction-id-very-nice"
-                                                             productId:@"product-id-very-nice"
-                                                            andReceipt:[@"receipt-very-nice" dataUsingEncoding:NSUTF8StringEncoding]];
-    [Adjust verifyPurchase:purchase completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
-        NSLog(@"Purchase verification response arrived!");
-        NSLog(@"Status: %@", verificationResult.verificationStatus);
-        NSLog(@"Code: %d", verificationResult.code);
-        NSLog(@"Message: %@", verificationResult.message);
-    }];
+    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
+    [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
