@@ -1424,8 +1424,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)verifyPurchaseI:(ADJActivityHandler *)selfI
                purchase:(nonnull ADJPurchase *)purchase
       completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
-    if ([selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyTR]) {
-        [selfI.logger warn:@"Purchase verification not available for Turkey data residency region right now"];
+    if ([selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyEU] ||
+        [selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyUS] ||
+        [selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyTR]) {
+        [selfI.logger warn:@"Purchase verification not available for data residency users right now"];
         return;
     }
     if (![selfI isEnabledI:selfI]) {
