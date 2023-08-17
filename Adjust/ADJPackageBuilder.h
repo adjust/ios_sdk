@@ -42,7 +42,7 @@
 - (ADJActivityPackage * _Nullable)buildSessionPackage:(BOOL)isInDelay;
 
 - (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event
-                                isInDelay:(BOOL)isInDelay;
+                                          isInDelay:(BOOL)isInDelay;
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
@@ -57,6 +57,8 @@
 
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
                                           linkMeUrl:(NSString * _Nullable)linkMeUrl;
+
+- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackage:(ADJPurchase * _Nullable)purchase;
 
 - (ADJActivityPackage * _Nullable)buildAttributionPackage:(NSString * _Nullable)initiatedBy;
 
@@ -92,6 +94,9 @@
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
++ (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
+                 withConfig:(ADJConfig * _Nullable)adjConfig
+                     logger:(id<ADJLogger> _Nullable)logger;
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;

@@ -36,7 +36,6 @@
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
     ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-
     [Adjust trackEvent:event];
 }
 

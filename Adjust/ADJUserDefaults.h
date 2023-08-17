@@ -63,4 +63,13 @@
 
 + (NSURL *)getCachedDeeplinkUrl;
 
++ (BOOL)attWaitingRemainingSecondsKeyExists;
+
++ (void)setAttWaitingRemainingSeconds:(NSUInteger)seconds;
+
++ (NSUInteger)getAttWaitingRemainingSeconds;
+
++ (void)removeAttWaitingRemainingSeconds;
+
+
 @end

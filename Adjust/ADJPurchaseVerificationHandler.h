@@ -1,9 +1,9 @@
 //
-//  ADJSdkClickHandler.h
-//  Adjust SDK
+//  ADJPurchaseVerificationHandler.h
+//  Adjust
 //
-//  Created by Pedro Filipe (@nonelse) on 21st April 2016.
-//  Copyright © 2016 Adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on May 25th 2023.
+//  Copyright © 2023 Adjust. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,7 +12,9 @@
 #import "ADJRequestHandler.h"
 #import "ADJUrlStrategy.h"
 
-@interface ADJSdkClickHandler : NSObject <ADJResponseCallback>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface ADJPurchaseVerificationHandler : NSObject <ADJResponseCallback>
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
@@ -20,8 +22,10 @@
                   urlStrategy:(ADJUrlStrategy *)urlStrategy;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage;
+- (void)sendPurchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage;
 - (void)updatePackagesWithIdfaAndAttStatus;
 - (void)teardown;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -35,6 +35,8 @@
         return ADJActivityKindThirdPartySharing;
     } else if ([@"measurement_consent" isEqualToString:activityKindString]) {
         return ADJActivityKindMeasurementConsent;
+    } else if ([@"purchase_verification" isEqualToString:activityKindString]) {
+        return ADJActivityKindPurchaseVerification;
     } else {
         return ADJActivityKindUnknown;
     }
@@ -64,6 +66,8 @@
             return @"third_party_sharing";
         case ADJActivityKindMeasurementConsent:
             return @"measurement_consent";
+        case ADJActivityKindPurchaseVerification:
+            return @"purchase_verification";
         default:
             return @"unknown";
     }

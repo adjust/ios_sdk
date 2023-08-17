@@ -20,8 +20,10 @@
 @property (nonatomic, assign) BOOL background;
 @property (nonatomic, assign) BOOL delayStart;
 @property (nonatomic, assign) BOOL updatePackages;
+@property (nonatomic, assign) BOOL updatePackagesAttData;
 @property (nonatomic, assign) BOOL firstLaunch;
 @property (nonatomic, assign) BOOL sessionResponseProcessed;
+@property (nonatomic, assign) BOOL waitingForAttStatus;
 
 - (BOOL)isEnabled;
 - (BOOL)isDisabled;
@@ -32,8 +34,10 @@
 - (BOOL)isInDelayedStart;
 - (BOOL)isNotInDelayedStart;
 - (BOOL)itHasToUpdatePackages;
+- (BOOL)itHasToUpdatePackagesAttData;
 - (BOOL)isFirstLaunch;
 - (BOOL)hasSessionResponseNotBeenProcessed;
+- (BOOL)isWaitingForAttStatus;
 
 @end
 
@@ -110,6 +114,8 @@
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)checkForNewAttStatus;
+- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
@@ -143,15 +149,15 @@
 
 @interface ADJTrackingStatusManager : NSObject
 
-- (instancetype _Nullable)initWithActivityHandler:(ADJActivityHandler * _Nullable)activityHandler;
-
-- (void)checkForNewAttStatus;
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
-
-- (BOOL)canGetAttStatus;
-
 @property (nonatomic, readonly, assign) BOOL trackingEnabled;
 @property (nonatomic, readonly, assign) int attStatus;
+
+- (instancetype _Nullable)initWithActivityHandler:(ADJActivityHandler * _Nullable)activityHandler;
+- (void)checkForNewAttStatus;
+- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
+- (BOOL)canGetAttStatus;
+- (void)setAppInActiveState:(BOOL)activeState;
+- (BOOL)shouldWaitForAttStatus;
 
 @end
 

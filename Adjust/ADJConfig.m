@@ -203,6 +203,7 @@
         copy.allowIdfaReading = self.allowIdfaReading;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
         copy.delayStart = self.delayStart;
+        copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];

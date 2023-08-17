@@ -31,7 +31,7 @@
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
     // [self.testLibrary addTestDirectory:@"event-callbacks"];
-    // [self.testLibrary addTest:@"Test_Parameters"];
+    // [self.testLibrary addTest:@"Test_PurchaseVerification_ios_after_install"];
 
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];

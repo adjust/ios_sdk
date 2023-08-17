@@ -41,6 +41,7 @@ static NSString *appToken = nil;
     self.deviceToken = nil;
     self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
     self.updatePackages = NO;
+    self.updatePackagesAttData = NO;
     self.trackingManagerAuthorizationStatus = -1;
 
     return self;
@@ -176,6 +177,12 @@ static NSString *appToken = nil;
         self.updatePackages = NO;
     }
 
+    if ([decoder containsValueForKey:@"updatePackagesAttData"]) {
+        self.updatePackagesAttData = [decoder decodeBoolForKey:@"updatePackagesAttData"];
+    } else {
+        self.updatePackagesAttData = NO;
+    }
+
     if ([decoder containsValueForKey:@"adid"]) {
         self.adid = [decoder decodeObjectForKey:@"adid"];
     }
@@ -212,6 +219,7 @@ static NSString *appToken = nil;
     [encoder encodeBool:self.isThirdPartySharingDisabledForCoppa forKey:@"isThirdPartySharingDisabledForCoppa"];
     [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
+    [encoder encodeBool:self.updatePackagesAttData forKey:@"updatePackagesAttData"];
     [encoder encodeObject:self.adid forKey:@"adid"];
     [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
     [encoder encodeInt:self.trackingManagerAuthorizationStatus
@@ -240,6 +248,7 @@ static NSString *appToken = nil;
         copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
         copy.updatePackages = self.updatePackages;
+        copy.updatePackagesAttData = self.updatePackagesAttData;
         copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
     }
     

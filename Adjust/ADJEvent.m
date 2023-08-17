@@ -129,6 +129,18 @@
     }
 }
 
+- (void)setProductId:(NSString *)productId {
+    @synchronized (self) {
+        _productId = [productId copy];
+    }
+}
+
+- (void)setReceipt:(NSData *)receipt {
+    @synchronized (self) {
+        _receipt = [receipt copy];
+    }
+}
+
 - (BOOL)checkEventToken:(NSString *)eventToken {
     if ([ADJUtil isNull:eventToken]) {
         [self.logger error:@"Missing Event Token"];
@@ -202,6 +214,7 @@
         copy->_transactionId = [self.transactionId copyWithZone:zone];
         copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_emptyReceipt = self.emptyReceipt;
+        copy->_productId = [self.productId copyWithZone:zone];
     }
 
     return copy;

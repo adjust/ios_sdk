@@ -45,6 +45,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, strong) ADJActivityPackage *sdkPackage;
 
+@property (nonatomic, strong) ADJActivityPackage *purchaseVerificationPackage;
+
 + (id)buildResponseData:(ADJActivityPackage *)activityPackage;
 
 @end
@@ -58,6 +60,9 @@ typedef NS_ENUM(int, ADJTrackingState) {
 @end
 
 @interface ADJSdkClickResponseData : ADJResponseData
+@end
+
+@interface ADJPurchaseVerificationResponseData : ADJResponseData
 @end
 
 @interface ADJEventResponseData : ADJResponseData

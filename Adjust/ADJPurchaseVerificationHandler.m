@@ -1,22 +1,22 @@
 //
-//  ADJSdkClickHandler.m
-//  Adjust SDK
+//  ADJPurchaseVerificationHandler.m
+//  Adjust
 //
-//  Created by Pedro Filipe (@nonelse) on 21st April 2016.
-//  Copyright © 2016 Adjust GmbH. All rights reserved.
+//  Created by Uglješa Erceg (@uerceg) on May 25th 2023.
+//  Copyright © 2023 Adjust. All rights reserved.
 //
 
+#import "ADJPurchaseVerificationHandler.h"
 #import "ADJUtil.h"
 #import "ADJLogger.h"
 #import "ADJAdjustFactory.h"
-#import "ADJSdkClickHandler.h"
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
 #import "ADJPackageBuilder.h"
 
-static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
+static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQueue";
 
-@interface ADJSdkClickHandler()
+@interface ADJPurchaseVerificationHandler()
 
 @property (nonatomic, strong) NSMutableArray *packageQueue;
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
@@ -32,15 +32,14 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 @end
 
-@implementation ADJSdkClickHandler
+@implementation ADJPurchaseVerificationHandler
 
 #pragma mark - Public instance methods
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
                     userAgent:(NSString *)userAgent
-                  urlStrategy:(ADJUrlStrategy *)urlStrategy
-{
+                  urlStrategy:(ADJUrlStrategy *)urlStrategy {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -50,18 +49,15 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
     self.logger = ADJAdjustFactory.logger;
     self.lastPackageRetriesCount = 0;
 
-    self.requestHandler = [[ADJRequestHandler alloc]
-                           initWithResponseCallback:self
-                           urlStrategy:urlStrategy
-                           userAgent:userAgent
-                           requestTimeout:[ADJAdjustFactory requestTimeout]];
+    self.requestHandler = [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                                                  urlStrategy:urlStrategy
+                                                                    userAgent:userAgent
+                                                               requestTimeout:[ADJAdjustFactory requestTimeout]];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
-                     block:^(ADJSdkClickHandler *selfI) {
-                         [selfI initI:selfI
-                      activityHandler:activityHandler
-                        startsSending:startsSending];
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
+                         [selfI initI:selfI activityHandler:activityHandler startsSending:startsSending];
                      }];
     return self;
 }
@@ -72,35 +68,35 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 - (void)resumeSending {
     self.paused = NO;
-    [self sendNextSdkClick];
+    [self sendNextPurchaseVerificationPackage];
 }
 
-- (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage {
+- (void)sendPurchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
-                     block:^(ADJSdkClickHandler *selfI) {
-                         [selfI sendSdkClickI:selfI sdkClickPackage:sdkClickPackage];
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
+                         [selfI sendPurchaseVerificationPackageI:selfI purchaseVerificationPackage:purchaseVerificationPackage];
                      }];
 }
 
-- (void)sendNextSdkClick {
+- (void)sendNextPurchaseVerificationPackage {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
-                     block:^(ADJSdkClickHandler *selfI) {
-                         [selfI sendNextSdkClickI:selfI];
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
+                         [selfI sendNextPurchaseVerificationPackageI:selfI];
                      }];
 }
 
 - (void)updatePackagesWithIdfaAndAttStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
-                     block:^(ADJSdkClickHandler *selfI) {
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
         [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
     }];
 }
 
 - (void)teardown {
-    [ADJAdjustFactory.logger verbose:@"ADJSdkClickHandler teardown"];
+    [ADJAdjustFactory.logger verbose:@"ADJPurchaseVerificationHandler teardown"];
 
     if (self.packageQueue != nil) {
         [self.packageQueue removeAllObjects];
@@ -115,7 +111,7 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 #pragma mark - Private & helper methods
 
--   (void)initI:(ADJSdkClickHandler *)selfI
+-   (void)initI:(ADJPurchaseVerificationHandler *)selfI
 activityHandler:(id<ADJActivityHandler>)activityHandler
   startsSending:(BOOL)startsSending {
     selfI.activityHandler = activityHandler;
@@ -124,15 +120,15 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     selfI.packageQueue = [NSMutableArray array];
 }
 
-- (void)sendSdkClickI:(ADJSdkClickHandler *)selfI
-      sdkClickPackage:(ADJActivityPackage *)sdkClickPackage {
-    [selfI.packageQueue addObject:sdkClickPackage];
-    [selfI.logger debug:@"Added sdk_click %d", selfI.packageQueue.count];
-    [selfI.logger verbose:@"%@", sdkClickPackage.extendedString];
-    [selfI sendNextSdkClick];
+- (void)sendPurchaseVerificationPackageI:(ADJPurchaseVerificationHandler *)selfI
+             purchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage {
+    [selfI.packageQueue addObject:purchaseVerificationPackage];
+    [selfI.logger debug:@"Added purchase_verification %d", selfI.packageQueue.count];
+    [selfI.logger verbose:@"%@", purchaseVerificationPackage.extendedString];
+    [selfI sendNextPurchaseVerificationPackage];
 }
 
-- (void)sendNextSdkClickI:(ADJSdkClickHandler *)selfI {
+- (void)sendNextPurchaseVerificationPackageI:(ADJPurchaseVerificationHandler *)selfI {
     if (selfI.paused) {
         return;
     }
@@ -141,45 +137,26 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         return;
     }
     if ([selfI.activityHandler isGdprForgotten]) {
-        [selfI.logger debug:@"sdk_click request won't be fired for forgotten user"];
+        [selfI.logger debug:@"purchase_verification request won't be fired for forgotten user"];
         return;
     }
 
-    ADJActivityPackage *sdkClickPackage = [self.packageQueue objectAtIndex:0];
+    ADJActivityPackage *purchaseVerificationPackage = [self.packageQueue objectAtIndex:0];
     [self.packageQueue removeObjectAtIndex:0];
 
-    if (![sdkClickPackage isKindOfClass:[ADJActivityPackage class]]) {
-        [selfI.logger error:@"Failed to read sdk_click package"];
-        [selfI sendNextSdkClick];
+    if (![purchaseVerificationPackage isKindOfClass:[ADJActivityPackage class]]) {
+        [selfI.logger error:@"Failed to read purchase_verification package"];
+        [selfI sendNextPurchaseVerificationPackage];
         return;
-    }
-    
-    if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
-        // refresh token
-        NSString *token = [ADJUtil fetchAdServicesAttribution:nil];
-        
-        if (token != nil && ![sdkClickPackage.parameters[ADJAttributionTokenParameter] isEqualToString:token]) {
-            // update token
-            [ADJPackageBuilder parameters:sdkClickPackage.parameters
-                                setString:token
-                                   forKey:ADJAttributionTokenParameter];
-            
-            // update created_at
-            [ADJPackageBuilder parameters:sdkClickPackage.parameters
-                              setDate1970:[NSDate.date timeIntervalSince1970]
-                                   forKey:@"created_at"];
-        }
     }
 
     dispatch_block_t work = ^{
         NSDictionary *sendingParameters = @{
             @"sent_at": [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
         };
-
-        [selfI.requestHandler sendPackageByPOST:sdkClickPackage
+        [selfI.requestHandler sendPackageByPOST:purchaseVerificationPackage
                               sendingParameters:sendingParameters];
-
-        [selfI sendNextSdkClick];
+        [selfI sendNextPurchaseVerificationPackage];
     };
 
     if (selfI.lastPackageRetriesCount <= 0) {
@@ -189,13 +166,13 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
     NSTimeInterval waitTime = [ADJUtil waitingTime:selfI.lastPackageRetriesCount backoffStrategy:self.backoffStrategy];
     NSString *waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
-
-    [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click for the %d time", waitTimeFormatted, selfI.lastPackageRetriesCount];
+    [self.logger verbose:@"Waiting for %@ seconds before retrying purchase_verification for the %d time",
+     waitTimeFormatted,
+     selfI.lastPackageRetriesCount];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
-- (void)updatePackagesWithIdfaAndAttStatusI:(ADJSdkClickHandler *)selfI {
-
+- (void)updatePackagesWithIdfaAndAttStatusI:(ADJPurchaseVerificationHandler *)selfI {
     int attStatus = [ADJUtil attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
@@ -207,14 +184,23 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
 }
 
-
 - (void)responseCallback:(ADJResponseData *)responseData {
     if (responseData.jsonResponse) {
         [self.logger debug:
-            @"Got click JSON response with message: %@", responseData.message];
+            @"Got purchase_verification JSON response with message: %@", responseData.message];
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = responseData.jsonResponse[@"verification_status"];
+        verificationResult.code = [(NSNumber *)responseData.jsonResponse[@"code"] intValue];
+        verificationResult.message = responseData.jsonResponse[@"message"];
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
     } else {
         [self.logger error:
-            @"Could not get click JSON response with message: %@", responseData.message];
+            @"Could not get purchase_verification JSON response with message: %@", responseData.message];
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = @"not_verified";
+        verificationResult.code = 102;
+        verificationResult.message = responseData.message;
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
     }
     // Check if any package response contains information that user has opted out.
     // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
@@ -225,18 +211,11 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
     if (responseData.jsonResponse == nil) {
         self.lastPackageRetriesCount++;
-        [self.logger error:@"Retrying sdk_click package for the %d time", self.lastPackageRetriesCount];
-        [self sendSdkClick:responseData.sdkClickPackage];
+        [self.logger error:@"Retrying purchase_verification package for the %d time", self.lastPackageRetriesCount];
+        [self sendPurchaseVerificationPackage:responseData.purchaseVerificationPackage];
         return;
     }
     self.lastPackageRetriesCount = 0;
-    
-    if ([ADJPackageBuilder isAdServicesPackage:responseData.sdkClickPackage]) {
-        // set as tracked
-        [ADJUserDefaults setAdServicesTracked];
-        [self.logger info:@"Received Apple Ads click response"];
-    }
-
     [self.activityHandler finishedTracking:responseData];
 }
 

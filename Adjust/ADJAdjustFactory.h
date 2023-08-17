@@ -29,6 +29,7 @@
 + (NSString *)baseUrl;
 + (NSString *)gdprUrl;
 + (NSString *)subscriptionUrl;
++ (NSString *)purchaseVerificationUrl;
 + (BOOL)adServicesFrameworkEnabled;
 
 + (void)setLogger:(id<ADJLogger>)logger;
@@ -45,6 +46,7 @@
 + (void)setBaseUrl:(NSString *)baseUrl;
 + (void)setGdprUrl:(NSString *)gdprUrl;
 + (void)setSubscriptionUrl:(NSString *)subscriptionUrl;
++ (void)setPurchaseVerificationUrl:(NSString *)purchaseVerificationUrl;
 
 + (void)enableSigning;
 + (void)disableSigning;
