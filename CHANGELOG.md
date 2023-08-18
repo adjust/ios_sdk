@@ -1,10 +1,8 @@
 ### Version 4.34.1 (18th August 2023)
 #### Fixed
-- Fixed `ADJPurchase.h` file not found via SPM installation
-   (https://github.com/adjust/ios_sdk/issues/673).
+- Fixed `ADJPurchase.h` file not found issue via SPM installation (https://github.com/adjust/ios_sdk/issues/673).
 
 ---
-
 
 ### Version 4.34.0 (17th August 2023)
 #### Added
