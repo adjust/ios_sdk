@@ -1,3 +1,11 @@
+### Version 4.34.1 (18th August 2023)
+#### Fixed
+- Fixed `ADJPurchase.h` file not found via SPM installation
+   (https://github.com/adjust/ios_sdk/issues/673).
+
+---
+
+
 ### Version 4.34.0 (17th August 2023)
 #### Added
 - Added ability to delay SDK start in order to wait for an answer to the ATT dialog. You can set the number of seconds to wait (capped internally to 120) by calling the `setAttConsentWaitingInterval:` method of the `ADJConfig` instance.
