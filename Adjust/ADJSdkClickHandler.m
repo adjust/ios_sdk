@@ -195,8 +195,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 }
 
 - (void)updatePackagesWithIdfaAndAttStatusI:(ADJSdkClickHandler *)selfI {
-
     int attStatus = [ADJUtil attStatus];
+    [selfI.logger debug:@"Updating sdk_click queue with idfa and att_status: %d", attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus

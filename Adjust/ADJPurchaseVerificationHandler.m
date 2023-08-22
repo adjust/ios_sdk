@@ -174,6 +174,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
 - (void)updatePackagesWithIdfaAndAttStatusI:(ADJPurchaseVerificationHandler *)selfI {
     int attStatus = [ADJUtil attStatus];
+    [selfI.logger debug:@"Updating purchase_verification queue with idfa and att_status: %d", attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus

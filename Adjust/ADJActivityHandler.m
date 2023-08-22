@@ -3068,6 +3068,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // We have to set the configured waiting timeout and start ATT status monitoring logic.
     [ADJUserDefaults setAttWaitingRemainingSeconds:timeoutSec];
+
     return YES;
 }
 
@@ -3084,6 +3085,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // check current ATT status
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
+        [self.activityHandler.logger info:@"ATT consent status udated to [%d]", attStatus];
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
@@ -3091,7 +3093,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     NSUInteger seconds = [ADJUserDefaults getAttWaitingRemainingSeconds];
     if (seconds == 0) {
-        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed without changing the state of consent"];
+        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed without receiving any consent status update"];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
     }

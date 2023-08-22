@@ -300,11 +300,8 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)updatePackagesWithIdfaAndAttStatusI:(ADJPackageHandler *)selfI {
-
     int attStatus = [ADJUtil attStatus];
-    [selfI.logger debug:@"Updating package handler queue"];
-    [selfI.logger verbose:@"ATT Status %ld", (long)attStatus];
-
+    [selfI.logger debug:@"Updating package queue with idfa and att_status: %d", (long)attStatus];
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];
 
