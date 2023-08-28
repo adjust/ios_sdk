@@ -432,18 +432,28 @@ authorizationHeader:(NSString *)authorizationHeader
 - (NSString *)buildAuthorizationHeader:(NSDictionary *)parameters
                           activityKind:(ADJActivityKind)activityKind
 {
-    NSString *secretId = [parameters objectForKey:@"secret_id"];
+    NSString *adjSigningId = [parameters objectForKey:@"adj_signing_id"];
     NSString *signature = [parameters objectForKey:@"signature"];
     NSString *headersId = [parameters objectForKey:@"headers_id"];
     NSString *nativeVersion = [parameters objectForKey:@"native_version"];
     NSString *algorithm = [parameters objectForKey:@"algorithm"];
-    NSString *authorizationHeader = [self buildAuthorizationHeaderV2:signature
-                                                            secretId:secretId
-                                                           headersId:headersId
-                                                       nativeVersion:nativeVersion
-                                                           algorithm:algorithm];
-    if (authorizationHeader != nil) {
-        return authorizationHeader;
+    NSString *authorizationHeaderWithAdjSigningId = [self buildAuthorizationHeaderV2:signature
+                                                                        adjSigningId:adjSigningId
+                                                                           headersId:headersId
+                                                                       nativeVersion:nativeVersion
+                                                                           algorithm:algorithm];
+    if (authorizationHeaderWithAdjSigningId != nil) {
+        return authorizationHeaderWithAdjSigningId;
+    }
+
+    NSString *secretId = [parameters objectForKey:@"secret_id"];
+    NSString *authorizationHeaderWithSecretId = [self buildAuthorizationHeaderV2:signature
+                                                                        secretId:secretId
+                                                                       headersId:headersId
+                                                                   nativeVersion:nativeVersion
+                                                                       algorithm:algorithm];
+    if (authorizationHeaderWithSecretId != nil) {
+        return authorizationHeaderWithSecretId;
     }
 
     NSString * appSecret = [parameters objectForKey:@"app_secret"];
@@ -452,6 +462,31 @@ authorizationHeader:(NSString *)authorizationHeader
                                     parameters:parameters
                                   activityKind:activityKind];
 }
+
+- (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
+                            adjSigningId:(NSString *)adjSigningId
+                               headersId:(NSString *)headersId
+                           nativeVersion:(NSString *)nativeVersion
+                               algorithm:(NSString *)algorithm
+{
+    if (adjSigningId == nil || signature == nil || headersId == nil) {
+        return nil;
+    }
+
+    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
+    NSString * adjSigningIdHeader = [NSString stringWithFormat:@"adj_signing_id=\"%@\"", adjSigningId];
+    NSString * idHeader        = [NSString stringWithFormat:@"headers_id=\"%@\"", headersId];
+    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm != nil ? algorithm : @"adj1"];
+
+    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
+            signatureHeader, adjSigningIdHeader, algorithmHeader, idHeader];
+
+    if (nativeVersion == nil) {
+        return [authorizationHeader stringByAppendingFormat:@",native_version=\"\""];
+    }
+    return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
+}
+
 
 - (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
                                 secretId:(NSString *)secretId
