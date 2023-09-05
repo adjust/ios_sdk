@@ -142,6 +142,12 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
     }
 
+    // check if ATT consent delay has been configured
+    if (adjustConfig.attConsentWaitingInterval > 0) {
+        [ADJAdjustFactory.logger info:@"ATT consent waiting interval has been configured to %d",
+         adjustConfig.attConsentWaitingInterval];
+    }
+
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
@@ -3085,7 +3091,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     NSUInteger seconds = [ADJUserDefaults getAttWaitingRemainingSeconds];
     if (seconds == 0) {
-        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed - NO ATT STATUS FOUND"];
+        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed without changing the state of consent"];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
     }
