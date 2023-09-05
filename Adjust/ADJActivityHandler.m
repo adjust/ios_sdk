@@ -3006,6 +3006,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)setAppInActiveState:(BOOL)activeState {
     dispatch_async(self.waitingForAttQueue, ^{
+        // skip in case active state didn't change
+        if (self.activeState == activeState) {
+            return;
+        }
         self.activeState = activeState;
         if (self.activeState) {
             [self startWaitingForAttStatus];
