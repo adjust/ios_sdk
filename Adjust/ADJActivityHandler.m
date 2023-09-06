@@ -142,6 +142,12 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
     }
 
+    // check if ATT consent delay has been configured
+    if (adjustConfig.attConsentWaitingInterval > 0) {
+        [ADJAdjustFactory.logger info:@"ATT consent waiting interval has been configured to %d",
+         adjustConfig.attConsentWaitingInterval];
+    }
+
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
@@ -3006,6 +3012,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)setAppInActiveState:(BOOL)activeState {
     dispatch_async(self.waitingForAttQueue, ^{
+        // skip in case active state didn't change
+        if (self.activeState == activeState) {
+            return;
+        }
         self.activeState = activeState;
         if (self.activeState) {
             [self startWaitingForAttStatus];
@@ -3058,6 +3068,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // We have to set the configured waiting timeout and start ATT status monitoring logic.
     [ADJUserDefaults setAttWaitingRemainingSeconds:timeoutSec];
+
     return YES;
 }
 
@@ -3074,6 +3085,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // check current ATT status
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
+        [self.activityHandler.logger info:@"ATT consent status udated to: %d", attStatus];
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
@@ -3081,7 +3093,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     NSUInteger seconds = [ADJUserDefaults getAttWaitingRemainingSeconds];
     if (seconds == 0) {
-        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed - NO ATT STATUS FOUND"];
+        [self.activityHandler.logger warn:@"ATT status waiting timeout elapsed without receiving any consent status update"];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
     }

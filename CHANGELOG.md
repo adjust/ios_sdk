@@ -1,3 +1,13 @@
+### Version 4.34.2 (6th September 2023)
+
+#### Added
+- Added more logging around ATT delay timer feature to indicate that it's activated.
+
+#### Fixed
+- Fixed issue where subsequent calls to active state callback would make ATT delay timer elapse sooner.
+
+---
+
 ### Version 4.34.1 (18th August 2023)
 #### Fixed
 - Fixed `ADJPurchase.h` file not found issue via SPM installation (https://github.com/adjust/ios_sdk/issues/673).
