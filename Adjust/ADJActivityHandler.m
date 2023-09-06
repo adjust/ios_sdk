@@ -3085,7 +3085,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // check current ATT status
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
-        [self.activityHandler.logger info:@"ATT consent status udated to [%d]", attStatus];
+        [self.activityHandler.logger info:@"ATT consent status udated to: %d", attStatus];
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;
