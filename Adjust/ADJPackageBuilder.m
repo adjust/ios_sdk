@@ -365,9 +365,22 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
 
     // Stack allocated strings to ensure their lifetime stays until the next iteration
-    static char activityKind[64], sdkVersion[64];
-    strncpy(activityKind, activityKindChar, strlen(activityKindChar) + 1);
-    strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
+    static char activityKind[64] = {0};
+    static char sdkVersion[64] = {0};
+
+    size_t activityKindCharLength = 0;
+    while (activityKindChar[activityKindCharLength] != '\0' && activityKindCharLength < sizeof(activityKind) - 1) {
+        activityKind[activityKindCharLength] = activityKindChar[activityKindCharLength];
+        activityKindCharLength++;
+    }
+    activityKind[activityKindCharLength] = '\0';
+
+    size_t sdkVersionCharLength = 0;
+    while (sdkVersionChar[sdkVersionCharLength] != '\0' && sdkVersionCharLength < sizeof(sdkVersion) - 1) {
+        sdkVersion[sdkVersionCharLength] = sdkVersionChar[sdkVersionCharLength];
+        sdkVersionCharLength++;
+    }
+    sdkVersion[sdkVersionCharLength] = '\0';
 
     // NSInvocation setArgument requires lvalue references with exact matching types to the executed function signature.
     // With this usage we ensure that the lifetime of the object remains until the next iteration, as it points to the
