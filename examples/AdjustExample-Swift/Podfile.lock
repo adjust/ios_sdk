@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.34.2):
-    - Adjust/Core (= 4.34.2)
-  - Adjust/Core (4.34.2)
+  - Adjust (4.35.0):
+    - Adjust/Core (= 4.35.0)
+  - Adjust/Core (4.35.0)
 
 DEPENDENCIES:
   - Adjust (from `../../`)
