@@ -1,3 +1,9 @@
+### Version 4.35.0 (12th September 2023)
+#### Added
+- Added support for SigV3 library. Update authorization header building logic to use `adj_signing_id`.
+
+---
+
 ### Version 4.34.2 (6th September 2023)
 
 #### Added
