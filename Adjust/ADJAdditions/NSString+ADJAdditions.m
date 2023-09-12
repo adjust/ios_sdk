@@ -59,11 +59,12 @@
 
 - (NSString *)adjSha256 {
     const char* str = [self UTF8String];
+    NSUInteger length = [self lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     unsigned char result[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(str, (CC_LONG)strlen(str), result);
+    CC_SHA256(str, (CC_LONG)length, result);
     NSMutableString *ret = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
-    for (int i = 0; i<CC_SHA256_DIGEST_LENGTH; i++) {
-        [ret appendFormat:@"%02x",result[i]];
+    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
+        [ret appendFormat:@"%02x", result[i]];
     }
     return ret;
 }
