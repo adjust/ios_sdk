@@ -67,6 +67,11 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     return self;
 }
 
+- (BOOL)isTrackingOrElseAnalytics {
+    //TODO:
+    return YES;
+}
+
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
@@ -86,8 +91,9 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
-    NSString *urlHostString = [self.urlStrategy getUrlHostStringByPackageKind:
-                               activityPackage.activityKind];
+    NSString *urlHostString = [self.urlStrategy
+                               getUrlHostStringByPackageKind:activityPackage.activityKind
+                               isTrackingOrElseAnalytics:[self isTrackingOrElseAnalytics]];
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
                           clientSdk:clientSdk
@@ -121,7 +127,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                                        activityKind:activityKind];
 
     NSString *urlHostString = [self.urlStrategy
-                               getUrlHostStringByPackageKind:activityPackage.activityKind];
+                               getUrlHostStringByPackageKind:activityPackage.activityKind
+                               isTrackingOrElseAnalytics:[self isTrackingOrElseAnalytics]];
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path

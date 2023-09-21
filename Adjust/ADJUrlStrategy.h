@@ -16,7 +16,8 @@
 - (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
                               extraPath:(NSString *)extraPath;
 
-- (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind;
+- (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind
+                  isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics;
 
 - (void)resetAfterSuccess;
 - (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;
