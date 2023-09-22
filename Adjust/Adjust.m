@@ -756,6 +756,12 @@ static dispatch_once_t onceToken = 0;
         NSTimeInterval subsessionIntervalInSeconds = [testOptions.subsessionIntervalInMilliseconds intValue] / 1000.0;
         [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
     }
+    if (testOptions.attStatusInt != nil) {
+        [ADJAdjustFactory setAttStatus:testOptions.attStatusInt];
+    }
+    if (testOptions.idfa != nil) {
+        [ADJAdjustFactory setIdfa:testOptions.idfa];
+    }
     if (testOptions.noBackoffWait) {
         [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
         [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];

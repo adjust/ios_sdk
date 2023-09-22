@@ -15,6 +15,8 @@ static id<ADJLogger> internalLogger = nil;
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
 static double internalRequestTimeout = -1;
+static NSNumber * internalAttStatus = nil;
+static NSString * internalIdfa = nil;
 static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
@@ -58,6 +60,14 @@ static NSString * internalPurchaseVerificationUrl = nil;
         return 60;                 // 60 second
     }
     return internalRequestTimeout;
+}
+
++ (NSNumber *)attStatus {
+    return internalAttStatus;
+}
+
++ (NSString *)idfa {
+    return internalIdfa;
 }
 
 + (NSTimeInterval)timerInterval {
@@ -136,6 +146,13 @@ static NSString * internalPurchaseVerificationUrl = nil;
 
 + (void)setSubsessionInterval:(double)subsessionInterval {
     intervalSubsessionInterval = subsessionInterval;
+}
++ (void)setAttStatus:(NSNumber *)attStatus {
+    internalAttStatus = attStatus;
+}
+
++ (void)setIdfa:(NSString *)idfa {
+    internalIdfa = idfa;
 }
 
 + (void)setRequestTimeout:(double)requestTimeout {
@@ -240,6 +257,8 @@ static NSString * internalPurchaseVerificationUrl = nil;
     internalTimerInterval = -1;
     intervalTimerStart = -1;
     internalRequestTimeout = -1;
+    internalAttStatus = nil;
+    internalIdfa = nil;
     packageHandlerBackoffStrategy = nil;
     sdkClickHandlerBackoffStrategy = nil;
     installSessionBackoffStrategy = nil;

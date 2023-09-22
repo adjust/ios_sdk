@@ -30,6 +30,8 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *attStatusInt;
+@property (nonatomic, copy, nullable) NSString *idfa;
 @property (nonatomic, assign) BOOL teardown;
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;

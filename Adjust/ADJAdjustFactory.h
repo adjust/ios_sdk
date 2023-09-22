@@ -18,6 +18,8 @@
 + (double)sessionInterval;
 + (double)subsessionInterval;
 + (double)requestTimeout;
++ (NSNumber *)attStatus;
++ (NSString *)idfa;
 + (NSTimeInterval)timerInterval;
 + (NSTimeInterval)timerStart;
 + (ADJBackoffStrategy *)packageHandlerBackoffStrategy;
@@ -35,6 +37,8 @@
 + (void)setLogger:(id<ADJLogger>)logger;
 + (void)setSessionInterval:(double)sessionInterval;
 + (void)setSubsessionInterval:(double)subsessionInterval;
++ (void)setAttStatus:(NSNumber *)attStatus;
++ (void)setIdfa:(NSString *)idfa;
 + (void)setRequestTimeout:(double)requestTimeout;
 + (void)setTimerInterval:(NSTimeInterval)timerInterval;
 + (void)setTimerStart:(NSTimeInterval)timerStart;

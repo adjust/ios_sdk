@@ -134,6 +134,16 @@
         NSString *subsessionIntervalMilliS = [parameters objectForKey:@"subsessionInterval"][0];
         testOptions.subsessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS];
     }
+    if ([parameters objectForKey:@"attStatus"]) {
+        NSString *attStatusS = [parameters objectForKey:@"attStatus"][0];
+        NSNumber *attStatusN = [NSNumber numberWithInt:[attStatusS intValue]];
+
+        testOptions.attStatusInt = attStatusN;
+    }
+    if ([parameters objectForKey:@"idfa"]) {
+        NSString *idfa = [parameters objectForKey:@"idfa"][0];
+        testOptions.idfa = idfa;
+    }
     if ([parameters objectForKey:@"noBackoffWait"]) {
         NSString *noBackoffWaitStr = [parameters objectForKey:@"noBackoffWait"][0];
         testOptions.noBackoffWait = NO;

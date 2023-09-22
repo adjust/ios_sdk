@@ -1033,6 +1033,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)idfa {
+    if (ADJAdjustFactory.idfa != nil) {
+        return ADJAdjustFactory.idfa;
+    }
+
 #if ADJUST_NO_IDFA
     return @"";
 #else
@@ -1183,6 +1187,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (int)attStatus {
+    if (ADJAdjustFactory.attStatus != nil) {
+        return ADJAdjustFactory.attStatus.intValue;
+    }
+
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass != nil) {
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
