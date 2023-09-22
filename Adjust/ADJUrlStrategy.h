@@ -16,8 +16,9 @@
 - (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
                               extraPath:(NSString *)extraPath;
 
-- (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind
-                  isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics;
+- (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
+                       isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+                            sendingParametersMut:(NSMutableDictionary *)sendingParametersMut;
 
 - (void)resetAfterSuccess;
 - (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;

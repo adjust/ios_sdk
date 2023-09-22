@@ -85,21 +85,27 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParameters
-                                      copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
+    NSMutableDictionary * sendingParametersMut =
+        [NSMutableDictionary dictionaryWithDictionary:sendingParameters];
+
     NSString *urlHostString = [self.urlStrategy
-                               getUrlHostStringByPackageKind:activityPackage.activityKind
-                               isTrackingOrElseAnalytics:[self isTrackingOrElseAnalytics]];
+                               urlHostStringByPackageKind:activityPackage.activityKind
+                               isTrackingOrElseAnalytics:[ADJUtil isTrackingOrElseAnalytics]
+                               sendingParametersMut:sendingParametersMut];
+
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParametersMut
+                                      copyItems:YES];
+
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
                           clientSdk:clientSdk
                          parameters:parameters
                       urlHostString:urlHostString
-                  sendingParameters:sendingParameters];
+                  sendingParameters:responseData.sendingParameters];
 
     [self sendRequest:urlRequest
   authorizationHeader:authorizationHeader
@@ -119,23 +125,28 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParameters
-                                      copyItems:YES];
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters
                                                        activityKind:activityKind];
 
+    NSMutableDictionary * sendingParametersMut =
+        [NSMutableDictionary dictionaryWithDictionary:sendingParameters];
+
     NSString *urlHostString = [self.urlStrategy
-                               getUrlHostStringByPackageKind:activityPackage.activityKind
-                               isTrackingOrElseAnalytics:[self isTrackingOrElseAnalytics]];
+                               urlHostStringByPackageKind:activityPackage.activityKind
+                               isTrackingOrElseAnalytics:[ADJUtil isTrackingOrElseAnalytics]
+                               sendingParametersMut:sendingParametersMut];
+
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParametersMut
+                                      copyItems:YES];
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
                          clientSdk:clientSdk
                         parameters:parameters
                      urlHostString:urlHostString
-                 sendingParameters:sendingParameters];
+                 sendingParameters:responseData.sendingParameters];
 
     [self sendRequest:urlRequest
      authorizationHeader:authorizationHeader

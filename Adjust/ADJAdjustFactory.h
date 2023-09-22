@@ -28,10 +28,7 @@
 
 + (BOOL)testing;
 + (NSTimeInterval)maxDelayStart;
-+ (NSString *)baseUrl;
-+ (NSString *)gdprUrl;
-+ (NSString *)subscriptionUrl;
-+ (NSString *)purchaseVerificationUrl;
++ (NSString *)urlOverwrite;
 + (BOOL)adServicesFrameworkEnabled;
 
 + (void)setLogger:(id<ADJLogger>)logger;
@@ -47,10 +44,7 @@
 + (void)setTesting:(BOOL)testing;
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled;
 + (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
-+ (void)setBaseUrl:(NSString *)baseUrl;
-+ (void)setGdprUrl:(NSString *)gdprUrl;
-+ (void)setSubscriptionUrl:(NSString *)subscriptionUrl;
-+ (void)setPurchaseVerificationUrl:(NSString *)purchaseVerificationUrl;
++ (void)setUrlOverwrite:(NSString *)urlOverwrite;
 
 + (void)enableSigning;
 + (void)disableSigning;

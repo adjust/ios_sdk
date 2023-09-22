@@ -21,10 +21,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @interface AdjustTestOptions : NSObject
 
-@property (nonatomic, copy, nullable) NSString *baseUrl;
-@property (nonatomic, copy, nullable) NSString *gdprUrl;
-@property (nonatomic, copy, nullable) NSString *subscriptionUrl;
-@property (nonatomic, copy, nullable) NSString *purchaseVerificationUrl;
+@property (nonatomic, copy, nullable) NSString *urlOverwrite;
 @property (nonatomic, copy, nullable) NSString *extraPath;
 @property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;

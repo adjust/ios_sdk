@@ -110,10 +110,7 @@
 
 - (void)testOptions:(NSDictionary *)parameters {
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-    testOptions.baseUrl = baseUrl;
-    testOptions.gdprUrl = gdprUrl;
-    testOptions.subscriptionUrl = subscriptionUrl;
-    testOptions.purchaseVerificationUrl = purchaseVerificationUrl;
+    testOptions.urlOverwrite = urlOverwrite;
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];

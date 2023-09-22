@@ -52,6 +52,10 @@ static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
 static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
 static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com";
 
+static NSString *const testServerCustomEndPointKey = @"test_server_custom_end_point";
+static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_point";
+
+
 @interface ADJUrlStrategy ()
 
 @property (nonatomic, copy) NSArray<NSString *> *aBaseUrlChoicesArray;
@@ -60,10 +64,7 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionUrlChoicesArray;
 @property (nonatomic, copy) NSArray<NSString *> *purchaseVerificationUrlChoicesArray;
 
-@property (nonatomic, copy) NSString *overridenBaseUrl;
-@property (nonatomic, copy) NSString *overridenGdprUrl;
-@property (nonatomic, copy) NSString *overridenSubscriptionUrl;
-@property (nonatomic, copy) NSString *overridenPurchaseVerificationUrl;
+@property (nonatomic, copy) NSString *urlOverwrite;
 
 @property (nonatomic, assign) BOOL wasLastAttemptSuccess;
 
@@ -88,10 +89,7 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     _purchaseVerificationUrlChoicesArray = [ADJUrlStrategy
                                             purchaseVerificationUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
 
-    _overridenBaseUrl = [ADJAdjustFactory baseUrl];
-    _overridenGdprUrl = [ADJAdjustFactory gdprUrl];
-    _overridenSubscriptionUrl = [ADJAdjustFactory subscriptionUrl];
-    _overridenPurchaseVerificationUrl = [ADJAdjustFactory purchaseVerificationUrl];
+    _urlOverwrite = [ADJAdjustFactory urlOverwrite];
 
     _wasLastAttemptSuccess = NO;
     _choiceIndex = 0;
@@ -198,37 +196,42 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     }
 }
 
-- (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind
-                  isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+- (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
+                       isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+                            sendingParametersMut:(NSMutableDictionary *)sendingParametersMut
+{
+    NSString *_Nonnull urlByActivityKind =
+        [self chooseUrlWithActivityKind:activityKind
+              isTrackingOrElseAnalytics:isTrackingOrElseAnalytics];
+
+    if (self.urlOverwrite != nil) {
+        [sendingParametersMut setObject:urlByActivityKind
+                                 forKey:testServerAdjustEndPointKey];
+
+        return self.urlOverwrite;
+    }
+
+    return urlByActivityKind;
+}
+- (nonnull NSString *)chooseUrlWithActivityKind:(ADJActivityKind)activityKind
+                      isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
 {
     if (activityKind == ADJActivityKindGdpr) {
-        if (self.overridenGdprUrl != nil) {
-            return self.overridenGdprUrl;
-        } else {
-            return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
-        }
-    } else if (activityKind == ADJActivityKindSubscription) {
-        if (self.overridenSubscriptionUrl != nil) {
-            return self.overridenSubscriptionUrl;
-        } else {
-            return [self.subscriptionUrlChoicesArray objectAtIndex:self.choiceIndex];
-        }
-    } else if (activityKind == ADJActivityKindPurchaseVerification) {
-        if (self.overridenPurchaseVerificationUrl != nil) {
-            return self.overridenPurchaseVerificationUrl;
-        } else {
-            return [self.purchaseVerificationUrlChoicesArray objectAtIndex:self.choiceIndex];
-        }
+        return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
+    }
+
+    if (activityKind == ADJActivityKindSubscription) {
+        return [self.subscriptionUrlChoicesArray objectAtIndex:self.choiceIndex];
+    }
+
+    if (activityKind == ADJActivityKindPurchaseVerification) {
+        return [self.purchaseVerificationUrlChoicesArray objectAtIndex:self.choiceIndex];
+    }
+
+    if (isTrackingOrElseAnalytics) {
+        return [self.tBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
     } else {
-        if (self.overridenBaseUrl != nil) {
-            return self.overridenBaseUrl;
-        } else {
-            if (isTrackingOrElseAnalytics) {
-                return [self.tBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
-            } else {
-                return [self.aBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
-            }
-        }
+        return [self.aBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
 }
 

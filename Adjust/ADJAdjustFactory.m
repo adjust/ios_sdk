@@ -26,10 +26,7 @@ static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internalAdServicesFrameworkEnabled = YES;
 
-static NSString * internalBaseUrl = nil;
-static NSString * internalGdprUrl = nil;
-static NSString * internalSubscriptionUrl = nil;
-static NSString * internalPurchaseVerificationUrl = nil;
+static NSString * internalUrlOverwrite = nil;
 
 @implementation ADJAdjustFactory
 
@@ -120,20 +117,8 @@ static NSString * internalPurchaseVerificationUrl = nil;
     return internalMaxDelayStart;
 }
 
-+ (NSString *)baseUrl {
-    return internalBaseUrl;
-}
-
-+ (NSString *)gdprUrl {
-    return internalGdprUrl;
-}
-
-+ (NSString *)subscriptionUrl {
-    return internalSubscriptionUrl;
-}
-
-+ (NSString *)purchaseVerificationUrl {
-    return internalPurchaseVerificationUrl;
++ (NSString *)urlOverwrite {
+    return internalUrlOverwrite;
 }
 
 + (void)setLogger:(id<ADJLogger>)logger {
@@ -187,20 +172,8 @@ static NSString * internalPurchaseVerificationUrl = nil;
     internalMaxDelayStart = maxDelayStart;
 }
 
-+ (void)setBaseUrl:(NSString *)baseUrl {
-    internalBaseUrl = baseUrl;
-}
-
-+ (void)setGdprUrl:(NSString *)gdprUrl {
-    internalGdprUrl = gdprUrl;
-}
-
-+ (void)setSubscriptionUrl:(NSString *)subscriptionUrl {
-    internalSubscriptionUrl = subscriptionUrl;
-}
-
-+ (void)setPurchaseVerificationUrl:(NSString *)purchaseVerificationUrl {
-    internalPurchaseVerificationUrl = purchaseVerificationUrl;
++ (void)setUrlOverwrite:(NSString *)urlOverwrite {
+    internalUrlOverwrite = urlOverwrite;
 }
 
 + (void)enableSigning {
@@ -264,10 +237,7 @@ static NSString * internalPurchaseVerificationUrl = nil;
     installSessionBackoffStrategy = nil;
     internalTesting = NO;
     internalMaxDelayStart = -1;
-    internalBaseUrl = nil;
-    internalGdprUrl = nil;
-    internalSubscriptionUrl = nil;
-    internalPurchaseVerificationUrl = nil;
+    internalUrlOverwrite = nil;
     internalAdServicesFrameworkEnabled = YES;
 }
 @end
