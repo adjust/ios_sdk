@@ -67,11 +67,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     return self;
 }
 
-- (BOOL)isTrackingOrElseAnalytics {
-    //TODO:
-    return YES;
-}
-
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {

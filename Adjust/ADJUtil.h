@@ -119,6 +119,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (int)attStatus;
 
++ (BOOL)isTrackingOrElseAnalytics;
+
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;

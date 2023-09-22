@@ -1209,6 +1209,17 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return -1;
 }
 
++ (BOOL)isTrackingOrElseAnalytics {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        int attStatus = [ADJUtil attStatus];
+        NSLog(@"TORMV isTrackingOrElseAnalytics attStatus %@", @(attStatus));
+        return attStatus == 3;
+    } else {
+        // if iOs lower than 14 can use tracking
+        return YES;
+    }
+}
+
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
 
