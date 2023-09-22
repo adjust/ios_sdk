@@ -10,8 +10,8 @@
 #import "Adjust.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const aBaseUrl = @"https://t.adjust.com";
-static NSString * const tBaseUrl = @"https://a.adjust.com";
+static NSString * const aBaseUrl = @"https://a.adjust.com";
+static NSString * const tBaseUrl = @"https://t.adjust.com";
 static NSString * const gdprUrl = @"https://gdpr.adjust.com";
 static NSString * const subscriptionUrl = @"https://subscription.adjust.com";
 static NSString * const purchaseVerificationUrl = @"https://ssrv.adjust.com";
