@@ -2625,9 +2625,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // update activity packages
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
-        [selfI.packageHandler updatePackagesWithIdfaAndAttStatus];
-        [selfI.sdkClickHandler updatePackagesWithIdfaAndAttStatus];
-        [selfI.purchaseVerificationHandler updatePackagesWithIdfaAndAttStatus];
+        NSUInteger startedAt = [ADJUtil startedAt];
+        [selfI.packageHandler updatePackagesTrackingWithStartedAt:startedAt];
+        [selfI.sdkClickHandler updatePackagesTrackingWithStartedAt:startedAt];
+        [selfI.purchaseVerificationHandler updatePackagesTrackingWithStartedAt:startedAt];
     }
 
     selfI.internalState.updatePackagesAttData = NO;

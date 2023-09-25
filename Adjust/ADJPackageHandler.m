@@ -153,11 +153,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatus {
+- (void)updatePackagesTrackingWithStartedAt:(NSUInteger)startedAt {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
+        [selfI updatePackagesTrackingI:selfI
+                             startedAt:startedAt];
     }];
 }
 
@@ -299,7 +300,9 @@ startsSending:(BOOL)startsSending
     [selfI writePackageQueueS:selfI];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatusI:(ADJPackageHandler *)selfI {
+- (void)updatePackagesTrackingI:(ADJPackageHandler *)selfI
+                     startedAt:(NSUInteger)startedAt
+{
     int attStatus = [ADJUtil attStatus];
     [selfI.logger debug:@"Updating package queue with idfa and att_status: %d", (long)attStatus];
     // create package queue copy for new state of array
@@ -307,10 +310,9 @@ startsSending:(BOOL)startsSending
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
-        [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
-                                    withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]
-                                 packageParams:self.activityHandler.packageParams];
+        [ADJPackageBuilder addTrackingToParameters:activityPackage.parameters
+                                        withConfig:selfI.activityHandler.adjustConfig
+                                         startedAt:startedAt];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }

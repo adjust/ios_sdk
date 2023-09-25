@@ -21,7 +21,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage;
-- (void)updatePackagesWithIdfaAndAttStatus;
+- (void)updatePackagesTrackingWithStartedAt:(NSUInteger)startedAt;
 - (void)teardown;
 
 @end
