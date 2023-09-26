@@ -92,7 +92,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         [self.activityHandler setTrackingStateOptedOut];
         return;
     }
-    if (responseData.jsonResponse == nil) {
+    if (responseData.willRetry) {
         [self closeFirstPackage:responseData];
     } else {
         [self sendNextPackage:responseData];
@@ -113,7 +113,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (void)closeFirstPackage:(ADJResponseData *)responseData
 {
-    responseData.willRetry = YES;
     [self.activityHandler finishedTracking:responseData];
 
     self.lastPackageRetriesCount++;
