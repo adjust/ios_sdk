@@ -87,11 +87,14 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
                      }];
 }
 
-- (void)updatePackagesTrackingWithStartedAt:(NSUInteger)startedAt {
+- (void)updatePackagesTrackingWithAttStatus:(int)attStatus
+                                  startedAt:(NSUInteger)startedAt
+{
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPurchaseVerificationHandler *selfI) {
         [selfI updatePackagesTrackingI:selfI
+                             attStatus:attStatus
                              startedAt:startedAt];
     }];
 }
@@ -174,17 +177,18 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 }
 
 - (void)updatePackagesTrackingI:(ADJPurchaseVerificationHandler *)selfI
-                     startedAt:(NSUInteger)startedAt
+                      attStatus:(int)attStatus
+                      startedAt:(NSUInteger)startedAt
 {
-    int attStatus = [ADJUtil attStatus];
     [selfI.logger debug:@"Updating purchase_verification queue with idfa and att_status: %d", attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus
                                forKey:@"att_status"];
-        [ADJPackageBuilder addTrackingToParameters:activityPackage.parameters
-                                        withConfig:selfI.activityHandler.adjustConfig
-                                         startedAt:startedAt];
+        [ADJPackageBuilder addConsentToToParameters:activityPackage.parameters
+                                    attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
+                                         withConfig:selfI.activityHandler.adjustConfig
+                                          startedAt:startedAt];
     }
 }
 

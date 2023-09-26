@@ -91,11 +91,14 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
                      }];
 }
 
-- (void)updatePackagesTrackingWithStartedAt:(NSUInteger)startedAt {
+- (void)updatePackagesTrackingWithAttStatus:(int)attStatus
+                                  startedAt:(NSUInteger)startedAt
+{
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJSdkClickHandler *selfI) {
         [selfI updatePackagesTrackingI:selfI
+                             attStatus:attStatus
                              startedAt:startedAt];
     }];
 }
@@ -196,18 +199,19 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 }
 
 - (void)updatePackagesTrackingI:(ADJSdkClickHandler *)selfI
-                     startedAt:(NSUInteger)startedAt
+                      attStatus:(int)attStatus
+                      startedAt:(NSUInteger)startedAt
 {
-    int attStatus = [ADJUtil attStatus];
     [selfI.logger debug:@"Updating sdk_click queue with idfa and att_status: %d", attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus
                                forKey:@"att_status"];
 
-        [ADJPackageBuilder addTrackingToParameters:activityPackage.parameters
-                                        withConfig:selfI.activityHandler.adjustConfig
-                                         startedAt:startedAt];
+        [ADJPackageBuilder addConsentToToParameters:activityPackage.parameters
+                                    attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
+                                         withConfig:selfI.activityHandler.adjustConfig
+                                          startedAt:startedAt];
     }
 }
 

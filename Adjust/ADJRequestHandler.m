@@ -83,17 +83,15 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
 
-    NSMutableDictionary * sendingParametersMut =
-        [NSMutableDictionary dictionaryWithDictionary:sendingParameters];
+    NSString *urlHostString =
+        [self urlHostStringWithSendingParameters:sendingParameters
+                    responseData:responseData];
 
-    NSString *urlHostString = [self.urlStrategy
-                               urlHostStringByPackageKind:activityPackage.activityKind
-                               isConsentOrElseAnalytics:[ADJUtil isConsentOrElseAnalytics]
-                               sendingParametersMut:sendingParametersMut];
-
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParametersMut
-                                      copyItems:YES];
+    if (urlHostString == nil) {
+        responseData.willRetry = NO;
+        [self.responseCallback responseCallback:responseData];
+        return;
+    }
 
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
@@ -124,17 +122,15 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString * authorizationHeader = [self buildAuthorizationHeader:parameters
                                                        activityKind:activityKind];
 
-    NSMutableDictionary * sendingParametersMut =
-        [NSMutableDictionary dictionaryWithDictionary:sendingParameters];
+    NSString *urlHostString =
+        [self urlHostStringWithSendingParameters:sendingParameters
+                    responseData:responseData];
 
-    NSString *urlHostString = [self.urlStrategy
-                               urlHostStringByPackageKind:activityPackage.activityKind
-                               isConsentOrElseAnalytics:[ADJUtil isConsentOrElseAnalytics]
-                               sendingParametersMut:sendingParametersMut];
-
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParametersMut
-                                      copyItems:YES];
+    if (urlHostString == nil) {
+        responseData.willRetry = NO;
+        [self.responseCallback responseCallback:responseData];
+        return;
+    }
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
@@ -150,6 +146,35 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 }
 
 #pragma mark Internal methods
+- (NSString *)urlHostStringWithSendingParameters:(NSDictionary *)sendingParameters
+                                    responseData:(ADJResponseData *)responseData
+{
+    NSMutableDictionary * sendingParametersMut =
+        [NSMutableDictionary dictionaryWithDictionary:sendingParameters];
+
+    NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
+
+    BOOL wasConsentWhenCreated =
+        [ADJUtil isConsentOrElseAnalyticsWithAttStatusString:attStatusString];
+    BOOL isConsentWhenSending = [ADJUtil isConsentOrElseAnalytics];
+
+    if (wasConsentWhenCreated && ! isConsentWhenSending) {
+        return nil;
+    }
+
+    NSString *urlHostString =
+        [self.urlStrategy
+         urlHostStringByPackageKind:responseData.activityKind
+         isConsentOrElseAnalytics:wasConsentWhenCreated
+         sendingParametersMut:sendingParametersMut];
+
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParametersMut
+                                      copyItems:YES];
+
+    return urlHostString;
+}
+
 - (void)sendRequest:(NSMutableURLRequest *)request
 authorizationHeader:(NSString *)authorizationHeader
        responseData:(ADJResponseData *)responseData

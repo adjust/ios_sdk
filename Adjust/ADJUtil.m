@@ -1209,6 +1209,15 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return -1;
 }
 
++ (BOOL)isConsentOrElseAnalyticsWithAttStatusString:(NSString *)attStatusString {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        return [@"3" isEqualToString:attStatusString];
+    } else {
+        // if iOs lower than 14 can assume consent
+        return YES;
+    }
+}
+
 + (BOOL)isConsentOrElseAnalytics {
     if (@available(iOS 14.0, tvOS 14.0, *)) {
         int attStatus = [ADJUtil attStatus];

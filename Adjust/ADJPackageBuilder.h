@@ -94,9 +94,10 @@
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
-+ (void)addTrackingToParameters:(NSMutableDictionary * _Nullable)parameters
-                     withConfig:(ADJConfig * _Nullable)adjConfig
-                      startedAt:(NSUInteger)startedAt;
++ (void)addConsentToToParameters:(NSMutableDictionary * _Nullable)parameters
+                 attStatusString:(NSString *)attStatusString
+                      withConfig:(ADJConfig * _Nullable)adjConfig
+                       startedAt:(NSUInteger)startedAt;
 
 @end
 // TODO change to ADJ...
