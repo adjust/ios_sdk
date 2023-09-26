@@ -4,50 +4,51 @@
 //
 //  Created by Pedro S. on 11.08.20.
 //  Copyright © 2020 adjust GmbH. All rights reserved.
-//
+//analytics.adjust.com
+
 
 #import "ADJUrlStrategy.h"
 #import "Adjust.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const aBaseUrl = @"https://a.adjust.com";
-static NSString * const tBaseUrl = @"https://t.adjust.com";
+static NSString * const aBaseUrl = @"https://analytics.adjust.com";
+static NSString * const cBaseUrl = @"https://consent.adjust.com";
 static NSString * const gdprUrl = @"https://gdpr.adjust.com";
 static NSString * const subscriptionUrl = @"https://subscription.adjust.com";
 static NSString * const purchaseVerificationUrl = @"https://ssrv.adjust.com";
 
-static NSString * const aBaseUrlIndia = @"https://a.adjust.net.in";
-static NSString * const tBaseUrlIndia = @"https://t.adjust.net.in";
+static NSString * const aBaseUrlIndia = @"https://analytics.adjust.net.in";
+static NSString * const cBaseUrlIndia = @"https://consent.adjust.net.in";
 static NSString * const gdprUrlIndia = @"https://gdpr.adjust.net.in";
 static NSString * const subscriptionUrlIndia = @"https://subscription.adjust.net.in";
 static NSString * const purchaseVerificationUrlIndia = @"https://ssrv.adjust.net.in";
 
-static NSString * const aBaseUrlChina = @"https://a.adjust.world";
-static NSString * const tBaseUrlChina = @"https://t.adjust.world";
+static NSString * const aBaseUrlChina = @"https://analytics.adjust.world";
+static NSString * const cBaseUrlChina = @"https://consent.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
 static NSString * const subscriptionUrlChina = @"https://subscription.adjust.world";
 static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.world";
 
-static NSString * const aBaseUrlCn = @"https://a.adjust.cn";
-static NSString * const tBaseUrlCn = @"https://t.adjust.cn";
+static NSString * const aBaseUrlCn = @"https://analytics.adjust.cn";
+static NSString * const cBaseUrlCn = @"https://consent.adjust.cn";
 static NSString * const gdprUrlCn = @"https://gdpr.adjust.com"; // TODO: switch to .cn
 static NSString * const subscriptionUrlCn = @"https://subscription.adjust.com"; // TODO: switch to .cn
 static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
 
-static NSString * const aBaseUrlEU = @"https://a.eu.adjust.com";
-static NSString * const tBaseUrlEU = @"https://t.eu.adjust.com";
+static NSString * const aBaseUrlEU = @"https://analytics.eu.adjust.com";
+static NSString * const cBaseUrlEU = @"https://consent.eu.adjust.com";
 static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.com";
 static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.com";
 static NSString * const purchaseVerificationUrlEU = @"https://ssrv.eu.adjust.com";
 
-static NSString * const aBaseUrlTR = @"https://a.tr.adjust.com";
-static NSString * const tBaseUrlTR = @"https://t.tr.adjust.com";
+static NSString * const aBaseUrlTR = @"https://analytics.tr.adjust.com";
+static NSString * const cBaseUrlTR = @"https://consent.tr.adjust.com";
 static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.com";
 static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.com";
 static NSString * const purchaseVerificationUrlTR = @"https://ssrv.tr.adjust.com";
 
-static NSString * const aBaseUrlUS = @"https://a.us.adjust.com";
-static NSString * const tBaseUrlUS = @"https://t.us.adjust.com";
+static NSString * const aBaseUrlUS = @"https://analytics.us.adjust.com";
+static NSString * const cBaseUrlUS = @"https://consent.us.adjust.com";
 static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
 static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
 static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com";
@@ -59,7 +60,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
 @interface ADJUrlStrategy ()
 
 @property (nonatomic, copy) NSArray<NSString *> *aBaseUrlChoicesArray;
-@property (nonatomic, copy) NSArray<NSString *> *tBaseUrlChoicesArray;
+@property (nonatomic, copy) NSArray<NSString *> *cBaseUrlChoicesArray;
 @property (nonatomic, copy) NSArray<NSString *> *gdprUrlChoicesArray;
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionUrlChoicesArray;
 @property (nonatomic, copy) NSArray<NSString *> *purchaseVerificationUrlChoicesArray;
@@ -82,7 +83,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     _extraPath = extraPath ?: @"";
 
     _aBaseUrlChoicesArray = [ADJUrlStrategy aBaseUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
-    _tBaseUrlChoicesArray = [ADJUrlStrategy tBaseUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
+    _cBaseUrlChoicesArray = [ADJUrlStrategy cBaseUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
     _gdprUrlChoicesArray = [ADJUrlStrategy gdprUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
     _subscriptionUrlChoicesArray = [ADJUrlStrategy
                                     subscriptionUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
@@ -118,21 +119,21 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     }
 }
 
-+ (NSArray<NSString *> *)tBaseUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
++ (NSArray<NSString *> *)cBaseUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
     if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[tBaseUrlIndia, tBaseUrl];
+        return @[cBaseUrlIndia, cBaseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[tBaseUrlChina, tBaseUrl];
+        return @[cBaseUrlChina, cBaseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[tBaseUrlCn, tBaseUrl];
+        return @[cBaseUrlCn, cBaseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[tBaseUrlEU];
+        return @[cBaseUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[tBaseUrlTR];
+        return @[cBaseUrlTR];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[tBaseUrlUS];
+        return @[cBaseUrlUS];
     } else {
-        return @[tBaseUrl, tBaseUrlIndia, tBaseUrlChina];
+        return @[cBaseUrl, cBaseUrlIndia, cBaseUrlChina];
     }
 }
 
@@ -197,12 +198,12 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
 }
 
 - (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
-                       isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+                        isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
                             sendingParametersMut:(NSMutableDictionary *)sendingParametersMut
 {
     NSString *_Nonnull urlByActivityKind =
         [self chooseUrlWithActivityKind:activityKind
-              isTrackingOrElseAnalytics:isTrackingOrElseAnalytics];
+               isConsentOrElseAnalytics:isConsentOrElseAnalytics];
 
     if (self.urlOverwrite != nil) {
         [sendingParametersMut setObject:urlByActivityKind
@@ -214,7 +215,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     return urlByActivityKind;
 }
 - (nonnull NSString *)chooseUrlWithActivityKind:(ADJActivityKind)activityKind
-                      isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+                      isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
 {
     if (activityKind == ADJActivityKindGdpr) {
         return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
@@ -228,8 +229,8 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
         return [self.purchaseVerificationUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
 
-    if (isTrackingOrElseAnalytics) {
-        return [self.tBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
+    if (isConsentOrElseAnalytics) {
+        return [self.cBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
     } else {
         return [self.aBaseUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
@@ -251,8 +252,8 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     } else if (activityKind == ADJActivityKindPurchaseVerification) {
         choiceListSize = [self.purchaseVerificationUrlChoicesArray count];
     } else {
-        // tBaseUrlChoicesArray or aBaseUrlChoicesArray should be of equal size
-        choiceListSize = [self.tBaseUrlChoicesArray count];
+        // cBaseUrlChoicesArray or aBaseUrlChoicesArray should be of equal size
+        choiceListSize = [self.cBaseUrlChoicesArray count];
     }
 
     NSUInteger nextChoiceIndex = (self.choiceIndex + 1) % choiceListSize;

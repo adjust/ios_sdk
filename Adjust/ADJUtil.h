@@ -119,7 +119,7 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (int)attStatus;
 
-+ (BOOL)isTrackingOrElseAnalytics;
++ (BOOL)isConsentOrElseAnalytics;
 
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 

@@ -1361,7 +1361,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                      withConfig:(ADJConfig * _Nullable)adjConfig
                       startedAt:(NSUInteger)startedAt
 {
-    if (! [ADJUtil isTrackingOrElseAnalytics]) {
+    if (! [ADJUtil isConsentOrElseAnalytics]) {
         return;
     }
 

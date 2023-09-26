@@ -17,7 +17,7 @@
                               extraPath:(NSString *)extraPath;
 
 - (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
-                       isTrackingOrElseAnalytics:(BOOL)isTrackingOrElseAnalytics
+                        isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
                             sendingParametersMut:(NSMutableDictionary *)sendingParametersMut;
 
 - (void)resetAfterSuccess;

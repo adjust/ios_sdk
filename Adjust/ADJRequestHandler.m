@@ -88,7 +88,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString *urlHostString = [self.urlStrategy
                                urlHostStringByPackageKind:activityPackage.activityKind
-                               isTrackingOrElseAnalytics:[ADJUtil isTrackingOrElseAnalytics]
+                               isConsentOrElseAnalytics:[ADJUtil isConsentOrElseAnalytics]
                                sendingParametersMut:sendingParametersMut];
 
     responseData.sendingParameters = [[NSDictionary alloc]
@@ -129,7 +129,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString *urlHostString = [self.urlStrategy
                                urlHostStringByPackageKind:activityPackage.activityKind
-                               isTrackingOrElseAnalytics:[ADJUtil isTrackingOrElseAnalytics]
+                               isConsentOrElseAnalytics:[ADJUtil isConsentOrElseAnalytics]
                                sendingParametersMut:sendingParametersMut];
 
     responseData.sendingParameters = [[NSDictionary alloc]
