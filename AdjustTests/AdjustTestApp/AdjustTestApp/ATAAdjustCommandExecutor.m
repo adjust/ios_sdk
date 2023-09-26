@@ -400,6 +400,11 @@
                 andReturnValue:[shouldOpenDeeplinkS boolValue]];
     }
 
+    if ([parameters objectForKey:@"attConsentWaitingSeconds"]) {
+        NSString *attConsentWaitingSecondsS = [parameters objectForKey:@"attConsentWaitingSeconds"][0];
+        [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSecondsS intValue]];
+    }
+
     [adjustConfig setDelegate:self.adjustDelegate];
 }
 
