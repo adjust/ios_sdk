@@ -230,7 +230,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [self.activityHandler setTrackingStateOptedOut];
         return;
     }
-    if (responseData.willRetry) {
+    if (responseData.jsonResponse == nil) {
         self.lastPackageRetriesCount++;
         [self.logger error:@"Retrying sdk_click package for the %d time", self.lastPackageRetriesCount];
         [self sendSdkClick:responseData.sdkClickPackage];

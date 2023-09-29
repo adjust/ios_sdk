@@ -224,7 +224,6 @@ authorizationHeader:(NSString *)authorizationHeader
             } else {
                 [self.logger debug:@"Request failed with current URL strategy and it will not be retried"];
                 //  Stop retrying with different type and return to caller
-                responseData.willRetry = YES;
                 [self.responseCallback responseCallback:responseData];
             }
         }];
@@ -302,7 +301,6 @@ authorizationHeader:(NSString *)authorizationHeader
             } else {
                 [self.logger debug:@"failed with current url strategy and it will not retry"];
                 //  Stop retrying with different type and return to caller
-                responseData.willRetry = YES;
                 [self.responseCallback responseCallback:responseData];
             }
         });
