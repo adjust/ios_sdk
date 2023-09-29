@@ -99,6 +99,8 @@
                       withConfig:(ADJConfig * _Nullable)adjConfig
                        startedAt:(NSUInteger)startedAt;
 
++ (void)removeConsentToParameters:(nonnull NSMutableDictionary *)parameters;
+
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;
