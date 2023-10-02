@@ -69,8 +69,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     sessionPackage.activityKind = ADJActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:sessionPackage];
     sessionPackage.parameters = [ADJUtil deepCopyOfDictionary:sessionPackage.parameters];
 
     return sessionPackage;
@@ -84,13 +82,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     eventPackage.activityKind = ADJActivityKindEvent;
     eventPackage.suffix = [self eventSuffix:event];
     eventPackage.parameters = parameters;
-
     if (isInDelay) {
         eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
         eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
     }
-
-    [self signWithSigV2Plugin:eventPackage];
     eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
 
     return eventPackage;
@@ -103,8 +98,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     infoPackage.activityKind = ADJActivityKindInfo;
     infoPackage.suffix = @"";
     infoPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:infoPackage];
     infoPackage.parameters = [ADJUtil deepCopyOfDictionary:infoPackage.parameters];
 
     return infoPackage;
@@ -117,8 +110,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:adRevenuePackage];
     adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
@@ -131,13 +122,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
-
     if (isInDelay) {
         adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
         adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
     }
-
-    [self signWithSigV2Plugin:adRevenuePackage];
     adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
@@ -154,8 +142,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     clickPackage.activityKind = ADJActivityKindClick;
     clickPackage.suffix = @"";
     clickPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:clickPackage];
     clickPackage.parameters = [ADJUtil deepCopyOfDictionary:clickPackage.parameters];
 
     return clickPackage;
@@ -168,8 +154,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     attributionPackage.activityKind = ADJActivityKindAttribution;
     attributionPackage.suffix = @"";
     attributionPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:attributionPackage];
     attributionPackage.parameters = [ADJUtil deepCopyOfDictionary:attributionPackage.parameters];
 
     return attributionPackage;
@@ -182,8 +166,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     gdprPackage.activityKind = ADJActivityKindGdpr;
     gdprPackage.suffix = @"";
     gdprPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:gdprPackage];
     gdprPackage.parameters = [ADJUtil deepCopyOfDictionary:gdprPackage.parameters];
 
     return gdprPackage;
@@ -196,8 +178,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     dtpsPackage.activityKind = ADJActivityKindDisableThirdPartySharing;
     dtpsPackage.suffix = @"";
     dtpsPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:dtpsPackage];
     dtpsPackage.parameters = [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters];
 
     return dtpsPackage;
@@ -211,8 +191,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     tpsPackage.activityKind = ADJActivityKindThirdPartySharing;
     tpsPackage.suffix = @"";
     tpsPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:tpsPackage];
     tpsPackage.parameters = [ADJUtil deepCopyOfDictionary:tpsPackage.parameters];
 
     return tpsPackage;
@@ -225,8 +203,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     mcPackage.activityKind = ADJActivityKindMeasurementConsent;
     mcPackage.suffix = @"";
     mcPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:mcPackage];
     mcPackage.parameters = [ADJUtil deepCopyOfDictionary:mcPackage.parameters];
 
     return mcPackage;
@@ -240,13 +216,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     subscriptionPackage.activityKind = ADJActivityKindSubscription;
     subscriptionPackage.suffix = @"";
     subscriptionPackage.parameters = parameters;
-
     if (isInDelay) {
         subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
         subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
     }
-
-    [self signWithSigV2Plugin:subscriptionPackage];
     subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
 
     return subscriptionPackage;
@@ -263,8 +236,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     purchaseVerificationPackage.activityKind = ADJActivityKindPurchaseVerification;
     purchaseVerificationPackage.suffix = @"";
     purchaseVerificationPackage.parameters = parameters;
-
-    [self signWithSigV2Plugin:purchaseVerificationPackage];
     purchaseVerificationPackage.parameters = [ADJUtil deepCopyOfDictionary:purchaseVerificationPackage.parameters];
 
     return purchaseVerificationPackage;
@@ -349,71 +320,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 #pragma mark - Private & helper methods
-
-- (void)signWithSigV2Plugin:(ADJActivityPackage *)activityPackage {
-    Class signerClass = NSClassFromString(@"ADJSigner");
-    if (signerClass == nil) {
-        return;
-    }
-    SEL signSEL = NSSelectorFromString(@"sign:withActivityKind:withSdkVersion:");
-    if (![signerClass respondsToSelector:signSEL]) {
-        return;
-    }
-
-    NSMutableDictionary *parameters = activityPackage.parameters;
-    const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityPackage.activityKind] UTF8String];
-    const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
-
-    // Stack allocated strings to ensure their lifetime stays until the next iteration
-    static char activityKind[64], sdkVersion[64];
-    strncpy(activityKind, activityKindChar, strlen(activityKindChar) + 1);
-    strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
-
-    // NSInvocation setArgument requires lvalue references with exact matching types to the executed function signature.
-    // With this usage we ensure that the lifetime of the object remains until the next iteration, as it points to the
-    // stack allocated string where we copied the buffer.
-    const char *lvalActivityKind = activityKind;
-    const char *lvalSdkVersion = sdkVersion;
-
-    /*
-     [ADJSigner sign:parameters
-    withActivityKind:activityKindChar
-      withSdkVersion:sdkVersionChar];
-     */
-
-    NSMethodSignature *signMethodSignature = [signerClass methodSignatureForSelector:signSEL];
-    NSInvocation *signInvocation = [NSInvocation invocationWithMethodSignature:signMethodSignature];
-    [signInvocation setSelector:signSEL];
-    [signInvocation setTarget:signerClass];
-
-    [signInvocation setArgument:&parameters atIndex:2];
-    [signInvocation setArgument:&lvalActivityKind atIndex:3];
-    [signInvocation setArgument:&lvalSdkVersion atIndex:4];
-
-    [signInvocation invoke];
-
-    SEL getVersionSEL = NSSelectorFromString(@"getVersion");
-    if (![signerClass respondsToSelector:getVersionSEL]) {
-        return;
-    }
-    /*
-     NSString *signerVersion = [ADJSigner getVersion];
-     */
-    IMP getVersionIMP = [signerClass methodForSelector:getVersionSEL];
-    if (!getVersionIMP) {
-        return;
-    }
-    id (*getVersionFunc)(id, SEL) = (void *)getVersionIMP;
-    id signerVersion = getVersionFunc(signerClass, getVersionSEL);
-    if (![signerVersion isKindOfClass:[NSString class]]) {
-        return;
-    }
-
-    NSString *signerVersionString = (NSString *)signerVersion;
-    [ADJPackageBuilder parameters:parameters
-                           setString:signerVersionString
-                           forKey:@"native_version"];
-}
 
 - (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];

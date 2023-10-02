@@ -71,6 +71,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
+    [self signWithSigV2Plugin:activityPackage];
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
                                 copyItems:YES];
@@ -103,6 +104,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
+    [self signWithSigV2Plugin:activityPackage];
     NSDictionary *parameters = [[NSDictionary alloc]
                                 initWithDictionary:activityPackage.parameters
                                 copyItems:YES];
@@ -645,6 +647,71 @@ authorizationHeader:(NSString *)authorizationHeader
         return nil;
     }
     return jsonDict;
+}
+
+- (void)signWithSigV2Plugin:(ADJActivityPackage *)activityPackage {
+    Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return;
+    }
+    SEL signSEL = NSSelectorFromString(@"sign:withActivityKind:withSdkVersion:");
+    if (![signerClass respondsToSelector:signSEL]) {
+        return;
+    }
+
+    NSMutableDictionary *parameters = activityPackage.parameters;
+    const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityPackage.activityKind] UTF8String];
+    const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
+
+    // Stack allocated strings to ensure their lifetime stays until the next iteration
+    static char activityKind[64], sdkVersion[64];
+    strncpy(activityKind, activityKindChar, strlen(activityKindChar) + 1);
+    strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
+
+    // NSInvocation setArgument requires lvalue references with exact matching types to the executed function signature.
+    // With this usage we ensure that the lifetime of the object remains until the next iteration, as it points to the
+    // stack allocated string where we copied the buffer.
+    const char *lvalActivityKind = activityKind;
+    const char *lvalSdkVersion = sdkVersion;
+
+    /*
+     [ADJSigner sign:parameters
+    withActivityKind:activityKindChar
+      withSdkVersion:sdkVersionChar];
+     */
+
+    NSMethodSignature *signMethodSignature = [signerClass methodSignatureForSelector:signSEL];
+    NSInvocation *signInvocation = [NSInvocation invocationWithMethodSignature:signMethodSignature];
+    [signInvocation setSelector:signSEL];
+    [signInvocation setTarget:signerClass];
+
+    [signInvocation setArgument:&parameters atIndex:2];
+    [signInvocation setArgument:&lvalActivityKind atIndex:3];
+    [signInvocation setArgument:&lvalSdkVersion atIndex:4];
+
+    [signInvocation invoke];
+
+    SEL getVersionSEL = NSSelectorFromString(@"getVersion");
+    if (![signerClass respondsToSelector:getVersionSEL]) {
+        return;
+    }
+    /*
+     NSString *signerVersion = [ADJSigner getVersion];
+     */
+    IMP getVersionIMP = [signerClass methodForSelector:getVersionSEL];
+    if (!getVersionIMP) {
+        return;
+    }
+    id (*getVersionFunc)(id, SEL) = (void *)getVersionIMP;
+    id signerVersion = getVersionFunc(signerClass, getVersionSEL);
+    if (![signerVersion isKindOfClass:[NSString class]]) {
+        return;
+    }
+
+    NSString *signerVersionString = (NSString *)signerVersion;
+    [ADJPackageBuilder parameters:parameters
+                           setString:signerVersionString
+                           forKey:@"native_version"];
 }
 
 @end
