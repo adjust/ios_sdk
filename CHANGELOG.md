@@ -1,3 +1,9 @@
+### Version 4.35.1 (2nd October 2023)
+#### Fixed
+- Fixed issue with signing requests post ATT delay timer exipry.
+
+---
+
 ### Version 4.35.0 (12th September 2023)
 #### Added
 - Added support for SigV3 library. Update authorization header building logic to use `adj_signing_id`.
@@ -5,7 +11,6 @@
 ---
 
 ### Version 4.34.2 (6th September 2023)
-
 #### Added
 - Added more logging around ATT delay timer feature to indicate that it's activated.
 
