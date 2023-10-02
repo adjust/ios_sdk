@@ -275,7 +275,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.35.0';
+                    return 'web-bridge4.35.1';
                 }
             },
             setTestOptions: function(testOptions) {
