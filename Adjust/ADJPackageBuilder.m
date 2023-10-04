@@ -1264,7 +1264,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
-               attStatusString:(NSString *)attStatusString
+               attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
                      startedAt:(NSUInteger)startedAt {
     if (! [ADJUtil isConsentOrElseAnalyticsWithAttStatusString:attStatusString]) {

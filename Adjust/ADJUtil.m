@@ -1209,7 +1209,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return -1;
 }
 
-+ (BOOL)isConsentOrElseAnalyticsWithAttStatusString:(NSString *)attStatusString {
++ (BOOL)isConsentOrElseAnalyticsWithAttStatusString:(nullable NSString *)attStatusString {
     if (@available(iOS 14.0, tvOS 14.0, *)) {
         return [@"3" isEqualToString:attStatusString];
     } else {
