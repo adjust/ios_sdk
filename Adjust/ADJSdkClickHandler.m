@@ -208,10 +208,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                                setInt:attStatus
                                forKey:@"att_status"];
 
-        [ADJPackageBuilder addConsentToToParameters:activityPackage.parameters
-                                    attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
-                                         withConfig:selfI.activityHandler.adjustConfig
-                                          startedAt:startedAt];
+        [ADJPackageBuilder addConsentToParameters:activityPackage.parameters
+                                  attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
+                                       withConfig:selfI.activityHandler.adjustConfig
+                                        startedAt:startedAt];
     }
 }
 

@@ -94,10 +94,10 @@
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
-+ (void)addConsentToToParameters:(NSMutableDictionary * _Nullable)parameters
-                 attStatusString:(NSString *)attStatusString
-                      withConfig:(ADJConfig * _Nullable)adjConfig
-                       startedAt:(NSUInteger)startedAt;
++ (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
+               attStatusString:(NSString *)attStatusString
+                    withConfig:(ADJConfig * _Nullable)adjConfig
+                     startedAt:(NSUInteger)startedAt;
 
 + (void)removeConsentToParameters:(nonnull NSMutableDictionary *)parameters;
 

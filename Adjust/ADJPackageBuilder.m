@@ -1126,10 +1126,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    [ADJPackageBuilder addConsentToToParameters:parameters
-                                attStatusString:[parameters objectForKey:@"att_status"]
-                                     withConfig:self.adjustConfig
-                                      startedAt:self.packageParams.startedAt];
+    [ADJPackageBuilder addConsentToParameters:parameters
+                              attStatusString:[parameters objectForKey:@"att_status"]
+                                   withConfig:self.adjustConfig
+                                    startedAt:self.packageParams.startedAt];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1263,11 +1263,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
 }
 
-+ (void)addConsentToToParameters:(NSMutableDictionary * _Nullable)parameters
-                 attStatusString:(NSString *)attStatusString
-                      withConfig:(ADJConfig * _Nullable)adjConfig
-                       startedAt:(NSUInteger)startedAt
-{
++ (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
+               attStatusString:(NSString *)attStatusString
+                    withConfig:(ADJConfig * _Nullable)adjConfig
+                     startedAt:(NSUInteger)startedAt {
     if (! [ADJUtil isConsentOrElseAnalyticsWithAttStatusString:attStatusString]) {
         return;
     }
