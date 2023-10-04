@@ -99,7 +99,7 @@
                     withConfig:(ADJConfig * _Nullable)adjConfig
                      startedAt:(NSUInteger)startedAt;
 
-+ (void)removeConsentToParameters:(nonnull NSMutableDictionary *)parameters;
++ (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters;
 
 @end
 // TODO change to ADJ...

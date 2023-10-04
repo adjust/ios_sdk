@@ -155,7 +155,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     BOOL isConsentOrElseAnalytics = wasConsentWhenCreated && isConsentWhenSending;
 
     if (! isConsentOrElseAnalytics) {
-        [ADJPackageBuilder removeConsentToParameters:parametersMut];
+        [ADJPackageBuilder removeConsentFromParameters:parametersMut];
     }
 
     NSString *urlHostString =

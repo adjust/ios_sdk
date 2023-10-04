@@ -1310,7 +1310,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 }
 
-+ (void)removeConsentToParameters:(nonnull NSMutableDictionary *)parameters {
++ (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters {
     [parameters removeObjectForKey:@"started_at"];
     [parameters removeObjectForKey:@"idfa"];
 }
