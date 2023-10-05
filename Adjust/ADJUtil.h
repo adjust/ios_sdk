@@ -119,8 +119,9 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (int)attStatus;
 
-+ (BOOL)isConsentOrElseAnalyticsWithAttStatusString:(nullable NSString *)attStatusString;
-+ (BOOL)isConsentOrElseAnalytics;
++ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind
+                                 attStatusString:(nullable NSString *)attStatusString;
++ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind;
 
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 

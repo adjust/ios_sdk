@@ -95,6 +95,7 @@
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
 + (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
+                  activityKind:(ADJActivityKind)activityKind
                attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
                      startedAt:(NSUInteger)startedAt;

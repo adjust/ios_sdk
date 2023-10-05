@@ -314,6 +314,7 @@ startsSending:(BOOL)startsSending
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
         [ADJPackageBuilder addConsentToParameters:activityPackage.parameters
+                                     activityKind:activityPackage.activityKind
                                   attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
                                        withConfig:selfI.activityHandler.adjustConfig
                                         startedAt:startedAt];

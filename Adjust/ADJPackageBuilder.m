@@ -336,7 +336,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindSession];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -394,7 +394,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindEvent];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -482,7 +482,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindInfo];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -544,7 +544,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -597,7 +597,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -672,7 +672,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindClick];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -732,7 +732,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindAttribution];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
@@ -776,7 +776,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindGdpr];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -826,7 +826,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindDisableThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -885,7 +885,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -953,7 +953,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindMeasurementConsent];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1008,7 +1008,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindSubscription];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1080,7 +1080,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters];
+    [self addConsentToParameters:parameters activityKind:ADJActivityKindPurchaseVerification];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1117,7 +1117,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 
-- (void)addConsentToParameters:(NSMutableDictionary *)parameters {
+- (void)addConsentToParameters:(NSMutableDictionary *)parameters
+                  activityKind:(ADJActivityKind)activityKind
+{
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
                                forKey:@"att_status"];
@@ -1127,6 +1129,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     [ADJPackageBuilder addConsentToParameters:parameters
+                                 activityKind:activityKind
                               attStatusString:[parameters objectForKey:@"att_status"]
                                    withConfig:self.adjustConfig
                                     startedAt:self.packageParams.startedAt];
@@ -1264,10 +1267,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
+                  activityKind:(ADJActivityKind)activityKind
                attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
-                     startedAt:(NSUInteger)startedAt {
-    if (! [ADJUtil isConsentOrElseAnalyticsWithAttStatusString:attStatusString]) {
+                     startedAt:(NSUInteger)startedAt
+{
+    if (! [ADJUtil isConsentOrElseAnalyticsWithActivityKind:activityKind
+                                            attStatusString:attStatusString])
+    {
         return;
     }
 
