@@ -55,15 +55,14 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     self.logger = ADJAdjustFactory.logger;
     self.defaultSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 
-    self.exceptionKeys =
-        [NSHashTable hashTableWithOptions:NSHashTableStrongMemory];
-    [self.exceptionKeys addObject:@"event_callback_id"];
+    self.exceptionKeys = [NSHashTable hashTableWithOptions:NSHashTableStrongMemory];
     [self.exceptionKeys addObject:@"secret_id"];
     [self.exceptionKeys addObject:@"signature"];
     [self.exceptionKeys addObject:@"headers_id"];
     [self.exceptionKeys addObject:@"native_version"];
     [self.exceptionKeys addObject:@"algorithm"];
     [self.exceptionKeys addObject:@"app_secret"];
+    [self.exceptionKeys addObject:@"adj_signing_id"];
 
     return self;
 }
@@ -659,6 +658,8 @@ authorizationHeader:(NSString *)authorizationHeader
         return;
     }
 
+    [activityPackage.parameters removeObjectForKey:@"app_secret"];
+    [activityPackage.parameters removeObjectForKey:@"secret_id"];
     NSMutableDictionary *parameters = activityPackage.parameters;
     const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityPackage.activityKind] UTF8String];
     const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
