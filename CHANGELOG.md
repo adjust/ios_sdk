@@ -1,3 +1,9 @@
+### Version 4.35.2 (9th October 2023)
+#### Added
+- Added sending of `event_callback_id` parameter (if set) with the event payload.
+
+---
+
 ### Version 4.35.1 (2nd October 2023)
 #### Fixed
 - Fixed issue with signing requests post ATT delay timer exipry.
