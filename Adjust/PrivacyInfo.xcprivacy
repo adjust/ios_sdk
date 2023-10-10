@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPrivacyTracking</key>
+	<true/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array>
+		<string>https://consent.adjust.com</string>
+		<string>https://consent.adjust.net.in</string>
+		<string>https://consent.adjust.world</string>
+		<string>https://consent.adjust.cn</string>
+		<string>https://consent.eu.adjust.com</string>
+		<string>https://consent.tr.adjust.com</string>
+		<string>https://consent.us.adjust.com</string>
+	</array>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array>
 		<dict>
