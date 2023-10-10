@@ -88,6 +88,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSMutableDictionary *parametersMut = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
     [parametersMut addEntriesFromDictionary:responseData.sendingParameters];
+    [parametersMut removeObjectForKey:@"app_secret"];
 
     [self signWithSigV2PluginWithParametersMut:parametersMut
                                   packageActivityKind:activityKind
@@ -128,6 +129,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSMutableDictionary *parametersMut = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
     [parametersMut addEntriesFromDictionary:responseData.sendingParameters];
+    [parametersMut removeObjectForKey:@"app_secret"];
 
     [self signWithSigV2PluginWithParametersMut:parametersMut
                                   packageActivityKind:activityKind

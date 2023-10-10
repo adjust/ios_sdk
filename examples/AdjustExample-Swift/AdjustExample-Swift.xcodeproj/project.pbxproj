@@ -146,9 +146,7 @@
 				TargetAttributes = {
 					9DF7A9C11CB4ECA600D3591F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = QGUGW9AUMK;
 						LastSwiftMigration = 1030;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 1;
@@ -377,9 +375,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AdjustExample-Swift/AdjustExample-Swift.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "AdjustExample-Swift/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -405,9 +403,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AdjustExample-Swift/AdjustExample-Swift.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "AdjustExample-Swift/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
