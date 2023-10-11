@@ -1,0 +1,64 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+    "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/.build/arm64-apple-macosx/debug/Adjust_Adjust.bundle/PrivacyInfo.xcprivacy" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/Adjust/PrivacyInfo.xcprivacy"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/.build/arm64-apple-macosx/debug/Adjust_Adjust.bundle/PrivacyInfo.xcprivacy"
+        }
+      ]
+    }
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+
+  },
+  "targetDependencyMap" : {
+    "Adjust" : [
+
+    ],
+    "Criteo" : [
+
+    ],
+    "Sociomantic" : [
+
+    ],
+    "Trademob" : [
+
+    ],
+    "WebBridge" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  }
+}
