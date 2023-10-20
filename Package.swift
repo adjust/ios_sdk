@@ -16,6 +16,9 @@ let package = Package(
             name: "Adjust",
             path: "Adjust",
             exclude: ["Info.plist"],
+            resources: [
+                .copy("PrivacyInfo.xcprivacy"),
+            ],
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("ADJAdditions")
