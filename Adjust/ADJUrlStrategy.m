@@ -31,8 +31,8 @@ static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.wor
 
 static NSString * const aBaseUrlCn = @"https://analytics.adjust.cn";
 static NSString * const cBaseUrlCn = @"https://consent.adjust.cn";
-static NSString * const gdprUrlCn = @"https://gdpr.adjust.com"; // TODO: switch to .cn
-static NSString * const subscriptionUrlCn = @"https://subscription.adjust.com"; // TODO: switch to .cn
+static NSString * const gdprUrlCn = @"https://gdpr.adjust.cn";
+static NSString * const subscriptionUrlCn = @"https://subscription.adjust.cn";
 static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
 
 static NSString * const aBaseUrlEU = @"https://analytics.eu.adjust.com";
