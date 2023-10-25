@@ -30,6 +30,8 @@
 
 @property (nonatomic, strong) NSDictionary * _Nullable deeplinkParameters;
 
+@property (nonatomic, strong) NSDictionary * _Nullable skanParameters;
+
 @property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 
 @property (nonatomic, weak) ADJInternalState * _Nullable internalState;

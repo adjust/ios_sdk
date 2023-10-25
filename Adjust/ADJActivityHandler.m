@@ -411,6 +411,21 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                      }];
 }
 
+- (void)logConversionValueUpdate:(NSNumber *)conversionValue
+                     coarseValue:(NSString *)coarseValue
+                      lockWindow:(NSNumber *)lockWindow
+                        andError:(NSError *)error {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI logConversionValueUpdateI:selfI
+                         conversionValue:conversionValue
+                             coarseValue:coarseValue
+                              lockWindow:lockWindow
+                                andError:error];
+    }];
+}
+
 - (void)setGdprForgetMe {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -2090,6 +2105,46 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)logConversionValueUpdateI:(ADJActivityHandler *)selfI
+                  conversionValue:(NSNumber *)conversionValue
+                      coarseValue:(NSString *)coarseValue
+                       lockWindow:(NSNumber *)lockWindow
+                         andError:(NSError *)error {
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
+    if (!selfI.activityState) {
+        return;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        return;
+    }
+
+    // send info package
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                                                        activityState:selfI.activityState
+                                                                               config:selfI.adjustConfig
+                                                                    sessionParameters:selfI.sessionParameters
+                                                                trackingStatusManager:self.trackingStatusManager
+                                                                            createdAt:now];
+    NSDictionary *skanParameters = [NSMutableDictionary dictionary];
+    [skanParameters setValue:conversionValue forKey:@"conversion_value"];
+    [skanParameters setValue:coarseValue forKey:@"coarse_value"];
+    [skanParameters setValue:lockWindow forKey:@"lock_window"];
+    [skanParameters setValue:error forKey:@"error"];
+    infoBuilder.skanParameters = skanParameters;
+
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
+    [selfI.packageHandler addPackage:infoPackage];
+
+    if (selfI.adjustConfig.eventBufferingEnabled) {
+        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
+    } else {
+        [selfI.packageHandler sendFirstPackage];
+    }
+}
+
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
     if (![selfI isEnabledI:selfI]) {
         return;
@@ -2889,6 +2944,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                          completionHandler:^(NSError *error) {
         if (error) {
             // handle error
+            [self logConversionValueUpdate:conversionValue
+                               coarseValue:coarseValue
+                                lockWindow:lockWindow
+                                  andError:error];
         } else {
             // ping old callback if implemented
             if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
@@ -2906,6 +2965,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                                            lockWindow:lockWindow];
                 }];
             }
+            // log
+            [self logConversionValueUpdate:conversionValue
+                               coarseValue:coarseValue
+                                lockWindow:lockWindow
+                                  andError:nil];
         }
     }];
 }
