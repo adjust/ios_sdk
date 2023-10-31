@@ -28,7 +28,6 @@ static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.wor
 static NSString * const baseUrlCn = @"https://app.adjust.cn";
 static NSString * const gdprUrlCn = @"https://gdpr.adjust.cn";
 static NSString * const subscriptionUrlCn = @"https://subscription.adjust.cn";
-
 static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
 
 static NSString * const baseUrlEU = @"https://app.eu.adjust.com";
@@ -152,7 +151,7 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[purchaseVerificationUrlChina, purchaseVerificationUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[purchaseVerificationUrlCn, purchaseVerificationUrl];
+        return @[purchaseVerificationUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[purchaseVerificationUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
