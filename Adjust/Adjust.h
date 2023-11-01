@@ -54,6 +54,8 @@ extern NSString * __nonnull const ADJAdRevenueSourceAdMost;
 extern NSString * __nonnull const ADJAdRevenueSourceUnity;
 extern NSString * __nonnull const ADJAdRevenueSourceHeliumChartboost;
 extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
+extern NSString * __nonnull const ADJAdRevenueSourceTopOn;
+extern NSString * __nonnull const ADJAdRevenueSourceADX;
 
 /**
  * Constants for country app's URL strategies.
