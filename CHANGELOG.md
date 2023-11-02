@@ -1,3 +1,12 @@
+### Version 4.35.3 (3rd November 2023)
+#### Added
+- Added support for `TopOn` and `ADX` ad revenue source.
+
+#### Changed
+- Removed fallback domain for `ADJUrlStrategyCn`.
+
+---
+
 ### Version 4.35.2 (9th October 2023)
 #### Added
 - Added sending of `event_callback_id` parameter (if set) with the event payload.
