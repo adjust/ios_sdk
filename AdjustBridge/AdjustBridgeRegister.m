@@ -398,6 +398,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
         AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
         AdjustConfig.UrlStrategyCn = 'UrlStrategyCn';
+        AdjustConfig.UrlStrategyCnOnly = 'UrlStrategyCnOnly';
         AdjustConfig.DataResidencyEU = 'DataResidencyEU';
         AdjustConfig.DataResidencyTR = 'DataResidencyTR';
         AdjustConfig.DataResidencyUS = 'DataResidencyUS';

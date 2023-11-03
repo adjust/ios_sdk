@@ -61,6 +61,7 @@ extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
 extern NSString * __nonnull const ADJUrlStrategyIndia;
 extern NSString * __nonnull const ADJUrlStrategyChina;
 extern NSString * __nonnull const ADJUrlStrategyCn;
+extern NSString * __nonnull const ADJUrlStrategyCnOnly;
 extern NSString * __nonnull const ADJDataResidencyEU;
 extern NSString * __nonnull const ADJDataResidencyTR;
 extern NSString * __nonnull const ADJDataResidencyUS;

@@ -34,6 +34,7 @@ NSString * const ADJAdRevenueSourcePublisher = @"publisher_sdk";
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
 NSString * const ADJUrlStrategyCn = @"UrlStrategyCn";
+NSString * const ADJUrlStrategyCnOnly = @"UrlStrategyCnOnly";
 
 NSString * const ADJDataResidencyEU = @"DataResidencyEU";
 NSString * const ADJDataResidencyTR = @"DataResidencyTR";

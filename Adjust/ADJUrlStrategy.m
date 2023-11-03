@@ -97,6 +97,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[baseUrlChina, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[baseUrlCn, baseUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
         return @[baseUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[baseUrlEU];
@@ -115,6 +117,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[gdprUrlChina, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[gdprUrlCn, gdprUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
         return @[gdprUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[gdprUrlEU];
@@ -133,6 +137,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[subscriptionUrlChina, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[subscriptionUrlCn, subscriptionUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
         return @[subscriptionUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[subscriptionUrlEU];
@@ -151,6 +157,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
         return @[purchaseVerificationUrlChina, purchaseVerificationUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
+        return @[purchaseVerificationUrlCn, purchaseVerificationUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
         return @[purchaseVerificationUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[purchaseVerificationUrlEU];
