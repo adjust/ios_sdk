@@ -116,16 +116,19 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Dynamic XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
- 
+
   # VERIFY
 
-  if [[ $BUILD_TARGET_IOS -eq 1 ]] 
-  then 
+  if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
+  then
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+  elif [[ $BUILD_TARGET_IOS -eq 1 ]]
+  then
+    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   else
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_TV}.xcframework" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   fi
-  
+
 fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
