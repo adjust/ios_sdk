@@ -2,8 +2,8 @@
 #### Added
 - Added support for `TopOn` and `ADX` ad revenue source.
 
-#### Changed
-- Removed fallback domain for `ADJUrlStrategyCn`.
+#### Added
+- Added new type of URL Strategy `ADJUrlStrategyCnOnly`. This type has the same domains as defined for `ADJUrlStrategyCn`, but has no fallback domain.
 
 ---
 
