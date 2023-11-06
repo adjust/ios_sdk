@@ -1,7 +1,7 @@
 ### Version 4.35.3 (7th November 2023)
 #### Added
 - Added support for `TopOn` and `ADX` ad revenue sources.
-- Added a new type of URL Strategy, `ADJUrlStrategyCnOnly`. This type has the same domains as defined for `ADJUrlStrategyCn`, but has no fallback domain.
+- Added a new type of URL strategy called `ADJUrlStrategyCnOnly`. This URL strategy represents `ADJUrlStrategyCn` strategy, but without fallback domains.
 
 ---
 
