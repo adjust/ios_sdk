@@ -1238,7 +1238,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)addIdfaIfPossibleToParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder addIdfaToParameters:parameters
                                 withConfig:self.adjustConfig
-                                    logger:[ADJAdjustFactory logger]];
+                                    logger:[ADJAdjustFactory logger]
+                             packageParams:self.packageParams
+                              adjustConfig:self.adjustConfig];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1374,7 +1376,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
                  withConfig:(ADJConfig * _Nullable)adjConfig
-                     logger:(id<ADJLogger> _Nullable)logger {
+                     logger:(id<ADJLogger> _Nullable)logger
+              packageParams:(ADJPackageParams *)packageParams
+               adjustConfig:(ADJConfig *)adjustConfig
+{
 
     if (! adjConfig.allowIdfaReading) {
         return;
@@ -1385,6 +1390,11 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         return;
     }
 
+    if (adjustConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
+        [ADJPackageBuilder parameters:parameters setString:packageParams.idfaCached forKey:@"idfa"];
+        return;
+    }
+
     NSString *idfa = [ADJUtil idfa];
     if (idfa == nil
         || idfa.length == 0
@@ -1392,6 +1402,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     {
         return;
     }
+    packageParams.idfaCached = idfa;
 
     [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }

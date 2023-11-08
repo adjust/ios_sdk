@@ -22,6 +22,7 @@
 @property (nonatomic, copy) NSString *osVersion;
 @property (nonatomic, copy) NSString *installedAt;
 @property (nonatomic, assign) NSUInteger startedAt;
+@property (nonatomic, copy) NSString *idfaCached;
 
 - (id)initWithSdkPrefix:(NSString *)sdkPrefix;
 

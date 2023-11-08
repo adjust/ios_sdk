@@ -291,4 +291,9 @@
  */
 @property (nonatomic, assign) BOOL coppaCompliantEnabled;
 
+/**
+ * @brief Enables caching of device ids to read it only once
+ */
+@property (nonatomic, assign) BOOL readDeviceInfoOnceEnabled;
+
 @end
