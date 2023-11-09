@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.35.3):
-    - Adjust/Core (= 4.35.3)
-  - Adjust/Core (4.35.3)
+  - Adjust (4.36.0):
+    - Adjust/Core (= 4.36.0)
+  - Adjust/Core (4.36.0)
 
 DEPENDENCIES:
   - Adjust (from `../../`)
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Adjust: d82bf78d135ed930acdb73826aad67e66471eea9
+  Adjust: 0f4b1a656962b7863853f9888f3ec16e653304c6
 
 PODFILE CHECKSUM: 4c79da456db9adb90cdd42adc7f721c7bb6490cd
 
