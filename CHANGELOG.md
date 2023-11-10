@@ -1,8 +1,7 @@
-### Version 4.36.0 (13th November 2023)
+### Version 4.35.3 (7th November 2023)
 #### Added
 - Added support for `TopOn` and `ADX` ad revenue sources.
 - Added a new type of URL strategy called `ADJUrlStrategyCnOnly`. This URL strategy represents `ADJUrlStrategyCn` strategy, but without fallback domains.
-- Added `readDeviceInfoOnceEnabled` to AdjustConfig to indicate if device info to be read only once.
 
 ---
 

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = "Adjust"
-  s.version        = "4.36.0"
+  s.version        = "4.35.3"
   s.summary        = "This is the iOS SDK of adjust. You can read more about it at http://adjust.com."
   s.homepage       = "https://github.com/adjust/ios_sdk"
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
