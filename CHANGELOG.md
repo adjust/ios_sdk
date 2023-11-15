@@ -1,4 +1,4 @@
-### Version 4.35.3 (13th November 2023)
+### Version 4.35.3 (15th November 2023)
 #### Added
 - Added support for `TopOn` and `ADX` ad revenue sources.
 - Added a new type of URL strategy called `ADJUrlStrategyCnOnly`. This URL strategy represents `ADJUrlStrategyCn` strategy, but without fallback domains.
@@ -13,7 +13,7 @@
 
 ### Version 4.35.1 (2nd October 2023)
 #### Fixed
-- Fixed issue with signing requests post ATT delay timer exipry.
+- Fixed issue with signing requests post ATT delay timer expiry.
 
 ---
 
