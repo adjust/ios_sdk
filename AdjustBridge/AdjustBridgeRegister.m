@@ -275,7 +275,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.35.2';
+                    return 'web-bridge4.35.3';
                 }
             },
             setTestOptions: function(testOptions) {
@@ -398,6 +398,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
         AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
         AdjustConfig.UrlStrategyCn = 'UrlStrategyCn';
+        AdjustConfig.UrlStrategyCnOnly = 'UrlStrategyCnOnly';
         AdjustConfig.DataResidencyEU = 'DataResidencyEU';
         AdjustConfig.DataResidencyTR = 'DataResidencyTR';
         AdjustConfig.DataResidencyUS = 'DataResidencyUS';

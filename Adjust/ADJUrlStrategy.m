@@ -26,8 +26,8 @@ static NSString * const subscriptionUrlChina = @"https://subscription.adjust.wor
 static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.world";
 
 static NSString * const baseUrlCn = @"https://app.adjust.cn";
-static NSString * const gdprUrlCn = @"https://gdpr.adjust.com"; // TODO: switch to .cn
-static NSString * const subscriptionUrlCn = @"https://subscription.adjust.com"; // TODO: switch to .cn
+static NSString * const gdprUrlCn = @"https://gdpr.adjust.cn";
+static NSString * const subscriptionUrlCn = @"https://subscription.adjust.cn";
 static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
 
 static NSString * const baseUrlEU = @"https://app.eu.adjust.com";
@@ -98,6 +98,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
         return @[baseUrlChina, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
         return @[baseUrlCn, baseUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
+        return @[baseUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[baseUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -116,6 +118,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
         return @[gdprUrlChina, gdprUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
         return @[gdprUrlCn, gdprUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
+        return @[gdprUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[gdprUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -134,6 +138,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
         return @[subscriptionUrlChina, subscriptionUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
         return @[subscriptionUrlCn, subscriptionUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
+        return @[subscriptionUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[subscriptionUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
@@ -152,6 +158,8 @@ static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com
         return @[purchaseVerificationUrlChina, purchaseVerificationUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
         return @[purchaseVerificationUrlCn, purchaseVerificationUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
+        return @[purchaseVerificationUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[purchaseVerificationUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
