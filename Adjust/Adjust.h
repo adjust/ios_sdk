@@ -17,6 +17,8 @@
 #import "ADJPurchase.h"
 #import "ADJPurchaseVerificationResult.h"
 
+typedef void(^AdjustResolvedDeeplinkBlock)(NSURL * _Nonnull resolvedLink);
+
 @interface AdjustTestOptions : NSObject
 
 @property (nonatomic, copy, nullable) NSString *baseUrl;
@@ -136,6 +138,15 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @param url URL object which contains info about adjust deep link.
  */
 + (void)appWillOpenUrl:(nonnull NSURL *)url;
+
+/**
+ * @brief Process the deep link that has opened an app and potentially get a resolved link.
+ *
+ * @param url URL object which contains info about adjust deep link.
+ * @param completionHandler Completion handler where either resolved or echoed deep link will be sent.
+ */
++ (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSURL * _Nonnull resolvedLink))completionHandler;
 
 /**
  * @brief Set the device token used by push notifications.
@@ -406,6 +417,9 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)teardown;
 
 - (void)appWillOpenUrl:(nonnull NSURL *)url;
+
+- (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSURL * _Nonnull resolvedLink))completionHandler;
 
 - (void)setOfflineMode:(BOOL)enabled;
 

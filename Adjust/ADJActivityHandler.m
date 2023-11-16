@@ -106,6 +106,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
 @property (nonatomic, copy) NSString* purchaseVerificationPath;
+@property (nonatomic, copy) AdjustResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
@@ -118,9 +119,9 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 @synthesize attribution = _attribution;
 @synthesize trackingStatusManager = _trackingStatusManager;
 
-- (id)initWithConfig:(ADJConfig *)adjustConfig
-      savedPreLaunch:(ADJSavedPreLaunch *)savedPreLaunch
-{
+- (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
+      savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
+      deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback {
     self = [super init];
     if (self == nil) return nil;
 
@@ -151,6 +152,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
+    self.cachedDeeplinkResolutionCallback = deepLinkResolutionCallback;
 
     // init logger to be available everywhere
     self.logger = ADJAdjustFactory.logger;
@@ -380,6 +382,17 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                      block:^(ADJActivityHandler * selfI) {
                          [selfI appWillOpenUrlI:selfI url:url clickTime:clickTime];
                      }];
+}
+
+- (void)processDeeplink:(NSURL * _Nullable)deeplink
+              clickTime:(NSDate * _Nullable)clickTime
+      completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        selfI.cachedDeeplinkResolutionCallback = completionHandler;
+        [selfI appWillOpenUrlI:selfI url:deeplink clickTime:clickTime];
+    }];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
@@ -1555,6 +1568,14 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [ADJUtil launchInMainThread:selfI.adjustDelegate
                            selector:@selector(adjustAttributionChanged:)
                          withObject:sdkClickResponseData.attribution];
+    }
+
+    // check if we got resolved deep link in the response
+    if (sdkClickResponseData.resolvedDeeplink != nil) {
+        if (selfI.cachedDeeplinkResolutionCallback != nil) {
+            selfI.cachedDeeplinkResolutionCallback([NSURL URLWithString:sdkClickResponseData.resolvedDeeplink]);
+            selfI.cachedDeeplinkResolutionCallback = nil;
+        }
     }
 }
 
@@ -2861,6 +2882,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
     [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
 }
+
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
     if (!selfI.adjustConfig.coppaCompliantEnabled) {
