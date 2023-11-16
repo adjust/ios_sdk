@@ -31,3 +31,4 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkVersionString[];
 #import <AdjustSdk/ADJLinkResolution.h>
 #import <AdjustSdk/ADJPurchase.h>
 #import <AdjustSdk/ADJPurchaseVerificationResult.h>
+#import <AdjustSdk/ADJTrademob.h>
