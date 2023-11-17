@@ -103,6 +103,8 @@
         [self getLastDeeplink:parameters];
     } else if ([methodName isEqualToString:@"verifyPurchase"]) {
         [self verifyPurchase:parameters];
+    } else if ([methodName isEqualToString:@"processDeeplink"]) {
+        [self processDeeplink:parameters];
     }
 }
 
@@ -793,6 +795,15 @@
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
         [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
         [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)processDeeplink:(NSDictionary *)parameters {
+    NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
+    NSURL *deeplink = [NSURL URLWithString:deeplinkS];
+    [Adjust processDeeplink:deeplink completionHandler:^(NSURL * _Nonnull resolvedLink) {
+        [self.testLibrary addInfoToSend:@"resolved_link" value:[resolvedLink absoluteString]];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
