@@ -154,6 +154,12 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (NSString *)idfv {
+    @synchronized (self) {
+        return [[Adjust getInstance] idfv];
+    }
+}
+
 + (NSString *)sdkVersion {
     @synchronized (self) {
         return [[Adjust getInstance] sdkVersion];
@@ -435,6 +441,10 @@ static dispatch_once_t onceToken = 0;
 
 - (NSString *)idfa {
     return [ADJUtil idfa];
+}
+
+- (NSString *)idfv {
+    return [ADJUtil idfv];
 }
 
 - (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {

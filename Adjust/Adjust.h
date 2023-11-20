@@ -168,6 +168,14 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (nullable NSString *)idfa;
 
 /**
+ * @brief Retrieve iOS device IDFV value.
+ *
+ * @return Device IDFV value.
+ */
++ (nullable NSString *)idfv;
+
+
+/**
  * @brief Get current adjust identifier for the user.
  *
  * @note Adjust identifier is available only after installation has been successfully tracked.
