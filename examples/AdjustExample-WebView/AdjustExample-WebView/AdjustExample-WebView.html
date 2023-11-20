@@ -147,6 +147,14 @@
             })
         }
 
+        var btnGetIdfv = document.getElementById('btnGetIdfv')
+        btnGetIdfv.onclick = function(e) {
+            e.preventDefault()
+            Adjust.getIdfv(function(idfv) {
+                alert('IDFV\n' + idfv)
+            })
+        }
+
         var btnAskTrackingPermission = document.getElementById('btnAskTrackingPermission')
         btnAskTrackingPermission.onclick = function(e) {
             e.preventDefault()
@@ -187,6 +195,9 @@
         </div>
         <div style="width:300px;height:35px;text-align:center;">
             <button id='btnGetIdfa'>Get IDFA</button>
+        </div>
+        <div style="width:300px;height:35px;text-align:center;">
+            <button id='btnGetIdfv'>Get IDFV</button>
         </div>
         <div style="width:300px;height:35px;text-align:center;">
             <button id='btnAskTrackingPermission'>Ask tracking permission</button>
