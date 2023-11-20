@@ -1,6 +1,6 @@
 ### Version 4.36.0 (21st November 2023)
 #### Added
-- Added idfv method on Adjust instance to get access to device's IDFV value.
+- Added `idfv` method on Adjust instance to get access to device's IDFV value.
 
 #### Fixed
 - Fixed the issue with CocoaPods installation for v4.35.3, where incorrect version was set as the source in podspec.
