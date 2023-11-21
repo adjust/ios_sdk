@@ -145,7 +145,12 @@ static NSString * fbAppIdStatic = nil;
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
                 }
-                },
+            },
+            getIdfv: function(callback) {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_idfv', null, callback);
+                }
+            },
             requestTrackingAuthorizationWithCompletionHandler: function(callback) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_requestTrackingAuthorizationWithCompletionHandler', null, callback);
@@ -275,7 +280,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge4.35.3';
+                    return 'web-bridge4.36.0';
                 }
             },
             setTestOptions: function(testOptions) {

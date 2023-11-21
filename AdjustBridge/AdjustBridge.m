@@ -431,6 +431,13 @@
         responseCallback([Adjust idfa]);
     }];
     
+    [self.bridgeRegister registerHandler:@"adjust_idfv" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
+        responseCallback([Adjust idfv]);
+    }];
+
     [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;

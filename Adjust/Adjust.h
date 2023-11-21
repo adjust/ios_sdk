@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.35.3
+//  V4.36.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -166,6 +166,14 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @return Device IDFA value.
  */
 + (nullable NSString *)idfa;
+
+/**
+ * @brief Retrieve iOS device IDFV value.
+ *
+ * @return Device IDFV value.
+ */
++ (nullable NSString *)idfv;
+
 
 /**
  * @brief Get current adjust identifier for the user.
