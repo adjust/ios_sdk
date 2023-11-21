@@ -130,7 +130,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSURL * _Nonnull resolvedLink))completionHandler {
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
     @synchronized (self) {
         [[Adjust getInstance] processDeeplink:deeplink completionHandler:completionHandler];
     }
@@ -420,7 +420,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSURL * _Nonnull resolvedLink))completionHandler {
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
     // if resolution result is not wanted, fallback to default method
     if (completionHandler == nil) {
         [self appWillOpenUrl:deeplink];

@@ -802,8 +802,8 @@
 - (void)processDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    [Adjust processDeeplink:deeplink completionHandler:^(NSURL * _Nonnull resolvedLink) {
-        [self.testLibrary addInfoToSend:@"resolved_link" value:[resolvedLink absoluteString]];
+    [Adjust processDeeplink:deeplink completionHandler:^(NSString * _Nonnull resolvedLink) {
+        [self.testLibrary addInfoToSend:@"resolved_link" value:resolvedLink];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
