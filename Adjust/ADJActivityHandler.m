@@ -2135,7 +2135,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [skanParameters setValue:error forKey:@"error"];
     infoBuilder.skanParameters = skanParameters;
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"skan-debug"];
     [selfI.packageHandler addPackage:infoPackage];
 
     if (selfI.adjustConfig.eventBufferingEnabled) {
