@@ -29,3 +29,5 @@ FOUNDATION_EXPORT const unsigned char AdjustSdkTvVersionString[];
 #import <AdjustSdkTv/ADJSessionFailure.h>
 #import <AdjustSdkTv/ADJAdRevenue.h>
 #import <AdjustSdkTv/ADJLinkResolution.h>
+#import <AdjustSdkTv/ADJPurchase.h>
+#import <AdjustSdkTv/ADJPurchaseVerificationResult.h>
