@@ -212,6 +212,7 @@
         NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
         NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
+        NSNumber *readDeviceInfoOnceEnabled = [data objectForKey:@"readDeviceInfoOnceEnabled"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
