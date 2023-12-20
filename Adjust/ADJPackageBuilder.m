@@ -1236,11 +1236,34 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)addIdfaIfPossibleToParameters:(NSMutableDictionary *)parameters {
-    [ADJPackageBuilder addIdfaToParameters:parameters
-                                withConfig:self.adjustConfig
-                                    logger:[ADJAdjustFactory logger]
-                             packageParams:self.packageParams
-                              adjustConfig:self.adjustConfig];
+    id<ADJLogger> logger = [ADJAdjustFactory logger];
+
+    if (!self.adjustConfig.allowIdfaReading) {
+        [logger info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
+        return;
+    }
+    if (self.adjustConfig.coppaCompliantEnabled) {
+        [logger info:@"Cannot read IDFA with COPPA enabled"];
+        return;
+    }
+
+    // read once && IDFA not cached
+    if (self.adjustConfig.readDeviceInfoOnceEnabled && self.packageParams.idfaCached != nil) {
+        [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfaCached forKey:@"idfa"];
+        return;
+    }
+
+    // read IDFA
+    NSString *idfa = [ADJUtil idfa];
+    if (idfa == nil ||
+        idfa.length == 0 ||
+        [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
+        return;
+    }
+    self.packageParams.idfaCached = idfa;
+
+    // add IDFA to payload
+    [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1372,39 +1395,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 + (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage {
     NSString *source = activityPackage.parameters[@"source"];
     return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
-}
-
-+ (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
-                 withConfig:(ADJConfig * _Nullable)adjConfig
-                     logger:(id<ADJLogger> _Nullable)logger
-              packageParams:(ADJPackageParams *)packageParams
-               adjustConfig:(ADJConfig *)adjustConfig
-{
-
-    if (! adjConfig.allowIdfaReading) {
-        return;
-    }
-
-    if (adjConfig.coppaCompliantEnabled) {
-        [logger info:@"Cannot read IDFA with COPPA enabled"];
-        return;
-    }
-
-    if (adjustConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
-        [ADJPackageBuilder parameters:parameters setString:packageParams.idfaCached forKey:@"idfa"];
-        return;
-    }
-
-    NSString *idfa = [ADJUtil idfa];
-    if (idfa == nil
-        || idfa.length == 0
-        || [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
-    {
-        return;
-    }
-    packageParams.idfaCached = idfa;
-
-    [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }
 
 @end
