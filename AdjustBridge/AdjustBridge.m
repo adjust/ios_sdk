@@ -331,6 +331,9 @@
         if ([self isFieldValid:urlStrategy]) {
             [adjustConfig setUrlStrategy:urlStrategy];
         }
+        if ([self isFieldValid:readDeviceInfoOnceEnabled]) {
+            [adjustConfig setReadDeviceInfoOnceEnabled:[readDeviceInfoOnceEnabled boolValue]];
+        }
 
         [Adjust appDidLaunch:adjustConfig];
         [Adjust trackSubsessionStart];
