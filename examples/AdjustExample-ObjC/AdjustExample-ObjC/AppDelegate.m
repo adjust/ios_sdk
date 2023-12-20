@@ -23,7 +23,8 @@
     
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-    
+    [adjustConfig setReadDeviceInfoOnceEnabled:YES];
+
     // Enable event buffering.
     // [adjustConfig setEventBufferingEnabled:YES];
     

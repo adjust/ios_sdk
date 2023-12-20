@@ -203,7 +203,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                                forKey:@"att_status"];
         [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
                                     withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]];
+                                        logger:[ADJAdjustFactory logger]
+                                 packageParams:self.activityHandler.packageParams];
     }
 }
 
