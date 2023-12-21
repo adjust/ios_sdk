@@ -65,7 +65,8 @@
 - (NSString *_Nullable)adid;
 
 - (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
-                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch;
+                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
+    deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -83,6 +84,9 @@
 
 - (void)appWillOpenUrl:(NSURL * _Nullable)url
          withClickTime:(NSDate * _Nullable)clickTime;
+- (void)processDeeplink:(NSURL * _Nullable)deeplink
+              clickTime:(NSDate * _Nullable)clickTime
+      completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler;
 - (void)setDeviceToken:(NSData * _Nullable)deviceToken;
 - (void)setPushToken:(NSString * _Nullable)deviceToken;
 - (void)setGdprForgetMe;
@@ -128,8 +132,9 @@
 
 @interface ADJActivityHandler : NSObject <ADJActivityHandler>
 
-- (id _Nullable)initWithConfig:(ADJConfig * _Nullable)adjustConfig
-                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch;
+- (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
+                savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
+    deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
 
 - (void)addSessionCallbackParameterI:(ADJActivityHandler * _Nullable)selfI
                                  key:(NSString * _Nullable)key

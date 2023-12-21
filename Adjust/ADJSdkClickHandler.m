@@ -203,7 +203,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                                forKey:@"att_status"];
         [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
                                     withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]];
+                                        logger:[ADJAdjustFactory logger]
+                                 packageParams:self.activityHandler.packageParams];
     }
 }
 
@@ -236,6 +237,9 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [ADJUserDefaults setAdServicesTracked];
         [self.logger info:@"Received Apple Ads click response"];
     }
+
+    // in case there's resolved_click_url in the response
+    ((ADJSdkClickResponseData *)responseData).resolvedDeeplink = [responseData.jsonResponse objectForKey:@"resolved_click_url"];
 
     [self.activityHandler finishedTracking:responseData];
 }

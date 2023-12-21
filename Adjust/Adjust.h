@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.36.0
+//  V4.37.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -16,6 +16,8 @@
 #import "ADJLinkResolution.h"
 #import "ADJPurchase.h"
 #import "ADJPurchaseVerificationResult.h"
+
+typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @interface AdjustTestOptions : NSObject
 
@@ -136,6 +138,15 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @param url URL object which contains info about adjust deep link.
  */
 + (void)appWillOpenUrl:(nonnull NSURL *)url;
+
+/**
+ * @brief Process the deep link that has opened an app and potentially get a resolved link.
+ *
+ * @param deeplink URL object which contains info about adjust deep link.
+ * @param completionHandler Completion handler where either resolved or echoed deep link will be sent.
+ */
++ (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
 /**
  * @brief Set the device token used by push notifications.
@@ -406,6 +417,9 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)teardown;
 
 - (void)appWillOpenUrl:(nonnull NSURL *)url;
+
+- (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
 - (void)setOfflineMode:(BOOL)enabled;
 

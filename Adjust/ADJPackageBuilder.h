@@ -96,7 +96,8 @@
 
 + (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
                  withConfig:(ADJConfig * _Nullable)adjConfig
-                     logger:(id<ADJLogger> _Nullable)logger;
+                     logger:(id<ADJLogger> _Nullable)logger
+              packageParams:(ADJPackageParams * _Nullable)packageParams;
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;

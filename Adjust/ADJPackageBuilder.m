@@ -43,8 +43,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                      config:(ADJConfig * _Nullable)adjustConfig
           sessionParameters:(ADJSessionParameters * _Nullable)sessionParameters
       trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
-                  createdAt:(double)createdAt
-{
+                  createdAt:(double)createdAt {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -1237,8 +1236,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 - (void)addIdfaIfPossibleToParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder addIdfaToParameters:parameters
-                                withConfig:self.adjustConfig
-                                    logger:[ADJAdjustFactory logger]];
+                                    withConfig:self.adjustConfig
+                                        logger:[ADJAdjustFactory logger]
+                                 packageParams:self.packageParams];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1374,25 +1374,33 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
                  withConfig:(ADJConfig * _Nullable)adjConfig
-                     logger:(id<ADJLogger> _Nullable)logger {
-
-    if (! adjConfig.allowIdfaReading) {
+                     logger:(id<ADJLogger> _Nullable)logger
+              packageParams:(ADJPackageParams *)packageParams {
+    if (!adjConfig.allowIdfaReading) {
+        [logger info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }
-
     if (adjConfig.coppaCompliantEnabled) {
         [logger info:@"Cannot read IDFA with COPPA enabled"];
         return;
     }
 
-    NSString *idfa = [ADJUtil idfa];
-    if (idfa == nil
-        || idfa.length == 0
-        || [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
-    {
+    // read once && IDFA not cached
+    if (adjConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
+        [ADJPackageBuilder parameters:parameters setString:packageParams.idfaCached forKey:@"idfa"];
         return;
     }
 
+    // read IDFA
+    NSString *idfa = [ADJUtil idfa];
+    if (idfa == nil ||
+        idfa.length == 0 ||
+        [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
+        return;
+    }
+    // cache IDFA
+    packageParams.idfaCached = idfa;
+    // add IDFA to payload
     [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }
 

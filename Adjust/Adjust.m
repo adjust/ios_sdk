@@ -53,6 +53,8 @@ NSString * const ADJDataResidencyUS = @"DataResidencyUS";
 
 @property (nonatomic, strong) ADJSavedPreLaunch *savedPreLaunch;
 
+@property (nonatomic) AdjustResolvedDeeplinkBlock cachedResolvedDeeplinkBlock;
+
 @end
 
 @implementation Adjust
@@ -78,6 +80,7 @@ static dispatch_once_t onceToken = 0;
     self.activityHandler = nil;
     self.logger = [ADJAdjustFactory logger];
     self.savedPreLaunch = [[ADJSavedPreLaunch alloc] init];
+    self.cachedResolvedDeeplinkBlock = nil;
     return self;
 }
 
@@ -123,6 +126,13 @@ static dispatch_once_t onceToken = 0;
 + (void)appWillOpenUrl:(NSURL *)url {
     @synchronized (self) {
         [[Adjust getInstance] appWillOpenUrl:[url copy]];
+    }
+}
+
++ (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
+    @synchronized (self) {
+        [[Adjust getInstance] processDeeplink:deeplink completionHandler:completionHandler];
     }
 }
 
@@ -356,9 +366,9 @@ static dispatch_once_t onceToken = 0;
         [self.logger error:@"Adjust already initialized"];
         return;
     }
-    self.activityHandler = [[ADJActivityHandler alloc]
-                                initWithConfig:adjustConfig
-                                savedPreLaunch:self.savedPreLaunch];
+    self.activityHandler = [[ADJActivityHandler alloc] initWithConfig:adjustConfig
+                                                       savedPreLaunch:self.savedPreLaunch
+                                           deeplinkResolutionCallback:self.cachedResolvedDeeplinkBlock];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -407,6 +417,27 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     [self.activityHandler appWillOpenUrl:url withClickTime:clickTime];
+}
+
+- (void)processDeeplink:(nonnull NSURL *)deeplink
+      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
+    // if resolution result is not wanted, fallback to default method
+    if (completionHandler == nil) {
+        [self appWillOpenUrl:deeplink];
+        return;
+    }
+    // if deep link processing is triggered prior to SDK being initialized
+    [ADJUserDefaults cacheDeeplinkUrl:deeplink];
+    NSDate *clickTime = [NSDate date];
+    if (![self checkActivityHandler]) {
+        [ADJUserDefaults saveDeeplinkUrl:deeplink andClickTime:clickTime];
+        self.cachedResolvedDeeplinkBlock = completionHandler;
+        return;
+    }
+    // if deep link processing was triggered with SDK being initialized
+    [self.activityHandler processDeeplink:deeplink
+                                clickTime:clickTime
+                        completionHandler:completionHandler];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {

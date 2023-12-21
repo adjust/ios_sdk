@@ -309,7 +309,8 @@ startsSending:(BOOL)startsSending
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
         [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
                                     withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]];
+                                        logger:[ADJAdjustFactory logger]
+                                 packageParams:self.activityHandler.packageParams];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }

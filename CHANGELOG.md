@@ -1,6 +1,16 @@
+### Version 4.37.0 (21st December 2023)
+#### Added
+- Added ability to instruct to SDK to read device IDs just once upon initialization. You can set this by calling `setReadDeviceInfoOnceEnabled` method of the `ADJConfig` instance.
+- Added ability to process shortened deep links and provide the unshortened link back as a response. You can achieve this by invoking `processDeeplink:completionHandler:` method of the `Adjust` instance.
+
+#### Fixed
+- Added missing purchase verification related headers into the umbrella headers of the various framework targets.
+
+---
+
 ### Version 4.36.0 (21st November 2023)
 #### Added
-- Added `idfv` method on Adjust instance to get access to device's IDFV value.
+- Added `idfv` method to `Adjust` instance to get access to device's IDFV value.
 
 #### Fixed
 - Fixed the issue with CocoaPods installation for v4.35.3, where incorrect version was set as the source in podspec.

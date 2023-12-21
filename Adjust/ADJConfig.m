@@ -214,6 +214,7 @@
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
         copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
         copy.linkMeEnabled = self.linkMeEnabled;
+        copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
         // adjust delegate not copied
     }
 
