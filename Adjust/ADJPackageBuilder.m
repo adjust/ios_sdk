@@ -1132,7 +1132,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                  activityKind:activityKind
                               attStatusString:[parameters objectForKey:@"att_status"]
                                    withConfig:self.adjustConfig
-                                    startedAt:self.packageParams.startedAt];
+                                    startedAt:self.packageParams.startedAt
+                                packageParams:self.packageParams];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1271,6 +1272,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
                      startedAt:(NSUInteger)startedAt
+                 packageParams:(ADJPackageParams *)packageParams
 {
     if (! [ADJUtil isConsentOrElseAnalyticsWithActivityKind:activityKind
                                             attStatusString:attStatusString])

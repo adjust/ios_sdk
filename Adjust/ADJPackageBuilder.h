@@ -98,7 +98,8 @@
                   activityKind:(ADJActivityKind)activityKind
                attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
-                     startedAt:(NSUInteger)startedAt;
+                     startedAt:(NSUInteger)startedAt
+                 packageParams:(ADJPackageParams *)packageParams;
 
 + (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters;
 

@@ -212,7 +212,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
                                      activityKind:activityPackage.activityKind
                                   attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
                                        withConfig:selfI.activityHandler.adjustConfig
-                                        startedAt:startedAt];
+                                        startedAt:startedAt
+                                    packageParams:selfI.activityHandler.packageParams];
     }
 }
 
