@@ -30,6 +30,8 @@
 
 @property (nonatomic, copy) NSString *lastErrorMessage;
 
+@property (nonatomic, assign) double waitBeforeSend;
+
 - (void)addError:(NSString *)errorMessage;
 
 // Logs

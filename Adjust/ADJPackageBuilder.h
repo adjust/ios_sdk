@@ -89,6 +89,10 @@
             forKey:(NSString * _Nullable)key;
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
+         setDouble:(double)value
+            forKey:(NSString * _Nullable)key;
+
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
        setDate1970:(double)value
             forKey:(NSString * _Nullable)key;
 

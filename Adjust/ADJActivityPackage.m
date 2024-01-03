@@ -91,10 +91,14 @@
 
     id errorCountObject = [decoder decodeObjectForKey:@"errorCount"];
     if (errorCountObject != nil && [errorCountObject isKindOfClass:[NSNumber class]]) {
-        self.errorCount = ((NSNumber *) errorCountObject).unsignedIntegerValue;
+        self.errorCount = ((NSNumber *)errorCountObject).unsignedIntegerValue;
     }
     self.firstErrorMessage = [decoder decodeObjectForKey:@"firstErrorMessage"];
     self.lastErrorMessage = [decoder decodeObjectForKey:@"lastErrorMessage"];
+    id waitBeforeSendObject = [decoder decodeObjectForKey:@"waitBeforeSend"];
+    if (waitBeforeSendObject != nil && [waitBeforeSendObject isKindOfClass:[NSNumber class]]) {
+        self.waitBeforeSend = ((NSNumber *)waitBeforeSendObject).doubleValue;
+    }
 
     return self;
 }
@@ -112,6 +116,7 @@
     [encoder encodeObject:@(self.errorCount) forKey:@"errorCount"];
     [encoder encodeObject:self.firstErrorMessage forKey:@"firstErrorMessage"];
     [encoder encodeObject:self.lastErrorMessage forKey:@"lastErrorMessage"];
+    [encoder encodeObject:@(self.waitBeforeSend) forKey:@"waitBeforeSend"];
 }
 
 @end

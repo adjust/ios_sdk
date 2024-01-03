@@ -1253,6 +1253,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:valueString forKey:key];
 }
 
++ (void)parameters:(NSMutableDictionary *)parameters setDouble:(double)value forKey:(NSString *)key {
+    if (value <= 0.0) {
+        return;
+    }
+    NSString *valueString = [NSString stringWithFormat:@"%.2f", value];
+    [ADJPackageBuilder parameters:parameters setString:valueString forKey:key];
+}
+
 + (void)parameters:(NSMutableDictionary *)parameters setDate1970:(double)value forKey:(NSString *)key {
     if (value < 0) {
         return;
