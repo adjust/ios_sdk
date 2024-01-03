@@ -1215,10 +1215,26 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)injectFeatureFlagsWithParameters:(NSMutableDictionary *)parameters {
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.eventBufferingEnabled
+    [ADJPackageBuilder parameters:parameters 
+                          setBool:self.adjustConfig.eventBufferingEnabled
                            forKey:@"event_buffering_enabled"];
-    [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.sendInBackground
+    [ADJPackageBuilder parameters:parameters
+                          setBool:self.adjustConfig.sendInBackground
                            forKey:@"send_in_background_enabled"];
+    if (self.internalState != nil) {
+        [ADJPackageBuilder parameters:parameters 
+                              setBool:self.internalState.isOffline
+                               forKey:@"offline_mode_enabled"];
+        if (self.internalState.isInForeground == YES) {
+            [ADJPackageBuilder parameters:parameters
+                                  setBool:YES
+                                   forKey:@"foreground"];
+        } else {
+            [ADJPackageBuilder parameters:parameters
+                                  setBool:YES
+                                   forKey:@"background"];
+        }
+    }
     if (self.adjustConfig.coppaCompliantEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_coppa"];
     }

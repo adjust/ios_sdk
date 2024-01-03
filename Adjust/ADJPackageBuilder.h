@@ -32,6 +32,8 @@
 
 @property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 
+@property (nonatomic, weak) ADJInternalState * _Nullable internalState;
+
 - (id _Nullable)initWithPackageParams:(ADJPackageParams * _Nullable)packageParams
                         activityState:(ADJActivityState * _Nullable)activityState
                                config:(ADJConfig * _Nullable)adjustConfig
