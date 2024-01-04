@@ -231,6 +231,9 @@ startsSending:(BOOL)startsSending
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
         newPackage.waitBeforeSend = self.totalWaitTime - (now - self.retryStartedAt);
     }
+    [ADJPackageBuilder parameters:newPackage.parameters
+                           setInt:(int)selfI.packageQueue.count
+                           forKey:@"enqueue_size"];
     [selfI.packageQueue addObject:newPackage];
 
     [selfI.logger debug:@"Added package %d (%@)", selfI.packageQueue.count, newPackage];
