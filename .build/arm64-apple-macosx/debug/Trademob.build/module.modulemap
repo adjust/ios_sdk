@@ -1,4 +1,0 @@
-module Trademob {
-    umbrella "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/plugin/Trademob"
-    export *
-}

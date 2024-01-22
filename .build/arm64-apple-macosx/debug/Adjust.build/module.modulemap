@@ -1,4 +1,0 @@
-module Adjust {
-    umbrella header "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/Adjust/include/Adjust.h"
-    export *
-}

@@ -1,4 +1,0 @@
-module WebBridge {
-    umbrella "/Users/nonelse/Development/Github/adjust/ios_sdk_dev/AdjustBridge/include"
-    export *
-}
