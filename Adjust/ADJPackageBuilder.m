@@ -1120,13 +1120,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters
                   activityKind:(ADJActivityKind)activityKind
 {
-    if ([self.trackingStatusManager canGetAttStatus]) {
+    // TODO: re-introduce when deciding about fields upon consent or not
+    //if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
                                forKey:@"att_status"];
-    } else {
+    //} else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
+    //}
 
     [ADJPackageBuilder addConsentToParameters:parameters
                                  activityKind:activityKind
@@ -1274,12 +1275,13 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                      startedAt:(NSUInteger)startedAt
                  packageParams:(ADJPackageParams *)packageParams
 {
+    /* TODO: re-introduce when deciding about fields upon consent or not
     if (! [ADJUtil isConsentOrElseAnalyticsWithActivityKind:activityKind
                                             attStatusString:attStatusString])
     {
         return;
     }
-
+     */
     // started_at
     [ADJPackageBuilder parameters:parameters
                       setDate1970:(double)startedAt forKey:@"started_at"];
