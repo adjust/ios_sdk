@@ -88,13 +88,16 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSMutableDictionary *parametersMut = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
     [parametersMut addEntriesFromDictionary:responseData.sendingParameters];
+
+    NSString * appSecret = [parametersMut objectForKey:@"app_secret"];
     [parametersMut removeObjectForKey:@"app_secret"];
 
     [self signWithSigV2PluginWithParametersMut:parametersMut
                                   packageActivityKind:activityKind
                                      clientSdk:clientSdk];
     NSString * authorizationHeader = [self buildAuthorizationHeader:parametersMut
-                                                       activityKind:activityKind];
+                                                       activityKind:activityKind
+                                                          appSecret:appSecret];
 
     NSMutableURLRequest *urlRequest =
         [self requestForPostPackage:path
@@ -129,13 +132,16 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSMutableDictionary *parametersMut = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
     [parametersMut addEntriesFromDictionary:responseData.sendingParameters];
+
+    NSString * appSecret = [parametersMut objectForKey:@"app_secret"];
     [parametersMut removeObjectForKey:@"app_secret"];
 
     [self signWithSigV2PluginWithParametersMut:parametersMut
                                   packageActivityKind:activityKind
                                      clientSdk:clientSdk];
     NSString * authorizationHeader = [self buildAuthorizationHeader:parametersMut
-                                                       activityKind:activityKind];
+                                                       activityKind:activityKind
+                                                          appSecret:appSecret];
 
     NSMutableURLRequest *urlRequest =
         [self requestForGetPackage:path
@@ -479,6 +485,7 @@ authorizationHeader:(NSString *)authorizationHeader
 #pragma mark - Authorization Header
 - (NSString *)buildAuthorizationHeader:(NSDictionary *)parameters
                           activityKind:(ADJActivityKind)activityKind
+                             appSecret:(NSString *)appSecret
 {
     NSString *adjSigningId = [parameters objectForKey:@"adj_signing_id"];
     NSString *signature = [parameters objectForKey:@"signature"];
@@ -504,7 +511,6 @@ authorizationHeader:(NSString *)authorizationHeader
         return authorizationHeaderWithSecretId;
     }
 
-    NSString * appSecret = [parameters objectForKey:@"app_secret"];
     return [self buildAuthorizationHeaderV1:appSecret
                                       secretId:secretId
                                     parameters:parameters
