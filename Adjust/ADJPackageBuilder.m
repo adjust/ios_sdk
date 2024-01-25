@@ -1120,14 +1120,13 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters
                   activityKind:(ADJActivityKind)activityKind
 {
-    // TODO: re-introduce when deciding about fields upon consent or not
-    //if ([self.trackingStatusManager canGetAttStatus]) {
+    if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
                                forKey:@"att_status"];
-    //} else {
+    } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    //}
+    }
 
     [ADJPackageBuilder addConsentToParameters:parameters
                                  activityKind:activityKind
