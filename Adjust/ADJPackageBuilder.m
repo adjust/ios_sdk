@@ -1275,16 +1275,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                      startedAt:(NSUInteger)startedAt
                  packageParams:(ADJPackageParams *)packageParams
 {
-    /* TODO: re-introduce when deciding about fields upon consent or not
+    // TODO: move after consent check when deciding about fields upon consent or not
+    // started_at
+    [ADJPackageBuilder parameters:parameters
+                      setDate1970:(double)startedAt forKey:@"started_at"];
+
     if (! [ADJUtil isConsentOrElseAnalyticsWithActivityKind:activityKind
                                             attStatusString:attStatusString])
     {
         return;
     }
-     */
-    // started_at
-    [ADJPackageBuilder parameters:parameters
-                      setDate1970:(double)startedAt forKey:@"started_at"];
 
     // idfa
     if (! adjConfig.allowIdfaReading) {
