@@ -119,6 +119,8 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
         return @[baseUrlChina, baseUrl];
     } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
         return @[baseUrlCn, baseUrl];
+    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
+        return @[baseUrlCn];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
         return @[baseUrlEU];
     } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
