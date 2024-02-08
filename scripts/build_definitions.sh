@@ -203,7 +203,10 @@ Usage: $0 [options]
 	SDK_VERSION=$(head -n 1 VERSION)
 	echo "$SDK_VERSION"
 
-	# previous builds artefacts cleanup 
+    # dynamic xcframework signing identity
+    SDK_CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)"
+
+	# previous builds artefacts cleanup
 	rm -rf ${XCF_OUTPUT_FOLDER}
 	mkdir ${XCF_OUTPUT_FOLDER}
 
@@ -230,8 +233,6 @@ Usage: $0 [options]
 	  -sdk "$target_sdk" \
 	  -destination "$platform_destination" \
 	  -archivePath "$output_path" \
-      CODE_SIGN_STYLE="Manual" \
-      CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	  SKIP_INSTALL=NO \
 	  BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
 	  GCC_GENERATE_DEBUGGING_SYMBOLS=YES
@@ -265,21 +266,6 @@ Usage: $0 [options]
 	  zip -r -X -y "$output_file" "$input_file"
 	  cd -
 	}
-
-
-	XCODE12PLUS=0 
-	product_version=$(xcodebuild -version)
-	xcode_version=( ${product_version//./ } )
-	xcode="${xcode_version[0]}"
-	major="${xcode_version[1]}"
-	minor="${xcode_version[2]}"
-	echo "${xcode}.${major}.${minor}"
-	if [[ $major > 11 ]]; then
-	  XCODE12PLUS=1
-	fi
-
-	SDK_VERSION=$(head -n 1 VERSION)
-	echo "$SDK_VERSION"
 
 	# Build, Lipo an Zip framework function
 	function build_static_fat_framework() {
@@ -318,8 +304,6 @@ Usage: $0 [options]
 	      -target "$target_scheme" \
 	      -sdk iphonesimulator \
 	      -arch x86_64 \
-          CODE_SIGN_STYLE="Manual" \
-          CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	      build
 	    else
 	      xcodebuild -configuration Release \
@@ -332,8 +316,6 @@ Usage: $0 [options]
 	    xcodebuild -configuration Release \
 	    -target "$target_scheme" \
 	    -sdk iphoneos \
-        CODE_SIGN_STYLE="Manual" \
-        CODE_SIGN_IDENTITY="Apple Distribution: adeven GmbH (QGUGW9AUMK)" \
 	    build
 
 	    ditto "./$build_root_folder/$target_scheme/iphoneos/$framework_name.framework" "./$build_root_folder/$target_scheme/universal/$framework_name.framework"
