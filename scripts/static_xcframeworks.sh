@@ -95,11 +95,14 @@ then
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_TV_STATIC}-"${SDK_VERSION}".xcframework.zip"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_STATIC}-"${SDK_VERSION}".xcframework.zip"
   else
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_TV}.xcframework" "${XCF_FRM_ZIP_NAME__TV_STATIC}-"${SDK_VERSION}".xcframework.zip"
   fi
 fi
@@ -135,6 +138,7 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Static XCFramework for iOS (iMessage)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IM}.xcframework" "${XCF_FRM_ZIP_NAME__IM_STATIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
@@ -170,6 +174,7 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Static XCFramework for iOS (WebBridge)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
