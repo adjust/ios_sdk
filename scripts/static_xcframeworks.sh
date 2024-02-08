@@ -90,7 +90,7 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
@@ -136,7 +136,7 @@ then
   rm -rf "./${XCF_OUTPUT_FOLDER}/${SCHEMA_NAME__ADJUST_IM_STATIC}"
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Static XCFramework for iOS (iMessage)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for iOS (iMessage)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IM}.xcframework" "${XCF_FRM_ZIP_NAME__IM_STATIC}-"${SDK_VERSION}".xcframework.zip"
@@ -172,7 +172,7 @@ then
   rm -rf "./${XCF_OUTPUT_FOLDER}/${SCHEMA_NAME__ADJUST_WEB_BRIDGE_STATIC}"
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Static XCFramework for iOS (WebBridge)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for iOS (WebBridge)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC}-"${SDK_VERSION}".xcframework.zip"
