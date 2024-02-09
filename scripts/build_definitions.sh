@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z ${NC+x} ]; then 
+if [ -z ${NC+x} ]; then
     # Colors for output
     NC='\033[0m'
     RED='\033[0;31m'
@@ -9,7 +9,7 @@ if [ -z ${NC+x} ]; then
     YELLOW='\033[1;33m'
 fi
 
-if [ -z ${XCF_OUTPUT_FOLDER+x} ]; then 
+if [ -z ${XCF_OUTPUT_FOLDER+x} ]; then
 
     echo "Executing the definitions script...";
     set -o pipefail
@@ -44,7 +44,7 @@ Usage: $0 [options]
 
 * For a Test Framework, specify the following argument:
 
-    [-test]			Test Framework
+    [-test]            Test Framework
 
 * Examples:
 
@@ -363,7 +363,7 @@ Usage: $0 [options]
 
     }
 else
-  # echo "The definitions script has been already executed. Skipping it..."; 
+  # echo "The definitions script has been already executed. Skipping it...";
   echo -e "${CYAN}[ADJUST][BUILD]:${YELLOW} The definitions script has been already executed. Skipping it... ${NC}"
 
 fi

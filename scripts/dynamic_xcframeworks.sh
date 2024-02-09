@@ -7,11 +7,11 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic XCFrameworks build - START... $
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 if [[ $BUILD_TARGET_IOS -eq 1 ]] || [[ $BUILD_TARGET_TVOS -eq 1 ]]
-then  
+then
 
   TRAGET_PLATFORM_DESCRIPTION=""
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
-  then  
+  then
     TRAGET_PLATFORM_DESCRIPTION="iOS and tvOS"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
@@ -44,7 +44,7 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
-  then  
+  then
     if [[ $XCODE12PLUS > 0 ]]; then
         xcodebuild -create-xcframework \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \

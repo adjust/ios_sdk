@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   s.framework      = 'SystemConfiguration'
   s.ios.weak_framework = 'AdSupport'
   s.tvos.weak_framework = 'AdSupport'
+  s.ios.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   s.requires_arc   = true
   s.default_subspec = 'Core'
   s.pod_target_xcconfig = { 'BITCODE_GENERATION_MODE' => 'bitcode' }
