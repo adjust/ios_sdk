@@ -1385,23 +1385,30 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         return;
     }
 
-    // read once && IDFA not cached
-    if (adjConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
-        [ADJPackageBuilder parameters:parameters setString:packageParams.idfaCached forKey:@"idfa"];
-        return;
-    }
+    __block NSString *idfa = nil;
+    [ADJUtil launchSynchronisedWithObject:[ADJPackageBuilder class] block:^{
+        // read once && IDFA not cached
+        if (adjConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
+            idfa = packageParams.idfaCached;
+        } else {
+            // read IDFA
+            idfa = [ADJUtil idfa];
+            if (idfa == nil ||
+                idfa.length == 0 ||
+                [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
+            {
+                idfa = nil;
+            } else {
+                // cache IDFA
+                packageParams.idfaCached = idfa;
+            }
+        }
+    }];
 
-    // read IDFA
-    NSString *idfa = [ADJUtil idfa];
-    if (idfa == nil ||
-        idfa.length == 0 ||
-        [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
-        return;
+    if (idfa != nil) {
+        // add IDFA to payload
+        [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
     }
-    // cache IDFA
-    packageParams.idfaCached = idfa;
-    // add IDFA to payload
-    [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
 }
 
 @end
