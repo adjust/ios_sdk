@@ -1,3 +1,9 @@
+### Version 4.37.1 (14th February 2024)
+#### Fixed
+- Fixed Crash: 4.37.0 +[ADJPackageBuilder addIdfaToParameters:withConfig:logger:packageParams:] (https://github.com/adjust/ios_sdk/issues/696)
+
+---
+
 ### Version 4.37.0 (21st December 2023)
 #### Added
 - Added ability to instruct to SDK to read device IDs just once upon initialization. You can set this by calling `setReadDeviceInfoOnceEnabled` method of the `ADJConfig` instance.
