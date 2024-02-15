@@ -3,7 +3,7 @@
 - Added support for `TradPlus` ad revenue tracking.
 
 #### Fixed
-- Fixed Crash: 4.37.0 +[ADJPackageBuilder addIdfaToParameters:withConfig:logger:packageParams:] (https://github.com/adjust/ios_sdk/issues/696).
+- Fixed occasional crashes caused by not synchronized access to cached IDFA value (https://github.com/adjust/ios_sdk/issues/696).
 
 ---
 
