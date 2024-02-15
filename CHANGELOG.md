@@ -178,7 +178,7 @@
 #### Fixed
 - Fixed new Xcode 13 beta compile time errors for extensions targets (https://github.com/adjust/ios_sdk/pull/559).
 - Improved dummy iAd attribution responses filtering (https://github.com/adjust/ios_sdk/pull/524).
-- Fixed SPM warnnings about `ADJLinkResolution.h` not being part of umbrella header (https://github.com/adjust/ios_sdk/pull/557).
+- Fixed SPM warnings about `ADJLinkResolution.h` not being part of umbrella header (https://github.com/adjust/ios_sdk/pull/557).
 - Fixed some static code analysis warnings (https://github.com/adjust/ios_sdk/pull/558).
 
 ---
@@ -640,7 +640,7 @@
 #### Fixed
 - Replaced `NSLog` in `ADJSystemProfile` with the adjust logger.
 - It is no longer necessary to have attribution delegate implemented to get deferred deep links.
-- Sending `os_build` or permenent version, not both.
+- Sending `os_build` or permanent version, not both.
 
 ---
 
@@ -922,7 +922,7 @@
 - Added sending of short app version field.
 
 #### Changed
-- Updating deep linking handling to be comaptible with iOS 9.
+- Updating deep linking handling to be compatible with iOS 9.
 - Updated docs.
 
 #### Fixed
@@ -1102,8 +1102,8 @@
 #### Added
 - Added config object used for SDK initialisation.
 - Added possibility send currency together with revenue in the event.
-- Added posibility to track parameters for client callbacks.
-- Added posibility to track parameters for partner networks.
+- Added possibility to track parameters for client callbacks.
+- Added possibility to track parameters for partner networks.
 - Added `setOfflineMode` method to allow you to put SDK in offline mode.
 
 #### Changed
@@ -1117,7 +1117,7 @@
 - Added support for handling deferred deep links.
 
 #### Changed
-- Removed static dependancy on `ADClient`.
+- Removed static dependency on `ADClient`.
 
 ---
 
@@ -1133,7 +1133,7 @@
 ### Version 3.3.4 (19th June 2014)
 #### Added
 - Added tracker information to response data.
-- Addded support for `Mixpanel`.
+- Added support for `Mixpanel`.
 
 #### Changed
 - Updated docs.
@@ -1278,7 +1278,7 @@
 - Added support for `iOS 7`.
 - Added offline tracking.
 - Added persisted storage.
-- Addud multi threading.
+- Added multi-threading.
 
 ---
 
@@ -1300,7 +1300,7 @@
 ### Version 1.4 (17th January 2013)
 #### Added
 - Added session IDs and interval to last session event to session starts and ends.
-- Added facebook attribution ID to installs for facebook install ads.
+- Added Facebook attribution ID to installs for Facebook install ads.
 
 ---
 
@@ -1337,3 +1337,4 @@
 ### Version 1.0.0 (30th July 2012)
 #### Added
 - Initial release of the adjust SDK for iOS.
+
