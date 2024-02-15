@@ -1,6 +1,9 @@
-### Version 4.37.1 (14th February 2024)
+### Version 4.37.1 (15th February 2024)
+#### Added
+- Added support for `TradPlus` ad revenue tracking.
+
 #### Fixed
-- Fixed Crash: 4.37.0 +[ADJPackageBuilder addIdfaToParameters:withConfig:logger:packageParams:] (https://github.com/adjust/ios_sdk/issues/696)
+- Fixed Crash: 4.37.0 +[ADJPackageBuilder addIdfaToParameters:withConfig:logger:packageParams:] (https://github.com/adjust/ios_sdk/issues/696).
 
 ---
 
