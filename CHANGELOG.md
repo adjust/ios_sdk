@@ -1,3 +1,12 @@
+### Version 4.37.1 (15th February 2024)
+#### Added
+- Added support for `TradPlus` ad revenue tracking.
+
+#### Fixed
+- Fixed occasional crashes caused by not synchronized access to cached IDFA value (https://github.com/adjust/ios_sdk/issues/696).
+
+---
+
 ### Version 4.37.0 (21st December 2023)
 #### Added
 - Added ability to instruct to SDK to read device IDs just once upon initialization. You can set this by calling `setReadDeviceInfoOnceEnabled` method of the `ADJConfig` instance.

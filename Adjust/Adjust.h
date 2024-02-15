@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V4.37.0
+//  V4.37.1
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
@@ -58,6 +58,7 @@ extern NSString * __nonnull const ADJAdRevenueSourceHeliumChartboost;
 extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
 extern NSString * __nonnull const ADJAdRevenueSourceTopOn;
 extern NSString * __nonnull const ADJAdRevenueSourceADX;
+extern NSString * __nonnull const ADJAdRevenueSourceTradplus;
 
 /**
  * Constants for country app's URL strategies.
