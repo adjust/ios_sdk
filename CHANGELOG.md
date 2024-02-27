@@ -1,3 +1,9 @@
+### Version 4.37.2 (27th February 2024)
+#### Changed
+- Added tracking of `third_party_sharing` and `measurement_consent` packages if invoked before SDK initialization in subsequent SDK initializations.
+
+---
+
 ### Version 4.37.1 (15th February 2024)
 #### Added
 - Added support for `TradPlus` ad revenue tracking.
