@@ -22,7 +22,14 @@
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    NSLog(@"Scheme based deep link opened an app: %@", url);
+    // Pass deep link to Adjust in order to potentially reattribute user.
+    // add your code below to handle deep link
+    // (e.g., open deep link content)
+    // url object contains the deep link
+
+    // Call the below method to send deep link to Adjust backend
     [Adjust appWillOpenUrl:url];
     return YES;
 }
