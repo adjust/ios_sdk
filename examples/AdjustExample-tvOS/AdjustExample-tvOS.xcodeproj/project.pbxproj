@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07C8C7D72B8F428F006979A1 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7D12B8F428F006979A1 /* ADJPurchaseVerificationResult.m */; };
+		07C8C7D82B8F428F006979A1 /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7D22B8F428F006979A1 /* ADJPurchase.m */; };
+		07C8C7D92B8F428F006979A1 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7D32B8F428F006979A1 /* ADJPurchaseVerificationHandler.m */; };
 		6F84514125B1B1C80004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */; };
 		6FAB78B32636DD8200773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB78B22636DD8200773869 /* ADJLinkResolution.m */; };
 		6FBEE91424E4214800FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91324E4214800FEF3F1 /* ADJUrlStrategy.m */; };
@@ -67,6 +70,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		07C8C7D12B8F428F006979A1 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
+		07C8C7D22B8F428F006979A1 /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchase.m; sourceTree = "<group>"; };
+		07C8C7D32B8F428F006979A1 /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
+		07C8C7D42B8F428F006979A1 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
+		07C8C7D52B8F428F006979A1 /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
+		07C8C7D62B8F428F006979A1 /* ADJPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchase.h; sourceTree = "<group>"; };
 		6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6F84514025B1B1C80004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FAB78B12636DD8200773869 /* ADJLinkResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLinkResolution.h; sourceTree = "<group>"; };
@@ -281,6 +290,12 @@
 				6FAB78B22636DD8200773869 /* ADJLinkResolution.m */,
 				9D49D16F290FEBFC00042345 /* ADJSKAdNetwork.h */,
 				9D49D170290FEBFC00042345 /* ADJSKAdNetwork.m */,
+				07C8C7D62B8F428F006979A1 /* ADJPurchase.h */,
+				07C8C7D22B8F428F006979A1 /* ADJPurchase.m */,
+				07C8C7D42B8F428F006979A1 /* ADJPurchaseVerificationHandler.h */,
+				07C8C7D32B8F428F006979A1 /* ADJPurchaseVerificationHandler.m */,
+				07C8C7D52B8F428F006979A1 /* ADJPurchaseVerificationResult.h */,
+				07C8C7D12B8F428F006979A1 /* ADJPurchaseVerificationResult.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -412,6 +427,8 @@
 				9D449F5E1E6EE6C500E7E80B /* ADJUtil.m in Sources */,
 				9D449F4E1E6EE6C500E7E80B /* ADJEventFailure.m in Sources */,
 				9D449F461E6EE6C500E7E80B /* ADJAdjustFactory.m in Sources */,
+				07C8C7D82B8F428F006979A1 /* ADJPurchase.m in Sources */,
+				07C8C7D92B8F428F006979A1 /* ADJPurchaseVerificationHandler.m in Sources */,
 				9D449F3F1E6EE6C500E7E80B /* ADJActivityHandler.m in Sources */,
 				9D449F5C1E6EE6C500E7E80B /* ADJTimerOnce.m in Sources */,
 				9D449F401E6EE6C500E7E80B /* ADJActivityKind.m in Sources */,
@@ -421,6 +438,7 @@
 				9D449F4D1E6EE6C500E7E80B /* ADJEvent.m in Sources */,
 				963909B71BCC0D8300A2E8A4 /* main.m in Sources */,
 				6FBEE91424E4214800FEF3F1 /* ADJUrlStrategy.m in Sources */,
+				07C8C7D72B8F428F006979A1 /* ADJPurchaseVerificationResult.m in Sources */,
 				9D449F491E6EE6C500E7E80B /* ADJBackoffStrategy.m in Sources */,
 				9D449F581E6EE6C500E7E80B /* ADJSessionParameters.m in Sources */,
 				9D49D171290FEBFC00042345 /* ADJSKAdNetwork.m in Sources */,
