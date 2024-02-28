@@ -1030,6 +1030,28 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [ADJUserDefaults removeDisableThirdPartySharing];
 
         return;
+    } else {
+        // these checks should run after SDK initialization after the first one
+        if ([ADJUserDefaults getDisableThirdPartySharing]) {
+            [selfI disableThirdPartySharingI:selfI];
+        }
+        if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+            for (ADJThirdPartySharing *thirdPartySharing
+                 in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
+            {
+                [selfI trackThirdPartySharingI:selfI
+                             thirdPartySharing:thirdPartySharing];
+            }
+
+            selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
+        }
+        if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
+            [selfI
+                trackMeasurementConsentI:selfI
+                enabled:[selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+
+            selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
+        }
     }
 
     double lastInterval = now - selfI.activityState.lastActivity;

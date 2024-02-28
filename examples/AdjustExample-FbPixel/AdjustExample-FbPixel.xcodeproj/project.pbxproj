@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07A893432B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A8933F2B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.m */; };
-		07A893442B0B980B0011DAB8 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A893402B0B980B0011DAB8 /* ADJPurchaseVerificationResult.m */; };
-		07A893452B0B980B0011DAB8 /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A893412B0B980B0011DAB8 /* ADJPurchase.m */; };
 		07AF832327BD3CBF00C5DD9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07AF832227BD3CBF00C5DD9E /* Main.storyboard */; };
+		07C8C7F22B8F447B006979A1 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7EC2B8F447B006979A1 /* ADJPurchaseVerificationResult.m */; };
+		07C8C7F32B8F447B006979A1 /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7ED2B8F447B006979A1 /* ADJPurchase.m */; };
+		07C8C7F42B8F447B006979A1 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C8C7EF2B8F447B006979A1 /* ADJPurchaseVerificationHandler.m */; };
 		6FAB78C12636DDC400773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */; };
 		9D49D17A290FEC2E00042345 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D49D179290FEC2E00042345 /* ADJSKAdNetwork.m */; };
 		9D9D1533212EB3920081445E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9D1532212EB3920081445E /* AppDelegate.m */; };
@@ -63,13 +63,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		07A8933D2B0B980B0011DAB8 /* ADJPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJPurchase.h; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchase.h"; sourceTree = "<group>"; };
-		07A8933E2B0B980B0011DAB8 /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJPurchaseVerificationResult.h; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchaseVerificationResult.h"; sourceTree = "<group>"; };
-		07A8933F2B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJPurchaseVerificationHandler.m; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchaseVerificationHandler.m"; sourceTree = "<group>"; };
-		07A893402B0B980B0011DAB8 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJPurchaseVerificationResult.m; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchaseVerificationResult.m"; sourceTree = "<group>"; };
-		07A893412B0B980B0011DAB8 /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADJPurchase.m; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchase.m"; sourceTree = "<group>"; };
-		07A893422B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADJPurchaseVerificationHandler.h; path = "../../../Downloads/ios_sdk_dev-tracking_domain/Adjust/ADJPurchaseVerificationHandler.h"; sourceTree = "<group>"; };
 		07AF832227BD3CBF00C5DD9E /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		07C8C7EC2B8F447B006979A1 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
+		07C8C7ED2B8F447B006979A1 /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchase.m; sourceTree = "<group>"; };
+		07C8C7EE2B8F447B006979A1 /* ADJPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchase.h; sourceTree = "<group>"; };
+		07C8C7EF2B8F447B006979A1 /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
+		07C8C7F02B8F447B006979A1 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
+		07C8C7F12B8F447B006979A1 /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
 		6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLinkResolution.m; sourceTree = "<group>"; };
 		6FAB78C02636DDC400773869 /* ADJLinkResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLinkResolution.h; sourceTree = "<group>"; };
 		9D49D178290FEC2E00042345 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
@@ -298,12 +298,12 @@
 				6FAB78BF2636DDC400773869 /* ADJLinkResolution.m */,
 				9D49D178290FEC2E00042345 /* ADJSKAdNetwork.h */,
 				9D49D179290FEC2E00042345 /* ADJSKAdNetwork.m */,
-				07A8933D2B0B980B0011DAB8 /* ADJPurchase.h */,
-				07A893412B0B980B0011DAB8 /* ADJPurchase.m */,
-				07A893422B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.h */,
-				07A8933F2B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.m */,
-				07A8933E2B0B980B0011DAB8 /* ADJPurchaseVerificationResult.h */,
-				07A893402B0B980B0011DAB8 /* ADJPurchaseVerificationResult.m */,
+				07C8C7EE2B8F447B006979A1 /* ADJPurchase.h */,
+				07C8C7ED2B8F447B006979A1 /* ADJPurchase.m */,
+				07C8C7F02B8F447B006979A1 /* ADJPurchaseVerificationHandler.h */,
+				07C8C7EF2B8F447B006979A1 /* ADJPurchaseVerificationHandler.m */,
+				07C8C7F12B8F447B006979A1 /* ADJPurchaseVerificationResult.h */,
+				07C8C7EC2B8F447B006979A1 /* ADJPurchaseVerificationResult.m */,
 			);
 			name = Adjust;
 			path = ../../../Adjust;
@@ -427,16 +427,13 @@
 				9DF92F202630F377000FC3FC /* ADJResponseData.m in Sources */,
 				9DF92F1C2630F377000FC3FC /* ADJActivityPackage.m in Sources */,
 				9DF92F0C2630F377000FC3FC /* ADJEventSuccess.m in Sources */,
-				07A893442B0B980B0011DAB8 /* ADJPurchaseVerificationResult.m in Sources */,
 				9DF92FB02630F3A1000FC3FC /* WKWebViewJavascriptBridge.m in Sources */,
-				07A893432B0B980B0011DAB8 /* ADJPurchaseVerificationHandler.m in Sources */,
 				9DF92F232630F377000FC3FC /* ADJUserDefaults.m in Sources */,
 				9DF92F182630F377000FC3FC /* NSData+ADJAdditions.m in Sources */,
 				9DF92F212630F377000FC3FC /* ADJPackageBuilder.m in Sources */,
 				9DF92F132630F377000FC3FC /* Adjust.m in Sources */,
 				9DF92F172630F377000FC3FC /* NSString+ADJAdditions.m in Sources */,
 				9DF92F052630F377000FC3FC /* ADJTimerOnce.m in Sources */,
-				07A893452B0B980B0011DAB8 /* ADJPurchase.m in Sources */,
 				9DF92F072630F377000FC3FC /* ADJRequestHandler.m in Sources */,
 				9DF92F122630F377000FC3FC /* ADJBackoffStrategy.m in Sources */,
 				9DF92F222630F377000FC3FC /* ADJSubscription.m in Sources */,
@@ -457,14 +454,17 @@
 				9DF92F0F2630F377000FC3FC /* ADJTimerCycle.m in Sources */,
 				9DF92FB12630F3A1000FC3FC /* WebViewJavascriptBridge_JS.m in Sources */,
 				9DF92F0E2630F377000FC3FC /* ADJSessionFailure.m in Sources */,
+				07C8C7F22B8F447B006979A1 /* ADJPurchaseVerificationResult.m in Sources */,
 				9DF92F1E2630F377000FC3FC /* ADJUrlStrategy.m in Sources */,
 				6FAB78C12636DDC400773869 /* ADJLinkResolution.m in Sources */,
 				9DF92F1B2630F377000FC3FC /* ADJThirdPartySharing.m in Sources */,
+				07C8C7F42B8F447B006979A1 /* ADJPurchaseVerificationHandler.m in Sources */,
 				9DF92F162630F377000FC3FC /* ADJActivityKind.m in Sources */,
 				9DF92F092630F377000FC3FC /* ADJEvent.m in Sources */,
 				9DF92F0D2630F377000FC3FC /* ADJActivityState.m in Sources */,
 				9DF92F0A2630F377000FC3FC /* ADJSessionSuccess.m in Sources */,
 				9DF92F042630F377000FC3FC /* ADJAdRevenue.m in Sources */,
+				07C8C7F32B8F447B006979A1 /* ADJPurchase.m in Sources */,
 				9DF92F142630F377000FC3FC /* ADJConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
