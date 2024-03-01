@@ -36,25 +36,14 @@
 }
 
 - (NSString *)adjUrlEncode {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                 NULL,
-                                                                                 (CFStringRef)self,
-                                                                                 NULL,
-                                                                                 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-                                                                                 CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
-#pragma clang diagnostic pop
-    // Alternative:
-    // return [self stringByAddingPercentEncodingWithAllowedCharacters:
-    //        [NSCharacterSet characterSetWithCharactersInString:@"!*'\"();:@&=+$,/?%#[]% "]];
+    NSMutableCharacterSet *urlQueryKeyValueAllowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    [urlQueryKeyValueAllowedCharacterSet removeCharactersInString:@"!*'\"();:@&=+$,/?%#[]% "];
+    
+    return [self stringByAddingPercentEncodingWithAllowedCharacters: urlQueryKeyValueAllowedCharacterSet];
 }
 
 - (NSString *)adjUrlDecode {
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapes(
-                                                                                 kCFAllocatorDefault,
-                                                                                 (CFStringRef)self,
-                                                                                 CFSTR("")));
+    return [self stringByRemovingPercentEncoding];
 }
 
 - (NSString *)adjSha256 {
