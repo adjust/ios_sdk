@@ -11,44 +11,44 @@
 #import "Adjust.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const baseUrlAnalytics = @"https://app.adjust.com";
-static NSString * const baseUrlConsent = @"https://app.adjust.com";
+static NSString * const baseUrlAnalytics = @"https://analytics.adjust.com";
+static NSString * const baseUrlConsent = @"https://consent.adjust.com";
 static NSString * const gdprUrl = @"https://gdpr.adjust.com";
 static NSString * const subscriptionUrl = @"https://subscription.adjust.com";
 static NSString * const purchaseVerificationUrl = @"https://ssrv.adjust.com";
 
-static NSString * const baseUrlIndiaAnalytics = @"https://app.adjust.net.in";
-static NSString * const baseUrlIndiaConsent = @"https://app.adjust.net.in";
+static NSString * const baseUrlIndiaAnalytics = @"https://analytics.adjust.net.in";
+static NSString * const baseUrlIndiaConsent = @"https://consent.adjust.net.in";
 static NSString * const gdprUrlIndia = @"https://gdpr.adjust.net.in";
 static NSString * const subscriptionUrlIndia = @"https://subscription.adjust.net.in";
 static NSString * const purchaseVerificationUrlIndia = @"https://ssrv.adjust.net.in";
 
-static NSString * const baseUrlChinaAnalytics = @"https://app.adjust.world";
-static NSString * const baseUrlChinaConsent = @"https://app.adjust.world";
+static NSString * const baseUrlChinaAnalytics = @"https://analytics.adjust.world";
+static NSString * const baseUrlChinaConsent = @"https://consent.adjust.world";
 static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
 static NSString * const subscriptionUrlChina = @"https://subscription.adjust.world";
 static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.world";
 
-static NSString * const baseUrlCnAnalytics = @"https://app.adjust.cn";
-static NSString * const baseUrlCnConsent = @"https://app.adjust.cn";
+static NSString * const baseUrlCnAnalytics = @"https://analytics.adjust.cn";
+static NSString * const baseUrlCnConsent = @"https://consent.adjust.cn";
 static NSString * const gdprUrlCn = @"https://gdpr.adjust.cn";
 static NSString * const subscriptionUrlCn = @"https://subscription.adjust.cn";
 static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
 
-static NSString * const baseUrlEUAnalytics = @"https://app.eu.adjust.com";
-static NSString * const baseUrlEUConsent = @"https://app.eu.adjust.com";
+static NSString * const baseUrlEUAnalytics = @"https://analytics.eu.adjust.com";
+static NSString * const baseUrlEUConsent = @"https://consent.eu.adjust.com";
 static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.com";
 static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.com";
 static NSString * const purchaseVerificationUrlEU = @"https://ssrv.eu.adjust.com";
 
-static NSString * const baseUrlTRAnalytics = @"https://app.tr.adjust.com";
-static NSString * const baseUrlTRConsent = @"https://app.tr.adjust.com";
+static NSString * const baseUrlTRAnalytics = @"https://analytics.tr.adjust.com";
+static NSString * const baseUrlTRConsent = @"https://consent.tr.adjust.com";
 static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.com";
 static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.com";
 static NSString * const purchaseVerificationUrlTR = @"https://ssrv.tr.adjust.com";
 
-static NSString * const baseUrlUSAnalytics = @"https://app.us.adjust.com";
-static NSString * const baseUrlUSConsent = @"https://app.us.adjust.com";
+static NSString * const baseUrlUSAnalytics = @"https://analytics.us.adjust.com";
+static NSString * const baseUrlUSConsent = @"https://consent .us.adjust.com";
 static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
 static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
 static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com";
