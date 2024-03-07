@@ -1,3 +1,15 @@
+### Version 4.38.0 (th March 2024)
+#### Added
+- 
+- 
+
+#### Changed
+- 
+-
+
+---
+
+
 ### Version 4.37.2 (28th February 2024)
 #### Changed
 - Added tracking of `third_party_sharing` and `measurement_consent` packages if invoked before SDK initialization in subsequent SDK initializations.
