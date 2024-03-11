@@ -48,7 +48,7 @@ static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.com
 static NSString * const purchaseVerificationUrlTR = @"https://ssrv.tr.adjust.com";
 
 static NSString * const baseUrlUSAnalytics = @"https://analytics.us.adjust.com";
-static NSString * const baseUrlUSConsent = @"https://consent .us.adjust.com";
+static NSString * const baseUrlUSConsent = @"https://consent.us.adjust.com";
 static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
 static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
 static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com";
