@@ -39,5 +39,6 @@ Pod::Spec.new do |s|
     wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
     wb.dependency 'Adjust/Core'
     wb.ios.deployment_target = '9.0'
+    wb.ios.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   end
 end
