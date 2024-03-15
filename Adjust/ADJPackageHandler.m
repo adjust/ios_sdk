@@ -153,15 +153,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }];
 }
 
-- (void)updatePackagesTrackingWithAttStatus:(int)attStatus
-                                  startedAt:(NSUInteger)startedAt
-{
+- (void)updatePackagesWithAttStatus:(int)attStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
         [selfI updatePackagesTrackingI:selfI
-                             attStatus:attStatus
-                             startedAt:startedAt];
+                             attStatus:attStatus];
     }];
 }
 
@@ -304,9 +301,7 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)updatePackagesTrackingI:(ADJPackageHandler *)selfI
-                      attStatus:(int)attStatus
-                      startedAt:(NSUInteger)startedAt
-{
+                      attStatus:(int)attStatus {
     [selfI.logger debug:@"Updating package queue with idfa and att_status: %d", (long)attStatus];
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];
@@ -317,7 +312,6 @@ startsSending:(BOOL)startsSending
                                      activityKind:activityPackage.activityKind
                                   attStatusString:[activityPackage.parameters objectForKey:@"att_status"]
                                        withConfig:selfI.activityHandler.adjustConfig
-                                        startedAt:startedAt
                                     packageParams:selfI.activityHandler.packageParams];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];

@@ -23,8 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)sendPurchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage;
-- (void)updatePackagesTrackingWithAttStatus:(int)attStatus
-                                  startedAt:(NSUInteger)startedAt;
+- (void)updatePackagesWithAttStatus:(int)attStatus;
 - (void)teardown;
 
 @end

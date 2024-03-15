@@ -28,8 +28,7 @@
 - (void)pauseSending;
 - (void)resumeSending;
 - (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters;
-- (void)updatePackagesTrackingWithAttStatus:(int)attStatus
-                                  startedAt:(NSUInteger)startedAt;
+- (void)updatePackagesWithAttStatus:(int)attStatus;
 - (void)flush;
 
 - (void)teardown;
