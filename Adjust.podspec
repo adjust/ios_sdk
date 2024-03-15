@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.framework      = 'SystemConfiguration'
   s.ios.weak_framework = 'AdSupport'
   s.tvos.weak_framework = 'AdSupport'
-  s.ios.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
+  s.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   s.requires_arc   = true
   s.default_subspec = 'Core'
   s.pod_target_xcconfig = { 'BITCODE_GENERATION_MODE' => 'bitcode' }
@@ -39,6 +39,5 @@ Pod::Spec.new do |s|
     wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
     wb.dependency 'Adjust/Core'
     wb.ios.deployment_target = '9.0'
-    wb.ios.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   end
 end
