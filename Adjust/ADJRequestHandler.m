@@ -166,11 +166,11 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
     BOOL wasConsentWhenCreated =
-        [ADJUtil isConsentOrElseAnalyticsWithActivityKind:responseData.activityKind
-                                          attStatusString:attStatusString];
+        [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                          andAttStatus:attStatusString];
 
     BOOL isConsentWhenSending =
-        [ADJUtil isConsentOrElseAnalyticsWithActivityKind:responseData.activityKind];
+        [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind];
 
     BOOL isConsentOrElseAnalytics = wasConsentWhenCreated && isConsentWhenSending;
 

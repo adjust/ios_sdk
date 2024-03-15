@@ -1209,41 +1209,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return -1;
 }
 
-+ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind
-                                 attStatusString:(nullable NSString *)attStatusString
-{
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        if ([ADJUtil isAnalyticsWithActivityKind:activityKind]) {
-            return NO;
-        }
-
-        return [@"3" isEqualToString:attStatusString];
-    } else {
-        // if iOs lower than 14 can assume consent
-        return YES;
-    }
-}
-
-+ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind {
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        if ([ADJUtil isAnalyticsWithActivityKind:activityKind]) {
-            return NO;
-        }
-
-        int attStatus = [ADJUtil attStatus];
-        return attStatus == 3;
-    } else {
-        // if iOs lower than 14 can assume consent
-        return YES;
-    }
-}
-
-+ (BOOL)isAnalyticsWithActivityKind:(ADJActivityKind)activityKind {
-    return activityKind == ADJActivityKindGdpr
-        || activityKind == ADJActivityKindSubscription
-        || activityKind == ADJActivityKindPurchaseVerification;
-}
-
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
 
@@ -1479,6 +1444,38 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                                                           (CFDictionaryRef)dictionary,
                                                                           kCFPropertyListMutableContainersAndLeaves));
     return deepCopy;
+}
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        if (activityKind == ADJActivityKindGdpr ||
+            activityKind == ADJActivityKindSubscription ||
+            activityKind == ADJActivityKindPurchaseVerification) {
+            return NO;
+        }
+
+        int attStatus = [ADJUtil attStatus];
+        return attStatus == 3;
+    } else {
+        // if iOS lower than 14 can assume consent
+        return YES;
+    }
+}
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
+                                 andAttStatus:(nullable NSString *)attStatusString {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        if (activityKind == ADJActivityKindGdpr ||
+            activityKind == ADJActivityKindSubscription ||
+            activityKind == ADJActivityKindPurchaseVerification) {
+            return NO;
+        }
+
+        return [@"3" isEqualToString:attStatusString];
+    } else {
+        // if iOS lower than 14 can assume consent
+        return YES;
+    }
 }
 
 @end

@@ -336,7 +336,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindSession];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -346,11 +346,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -395,7 +400,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.eventToken forKey:@"event_token"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindEvent];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindEvent];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -425,11 +430,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.productId forKey:@"product_id"];
     [ADJPackageBuilder parameters:parameters setString:[event.receipt adjEncodeBase64] forKey:@"receipt"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -484,7 +494,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindInfo];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindInfo];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -498,11 +508,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -547,7 +562,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindAdRevenue];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -558,12 +573,17 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
-    
+
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -601,7 +621,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindAdRevenue];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -618,12 +638,17 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenueNetwork forKey:@"ad_revenue_network"];
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenueUnit forKey:@"ad_revenue_unit"];
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenuePlacement forKey:@"ad_revenue_placement"];
-    
+
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
     
     if (!isInDelay) {
@@ -678,7 +703,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindClick];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindClick];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -692,11 +717,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -739,7 +769,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindAttribution];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAttribution];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setString:initiatedBy forKey:@"initiated_by"];
@@ -750,13 +780,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
     if (self.adjustConfig.needsCost) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
-    
+
     if (self.activityState != nil) {
         if (self.activityState.isPersisted) {
             [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"primary_dedupe_token"];
@@ -784,7 +822,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindGdpr];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindGdpr];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -794,11 +832,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -835,7 +878,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindDisableThirdPartySharing];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindDisableThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -848,11 +891,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
     
     if (self.activityState != nil) {
@@ -895,7 +943,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindThirdPartySharing];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -907,6 +955,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
+
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
 
     // Third Party Sharing
     if (thirdPartySharing.enabled != nil) {
@@ -964,7 +1020,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindMeasurementConsent];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindMeasurementConsent];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -982,6 +1038,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters
                         setString:enableValue
                            forKey:@"measurement"];
+
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
 
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
@@ -1020,7 +1084,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindSubscription];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSubscription];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1030,11 +1094,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -1093,7 +1162,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [self addConsentToParameters:parameters activityKind:ADJActivityKindPurchaseVerification];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindPurchaseVerification];
     [self addIdfvIfPossibleToParameters:parameters];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
@@ -1104,11 +1173,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
+    if ([self.trackingStatusManager canGetAttStatus]) {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
+                               forKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+                               forKey:@"tracking_enabled"];
+    }
+
     if (self.adjustConfig.isDeviceKnown) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {
@@ -1128,25 +1202,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self injectFeatureFlagsWithParameters:parameters];
 
     return parameters;
-}
-
-
-- (void)addConsentToParameters:(NSMutableDictionary *)parameters
-                  activityKind:(ADJActivityKind)activityKind
-{
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
-    } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
-                               forKey:@"tracking_enabled"];
-    }
-
-    [ADJPackageBuilder addConsentToParameters:parameters
-                                 activityKind:activityKind
-                              attStatusString:[parameters objectForKey:@"att_status"]
-                                   withConfig:self.adjustConfig
-                                packageParams:self.packageParams];
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
@@ -1280,13 +1335,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
 }
 
+#pragma mark - Consent params
+
 + (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
                   activityKind:(ADJActivityKind)activityKind
                attStatusString:(nullable NSString *)attStatusString
                     withConfig:(ADJConfig * _Nullable)adjConfig
                  packageParams:(ADJPackageParams *)packageParams {
-    if (![ADJUtil isConsentOrElseAnalyticsWithActivityKind:activityKind
-                                            attStatusString:attStatusString]) {
+    if (![ADJUtil shouldUseConsentParamsForActivityKind:activityKind
+                                           andAttStatus:attStatusString]) {
         return;
     }
 
@@ -1326,8 +1383,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters {
-    [parameters removeObjectForKey:@"started_at"];
     [parameters removeObjectForKey:@"idfa"];
+}
+
+- (void)addConsentToParameters:(NSMutableDictionary *)parameters
+               forActivityKind:(ADJActivityKind)activityKind {
+    [ADJPackageBuilder addConsentToParameters:parameters
+                                 activityKind:activityKind
+                              attStatusString:[parameters objectForKey:@"att_status"]
+                                   withConfig:self.adjustConfig
+                                packageParams:self.packageParams];
 }
 
 @end

@@ -119,10 +119,6 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (int)attStatus;
 
-+ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind
-                                 attStatusString:(nullable NSString *)attStatusString;
-+ (BOOL)isConsentOrElseAnalyticsWithActivityKind:(ADJActivityKind)activityKind;
-
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
@@ -144,5 +140,10 @@ typedef void (^isInactiveInjected)(BOOL);
 + (BOOL)setPersistedRandomToken:(NSString *)randomToken;
 
 + (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind;
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
+                                 andAttStatus:(nullable NSString *)attStatusString;
 
 @end
