@@ -94,13 +94,13 @@
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
-+ (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
-                  activityKind:(ADJActivityKind)activityKind
-               attStatusString:(nullable NSString *)attStatusString
-                    withConfig:(ADJConfig * _Nullable)adjConfig
-                 packageParams:(ADJPackageParams * _Nullable)packageParams;
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                   forActivityKind:(ADJActivityKind)activityKind
+                     withAttStatus:(NSString * _Nullable)attStatusString
+                     configuration:(ADJConfig * _Nullable)adjConfig
+                     packageParams:(ADJPackageParams * _Nullable)packageParams;
 
-+ (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters;
++ (void)removeConsentDataFromParameters:(nonnull NSMutableDictionary *)parameters;
 
 @end
 // TODO change to ADJ...

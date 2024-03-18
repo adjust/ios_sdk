@@ -1337,13 +1337,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 #pragma mark - Consent params
 
-+ (void)addConsentToParameters:(NSMutableDictionary * _Nullable)parameters
-                  activityKind:(ADJActivityKind)activityKind
-               attStatusString:(nullable NSString *)attStatusString
-                    withConfig:(ADJConfig * _Nullable)adjConfig
-                 packageParams:(ADJPackageParams *)packageParams {
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                   forActivityKind:(ADJActivityKind)activityKind
+                     withAttStatus:(NSString * _Nullable)attStatusString
+                     configuration:(ADJConfig * _Nullable)adjConfig
+                     packageParams:(ADJPackageParams * _Nullable)packageParams {
+
     if (![ADJUtil shouldUseConsentParamsForActivityKind:activityKind
-                                           andAttStatus:attStatusString]) {
+                                       andAttStatus:attStatusString]) {
         return;
     }
 
@@ -1382,16 +1383,16 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 }
 
-+ (void)removeConsentFromParameters:(nonnull NSMutableDictionary *)parameters {
++ (void)removeConsentDataFromParameters:(nonnull NSMutableDictionary *)parameters {
     [parameters removeObjectForKey:@"idfa"];
 }
 
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters
                forActivityKind:(ADJActivityKind)activityKind {
-    [ADJPackageBuilder addConsentToParameters:parameters
-                                 activityKind:activityKind
-                              attStatusString:[parameters objectForKey:@"att_status"]
-                                   withConfig:self.adjustConfig
+    [ADJPackageBuilder addConsentDataToParameters:parameters
+                              forActivityKind:activityKind
+                                withAttStatus:[parameters objectForKey:@"att_status"]
+                                configuration:self.adjustConfig
                                 packageParams:self.packageParams];
 }
 

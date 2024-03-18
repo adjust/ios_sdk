@@ -16,9 +16,9 @@
 - (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
                               extraPath:(NSString *)extraPath;
 
-- (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
-                        isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
-                            sendingParametersMut:(NSMutableDictionary *)sendingParametersMut;
+- (nonnull NSString *)urlByActivityKind:(ADJActivityKind)activityKind
+                  withConsentDataExists:(BOOL)consentDataExists
+                          sendingParams:(NSMutableDictionary *)sendingParams;
 
 - (void)resetAfterSuccess;
 - (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;

@@ -199,26 +199,25 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     }
 }
 
-- (nonnull NSString *)urlHostStringByPackageKind:(ADJActivityKind)activityKind
-                        isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
-                            sendingParametersMut:(NSMutableDictionary *)sendingParametersMut
-{
-    NSString *_Nonnull urlByActivityKind =
-        [self chooseUrlWithActivityKind:activityKind
-               isConsentOrElseAnalytics:isConsentOrElseAnalytics];
+- (nonnull NSString *)urlByActivityKind:(ADJActivityKind)activityKind
+                  withConsentDataExists:(BOOL)consentDataExists
+                          sendingParams:(NSMutableDictionary *)sendingParams {
+
+    NSString *_Nonnull urlByActivityKind = [self urlForActivityKind:activityKind
+                                              withConsentDataExists:consentDataExists];
 
     if (self.urlOverwrite != nil) {
-        [sendingParametersMut setObject:urlByActivityKind
-                                 forKey:testServerAdjustEndPointKey];
+        [sendingParams setObject:urlByActivityKind
+                          forKey:testServerAdjustEndPointKey];
 
         return self.urlOverwrite;
     }
 
     return urlByActivityKind;
 }
-- (nonnull NSString *)chooseUrlWithActivityKind:(ADJActivityKind)activityKind
-                      isConsentOrElseAnalytics:(BOOL)isConsentOrElseAnalytics
-{
+- (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
+                   withConsentDataExists:(BOOL)consentDataExists {
+
     if (activityKind == ADJActivityKindGdpr) {
         return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
@@ -231,7 +230,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
         return [self.purchaseVerificationUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
 
-    if (isConsentOrElseAnalytics) {
+    if (consentDataExists) {
         return [self.baseUrlConsentChoicesArray objectAtIndex:self.choiceIndex];
     } else {
         return [self.baseUrlAnalyticsChoicesArray objectAtIndex:self.choiceIndex];
