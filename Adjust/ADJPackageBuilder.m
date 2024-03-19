@@ -1387,6 +1387,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [parameters removeObjectForKey:@"idfa"];
 }
 
++ (void)updateAttStatusInParameters:(nonnull NSMutableDictionary *)parameters {
+    [ADJPackageBuilder parameters:parameters setInt:[ADJUtil attStatus] forKey:@"att_status"];
+}
+
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters
                forActivityKind:(ADJActivityKind)activityKind {
     [ADJPackageBuilder addConsentDataToParameters:parameters

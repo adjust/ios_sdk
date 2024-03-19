@@ -102,6 +102,8 @@
 
 + (void)removeConsentDataFromParameters:(nonnull NSMutableDictionary *)parameters;
 
++ (void)updateAttStatusInParameters:(nonnull NSMutableDictionary *)parameters;
+
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;

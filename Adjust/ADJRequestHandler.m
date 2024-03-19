@@ -168,6 +168,12 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
+    // if att_status was part of the payload at all
+    // make sure to have up to date value before sending
+    if (attStatusString != nil) {
+        [ADJPackageBuilder updateAttStatusInParameters:params];
+    }
+
     NSString *urlHostString =  [self.urlStrategy urlByActivityKind:responseData.activityKind
                                              withConsentDataExists:doesConsentDataExist
                                                      sendingParams:sendingParamsCopy];
