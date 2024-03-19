@@ -174,9 +174,9 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [ADJPackageBuilder updateAttStatusInParameters:params];
     }
 
-    NSString *urlHostString =  [self.urlStrategy urlByActivityKind:responseData.activityKind
-                                             withConsentDataExists:doesConsentDataExist
-                                                     sendingParams:sendingParamsCopy];
+    NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
+                                                     isConsentGiven:isConsentWhenSending
+                                                  withSendingParams:sendingParamsCopy];
 
     responseData.sendingParameters = [[NSDictionary alloc]
                                       initWithDictionary:sendingParamsCopy

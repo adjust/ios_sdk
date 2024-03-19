@@ -199,12 +199,11 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     }
 }
 
-- (nonnull NSString *)urlByActivityKind:(ADJActivityKind)activityKind
-                  withConsentDataExists:(BOOL)consentDataExists
-                          sendingParams:(NSMutableDictionary *)sendingParams {
-
+- (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
+                          isConsentGiven:(BOOL)isConsentGiven
+                       withSendingParams:(NSMutableDictionary *)sendingParams {
     NSString *_Nonnull urlByActivityKind = [self urlForActivityKind:activityKind
-                                              withConsentDataExists:consentDataExists];
+                                                     isConsentGiven:isConsentGiven];
 
     if (self.urlOverwrite != nil) {
         [sendingParams setObject:urlByActivityKind
@@ -215,9 +214,9 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
 
     return urlByActivityKind;
 }
-- (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
-                   withConsentDataExists:(BOOL)consentDataExists {
 
+- (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
+                          isConsentGiven:(BOOL)isConsentGiven {
     if (activityKind == ADJActivityKindGdpr) {
         return [self.gdprUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
@@ -230,7 +229,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
         return [self.purchaseVerificationUrlChoicesArray objectAtIndex:self.choiceIndex];
     }
 
-    if (consentDataExists) {
+    if (isConsentGiven) {
         return [self.baseUrlConsentChoicesArray objectAtIndex:self.choiceIndex];
     } else {
         return [self.baseUrlAnalyticsChoicesArray objectAtIndex:self.choiceIndex];
