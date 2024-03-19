@@ -165,7 +165,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
 
     if (!doesConsentDataExist) {
-        [ADJPackageBuilder removeConsentDataFromParameters:sendingParamsCopy];
+        [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
     NSString *urlHostString =  [self.urlStrategy urlByActivityKind:responseData.activityKind
