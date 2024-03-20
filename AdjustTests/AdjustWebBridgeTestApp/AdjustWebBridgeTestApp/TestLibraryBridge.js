@@ -1,9 +1,9 @@
 // simulator
-//var localBaseUrl = 'http://127.0.0.1:8080';
-//var localGdprUrl = 'http://127.0.0.1:8080';
+var urlOverwrite = 'http://127.0.0.1:8080';
+var controlUrl = 'ws://127.0.0.1:1987';
 // device
- var localBaseUrl = 'http://192.168.86.44:8080';
- var localGdprUrl = 'http://192.168.86.44:8080';
+// var urlOverwrite = 'http://192.168.86.44:8080';
+// var controlUrl = 'ws://192.168.86.44:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -25,7 +25,7 @@ var TestLibraryBridge = {
         console.log('TestLibraryBridge startTestSession');
         if (WebViewJavascriptBridge) {
             console.log('TestLibraryBridge startTestSession callHandler');
-            localAdjustCommandExecutor = new AdjustCommandExecutor(localBaseUrl, localGdprUrl);
+            localAdjustCommandExecutor = new AdjustCommandExecutor(urlOverwrite, controlUrl);
             // register objc->JS function for commands
             WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
             // start test session in obj-c
@@ -42,9 +42,9 @@ var TestLibraryBridge = {
     }
 };
 
-var AdjustCommandExecutor = function(baseUrl, gdprUrl) {
-    this.baseUrl = baseUrl;
-    this.gdprUrl = gdprUrl;
+var AdjustCommandExecutor = function(urlOverwrite, controlUrl) {
+    this.urlOverwrite = urlOverwrite;
+    this.controlUrl = controlUrl;
     this.extraPath = null;
     this.savedEvents = {};
     this.savedConfigs = {};
@@ -57,8 +57,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     console.log('params: ' + JSON.stringify(params));
 
     var TestOptions = function() {
-        this.baseUrl = null;
-        this.gdprUrl = null;
+        this.urlOverwrite = null;
+        this.controlUrl = null;
         this.extraPath = null;
         this.timerIntervalInMilliseconds = null;
         this.timerStartInMilliseconds = null;
@@ -71,8 +71,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     };
 
     var testOptions = new TestOptions();
-    testOptions.baseUrl = this.baseUrl;
-    testOptions.gdprUrl = this.gdprUrl;
+    testOptions.urlOverwrite = this.urlOverwrite;
+    testOptions.controlUrl = this.controlUrl;
 
     if ('basePath' in params) {
         this.extraPath = getFirstValue(params, 'basePath');
