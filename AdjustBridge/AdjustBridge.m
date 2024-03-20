@@ -639,6 +639,8 @@
         NSNumber *deleteState = [data objectForKey:@"deleteState"];
         NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
         NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
+        NSNumber *attStatus = [data objectForKey:@"attStatus"];
+        NSString *idfa = [data objectForKey:@"idfa"];
 
         AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
 
@@ -661,6 +663,12 @@
         }
         if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
             testOptions.subsessionIntervalInMilliseconds = subsessionIntervalInMilliseconds;
+        }
+        if ([self isFieldValid:attStatus]) {
+            testOptions.attStatusInt = attStatus;
+        }
+        if ([self isFieldValid:idfa]) {
+            testOptions.idfa = idfa;
         }
         if ([self isFieldValid:teardown]) {
             testOptions.teardown = [teardown boolValue];

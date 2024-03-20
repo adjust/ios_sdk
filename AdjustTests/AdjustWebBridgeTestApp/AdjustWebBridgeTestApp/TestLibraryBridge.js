@@ -64,6 +64,8 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
         this.timerStartInMilliseconds = null;
         this.sessionIntervalInMilliseconds = null;
         this.subsessionIntervalInMilliseconds = null;
+        this.idfa = null;
+        this.attStatus = null;
         this.teardown = null;
         this.deleteState = null;
         this.noBackoffWait = null;
@@ -88,6 +90,14 @@ AdjustCommandExecutor.prototype.testOptions = function(params) {
     }
     if ('subsessionInterval' in params) {
         testOptions.subsessionIntervalInMilliseconds = getFirstValue(params, 'subsessionInterval');
+    }
+    if ('attStatus' in params) {
+        var attStatus = getFirstValue(params, 'attStatus');
+        testOptions.attStatus = attStatus;
+    }
+    if ('idfa' in params) {
+        var idfa = getFirstValue(params, 'idfa');
+        testOptions.idfa = idfa;
     }
     if ('noBackoffWait' in params) {
         var noBackoffWait = getFirstValue(params, 'noBackoffWait');
