@@ -651,11 +651,9 @@
         if ([self isFieldValid:urlOverwrite]) {
             testOptions.urlOverwrite = urlOverwrite;
         }
-
         if ([self isFieldValid:extraPath]) {
             testOptions.extraPath = extraPath;
         }
-        
         if ([self isFieldValid:timerIntervalInMilliseconds]) {
             testOptions.timerIntervalInMilliseconds = timerIntervalInMilliseconds;
         }
