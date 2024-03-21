@@ -213,6 +213,7 @@
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
         NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
         NSNumber *readDeviceInfoOnceEnabled = [data objectForKey:@"readDeviceInfoOnceEnabled"];
+        NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -267,6 +268,9 @@
         }
         if ([self isFieldValid:allowIdfaReading]) {
             [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+        }
+        if ([self isFieldValid:attConsentWaitingSeconds]) {
+            [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
         }
         if ([self isFieldValid:allowSkAdNetworkHandling]) {
             if ([allowSkAdNetworkHandling boolValue] == NO) {

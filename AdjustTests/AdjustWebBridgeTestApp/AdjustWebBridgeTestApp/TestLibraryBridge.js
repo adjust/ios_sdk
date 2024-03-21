@@ -290,6 +290,12 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setUserAgent(userAgent);
     }
 
+    if ('attConsentWaitingSeconds' in params) {
+        var attConsentWaitingSecondsS = getFirstValue(params, 'attConsentWaitingSeconds');
+        var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);
+        adjustConfig.setAttConsentWaitingInterval(attConsentWaitingSeconds);
+    }
+
     if ('attributionCallbackSendAll' in params) {
         console.log('AdjustCommandExecutor.prototype.config attributionCallbackSendAll');
         var extraPath = this.extraPath;
