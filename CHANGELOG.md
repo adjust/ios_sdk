@@ -1,14 +1,11 @@
-### Version 4.38.0 (th March 2024)
+### Version 4.38.0 (22nd March 2024)
 #### Added
-- 
-- 
-
-#### Changed
-- 
--
+- Added Privacy Manifest for the Adjust SDK.
+- Added new domains and corresponding payload restrictions for the Adjust SDK to direct the iOS traffic to:
+    - https://consent.adjust.com - for consented users
+    - https://analytics.adjust.com - for non-consented users
 
 ---
-
 
 ### Version 4.37.2 (28th February 2024)
 #### Changed
