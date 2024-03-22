@@ -94,10 +94,16 @@
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
-+ (void)addIdfaToParameters:(NSMutableDictionary * _Nullable)parameters
-                 withConfig:(ADJConfig * _Nullable)adjConfig
-                     logger:(id<ADJLogger> _Nullable)logger
-              packageParams:(ADJPackageParams * _Nullable)packageParams;
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                   forActivityKind:(ADJActivityKind)activityKind
+                     withAttStatus:(NSString * _Nullable)attStatusString
+                     configuration:(ADJConfig * _Nullable)adjConfig
+                     packageParams:(ADJPackageParams * _Nullable)packageParams;
+
++ (void)removeConsentDataFromParameters:(nonnull NSMutableDictionary *)parameters;
+
++ (void)updateAttStatusInParameters:(nonnull NSMutableDictionary *)parameters;
+
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;

@@ -15,6 +15,8 @@ static id<ADJLogger> internalLogger = nil;
 static double internalSessionInterval    = -1;
 static double intervalSubsessionInterval = -1;
 static double internalRequestTimeout = -1;
+static NSNumber * internalAttStatus = nil;
+static NSString * internalIdfa = nil;
 static NSTimeInterval internalTimerInterval = -1;
 static NSTimeInterval intervalTimerStart = -1;
 static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
@@ -24,10 +26,7 @@ static BOOL internalTesting = NO;
 static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internalAdServicesFrameworkEnabled = YES;
 
-static NSString * internalBaseUrl = nil;
-static NSString * internalGdprUrl = nil;
-static NSString * internalSubscriptionUrl = nil;
-static NSString * internalPurchaseVerificationUrl = nil;
+static NSString * internalUrlOverwrite = nil;
 
 @implementation ADJAdjustFactory
 
@@ -58,6 +57,14 @@ static NSString * internalPurchaseVerificationUrl = nil;
         return 60;                 // 60 second
     }
     return internalRequestTimeout;
+}
+
++ (NSNumber *)attStatus {
+    return internalAttStatus;
+}
+
++ (NSString *)idfa {
+    return internalIdfa;
 }
 
 + (NSTimeInterval)timerInterval {
@@ -110,20 +117,8 @@ static NSString * internalPurchaseVerificationUrl = nil;
     return internalMaxDelayStart;
 }
 
-+ (NSString *)baseUrl {
-    return internalBaseUrl;
-}
-
-+ (NSString *)gdprUrl {
-    return internalGdprUrl;
-}
-
-+ (NSString *)subscriptionUrl {
-    return internalSubscriptionUrl;
-}
-
-+ (NSString *)purchaseVerificationUrl {
-    return internalPurchaseVerificationUrl;
++ (NSString *)urlOverwrite {
+    return internalUrlOverwrite;
 }
 
 + (void)setLogger:(id<ADJLogger>)logger {
@@ -136,6 +131,13 @@ static NSString * internalPurchaseVerificationUrl = nil;
 
 + (void)setSubsessionInterval:(double)subsessionInterval {
     intervalSubsessionInterval = subsessionInterval;
+}
++ (void)setAttStatus:(NSNumber *)attStatus {
+    internalAttStatus = attStatus;
+}
+
++ (void)setIdfa:(NSString *)idfa {
+    internalIdfa = idfa;
 }
 
 + (void)setRequestTimeout:(double)requestTimeout {
@@ -170,20 +172,8 @@ static NSString * internalPurchaseVerificationUrl = nil;
     internalMaxDelayStart = maxDelayStart;
 }
 
-+ (void)setBaseUrl:(NSString *)baseUrl {
-    internalBaseUrl = baseUrl;
-}
-
-+ (void)setGdprUrl:(NSString *)gdprUrl {
-    internalGdprUrl = gdprUrl;
-}
-
-+ (void)setSubscriptionUrl:(NSString *)subscriptionUrl {
-    internalSubscriptionUrl = subscriptionUrl;
-}
-
-+ (void)setPurchaseVerificationUrl:(NSString *)purchaseVerificationUrl {
-    internalPurchaseVerificationUrl = purchaseVerificationUrl;
++ (void)setUrlOverwrite:(NSString *)urlOverwrite {
+    internalUrlOverwrite = urlOverwrite;
 }
 
 + (void)enableSigning {
@@ -240,15 +230,14 @@ static NSString * internalPurchaseVerificationUrl = nil;
     internalTimerInterval = -1;
     intervalTimerStart = -1;
     internalRequestTimeout = -1;
+    internalAttStatus = nil;
+    internalIdfa = nil;
     packageHandlerBackoffStrategy = nil;
     sdkClickHandlerBackoffStrategy = nil;
     installSessionBackoffStrategy = nil;
     internalTesting = NO;
     internalMaxDelayStart = -1;
-    internalBaseUrl = nil;
-    internalGdprUrl = nil;
-    internalSubscriptionUrl = nil;
-    internalPurchaseVerificationUrl = nil;
+    internalUrlOverwrite = nil;
     internalAdServicesFrameworkEnabled = YES;
 }
 @end

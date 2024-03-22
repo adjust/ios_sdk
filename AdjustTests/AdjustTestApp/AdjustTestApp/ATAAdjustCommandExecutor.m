@@ -110,10 +110,7 @@
 
 - (void)testOptions:(NSDictionary *)parameters {
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-    testOptions.baseUrl = baseUrl;
-    testOptions.gdprUrl = gdprUrl;
-    testOptions.subscriptionUrl = subscriptionUrl;
-    testOptions.purchaseVerificationUrl = purchaseVerificationUrl;
+    testOptions.urlOverwrite = urlOverwrite;
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];
@@ -133,6 +130,16 @@
     if ([parameters objectForKey:@"subsessionInterval"]) {
         NSString *subsessionIntervalMilliS = [parameters objectForKey:@"subsessionInterval"][0];
         testOptions.subsessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS];
+    }
+    if ([parameters objectForKey:@"attStatus"]) {
+        NSString *attStatusS = [parameters objectForKey:@"attStatus"][0];
+        NSNumber *attStatusN = [NSNumber numberWithInt:[attStatusS intValue]];
+
+        testOptions.attStatusInt = attStatusN;
+    }
+    if ([parameters objectForKey:@"idfa"]) {
+        NSString *idfa = [parameters objectForKey:@"idfa"][0];
+        testOptions.idfa = idfa;
     }
     if ([parameters objectForKey:@"noBackoffWait"]) {
         NSString *noBackoffWaitStr = [parameters objectForKey:@"noBackoffWait"][0];
@@ -391,6 +398,11 @@
                 initWithTestLibrary:self.testLibrary
                 extraPath:self.extraPath
                 andReturnValue:[shouldOpenDeeplinkS boolValue]];
+    }
+
+    if ([parameters objectForKey:@"attConsentWaitingSeconds"]) {
+        NSString *attConsentWaitingSecondsS = [parameters objectForKey:@"attConsentWaitingSeconds"][0];
+        [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSecondsS intValue]];
     }
 
     [adjustConfig setDelegate:self.adjustDelegate];

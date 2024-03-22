@@ -111,9 +111,9 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     [self.activityHandler finishedTracking:responseData];
 }
 
-- (void)closeFirstPackage:(ADJResponseData *)responseData
-{
+- (void)closeFirstPackage:(ADJResponseData *)responseData {
     responseData.willRetry = YES;
+
     [self.activityHandler finishedTracking:responseData];
 
     self.lastPackageRetriesCount++;
@@ -153,11 +153,12 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     }];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatus {
+- (void)updatePackagesWithAttStatus:(int)attStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
+        [selfI updatePackagesTrackingI:selfI
+                             attStatus:attStatus];
     }];
 }
 
@@ -299,18 +300,20 @@ startsSending:(BOOL)startsSending
     [selfI writePackageQueueS:selfI];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatusI:(ADJPackageHandler *)selfI {
-    int attStatus = [ADJUtil attStatus];
+- (void)updatePackagesTrackingI:(ADJPackageHandler *)selfI
+                      attStatus:(int)attStatus {
     [selfI.logger debug:@"Updating package queue with idfa and att_status: %d", (long)attStatus];
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
-        [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
-                                    withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]
-                                 packageParams:self.activityHandler.packageParams];
+
+        [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
+                                      forActivityKind:activityPackage.activityKind
+                                        withAttStatus:[activityPackage.parameters objectForKey:@"att_status"]
+                                        configuration:selfI.activityHandler.adjustConfig
+                                        packageParams:selfI.activityHandler.packageParams];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }

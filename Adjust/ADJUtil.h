@@ -141,4 +141,9 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
 
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind;
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
+                                 andAttStatus:(nullable NSString *)attStatusString;
+
 @end

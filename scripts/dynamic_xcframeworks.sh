@@ -7,11 +7,11 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic XCFrameworks build - START... $
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 if [[ $BUILD_TARGET_IOS -eq 1 ]] || [[ $BUILD_TARGET_TVOS -eq 1 ]]
-then  
+then
 
   TRAGET_PLATFORM_DESCRIPTION=""
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
-  then  
+  then
     TRAGET_PLATFORM_DESCRIPTION="iOS and tvOS"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
@@ -44,7 +44,7 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
-  then  
+  then
     if [[ $XCODE12PLUS > 0 ]]; then
         xcodebuild -create-xcframework \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
@@ -114,18 +114,21 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Dynamic XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   # VERIFY
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   else
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
     archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_TV}.xcframework" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   fi
 
@@ -168,8 +171,9 @@ then
   rm -rf "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive"
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Dynamic XCFramework for iOS (iMessage) ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for iOS (iMessage) ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IM}.xcframework" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
@@ -214,8 +218,9 @@ then
   rm -rf "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive"
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Archiving (ZIP) Dynamic XCFramework for iOS (WebBridge) ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for iOS (WebBridge) ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 

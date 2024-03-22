@@ -91,11 +91,12 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
                      }];
 }
 
-- (void)updatePackagesWithIdfaAndAttStatus {
+- (void)updatePackagesWithAttStatus:(int)attStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJSdkClickHandler *selfI) {
-        [selfI updatePackagesWithIdfaAndAttStatusI:selfI];
+        [selfI updatePackagesTrackingI:selfI
+                             attStatus:attStatus];
     }];
 }
 
@@ -194,20 +195,21 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, work);
 }
 
-- (void)updatePackagesWithIdfaAndAttStatusI:(ADJSdkClickHandler *)selfI {
-    int attStatus = [ADJUtil attStatus];
+- (void)updatePackagesTrackingI:(ADJSdkClickHandler *)selfI
+                      attStatus:(int)attStatus {
     [selfI.logger debug:@"Updating sdk_click queue with idfa and att_status: %d", attStatus];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters
                                setInt:attStatus
                                forKey:@"att_status"];
-        [ADJPackageBuilder addIdfaToParameters:activityPackage.parameters
-                                    withConfig:self.activityHandler.adjustConfig
-                                        logger:[ADJAdjustFactory logger]
-                                 packageParams:self.activityHandler.packageParams];
+
+        [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
+                                      forActivityKind:activityPackage.activityKind
+                                        withAttStatus:[activityPackage.parameters objectForKey:@"att_status"]
+                                        configuration:selfI.activityHandler.adjustConfig
+                                        packageParams:selfI.activityHandler.packageParams];
     }
 }
-
 
 - (void)responseCallback:(ADJResponseData *)responseData {
     if (responseData.jsonResponse) {

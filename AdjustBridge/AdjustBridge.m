@@ -213,6 +213,7 @@
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
         NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
         NSNumber *readDeviceInfoOnceEnabled = [data objectForKey:@"readDeviceInfoOnceEnabled"];
+        NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
@@ -267,6 +268,9 @@
         }
         if ([self isFieldValid:allowIdfaReading]) {
             [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+        }
+        if ([self isFieldValid:attConsentWaitingSeconds]) {
+            [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
         }
         if ([self isFieldValid:allowSkAdNetworkHandling]) {
             if ([allowSkAdNetworkHandling boolValue] == NO) {
@@ -629,8 +633,7 @@
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *baseUrl = [data objectForKey:@"baseUrl"];
-        NSString *gdprUrl = [data objectForKey:@"gdprUrl"];
+        NSString *urlOverwrite = [data objectForKey:@"urlOverwrite"];
         NSString *extraPath = [data objectForKey:@"extraPath"];
         NSNumber *timerIntervalInMilliseconds = [data objectForKey:@"timerIntervalInMilliseconds"];
         NSNumber *timerStartInMilliseconds = [data objectForKey:@"timerStartInMilliseconds"];
@@ -640,14 +643,13 @@
         NSNumber *deleteState = [data objectForKey:@"deleteState"];
         NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
         NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
+        NSNumber *attStatus = [data objectForKey:@"attStatus"];
+        NSString *idfa = [data objectForKey:@"idfa"];
 
         AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
 
-        if ([self isFieldValid:baseUrl]) {
-            testOptions.baseUrl = baseUrl;
-        }
-        if ([self isFieldValid:gdprUrl]) {
-            testOptions.gdprUrl = gdprUrl;
+        if ([self isFieldValid:urlOverwrite]) {
+            testOptions.urlOverwrite = urlOverwrite;
         }
         if ([self isFieldValid:extraPath]) {
             testOptions.extraPath = extraPath;
@@ -663,6 +665,12 @@
         }
         if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
             testOptions.subsessionIntervalInMilliseconds = subsessionIntervalInMilliseconds;
+        }
+        if ([self isFieldValid:attStatus]) {
+            testOptions.attStatusInt = attStatus;
+        }
+        if ([self isFieldValid:idfa]) {
+            testOptions.idfa = idfa;
         }
         if ([self isFieldValid:teardown]) {
             testOptions.teardown = [teardown boolValue];

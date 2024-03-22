@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name           = "Adjust"
-  s.version        = "4.37.2"
+  s.version        = "4.38.0"
   s.summary        = "This is the iOS SDK of adjust. You can read more about it at http://adjust.com."
   s.homepage       = "https://github.com/adjust/ios_sdk"
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Adjust" => "sdk@adjust.com" }
-  s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.37.2" }
+  s.source         = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v4.38.0" }
   s.ios.deployment_target = '9.0'
   s.tvos.deployment_target = '9.0'
   s.framework      = 'SystemConfiguration'
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |co|
     co.source_files   = 'Adjust/*.{h,m}', 'Adjust/ADJAdditions/*.{h,m}'
+    co.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   end
 
   s.subspec 'Sociomantic' do |sm|

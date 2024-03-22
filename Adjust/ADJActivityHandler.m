@@ -2625,9 +2625,9 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     // update activity packages
     int attStatus = [ADJUtil attStatus];
     if (attStatus != 0) {
-        [selfI.packageHandler updatePackagesWithIdfaAndAttStatus];
-        [selfI.sdkClickHandler updatePackagesWithIdfaAndAttStatus];
-        [selfI.purchaseVerificationHandler updatePackagesWithIdfaAndAttStatus];
+        [selfI.packageHandler updatePackagesWithAttStatus:attStatus];
+        [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus];
+        [selfI.purchaseVerificationHandler updatePackagesWithAttStatus:attStatus];
     }
 
     selfI.internalState.updatePackagesAttData = NO;

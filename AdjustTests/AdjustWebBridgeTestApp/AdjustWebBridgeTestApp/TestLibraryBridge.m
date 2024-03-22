@@ -24,7 +24,7 @@
         return nil;
     }
 
-    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
+    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:urlOverwrite
                                                 andControlUrl:controlUrl
                                            andCommandDelegate:self];
 

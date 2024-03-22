@@ -25,7 +25,7 @@
     [super viewDidLoad];
 
     self.adjustCommandExecutor = [[ATAAdjustCommandExecutor alloc] init];
-    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:baseUrl
+    self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:urlOverwrite
                                                 andControlUrl:controlUrl
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];

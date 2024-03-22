@@ -16,7 +16,9 @@
 - (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
                               extraPath:(NSString *)extraPath;
 
-- (NSString *)getUrlHostStringByPackageKind:(ADJActivityKind)activityKind;
+- (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
+                          isConsentGiven:(BOOL)isConsentGiven
+                       withSendingParams:(NSMutableDictionary *)sendingParams;
 
 - (void)resetAfterSuccess;
 - (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;

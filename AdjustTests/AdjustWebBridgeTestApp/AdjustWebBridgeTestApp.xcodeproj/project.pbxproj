@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07077DC32BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 07077DBE2BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.m */; };
+		07077DC42BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07077DC02BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.m */; };
+		07077DC52BAB2D9200D44AC7 /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07077DC12BAB2D9200D44AC7 /* ADJPurchase.m */; };
 		6F6F75A223279D4D00F47E64 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6F759723279D4D00F47E64 /* AdjustBridge.m */; };
 		6F6F75A323279D4D00F47E64 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6F759A23279D4D00F47E64 /* WebViewJavascriptBridgeBase.m */; };
 		6F6F75A423279D4D00F47E64 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6F759B23279D4D00F47E64 /* WKWebViewJavascriptBridge.m */; };
@@ -81,6 +84,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07077DBD2BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
+		07077DBE2BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
+		07077DBF2BAB2D9200D44AC7 /* ADJPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchase.h; sourceTree = "<group>"; };
+		07077DC02BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
+		07077DC12BAB2D9200D44AC7 /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchase.m; sourceTree = "<group>"; };
+		07077DC22BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
 		6F6F759723279D4D00F47E64 /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		6F6F759823279D4D00F47E64 /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
 		6F6F759A23279D4D00F47E64 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
@@ -355,6 +364,12 @@
 		6F7AF6EC21187CFE00F730B2 /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
+				07077DBF2BAB2D9200D44AC7 /* ADJPurchase.h */,
+				07077DC12BAB2D9200D44AC7 /* ADJPurchase.m */,
+				07077DC22BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.h */,
+				07077DC02BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.m */,
+				07077DBD2BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.h */,
+				07077DBE2BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.m */,
 				9D0B5C1729297B40007009C1 /* ADJSKAdNetwork.h */,
 				9D0B5C1929297B40007009C1 /* ADJSKAdNetwork.m */,
 				9D0B5C1829297B40007009C1 /* ADJSubscription.h */,
@@ -535,6 +550,7 @@
 				6F7AF73221187CFF00F730B2 /* ADJTimerOnce.m in Sources */,
 				6F7AF74521187CFF00F730B2 /* NSString+ADJAdditions.m in Sources */,
 				6F6F75CD2327C08B00F47E64 /* ATLUtil.m in Sources */,
+				07077DC32BAB2D9200D44AC7 /* ADJPurchaseVerificationResult.m in Sources */,
 				6F7AF73821187CFF00F730B2 /* ADJSessionSuccess.m in Sources */,
 				6F7AF74E21187CFF00F730B2 /* ADJPackageBuilder.m in Sources */,
 				6F6F75D22327C08B00F47E64 /* PSWebSocketDriver.m in Sources */,
@@ -544,6 +560,7 @@
 				6F84513125B1B14E0004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				6F7AF73721187CFF00F730B2 /* ADJEvent.m in Sources */,
 				6F7AF74621187CFF00F730B2 /* NSData+ADJAdditions.m in Sources */,
+				07077DC42BAB2D9200D44AC7 /* ADJPurchaseVerificationHandler.m in Sources */,
 				6F6F75D82327C08B00F47E64 /* ATLTestLibrary.m in Sources */,
 				6F6F75D42327C08B00F47E64 /* PSWebSocketNetworkThread.m in Sources */,
 				9DF92D962630EDB0000FC3FC /* ADJPackageParams.m in Sources */,
@@ -564,6 +581,7 @@
 				6F6F75A523279D4D00F47E64 /* WebViewJavascriptBridge_JS.m in Sources */,
 				6F7AF639211878BC00F730B2 /* main.m in Sources */,
 				6F7AF74121187CFF00F730B2 /* Adjust.m in Sources */,
+				07077DC52BAB2D9200D44AC7 /* ADJPurchase.m in Sources */,
 				6F6F75A223279D4D00F47E64 /* AdjustBridge.m in Sources */,
 				6FBEE92324E421C800FEF3F1 /* ADJUrlStrategy.m in Sources */,
 				6F6F75D32327C08B00F47E64 /* PSWebSocketBuffer.m in Sources */,

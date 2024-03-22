@@ -728,17 +728,8 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.extraPath != nil) {
         self.savedPreLaunch.extraPath = testOptions.extraPath;
     }
-    if (testOptions.baseUrl != nil) {
-        [ADJAdjustFactory setBaseUrl:testOptions.baseUrl];
-    }
-    if (testOptions.gdprUrl != nil) {
-        [ADJAdjustFactory setGdprUrl:testOptions.gdprUrl];
-    }
-    if (testOptions.subscriptionUrl != nil) {
-        [ADJAdjustFactory setSubscriptionUrl:testOptions.subscriptionUrl];
-    }
-    if (testOptions.purchaseVerificationUrl != nil) {
-        [ADJAdjustFactory setPurchaseVerificationUrl:testOptions.purchaseVerificationUrl];
+    if (testOptions.urlOverwrite != nil) {
+        [ADJAdjustFactory setUrlOverwrite:testOptions.urlOverwrite];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;
@@ -755,6 +746,12 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.subsessionIntervalInMilliseconds != nil) {
         NSTimeInterval subsessionIntervalInSeconds = [testOptions.subsessionIntervalInMilliseconds intValue] / 1000.0;
         [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
+    }
+    if (testOptions.attStatusInt != nil) {
+        [ADJAdjustFactory setAttStatus:testOptions.attStatusInt];
+    }
+    if (testOptions.idfa != nil) {
+        [ADJAdjustFactory setIdfa:testOptions.idfa];
     }
     if (testOptions.noBackoffWait) {
         [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];

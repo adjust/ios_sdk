@@ -35,7 +35,7 @@ static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios4.37.2";
+static NSString * const kClientSdk                  = @"ios4.38.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1033,6 +1033,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)idfa {
+    if (ADJAdjustFactory.idfa != nil) {
+        return ADJAdjustFactory.idfa;
+    }
+
 #if ADJUST_NO_IDFA
     return @"";
 #else
@@ -1183,6 +1187,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (int)attStatus {
+    if (ADJAdjustFactory.attStatus != nil) {
+        return ADJAdjustFactory.attStatus.intValue;
+    }
+
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass != nil) {
         NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
@@ -1436,6 +1444,38 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                                                           (CFDictionaryRef)dictionary,
                                                                           kCFPropertyListMutableContainersAndLeaves));
     return deepCopy;
+}
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        if (activityKind == ADJActivityKindGdpr ||
+            activityKind == ADJActivityKindSubscription ||
+            activityKind == ADJActivityKindPurchaseVerification) {
+            return NO;
+        }
+
+        int attStatus = [ADJUtil attStatus];
+        return attStatus == 3;
+    } else {
+        // if iOS lower than 14 can assume consent
+        return YES;
+    }
+}
+
++ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
+                                 andAttStatus:(nullable NSString *)attStatusString {
+    if (@available(iOS 14.0, tvOS 14.0, *)) {
+        if (activityKind == ADJActivityKindGdpr ||
+            activityKind == ADJActivityKindSubscription ||
+            activityKind == ADJActivityKindPurchaseVerification) {
+            return NO;
+        }
+
+        return [@"3" isEqualToString:attStatusString];
+    } else {
+        // if iOS lower than 14 can assume consent
+        return YES;
+    }
 }
 
 @end

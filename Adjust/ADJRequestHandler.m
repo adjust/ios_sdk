@@ -70,30 +70,39 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters
 {
-    [self signWithSigV2Plugin:activityPackage];
-    NSDictionary *parameters = [[NSDictionary alloc]
-                                initWithDictionary:activityPackage.parameters
-                                copyItems:YES];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc]
+                                       initWithDictionary:activityPackage.parameters
+                                       copyItems:YES];
     NSString *path = [activityPackage.path copy];
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParameters
-                                      copyItems:YES];
 
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters activityKind:activityKind];
+    NSString *urlHostString = [self urlWithParams:parameters
+                                    sendingParams:sendingParameters
+                                     responseData:responseData];
 
-    NSString *urlHostString = [self.urlStrategy getUrlHostStringByPackageKind:
-                               activityPackage.activityKind];
-    NSMutableURLRequest *urlRequest =
-        [self requestForPostPackage:path
-                          clientSdk:clientSdk
-                         parameters:parameters
-                      urlHostString:urlHostString
-                  sendingParameters:sendingParameters];
+    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc]
+                                          initWithDictionary:parameters];
+    [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
+
+    NSString * appSecret = [parametersCopy objectForKey:@"app_secret"];
+    [parametersCopy removeObjectForKey:@"app_secret"];
+
+    [self signWithSigV2PluginWithParams:parametersCopy
+                           activityKind:activityKind
+                              clientSdk:clientSdk];
+    NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
+                                                       activityKind:activityKind
+                                                          appSecret:appSecret];
+
+    NSMutableURLRequest *urlRequest = [self requestForPostPackage:path
+                                                        clientSdk:clientSdk
+                                                       parameters:parameters
+                                                    urlHostString:urlHostString
+                                                sendingParameters:responseData.sendingParameters];
 
     [self sendRequest:urlRequest
   authorizationHeader:authorizationHeader
@@ -103,45 +112,83 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
-    [self signWithSigV2Plugin:activityPackage];
-    NSDictionary *parameters = [[NSDictionary alloc]
-                                initWithDictionary:activityPackage.parameters
-                                copyItems:YES];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc]
+                                       initWithDictionary:activityPackage.parameters
+                                       copyItems:YES];
     NSString *path = [activityPackage.path copy];
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
-    responseData.sendingParameters = [[NSDictionary alloc]
-                                      initWithDictionary:sendingParameters
-                                      copyItems:YES];
 
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parameters
-                                                       activityKind:activityKind];
+    NSString *urlHostString = [self urlWithParams:parameters
+                                    sendingParams:sendingParameters
+                                     responseData:responseData];
 
-    NSString *urlHostString = [self.urlStrategy
-                               getUrlHostStringByPackageKind:activityPackage.activityKind];
+    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc]
+                                          initWithDictionary:parameters];
+    [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
 
-    NSMutableURLRequest *urlRequest =
-        [self requestForGetPackage:path
-                         clientSdk:clientSdk
-                        parameters:parameters
-                     urlHostString:urlHostString
-                 sendingParameters:sendingParameters];
+    NSString *appSecret = [parametersCopy objectForKey:@"app_secret"];
+    [parametersCopy removeObjectForKey:@"app_secret"];
+
+    [self signWithSigV2PluginWithParams:parametersCopy
+                           activityKind:activityKind
+                              clientSdk:clientSdk];
+    NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
+                                                       activityKind:activityKind
+                                                          appSecret:appSecret];
+
+    NSMutableURLRequest *urlRequest = [self requestForGetPackage:path
+                                                       clientSdk:clientSdk
+                                                      parameters:parameters
+                                                   urlHostString:urlHostString
+                                               sendingParameters:responseData.sendingParameters];
 
     [self sendRequest:urlRequest
-     authorizationHeader:authorizationHeader
+  authorizationHeader:authorizationHeader
          responseData:responseData
        methodTypeInfo:ADJMethodGET];
 }
 
 #pragma mark Internal methods
+- (nonnull NSString *)urlWithParams:(nonnull NSMutableDictionary *)params
+                      sendingParams:(NSDictionary *)sendingParams
+                       responseData:(nonnull ADJResponseData *)responseData {
+    NSMutableDictionary * sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
+
+    NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
+    BOOL wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                                                   andAttStatus:attStatusString];
+    BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind];
+    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
+
+    if (!doesConsentDataExist) {
+        [ADJPackageBuilder removeConsentDataFromParameters:params];
+    }
+
+    // if att_status was part of the payload at all
+    // make sure to have up to date value before sending
+    if (attStatusString != nil) {
+        [ADJPackageBuilder updateAttStatusInParameters:params];
+    }
+
+    NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
+                                                     isConsentGiven:isConsentWhenSending
+                                                  withSendingParams:sendingParamsCopy];
+
+    responseData.sendingParameters = [[NSDictionary alloc]
+                                      initWithDictionary:sendingParamsCopy
+                                      copyItems:YES];
+
+    return urlHostString;
+}
+
 - (void)sendRequest:(NSMutableURLRequest *)request
 authorizationHeader:(NSString *)authorizationHeader
        responseData:(ADJResponseData *)responseData
      methodTypeInfo:(NSString *)methodTypeInfo
-
 {
     if (authorizationHeader != nil) {
         [ADJAdjustFactory.logger debug:@"Authorization header content: %@", authorizationHeader];
@@ -432,6 +479,7 @@ authorizationHeader:(NSString *)authorizationHeader
 #pragma mark - Authorization Header
 - (NSString *)buildAuthorizationHeader:(NSDictionary *)parameters
                           activityKind:(ADJActivityKind)activityKind
+                             appSecret:(NSString *)appSecret
 {
     NSString *adjSigningId = [parameters objectForKey:@"adj_signing_id"];
     NSString *signature = [parameters objectForKey:@"signature"];
@@ -457,7 +505,6 @@ authorizationHeader:(NSString *)authorizationHeader
         return authorizationHeaderWithSecretId;
     }
 
-    NSString * appSecret = [parameters objectForKey:@"app_secret"];
     return [self buildAuthorizationHeaderV1:appSecret
                                       secretId:secretId
                                     parameters:parameters
@@ -648,7 +695,10 @@ authorizationHeader:(NSString *)authorizationHeader
     return jsonDict;
 }
 
-- (void)signWithSigV2Plugin:(ADJActivityPackage *)activityPackage {
+- (void)signWithSigV2PluginWithParams:(NSMutableDictionary *)params
+                         activityKind:(ADJActivityKind)activityKind
+                            clientSdk:(NSString *)clientSdk
+{
     Class signerClass = NSClassFromString(@"ADJSigner");
     if (signerClass == nil) {
         return;
@@ -658,21 +708,18 @@ authorizationHeader:(NSString *)authorizationHeader
         return;
     }
 
-    [activityPackage.parameters removeObjectForKey:@"app_secret"];
-    [activityPackage.parameters removeObjectForKey:@"secret_id"];
-    NSMutableDictionary *parameters = activityPackage.parameters;
-    const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityPackage.activityKind] UTF8String];
-    const char *sdkVersionChar = [activityPackage.clientSdk UTF8String];
+    const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityKind] UTF8String];
+    const char *sdkVersionChar = [clientSdk UTF8String];
 
     // Stack allocated strings to ensure their lifetime stays until the next iteration
-    static char activityKind[64], sdkVersion[64];
-    strncpy(activityKind, activityKindChar, strlen(activityKindChar) + 1);
+    static char packageActivityKind[64], sdkVersion[64];
+    strncpy(packageActivityKind, activityKindChar, strlen(activityKindChar) + 1);
     strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
 
     // NSInvocation setArgument requires lvalue references with exact matching types to the executed function signature.
     // With this usage we ensure that the lifetime of the object remains until the next iteration, as it points to the
     // stack allocated string where we copied the buffer.
-    const char *lvalActivityKind = activityKind;
+    const char *lvalActivityKind = packageActivityKind;
     const char *lvalSdkVersion = sdkVersion;
 
     /*
@@ -686,7 +733,7 @@ authorizationHeader:(NSString *)authorizationHeader
     [signInvocation setSelector:signSEL];
     [signInvocation setTarget:signerClass];
 
-    [signInvocation setArgument:&parameters atIndex:2];
+    [signInvocation setArgument:&params atIndex:2];
     [signInvocation setArgument:&lvalActivityKind atIndex:3];
     [signInvocation setArgument:&lvalSdkVersion atIndex:4];
 
@@ -710,7 +757,7 @@ authorizationHeader:(NSString *)authorizationHeader
     }
 
     NSString *signerVersionString = (NSString *)signerVersion;
-    [ADJPackageBuilder parameters:parameters
+    [ADJPackageBuilder parameters:params
                            setString:signerVersionString
                            forKey:@"native_version"];
 }
