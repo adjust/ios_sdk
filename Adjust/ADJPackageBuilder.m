@@ -1350,6 +1350,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
     // idfa
     if (!adjConfig.allowIdfaReading) {
+        [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }
     if (adjConfig.coppaCompliantEnabled) {
