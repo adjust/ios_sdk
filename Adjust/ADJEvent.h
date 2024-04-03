@@ -54,11 +54,6 @@
 @property (nonatomic, readonly, nonnull) NSDictionary *callbackParameters;
 
 /**
- * @brief Is the given receipt empty.
- */
-@property (nonatomic, assign, readonly) BOOL emptyReceipt;
-
-/**
  * @brief IAP product ID.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *productId;

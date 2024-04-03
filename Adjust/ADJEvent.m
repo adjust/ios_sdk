@@ -187,9 +187,6 @@
         return;
     }
 
-    if ([ADJUtil isNull:receipt] || [receipt length] == 0) {
-        _emptyReceipt = YES;
-    }
     _receipt = receipt;
     _transactionId = transactionId;
 }
@@ -213,7 +210,6 @@
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
         copy->_receipt = [self.receipt copyWithZone:zone];
-        copy->_emptyReceipt = self.emptyReceipt;
         copy->_productId = [self.productId copyWithZone:zone];
     }
 
