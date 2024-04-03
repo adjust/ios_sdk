@@ -230,14 +230,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)sendFirstPackages;
 
 /**
- * @brief Tell adjust to send the request to Google and check if the installation
- *        belongs to Google AdWords campaign.
- *
- * @note Deprecated method, should not be used.
- */
-+ (void)sendAdWordsRequest;
-
-/**
  * @brief Add default callback parameter key-value pair which is going to be sent with each tracked session and event.
  *
  * @param key Default callback parameter key.

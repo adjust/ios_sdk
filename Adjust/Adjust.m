@@ -155,10 +155,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)sendAdWordsRequest {
-    [[ADJAdjustFactory logger] warn:@"Send AdWords Request functionality removed"];
-}
-
 + (NSString *)idfa {
     @synchronized (self) {
         return [[Adjust getInstance] idfa];
