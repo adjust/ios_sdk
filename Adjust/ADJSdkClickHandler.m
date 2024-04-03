@@ -38,7 +38,6 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
@@ -53,7 +52,6 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
     self.requestHandler = [[ADJRequestHandler alloc]
                            initWithResponseCallback:self
                            urlStrategy:urlStrategy
-                           userAgent:userAgent
                            requestTimeout:[ADJAdjustFactory requestTimeout]];
 
     [ADJUtil launchInQueue:self.internalQueue

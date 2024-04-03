@@ -16,7 +16,6 @@
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy;
 
 - (void)checkSessionResponse:(ADJSessionResponseData *)sessionResponseData;

@@ -18,7 +18,6 @@
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
-                     userAgent:(NSString *)userAgent
                 requestTimeout:(double)requestTimeout;
 
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage

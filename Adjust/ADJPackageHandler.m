@@ -43,7 +43,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
@@ -62,7 +61,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         [selfI initI:selfI
      activityHandler:activityHandler
        startsSending:startsSending
-           userAgent:userAgent
          urlStrategy:urlStrategy];
     }];
 
@@ -209,7 +207,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 - (void)initI:(ADJPackageHandler *)selfI
 activityHandler:(id<ADJActivityHandler>)activityHandler
 startsSending:(BOOL)startsSending
-    userAgent:(NSString *)userAgent
   urlStrategy:(ADJUrlStrategy *)urlStrategy {
 
     selfI.activityHandler = activityHandler;
@@ -217,7 +214,6 @@ startsSending:(BOOL)startsSending
     selfI.requestHandler = [[ADJRequestHandler alloc]
                             initWithResponseCallback:self
                             urlStrategy:urlStrategy
-                            userAgent:userAgent
                             requestTimeout:[ADJAdjustFactory requestTimeout]];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);

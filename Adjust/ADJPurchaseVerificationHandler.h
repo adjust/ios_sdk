@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy;
 - (void)pauseSending;
 - (void)resumeSending;

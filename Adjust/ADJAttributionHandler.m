@@ -33,7 +33,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 @implementation ADJAttributionHandler
 - (id)initWithActivityHandler:(id<ADJActivityHandler>) activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy
 {
     self = [super init];
@@ -43,7 +42,6 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.requestHandler = [[ADJRequestHandler alloc]
                                 initWithResponseCallback:self
                                 urlStrategy:urlStrategy
-                                userAgent:userAgent
                                 requestTimeout:[ADJAdjustFactory requestTimeout]];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;

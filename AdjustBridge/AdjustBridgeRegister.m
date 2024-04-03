@@ -361,7 +361,6 @@ static NSString * fbAppIdStatic = nil;
             this.linkMeEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
-            this.userAgent = null;
             this.needsCost = null;
             this.allowAdServicesInfoReading = null;
             this.allowIdfaReading = null;
@@ -450,9 +449,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setDelayStart = function(delayStartInSeconds) {
             this.delayStart = delayStartInSeconds;
-        };
-        AdjustConfig.prototype.setUserAgent = function(userAgent) {
-            this.userAgent = userAgent;
         };
         AdjustConfig.prototype.setNeedsCost = function(needsCost) {
             this.needsCost = needsCost;

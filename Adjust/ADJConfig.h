@@ -184,11 +184,6 @@
 @property (nonatomic, assign) NSUInteger attConsentWaitingInterval;
 
 /**
- * @brief User agent for the requests.
- */
-@property (nonatomic, copy, nullable) NSString *userAgent;
-
-/**
  * @brief Set if cost data is needed in attribution response.
  */
 @property (nonatomic, assign) BOOL needsCost;
