@@ -28,7 +28,6 @@
 #import <AdSupport/ASIdentifierManager.h>
 #endif
 
-static NSString *userAgent = nil;
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
@@ -120,7 +119,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (void)updateUrlSessionConfiguration:(ADJConfig *)config {
-    userAgent = config.userAgent;
+    // TODO: do we need this method?
 }
 
 + (NSString *)clientSdk {

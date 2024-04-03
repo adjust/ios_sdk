@@ -21,7 +21,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 @interface ADJRequestHandler()
 
 @property (nonatomic, strong) ADJUrlStrategy *urlStrategy;
-@property (nonatomic, copy) NSString *userAgent;
 @property (nonatomic, assign) double requestTimeout;
 @property (nonatomic, weak) id<ADJResponseCallback> responseCallback;
 
@@ -39,7 +38,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
-                     userAgent:(NSString *)userAgent
                 requestTimeout:(double)requestTimeout
 {
     self = [super init];
@@ -48,7 +46,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         return nil;
     }
     self.urlStrategy = urlStrategy;
-    self.userAgent = userAgent;
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
 
@@ -193,9 +190,6 @@ authorizationHeader:(NSString *)authorizationHeader
     if (authorizationHeader != nil) {
         [ADJAdjustFactory.logger debug:@"Authorization header content: %@", authorizationHeader];
         [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
-    }
-    if (self.userAgent != nil) {
-        [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
     }
 
     Class NSURLSessionClass = NSClassFromString(@"NSURLSession");

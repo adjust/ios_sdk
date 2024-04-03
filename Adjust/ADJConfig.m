@@ -205,7 +205,6 @@
         copy.delayStart = self.delayStart;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
-        copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
         copy->_secretId = [self.secretId copyWithZone:zone];

@@ -333,11 +333,6 @@
         }
     }
 
-    if ([parameters objectForKey:@"userAgent"]) {
-        NSString *userAgent = [parameters objectForKey:@"userAgent"][0];
-        [adjustConfig setUserAgent:userAgent];
-    }
-
     if ([parameters objectForKey:@"externalDeviceId"]) {
         NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
         [adjustConfig setExternalDeviceId:externalDeviceId];

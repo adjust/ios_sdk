@@ -38,7 +38,6 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
-                    userAgent:(NSString *)userAgent
                   urlStrategy:(ADJUrlStrategy *)urlStrategy {
     self = [super init];
     if (self == nil) {
@@ -51,7 +50,6 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 
     self.requestHandler = [[ADJRequestHandler alloc] initWithResponseCallback:self
                                                                   urlStrategy:urlStrategy
-                                                                    userAgent:userAgent
                                                                requestTimeout:[ADJAdjustFactory requestTimeout]];
 
     [ADJUtil launchInQueue:self.internalQueue

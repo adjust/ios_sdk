@@ -279,11 +279,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setSendInBackground(sendInBackground);
     }
 
-    if ('userAgent' in params) {
-        var userAgent = getFirstValue(params, 'userAgent');
-        adjustConfig.setUserAgent(userAgent);
-    }
-
     if ('attConsentWaitingSeconds' in params) {
         var attConsentWaitingSecondsS = getFirstValue(params, 'attConsentWaitingSeconds');
         var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);

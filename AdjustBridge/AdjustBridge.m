@@ -191,7 +191,6 @@
         NSNumber *linkMeEnabled = [data objectForKey:@"linkMeEnabled"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
-        NSString *userAgent = [data objectForKey:@"userAgent"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
@@ -252,9 +251,6 @@
         }
         if ([self isFieldValid:delayStart]) {
             [adjustConfig setDelayStart:[delayStart doubleValue]];
-        }
-        if ([self isFieldValid:userAgent]) {
-            [adjustConfig setUserAgent:userAgent];
         }
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];
