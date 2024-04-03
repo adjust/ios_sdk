@@ -39,6 +39,7 @@
     self.costType = [jsonDict objectForKey:@"cost_type"];
     self.costAmount = [jsonDict objectForKey:@"cost_amount"];
     self.costCurrency = [jsonDict objectForKey:@"cost_currency"];
+    self.state = [jsonDict objectForKey:@"state"];
 
     return self;
 }
@@ -78,6 +79,10 @@
         return NO;
     }
     if (![NSString adjIsEqual:self.costCurrency toString:attribution.costCurrency]) {
+        return NO;
+    }
+    if (![NSString adjIsEqual:self.state toString:attribution.state]) {
+        // TODO: should state be part of the attribution comparison?
         return NO;
     }
 
@@ -120,15 +125,18 @@
     if (self.costCurrency != nil) {
         [responseDataDic setObject:self.costCurrency forKey:@"costCurrency"];
     }
+    if (self.state != nil) {
+        [responseDataDic setObject:self.state forKey:@"state"];
+    }
 
     return responseDataDic;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@ cl:%@ adid:%@ ct:%@ ca:%@ cc:%@",
+    return [NSString stringWithFormat:@"tt:%@ tn:%@ net:%@ cam:%@ adg:%@ cre:%@ cl:%@ adid:%@ ct:%@ ca:%@ cc:%@ st:%@",
             self.trackerToken, self.trackerName, self.network, self.campaign,
             self.adgroup, self.creative, self.clickLabel, self.adid, self.costType,
-            self.costAmount, self.costCurrency];
+            self.costAmount, self.costCurrency, self.state];
 }
 
 
@@ -166,6 +174,7 @@
         copy.costType = [self.costType copyWithZone:zone];
         copy.costAmount = [self.costAmount copyWithZone:zone];
         copy.costCurrency = [self.costCurrency copyWithZone:zone];
+        copy.state = [self.state copyWithZone:zone];
     }
 
     return copy;
@@ -191,6 +200,7 @@
     self.costType = [decoder decodeObjectForKey:@"costType"];
     self.costAmount = [decoder decodeObjectForKey:@"costAmount"];
     self.costCurrency = [decoder decodeObjectForKey:@"costCurrency"];
+    self.state = [decoder decodeObjectForKey:@"state"];
 
     return self;
 }
@@ -207,6 +217,7 @@
     [encoder encodeObject:self.costType forKey:@"costType"];
     [encoder encodeObject:self.costAmount forKey:@"costAmount"];
     [encoder encodeObject:self.costCurrency forKey:@"costCurrency"];
+    [encoder encodeObject:self.state forKey:@"state"];
 }
 
 @end
