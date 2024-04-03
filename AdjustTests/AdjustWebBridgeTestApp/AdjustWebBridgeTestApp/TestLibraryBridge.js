@@ -564,16 +564,6 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
     Adjust.appWillOpenUrl(deeplink);
 };
 
-AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
-    var source = getFirstValue(params, 'adRevenueSource');
-    var payload = getFirstValue(params, 'adRevenueJsonString');
-    if (payload === null) {
-        Adjust.trackAdRevenue(source, '');
-    } else {
-        Adjust.trackAdRevenue(source, payload);
-    }
-};
-
 AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
     Adjust.disableThirdPartySharing();
 };

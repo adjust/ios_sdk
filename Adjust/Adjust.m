@@ -227,12 +227,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload {
-    @synchronized (self) {
-        [[Adjust getInstance] trackAdRevenue:[source copy] payload:[payload copy]];
-    }
-}
-
 + (void)disableThirdPartySharing {
     @synchronized (self) {
         [[Adjust getInstance] disableThirdPartySharing];
@@ -571,13 +565,6 @@ static dispatch_once_t onceToken = 0;
             [self.activityHandler setGdprForgetMe];
         }
     }
-}
-
-- (void)trackAdRevenue:(NSString *)source payload:(NSData *)payload {
-    if (![self checkActivityHandler]) {
-        return;
-    }
-    [self.activityHandler trackAdRevenue:source payload:payload];
 }
 
 - (void)disableThirdPartySharing {
