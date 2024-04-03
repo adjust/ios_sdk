@@ -182,23 +182,6 @@
     return self.eventToken != nil;
 }
 
-- (void)setReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if (![self checkReceipt:receipt transactionId:transactionId]) {
-        return;
-    }
-
-    _receipt = receipt;
-    _transactionId = transactionId;
-}
-
-- (BOOL)checkReceipt:(NSData *)receipt transactionId:(NSString *)transactionId {
-    if ([ADJUtil isNotNull:receipt] && [ADJUtil isNull:transactionId]) {
-        [self.logger error:@"Missing transactionId"];
-        return NO;
-    }
-    return YES;
-}
-
 - (id)copyWithZone:(NSZone *)zone {
     ADJEvent *copy = [[[self class] allocWithZone:zone] init];
 

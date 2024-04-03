@@ -140,15 +140,4 @@
  */
 - (BOOL)isValid;
 
-/**
- * @brief Validate a in-app-purchase receipt.
- *
- * @param receipt The receipt to validate.
- * @param transactionId The identifier used to validate the receipt and to avoid duplicate revenue events.
- *
- * @note This method is obsolete and should not be used.
- *       For more information, visit: https://github.com/adjust/ios_purchase_sdk
- */
-- (void)setReceipt:(nonnull NSData *)receipt transactionId:(nonnull NSString *)transactionId;
-
 @end
