@@ -22,18 +22,6 @@
 NSString * const ADJEnvironmentSandbox = @"sandbox";
 NSString * const ADJEnvironmentProduction = @"production";
 
-NSString * const ADJAdRevenueSourceAppLovinMAX = @"applovin_max_sdk";
-NSString * const ADJAdRevenueSourceMopub = @"mopub";
-NSString * const ADJAdRevenueSourceAdMob = @"admob_sdk";
-NSString * const ADJAdRevenueSourceIronSource = @"ironsource_sdk";
-NSString * const ADJAdRevenueSourceAdMost = @"admost_sdk";
-NSString * const ADJAdRevenueSourceUnity = @"unity_sdk";
-NSString * const ADJAdRevenueSourceHeliumChartboost = @"helium_chartboost_sdk";
-NSString * const ADJAdRevenueSourcePublisher = @"publisher_sdk";
-NSString * const ADJAdRevenueSourceTopOn = @"topon_sdk";
-NSString * const ADJAdRevenueSourceADX = @"adx_sdk";
-NSString * const ADJAdRevenueSourceTradplus = @"tradplus_sdk";
-
 NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
 NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
 NSString * const ADJUrlStrategyCn = @"UrlStrategyCn";

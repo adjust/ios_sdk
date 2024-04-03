@@ -45,21 +45,6 @@ extern NSString * __nonnull const ADJEnvironmentSandbox;
 extern NSString * __nonnull const ADJEnvironmentProduction;
 
 /**
- * Constants for supported ad revenue sources.
- */
-extern NSString * __nonnull const ADJAdRevenueSourceAppLovinMAX;
-extern NSString * __nonnull const ADJAdRevenueSourceMopub;
-extern NSString * __nonnull const ADJAdRevenueSourceAdMob;
-extern NSString * __nonnull const ADJAdRevenueSourceIronSource;
-extern NSString * __nonnull const ADJAdRevenueSourceAdMost;
-extern NSString * __nonnull const ADJAdRevenueSourceUnity;
-extern NSString * __nonnull const ADJAdRevenueSourceHeliumChartboost;
-extern NSString * __nonnull const ADJAdRevenueSourcePublisher;
-extern NSString * __nonnull const ADJAdRevenueSourceTopOn;
-extern NSString * __nonnull const ADJAdRevenueSourceADX;
-extern NSString * __nonnull const ADJAdRevenueSourceTradplus;
-
-/**
  * Constants for country app's URL strategies.
  */
 extern NSString * __nonnull const ADJUrlStrategyIndia;
