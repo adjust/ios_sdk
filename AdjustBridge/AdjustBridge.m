@@ -192,7 +192,6 @@
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSString *userAgent = [data objectForKey:@"userAgent"];
-        NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
@@ -256,9 +255,6 @@
         }
         if ([self isFieldValid:userAgent]) {
             [adjustConfig setUserAgent:userAgent];
-        }
-        if ([self isFieldValid:isDeviceKnown]) {
-            [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
         }
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];

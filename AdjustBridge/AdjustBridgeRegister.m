@@ -367,7 +367,6 @@ static NSString * fbAppIdStatic = nil;
             this.sendInBackground = null;
             this.delayStart = null;
             this.userAgent = null;
-            this.isDeviceKnown = null;
             this.needsCost = null;
             this.allowAdServicesInfoReading = null;
             this.allowIdfaReading = null;
@@ -459,9 +458,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setUserAgent = function(userAgent) {
             this.userAgent = userAgent;
-        };
-        AdjustConfig.prototype.setIsDeviceKnown = function(isDeviceKnown) {
-            this.isDeviceKnown = isDeviceKnown;
         };
         AdjustConfig.prototype.setNeedsCost = function(needsCost) {
             this.needsCost = needsCost;

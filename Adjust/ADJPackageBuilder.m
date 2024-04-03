@@ -352,10 +352,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -419,10 +415,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
-
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
 
     if (self.activityState != nil) {
@@ -499,10 +491,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -565,10 +553,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -628,10 +612,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
-
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
     
     if (!isInDelay) {
@@ -708,10 +688,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -771,9 +747,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
     if (self.adjustConfig.needsCost) {
         [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
     }
@@ -821,10 +794,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
-
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
 
     if (self.activityState != nil) {
@@ -882,10 +851,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-    
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -959,10 +924,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                 setDictionaryJson:thirdPartySharing.partnerSharingSettings
                            forKey:@"partner_sharing_settings"];
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -1030,10 +991,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
-    }
-
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
@@ -1083,10 +1040,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
-
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
 
     if (self.activityState != nil) {
@@ -1162,10 +1115,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     } else {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
-    }
-
-    if (self.adjustConfig.isDeviceKnown) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isDeviceKnown forKey:@"device_known"];
     }
 
     if (self.activityState != nil) {

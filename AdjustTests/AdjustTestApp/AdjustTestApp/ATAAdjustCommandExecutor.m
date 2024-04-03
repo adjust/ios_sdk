@@ -297,11 +297,6 @@
         double delayStart = [delayStartS doubleValue];
         [adjustConfig setDelayStart:delayStart];
     }
-
-    if ([parameters objectForKey:@"deviceKnown"]) {
-        NSString *deviceKnownS = [parameters objectForKey:@"deviceKnown"][0];
-        [adjustConfig setIsDeviceKnown:[deviceKnownS boolValue]];
-    }
     
     if ([parameters objectForKey:@"needsCost"]) {
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];

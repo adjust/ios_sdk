@@ -207,7 +207,6 @@
         copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
         copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
-        copy.isDeviceKnown = self.isDeviceKnown;
         copy.needsCost = self.needsCost;
         copy->_secretId = [self.secretId copyWithZone:zone];
         copy->_appSecret = [self.appSecret copyWithZone:zone];
