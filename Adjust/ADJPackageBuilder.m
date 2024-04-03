@@ -408,21 +408,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
-
-    // FYI: long time ago deprecated way of purchase verification, to be removed
-    // if (event.emptyReceipt) {
-    //     NSString *emptyReceipt = @"empty";
-    //     [ADJPackageBuilder parameters:parameters setString:emptyReceipt forKey:@"receipt"];
-    //     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
-    // } else if (event.receipt != nil) {
-    //     NSString *receiptBase64 = [event.receipt adjEncodeBase64];
-    //     [ADJPackageBuilder parameters:parameters setString:receiptBase64 forKey:@"receipt"];
-    //     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
-    // }
-    // FYI: event.transactionId being historically used for deduplication + for IAP verification
-    // if (event.transactionId) {
-    //     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"deduplication_id"];
-    // }
     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"deduplication_id"];
     [ADJPackageBuilder parameters:parameters setString:event.productId forKey:@"product_id"];
