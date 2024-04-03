@@ -69,6 +69,11 @@
 @property (nonatomic, copy, nullable) NSString *costCurrency;
 
 /**
+ * @brief State (installed / reinstalled).
+ */
+@property (nonatomic, copy, nullable) NSString *state;
+
+/**
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.
