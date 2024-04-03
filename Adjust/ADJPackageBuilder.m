@@ -102,18 +102,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return infoPackage;
 }
 
-- (ADJActivityPackage *)buildAdRevenuePackage:(NSString *)source payload:(NSData *)payload {
-    NSMutableDictionary *parameters = [self getAdRevenueParameters:source payload:payload];
-    ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
-    adRevenuePackage.path = @"/ad_revenue";
-    adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
-    adRevenuePackage.suffix = @"";
-    adRevenuePackage.parameters = parameters;
-    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
-
-    return adRevenuePackage;
-}
-
 - (ADJActivityPackage *)buildAdRevenuePackage:(ADJAdRevenue *)adRevenue isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self getAdRevenueParameters:adRevenue isInDelay:isInDelay];
     ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
@@ -513,61 +501,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindInfo];
-    [self addIdfvIfPossibleToParameters:parameters];
-    [self injectFeatureFlagsWithParameters:parameters];
-
-    return parameters;
-}
-
-- (NSMutableDictionary *)getAdRevenueParameters:(NSString *)source payload:(NSData *)payload {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
-    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.bundleIdentifier forKey:@"bundle_id"];
-    [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
-    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
-    [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
-    [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
-    [ADJPackageBuilder parameters:parameters setData:payload forKey:@"payload"];
-
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
-    } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
-                               forKey:@"tracking_enabled"];
-    }
-
-    if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-        [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
-        [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
-        [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"primary_dedupe_token"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
-        }
-    }
-
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
 

@@ -275,14 +275,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)gdprForgetMe;
 
 /**
- * @brief Track ad revenue for given source.
- *
- * @param source Ad revenue source.
- * @param payload Ad revenue payload.
- */
-+ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
-
-/**
  * @brief Give right user to disable sharing data to any third-party.
  */
 + (void)disableThirdPartySharing;
@@ -438,8 +430,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)gdprForgetMe;
-
-- (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
 - (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 

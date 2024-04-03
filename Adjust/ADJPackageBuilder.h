@@ -48,9 +48,6 @@
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
-- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(NSString * _Nullable)source
-                                                payload:(NSData * _Nullable)payload;
-
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource;
 
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource

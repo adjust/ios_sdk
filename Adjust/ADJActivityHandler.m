@@ -580,14 +580,6 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                      }];
 }
 
-- (void)trackAdRevenue:(NSString *)source payload:(NSData *)payload {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI adRevenueI:selfI source:source payload:payload];
-                     }];
-}
-
 - (void)trackSubscription:(ADJSubscription *)subscription {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -1214,39 +1206,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     [selfI writeActivityStateI:selfI];
-}
-
-- (void)adRevenueI:(ADJActivityHandler *)selfI
-            source:(NSString *)source
-           payload:(NSData *)payload {
-    if (!selfI.activityState) {
-        return;
-    }
-    if (![selfI isEnabledI:selfI]) {
-        return;
-    }
-    if (selfI.activityState.isGdprForgotten) {
-        return;
-    }
-
-    double now = [NSDate.date timeIntervalSince1970];
-
-    // Create and submit ad revenue package.
-    ADJPackageBuilder *adRevenueBuilder = [[ADJPackageBuilder alloc]
-                                           initWithPackageParams:selfI.packageParams
-                                                   activityState:selfI.activityState
-                                                   config:selfI.adjustConfig
-                                                   sessionParameters:selfI.sessionParameters
-                                                   trackingStatusManager:self.trackingStatusManager
-                                                   createdAt:now];
-    adRevenueBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:source payload:payload];
-    [selfI.packageHandler addPackage:adRevenuePackage];
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", adRevenuePackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
 }
 
 - (void)trackSubscriptionI:(ADJActivityHandler *)selfI
