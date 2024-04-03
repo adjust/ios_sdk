@@ -194,11 +194,6 @@
 @property (nonatomic, copy, nullable) NSString *userAgent;
 
 /**
- * @brief Set if the device is known.
- */
-@property (nonatomic, assign) BOOL isDeviceKnown;
-
-/**
  * @brief Set if cost data is needed in attribution response.
  */
 @property (nonatomic, assign) BOOL needsCost;
