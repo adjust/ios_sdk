@@ -462,9 +462,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setNeedsCost = function(needsCost) {
             this.needsCost = needsCost;
         };
-        AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
-            // Apple has official sunset support for Apple Search Ads attribution via iAd.framework as of February 7th 2023
-        };
         AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
             this.allowAdServicesInfoReading = allowAdServicesInfoReading;
         };
