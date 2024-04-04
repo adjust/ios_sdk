@@ -302,6 +302,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('costType', attribution.costType);
                 addInfoToSend('costAmount', attribution.costAmount);
                 addInfoToSend('costCurrency', attribution.costCurrency);
+                addInfoToSend('state', attribution.state);
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );

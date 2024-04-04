@@ -45,7 +45,8 @@
     [self.testLibrary addInfoToSend:@"costType" value:attribution.costType];
     [self.testLibrary addInfoToSend:@"costAmount" value:[attribution.costAmount stringValue]];
     [self.testLibrary addInfoToSend:@"costCurrency" value:attribution.costCurrency];
-    
+    [self.testLibrary addInfoToSend:@"state" value:attribution.state];
+
     [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
