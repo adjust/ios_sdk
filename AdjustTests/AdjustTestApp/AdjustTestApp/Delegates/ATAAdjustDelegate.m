@@ -104,17 +104,17 @@
     NSLog(@"Attribution callback called!");
     NSLog(@"Attribution: %@", attribution);
     
-    [self.testLibrary addInfoToSend:@"trackerToken" value:attribution.trackerToken];
-    [self.testLibrary addInfoToSend:@"trackerName" value:attribution.trackerName];
+    [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+    [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
     [self.testLibrary addInfoToSend:@"network" value:attribution.network];
     [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
     [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
     [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
-    [self.testLibrary addInfoToSend:@"clickLabel" value:attribution.clickLabel];
+    [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
     [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
-    [self.testLibrary addInfoToSend:@"costType" value:attribution.costType];
-    [self.testLibrary addInfoToSend:@"costAmount" value:[attribution.costAmount stringValue]];
-    [self.testLibrary addInfoToSend:@"costCurrency" value:attribution.costCurrency];
+    [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+    [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+    [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
     [self.testLibrary addInfoToSend:@"state" value:attribution.state];
 
     [self.testLibrary sendInfoToServer:self.basePath];
