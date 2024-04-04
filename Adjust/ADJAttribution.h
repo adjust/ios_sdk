@@ -69,7 +69,7 @@
 @property (nonatomic, copy, nullable) NSString *costCurrency;
 
 /**
- * @brief State (installed / reinstalled).
+ * @brief State (installed/reinstalled).
  */
 @property (nonatomic, copy, nullable) NSString *state;
 
