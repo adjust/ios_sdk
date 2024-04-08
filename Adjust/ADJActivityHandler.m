@@ -588,14 +588,6 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
     }];
 }
 
-- (void)disableThirdPartySharing {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI disableThirdPartySharingI:selfI];
-                     }];
-}
-
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -974,9 +966,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 [selfI processCoppaComplianceI:selfI];
                 
                 // check if disable third party sharing request came, then send it first
-                if ([ADJUserDefaults getDisableThirdPartySharing]) {
-                    [selfI disableThirdPartySharingI:selfI];
-                }
                 if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
                     for (ADJThirdPartySharing *thirdPartySharing
                          in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
@@ -1017,14 +1006,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
-        [ADJUserDefaults removeDisableThirdPartySharing];
 
         return;
     } else {
         // these checks should run after SDK initialization after the first one
-        if ([ADJUserDefaults getDisableThirdPartySharing]) {
-            [selfI disableThirdPartySharingI:selfI];
-        }
         if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
             for (ADJThirdPartySharing *thirdPartySharing
                  in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
@@ -1232,58 +1217,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI.packageHandler addPackage:subscriptionPackage];
     if (selfI.adjustConfig.eventBufferingEnabled) {
         [selfI.logger info:@"Buffered event %@", subscriptionPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
-}
-
-- (void)disableThirdPartySharingI:(ADJActivityHandler *)selfI {
-    // cache the disable third party sharing request, so that the request order maintains
-    // even this call returns before making server request
-    [ADJUserDefaults setDisableThirdPartySharing];
-
-    if (!selfI.activityState) {
-        return;
-    }
-    if (![selfI isEnabledI:selfI]) {
-        return;
-    }
-    if (selfI.activityState.isGdprForgotten) {
-        return;
-    }
-    if (selfI.activityState.isThirdPartySharingDisabled) {
-        return;
-    }
-    if (selfI.adjustConfig.coppaCompliantEnabled) {
-        [selfI.logger warn:@"Call to disable third party sharing API ignored, already done when COPPA enabled"];
-        return;
-    }
-
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.isThirdPartySharingDisabled = YES;
-    }];
-    [selfI writeActivityStateI:selfI];
-
-    double now = [NSDate.date timeIntervalSince1970];
-
-    // build package
-    ADJPackageBuilder *dtpsBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                            activityState:selfI.activityState
-                                            config:selfI.adjustConfig
-                                            sessionParameters:selfI.sessionParameters
-                                            trackingStatusManager:self.trackingStatusManager
-                                            createdAt:now];
-    dtpsBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *dtpsPackage = [dtpsBuilder buildDisableThirdPartySharingPackage];
-
-    [selfI.packageHandler addPackage:dtpsPackage];
-
-    [ADJUserDefaults removeDisableThirdPartySharing];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
     } else {
         [selfI.packageHandler sendFirstPackage];
     }
@@ -1693,9 +1626,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI setGdprForgetMe];
         } else {
             [selfI processCoppaComplianceI:selfI];
-            if ([ADJUserDefaults getDisableThirdPartySharing]) {
-                [selfI disableThirdPartySharing];
-            }
             if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
                 for (ADJThirdPartySharing *thirdPartySharing
                      in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)

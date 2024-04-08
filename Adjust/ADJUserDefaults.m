@@ -14,7 +14,6 @@ static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
 static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_time";
-static NSString * const PREFS_KEY_DISABLE_THIRD_PARTY_SHARING = @"adj_disable_third_party_sharing";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
 static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
 static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
@@ -84,18 +83,6 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
-+ (void)setDisableThirdPartySharing {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-}
-
-+ (BOOL)getDisableThirdPartySharing {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-}
-
-+ (void)removeDisableThirdPartySharing {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
-}
-
 + (void)setAdServicesTracked {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFS_KEY_ADSERVICES_TRACKED];
 }
@@ -153,7 +140,6 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DISABLE_THIRD_PARTY_SHARING];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LINK_ME_CHECKED];

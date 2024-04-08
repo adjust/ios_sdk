@@ -215,12 +215,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)disableThirdPartySharing {
-    @synchronized (self) {
-        [[Adjust getInstance] disableThirdPartySharing];
-    }
-}
-
 + (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     @synchronized (self) {
         [[Adjust getInstance] trackThirdPartySharing:thirdPartySharing];
@@ -553,14 +547,6 @@ static dispatch_once_t onceToken = 0;
             [self.activityHandler setGdprForgetMe];
         }
     }
-}
-
-- (void)disableThirdPartySharing {
-    if (![self checkActivityHandler:@"disable third party sharing"]) {
-        [ADJUserDefaults setDisableThirdPartySharing];
-        return;
-    }
-    [self.activityHandler disableThirdPartySharing];
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {

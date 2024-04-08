@@ -566,10 +566,6 @@
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
         [Adjust gdprForgetMe];
     }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_disableThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust disableThirdPartySharing];
-    }];
 
     [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
         id isEnabledO = [data objectForKey:@"isEnabled"];

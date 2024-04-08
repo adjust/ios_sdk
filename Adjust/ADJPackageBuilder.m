@@ -158,19 +158,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return gdprPackage;
 }
 
-- (ADJActivityPackage *)buildDisableThirdPartySharingPackage {
-    NSMutableDictionary *parameters = [self getDisableThirdPartySharingParameters];
-    ADJActivityPackage *dtpsPackage = [self defaultActivityPackage];
-    dtpsPackage.path = @"/disable_third_party_sharing";
-    dtpsPackage.activityKind = ADJActivityKindDisableThirdPartySharing;
-    dtpsPackage.suffix = @"";
-    dtpsPackage.parameters = parameters;
-    dtpsPackage.parameters = [ADJUtil deepCopyOfDictionary:dtpsPackage.parameters];
-
-    return dtpsPackage;
-}
-
-
 - (ADJActivityPackage *)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     NSMutableDictionary *parameters = [self getThirdPartySharingParameters:thirdPartySharing];
     ADJActivityPackage *tpsPackage = [self defaultActivityPackage];
@@ -738,67 +725,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindGdpr];
-    [self addIdfvIfPossibleToParameters:parameters];
-    [self injectFeatureFlagsWithParameters:parameters];
-
-    return parameters;
-}
-
-- (NSMutableDictionary *)getDisableThirdPartySharingParameters {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
-    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.bundleIdentifier forKey:@"bundle_id"];
-    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.callbackParameters copy] forKey:@"callback_params"];
-    [ADJPackageBuilder parameters:parameters setDate:self.clickTime forKey:@"click_time"];
-    [ADJPackageBuilder parameters:parameters setDate1970:self.createdAt forKey:@"created_at"];
-    [ADJPackageBuilder parameters:parameters setString:self.deeplink forKey:@"deeplink"];
-    [ADJPackageBuilder parameters:parameters setString:self.reftag forKey:@"reftag"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.defaultTracker forKey:@"default_tracker"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.attributionDetails forKey:@"details"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceName forKey:@"device_name"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.deviceType forKey:@"device_type"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.environment forKey:@"environment"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.externalDeviceId forKey:@"external_device_id"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.fbAnonymousId forKey:@"fb_anon_id"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.installedAt forKey:@"installed_at"];
-    [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
-    [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
-    [ADJPackageBuilder parameters:parameters setDictionary:[self.sessionParameters.partnerParameters copy] forKey:@"partner_params"];
-    [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
-    [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
-    [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
-
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
-    } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
-                               forKey:@"tracking_enabled"];
-    }
-
-    if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
-        [ADJPackageBuilder parameters:parameters setString:self.activityState.deviceToken forKey:@"push_token"];
-        [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
-        [ADJPackageBuilder parameters:parameters setInt:self.activityState.subsessionCount forKey:@"subsession_count"];
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.timeSpent forKey:@"time_spent"];
-        if (self.activityState.isPersisted) {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"primary_dedupe_token"];
-        } else {
-            [ADJPackageBuilder parameters:parameters setString:self.activityState.dedupeToken forKey:@"secondary_dedupe_token"];
-        }
-    }
-
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindDisableThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
 

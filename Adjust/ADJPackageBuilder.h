@@ -63,8 +63,6 @@
 
 - (ADJActivityPackage * _Nullable)buildGdprPackage;
 
-- (ADJActivityPackage * _Nullable)buildDisableThirdPartySharingPackage;
-
 - (ADJActivityPackage * _Nullable)buildThirdPartySharingPackage:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
 - (ADJActivityPackage * _Nullable)buildMeasurementConsentPackage:(BOOL)enabled;

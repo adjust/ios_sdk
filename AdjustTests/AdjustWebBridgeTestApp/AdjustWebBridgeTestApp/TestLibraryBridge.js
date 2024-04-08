@@ -560,10 +560,6 @@ AdjustCommandExecutor.prototype.openDeeplink = function(params) {
     Adjust.appWillOpenUrl(deeplink);
 };
 
-AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
-    Adjust.disableThirdPartySharing();
-};
-
 AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
     var isEnabledS = getFirstValue(params, 'isEnabled');
 

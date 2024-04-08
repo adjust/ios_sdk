@@ -87,8 +87,6 @@
         [self openDeeplink:parameters];
     } else if ([methodName isEqualToString:@"gdprForgetMe"]) {
         [self gdprForgetMe:parameters];
-    } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
-        [self disableThirdPartySharing:parameters];
     } else if ([methodName isEqualToString:@"thirdPartySharing"]) {
         [self thirdPartySharing:parameters];
     } else if ([methodName isEqualToString:@"measurementConsent"]) {
@@ -597,10 +595,6 @@
 
 - (void)gdprForgetMe:(NSDictionary *)parameters {
     [Adjust gdprForgetMe];
-}
-
-- (void)disableThirdPartySharing:(NSDictionary *)parameters {
-    [Adjust disableThirdPartySharing];
 }
 
 - (void)thirdPartySharing:(NSDictionary *)parameters {

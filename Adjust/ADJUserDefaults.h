@@ -39,12 +39,6 @@
 
 + (void)removeDeeplink;
 
-+ (void)setDisableThirdPartySharing;
-
-+ (BOOL)getDisableThirdPartySharing;
-
-+ (void)removeDisableThirdPartySharing;
-
 + (void)clearAdjustStuff;
 
 + (void)setAdServicesTracked;
