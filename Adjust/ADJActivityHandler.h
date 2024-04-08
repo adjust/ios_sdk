@@ -10,7 +10,7 @@
 #import "ADJResponseData.h"
 #import "ADJActivityState.h"
 #import "ADJPackageParams.h"
-#import "ADJSessionParameters.h"
+#import "ADJGlobalParameters.h"
 #import "ADJThirdPartySharing.h"
 
 @interface ADJInternalState : NSObject
@@ -101,14 +101,13 @@
 - (void)setOfflineMode:(BOOL)offline;
 - (void)sendFirstPackages;
 
-- (void)addSessionCallbackParameter:(NSString * _Nullable)key
-                              value:(NSString * _Nullable)value;
-- (void)addSessionPartnerParameter:(NSString * _Nullable)key
-                             value:(NSString * _Nullable)value;
-- (void)removeSessionCallbackParameter:(NSString * _Nullable)key;
-- (void)removeSessionPartnerParameter:(NSString * _Nullable)key;
-- (void)resetSessionCallbackParameters;
-- (void)resetSessionPartnerParameters;
+- (void)addGlobalCallbackParameter:(NSString *_Nonnull)param forKey:(NSString *_Nonnull)key;
+- (void)addGlobalPartnerParameter:(NSString *_Nonnull)param forKey:(NSString *_Nonnull)key;
+- (void)removeGlobalCallbackParameterForKey:(NSString *_Nullable)key;
+- (void)removeGlobalPartnerParameterForKey:(NSString *_Nonnull)key;
+- (void)removeGlobalCallbackParameters;
+- (void)removeGlobalPartnerParameters;
+
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 - (void)trackMeasurementConsent:(BOOL)enabled;
 - (void)trackSubscription:(ADJSubscription * _Nullable)subscription;
@@ -121,7 +120,7 @@
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
 - (ADJConfig * _Nullable)adjustConfig;
-- (ADJSessionParameters * _Nullable)sessionParameters;
+- (ADJGlobalParameters * _Nullable)globalParameters;
 
 - (void)teardown;
 + (void)deleteState;
@@ -133,20 +132,18 @@
                 savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
     deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
 
-- (void)addSessionCallbackParameterI:(ADJActivityHandler * _Nullable)selfI
-                                 key:(NSString * _Nullable)key
-                               value:(NSString * _Nullable)value;
-
-- (void)addSessionPartnerParameterI:(ADJActivityHandler * _Nullable)selfI
-                                key:(NSString * _Nullable)key
-                              value:(NSString * _Nullable)value;
-- (void)removeSessionCallbackParameterI:(ADJActivityHandler * _Nullable)selfI
-                                    key:(NSString * _Nullable)key;
-- (void)removeSessionPartnerParameterI:(ADJActivityHandler * _Nullable)selfI
-                                   key:(NSString * _Nullable)key;
-- (void)resetSessionCallbackParametersI:(ADJActivityHandler * _Nullable)selfI;
-- (void)resetSessionPartnerParametersI:(ADJActivityHandler * _Nullable)selfI;
-
+- (void)addGlobalCallbackParameterI:(ADJActivityHandler *_Nonnull)selfI
+                              param:(NSString *_Nonnull)param
+                             forKey:(NSString *_Nonnull)key;
+- (void)addGlobalPartnerParameterI:(ADJActivityHandler *_Nonnull)selfI
+                             param:(NSString *_Nonnull)param
+                            forKey:(NSString *_Nonnull)key;
+- (void)removeGlobalCallbackParameterI:(ADJActivityHandler *_Nonnull)selfI
+                                forKey:(NSString *_Nonnull)key;
+- (void)removeGlobalPartnerParameterI:(ADJActivityHandler *_Nonnull)selfI
+                               forKey:(NSString *_Nonnull)key;
+- (void)removeGlobalCallbackParametersI:(ADJActivityHandler *_Nonnull)selfI;
+- (void)removeGlobalPartnerParametersI:(ADJActivityHandler *_Nonnull)selfI;
 @end
 
 @interface ADJTrackingStatusManager : NSObject

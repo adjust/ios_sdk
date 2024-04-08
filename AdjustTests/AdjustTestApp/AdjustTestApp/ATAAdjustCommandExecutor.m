@@ -69,18 +69,18 @@
         [self setOfflineMode:parameters];
     } else if ([methodName isEqualToString:@"sendFirstPackages"]) {
         [self sendFirstPackages:parameters];
-    } else if ([methodName isEqualToString:@"addSessionCallbackParameter"]) {
-        [self addSessionCallbackParameter:parameters];
-    } else if ([methodName isEqualToString:@"addSessionPartnerParameter"]) {
-        [self addSessionPartnerParameter:parameters];
-    } else if ([methodName isEqualToString:@"removeSessionCallbackParameter"]) {
-        [self removeSessionCallbackParameter:parameters];
-    } else if ([methodName isEqualToString:@"removeSessionPartnerParameter"]) {
-        [self removeSessionPartnerParameter:parameters];
-    } else if ([methodName isEqualToString:@"resetSessionCallbackParameters"]) {
-        [self resetSessionCallbackParameters:parameters];
-    } else if ([methodName isEqualToString:@"resetSessionPartnerParameters"]) {
-        [self resetSessionPartnerParameters:parameters];
+    } else if ([methodName isEqualToString:@"addGlobalCallbackParameter"]) {
+        [self addGlobalCallbackParameter:parameters];
+    } else if ([methodName isEqualToString:@"addGlobalPartnerParameter"]) {
+        [self addGlobalPartnerParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalCallbackParameter"]) {
+        [self removeGlobalCallbackParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalPartnerParameter"]) {
+        [self removeGlobalPartnerParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalCallbackParameters"]) {
+        [self removeGlobalCallbackParameters:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalPartnerParameters"]) {
+        [self removeGlobalPartnerParameters:parameters];
     } else if ([methodName isEqualToString:@"setPushToken"]) {
         [self setPushToken:parameters];
     } else if ([methodName isEqualToString:@"openDeeplink"]) {
@@ -539,46 +539,46 @@
     [Adjust sendFirstPackages];
 }
 
-- (void)addSessionCallbackParameter:(NSDictionary *)parameters {
+- (void)addGlobalCallbackParameter:(NSDictionary *)parameters {
     NSArray *keyValuesPairs = [parameters objectForKey:@"KeyValue"];
     for (int i = 0; i < keyValuesPairs.count; i = i + 2) {
         NSString *key = keyValuesPairs[i];
         NSString *value = keyValuesPairs[i + 1];
-        [Adjust addSessionCallbackParameter:key value:value];
+        [Adjust addGlobalCallbackParameter:value forKey:key];
     }
 }
 
-- (void)addSessionPartnerParameter:(NSDictionary *)parameters {
+- (void)addGlobalPartnerParameter:(NSDictionary *)parameters {
     NSArray *keyValuesPairs = [parameters objectForKey:@"KeyValue"];
     for (int i = 0; i < keyValuesPairs.count; i = i + 2) {
         NSString *key = keyValuesPairs[i];
         NSString *value = keyValuesPairs[i + 1];
-        [Adjust addSessionPartnerParameter:key value:value];
+        [Adjust addGlobalPartnerParameter:value forKey:key];
     }
 }
 
-- (void)removeSessionCallbackParameter:(NSDictionary *)parameters {
+- (void)removeGlobalCallbackParameter:(NSDictionary *)parameters {
     NSArray *keys = [parameters objectForKey:@"key"];
     for (int i = 0; i < keys.count; i = i + 1) {
         NSString *key = keys[i];
-        [Adjust removeSessionCallbackParameter:key];
+        [Adjust removeGlobalCallbackParameterForKey:key];
     }
 }
 
-- (void)removeSessionPartnerParameter:(NSDictionary *)parameters {
+- (void)removeGlobalPartnerParameter:(NSDictionary *)parameters {
     NSArray *keys = [parameters objectForKey:@"key"];
     for (int i = 0; i < keys.count; i = i + 1) {
         NSString *key = keys[i];
-        [Adjust removeSessionPartnerParameter:key];
+        [Adjust removeGlobalPartnerParameterForKey:key];
     }
 }
 
-- (void)resetSessionCallbackParameters:(NSDictionary *)parameters {
-    [Adjust resetSessionCallbackParameters];
+- (void)removeGlobalCallbackParameters:(NSDictionary *)parameters {
+    [Adjust removeGlobalCallbackParameters];
 }
 
-- (void)resetSessionPartnerParameters:(NSDictionary *)parameters {
-    [Adjust resetSessionPartnerParameters];
+- (void)removeGlobalPartnerParameters:(NSDictionary *)parameters {
+    [Adjust removeGlobalPartnerParameters];
 }
 
 - (void)setPushToken:(NSDictionary *)parameters {

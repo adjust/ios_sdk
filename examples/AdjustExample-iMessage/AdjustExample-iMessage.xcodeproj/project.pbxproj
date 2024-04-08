@@ -30,7 +30,7 @@
 		9D01686020FF88F60029CFFF /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682620FF88F60029CFFF /* ADJActivityState.m */; };
 		9D01686120FF88F60029CFFF /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682720FF88F60029CFFF /* ADJSessionFailure.m */; };
 		9D01686220FF88F60029CFFF /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682B20FF88F60029CFFF /* ADJTimerCycle.m */; };
-		9D01686320FF88F60029CFFF /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682C20FF88F60029CFFF /* ADJSessionParameters.m */; };
+		9D01686320FF88F60029CFFF /* ADJGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682C20FF88F60029CFFF /* ADJGlobalParameters.m */; };
 		9D01686420FF88F60029CFFF /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682D20FF88F60029CFFF /* ADJLogger.m */; };
 		9D01686520FF88F60029CFFF /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01682E20FF88F60029CFFF /* ADJBackoffStrategy.m */; };
 		9D01686620FF88F60029CFFF /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D01683020FF88F60029CFFF /* Adjust.m */; };
@@ -123,7 +123,7 @@
 		9D01682820FF88F60029CFFF /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		9D01682A20FF88F60029CFFF /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		9D01682B20FF88F60029CFFF /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
-		9D01682C20FF88F60029CFFF /* ADJSessionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionParameters.m; sourceTree = "<group>"; };
+		9D01682C20FF88F60029CFFF /* ADJGlobalParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJGlobalParameters.m; sourceTree = "<group>"; };
 		9D01682D20FF88F60029CFFF /* ADJLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLogger.m; sourceTree = "<group>"; };
 		9D01682E20FF88F60029CFFF /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
 		9D01682F20FF88F60029CFFF /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		9D01684E20FF88F60029CFFF /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		9D01684F20FF88F60029CFFF /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
 		9D01685020FF88F60029CFFF /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
-		9D01685120FF88F60029CFFF /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
+		9D01685120FF88F60029CFFF /* ADJGlobalParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJGlobalParameters.h; sourceTree = "<group>"; };
 		9D01685320FF88F60029CFFF /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		9D01685420FF88F60029CFFF /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
 		9D2F24182447DE4700B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
@@ -255,7 +255,7 @@
 				9D01682820FF88F60029CFFF /* ADJUtil.h */,
 				9D01682A20FF88F60029CFFF /* ADJActivityHandler.h */,
 				9D01682B20FF88F60029CFFF /* ADJTimerCycle.m */,
-				9D01682C20FF88F60029CFFF /* ADJSessionParameters.m */,
+				9D01682C20FF88F60029CFFF /* ADJGlobalParameters.m */,
 				9D01682D20FF88F60029CFFF /* ADJLogger.m */,
 				9D01682E20FF88F60029CFFF /* ADJBackoffStrategy.m */,
 				9D01682F20FF88F60029CFFF /* ADJUserDefaults.h */,
@@ -283,7 +283,7 @@
 				9D01684E20FF88F60029CFFF /* ADJUserDefaults.m */,
 				9D01684F20FF88F60029CFFF /* ADJBackoffStrategy.h */,
 				9D01685020FF88F60029CFFF /* ADJLogger.h */,
-				9D01685120FF88F60029CFFF /* ADJSessionParameters.h */,
+				9D01685120FF88F60029CFFF /* ADJGlobalParameters.h */,
 				9D01685320FF88F60029CFFF /* ADJTimerCycle.h */,
 				9D01685420FF88F60029CFFF /* ADJActivityHandler.m */,
 				9D2F24182447DE4700B7CA90 /* ADJSubscription.h */,
@@ -453,7 +453,7 @@
 				9D01686220FF88F60029CFFF /* ADJTimerCycle.m in Sources */,
 				9D01686D20FF88F60029CFFF /* ADJAttribution.m in Sources */,
 				0A4FE7B52AD6A14C0085338A /* ADJPurchaseVerificationResult.m in Sources */,
-				9D01686320FF88F60029CFFF /* ADJSessionParameters.m in Sources */,
+				9D01686320FF88F60029CFFF /* ADJGlobalParameters.m in Sources */,
 				9D01686B20FF88F60029CFFF /* NSData+ADJAdditions.m in Sources */,
 				9D01685C20FF88F60029CFFF /* ADJEvent.m in Sources */,
 				9D01687320FF88F60029CFFF /* ADJPackageBuilder.m in Sources */,

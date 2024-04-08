@@ -217,42 +217,42 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * @brief Add default callback parameter key-value pair which is going to be sent with each tracked session and event.
  *
+ * @param param Default callback parameter value.
  * @param key Default callback parameter key.
- * @param value Default callback parameter value.
  */
-+ (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
++ (void)addGlobalCallbackParameter:(nonnull NSString *)param forKey:(nonnull NSString *)key;
 
 /**
  * @brief Add default partner parameter key-value pair which is going to be sent with each tracked session.
  *
+ * @param param Default partner parameter value.
  * @param key Default partner parameter key.
- * @param value Default partner parameter value.
  */
-+ (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
++ (void)addGlobalPartnerParameter:(nonnull NSString *)param forKey:(nonnull NSString *)key;
 
 /**
- * @brief Remove default callback parameter from the session packages.
+ * @brief Remove default callback parameter from the tracked session and event packages.
  *
  * @param key Default callback parameter key.
  */
-+ (void)removeSessionCallbackParameter:(nonnull NSString *)key;
++ (void)removeGlobalCallbackParameterForKey:(nonnull NSString *)key;
 
 /**
- * @brief Remove default partner parameter from the session packages.
+ * @brief Remove default partner parameter from the tracked session and event packages.
  *
  * @param key Default partner parameter key.
  */
-+ (void)removeSessionPartnerParameter:(nonnull NSString *)key;
++ (void)removeGlobalPartnerParameterForKey:(nonnull NSString *)key;
 
 /**
- * @brief Remove all default callback parameters from the session packages.
+ * @brief Remove all default callback parameters from the tracked session and event packages.
  */
-+ (void)resetSessionCallbackParameters;
++ (void)removeGlobalCallbackParameters;
 
 /**
- * @brief Remove all default partner parameters from the session packages.
+ * @brief Remove all default partner parameters from the tracked session and event packages.
  */
-+ (void)resetSessionPartnerParameters;
++ (void)removeGlobalPartnerParameters;
 
 /**
  * @brief Give right user to be forgotten in accordance with GDPR law.
@@ -397,17 +397,17 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)trackSubsessionStart;
 
-- (void)resetSessionPartnerParameters;
+- (void)addGlobalCallbackParameter:(NSString *_Nonnull)param forKey:(NSString *_Nonnull)key;
 
-- (void)resetSessionCallbackParameters;
+- (void)addGlobalPartnerParameter:(NSString *_Nonnull)param forKey:(NSString *_Nonnull)key;
 
-- (void)removeSessionPartnerParameter:(nonnull NSString *)key;
+- (void)removeGlobalCallbackParameterForKey:(NSString *_Nonnull)key;
 
-- (void)removeSessionCallbackParameter:(nonnull NSString *)key;
+- (void)removeGlobalPartnerParameterForKey:(NSString *_Nonnull)key;
 
-- (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)removeGlobalCallbackParameters;
 
-- (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)removeGlobalPartnerParameters;
 
 - (void)gdprForgetMe;
 

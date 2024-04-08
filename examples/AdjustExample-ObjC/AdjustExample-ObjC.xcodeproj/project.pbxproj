@@ -44,7 +44,7 @@
 		9D449E2C1E6ED88F00E7E80B /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E051E6ED88F00E7E80B /* ADJEventFailure.m */; };
 		9D449E2E1E6ED88F00E7E80B /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E091E6ED88F00E7E80B /* ADJBackoffStrategy.m */; };
 		9D449E2F1E6ED88F00E7E80B /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0B1E6ED88F00E7E80B /* ADJSdkClickHandler.m */; };
-		9D449E311E6ED88F00E7E80B /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */; };
+		9D449E311E6ED88F00E7E80B /* ADJGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E0F1E6ED88F00E7E80B /* ADJGlobalParameters.m */; };
 		9D775B6D2A1FA6BC009D0BE8 /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B692A1FA6BC009D0BE8 /* ADJPurchase.m */; };
 		9D775B6E2A1FA6BC009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B6A2A1FA6BC009D0BE8 /* ADJPurchaseVerificationHandler.m */; };
 		9D775B6F2A1FA6BC009D0BE8 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B6B2A1FA6BC009D0BE8 /* ADJPurchaseVerificationResult.m */; };
@@ -133,8 +133,8 @@
 		9D449E091E6ED88F00E7E80B /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
 		9D449E0A1E6ED88F00E7E80B /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSdkClickHandler.h; sourceTree = "<group>"; };
 		9D449E0B1E6ED88F00E7E80B /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSdkClickHandler.m; sourceTree = "<group>"; };
-		9D449E0E1E6ED88F00E7E80B /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
-		9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionParameters.m; sourceTree = "<group>"; };
+		9D449E0E1E6ED88F00E7E80B /* ADJGlobalParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJGlobalParameters.h; sourceTree = "<group>"; };
+		9D449E0F1E6ED88F00E7E80B /* ADJGlobalParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJGlobalParameters.m; sourceTree = "<group>"; };
 		9D775B672A1FA6BC009D0BE8 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
 		9D775B682A1FA6BC009D0BE8 /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
 		9D775B692A1FA6BC009D0BE8 /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchase.m; sourceTree = "<group>"; };
@@ -287,8 +287,8 @@
 				9D449E091E6ED88F00E7E80B /* ADJBackoffStrategy.m */,
 				9D449E0A1E6ED88F00E7E80B /* ADJSdkClickHandler.h */,
 				9D449E0B1E6ED88F00E7E80B /* ADJSdkClickHandler.m */,
-				9D449E0E1E6ED88F00E7E80B /* ADJSessionParameters.h */,
-				9D449E0F1E6ED88F00E7E80B /* ADJSessionParameters.m */,
+				9D449E0E1E6ED88F00E7E80B /* ADJGlobalParameters.h */,
+				9D449E0F1E6ED88F00E7E80B /* ADJGlobalParameters.m */,
 				9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */,
 				9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */,
 				9D2F24092447DDE100B7CA90 /* ADJSubscription.h */,
@@ -422,7 +422,7 @@
 				9D2F240B2447DDE100B7CA90 /* ADJSubscription.m in Sources */,
 				6F84513525B1B1850004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */,
-				9D449E311E6ED88F00E7E80B /* ADJSessionParameters.m in Sources */,
+				9D449E311E6ED88F00E7E80B /* ADJGlobalParameters.m in Sources */,
 				9D449E171E6ED88F00E7E80B /* ADJActivityHandler.m in Sources */,
 				9D449E181E6ED88F00E7E80B /* ADJActivityKind.m in Sources */,
 				9D449E151E6ED88F00E7E80B /* NSData+ADJAdditions.m in Sources */,

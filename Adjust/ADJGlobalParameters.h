@@ -1,5 +1,5 @@
 //
-//  ADJSessionParameters.h
+//  ADJGlobalParameters.h
 //  Adjust
 //
 //  Created by Pedro Filipe on 27/05/16.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJSessionParameters : NSObject <NSCopying>
+@interface ADJGlobalParameters : NSObject <NSCopying>
 
 @property (nonatomic, strong) NSMutableDictionary* callbackParameters;
 @property (nonatomic, strong) NSMutableDictionary* partnerParameters;
