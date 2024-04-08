@@ -230,11 +230,6 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
                 }
             },
-            disableThirdPartySharing: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_disableThirdPartySharing', null, null);
-                }
-            },
             trackThirdPartySharing: function(adjustThirdPartySharing) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_trackThirdPartySharing', adjustThirdPartySharing, null);
