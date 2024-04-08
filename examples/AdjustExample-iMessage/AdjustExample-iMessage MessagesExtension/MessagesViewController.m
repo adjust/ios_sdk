@@ -30,20 +30,26 @@
         // Change the log level.
         [adjustConfig setLogLevel:ADJLogLevelVerbose];
         
-        // Add session callback parameters.
-        [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
-        [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-        
-        // Add session partner parameters.
-        [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
-        [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-        
-        // Remove session callback parameter.
-        [Adjust removeSessionCallbackParameter:@"sp_key"];
-        
-        // Remove session partner parameter.
-        [Adjust removeSessionPartnerParameter:@"sp_foo"];
-        
+        // Add global callback parameters.
+        [Adjust addGlobalCallbackParameter:@"sp_bar" forKey:@"sp_foo"];
+        [Adjust addGlobalCallbackParameter:@"sp_value" forKey:@"sp_key"];
+
+        // Add global partner parameters.
+        [Adjust addGlobalPartnerParameter:@"sp_bar" forKey:@"sp_foo"];
+        [Adjust addGlobalPartnerParameter:@"sp_value" forKey:@"sp_key"];
+
+        // Remove global callback parameter.
+        [Adjust removeGlobalCallbackParameterForKey:@"sp_key"];
+
+        // Remove global partner parameter.
+        [Adjust removeGlobalPartnerParameterForKey:@"sp_foo"];
+
+        // Remove all global callback parameters.
+        // [Adjust removeGlobalCallbackParameters];
+
+        // Remove all global partner parameters.
+        // [Adjust removeGlobalPartnerParameters];
+
         // Initialise the SDK.
         [Adjust appDidLaunch:adjustConfig];
     });

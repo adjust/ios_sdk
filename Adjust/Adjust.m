@@ -173,39 +173,39 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value {
++ (void)addGlobalCallbackParameter:(NSString *)param forKey:(NSString *)key {
     @synchronized (self) {
-        [[Adjust getInstance] addSessionCallbackParameter:[key copy] value:[value copy]];
+        [[Adjust getInstance] addGlobalCallbackParameter:[param copy] forKey:[key copy]];
     }
 }
 
-+ (void)addSessionPartnerParameter:(NSString *)key value:(NSString *)value {
++ (void)addGlobalPartnerParameter:(NSString *)param forKey:(NSString *)key {
     @synchronized (self) {
-        [[Adjust getInstance] addSessionPartnerParameter:[key copy] value:[value copy]];
+        [[Adjust getInstance] addGlobalPartnerParameter:[param copy] forKey:[key copy]];
     }
 }
 
-+ (void)removeSessionCallbackParameter:(NSString *)key {
++ (void)removeGlobalCallbackParameterForKey:(NSString *)key {
     @synchronized (self) {
-        [[Adjust getInstance] removeSessionCallbackParameter:[key copy]];
+        [[Adjust getInstance] removeGlobalCallbackParameterForKey:[key copy]];
     }
 }
 
-+ (void)removeSessionPartnerParameter:(NSString *)key {
++ (void)removeGlobalPartnerParameterForKey:(NSString *)key {
     @synchronized (self) {
-        [[Adjust getInstance] removeSessionPartnerParameter:[key copy]];
+        [[Adjust getInstance] removeGlobalPartnerParameterForKey:[key copy]];
     }
 }
 
-+ (void)resetSessionCallbackParameters {
++ (void)removeGlobalCallbackParameters {
     @synchronized (self) {
-        [[Adjust getInstance] resetSessionCallbackParameters];
+        [[Adjust getInstance] removeGlobalCallbackParameters];
     }
 }
 
-+ (void)resetSessionPartnerParameters {
++ (void)removeGlobalPartnerParameters {
     @synchronized (self) {
-        [[Adjust getInstance] resetSessionPartnerParameters];
+        [[Adjust getInstance] removeGlobalPartnerParameters];
     }
 }
 
@@ -462,81 +462,87 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler sendFirstPackages];
 }
 
-- (void)addSessionCallbackParameter:(NSString *)key value:(NSString *)value {
-    if ([self checkActivityHandler:@"adding session callback parameter"]) {
-        [self.activityHandler addSessionCallbackParameter:key value:value];
+- (void)addGlobalCallbackParameter:(nonnull NSString *)param forKey:(nonnull NSString *)key {
+    if ([self checkActivityHandler:@"adding global callback parameter"]) {
+        [self.activityHandler addGlobalCallbackParameter:param forKey:key];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler addSessionCallbackParameterI:activityHandler key:key value:value];
+        [activityHandler addGlobalCallbackParameterI:activityHandler param:param forKey:key];
     }];
 }
 
-- (void)addSessionPartnerParameter:(NSString *)key value:(NSString *)value {
-    if ([self checkActivityHandler:@"adding session partner parameter"]) {
-        [self.activityHandler addSessionPartnerParameter:key value:value];
+- (void)addGlobalPartnerParameter:(nonnull NSString *)param forKey:(nonnull NSString *)key {
+    if ([self checkActivityHandler:@"adding global partner parameter"]) {
+        [self.activityHandler addGlobalPartnerParameter:param forKey:key];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler addSessionPartnerParameterI:activityHandler key:key value:value];
+        [activityHandler addGlobalPartnerParameterI:activityHandler param:param forKey:key];
     }];
+
 }
 
-- (void)removeSessionCallbackParameter:(NSString *)key {
-    if ([self checkActivityHandler:@"removing session callback parameter"]) {
-        [self.activityHandler removeSessionCallbackParameter:key];
+- (void)removeGlobalCallbackParameterForKey:(nonnull NSString *)key {
+
+    if ([self checkActivityHandler:@"removing global callback parameter"]) {
+        [self.activityHandler removeGlobalCallbackParameterForKey:key];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler removeSessionCallbackParameterI:activityHandler key:key];
+        [activityHandler removeGlobalCallbackParameterI:activityHandler forKey:key];
     }];
+
 }
 
-- (void)removeSessionPartnerParameter:(NSString *)key {
-    if ([self checkActivityHandler:@"removing session partner parameter"]) {
-        [self.activityHandler removeSessionPartnerParameter:key];
+- (void)removeGlobalPartnerParameterForKey:(nonnull NSString *)key {
+    if ([self checkActivityHandler:@"removing global partner parameter"]) {
+        [self.activityHandler removeGlobalPartnerParameterForKey:key];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler removeSessionPartnerParameterI:activityHandler key:key];
+        [activityHandler removeGlobalPartnerParameterI:activityHandler forKey:key];
     }];
+
 }
 
-- (void)resetSessionCallbackParameters {
-    if ([self checkActivityHandler:@"resetting session callback parameters"]) {
-        [self.activityHandler resetSessionCallbackParameters];
+- (void)removeGlobalCallbackParameters {
+
+    if ([self checkActivityHandler:@"removing all global callback parameters"]) {
+        [self.activityHandler removeGlobalCallbackParameters];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler resetSessionCallbackParametersI:activityHandler];
+        [activityHandler removeGlobalCallbackParametersI:activityHandler];
     }];
+
 }
 
-- (void)resetSessionPartnerParameters {
-    if ([self checkActivityHandler:@"resetting session partner parameters"]) {
-        [self.activityHandler resetSessionPartnerParameters];
+- (void)removeGlobalPartnerParameters {
+    if ([self checkActivityHandler:@"removing all global partner parameters"]) {
+        [self.activityHandler removeGlobalPartnerParameters];
         return;
     }
     if (self.savedPreLaunch.preLaunchActionsArray == nil) {
         self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler resetSessionPartnerParametersI:activityHandler];
+        [activityHandler removeGlobalPartnerParametersI:activityHandler];
     }];
 }
 

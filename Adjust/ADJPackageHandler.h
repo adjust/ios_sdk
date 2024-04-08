@@ -11,7 +11,7 @@
 #import "ADJPackageHandler.h"
 #import "ADJActivityHandler.h"
 #import "ADJResponseData.h"
-#import "ADJSessionParameters.h"
+#import "ADJGlobalParameters.h"
 #import "ADJRequestHandler.h"
 #import "ADJUrlStrategy.h"
 
@@ -26,7 +26,7 @@
 - (void)sendFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters;
+- (void)updatePackagesWithGlobalParams:(ADJGlobalParameters *)globalParameters;
 - (void)updatePackagesWithAttStatus:(int)attStatus;
 - (void)flush;
 

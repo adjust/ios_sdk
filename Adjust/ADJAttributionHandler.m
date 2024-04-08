@@ -240,7 +240,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
                                              initWithPackageParams:selfI.activityHandler.packageParams
                                              activityState:selfI.activityHandler.activityState
                                              config:selfI.activityHandler.adjustConfig
-                                             sessionParameters:selfI.activityHandler.sessionParameters
+                                             globalParameters:selfI.activityHandler.globalParameters
                                              trackingStatusManager:selfI.activityHandler.trackingStatusManager
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];

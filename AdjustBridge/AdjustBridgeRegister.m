@@ -195,34 +195,34 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_sendFirstPackages', null, null);
                 }
             },
-            addSessionCallbackParameter: function(key, value) {
+            addGlobalCallbackParameter: function(key, value) {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_addSessionCallbackParameter', {key: key, value: value}, null);
+                    WebViewJavascriptBridge.callHandler('adjust_addGlobalCallbackParameter', {key: key, value: value}, null);
                 }
             },
-            addSessionPartnerParameter: function(key, value) {
+            addGlobalPartnerParameter: function(key, value) {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_addSessionPartnerParameter', {key: key, value: value}, null);
+                    WebViewJavascriptBridge.callHandler('adjust_addGlobalPartnerParameter', {key: key, value: value}, null);
                 }
             },
-            removeSessionCallbackParameter: function(key) {
+            removeGlobalCallbackParameter: function(key) {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_removeSessionCallbackParameter', key, null);
+                    WebViewJavascriptBridge.callHandler('adjust_removeGlobalCallbackParameter', key, null);
                 }
             },
-            removeSessionPartnerParameter: function(key) {
+            removeGlobalPartnerParameter: function(key) {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_removeSessionPartnerParameter', key, null);
+                    WebViewJavascriptBridge.callHandler('adjust_removeGlobalPartnerParameter', key, null);
                 }
             },
-            resetSessionCallbackParameters: function() {
+            removeGlobalCallbackParameters: function() {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_resetSessionCallbackParameters', null, null);
+                    WebViewJavascriptBridge.callHandler('adjust_removeGlobalCallbackParameters', null, null);
                 }
             },
-            resetSessionPartnerParameters: function() {
+            removeGlobalPartnerParameters: function() {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_resetSessionPartnerParameters', null, null);
+                    WebViewJavascriptBridge.callHandler('adjust_removeGlobalPartnerParameters', null, null);
                 }
             },
             gdprForgetMe: function() {

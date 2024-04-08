@@ -34,7 +34,7 @@
 		6F3A5E782018CE14000AACD0 /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E3E2018CE14000AACD0 /* ADJActivityState.m */; };
 		6F3A5E792018CE14000AACD0 /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E3F2018CE14000AACD0 /* ADJSessionFailure.m */; };
 		6F3A5E7A2018CE14000AACD0 /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E432018CE14000AACD0 /* ADJTimerCycle.m */; };
-		6F3A5E7B2018CE14000AACD0 /* ADJSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E442018CE14000AACD0 /* ADJSessionParameters.m */; };
+		6F3A5E7B2018CE14000AACD0 /* ADJGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E442018CE14000AACD0 /* ADJGlobalParameters.m */; };
 		6F3A5E7C2018CE14000AACD0 /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E452018CE14000AACD0 /* ADJLogger.m */; };
 		6F3A5E7D2018CE14000AACD0 /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E462018CE14000AACD0 /* ADJBackoffStrategy.m */; };
 		6F3A5E7E2018CE14000AACD0 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E482018CE14000AACD0 /* Adjust.m */; };
@@ -137,7 +137,7 @@
 		6F3A5E402018CE14000AACD0 /* ADJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUtil.h; sourceTree = "<group>"; };
 		6F3A5E422018CE14000AACD0 /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
 		6F3A5E432018CE14000AACD0 /* ADJTimerCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJTimerCycle.m; sourceTree = "<group>"; };
-		6F3A5E442018CE14000AACD0 /* ADJSessionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSessionParameters.m; sourceTree = "<group>"; };
+		6F3A5E442018CE14000AACD0 /* ADJGlobalParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJGlobalParameters.m; sourceTree = "<group>"; };
 		6F3A5E452018CE14000AACD0 /* ADJLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLogger.m; sourceTree = "<group>"; };
 		6F3A5E462018CE14000AACD0 /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJBackoffStrategy.m; sourceTree = "<group>"; };
 		6F3A5E472018CE14000AACD0 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 		6F3A5E662018CE14000AACD0 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
 		6F3A5E672018CE14000AACD0 /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJBackoffStrategy.h; sourceTree = "<group>"; };
 		6F3A5E682018CE14000AACD0 /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
-		6F3A5E692018CE14000AACD0 /* ADJSessionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionParameters.h; sourceTree = "<group>"; };
+		6F3A5E692018CE14000AACD0 /* ADJGlobalParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJGlobalParameters.h; sourceTree = "<group>"; };
 		6F3A5E6A2018CE14000AACD0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F3A5E6B2018CE14000AACD0 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
@@ -315,7 +315,7 @@
 				6F3A5E402018CE14000AACD0 /* ADJUtil.h */,
 				6F3A5E422018CE14000AACD0 /* ADJActivityHandler.h */,
 				6F3A5E432018CE14000AACD0 /* ADJTimerCycle.m */,
-				6F3A5E442018CE14000AACD0 /* ADJSessionParameters.m */,
+				6F3A5E442018CE14000AACD0 /* ADJGlobalParameters.m */,
 				6F3A5E452018CE14000AACD0 /* ADJLogger.m */,
 				6F3A5E462018CE14000AACD0 /* ADJBackoffStrategy.m */,
 				6F3A5E472018CE14000AACD0 /* ADJUserDefaults.h */,
@@ -343,7 +343,7 @@
 				6F3A5E662018CE14000AACD0 /* ADJUserDefaults.m */,
 				6F3A5E672018CE14000AACD0 /* ADJBackoffStrategy.h */,
 				6F3A5E682018CE14000AACD0 /* ADJLogger.h */,
-				6F3A5E692018CE14000AACD0 /* ADJSessionParameters.h */,
+				6F3A5E692018CE14000AACD0 /* ADJGlobalParameters.h */,
 				6F3A5E6A2018CE14000AACD0 /* Info.plist */,
 				6F3A5E6B2018CE14000AACD0 /* ADJTimerCycle.h */,
 				6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */,
@@ -539,7 +539,7 @@
 				6FFCFE72200797D100467F01 /* ATAAdjustDelegateSessionSuccess.m in Sources */,
 				6F3A5E7E2018CE14000AACD0 /* Adjust.m in Sources */,
 				6FFCFE6D200797D100467F01 /* ATAAdjustDelegateAttribution.m in Sources */,
-				6F3A5E7B2018CE14000AACD0 /* ADJSessionParameters.m in Sources */,
+				6F3A5E7B2018CE14000AACD0 /* ADJGlobalParameters.m in Sources */,
 				524BACB2221D583700624F6C /* ATLControlWebSocketClient.m in Sources */,
 				6F3A5E882018CE14000AACD0 /* ADJUtil.m in Sources */,
 				6F3A5E812018CE14000AACD0 /* ADJActivityKind.m in Sources */,

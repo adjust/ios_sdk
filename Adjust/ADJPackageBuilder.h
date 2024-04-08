@@ -11,7 +11,7 @@
 #import "ADJPackageParams.h"
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
-#import "ADJSessionParameters.h"
+#import "ADJGlobalParameters.h"
 #import <Foundation/Foundation.h>
 #import "ADJActivityHandler.h"
 #import "ADJThirdPartySharing.h"
@@ -37,7 +37,7 @@
 - (id _Nullable)initWithPackageParams:(ADJPackageParams * _Nullable)packageParams
                         activityState:(ADJActivityState * _Nullable)activityState
                                config:(ADJConfig * _Nullable)adjustConfig
-                    sessionParameters:(ADJSessionParameters * _Nullable)sessionParameters
+                     globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
                             createdAt:(double)createdAt;
 

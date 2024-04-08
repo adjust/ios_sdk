@@ -155,14 +155,14 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)updatePackagesWithSessionParams:(ADJSessionParameters *)sessionParameters {
+- (void)updatePackagesWithGlobalParams:(ADJGlobalParameters *)globalParameters {
     // make copy to prevent possible Activity Handler changes of it
-    ADJSessionParameters * sessionParametersCopy = [sessionParameters copy];
+    ADJGlobalParameters * globalParametersCopy = [globalParameters copy];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesI:selfI sessionParameters:sessionParametersCopy];
+        [selfI updatePackagesI:selfI globalParameters:globalParametersCopy];
     }];
 }
 
@@ -305,17 +305,17 @@ startsSending:(BOOL)startsSending
 }
 
 - (void)updatePackagesI:(ADJPackageHandler *)selfI
-      sessionParameters:(ADJSessionParameters *)sessionParameters {
+       globalParameters:(ADJGlobalParameters *)globalParameters {
     [selfI.logger debug:@"Updating package handler queue"];
-    [selfI.logger verbose:@"Session callback parameters: %@", sessionParameters.callbackParameters];
-    [selfI.logger verbose:@"Session partner parameters: %@", sessionParameters.partnerParameters];
+    [selfI.logger verbose:@"Global callback parameters: %@", globalParameters.callbackParameters];
+    [selfI.logger verbose:@"Global partner parameters: %@", globalParameters.partnerParameters];
 
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         // callback parameters
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:sessionParameters.callbackParameters
+        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:globalParameters.callbackParameters
                                                                    source:activityPackage.callbackParameters
                                                             parameterName:@"Callback"];
         [ADJPackageBuilder parameters:activityPackage.parameters
@@ -323,7 +323,7 @@ startsSending:(BOOL)startsSending
                                forKey:@"callback_params"];
 
         // partner parameters
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:sessionParameters.partnerParameters
+        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:globalParameters.partnerParameters
                                                                   source:activityPackage.partnerParameters
                                                            parameterName:@"Partner"];
         [ADJPackageBuilder parameters:activityPackage.parameters

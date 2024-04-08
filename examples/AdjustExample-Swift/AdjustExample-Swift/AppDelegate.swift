@@ -39,26 +39,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Delay the first session of the SDK.
         // adjustConfig?.delayStart = 7
         
-        // Add session callback parameters.
-        Adjust.addSessionCallbackParameter("obi", value: "wan")
-        Adjust.addSessionCallbackParameter("master", value: "yoda")
+        // Add global callback parameters.
+        Adjust.addGlobalCallbackParameter("wan", forKey: "obi")
+        Adjust.addGlobalCallbackParameter("yoda", forKey: "master")
         
-        // Add session partner parameters.
-        Adjust.addSessionPartnerParameter("darth", value: "vader")
-        Adjust.addSessionPartnerParameter("han", value: "solo")
+        // Add global partner parameters.
+        Adjust.addGlobalPartnerParameter("vader", forKey: "darth")
+        Adjust.addGlobalPartnerParameter("solo", forKey: "han")
         
-        // Remove session callback parameter.
-        Adjust.removeSessionCallbackParameter("obi")
-        
-        // Remove session partner parameter.
-        Adjust.removeSessionPartnerParameter("han")
-        
-        // Remove all session callback parameters.
-        // Adjust.resetSessionCallbackParameters()
-        
-        // Remove all session partner parameters.
-        // Adjust.resetSessionPartnerParameters()
-        
+        // Remove global callback parameter.
+        Adjust.removeGlobalCallbackParameter(forKey: "obi")
+        // Remove global partner parameter.
+        Adjust.removeGlobalPartnerParameter(forKey: "han")
+
+        // Remove all global callback parameters.
+        // Adjust.removeGlobalCallbackParameters()
+
+        // Remove all global partner parameters.
+        // Adjust.removeGlobalPartnerParameters())
+
         // Initialise the SDK.
         Adjust.appDidLaunch(adjustConfig!)
         

@@ -529,38 +529,38 @@
         [Adjust sendFirstPackages];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_addSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_addGlobalCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *key = [data objectForKey:@"key"];
         NSString *value = [data objectForKey:@"value"];
-        [Adjust addSessionCallbackParameter:key value:value];
+        [Adjust addGlobalCallbackParameter:value forKey:key];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_addSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_addGlobalPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *key = [data objectForKey:@"key"];
         NSString *value = [data objectForKey:@"value"];
-        [Adjust addSessionPartnerParameter:key value:value];
+        [Adjust addGlobalPartnerParameter:value forKey:key];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_removeSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_removeGlobalCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
-        [Adjust removeSessionCallbackParameter:(NSString *)data];
+        [Adjust removeGlobalCallbackParameterForKey:(NSString *)data];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_removeSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_removeGlobalPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;
         }
-        [Adjust removeSessionPartnerParameter:(NSString *)data];
+        [Adjust removeGlobalPartnerParameterForKey:(NSString *)data];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_resetSessionCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust resetSessionCallbackParameters];
+    [self.bridgeRegister registerHandler:@"adjust_removeGlobalCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust removeGlobalCallbackParameters];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_resetSessionPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust resetSessionPartnerParameters];
+    [self.bridgeRegister registerHandler:@"adjust_removeGlobalPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust removeGlobalPartnerParameters];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
