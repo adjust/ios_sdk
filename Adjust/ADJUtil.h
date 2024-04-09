@@ -144,6 +144,6 @@ typedef void (^isInactiveInjected)(BOOL);
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind;
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
-                                 andAttStatus:(nullable NSString *)attStatusString;
+                                 andAttStatus:(NSString *)attStatusString;
 
 @end
