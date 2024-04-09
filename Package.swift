@@ -6,7 +6,6 @@ let package = Package(
     name: "Adjust",
     products: [
         .library(name: "Adjust", targets: ["Adjust"]),
-        .library(name: "Sociomantic", targets: ["Sociomantic", "Adjust"]),
         .library(name: "Criteo", targets: ["Criteo", "Adjust"]),
         .library(name: "WebBridge", targets: ["WebBridge", "Adjust"])
     ],
@@ -21,16 +20,6 @@ let package = Package(
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "Sociomantic",
-            path: "plugin/Sociomantic",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
             ]
         ),
         .target(
