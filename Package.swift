@@ -8,7 +8,6 @@ let package = Package(
         .library(name: "Adjust", targets: ["Adjust"]),
         .library(name: "Sociomantic", targets: ["Sociomantic", "Adjust"]),
         .library(name: "Criteo", targets: ["Criteo", "Adjust"]),
-        .library(name: "Trademob", targets: ["Trademob", "Adjust"]),
         .library(name: "WebBridge", targets: ["WebBridge", "Adjust"])
     ],
     targets: [
@@ -37,16 +36,6 @@ let package = Package(
         .target(
             name: "Criteo",
             path: "plugin/Criteo",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "Trademob",
-            path: "plugin/Trademob",
             exclude: ["Adjust"],
             publicHeadersPath: "",
             cSettings: [
