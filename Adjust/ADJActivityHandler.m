@@ -965,7 +965,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             } else {
                 [selfI processCoppaComplianceI:selfI];
                 
-                // check if disable third party sharing request came, then send it first
+                // check if third party sharing request came, then send it first
                 if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
                     for (ADJThirdPartySharing *thirdPartySharing
                          in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
