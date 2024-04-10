@@ -1,4 +1,4 @@
-### Version 4.38.1 (9th April 2024)
+### Version 4.38.1 (10th April 2024)
 #### Fixed
 - Removed nullability type specifier warnings (https://github.com/adjust/ios_sdk/issues/703).
 
