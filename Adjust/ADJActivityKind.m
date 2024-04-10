@@ -27,8 +27,6 @@
         return ADJActivityKindGdpr;
     } else if ([@"ad_revenue" isEqualToString:activityKindString]) {
         return ADJActivityKindAdRevenue;
-    } else if ([@"disable_third_party_sharing" isEqualToString:activityKindString]) {
-        return ADJActivityKindDisableThirdPartySharing;
     } else if ([@"subscription" isEqualToString:activityKindString]) {
         return ADJActivityKindSubscription;
     } else if ([@"third_party_sharing" isEqualToString:activityKindString]) {
@@ -58,8 +56,6 @@
             return @"gdpr";
         case ADJActivityKindAdRevenue:
             return @"ad_revenue";
-        case ADJActivityKindDisableThirdPartySharing:
-            return @"disable_third_party_sharing";
         case ADJActivityKindSubscription:
             return @"subscription";
         case ADJActivityKindThirdPartySharing:

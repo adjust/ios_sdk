@@ -22,7 +22,7 @@ typedef NS_ENUM(int, ADJActivityKind) {
     ADJActivityKindInfo = 6,
     ADJActivityKindGdpr = 7,
     ADJActivityKindAdRevenue = 8,
-    ADJActivityKindDisableThirdPartySharing = 9,
+    // ADJActivityKindDisableThirdPartySharing = 9,
     ADJActivityKindSubscription = 10,
     ADJActivityKindThirdPartySharing = 11,
     ADJActivityKindMeasurementConsent = 12,
