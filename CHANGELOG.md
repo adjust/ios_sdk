@@ -1,3 +1,9 @@
+### Version 4.38.1 (10th April 2024)
+#### Fixed
+- Removed nullability type specifier warnings (https://github.com/adjust/ios_sdk/issues/703).
+
+---
+
 ### Version 4.38.0 (22nd March 2024)
 #### Added
 - Added Privacy Manifest for the Adjust SDK.
