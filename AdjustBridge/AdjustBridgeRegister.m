@@ -353,7 +353,6 @@ static NSString * fbAppIdStatic = nil;
             this.logLevel = null;
             this.eventBufferingEnabled = null;
             this.coppaCompliantEnabled = null;
-            this.linkMeEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
             this.needsCost = null;
@@ -435,9 +434,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
             this.coppaCompliantEnabled = isEnabled;
-        };
-        AdjustConfig.prototype.setLinkMeEnabled = function(isEnabled) {
-            this.linkMeEnabled = isEnabled;
         };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;
