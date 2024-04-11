@@ -2031,7 +2031,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)checkLinkMeI:(ADJActivityHandler *)selfI {
 #if TARGET_OS_IOS
     if (@available(iOS 15.0, *)) {
-        if (selfI.adjustConfig.linkMeEnabled == NO) {
+        if (selfI.adjustConfig.isLinkMeEnabled == NO) {
             [self.logger debug:@"LinkMe not allowed by client"];
             return;
         }
