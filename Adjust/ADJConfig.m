@@ -70,7 +70,7 @@
     self.coppaCompliantEnabled = NO;
     self.allowIdfaReading = YES;
     self.allowAdServicesInfoReading = YES;
-    self.linkMeEnabled = NO;
+    _isLinkMeEnabled = NO;
     _isSKAdNetworkHandlingActive = YES;
 
     return self;
@@ -88,6 +88,10 @@
 
 - (void)deactivateSKAdNetworkHandling {
     _isSKAdNetworkHandlingActive = NO;
+}
+
+- (void)enableLinkMe {
+    _isLinkMeEnabled = YES;
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
@@ -211,7 +215,7 @@
         copy->_appSecret = [self.appSecret copyWithZone:zone];
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
         copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
-        copy.linkMeEnabled = self.linkMeEnabled;
+        copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
         // adjust delegate not copied
     }

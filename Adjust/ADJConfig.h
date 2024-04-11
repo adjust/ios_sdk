@@ -217,10 +217,12 @@
  */
 @property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
 
+@property (nonatomic, assign, readonly) BOOL isLinkMeEnabled;
+
 /**
- * @brief Enables/disables linkMe
+ * @brief Enables linkMe
  */
-@property (nonatomic, assign) BOOL linkMeEnabled;
+- (void)enableLinkMe;
 
 /**
  * @brief Get configuration object for the initialization of the Adjust SDK.
