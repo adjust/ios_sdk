@@ -194,11 +194,6 @@
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
         NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
-        NSNumber *secretId = [data objectForKey:@"secretId"];
-        NSString *info1 = [data objectForKey:@"info1"];
-        NSString *info2 = [data objectForKey:@"info2"];
-        NSString *info3 = [data objectForKey:@"info3"];
-        NSString *info4 = [data objectForKey:@"info4"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
@@ -264,18 +259,6 @@
             if ([allowSkAdNetworkHandling boolValue] == NO) {
                 [adjustConfig deactivateSKAdNetworkHandling];
             }
-        }
-        BOOL isAppSecretDefined = [self isFieldValid:secretId]
-        && [self isFieldValid:info1]
-        && [self isFieldValid:info2]
-        && [self isFieldValid:info3]
-        && [self isFieldValid:info4];
-        if (isAppSecretDefined) {
-            [adjustConfig setAppSecret:[[self fieldToNSNumber:secretId] unsignedIntegerValue]
-                                 info1:[[self fieldToNSNumber:info1] unsignedIntegerValue]
-                                 info2:[[self fieldToNSNumber:info2] unsignedIntegerValue]
-                                 info3:[[self fieldToNSNumber:info3] unsignedIntegerValue]
-                                 info4:[[self fieldToNSNumber:info4] unsignedIntegerValue]];
         }
         if ([self isFieldValid:openDeferredDeeplink]) {
             self.openDeferredDeeplink = [openDeferredDeeplink boolValue];

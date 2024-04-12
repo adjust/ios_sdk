@@ -219,16 +219,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
 
-    if ('appSecret' in params) {
-        var appSecretArray = getValues(params, 'appSecret');
-        var secretId = appSecretArray[0].toString();
-        var info1    = appSecretArray[1].toString();
-        var info2    = appSecretArray[2].toString();
-        var info3    = appSecretArray[3].toString();
-        var info4    = appSecretArray[4].toString();
-        adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
-    }
-
     if ('delayStart' in params) {
         var delayStartS = getFirstValue(params, 'delayStart');
         var delayStart = parseFloat(delayStartS);

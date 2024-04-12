@@ -298,7 +298,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -315,7 +314,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -356,7 +354,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getEventParameters:(BOOL)isInDelay forEventPackage:(ADJEvent *)event {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -376,7 +373,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setNumber:event.revenue forKey:@"revenue"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
@@ -428,7 +424,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getInfoParameters:(NSString *)source {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -453,7 +448,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
@@ -497,7 +491,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getAdRevenueParameters:(ADJAdRevenue *)adRevenue isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -514,7 +507,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -570,7 +562,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getClickParameters:(NSString *)source {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -595,7 +586,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
@@ -640,7 +630,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
@@ -655,7 +644,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -690,7 +678,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"attribution_deeplink"];
@@ -704,7 +691,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -734,7 +720,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getThirdPartySharingParameters:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -759,7 +744,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -807,7 +791,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getMeasurementConsentParameters:(BOOL)enabled {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -832,7 +815,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -873,7 +855,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getSubscriptionParameters:(BOOL)isInDelay forSubscriptionPackage:(ADJSubscription *)subscription {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -889,7 +870,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"needs_response_details"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
@@ -944,7 +924,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (NSMutableDictionary *)getPurchaseVerificationParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appSecret forKey:@"app_secret"];
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.buildNumber forKey:@"app_version"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.versionNumber forKey:@"app_version_short"];
@@ -964,7 +943,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osName forKey:@"os_name"];
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.osVersion forKey:@"os_version"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
-    [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.secretId forKey:@"secret_id"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 

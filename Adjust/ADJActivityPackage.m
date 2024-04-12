@@ -17,7 +17,6 @@
     NSMutableString *builder = [NSMutableString string];
     NSArray *excludedKeys = @[
         @"secret_id",
-        @"app_secret",
         @"signature",
         @"headers_id",
         @"native_version",
