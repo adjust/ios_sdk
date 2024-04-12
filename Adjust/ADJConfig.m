@@ -66,7 +66,6 @@
     
     // default values
     self.sendInBackground = NO;
-    self.eventBufferingEnabled = NO;
     self.coppaCompliantEnabled = NO;
     self.allowIdfaReading = YES;
     self.allowAdServicesInfoReading = YES;
@@ -189,7 +188,6 @@
         copy.logLevel = self.logLevel;
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
-        copy.eventBufferingEnabled = self.eventBufferingEnabled;
         copy.sendInBackground = self.sendInBackground;
         copy.allowIdfaReading = self.allowIdfaReading;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;

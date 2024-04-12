@@ -351,7 +351,6 @@ static NSString * fbAppIdStatic = nil;
             this.defaultTracker = null;
             this.externalDeviceId = null;
             this.logLevel = null;
-            this.eventBufferingEnabled = null;
             this.coppaCompliantEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
@@ -423,9 +422,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setLogLevel = function(logLevel) {
             this.logLevel = logLevel;
-        };
-        AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
-            this.eventBufferingEnabled = isEnabled;
         };
         AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
             this.coppaCompliantEnabled = isEnabled;

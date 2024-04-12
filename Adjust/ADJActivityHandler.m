@@ -673,12 +673,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
     [selfI.packageHandler addPackage:infoPackage];
-    
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", infoPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (NSString *)getBasePath {
@@ -786,10 +781,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI readGlobalCallbackParametersI:selfI];
     [selfI readGlobalPartnerParametersI:selfI];
 
-    if (selfI.adjustConfig.eventBufferingEnabled)  {
-        [selfI.logger info:@"Event buffering is enabled"];
-    }
-    
     if (selfI.adjustConfig.defaultTracker != nil) {
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
@@ -1174,12 +1165,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
                                                              isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:eventPackage];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", eventPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 
     // if it is in the background and it can send, start the background timer
     if (selfI.adjustConfig.sendInBackground && [selfI.internalState isInBackground]) {
@@ -1215,11 +1201,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription
                                                                                   isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:subscriptionPackage];
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", subscriptionPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (BOOL)trackThirdPartySharingI:(ADJActivityHandler *)selfI
@@ -1253,12 +1235,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
 
     [selfI.packageHandler addPackage:dtpsPackage];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 
     return YES;
 }
@@ -1290,12 +1267,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsentPackage:enabled];
 
     [selfI.packageHandler addPackage:mcPackage];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", mcPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 
     return YES;
 }
@@ -1329,11 +1301,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue
                                                                          isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:adRevenuePackage];
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", adRevenuePackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (void)checkForNewAttStatusI:(ADJActivityHandler *)selfI {
@@ -1914,17 +1882,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
-
     [selfI.packageHandler addPackage:infoPackage];
+    [selfI.packageHandler sendFirstPackage];
 
     // if push token was cached, remove it
     [ADJUserDefaults removePushToken];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
 }
 
 - (void)setPushTokenI:(ADJActivityHandler *)selfI
@@ -1964,15 +1926,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
+    [selfI.packageHandler sendFirstPackage];
 
     // if push token was cached, remove it
     [ADJUserDefaults removePushToken];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered info %@", infoPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
 }
 
 - (void)setGdprForgetMeI:(ADJActivityHandler *)selfI {
@@ -2005,14 +1962,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
     [selfI.packageHandler addPackage:gdprPackage];
+    [selfI.packageHandler sendFirstPackage];
 
     [ADJUserDefaults removeGdprForgetMe];
-
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered gdpr %@", gdprPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
 }
 
 - (void)setTrackingStateOptedOutI:(ADJActivityHandler *)selfI {
@@ -2273,7 +2225,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI resumeSendingI:selfI];
 
     // try to send if it's the first launch and it hasn't received the session response
-    //  even if event buffering is enabled
     if ([selfI.internalState isFirstLaunch] &&
         [selfI.internalState hasSessionResponseNotBeenProcessed])
     {
@@ -2281,9 +2232,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // try to send
-    if (!selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (void)pauseSendingI:(ADJActivityHandler *)selfI {
@@ -2840,14 +2789,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                      createdAt:now];
     tpsBuilder.internalState = selfI.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
-    
     [selfI.packageHandler addPackage:dtpsPackage];
-    
-    if (selfI.adjustConfig.eventBufferingEnabled) {
-        [selfI.logger info:@"Buffered event %@", dtpsPackage.suffix];
-    } else {
-        [selfI.packageHandler sendFirstPackage];
-    }
+    [selfI.packageHandler sendFirstPackage];
 }
 
 - (void)resetThirdPartySharingCoppaActivityStateI:(ADJActivityHandler *)selfI {

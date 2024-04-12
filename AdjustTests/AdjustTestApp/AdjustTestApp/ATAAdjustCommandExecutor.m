@@ -280,11 +280,6 @@
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
         [adjustConfig setNeedsCost:[needsCostS boolValue]];
     }
-
-    if ([parameters objectForKey:@"eventBufferingEnabled"]) {
-        NSString *eventBufferingEnabledS = [parameters objectForKey:@"eventBufferingEnabled"][0];
-        [adjustConfig setEventBufferingEnabled:[eventBufferingEnabledS boolValue]];
-    }
     
     if ([parameters objectForKey:@"coppaCompliant"]) {
         NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];

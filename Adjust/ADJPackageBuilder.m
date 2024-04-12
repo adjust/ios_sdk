@@ -986,9 +986,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)injectFeatureFlagsWithParameters:(NSMutableDictionary *)parameters {
-    [ADJPackageBuilder parameters:parameters 
-                          setBool:self.adjustConfig.eventBufferingEnabled
-                           forKey:@"event_buffering_enabled"];
     [ADJPackageBuilder parameters:parameters
                           setBool:self.adjustConfig.sendInBackground
                            forKey:@"send_in_background_enabled"];

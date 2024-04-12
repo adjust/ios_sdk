@@ -145,13 +145,6 @@
 @property (nonatomic, assign) ADJLogLevel logLevel;
 
 /**
- * @brief Enable event buffering if your app triggers a lot of events.
- *        When enabled, events get buffered and only get tracked each
- *        minute. Buffered events are still persisted, of course.
- */
-@property (nonatomic, assign) BOOL eventBufferingEnabled;
-
-/**
  * @brief Set the optional delegate that will inform you about attribution or events.
  *
  * @note See the AdjustDelegate declaration above for details.

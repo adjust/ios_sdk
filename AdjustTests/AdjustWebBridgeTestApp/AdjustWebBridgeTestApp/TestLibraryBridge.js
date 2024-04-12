@@ -250,12 +250,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
             adjustConfig.deactivateSkAdNetworkHandling();
         }
     }
-
-    if ('eventBufferingEnabled' in params) {
-        var eventBufferingEnabledS = getFirstValue(params, 'eventBufferingEnabled');
-        var eventBufferingEnabled = eventBufferingEnabledS == 'true';
-        adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
-    }
     
     if ('coppaCompliant' in params) {
         var coppaCompliantEnabledS = getFirstValue(params, 'coppaCompliant');
