@@ -358,6 +358,7 @@ authorizationHeader:(NSString *)authorizationHeader
     responseData.message = messageResponse;
     responseData.timeStamp = [responseData.jsonResponse objectForKey:@"timestamp"];
     responseData.adid = [responseData.jsonResponse objectForKey:@"adid"];
+    responseData.retryInMilli = [responseData.jsonResponse objectForKey:@"retry_in"];
 
     NSString *trackingState = [responseData.jsonResponse objectForKey:@"tracking_state"];
     if (trackingState != nil) {

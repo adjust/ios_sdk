@@ -85,6 +85,7 @@
         copy.message = [self.message copyWithZone:zone];
         copy.timeStamp = [self.timeStamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
+        copy.retryInMilli = [self.retryInMilli copyWithZone:zone];
         copy.willRetry = self.willRetry;
         copy.trackingState = self.trackingState;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
