@@ -359,11 +359,6 @@ static NSString * fbAppIdStatic = nil;
             this.allowAdServicesInfoReading = null;
             this.allowIdfaReading = null;
             this.allowSkAdNetworkHandling = null;
-            this.secretId = null;
-            this.info1 = null;
-            this.info2 = null;
-            this.info3 = null;
-            this.info4 = null;
             this.openDeferredDeeplink = null;
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
@@ -452,13 +447,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.deactivateSkAdNetworkHandling = function() {
             this.allowSkAdNetworkHandling = false;
-        };
-        AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
-            this.secretId = secretId;
-            this.info1 = info1;
-            this.info2 = info2;
-            this.info3 = info3;
-            this.info4 = info4;
         };
         AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
             this.openDeferredDeeplink = shouldOpen;

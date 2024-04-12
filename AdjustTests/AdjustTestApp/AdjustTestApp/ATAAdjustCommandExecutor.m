@@ -270,24 +270,6 @@
         [adjustConfig setDefaultTracker:defaultTracker];
     }
 
-    if ([parameters objectForKey:@"appSecret"]) {
-        NSArray *appSecretList = [parameters objectForKey:@"appSecret"];
-        if ([appSecretList count] == 5 &&
-            [appSecretList[0] length] > 0 &&
-            [appSecretList[1] length] > 0 &&
-            [appSecretList[2] length] > 0 &&
-            [appSecretList[3] length] > 0 &&
-            [appSecretList[4] length] > 0) {
-            NSUInteger secretId = [appSecretList[0] integerValue];
-            NSUInteger part1 = [appSecretList[1] integerValue];
-            NSUInteger part2 = [appSecretList[2] integerValue];
-            NSUInteger part3 = [appSecretList[3] integerValue];
-            NSUInteger part4 = [appSecretList[4] integerValue];
-
-            [adjustConfig setAppSecret:secretId info1:part1 info2:part2 info3:part3 info4:part4];
-        }
-    }
-
     if ([parameters objectForKey:@"delayStart"]) {
         NSString *delayStartS = [parameters objectForKey:@"delayStart"][0];
         double delayStart = [delayStartS doubleValue];

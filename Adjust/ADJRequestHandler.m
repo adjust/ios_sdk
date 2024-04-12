@@ -58,7 +58,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     [self.exceptionKeys addObject:@"headers_id"];
     [self.exceptionKeys addObject:@"native_version"];
     [self.exceptionKeys addObject:@"algorithm"];
-    [self.exceptionKeys addObject:@"app_secret"];
     [self.exceptionKeys addObject:@"adj_signing_id"];
 
     return self;
@@ -85,15 +84,11 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                           initWithDictionary:parameters];
     [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
 
-    NSString * appSecret = [parametersCopy objectForKey:@"app_secret"];
-    [parametersCopy removeObjectForKey:@"app_secret"];
-
     [self signWithSigV2PluginWithParams:parametersCopy
                            activityKind:activityKind
                               clientSdk:clientSdk];
     NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                       activityKind:activityKind
-                                                          appSecret:appSecret];
+                                                       activityKind:activityKind];
 
     NSMutableURLRequest *urlRequest = [self requestForPostPackage:path
                                                         clientSdk:clientSdk
@@ -127,15 +122,11 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                           initWithDictionary:parameters];
     [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
 
-    NSString *appSecret = [parametersCopy objectForKey:@"app_secret"];
-    [parametersCopy removeObjectForKey:@"app_secret"];
-
     [self signWithSigV2PluginWithParams:parametersCopy
                            activityKind:activityKind
                               clientSdk:clientSdk];
     NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                       activityKind:activityKind
-                                                          appSecret:appSecret];
+                                                       activityKind:activityKind];
 
     NSMutableURLRequest *urlRequest = [self requestForGetPackage:path
                                                        clientSdk:clientSdk
@@ -476,9 +467,7 @@ authorizationHeader:(NSString *)authorizationHeader
 
 #pragma mark - Authorization Header
 - (NSString *)buildAuthorizationHeader:(NSDictionary *)parameters
-                          activityKind:(ADJActivityKind)activityKind
-                             appSecret:(NSString *)appSecret
-{
+                          activityKind:(ADJActivityKind)activityKind {
     NSString *adjSigningId = [parameters objectForKey:@"adj_signing_id"];
     NSString *signature = [parameters objectForKey:@"signature"];
     NSString *headersId = [parameters objectForKey:@"headers_id"];
@@ -494,19 +483,11 @@ authorizationHeader:(NSString *)authorizationHeader
     }
 
     NSString *secretId = [parameters objectForKey:@"secret_id"];
-    NSString *authorizationHeaderWithSecretId = [self buildAuthorizationHeaderV2:signature
-                                                                        secretId:secretId
-                                                                       headersId:headersId
-                                                                   nativeVersion:nativeVersion
-                                                                       algorithm:algorithm];
-    if (authorizationHeaderWithSecretId != nil) {
-        return authorizationHeaderWithSecretId;
-    }
-
-    return [self buildAuthorizationHeaderV1:appSecret
-                                      secretId:secretId
-                                    parameters:parameters
-                                  activityKind:activityKind];
+    return [self buildAuthorizationHeaderV2:signature
+                                   secretId:secretId
+                                  headersId:headersId
+                              nativeVersion:nativeVersion
+                                  algorithm:algorithm];
 }
 
 - (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
@@ -556,75 +537,6 @@ authorizationHeader:(NSString *)authorizationHeader
         return [authorizationHeader stringByAppendingFormat:@",native_version=\"\""];
     }
     return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
-}
-
-- (NSString *)buildAuthorizationHeaderV1:(NSString *)appSecret
-                              secretId:(NSString *)secretId
-                              parameters:(NSDictionary *)parameters
-                       activityKind:(ADJActivityKind)activityKind
-{
-    if (appSecret == nil) {
-        return nil;
-    }
-
-    NSString *activityKindS = [ADJActivityKindUtil activityKindToString:activityKind];
-    NSDictionary *signatureParameters = [self buildSignatureParameters:parameters
-                                                                appSecret:appSecret
-                                                            activityKindS:activityKindS];
-    NSMutableString *fields = [[NSMutableString alloc] initWithCapacity:5];
-    NSMutableString *clearSignature = [[NSMutableString alloc] initWithCapacity:5];
-
-    // signature part of header
-    for (NSDictionary *key in signatureParameters) {
-        [fields appendFormat:@"%@ ", key];
-        NSString *value = [signatureParameters objectForKey:key];
-        [clearSignature appendString:value];
-    }
-
-    NSString *secretIdHeader = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
-    // algorithm part of header
-    NSString *algorithm = @"sha256";
-    NSString *signature = [clearSignature adjSha256];
-    NSString *signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
-    NSString *algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm];
-    // fields part of header
-    // Remove last empty space.
-    if (fields.length > 0) {
-        [fields deleteCharactersInRange:NSMakeRange(fields.length - 1, 1)];
-    }
-
-    NSString *fieldsHeader = [NSString stringWithFormat:@"headers=\"%@\"", fields];
-    // putting it all together
-    NSString *authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
-                                     secretIdHeader,
-                                     signatureHeader,
-                                     algorithmHeader,
-                                     fieldsHeader];
-    return authorizationHeader;
-}
-
-- (NSDictionary *)buildSignatureParameters:(NSDictionary *)parameters
-                                 appSecret:(NSString *)appSecret
-                             activityKindS:(NSString *)activityKindS {
-    NSString *appSecretName = @"app_secret";
-    NSString *sourceName = @"source";
-    NSString *payloadName = @"payload";
-    NSString *activityKindName = @"activity_kind";
-    NSString *activityKindValue = activityKindS;
-    NSString *createdAtName = @"created_at";
-    NSString *createdAtValue = [parameters objectForKey:createdAtName];
-    NSString *deviceIdentifierName = [self getValidIdentifier:parameters];
-    NSString *deviceIdentifierValue = [parameters objectForKey:deviceIdentifierName];
-    NSMutableDictionary *signatureParameters = [[NSMutableDictionary alloc] initWithCapacity:6];
-
-    [self checkAndAddEntry:signatureParameters key:appSecretName value:appSecret];
-    [self checkAndAddEntry:signatureParameters key:createdAtName value:createdAtValue];
-    [self checkAndAddEntry:signatureParameters key:activityKindName value:activityKindValue];
-    [self checkAndAddEntry:signatureParameters key:deviceIdentifierName value:deviceIdentifierValue];
-    [self checkAndAddEntry:signatureParameters key:sourceName value:parameters[sourceName]];
-    [self checkAndAddEntry:signatureParameters key:payloadName value:parameters[payloadName]];
-
-    return signatureParameters;
 }
 
 - (void)checkAndAddEntry:(NSMutableDictionary *)parameters
