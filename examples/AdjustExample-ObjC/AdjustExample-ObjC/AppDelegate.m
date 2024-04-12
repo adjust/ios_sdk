@@ -37,8 +37,8 @@
     // [adjustConfig setCoppaCompliantEnabled:YES];
     
     // Enable LinkMe feature.
-    // [adjustConfig setLinkMeEnabled:YES];
-    
+    // [adjustConfig enableLinkMe];
+
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
     
