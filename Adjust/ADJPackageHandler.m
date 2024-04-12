@@ -95,7 +95,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
         [self.activityHandler setTrackingStateOptedOut];
         return;
     }
-    if (responseData.jsonResponse == nil) {
+    if (responseData.jsonResponse == nil || responseData.retryInMilli != nil) {
         [self closeFirstPackage:responseData];
     } else {
         [self sendNextPackage:responseData];
@@ -130,21 +130,42 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
                      }];
 
     NSTimeInterval waitTime;
-    if (responseData.activityKind == ADJActivityKindSession && [ADJUserDefaults getInstallTracked] == NO) {
-        waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount backoffStrategy:self.backoffStrategyForInstallSession];
-    } else {
-        waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount backoffStrategy:self.backoffStrategy];
-    }
-    NSString *waitTimeFormatted = [ADJUtil secondsNumberFormat:waitTime];
+    if (responseData.retryInMilli != nil) {
+        waitTime = responseData.retryInMilli.unsignedIntegerValue / 1000.0;
 
-    [self.logger verbose:@"Waiting for %@ seconds before retrying the %d time", waitTimeFormatted, self.lastPackageRetriesCount];
-    self.totalWaitTime += waitTime;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)), self.internalQueue, ^{
+        [self.logger verbose:@"Waiting for %@ seconds before retrying with retry_in",
+         [ADJUtil secondsNumberFormat:waitTime]];
+    } else {
+        waitTime = [self retryPackageUsingBackoffWithResponse:responseData];
+    }
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)),
+                   self.internalQueue, ^{
         [self.logger verbose:@"Package handler finished waiting"];
         dispatch_semaphore_signal(self.sendingSemaphore);
         responseData.sdkPackage.waitBeforeSend += waitTime;
         [self sendFirstPackage];
     });
+}
+
+- (NSTimeInterval)retryPackageUsingBackoffWithResponse:(ADJResponseData *)responseData {
+    self.lastPackageRetriesCount++;
+
+    NSTimeInterval waitTime;
+    if (responseData.activityKind == ADJActivityKindSession
+        && [ADJUserDefaults getInstallTracked] == NO)
+    {
+        waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount
+                        backoffStrategy:self.backoffStrategyForInstallSession];
+    } else {
+        waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount
+                        backoffStrategy:self.backoffStrategy];
+    }
+
+    [self.logger verbose:@"Waiting for %@ seconds before retrying the %d time",
+     [ADJUtil secondsNumberFormat:waitTime], self.lastPackageRetriesCount];
+
+    return waitTime;
 }
 
 - (void)pauseSending {
