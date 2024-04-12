@@ -186,7 +186,6 @@
         NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
         NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
-        NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
         NSNumber *coppaCompliantEnabled = [data objectForKey:@"coppaCompliantEnabled"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
@@ -230,9 +229,6 @@
         }
         if ([self isFieldValid:logLevel]) {
             [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
-        }
-        if ([self isFieldValid:eventBufferingEnabled]) {
-            [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
         }
         if ([self isFieldValid:coppaCompliantEnabled]) {
             [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];

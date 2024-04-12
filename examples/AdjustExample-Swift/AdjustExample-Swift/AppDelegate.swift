@@ -21,9 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Change the log level.
         adjustConfig?.logLevel = ADJLogLevelVerbose
         
-        // Enable event buffering.
-        // adjustConfig?.eventBufferingEnabled = true
-        
         // Set default tracker.
         // adjustConfig?.defaultTracker = "{TrackerToken}"
         

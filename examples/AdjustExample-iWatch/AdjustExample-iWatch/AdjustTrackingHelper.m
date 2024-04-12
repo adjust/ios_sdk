@@ -32,9 +32,6 @@
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
     
-    // Enable event buffering.
-    // [adjustConfig setEventBufferingEnabled:YES];
-    
     // Set default tracker.
     // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
     
