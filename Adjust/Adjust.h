@@ -296,7 +296,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)disableThirdPartySharing;
 
 /**
- * @brief Track third paty sharing with possibility to allow or disallow it.
+ * @brief Track third party sharing with possibility to allow or disallow it.
  *
  * @param thirdPartySharing Third party sharing choice.
  */
