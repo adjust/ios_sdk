@@ -257,7 +257,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
     if (responseData.retryInMilli != nil) {
         self.lastPackageRetryInMilli = responseData.retryInMilli;
-        [self.logger error:@"Retrying purchase_verification package with retry in %s ms",
+        [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
          [responseData.retryInMilli intValue]];
         return YES;
     }
