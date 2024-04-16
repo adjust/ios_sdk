@@ -31,6 +31,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, copy) NSNumber *errorCode;
 
+@property (nonatomic, copy) NSNumber *continueInMilli;
+
 @property (nonatomic, copy) NSNumber *retryInMilli;
 
 @property (nonatomic, assign) BOOL success;
