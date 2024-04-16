@@ -205,7 +205,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
 
     if (self.lastPackageRetryInMilli != nil) {
-        NSTimeInterval waitTime = self.lastPackageRetryInMilli.unsignedIntegerValue / 1000.0;
+        NSTimeInterval waitTime = [self.lastPackageRetryInMilli intValue] / 1000.0;
 
         [self.logger verbose:@"Waiting for %@ seconds before retrying sdk_click with retry_in",
          [ADJUtil secondsNumberFormat:waitTime]];
@@ -279,8 +279,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
     if (responseData.retryInMilli != nil) {
         self.lastPackageRetryInMilli = responseData.retryInMilli;
-        [self.logger error:@"Retrying sdk_click package with retry in %@ ms",
-         responseData.retryInMilli.unsignedIntegerValue];
+        [self.logger error:@"Retrying sdk_click package with retry in %d ms",
+         [responseData.retryInMilli intValue]];
         return YES;
     }
 

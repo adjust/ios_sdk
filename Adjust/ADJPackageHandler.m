@@ -131,7 +131,7 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     NSTimeInterval waitTime;
     if (responseData.retryInMilli != nil) {
-        waitTime = responseData.retryInMilli.unsignedIntegerValue / 1000.0;
+        waitTime = [responseData.retryInMilli intValue] / 1000.0;
 
         [self.logger verbose:@"Waiting for %@ seconds before retrying with retry_in",
          [ADJUtil secondsNumberFormat:waitTime]];

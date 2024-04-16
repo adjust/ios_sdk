@@ -182,7 +182,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
 
     if (self.lastPackageRetryInMilli != nil) {
-        NSTimeInterval waitTime = self.lastPackageRetryInMilli.unsignedIntegerValue / 1000.0;
+        NSTimeInterval waitTime = [self.lastPackageRetryInMilli intValue] / 1000.0;
 
         [self.logger verbose:
          @"Waiting for %@ seconds before retrying purchase_verification with retry_in",
@@ -257,8 +257,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
     if (responseData.retryInMilli != nil) {
         self.lastPackageRetryInMilli = responseData.retryInMilli;
-        [self.logger error:@"Retrying purchase_verification package with retry in %@ ms",
-         responseData.retryInMilli.unsignedIntegerValue];
+        [self.logger error:@"Retrying purchase_verification package with retry in %s ms",
+         [responseData.retryInMilli intValue]];
         return YES;
     }
 
