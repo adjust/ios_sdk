@@ -32,6 +32,7 @@ static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;
 static NSRegularExpression *shortUniversalLinkRegex = nil;
+static NSRegularExpression *goLinkUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
 static NSString * const kClientSdk                  = @"ios5.0.0";
@@ -41,6 +42,7 @@ static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
 static NSString * const kUniversalLinkPattern       = @"https://[^.]*\\.ulink\\.adjust\\.com/ulink/?(.*)";
 static NSString * const kOptionalRedirectPattern    = @"adjust_redirect=[^&#]*";
 static NSString * const kShortUniversalLinkPattern  = @"http[s]?://[a-z0-9]{4}\\.(?:[a-z]{2}\\.)?adj\\.st/?(.*)";
+static NSString * const kGoLinkUniversalLinkPattern = @"https://[^.]*\\.go\\.link/?(.*)";
 static NSString * const kExcludedDeeplinksPattern   = @"^(fb|vk)[0-9]{5,}[^:]*://authorize.*access_token=.*";
 static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z";
 
@@ -56,6 +58,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [self initializeShortUniversalLinkRegex];
     [self initializeOptionalRedirectRegex];
     [self initializeExcludedDeeplinkRegex];
+    [self initializeGoLinkUniversalLinkRegex];
 }
 
 + (void)teardown {
@@ -63,6 +66,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     secondsNumberFormatter = nil;
     optionalRedirectRegex = nil;
     shortUniversalLinkRegex = nil;
+    goLinkUniversalLinkRegex = nil;
 }
 
 + (void)initializeUniversalLinkRegex {
@@ -87,6 +91,18 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return;
     }
     shortUniversalLinkRegex = regex;
+}
+
++ (void)initializeGoLinkUniversalLinkRegex {
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:kGoLinkUniversalLinkPattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    if ([ADJUtil isNotNull:error]) {
+        [ADJAdjustFactory.logger error:@"go.link universal link regex rule error (%@)", [error description]];
+        return;
+    }
+    goLinkUniversalLinkRegex = regex;
 }
 
 + (void)initializeOptionalRedirectRegex {
@@ -584,13 +600,20 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         [logger error:@"Short Universal link regex not correctly configured"];
         return nil;
     }
+    if (goLinkUniversalLinkRegex == nil) {
+        [logger error:@"go.link universal link regex not correctly configured"];
+        return nil;
+    }
 
     NSArray<NSTextCheckingResult *> *matches = [universalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
     if ([matches count] == 0) {
         matches = [shortUniversalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
         if ([matches count] == 0) {
-            [logger error:@"Url doesn't match as universal link or short version"];
-            return nil;
+            matches = [goLinkUniversalLinkRegex matchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])];
+            if ([matches count] == 0) {
+                [logger error:@"URL doesn't match any of the Adjust universal link versions"];
+                return nil;
+            }
         }
     }
     if ([matches count] > 1) {
@@ -607,7 +630,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSString *tailSubString = [urlString substringWithRange:[match rangeAtIndex:1]];
     NSString *finalTailSubString = [ADJUtil removeOptionalRedirect:tailSubString];
     NSString *extractedUrlString = [NSString stringWithFormat:@"%@://%@", scheme, finalTailSubString];
-    [logger info:@"Converted deeplink from universal link %@", extractedUrlString];
+    [logger info:@"Converted deeplink from universal link %@", [url absoluteString]];
     NSURL *extractedUrl = [NSURL URLWithString:extractedUrlString];
     if ([ADJUtil isNull:extractedUrl]) {
         [logger error:@"Unable to parse converted deeplink from universal link %@", extractedUrlString];
