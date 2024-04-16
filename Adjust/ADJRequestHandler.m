@@ -539,33 +539,6 @@ authorizationHeader:(NSString *)authorizationHeader
     return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
 }
 
-- (void)checkAndAddEntry:(NSMutableDictionary *)parameters
-                     key:(NSString *)key
-                   value:(NSString *)value {
-    if (key == nil) {
-        return;
-    }
-
-    if (value == nil) {
-        return;
-    }
-
-    [parameters setObject:value forKey:key];
-}
-
-- (NSString *)getValidIdentifier:(NSDictionary *)parameters {
-    NSString *idfaName = @"idfa";
-    NSString *randomTokenName = @"random_token";
-
-    if ([parameters objectForKey:idfaName] != nil) {
-        return idfaName;
-    }
-    if ([parameters objectForKey:randomTokenName] != nil) {
-        return randomTokenName;
-    }
-    return nil;
-}
-
 #pragma mark - JSON
 - (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
     NSError *error = nil;
