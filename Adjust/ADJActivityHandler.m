@@ -2224,13 +2224,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     [selfI resumeSendingI:selfI];
 
-    // try to send if it's the first launch and it hasn't received the session response
-    if ([selfI.internalState isFirstLaunch] &&
-        [selfI.internalState hasSessionResponseNotBeenProcessed])
-    {
-        [selfI.packageHandler sendFirstPackage];
-    }
-
     // try to send
     [selfI.packageHandler sendFirstPackage];
 }
