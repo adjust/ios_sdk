@@ -311,6 +311,12 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
         [self launchEventResponseTasks:(ADJEventResponseData*)responseData];
         return;
     }
+
+    // check if it's a purchase verification response
+    if ([responseData isKindOfClass:[ADJPurchaseVerificationResponseData class]]) {
+        [self launchPurchaseVerificationResponseTasks:(ADJPurchaseVerificationResponseData *)responseData];
+        return;
+    }
 }
 
 - (void)launchEventResponseTasks:(ADJEventResponseData *)eventResponseData {
@@ -342,6 +348,15 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
                          [selfI launchAttributionResponseTasksI:selfI attributionResponseData:attributionResponseData];
+                     }];
+}
+
+- (void)launchPurchaseVerificationResponseTasks:(ADJPurchaseVerificationResponseData *)purchaseVerificationResponseData {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+                         [selfI launchPurchaseVerificationResponseTasksI:selfI
+                                        purchaseVerificationResponseData:purchaseVerificationResponseData];
                      }];
 }
 
@@ -1483,6 +1498,17 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     [selfI prepareDeeplinkI:selfI responseData:attributionResponseData];
+}
+
+- (void)launchPurchaseVerificationResponseTasksI:(ADJActivityHandler *)selfI
+                purchaseVerificationResponseData:(ADJPurchaseVerificationResponseData *)purchaseVerificationResponseData {
+    [selfI.logger debug:
+        @"Got purchase_verification JSON response with message: %@", purchaseVerificationResponseData.message];
+    ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+    verificationResult.verificationStatus = purchaseVerificationResponseData.jsonResponse[@"verification_status"];
+    verificationResult.code = [(NSNumber *)purchaseVerificationResponseData.jsonResponse[@"code"] intValue];
+    verificationResult.message = purchaseVerificationResponseData.jsonResponse[@"message"];
+    purchaseVerificationResponseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
 }
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *)selfI
