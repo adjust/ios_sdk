@@ -85,7 +85,7 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
-        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample"];
+        [Adjust convertUniversalLink:[userActivity webpageURL] withScheme:@"adjustExample"];
         [Adjust appWillOpenUrl:[userActivity webpageURL]];
     }
     
