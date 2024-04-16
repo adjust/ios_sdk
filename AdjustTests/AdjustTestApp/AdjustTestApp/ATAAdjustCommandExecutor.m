@@ -93,8 +93,8 @@
         [self measurementConsent:parameters];
     } else if ([methodName isEqualToString:@"trackSubscription"]) {
         [self trackSubscription:parameters];
-    } else if ([methodName isEqualToString:@"trackAdRevenueV2"]) {
-        [self trackAdRevenueV2:parameters];
+    } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
+        [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"getLastDeeplink"]) {
         [self getLastDeeplink:parameters];
     } else if ([methodName isEqualToString:@"verifyPurchase"]) {
@@ -674,7 +674,7 @@
     [Adjust trackSubscription:subscription];
 }
 
-- (void)trackAdRevenueV2:(NSDictionary *)parameters {
+- (void)trackAdRevenue:(NSDictionary *)parameters {
     NSString *source = nil;
     if ([parameters objectForKey:@"adRevenueSource"]) {
         if ([[parameters objectForKey:@"adRevenueSource"] count] > 0) {
