@@ -205,7 +205,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @return URL object in custom URL scheme style prefixed with given scheme name.
  */
-+ (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
++ (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
 /**
  * @brief Tell the adjust SDK to stop waiting for delayed initialisation timer to complete but rather to start
@@ -423,7 +423,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (nullable ADJAttribution *)attribution;
 
-- (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
+- (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
 - (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 

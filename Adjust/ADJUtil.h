@@ -90,7 +90,7 @@ typedef void (^isInactiveInjected)(BOOL);
                            source:(NSDictionary *)source
                     parameterName:(NSString *)parameterName;
 
-+ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme;
++ (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme;
 
 + (NSTimeInterval)waitingTime:(NSInteger)retries
               backoffStrategy:(ADJBackoffStrategy *)backoffStrategy;

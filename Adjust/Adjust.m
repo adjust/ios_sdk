@@ -161,9 +161,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
++ (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
     @synchronized (self) {
-        return [[Adjust getInstance] convertUniversalLink:[url copy] scheme:[scheme copy]];
+        return [[Adjust getInstance] convertUniversalLink:[url copy] withScheme:[scheme copy]];
     }
 }
 
@@ -451,8 +451,8 @@ static dispatch_once_t onceToken = 0;
     return [ADJUtil idfv];
 }
 
-- (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
-    return [ADJUtil convertUniversalLink:url scheme:scheme];
+- (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
+    return [ADJUtil convertUniversalLink:url withScheme:scheme];
 }
 
 - (void)sendFirstPackages {

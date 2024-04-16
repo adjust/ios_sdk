@@ -576,7 +576,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return convertedDictionary;
 }
 
-+ (NSURL *)convertUniversalLink:(NSURL *)url scheme:(NSString *)scheme {
++ (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
     id<ADJLogger> logger = ADJAdjustFactory.logger;
 
     if ([ADJUtil isNull:url]) {
