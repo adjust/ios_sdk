@@ -2746,25 +2746,24 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                                coarseValue:coarseValue
                                                 lockWindow:lockWindow
                                          completionHandler:^(NSError *error) {
-        if (error) {
-            // handle error
-        } else {
-            // ping old callback if implemented
-            if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
-                [self.logger debug:@"Launching adjustConversionValueUpdated: delegate"];
-                [ADJUtil launchInMainThread:self.adjustDelegate
-                                   selector:@selector(adjustConversionValueUpdated:)
-                                 withObject:conversionValue];
-            }
-            // ping new callback if implemented
-            if ([self.adjustDelegate respondsToSelector:@selector(adjustConversionValueUpdated:coarseValue:lockWindow:)]) {
-                [self.logger debug:@"Launching adjustConversionValueUpdated:coarseValue:lockWindow: delegate"];
-                [ADJUtil launchInMainThread:^{
-                    [self.adjustDelegate adjustConversionValueUpdated:conversionValue
-                                                          coarseValue:coarseValue
-                                                           lockWindow:lockWindow];
-                }];
-            }
+        // Create updated conversion data dictionary
+        NSMutableDictionary *conversionParams = [[NSMutableDictionary alloc] init];
+        [conversionParams setObject:conversionValue.stringValue forKey:@"skadn_conv_value"];
+        if (coarseValue != nil) {
+            [conversionParams setObject:coarseValue forKey:@"skadn_coarse_value"];
+        }
+        if (lockWindow != nil) {
+            NSString *val = (lockWindow.boolValue) ? @"true" : @"false";
+            [conversionParams setObject:val forKey:@"skadn_lock_window"];
+        }
+
+        // Ping the callback method if implemented
+        if ([self.adjustDelegate respondsToSelector:@selector(adjustSKAdNetworkUpdatedWithConversionData:error:)]) {
+            [self.logger debug:@"Launching delegate's method adjustSKAdNetworkUpdatedWithConversionData:error:"];
+            [ADJUtil launchInMainThread:^{
+                [self.adjustDelegate adjustSKAdNetworkUpdatedWithConversionData:conversionParams
+                                                                          error:error];
+            }];
         }
     }];
 }

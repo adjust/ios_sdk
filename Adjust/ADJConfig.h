@@ -77,25 +77,18 @@
 - (BOOL)adjustDeeplinkResponse:(nullable NSURL *)deeplink;
 
 /**
- * @brief Optional SKAdNetwork pre 4.0 style delegate method that gets called when Adjust SDK sets conversion value for the user.
+ * @brief Optional SKAdNetwork delegate method that gets called when Adjust SDK updates conversion value for the user.
+ *        The conversionData dictionary will contain string representation for the values set by Adjust SDK.
+ *        Avalable keys are "skadn_conv_value", "skadn_coarse_value" and "skadn_lock_window".
+ *        Example: {"skadn_conv_value":"1",  "skadn_coarse_value":"low", "skadn_lock_window":"false"}
+ *        You can use this callback even while using pre 4.0 SKAdNetwork.
+ *        In that case the dictionary will contain only "skadn_conv_value" key.
  *
- * @param conversionValue Conversion value used by Adjust SDK to invoke updateConversionValue: API.
+ * @param conversionData Conversion parameters set by Adjust SDK
+ * @param error Error returned by SKAdNetwork API
  */
-- (void)adjustConversionValueUpdated:(nullable NSNumber *)conversionValue;
-
-/**
- * @brief Optional SKAdNetwork 4.0 style delegate method that gets called when Adjust SDK sets conversion value for the user.
- *        You can use this callback even with using pre 4.0 SKAdNetwork.
- *        In that case you can expect coarseValue and lockWindow values to be nil.
- *
- * @param fineValue Conversion value set by Adjust SDK.
- * @param coarseValue Coarse value set by Adjust SDK.
- * @param lockWindow Lock window set by Adjust SDK.
- */
-- (void)adjustConversionValueUpdated:(nullable NSNumber *)fineValue
-                         coarseValue:(nullable NSString *)coarseValue
-                          lockWindow:(nullable NSNumber *)lockWindow;
-
+- (void)adjustSKAdNetworkUpdatedWithConversionData:(nonnull NSDictionary *)conversionData
+                                             error:(nullable NSError *)error;
 @end
 
 /**
