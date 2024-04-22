@@ -187,17 +187,10 @@ const BOOL kSKANRegisterLockWindow = NO;
                                                           lockWindow:numLockWindow
                                                    completionHandler:^(NSError * _Nonnull error) {
 
-            NSDictionary *conversionParams = [self skanCallbackDataWithConversionValue:numConversionValue
-                                                                           coarseValue:kSKANRegisterCoarseValue
-                                                                            lockWindow:numLockWindow
-                                                                    apiInvocationError:error];
-            // Ping the callback method if implemented
-            if ([self.adjustDelegate respondsToSelector:@selector(adjustSKAdNetworkUpdatedWithConversionData:)]) {
-                [self.logger debug:@"Launching delegate's method adjustSKAdNetworkUpdatedWithConversionData:"];
-                [ADJUtil launchInMainThread:^{
-                    [self.adjustDelegate adjustSKAdNetworkUpdatedWithConversionData:conversionParams];
-                }];
-            }
+            [self notifySKANCallbackWithConversionValue:numConversionValue
+                                            coarseValue:kSKANRegisterCoarseValue
+                                             lockWindow:numLockWindow
+                                     apiInvocationError:error];
         }];
     }
 
@@ -2768,18 +2761,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                                coarseValue:coarseValue
                                                 lockWindow:lockWindow
                                          completionHandler:^(NSError *error) {
-        
-        NSDictionary *conversionParams = [self skanCallbackDataWithConversionValue:conversionValue
-                                                                       coarseValue:coarseValue
-                                                                        lockWindow:lockWindow
-                                                                apiInvocationError:error];
-        // Ping the callback method if implemented
-        if ([self.adjustDelegate respondsToSelector:@selector(adjustSKAdNetworkUpdatedWithConversionData:)]) {
-            [self.logger debug:@"Launching delegate's method adjustSKAdNetworkUpdatedWithConversionData:"];
-            [ADJUtil launchInMainThread:^{
-                [self.adjustDelegate adjustSKAdNetworkUpdatedWithConversionData:conversionParams];
-            }];
-        }
+
+        [self notifySKANCallbackWithConversionValue:conversionValue
+                                        coarseValue:coarseValue
+                                         lockWindow:lockWindow
+                                 apiInvocationError:error];
     }];
 }
 
@@ -2856,10 +2842,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 #pragma mark Utils
 
-- (NSDictionary *)skanCallbackDataWithConversionValue:(nonnull NSNumber *)conversionValue
-                                          coarseValue:(nullable NSString *)coarseValue
-                                           lockWindow:(nullable NSNumber *)lockWindow
-                                   apiInvocationError:(nullable NSError *)error {
+- (void)notifySKANCallbackWithConversionValue:(nonnull NSNumber *)conversionValue
+                                  coarseValue:(nullable NSString *)coarseValue
+                                   lockWindow:(nullable NSNumber *)lockWindow
+                           apiInvocationError:(nullable NSError *)error {
     // Create updated conversion data dictionary
     NSMutableDictionary<NSString *, NSString *> *conversionParams = [[NSMutableDictionary alloc] init];
     [conversionParams setObject:conversionValue.stringValue forKey:kSKAdNetworkConversionValue];
@@ -2873,7 +2859,14 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (error != nil) {
         [conversionParams setObject:error.localizedDescription forKey:kSKAdNetworkAPICallError];
     }
-    return conversionParams;
+
+    // Ping the callback method if implemented
+    if ([self.adjustDelegate respondsToSelector:@selector(adjustSKAdNetworkUpdatedWithConversionData:)]) {
+        [self.logger debug:@"Launching delegate's method adjustSKAdNetworkUpdatedWithConversionData:"];
+        [ADJUtil launchInMainThread:^{
+            [self.adjustDelegate adjustSKAdNetworkUpdatedWithConversionData:conversionParams];
+        }];
+    }
 }
 
 @end
