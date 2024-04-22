@@ -145,7 +145,10 @@
 
 #pragma mark - Adjust helper methods
 
-- (void)adjRegisterWithCompletionHandler:(void (^)(NSError *error))callback {
+- (void)adjRegisterWithConversionValue:(NSInteger)conversionValue
+                           coarseValue:(NSString *)coarseValue
+                            lockWindow:(NSNumber *)lockWindow
+                     completionHandler:(void (^)(NSError *error))callback {
     if (NSClassFromString(@"SKAdNetwork") == nil) {
         [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return;
