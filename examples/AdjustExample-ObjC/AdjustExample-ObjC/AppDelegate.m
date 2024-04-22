@@ -131,12 +131,9 @@
     return YES;
 }
 
-- (void)adjustSKAdNetworkUpdatedWithConversionData:(NSDictionary *)conversionData
-                                             error:(NSError *)error {
+- (void)adjustSKAdNetworkUpdatedWithConversionData:(NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"Conversion value updated callback called!");
-    NSLog(@"Conversion value dictionary: \n%@\n error: \n%@", 
-          conversionData.description,
-          error.localizedDescription);
+    NSLog(@"Conversion value dictionary: \n%@", data.description);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -30,7 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
                            lockWindow:(BOOL)lockWindow
                     completionHandler:(void (^)(NSError *error))completion;
 
-- (void)adjRegisterWithCompletionHandler:(void (^)(NSError *error))callback;
+- (void)adjRegisterWithConversionValue:(NSInteger)conversionValue
+                           coarseValue:(NSString *)coarseValue
+                            lockWindow:(NSNumber *)lockWindow
+                     completionHandler:(void (^)(NSError *error))callback;
 
 - (void)adjUpdateConversionValue:(NSInteger)conversionValue
                      coarseValue:(NSString *)coarseValue

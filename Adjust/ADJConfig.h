@@ -78,17 +78,16 @@
 
 /**
  * @brief Optional SKAdNetwork delegate method that gets called when Adjust SDK updates conversion value for the user.
- *        The conversionData dictionary will contain string representation for the values set by Adjust SDK.
- *        Avalable keys are "skadn_conv_value", "skadn_coarse_value" and "skadn_lock_window".
+ *        The conversionData dictionary will contain string representation for the values set by Adjust SDK and
+ *        possible API invocation error.
+ *        Avalable keys are "skadn_conv_value", "skadn_coarse_value", "skadn_lock_window" and "skadn_api_call_error".
  *        Example: {"skadn_conv_value":"1",  "skadn_coarse_value":"low", "skadn_lock_window":"false"}
  *        You can use this callback even while using pre 4.0 SKAdNetwork.
  *        In that case the dictionary will contain only "skadn_conv_value" key.
  *
- * @param conversionData Conversion parameters set by Adjust SDK
- * @param error Error returned by SKAdNetwork API
+ * @param data Conversion parameters set by Adjust SDK
  */
-- (void)adjustSKAdNetworkUpdatedWithConversionData:(nonnull NSDictionary *)conversionData
-                                             error:(nullable NSError *)error;
+- (void)adjustSKAdNetworkUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data;
 @end
 
 /**
