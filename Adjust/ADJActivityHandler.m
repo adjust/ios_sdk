@@ -52,6 +52,7 @@ static double kSubSessionInterval;
 static const int kAdServicesdRetriesCount = 1;
 const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
 
+// default SKAN registration values
 const NSInteger kSKANRegisterConversionValue = 0;
 static NSString   * const kSKANRegisterCoarseValue              = @"low";
 const BOOL kSKANRegisterLockWindow = NO;
