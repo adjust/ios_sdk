@@ -15,6 +15,7 @@
 #import "ATAAdjustDelegateSessionSuccess.h"
 #import "ATAAdjustDelegateSessionFailure.h"
 #import "ATAAdjustDelegateDeferredDeeplink.h"
+#import "ATAAdjustDelegateSkan.h"
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
@@ -363,6 +364,13 @@
                 initWithTestLibrary:self.testLibrary
                 extraPath:self.extraPath
                 andReturnValue:[shouldOpenDeeplinkS boolValue]];
+    }
+
+    if ([parameters objectForKey:@"skanCallback"]) {
+        NSLog(@"skanCallback detected");
+        self.adjustDelegate =
+            [[ATAAdjustDelegateSkan alloc] initWithTestLibrary:self.testLibrary
+                                                  andExtraPath:self.extraPath];
     }
 
     if ([parameters objectForKey:@"attConsentWaitingSeconds"]) {

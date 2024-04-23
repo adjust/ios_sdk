@@ -43,6 +43,9 @@
     [self swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                swizzledSelector:@selector(adjustSessionTrackingFailedWananbeEmpty:)];
 
+    [self swizzleCallbackMethod:@selector(adjustSKAdNetworkUpdatedWithConversionData:)
+               swizzledSelector:@selector(adjustSKAdNetworkUpdatedWithConversionDataWannabeEmpty:)];
+
     return self;
 }
 
@@ -50,7 +53,8 @@
             eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
                eventFailedCallback:(BOOL)swizzleEventFailedCallback
           sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
-             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback {
+             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
+                      skanCallback:(BOOL)swizzleSkanCallback {
     // Do the swizzling where and if needed.
     if (swizzleAttributionCallback) {
         [self swizzleCallbackMethod:@selector(adjustAttributionChanged:)
@@ -75,6 +79,11 @@
     if (swizzleSessionFailedCallback) {
         [self swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                    swizzledSelector:@selector(adjustSessionTrackingFailedWananbe:)];
+    }
+
+    if (swizzleSkanCallback) {
+        [self swizzleCallbackMethod:@selector(adjustSKAdNetworkUpdatedWithConversionData:)
+                   swizzledSelector:@selector(adjustSKAdNetworkUpdatedWithConversionDataWannabe:)];
     }
 }
 
@@ -216,6 +225,16 @@
     [self.testLibrary sendInfoToServer:self.basePath];
 }
 
+- (void)adjustSKAdNetworkUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    NSLog(@"SKAN callback called!");
+
+    for (NSString *key in data) {
+        [self.testLibrary addInfoToSend:key value:[data objectForKey:key]];
+    }
+
+    [self.testLibrary sendInfoToServer:self.basePath];
+}
+
 - (void)adjustAttributionChangedWannabeEmpty:(ADJAttribution *)attribution {
     NSLog(@"Attribution callback called!");
     NSLog(@"Attribution: %@", attribution);
@@ -239,6 +258,11 @@
 - (void)adjustSessionTrackingFailedWananbeEmpty:(ADJSessionFailure *)sessionFailureResponseData {
     NSLog(@"Session failure callback called!");
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
+}
+
+- (void)adjustSKAdNetworkUpdatedWithConversionDataWannabeEmpty:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    NSLog(@"SKAN callback called!");
+    NSLog(@"SKAN stuff: %@", data);
 }
 
 @end
