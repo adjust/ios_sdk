@@ -76,6 +76,8 @@
 		9D3A34B92A2DF5FB0029CE4F /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A34B52A2DF5FB0029CE4F /* ADJPurchase.m */; };
 		9D3A34BA2A2DF5FB0029CE4F /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A34B72A2DF5FB0029CE4F /* ADJPurchaseVerificationHandler.m */; };
 		9D75AFDB210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */; };
+		9D8EF16D2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8EF16B2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.m */; };
+		9D8EF16F2BD7BECA0092AB68 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D8EF16E2BD7BECA0092AB68 /* StoreKit.framework */; };
 		9DAA5C6A25B0F81200C718DD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAA5C6925B0F81100C718DD /* AdServices.framework */; };
 		9DF38229260E9BA90033F5A1 /* NSNumber+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF38227260E9BA90033F5A1 /* NSNumber+ADJAdditions.m */; };
 		9DF92D932630ED95000FC3FC /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF92D912630ED95000FC3FC /* ADJPackageParams.m */; };
@@ -220,6 +222,9 @@
 		9D3A34B72A2DF5FB0029CE4F /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
 		9D75AFD9210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateDeferredDeeplink.h; sourceTree = "<group>"; };
 		9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateDeferredDeeplink.m; sourceTree = "<group>"; };
+		9D8EF16B2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAAdjustDelegateSkan.m; sourceTree = "<group>"; };
+		9D8EF16C2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAAdjustDelegateSkan.h; sourceTree = "<group>"; };
+		9D8EF16E2BD7BECA0092AB68 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9DAA5C6925B0F81100C718DD /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 		9DF38227260E9BA90033F5A1 /* NSNumber+ADJAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ADJAdditions.m"; sourceTree = "<group>"; };
 		9DF38228260E9BA90033F5A1 /* NSNumber+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ADJAdditions.h"; sourceTree = "<group>"; };
@@ -234,6 +239,7 @@
 			files = (
 				9D1D8E9E219246E50088E3CF /* iAd.framework in Frameworks */,
 				9DAA5C6A25B0F81200C718DD /* AdServices.framework in Frameworks */,
+				9D8EF16F2BD7BECA0092AB68 /* StoreKit.framework in Frameworks */,
 				9D1D8EA0219246EA0088E3CF /* AdSupport.framework in Frameworks */,
 				9D1D8EA2219246EF0088E3CF /* CoreTelephony.framework in Frameworks */,
 			);
@@ -434,6 +440,8 @@
 				6FFCFE6A200797D000467F01 /* ATAAdjustDelegateSessionSuccess.m */,
 				9D75AFD9210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.h */,
 				9D75AFDA210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m */,
+				9D8EF16C2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.h */,
+				9D8EF16B2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.m */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -441,6 +449,7 @@
 		9D1D8E9C219246E50088E3CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D8EF16E2BD7BECA0092AB68 /* StoreKit.framework */,
 				9DAA5C6925B0F81100C718DD /* AdServices.framework */,
 				9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */,
 				9D1D8E9F219246EA0088E3CF /* AdSupport.framework */,
@@ -545,6 +554,7 @@
 				6F3A5E812018CE14000AACD0 /* ADJActivityKind.m in Sources */,
 				6F3A5E8B2018CE14000AACD0 /* ADJPackageBuilder.m in Sources */,
 				6F3A5E8C2018CE14000AACD0 /* ADJUserDefaults.m in Sources */,
+				9D8EF16D2BD7BC4B0092AB68 /* ATAAdjustDelegateSkan.m in Sources */,
 				9D3A2AC226263AFC00BD6E44 /* ADJAdRevenue.m in Sources */,
 				6F3A5E7C2018CE14000AACD0 /* ADJLogger.m in Sources */,
 				524BACA6221C4EE800624F6C /* PSWebSocketServer.m in Sources */,

@@ -18,5 +18,6 @@
             eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
                eventFailedCallback:(BOOL)swizzleEventFailedCallback
           sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
-             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback;
+             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
+                      skanCallback:(BOOL)swizzleSkanCallback;
 @end
