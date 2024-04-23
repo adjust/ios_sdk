@@ -160,14 +160,14 @@
     }
 
     if (@available(iOS 16.1, *)) {
-        [self updatePostbackConversionValue:0
-                                coarseValue:[self getSkAdNetworkCoarseConversionValue:@"low"]
-                                 lockWindow:NO
+        [self updatePostbackConversionValue:conversionValue
+                                coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                 lockWindow:lockWindow
                           completionHandler:^(NSError * _Nonnull error) {
             callback(error);
         }];
     } else if (@available(iOS 15.4, *)) {
-        [self updatePostbackConversionValue:0
+        [self updatePostbackConversionValue:conversionValue
                           completionHandler:^(NSError * _Nonnull error) {
             callback(error);
         }];
