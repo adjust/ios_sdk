@@ -43,8 +43,8 @@
     [self swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                swizzledSelector:@selector(adjustSessionTrackingFailedWananbeEmpty:)];
 
-    [self swizzleCallbackMethod:@selector(adjustSKAdNetworkUpdatedWithConversionData:)
-               swizzledSelector:@selector(adjustSKAdNetworkUpdatedWithConversionDataWannabeEmpty:)];
+    [self swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
+               swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabeEmpty:)];
 
     return self;
 }
@@ -82,8 +82,8 @@
     }
 
     if (swizzleSkanCallback) {
-        [self swizzleCallbackMethod:@selector(adjustSKAdNetworkUpdatedWithConversionData:)
-                   swizzledSelector:@selector(adjustSKAdNetworkUpdatedWithConversionDataWannabe:)];
+        [self swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
+                   swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabe:)];
     }
 }
 
@@ -225,7 +225,7 @@
     [self.testLibrary sendInfoToServer:self.basePath];
 }
 
-- (void)adjustSKAdNetworkUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
+- (void)adjustSkanUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"SKAN callback called!");
 
     for (NSString *key in data) {
@@ -260,7 +260,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
 }
 
-- (void)adjustSKAdNetworkUpdatedWithConversionDataWannabeEmpty:(nonnull NSDictionary<NSString *, NSString *> *)data {
+- (void)adjustSkanUpdatedWithConversionDataWannabeEmpty:(nonnull NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"SKAN callback called!");
     NSLog(@"SKAN stuff: %@", data);
 }
