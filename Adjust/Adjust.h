@@ -38,6 +38,8 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @end
 
+@protocol ADJAdjustAttributionCallback;
+
 /**
  * Constants for our supported tracking environments.
  */
@@ -181,14 +183,12 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (nullable NSString *)adid;
 
 /**
- * @brief Get current attribution for the user.
+ * @brief Get current attribution for the user through a callback.
  *
  * @note Attribution information is available only after installation has been successfully tracked
  *       and attribution information arrived after that from the backend.
- *
- * @return Current attribution value for the user.
  */
-+ (nullable ADJAttribution *)attribution;
++ (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
 
 /**
  * @brief Get current Adjust SDK version string.
@@ -421,7 +421,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (nullable NSString *)sdkVersion;
 
-- (nullable ADJAttribution *)attribution;
+- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
@@ -455,5 +455,13 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+
+@end
+
+@protocol ADJAdjustAttributionCallback <NSObject>
+
+- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)adjustAttribution;
+
+- (void)didFailAttributionWithMessage:(nonnull NSString *)message;
 
 @end

@@ -287,9 +287,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (ADJAttribution *)attribution {
++ (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
     @synchronized (self) {
-        return [[Adjust getInstance] attribution];
+        [[Adjust getInstance] attributionWithCallback:attributionCallback];
     }
 }
 
@@ -633,11 +633,16 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackAdRevenue:adRevenue];
 }
 
-- (ADJAttribution *)attribution {
-    if (![self checkActivityHandler]) {
-        return nil;
+- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
+    if (attributionCallback == nil) {
+        return;
     }
-    return [self.activityHandler attribution];
+    if (![self checkActivityHandler]) {
+        [attributionCallback didFailAttributionWithMessage:
+         @"Attribution cannot be read before init"];
+        return;
+    }
+    return [self.activityHandler attributionWithCallback:attributionCallback];
 }
 
 - (NSString *)adid {

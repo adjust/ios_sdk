@@ -59,7 +59,6 @@
 
 @protocol ADJActivityHandler <NSObject>
 
-@property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 @property (nonatomic, strong) ADJTrackingStatusManager * _Nullable trackingStatusManager;
 
 - (NSString *_Nullable)adid;
@@ -116,6 +115,7 @@
 - (void)checkForNewAttStatus;
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
