@@ -134,8 +134,8 @@
         implementsDeeplinkCallback = YES;
     }
     
-    if ([delegate respondsToSelector:@selector(adjustSKAdNetworkUpdatedWithConversionData:)]) {
-        [self.logger debug:@"Delegate implements adjustSKAdNetworkUpdatedWithConversionData:"];
+    if ([delegate respondsToSelector:@selector(adjustSkanUpdatedWithConversionData:)]) {
+        [self.logger debug:@"Delegate implements adjustSkanUpdatedWithConversionData:"];
         hasResponseDelegate = YES;
     }
 

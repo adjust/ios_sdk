@@ -30,7 +30,7 @@
     return self;
 }
 
-- (void)adjustSKAdNetworkUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
+- (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"SKAN callback called!");
 
     for (NSString *key in data) {

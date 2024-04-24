@@ -131,7 +131,7 @@
     return YES;
 }
 
-- (void)adjustSKAdNetworkUpdatedWithConversionData:(NSDictionary<NSString *, NSString *> *)data {
+- (void)adjustSkanUpdatedWithConversionData:(NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"Conversion value updated callback called!");
     NSLog(@"Conversion value dictionary: \n%@", data.description);
 }
