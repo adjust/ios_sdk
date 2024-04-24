@@ -119,6 +119,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, copy) NSString* subscriptionPath;
 @property (nonatomic, copy) NSString* purchaseVerificationPath;
 @property (nonatomic, copy) AdjustResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
+@property (nonatomic, copy) ADJAttribution *attribution;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
@@ -128,7 +129,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 #pragma mark -
 @implementation ADJActivityHandler
 
-@synthesize attribution = _attribution;
 @synthesize trackingStatusManager = _trackingStatusManager;
 
 - (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
@@ -677,6 +677,15 @@ const BOOL kSkanRegisterLockWindow = NO;
                      block:^(ADJActivityHandler * selfI) {
         [selfI verifyPurchaseI:selfI purchase:purchase completionHandler:completionHandler];
     }];
+}
+
+- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
+    ADJAttribution *_Nullable localAttribution = self.attribution;
+    if (localAttribution == nil) {
+        [attributionCallback didFailAttributionWithMessage:@"Attribution not available yet"];
+    } else {
+        [attributionCallback didReadWithAdjustAttribution:localAttribution];
+    }
 }
 
 - (void)writeActivityState {
