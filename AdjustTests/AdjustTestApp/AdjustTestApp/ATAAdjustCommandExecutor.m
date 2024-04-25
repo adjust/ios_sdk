@@ -294,7 +294,9 @@
     
     if ([parameters objectForKey:@"allowIdfaReading"]) {
         NSString *allowIdfaReadingS = [parameters objectForKey:@"allowIdfaReading"][0];
-        [adjustConfig setAllowIdfaReading:[allowIdfaReadingS boolValue]];
+        if ([allowIdfaReadingS boolValue] == NO) {
+            [adjustConfig disableIdfaReading];
+        }
     }
 
     if ([parameters objectForKey:@"allowAdServicesInfoReading"]) {

@@ -1009,7 +1009,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
     }
-    if (self.adjustConfig.allowIdfaReading == NO) {
+    if (self.adjustConfig.isIdfaReadingAllowed == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
     }
     if (self.adjustConfig.allowAdServicesInfoReading == NO) {
@@ -1143,7 +1143,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     // idfa
-    if (!adjConfig.allowIdfaReading) {
+    if (!adjConfig.isIdfaReadingAllowed) {
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }

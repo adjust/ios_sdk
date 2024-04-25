@@ -67,9 +67,9 @@
     // default values
     self.sendInBackground = NO;
     self.coppaCompliantEnabled = NO;
-    self.allowIdfaReading = YES;
     self.allowAdServicesInfoReading = YES;
     _isLinkMeEnabled = NO;
+    _isIdfaReadingAllowed = YES;
     _isSKAdNetworkHandlingActive = YES;
 
     return self;
@@ -83,6 +83,10 @@
         environment:(NSString *)environment {
     [self.logger setLogLevel:logLevel
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
+}
+
+- (void)disableIdfaReading {
+    _isIdfaReadingAllowed = NO;
 }
 
 - (void)deactivateSKAdNetworkHandling {
@@ -189,7 +193,6 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.sendInBackground = self.sendInBackground;
-        copy.allowIdfaReading = self.allowIdfaReading;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
         copy.delayStart = self.delayStart;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
@@ -199,6 +202,7 @@
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
         copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
+        copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;
         copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
         // adjust delegate not copied
     }

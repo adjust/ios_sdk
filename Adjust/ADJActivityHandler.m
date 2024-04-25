@@ -148,7 +148,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     
     // check if ASA and IDFA tracking were switched off and warn just in case
-    if (adjustConfig.allowIdfaReading == NO) {
+    if (adjustConfig.isIdfaReadingAllowed == NO) {
         [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
     }
     if (adjustConfig.allowAdServicesInfoReading == NO) {

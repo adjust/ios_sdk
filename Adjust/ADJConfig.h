@@ -153,10 +153,13 @@
  */
 @property (nonatomic, assign) BOOL allowAdServicesInfoReading;
 
+@property (nonatomic, assign, readonly) BOOL isIdfaReadingAllowed;
+
 /**
- * @brief Enables/disables reading of IDFA parameter.
+ * @brief Disables reading of IDFA parameter.
  */
-@property (nonatomic, assign) BOOL allowIdfaReading;
+
+- (void)disableIdfaReading;
 
 /**
  * @brief Enables delayed start of the SDK.
