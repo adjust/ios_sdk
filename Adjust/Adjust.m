@@ -638,8 +638,13 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     if (![self checkActivityHandler]) {
-        [attributionCallback didFailAttributionWithMessage:
-         @"Attribution cannot be read before init"];
+        __block id<ADJAdjustAttributionCallback>_Nullable localAttributionCallback =
+            attributionCallback;
+        [ADJUtil launchInMainThread:^{
+            [localAttributionCallback didFailAttributionWithMessage:
+             @"Attribution cannot be read before init"];
+        }];
+
         return;
     }
     return [self.activityHandler attributionWithCallback:attributionCallback];
