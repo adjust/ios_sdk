@@ -356,7 +356,7 @@ static NSString * fbAppIdStatic = nil;
             this.delayStart = null;
             this.needsCost = null;
             this.allowAdServicesInfoReading = null;
-            this.allowIdfaReading = null;
+            this.isIdfaReadingAllowed = null;
             this.allowSkAdNetworkHandling = null;
             this.openDeferredDeeplink = null;
             this.fbPixelDefaultEventToken = null;
@@ -439,7 +439,7 @@ static NSString * fbAppIdStatic = nil;
             this.allowAdServicesInfoReading = allowAdServicesInfoReading;
         };
         AdjustConfig.prototype.disableIdfaReading = function() {
-            this.allowIdfaReading = false;
+            this.isIdfaReadingAllowed = false;
         };
         AdjustConfig.prototype.deactivateSkAdNetworkHandling = function() {
             this.allowSkAdNetworkHandling = false;

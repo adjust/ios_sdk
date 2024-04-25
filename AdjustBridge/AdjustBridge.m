@@ -191,7 +191,7 @@
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
-        NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
+        NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
         NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
@@ -245,8 +245,8 @@
         if ([self isFieldValid:allowAdServicesInfoReading]) {
             [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
         }
-        if ([self isFieldValid:allowIdfaReading]) {
-            if ([allowIdfaReading boolValue] == NO) {
+        if ([self isFieldValid:isIdfaReadingAllowed]) {
+            if ([isIdfaReadingAllowed boolValue] == NO) {
                 [adjustConfig disableIdfaReading];
             }
         }
