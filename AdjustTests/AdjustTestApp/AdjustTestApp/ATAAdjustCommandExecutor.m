@@ -19,6 +19,11 @@
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
+@interface ADJAttributionGetterSendAll : NSObject<ADJAdjustAttributionCallback>
+@property (nonatomic, strong) ATLTestLibrary *testLibrary;
+@property (nonatomic, copy) NSString *extraPath;
+@end
+
 @interface ATAAdjustCommandExecutor ()
 
 @property (nonatomic, copy) NSString *extraPath;
@@ -102,6 +107,8 @@
         [self verifyPurchase:parameters];
     } else if ([methodName isEqualToString:@"processDeeplink"]) {
         [self processDeeplink:parameters];
+    } else if ([methodName isEqualToString:@"attributionGetter"]) {
+        [self attributionGetter:parameters];
     }
 }
 
@@ -795,6 +802,42 @@
         [self.testLibrary addInfoToSend:@"resolved_link" value:resolvedLink];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
+}
+
+- (void)attributionGetter:(NSDictionary *)parameters {
+    ADJAttributionGetterSendAll *_Nonnull attributionGetter =
+        [[ADJAttributionGetterSendAll alloc] init];
+    attributionGetter.testLibrary = self.testLibrary;
+    attributionGetter.extraPath = self.extraPath;
+
+    [Adjust attributionWithCallback:attributionGetter];
+}
+
+@end
+
+@implementation ADJAttributionGetterSendAll
+
+- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)attribution {
+    [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+    [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
+    [self.testLibrary addInfoToSend:@"network" value:attribution.network];
+    [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
+    [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
+    [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
+    [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
+    [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
+    [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+    [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+    [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
+    [self.testLibrary addInfoToSend:@"state" value:attribution.state];
+
+    [self.testLibrary sendInfoToServer:self.extraPath];
+}
+
+- (void)didFailAttributionWithMessage:(nonnull NSString *)message {
+    [self.testLibrary addInfoToSend:@"fail_message" value:message];
+
+    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end
