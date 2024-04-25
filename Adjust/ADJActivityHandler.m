@@ -680,12 +680,18 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
-    ADJAttribution *_Nullable localAttribution = self.attribution;
-    if (localAttribution == nil) {
-        [attributionCallback didFailAttributionWithMessage:@"Attribution not available yet"];
-    } else {
-        [attributionCallback didReadWithAdjustAttribution:localAttribution];
-    }
+    __block ADJAttribution *_Nullable localAttribution = self.attribution;
+    __block id<ADJAdjustAttributionCallback>_Nonnull localAttributionCallback =
+        attributionCallback;
+
+    [ADJUtil launchInMainThread:^{
+        if (localAttribution == nil) {
+            [localAttributionCallback
+             didFailAttributionWithMessage:@"Attribution not available yet"];
+        } else {
+            [localAttributionCallback didReadWithAdjustAttribution:localAttribution];
+        }
+    }];
 }
 
 - (void)writeActivityState {
