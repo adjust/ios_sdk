@@ -240,7 +240,9 @@ AdjustCommandExecutor.prototype.config = function(params) {
     if ('allowIdfaReading' in params) {
         var allowIdfaReadingS = getFirstValue(params, 'allowIdfaReading');
         var allowIdfaReading = allowIdfaReadingS == 'true';
-        adjustConfig.setAllowIdfaReading(allowIdfaReading);
+        if (allowIdfaReading == false) {
+            adjustConfig.disableIdfaReading();
+        }
     }
     
     if ('allowSkAdNetworkHandling' in params) {
