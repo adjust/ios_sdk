@@ -246,7 +246,9 @@
             [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
         }
         if ([self isFieldValid:allowIdfaReading]) {
-            [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
+            if ([allowIdfaReading boolValue] == NO) {
+                [adjustConfig disableIdfaReading];
+            }
         }
         if ([self isFieldValid:attConsentWaitingSeconds]) {
             [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
