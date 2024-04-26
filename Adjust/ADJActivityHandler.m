@@ -681,16 +681,22 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
+
+    if (localAttribution == nil) {
+        if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
+            self.savedPreLaunch.cachedAttributionReadCallbackArray = [NSMutableArray array];
+        }
+
+        [self.savedPreLaunch.cachedAttributionReadCallbackArray addObject:attributionCallback];
+
+        return;
+    }
+
     __block id<ADJAdjustAttributionCallback>_Nonnull localAttributionCallback =
         attributionCallback;
 
     [ADJUtil launchInMainThread:^{
-        if (localAttribution == nil) {
-            [localAttributionCallback
-             didFailAttributionWithMessage:@"Attribution not available yet"];
-        } else {
-            [localAttributionCallback didReadWithAdjustAttribution:localAttribution];
-        }
+        [localAttributionCallback didReadWithAdjustAttribution:localAttribution];
     }];
 }
 
@@ -950,6 +956,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     [selfI preLaunchActionsI:selfI
        preLaunchActionsArray:preLaunchActions.preLaunchActionsArray];
+
+    [selfI processCachedAttributionReadCallback];
 
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
         [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
@@ -1601,6 +1609,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     selfI.attribution = attribution;
     [selfI writeAttributionI:selfI];
 
+    [selfI processCachedAttributionReadCallback];
+
     if (selfI.adjustDelegate == nil) {
         return NO;
     }
@@ -1610,6 +1620,26 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     return YES;
+}
+
+- (void)processCachedAttributionReadCallback {
+    __block ADJAttribution *_Nullable localAttribution = self.attribution;
+    if (localAttribution == nil) {
+        return;
+    }
+    if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
+        return;
+    }
+
+    for (id<ADJAdjustAttributionCallback> attributionCallback in
+         self.savedPreLaunch.cachedAttributionReadCallbackArray)
+    {
+        [ADJUtil launchInMainThread:^{
+            [attributionCallback didReadWithAdjustAttribution:localAttribution];
+        }];
+    }
+
+    [self.savedPreLaunch.cachedAttributionReadCallbackArray removeAllObjects];
 }
 
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
