@@ -486,7 +486,6 @@ static dispatch_once_t onceToken = 0;
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler addGlobalPartnerParameterI:activityHandler param:param forKey:key];
     }];
-
 }
 
 - (void)removeGlobalCallbackParameterForKey:(nonnull NSString *)key {
@@ -637,14 +636,13 @@ static dispatch_once_t onceToken = 0;
     if (attributionCallback == nil) {
         return;
     }
-    if (![self checkActivityHandler]) {
-        __block id<ADJAdjustAttributionCallback>_Nullable localAttributionCallback =
-            attributionCallback;
-        [ADJUtil launchInMainThread:^{
-            [localAttributionCallback didFailAttributionWithMessage:
-             @"Attribution cannot be read before init"];
-        }];
 
+    if (![self checkActivityHandler]) {
+        if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
+            self.savedPreLaunch.cachedAttributionReadCallbackArray = [NSMutableArray array];
+        }
+
+        [self.savedPreLaunch.cachedAttributionReadCallbackArray addObject:attributionCallback];
         return;
     }
     return [self.activityHandler attributionWithCallback:attributionCallback];

@@ -462,6 +462,4 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)adjustAttribution;
 
-- (void)didFailAttributionWithMessage:(nonnull NSString *)message;
-
 @end

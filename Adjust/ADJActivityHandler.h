@@ -44,6 +44,7 @@
 @interface ADJSavedPreLaunch : NSObject
 
 @property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
+@property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbackArray;
 @property (nonatomic, copy) NSData *_Nullable deviceTokenData;
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;

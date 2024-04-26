@@ -834,10 +834,4 @@
     [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
-- (void)didFailAttributionWithMessage:(nonnull NSString *)message {
-    [self.testLibrary addInfoToSend:@"fail_message" value:message];
-
-    [self.testLibrary sendInfoToServer:self.extraPath];
-}
-
 @end
