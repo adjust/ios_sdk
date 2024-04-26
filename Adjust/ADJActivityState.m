@@ -137,11 +137,11 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         [self assignRandomToken:[ADJUtil generateRandomUuid]];
     }
 
-    // look for transactionIds key for backward compatibility.
-    if ([decoder containsValueForKey:@"transactionIds"]) {
-        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"transactionIds"];
-    } else if ([decoder containsValueForKey:@"eventDeduplicationIds"]) {
+    if ([decoder containsValueForKey:@"eventDeduplicationIds"]) {
         self.eventDeduplicationIds = [decoder decodeObjectForKey:@"eventDeduplicationIds"];
+    } else if ([decoder containsValueForKey:@"transactionIds"]) {
+        // look for transactionIds key for backward compatibility.
+        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"transactionIds"];
     }
 
     if (self.eventDeduplicationIds == nil) {

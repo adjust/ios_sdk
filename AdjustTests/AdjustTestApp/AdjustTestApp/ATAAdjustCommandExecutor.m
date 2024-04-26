@@ -380,6 +380,11 @@
         [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSecondsS intValue]];
     }
 
+    if ([parameters objectForKey:@"eventDeduplicationIdsMaxSize"]) {
+        NSString *eventDeduplicationIdsMaxSizeS = [parameters objectForKey:@"eventDeduplicationIdsMaxSize"][0];
+        [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSizeS intValue]];
+    }
+
     [adjustConfig setDelegate:self.adjustDelegate];
 }
 
