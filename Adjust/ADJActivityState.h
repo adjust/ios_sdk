@@ -38,8 +38,8 @@
 @property (nonatomic, assign) double lastActivity;      // Entire time in seconds since 1970
 @property (nonatomic, assign) double sessionLength;     // Entire duration in seconds
 
-// last ten transaction identifiers
-@property (nonatomic, strong) NSMutableArray *transactionIds;
+// last stored event deduplication identifiers
+@property (nonatomic, strong) NSMutableArray *eventDeduplicationIds;
 
 // Not persisted, only injected
 @property (nonatomic, assign) BOOL isPersisted;
@@ -48,9 +48,11 @@
 - (void)resetSessionAttributes:(double)now;
 
 + (void)saveAppToken:(NSString *)appTokenToSave;
++ (void)setEventDeduplicationIdsArraySize:(NSInteger)size;
 
-// Transaction ID management
-- (void)addTransactionId:(NSString *)transactionId;
-- (BOOL)findTransactionId:(NSString *)transactionId;
+// Deduplication ID management
+- (BOOL)eventDeduplicationIdExists:(NSString *)deduplicationId;
+- (void)addEventDeduplicationId:(NSString *)deduplicationId;
+
 
 @end

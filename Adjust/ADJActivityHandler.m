@@ -175,6 +175,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
         [ADJActivityState saveAppToken:adjustConfig.appToken];
+        [ADJActivityState setEventDeduplicationIdsArraySize:adjustConfig.eventDeduplicationIdsMaxSize];
     }];
 
     // read files to have sync values available
@@ -1176,8 +1177,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
          event:(ADJEvent *)event {
     if (![selfI isEnabledI:selfI]) return;
     if (![selfI checkEventI:selfI event:event]) return;
-    if (![selfI checkTransactionIdI:selfI transactionId:event.transactionId]) return;
-    if (selfI.activityState.isGdprForgotten) { return; }
+    if (selfI.activityState.isGdprForgotten) return;
+    if (![self shouldProcessEventI:selfI withDeduplicationId:event.deduplicationId]) return;
 
     double now = [NSDate.date timeIntervalSince1970];
 
@@ -2689,20 +2690,23 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 #pragma mark - checks
 
-- (BOOL)checkTransactionIdI:(ADJActivityHandler *)selfI
-              transactionId:(NSString *)transactionId {
-    if (transactionId == nil || transactionId.length == 0) {
-        return YES; // no transaction ID given
+- (BOOL)shouldProcessEventI:(ADJActivityHandler *)selfI
+        withDeduplicationId:(NSString *)deduplicationId {
+    if (deduplicationId == nil || deduplicationId.length == 0) {
+        return YES; // no deduplication ID given
     }
 
-    if ([selfI.activityState findTransactionId:transactionId]) {
-        [selfI.logger info:@"Skipping duplicate transaction ID '%@'", transactionId];
-        [selfI.logger verbose:@"Found transaction ID in %@", selfI.activityState.transactionIds];
-        return NO; // transaction ID found -> used already
+    if ([selfI.activityState eventDeduplicationIdExists:deduplicationId]) {
+        [selfI.logger info:@"Skipping duplicate event with deduplication ID '%@'", deduplicationId];
+        [selfI.logger verbose:@"Found deduplication ID in %@", selfI.activityState.eventDeduplicationIds];
+        return NO; // deduplication ID found -> used already
     }
-    
-    [selfI.activityState addTransactionId:transactionId];
-    [selfI.logger verbose:@"Added transaction ID %@", selfI.activityState.transactionIds];
+
+    [selfI.logger verbose:@"Adding deduplication ID [%@] to array [%@]",
+     deduplicationId,
+     self.activityState.eventDeduplicationIds];
+
+    [selfI.activityState addEventDeduplicationId:deduplicationId];
     // activity state will get written by caller
     return YES;
 }

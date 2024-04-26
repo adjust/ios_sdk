@@ -71,6 +71,7 @@
     _isLinkMeEnabled = NO;
     _isIdfaReadingAllowed = YES;
     _isSKAdNetworkHandlingActive = YES;
+    _eventDeduplicationIdsMaxSize = -1;
 
     return self;
 }
@@ -200,10 +201,11 @@
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
         copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
-        copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
+        copy.urlStrategy = [self.urlStrategy copyWithZone:zone];
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;
         copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
+        copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         // adjust delegate not copied
     }
 
