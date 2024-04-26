@@ -53,7 +53,7 @@ static NSTimeInterval kBackgroundTimerInterval;
 static double kSessionInterval;
 static double kSubSessionInterval;
 static const int kAdServicesdRetriesCount = 1;
-const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
+const NSUInteger kWaitingForAttStatusLimitSeconds = 360;
 
 // SKAN constants
 const NSInteger kSkanRegisterConversionValue = 0;
@@ -2988,7 +2988,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return NO;
     }
 
-    // Setting timeout value limited to 120 seconds.
+    // Setting timeout value according to configured/predefined_limit number of seconds.
     NSUInteger timeoutSec = (self.activityHandler.adjustConfig.attConsentWaitingInterval <= kWaitingForAttStatusLimitSeconds) ?
     self.activityHandler.adjustConfig.attConsentWaitingInterval : kWaitingForAttStatusLimitSeconds;
     if (keyExists && [ADJUserDefaults getAttWaitingRemainingSeconds] == 0) {
