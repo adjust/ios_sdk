@@ -484,6 +484,14 @@
         [adjustEvent setTransactionId:transactionId];
     }
 
+    if ([parameters objectForKey:@"deduplicationId"]) {
+        NSString *deduplicationId = [parameters objectForKey:@"deduplicationId"][0];
+        if (deduplicationId == (id)[NSNull null]) {
+            deduplicationId = nil;
+        }
+        [adjustEvent setDeduplicationId:deduplicationId];
+    }
+
     if ([parameters objectForKey:@"receipt"]) {
         NSString *receiptString = [parameters objectForKey:@"receipt"][0];
         NSData *receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];

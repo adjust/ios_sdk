@@ -252,4 +252,6 @@
  */
 @property (nonatomic, assign) BOOL readDeviceInfoOnceEnabled;
 
+@property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
+
 @end

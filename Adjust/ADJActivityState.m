@@ -11,8 +11,8 @@
 #import "NSString+ADJAdditions.h"
 #import "ADJUtil.h"
 
-static const int kTransactionIdCount = 10;
 static NSString *appToken = nil;
+static NSUInteger eventDeduplicationIdsArraySize = 10;
 
 @implementation ADJActivityState
 
@@ -39,7 +39,7 @@ static NSString *appToken = nil;
     self.isThirdPartySharingDisabled = NO;
     self.isThirdPartySharingDisabledForCoppa = NO;
     self.deviceToken = nil;
-    self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+    self.eventDeduplicationIds = [NSMutableArray array];
     self.updatePackages = NO;
     self.updatePackagesAttData = NO;
     self.trackingManagerAuthorizationStatus = -1;
@@ -55,6 +55,15 @@ static NSString *appToken = nil;
     }
 }
 
++ (void)setEventDeduplicationIdsArraySize:(NSInteger)size {
+    @synchronized (self) {
+        if (size >= 0){
+            eventDeduplicationIdsArraySize = size;
+            [[ADJAdjustFactory logger] verbose:@"Setting Deduplication IDs Array Size: [%ld]", size];
+        }
+    }
+}
+
 - (void)resetSessionAttributes:(double)now {
     self.subsessionCount = 1;
     self.sessionLength = 0;
@@ -63,23 +72,21 @@ static NSString *appToken = nil;
     self.lastActivity = now;
 }
 
-- (void)addTransactionId:(NSString *)transactionId {
-    // Create array.
-    if (self.transactionIds == nil) {
-        self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+- (void)addEventDeduplicationId:(NSString *)deduplicationId {
+    if (eventDeduplicationIdsArraySize == 0) {
+        [[ADJAdjustFactory logger] verbose:@"Cannot add deduplication id - array size configured to 0"];
+        return;
     }
-
     // Make space.
-    if (self.transactionIds.count == kTransactionIdCount) {
-        [self.transactionIds removeObjectAtIndex:0];
+    while (self.eventDeduplicationIds.count >= eventDeduplicationIdsArraySize) {
+        [self.eventDeduplicationIds removeObjectAtIndex:0];
     }
-
     // Add the new ID.
-    [self.transactionIds addObject:transactionId];
+    [self.eventDeduplicationIds addObject:deduplicationId];
 }
 
-- (BOOL)findTransactionId:(NSString *)transactionId {
-    return [self.transactionIds containsObject:transactionId];
+- (BOOL)eventDeduplicationIdExists:(NSString *)deduplicationId {
+    return [self.eventDeduplicationIds containsObject:deduplicationId];
 }
 
 #pragma mark - Private & helper methods
@@ -130,11 +137,19 @@ static NSString *appToken = nil;
         [self assignRandomToken:[ADJUtil generateRandomUuid]];
     }
 
+    // look for transactionIds key for backward compatibility.
     if ([decoder containsValueForKey:@"transactionIds"]) {
-        self.transactionIds = [decoder decodeObjectForKey:@"transactionIds"];
+        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"transactionIds"];
+    } else if ([decoder containsValueForKey:@"eventDeduplicationIds"]) {
+        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"eventDeduplicationIds"];
     }
-    if (self.transactionIds == nil) {
-        self.transactionIds = [NSMutableArray arrayWithCapacity:kTransactionIdCount];
+
+    if (self.eventDeduplicationIds == nil) {
+        self.eventDeduplicationIds = [NSMutableArray array];
+    } else {
+        while (self.eventDeduplicationIds.count > eventDeduplicationIdsArraySize) {
+            [self.eventDeduplicationIds removeObjectAtIndex:0];
+    }
     }
 
     if ([decoder containsValueForKey:@"enabled"]) {
@@ -211,7 +226,7 @@ static NSString *appToken = nil;
     [encoder encodeDouble:self.timeSpent forKey:@"timeSpent"];
     [encoder encodeDouble:self.lastActivity forKey:@"lastActivity"];
     [encoder encodeObject:self.dedupeToken forKey:@"uuid"];
-    [encoder encodeObject:self.transactionIds forKey:@"transactionIds"];
+    [encoder encodeObject:self.eventDeduplicationIds forKey:@"eventDeduplicationIds"];
     [encoder encodeBool:self.enabled forKey:@"enabled"];
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];

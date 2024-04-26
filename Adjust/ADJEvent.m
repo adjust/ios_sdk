@@ -111,6 +111,12 @@
     }
 }
 
+- (void)setDeduplicationId:(NSString *)deduplicationId {
+    @synchronized (self) {
+        _deduplicationId = [deduplicationId copy];
+    }
+}
+
 - (void)setCallbackId:(NSString *)callbackId {
     @synchronized (self) {
         _callbackId = [callbackId copy];
@@ -192,6 +198,7 @@
         copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
+        copy->_deduplicationId = [self.deduplicationId copyWithZone:zone];
         copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_productId = [self.productId copyWithZone:zone];
     }

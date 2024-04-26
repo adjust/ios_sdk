@@ -29,6 +29,12 @@
 @property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
 
 /**
+ * @brief Deduplication ID.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *deduplicationId;
+
+
+/**
  * @brief Custom user defined event ID.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *callbackId;
@@ -104,12 +110,21 @@
 /**
  * @brief Set the transaction ID of a In-App Purchases to avoid revenue duplications.
  *
- * @note A transaction ID can be used to avoid duplicate revenue events. The last ten
- *       transaction identifiers are remembered.
- *
  * @param transactionId The identifier used to avoid duplicate revenue events.
  */
 - (void)setTransactionId:(nonnull NSString *)transactionId;
+
+/**
+ * @brief Set the deduplication ID to avoid events duplications.
+ *
+ * @note A deduplication ID can be used to avoid duplicate events.
+ *       The number of last remembered deduplication identifiers can be set in deduplicationIdsMaxSize of ADJConfig .
+ *
+ * @param deduplicationId The identifier used to avoid duplicate events.
+ */
+- (void)setDeduplicationId:(nonnull NSString *)deduplicationId;
+
+
 
 /**
  * @brief Set the custom user defined ID for the event which will be reported in
