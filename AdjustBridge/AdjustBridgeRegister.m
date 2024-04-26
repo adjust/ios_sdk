@@ -374,6 +374,7 @@ static NSString * fbAppIdStatic = nil;
             this.urlStrategy = null;
             this.readDeviceInfoOnceEnabled = null;
             this.attConsentWaitingSeconds = null;
+            this.eventDeduplicationIdsMaxSize = null;
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -485,6 +486,12 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingSeconds) {
             this.attConsentWaitingSeconds = attConsentWaitingSeconds;
         };
+        AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
+            this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
+        };
+
+
+
     })();); // END preprocessorJSCode
     //, augmentedSection];
 #undef __adj_js_func__
