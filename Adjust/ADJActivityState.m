@@ -57,9 +57,9 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 
 + (void)setEventDeduplicationIdsArraySize:(NSInteger)size {
     @synchronized (self) {
-        if (size >= 0){
+        if (size >= 0) {
             eventDeduplicationIdsArraySize = size;
-            [[ADJAdjustFactory logger] verbose:@"Setting Deduplication IDs Array Size: [%ld]", size];
+            [[ADJAdjustFactory logger] info:@"Setting deduplication IDs array size to: %ld", size];
         }
     }
 }
@@ -74,14 +74,16 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 
 - (void)addEventDeduplicationId:(NSString *)deduplicationId {
     if (eventDeduplicationIdsArraySize == 0) {
-        [[ADJAdjustFactory logger] verbose:@"Cannot add deduplication id - array size configured to 0"];
+        [[ADJAdjustFactory logger] error:@"Cannot add deduplication id - deduplication IDs array size configured to 0"];
         return;
     }
     // Make space.
     while (self.eventDeduplicationIds.count >= eventDeduplicationIdsArraySize) {
+        [[ADJAdjustFactory logger] info:@"Removing deduplication ID \"%ld\" to make space", self.eventDeduplicationIds[0]];
         [self.eventDeduplicationIds removeObjectAtIndex:0];
     }
     // Add the new ID.
+    [[ADJAdjustFactory logger] info:@"Addid deduplication ID \"%ld\"", deduplicationId];
     [self.eventDeduplicationIds addObject:deduplicationId];
 }
 
@@ -149,7 +151,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     } else {
         while (self.eventDeduplicationIds.count > eventDeduplicationIdsArraySize) {
             [self.eventDeduplicationIds removeObjectAtIndex:0];
-    }
+        }
     }
 
     if ([decoder containsValueForKey:@"enabled"]) {

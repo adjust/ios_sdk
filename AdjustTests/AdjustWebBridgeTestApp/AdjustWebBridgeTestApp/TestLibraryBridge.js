@@ -454,6 +454,11 @@ AdjustCommandExecutor.prototype.event = function(params) {
         var callbackId = getFirstValue(params, 'callbackId');
         adjustEvent.setCallbackId(callbackId);
     }
+
+    if ('deduplicationId' in params) {
+        var deduplicationId = getFirstValue(params, 'deduplicationId');
+        adjustEvent.setDedupliationId(deduplicationId);
+    }
 };
 
 AdjustCommandExecutor.prototype.trackEvent = function(params) {

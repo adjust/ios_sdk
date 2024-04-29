@@ -489,9 +489,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
             this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
         };
-
-
-
     })();); // END preprocessorJSCode
     //, augmentedSection];
 #undef __adj_js_func__
