@@ -79,11 +79,11 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
     // Make space.
     while (self.eventDeduplicationIds.count >= eventDeduplicationIdsArraySize) {
-        [[ADJAdjustFactory logger] info:@"Removing deduplication ID \"%ld\" to make space", self.eventDeduplicationIds[0]];
+        [[ADJAdjustFactory logger] info:@"Removing deduplication ID \"%@\" to make space", self.eventDeduplicationIds[0]];
         [self.eventDeduplicationIds removeObjectAtIndex:0];
     }
     // Add the new ID.
-    [[ADJAdjustFactory logger] info:@"Addid deduplication ID \"%ld\"", deduplicationId];
+    [[ADJAdjustFactory logger] info:@"Added deduplication ID \"%@\"", deduplicationId];
     [self.eventDeduplicationIds addObject:deduplicationId];
 }
 
