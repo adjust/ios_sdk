@@ -24,6 +24,16 @@
 
 @property (nonatomic, copy) void (^purchaseVerificationCallback)(id);
 
+@property (nonatomic, assign) NSUInteger errorCount;
+
+@property (nonatomic, copy) NSNumber *firstErrorCode;
+
+@property (nonatomic, copy) NSNumber *lastErrorCode;
+
+@property (nonatomic, assign) double waitBeforeSend;
+
+- (void)addError:(NSNumber *)errorCode;
+
 // Logs
 
 @property (nonatomic, copy) NSString *suffix;

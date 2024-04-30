@@ -11,8 +11,7 @@
 
 @implementation ADJResponseData
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     
     if (self == nil) {
@@ -90,6 +89,7 @@
         copy.trackingState = self.trackingState;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
         copy.attribution = [self.attribution copyWithZone:zone];
+        copy.errorCode = [self.errorCode copyWithZone:zone];
     }
 
     return copy;

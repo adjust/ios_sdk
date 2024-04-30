@@ -480,6 +480,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                                        sessionParameters:self.sessionParameters
                                        trackingStatusManager:self.trackingStatusManager
                                        createdAt:now];
+     clickBuilder.internalState = selfI.internalState;
 
      ADJActivityPackage *clickPackage =
         [clickBuilder buildClickPackage:ADJAdServicesPackageKey
@@ -684,6 +685,7 @@ const NSUInteger kWaitingForAttStatusLimitSeconds = 120;
                                                 sessionParameters:selfI.sessionParameters
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
+    infoBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
     [selfI.packageHandler addPackage:infoPackage];
@@ -1119,6 +1121,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                          sessionParameters:selfI.sessionParameters
                                          trackingStatusManager:self.trackingStatusManager
                                          createdAt:now];
+    sessionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:sessionPackage];
     [selfI.packageHandler sendFirstPackage];
@@ -1194,6 +1197,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                        sessionParameters:selfI.sessionParameters
                                        trackingStatusManager:self.trackingStatusManager
                                        createdAt:now];
+    eventBuilder.internalState = selfI.internalState;
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
                                                              isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:eventPackage];
@@ -1235,7 +1239,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                    sessionParameters:selfI.sessionParameters
                                                    trackingStatusManager:self.trackingStatusManager
                                                    createdAt:now];
-
+    adRevenueBuilder.internalState = selfI.internalState;
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:source payload:payload];
     [selfI.packageHandler addPackage:adRevenuePackage];
     if (selfI.adjustConfig.eventBufferingEnabled) {
@@ -1267,7 +1271,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                     sessionParameters:selfI.sessionParameters
                                                     trackingStatusManager:self.trackingStatusManager
                                                     createdAt:now];
-
+    subscriptionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription
                                                                                   isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:subscriptionPackage];
@@ -1316,7 +1320,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                             sessionParameters:selfI.sessionParameters
                                             trackingStatusManager:self.trackingStatusManager
                                             createdAt:now];
-
+    dtpsBuilder.internalState = selfI.internalState;
     ADJActivityPackage *dtpsPackage = [dtpsBuilder buildDisableThirdPartySharingPackage];
 
     [selfI.packageHandler addPackage:dtpsPackage];
@@ -1357,7 +1361,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                             sessionParameters:selfI.sessionParameters
                                             trackingStatusManager:self.trackingStatusManager
                                             createdAt:now];
-
+    tpsBuilder.internalState = selfI.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
 
     [selfI.packageHandler addPackage:dtpsPackage];
@@ -1394,7 +1398,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                             sessionParameters:selfI.sessionParameters
                                             trackingStatusManager:self.trackingStatusManager
                                             createdAt:now];
-
+    tpsBuilder.internalState = selfI.internalState;
     ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsentPackage:enabled];
 
     [selfI.packageHandler addPackage:mcPackage];
@@ -1433,7 +1437,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                                       sessionParameters:selfI.sessionParameters
                                                                   trackingStatusManager:self.trackingStatusManager
                                                                               createdAt:now];
-
+    adRevenueBuilder.internalState = selfI.internalState;
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue
                                                                          isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:adRevenuePackage];
@@ -1500,7 +1504,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                                                     sessionParameters:selfI.sessionParameters
                                                                                 trackingStatusManager:self.trackingStatusManager
                                                                                             createdAt:now];
-
+    purchaseVerificationBuilder.internalState = selfI.internalState;
     ADJActivityPackage *purchaseVerificationPackage = [purchaseVerificationBuilder buildPurchaseVerificationPackage:purchase];
     purchaseVerificationPackage.purchaseVerificationCallback = completionHandler;
     [selfI.purchaseVerificationHandler sendPurchaseVerificationPackage:purchaseVerificationPackage];
@@ -1917,7 +1921,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 sessionParameters:selfI.sessionParameters
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
-
+    clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
@@ -2021,7 +2025,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 sessionParameters:selfI.sessionParameters
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
-
+    infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
 
     [selfI.packageHandler addPackage:infoPackage];
@@ -2070,7 +2074,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                 sessionParameters:selfI.sessionParameters
                                                 trackingStatusManager:self.trackingStatusManager
                                                 createdAt:now];
-
+    infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
 
@@ -2111,7 +2115,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                             sessionParameters:selfI.sessionParameters
                                             trackingStatusManager:self.trackingStatusManager
                                             createdAt:now];
-
+    gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
     [selfI.packageHandler addPackage:gdprPackage];
 
@@ -2183,6 +2187,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                          sessionParameters:selfI.sessionParameters
                                                                      trackingStatusManager:self.trackingStatusManager
                                                                                  createdAt:now];
+        clickBuilder.internalState = selfI.internalState;
         clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"linkme" linkMeUrl:pasteboardUrlString];
         [selfI.sdkClickHandler sendSdkClick:clickPackage];
@@ -2940,7 +2945,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                      sessionParameters:selfI.sessionParameters
                                      trackingStatusManager:self.trackingStatusManager
                                      createdAt:now];
-    
+    tpsBuilder.internalState = selfI.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
     
     [selfI.packageHandler addPackage:dtpsPackage];

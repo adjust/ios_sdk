@@ -32,6 +32,8 @@
 
 @property (nonatomic, copy) ADJAttribution * _Nullable attribution;
 
+@property (nonatomic, weak) ADJInternalState * _Nullable internalState;
+
 - (id _Nullable)initWithPackageParams:(ADJPackageParams * _Nullable)packageParams
                         activityState:(ADJActivityState * _Nullable)activityState
                                config:(ADJConfig * _Nullable)adjustConfig
@@ -89,7 +91,15 @@
             forKey:(NSString * _Nullable)key;
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
+         setDouble:(double)value
+            forKey:(NSString * _Nullable)key;
+
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
        setDate1970:(double)value
+            forKey:(NSString * _Nullable)key;
+
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
+setNumberWithoutRounding:(NSNumber * _Nullable)value
             forKey:(NSString * _Nullable)key;
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;

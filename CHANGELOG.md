@@ -1,3 +1,9 @@
+### Version 4.38.2 (30th April 2024)
+#### Added
+- Added sending of the additional SDK observability parameters for debugging purposes.
+
+---
+
 ### Version 4.38.1 (10th April 2024)
 #### Fixed
 - Removed nullability type specifier warnings (https://github.com/adjust/ios_sdk/issues/703).

@@ -60,6 +60,16 @@
     return [NSString stringWithFormat:@"Failed to track %@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
 }
 
+- (void)addError:(NSNumber *)errorCode {
+    self.errorCount = self.errorCount + 1;
+
+    if (self.firstErrorCode == nil) {
+        self.firstErrorCode = errorCode;
+    } else {
+        self.lastErrorCode = errorCode;
+    }
+}
+
 #pragma mark - NSCoding protocol methods
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -79,6 +89,17 @@
     NSString *kindString = [decoder decodeObjectForKey:@"kind"];
     self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
+    id errorCountObject = [decoder decodeObjectForKey:@"errorCount"];
+    if (errorCountObject != nil && [errorCountObject isKindOfClass:[NSNumber class]]) {
+        self.errorCount = ((NSNumber *)errorCountObject).unsignedIntegerValue;
+    }
+    self.firstErrorCode = [decoder decodeObjectForKey:@"firstErrorCode"];
+    self.lastErrorCode = [decoder decodeObjectForKey:@"lastErrorCode"];
+    id waitBeforeSendObject = [decoder decodeObjectForKey:@"waitBeforeSend"];
+    if (waitBeforeSendObject != nil && [waitBeforeSendObject isKindOfClass:[NSNumber class]]) {
+        self.waitBeforeSend = ((NSNumber *)waitBeforeSendObject).doubleValue;
+    }
+
     return self;
 }
 
@@ -92,6 +113,10 @@
     [encoder encodeObject:self.parameters forKey:@"parameters"];
     [encoder encodeObject:self.callbackParameters forKey:@"callbackParameters"];
     [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
+    [encoder encodeObject:@(self.errorCount) forKey:@"errorCount"];
+    [encoder encodeObject:self.firstErrorCode forKey:@"firstErrorCode"];
+    [encoder encodeObject:self.lastErrorCode forKey:@"lastErrorCode"];
+    [encoder encodeObject:@(self.waitBeforeSend) forKey:@"waitBeforeSend"];
 }
 
 @end
