@@ -98,6 +98,10 @@
        setDate1970:(double)value
             forKey:(NSString * _Nullable)key;
 
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
+setNumberWithoutRounding:(NSNumber * _Nullable)value
+            forKey:(NSString * _Nullable)key;
+
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters

@@ -26,13 +26,13 @@
 
 @property (nonatomic, assign) NSUInteger errorCount;
 
-@property (nonatomic, copy) NSString *firstErrorMessage;
+@property (nonatomic, copy) NSNumber *firstErrorCode;
 
-@property (nonatomic, copy) NSString *lastErrorMessage;
+@property (nonatomic, copy) NSNumber *lastErrorCode;
 
 @property (nonatomic, assign) double waitBeforeSend;
 
-- (void)addError:(NSString *)errorMessage;
+- (void)addError:(NSNumber *)errorCode;
 
 // Logs
 

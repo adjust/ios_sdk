@@ -278,10 +278,10 @@ startsSending:(BOOL)startsSending
                            setInt:(int)activityPackage.errorCount
                            forKey:@"retry_count"];
     [ADJPackageBuilder parameters:sendingParameters
-                        setString:activityPackage.firstErrorMessage
+         setNumberWithoutRounding:activityPackage.firstErrorCode
                            forKey:@"first_error"];
     [ADJPackageBuilder parameters:sendingParameters
-                        setString:activityPackage.lastErrorMessage
+         setNumberWithoutRounding:activityPackage.lastErrorCode
                            forKey:@"last_error"];
     [ADJPackageBuilder parameters:sendingParameters
                         setDouble:self.totalWaitTime

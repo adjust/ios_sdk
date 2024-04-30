@@ -232,7 +232,7 @@ authorizationHeader:(NSString *)authorizationHeader
                 [self.urlStrategy resetAfterSuccess];
                 [self.responseCallback responseCallback:responseData];
             } else {
-                [responseData.sdkPackage addError:responseData.message];
+                [responseData.sdkPackage addError:responseData.errorCode];
                 if ([self.urlStrategy shouldRetryAfterFailure:responseData.activityKind]) {
                     [self.logger debug:@"Request failed with current URL strategy, but it will be retried with new one"];
                     [self retryWithResponseData:responseData
@@ -346,6 +346,7 @@ authorizationHeader:(NSString *)authorizationHeader
     // Connection error
     if (responseError != nil) {
         responseData.message = responseError.description;
+        responseData.errorCode = [NSNumber numberWithInteger:responseError.code];
         return;
     }
     if ([ADJUtil isNull:data]) {

@@ -60,13 +60,13 @@
     return [NSString stringWithFormat:@"Failed to track %@%@", [ADJActivityKindUtil activityKindToString:self.activityKind], self.suffix];
 }
 
-- (void)addError:(NSString *)errorMessage {
+- (void)addError:(NSNumber *)errorCode {
     self.errorCount = self.errorCount + 1;
 
-    if (self.firstErrorMessage == nil) {
-        self.firstErrorMessage = errorMessage;
+    if (self.firstErrorCode == nil) {
+        self.firstErrorCode = errorCode;
     } else {
-        self.lastErrorMessage = errorMessage;
+        self.lastErrorCode = errorCode;
     }
 }
 
@@ -93,8 +93,8 @@
     if (errorCountObject != nil && [errorCountObject isKindOfClass:[NSNumber class]]) {
         self.errorCount = ((NSNumber *)errorCountObject).unsignedIntegerValue;
     }
-    self.firstErrorMessage = [decoder decodeObjectForKey:@"firstErrorMessage"];
-    self.lastErrorMessage = [decoder decodeObjectForKey:@"lastErrorMessage"];
+    self.firstErrorCode = [decoder decodeObjectForKey:@"firstErrorCode"];
+    self.lastErrorCode = [decoder decodeObjectForKey:@"lastErrorCode"];
     id waitBeforeSendObject = [decoder decodeObjectForKey:@"waitBeforeSend"];
     if (waitBeforeSendObject != nil && [waitBeforeSendObject isKindOfClass:[NSNumber class]]) {
         self.waitBeforeSend = ((NSNumber *)waitBeforeSendObject).doubleValue;
@@ -114,8 +114,8 @@
     [encoder encodeObject:self.callbackParameters forKey:@"callbackParameters"];
     [encoder encodeObject:self.partnerParameters forKey:@"partnerParameters"];
     [encoder encodeObject:@(self.errorCount) forKey:@"errorCount"];
-    [encoder encodeObject:self.firstErrorMessage forKey:@"firstErrorMessage"];
-    [encoder encodeObject:self.lastErrorMessage forKey:@"lastErrorMessage"];
+    [encoder encodeObject:self.firstErrorCode forKey:@"firstErrorCode"];
+    [encoder encodeObject:self.lastErrorCode forKey:@"lastErrorCode"];
     [encoder encodeObject:@(self.waitBeforeSend) forKey:@"waitBeforeSend"];
 }
 

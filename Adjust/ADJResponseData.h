@@ -29,6 +29,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, copy) NSString *adid;
 
+@property (nonatomic, copy) NSNumber *errorCode;
+
 @property (nonatomic, assign) BOOL success;
 
 @property (nonatomic, assign) BOOL willRetry;
