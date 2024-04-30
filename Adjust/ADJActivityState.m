@@ -36,7 +36,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.enabled = YES;
     self.isGdprForgotten = NO;
     self.askingAttribution = NO;
-    self.isThirdPartySharingDisabled = NO;
     self.isThirdPartySharingDisabledForCoppa = NO;
     self.deviceToken = nil;
     self.eventDeduplicationIds = [NSMutableArray array];
@@ -109,11 +108,11 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d dtps:%d dtpsc:%d att:%d",
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d dtpsc:%d att:%d",
             self.eventCount, self.sessionCount,
             self.subsessionCount, self.askingAttribution, self.sessionLength,
             self.timeSpent, self.lastActivity, self.deviceToken,
-            self.isGdprForgotten, self.isThirdPartySharingDisabled, self.isThirdPartySharingDisabledForCoppa, self.trackingManagerAuthorizationStatus];
+            self.isGdprForgotten, self.isThirdPartySharingDisabledForCoppa, self.trackingManagerAuthorizationStatus];
 }
 
 #pragma mark - NSCoding protocol methods
@@ -172,12 +171,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         self.askingAttribution = NO;
     }
 
-    if ([decoder containsValueForKey:@"isThirdPartySharingDisabled"]) {
-        self.isThirdPartySharingDisabled = [decoder decodeBoolForKey:@"isThirdPartySharingDisabled"];
-    } else {
-        self.isThirdPartySharingDisabled = NO;
-    }
-    
     if ([decoder containsValueForKey:@"isThirdPartySharingDisabledForCoppa"]) {
         self.isThirdPartySharingDisabledForCoppa = [decoder decodeBoolForKey:@"isThirdPartySharingDisabledForCoppa"];
     } else {
@@ -232,7 +225,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     [encoder encodeBool:self.enabled forKey:@"enabled"];
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
-    [encoder encodeBool:self.isThirdPartySharingDisabled forKey:@"isThirdPartySharingDisabled"];
     [encoder encodeBool:self.isThirdPartySharingDisabledForCoppa forKey:@"isThirdPartySharingDisabledForCoppa"];
     [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
@@ -261,7 +253,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         copy.isGdprForgotten = self.isGdprForgotten;
         copy.lastActivity = self.lastActivity;
         copy.askingAttribution = self.askingAttribution;
-        copy.isThirdPartySharingDisabled = self.isThirdPartySharingDisabled;
         copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
         copy.updatePackages = self.updatePackages;
