@@ -54,4 +54,7 @@
 - (void)addEventDeduplicationId:(NSString *)deduplicationId;
 
 
+- (BOOL)isCoppaComplianceEnabled;
+- (void)setCoppaComplianceWithIsEnabled:(BOOL)isCoppaComplianceEnabled;
+
 @end

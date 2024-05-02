@@ -288,6 +288,14 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)enableCoppaCompliance {
+    [[Adjust getInstance] enableCoppaCompliance];
+}
+
++ (void)disableCoppaCompliance {
+    [[Adjust getInstance] disableCoppaCompliance];
+}
+
 + (void)setTestOptions:(AdjustTestOptions *)testOptions {
     @synchronized (self) {
         if (testOptions.teardown) {
@@ -630,6 +638,36 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     [self.activityHandler verifyPurchase:purchase completionHandler:completionHandler];
+}
+
+- (void)enableCoppaCompliance {
+    [ADJUserDefaults saveCoppaComplianceWithValue:YES];
+    if ([self checkActivityHandler:@"enable coppa compliance"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setCoppaCompliance:YES];
+        }
+    } else {
+        if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
+            self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
+                [[NSMutableArray alloc] init];
+        }
+        [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(YES)];
+    }
+}
+
+- (void)disableCoppaCompliance {
+    [ADJUserDefaults saveCoppaComplianceWithValue:NO];
+    if ([self checkActivityHandler:@"disable coppa compliance"]) {
+        if (self.activityHandler.isEnabled) {
+            [self.activityHandler setCoppaCompliance:NO];
+        }
+    } else {
+        if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
+            self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
+                [[NSMutableArray alloc] init];
+        }
+        [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(NO)];
+    }
 }
 
 - (void)teardown {

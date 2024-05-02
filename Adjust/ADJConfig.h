@@ -245,11 +245,6 @@
 - (BOOL)isValid;
  
 /**
- * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
- */
-@property (nonatomic, assign) BOOL coppaCompliantEnabled;
-
-/**
  * @brief Enables caching of device ids to read it only once
  */
 @property (nonatomic, assign) BOOL readDeviceInfoOnceEnabled;

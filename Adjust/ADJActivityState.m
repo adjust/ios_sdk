@@ -90,6 +90,13 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     return [self.eventDeduplicationIds containsObject:deduplicationId];
 }
 
+- (BOOL)isCoppaComplianceEnabled {
+    return self.isThirdPartySharingDisabledForCoppa;
+}
+- (void)setCoppaComplianceWithIsEnabled:(BOOL)isCoppaComplianceEnabled {
+    self.isThirdPartySharingDisabledForCoppa = isCoppaComplianceEnabled;
+}
+
 #pragma mark - Private & helper methods
 
 - (void)assignRandomToken:(NSString *)randomToken {

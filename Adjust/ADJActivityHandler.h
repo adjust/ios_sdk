@@ -116,6 +116,7 @@
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
+- (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;

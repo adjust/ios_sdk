@@ -392,7 +392,8 @@ startsSending:(BOOL)startsSending
                                       forActivityKind:activityPackage.activityKind
                                         withAttStatus:[activityPackage.parameters objectForKey:@"att_status"]
                                         configuration:selfI.activityHandler.adjustConfig
-                                        packageParams:selfI.activityHandler.packageParams];
+                                        packageParams:selfI.activityHandler.packageParams
+                                        activityState:selfI.activityHandler.activityState];
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }

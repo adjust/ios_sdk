@@ -332,6 +332,16 @@ extern NSString * __nonnull const ADJDataResidencyUS;
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 /**
+ * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
+ */
++ (void)enableCoppaCompliance;
+
+/**
+ * @brief Disable COPPA (Children's Online Privacy Protection Act) compliant for the application.
+ */
++ (void)disableCoppaCompliance;
+
+/**
  * @brief Method used for internal testing only. Don't use it in production.
  */
 + (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
