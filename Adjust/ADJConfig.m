@@ -66,7 +66,6 @@
     
     // default values
     self.sendInBackground = NO;
-    self.coppaCompliantEnabled = NO;
     self.allowAdServicesInfoReading = YES;
     _isLinkMeEnabled = NO;
     _isIdfaReadingAllowed = YES;
@@ -197,7 +196,6 @@
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
         copy.delayStart = self.delayStart;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
-        copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
         copy->_isSkanAttributionHandlingEnabled = self.isSkanAttributionHandlingEnabled;

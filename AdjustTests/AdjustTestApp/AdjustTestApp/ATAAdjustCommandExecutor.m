@@ -288,12 +288,12 @@
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
         [adjustConfig setNeedsCost:[needsCostS boolValue]];
     }
-    
+    /*
     if ([parameters objectForKey:@"coppaCompliant"]) {
         NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
         [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
     }
-
+*/
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
         [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
