@@ -109,6 +109,10 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
+    } else if ([methodName isEqualToString:@"enableCoppaCompliance"]) {
+        [self enableCoppaCompliance:parameters];
+    } else if ([methodName isEqualToString:@"disableCoppaCompliance"]) {
+        [self disableCoppaCompliance:parameters];
     }
 }
 
@@ -288,12 +292,7 @@
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
         [adjustConfig setNeedsCost:[needsCostS boolValue]];
     }
-    /*
-    if ([parameters objectForKey:@"coppaCompliant"]) {
-        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
-        [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
-    }
-*/
+
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
         [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
@@ -811,6 +810,14 @@
     attributionGetter.extraPath = self.extraPath;
 
     [Adjust attributionWithCallback:attributionGetter];
+}
+
+- (void)enableCoppaCompliance:(NSDictionary *)parameters {
+    [Adjust enableCoppaCompliance];
+}
+
+- (void)disableCoppaCompliance:(NSDictionary *)parameters {
+    [Adjust disableCoppaCompliance];
 }
 
 @end
