@@ -662,14 +662,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
-- (void)checkForNewAttStatus {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-        [selfI checkForNewAttStatusI:selfI];
-    }];
-}
-
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     [ADJUtil launchInQueue:self.internalQueue
@@ -1360,23 +1352,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                                          isInDelay:[selfI.internalState isInDelayedStart]];
     [selfI.packageHandler addPackage:adRevenuePackage];
     [selfI.packageHandler sendFirstPackage];
-}
-
-- (void)checkForNewAttStatusI:(ADJActivityHandler *)selfI {
-    if (!selfI.activityState) {
-        return;
-    }
-    if (![selfI isEnabledI:selfI]) {
-        return;
-    }
-    if (selfI.activityState.isGdprForgotten) {
-        return;
-    }
-    if (!selfI.trackingStatusManager) {
-        return;
-    }
-    
-    [selfI.trackingStatusManager checkForNewAttStatus];
 }
 
 - (void)verifyPurchaseI:(ADJActivityHandler *)selfI

@@ -299,12 +299,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)checkForNewAttStatus {
-    @synchronized (self) {
-        [[Adjust getInstance] checkForNewAttStatus];
-    }
-}
-
 + (NSURL *)lastDeeplink {
     @synchronized (self) {
         return [[Adjust getInstance] lastDeeplink];
@@ -658,14 +652,6 @@ static dispatch_once_t onceToken = 0;
 
 - (NSString *)sdkVersion {
     return [ADJUtil sdkVersion];
-}
-
-- (void)checkForNewAttStatus {
-    if (![self checkActivityHandler]) {
-        return;
-    }
-    
-    [self.activityHandler checkForNewAttStatus];
 }
 
 - (NSURL *)lastDeeplink {

@@ -342,11 +342,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
                     completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 /**
- * @brief Instruct to Adjust SDK to check current state of att_status.
- */
-+ (void)checkForNewAttStatus;
-
-/**
  * @brief Get the last deep link which has opened the app.
  *
  * @return Last deep link which has opened the app.
@@ -448,8 +443,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)trackMeasurementConsent:(BOOL)enabled;
 
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
-
-- (void)checkForNewAttStatus;
 
 - (nullable NSURL *)lastDeeplink;
 
