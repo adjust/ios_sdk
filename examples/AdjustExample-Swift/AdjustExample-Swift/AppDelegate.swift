@@ -27,9 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Send in the background.
         // adjustConfig?.sendInBackground = true
         
-        // Enable COPPA compliance
-        // adjustConfig?.coppaCompliantEnabled = true
-        
         // Set delegate object.
         adjustConfig?.delegate = self
         

@@ -239,6 +239,16 @@ static NSString * fbAppIdStatic = nil;
                                                         null);
                 }
             },
+            enableCoppaCompliance: function() {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_enableCoppaCompliance', null, null);
+                }
+            },
+            disableCoppaCompliance: function() {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_disableCoppaCompliance', null, null);
+                }
+            },
             getSdkVersion: function(callback) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_sdkVersion', this.getSdkPrefix(), callback);
@@ -333,7 +343,6 @@ static NSString * fbAppIdStatic = nil;
             this.defaultTracker = null;
             this.externalDeviceId = null;
             this.logLevel = null;
-            this.coppaCompliantEnabled = null;
             this.sendInBackground = null;
             this.delayStart = null;
             this.needsCost = null;
@@ -405,9 +414,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setLogLevel = function(logLevel) {
             this.logLevel = logLevel;
-        };
-        AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
-            this.coppaCompliantEnabled = isEnabled;
         };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;

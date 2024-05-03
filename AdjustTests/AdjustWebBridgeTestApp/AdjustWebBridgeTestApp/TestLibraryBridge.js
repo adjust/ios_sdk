@@ -253,12 +253,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
     
-    if ('coppaCompliant' in params) {
-        var coppaCompliantEnabledS = getFirstValue(params, 'coppaCompliant');
-        var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
-        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
-    }
-
     if ('sendInBackground' in params) {
         var sendInBackgroundS = getFirstValue(params, 'sendInBackground');
         var sendInBackground = sendInBackgroundS == 'true';
@@ -610,6 +604,14 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
     });
 }
+
+AdjustCommandExecutor.prototype.enableCoppaCompliance = function(params) {
+    Adjust.enableCoppaCompliance();
+};
+
+AdjustCommandExecutor.prototype.disableCoppaCompliance = function(params) {
+    Adjust.disableCoppaCompliance();
+};
 
 // Util
 function getValues(params, key) {
