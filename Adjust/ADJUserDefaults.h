@@ -34,7 +34,7 @@
 
 + (BOOL)getCoppaCompliance;
 
-+ (void)removedCoppaCompliance;
++ (void)removeCoppaCompliance;
 
 + (void)saveDeeplinkUrl:(NSURL *)deeplink
            andClickTime:(NSDate *)clickTime;

@@ -75,7 +75,7 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
     return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_COPPA_COMPLIANCE];
 }
 
-+ (void)removedCoppaCompliance {
++ (void)removeCoppaCompliance {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_COPPA_COMPLIANCE];
 
 }
