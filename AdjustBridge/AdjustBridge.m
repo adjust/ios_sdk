@@ -193,7 +193,6 @@
         NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
         NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
-        NSNumber *coppaCompliantEnabled = [data objectForKey:@"coppaCompliantEnabled"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
@@ -237,9 +236,6 @@
         }
         if ([self isFieldValid:logLevel]) {
             [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
-        }
-        if ([self isFieldValid:coppaCompliantEnabled]) {
-            [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
         }
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];
@@ -562,6 +558,22 @@
         }
         NSURL *lastDeeplink = [Adjust lastDeeplink];
         responseCallback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_enableCoppaCompliance"
+                                 handler:^(id data, WVJBResponseCallback responseCallback)
+     {
+        if (responseCallback == nil) { return; }
+
+        [Adjust enableCoppaCompliance];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_disableCoppaCompliance"
+                                 handler:^(id data, WVJBResponseCallback responseCallback)
+     {
+        if (responseCallback == nil) { return; }
+
+        [Adjust disableCoppaCompliance];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {

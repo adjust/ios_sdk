@@ -30,9 +30,6 @@
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
     
-    // Enable COPPA compliance.
-    // [adjustConfig setCoppaCompliantEnabled:YES];
-    
     // Enable LinkMe feature.
     // [adjustConfig enableLinkMe];
 
