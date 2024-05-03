@@ -49,11 +49,6 @@
 @property (nonatomic, copy, nullable) NSString *clickLabel;
 
 /**
- * @brief Adjust identifier value.
- */
-@property (nonatomic, copy, nullable) NSString *adid;
-
-/**
  * @brief Cost type.
  */
 @property (nonatomic, copy, nullable) NSString *costType;

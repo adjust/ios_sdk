@@ -41,7 +41,6 @@
     [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
     [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
     [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
-    [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
     [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
     [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
     [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
