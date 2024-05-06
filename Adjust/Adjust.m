@@ -245,39 +245,15 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)updateConversionValue:(NSInteger)conversionValue {
++ (void)updateSkanConversionValue:(NSInteger)conversionValue
+                      coarseValue:(nullable NSString *)coarseValue
+                       lockWindow:(nullable NSNumber *)lockWindow
+                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
     @synchronized (self) {
-        [[Adjust getInstance] updateConversionValue:conversionValue];
-    }
-}
-
-+ (void)updatePostbackConversionValue:(NSInteger)conversionValue
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    @synchronized (self) {
-        [[Adjust getInstance] updatePostbackConversionValue:conversionValue
-                                          completionHandler:completion];
-    }
-}
-
-+ (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(nonnull NSString *)coarseValue
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    @synchronized (self) {
-        [[Adjust getInstance] updatePostbackConversionValue:fineValue
-                                                coarseValue:coarseValue
-                                          completionHandler:completion];
-    }
-}
-
-+ (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(nonnull NSString *)coarseValue
-                           lockWindow:(BOOL)lockWindow
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    @synchronized (self) {
-        [[Adjust getInstance] updatePostbackConversionValue:fineValue
-                                                coarseValue:coarseValue
-                                                 lockWindow:lockWindow
-                                          completionHandler:completion];
+        [[Adjust getInstance] updateSkanConversionValue:conversionValue
+                                            coarseValue:coarseValue
+                                             lockWindow:lockWindow
+                                      completionHandler:completion];
     }
 }
 
@@ -591,32 +567,15 @@ static dispatch_once_t onceToken = 0;
     return [ADJUtil attStatus];
 }
 
-- (void)updateConversionValue:(NSInteger)conversionValue {
-    [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue];
-}
-
-- (void)updatePostbackConversionValue:(NSInteger)conversionValue
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    [[ADJSKAdNetwork getInstance] updatePostbackConversionValue:conversionValue
-                                              completionHandler:completion];
-}
-
-- (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(nonnull NSString *)coarseValue
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    [[ADJSKAdNetwork getInstance] updatePostbackConversionValue:fineValue
-                                                    coarseValue:coarseValue
-                                              completionHandler:completion];
-}
-
-- (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(nonnull NSString *)coarseValue
-                           lockWindow:(BOOL)lockWindow
-                    completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    [[ADJSKAdNetwork getInstance] updatePostbackConversionValue:fineValue
-                                                    coarseValue:coarseValue
-                                                     lockWindow:lockWindow
-                                              completionHandler:completion];
+- (void)updateSkanConversionValue:(NSInteger)conversionValue
+                      coarseValue:(nullable NSString *)coarseValue
+                       lockWindow:(nullable NSNumber *)lockWindow
+                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
+    
+    [[ADJSKAdNetwork getInstance] adjUpdateConversionValue:conversionValue
+                                               coarseValue:coarseValue
+                                                lockWindow:lockWindow
+                                         completionHandler:completion];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {

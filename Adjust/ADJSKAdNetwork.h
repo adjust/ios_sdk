@@ -8,38 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface ADJSKAdNetwork : NSObject
 
 + (nullable instancetype)getInstance;
 
-- (void)registerAppForAdNetworkAttribution;
-
-- (void)updateConversionValue:(NSInteger)conversionValue;
-
-- (void)updatePostbackConversionValue:(NSInteger)conversionValue
-                    completionHandler:(void (^)(NSError *error))completion;
-
-- (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(NSString *)coarseValue
-                    completionHandler:(void (^)(NSError *error))completion;
-
-- (void)updatePostbackConversionValue:(NSInteger)fineValue
-                          coarseValue:(NSString *)coarseValue
-                           lockWindow:(BOOL)lockWindow
-                    completionHandler:(void (^)(NSError *error))completion;
-
 - (void)adjRegisterWithConversionValue:(NSInteger)conversionValue
-                           coarseValue:(NSString *)coarseValue
-                            lockWindow:(NSNumber *)lockWindow
-                     completionHandler:(void (^)(NSError *error))callback;
+                           coarseValue:(nullable NSString *)coarseValue
+                            lockWindow:(nullable NSNumber *)lockWindow
+                     completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 - (void)adjUpdateConversionValue:(NSInteger)conversionValue
-                     coarseValue:(NSString *)coarseValue
-                      lockWindow:(NSNumber *)lockWindow
-               completionHandler:(void (^)(NSError *error))callback;
+                     coarseValue:(nullable NSString *)coarseValue
+                      lockWindow:(nullable NSNumber *)lockWindow
+               completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 @end
-
-NS_ASSUME_NONNULL_END

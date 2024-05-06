@@ -148,14 +148,14 @@
 - (void)adjRegisterWithConversionValue:(NSInteger)conversionValue
                            coarseValue:(NSString *)coarseValue
                             lockWindow:(NSNumber *)lockWindow
-                     completionHandler:(void (^)(NSError *error))callback {
+                     completionHandler:(void (^)(NSError *error))completion {
     if (NSClassFromString(@"SKAdNetwork") == nil) {
         [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return;
     }
     if ([ADJUserDefaults getSkadRegisterCallTimestamp] != nil) {
         [self.logger debug:@"Call to register app with SKAdNetwork already made for this install"];
-        callback(nil);
+        completion(nil);
         return;
     }
 
@@ -164,19 +164,19 @@
                                 coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                  lockWindow:lockWindow
                           completionHandler:^(NSError * _Nonnull error) {
-            callback(error);
+            completion(error);
         }];
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:conversionValue
                           completionHandler:^(NSError * _Nonnull error) {
-            callback(error);
+            completion(error);
         }];
     } else if (@available(iOS 14.0, *)) {
         [self registerAppForAdNetworkAttribution];
-        callback(nil);
+        completion(nil);
     } else {
         [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        callback(nil);
+        completion(nil);
         return;
     }
 
@@ -186,14 +186,14 @@
 - (void)adjUpdateConversionValue:(NSInteger)conversionValue
                      coarseValue:(NSString *)coarseValue
                       lockWindow:(NSNumber *)lockWindow
-               completionHandler:(void (^)(NSError *error))callback {
+               completionHandler:(void (^)(NSError *error))completion {
     if (NSClassFromString(@"SKAdNetwork") == nil) {
         [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return;
     }
     // let's make sure that the conversionValue makes sense
     if (conversionValue < 0) {
-        callback(nil);
+        completion(nil);
         return;
     }
 
@@ -211,7 +211,7 @@
                     } else {
                         [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
                     }
-                    callback(error);
+                    completion(error);
                 }];
             } else {
                 // Only coarse value is received
@@ -223,7 +223,7 @@
                     } else {
                         [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
                     }
-                    callback(error);
+                    completion(error);
                 }];
             }
         } else {
@@ -236,7 +236,7 @@
                 } else {
                     [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
                 }
-                callback(error);
+                completion(error);
             }];
         }
     } else if (@available(iOS 15.4, *)) {
@@ -247,14 +247,14 @@
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
             }
-            callback(error);
+            completion(error);
         }];
     } else if (@available(iOS 14.0, *)) {
         [self updateConversionValue:conversionValue];
-        callback(nil);
+        completion(nil);
     } else {
         [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        callback(nil);
+        completion(nil);
     }
 }
 

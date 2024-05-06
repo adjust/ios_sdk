@@ -448,48 +448,15 @@
         responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValue" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust updateConversionValue:[(NSNumber *)data integerValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCompletionHandler"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust updatePostbackConversionValue:[(NSNumber *)data integerValue]
-                            completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                responseCallback([NSString stringWithFormat:@"%@", error]);
-            }
-        }];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCoarseValueCompletionHandler"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSNumber *conversionValue = [data objectForKey:@"conversionValue"];
-        NSString *coarseValue = [data objectForKey:@"coarseValue"];
-        [Adjust updatePostbackConversionValue:[conversionValue integerValue]
-                                  coarseValue:coarseValue
-                            completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                responseCallback([NSString stringWithFormat:@"%@", error]);
-            }
-        }];
-    }];
-
     [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCoarseValueLockWindowCompletionHandler"
                                  handler:^(id data, WVJBResponseCallback responseCallback) {
         NSNumber *conversionValue = [data objectForKey:@"conversionValue"];
         NSString *coarseValue = [data objectForKey:@"coarseValue"];
         NSNumber *lockWindow = [data objectForKey:@"lockWindow"];
-        [Adjust updatePostbackConversionValue:[conversionValue integerValue]
-                                  coarseValue:coarseValue
-                                   lockWindow:[lockWindow boolValue]
-                            completionHandler:^(NSError * _Nullable error) {
+        [Adjust updateSkanConversionValue:[conversionValue integerValue]
+                              coarseValue:coarseValue
+                               lockWindow:lockWindow
+                        completionHandler:^(NSError * _Nullable error) {
             if (error != nil) {
                 responseCallback([NSString stringWithFormat:@"%@", error]);
             }
