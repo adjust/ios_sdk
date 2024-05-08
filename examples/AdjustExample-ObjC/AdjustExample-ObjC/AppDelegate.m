@@ -148,7 +148,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Show ATT dialog.
     if (@available(iOS 14, *)) {
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+        [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
             // Process user's response.
         }];
     }

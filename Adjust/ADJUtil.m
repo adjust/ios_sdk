@@ -1281,7 +1281,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return token;
 }
 
-+ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion {
++ (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion {
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass == nil) {
         return;
