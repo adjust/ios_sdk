@@ -176,10 +176,9 @@
  */
 @property (nonatomic, assign) BOOL needsCost;
 
+@property (nonatomic, assign, readonly) BOOL isSKANAttributionHandlingEnabled;
 
-@property (nonatomic, assign, readonly) BOOL isSKAdNetworkHandlingActive;
-
-- (void)deactivateSKAdNetworkHandling;
+- (void)disableSKANAttributionHandling;
 
 /**
  * @brief Adjust url strategy.

@@ -249,7 +249,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var allowSkAdNetworkHandlingS = getFirstValue(params, 'allowSkAdNetworkHandling');
         var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
         if (allowSkAdNetworkHandling == false) {
-            adjustConfig.deactivateSkAdNetworkHandling();
+            adjustConfig.disableSKANAttributionHandling();
         }
     }
     
