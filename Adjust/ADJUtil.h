@@ -121,7 +121,7 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSString *)fetchAdServicesAttribution:(NSError **)errorPtr;
 
-+ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
++ (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
 
 + (NSString *)bundleIdentifier;
 

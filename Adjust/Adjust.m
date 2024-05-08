@@ -233,9 +233,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
++ (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
     @synchronized (self) {
-        [[Adjust getInstance] requestTrackingAuthorizationWithCompletionHandler:completion];
+        [[Adjust getInstance] requestAppTrackingAuthorizationWithCompletionHandler:completion];
     }
 }
 
@@ -581,8 +581,8 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackSubscription:subscription];
 }
 
-- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
-    [ADJUtil requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+- (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {
+    [ADJUtil requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
         if (completion) {
             completion(status);
         }

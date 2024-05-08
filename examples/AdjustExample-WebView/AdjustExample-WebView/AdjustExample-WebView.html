@@ -158,7 +158,7 @@
         var btnAskTrackingPermission = document.getElementById('btnAskTrackingPermission')
         btnAskTrackingPermission.onclick = function(e) {
             e.preventDefault()
-            Adjust.requestTrackingAuthorizationWithCompletionHandler(function(status) {
+            Adjust.requestAppTrackingAuthorizationWithCompletionHandler(function(status) {
                 alert('Tracking permission status\n' + status)
             })
         }

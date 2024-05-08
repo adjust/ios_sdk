@@ -430,12 +430,12 @@
         responseCallback([Adjust idfv]);
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_requestAppTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
-
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+        
+        [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
             responseCallback([NSNumber numberWithUnsignedInteger:status]);
         }];
     }];
