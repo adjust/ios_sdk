@@ -1006,7 +1006,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.adjustConfig.coppaCompliantEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_coppa"];
     }
-    if (self.adjustConfig.isSKAdNetworkHandlingActive == NO) {
+    if (self.adjustConfig.isSKANAttributionHandlingEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
     }
     if (self.adjustConfig.isIdfaReadingAllowed == NO) {

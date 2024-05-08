@@ -424,7 +424,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.disableIdfaReading = function() {
             this.isIdfaReadingAllowed = false;
         };
-        AdjustConfig.prototype.deactivateSkAdNetworkHandling = function() {
+        AdjustConfig.prototype.disableSKANAttributionHandling = function() {
             this.allowSkAdNetworkHandling = false;
         };
         AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
