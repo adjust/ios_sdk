@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Show ATT dialog.
-        Adjust.requestTrackingAuthorization { status in
+        Adjust.requestAppTrackingAuthorization { status in
             switch status {
             case 0:
                 // ATTrackingManagerAuthorizationStatusNotDetermined case
