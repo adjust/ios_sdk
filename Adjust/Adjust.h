@@ -288,7 +288,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)trackSubscription:(nonnull ADJSubscription *)subscription;
 
 /**
- * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method.
+ * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method of ATTrackingManager.
  *
  * @param completion Block which value of tracking authorization status will be delivered to.
  */
