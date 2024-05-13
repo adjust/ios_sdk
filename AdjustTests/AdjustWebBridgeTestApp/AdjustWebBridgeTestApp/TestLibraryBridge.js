@@ -596,6 +596,25 @@ AdjustCommandExecutor.prototype.measurementConsent = function(params) {
     Adjust.trackMeasurementConsent(consentMeasurement);
 };
 
+AdjustCommandExecutor.prototype.attributionGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getAttribution(function(attribution) {
+        addInfoToSend('tracker_token', attribution.trackerToken);
+        addInfoToSend('tracker_name', attribution.trackerName);
+        addInfoToSend('network', attribution.network);
+        addInfoToSend('campaign', attribution.campaign);
+        addInfoToSend('adgroup', attribution.adgroup);
+        addInfoToSend('creative', attribution.creative);
+        addInfoToSend('click_label', attribution.click_label);
+        addInfoToSend('adid', attribution.adid);
+        addInfoToSend('cost_type', attribution.costType);
+        addInfoToSend('cost_amount', attribution.costAmount);
+        addInfoToSend('cost_currency', attribution.costCurrency);
+        addInfoToSend('state', attribution.state);
+        WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+    });
+}
+
 // Util
 function getValues(params, key) {
     if (key in params) {
