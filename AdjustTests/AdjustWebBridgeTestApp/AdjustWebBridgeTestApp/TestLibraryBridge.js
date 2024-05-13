@@ -294,7 +294,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('cost_type', attribution.costType);
                 addInfoToSend('cost_amount', attribution.costAmount);
                 addInfoToSend('cost_currency', attribution.costCurrency);
-                addInfoToSend('state', attribution.state);
                 WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
             }
         );
@@ -610,7 +609,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         addInfoToSend('cost_type', attribution.costType);
         addInfoToSend('cost_amount', attribution.costAmount);
         addInfoToSend('cost_currency', attribution.costCurrency);
-        addInfoToSend('state', attribution.state);
         WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
     });
 }
