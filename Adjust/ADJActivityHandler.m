@@ -683,11 +683,11 @@ const BOOL kSkanRegisterLockWindow = NO;
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
 
     if (localAttribution == nil) {
-        if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
-            self.savedPreLaunch.cachedAttributionReadCallbackArray = [NSMutableArray array];
+        if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
+            self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
         }
 
-        [self.savedPreLaunch.cachedAttributionReadCallbackArray addObject:attributionCallback];
+        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:attributionCallback];
 
         return;
     }
@@ -1627,19 +1627,19 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (localAttribution == nil) {
         return;
     }
-    if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
+    if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
         return;
     }
 
     for (id<ADJAdjustAttributionCallback> attributionCallback in
-         self.savedPreLaunch.cachedAttributionReadCallbackArray)
+         self.savedPreLaunch.cachedAttributionReadCallbacksArray)
     {
         [ADJUtil launchInMainThread:^{
             [attributionCallback didReadWithAdjustAttribution:localAttribution];
         }];
     }
 
-    [self.savedPreLaunch.cachedAttributionReadCallbackArray removeAllObjects];
+    [self.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
 }
 
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {

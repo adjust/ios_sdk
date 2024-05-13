@@ -634,15 +634,16 @@ static dispatch_once_t onceToken = 0;
 
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback {
     if (attributionCallback == nil) {
+        [self.logger error:@"Callback for getting attribution can't be null"];
         return;
     }
 
     if (![self checkActivityHandler]) {
-        if (self.savedPreLaunch.cachedAttributionReadCallbackArray == nil) {
-            self.savedPreLaunch.cachedAttributionReadCallbackArray = [NSMutableArray array];
+        if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
+            self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
         }
 
-        [self.savedPreLaunch.cachedAttributionReadCallbackArray addObject:attributionCallback];
+        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:attributionCallback];
         return;
     }
     return [self.activityHandler attributionWithCallback:attributionCallback];
