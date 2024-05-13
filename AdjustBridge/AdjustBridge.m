@@ -26,6 +26,13 @@
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
+@property (nonatomic, strong) ADJAttribution *attribution;
+
+@end
+
+@interface ADJAttributionGetter : NSObject<ADJAdjustAttributionCallback>
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
 
 @end
 
@@ -408,14 +415,14 @@
         NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
         responseCallback(sdkVersion);
     }];
-    
+
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
         responseCallback([Adjust idfa]);
     }];
-    
+
     [self.bridgeRegister registerHandler:@"adjust_idfv" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
@@ -427,20 +434,20 @@
         if (responseCallback == nil) {
             return;
         }
-        
+
         [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
             responseCallback([NSNumber numberWithUnsignedInteger:status]);
         }];
     }];
-    
+
     [self.bridgeRegister registerHandler:@"adjust_appTrackingAuthorizationStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
-        
+
         responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
     }];
-    
+
     [self.bridgeRegister registerHandler:@"adjust_updateConversionValue" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSNumber class]]) {
             return;
@@ -501,13 +508,9 @@
             return;
         }
 
-        ADJAttribution *attribution = [Adjust attribution];
-        NSDictionary *attributionDictionary = nil;
-        if (attribution != nil) {
-            attributionDictionary = [attribution dictionary];
-        }
-
-        responseCallback(attributionDictionary);
+        ADJAttributionGetter * _Nonnull attributionGetter = [[ADJAttributionGetter alloc] init];
+        attributionGetter.callback = responseCallback;
+        [Adjust attributionWithCallback:attributionGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_sendFirstPackages" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -562,7 +565,7 @@
             isEnabled = (NSNumber *)isEnabledO;
         }
         ADJThirdPartySharing *adjustThirdPartySharing =
-            [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+        [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
         for (int i = 0; i < [granularOptions count]; i += 3) {
             NSString *partnerName = [[granularOptions objectAtIndex:i] description];
             NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
@@ -760,6 +763,21 @@
     }
     NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
     return [formatString numberFromString:[field description]];
+}
+
+@end
+
+#pragma mark - ADJAttributionCallback protocol
+
+@implementation ADJAttributionGetter
+
+- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)attribution {
+    NSDictionary *attributionDictionary = nil;
+    if (attribution != nil) {
+        attributionDictionary = [attribution dictionary];
+    }
+
+    self.callback(attributionDictionary);
 }
 
 @end
