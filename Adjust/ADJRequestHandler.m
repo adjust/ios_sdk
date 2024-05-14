@@ -84,11 +84,41 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                           initWithDictionary:parameters];
     [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
 
-    [self signWithSigV2PluginWithParams:parametersCopy
-                           activityKind:activityKind
-                              clientSdk:clientSdk];
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                       activityKind:activityKind];
+    NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
+        [self signWithSigV4PluginWithPackageParams:parametersCopy
+                                      activityKind:activityKind
+                                         clientSdk:clientSdk
+                                     urlHostString:urlHostString
+                                     controlParams:nil];
+
+    NSString *_Nullable authorizationHeader = nil;
+
+    if (outputParams.count > 0) {
+        authorizationHeader = [outputParams objectForKey:@"Authorization"];
+        [outputParams removeObjectForKey:@"Authorization"];
+
+        if ([outputParams objectForKey:@"client_sdk"] != nil) {
+            clientSdk = [outputParams objectForKey:@"client_sdk"];
+        }
+        [outputParams removeObjectForKey:@"client_sdk"];
+
+        [outputParams removeObjectForKey:@"activity_kind"];
+
+        if ([outputParams objectForKey:@"endpoint"] != nil) {
+            urlHostString = [outputParams objectForKey:@"endpoint"];
+        }
+        [outputParams removeObjectForKey:@"endpoint"];
+
+        parameters = outputParams;
+    } else {
+        [self signWithSigV2PluginWithParams:parametersCopy
+                               activityKind:activityKind
+                                  clientSdk:clientSdk];
+
+        authorizationHeader = [self buildAuthorizationHeader:parametersCopy
+                                                activityKind:activityKind];
+    }
+
 
     NSMutableURLRequest *urlRequest = [self requestForPostPackage:path
                                                         clientSdk:clientSdk
@@ -122,11 +152,40 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                           initWithDictionary:parameters];
     [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
 
-    [self signWithSigV2PluginWithParams:parametersCopy
-                           activityKind:activityKind
-                              clientSdk:clientSdk];
-    NSString * authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                       activityKind:activityKind];
+    NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
+        [self signWithSigV4PluginWithPackageParams:parametersCopy
+                                      activityKind:activityKind
+                                         clientSdk:clientSdk
+                                     urlHostString:urlHostString
+                                     controlParams:nil];
+
+    NSString *_Nullable authorizationHeader = nil;
+
+    if (outputParams.count > 0) {
+        authorizationHeader = [outputParams objectForKey:@"Authorization"];
+        [outputParams removeObjectForKey:@"Authorization"];
+
+        if ([outputParams objectForKey:@"client_sdk"] != nil) {
+            clientSdk = [outputParams objectForKey:@"client_sdk"];
+        }
+        [outputParams removeObjectForKey:@"client_sdk"];
+
+        [outputParams removeObjectForKey:@"activity_kind"];
+
+        if ([outputParams objectForKey:@"endpoint"] != nil) {
+            urlHostString = [outputParams objectForKey:@"endpoint"];
+        }
+        [outputParams removeObjectForKey:@"endpoint"];
+
+        parameters = outputParams;
+    } else {
+        [self signWithSigV2PluginWithParams:parametersCopy
+                               activityKind:activityKind
+                                  clientSdk:clientSdk];
+
+        authorizationHeader = [self buildAuthorizationHeader:parametersCopy
+                                                activityKind:activityKind];
+    }
 
     NSMutableURLRequest *urlRequest = [self requestForGetPackage:path
                                                        clientSdk:clientSdk
@@ -580,6 +639,64 @@ authorizationHeader:(NSString *)authorizationHeader
         return nil;
     }
     return jsonDict;
+}
+
+- (nonnull NSMutableDictionary<NSString *, NSString *> *)
+    signWithSigV4PluginWithPackageParams:
+        (nonnull NSDictionary<NSString *, NSString *> *)packageParam
+    activityKind:(ADJActivityKind)activityKind
+    clientSdk:(nonnull NSString *)clientSdk
+    urlHostString:(nonnull NSString *)urlHostString
+    controlParams:(nullable NSDictionary<NSString *, NSString *> *)controlParams
+{
+    NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
+        [NSMutableDictionary dictionary];
+
+    _Nullable Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return outputParams;
+    }
+    _Nonnull SEL signSEL = NSSelectorFromString(@"sign:withExtraParams:withOutputParams:");
+    if (![signerClass respondsToSelector:signSEL]) {
+        return outputParams;
+    }
+
+    NSMutableDictionary<NSString *, NSString *> *_Nonnull extraParams =
+        [NSMutableDictionary dictionary];
+
+    [extraParams setObject:clientSdk forKey:@"client_sdk"];
+
+    [extraParams setObject:[ADJActivityKindUtil activityKindToString:activityKind]
+                    forKey:@"activity_kind"];
+
+    [extraParams setObject:urlHostString forKey:@"endpoint"];
+
+    if (controlParams != nil) {
+        for (NSString *_Nonnull controlParamsKey in controlParams) {
+            NSString *_Nonnull controlParamsValue = [controlParams objectForKey:controlParamsKey];
+
+            [extraParams setObject:controlParamsValue forKey:controlParamsKey];
+        }
+    }
+
+    /*
+     [ADJSigner sign:packageParams
+      withExtraParams:extraParams
+     withOutputParams:outputParams];
+     */
+
+    NSMethodSignature *signMethodSignature = [signerClass methodSignatureForSelector:signSEL];
+    NSInvocation *signInvocation = [NSInvocation invocationWithMethodSignature:signMethodSignature];
+    [signInvocation setSelector:signSEL];
+    [signInvocation setTarget:signerClass];
+
+    [signInvocation setArgument:&packageParam atIndex:2];
+    [signInvocation setArgument:&extraParams atIndex:3];
+    [signInvocation setArgument:&outputParams atIndex:4];
+
+    [signInvocation invoke];
+
+    return outputParams;
 }
 
 - (void)signWithSigV2PluginWithParams:(NSMutableDictionary *)params
