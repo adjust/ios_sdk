@@ -164,48 +164,6 @@ static NSString * internalTestUrlOverwrite = nil;
     internalTestUrlOverwrite = testUrlOverwrite;
 }
 
-+ (void)enableSigning {
-    Class signerClass = NSClassFromString(@"ADJSigner");
-    if (signerClass == nil) {
-        return;
-    }
-
-    SEL enabledSEL = NSSelectorFromString(@"enableSigning");
-    if (![signerClass respondsToSelector:enabledSEL]) {
-        return;
-    }
-
-    IMP enableIMP = [signerClass methodForSelector:enabledSEL];
-    if (!enableIMP) {
-        return;
-    }
-
-    void (*enableFunc)(id, SEL) = (void *)enableIMP;
-
-    enableFunc(signerClass, enabledSEL);
-}
-
-+ (void)disableSigning {
-    Class signerClass = NSClassFromString(@"ADJSigner");
-    if (signerClass == nil) {
-        return;
-    }
-
-    SEL disableSEL = NSSelectorFromString(@"disableSigning");
-    if (![signerClass respondsToSelector:disableSEL]) {
-        return;
-    }
-
-    IMP disableIMP = [signerClass methodForSelector:disableSEL];
-    if (!disableIMP) {
-        return;
-    }
-
-    void (*disableFunc)(id, SEL) = (void *)disableIMP;
-
-    disableFunc(signerClass, disableSEL);
-}
-
 + (void)teardown:(BOOL)deleteState {
     if (deleteState) {
         [ADJActivityHandler deleteState];

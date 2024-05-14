@@ -44,8 +44,5 @@
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled;
 + (void)setTestUrlOverwrite:(NSString *)testUrlOverwrite;
 
-+ (void)enableSigning;
-+ (void)disableSigning;
-
 + (void)teardown:(BOOL)deleteState;
 @end
