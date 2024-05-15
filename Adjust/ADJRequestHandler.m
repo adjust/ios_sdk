@@ -110,15 +110,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [outputParams removeObjectForKey:@"endpoint"];
 
         parameters = outputParams;
-    } else {
-        [self signWithSigV2PluginWithParams:parametersCopy
-                               activityKind:activityKind
-                                  clientSdk:clientSdk];
-
-        authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                activityKind:activityKind];
     }
-
 
     NSMutableURLRequest *urlRequest = [self requestForPostPackage:path
                                                         clientSdk:clientSdk
@@ -178,13 +170,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [outputParams removeObjectForKey:@"endpoint"];
 
         parameters = outputParams;
-    } else {
-        [self signWithSigV2PluginWithParams:parametersCopy
-                               activityKind:activityKind
-                                  clientSdk:clientSdk];
-
-        authorizationHeader = [self buildAuthorizationHeader:parametersCopy
-                                                activityKind:activityKind];
     }
 
     NSMutableURLRequest *urlRequest = [self requestForGetPackage:path
@@ -528,80 +513,6 @@ authorizationHeader:(NSString *)authorizationHeader
     }
 }
 
-#pragma mark - Authorization Header
-- (NSString *)buildAuthorizationHeader:(NSDictionary *)parameters
-                          activityKind:(ADJActivityKind)activityKind {
-    NSString *adjSigningId = [parameters objectForKey:@"adj_signing_id"];
-    NSString *signature = [parameters objectForKey:@"signature"];
-    NSString *headersId = [parameters objectForKey:@"headers_id"];
-    NSString *nativeVersion = [parameters objectForKey:@"native_version"];
-    NSString *algorithm = [parameters objectForKey:@"algorithm"];
-    NSString *authorizationHeaderWithAdjSigningId = [self buildAuthorizationHeaderV2:signature
-                                                                        adjSigningId:adjSigningId
-                                                                           headersId:headersId
-                                                                       nativeVersion:nativeVersion
-                                                                           algorithm:algorithm];
-    if (authorizationHeaderWithAdjSigningId != nil) {
-        return authorizationHeaderWithAdjSigningId;
-    }
-
-    NSString *secretId = [parameters objectForKey:@"secret_id"];
-    return [self buildAuthorizationHeaderV2:signature
-                                   secretId:secretId
-                                  headersId:headersId
-                              nativeVersion:nativeVersion
-                                  algorithm:algorithm];
-}
-
-- (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
-                            adjSigningId:(NSString *)adjSigningId
-                               headersId:(NSString *)headersId
-                           nativeVersion:(NSString *)nativeVersion
-                               algorithm:(NSString *)algorithm
-{
-    if (adjSigningId == nil || signature == nil || headersId == nil) {
-        return nil;
-    }
-
-    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
-    NSString * adjSigningIdHeader = [NSString stringWithFormat:@"adj_signing_id=\"%@\"", adjSigningId];
-    NSString * idHeader        = [NSString stringWithFormat:@"headers_id=\"%@\"", headersId];
-    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm != nil ? algorithm : @"adj1"];
-
-    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
-            signatureHeader, adjSigningIdHeader, algorithmHeader, idHeader];
-
-    if (nativeVersion == nil) {
-        return [authorizationHeader stringByAppendingFormat:@",native_version=\"\""];
-    }
-    return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
-}
-
-
-- (NSString *)buildAuthorizationHeaderV2:(NSString *)signature
-                                secretId:(NSString *)secretId
-                                headersId:(NSString *)headersId
-                           nativeVersion:(NSString *)nativeVersion
-                               algorithm:(NSString *)algorithm
-{
-    if (secretId == nil || signature == nil || headersId == nil) {
-        return nil;
-    }
-
-    NSString * signatureHeader = [NSString stringWithFormat:@"signature=\"%@\"", signature];
-    NSString * secretIdHeader  = [NSString stringWithFormat:@"secret_id=\"%@\"", secretId];
-    NSString * idHeader        = [NSString stringWithFormat:@"headers_id=\"%@\"", headersId];
-    NSString * algorithmHeader = [NSString stringWithFormat:@"algorithm=\"%@\"", algorithm != nil ? algorithm : @"adj1"];
-
-    NSString * authorizationHeader = [NSString stringWithFormat:@"Signature %@,%@,%@,%@",
-            signatureHeader, secretIdHeader, algorithmHeader, idHeader];
-
-    if (nativeVersion == nil) {
-        return [authorizationHeader stringByAppendingFormat:@",native_version=\"\""];
-    }
-    return [authorizationHeader stringByAppendingFormat:@",native_version=\"%@\"", nativeVersion];
-}
-
 #pragma mark - JSON
 - (void)saveJsonResponse:(NSData *)jsonData responseData:(ADJResponseData *)responseData {
     NSError *error = nil;
@@ -697,73 +608,6 @@ authorizationHeader:(NSString *)authorizationHeader
     [signInvocation invoke];
 
     return outputParams;
-}
-
-- (void)signWithSigV2PluginWithParams:(NSMutableDictionary *)params
-                         activityKind:(ADJActivityKind)activityKind
-                            clientSdk:(NSString *)clientSdk
-{
-    Class signerClass = NSClassFromString(@"ADJSigner");
-    if (signerClass == nil) {
-        return;
-    }
-    SEL signSEL = NSSelectorFromString(@"sign:withActivityKind:withSdkVersion:");
-    if (![signerClass respondsToSelector:signSEL]) {
-        return;
-    }
-
-    const char *activityKindChar = [[ADJActivityKindUtil activityKindToString:activityKind] UTF8String];
-    const char *sdkVersionChar = [clientSdk UTF8String];
-
-    // Stack allocated strings to ensure their lifetime stays until the next iteration
-    static char packageActivityKind[64], sdkVersion[64];
-    strncpy(packageActivityKind, activityKindChar, strlen(activityKindChar) + 1);
-    strncpy(sdkVersion, sdkVersionChar, strlen(sdkVersionChar) + 1);
-
-    // NSInvocation setArgument requires lvalue references with exact matching types to the executed function signature.
-    // With this usage we ensure that the lifetime of the object remains until the next iteration, as it points to the
-    // stack allocated string where we copied the buffer.
-    const char *lvalActivityKind = packageActivityKind;
-    const char *lvalSdkVersion = sdkVersion;
-
-    /*
-     [ADJSigner sign:parameters
-    withActivityKind:activityKindChar
-      withSdkVersion:sdkVersionChar];
-     */
-
-    NSMethodSignature *signMethodSignature = [signerClass methodSignatureForSelector:signSEL];
-    NSInvocation *signInvocation = [NSInvocation invocationWithMethodSignature:signMethodSignature];
-    [signInvocation setSelector:signSEL];
-    [signInvocation setTarget:signerClass];
-
-    [signInvocation setArgument:&params atIndex:2];
-    [signInvocation setArgument:&lvalActivityKind atIndex:3];
-    [signInvocation setArgument:&lvalSdkVersion atIndex:4];
-
-    [signInvocation invoke];
-
-    SEL getVersionSEL = NSSelectorFromString(@"getVersion");
-    if (![signerClass respondsToSelector:getVersionSEL]) {
-        return;
-    }
-    /*
-     NSString *signerVersion = [ADJSigner getVersion];
-     */
-    IMP getVersionIMP = [signerClass methodForSelector:getVersionSEL];
-    if (!getVersionIMP) {
-        return;
-    }
-    id (*getVersionFunc)(id, SEL) = (void *)getVersionIMP;
-    id signerVersion = getVersionFunc(signerClass, getVersionSEL);
-    if (![signerVersion isKindOfClass:[NSString class]]) {
-        return;
-    }
-
-    NSString *signerVersionString = (NSString *)signerVersion;
-    [ADJPackageBuilder parameters:params
-                           setString:signerVersionString
-                           forKey:@"native_version"];
 }
 
 @end
