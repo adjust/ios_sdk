@@ -156,9 +156,9 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_appTrackingAuthorizationStatus', null, callback);
                 }
             },
-            updateConversionValueWithCoarseValueLockWindowAndCallback: function(conversionValue, coarseValue, lockWindow, callback) {
+            updateSkanConversionValueWithCoarseValueLockWindowAndCallback: function(conversionValue, coarseValue, lockWindow, callback) {
                 if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCoarseValueLockWindowCompletionHandler',
+                    WebViewJavascriptBridge.callHandler('adjust_updateSkanConversionValueCoarseValueLockWindowCompletionHandler',
                                                         {conversionValue: conversionValue, coarseValue: coarseValue},
                                                         callback);
                 }

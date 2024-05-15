@@ -448,7 +448,7 @@
         responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCoarseValueLockWindowCompletionHandler"
+    [self.bridgeRegister registerHandler:@"adjust_updateSkanConversionValueCoarseValueLockWindowCompletionHandler"
                                  handler:^(id data, WVJBResponseCallback responseCallback) {
         NSNumber *conversionValue = [data objectForKey:@"conversionValue"];
         NSString *coarseValue = [data objectForKey:@"coarseValue"];
