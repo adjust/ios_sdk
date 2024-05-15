@@ -67,13 +67,12 @@
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.
- * @param adid Adjust identifier value.
  * 
  * @return Adjust attribution object.
  */
-+ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
++ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict;
 
-- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
+- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict;
 
 /**
  * @brief Check if given attribution equals current one.

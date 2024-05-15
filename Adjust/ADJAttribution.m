@@ -15,11 +15,10 @@
 
 + (ADJAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict
                                 adid:(NSString *)adid {
-    return [[ADJAttribution alloc] initWithJsonDict:jsonDict adid:adid];
+    return [[ADJAttribution alloc] initWithJsonDict:jsonDict];
 }
 
-- (id)initWithJsonDict:(NSDictionary *)jsonDict
-                  adid:(NSString *)adid {
+- (id)initWithJsonDict:(NSDictionary *)jsonDict {
     self = [super init];
     if (self == nil) {
         return nil;
