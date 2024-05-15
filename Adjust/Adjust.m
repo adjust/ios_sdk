@@ -572,10 +572,10 @@ static dispatch_once_t onceToken = 0;
                        lockWindow:(nullable NSNumber *)lockWindow
                 completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
     
-    [[ADJSKAdNetwork getInstance] adjUpdateConversionValue:conversionValue
-                                               coarseValue:coarseValue
-                                                lockWindow:lockWindow
-                                         completionHandler:completion];
+    [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
+                                            coarseValue:coarseValue
+                                             lockWindow:lockWindow
+                                      completionHandler:completion];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
