@@ -80,16 +80,16 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                     sendingParams:sendingParameters
                                      responseData:responseData];
 
-    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc]
+    NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
-    [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
+    [mergedParameters addEntriesFromDictionary:responseData.sendingParameters];
 
     NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
-        [self signWithSigV4PluginWithPackageParams:parametersCopy
-                                      activityKind:activityKind
-                                         clientSdk:clientSdk
-                                     urlHostString:urlHostString
-                                     controlParams:nil];
+        [self signWithSigV4PluginWithMergedParameters:mergedParameters
+                                         activityKind:activityKind
+                                            clientSdk:clientSdk
+                                        urlHostString:urlHostString
+                                        controlParams:nil];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -109,14 +109,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         }
         [outputParams removeObjectForKey:@"endpoint"];
 
-        parameters = outputParams;
+        mergedParameters = outputParams;
     }
 
     NSMutableURLRequest *urlRequest = [self requestForPostPackage:path
                                                         clientSdk:clientSdk
-                                                       parameters:parameters
-                                                    urlHostString:urlHostString
-                                                sendingParameters:responseData.sendingParameters];
+                                                 mergedParameters:mergedParameters
+                                                    urlHostString:urlHostString];
 
     [self sendRequest:urlRequest
   authorizationHeader:authorizationHeader
@@ -140,16 +139,16 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                     sendingParams:sendingParameters
                                      responseData:responseData];
 
-    NSMutableDictionary *parametersCopy = [[NSMutableDictionary alloc]
+    NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
                                           initWithDictionary:parameters];
-    [parametersCopy addEntriesFromDictionary:responseData.sendingParameters];
+    [mergedParameters addEntriesFromDictionary:responseData.sendingParameters];
 
     NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
-        [self signWithSigV4PluginWithPackageParams:parametersCopy
-                                      activityKind:activityKind
-                                         clientSdk:clientSdk
-                                     urlHostString:urlHostString
-                                     controlParams:nil];
+        [self signWithSigV4PluginWithMergedParameters:mergedParameters
+                                         activityKind:activityKind
+                                            clientSdk:clientSdk
+                                        urlHostString:urlHostString
+                                        controlParams:nil];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -169,14 +168,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         }
         [outputParams removeObjectForKey:@"endpoint"];
 
-        parameters = outputParams;
+        mergedParameters = outputParams;
     }
 
     NSMutableURLRequest *urlRequest = [self requestForGetPackage:path
                                                        clientSdk:clientSdk
-                                                      parameters:parameters
-                                                   urlHostString:urlHostString
-                                               sendingParameters:responseData.sendingParameters];
+                                                mergedParameters:mergedParameters
+                                                   urlHostString:urlHostString];
 
     [self sendRequest:urlRequest
   authorizationHeader:authorizationHeader
@@ -420,10 +418,8 @@ authorizationHeader:(NSString *)authorizationHeader
 - (NSMutableURLRequest *)
     requestForPostPackage:(NSString *)path
     clientSdk:(NSString *)clientSdk
-    parameters:(NSDictionary *)parameters
+    mergedParameters:(NSDictionary *)mergedParameters
     urlHostString:(NSString *)urlHostString
-    sendingParameters:
-        (NSDictionary<NSString *, NSString *> *)sendingParameters
 {
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
                            urlHostString, self.urlStrategy.extraPath, path];
@@ -439,15 +435,10 @@ authorizationHeader:(NSString *)authorizationHeader
     [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
     [request setValue:@"1" forHTTPHeaderField:@"Beta-Version"];
 
-    NSUInteger sendingParametersCount = sendingParameters? sendingParameters.count : 0;
     NSMutableArray<NSString *> *kvParameters =
-        [NSMutableArray arrayWithCapacity:
-            parameters.count + sendingParametersCount];
+        [NSMutableArray arrayWithCapacity:mergedParameters.count];
 
-    [self injectParameters:parameters
-        kvArray:kvParameters];
-    [self injectParameters:sendingParameters
-        kvArray:kvParameters];
+    [self injectParameters:mergedParameters kvArray:kvParameters];
 
     NSString *bodyString = [kvParameters componentsJoinedByString:@"&"];
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
@@ -458,18 +449,13 @@ authorizationHeader:(NSString *)authorizationHeader
 - (NSMutableURLRequest *)
     requestForGetPackage:(NSString *)path
     clientSdk:(NSString *)clientSdk
-    parameters:(NSDictionary *)parameters
+    mergedParameters:(NSDictionary *)mergedParameters
     urlHostString:(NSString *)urlHostString
-    sendingParameters:(NSDictionary *)sendingParameters
 {
-    NSUInteger sendingParametersCount = sendingParameters? sendingParameters.count : 0;
     NSMutableArray<NSString *> *kvParameters =
-        [NSMutableArray arrayWithCapacity:
-            parameters.count + sendingParametersCount];
+        [NSMutableArray arrayWithCapacity:mergedParameters.count];
 
-    [self injectParameters:parameters
-        kvArray:kvParameters];
-    [self injectParameters:sendingParameters
+    [self injectParameters:mergedParameters
         kvArray:kvParameters];
 
     NSString *queryStringParameters = [kvParameters componentsJoinedByString:@"&"];
@@ -553,8 +539,8 @@ authorizationHeader:(NSString *)authorizationHeader
 }
 
 - (nonnull NSMutableDictionary<NSString *, NSString *> *)
-    signWithSigV4PluginWithPackageParams:
-        (nonnull NSDictionary<NSString *, NSString *> *)packageParam
+    signWithSigV4PluginWithMergedParameters:
+        (nonnull NSDictionary<NSString *, NSString *> *)mergedParameters
     activityKind:(ADJActivityKind)activityKind
     clientSdk:(nonnull NSString *)clientSdk
     urlHostString:(nonnull NSString *)urlHostString
@@ -601,7 +587,7 @@ authorizationHeader:(NSString *)authorizationHeader
     [signInvocation setSelector:signSEL];
     [signInvocation setTarget:signerClass];
 
-    [signInvocation setArgument:&packageParam atIndex:2];
+    [signInvocation setArgument:&mergedParameters atIndex:2];
     [signInvocation setArgument:&extraParams atIndex:3];
     [signInvocation setArgument:&outputParams atIndex:4];
 
