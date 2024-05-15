@@ -70,7 +70,7 @@
     self.allowAdServicesInfoReading = YES;
     _isLinkMeEnabled = NO;
     _isIdfaReadingAllowed = YES;
-    _isSKANAttributionHandlingEnabled = YES;
+    _isSkanAttributionHandlingEnabled = YES;
     _eventDeduplicationIdsMaxSize = -1;
 
     return self;
@@ -90,8 +90,8 @@
     _isIdfaReadingAllowed = NO;
 }
 
-- (void)disableSKANAttributionHandling {
-    _isSKANAttributionHandlingEnabled = NO;
+- (void)disableSkanAttributionHandling {
+    _isSkanAttributionHandlingEnabled = NO;
 }
 
 - (void)enableLinkMe {
@@ -200,7 +200,7 @@
         copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
-        copy->_isSKANAttributionHandlingEnabled = self.isSKANAttributionHandlingEnabled;
+        copy->_isSkanAttributionHandlingEnabled = self.isSkanAttributionHandlingEnabled;
         copy.urlStrategy = [self.urlStrategy copyWithZone:zone];
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;

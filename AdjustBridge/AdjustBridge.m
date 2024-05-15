@@ -263,7 +263,7 @@
         }
         if ([self isFieldValid:allowSkAdNetworkHandling]) {
             if ([allowSkAdNetworkHandling boolValue] == NO) {
-                [adjustConfig disableSKANAttributionHandling];
+                [adjustConfig disableSkanAttributionHandling];
             }
         }
         if ([self isFieldValid:openDeferredDeeplink]) {
