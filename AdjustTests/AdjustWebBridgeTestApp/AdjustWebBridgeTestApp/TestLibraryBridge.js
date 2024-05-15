@@ -290,7 +290,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('adgroup', attribution.adgroup);
                 addInfoToSend('creative', attribution.creative);
                 addInfoToSend('click_label', attribution.click_label);
-                addInfoToSend('adid', attribution.adid);
                 addInfoToSend('cost_type', attribution.costType);
                 addInfoToSend('cost_amount', attribution.costAmount);
                 addInfoToSend('cost_currency', attribution.costCurrency);
@@ -605,7 +604,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         addInfoToSend('adgroup', attribution.adgroup);
         addInfoToSend('creative', attribution.creative);
         addInfoToSend('click_label', attribution.click_label);
-        addInfoToSend('adid', attribution.adid);
         addInfoToSend('cost_type', attribution.costType);
         addInfoToSend('cost_amount', attribution.costAmount);
         addInfoToSend('cost_currency', attribution.costCurrency);
