@@ -187,10 +187,10 @@ const BOOL kSkanRegisterLockWindow = NO;
         NSNumber *numConversionValue = [NSNumber numberWithInteger:kSkanRegisterConversionValue];
         NSNumber *numLockWindow = [NSNumber numberWithBool:kSkanRegisterLockWindow];
 
-        [[ADJSKAdNetwork getInstance] adjRegisterWithConversionValue:kSkanRegisterConversionValue
-                                                         coarseValue:kSkanRegisterCoarseValue
-                                                          lockWindow:numLockWindow
-                                                   completionHandler:^(NSError * _Nonnull error) {
+        [[ADJSKAdNetwork getInstance] registerWithConversionValue:kSkanRegisterConversionValue
+                                                      coarseValue:kSkanRegisterCoarseValue
+                                                       lockWindow:numLockWindow
+                                                completionHandler:^(NSError * _Nonnull error) {
             [self notifySkanCallbackWithConversionValue:numConversionValue
                                             coarseValue:kSkanRegisterCoarseValue
                                              lockWindow:numLockWindow
@@ -2784,10 +2784,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     NSString *coarseValue = [responseData.jsonResponse objectForKey:kSkanCoarseValueResponseKey];
     NSNumber *lockWindow = [responseData.jsonResponse objectForKey:kSkanLockWindowResponseKey];
 
-    [[ADJSKAdNetwork getInstance] adjUpdateConversionValue:[conversionValue intValue]
-                                               coarseValue:coarseValue
-                                                lockWindow:lockWindow
-                                         completionHandler:^(NSError *error) {
+    [[ADJSKAdNetwork getInstance] updateConversionValue:[conversionValue intValue]
+                                            coarseValue:coarseValue
+                                             lockWindow:lockWindow
+                                      completionHandler:^(NSError *error) {
         [self notifySkanCallbackWithConversionValue:conversionValue
                                         coarseValue:coarseValue
                                          lockWindow:lockWindow
