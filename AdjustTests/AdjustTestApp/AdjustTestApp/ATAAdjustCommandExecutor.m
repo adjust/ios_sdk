@@ -314,7 +314,7 @@
     if ([parameters objectForKey:@"allowSkAdNetworkHandling"]) {
         NSString *allowSkAdNetworkHandlingS = [parameters objectForKey:@"allowSkAdNetworkHandling"][0];
         if ([allowSkAdNetworkHandlingS boolValue] == NO) {
-            [adjustConfig disableSKANAttributionHandling];
+            [adjustConfig disableSkanAttributionHandling];
         }
     }
 

@@ -176,9 +176,9 @@
  */
 @property (nonatomic, assign) BOOL needsCost;
 
-@property (nonatomic, assign, readonly) BOOL isSKANAttributionHandlingEnabled;
+@property (nonatomic, assign, readonly) BOOL isSkanAttributionHandlingEnabled;
 
-- (void)disableSKANAttributionHandling;
+- (void)disableSkanAttributionHandling;
 
 /**
  * @brief Adjust url strategy.
