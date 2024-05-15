@@ -13,8 +13,7 @@
 
 @implementation ADJAttribution
 
-+ (ADJAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict
-                                adid:(NSString *)adid {
++ (ADJAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict {
     return [[ADJAttribution alloc] initWithJsonDict:jsonDict];
 }
 
