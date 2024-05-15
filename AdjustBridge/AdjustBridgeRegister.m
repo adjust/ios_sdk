@@ -339,7 +339,7 @@ static NSString * fbAppIdStatic = nil;
             this.needsCost = null;
             this.allowAdServicesInfoReading = null;
             this.isIdfaReadingAllowed = null;
-            this.allowSkAdNetworkHandling = null;
+            this.isSkanAttributionHandlingEnabled = null;
             this.openDeferredDeeplink = null;
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
@@ -425,7 +425,7 @@ static NSString * fbAppIdStatic = nil;
             this.isIdfaReadingAllowed = false;
         };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
-            this.allowSkAdNetworkHandling = false;
+            this.isSkanAttributionHandlingEnabled = false;
         };
         AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
             this.openDeferredDeeplink = shouldOpen;

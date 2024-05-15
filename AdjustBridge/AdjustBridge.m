@@ -199,7 +199,7 @@
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
-        NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
+        NSNumber *isSkanAttributionHandlingEnabled = [data objectForKey:@"isSkanAttributionHandlingEnabled"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
@@ -261,8 +261,8 @@
         if ([self isFieldValid:attConsentWaitingSeconds]) {
             [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
         }
-        if ([self isFieldValid:allowSkAdNetworkHandling]) {
-            if ([allowSkAdNetworkHandling boolValue] == NO) {
+        if ([self isFieldValid:isSkanAttributionHandlingEnabled]) {
+            if ([isSkanAttributionHandlingEnabled boolValue] == NO) {
                 [adjustConfig disableSkanAttributionHandling];
             }
         }
