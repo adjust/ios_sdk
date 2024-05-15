@@ -178,6 +178,9 @@
 
 @property (nonatomic, assign, readonly) BOOL isSkanAttributionHandlingEnabled;
 
+/**
+ * @brief Disables SKAdNetwork attribution handling
+ */
 - (void)disableSkanAttributionHandling;
 
 /**
