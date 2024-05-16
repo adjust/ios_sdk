@@ -132,8 +132,8 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @param deeplink URL object which contains info about adjust deep link.
  * @param completionHandler Completion handler where either resolved or echoed deep link will be sent.
  */
-+ (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
++ (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
+                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
 /**
  * @brief Set the device token used by push notifications.
@@ -361,8 +361,8 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)processDeeplink:(nonnull NSURL *)url;
 
-- (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
+- (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
+                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
 - (void)setOfflineMode:(BOOL)enabled;
 
