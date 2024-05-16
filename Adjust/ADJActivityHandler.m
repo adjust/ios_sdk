@@ -988,7 +988,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI setCoppaComplianceI:selfI
               isCoppaComplianceEnabled:((NSNumber *)adjustTPSorCoppaNumberBool).boolValue];
         } else {
-            [selfI processCoppaComplianceI:selfI];
+            [selfI.logger
+             error:@"Unexpected type of element in preLaunchAdjustThirdPartySharingArray: %@",
+             NSStringFromClass([adjustTPSorCoppaNumberBool class])];
         }
     }
 
