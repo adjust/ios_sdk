@@ -2850,12 +2850,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     BOOL coppaFromUserDefaults = [ADJUserDefaults getCoppaCompliance];
 
-    BOOL doesCoppaRemainsEnabled =
+    BOOL doesCoppaRemainEnabled =
         [selfI.activityState isCoppaComplianceEnabled] && coppaFromUserDefaults;
     BOOL doesCoppaRemainsDisabled =
         ! [selfI.activityState isCoppaComplianceEnabled] && ! coppaFromUserDefaults;
 
-    if (doesCoppaRemainsEnabled || doesCoppaRemainsDisabled) { return; }
+    if (doesCoppaRemainEnabled || doesCoppaRemainsDisabled) { return; }
 
     [selfI setCoppaComplianceI:selfI isCoppaComplianceEnabled:coppaFromUserDefaults];
 }
