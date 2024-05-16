@@ -17,7 +17,7 @@
 @property (nonatomic, assign) BOOL isThirdPartySharingDisabledForCoppa;
 
 @property (nonatomic, copy) NSString *dedupeToken;
-@property (nonatomic, copy) NSString *deviceToken;
+@property (nonatomic, copy) NSString *pushToken;
 @property (nonatomic, assign) BOOL updatePackagesAttData;
 
 @property (nonatomic, copy) NSString *adid;

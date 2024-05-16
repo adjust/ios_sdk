@@ -37,7 +37,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.isGdprForgotten = NO;
     self.askingAttribution = NO;
     self.isThirdPartySharingDisabledForCoppa = NO;
-    self.deviceToken = nil;
+    self.pushToken = nil;
     self.eventDeduplicationIds = [NSMutableArray array];
     self.updatePackagesAttData = NO;
     self.trackingManagerAuthorizationStatus = -1;
@@ -114,10 +114,10 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f dt:%@ gdprf:%d dtpsc:%d att:%d",
+    return [NSString stringWithFormat:@"ec:%d sc:%d ssc:%d ask:%d sl:%.1f ts:%.1f la:%.1f pt:%@ gdprf:%d dtpsc:%d att:%d",
             self.eventCount, self.sessionCount,
             self.subsessionCount, self.askingAttribution, self.sessionLength,
-            self.timeSpent, self.lastActivity, self.deviceToken,
+            self.timeSpent, self.lastActivity, self.pushToken,
             self.isGdprForgotten, self.isThirdPartySharingDisabledForCoppa, self.trackingManagerAuthorizationStatus];
 }
 
@@ -184,7 +184,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     if ([decoder containsValueForKey:@"deviceToken"]) {
-        self.deviceToken = [decoder decodeObjectForKey:@"deviceToken"];
+        self.pushToken = [decoder decodeObjectForKey:@"deviceToken"];
     }
 
     if ([decoder containsValueForKey:@"updatePackagesAttData"]) {
@@ -226,7 +226,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
     [encoder encodeBool:self.isThirdPartySharingDisabledForCoppa forKey:@"isThirdPartySharingDisabledForCoppa"];
-    [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
+    [encoder encodeObject:self.pushToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackagesAttData forKey:@"updatePackagesAttData"];
     [encoder encodeObject:self.adid forKey:@"adid"];
     [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
@@ -253,7 +253,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         copy.lastActivity = self.lastActivity;
         copy.askingAttribution = self.askingAttribution;
         copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
-        copy.deviceToken = [self.deviceToken copyWithZone:zone];
+        copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.updatePackagesAttData = self.updatePackagesAttData;
         copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
     }

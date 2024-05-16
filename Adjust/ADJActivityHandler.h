@@ -40,7 +40,6 @@
 
 @property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
-@property (nonatomic, copy) NSData *_Nullable deviceTokenData;
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *_Nullable extraPath;
@@ -82,8 +81,8 @@
 - (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
                 completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler;
-- (void)setDeviceToken:(NSData * _Nullable)deviceToken;
-- (void)setPushToken:(NSString * _Nullable)deviceToken;
+- (void)setPushTokenData:(NSData * _Nullable)pushTokenData;
+- (void)setPushTokenString:(NSString * _Nullable)pushTokenString;
 - (void)setGdprForgetMe;
 - (void)setTrackingStateOptedOut;
 - (void)setAskingAttribution:(BOOL)askingAttribution;

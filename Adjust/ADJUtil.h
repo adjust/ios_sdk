@@ -72,7 +72,7 @@ typedef void (^isInactiveInjected)(BOOL);
 + (NSString *)queryString:(NSDictionary *)parameters
                 queueSize:(NSUInteger)queueSize;
 
-+ (NSString *)convertDeviceToken:(NSData *)deviceToken;
++ (NSString *)pushTokenDataAsString:(NSData *)pushTokenData;
 
 + (BOOL)isNull:(id)value;
 

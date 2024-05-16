@@ -125,15 +125,15 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)setDeviceToken:(NSData *)deviceToken {
++ (void)setPushToken:(NSData *)pushToken {
     @synchronized (self) {
-        [[Adjust getInstance] setDeviceToken:[deviceToken copy]];
+        [[Adjust getInstance] setPushToken:[pushToken copy]];
     }
 }
 
-+ (void)setPushToken:(NSString *)pushToken {
++ (void)setPushTokenAsString:(NSString *)pushToken {
     @synchronized (self) {
-        [[Adjust getInstance] setPushToken:[pushToken copy]];
+        [[Adjust getInstance] setPushTokenAsString:[pushToken copy]];
     }
 }
 
@@ -385,22 +385,22 @@ static dispatch_once_t onceToken = 0;
                                   completionHandler:completionHandler];
 }
 
-- (void)setDeviceToken:(NSData *)deviceToken {
-    [ADJUserDefaults savePushTokenData:deviceToken];
+- (void)setPushToken:(NSData *)pushToken {
+    [ADJUserDefaults savePushTokenData:pushToken];
 
-    if ([self checkActivityHandler:@"device token"]) {
+    if ([self checkActivityHandler:@"push token"]) {
         if (self.activityHandler.isEnabled) {
-            [self.activityHandler setDeviceToken:deviceToken];
+            [self.activityHandler setPushTokenData:pushToken];
         }
     }
 }
 
-- (void)setPushToken:(NSString *)pushToken {
+- (void)setPushTokenAsString:(NSString *)pushToken {
     [ADJUserDefaults savePushTokenString:pushToken];
 
-    if ([self checkActivityHandler:@"device token"]) {
+    if ([self checkActivityHandler:@"push token as string"]) {
         if (self.activityHandler.isEnabled) {
-            [self.activityHandler setPushToken:pushToken];
+            [self.activityHandler setPushTokenString:pushToken];
         }
     }
 }
