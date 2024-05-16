@@ -58,7 +58,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     self.globalParameters = globalParameters;
     self.trackingStatusManager = trackingStatusManager;
     self.isCoppaComplianceEnabled =
-        [ADJPackageBuilder coallesceIsCoppaComplianceEnabledWithActivityState:activityState];
+        [ADJPackageBuilder coalesceIsCoppaComplianceEnabledWithActivityState:activityState];
 
     return self;
 }
@@ -1153,7 +1153,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }
-    if ([ADJPackageBuilder coallesceIsCoppaComplianceEnabledWithActivityState:activityState]) {
+    if ([ADJPackageBuilder coalesceIsCoppaComplianceEnabledWithActivityState:activityState]) {
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA with COPPA enabled"];
         return;
     }
@@ -1202,7 +1202,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                     activityState:self.activityState];
 }
 
-+ (BOOL)coallesceIsCoppaComplianceEnabledWithActivityState:(ADJActivityState *)activityState {
++ (BOOL)coalesceIsCoppaComplianceEnabledWithActivityState:(ADJActivityState *)activityState {
     if (activityState != nil) {
         return [activityState isCoppaComplianceEnabled];
     }
