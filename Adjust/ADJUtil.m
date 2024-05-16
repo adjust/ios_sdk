@@ -946,14 +946,14 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 // adapted from https://stackoverflow.com/a/9084784
-+ (NSString *)convertDeviceToken:(NSData *)deviceToken {
-    NSUInteger dataLength  = [deviceToken length];
++ (NSString *)pushTokenDataAsString:(NSData *)pushTokenData {
+    NSUInteger dataLength = [pushTokenData length];
 
     if (dataLength == 0) {
         return nil;
     }
 
-    const unsigned char *dataBuffer = (const unsigned char *)[deviceToken bytes];
+    const unsigned char *dataBuffer = (const unsigned char *)[pushTokenData bytes];
 
     if (!dataBuffer) {
         return nil;

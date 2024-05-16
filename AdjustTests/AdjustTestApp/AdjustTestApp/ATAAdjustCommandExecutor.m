@@ -583,9 +583,9 @@
 }
 
 - (void)setPushToken:(NSDictionary *)parameters {
-    NSString *deviceTokenS = [parameters objectForKey:@"pushToken"][0];
-    NSData *deviceToken = [deviceTokenS dataUsingEncoding:NSUTF8StringEncoding];
-    [Adjust setDeviceToken:deviceToken];
+    NSString *pushTokenS = [parameters objectForKey:@"pushToken"][0];
+    NSData *pushToken = [pushTokenS dataUsingEncoding:NSUTF8StringEncoding];
+    [Adjust setPushToken:pushToken];
 }
 
 - (void)openDeeplink:(NSDictionary *)parameters {

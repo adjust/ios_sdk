@@ -529,11 +529,6 @@ AdjustCommandExecutor.prototype.removeGlobalPartnerParameters = function(params)
     Adjust.removeGlobalPartnerParameters();
 };
 
-AdjustCommandExecutor.prototype.setPushToken = function(params) {
-    var token = getFirstValue(params, 'pushToken');
-    Adjust.setDeviceToken(token);
-};
-
 AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
     var isEnabledS = getFirstValue(params, 'isEnabled');
 

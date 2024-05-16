@@ -408,13 +408,6 @@
         responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust setPushToken:(NSString *)data];
-    }];
-
     [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSNumber class]]) {
             return;

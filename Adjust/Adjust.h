@@ -140,19 +140,19 @@ extern NSString * __nonnull const ADJDataResidencyUS;
                 completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
 /**
- * @brief Set the device token used by push notifications.
+ * @brief Set the APNs push token.
  *
- * @param deviceToken Apple push notification token for iOS device as NSData.
+ * @param pushToken APNs push token.
  */
-+ (void)setDeviceToken:(nonnull NSData *)deviceToken;
++ (void)setPushToken:(nonnull NSData *)pushToken;
 
 /**
- * @brief Set the device token used by push notifications.
+ * @brief Set the APNs push token as stirng.
  *        This method is only used by Adjust non native SDKs. Don't use it anywhere else.
  *
- * @param pushToken Apple push notification token for iOS device as NSString.
+ * @param pushToken APNs push token as string.
  */
-+ (void)setPushToken:(nonnull NSString *)pushToken;
++ (void)setPushTokenAsString:(nonnull NSString *)pushToken;
 
 /**
  * @brief Enable or disable offline mode. Activities won't be sent but they are saved when
@@ -363,9 +363,9 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)setOfflineMode:(BOOL)enabled;
 
-- (void)setDeviceToken:(nonnull NSData *)deviceToken;
+- (void)setPushToken:(nonnull NSData *)pushToken;
 
-- (void)setPushToken:(nonnull NSString *)pushToken;
+- (void)setPushTokenAsString:(nonnull NSString *)pushToken;
 
 - (void)trackSubsessionEnd;
 
