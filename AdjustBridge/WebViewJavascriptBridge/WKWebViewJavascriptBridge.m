@@ -163,6 +163,39 @@
     }
 }
 
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction preferences:(WKWebpagePreferences *)preferences decisionHandler:(void (^)(WKNavigationActionPolicy, WKWebpagePreferences * _Nonnull))decisionHandler  API_AVAILABLE(ios(13.0)){
+    if (webView != _webView) { return; }
+    NSURL *url = navigationAction.request.URL;
+    __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
+
+    if ([_base isWebViewJavascriptBridgeURL:url]) {
+        if ([_base isBridgeLoadedURL:url]) {
+            [_base injectJavascriptFile];
+        } else if ([_base isQueueMessageURL:url]) {
+            [self WKFlushMessageQueue];
+        } else {
+            [_base logUnkownMessage:url];
+        }
+        decisionHandler(WKNavigationActionPolicyCancel, preferences);
+        return;
+    }
+
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:decidePolicyForNavigationAction:preferences:decisionHandler:)]) {
+        [_webViewDelegate webView:webView decidePolicyForNavigationAction:navigationAction preferences:preferences decisionHandler:decisionHandler];
+    } else {
+        decisionHandler(WKNavigationActionPolicyAllow, preferences);
+    }
+}
+
+- (void)webView:(WKWebView *)webView navigationAction:(WKNavigationAction *)navigationAction didBecomeDownload:(WKDownload *)download  API_AVAILABLE(ios(14.5)){
+    if (webView != _webView) { return; }
+
+    __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:navigationAction:didBecomeDownload:)]) {
+        [strongDelegate webView:webView navigationAction:navigationAction didBecomeDownload:download];
+    }
+}
+
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     if (webView != _webView) { return; }
     
@@ -172,6 +205,14 @@
     }
 }
 
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
+    if (webView != _webView) { return; }
+
+    __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:didReceiveServerRedirectForProvisionalNavigation:)]) {
+        [strongDelegate webView:webView didReceiveServerRedirectForProvisionalNavigation:navigation];
+    }
+}
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     if (webView != _webView) { return; }
@@ -188,6 +229,24 @@
     __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
     if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:didFailProvisionalNavigation:withError:)]) {
         [strongDelegate webView:webView didFailProvisionalNavigation:navigation withError:error];
+    }
+}
+
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
+    if (webView != _webView) { return; }
+
+    __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webViewWebContentProcessDidTerminate:)]) {
+        [strongDelegate webViewWebContentProcessDidTerminate:webView];
+    }
+}
+
+- (void)webView:(WKWebView *)webView navigationResponse:(WKNavigationResponse *)navigationResponse didBecomeDownload:(WKDownload *)download  API_AVAILABLE(ios(14.5)){
+    if (webView != _webView) { return; }
+
+    __strong typeof(_webViewDelegate) strongDelegate = _webViewDelegate;
+    if (strongDelegate && [strongDelegate respondsToSelector:@selector(webView:navigationResponse:didBecomeDownload:)]) {
+        [strongDelegate webView:webView navigationResponse:navigationResponse didBecomeDownload:download];
     }
 }
 
