@@ -424,6 +424,10 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
+- (void)enableCoppaCompliance;
+
+- (void)disableCoppaCompliance;
+
 @end
 
 @protocol ADJAdjustAttributionCallback <NSObject>
