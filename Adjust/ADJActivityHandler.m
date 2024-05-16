@@ -411,11 +411,11 @@ const BOOL kSkanRegisterLockWindow = NO;
     return self.activityState.adid;
 }
 
-- (void)appWillOpenUrl:(NSURL *)url withClickTime:(NSDate *)clickTime {
+- (void)processDeeplink:(NSURL *)url withClickTime:(NSDate *)clickTime {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI appWillOpenUrlI:selfI url:url clickTime:clickTime];
+                         [selfI processDeeplinkI:selfI url:url clickTime:clickTime];
                      }];
 }
 
@@ -426,7 +426,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         selfI.cachedDeeplinkResolutionCallback = completionHandler;
-        [selfI appWillOpenUrlI:selfI url:deeplink clickTime:clickTime];
+        [selfI processDeeplinkI:selfI url:deeplink clickTime:clickTime];
     }];
 }
 
@@ -1191,7 +1191,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    [selfI appWillOpenUrlI:selfI url:cachedDeeplinkUrl clickTime:cachedDeeplinkClickTime];
+    [selfI processDeeplinkI:selfI url:cachedDeeplinkUrl clickTime:cachedDeeplinkClickTime];
     [ADJUserDefaults removeDeeplink];
 }
 
@@ -1848,9 +1848,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI updateHandlersStatusAndSendI:selfI];
 }
 
-- (void)appWillOpenUrlI:(ADJActivityHandler *)selfI
-                    url:(NSURL *)url
-              clickTime:(NSDate *)clickTime {
+- (void)processDeeplinkI:(ADJActivityHandler *)selfI
+                     url:(NSURL *)url
+               clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
     }

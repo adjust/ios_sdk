@@ -81,7 +81,7 @@
     // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:url];
     return YES;
 }
 
@@ -89,7 +89,7 @@
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"Universal link opened an app: %@", [userActivity webpageURL]);
         // Pass deep link to Adjust in order to potentially reattribute user.
-        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+        [Adjust processDeeplink:[userActivity webpageURL]];
     }
     return YES;
 }

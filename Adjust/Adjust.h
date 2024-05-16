@@ -124,7 +124,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @param url URL object which contains info about adjust deep link.
  */
-+ (void)appWillOpenUrl:(nonnull NSURL *)url;
++ (void)processDeeplink:(nonnull NSURL *)url;
 
 /**
  * @brief Process the deep link that has opened an app and potentially get a resolved link.
@@ -359,7 +359,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)teardown;
 
-- (void)appWillOpenUrl:(nonnull NSURL *)url;
+- (void)processDeeplink:(nonnull NSURL *)url;
 
 - (void)processDeeplink:(nonnull NSURL *)deeplink
       completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;

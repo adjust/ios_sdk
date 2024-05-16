@@ -121,11 +121,6 @@ static NSString * fbAppIdStatic = nil;
                                                         });
                 }
             },
-            appWillOpenUrl: function(url) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_appWillOpenUrl', url, null);
-                }
-            },
             setDeviceToken: function(deviceToken) {
                 if (WebViewJavascriptBridge) {
                     WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);

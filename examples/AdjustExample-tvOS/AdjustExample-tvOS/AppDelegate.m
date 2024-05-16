@@ -78,7 +78,7 @@
     // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:url];
     return YES;
 }
 
@@ -86,7 +86,7 @@
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
         [Adjust convertUniversalLink:[userActivity webpageURL] withScheme:@"adjustExample"];
-        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+        [Adjust processDeeplink:[userActivity webpageURL]];
     }
     
     return YES;

@@ -82,8 +82,8 @@
 - (BOOL)isEnabled;
 - (BOOL)isGdprForgotten;
 
-- (void)appWillOpenUrl:(NSURL * _Nullable)url
-         withClickTime:(NSDate * _Nullable)clickTime;
+- (void)processDeeplink:(NSURL * _Nullable)url
+          withClickTime:(NSDate * _Nullable)clickTime;
 - (void)processDeeplink:(NSURL * _Nullable)deeplink
               clickTime:(NSDate * _Nullable)clickTime
       completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler;

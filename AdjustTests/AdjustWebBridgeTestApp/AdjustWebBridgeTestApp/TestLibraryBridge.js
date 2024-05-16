@@ -544,11 +544,6 @@ AdjustCommandExecutor.prototype.setPushToken = function(params) {
     Adjust.setDeviceToken(token);
 };
 
-AdjustCommandExecutor.prototype.openDeeplink = function(params) {
-    var deeplink = getFirstValue(params, 'deeplink');
-    Adjust.appWillOpenUrl(deeplink);
-};
-
 AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
     var isEnabledS = getFirstValue(params, 'isEnabled');
 

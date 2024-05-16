@@ -598,7 +598,7 @@
 - (void)openDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    [Adjust appWillOpenUrl:deeplink];
+    [Adjust processDeeplink:deeplink];
 }
 
 - (void)gdprForgetMe:(NSDictionary *)parameters {
