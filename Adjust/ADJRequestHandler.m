@@ -94,8 +94,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *_Nullable authorizationHeader = nil;
 
     if (outputParams.count > 0) {
-        authorizationHeader = [outputParams objectForKey:@"Authorization"];
-        [outputParams removeObjectForKey:@"Authorization"];
+        authorizationHeader = [outputParams objectForKey:@"authorization"];
+        [outputParams removeObjectForKey:@"authorization"];
 
         if ([outputParams objectForKey:@"client_sdk"] != nil) {
             clientSdk = [outputParams objectForKey:@"client_sdk"];
@@ -153,8 +153,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *_Nullable authorizationHeader = nil;
 
     if (outputParams.count > 0) {
-        authorizationHeader = [outputParams objectForKey:@"Authorization"];
-        [outputParams removeObjectForKey:@"Authorization"];
+        authorizationHeader = [outputParams objectForKey:@"authorization"];
+        [outputParams removeObjectForKey:@"authorization"];
 
         if ([outputParams objectForKey:@"client_sdk"] != nil) {
             clientSdk = [outputParams objectForKey:@"client_sdk"];
