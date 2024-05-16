@@ -384,10 +384,6 @@
         responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_appWillOpenUrl" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
-    }];
-
     [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
         if (![data isKindOfClass:[NSString class]]) {
             return;

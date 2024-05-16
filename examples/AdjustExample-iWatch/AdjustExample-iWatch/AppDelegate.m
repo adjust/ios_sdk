@@ -37,7 +37,7 @@
     // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:url];
     return YES;
 }
 

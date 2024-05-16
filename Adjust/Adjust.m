@@ -112,9 +112,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)appWillOpenUrl:(NSURL *)url {
++ (void)processDeeplink:(NSURL *)url {
     @synchronized (self) {
-        [[Adjust getInstance] appWillOpenUrl:[url copy]];
+        [[Adjust getInstance] processDeeplink:[url copy]];
     }
 }
 
@@ -360,21 +360,21 @@ static dispatch_once_t onceToken = 0;
     return [self.activityHandler isEnabled];
 }
 
-- (void)appWillOpenUrl:(NSURL *)url {
+- (void)processDeeplink:(NSURL *)url {
     [ADJUserDefaults cacheDeeplinkUrl:url];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
         [ADJUserDefaults saveDeeplinkUrl:url andClickTime:clickTime];
         return;
     }
-    [self.activityHandler appWillOpenUrl:url withClickTime:clickTime];
+    [self.activityHandler processDeeplink:url withClickTime:clickTime];
 }
 
 - (void)processDeeplink:(nonnull NSURL *)deeplink
       completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
     // if resolution result is not wanted, fallback to default method
     if (completionHandler == nil) {
-        [self appWillOpenUrl:deeplink];
+        [self processDeeplink:deeplink];
         return;
     }
     // if deep link processing is triggered prior to SDK being initialized
