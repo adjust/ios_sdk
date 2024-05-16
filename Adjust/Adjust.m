@@ -118,10 +118,10 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
++ (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
+                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
     @synchronized (self) {
-        [[Adjust getInstance] processDeeplink:deeplink completionHandler:completionHandler];
+        [[Adjust getInstance] processAndResolveDeeplink:deeplink completionHandler:completionHandler];
     }
 }
 
@@ -370,8 +370,8 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler processDeeplink:url withClickTime:clickTime];
 }
 
-- (void)processDeeplink:(nonnull NSURL *)deeplink
-      completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
+- (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
+                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
     // if resolution result is not wanted, fallback to default method
     if (completionHandler == nil) {
         [self processDeeplink:deeplink];
@@ -386,9 +386,9 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     // if deep link processing was triggered with SDK being initialized
-    [self.activityHandler processDeeplink:deeplink
-                                clickTime:clickTime
-                        completionHandler:completionHandler];
+    [self.activityHandler processAndResolveDeeplink:deeplink
+                                          clickTime:clickTime
+                                  completionHandler:completionHandler];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {

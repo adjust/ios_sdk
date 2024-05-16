@@ -419,9 +419,9 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)processDeeplink:(NSURL * _Nullable)deeplink
-              clickTime:(NSDate * _Nullable)clickTime
-      completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler {
+- (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
+                        clickTime:(NSDate * _Nullable)clickTime
+                completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
