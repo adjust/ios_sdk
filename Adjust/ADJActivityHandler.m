@@ -977,7 +977,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (selfI.activityState == nil) {
         selfI.activityState = [[ADJActivityState alloc] init];
 
-        // selfI.activityState.deviceToken = [ADJUtil convertDeviceToken:selfI.deviceTokenData];
         NSData *pushTokenData = [ADJUserDefaults getPushTokenData];
         NSString *pushTokenDataAsString = [ADJUtil pushTokenDataAsString:pushTokenData];
         NSString *pushTokenString = [ADJUserDefaults getPushTokenString];
