@@ -16,7 +16,7 @@
 		9639094C1BCBFCF300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */; };
 		9639094F1BCBFCF300A2E8A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */; };
 		963909611BCBFD4200A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909601BCBFD4200A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		9D2F240B2447DDE100B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240A2447DDE100B7CA90 /* ADJSubscription.m */; };
+		9D2F240B2447DDE100B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F240A2447DDE100B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D3A2AD82626511800BD6E44 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AD62626511800BD6E44 /* ADJAdRevenue.m */; };
 		9D449E131E6ED88F00E7E80B /* NSString+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449DD21E6ED88F00E7E80B /* NSString+ADJAdditions.m */; };
 		9D449E151E6ED88F00E7E80B /* NSData+ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449DD61E6ED88F00E7E80B /* NSData+ADJAdditions.m */; };
@@ -77,8 +77,8 @@
 		9639095E1BCBFD3B00A2E8A4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		963909601BCBFD4200A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		964E17FC1D50C6250097770B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		9D2F24092447DDE100B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
-		9D2F240A2447DDE100B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F24092447DDE100B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
+		9D2F240A2447DDE100B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2AD62626511800BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
 		9D3A2AD72626511800BD6E44 /* ADJAdRevenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAdRevenue.h; sourceTree = "<group>"; };
 		9D449DD11E6ED88F00E7E80B /* NSString+ADJAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ADJAdditions.h"; sourceTree = "<group>"; };
@@ -291,8 +291,8 @@
 				9D449E0F1E6ED88F00E7E80B /* ADJGlobalParameters.m */,
 				9DD0E9BC1F457EF800B2A759 /* ADJUserDefaults.h */,
 				9DD0E9BD1F457EF800B2A759 /* ADJUserDefaults.m */,
-				9D2F24092447DDE100B7CA90 /* ADJSubscription.h */,
-				9D2F240A2447DDE100B7CA90 /* ADJSubscription.m */,
+				9D2F24092447DDE100B7CA90 /* ADJAppStoreSubscription.h */,
+				9D2F240A2447DDE100B7CA90 /* ADJAppStoreSubscription.m */,
 				6FBEE90A24E420FA00FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE90924E420FA00FEF3F1 /* ADJUrlStrategy.m */,
 				6F84513325B1B1840004C7C0 /* ADJThirdPartySharing.h */,
@@ -419,7 +419,7 @@
 				9D449E241E6ED88F00E7E80B /* ADJAttribution.m in Sources */,
 				9DC95F2A1C10515300138E4B /* Constants.m in Sources */,
 				9DF38231260E9DAD0033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
-				9D2F240B2447DDE100B7CA90 /* ADJSubscription.m in Sources */,
+				9D2F240B2447DDE100B7CA90 /* ADJAppStoreSubscription.m in Sources */,
 				6F84513525B1B1850004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				963909441BCBFCF300A2E8A4 /* AppDelegate.m in Sources */,
 				9D449E311E6ED88F00E7E80B /* ADJGlobalParameters.m in Sources */,

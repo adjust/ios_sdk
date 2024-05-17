@@ -10,7 +10,7 @@
 #import "ADJEvent.h"
 #import "ADJConfig.h"
 #import "ADJAttribution.h"
-#import "ADJSubscription.h"
+#import "ADJAppStoreSubscription.h"
 #import "ADJThirdPartySharing.h"
 #import "ADJAdRevenue.h"
 #import "ADJLinkResolution.h"
@@ -285,7 +285,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @param subscription Subscription object.
  */
-+ (void)trackSubscription:(nonnull ADJSubscription *)subscription;
++ (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
 /**
  * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method of ATTrackingManager.
@@ -390,7 +390,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)gdprForgetMe;
 
-- (void)trackSubscription:(nonnull ADJSubscription *)subscription;
+- (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
 - (BOOL)isEnabled;
 

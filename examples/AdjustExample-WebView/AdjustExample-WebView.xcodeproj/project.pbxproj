@@ -24,7 +24,7 @@
 		9D10833F1CFDDBF50050568B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D10833E1CFDDBF50050568B /* Default-568h@2x.png */; };
 		9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083401CFDE2470050568B /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9D1083431CFDE29A0050568B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1083421CFDE29A0050568B /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		9D2F24112447DE0A00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24102447DE0A00B7CA90 /* ADJSubscription.m */; };
+		9D2F24112447DE0A00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24102447DE0A00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D3A2ADE2626514300BD6E44 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2ADC2626514300BD6E44 /* ADJAdRevenue.m */; };
 		9D449EDA1E6EDD4100E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E991E6EDD4100E7E80B /* ADJActivityHandler.m */; };
 		9D449EDB1E6EDD4100E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449E9B1E6EDD4100E7E80B /* ADJActivityKind.m */; };
@@ -94,8 +94,8 @@
 		9D10833E1CFDDBF50050568B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9D1083401CFDE2470050568B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9D1083421CFDE29A0050568B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		9D2F240F2447DE0A00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
-		9D2F24102447DE0A00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F240F2447DE0A00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
+		9D2F24102447DE0A00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2ADC2626514300BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
 		9D3A2ADD2626514300BD6E44 /* ADJAdRevenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAdRevenue.h; sourceTree = "<group>"; };
 		9D449E981E6EDD4100E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
@@ -307,8 +307,8 @@
 				9D449ED81E6EDD4100E7E80B /* ADJUtil.m */,
 				9DD0E9C21F4587C600B2A759 /* ADJUserDefaults.h */,
 				9DD0E9C31F4587C600B2A759 /* ADJUserDefaults.m */,
-				9D2F240F2447DE0A00B7CA90 /* ADJSubscription.h */,
-				9D2F24102447DE0A00B7CA90 /* ADJSubscription.m */,
+				9D2F240F2447DE0A00B7CA90 /* ADJAppStoreSubscription.h */,
+				9D2F24102447DE0A00B7CA90 /* ADJAppStoreSubscription.m */,
 				6FBEE90F24E4213800FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE91024E4213800FEF3F1 /* ADJUrlStrategy.m */,
 				6F84513C25B1B1B40004C7C0 /* ADJThirdPartySharing.h */,
@@ -494,7 +494,7 @@
 				9D449EF01E6EDD4100E7E80B /* ADJResponseData.m in Sources */,
 				9D1082A91CFDAF8E0050568B /* main.m in Sources */,
 				9D449EF91E6EDD4100E7E80B /* ADJUtil.m in Sources */,
-				9D2F24112447DE0A00B7CA90 /* ADJSubscription.m in Sources */,
+				9D2F24112447DE0A00B7CA90 /* ADJAppStoreSubscription.m in Sources */,
 				9D449EEE1E6EDD4100E7E80B /* ADJPackageHandler.m in Sources */,
 				9D449EE91E6EDD4100E7E80B /* ADJEventFailure.m in Sources */,
 				9D449EF41E6EDD4100E7E80B /* ADJSessionSuccess.m in Sources */,

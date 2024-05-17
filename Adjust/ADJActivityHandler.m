@@ -615,7 +615,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)trackSubscription:(ADJSubscription *)subscription {
+- (void)trackSubscription:(ADJAppStoreSubscription *)subscription {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
@@ -1245,7 +1245,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)trackSubscriptionI:(ADJActivityHandler *)selfI
-              subscription:(ADJSubscription *)subscription {
+              subscription:(ADJAppStoreSubscription *)subscription {
     if (!selfI.activityState) {
         return;
     }

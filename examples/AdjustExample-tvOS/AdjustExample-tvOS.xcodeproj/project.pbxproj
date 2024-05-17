@@ -19,7 +19,7 @@
 		963909C01BCC0D8300A2E8A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 963909BE1BCC0D8300A2E8A4 /* Main.storyboard */; };
 		963909C21BCC0D8300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963909C11BCC0D8300A2E8A4 /* Assets.xcassets */; };
 		963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */; };
+		9D2F24142447DE1F00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24122447DE1E00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D3A2AE12626515900BD6E44 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AE02626515900BD6E44 /* ADJAdRevenue.m */; };
 		9D449F3F1E6EE6C500E7E80B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449EFE1E6EE6C500E7E80B /* ADJActivityHandler.m */; };
 		9D449F401E6EE6C500E7E80B /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D449F001E6EE6C500E7E80B /* ADJActivityKind.m */; };
@@ -92,8 +92,8 @@
 		963909C11BCC0D8300A2E8A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		963909C31BCC0D8300A2E8A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		963909CF1BCC0DA600A2E8A4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
-		9D2F24132447DE1F00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
+		9D2F24122447DE1E00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
+		9D2F24132447DE1F00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
 		9D3A2ADF2626515900BD6E44 /* ADJAdRevenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAdRevenue.h; sourceTree = "<group>"; };
 		9D3A2AE02626515900BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
 		9D449EFD1E6EE6C400E7E80B /* ADJActivityHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJActivityHandler.h; sourceTree = "<group>"; };
@@ -280,8 +280,8 @@
 				9D449F331E6EE6C500E7E80B /* ADJSessionSuccess.m */,
 				9D49D16F290FEBFC00042345 /* ADJSKAdNetwork.h */,
 				9D49D170290FEBFC00042345 /* ADJSKAdNetwork.m */,
-				9D2F24132447DE1F00B7CA90 /* ADJSubscription.h */,
-				9D2F24122447DE1E00B7CA90 /* ADJSubscription.m */,
+				9D2F24132447DE1F00B7CA90 /* ADJAppStoreSubscription.h */,
+				9D2F24122447DE1E00B7CA90 /* ADJAppStoreSubscription.m */,
 				6F84514025B1B1C80004C7C0 /* ADJThirdPartySharing.h */,
 				6F84513F25B1B1C70004C7C0 /* ADJThirdPartySharing.m */,
 				9D449F361E6EE6C500E7E80B /* ADJTimerCycle.h */,
@@ -414,7 +414,7 @@
 				9D449F5B1E6EE6C500E7E80B /* ADJTimerCycle.m in Sources */,
 				9D449F471E6EE6C500E7E80B /* ADJAttribution.m in Sources */,
 				9DF3823D260E9E000033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
-				9D2F24142447DE1F00B7CA90 /* ADJSubscription.m in Sources */,
+				9D2F24142447DE1F00B7CA90 /* ADJAppStoreSubscription.m in Sources */,
 				6F84514125B1B1C80004C7C0 /* ADJThirdPartySharing.m in Sources */,
 				9D449F421E6EE6C500E7E80B /* ADJActivityState.m in Sources */,
 				9DC95F2F1C10596500138E4B /* Constants.m in Sources */,

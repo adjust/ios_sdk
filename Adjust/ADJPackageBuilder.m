@@ -186,7 +186,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return mcPackage;
 }
 
-- (ADJActivityPackage *)buildSubscriptionPackage:(ADJSubscription *)subscription
+- (ADJActivityPackage *)buildSubscriptionPackage:(ADJAppStoreSubscription *)subscription
                                        isInDelay:(BOOL)isInDelay {
     NSMutableDictionary *parameters = [self getSubscriptionParameters:isInDelay forSubscriptionPackage:subscription];
     ADJActivityPackage *subscriptionPackage = [self defaultActivityPackage];
@@ -856,7 +856,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
     return parameters;
 }
-- (NSMutableDictionary *)getSubscriptionParameters:(BOOL)isInDelay forSubscriptionPackage:(ADJSubscription *)subscription {
+- (NSMutableDictionary *)getSubscriptionParameters:(BOOL)isInDelay
+                            forSubscriptionPackage:(ADJAppStoreSubscription *)subscription {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];

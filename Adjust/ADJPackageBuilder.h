@@ -67,7 +67,7 @@
 
 - (ADJActivityPackage * _Nullable)buildMeasurementConsentPackage:(BOOL)enabled;
 
-- (ADJActivityPackage * _Nullable)buildSubscriptionPackage:( ADJSubscription * _Nullable)subscription
+- (ADJActivityPackage * _Nullable)buildSubscriptionPackage:(ADJAppStoreSubscription * _Nullable)subscription
                                                  isInDelay:(BOOL)isInDelay;
 
 - (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(ADJAdRevenue * _Nullable)adRevenue
