@@ -18,8 +18,6 @@
 
 @property (nonatomic, copy, readonly, nonnull) NSData *receipt;         // [M] receipt
 
-@property (nonatomic, copy, readonly, nonnull) NSString *billingStore;  // [M] billing_store
-
 @property (nonatomic, copy, readonly, nonnull) NSDate *transactionDate; // [O] transaction_date
 
 @property (nonatomic, copy, readonly, nonnull) NSString *salesRegion;   // [O] sales_region

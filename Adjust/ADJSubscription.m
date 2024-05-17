@@ -35,7 +35,6 @@
     _currency = [currency copy];
     _transactionId = [transactionId copy];
     _receipt = [receipt copy];
-    _billingStore = @"iOS";
 
     _logger = ADJAdjustFactory.logger;
     
@@ -130,7 +129,6 @@
         copy->_currency = [self.currency copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
         copy->_receipt = [self.receipt copyWithZone:zone];
-        copy->_billingStore = [self.billingStore copyWithZone:zone];
         copy->_transactionDate = [self.transactionDate copyWithZone:zone];
         copy->_salesRegion = [self.salesRegion copyWithZone:zone];
         copy.mutableCallbackParameters = [self.mutableCallbackParameters copyWithZone:zone];
