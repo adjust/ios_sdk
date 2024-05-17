@@ -22,15 +22,6 @@
 NSString * const ADJEnvironmentSandbox = @"sandbox";
 NSString * const ADJEnvironmentProduction = @"production";
 
-NSString * const ADJUrlStrategyIndia = @"UrlStrategyIndia";
-NSString * const ADJUrlStrategyChina = @"UrlStrategyChina";
-NSString * const ADJUrlStrategyCn = @"UrlStrategyCn";
-NSString * const ADJUrlStrategyCnOnly = @"UrlStrategyCnOnly";
-
-NSString * const ADJDataResidencyEU = @"DataResidencyEU";
-NSString * const ADJDataResidencyTR = @"DataResidencyTR";
-NSString * const ADJDataResidencyUS = @"DataResidencyUS";
-
 @implementation AdjustTestOptions
 @end
 
@@ -702,8 +693,8 @@ static dispatch_once_t onceToken = 0;
     if (testOptions.extraPath != nil) {
         self.savedPreLaunch.extraPath = testOptions.extraPath;
     }
-    if (testOptions.urlOverwrite != nil) {
-        [ADJAdjustFactory setUrlOverwrite:testOptions.urlOverwrite];
+    if (testOptions.testUrlOverwrite != nil) {
+        [ADJAdjustFactory setTestUrlOverwrite:testOptions.testUrlOverwrite];
     }
     if (testOptions.timerIntervalInMilliseconds != nil) {
         NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;

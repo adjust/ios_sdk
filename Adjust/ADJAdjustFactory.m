@@ -25,7 +25,7 @@ static ADJBackoffStrategy * installSessionBackoffStrategy = nil;
 static BOOL internalTesting = NO;
 static BOOL internalAdServicesFrameworkEnabled = YES;
 
-static NSString * internalUrlOverwrite = nil;
+static NSString * internalTestUrlOverwrite = nil;
 
 @implementation ADJAdjustFactory
 
@@ -109,8 +109,8 @@ static NSString * internalUrlOverwrite = nil;
     return internalAdServicesFrameworkEnabled;
 }
 
-+ (NSString *)urlOverwrite {
-    return internalUrlOverwrite;
++ (NSString *)testUrlOverwrite {
+    return internalTestUrlOverwrite;
 }
 
 + (void)setLogger:(id<ADJLogger>)logger {
@@ -160,8 +160,8 @@ static NSString * internalUrlOverwrite = nil;
     internalAdServicesFrameworkEnabled = adServicesFrameworkEnabled;
 }
 
-+ (void)setUrlOverwrite:(NSString *)urlOverwrite {
-    internalUrlOverwrite = urlOverwrite;
++ (void)setTestUrlOverwrite:(NSString *)testUrlOverwrite {
+    internalTestUrlOverwrite = testUrlOverwrite;
 }
 
 + (void)enableSigning {
@@ -224,7 +224,7 @@ static NSString * internalUrlOverwrite = nil;
     sdkClickHandlerBackoffStrategy = nil;
     installSessionBackoffStrategy = nil;
     internalTesting = NO;
-    internalUrlOverwrite = nil;
+    internalTestUrlOverwrite = nil;
     internalAdServicesFrameworkEnabled = YES;
 }
 @end

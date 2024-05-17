@@ -178,11 +178,6 @@
  */
 - (void)disableSkanAttributionHandling;
 
-/**
- * @brief Adjust url strategy.
- */
-@property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
-
 @property (nonatomic, assign, readonly) BOOL isLinkMeEnabled;
 
 /**
@@ -247,5 +242,12 @@
 - (void)readDeviceIdsOnce;
 
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
+
+@property (nonatomic, copy, readonly, nullable) NSMutableArray *urlStrategyDomains;
+
+@property (nonatomic, readonly) BOOL useSubdomains;
+
+- (void)setUrlStrategyDomains:(NSMutableArray * _Nullable)domains
+               withSubdomains:(BOOL)useSubdomains;
 
 @end

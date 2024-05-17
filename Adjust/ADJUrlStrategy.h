@@ -13,14 +13,16 @@
 
 @property (nonatomic, readonly, copy) NSString *extraPath;
 
-- (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
-                              extraPath:(NSString *)extraPath;
+- (instancetype)initWithUrlStrategyDomains:(NSMutableArray *)domains
+                                 extraPath:(NSString *)extraPath
+                             useSubdomains:(BOOL)useSubdomains;
 
 - (NSString *)urlForActivityKind:(ADJActivityKind)activityKind
                   isConsentGiven:(BOOL)isConsentGiven
                withSendingParams:(NSMutableDictionary *)sendingParams;
 
 - (void)resetAfterSuccess;
+
 - (BOOL)shouldRetryAfterFailure:(ADJActivityKind)activityKind;
 
 @end

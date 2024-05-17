@@ -121,7 +121,7 @@
 
 - (void)testOptions:(NSDictionary *)parameters {
     AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-    testOptions.urlOverwrite = urlOverwrite;
+    testOptions.testUrlOverwrite = urlOverwrite;
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];
