@@ -611,7 +611,7 @@
         AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
 
         if ([self isFieldValid:urlOverwrite]) {
-            testOptions.urlOverwrite = urlOverwrite;
+            testOptions.testUrlOverwrite = urlOverwrite;
         }
         if ([self isFieldValid:extraPath]) {
             testOptions.extraPath = extraPath;

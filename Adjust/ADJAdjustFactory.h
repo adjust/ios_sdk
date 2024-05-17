@@ -27,7 +27,7 @@
 + (ADJBackoffStrategy *)installSessionBackoffStrategy;
 
 + (BOOL)testing;
-+ (NSString *)urlOverwrite;
++ (NSString *)testUrlOverwrite;
 + (BOOL)adServicesFrameworkEnabled;
 
 + (void)setLogger:(id<ADJLogger>)logger;
@@ -42,7 +42,7 @@
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled;
-+ (void)setUrlOverwrite:(NSString *)urlOverwrite;
++ (void)setTestUrlOverwrite:(NSString *)testUrlOverwrite;
 
 + (void)enableSigning;
 + (void)disableSigning;

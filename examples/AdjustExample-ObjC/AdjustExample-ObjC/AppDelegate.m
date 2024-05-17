@@ -20,16 +20,16 @@
     NSString *appToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
-    
+
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-    
+
     // Set default tracker.
     // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
-    
+
     // Send in the background.
     // [adjustConfig setSendInBackground:YES];
-    
+
     // Enable LinkMe feature.
     // [adjustConfig enableLinkMe];
 

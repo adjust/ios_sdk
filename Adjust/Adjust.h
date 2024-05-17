@@ -21,7 +21,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @interface AdjustTestOptions : NSObject
 
-@property (nonatomic, copy, nullable) NSString *urlOverwrite;
+@property (nonatomic, copy, nullable) NSString *testUrlOverwrite;
 @property (nonatomic, copy, nullable) NSString *extraPath;
 @property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
@@ -49,17 +49,6 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
  */
 extern NSString * __nonnull const ADJEnvironmentSandbox;
 extern NSString * __nonnull const ADJEnvironmentProduction;
-
-/**
- * Constants for country app's URL strategies.
- */
-extern NSString * __nonnull const ADJUrlStrategyIndia;
-extern NSString * __nonnull const ADJUrlStrategyChina;
-extern NSString * __nonnull const ADJUrlStrategyCn;
-extern NSString * __nonnull const ADJUrlStrategyCnOnly;
-extern NSString * __nonnull const ADJDataResidencyEU;
-extern NSString * __nonnull const ADJDataResidencyTR;
-extern NSString * __nonnull const ADJDataResidencyUS;
 
 /**
  * @brief The main interface to Adjust.

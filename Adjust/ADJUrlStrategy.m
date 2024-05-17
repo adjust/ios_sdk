@@ -11,47 +11,24 @@
 #import "Adjust.h"
 #import "ADJAdjustFactory.h"
 
-static NSString * const baseUrlAnalytics = @"https://analytics.adjust.com";
-static NSString * const baseUrlConsent = @"https://consent.adjust.com";
-static NSString * const gdprUrl = @"https://gdpr.adjust.com";
-static NSString * const subscriptionUrl = @"https://subscription.adjust.com";
-static NSString * const purchaseVerificationUrl = @"https://ssrv.adjust.com";
+static NSString * const kBaseAnalyticsUrl = @"https://analytics.adjust.com";
+static NSString * const kBaseConsentUrl = @"https://consent.adjust.com";
+static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
+static NSString * const kSubscriptionUrl = @"https://subscription.adjust.com";
+static NSString * const kPurchaseVerificationUrl = @"https://ssrv.adjust.com";
 
-static NSString * const baseUrlIndiaAnalytics = @"https://analytics.adjust.net.in";
-static NSString * const baseUrlIndiaConsent = @"https://consent.adjust.net.in";
-static NSString * const gdprUrlIndia = @"https://gdpr.adjust.net.in";
-static NSString * const subscriptionUrlIndia = @"https://subscription.adjust.net.in";
-static NSString * const purchaseVerificationUrlIndia = @"https://ssrv.adjust.net.in";
+static NSString * const kBaseAnalyticsWorldUrl = @"https://analytics.adjust.world";
+static NSString * const kBaseConsentWorldUrl = @"https://consent.adjust.world";
+static NSString * const kGdprWorldUrl = @"https://gdpr.adjust.world";
+static NSString * const kSubscriptionWorldUrl = @"https://subscription.adjust.world";
+static NSString * const kPurchaseVerificationWorldUrl = @"https://ssrv.adjust.world";
 
-static NSString * const baseUrlChinaAnalytics = @"https://analytics.adjust.world";
-static NSString * const baseUrlChinaConsent = @"https://consent.adjust.world";
-static NSString * const gdprUrlChina = @"https://gdpr.adjust.world";
-static NSString * const subscriptionUrlChina = @"https://subscription.adjust.world";
-static NSString * const purchaseVerificationUrlChina = @"https://ssrv.adjust.world";
-
-static NSString * const baseUrlCnAnalytics = @"https://analytics.adjust.cn";
-static NSString * const baseUrlCnConsent = @"https://consent.adjust.cn";
-static NSString * const gdprUrlCn = @"https://gdpr.adjust.cn";
-static NSString * const subscriptionUrlCn = @"https://subscription.adjust.cn";
-static NSString * const purchaseVerificationUrlCn = @"https://ssrv.adjust.cn";
-
-static NSString * const baseUrlEUAnalytics = @"https://analytics.eu.adjust.com";
-static NSString * const baseUrlEUConsent = @"https://consent.eu.adjust.com";
-static NSString * const gdprUrlEU = @"https://gdpr.eu.adjust.com";
-static NSString * const subscriptionUrlEU = @"https://subscription.eu.adjust.com";
-static NSString * const purchaseVerificationUrlEU = @"https://ssrv.eu.adjust.com";
-
-static NSString * const baseUrlTRAnalytics = @"https://analytics.tr.adjust.com";
-static NSString * const baseUrlTRConsent = @"https://consent.tr.adjust.com";
-static NSString * const gdprUrlTR = @"https://gdpr.tr.adjust.com";
-static NSString * const subscriptionUrlTR = @"https://subscription.tr.adjust.com";
-static NSString * const purchaseVerificationUrlTR = @"https://ssrv.tr.adjust.com";
-
-static NSString * const baseUrlUSAnalytics = @"https://analytics.us.adjust.com";
-static NSString * const baseUrlUSConsent = @"https://consent.us.adjust.com";
-static NSString * const gdprUrlUS = @"https://gdpr.us.adjust.com";
-static NSString * const subscriptionUrlUS = @"https://subscription.us.adjust.com";
-static NSString * const purchaseVerificationUrlUS = @"https://ssrv.us.adjust.com";
+// TODO: to be utilized
+static NSString * const kBaseAnalyticsIoUrl = @"https://analytics.adjust.io";
+static NSString * const kBaseConsentIoUrl = @"https://consent.adjust.io";
+static NSString * const kGdprIoUrl = @"https://gdpr.adjust.io";
+static NSString * const kSubscriptionIoUrl = @"https://subscription.adjust.io";
+static NSString * const kPurchaseVerificationIoUrl = @"https://ssrv.adjust.io";
 
 static NSString *const testServerCustomEndPointKey = @"test_server_custom_end_point";
 static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_point";
@@ -59,39 +36,106 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
 
 @interface ADJUrlStrategy ()
 
-@property (nonatomic, copy) NSArray<NSString *> *baseUrlAnalyticsChoicesArray;
-@property (nonatomic, copy) NSArray<NSString *> *baseUrlConsentChoicesArray;
-@property (nonatomic, copy) NSArray<NSString *> *gdprUrlChoicesArray;
-@property (nonatomic, copy) NSArray<NSString *> *subscriptionUrlChoicesArray;
-@property (nonatomic, copy) NSArray<NSString *> *purchaseVerificationUrlChoicesArray;
+@property (nonatomic, copy) NSMutableArray<NSString *> *baseUrlAnalyticsChoicesArray;
 
-@property (nonatomic, copy) NSString *urlOverwrite;
+@property (nonatomic, copy) NSMutableArray<NSString *> *baseUrlConsentChoicesArray;
+
+@property (nonatomic, copy) NSMutableArray<NSString *> *gdprUrlChoicesArray;
+
+@property (nonatomic, copy) NSMutableArray<NSString *> *subscriptionUrlChoicesArray;
+
+@property (nonatomic, copy) NSMutableArray<NSString *> *purchaseVerificationUrlChoicesArray;
+
+@property (nonatomic, copy) NSString *testUrlOverwrite;
 
 @property (nonatomic, assign) BOOL wasLastAttemptSuccess;
 
 @property (nonatomic, assign) NSUInteger choiceIndex;
+
 @property (nonatomic, assign) NSUInteger startingChoiceIndex;
 
 @end
 
 @implementation ADJUrlStrategy
 
-- (instancetype)initWithUrlStrategyInfo:(NSString *)urlStrategyInfo
-                              extraPath:(NSString *)extraPath {
+- (instancetype)initWithUrlStrategyDomains:(NSMutableArray *)domains
+                                 extraPath:(NSString *)extraPath
+                             useSubdomains:(BOOL)useSubdomains {
     self = [super init];
 
     _extraPath = extraPath ?: @"";
 
-    _baseUrlAnalyticsChoicesArray = [ADJUrlStrategy baseUrlAnalyticsChoicesWithUrlStrategyInfo:urlStrategyInfo];
-    _baseUrlConsentChoicesArray = [ADJUrlStrategy baseUrlConsentChoicesWithUrlStrategyInfo:urlStrategyInfo];
-    _gdprUrlChoicesArray = [ADJUrlStrategy gdprUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
-    _subscriptionUrlChoicesArray = [ADJUrlStrategy
-                                    subscriptionUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
-    _purchaseVerificationUrlChoicesArray = [ADJUrlStrategy
-                                            purchaseVerificationUrlChoicesWithUrlStrategyInfo:urlStrategyInfo];
+    _baseUrlAnalyticsChoicesArray = [NSMutableArray array];
+    _baseUrlConsentChoicesArray = [NSMutableArray array];
+    _gdprUrlChoicesArray = [NSMutableArray array];
+    _subscriptionUrlChoicesArray = [NSMutableArray array];
+    _purchaseVerificationUrlChoicesArray = [NSMutableArray array];
 
-    _urlOverwrite = [ADJAdjustFactory urlOverwrite];
+    if (domains != nil) {
+        if (useSubdomains == YES) {
+            for (NSString *domain in domains) {
+                NSString *baseAnalyticsUrl = [ADJUrlStrategy generateBaseAnalyticsUrlForDomain:domain];
+                NSString *baseConsentUrl = [ADJUrlStrategy generateBaseConsentUrlForDomain:domain];
+                NSString *gdprUrl = [ADJUrlStrategy generateGdprUrlForDomain:domain];
+                NSString *subscriptionUrl = [ADJUrlStrategy generateSubscriptionUrlForDomain:domain];
+                NSString *purchaseVerificationUrl = [ADJUrlStrategy generatePurchaseVerificationUrlForDomain:domain];
 
+                if ([_baseUrlAnalyticsChoicesArray containsObject:baseAnalyticsUrl] == NO) {
+                    [_baseUrlAnalyticsChoicesArray addObject:baseAnalyticsUrl];
+                }
+                if ([_baseUrlConsentChoicesArray containsObject:baseConsentUrl] == NO) {
+                    [_baseUrlConsentChoicesArray addObject:baseConsentUrl];
+                }
+                if ([_gdprUrlChoicesArray containsObject:gdprUrl] == NO) {
+                    [_gdprUrlChoicesArray addObject:gdprUrl];
+                }
+                if ([_subscriptionUrlChoicesArray containsObject:subscriptionUrl] == NO) {
+                    [_subscriptionUrlChoicesArray addObject:subscriptionUrl];
+                }
+                if ([_purchaseVerificationUrlChoicesArray containsObject:purchaseVerificationUrl] == NO) {
+                    [_purchaseVerificationUrlChoicesArray addObject:purchaseVerificationUrl];
+                }
+            }
+        } else {
+            for (NSString *domain in domains) {
+                NSString *domainUrl = [NSString stringWithFormat:@"https://%@", domain];
+
+                if ([_baseUrlAnalyticsChoicesArray containsObject:domainUrl] == NO) {
+                    [_baseUrlAnalyticsChoicesArray addObject:domainUrl];
+                }
+                if ([_baseUrlConsentChoicesArray containsObject:domainUrl] == NO) {
+                    [_baseUrlConsentChoicesArray addObject:domainUrl];
+                }
+                if ([_gdprUrlChoicesArray containsObject:domainUrl] == NO) {
+                    [_gdprUrlChoicesArray addObject:domainUrl];
+                }
+                if ([_subscriptionUrlChoicesArray containsObject:domainUrl] == NO) {
+                    [_subscriptionUrlChoicesArray addObject:domainUrl];
+                }
+                if ([_purchaseVerificationUrlChoicesArray containsObject:domainUrl] == NO) {
+                    [_purchaseVerificationUrlChoicesArray addObject:domainUrl];
+                }
+            }
+        }
+    } else {
+        [_baseUrlConsentChoicesArray addObject:kBaseConsentUrl];
+        [_baseUrlConsentChoicesArray addObject:kBaseConsentWorldUrl];
+        // [_baseUrlConsentChoicesArray addObject:kBaseConsentIoUrl];
+        [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsUrl];
+        [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsWorldUrl];
+        // [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsIoUrl];
+        [_gdprUrlChoicesArray addObject:kGdprUrl];
+        [_gdprUrlChoicesArray addObject:kGdprWorldUrl];
+        // [_gdprUrlChoicesArray addObject:kGdprIoUrl];
+        [_subscriptionUrlChoicesArray addObject:kSubscriptionUrl];
+        [_subscriptionUrlChoicesArray addObject:kSubscriptionWorldUrl];
+        // [_subscriptionUrlChoicesArray addObject:kSubscriptionIoUrl];
+        [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationUrl];
+        [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationWorldUrl];
+        // [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationIoUrl];
+    }
+
+    _testUrlOverwrite = [ADJAdjustFactory testUrlOverwrite];
     _wasLastAttemptSuccess = NO;
     _choiceIndex = 0;
     _startingChoiceIndex = 0;
@@ -99,104 +143,24 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     return self;
 }
 
-+ (NSArray<NSString *> *)baseUrlAnalyticsChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
-    if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[baseUrlIndiaAnalytics, baseUrlAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[baseUrlChinaAnalytics, baseUrlAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[baseUrlCnAnalytics, baseUrlAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
-        return @[baseUrlCnAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[baseUrlEUAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[baseUrlTRAnalytics];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[baseUrlUSAnalytics];
-    } else {
-        return @[baseUrlAnalytics, baseUrlIndiaAnalytics, baseUrlChinaAnalytics];
-    }
++ (NSString *)generateBaseAnalyticsUrlForDomain:(NSString *)domain {
+    return [NSString stringWithFormat:@"https://analytics.%@", domain];
 }
 
-+ (NSArray<NSString *> *)baseUrlConsentChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
-    if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[baseUrlIndiaConsent, baseUrlConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[baseUrlChinaConsent, baseUrlConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[baseUrlCnConsent, baseUrlConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
-        return @[baseUrlCnConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[baseUrlEUConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[baseUrlTRConsent];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[baseUrlUSConsent];
-    } else {
-        return @[baseUrlConsent, baseUrlIndiaConsent, baseUrlChinaConsent];
-    }
++ (NSString *)generateBaseConsentUrlForDomain:(NSString *)domain {
+    return [NSString stringWithFormat:@"https://consent.%@", domain];
 }
 
-+ (NSArray<NSString *> *)gdprUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
-    if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[gdprUrlIndia, gdprUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[gdprUrlChina, gdprUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[gdprUrlCn, gdprUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
-        return @[gdprUrlCn];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[gdprUrlEU];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[gdprUrlTR];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[gdprUrlUS];
-    } else {
-        return @[gdprUrl, gdprUrlIndia, gdprUrlChina];
-    }
++ (NSString *)generateGdprUrlForDomain:(NSString *)domain {
+    return [NSString stringWithFormat:@"https://gdpr.%@", domain];
 }
 
-+ (NSArray<NSString *> *)subscriptionUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
-    if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[subscriptionUrlIndia, subscriptionUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[subscriptionUrlChina, subscriptionUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[subscriptionUrlCn, subscriptionUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
-        return @[subscriptionUrlCn];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[subscriptionUrlEU];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[subscriptionUrlTR];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[subscriptionUrlUS];
-    } else {
-        return @[subscriptionUrl, subscriptionUrlIndia, subscriptionUrlChina];
-    }
++ (NSString *)generateSubscriptionUrlForDomain:(NSString *)domain {
+    return [NSString stringWithFormat:@"https://subscription.%@", domain];
 }
 
-+ (NSArray<NSString *> *)purchaseVerificationUrlChoicesWithUrlStrategyInfo:(NSString *)urlStrategyInfo {
-    if ([urlStrategyInfo isEqualToString:ADJUrlStrategyIndia]) {
-        return @[purchaseVerificationUrlIndia, purchaseVerificationUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyChina]) {
-        return @[purchaseVerificationUrlChina, purchaseVerificationUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCn]) {
-        return @[purchaseVerificationUrlCn, purchaseVerificationUrl];
-    } else if ([urlStrategyInfo isEqualToString:ADJUrlStrategyCnOnly]) {
-        return @[purchaseVerificationUrlCn];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyEU]) {
-        return @[purchaseVerificationUrlEU];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyTR]) {
-        return @[purchaseVerificationUrlTR];
-    } else if ([urlStrategyInfo isEqualToString:ADJDataResidencyUS]) {
-        return @[purchaseVerificationUrlUS];
-    } else {
-        return @[purchaseVerificationUrl, purchaseVerificationUrlIndia, purchaseVerificationUrlChina];
-    }
++ (NSString *)generatePurchaseVerificationUrlForDomain:(NSString *)domain {
+    return [NSString stringWithFormat:@"https://ssrv.%@", domain];
 }
 
 - (nonnull NSString *)urlForActivityKind:(ADJActivityKind)activityKind
@@ -205,11 +169,10 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
     NSString *_Nonnull urlByActivityKind = [self urlForActivityKind:activityKind
                                                      isConsentGiven:isConsentGiven];
 
-    if (self.urlOverwrite != nil) {
+    if (self.testUrlOverwrite != nil) {
         [sendingParams setObject:urlByActivityKind
                           forKey:testServerAdjustEndPointKey];
-
-        return self.urlOverwrite;
+        return self.testUrlOverwrite;
     }
 
     return urlByActivityKind;
