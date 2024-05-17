@@ -98,7 +98,7 @@
     } else if ([methodName isEqualToString:@"measurementConsent"]) {
         [self measurementConsent:parameters];
     } else if ([methodName isEqualToString:@"trackSubscription"]) {
-        [self trackSubscription:parameters];
+        [self trackAppStoreSubscription:parameters];
     } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
         [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"getLastDeeplink"]) {
@@ -647,7 +647,7 @@
     [Adjust trackMeasurementConsent:[isEnabledS boolValue]];
 }
 
-- (void)trackSubscription:(NSDictionary *)parameters {
+- (void)trackAppStoreSubscription:(NSDictionary *)parameters {
     NSDecimalNumber *price;
     NSString *currency;
     NSString *transactionId;
@@ -675,10 +675,11 @@
         salesRegion = [parameters objectForKey:@"salesRegion"][0];
     }
 
-    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
-                                                                  currency:currency
-                                                             transactionId:transactionId
-                                                                andReceipt:receipt];
+    ADJAppStoreSubscription *subscription =
+    [[ADJAppStoreSubscription alloc] initWithPrice:price
+                                          currency:currency
+                                     transactionId:transactionId
+                                        andReceipt:receipt];
     [subscription setTransactionDate:transactionDate];
     [subscription setSalesRegion:salesRegion];
 
@@ -700,7 +701,7 @@
         }
     }
 
-    [Adjust trackSubscription:subscription];
+    [Adjust trackAppStoreSubscription:subscription];
 }
 
 - (void)trackAdRevenue:(NSDictionary *)parameters {

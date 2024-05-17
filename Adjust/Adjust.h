@@ -285,7 +285,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @param subscription Subscription object.
  */
-+ (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription;
++ (void)trackAppStoreSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
 /**
  * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method of ATTrackingManager.
@@ -390,7 +390,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)gdprForgetMe;
 
-- (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription;
+- (void)trackAppStoreSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
 - (BOOL)isEnabled;
 

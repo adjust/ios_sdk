@@ -227,9 +227,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription {
++ (void)trackAppStoreSubscription:(nonnull ADJAppStoreSubscription *)subscription {
     @synchronized (self) {
-        [[Adjust getInstance] trackSubscription:subscription];
+        [[Adjust getInstance] trackAppStoreSubscription:subscription];
     }
 }
 
@@ -552,11 +552,11 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackMeasurementConsent:enabled];
 }
 
-- (void)trackSubscription:(ADJAppStoreSubscription *)subscription {
+- (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
     if (![self checkActivityHandler]) {
         return;
     }
-    [self.activityHandler trackSubscription:subscription];
+    [self.activityHandler trackAppStoreSubscription:subscription];
 }
 
 - (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion {

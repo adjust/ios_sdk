@@ -615,11 +615,11 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)trackSubscription:(ADJAppStoreSubscription *)subscription {
+- (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-        [selfI trackSubscriptionI:selfI subscription:subscription];
+        [selfI trackAppStoreSubscriptionI:selfI subscription:subscription];
     }];
 }
 
@@ -1244,8 +1244,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI writeActivityStateI:selfI];
 }
 
-- (void)trackSubscriptionI:(ADJActivityHandler *)selfI
-              subscription:(ADJAppStoreSubscription *)subscription {
+- (void)trackAppStoreSubscriptionI:(ADJActivityHandler *)selfI
+                      subscription:(ADJAppStoreSubscription *)subscription {
     if (!selfI.activityState) {
         return;
     }
