@@ -71,5 +71,8 @@
 
 + (void)removeAttWaitingRemainingSeconds;
 
++ (void)saveControlParams:(NSDictionary *)controlParams;
+
++ (NSDictionary *)getControlParams;
 
 @end

@@ -13,6 +13,7 @@
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
 #import "NSString+ADJAdditions.h"
+#import "ADJUserDefaults.h"
 #include <stdlib.h>
 
 static NSString * const ADJMethodGET = @"MethodGET";
@@ -88,8 +89,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [self signWithSigV4PluginWithMergedParameters:mergedParameters
                                          activityKind:activityKind
                                             clientSdk:clientSdk
-                                        urlHostString:urlHostString
-                                        controlParams:nil];
+                                        urlHostString:urlHostString];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -140,8 +140,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [self signWithSigV4PluginWithMergedParameters:mergedParameters
                                          activityKind:activityKind
                                             clientSdk:clientSdk
-                                        urlHostString:urlHostString
-                                        controlParams:nil];
+                                        urlHostString:urlHostString];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -389,6 +388,11 @@ authorizationHeader:(NSString *)authorizationHeader
     responseData.continueInMilli = [responseData.jsonResponse objectForKey:@"continue_in"];
     responseData.retryInMilli = [responseData.jsonResponse objectForKey:@"retry_in"];
 
+    NSDictionary *controlParams = [responseData.jsonResponse objectForKey:@"control_params"];
+    if (controlParams != nil) {
+        [ADJUserDefaults saveControlParams:controlParams];
+    }
+
     NSString *trackingState = [responseData.jsonResponse objectForKey:@"tracking_state"];
     if (trackingState != nil) {
         if ([trackingState isEqualToString:@"opted_out"]) {
@@ -530,7 +534,6 @@ authorizationHeader:(NSString *)authorizationHeader
     activityKind:(ADJActivityKind)activityKind
     clientSdk:(nonnull NSString *)clientSdk
     urlHostString:(nonnull NSString *)urlHostString
-    controlParams:(nullable NSDictionary<NSString *, NSString *> *)controlParams
 {
     NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
         [NSMutableDictionary dictionary];
@@ -554,6 +557,8 @@ authorizationHeader:(NSString *)authorizationHeader
 
     [extraParams setObject:urlHostString forKey:@"endpoint"];
 
+    NSDictionary<NSString *, NSString *> *_Nullable controlParams =
+        [ADJUserDefaults getControlParams];
     if (controlParams != nil) {
         for (NSString *_Nonnull controlParamsKey in controlParams) {
             NSString *_Nonnull controlParamsValue = [controlParams objectForKey:controlParamsKey];
