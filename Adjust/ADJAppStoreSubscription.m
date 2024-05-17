@@ -1,5 +1,5 @@
 //
-//  ADJSubscription.m
+//  ADJAppStoreSubscription.m
 //  Adjust
 //
 //  Created by Uglješa Erceg on 16.04.20.
@@ -7,10 +7,10 @@
 //
 
 #import "ADJUtil.h"
-#import "ADJSubscription.h"
+#import "ADJAppStoreSubscription.h"
 #import "ADJAdjustFactory.h"
 
-@interface ADJSubscription()
+@interface ADJAppStoreSubscription()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation ADJSubscription
+@implementation ADJAppStoreSubscription
 
 - (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
                     currency:(nonnull NSString *)currency
@@ -122,7 +122,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJSubscription *copy = [[[self class] allocWithZone:zone] init];
+    ADJAppStoreSubscription *copy = [[[self class] allocWithZone:zone] init];
 
     if (copy) {
         copy->_price = [self.price copyWithZone:zone];

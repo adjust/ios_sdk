@@ -70,7 +70,7 @@
 		9D1D8E9E219246E50088E3CF /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9D219246E50088E3CF /* iAd.framework */; };
 		9D1D8EA0219246EA0088E3CF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8E9F219246EA0088E3CF /* AdSupport.framework */; };
 		9D1D8EA2219246EF0088E3CF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */; };
-		9D2F24082447DDCB00B7CA90 /* ADJSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */; };
+		9D2F24082447DDCB00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F24072447DDCA00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D3A2AC226263AFC00BD6E44 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AC026263AFB00BD6E44 /* ADJAdRevenue.m */; };
 		9D3A34B82A2DF5FB0029CE4F /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A34B22A2DF5FB0029CE4F /* ADJPurchaseVerificationResult.m */; };
 		9D3A34B92A2DF5FB0029CE4F /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A34B52A2DF5FB0029CE4F /* ADJPurchase.m */; };
@@ -210,8 +210,8 @@
 		9D1D8E9D219246E50088E3CF /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		9D1D8E9F219246EA0088E3CF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9D1D8EA1219246EF0088E3CF /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		9D2F24062447DDCA00B7CA90 /* ADJSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSubscription.h; sourceTree = "<group>"; };
-		9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJSubscription.m; sourceTree = "<group>"; };
+		9D2F24062447DDCA00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
+		9D2F24072447DDCA00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2AC026263AFB00BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
 		9D3A2AC126263AFB00BD6E44 /* ADJAdRevenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAdRevenue.h; sourceTree = "<group>"; };
 		9D3A34B22A2DF5FB0029CE4F /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
@@ -353,8 +353,8 @@
 				6F3A5E6A2018CE14000AACD0 /* Info.plist */,
 				6F3A5E6B2018CE14000AACD0 /* ADJTimerCycle.h */,
 				6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */,
-				9D2F24062447DDCA00B7CA90 /* ADJSubscription.h */,
-				9D2F24072447DDCA00B7CA90 /* ADJSubscription.m */,
+				9D2F24062447DDCA00B7CA90 /* ADJAppStoreSubscription.h */,
+				9D2F24072447DDCA00B7CA90 /* ADJAppStoreSubscription.m */,
 				6FBEE91E24E421B200FEF3F1 /* ADJUrlStrategy.h */,
 				6FBEE91F24E421B200FEF3F1 /* ADJUrlStrategy.m */,
 				6F84510D25B1B1110004C7C0 /* ADJThirdPartySharing.h */,
@@ -592,7 +592,7 @@
 				6F3A5E872018CE14000AACD0 /* ADJActivityPackage.m in Sources */,
 				6FFCFE71200797D100467F01 /* ATAAdjustDelegateEventSuccess.m in Sources */,
 				6F3A5E6F2018CE14000AACD0 /* ADJTimerOnce.m in Sources */,
-				9D2F24082447DDCB00B7CA90 /* ADJSubscription.m in Sources */,
+				9D2F24082447DDCB00B7CA90 /* ADJAppStoreSubscription.m in Sources */,
 				6FFCFE6F200797D100467F01 /* ATAAdjustDelegateSessionFailure.m in Sources */,
 				6F3A5E7D2018CE14000AACD0 /* ADJBackoffStrategy.m in Sources */,
 			);

@@ -227,7 +227,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)trackSubscription:(nonnull ADJSubscription *)subscription {
++ (void)trackSubscription:(nonnull ADJAppStoreSubscription *)subscription {
     @synchronized (self) {
         [[Adjust getInstance] trackSubscription:subscription];
     }
@@ -552,7 +552,7 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackMeasurementConsent:enabled];
 }
 
-- (void)trackSubscription:(ADJSubscription *)subscription {
+- (void)trackSubscription:(ADJAppStoreSubscription *)subscription {
     if (![self checkActivityHandler]) {
         return;
     }
