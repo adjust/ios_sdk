@@ -20,6 +20,7 @@ static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_
 static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cached";
 static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_waiting_remaining_seconds";
+static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_att_control_params";
 
 @implementation ADJUserDefaults
 
@@ -148,6 +149,14 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
 }
 
++ (void)saveControlParams:(NSDictionary *)controlParams {
+    [[NSUserDefaults standardUserDefaults] setObject:controlParams forKey:PREFS_KEY_CONTROL_PARAMS];
+}
+
++ (NSDictionary *)getControlParams {
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:PREFS_KEY_CONTROL_PARAMS];
+}
+
 + (void)clearAdjustStuff {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
@@ -161,6 +170,7 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LINK_ME_CHECKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL_CACHED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_CONTROL_PARAMS];
 }
 
 @end
