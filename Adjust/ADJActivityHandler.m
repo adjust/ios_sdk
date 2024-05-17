@@ -416,7 +416,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI setPushTokenDataI:selfI pushTokenData:pushTokenData];
+                         [selfI setPushTokenI:selfI pushTokenData:pushTokenData];
                      }];
 }
 
@@ -424,7 +424,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI setPushTokenStringI:selfI pushTokenString:pushTokenString];
+                         [selfI setPushTokenI:selfI pushTokenString:pushTokenString];
                      }];
 }
 
@@ -1904,8 +1904,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     return NO;
 }
 
-- (void)setPushTokenDataI:(ADJActivityHandler *)selfI
-            pushTokenData:(NSData *)pushTokenData {
+- (void)setPushTokenI:(ADJActivityHandler *)selfI
+        pushTokenData:(NSData *)pushTokenData {
     if (![selfI isEnabledI:selfI]) {
         return;
     }
@@ -1950,8 +1950,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUserDefaults removePushToken];
 }
 
-- (void)setPushTokenStringI:(ADJActivityHandler *)selfI
-            pushTokenString:(NSString *)pushTokenString {
+- (void)setPushTokenI:(ADJActivityHandler *)selfI
+      pushTokenString:(NSString *)pushTokenString {
     if (![selfI isEnabledI:selfI]) {
         return;
     }
