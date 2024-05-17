@@ -110,7 +110,7 @@
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 - (void)trackMeasurementConsent:(BOOL)enabled;
-- (void)trackSubscription:(ADJAppStoreSubscription * _Nullable)subscription;
+- (void)trackAppStoreSubscription:(ADJAppStoreSubscription * _Nullable)subscription;
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
