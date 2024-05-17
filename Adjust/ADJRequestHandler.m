@@ -86,10 +86,10 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     [mergedParameters addEntriesFromDictionary:responseData.sendingParameters];
 
     NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
-        [self signWithSigV4PluginWithMergedParameters:mergedParameters
-                                         activityKind:activityKind
-                                            clientSdk:clientSdk
-                                        urlHostString:urlHostString];
+        [self signWithSigPluginWithMergedParameters:mergedParameters
+                                       activityKind:activityKind
+                                          clientSdk:clientSdk
+                                      urlHostString:urlHostString];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -137,10 +137,10 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     [mergedParameters addEntriesFromDictionary:responseData.sendingParameters];
 
     NSMutableDictionary<NSString *, NSString *> *_Nonnull outputParams =
-        [self signWithSigV4PluginWithMergedParameters:mergedParameters
-                                         activityKind:activityKind
-                                            clientSdk:clientSdk
-                                        urlHostString:urlHostString];
+        [self signWithSigPluginWithMergedParameters:mergedParameters
+                                       activityKind:activityKind
+                                          clientSdk:clientSdk
+                                      urlHostString:urlHostString];
 
     NSString *_Nullable authorizationHeader = nil;
 
@@ -529,7 +529,7 @@ authorizationHeader:(NSString *)authorizationHeader
 }
 
 - (nonnull NSMutableDictionary<NSString *, NSString *> *)
-    signWithSigV4PluginWithMergedParameters:
+    signWithSigPluginWithMergedParameters:
         (nonnull NSDictionary<NSString *, NSString *> *)mergedParameters
     activityKind:(ADJActivityKind)activityKind
     clientSdk:(nonnull NSString *)clientSdk
