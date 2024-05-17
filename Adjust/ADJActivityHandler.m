@@ -424,7 +424,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI setPushTokenString:selfI pushTokenString:pushTokenString];
+                         [selfI setPushTokenStringI:selfI pushTokenString:pushTokenString];
                      }];
 }
 
@@ -1950,8 +1950,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUserDefaults removePushToken];
 }
 
-- (void)setPushTokenString:(ADJActivityHandler *)selfI
-           pushTokenString:(NSString *)pushTokenString {
+- (void)setPushTokenStringI:(ADJActivityHandler *)selfI
+            pushTokenString:(NSString *)pushTokenString {
     if (![selfI isEnabledI:selfI]) {
         return;
     }
