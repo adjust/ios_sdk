@@ -97,13 +97,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         authorizationHeader = [outputParams objectForKey:@"authorization"];
         [outputParams removeObjectForKey:@"authorization"];
 
-        if ([outputParams objectForKey:@"client_sdk"] != nil) {
-            clientSdk = [outputParams objectForKey:@"client_sdk"];
-        }
-        [outputParams removeObjectForKey:@"client_sdk"];
-
-        [outputParams removeObjectForKey:@"activity_kind"];
-
         if ([outputParams objectForKey:@"endpoint"] != nil) {
             urlHostString = [outputParams objectForKey:@"endpoint"];
         }
@@ -155,13 +148,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     if (outputParams.count > 0) {
         authorizationHeader = [outputParams objectForKey:@"authorization"];
         [outputParams removeObjectForKey:@"authorization"];
-
-        if ([outputParams objectForKey:@"client_sdk"] != nil) {
-            clientSdk = [outputParams objectForKey:@"client_sdk"];
-        }
-        [outputParams removeObjectForKey:@"client_sdk"];
-
-        [outputParams removeObjectForKey:@"activity_kind"];
 
         if ([outputParams objectForKey:@"endpoint"] != nil) {
             urlHostString = [outputParams objectForKey:@"endpoint"];
