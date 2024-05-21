@@ -674,6 +674,15 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
+- (void)verifyAndTrack:(nonnull ADJEvent *)event
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI verifyAndTrackI:selfI event:event completionHandler:completionHandler];
+    }];
+}
+
 - (void)writeActivityState {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -1349,14 +1358,18 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         double lastInterval = now - selfI.activityState.lastActivity;
         selfI.activityState.lastInterval = lastInterval;
     }];
-    ADJPackageBuilder *purchaseVerificationBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
-                                                                                        activityState:selfI.activityState
-                                                                                               config:selfI.adjustConfig
-                                                                                     globalParameters:selfI.globalParameters
-                                                                                trackingStatusManager:self.trackingStatusManager
-                                                                                            createdAt:now];
+
+    ADJPackageBuilder *purchaseVerificationBuilder = 
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:self.trackingStatusManager
+                                           createdAt:now];
     purchaseVerificationBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *purchaseVerificationPackage = [purchaseVerificationBuilder buildPurchaseVerificationPackage:purchase];
+
+    ADJActivityPackage *purchaseVerificationPackage = 
+    [purchaseVerificationBuilder buildPurchaseVerificationPackageWithPurchase:purchase];
     purchaseVerificationPackage.purchaseVerificationCallback = completionHandler;
     [selfI.purchaseVerificationHandler sendPurchaseVerificationPackage:purchaseVerificationPackage];
 }
@@ -1392,6 +1405,53 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     [selfI.packageHandler addPackage:tpsPackage];
     [selfI.packageHandler sendFirstPackage];
+}
+
+- (void)verifyAndTrackI:(ADJActivityHandler *)selfI
+                  event:(nonnull ADJEvent *)event
+      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    if (selfI.adjustConfig.isDataResidency) {
+        [selfI.logger warn:@"Purchase verification not available for data residency users right now"];
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
+        return;
+    }
+    if ([ADJUtil isNull:completionHandler]) {
+        [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
+        return;
+    }
+    if ([ADJUtil isNull:event]) {
+        [selfI.logger warn:@"Purchase verification aborted because event instance is null"];
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = @"not_verified";
+        verificationResult.code = 101;
+        verificationResult.message = @"Purchase verification aborted because purchase instance is null";
+        completionHandler(verificationResult);
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        double lastInterval = now - selfI.activityState.lastActivity;
+        selfI.activityState.lastInterval = lastInterval;
+    }];
+    ADJPackageBuilder *purchaseVerificationBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:self.trackingStatusManager
+                                           createdAt:now];
+
+    ADJActivityPackage *purchaseVerificationPackage =
+    [purchaseVerificationBuilder buildPurchaseVerificationPackageWithEvent:event];
+    purchaseVerificationPackage.purchaseVerificationCallback = completionHandler;
+    [selfI.purchaseVerificationHandler sendPurchaseVerificationPackage:purchaseVerificationPackage];
+    // TODO: discuss whether this order of performing actions is okay
+    [selfI trackEvent:event];
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
