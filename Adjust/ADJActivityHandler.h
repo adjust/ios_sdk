@@ -82,7 +82,7 @@
 - (BOOL)isEnabled;
 - (BOOL)isGdprForgotten;
 
-- (void)processDeeplink:(NSURL * _Nullable)url
+- (void)processDeeplink:(NSURL * _Nullable)deeplink
           withClickTime:(NSDate * _Nullable)clickTime;
 - (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime

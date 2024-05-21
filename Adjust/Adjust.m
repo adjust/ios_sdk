@@ -112,9 +112,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)processDeeplink:(NSURL *)url {
++ (void)processDeeplink:(NSURL *)deeplink {
     @synchronized (self) {
-        [[Adjust getInstance] processDeeplink:[url copy]];
+        [[Adjust getInstance] processDeeplink:[deeplink copy]];
     }
 }
 
@@ -360,14 +360,14 @@ static dispatch_once_t onceToken = 0;
     return [self.activityHandler isEnabled];
 }
 
-- (void)processDeeplink:(NSURL *)url {
-    [ADJUserDefaults cacheDeeplinkUrl:url];
+- (void)processDeeplink:(NSURL *)deeplink {
+    [ADJUserDefaults cacheDeeplinkUrl:deeplink];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
-        [ADJUserDefaults saveDeeplinkUrl:url andClickTime:clickTime];
+        [ADJUserDefaults saveDeeplinkUrl:deeplink andClickTime:clickTime];
         return;
     }
-    [self.activityHandler processDeeplink:url withClickTime:clickTime];
+    [self.activityHandler processDeeplink:deeplink withClickTime:clickTime];
 }
 
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
