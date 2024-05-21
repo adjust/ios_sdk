@@ -1161,7 +1161,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     __block NSString *idfa = nil;
     [ADJUtil launchSynchronisedWithObject:[ADJPackageBuilder class] block:^{
         // read once && IDFA not cached
-        if (adjConfig.readDeviceInfoOnceEnabled && packageParams.idfaCached != nil) {
+        if (adjConfig.shouldReadDeviceInfoOnce && packageParams.idfaCached != nil) {
             idfa = packageParams.idfaCached;
         } else {
             // read IDFA

@@ -247,7 +247,9 @@
 /**
  * @brief Enables caching of device ids to read it only once
  */
-@property (nonatomic, assign) BOOL readDeviceInfoOnceEnabled;
+@property (nonatomic, readonly) BOOL shouldReadDeviceInfoOnce;
+
+- (void)readDeviceIdsOnce;
 
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
 

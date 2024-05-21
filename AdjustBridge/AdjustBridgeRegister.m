@@ -354,7 +354,7 @@ static NSString * fbAppIdStatic = nil;
             this.sessionFailureCallback = null;
             this.deferredDeeplinkCallback = null;
             this.urlStrategy = null;
-            this.readDeviceInfoOnceEnabled = null;
+            this.shouldReadDeviceInfoOnce = null;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
         };
@@ -459,8 +459,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
             this.urlStrategy = urlStrategy;
         };
-        AdjustConfig.prototype.setReadDeviceInfoOnceEnabled = function(readDeviceInfoOnceEnabled) {
-            this.readDeviceInfoOnceEnabled = readDeviceInfoOnceEnabled;
+        AdjustConfig.prototype.readDeviceInfoOnce = function() {
+            this.shouldReadDeviceInfoOnce = true;
         };
         AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingSeconds) {
             this.attConsentWaitingSeconds = attConsentWaitingSeconds;
