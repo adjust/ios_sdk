@@ -48,6 +48,14 @@
 
 @end
 
+@interface ADJSdkVersionGetter : NSObject<ADJSdkVersionCallback>
+
+@property (nonatomic, copy) NSString *sdkPrefix;
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
+
+@end
+
 @implementation AdjustBridge
 
 #pragma mark - Object lifecycle
@@ -413,9 +421,10 @@
             return;
         }
 
-        NSString *sdkPrefix = (NSString *)data;
-        NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
-        responseCallback(sdkVersion);
+        ADJSdkVersionGetter * _Nonnull sdkVersionGetter = [[ADJSdkVersionGetter alloc] init];
+        sdkVersionGetter.sdkPrefix = (NSString *)data;
+        sdkVersionGetter.callback = responseCallback;
+        [Adjust sdkVersionWithCallback:sdkVersionGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -781,6 +790,17 @@
 
 - (void)didReadWithIdfv:(nullable NSString *)idfv {
     self.callback(idfv);
+}
+
+@end
+
+#pragma mark - ADJSdkVersionCallback protocol
+
+@implementation ADJSdkVersionGetter
+
+- (void)didReadWithSdkVersion:(NSString *)sdkVersion {
+    NSString *joinedSdkVersion = [NSString stringWithFormat:@"%@@%@", self.sdkPrefix, sdkVersion];
+    self.callback(joinedSdkVersion);
 }
 
 @end

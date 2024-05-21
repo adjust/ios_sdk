@@ -41,6 +41,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 @protocol ADJAdjustAttributionCallback;
 @protocol ADJAdjustIdfaCallback;
 @protocol ADJAdjustIdfvCallback;
+@protocol ADJSdkVersionCallback;
 
 /**
  * Constants for our supported tracking environments.
@@ -193,11 +194,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
 
 /**
- * @brief Get current Adjust SDK version string.
+ * @brief Get current Adjust SDK version string through a callback.
  *
  * @return Adjust SDK version string (iosX.Y.Z).
  */
-+ (nullable NSString *)sdkVersion;
++ (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
 /**
  * @brief Convert a universal link style URL to a deeplink style URL with the corresponding scheme.
@@ -393,7 +394,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
 
-- (nullable NSString *)sdkVersion;
+- (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
 
@@ -440,5 +441,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 @protocol ADJAdjustIdfvCallback <NSObject>
 
 - (void)didReadWithIdfv:(nullable NSString *)idfv;
+
+@end
+
+@protocol ADJSdkVersionCallback <NSObject>
+
+- (void)didReadWithSdkVersion:(nullable NSString *)sdkVersion;
 
 @end
