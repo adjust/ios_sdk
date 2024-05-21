@@ -35,10 +35,7 @@
 
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-    
-    // Delay the first session of the SDK.
-    // [adjustConfig setDelayStart:7];
-    
+
     // Add global callback parameters.
     [Adjust addGlobalCallbackParameter:@"sp_bar" forKey:@"sp_foo"];
     [Adjust addGlobalCallbackParameter:@"sp_value" forKey:@"sp_key"];
@@ -67,9 +64,6 @@
     
     // Disable the SDK.
     // [Adjust setEnabled:NO];
-    
-    // Interrupt delayed start set with setDelayStart: method.
-    // [Adjust sendFirstPackages];
     
     return YES;
 }

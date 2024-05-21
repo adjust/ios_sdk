@@ -194,7 +194,6 @@
         NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
-        NSNumber *delayStart = [data objectForKey:@"delayStart"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
         NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
@@ -239,9 +238,6 @@
         }
         if ([self isFieldValid:sendInBackground]) {
             [adjustConfig setSendInBackground:[sendInBackground boolValue]];
-        }
-        if ([self isFieldValid:delayStart]) {
-            [adjustConfig setDelayStart:[delayStart doubleValue]];
         }
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];
@@ -472,10 +468,6 @@
         ADJAttributionGetter * _Nonnull attributionGetter = [[ADJAttributionGetter alloc] init];
         attributionGetter.callback = responseCallback;
         [Adjust attributionWithCallback:attributionGetter];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_sendFirstPackages" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust sendFirstPackages];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_addGlobalCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {

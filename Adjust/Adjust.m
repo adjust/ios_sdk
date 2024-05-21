@@ -167,12 +167,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)sendFirstPackages {
-    @synchronized (self) {
-        [[Adjust getInstance] sendFirstPackages];
-    }
-}
-
 + (void)addGlobalCallbackParameter:(NSString *)param forKey:(NSString *)key {
     @synchronized (self) {
         [[Adjust getInstance] addGlobalCallbackParameter:[param copy] forKey:[key copy]];
@@ -431,13 +425,6 @@ static dispatch_once_t onceToken = 0;
 
 - (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
     return [ADJUtil convertUniversalLink:url withScheme:scheme];
-}
-
-- (void)sendFirstPackages {
-    if (![self checkActivityHandler]) {
-        return;
-    }
-    [self.activityHandler sendFirstPackages];
 }
 
 - (void)addGlobalCallbackParameter:(nonnull NSString *)param forKey:(nonnull NSString *)key {

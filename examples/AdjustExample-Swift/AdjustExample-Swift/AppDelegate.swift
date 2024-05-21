@@ -30,9 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Set delegate object.
         adjustConfig?.delegate = self
         
-        // Delay the first session of the SDK.
-        // adjustConfig?.delayStart = 7
-        
         // Add global callback parameters.
         Adjust.addGlobalCallbackParameter("wan", forKey: "obi")
         Adjust.addGlobalCallbackParameter("yoda", forKey: "master")
@@ -60,9 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         
         // Disable the SDK
         // Adjust.setEnabled(false);
-        
-        // Interrupt delayed start set with setDelayStart: method.
-        // Adjust.sendFirstPackages()
         
         return true
     }

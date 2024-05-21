@@ -199,7 +199,6 @@
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy.sendInBackground = self.sendInBackground;
         copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
-        copy.delayStart = self.delayStart;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;

@@ -208,13 +208,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
 /**
- * @brief Tell the adjust SDK to stop waiting for delayed initialisation timer to complete but rather to start
- *        upon this call. This should be called if you have obtained needed callback/partner parameters which you
- *        wanted to put as default ones before the delayedStart value you have set on ADJConfig has expired.
- */
-+ (void)sendFirstPackages;
-
-/**
  * @brief Add default callback parameter key-value pair which is going to be sent with each tracked session and event.
  *
  * @param param Default callback parameter value.
@@ -369,8 +362,6 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 - (void)setDeviceToken:(nonnull NSData *)deviceToken;
 
 - (void)setPushToken:(nonnull NSString *)pushToken;
-
-- (void)sendFirstPackages;
 
 - (void)trackSubsessionEnd;
 

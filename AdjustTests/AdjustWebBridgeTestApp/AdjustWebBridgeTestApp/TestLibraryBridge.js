@@ -218,12 +218,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
-
-    if ('delayStart' in params) {
-        var delayStartS = getFirstValue(params, 'delayStart');
-        var delayStart = parseFloat(delayStartS);
-        adjustConfig.setDelayStart(delayStart);
-    }
     
     if ('needsCost' in params) {
         var needsCostS = getFirstValue(params, 'needsCost');
@@ -483,10 +477,6 @@ AdjustCommandExecutor.prototype.setEnabled = function(params) {
 AdjustCommandExecutor.prototype.setOfflineMode = function(params) {
     var enabled = getFirstValue(params, 'enabled') == 'true';
     Adjust.setOfflineMode(enabled);
-};
-
-AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
-    Adjust.sendFirstPackages();
 };
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
