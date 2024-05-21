@@ -38,9 +38,9 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @end
 
-@protocol ADJAdjustAttributionCallback;
-@protocol ADJAdjustIdfaCallback;
-@protocol ADJAdjustIdfvCallback;
+@protocol ADJAttributionCallback;
+@protocol ADJIdfaCallback;
+@protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
 
@@ -167,14 +167,14 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @param idfaCallback Callback to get IDFA value delivered to.
  */
-+ (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback;
++ (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback;
 
 /**
  * @brief Retrieve iOS device IDFV value through a callback.
  *
  * @param idfvCallback Callback to get the IDFV value delivered to.
  */
-+ (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
++ (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback;
 
 
 /**
@@ -192,7 +192,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @note Attribution information is available only after installation has been successfully tracked
  *       and attribution information arrived after that from the backend.
  */
-+ (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
++ (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
 
 /**
  * @brief Get current Adjust SDK version string through a callback.
@@ -391,13 +391,13 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (nullable NSString *)adid;
 
-- (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback;
+- (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback;
 
-- (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
+- (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback;
 
 - (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
-- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
+- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
@@ -427,19 +427,19 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 @end
 
-@protocol ADJAdjustAttributionCallback <NSObject>
+@protocol ADJAttributionCallback <NSObject>
 
 - (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)adjustAttribution;
 
 @end
 
-@protocol ADJAdjustIdfaCallback <NSObject>
+@protocol ADJIdfaCallback <NSObject>
 
 - (void)didReadWithIdfa:(nullable NSString *)idfa;
 
 @end
 
-@protocol ADJAdjustIdfvCallback <NSObject>
+@protocol ADJIdfvCallback <NSObject>
 
 - (void)didReadWithIdfv:(nullable NSString *)idfv;
 

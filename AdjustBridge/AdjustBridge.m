@@ -30,19 +30,19 @@
 
 @end
 
-@interface ADJAttributionGetter : NSObject<ADJAdjustAttributionCallback>
+@interface ADJAttributionGetter : NSObject<ADJAttributionCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
 
 @end
 
-@interface ADJIdfaGetter : NSObject<ADJAdjustIdfaCallback>
+@interface ADJIdfaGetter : NSObject<ADJIdfaCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
 
 @end
 
-@interface ADJIdfvGetter : NSObject<ADJAdjustIdfvCallback>
+@interface ADJIdfvGetter : NSObject<ADJIdfvCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
 

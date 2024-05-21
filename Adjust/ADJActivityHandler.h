@@ -109,7 +109,7 @@
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
-- (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
+- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 
 - (ADJPackageParams * _Nullable)packageParams;

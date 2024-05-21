@@ -19,7 +19,7 @@
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
-@interface ADJAttributionGetterSendAll : NSObject<ADJAdjustAttributionCallback>
+@interface ADJAttributionGetterSendAll : NSObject<ADJAttributionCallback>
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
 @property (nonatomic, copy) NSString *extraPath;
 @end
