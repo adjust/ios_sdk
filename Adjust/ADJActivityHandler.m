@@ -411,11 +411,11 @@ const BOOL kSkanRegisterLockWindow = NO;
     return self.activityState.adid;
 }
 
-- (void)processDeeplink:(NSURL *)url withClickTime:(NSDate *)clickTime {
+- (void)processDeeplink:(NSURL *)deeplink withClickTime:(NSDate *)clickTime {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI processDeeplinkI:selfI url:url clickTime:clickTime];
+                         [selfI processDeeplinkI:selfI url:deeplink clickTime:clickTime];
                      }];
 }
 
@@ -1849,19 +1849,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)processDeeplinkI:(ADJActivityHandler *)selfI
-                     url:(NSURL *)url
+                     url:(NSURL *)deeplink
                clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
     }
-    if ([ADJUtil isNull:url]) {
+    if ([ADJUtil isNull:deeplink]) {
         return;
     }
-    if (![ADJUtil isDeeplinkValid:url]) {
+    if (![ADJUtil isDeeplinkValid:deeplink]) {
         return;
     }
 
-    NSArray *queryArray = [url.query componentsSeparatedByString:@"&"];
+    NSArray *queryArray = [deeplink.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
         queryArray = @[];
     }
@@ -1889,7 +1889,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
-    clickBuilder.deeplink = [url absoluteString];
+    clickBuilder.deeplink = [deeplink absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
