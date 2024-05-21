@@ -165,14 +165,14 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * @brief Retrieve iOS device IDFA value thorugh a callback.
  *
- * @return Device IDFA value.
+ * @param idfaCallback Callback to get IDFA value delivered to.
  */
 + (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback;
 
 /**
  * @brief Retrieve iOS device IDFV value through a callback.
  *
- * @return Device IDFV value.
+ * @param idfvCallback Callback to get the IDFV value delivered to.
  */
 + (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
 
@@ -197,7 +197,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * @brief Get current Adjust SDK version string through a callback.
  *
- * @return Adjust SDK version string (iosX.Y.Z).
+ * @param sdkVersionCallback Callback to get the Adjust SDK version string (iosX.Y.Z) delivered to.
  */
 + (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
@@ -315,7 +315,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 /**
  * @brief Get the last deep link which has opened the app through a callback.
  *
- * @return Last deep link which has opened the app.
+ * @param lastDeeplinkCallback Callback to get the last opened deep link delivered to.
  */
 + (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
 
