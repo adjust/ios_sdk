@@ -143,9 +143,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (NSString *)idfa {
++ (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback {
     @synchronized (self) {
-        return [[Adjust getInstance] idfa];
+        [[Adjust getInstance] idfaWithCallback:idfaCallback];
     }
 }
 
@@ -415,8 +415,14 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (NSString *)idfa {
-    return [ADJUtil idfa];
+- (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback {
+    if (idfaCallback == nil) {
+        [self.logger error:@"Callback for getting IDFA can't be null"];
+        return;
+    }
+
+    NSString *idfa = [ADJUtil idfa];
+    [idfaCallback didReadWithIdfa:idfa];
 }
 
 - (NSString *)idfv {

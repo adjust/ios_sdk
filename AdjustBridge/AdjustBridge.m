@@ -36,6 +36,12 @@
 
 @end
 
+@interface ADJIdfaGetter : NSObject<ADJAdjustIdfaCallback>
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
+
+@end
+
 @implementation AdjustBridge
 
 #pragma mark - Object lifecycle
@@ -410,7 +416,10 @@
         if (responseCallback == nil) {
             return;
         }
-        responseCallback([Adjust idfa]);
+
+        ADJIdfaGetter * _Nonnull idfaGetter = [[ADJIdfaGetter alloc] init];
+        idfaGetter.callback = responseCallback;
+        [Adjust idfaWithCallback:idfaGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_idfv" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -743,6 +752,16 @@
     }
 
     self.callback(attributionDictionary);
+}
+
+@end
+
+#pragma mark - ADJIdfaCallback protocol
+
+@implementation ADJIdfaGetter
+
+- (void)didReadWithIdfa:(nullable NSString *)idfa {
+    self.callback(idfa);
 }
 
 @end
