@@ -41,10 +41,9 @@
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
                             createdAt:(double)createdAt;
 
-- (ADJActivityPackage * _Nullable)buildSessionPackage:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildSessionPackage;
 
-- (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event
-                                          isInDelay:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event;
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
@@ -67,11 +66,9 @@
 
 - (ADJActivityPackage * _Nullable)buildMeasurementConsentPackage:(BOOL)enabled;
 
-- (ADJActivityPackage * _Nullable)buildSubscriptionPackage:(ADJAppStoreSubscription * _Nullable)subscription
-                                                 isInDelay:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildSubscriptionPackage:(ADJAppStoreSubscription * _Nullable)subscription;
 
-- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(ADJAdRevenue * _Nullable)adRevenue
-                                              isInDelay:(BOOL)isInDelay;
+- (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(ADJAdRevenue * _Nullable)adRevenue;
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
      setDictionary:(NSDictionary * _Nullable)dictionary

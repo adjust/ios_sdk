@@ -73,8 +73,6 @@
         [self setEnabled:parameters];
     } else if ([methodName isEqualToString:@"setOfflineMode"]) {
         [self setOfflineMode:parameters];
-    } else if ([methodName isEqualToString:@"sendFirstPackages"]) {
-        [self sendFirstPackages:parameters];
     } else if ([methodName isEqualToString:@"addGlobalCallbackParameter"]) {
         [self addGlobalCallbackParameter:parameters];
     } else if ([methodName isEqualToString:@"addGlobalPartnerParameter"]) {
@@ -282,12 +280,6 @@
         [adjustConfig setDefaultTracker:defaultTracker];
     }
 
-    if ([parameters objectForKey:@"delayStart"]) {
-        NSString *delayStartS = [parameters objectForKey:@"delayStart"][0];
-        double delayStart = [delayStartS doubleValue];
-        [adjustConfig setDelayStart:delayStart];
-    }
-    
     if ([parameters objectForKey:@"needsCost"]) {
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
         [adjustConfig setNeedsCost:[needsCostS boolValue]];
@@ -541,10 +533,6 @@
 - (void)setOfflineMode:(NSDictionary *)parameters {
     NSString *enabledS = [parameters objectForKey:@"enabled"][0];
     [Adjust setOfflineMode:[enabledS boolValue]];
-}
-
-- (void)sendFirstPackages:(NSDictionary *)parameters {
-    [Adjust sendFirstPackages];
 }
 
 - (void)addGlobalCallbackParameter:(NSDictionary *)parameters {

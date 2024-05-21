@@ -168,11 +168,6 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_attribution', null, callback);
                 }
             },
-            sendFirstPackages: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_sendFirstPackages', null, null);
-                }
-            },
             addGlobalCallbackParameter: function(key, value) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_addGlobalCallbackParameter', {key: key, value: value}, null);
@@ -339,7 +334,6 @@ static NSString * fbAppIdStatic = nil;
             this.externalDeviceId = null;
             this.logLevel = null;
             this.sendInBackground = null;
-            this.delayStart = null;
             this.needsCost = null;
             this.allowAdServicesInfoReading = null;
             this.isIdfaReadingAllowed = null;
@@ -412,9 +406,6 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;
-        };
-        AdjustConfig.prototype.setDelayStart = function(delayStartInSeconds) {
-            this.delayStart = delayStartInSeconds;
         };
         AdjustConfig.prototype.setNeedsCost = function(needsCost) {
             this.needsCost = needsCost;

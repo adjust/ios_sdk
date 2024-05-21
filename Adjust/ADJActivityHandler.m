@@ -38,7 +38,6 @@ static const char * const kInternalQueueName                    = "io.adjust.Act
 static const char * const kWaitingForAttQueueName               = "io.adjust.WaitingForAttQueue";
 static NSString   * const kForegroundTimerName                  = @"Foreground timer";
 static NSString   * const kBackgroundTimerName                  = @"Background timer";
-static NSString   * const kDelayStartTimerName                  = @"Delay Start timer";
 static NSString   * const kSkanConversionValueResponseKey       = @"skadn_conv_value";
 static NSString   * const kSkanCoarseValueResponseKey           = @"skadn_coarse_value";
 static NSString   * const kSkanLockWindowResponseKey            = @"skadn_lock_window";
@@ -68,8 +67,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (BOOL)isOnline { return !self.offline; }
 - (BOOL)isInBackground { return self.background; }
 - (BOOL)isInForeground { return !self.background; }
-- (BOOL)isInDelayedStart { return self.delayStart; }
-- (BOOL)isNotInDelayedStart { return !self.delayStart; }
 - (BOOL)itHasToUpdatePackages { return self.updatePackages; }
 - (BOOL)itHasToUpdatePackagesAttData { return self.updatePackagesAttData; }
 - (BOOL)isFirstLaunch { return self.firstLaunch; }
@@ -105,7 +102,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJPackageParams *packageParams;
-@property (nonatomic, strong) ADJTimerOnce *delayStartTimer;
 @property (nonatomic, strong) ADJGlobalParameters *globalParameters;
 // weak for object that Activity Handler does not "own"
 @property (nonatomic, weak) id<ADJLogger> logger;
@@ -217,8 +213,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.internalState.offline = savedPreLaunch.offline;
     // in the background by default
     self.internalState.background = YES;
-    // delay start not configured by default
-    self.internalState.delayStart = NO;
     // does not need to update packages by default
     if (self.activityState == nil) {
         self.internalState.updatePackages = NO;
@@ -265,8 +259,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-
-                        [selfI delayStartI:selfI];
 
                         [selfI activateWaitingForAttStatusI:selfI];
 
@@ -549,14 +541,6 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)sendFirstPackages {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI sendFirstPackagesI:selfI];
-                     }];
-}
-
 - (void)resumeActivityFromWaitingForAttStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -759,9 +743,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (self.foregroundTimer != nil) {
         [self.foregroundTimer cancel];
     }
-    if (self.delayStartTimer != nil) {
-        [self.delayStartTimer cancel];
-    }
     if (self.attributionHandler != nil) {
         [self.attributionHandler teardown];
     }
@@ -791,7 +772,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.adjustConfig = nil;
     self.internalState = nil;
     self.packageParams = nil;
-    self.delayStartTimer = nil;
     self.logger = nil;
 }
 
@@ -876,16 +856,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         selfI.backgroundTimer = [ADJTimerOnce timerWithBlock:^{ [selfI backgroundTimerFired]; }
                                                       queue:selfI.internalQueue
                                                         name:kBackgroundTimerName];
-    }
-
-    if (selfI.activityState == nil &&
-        selfI.adjustConfig.delayStart > 0)
-    {
-        [selfI.logger info:@"Delay start configured"];
-        selfI.internalState.delayStart = YES;
-        selfI.delayStartTimer = [ADJTimerOnce timerWithBlock:^{ [selfI sendFirstPackages]; }
-                                                       queue:selfI.internalQueue
-                                                        name:kDelayStartTimerName];
     }
 
     // Update Waiting for ATT status state - should be done before the package handler is created.
@@ -1155,7 +1125,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                          trackingStatusManager:self.trackingStatusManager
                                          createdAt:now];
     sessionBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage:[selfI.internalState isInDelayedStart]];
+    ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [selfI.packageHandler addPackage:sessionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -1231,8 +1201,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                        trackingStatusManager:self.trackingStatusManager
                                        createdAt:now];
     eventBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
-                                                             isInDelay:[selfI.internalState isInDelayedStart]];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [selfI.packageHandler addPackage:eventPackage];
     [selfI.packageHandler sendFirstPackage];
 
@@ -1267,8 +1236,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                               trackingStatusManager:self.trackingStatusManager
                                               createdAt:now];
     subscriptionBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription
-                                                                                  isInDelay:[selfI.internalState isInDelayedStart]];
+
+    ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription];
     [selfI.packageHandler addPackage:subscriptionPackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -1363,8 +1332,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                                                      trackingStatusManager:self.trackingStatusManager
                                                                                  createdAt:now];
     adRevenueBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue
-                                                                         isInDelay:[selfI.internalState isInDelayedStart]];
+
+    ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue];
     [selfI.packageHandler addPackage:adRevenuePackage];
     [selfI.packageHandler sendFirstPackage];
 }
@@ -2368,7 +2337,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // other handlers are paused if either:
     return [selfI.internalState isOffline]                  // it's offline
     || ![selfI isEnabledI:selfI]                            // is disabled
-    || [selfI.internalState isInDelayedStart]               // is in delayed start
     || [selfI.internalState isWaitingForAttStatus];         // Waiting for ATT status
 }
 
@@ -2466,63 +2434,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if ([selfI toSendI:selfI]) {
         [selfI.packageHandler sendFirstPackage];
     }
-}
-
-#pragma mark - delay
-- (void)delayStartI:(ADJActivityHandler *)selfI {
-    // it's not configured to start delayed or already finished
-    if ([selfI.internalState isNotInDelayedStart]) {
-        return;
-    }
-
-    // the delay has already started
-    if ([selfI itHasToUpdatePackagesI:selfI]) {
-        return;
-    }
-
-    // check against max start delay
-    double delayStart = selfI.adjustConfig.delayStart;
-    double maxDelayStart = [ADJAdjustFactory maxDelayStart];
-
-    if (delayStart > maxDelayStart) {
-        NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
-        NSString * maxDelayStartFormatted = [ADJUtil secondsNumberFormat:maxDelayStart];
-
-        [selfI.logger warn:@"Delay start of %@ seconds bigger than max allowed value of %@ seconds", delayStartFormatted, maxDelayStartFormatted];
-        delayStart = maxDelayStart;
-    }
-
-    NSString * delayStartFormatted = [ADJUtil secondsNumberFormat:delayStart];
-    [selfI.logger info:@"Waiting %@ seconds before starting first session", delayStartFormatted];
-
-    [selfI.delayStartTimer startIn:delayStart];
-
-    selfI.internalState.updatePackages = YES;
-
-    if (selfI.activityState != nil) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.updatePackages = YES;
-        }];
-        [selfI writeActivityStateI:selfI];
-    }
-}
-
-- (void)sendFirstPackagesI:(ADJActivityHandler *)selfI {
-    if ([selfI.internalState isNotInDelayedStart]) {
-        [selfI.logger info:@"Start delay expired or never configured"];
-        return;
-    }
-    // update packages in queue
-    [selfI updatePackagesI:selfI];
-    // no longer is in delay start
-    selfI.internalState.delayStart = NO;
-    // cancel possible still running timer if it was called by user
-    [selfI.delayStartTimer cancel];
-    // and release timer
-    selfI.delayStartTimer = nil;
-    // update the status and try to send first package
-    [selfI updateHandlersStatusAndSendI:selfI];
 }
 
 - (void)updatePackagesI:(ADJActivityHandler *)selfI {

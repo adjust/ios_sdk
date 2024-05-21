@@ -27,7 +27,6 @@
 + (ADJBackoffStrategy *)installSessionBackoffStrategy;
 
 + (BOOL)testing;
-+ (NSTimeInterval)maxDelayStart;
 + (NSString *)urlOverwrite;
 + (BOOL)adServicesFrameworkEnabled;
 
@@ -43,7 +42,6 @@
 + (void)setSdkClickHandlerBackoffStrategy:(ADJBackoffStrategy *)backoffStrategy;
 + (void)setTesting:(BOOL)testing;
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled;
-+ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart;
 + (void)setUrlOverwrite:(NSString *)urlOverwrite;
 
 + (void)enableSigning;

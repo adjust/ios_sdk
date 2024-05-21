@@ -23,7 +23,6 @@ static ADJBackoffStrategy * packageHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * sdkClickHandlerBackoffStrategy = nil;
 static ADJBackoffStrategy * installSessionBackoffStrategy = nil;
 static BOOL internalTesting = NO;
-static NSTimeInterval internalMaxDelayStart = -1;
 static BOOL internalAdServicesFrameworkEnabled = YES;
 
 static NSString * internalUrlOverwrite = nil;
@@ -110,13 +109,6 @@ static NSString * internalUrlOverwrite = nil;
     return internalAdServicesFrameworkEnabled;
 }
 
-+ (NSTimeInterval)maxDelayStart {
-    if (internalMaxDelayStart < 0) {
-        return 10.0;               // 10 seconds
-    }
-    return internalMaxDelayStart;
-}
-
 + (NSString *)urlOverwrite {
     return internalUrlOverwrite;
 }
@@ -166,10 +158,6 @@ static NSString * internalUrlOverwrite = nil;
 
 + (void)setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled {
     internalAdServicesFrameworkEnabled = adServicesFrameworkEnabled;
-}
-
-+ (void)setMaxDelayStart:(NSTimeInterval)maxDelayStart {
-    internalMaxDelayStart = maxDelayStart;
 }
 
 + (void)setUrlOverwrite:(NSString *)urlOverwrite {
@@ -236,7 +224,6 @@ static NSString * internalUrlOverwrite = nil;
     sdkClickHandlerBackoffStrategy = nil;
     installSessionBackoffStrategy = nil;
     internalTesting = NO;
-    internalMaxDelayStart = -1;
     internalUrlOverwrite = nil;
     internalAdServicesFrameworkEnabled = YES;
 }

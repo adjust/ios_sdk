@@ -65,8 +65,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 #pragma mark - Public methods
 
-- (ADJActivityPackage *)buildSessionPackage:(BOOL)isInDelay {
-    NSMutableDictionary *parameters = [self getSessionParameters:isInDelay];
+- (ADJActivityPackage *)buildSessionPackage {
+    NSMutableDictionary *parameters = [self getSessionParameters];
     ADJActivityPackage *sessionPackage = [self defaultActivityPackage];
     sessionPackage.path = @"/session";
     sessionPackage.activityKind = ADJActivityKindSession;
@@ -77,18 +77,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return sessionPackage;
 }
 
-- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
-                                isInDelay:(BOOL)isInDelay {
-    NSMutableDictionary *parameters = [self getEventParameters:isInDelay forEventPackage:event];
+- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event {
+    NSMutableDictionary *parameters = [self getEventParameters:event];
     ADJActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
     eventPackage.activityKind = ADJActivityKindEvent;
     eventPackage.suffix = [self eventSuffix:event];
     eventPackage.parameters = parameters;
-    if (isInDelay) {
-        eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
-        eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
-    }
+    eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
+    eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
     eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
 
     return eventPackage;
@@ -106,17 +103,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return infoPackage;
 }
 
-- (ADJActivityPackage *)buildAdRevenuePackage:(ADJAdRevenue *)adRevenue isInDelay:(BOOL)isInDelay {
-    NSMutableDictionary *parameters = [self getAdRevenueParameters:adRevenue isInDelay:isInDelay];
+- (ADJActivityPackage *)buildAdRevenuePackage:(ADJAdRevenue *)adRevenue {
+    NSMutableDictionary *parameters = [self getAdRevenueParameters:adRevenue];
     ADJActivityPackage *adRevenuePackage = [self defaultActivityPackage];
     adRevenuePackage.path = @"/ad_revenue";
     adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
-    if (isInDelay) {
-        adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
-        adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
-    }
+    adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
+    adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
     adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
 
     return adRevenuePackage;
@@ -186,18 +181,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return mcPackage;
 }
 
-- (ADJActivityPackage *)buildSubscriptionPackage:(ADJAppStoreSubscription *)subscription
-                                       isInDelay:(BOOL)isInDelay {
-    NSMutableDictionary *parameters = [self getSubscriptionParameters:isInDelay forSubscriptionPackage:subscription];
+- (ADJActivityPackage *)buildSubscriptionPackage:(ADJAppStoreSubscription *)subscription {
+    NSMutableDictionary *parameters = [self getSubscriptionParameters:subscription];
     ADJActivityPackage *subscriptionPackage = [self defaultActivityPackage];
     subscriptionPackage.path = @"/v2/purchase";
     subscriptionPackage.activityKind = ADJActivityKindSubscription;
     subscriptionPackage.suffix = @"";
     subscriptionPackage.parameters = parameters;
-    if (isInDelay) {
-        subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
-        subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
-    }
+    subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
+    subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
     subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
 
     return subscriptionPackage;
@@ -299,7 +291,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 #pragma mark - Private & helper methods
 
-- (NSMutableDictionary *)getSessionParameters:(BOOL)isInDelay {
+- (NSMutableDictionary *)getSessionParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -343,10 +335,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    if (!isInDelay) {
-        [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.callbackParameters copy] forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
-    }
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.callbackParameters copy] forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
 
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession];
     [self addIdfvIfPossibleToParameters:parameters];
@@ -355,7 +345,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return parameters;
 }
 
-- (NSMutableDictionary *)getEventParameters:(BOOL)isInDelay forEventPackage:(ADJEvent *)event {
+- (NSMutableDictionary *)getEventParameters:(ADJEvent *)event {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -406,17 +396,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:[self.globalParameters.callbackParameters copy]
-                                                                   source:[event.callbackParameters copy]
-                                                            parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:[self.globalParameters.partnerParameters copy]
-                                                                  source:[event.partnerParameters copy]
-                                                           parameterName:@"Partner"];
-
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
-    }
+    NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:[self.globalParameters.callbackParameters copy]
+                                                               source:[event.callbackParameters copy]
+                                                        parameterName:@"Callback"];
+    NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:[self.globalParameters.partnerParameters copy]
+                                                              source:[event.partnerParameters copy]
+                                                       parameterName:@"Partner"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
 
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindEvent];
     [self addIdfvIfPossibleToParameters:parameters];
@@ -492,7 +479,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return parameters;
 }
 
-- (NSMutableDictionary *)getAdRevenueParameters:(ADJAdRevenue *)adRevenue isInDelay:(BOOL)isInDelay {
+- (NSMutableDictionary *)getAdRevenueParameters:(ADJAdRevenue *)adRevenue {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -529,18 +516,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
                                forKey:@"tracking_enabled"];
     }
-    
-    if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:[self.globalParameters.callbackParameters copy]
-                                                                   source:[adRevenue.callbackParameters copy]
-                                                            parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:[self.globalParameters.partnerParameters copy]
-                                                                  source:[adRevenue.partnerParameters copy]
-                                                           parameterName:@"Partner"];
 
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
-    }
+    NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:[self.globalParameters.callbackParameters copy]
+                                                               source:[adRevenue.callbackParameters copy]
+                                                        parameterName:@"Callback"];
+    NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:[self.globalParameters.partnerParameters copy]
+                                                              source:[adRevenue.partnerParameters copy]
+                                                       parameterName:@"Partner"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
 
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
@@ -856,8 +840,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
     return parameters;
 }
-- (NSMutableDictionary *)getSubscriptionParameters:(BOOL)isInDelay
-                            forSubscriptionPackage:(ADJAppStoreSubscription *)subscription {
+- (NSMutableDictionary *)getSubscriptionParameters:(ADJAppStoreSubscription *)subscription {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -899,17 +882,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    if (!isInDelay) {
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.globalParameters.callbackParameters
-                                                                   source:subscription.callbackParameters
-                                                            parameterName:@"Callback"];
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:self.globalParameters.partnerParameters
-                                                                  source:subscription.partnerParameters
-                                                           parameterName:@"Partner"];
-
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
-        [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
-    }
+    NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:self.globalParameters.callbackParameters
+                                                               source:subscription.callbackParameters
+                                                        parameterName:@"Callback"];
+    NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:self.globalParameters.partnerParameters
+                                                              source:subscription.partnerParameters
+                                                       parameterName:@"Partner"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
+    [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
     
     [ADJPackageBuilder parameters:parameters setNumber:subscription.price forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:subscription.currency forKey:@"currency"];
