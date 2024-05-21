@@ -247,7 +247,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return [self buildClickPackage:clickSource extraParameters:parameters];
 }
 
-- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackage:(ADJPurchase * _Nullable)purchase {
+- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJPurchase * _Nullable)purchase {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (purchase.receipt != nil) {
@@ -265,6 +265,45 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters
                             setString:purchase.productId
                                forKey:@"product_id"];
+    }
+
+    return [self buildPurchaseVerificationPackageWithExtraParams:parameters];
+}
+
+- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithEvent:(ADJEvent *)event {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    // TODO: most probably remove receipts from PV logic
+    if (event.receipt != nil) {
+        NSString *receiptBase64 = [event.receipt adjEncodeBase64];
+        [ADJPackageBuilder parameters:parameters
+                            setString:receiptBase64
+                               forKey:@"receipt"];
+    }
+    if (event.transactionId != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:event.transactionId
+                               forKey:@"transaction_id"];
+    }
+    if (event.productId != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:event.productId
+                               forKey:@"product_id"];
+    }
+    if (event.eventToken != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:event.eventToken
+                               forKey:@"event_token"];
+    }
+    if (event.revenue != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setNumber:event.revenue
+                               forKey:@"revenue"];
+    }
+    if (event.currency != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:event.currency
+                               forKey:@"currency"];
     }
 
     return [self buildPurchaseVerificationPackageWithExtraParams:parameters];

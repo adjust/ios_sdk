@@ -281,6 +281,13 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] disableCoppaCompliance];
 }
 
++ (void)verifyAndTrack:(nonnull ADJEvent *)event
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    @synchronized (self) {
+        [[Adjust getInstance] verifyAndTrack:event completionHandler:completionHandler];
+    }
+}
+
 + (void)setTestOptions:(AdjustTestOptions *)testOptions {
     @synchronized (self) {
         if (testOptions.teardown) {
@@ -678,6 +685,21 @@ static dispatch_once_t onceToken = 0;
         }
         [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(NO)];
     }
+}
+
+- (void)verifyAndTrack:(nonnull ADJEvent *)event
+     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    if (![self checkActivityHandler]) {
+        if (completionHandler != nil) {
+            ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
+            result.verificationStatus = @"not_verified";
+            result.code = 100;
+            result.message = @"SDK needs to be initialized before making purchase verification request";
+            completionHandler(result);
+        }
+        return;
+    }
+    [self.activityHandler verifyAndTrack:event completionHandler:completionHandler];
 }
 
 - (void)teardown {
