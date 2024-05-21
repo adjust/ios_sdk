@@ -71,6 +71,7 @@
     _isIdfaReadingAllowed = YES;
     _isSkanAttributionHandlingEnabled = YES;
     _eventDeduplicationIdsMaxSize = -1;
+    _shouldReadDeviceInfoOnce = NO;
 
     return self;
 }
@@ -95,6 +96,10 @@
 
 - (void)enableLinkMe {
     _isLinkMeEnabled = YES;
+}
+
+- (void)readDeviceIdsOnce {
+    _shouldReadDeviceInfoOnce = YES;
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
@@ -202,7 +207,7 @@
         copy.urlStrategy = [self.urlStrategy copyWithZone:zone];
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;
-        copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
+        copy->_shouldReadDeviceInfoOnce = self.shouldReadDeviceInfoOnce;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         // adjust delegate not copied
     }

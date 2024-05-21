@@ -209,7 +209,7 @@
         NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
         NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
-        NSNumber *readDeviceInfoOnceEnabled = [data objectForKey:@"readDeviceInfoOnceEnabled"];
+        NSNumber *shouldReadDeviceInfoOnce = [data objectForKey:@"shouldReadDeviceInfoOnce"];
         NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
         NSNumber *eventDeduplicationIdsMaxSize = [data objectForKey:@"eventDeduplicationIdsMaxSize"];
 
@@ -308,8 +308,10 @@
         if ([self isFieldValid:urlStrategy]) {
             [adjustConfig setUrlStrategy:urlStrategy];
         }
-        if ([self isFieldValid:readDeviceInfoOnceEnabled]) {
-            [adjustConfig setReadDeviceInfoOnceEnabled:[readDeviceInfoOnceEnabled boolValue]];
+        if ([self isFieldValid:shouldReadDeviceInfoOnce]) {
+            if ([shouldReadDeviceInfoOnce boolValue] == YES) {
+                [adjustConfig readDeviceIdsOnce];
+            }
         }
         if ([self isFieldValid:eventDeduplicationIdsMaxSize]) {
             [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
