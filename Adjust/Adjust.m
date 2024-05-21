@@ -269,9 +269,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (NSURL *)lastDeeplink {
++ (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback {
     @synchronized (self) {
-        return [[Adjust getInstance] lastDeeplink];
+        [[Adjust getInstance] lastDeeplinkWithCallback:lastDeeplinkCallback];
     }
 }
 
@@ -626,8 +626,14 @@ static dispatch_once_t onceToken = 0;
     [sdkVersionCallback didReadWithSdkVersion:sdkVersion];
 }
 
-- (NSURL *)lastDeeplink {
-    return [ADJUserDefaults getCachedDeeplinkUrl];
+- (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback {
+    if (lastDeeplinkCallback == nil) {
+        [self.logger error:@"Callback for getting last opened deep link can't be null"];
+        return;
+    }
+
+    NSURL *lastDeeplink = [ADJUserDefaults getCachedDeeplinkUrl];
+    [lastDeeplinkCallback didReadWithLastDeeplink:lastDeeplink];
 }
 
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase

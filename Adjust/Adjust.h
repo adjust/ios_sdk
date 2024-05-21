@@ -42,6 +42,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 @protocol ADJAdjustIdfaCallback;
 @protocol ADJAdjustIdfvCallback;
 @protocol ADJSdkVersionCallback;
+@protocol ADJLastDeeplinkCallback;
 
 /**
  * Constants for our supported tracking environments.
@@ -312,11 +313,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
                 completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 /**
- * @brief Get the last deep link which has opened the app.
+ * @brief Get the last deep link which has opened the app through a callback.
  *
  * @return Last deep link which has opened the app.
  */
-+ (nullable NSURL *)lastDeeplink;
++ (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
 
 /**
  * @brief Verify in-app-purchase.
@@ -415,7 +416,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
 
-- (nullable NSURL *)lastDeeplink;
+- (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
 
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
@@ -447,5 +448,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 @protocol ADJSdkVersionCallback <NSObject>
 
 - (void)didReadWithSdkVersion:(nullable NSString *)sdkVersion;
+
+@end
+
+@protocol ADJLastDeeplinkCallback <NSObject>
+
+- (void)didReadWithLastDeeplink:(nullable NSURL *)lastDeeplink;
 
 @end

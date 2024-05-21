@@ -56,6 +56,12 @@
 
 @end
 
+@interface ADJLastDeeplinkGetter : NSObject<ADJLastDeeplinkCallback>
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
+
+@end
+
 @implementation AdjustBridge
 
 #pragma mark - Object lifecycle
@@ -573,8 +579,10 @@
         if (responseCallback == nil) {
             return;
         }
-        NSURL *lastDeeplink = [Adjust lastDeeplink];
-        responseCallback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
+
+        ADJLastDeeplinkGetter * _Nonnull lastDeeplinkGetter = [[ADJLastDeeplinkGetter alloc] init];
+        lastDeeplinkGetter.callback = responseCallback;
+        [Adjust lastDeeplinkWithCallback:lastDeeplinkGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_enableCoppaCompliance"
@@ -801,6 +809,16 @@
 - (void)didReadWithSdkVersion:(NSString *)sdkVersion {
     NSString *joinedSdkVersion = [NSString stringWithFormat:@"%@@%@", self.sdkPrefix, sdkVersion];
     self.callback(joinedSdkVersion);
+}
+
+@end
+
+#pragma mark - ADJLastDeeplinkCallback protocol
+
+@implementation ADJLastDeeplinkGetter
+
+- (void)didReadWithLastDeeplink:(NSURL *)lastDeeplink {
+    self.callback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
 }
 
 @end
