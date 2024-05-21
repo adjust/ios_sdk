@@ -40,6 +40,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
 @protocol ADJAdjustAttributionCallback;
 @protocol ADJAdjustIdfaCallback;
+@protocol ADJAdjustIdfvCallback;
 
 /**
  * Constants for our supported tracking environments.
@@ -167,11 +168,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback;
 
 /**
- * @brief Retrieve iOS device IDFV value.
+ * @brief Retrieve iOS device IDFV value through a callback.
  *
  * @return Device IDFV value.
  */
-+ (nullable NSString *)idfv;
++ (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
 
 
 /**
@@ -390,6 +391,8 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (void)idfaWithCallback:(nullable id<ADJAdjustIdfaCallback>)idfaCallback;
 
+- (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback;
+
 - (nullable NSString *)sdkVersion;
 
 - (void)attributionWithCallback:(nonnull id<ADJAdjustAttributionCallback>)attributionCallback;
@@ -431,5 +434,11 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 @protocol ADJAdjustIdfaCallback <NSObject>
 
 - (void)didReadWithIdfa:(nullable NSString *)idfa;
+
+@end
+
+@protocol ADJAdjustIdfvCallback <NSObject>
+
+- (void)didReadWithIdfv:(nullable NSString *)idfv;
 
 @end

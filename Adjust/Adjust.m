@@ -149,9 +149,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (NSString *)idfv {
++ (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback {
     @synchronized (self) {
-        return [[Adjust getInstance] idfv];
+        [[Adjust getInstance] idfvWithCallback:idfvCallback];
     }
 }
 
@@ -425,8 +425,14 @@ static dispatch_once_t onceToken = 0;
     [idfaCallback didReadWithIdfa:idfa];
 }
 
-- (NSString *)idfv {
-    return [ADJUtil idfv];
+- (void)idfvWithCallback:(nullable id<ADJAdjustIdfvCallback>)idfvCallback {
+    if (idfvCallback == nil) {
+        [self.logger error:@"Callback for getting IDFV can't be null"];
+        return;
+    }
+
+    NSString *idfv = [ADJUtil idfv];
+    [idfvCallback didReadWithIdfv:idfv];
 }
 
 - (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
