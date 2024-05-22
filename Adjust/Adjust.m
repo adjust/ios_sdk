@@ -143,13 +143,13 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback {
++ (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback {
     @synchronized (self) {
         [[Adjust getInstance] idfaWithCallback:idfaCallback];
     }
 }
 
-+ (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback {
++ (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback {
     @synchronized (self) {
         [[Adjust getInstance] idfvWithCallback:idfvCallback];
     }
@@ -415,7 +415,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback {
+- (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback {
     if (idfaCallback == nil) {
         [self.logger error:@"Callback for getting IDFA can't be null"];
         return;
@@ -425,7 +425,7 @@ static dispatch_once_t onceToken = 0;
     [idfaCallback didReadWithIdfa:idfa];
 }
 
-- (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback {
+- (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback {
     if (idfvCallback == nil) {
         [self.logger error:@"Callback for getting IDFV can't be null"];
         return;
