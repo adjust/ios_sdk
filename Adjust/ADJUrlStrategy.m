@@ -30,6 +30,7 @@ static NSString * const kGdprIoUrl = @"https://gdpr.adjust.io";
 static NSString * const kSubscriptionIoUrl = @"https://subscription.adjust.io";
 static NSString * const kPurchaseVerificationIoUrl = @"https://ssrv.adjust.io";
 
+// TODO: remove testServerCustomEndPointKey
 static NSString *const testServerCustomEndPointKey = @"test_server_custom_end_point";
 static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_point";
 
@@ -58,7 +59,7 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
 
 @implementation ADJUrlStrategy
 
-- (instancetype)initWithUrlStrategyDomains:(NSMutableArray *)domains
+- (instancetype)initWithUrlStrategyDomains:(NSArray *)domains
                                  extraPath:(NSString *)extraPath
                              useSubdomains:(BOOL)useSubdomains {
     self = [super init];

@@ -13,7 +13,7 @@
 
 @property (nonatomic, readonly, copy) NSString *extraPath;
 
-- (instancetype)initWithUrlStrategyDomains:(NSMutableArray *)domains
+- (instancetype)initWithUrlStrategyDomains:(NSArray *)domains
                                  extraPath:(NSString *)extraPath
                              useSubdomains:(BOOL)useSubdomains;
 
