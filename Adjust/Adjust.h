@@ -167,14 +167,14 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  *
  * @param idfaCallback Callback to get IDFA value delivered to.
  */
-+ (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback;
++ (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback;
 
 /**
  * @brief Retrieve iOS device IDFV value through a callback.
  *
  * @param idfvCallback Callback to get the IDFV value delivered to.
  */
-+ (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback;
++ (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback;
 
 
 /**
@@ -391,9 +391,9 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 
 - (nullable NSString *)adid;
 
-- (void)idfaWithCallback:(nullable id<ADJIdfaCallback>)idfaCallback;
+- (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback;
 
-- (void)idfvWithCallback:(nullable id<ADJIdfvCallback>)idfvCallback;
+- (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback;
 
 - (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
