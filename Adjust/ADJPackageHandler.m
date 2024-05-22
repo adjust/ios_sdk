@@ -176,17 +176,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     self.paused = NO;
 }
 
-- (void)updatePackagesWithGlobalParams:(ADJGlobalParameters *)globalParameters {
-    // make copy to prevent possible Activity Handler changes of it
-    ADJGlobalParameters * globalParametersCopy = [globalParameters copy];
-
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJPackageHandler* selfI) {
-        [selfI updatePackagesI:selfI globalParameters:globalParametersCopy];
-    }];
-}
-
 - (void)updatePackagesWithAttStatus:(int)attStatus {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -343,40 +332,6 @@ startsSending:(BOOL)startsSending
         dispatch_semaphore_signal(selfI.sendingSemaphore);
         [selfI sendFirstI:selfI];
     }
-}
-
-- (void)updatePackagesI:(ADJPackageHandler *)selfI
-       globalParameters:(ADJGlobalParameters *)globalParameters {
-    [selfI.logger debug:@"Updating package handler queue"];
-    [selfI.logger verbose:@"Global callback parameters: %@", globalParameters.callbackParameters];
-    [selfI.logger verbose:@"Global partner parameters: %@", globalParameters.partnerParameters];
-
-    // create package queue copy for new state of array
-    NSMutableArray *packageQueueCopy = [NSMutableArray array];
-
-    for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
-        // callback parameters
-        NSDictionary *mergedCallbackParameters = [ADJUtil mergeParameters:globalParameters.callbackParameters
-                                                                   source:activityPackage.callbackParameters
-                                                            parameterName:@"Callback"];
-        [ADJPackageBuilder parameters:activityPackage.parameters
-                        setDictionary:mergedCallbackParameters
-                               forKey:@"callback_params"];
-
-        // partner parameters
-        NSDictionary *mergedPartnerParameters = [ADJUtil mergeParameters:globalParameters.partnerParameters
-                                                                  source:activityPackage.partnerParameters
-                                                           parameterName:@"Partner"];
-        [ADJPackageBuilder parameters:activityPackage.parameters
-                        setDictionary:mergedPartnerParameters
-                               forKey:@"partner_params"];
-        // add to copy queue
-        [packageQueueCopy addObject:activityPackage];
-    }
-
-    // write package queue copy
-    selfI.packageQueue = packageQueueCopy;
-    [selfI writePackageQueueS:selfI];
 }
 
 - (void)updatePackagesTrackingI:(ADJPackageHandler *)selfI

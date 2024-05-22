@@ -18,7 +18,6 @@
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, assign) BOOL background;
-@property (nonatomic, assign) BOOL updatePackages;
 @property (nonatomic, assign) BOOL updatePackagesAttData;
 @property (nonatomic, assign) BOOL firstLaunch;
 @property (nonatomic, assign) BOOL sessionResponseProcessed;
@@ -30,7 +29,6 @@
 - (BOOL)isOnline;
 - (BOOL)isInBackground;
 - (BOOL)isInForeground;
-- (BOOL)itHasToUpdatePackages;
 - (BOOL)itHasToUpdatePackagesAttData;
 - (BOOL)isFirstLaunch;
 - (BOOL)hasSessionResponseNotBeenProcessed;

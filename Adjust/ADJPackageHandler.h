@@ -26,7 +26,6 @@
 - (void)sendFirstPackage;
 - (void)pauseSending;
 - (void)resumeSending;
-- (void)updatePackagesWithGlobalParams:(ADJGlobalParameters *)globalParameters;
 - (void)updatePackagesWithAttStatus:(int)attStatus;
 - (void)flush;
 

@@ -39,7 +39,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.isThirdPartySharingDisabledForCoppa = NO;
     self.deviceToken = nil;
     self.eventDeduplicationIds = [NSMutableArray array];
-    self.updatePackages = NO;
     self.updatePackagesAttData = NO;
     self.trackingManagerAuthorizationStatus = -1;
 
@@ -188,12 +187,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         self.deviceToken = [decoder decodeObjectForKey:@"deviceToken"];
     }
 
-    if ([decoder containsValueForKey:@"updatePackages"]) {
-        self.updatePackages = [decoder decodeBoolForKey:@"updatePackages"];
-    } else {
-        self.updatePackages = NO;
-    }
-
     if ([decoder containsValueForKey:@"updatePackagesAttData"]) {
         self.updatePackagesAttData = [decoder decodeBoolForKey:@"updatePackagesAttData"];
     } else {
@@ -234,7 +227,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
     [encoder encodeBool:self.isThirdPartySharingDisabledForCoppa forKey:@"isThirdPartySharingDisabledForCoppa"];
     [encoder encodeObject:self.deviceToken forKey:@"deviceToken"];
-    [encoder encodeBool:self.updatePackages forKey:@"updatePackages"];
     [encoder encodeBool:self.updatePackagesAttData forKey:@"updatePackagesAttData"];
     [encoder encodeObject:self.adid forKey:@"adid"];
     [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
@@ -262,7 +254,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         copy.askingAttribution = self.askingAttribution;
         copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
         copy.deviceToken = [self.deviceToken copyWithZone:zone];
-        copy.updatePackages = self.updatePackages;
         copy.updatePackagesAttData = self.updatePackagesAttData;
         copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
     }
