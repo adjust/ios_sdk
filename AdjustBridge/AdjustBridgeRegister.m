@@ -342,7 +342,6 @@ static NSString * fbAppIdStatic = nil;
             this.sessionSuccessCallback = null;
             this.sessionFailureCallback = null;
             this.deferredDeeplinkCallback = null;
-            this.urlStrategy = null;
             this.shouldReadDeviceInfoOnce = null;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
@@ -358,14 +357,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelError = 'ERROR';
         AdjustConfig.LogLevelAssert = 'ASSERT';
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
-
-        AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
-        AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
-        AdjustConfig.UrlStrategyCn = 'UrlStrategyCn';
-        AdjustConfig.UrlStrategyCnOnly = 'UrlStrategyCnOnly';
-        AdjustConfig.DataResidencyEU = 'DataResidencyEU';
-        AdjustConfig.DataResidencyTR = 'DataResidencyTR';
-        AdjustConfig.DataResidencyUS = 'DataResidencyUS';
 
         AdjustConfig.prototype.registerCallbackHandlers = function() {
             var registerCallbackHandler = function(callbackName) {
@@ -441,9 +432,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.addFbPixelMapping = function(fbEventNameKey, adjEventTokenValue) {
             this.fbPixelMapping.push(fbEventNameKey);
             this.fbPixelMapping.push(adjEventTokenValue);
-        };
-        AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
-            this.urlStrategy = urlStrategy;
         };
         AdjustConfig.prototype.readDeviceInfoOnce = function() {
             this.shouldReadDeviceInfoOnce = true;
