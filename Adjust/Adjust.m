@@ -422,7 +422,9 @@ static dispatch_once_t onceToken = 0;
     }
 
     NSString *idfa = [ADJUtil idfa];
-    [idfaCallback didReadWithIdfa:idfa];
+    [ADJUtil launchInMainThread:^{
+        [idfaCallback didReadWithIdfa:idfa];
+    }];
 }
 
 - (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback {
@@ -432,7 +434,9 @@ static dispatch_once_t onceToken = 0;
     }
 
     NSString *idfv = [ADJUtil idfv];
-    [idfvCallback didReadWithIdfv:idfv];
+    [ADJUtil launchInMainThread:^{
+        [idfvCallback didReadWithIdfv:idfv];
+    }];
 }
 
 - (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
@@ -623,7 +627,9 @@ static dispatch_once_t onceToken = 0;
     }
 
     NSString *sdkVersion = [ADJUtil sdkVersion];
-    [sdkVersionCallback didReadWithSdkVersion:sdkVersion];
+    [ADJUtil launchInMainThread:^{
+        [sdkVersionCallback didReadWithSdkVersion:sdkVersion];
+    }];
 }
 
 - (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback {
@@ -633,7 +639,9 @@ static dispatch_once_t onceToken = 0;
     }
 
     NSURL *lastDeeplink = [ADJUserDefaults getCachedDeeplinkUrl];
-    [lastDeeplinkCallback didReadWithLastDeeplink:lastDeeplink];
+    [ADJUtil launchInMainThread:^{
+        [lastDeeplinkCallback didReadWithLastDeeplink:lastDeeplink];
+    }];
 }
 
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
