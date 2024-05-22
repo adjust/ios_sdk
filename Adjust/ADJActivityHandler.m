@@ -67,7 +67,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (BOOL)isOnline { return !self.offline; }
 - (BOOL)isInBackground { return self.background; }
 - (BOOL)isInForeground { return !self.background; }
-- (BOOL)itHasToUpdatePackages { return self.updatePackages; }
 - (BOOL)itHasToUpdatePackagesAttData { return self.updatePackagesAttData; }
 - (BOOL)isFirstLaunch { return self.firstLaunch; }
 - (BOOL)hasSessionResponseNotBeenProcessed { return !self.sessionResponseProcessed; }
@@ -215,10 +214,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.internalState.background = YES;
     // does not need to update packages by default
     if (self.activityState == nil) {
-        self.internalState.updatePackages = NO;
         self.internalState.updatePackagesAttData = NO;
     } else {
-        self.internalState.updatePackages = self.activityState.updatePackages;
         self.internalState.updatePackagesAttData = self.activityState.updatePackagesAttData;
     }
     if (self.activityState == nil) {
@@ -874,11 +871,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                     [selfI toSendI:selfI sdkClickHandlerOnly:NO]
                                 urlStrategy:packageHandlerUrlStrategy];
 
-    // update session parameters in package queue
-    if ([selfI itHasToUpdatePackagesI:selfI]) {
-        [selfI updatePackagesI:selfI];
-    }
-
     ADJUrlStrategy *attributionHandlerUrlStrategy =
         [[ADJUrlStrategy alloc]
              initWithUrlStrategyInfo:selfI.adjustConfig.urlStrategy
@@ -1034,7 +1026,6 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                                         block:^{
             [selfI.activityState resetSessionAttributes:now];
             selfI.activityState.enabled = [selfI.internalState isEnabled];
-            selfI.activityState.updatePackages = [selfI.internalState itHasToUpdatePackages];
             selfI.activityState.updatePackagesAttData = [selfI.internalState itHasToUpdatePackagesAttData];
         }];
 
@@ -2134,14 +2125,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (BOOL)itHasToUpdatePackagesI:(ADJActivityHandler *)selfI {
-    if (selfI.activityState != nil) {
-        return selfI.activityState.updatePackages;
-    } else {
-        return [selfI.internalState itHasToUpdatePackages];
-    }
-}
-
 - (BOOL)itHasToUpdatePackagesAttDataI:(ADJActivityHandler *)selfI {
     if (selfI.activityState != nil) {
         return selfI.activityState.updatePackagesAttData;
@@ -2433,20 +2416,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 - (void)backgroundTimerFiredI:(ADJActivityHandler *)selfI {
     if ([selfI toSendI:selfI]) {
         [selfI.packageHandler sendFirstPackage];
-    }
-}
-
-- (void)updatePackagesI:(ADJActivityHandler *)selfI {
-    // update activity packages
-    [selfI.packageHandler updatePackagesWithGlobalParams:selfI.globalParameters];
-    // no longer needs to update packages
-    selfI.internalState.updatePackages = NO;
-    if (selfI.activityState != nil) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.updatePackages = NO;
-        }];
-        [selfI writeActivityStateI:selfI];
     }
 }
 
