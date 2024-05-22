@@ -163,7 +163,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)setOfflineMode:(BOOL)enabled;
 
 /**
- * @brief Retrieve iOS device IDFA value thorugh a callback.
+ * @brief Retrieve iOS device IDFA value through a callback.
  *
  * @param idfaCallback Callback to get IDFA value delivered to.
  */
