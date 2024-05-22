@@ -243,11 +243,11 @@
 
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
 
-@property (nonatomic, copy, readonly, nullable) NSMutableArray *urlStrategyDomains;
+@property (nonatomic, copy, readonly, nullable) NSArray *urlStrategyDomains;
 
 @property (nonatomic, readonly) BOOL useSubdomains;
 
-- (void)setUrlStrategyDomains:(NSMutableArray * _Nullable)domains
+- (void)setUrlStrategyDomains:(NSArray * _Nullable)domains
                withSubdomains:(BOOL)useSubdomains;
 
 @end

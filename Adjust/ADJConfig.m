@@ -102,7 +102,7 @@
     _shouldReadDeviceInfoOnce = YES;
 }
 
-- (void)setUrlStrategyDomains:(NSMutableArray * _Nullable)domains
+- (void)setUrlStrategyDomains:(NSArray * _Nullable)domains
                withSubdomains:(BOOL)useSubdomains {
     if (domains == nil) {
         return;
@@ -112,7 +112,7 @@
     }
 
     if (_urlStrategyDomains == nil) {
-        _urlStrategyDomains = [NSMutableArray arrayWithArray:domains];
+        _urlStrategyDomains = [NSArray arrayWithArray:domains];
     }
 
     _useSubdomains = useSubdomains;
