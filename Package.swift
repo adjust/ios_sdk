@@ -6,7 +6,6 @@ let package = Package(
     name: "Adjust",
     products: [
         .library(name: "Adjust", targets: ["Adjust"]),
-        .library(name: "Criteo", targets: ["Criteo", "Adjust"]),
         .library(name: "WebBridge", targets: ["WebBridge", "Adjust"])
     ],
     targets: [
@@ -20,16 +19,6 @@ let package = Package(
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "Criteo",
-            path: "plugin/Criteo",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
             ]
         ),
         .target(
