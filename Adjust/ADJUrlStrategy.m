@@ -119,21 +119,16 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
             }
         }
     } else {
-        [_baseUrlConsentChoicesArray addObject:kBaseConsentUrl];
-        [_baseUrlConsentChoicesArray addObject:kBaseConsentWorldUrl];
-        // [_baseUrlConsentChoicesArray addObject:kBaseConsentIoUrl];
-        [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsUrl];
-        [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsWorldUrl];
-        // [_baseUrlAnalyticsChoicesArray addObject:kBaseAnalyticsIoUrl];
-        [_gdprUrlChoicesArray addObject:kGdprUrl];
-        [_gdprUrlChoicesArray addObject:kGdprWorldUrl];
-        // [_gdprUrlChoicesArray addObject:kGdprIoUrl];
-        [_subscriptionUrlChoicesArray addObject:kSubscriptionUrl];
-        [_subscriptionUrlChoicesArray addObject:kSubscriptionWorldUrl];
-        // [_subscriptionUrlChoicesArray addObject:kSubscriptionIoUrl];
-        [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationUrl];
-        [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationWorldUrl];
-        // [_purchaseVerificationUrlChoicesArray addObject:kPurchaseVerificationIoUrl];
+        [_baseUrlConsentChoicesArray setArray:@[kBaseConsentUrl,
+                                                kBaseConsentWorldUrl]];
+        [_baseUrlAnalyticsChoicesArray setArray:@[kBaseAnalyticsUrl,
+                                                  kBaseAnalyticsWorldUrl]];
+        [_gdprUrlChoicesArray setArray:@[kGdprUrl,
+                                         kGdprWorldUrl]];
+        [_subscriptionUrlChoicesArray setArray:@[kSubscriptionUrl,
+                                                 kSubscriptionWorldUrl]];
+        [_purchaseVerificationUrlChoicesArray setArray:@[kPurchaseVerificationUrl,
+                                                         kPurchaseVerificationWorldUrl]];
     }
 
     _testUrlOverwrite = [ADJAdjustFactory testUrlOverwrite];
