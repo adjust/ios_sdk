@@ -43,6 +43,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 @protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
+@protocol ADJAdidCallback;
 
 /**
  * Constants for our supported tracking environments.
@@ -167,13 +168,13 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 
 /**
- * @brief Get current adjust identifier for the user.
+ * @brief Get current adjust identifier for the user through a callback.
+ *
+ * @param adidCallback Callback to get the adid value delivered to.
  *
  * @note Adjust identifier is available only after installation has been successfully tracked.
- *
- * @return Current adjust identifier value for the user.
  */
-+ (nullable NSString *)adid;
++ (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 
 /**
  * @brief Get current attribution for the user through a callback.
@@ -381,7 +382,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (BOOL)isEnabled;
 
-- (nullable NSString *)adid;
+- (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;;
 
 - (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback;
 
@@ -449,5 +450,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 @protocol ADJLastDeeplinkCallback <NSObject>
 
 - (void)didReadWithLastDeeplink:(nullable NSURL *)lastDeeplink;
+
+@end
+
+@protocol ADJAdidCallback <NSObject>
+
+- (void)didReadWithAdid:(nullable NSString *)adid;
 
 @end

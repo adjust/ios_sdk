@@ -40,6 +40,7 @@
 
 @property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *_Nullable extraPath;
@@ -55,8 +56,6 @@
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, strong) ADJTrackingStatusManager * _Nullable trackingStatusManager;
-
-- (NSString *_Nullable)adid;
 
 - (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
                 savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
@@ -109,6 +108,7 @@
 - (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 - (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
+- (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrack:(nonnull ADJEvent *)event
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
