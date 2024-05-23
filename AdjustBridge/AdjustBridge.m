@@ -63,6 +63,12 @@
 
 @end
 
+@interface ADJAdidGetter : NSObject<ADJAdidCallback>
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
+
+@end
+
 @implementation AdjustBridge
 
 #pragma mark - Object lifecycle
@@ -497,7 +503,10 @@
         if (responseCallback == nil) {
             return;
         }
-        responseCallback([Adjust adid]);
+
+        ADJAdidGetter * _Nonnull adidGetter = [[ADJAdidGetter alloc] init];
+        adidGetter.callback = responseCallback;
+        [Adjust adidWithCallback:adidGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_attribution" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -826,6 +835,16 @@
 
 - (void)didReadWithLastDeeplink:(NSURL *)lastDeeplink {
     self.callback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
+}
+
+@end
+
+#pragma mark - ADJAdidCallback protocol
+
+@implementation ADJAdidGetter
+
+- (void)didReadWithAdid:(NSString *)adid {
+    self.callback(adid);
 }
 
 @end
