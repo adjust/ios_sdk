@@ -1,3 +1,9 @@
+### Version 4.38.3 (23rd May 2024)
+#### Fixed
+- Added missing `WKNavigationDelegate` methods to the `WebBridge` implementation.
+
+---
+
 ### Version 4.38.2 (30th April 2024)
 #### Added
 - Added sending of the additional SDK observability parameters for debugging purposes.
