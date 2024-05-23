@@ -69,6 +69,12 @@
 
 @end
 
+@interface ADJIsEnabledGetter : NSObject<ADJIsEnabledCallback>
+
+@property (nonatomic, strong) WVJBResponseCallback callback;
+
+@end
+
 @implementation AdjustBridge
 
 #pragma mark - Object lifecycle
@@ -425,7 +431,10 @@
         if (responseCallback == nil) {
             return;
         }
-        responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
+
+        ADJIsEnabledGetter * _Nonnull isEnabledGetter = [[ADJIsEnabledGetter alloc] init];
+        isEnabledGetter.callback = responseCallback;
+        [Adjust isEnabledWithCallback:isEnabledGetter];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -840,11 +849,19 @@
 @end
 
 #pragma mark - ADJAdidCallback protocol
-
 @implementation ADJAdidGetter
 
 - (void)didReadWithAdid:(NSString *)adid {
     self.callback(adid);
+}
+
+@end
+
+#pragma mark - ADJIsEnabledCallback protocol
+@implementation ADJIsEnabledGetter
+
+- (void)didReadWithIsEnabled:(BOOL)isEnabled {
+    self.callback([NSNumber numberWithBool:isEnabled]);
 }
 
 @end
