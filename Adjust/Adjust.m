@@ -97,9 +97,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (BOOL)isEnabled {
++ (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
     @synchronized (self) {
-        return [[Adjust getInstance] isEnabled];
+        [[Adjust getInstance] isEnabledWithCallback:isEnabledCallback];
     }
 }
 
@@ -345,11 +345,16 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (BOOL)isEnabled {
+- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
     if (![self checkActivityHandler]) {
-        return [self isInstanceEnabled];
+        [ADJUtil isEnabledFromActivityStateFile:^(BOOL isEnabled) {
+            [ADJUtil launchInMainThread:^{
+                [isEnabledCallback didReadWithIsEnabled:isEnabled];
+            }];
+        }];
+        return;
     }
-    return [self.activityHandler isEnabled];
+    [self.activityHandler isEnabledWithCallback:isEnabledCallback];
 }
 
 - (void)processDeeplink:(NSURL *)deeplink {
@@ -387,9 +392,7 @@ static dispatch_once_t onceToken = 0;
     [ADJUserDefaults savePushTokenData:pushToken];
 
     if ([self checkActivityHandler:@"push token"]) {
-        if (self.activityHandler.isEnabled) {
-            [self.activityHandler setPushTokenData:pushToken];
-        }
+        [self.activityHandler setPushTokenData:pushToken];
     }
 }
 
@@ -397,9 +400,7 @@ static dispatch_once_t onceToken = 0;
     [ADJUserDefaults savePushTokenString:pushToken];
 
     if ([self checkActivityHandler:@"push token as string"]) {
-        if (self.activityHandler.isEnabled) {
-            [self.activityHandler setPushTokenString:pushToken];
-        }
+        [self.activityHandler setPushTokenString:pushToken];
     }
 }
 
@@ -527,9 +528,7 @@ static dispatch_once_t onceToken = 0;
 - (void)gdprForgetMe {
     [ADJUserDefaults setGdprForgetMe];
     if ([self checkActivityHandler:@"GDPR forget me"]) {
-        if (self.activityHandler.isEnabled) {
-            [self.activityHandler setGdprForgetMe];
-        }
+        [self.activityHandler setGdprForgetMe];
     }
 }
 
@@ -670,9 +669,7 @@ static dispatch_once_t onceToken = 0;
 - (void)enableCoppaCompliance {
     [ADJUserDefaults saveCoppaComplianceWithValue:YES];
     if ([self checkActivityHandler:@"enable coppa compliance"]) {
-        if (self.activityHandler.isEnabled) {
-            [self.activityHandler setCoppaCompliance:YES];
-        }
+        [self.activityHandler setCoppaCompliance:YES];
     } else {
         if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
             self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
@@ -685,9 +682,7 @@ static dispatch_once_t onceToken = 0;
 - (void)disableCoppaCompliance {
     [ADJUserDefaults saveCoppaComplianceWithValue:NO];
     if ([self checkActivityHandler:@"disable coppa compliance"]) {
-        if (self.activityHandler.isEnabled) {
-            [self.activityHandler setCoppaCompliance:NO];
-        }
+        [self.activityHandler setCoppaCompliance:NO];
     } else {
         if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
             self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =

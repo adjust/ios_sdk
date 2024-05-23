@@ -10,7 +10,7 @@
 #import "Constants.h"
 #import "ViewControllerObjC.h"
 
-@interface ViewControllerObjC ()
+@interface ViewControllerObjC () <ADJIsEnabledCallback>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackSimpleEvent;
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackRevenueEvent;
@@ -85,8 +85,12 @@
 }
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
+    [Adjust isEnabledWithCallback:self];
+}
+
+- (void)didReadWithIsEnabled:(BOOL)isEnabled {
     NSString *message;
-    if ([Adjust isEnabled]) {
+    if (isEnabled) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";

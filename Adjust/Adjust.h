@@ -42,6 +42,7 @@ typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 @protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
 @protocol ADJAdidCallback;
+@protocol ADJIsEnabledCallback;
 
 /**
  * Constants for our supported tracking environments.
@@ -105,11 +106,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)setEnabled:(BOOL)enabled;
 
 /**
- * @brief Check if the SDK is enabled or disabled.
+ * @brief Check if the SDK is enabled or disabled through a callback.
  *
- * return Boolean indicating whether SDK is enabled or not.
+ * @param isEnabledCallback Callback to be pinged with the enabled state of the SDK.
  */
-+ (BOOL)isEnabled;
++ (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
 
 /**
  * @brief Read the URL that opened the application to search for an adjust deep link.
@@ -345,6 +346,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)setEnabled:(BOOL)enabled;
 
+- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
+
 - (void)teardown;
 
 - (void)processDeeplink:(nonnull NSURL *)deeplink;
@@ -378,7 +381,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)trackAppStoreSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
-- (BOOL)isEnabled;
+- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
 
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;;
 
@@ -454,5 +457,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 @protocol ADJAdidCallback <NSObject>
 
 - (void)didReadWithAdid:(nullable NSString *)adid;
+
+@end
+
+@protocol ADJIsEnabledCallback <NSObject>
+
+- (void)didReadWithIsEnabled:(BOOL)isEnabled;
 
 @end

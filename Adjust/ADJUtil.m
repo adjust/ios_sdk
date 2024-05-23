@@ -1500,4 +1500,22 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 }
 
++ (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+            ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
+                                                       objectName:@"Activity state"
+                                                            class:[ADJActivityState class]
+                                                       syncObject:[ADJActivityState class]];
+            if (activityState == nil) {
+                completion(YES);
+            } else {
+                completion(activityState.enabled);
+            }
+        }];
+    });
+}
+
 @end

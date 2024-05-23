@@ -377,8 +377,12 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (BOOL)isEnabled {
-    return [self isEnabledI:self];
+- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI isEnabledI:selfI withCallback:isEnabledCallback];
+    }];
 }
 
 - (BOOL)isGdprForgotten {
@@ -1711,7 +1715,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
     // compare with the saved or internal state
     if (![selfI hasChangedStateI:selfI
-                   previousState:[selfI isEnabled]
+                   previousState:selfI.activityState.enabled
                        nextState:enabled
                      trueMessage:@"Adjust already enabled"
                     falseMessage:@"Adjust already disabled"]) {
@@ -1843,6 +1847,13 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
          pausingMessage:@"Pausing handlers to put SDK offline mode"
    remainsPausedMessage:@"Handlers remain paused"
        unPausingMessage:@"Resuming handlers to put SDK in online mode"];
+}
+
+- (void)isEnabledI:(ADJActivityHandler *)selfI
+      withCallback:(id<ADJIsEnabledCallback>)isEnabledCallback {
+    [ADJUtil launchInMainThread:^{
+        [isEnabledCallback didReadWithIsEnabled:[selfI isEnabledI:selfI]];
+    }];
 }
 
 - (BOOL)hasChangedStateI:(ADJActivityHandler *)selfI
