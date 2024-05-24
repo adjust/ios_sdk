@@ -20,7 +20,7 @@ static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_
 static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cached";
 static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_waiting_remaining_seconds";
-static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_att_control_params";
+static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
 
 @implementation ADJUserDefaults
 
