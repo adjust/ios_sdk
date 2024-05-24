@@ -51,11 +51,10 @@
 		6F3A5E8B2018CE14000AACD0 /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E652018CE14000AACD0 /* ADJPackageBuilder.m */; };
 		6F3A5E8C2018CE14000AACD0 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E662018CE14000AACD0 /* ADJUserDefaults.m */; };
 		6F3A5E8E2018CE14000AACD0 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */; };
-		6F3A5E9E2018CE3A000AACD0 /* ATLTestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */; };
 		6F3A5E9F2018CE3A000AACD0 /* ATLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E982018CE3A000AACD0 /* ATLUtil.m */; };
-		6F3A5EA12018CE3A000AACD0 /* ATLUtilNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */; };
 		6F3A5EA22018CE3A000AACD0 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */; };
 		6F3A5EA32018CE3A000AACD0 /* ATLBlockingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */; };
+		6F666C9D2C00C80A005A6D90 /* ATLNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F666C9B2C00C80A005A6D90 /* ATLNetworking.m */; };
 		6F84510E25B1B1110004C7C0 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F84510C25B1B1100004C7C0 /* ADJThirdPartySharing.m */; };
 		6FAB789F2636DD0F00773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB789E2636DD0F00773869 /* ADJLinkResolution.m */; };
 		6FBEE92024E421B200FEF3F1 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE91F24E421B200FEF3F1 /* ADJUrlStrategy.m */; };
@@ -174,17 +173,15 @@
 		6F3A5E6A2018CE14000AACD0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F3A5E6B2018CE14000AACD0 /* ADJTimerCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJTimerCycle.h; sourceTree = "<group>"; };
 		6F3A5E6C2018CE14000AACD0 /* ADJActivityHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJActivityHandler.m; sourceTree = "<group>"; };
-		6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestInfo.m; sourceTree = "<group>"; };
 		6F3A5E922018CE3A000AACD0 /* ATLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLUtil.h; sourceTree = "<group>"; };
 		6F3A5E942018CE3A000AACD0 /* ATLConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLConstants.h; sourceTree = "<group>"; };
 		6F3A5E952018CE3A000AACD0 /* ATLTestLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLTestLibrary.h; sourceTree = "<group>"; };
-		6F3A5E962018CE3A000AACD0 /* ATLUtilNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLUtilNetworking.h; sourceTree = "<group>"; };
 		6F3A5E972018CE3A000AACD0 /* ATLBlockingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLBlockingQueue.h; sourceTree = "<group>"; };
 		6F3A5E982018CE3A000AACD0 /* ATLUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLUtil.m; sourceTree = "<group>"; };
-		6F3A5E992018CE3A000AACD0 /* ATLTestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLTestInfo.h; sourceTree = "<group>"; };
-		6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLUtilNetworking.m; sourceTree = "<group>"; };
 		6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLTestLibrary.m; sourceTree = "<group>"; };
 		6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLBlockingQueue.m; sourceTree = "<group>"; };
+		6F666C9B2C00C80A005A6D90 /* ATLNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATLNetworking.m; sourceTree = "<group>"; };
+		6F666C9C2C00C80A005A6D90 /* ATLNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLNetworking.h; sourceTree = "<group>"; };
 		6F84510C25B1B1100004C7C0 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		6F84510D25B1B1110004C7C0 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJThirdPartySharing.h; sourceTree = "<group>"; };
 		6FAB789D2636DD0F00773869 /* ADJLinkResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLinkResolution.h; sourceTree = "<group>"; };
@@ -407,15 +404,13 @@
 				524BACA1221C4EE800624F6C /* PSWebSocketTypes.h */,
 				524BAC97221C4EE700624F6C /* PSWebSocketUTF8Decoder.h */,
 				524BACA2221C4EE800624F6C /* PSWebSocketUTF8Decoder.m */,
-				6F3A5E912018CE3A000AACD0 /* ATLTestInfo.m */,
+				6F666C9C2C00C80A005A6D90 /* ATLNetworking.h */,
+				6F666C9B2C00C80A005A6D90 /* ATLNetworking.m */,
 				6F3A5E922018CE3A000AACD0 /* ATLUtil.h */,
 				6F3A5E942018CE3A000AACD0 /* ATLConstants.h */,
 				6F3A5E952018CE3A000AACD0 /* ATLTestLibrary.h */,
-				6F3A5E962018CE3A000AACD0 /* ATLUtilNetworking.h */,
 				6F3A5E972018CE3A000AACD0 /* ATLBlockingQueue.h */,
 				6F3A5E982018CE3A000AACD0 /* ATLUtil.m */,
-				6F3A5E992018CE3A000AACD0 /* ATLTestInfo.h */,
-				6F3A5E9B2018CE3A000AACD0 /* ATLUtilNetworking.m */,
 				6F3A5E9C2018CE3A000AACD0 /* ATLTestLibrary.m */,
 				6F3A5E9D2018CE3A000AACD0 /* ATLBlockingQueue.m */,
 			);
@@ -548,6 +543,7 @@
 				6FFCFE72200797D100467F01 /* ATAAdjustDelegateSessionSuccess.m in Sources */,
 				6F3A5E7E2018CE14000AACD0 /* Adjust.m in Sources */,
 				6FFCFE6D200797D100467F01 /* ATAAdjustDelegateAttribution.m in Sources */,
+				6F666C9D2C00C80A005A6D90 /* ATLNetworking.m in Sources */,
 				6F3A5E7B2018CE14000AACD0 /* ADJGlobalParameters.m in Sources */,
 				524BACB2221D583700624F6C /* ATLControlWebSocketClient.m in Sources */,
 				6F3A5E882018CE14000AACD0 /* ADJUtil.m in Sources */,
@@ -571,13 +567,11 @@
 				9D75AFDB210217FF0079A36C /* ATAAdjustDelegateDeferredDeeplink.m in Sources */,
 				6F3A5E8A2018CE14000AACD0 /* ADJResponseData.m in Sources */,
 				6F08423A200776A000568A31 /* main.m in Sources */,
-				6F3A5E9E2018CE3A000AACD0 /* ATLTestInfo.m in Sources */,
 				524BACAB221C4EE800624F6C /* PSWebSocketDeflater.m in Sources */,
 				6F3A5E802018CE14000AACD0 /* ADJPackageHandler.m in Sources */,
 				524BACA8221C4EE800624F6C /* PSWebSocketBuffer.m in Sources */,
 				6F3A5E792018CE14000AACD0 /* ADJSessionFailure.m in Sources */,
 				6F3A5EA22018CE3A000AACD0 /* ATLTestLibrary.m in Sources */,
-				6F3A5EA12018CE3A000AACD0 /* ATLUtilNetworking.m in Sources */,
 				6F3A5E782018CE14000AACD0 /* ADJActivityState.m in Sources */,
 				9DF38229260E9BA90033F5A1 /* NSNumber+ADJAdditions.m in Sources */,
 				6FBEE92024E421B200FEF3F1 /* ADJUrlStrategy.m in Sources */,
