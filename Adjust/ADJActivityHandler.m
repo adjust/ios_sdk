@@ -1410,16 +1410,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)verifyAndTrackI:(ADJActivityHandler *)selfI
                   event:(nonnull ADJEvent *)event
       completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+    if ([ADJUtil isNull:completionHandler]) {
+        [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
+        return;
+    }
     if (selfI.adjustConfig.isDataResidency) {
         [selfI.logger warn:@"Purchase verification not available for data residency users right now"];
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = @"not_verified";
+        verificationResult.code = 109;
+        verificationResult.message = @"Purchase verification not available for data residency users right now";
+        completionHandler(verificationResult);
         return;
     }
     if (![selfI isEnabledI:selfI]) {
         [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
-        return;
-    }
-    if ([ADJUtil isNull:completionHandler]) {
-        [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
         return;
     }
     if ([ADJUtil isNull:event]) {
