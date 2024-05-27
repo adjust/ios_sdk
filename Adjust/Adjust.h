@@ -19,23 +19,6 @@
 
 typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 
-@interface AdjustTestOptions : NSObject
-
-@property (nonatomic, copy, nullable) NSString *testUrlOverwrite;
-@property (nonatomic, copy, nullable) NSString *extraPath;
-@property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
-@property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
-@property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
-@property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
-@property (nonatomic, copy, nullable) NSNumber *attStatusInt;
-@property (nonatomic, copy, nullable) NSString *idfa;
-@property (nonatomic, assign) BOOL teardown;
-@property (nonatomic, assign) BOOL deleteState;
-@property (nonatomic, assign) BOOL noBackoffWait;
-@property (nonatomic, assign) BOOL adServicesFrameworkEnabled;
-
-@end
-
 @protocol ADJAttributionCallback;
 @protocol ADJIdfaCallback;
 @protocol ADJIdfvCallback;
@@ -333,7 +316,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Method used for internal testing only. Don't use it in production.
  */
-+ (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
++ (void)setTestOptions:(nullable NSDictionary *)testOptions;
 
 /**
  * Obtain singleton Adjust object.
