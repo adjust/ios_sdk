@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		071684DE2C0471C800B8B9FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA22A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA32A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA42A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
@@ -2727,6 +2728,7 @@
 				9DFB060B1D747070006D48FC /* Sources */,
 				9DFB060C1D747070006D48FC /* Frameworks */,
 				9DFB060D1D747070006D48FC /* Headers */,
+				071684CB2C0471C300B8B9FD /* Resources */,
 			);
 			buildRules = (
 			);
@@ -2987,6 +2989,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		071684CB2C0471C300B8B9FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				071684DE2C0471C800B8B9FD /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9679921B18BBAE2800394606 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
