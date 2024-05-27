@@ -103,7 +103,8 @@
 }
 
 - (void)setUrlStrategyDomains:(NSArray * _Nullable)domains
-               withSubdomains:(BOOL)useSubdomains {
+               withSubdomains:(BOOL)useSubdomains
+              isDataResidency:(BOOL)isDataResidency {
     if (domains == nil) {
         return;
     }
@@ -116,6 +117,7 @@
     }
 
     _useSubdomains = useSubdomains;
+    _isDataResidency = isDataResidency;
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
@@ -221,6 +223,7 @@
         copy->_isSkanAttributionHandlingEnabled = self.isSkanAttributionHandlingEnabled;
         copy->_urlStrategyDomains = [self.urlStrategyDomains copyWithZone:zone];
         copy->_useSubdomains = self.useSubdomains;
+        copy->_isDataResidency = self.isDataResidency;
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;
         copy->_shouldReadDeviceInfoOnce = self.shouldReadDeviceInfoOnce;
