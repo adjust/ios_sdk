@@ -22,8 +22,6 @@
 NSString * const ADJEnvironmentSandbox = @"sandbox";
 NSString * const ADJEnvironmentProduction = @"production";
 
-@implementation AdjustTestOptions
-@end
 
 @interface Adjust()
 
@@ -288,17 +286,17 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)setTestOptions:(AdjustTestOptions *)testOptions {
++ (void)setTestOptions:(NSDictionary *)testOptions {
     @synchronized (self) {
-        if (testOptions.teardown) {
+        if ([testOptions[@"teardown"] boolValue]) {
             if (defaultInstance != nil) {
                 [defaultInstance teardown];
             }
             defaultInstance = nil;
             onceToken = 0;
-            [ADJAdjustFactory teardown:testOptions.deleteState];
+            [ADJAdjustFactory teardown:[testOptions[@"deleteState"] boolValue]];
         }
-        [[Adjust getInstance] setTestOptions:(AdjustTestOptions *)testOptions];
+        [[Adjust getInstance] setTestOptions:testOptions];
     }
 }
 
@@ -716,41 +714,41 @@ static dispatch_once_t onceToken = 0;
     self.activityHandler = nil;
 }
 
-- (void)setTestOptions:(AdjustTestOptions *)testOptions {
-    if (testOptions.extraPath != nil) {
-        self.savedPreLaunch.extraPath = testOptions.extraPath;
+- (void)setTestOptions:(NSDictionary *)testOptions {
+    if (testOptions[@"extraPath"] != nil) {
+        self.savedPreLaunch.extraPath = testOptions[@"extraPath"];
     }
-    if (testOptions.testUrlOverwrite != nil) {
-        [ADJAdjustFactory setTestUrlOverwrite:testOptions.testUrlOverwrite];
+    if (testOptions[@"testUrlOverwrite"] != nil) {
+        [ADJAdjustFactory setTestUrlOverwrite:testOptions[@"testUrlOverwrite"]];
     }
-    if (testOptions.timerIntervalInMilliseconds != nil) {
-        NSTimeInterval timerIntervalInSeconds = [testOptions.timerIntervalInMilliseconds intValue] / 1000.0;
+    if (testOptions[@"timerIntervalInMilliseconds"] != nil) {
+        NSTimeInterval timerIntervalInSeconds = [testOptions[@"timerIntervalInMilliseconds"] intValue] / 1000.0;
         [ADJAdjustFactory setTimerInterval:timerIntervalInSeconds];
     }
-    if (testOptions.timerStartInMilliseconds != nil) {
-        NSTimeInterval timerStartInSeconds = [testOptions.timerStartInMilliseconds intValue] / 1000.0;
+    if (testOptions[@"timerStartInMilliseconds"] != nil) {
+        NSTimeInterval timerStartInSeconds = [testOptions[@"timerStartInMilliseconds"] intValue] / 1000.0;
         [ADJAdjustFactory setTimerStart:timerStartInSeconds];
     }
-    if (testOptions.sessionIntervalInMilliseconds != nil) {
-        NSTimeInterval sessionIntervalInSeconds = [testOptions.sessionIntervalInMilliseconds intValue] / 1000.0;
+    if (testOptions[@"sessionIntervalInMilliseconds"] != nil) {
+        NSTimeInterval sessionIntervalInSeconds = [testOptions[@"sessionIntervalInMilliseconds"] intValue] / 1000.0;
         [ADJAdjustFactory setSessionInterval:sessionIntervalInSeconds];
     }
-    if (testOptions.subsessionIntervalInMilliseconds != nil) {
-        NSTimeInterval subsessionIntervalInSeconds = [testOptions.subsessionIntervalInMilliseconds intValue] / 1000.0;
+    if (testOptions[@"subsessionIntervalInMilliseconds"] != nil) {
+        NSTimeInterval subsessionIntervalInSeconds = [testOptions[@"subsessionIntervalInMilliseconds"] intValue] / 1000.0;
         [ADJAdjustFactory setSubsessionInterval:subsessionIntervalInSeconds];
     }
-    if (testOptions.attStatusInt != nil) {
-        [ADJAdjustFactory setAttStatus:testOptions.attStatusInt];
+    if (testOptions[@"attStatusInt"] != nil) {
+        [ADJAdjustFactory setAttStatus:testOptions[@"attStatusInt"]];
     }
-    if (testOptions.idfa != nil) {
-        [ADJAdjustFactory setIdfa:testOptions.idfa];
+    if (testOptions[@"idfa"] != nil) {
+        [ADJAdjustFactory setIdfa:testOptions[@"idfa"]];
     }
-    if (testOptions.noBackoffWait) {
+    if ([testOptions[@"noBackoffWait"] boolValue] == YES) {
         [ADJAdjustFactory setSdkClickHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
         [ADJAdjustFactory setPackageHandlerBackoffStrategy:[ADJBackoffStrategy backoffStrategyWithType:ADJNoWait]];
     }
 
-    [ADJAdjustFactory setAdServicesFrameworkEnabled:testOptions.adServicesFrameworkEnabled];
+    [ADJAdjustFactory setAdServicesFrameworkEnabled:[testOptions[@"adServicesFrameworkEnabled"] boolValue]];
 }
 
 #pragma mark - Private & helper methods

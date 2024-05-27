@@ -120,50 +120,53 @@
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
-    AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-    testOptions.testUrlOverwrite = urlOverwrite;
+    NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
+    [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
-        testOptions.timerIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:timerIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:timerIntervalMilliS]
+                        forKey:@"timerIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"timerStart"]) {
         NSString *timerStartMilliS = [parameters objectForKey:@"timerStart"][0];
-        testOptions.timerStartInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:timerStartMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:timerStartMilliS]
+                        forKey:@"timerStartInMilliseconds"];
     }
     if ([parameters objectForKey:@"sessionInterval"]) {
         NSString *sessionIntervalMilliS = [parameters objectForKey:@"sessionInterval"][0];
-        testOptions.sessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:sessionIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:sessionIntervalMilliS]
+                        forKey:@"sessionIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"subsessionInterval"]) {
         NSString *subsessionIntervalMilliS = [parameters objectForKey:@"subsessionInterval"][0];
-        testOptions.subsessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS]
+                        forKey:@"subsessionIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"attStatus"]) {
         NSString *attStatusS = [parameters objectForKey:@"attStatus"][0];
         NSNumber *attStatusN = [NSNumber numberWithInt:[attStatusS intValue]];
-
-        testOptions.attStatusInt = attStatusN;
+        [testOptions setObject:attStatusN forKey:@"attStatusInt"];
     }
     if ([parameters objectForKey:@"idfa"]) {
         NSString *idfa = [parameters objectForKey:@"idfa"][0];
-        testOptions.idfa = idfa;
+        [testOptions setObject:idfa forKey:@"idfa"];
     }
     if ([parameters objectForKey:@"noBackoffWait"]) {
         NSString *noBackoffWaitStr = [parameters objectForKey:@"noBackoffWait"][0];
-        testOptions.noBackoffWait = NO;
+        [testOptions setObject:@NO forKey:@"noBackoffWait"];
         if ([noBackoffWaitStr isEqualToString:@"true"]) {
-            testOptions.noBackoffWait = YES;
+            [testOptions setObject:@YES forKey:@"noBackoffWait"];
         }
     }
-    testOptions.adServicesFrameworkEnabled = NO; // default value -> NO - AdServices will not be used in test app by default
+    [testOptions setObject:@NO forKey:@"adServicesFrameworkEnabled"]; // default value -> NO - AdServices will not be used in test app by default
     if ([parameters objectForKey:@"adServicesFrameworkEnabled"]) {
         NSString *adServicesFrameworkEnabledStr = [parameters objectForKey:@"adServicesFrameworkEnabled"][0];
         if ([adServicesFrameworkEnabledStr isEqualToString:@"true"]) {
-            testOptions.adServicesFrameworkEnabled = YES;
+            [testOptions setObject:@YES forKey:@"adServicesFrameworkEnabled"];
         }
     }
     if ([parameters objectForKey:@"teardown"]) {
@@ -171,34 +174,34 @@
         for (int i = 0; i < teardownOptions.count; i = i + 1) {
             NSString *teardownOption = teardownOptions[i];
             if ([teardownOption isEqualToString:@"resetSdk"]) {
-                testOptions.teardown = YES;
-                testOptions.extraPath = self.extraPath;
+                [testOptions setObject:@YES forKey:@"teardown"];
+                [testOptions setObject:self.extraPath forKey:@"extraPath"];
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
-                testOptions.deleteState = YES;
+                [testOptions setObject:@YES forKey:@"deleteState"];
             }
             if ([teardownOption isEqualToString:@"resetTest"]) {
                 self.savedConfigs = [NSMutableDictionary dictionary];
                 self.savedEvents = [NSMutableDictionary dictionary];
                 self.adjustDelegate = nil;
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerStartInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"sessionIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"subsessionIntervalInMilliseconds"];
             }
             if ([teardownOption isEqualToString:@"sdk"]) {
-                testOptions.teardown = YES;
-                testOptions.extraPath = nil;
+                [testOptions setObject:@YES forKey:@"teardown"];
+                [testOptions removeObjectForKey:@"extraPath"];
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
                 self.extraPath = nil;
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerStartInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"sessionIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"subsessionIntervalInMilliseconds"];
             }
         }
     }

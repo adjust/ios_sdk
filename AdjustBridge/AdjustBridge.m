@@ -640,46 +640,46 @@
         NSNumber *attStatus = [data objectForKey:@"attStatus"];
         NSString *idfa = [data objectForKey:@"idfa"];
 
-        AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
+        NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
 
         if ([self isFieldValid:urlOverwrite]) {
-            testOptions.testUrlOverwrite = urlOverwrite;
+            [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
         }
         if ([self isFieldValid:extraPath]) {
-            testOptions.extraPath = extraPath;
+            [testOptions setObject:extraPath forKey:@"extraPath"];
         }
         if ([self isFieldValid:timerIntervalInMilliseconds]) {
-            testOptions.timerIntervalInMilliseconds = timerIntervalInMilliseconds;
+            [testOptions setObject:timerIntervalInMilliseconds forKey:@"timerIntervalInMilliseconds"];
         }
         if ([self isFieldValid:timerStartInMilliseconds]) {
-            testOptions.timerStartInMilliseconds = timerStartInMilliseconds;
+            [testOptions setObject:timerStartInMilliseconds forKey:@"timerStartInMilliseconds"];
         }
         if ([self isFieldValid:sessionIntervalInMilliseconds]) {
-            testOptions.sessionIntervalInMilliseconds = sessionIntervalInMilliseconds;
+            [testOptions setObject:sessionIntervalInMilliseconds forKey:@"sessionIntervalInMilliseconds"];
         }
         if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
-            testOptions.subsessionIntervalInMilliseconds = subsessionIntervalInMilliseconds;
+            [testOptions setObject:subsessionIntervalInMilliseconds forKey:@"subsessionIntervalInMilliseconds"];
         }
         if ([self isFieldValid:attStatus]) {
-            testOptions.attStatusInt = attStatus;
+            [testOptions setObject:attStatus forKey:@"attStatusInt"];
         }
         if ([self isFieldValid:idfa]) {
-            testOptions.idfa = idfa;
+            [testOptions setObject:idfa forKey:@"idfa"];
         }
         if ([self isFieldValid:teardown]) {
-            testOptions.teardown = [teardown boolValue];
-            if (testOptions.teardown) {
+            [testOptions setObject:teardown forKey:@"teardown"];
+            if ([teardown boolValue] == YES) {
                 [self resetAdjustBridge];
             }
         }
         if ([self isFieldValid:deleteState]) {
-            testOptions.deleteState = [deleteState boolValue];
+            [testOptions setObject:deleteState forKey:@"deleteState"];
         }
         if ([self isFieldValid:noBackoffWait]) {
-            testOptions.noBackoffWait = [noBackoffWait boolValue];
+            [testOptions setObject:noBackoffWait forKey:@"noBackoffWait"];
         }
         if ([self isFieldValid:adServicesFrameworkEnabled]) {
-            testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
+            [testOptions setObject:adServicesFrameworkEnabled forKey:@"adServicesFrameworkEnabled"];
         }
 
         [Adjust setTestOptions:testOptions];
