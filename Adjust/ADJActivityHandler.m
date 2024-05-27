@@ -108,7 +108,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 // copy for objects shared with the user
 @property (nonatomic, copy) ADJConfig *adjustConfig;
 @property (nonatomic, weak) ADJSavedPreLaunch *savedPreLaunch;
-@property (nonatomic, copy) NSData* pushTokenData;
 @property (nonatomic, copy) NSString* basePath;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
@@ -812,18 +811,11 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [selfI.logger info:@"Default tracker: '%@'", selfI.adjustConfig.defaultTracker];
     }
 
-    if (selfI.pushTokenData != nil) {
-        [selfI.logger info:@"Push token: '%@'", selfI.pushTokenData];
-        if (selfI.activityState != nil) {
-            [selfI setPushTokenData:selfI.pushTokenData];
-        }
-    } else {
-        if (selfI.activityState != nil) {
-            NSData *pushTokenData = [ADJUserDefaults getPushTokenData];
-            [selfI setPushTokenData:pushTokenData];
-            NSString *pushTokenString = [ADJUserDefaults getPushTokenString];
-            [selfI setPushTokenString:pushTokenString];
-        }
+    if (selfI.activityState != nil) {
+        NSData *pushTokenData = [ADJUserDefaults getPushTokenData];
+        [selfI setPushTokenData:pushTokenData];
+        NSString *pushTokenString = [ADJUserDefaults getPushTokenString];
+        [selfI setPushTokenString:pushTokenString];
     }
 
     if (selfI.activityState != nil) {
