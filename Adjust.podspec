@@ -1,7 +1,8 @@
 Pod::Spec.new do |s|
   s.name           = "Adjust"
+  s.module_name    = "AdjustSdk"
   s.version        = "5.0.0"
-  s.summary        = "This is the iOS SDK of adjust. You can read more about it at http://adjust.com."
+  s.summary        = "This is the iOS SDK of Adjust. You can read more about it at http://adjust.com."
   s.homepage       = "https://github.com/adjust/ios_sdk"
   s.license        = { :type => 'MIT', :file => 'MIT-LICENSE' }
   s.author         = { "Adjust" => "sdk@adjust.com" }
