@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Adjust",
+    name: "AdjustSdk",
     products: [
-        .library(name: "Adjust", targets: ["Adjust"]),
-        .library(name: "WebBridge", targets: ["WebBridge", "Adjust"])
+        .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
+        .library(name: "WebBridge", targets: ["WebBridge", "AdjustSdk"])
     ],
     targets: [
         .target(
-            name: "Adjust",
+            name: "AdjustSdk",
             path: "Adjust",
             exclude: ["Info.plist"],
             resources: [
@@ -33,3 +33,4 @@ let package = Package(
         ),
     ]
 )
+
