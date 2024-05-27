@@ -1316,19 +1316,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)verifyPurchaseI:(ADJActivityHandler *)selfI
                purchase:(nonnull ADJPurchase *)purchase
       completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
-    // TODO: to be handled
-    // if ([selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyEU] ||
-    //     [selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyUS] ||
-    //     [selfI.adjustConfig.urlStrategy isEqualToString:ADJDataResidencyTR]) {
-    //     [selfI.logger warn:@"Purchase verification not available for data residency users right now"];
-    //     return;
-    // }
-    if (![selfI isEnabledI:selfI]) {
-        [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
-        return;
-    }
     if ([ADJUtil isNull:completionHandler]) {
         [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
+        return;
+    }
+    if (selfI.adjustConfig.isDataResidency) {
+        [selfI.logger warn:@"Purchase verification not available for data residency users right now"];
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = @"not_verified";
+        verificationResult.code = 109;
+        verificationResult.message = @"Purchase verification not available for data residency users right now";
+        completionHandler(verificationResult);
+        return;
+    }
+    if (![selfI isEnabledI:selfI]) {
+        [selfI.logger warn:@"Purchase verification aborted because SDK is disabled"];
         return;
     }
     if ([ADJUtil isNull:purchase]) {
