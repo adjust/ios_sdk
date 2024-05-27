@@ -273,7 +273,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithEvent:(ADJEvent *)event {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    // TODO: most probably remove receipts from PV logic
     if (event.receipt != nil) {
         NSString *receiptBase64 = [event.receipt adjEncodeBase64];
         [ADJPackageBuilder parameters:parameters
