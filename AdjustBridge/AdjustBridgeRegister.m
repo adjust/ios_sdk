@@ -445,7 +445,7 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
             this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
         };
-        AdjustConfig.prototype.setUrlStrategies(urlStrategies, useSubdomains, isDataResidency) {
+        AdjustConfig.prototype.setUrlStrategies = function(urlStrategies, useSubdomains, isDataResidency) {
             this.urlStrategies = urlStrategies;
             this.useSubdomains = useSubdomains;
             this.isDataResidency = isDataResidency;

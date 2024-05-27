@@ -238,7 +238,7 @@
         NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
         NSNumber *eventDeduplicationIdsMaxSize = [data objectForKey:@"eventDeduplicationIdsMaxSize"];
         id urlStrategies = [data objectForKey:@"urlStrategies"];
-        NSNumber *useSubdomains = [data objectForKey:@"attConsentWaitingSeconds"];
+        NSNumber *useSubdomains = [data objectForKey:@"useSubdomains"];
         NSNumber *isDataResidency = [data objectForKey:@"isDataResidency"];
 
         ADJConfig *adjustConfig;
