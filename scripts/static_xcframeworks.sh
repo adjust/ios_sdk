@@ -20,7 +20,7 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   xcodebuild clean
@@ -54,7 +54,7 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
@@ -112,7 +112,7 @@ fi
 if [[ $BUILD_TARGET_IM -eq 1 ]]
 then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for iOS (iMessage)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for iOS (iMessage)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   xcodebuild clean
@@ -148,7 +148,7 @@ fi
 if [[ $BUILD_TARGET_WEB_BRIDGE -eq 1 ]]
 then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Buiding Static XCFramework for iOS (WebBridge)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for iOS (WebBridge)...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   xcodebuild clean

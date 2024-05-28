@@ -29,7 +29,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 if [[ $BUILD_TARGET_IOS -eq 1 ]]
 then
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOS target with Carthage ... ${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic iOS target with Carthage ... ${NC}"
   arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
@@ -58,7 +58,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 if [[ $BUILD_TARGET_TVOS -eq 1 ]]
 then
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic tvOS targets with Carthage ... ${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic tvOS targets with Carthage ... ${NC}"
   arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
@@ -87,7 +87,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 if [[ $BUILD_TARGET_IM -eq 1 ]]
 then
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iMessage target with Carthage ... ${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic iMessage target with Carthage ... ${NC}"
   #carthage build --no-skip-current
   arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
@@ -117,7 +117,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 if [[ $BUILD_TARGET_WEB_BRIDGE -eq 1 ]]
 then
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WebBridge target with Carthage ... ${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic WebBridge target with Carthage ... ${NC}"
   #carthage build --no-skip-current
   arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
