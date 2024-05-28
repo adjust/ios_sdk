@@ -1715,7 +1715,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
     // compare with the saved or internal state
     if (![selfI hasChangedStateI:selfI
-                   previousState:selfI.activityState.enabled
+                   previousState:[selfI isEnabledI:selfI]
                        nextState:enabled
                      trueMessage:@"Adjust already enabled"
                     falseMessage:@"Adjust already disabled"]) {
