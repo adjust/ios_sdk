@@ -142,6 +142,10 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)),
                    self.internalQueue, ^{
         [self.logger verbose:@"Package handler finished waiting to retry"];
+        if (self.sendingSemaphore == nil) {
+            [self.logger error:@"Sending semaphore is nil"];
+            return;
+        }
         dispatch_semaphore_signal(self.sendingSemaphore);
         responseData.sdkPackage.waitBeforeSend += waitTime;
         [self sendFirstPackage];
