@@ -51,7 +51,7 @@
         // [Adjust removeGlobalPartnerParameters];
 
         // Initialise the SDK.
-        [Adjust appDidLaunch:adjustConfig];
+        [Adjust initSdk:adjustConfig];
     });
 }
 

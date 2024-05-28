@@ -224,7 +224,7 @@
     _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWKWebView:wkWebView];
     [self.bridgeRegister setWKWebViewDelegate:wkWebViewDelegate];
 
-    [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_initSdk" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *appToken = [data objectForKey:@"appToken"];
         NSString *environment = [data objectForKey:@"environment"];
         NSString *allowSuppressLogLevel = [data objectForKey:@"allowSuppressLogLevel"];
@@ -365,7 +365,7 @@
                                 isDataResidency:[isDataResidency boolValue]];
         }
 
-        [Adjust appDidLaunch:adjustConfig];
+        [Adjust initSdk:adjustConfig];
         [Adjust trackSubsessionStart];
     }];
 

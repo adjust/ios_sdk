@@ -69,7 +69,7 @@
             console.log('Deferred deeplink:\n' + deferredDeeplink)
         })
 
-        Adjust.appDidLaunch(adjustConfig);
+        Adjust.initSdk(adjustConfig);
 
         var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
         btnTrackSimpleEvent.onclick = function(e) {
