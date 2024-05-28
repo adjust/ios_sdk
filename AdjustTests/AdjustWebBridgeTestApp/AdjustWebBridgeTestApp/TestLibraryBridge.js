@@ -466,7 +466,11 @@ AdjustCommandExecutor.prototype.resume = function(params) {
 
 AdjustCommandExecutor.prototype.setEnabled = function(params) {
     var enabled = getFirstValue(params, 'enabled') == 'true';
-    Adjust.setEnabled(enabled);
+    if (enabled == true) {
+        Adjust.enable();
+    } else {
+        Adjust.disable();
+    }
 };
 
 AdjustCommandExecutor.prototype.setOfflineMode = function(params) {

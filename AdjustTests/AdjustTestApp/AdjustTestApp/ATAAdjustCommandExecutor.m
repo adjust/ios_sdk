@@ -522,7 +522,11 @@
 
 - (void)setEnabled:(NSDictionary *)parameters {
     NSString *enabledS = [parameters objectForKey:@"enabled"][0];
-    [Adjust setEnabled:[enabledS boolValue]];
+    if ([enabledS boolValue] == YES) {
+        [Adjust enable];
+    } else {
+        [Adjust disable];
+    }
 }
 
 - (void)setOfflineMode:(NSDictionary *)parameters {

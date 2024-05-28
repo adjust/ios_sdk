@@ -63,7 +63,7 @@
     // [Adjust setOfflineMode:YES];
     
     // Disable the SDK.
-    // [Adjust setEnabled:NO];
+    // [Adjust disable];
     
     return YES;
 }

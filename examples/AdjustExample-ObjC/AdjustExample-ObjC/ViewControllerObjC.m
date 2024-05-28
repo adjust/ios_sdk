@@ -77,11 +77,11 @@
 }
 
 - (IBAction)clickEnableSdk:(id)sender {
-    [Adjust setEnabled:YES];
+    [Adjust enable];
 }
 
 - (IBAction)clickDisableSdk:(id)sender {
-    [Adjust setEnabled:NO];
+    [Adjust disable];
 }
 
 - (IBAction)clickIsSdkEnabled:(id)sender {

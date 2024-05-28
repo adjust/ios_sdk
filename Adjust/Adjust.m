@@ -88,10 +88,17 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)setEnabled:(BOOL)enabled {
++ (void)enable {
     @synchronized (self) {
         Adjust *instance = [Adjust getInstance];
-        [instance setEnabled:enabled];
+        [instance enable];
+    }
+}
+
++ (void)disable {
+    @synchronized (self) {
+        Adjust *instance = [Adjust getInstance];
+        [instance disable];
     }
 }
 
@@ -333,13 +340,23 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler applicationWillResignActive];
 }
 
-- (void)setEnabled:(BOOL)enabled {
-    self.savedPreLaunch.enabled = [NSNumber numberWithBool:enabled];
+- (void)enable {
+    self.savedPreLaunch.enabled = @YES;
 
-    if ([self checkActivityHandler:enabled
+    if ([self checkActivityHandler:YES
                        trueMessage:@"enabled mode"
                       falseMessage:@"disabled mode"]) {
-        [self.activityHandler setEnabled:enabled];
+        [self.activityHandler setEnabled:YES];
+    }
+}
+
+- (void)disable {
+    self.savedPreLaunch.enabled = @NO;
+
+    if ([self checkActivityHandler:NO
+                       trueMessage:@"enabled mode"
+                      falseMessage:@"disabled mode"]) {
+        [self.activityHandler setEnabled:NO];
     }
 }
 

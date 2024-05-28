@@ -82,11 +82,14 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)trackSubsessionEnd;
 
 /**
- * @brief Enable or disable the adjust SDK. This setting is saved for future sessions.
- *
- * @param enabled The flag to enable or disable the adjust SDK.
+ * @brief Enable Adjust SDK. This setting is saved for future sessions.
  */
-+ (void)setEnabled:(BOOL)enabled;
++ (void)enable;
+
+/**
+ * @brief Disable Adjust SDK. This setting is saved for future sessions.
+ */
++ (void)disable;
 
 /**
  * @brief Check if the SDK is enabled or disabled through a callback.
@@ -327,7 +330,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)trackEvent:(nullable ADJEvent *)event;
 
-- (void)setEnabled:(BOOL)enabled;
+- (void)enable;
+
+- (void)disable;
 
 - (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
 

@@ -108,9 +108,14 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackSubsessionEnd', null, null);
                 }
             },
-            setEnabled: function(enabled) {
+            enable: function() {
                 if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_setEnabled', enabled, null);
+                    WebViewJavascriptBridge.callHandler('adjust_enable', null, null);
+                }
+            },
+            disable: function() {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_disable', null, null);
                 }
             },
             isEnabled: function(callback) {

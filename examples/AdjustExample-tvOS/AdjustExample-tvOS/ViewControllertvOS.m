@@ -10,7 +10,7 @@
 #import "Constants.h"
 #import "ViewControllertvOS.h"
 
-@interface ViewControllertvOS ()
+@interface ViewControllertvOS () <ADJIsEnabledCallback>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackSimpleEvent;
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackRevenueEvent;
@@ -80,23 +80,28 @@
 }
 
 - (IBAction)clickEnableSdk:(id)sender {
-    [Adjust setEnabled:YES];
+    [Adjust enable];
 }
 
 - (IBAction)clickDisableSdk:(id)sender {
-    [Adjust setEnabled:NO];
+    [Adjust disable];
 }
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
+    [Adjust isEnabledWithCallback:self];
+}
+
+- (void)didReadWithIsEnabled:(BOOL)isEnabled {
     NSString *message;
-    if ([Adjust isEnabled]) {
+    if (isEnabled) {
         message = @"SDK is ENABLED!";
     } else {
         message = @"SDK is DISABLED!";
     }
-    
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
-                                                                   message:message preferredStyle:UIAlertControllerStyleAlert];
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {}];
     [alert addAction:defaultAction];
