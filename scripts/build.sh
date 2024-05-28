@@ -37,13 +37,13 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding static SDK framework and copying it to destination folder ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building static SDK framework and copying it to destination folder ... ${NC}"
 xcodebuild -target AdjustStatic -configuration Release clean build
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding universal tvOS SDK framework (device + simulator) and copying it to destination folder ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building universal tvOS SDK framework (device + simulator) and copying it to destination folder ... ${NC}"
 xcodebuild -configuration Release -target AdjustSdkTv -arch x86_64 -sdk appletvsimulator clean build
 xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
 cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static
@@ -59,7 +59,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iOS and tvOS targets with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic iOS and tvOS targets with Carthage ... ${NC}"
 #carthage build --no-skip-current
 arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
@@ -86,7 +86,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic iMessage target with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic iMessage target with Carthage ... ${NC}"
 #carthage build --no-skip-current
 arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
@@ -106,7 +106,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding dynamic WebBridge target with Carthage ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building dynamic WebBridge target with Carthage ... ${NC}"
 #carthage build --no-skip-current
 arch -x86_64 /bin/bash ./scripts/carthage_xcode.sh build --no-skip-current
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
@@ -125,7 +125,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
-echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Bulding static test library framework and copying it to destination folder ... ${NC}"
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building static test library framework and copying it to destination folder ... ${NC}"
 cd ${ROOT_DIR}/AdjustTests/AdjustTestLibrary
 xcodebuild -target AdjustTestLibraryStatic -configuration Debug clean build
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
