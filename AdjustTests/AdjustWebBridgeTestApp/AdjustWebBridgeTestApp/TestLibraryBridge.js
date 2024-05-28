@@ -431,11 +431,6 @@ AdjustCommandExecutor.prototype.event = function(params) {
         }
     }
 
-    if ('orderId' in params) {
-        var orderId = getFirstValue(params, 'orderId');
-        adjustEvent.setTransactionId(orderId);
-    }
-
     if ('callbackId' in params) {
         var callbackId = getFirstValue(params, 'callbackId');
         adjustEvent.setCallbackId(callbackId);
@@ -443,7 +438,7 @@ AdjustCommandExecutor.prototype.event = function(params) {
 
     if ('deduplicationId' in params) {
         var deduplicationId = getFirstValue(params, 'deduplicationId');
-        adjustEvent.setDedupliationId(deduplicationId);
+        adjustEvent.setDeduplicationId(deduplicationId);
     }
 };
 
