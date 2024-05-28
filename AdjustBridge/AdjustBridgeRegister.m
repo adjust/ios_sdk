@@ -126,9 +126,14 @@ static NSString * fbAppIdStatic = nil;
                                                         });
                 }
             },
-            setOfflineMode: function(isOffline) {
+            switchToOfflineMode: function() {
                 if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null);
+                    WebViewJavascriptBridge.callHandler('adjust_switchToOfflineMode', null, null);
+                }
+            },
+            switchBackToOnlineMode: function() {
+                if (WebViewJavascriptBridge) {
+                    WebViewJavascriptBridge.callHandler('adjust_switchBackToOnlineMode', null, null);
                 }
             },
             getIdfa: function(callback) {

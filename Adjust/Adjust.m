@@ -133,9 +133,15 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)setOfflineMode:(BOOL)enabled {
++ (void)switchToOfflineMode {
     @synchronized (self) {
-        [[Adjust getInstance] setOfflineMode:enabled];
+        [[Adjust getInstance] switchToOfflineMode];
+    }
+}
+
++ (void)switchBackToOnlineMode {
+    @synchronized (self) {
+        [[Adjust getInstance] switchBackToOnlineMode];
     }
 }
 
@@ -419,13 +425,23 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)setOfflineMode:(BOOL)enabled {
-    if (![self checkActivityHandler:enabled
+- (void)switchToOfflineMode {
+    if (![self checkActivityHandler:YES
                         trueMessage:@"offline mode"
                        falseMessage:@"online mode"]) {
-        self.savedPreLaunch.offline = enabled;
+        self.savedPreLaunch.offline = YES;
     } else {
-        [self.activityHandler setOfflineMode:enabled];
+        [self.activityHandler setOfflineMode:YES];
+    }
+}
+
+- (void)switchBackToOnlineMode {
+    if (![self checkActivityHandler:NO
+                        trueMessage:@"offline mode"
+                       falseMessage:@"online mode"]) {
+        self.savedPreLaunch.offline = NO;
+    } else {
+        [self.activityHandler setOfflineMode:NO];
     }
 }
 

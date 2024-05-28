@@ -130,12 +130,16 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)setPushTokenAsString:(nonnull NSString *)pushToken;
 
 /**
- * @brief Enable or disable offline mode. Activities won't be sent but they are saved when
+ * @brief Enable offline mode. Activities won't be sent but they are saved when
  *        offline mode is disabled. This feature is not saved for future sessions.
- *
- * @param enabled The flag to enable or disable offline mode.
  */
-+ (void)setOfflineMode:(BOOL)enabled;
++ (void)switchToOfflineMode;
+
+/**
+ * @brief Disable offline mode. Activities won't be sent but they are saved when
+ *        offline mode is disabled. This feature is not saved for future sessions.
+ */
++ (void)switchBackToOnlineMode;
 
 /**
  * @brief Retrieve iOS device IDFA value through a callback.
@@ -343,7 +347,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
                 completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
 
-- (void)setOfflineMode:(BOOL)enabled;
+- (void)switchToOfflineMode;
+
+- (void)switchBackToOnlineMode;
 
 - (void)setPushToken:(nonnull NSData *)pushToken;
 

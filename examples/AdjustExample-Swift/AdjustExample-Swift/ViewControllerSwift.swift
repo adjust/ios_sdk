@@ -67,11 +67,11 @@ class ViewControllerSwift: UIViewController {
     }
     
     @IBAction func btnEnableOfflineModeTapped(_sender: UIButton) {
-        Adjust.setOfflineMode(true);
+        Adjust.switchToOfflineMode();
     }
     
     @IBAction func btnDisableOfflineModeTapped(_sender: UIButton) {
-        Adjust.setOfflineMode(false);
+        Adjust.switchBackToOnlineMode();
     }
     
     @IBAction func btnEnableSDKTapped(_sender: UIButton) {

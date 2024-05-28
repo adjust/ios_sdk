@@ -531,7 +531,11 @@
 
 - (void)setOfflineMode:(NSDictionary *)parameters {
     NSString *enabledS = [parameters objectForKey:@"enabled"][0];
-    [Adjust setOfflineMode:[enabledS boolValue]];
+    if ([enabledS boolValue] == YES) {
+        [Adjust switchToOfflineMode];
+    } else {
+        [Adjust switchBackToOnlineMode];
+    }
 }
 
 - (void)addGlobalCallbackParameter:(NSDictionary *)parameters {
