@@ -53,7 +53,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  *                     be found it in your dashboard at http://adjust.com and should always
  *                     be 12 characters long.
  */
-+ (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
++ (void)initSdk:(nullable ADJConfig *)adjustConfig;
 
 /**
  * @brief Tell Adjust that a particular event has happened.
@@ -70,7 +70,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Tell adjust that the application resumed.
  *
  * @note Only necessary if the native notifications can't be used
- *       or if they will happen before call to appDidLaunch: is made.
+ *       or if they will happen before call to initSdk: is made.
  */
 + (void)trackSubsessionStart;
 
@@ -323,7 +323,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (nullable instancetype)getInstance;
 
-- (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
+- (void)initSdk:(nullable ADJConfig *)adjustConfig;
 
 - (void)trackEvent:(nullable ADJEvent *)event;
 

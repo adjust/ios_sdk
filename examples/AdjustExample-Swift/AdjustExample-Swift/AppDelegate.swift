@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Adjust.removeGlobalPartnerParameters())
 
         // Initialise the SDK.
-        Adjust.appDidLaunch(adjustConfig!)
+        Adjust.initSdk(adjustConfig!)
         
         // Put the SDK in offline mode.
         // Adjust.setOfflineMode(true);

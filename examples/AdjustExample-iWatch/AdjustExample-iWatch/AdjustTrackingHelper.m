@@ -38,7 +38,7 @@
     // Set an attribution delegate.
     [adjustConfig setDelegate:delegate];
     
-    [Adjust appDidLaunch:adjustConfig];
+    [Adjust initSdk:adjustConfig];
     
     // Put the SDK in offline mode.
     // [Adjust setOfflineMode:YES];

@@ -81,7 +81,7 @@ static NSString * fbAppIdStatic = nil;
 
         // Copied from adjust.js
         window.Adjust = {
-            appDidLaunch: function(adjustConfig) {
+            initSdk: function(adjustConfig) {
                 if (WebViewJavascriptBridge) {
                     if (adjustConfig) {
                         if (!adjustConfig.getSdkPrefix()) {
@@ -89,7 +89,7 @@ static NSString * fbAppIdStatic = nil;
                         }
                         this.sdkPrefix = adjustConfig.getSdkPrefix();
                         adjustConfig.registerCallbackHandlers();
-                        WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
+                        WebViewJavascriptBridge.callHandler('adjust_initSdk', adjustConfig, null);
                     }
                 }
             },

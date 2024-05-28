@@ -59,7 +59,7 @@
                 adjustConfig.addFbPixelMapping('fb_mobile_purchase', 'a4fd35');
                 adjustConfig.setFbPixelDefaultEventToken('34vgg9');
                 
-                Adjust.appDidLaunch(adjustConfig);
+                Adjust.initSdk(adjustConfig);
                 
                 var btnTrackSimpleEvent = document.getElementById('btnTrackSimpleEvent')
                 btnTrackSimpleEvent.onclick = function(e) {

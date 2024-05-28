@@ -64,9 +64,9 @@ static dispatch_once_t onceToken = 0;
 
 #pragma mark - Public static methods
 
-+ (void)appDidLaunch:(ADJConfig *)adjustConfig {
++ (void)initSdk:(ADJConfig *)adjustConfig {
     @synchronized (self) {
-        [[Adjust getInstance] appDidLaunch:adjustConfig];
+        [[Adjust getInstance] initSdk:adjustConfig];
     }
 }
 
@@ -302,7 +302,7 @@ static dispatch_once_t onceToken = 0;
 
 #pragma mark - Public instance methods
 
-- (void)appDidLaunch:(ADJConfig *)adjustConfig {
+- (void)initSdk:(ADJConfig *)adjustConfig {
     if (self.activityHandler != nil) {
         [self.logger error:@"Adjust already initialized"];
         return;
@@ -772,7 +772,7 @@ static dispatch_once_t onceToken = 0;
         if (savedForLaunchWarningSuffixMessage != nil) {
             [self.logger warn:@"Adjust not initialized, but %@ saved for launch", savedForLaunchWarningSuffixMessage];
         } else {
-            [self.logger error:@"Please initialize Adjust by calling 'appDidLaunch' before"];
+            [self.logger error:@"Please initialize Adjust by calling initSdk: before"];
         }
         return NO;
     } else {
