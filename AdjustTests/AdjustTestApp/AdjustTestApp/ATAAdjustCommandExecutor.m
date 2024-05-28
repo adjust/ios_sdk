@@ -478,7 +478,8 @@
         [adjustEvent setTransactionId:transactionId];
     }
 
-    if ([parameters objectForKey:@"deduplicationId"]) {
+    if ([parameters objectForKey:@"deduplicationId"] &&
+        [[parameters objectForKey:@"deduplicationId"] count] > 0) {
         NSString *deduplicationId = [parameters objectForKey:@"deduplicationId"][0];
         if (deduplicationId == (id)[NSNull null]) {
             deduplicationId = nil;
