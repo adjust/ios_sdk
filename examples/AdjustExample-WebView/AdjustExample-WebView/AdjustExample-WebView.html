@@ -110,13 +110,13 @@
         var btnEnableOfflineMode = document.getElementById('btnEnableOfflineMode')
         btnEnableOfflineMode.onclick = function(e) {
             e.preventDefault()
-            Adjust.setOfflineMode(true)
+            Adjust.switchToOfflineMode()
         }
 
         var btnDisableOfflineMode = document.getElementById('btnDisableOfflineMode')
         btnDisableOfflineMode.onclick = function(e) {
             e.preventDefault()
-            Adjust.setOfflineMode(false)
+            Adjust.switchBackToOnlineMode()
         }
 
         var btnEnableSdk = document.getElementById('btnEnableSdk')

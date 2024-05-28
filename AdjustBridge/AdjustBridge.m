@@ -438,11 +438,12 @@
         [Adjust isEnabledWithCallback:isEnabledGetter];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust setOfflineMode:[(NSNumber *)data boolValue]];
+    [self.bridgeRegister registerHandler:@"adjust_switchToOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust switchToOfflineMode];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_switchBackToOnlineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust switchBackToOnlineMode];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_sdkVersion" handler:^(id data, WVJBResponseCallback responseCallback) {

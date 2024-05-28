@@ -41,7 +41,7 @@
     [Adjust initSdk:adjustConfig];
     
     // Put the SDK in offline mode.
-    // [Adjust setOfflineMode:YES];
+    // [Adjust switchToOfflineMode];
     
     // Disable the SDK.
     // [Adjust disable];

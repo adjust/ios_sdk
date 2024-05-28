@@ -72,11 +72,11 @@
 }
 
 - (IBAction)clickEnableOfflineMode:(id)sender {
-    [Adjust setOfflineMode:YES];
+    [Adjust switchToOfflineMode];
 }
 
 - (IBAction)clickDisableOfflineMode:(id)sender {
-    [Adjust setOfflineMode:NO];
+    [Adjust switchBackToOnlineMode];
 }
 
 - (IBAction)clickEnableSdk:(id)sender {
