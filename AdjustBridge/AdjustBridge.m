@@ -420,11 +420,12 @@
         [Adjust trackSubsessionEnd];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust setEnabled:[(NSNumber *)data boolValue]];
+    [self.bridgeRegister registerHandler:@"adjust_enable" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust enable];
+    }];
+
+    [self.bridgeRegister registerHandler:@"adjust_disable" handler:^(id data, WVJBResponseCallback responseCallback) {
+        [Adjust disable];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_isEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
