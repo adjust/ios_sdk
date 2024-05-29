@@ -338,8 +338,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)disable;
 
-- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
-
 - (void)teardown;
 
 - (void)processDeeplink:(nonnull NSURL *)deeplink;
