@@ -19,11 +19,6 @@
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
-@interface ADJLastDeeplinkGetterSendAll : NSObject<ADJLastDeeplinkCallback>
-@property (nonatomic, strong) ATLTestLibrary *testLibrary;
-@property (nonatomic, copy) NSString *extraPath;
-@end
-
 @interface ATAAdjustCommandExecutor ()
 
 @property (nonatomic, copy) NSString *extraPath;
@@ -748,12 +743,11 @@
 }
 
 - (void)getLastDeeplink:(NSDictionary *)parameters {
-    ADJLastDeeplinkGetterSendAll *_Nonnull lastDeeplinkGetter =
-    [[ADJLastDeeplinkGetterSendAll alloc] init];
-    lastDeeplinkGetter.testLibrary = self.testLibrary;
-    lastDeeplinkGetter.extraPath = self.extraPath;
-
-    [Adjust lastDeeplinkWithCallback:lastDeeplinkGetter];
+    [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
+        NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
+        [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
 }
 
 - (void)verifyPurchase:(NSDictionary *)parameters {
@@ -816,16 +810,6 @@
 
 - (void)disableCoppaCompliance:(NSDictionary *)parameters {
     [Adjust disableCoppaCompliance];
-}
-
-@end
-
-@implementation ADJLastDeeplinkGetterSendAll
-
-- (void)didReadWithLastDeeplink:(nullable NSURL *)lastDeeplink { 
-    NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
-    [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
-    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end

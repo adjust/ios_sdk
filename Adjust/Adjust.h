@@ -22,8 +22,8 @@ typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution)
 typedef void(^ADJIdfaGetterBlock)(NSString * _Nullable idfa);
 typedef void(^ADJIdfvGetterBlock)(NSString * _Nullable idfv);
 typedef void(^ADJSdkVersionGetterBlock)(NSString * _Nullable sdkVersion);
+typedef void(^ADJLastDeeplinkGetterBlock)(NSURL * _Nullable lastDeeplink);
 
-@protocol ADJLastDeeplinkCallback;
 @protocol ADJAdidCallback;
 @protocol ADJIsEnabledCallback;
 
@@ -294,9 +294,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Get the last deep link which has opened the app through a callback.
  *
- * @param lastDeeplinkCallback Callback to get the last opened deep link delivered to.
+ * @param completion Completion block to get the last opened deep link delivered to.
  */
-+ (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
++ (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion;
 
 /**
  * @brief Verify in-app-purchase.
@@ -402,7 +402,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)trackAdRevenue:(nonnull ADJAdRevenue *)adRevenue;
 
-- (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
+- (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion;
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJLastDeeplinkCallback <NSObject>
-
-- (void)didReadWithLastDeeplink:(nullable NSURL *)lastDeeplink;
 
 @end
 
