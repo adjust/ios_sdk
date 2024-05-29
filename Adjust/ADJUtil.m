@@ -22,7 +22,7 @@
 #import "ADJLogger.h"
 #import "ADJResponseData.h"
 #import "ADJAdjustFactory.h"
-#import "NSString+ADJAdditions.h"
+#import "ADJAdditions.h"
 
 #if !ADJUST_NO_IDFA
 #import <AdSupport/ASIdentifierManager.h>
@@ -147,9 +147,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     [dateFormatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian]];
     [dateFormatter setDateFormat:kDateFormat];
 
-    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"locale", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"N", @"S", @"locale", nil]);
     if (class != nil) {
-        NSString *keyLwli = [NSString adjJoin:@"locale", @"with", @"locale", @"identifier:", nil];
+        NSString *keyLwli = [ADJAdditions adjJoin:@"locale", @"with", @"locale", @"identifier:", nil];
         SEL selLwli = NSSelectorFromString(keyLwli);
         if ([class respondsToSelector:selLwli]) {
 #pragma clang diagnostic push
@@ -382,11 +382,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (BOOL)migrateFileFromPath:(NSString *)oldPath toPath:(NSString *)newPath {
     __autoreleasing NSError *error;
     __autoreleasing NSError **errorPointer = &error;
-    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"N", @"S", @"file", @"manager", nil]);
     if (class == nil) {
         return NO;
     }
-    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    NSString *keyDm = [ADJAdditions adjJoin:@"default", @"manager", nil];
     SEL selDm = NSSelectorFromString(keyDm);
     if (![class respondsToSelector:selDm]) {
         return NO;
@@ -396,9 +396,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     id man = [class performSelector:selDm];
 #pragma clang diagnostic pop
     NSString *keyCpy = [NSString stringWithFormat:@"%@%@%@",
-                        [NSString adjJoin:@"copy", @"item", @"at", @"path", @":", nil],
-                        [NSString adjJoin:@"to", @"path", @":", nil],
-                        [NSString adjJoin:@"error", @":", nil]];
+                        [ADJAdditions adjJoin:@"copy", @"item", @"at", @"path", @":", nil],
+                        [ADJAdditions adjJoin:@"to", @"path", @":", nil],
+                        [ADJAdditions adjJoin:@"error", @":", nil]];
     SEL selCpy = NSSelectorFromString(keyCpy);
     if (![man respondsToSelector:selCpy]) {
         return NO;
@@ -449,11 +449,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (BOOL)checkForDirectoryPresenceInPath:(NSString *)path forFolder:(NSString *)folderName {
     // Check for presence of directory first.
     // If it doesn't exist, make one.
-    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"N", @"S", @"file", @"manager", nil]);
     if (class == nil) {
         return NO;
     }
-    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    NSString *keyDm = [ADJAdditions adjJoin:@"default", @"manager", nil];
     SEL selDm = NSSelectorFromString(keyDm);
     if (![class respondsToSelector:selDm]) {
         return NO;
@@ -462,7 +462,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id man = [class performSelector:selDm];
 #pragma clang diagnostic pop
-    NSString *keyExi = [NSString adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
+    NSString *keyExi = [ADJAdditions adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
     SEL selExi = NSSelectorFromString(keyExi);
     if (![man respondsToSelector:selExi]) {
         return NO;
@@ -484,10 +484,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         __autoreleasing NSError *error;
         __autoreleasing NSError **errorPointer = &error;
         NSString *keyCrt = [NSString stringWithFormat:@"%@%@%@%@",
-                            [NSString adjJoin:@"create", @"directory", @"at", @"path", @":", nil],
-                            [NSString adjJoin:@"with", @"intermediate", @"directories", @":", nil],
-                            [NSString adjJoin:@"attributes", @":", nil],
-                            [NSString adjJoin:@"error", @":", nil]];
+                            [ADJAdditions adjJoin:@"create", @"directory", @"at", @"path", @":", nil],
+                            [ADJAdditions adjJoin:@"with", @"intermediate", @"directories", @":", nil],
+                            [ADJAdditions adjJoin:@"attributes", @":", nil],
+                            [ADJAdditions adjJoin:@"error", @":", nil]];
         SEL selCrt = NSSelectorFromString(keyCrt);
         if (![man respondsToSelector:selCrt]) {
             return NO;
@@ -520,22 +520,26 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     NSMutableArray *pairs = [NSMutableArray array];
     for (NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
-        NSString *escapedValue = [value adjUrlEncode];
-        NSString *escapedKey = [key adjUrlEncode];
+        // NSString *escapedValue = [value adjUrlEncode];
+        NSString *escapedValue = [ADJAdditions adjUrlEncode:value];
+        // NSString *escapedKey = [key adjUrlEncode];
+        NSString *escapedKey = [ADJAdditions adjUrlEncode:key];
         NSString *pair = [NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue];
         [pairs addObject:pair];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
     NSString *dateString = [ADJUtil formatSeconds1970:now];
-    NSString *escapedDate = [dateString adjUrlEncode];
+    // NSString *escapedDate = [dateString adjUrlEncode];
+    NSString *escapedDate = [ADJAdditions adjUrlEncode:dateString];
     NSString *sentAtPair = [NSString stringWithFormat:@"%@=%@", @"sent_at", escapedDate];
     [pairs addObject:sentAtPair];
 
     if (queueSize > 0) {
         unsigned long queueSizeNative = (unsigned long)queueSize;
         NSString *queueSizeString = [NSString stringWithFormat:@"%lu", queueSizeNative];
-        NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
+        // NSString *escapedQueueSize = [queueSizeString adjUrlEncode];
+        NSString *escapedQueueSize = [ADJAdditions adjUrlEncode:queueSizeString];
         NSString *queueSizePair = [NSString stringWithFormat:@"%@=%@", @"queue_size", escapedQueueSize];
         [pairs addObject:queueSizePair];
     }
@@ -842,11 +846,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (BOOL)deleteFileInPath:(NSString *)filePath {
-    Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"N", @"S", @"file", @"manager", nil]);
     if (class == nil) {
         return NO;
     }
-    NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+    NSString *keyDm = [ADJAdditions adjJoin:@"default", @"manager", nil];
     SEL selDm = NSSelectorFromString(keyDm);
     if (![class respondsToSelector:selDm]) {
         return NO;
@@ -855,7 +859,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id man = [class performSelector:selDm];
 #pragma clang diagnostic pop
-    NSString *keyExi = [NSString adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
+    NSString *keyExi = [ADJAdditions adjJoin:@"file", @"exists", @"at", @"path", @":", nil];
     SEL selExi = NSSelectorFromString(keyExi);
     if (![man respondsToSelector:selExi]) {
         return NO;
@@ -876,8 +880,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     __autoreleasing NSError *error;
     __autoreleasing NSError **errorPointer = &error;
     NSString *keyRm = [NSString stringWithFormat:@"%@%@",
-                        [NSString adjJoin:@"remove", @"item", @"at", @"path", @":", nil],
-                        [NSString adjJoin:@"error", @":", nil]];
+                        [ADJAdditions adjJoin:@"remove", @"item", @"at", @"path", @":", nil],
+                        [ADJAdditions adjJoin:@"error", @":", nil]];
     SEL selRm = NSSelectorFromString(keyRm);
     if (![man respondsToSelector:selRm]) {
         return NO;
@@ -1007,13 +1011,13 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (Class)adSupportManager {
-    NSString *className = [NSString adjJoin:@"A", @"S", @"identifier", @"manager", nil];
+    NSString *className = [ADJAdditions adjJoin:@"A", @"S", @"identifier", @"manager", nil];
     Class class = NSClassFromString(className);
     return class;
 }
 
 + (Class)appTrackingManager {
-    NSString *className = [NSString adjJoin:@"A", @"T", @"tracking", @"manager", nil];
+    NSString *className = [ADJAdditions adjJoin:@"A", @"T", @"tracking", @"manager", nil];
     Class class = NSClassFromString(className);
     return class;
 }
@@ -1028,7 +1032,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         return NO;
     }
 
-    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    NSString *keyManager = [ADJAdditions adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![adSupportClass respondsToSelector:selManager]) {
         return NO;
@@ -1036,7 +1040,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id manager = [adSupportClass performSelector:selManager];
-    NSString *keyEnabled = [NSString adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
+    NSString *keyEnabled = [ADJAdditions adjJoin:@"is", @"advertising", @"tracking", @"enabled", nil];
     SEL selEnabled = NSSelectorFromString(keyEnabled);
     if (![manager respondsToSelector:selEnabled]) {
         return NO;
@@ -1069,19 +1073,19 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString *keyManager = [NSString adjJoin:@"shared", @"manager", nil];
+    NSString *keyManager = [ADJAdditions adjJoin:@"shared", @"manager", nil];
     SEL selManager = NSSelectorFromString(keyManager);
     if (![adSupportClass respondsToSelector:selManager]) {
         return @"";
     }
     id manager = [adSupportClass performSelector:selManager];
-    NSString *keyIdentifier = [NSString adjJoin:@"advertising", @"identifier", nil];
+    NSString *keyIdentifier = [ADJAdditions adjJoin:@"advertising", @"identifier", nil];
     SEL selIdentifier = NSSelectorFromString(keyIdentifier);
     if (![manager respondsToSelector:selIdentifier]) {
         return @"";
     }
     id identifier = [manager performSelector:selIdentifier];
-    NSString *keyString = [NSString adjJoin:@"UUID", @"string", nil];
+    NSString *keyString = [ADJAdditions adjJoin:@"UUID", @"string", nil];
     SEL selString = NSSelectorFromString(keyString);
     if (![identifier respondsToSelector:selString]) {
         return @"";
@@ -1093,11 +1097,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)idfv {
-    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"U", @"I", @"device", nil]);
     if (class == nil) {
         return nil;
     }
-    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    NSString *keyCd = [ADJAdditions adjJoin:@"current", @"device", nil];
     SEL selCd = NSSelectorFromString(keyCd);
     if (![class respondsToSelector:selCd]) {
         return nil;
@@ -1106,7 +1110,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id dev = [class performSelector:selCd];
 #pragma clang diagnostic pop
-    NSString *keyIfv = [NSString adjJoin:@"identifier", @"for", @"vendor", nil];
+    NSString *keyIfv = [ADJAdditions adjJoin:@"identifier", @"for", @"vendor", nil];
     SEL selIfv = NSSelectorFromString(keyIfv);
     if (![dev respondsToSelector:selIfv]) {
         return nil;
@@ -1156,11 +1160,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)deviceType {
-    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"U", @"I", @"device", nil]);
     if (class == nil) {
         return nil;
     }
-    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    NSString *keyCd = [ADJAdditions adjJoin:@"current", @"device", nil];
     SEL selCd = NSSelectorFromString(keyCd);
     if (![class respondsToSelector:selCd]) {
         return nil;
@@ -1169,7 +1173,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id dev = [class performSelector:selCd];
 #pragma clang diagnostic pop
-    NSString *keyM = [NSString adjJoin:@"model", nil];
+    NSString *keyM = [ADJAdditions adjJoin:@"model", nil];
     SEL selM = NSSelectorFromString(keyM);
     if (![dev respondsToSelector:selM]) {
         return nil;
@@ -1195,7 +1199,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     mib[1] = KERN_BOOTTIME;
     size = sizeof(starttime);
 
-    NSString *m = [[NSString adjJoin:@"s", @"ys", @"ct", @"l", nil] lowercaseString];
+    NSString *m = [[ADJAdditions adjJoin:@"s", @"ys", @"ct", @"l", nil] lowercaseString];
     int (*fptr)(int *, u_int, void *, size_t *, void *, size_t);
     *(int**)(&fptr) = dlsym(RTLD_SELF, [m UTF8String]);
     if (fptr) {
@@ -1215,7 +1219,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass != nil) {
-        NSString *keyAuthorization = [NSString adjJoin:@"tracking", @"authorization", @"status", nil];
+        NSString *keyAuthorization = [ADJAdditions adjJoin:@"tracking", @"authorization", @"status", nil];
         SEL selAuthorization = NSSelectorFromString(keyAuthorization);
         if ([appTrackingClass respondsToSelector:selAuthorization]) {
             NSMethodSignature *msAuthorization = [appTrackingClass methodSignatureForSelector:selAuthorization];
@@ -1286,7 +1290,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     if (appTrackingClass == nil) {
         return;
     }
-    NSString *requestAuthorization = [NSString adjJoin:
+    NSString *requestAuthorization = [ADJAdditions adjJoin:
                                       @"request",
                                       @"tracking",
                                       @"authorization",
@@ -1319,11 +1323,11 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 }
 
 + (NSString *)osVersion {
-    Class class = NSClassFromString([NSString adjJoin:@"U", @"I", @"device", nil]);
+    Class class = NSClassFromString([ADJAdditions adjJoin:@"U", @"I", @"device", nil]);
     if (class == nil) {
         return nil;
     }
-    NSString *keyCd = [NSString adjJoin:@"current", @"device", nil];
+    NSString *keyCd = [ADJAdditions adjJoin:@"current", @"device", nil];
     SEL selCd = NSSelectorFromString(keyCd);
     if (![class respondsToSelector:selCd]) {
         return nil;
@@ -1332,7 +1336,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     id dev = [class performSelector:selCd];
 #pragma clang diagnostic pop
-    NSString *keySv = [NSString adjJoin:@"system", @"version", nil];
+    NSString *keySv = [ADJAdditions adjJoin:@"system", @"version", nil];
     SEL selSv = NSSelectorFromString(keySv);
     if (![dev respondsToSelector:selSv]) {
         return nil;
@@ -1361,9 +1365,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
         __autoreleasing NSError *error;
         __autoreleasing NSError **errorPointer = &error;
-        Class class = NSClassFromString([NSString adjJoin:@"N", @"S", @"file", @"manager", nil]);
+        Class class = NSClassFromString([ADJAdditions adjJoin:@"N", @"S", @"file", @"manager", nil]);
         if (class != nil) {
-            NSString *keyDm = [NSString adjJoin:@"default", @"manager", nil];
+            NSString *keyDm = [ADJAdditions adjJoin:@"default", @"manager", nil];
             SEL selDm = NSSelectorFromString(keyDm);
             if ([class respondsToSelector:selDm]) {
 #pragma clang diagnostic push
@@ -1371,8 +1375,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 id man = [class performSelector:selDm];
 #pragma clang diagnostic pop
                 NSString *keyChk = [NSString stringWithFormat:@"%@%@",
-                        [NSString adjJoin:@"attributes", @"of", @"item", @"at", @"path", @":", nil],
-                        [NSString adjJoin:@"error", @":", nil]];
+                        [ADJAdditions adjJoin:@"attributes", @"of", @"item", @"at", @"path", @":", nil],
+                        [ADJAdditions adjJoin:@"error", @":", nil]];
                 SEL selChk = NSSelectorFromString(keyChk);
                 if ([man respondsToSelector:selChk]) {
                     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[man methodSignatureForSelector:selChk]];
@@ -1384,7 +1388,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                     NSMutableDictionary * __unsafe_unretained tmpResult;
                     [inv getReturnValue:&tmpResult];
                     NSMutableDictionary *result = tmpResult;
-                    CFStringRef *indexRef = dlsym(RTLD_SELF, [[NSString adjJoin:@"N", @"S", @"file", @"creation", @"date", nil] UTF8String]);
+                    CFStringRef *indexRef = dlsym(RTLD_SELF, [[ADJAdditions adjJoin:@"N", @"S", @"file", @"creation", @"date", nil] UTF8String]);
                     NSString *ref = (__bridge_transfer id) *indexRef;
                     installTime = result[ref];
                 }

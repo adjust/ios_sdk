@@ -18,7 +18,7 @@
 #import "ADJUtil.h"
 #import "ADJAdjustFactory.h"
 #import "ADJAttributionHandler.h"
-#import "NSString+ADJAdditions.h"
+#import "ADJAdditions.h"
 #import "ADJSdkClickHandler.h"
 #import "ADJUserDefaults.h"
 #import "ADJUrlStrategy.h"
@@ -1960,12 +1960,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     NSString* key = [pairComponents objectAtIndex:0];
     if (![key hasPrefix:kAdjustPrefix]) return NO;
 
-    NSString* keyDecoded = [key adjUrlDecode];
+    // NSString* keyDecoded = [key adjUrlDecode];
+    NSString *keyDecoded = [ADJAdditions adjUrlDecode:key];
 
     NSString* value = [pairComponents objectAtIndex:1];
     if (value.length == 0) return NO;
 
-    NSString* valueDecoded = [value adjUrlDecode];
+    // NSString* valueDecoded = [value adjUrlDecode];
+    NSString *valueDecoded = [ADJAdditions adjUrlDecode:value];
     if (!valueDecoded) return NO;
 
     NSString* keyWOutPrefix = [keyDecoded substringFromIndex:kAdjustPrefix.length];

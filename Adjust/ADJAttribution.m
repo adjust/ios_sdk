@@ -8,8 +8,7 @@
 
 #import "ADJUtil.h"
 #import "ADJAttribution.h"
-#import "NSString+ADJAdditions.h"
-#import "NSNumber+ADJAdditions.h"
+#import "ADJAdditions.h"
 
 @implementation ADJAttribution
 
@@ -44,34 +43,34 @@
     if (attribution == nil) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.trackerToken toString:attribution.trackerToken]) {
+    if (![ADJAdditions adjIsStringEqual:self.trackerToken toString:attribution.trackerToken]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.trackerName toString:attribution.trackerName]) {
+    if (![ADJAdditions adjIsStringEqual:self.trackerName toString:attribution.trackerName]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.network toString:attribution.network]) {
+    if (![ADJAdditions adjIsStringEqual:self.network toString:attribution.network]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.campaign toString:attribution.campaign]) {
+    if (![ADJAdditions adjIsStringEqual:self.campaign toString:attribution.campaign]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.adgroup toString:attribution.adgroup]) {
+    if (![ADJAdditions adjIsStringEqual:self.adgroup toString:attribution.adgroup]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.creative toString:attribution.creative]) {
+    if (![ADJAdditions adjIsStringEqual:self.creative toString:attribution.creative]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.clickLabel toString:attribution.clickLabel]) {
+    if (![ADJAdditions adjIsStringEqual:self.clickLabel toString:attribution.clickLabel]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.costType toString:attribution.costType]) {
+    if (![ADJAdditions adjIsStringEqual:self.costType toString:attribution.costType]) {
         return NO;
     }
-    if (![NSNumber adjIsEqual:self.costAmount toNumber:attribution.costAmount]) {
+    if (![ADJAdditions adjIsNumberEqual:self.costAmount toNumber:attribution.costAmount]) {
         return NO;
     }
-    if (![NSString adjIsEqual:self.costCurrency toString:attribution.costCurrency]) {
+    if (![ADJAdditions adjIsStringEqual:self.costCurrency toString:attribution.costCurrency]) {
         return NO;
     }
 

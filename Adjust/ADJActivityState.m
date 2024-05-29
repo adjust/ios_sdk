@@ -8,7 +8,7 @@
 
 #import "ADJAdjustFactory.h"
 #import "ADJActivityState.h"
-#import "NSString+ADJAdditions.h"
+#import "ADJAdditions.h"
 #import "ADJUtil.h"
 
 static NSString *appToken = nil;
