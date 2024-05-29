@@ -266,9 +266,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)adidWithCallback:(id<ADJAdidCallback>)adidCallback {
++ (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] adidWithCallback:adidCallback];
+        [[Adjust getInstance] adidWithCompletionHandler:completion];
     }
 }
 
@@ -645,9 +645,9 @@ static dispatch_once_t onceToken = 0;
     return [self.activityHandler attributionWithCompletionHandler:completion];
 }
 
-- (void)adidWithCallback:(id<ADJAdidCallback>)adidCallback {
-    if (adidCallback == nil) {
-        [self.logger error:@"Callback for getting adid can't be null"];
+- (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting adid can't be null"];
         return;
     }
 
@@ -656,10 +656,10 @@ static dispatch_once_t onceToken = 0;
             self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
         }
 
-        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:adidCallback];
+        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
         return;
     }
-    return [self.activityHandler adidWithCallback:adidCallback];
+    return [self.activityHandler adidWithCompletionHandler:completion];
 }
 
 - (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {

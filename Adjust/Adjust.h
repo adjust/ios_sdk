@@ -23,8 +23,8 @@ typedef void(^ADJIdfaGetterBlock)(NSString * _Nullable idfa);
 typedef void(^ADJIdfvGetterBlock)(NSString * _Nullable idfv);
 typedef void(^ADJSdkVersionGetterBlock)(NSString * _Nullable sdkVersion);
 typedef void(^ADJLastDeeplinkGetterBlock)(NSURL * _Nullable lastDeeplink);
+typedef void(^ADJAdidGetterBlock)(NSString * _Nullable adid);
 
-@protocol ADJAdidCallback;
 @protocol ADJIsEnabledCallback;
 
 /**
@@ -159,11 +159,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Get current adjust identifier for the user through a callback.
  *
- * @param adidCallback Callback to get the adid value delivered to.
+ * @param completion Completion block to get the adid value delivered to.
  *
  * @note Adjust identifier is available only after installation has been successfully tracked.
  */
-+ (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
++ (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
 
 /**
  * @brief Get current attribution for the user through a callback.
@@ -375,7 +375,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
 
-- (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;;
+- (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
 
 - (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion;
 
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJAdidCallback <NSObject>
-
-- (void)didReadWithAdid:(nullable NSString *)adid;
 
 @end
 

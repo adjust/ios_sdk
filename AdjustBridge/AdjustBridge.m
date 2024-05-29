@@ -27,12 +27,6 @@
 
 @end
 
-@interface ADJAdidGetter : NSObject<ADJAdidCallback>
-
-@property (nonatomic, strong) WVJBResponseCallback callback;
-
-@end
-
 @interface ADJIsEnabledGetter : NSObject<ADJIsEnabledCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
@@ -478,9 +472,10 @@
             return;
         }
 
-        ADJAdidGetter * _Nonnull adidGetter = [[ADJAdidGetter alloc] init];
-        adidGetter.callback = responseCallback;
-        [Adjust adidWithCallback:adidGetter];
+        __block WVJBResponseCallback localResponseCallback = responseCallback;
+        [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
+            localResponseCallback(adid);
+        }];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_attribution" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -749,16 +744,6 @@
     }
     NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
     return [formatString numberFromString:[field description]];
-}
-
-@end
-
-#pragma mark - ADJAdidCallback protocol
-
-@implementation ADJAdidGetter
-
-- (void)didReadWithAdid:(NSString *)adid {
-    self.callback(adid);
 }
 
 @end
