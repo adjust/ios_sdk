@@ -146,9 +146,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback {
++ (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] idfaWithCallback:idfaCallback];
+        [[Adjust getInstance] idfaWithCompletionHandler:completion];
     }
 }
 
@@ -448,15 +448,16 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback {
-    if (idfaCallback == nil) {
-        [self.logger error:@"Callback for getting IDFA can't be null"];
+- (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion handler for getting IDFA can't be null"];
         return;
     }
 
     NSString *idfa = [ADJUtil idfa];
+    __block ADJIdfaGetterBlock localIdfaCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [idfaCallback didReadWithIdfa:idfa];
+        localIdfaCallback(idfa);
     }];
 }
 
