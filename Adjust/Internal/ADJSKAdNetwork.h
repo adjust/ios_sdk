@@ -15,11 +15,11 @@
 - (void)registerWithConversionValue:(NSInteger)conversionValue
                         coarseValue:(nonnull NSString *)coarseValue
                          lockWindow:(nonnull NSNumber *)lockWindow
-                  completionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion;
+              withCompletionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion;
 
 - (void)updateConversionValue:(NSInteger)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
-            completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+        withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 @end

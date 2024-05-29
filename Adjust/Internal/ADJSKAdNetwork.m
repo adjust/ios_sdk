@@ -81,7 +81,7 @@
 }
 
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
-                    completionHandler:(void (^)(NSError *error))completion {
+                withCompletionHandler:(void (^)(NSError *error))completion {
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
     if (@available(iOS 15.4, *)) {
@@ -101,7 +101,7 @@
 
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
-                    completionHandler:(void (^)(NSError *error))completion {
+                withCompletionHandler:(void (^)(NSError *error))completion {
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
     if (@available(iOS 16.1, *)) {
@@ -123,7 +123,7 @@
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                            lockWindow:(BOOL)lockWindow
-                    completionHandler:(void (^)(NSError *error))completion {
+                withCompletionHandler:(void (^)(NSError *error))completion {
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
     if (@available(iOS 16.1, *)) {
@@ -148,7 +148,7 @@
 - (void)registerWithConversionValue:(NSInteger)conversionValue
                         coarseValue:(nonnull NSString *)coarseValue
                          lockWindow:(nonnull NSNumber *)lockWindow
-                  completionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion {
+              withCompletionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion {
     if (NSClassFromString(@"SKAdNetwork") == nil) {
         [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return;
@@ -163,12 +163,12 @@
         [self updatePostbackConversionValue:conversionValue
                                 coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                  lockWindow:lockWindow
-                          completionHandler:^(NSError * _Nullable error) {
+                      withCompletionHandler:^(NSError * _Nullable error) {
             completion(error);
         }];
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:conversionValue
-                          completionHandler:^(NSError * _Nullable error) {
+                      withCompletionHandler:^(NSError * _Nullable error) {
             completion(error);
         }];
     } else if (@available(iOS 14.0, *)) {
@@ -186,7 +186,7 @@
 - (void)updateConversionValue:(NSInteger)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
-            completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
+        withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
     if (NSClassFromString(@"SKAdNetwork") == nil) {
         [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
         return;
@@ -200,56 +200,68 @@
                 [self updatePostbackConversionValue:conversionValue
                                         coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                          lockWindow:[lockWindow boolValue]
-                                  completionHandler:^(NSError * _Nullable error) {
+                              withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
                         [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
                     } else {
                         [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
                     }
-                    if (completion != nil) { completion(error); }
+                    if (completion != nil) {
+                        completion(error);
+                    }
                 }];
             } else {
                 // Only coarse value is received
                 [self updatePostbackConversionValue:conversionValue
                                         coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
-                                  completionHandler:^(NSError * _Nullable error) {
+                              withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
                         [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@ failed\nDescription: %@", conversionValue, coarseValue, error.localizedDescription];
                     } else {
                         [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
                     }
-                    if (completion != nil) { completion(error); }
+                    if (completion != nil) {
+                        completion(error);
+                    }
                 }];
             }
         } else {
             // they don't, let's make sure to update conversion value with a
             // call to updatePostbackConversionValue:completionHandler: method
             [self updatePostbackConversionValue:conversionValue
-                              completionHandler:^(NSError * _Nullable error) {
+                          withCompletionHandler:^(NSError * _Nullable error) {
                 if (error) {
                     [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
                 } else {
                     [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
                 }
-                if (completion != nil) { completion(error); }
+                if (completion != nil) {
+                    completion(error);
+                }
             }];
         }
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:conversionValue
-                          completionHandler:^(NSError * _Nullable error) {
+                      withCompletionHandler:^(NSError * _Nullable error) {
             if (error) {
                 [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
             } else {
                 [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
             }
-            if (completion != nil) { completion(error); }
+            if (completion != nil) {
+                completion(error);
+            }
         }];
     } else if (@available(iOS 14.0, *)) {
         [self updateConversionValue:conversionValue];
-        if (completion != nil) { completion(nil); }
+        if (completion != nil) {
+            completion(nil);
+        }
     } else {
         [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        if (completion != nil) { completion(nil); }
+        if (completion != nil) {
+            completion(nil);
+        }
     }
 }
 

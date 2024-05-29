@@ -109,10 +109,10 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Process the deep link that has opened an app and potentially get a resolved link.
  *
  * @param deeplink URL object which contains info about adjust deep link.
- * @param completionHandler Completion handler where either resolved or echoed deep link will be sent.
+ * @param completion Completion handler where either resolved or echoed deep link will be sent.
  */
 + (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
+            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion;
 
 /**
  * @brief Set the APNs push token.
@@ -289,7 +289,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)updateSkanConversionValue:(NSInteger)conversionValue
                       coarseValue:(nullable NSString *)coarseValue
                        lockWindow:(nullable NSNumber *)lockWindow
-                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+            withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 /**
  * @brief Get the last deep link which has opened the app through a callback.
@@ -301,11 +301,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Verify in-app-purchase.
  *
- * @param purchase          Purchase object.
- * @param completionHandler Callback where verification result will be repoted.
+ * @param purchase   Purchase object.
+ * @param completion Callback where verification result will be repoted.
  */
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 
 /**
  * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
@@ -318,7 +318,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)disableCoppaCompliance;
 
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 
 /**
  * @brief Method used for internal testing only. Don't use it in production.
@@ -343,7 +343,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)processDeeplink:(nonnull NSURL *)deeplink;
 
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler;
+            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion;
 
 - (void)switchToOfflineMode;
 
@@ -394,7 +394,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)updateSkanConversionValue:(NSInteger)conversionValue
                       coarseValue:(nullable NSString *)coarseValue
                        lockWindow:(nullable NSNumber *)lockWindow
-                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+            withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 
@@ -405,14 +405,14 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 
 - (void)enableCoppaCompliance;
 
 - (void)disableCoppaCompliance;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 
 @end
 
