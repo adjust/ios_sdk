@@ -377,11 +377,11 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
+- (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-        [selfI isEnabledI:selfI withCallback:isEnabledCallback];
+        [selfI isEnabledI:selfI withCompletionHandler:completion];
     }];
 }
 
@@ -1845,10 +1845,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
        unPausingMessage:@"Resuming handlers to put SDK in online mode"];
 }
 
-- (void)isEnabledI:(ADJActivityHandler *)selfI
-      withCallback:(id<ADJIsEnabledCallback>)isEnabledCallback {
+- (void)isEnabledI:(ADJActivityHandler *)selfI withCompletionHandler:(ADJIsEnabledGetterBlock)completion {
+    __block ADJIsEnabledGetterBlock localIsEnabledCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [isEnabledCallback didReadWithIsEnabled:[selfI isEnabledI:selfI]];
+        localIsEnabledCallback([selfI isEnabledI:selfI]);
     }];
 }
 

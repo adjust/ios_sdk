@@ -10,7 +10,7 @@
 #import "Constants.h"
 #import "ViewControllertvOS.h"
 
-@interface ViewControllertvOS () <ADJIsEnabledCallback>
+@interface ViewControllertvOS ()
 
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackSimpleEvent;
 @property (weak, nonatomic) IBOutlet UIButton *btnTrackRevenueEvent;
@@ -88,24 +88,22 @@
 }
 
 - (IBAction)clickIsSdkEnabled:(id)sender {
-    [Adjust isEnabledWithCallback:self];
-}
+    [Adjust isEnabledWithCompletionHandler:^(BOOL isEnabled) {
+        NSString *message;
+        if (isEnabled) {
+            message = @"SDK is ENABLED!";
+        } else {
+            message = @"SDK is DISABLED!";
+        }
 
-- (void)didReadWithIsEnabled:(BOOL)isEnabled {
-    NSString *message;
-    if (isEnabled) {
-        message = @"SDK is ENABLED!";
-    } else {
-        message = @"SDK is DISABLED!";
-    }
-
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {}];
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Is SDK Enabled?"
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {}];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
 }
 
 @end
