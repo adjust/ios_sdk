@@ -26,7 +26,7 @@
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
-@property (nonatomic, strong) NSMutableArray *urlStrategies;
+@property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) ADJAttribution *attribution;
 
 @end
@@ -249,7 +249,7 @@
         NSNumber *shouldReadDeviceInfoOnce = [data objectForKey:@"shouldReadDeviceInfoOnce"];
         NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
         NSNumber *eventDeduplicationIdsMaxSize = [data objectForKey:@"eventDeduplicationIdsMaxSize"];
-        id urlStrategies = [data objectForKey:@"urlStrategies"];
+        id urlStrategyDomains = [data objectForKey:@"urlStrategyDomains"];
         NSNumber *useSubdomains = [data objectForKey:@"useSubdomains"];
         NSNumber *isDataResidency = [data objectForKey:@"isDataResidency"];
 
@@ -352,17 +352,17 @@
         }
 
         // URL strategies
-        if (urlStrategies != nil && [urlStrategies count] > 0) {
-            self.urlStrategies = [[NSMutableArray alloc] initWithCapacity:[urlStrategies count]];
-            for (int i = 0; i < [urlStrategies count]; i += 1) {
-                NSString *domain = [[urlStrategies objectAtIndex:i] description];
-                [self.urlStrategies addObject:domain];
+        if (urlStrategyDomains != nil && [urlStrategyDomains count] > 0) {
+            self.urlStrategyDomains = [[NSMutableArray alloc] initWithCapacity:[urlStrategyDomains count]];
+            for (int i = 0; i < [urlStrategyDomains count]; i += 1) {
+                NSString *domain = [[urlStrategyDomains objectAtIndex:i] description];
+                [self.urlStrategyDomains addObject:domain];
             }
         }
         if ([self isFieldValid:useSubdomains] && [self isFieldValid:isDataResidency]) {
-            [adjustConfig setUrlStrategyDomains:(NSArray *)self.urlStrategies
-                                 withSubdomains:[useSubdomains boolValue]
-                                isDataResidency:[isDataResidency boolValue]];
+            [adjustConfig setUrlStrategy:(NSArray *)self.urlStrategyDomains
+                          withSubdomains:[useSubdomains boolValue]
+                        andDataResidency:[isDataResidency boolValue]];
         }
 
         [Adjust initSdk:adjustConfig];
