@@ -658,7 +658,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
-- (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback {
+- (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
     __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
 
     if (localAdid == nil) {
@@ -666,14 +666,13 @@ const BOOL kSkanRegisterLockWindow = NO;
             self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
         }
 
-        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:adidCallback];
+        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
         return;
     }
 
-    __block id<ADJAdidCallback>_Nonnull localAdidCallback = adidCallback;
-
+    __block ADJAdidGetterBlock localAdidCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [localAdidCallback didReadWithAdid:localAdid];
+        localAdidCallback(localAdid);
     }];
 }
 
@@ -1699,9 +1698,10 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    for (id<ADJAdidCallback> adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
+    for (ADJAdidGetterBlock adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
+        __block ADJAdidGetterBlock localAdidCallback = adidCallback;
         [ADJUtil launchInMainThread:^{
-            [adidCallback didReadWithAdid:localAdid];
+            localAdidCallback(localAdid);
         }];
     }
 
