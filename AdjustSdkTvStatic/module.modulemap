@@ -1,5 +1,5 @@
-framework module AdjustSdkTv {
-  umbrella header "AdjustSdkTv.h"
+framework module AdjustSdk {
+  umbrella header "AdjustSdk.h"
 
   export *
   module * { export * }

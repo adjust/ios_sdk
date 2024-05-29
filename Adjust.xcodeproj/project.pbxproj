@@ -77,7 +77,7 @@
 		0AB1C9C527DD4D7C00509231 /* ADJAdRevenue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D3A2ABD2625BEB800BD6E44 /* ADJAdRevenue.h */; };
 		0AB1C9C627DD4D7C00509231 /* ADJLinkResolution.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; };
 		0AB1C9F727DD5B5100509231 /* ModuleMap in Resources */ = {isa = PBXBuildFile; fileRef = 0AB1C9F627DD5B5100509231 /* ModuleMap */; };
-		0AB1CA2A27DF462200509231 /* AdjustSdkTv.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CA2727DF462200509231 /* AdjustSdkTv.h */; };
+		0AB1CA2A27DF462200509231 /* AdjustSdk.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CA2727DF462200509231 /* AdjustSdk.h */; };
 		0AB1CA3227DF49CB00509231 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E34D18BBB48A008E7B30 /* Adjust.m */; };
 		0AB1CA3327DF49CB00509231 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36318BBB48A008E7B30 /* ADJActivityHandler.m */; };
 		0AB1CA3427DF49CC00509231 /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36518BBB48A008E7B30 /* ADJActivityKind.m */; };
@@ -123,7 +123,7 @@
 		0AB1CA5C27DF4A2B00509231 /* ADJThirdPartySharing.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D651BF425B25A64006D69D6 /* ADJThirdPartySharing.h */; };
 		0AB1CA5D27DF4A2B00509231 /* ADJAdRevenue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D3A2ABD2625BEB800BD6E44 /* ADJAdRevenue.h */; };
 		0AB1CA5E27DF4A2B00509231 /* ADJLinkResolution.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; };
-		0AB1CA6D27DF5D3200509231 /* AdjustSdkIm.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CA6A27DF5D3200509231 /* AdjustSdkIm.h */; };
+		0AB1CA6D27DF5D3200509231 /* AdjustSdk.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CA6A27DF5D3200509231 /* AdjustSdk.h */; };
 		0AB1CA7527DF61F200509231 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E34D18BBB48A008E7B30 /* Adjust.m */; };
 		0AB1CA7627DF61F200509231 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36318BBB48A008E7B30 /* ADJActivityHandler.m */; };
 		0AB1CA7727DF61F200509231 /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36518BBB48A008E7B30 /* ADJActivityKind.m */; };
@@ -641,14 +641,14 @@
 		9DD0E9AE1F44690B00B2A759 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
 		9DD0E9AF1F44690B00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
 		9DDF24441F7BE4DF001C1A70 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
-		9DE354D62100726300D211C9 /* AdjustSdkIm.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DE354D42100726300D211C9 /* AdjustSdkIm.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9DE354D62100726300D211C9 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DE354D42100726300D211C9 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		9DF212D42909E86A0056D579 /* ADJSKAdNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */; };
 		9DF212D52909E86A0056D579 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF212D32909E86A0056D579 /* ADJSKAdNetwork.m */; };
 		9DF92D832630ED02000FC3FC /* ADJPackageParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF92D812630ED02000FC3FC /* ADJPackageParams.h */; };
 		9DF92D842630ED02000FC3FC /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF92D822630ED02000FC3FC /* ADJPackageParams.m */; };
 		9DFA37B71C0F21D600782607 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFA37B51C0F21D600782607 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9DFB06131D747070006D48FC /* AdjustSdkTv.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06121D747070006D48FC /* AdjustSdkTv.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9DFB06131D747070006D48FC /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DFB06121D747070006D48FC /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -826,7 +826,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				0AB1CA2A27DF462200509231 /* AdjustSdkTv.h in CopyFiles */,
+				0AB1CA2A27DF462200509231 /* AdjustSdk.h in CopyFiles */,
 				0AB1CA5227DF4A2B00509231 /* Adjust.h in CopyFiles */,
 				0AB1CA5327DF4A2B00509231 /* ADJLogger.h in CopyFiles */,
 				0AB1CA5427DF4A2B00509231 /* ADJEvent.h in CopyFiles */,
@@ -851,7 +851,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				0AB1CA6D27DF5D3200509231 /* AdjustSdkIm.h in CopyFiles */,
+				0AB1CA6D27DF5D3200509231 /* AdjustSdk.h in CopyFiles */,
 				0AB1CA9527DF621D00509231 /* Adjust.h in CopyFiles */,
 				0AB1CA9627DF621D00509231 /* ADJLogger.h in CopyFiles */,
 				0AB1CA9727DF621D00509231 /* ADJEvent.h in CopyFiles */,
@@ -927,11 +927,11 @@
 		0AB1C97327DD450D00509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1C9F627DD5B5100509231 /* ModuleMap */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ModuleMap; sourceTree = "<group>"; };
 		0AB1C9F827DD5C2400509231 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		0AB1CA2527DF462200509231 /* libAdjustSdkTv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdkTv.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AB1CA2727DF462200509231 /* AdjustSdkTv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkTv.h; sourceTree = "<group>"; };
+		0AB1CA2527DF462200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB1CA2727DF462200509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1CA2E27DF493500509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		0AB1CA6827DF5D3200509231 /* libAdjustSdkIm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdkIm.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AB1CA6A27DF5D3200509231 /* AdjustSdkIm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkIm.h; sourceTree = "<group>"; };
+		0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB1CA6A27DF5D3200509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1CA7127DF5FFE00509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0AB1CAD527DF671300509231 /* libAdjustSdkWebBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdkWebBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CAD727DF671300509231 /* AdjustSdkWebBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkWebBridge.h; sourceTree = "<group>"; };
@@ -1347,8 +1347,8 @@
 		9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-ObjC.xcodeproj"; path = "examples/AdjustExample-ObjC/AdjustExample-ObjC.xcodeproj"; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
 		9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJUserDefaults.m; sourceTree = "<group>"; };
-		9DE354D22100726300D211C9 /* AdjustSdkIm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkIm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9DE354D42100726300D211C9 /* AdjustSdkIm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkIm.h; sourceTree = "<group>"; };
+		9DE354D22100726300D211C9 /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DE354D42100726300D211C9 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		9DE354D52100726300D211C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DE7C8FC1AE688DA001556E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJSKAdNetwork.h; sourceTree = "<group>"; };
@@ -1358,8 +1358,8 @@
 		9DFA37AD1C0F219400782607 /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFA37B51C0F21D600782607 /* AdjustSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		9DFA37B61C0F21D600782607 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9DFB06101D747070006D48FC /* AdjustSdkTv.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkTv.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9DFB06121D747070006D48FC /* AdjustSdkTv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkTv.h; sourceTree = "<group>"; };
+		9DFB06101D747070006D48FC /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFB06121D747070006D48FC /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		9DFB06141D747070006D48FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1474,7 +1474,7 @@
 			isa = PBXGroup;
 			children = (
 				0AB1CA2E27DF493500509231 /* module.modulemap */,
-				0AB1CA2727DF462200509231 /* AdjustSdkTv.h */,
+				0AB1CA2727DF462200509231 /* AdjustSdk.h */,
 			);
 			path = AdjustSdkTvStatic;
 			sourceTree = "<group>";
@@ -1483,7 +1483,7 @@
 			isa = PBXGroup;
 			children = (
 				0AB1CA7127DF5FFE00509231 /* module.modulemap */,
-				0AB1CA6A27DF5D3200509231 /* AdjustSdkIm.h */,
+				0AB1CA6A27DF5D3200509231 /* AdjustSdk.h */,
 			);
 			path = AdjustSdkImStatic;
 			sourceTree = "<group>";
@@ -1593,13 +1593,13 @@
 				9679921D18BBAE2800394606 /* AdjustTests.xctest */,
 				9DFA37AD1C0F219400782607 /* AdjustSdk.framework */,
 				9615158F1CD2CB2C0022D336 /* libAdjustBridge.a */,
-				9DFB06101D747070006D48FC /* AdjustSdkTv.framework */,
+				9DFB06101D747070006D48FC /* AdjustSdk.framework */,
 				9D7431E61EB9F9B700969F14 /* AdjustExampleTests.app */,
-				9DE354D22100726300D211C9 /* AdjustSdkIm.framework */,
+				9DE354D22100726300D211C9 /* AdjustSdk.framework */,
 				9D0E2E02210B570600133B4F /* AdjustSdkWebBridge.framework */,
 				0AB1C97127DD450D00509231 /* libAdjustSdk.a */,
-				0AB1CA2527DF462200509231 /* libAdjustSdkTv.a */,
-				0AB1CA6827DF5D3200509231 /* libAdjustSdkIm.a */,
+				0AB1CA2527DF462200509231 /* libAdjustSdk.a */,
+				0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */,
 				0AB1CAD527DF671300509231 /* libAdjustSdkWebBridge.a */,
 			);
 			name = Products;
@@ -2189,7 +2189,7 @@
 		9DE354D32100726300D211C9 /* AdjustSdkIm */ = {
 			isa = PBXGroup;
 			children = (
-				9DE354D42100726300D211C9 /* AdjustSdkIm.h */,
+				9DE354D42100726300D211C9 /* AdjustSdk.h */,
 				9DB5629D2C072C980004CCAD /* Adjust */,
 				9DE354D52100726300D211C9 /* Info.plist */,
 			);
@@ -2209,7 +2209,7 @@
 		9DFB06111D747070006D48FC /* AdjustSdkTv */ = {
 			isa = PBXGroup;
 			children = (
-				9DFB06121D747070006D48FC /* AdjustSdkTv.h */,
+				9DFB06121D747070006D48FC /* AdjustSdk.h */,
 				9DB563562C072CB20004CCAD /* Adjust */,
 				9DFB06141D747070006D48FC /* Info.plist */,
 			);
@@ -2352,7 +2352,7 @@
 				9DB562D12C072C980004CCAD /* ADJTimerOnce.h in Headers */,
 				9DB562D52C072C980004CCAD /* ADJUserDefaults.h in Headers */,
 				9DB562C92C072C980004CCAD /* ADJResponseData.h in Headers */,
-				9DE354D62100726300D211C9 /* AdjustSdkIm.h in Headers */,
+				9DE354D62100726300D211C9 /* AdjustSdk.h in Headers */,
 				9DB562C32C072C980004CCAD /* ADJPackageParams.h in Headers */,
 				9DB562CB2C072C980004CCAD /* ADJSdkClickHandler.h in Headers */,
 			);
@@ -2422,7 +2422,7 @@
 				9DB563AA2C072CB20004CCAD /* ADJSessionSuccess.h in Headers */,
 				9DB563942C072CB20004CCAD /* ADJAppStoreSubscription.h in Headers */,
 				9DB563A82C072CB20004CCAD /* ADJSessionFailure.h in Headers */,
-				9DFB06131D747070006D48FC /* AdjustSdkTv.h in Headers */,
+				9DFB06131D747070006D48FC /* AdjustSdk.h in Headers */,
 				9DB568D92C0735240004CCAD /* ADJActivityHandler.h in Headers */,
 				9DB568DA2C0735240004CCAD /* ADJActivityKind.h in Headers */,
 				9DB568DB2C0735240004CCAD /* ADJActivityPackage.h in Headers */,
@@ -2484,7 +2484,7 @@
 			);
 			name = AdjustSdkTvStatic;
 			productName = AdjustSdkTvStatic;
-			productReference = 0AB1CA2527DF462200509231 /* libAdjustSdkTv.a */;
+			productReference = 0AB1CA2527DF462200509231 /* libAdjustSdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		0AB1CA6727DF5D3200509231 /* AdjustSdkImStatic */ = {
@@ -2502,7 +2502,7 @@
 			);
 			name = AdjustSdkImStatic;
 			productName = AdjustSdkImStatic;
-			productReference = 0AB1CA6827DF5D3200509231 /* libAdjustSdkIm.a */;
+			productReference = 0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		0AB1CAD427DF671300509231 /* AdjustSdkWebBridgeStatic */ = {
@@ -2628,7 +2628,7 @@
 			);
 			name = AdjustSdkIm;
 			productName = AdjustSdkIm;
-			productReference = 9DE354D22100726300D211C9 /* AdjustSdkIm.framework */;
+			productReference = 9DE354D22100726300D211C9 /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		9DFA37AC1C0F219400782607 /* AdjustSdk */ = {
@@ -2665,7 +2665,7 @@
 			);
 			name = AdjustSdkTv;
 			productName = AdjustSdkTv;
-			productReference = 9DFB06101D747070006D48FC /* AdjustSdkTv.framework */;
+			productReference = 9DFB06101D747070006D48FC /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -3616,8 +3616,8 @@
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
-				PRODUCT_NAME = AdjustSdkTv;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkTv;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -3644,8 +3644,8 @@
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
-				PRODUCT_NAME = AdjustSdkTv;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkTv;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -3677,8 +3677,8 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = AdjustSdkIm;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkIm;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3703,8 +3703,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = AdjustSdkIm;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkIm;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4175,7 +4175,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkIm;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustSdk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4215,7 +4215,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkIm;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustSdk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4329,7 +4329,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkTv;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AdjustSdk;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -4367,7 +4367,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkTv;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AdjustSdk;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
