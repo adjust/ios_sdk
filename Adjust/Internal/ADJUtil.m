@@ -221,7 +221,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
       syncObject:(id)syncObject {
 #if TARGET_OS_TV
     return nil;
-#endif
+#else
     @synchronized(syncObject) {
         NSString *documentsFilePath = [ADJUtil getFilePathInDocumentsDir:fileName];
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
@@ -324,6 +324,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
         return nil;
     }
+#endif
 }
 
 + (void)writeObject:(id)object
@@ -332,7 +333,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
          syncObject:(id)syncObject {
 #if TARGET_OS_TV
     return;
-#endif
+#else
     @synchronized(syncObject) {
         @try {
             BOOL result;
@@ -377,6 +378,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             [[ADJAdjustFactory logger] error:@"Failed to write %@ file (%@)", objectName, exception];
         }
     }
+#endif
 }
 
 + (BOOL)migrateFileFromPath:(NSString *)oldPath toPath:(NSString *)newPath {
