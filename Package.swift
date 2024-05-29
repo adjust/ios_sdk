@@ -24,12 +24,11 @@ let package = Package(
         .target(
             name: "WebBridge",
             path: "AdjustBridge",
-            exclude: ["Adjust"],
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("WebViewJavascriptBridge"),
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/Internal")
+                .headerSearchPath("../Adjust"),
+                .headerSearchPath("../Adjust/Internal")
             ]
         ),
     ]
