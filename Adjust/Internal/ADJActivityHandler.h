@@ -106,12 +106,12 @@
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+         withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+                 withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
