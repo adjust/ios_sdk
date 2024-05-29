@@ -21,5 +21,5 @@
 #import <AdjustSdk/ADJSessionFailure.h>
 #import <AdjustSdk/ADJAdRevenue.h>
 #import <AdjustSdk/ADJLinkResolution.h>
-#import <AdjustSdk/ADJPurchase.h>
+#import <AdjustSdk/ADJAppStorePurchase.h>
 #import <AdjustSdk/ADJPurchaseVerificationResult.h>

@@ -23,7 +23,7 @@
 #import <AdjustSdkWebBridge/ADJSessionFailure.h>
 #import <AdjustSdkWebBridge/ADJAdRevenue.h>
 #import <AdjustSdkWebBridge/ADJLinkResolution.h>
-#import <AdjustSdkWebBridge/ADJPurchase.h>
+#import <AdjustSdkWebBridge/ADJAppStorePurchase.h>
 #import <AdjustSdkWebBridge/ADJPurchaseVerificationResult.h>
 
 // Exposing entire WebViewJavascriptBridge framework

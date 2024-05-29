@@ -777,10 +777,10 @@
         productId = [parameters objectForKey:@"productId"][0];
     }
 
-    ADJPurchase *purchase = [[ADJPurchase alloc] initWithTransactionId:transactionId
-                                                             productId:productId
-                                                            andReceipt:receipt];
-    [Adjust verifyPurchase:purchase completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+    ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
+                                                                             productId:productId
+                                                                            andReceipt:receipt];
+    [Adjust verifyAppStorePurchase:purchase completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
         [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
         [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];

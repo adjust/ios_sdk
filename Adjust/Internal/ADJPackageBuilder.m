@@ -247,7 +247,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     return [self buildClickPackage:clickSource extraParameters:parameters];
 }
 
-- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJPurchase * _Nullable)purchase {
+- (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJAppStorePurchase * _Nullable)purchase {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (purchase.receipt != nil) {

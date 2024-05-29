@@ -632,12 +632,12 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
-- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+- (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
+             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-        [selfI verifyPurchaseI:selfI purchase:purchase completionHandler:completionHandler];
+        [selfI verifyAppStorePurchaseI:selfI purchase:purchase completionHandler:completionHandler];
     }];
 }
 
@@ -1339,9 +1339,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI.packageHandler sendFirstPackage];
 }
 
-- (void)verifyPurchaseI:(ADJActivityHandler *)selfI
-               purchase:(nonnull ADJPurchase *)purchase
-      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+- (void)verifyAppStorePurchaseI:(ADJActivityHandler *)selfI
+                       purchase:(nonnull ADJAppStorePurchase *)purchase
+              completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     if ([ADJUtil isNull:completionHandler]) {
         [selfI.logger warn:@"Purchase verification aborted because completion handler is null"];
         return;
