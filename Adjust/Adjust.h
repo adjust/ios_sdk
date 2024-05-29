@@ -24,8 +24,7 @@ typedef void(^ADJIdfvGetterBlock)(NSString * _Nullable idfv);
 typedef void(^ADJSdkVersionGetterBlock)(NSString * _Nullable sdkVersion);
 typedef void(^ADJLastDeeplinkGetterBlock)(NSURL * _Nullable lastDeeplink);
 typedef void(^ADJAdidGetterBlock)(NSString * _Nullable adid);
-
-@protocol ADJIsEnabledCallback;
+typedef void(^ADJIsEnabledGetterBlock)(BOOL isEnabled);
 
 /**
  * Constants for our supported tracking environments.
@@ -94,9 +93,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Check if the SDK is enabled or disabled through a callback.
  *
- * @param isEnabledCallback Callback to be pinged with the enabled state of the SDK.
+ * @param completion Completion block to be pinged with the enabled state of the SDK.
  */
-+ (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
++ (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion;
 
 /**
  * @brief Read the URL that opened the application to search for an adjust deep link.
@@ -373,7 +372,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)trackAppStoreSubscription:(nonnull ADJAppStoreSubscription *)subscription;
 
-- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
+- (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion;
 
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
 
@@ -413,11 +412,5 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJIsEnabledCallback <NSObject>
-
-- (void)didReadWithIsEnabled:(BOOL)isEnabled;
 
 @end

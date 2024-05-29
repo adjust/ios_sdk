@@ -72,7 +72,7 @@
 - (void)launchSdkClickResponseTasks:(ADJSdkClickResponseData * _Nullable)sdkClickResponseData;
 - (void)launchAttributionResponseTasks:(ADJAttributionResponseData * _Nullable)attributionResponseData;
 - (void)setEnabled:(BOOL)enabled;
-- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback;
+- (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion;
 - (BOOL)isGdprForgotten;
 
 - (void)processDeeplink:(NSURL * _Nullable)deeplink

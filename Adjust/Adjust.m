@@ -102,9 +102,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
++ (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] isEnabledWithCallback:isEnabledCallback];
+        [[Adjust getInstance] isEnabledWithCompletionHandler:completion];
     }
 }
 
@@ -369,16 +369,17 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)isEnabledWithCallback:(nonnull id<ADJIsEnabledCallback>)isEnabledCallback {
+- (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion {
     if (![self checkActivityHandler]) {
         [ADJUtil isEnabledFromActivityStateFile:^(BOOL isEnabled) {
+            __block ADJIsEnabledGetterBlock localIsEnabledCallback = completion;
             [ADJUtil launchInMainThread:^{
-                [isEnabledCallback didReadWithIsEnabled:isEnabled];
+                localIsEnabledCallback(isEnabled);
             }];
         }];
         return;
     }
-    [self.activityHandler isEnabledWithCallback:isEnabledCallback];
+    [self.activityHandler isEnabledWithCompletionHandler:completion];
 }
 
 - (void)processDeeplink:(NSURL *)deeplink {
