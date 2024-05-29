@@ -27,12 +27,6 @@
 
 @end
 
-@interface ADJIdfvGetter : NSObject<ADJIdfvCallback>
-
-@property (nonatomic, strong) WVJBResponseCallback callback;
-
-@end
-
 @interface ADJSdkVersionGetter : NSObject<ADJSdkVersionCallback>
 
 @property (nonatomic, copy) NSString *sdkPrefix;
@@ -446,9 +440,10 @@
             return;
         }
 
-        ADJIdfvGetter * _Nonnull idfvGetter = [[ADJIdfvGetter alloc] init];
-        idfvGetter.callback = responseCallback;
-        [Adjust idfvWithCallback:idfvGetter];
+        __block WVJBResponseCallback localResponseCallback = responseCallback;
+        [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+            localResponseCallback(idfv);
+        }];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_requestAppTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -760,16 +755,6 @@
     }
     NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
     return [formatString numberFromString:[field description]];
-}
-
-@end
-
-#pragma mark - ADJIdfvCallback protocol
-
-@implementation ADJIdfvGetter
-
-- (void)didReadWithIdfv:(nullable NSString *)idfv {
-    self.callback(idfv);
 }
 
 @end

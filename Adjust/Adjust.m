@@ -152,9 +152,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback {
++ (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] idfvWithCallback:idfvCallback];
+        [[Adjust getInstance] idfvWithCompletionHandler:completion];
     }
 }
 
@@ -450,7 +450,7 @@ static dispatch_once_t onceToken = 0;
 
 - (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion {
     if (completion == nil) {
-        [self.logger error:@"Completion handler for getting IDFA can't be null"];
+        [self.logger error:@"Completion block for getting IDFA can't be null"];
         return;
     }
 
@@ -461,15 +461,16 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
-- (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback {
-    if (idfvCallback == nil) {
-        [self.logger error:@"Callback for getting IDFV can't be null"];
+- (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting IDFV can't be null"];
         return;
     }
 
     NSString *idfv = [ADJUtil idfv];
+    __block ADJIdfaGetterBlock localIdfvCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [idfvCallback didReadWithIdfv:idfv];
+        localIdfvCallback(idfv);
     }];
 }
 
@@ -629,7 +630,7 @@ static dispatch_once_t onceToken = 0;
 
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
     if (completion == nil) {
-        [self.logger error:@"Completion handler for getting attribution can't be null"];
+        [self.logger error:@"Completion block for getting attribution can't be null"];
         return;
     }
 
