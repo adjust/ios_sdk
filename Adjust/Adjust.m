@@ -260,9 +260,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback {
++ (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] attributionWithCallback:attributionCallback];
+        [[Adjust getInstance] attributionWithCompletionHandler:completion];
     }
 }
 
@@ -626,9 +626,9 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackAdRevenue:adRevenue];
 }
 
-- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback {
-    if (attributionCallback == nil) {
-        [self.logger error:@"Callback for getting attribution can't be null"];
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion handler for getting attribution can't be null"];
         return;
     }
 
@@ -637,10 +637,10 @@ static dispatch_once_t onceToken = 0;
             self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
         }
 
-        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:attributionCallback];
+        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
         return;
     }
-    return [self.activityHandler attributionWithCallback:attributionCallback];
+    return [self.activityHandler attributionWithCompletionHandler:completion];
 }
 
 - (void)adidWithCallback:(id<ADJAdidCallback>)adidCallback {
