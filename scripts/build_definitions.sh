@@ -144,9 +144,14 @@ Usage: $0 [options]
     XCF_OUTPUT_STATIC_FRMK_FOLDER="frameworks-static"
     XCF_OUTPUT_STATIC_TEST_FRMK_FOLDER="test-static-framework"
 
-    # SDK xcframework folder names
-    XCF_OUTPUT_XCFRMK_IM_FOLDER="AdjustSdk-iMessage-xcframework"
+    # Output folder for frameworks and xcframeworks platforms - ios, tvos, iMessage and Web bridge
+    XCF_OUTPUT_STATIC_FRMK_IOS_FOLDER="AdjustSdk-iOS-Static"
+    XCF_OUTPUT_STATIC_FRMK_TV_FOLDER="AdjustSdk-tvOS-Static"
+    XCF_OUTPUT_STATIC_FRMK_IM_FOLDER="AdjustSdk-iMessage-Static"
+    XCF_OUTPUT_STATIC_FRMK_WEB_BRIDGE_FOLDER="AdjustSdk-WebBridge-Static"
+
     XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER="AdjustSdk-iOS-tvOS-xcframework"
+    XCF_OUTPUT_XCFRMK_IM_FOLDER="AdjustSdk-iMessage-xcframework"
     XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER="AdjustSdk-WebBridge-xcframework"
 
     # SDK Schema names - Dynamic
