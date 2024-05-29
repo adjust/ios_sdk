@@ -21,8 +21,8 @@ typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nullable resolvedLink);
 typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution);
 typedef void(^ADJIdfaGetterBlock)(NSString * _Nullable idfa);
 typedef void(^ADJIdfvGetterBlock)(NSString * _Nullable idfv);
+typedef void(^ADJSdkVersionGetterBlock)(NSString * _Nullable sdkVersion);
 
-@protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
 @protocol ADJAdidCallback;
 @protocol ADJIsEnabledCallback;
@@ -176,9 +176,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Get current Adjust SDK version string through a callback.
  *
- * @param sdkVersionCallback Callback to get the Adjust SDK version string (iosX.Y.Z) delivered to.
+ * @param completion Completion block to get the Adjust SDK version string (iosX.Y.Z) delivered to.
  */
-+ (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
++ (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion;
 
 /**
  * @brief Convert a universal link style URL to a deeplink style URL with the corresponding scheme.
@@ -381,7 +381,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion;
 
-- (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
+- (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion;
 
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJSdkVersionCallback <NSObject>
-
-- (void)didReadWithSdkVersion:(nullable NSString *)sdkVersion;
 
 @end
 

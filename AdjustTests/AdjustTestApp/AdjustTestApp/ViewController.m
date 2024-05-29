@@ -12,7 +12,7 @@
 #import "ADJAdjustFactory.h"
 #import "ATAAdjustCommandExecutor.h"
 
-@interface ViewController () <ADJSdkVersionCallback>
+@interface ViewController ()
 
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
 @property (nonatomic, strong) ATAAdjustCommandExecutor *adjustCommandExecutor;
@@ -38,7 +38,9 @@
 }
 
 - (void)startTestSession {
-    [Adjust sdkVersionWithCallback:self];
+    [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+        [self.testLibrary startTestSession:sdkVersion];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,7 +51,4 @@
     [self startTestSession];
 }
 
-- (void)didReadWithSdkVersion:(nullable NSString *)sdkVersion { 
-    [self.testLibrary startTestSession:sdkVersion];
-}
 @end
