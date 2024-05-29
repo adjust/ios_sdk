@@ -144,10 +144,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         [self assignRandomToken:[ADJUtil generateRandomUuid]];
     }
 
-    if ([decoder containsValueForKey:@"eventDeduplicationIds"]) {
-        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"eventDeduplicationIds"];
-    } else if ([decoder containsValueForKey:@"transactionIds"]) {
-        // look for transactionIds key for backward compatibility.
+    if ([decoder containsValueForKey:@"transactionIds"]) {
         self.eventDeduplicationIds = [decoder decodeObjectForKey:@"transactionIds"];
     }
 
@@ -221,7 +218,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     [encoder encodeDouble:self.timeSpent forKey:@"timeSpent"];
     [encoder encodeDouble:self.lastActivity forKey:@"lastActivity"];
     [encoder encodeObject:self.dedupeToken forKey:@"uuid"];
-    [encoder encodeObject:self.eventDeduplicationIds forKey:@"eventDeduplicationIds"];
+    [encoder encodeObject:self.eventDeduplicationIds forKey:@"transactionIds"];
     [encoder encodeBool:self.enabled forKey:@"enabled"];
     [encoder encodeBool:self.isGdprForgotten forKey:@"isGdprForgotten"];
     [encoder encodeBool:self.askingAttribution forKey:@"askingAttribution"];
