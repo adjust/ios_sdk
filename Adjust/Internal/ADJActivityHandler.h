@@ -110,8 +110,8 @@
 - (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
-- (void)verifyAndTrack:(nonnull ADJEvent *)event
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+- (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;

@@ -277,10 +277,10 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)verifyPurchase:(nonnull ADJPurchase *)purchase
++ (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     @synchronized (self) {
-        [[Adjust getInstance] verifyPurchase:purchase completionHandler:completionHandler];
+        [[Adjust getInstance] verifyAppStorePurchase:purchase completionHandler:completionHandler];
     }
 }
 
@@ -292,10 +292,11 @@ static dispatch_once_t onceToken = 0;
     [[Adjust getInstance] disableCoppaCompliance];
 }
 
-+ (void)verifyAndTrack:(nonnull ADJEvent *)event
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
++ (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     @synchronized (self) {
-        [[Adjust getInstance] verifyAndTrack:event completionHandler:completionHandler];
+        [[Adjust getInstance] verifyAndTrackAppStorePurchase:event
+                                           completionHandler:completionHandler];
     }
 }
 
@@ -682,8 +683,8 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
-- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+- (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     if (![self checkActivityHandler]) {
         if (completionHandler != nil) {
             ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
@@ -694,7 +695,7 @@ static dispatch_once_t onceToken = 0;
         }
         return;
     }
-    [self.activityHandler verifyPurchase:purchase completionHandler:completionHandler];
+    [self.activityHandler verifyAppStorePurchase:purchase completionHandler:completionHandler];
 }
 
 - (void)enableCoppaCompliance {
@@ -723,8 +724,8 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (void)verifyAndTrack:(nonnull ADJEvent *)event
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+- (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
     if (![self checkActivityHandler]) {
         if (completionHandler != nil) {
             ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
@@ -735,7 +736,7 @@ static dispatch_once_t onceToken = 0;
         }
         return;
     }
-    [self.activityHandler verifyAndTrack:event completionHandler:completionHandler];
+    [self.activityHandler verifyAndTrackAppStorePurchase:event completionHandler:completionHandler];
 }
 
 - (void)teardown {
