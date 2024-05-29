@@ -488,7 +488,7 @@
         [Adjust updateSkanConversionValue:[conversionValue integerValue]
                               coarseValue:coarseValue
                                lockWindow:lockWindow
-                        completionHandler:^(NSError * _Nullable error) {
+                    withCompletionHandler:^(NSError * _Nullable error){
             if (error != nil) {
                 responseCallback([NSString stringWithFormat:@"%@", error]);
             }
