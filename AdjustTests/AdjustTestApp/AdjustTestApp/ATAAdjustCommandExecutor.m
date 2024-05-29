@@ -788,14 +788,14 @@
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
     [Adjust processAndResolveDeeplink:deeplink
-                withCompletionHandler:^(NSString * _Nonnull resolvedLink) {
+                withCompletionHandler:^(NSString * _Nullable resolvedLink) {
         [self.testLibrary addInfoToSend:@"resolved_link" value:resolvedLink];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
 
 - (void)attributionGetter:(NSDictionary *)parameters {
-    [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nonnull attribution) {
+    [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
         [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
         [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
         [self.testLibrary addInfoToSend:@"network" value:attribution.network];
