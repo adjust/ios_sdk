@@ -10,7 +10,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJUtil.h"
 #import "ADJActivityHandler.h"
-#import "NSString+ADJAdditions.h"
+#import "ADJAdditions.h"
 #import "ADJTimerOnce.h"
 #import "ADJPackageBuilder.h"
 #import "ADJUtil.h"

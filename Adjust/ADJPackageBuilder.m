@@ -13,7 +13,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJPackageBuilder.h"
 #import "ADJActivityPackage.h"
-#import "NSData+ADJAdditions.h"
+#import "ADJAdditions.h"
 #import "ADJUserDefaults.h"
 
 NSString * const ADJAttributionTokenParameter = @"attribution_token";
@@ -251,7 +251,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (purchase.receipt != nil) {
-        NSString *receiptBase64 = [purchase.receipt adjEncodeBase64];
+        // NSString *receiptBase64 = [purchase.receipt adjEncodeBase64];
+        NSString *receiptBase64 = [ADJAdditions adjEncodeBase64:purchase.receipt];
         [ADJPackageBuilder parameters:parameters
                             setString:receiptBase64
                                forKey:@"receipt"];
@@ -274,7 +275,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (event.receipt != nil) {
-        NSString *receiptBase64 = [event.receipt adjEncodeBase64];
+        // NSString *receiptBase64 = [event.receipt adjEncodeBase64];
+        NSString *receiptBase64 = [ADJAdditions adjEncodeBase64:event.receipt];
         [ADJPackageBuilder parameters:parameters
                             setString:receiptBase64
                                forKey:@"receipt"];
@@ -410,7 +412,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     [ADJPackageBuilder parameters:parameters setString:event.deduplicationId forKey:@"deduplication_id"];
     [ADJPackageBuilder parameters:parameters setString:event.productId forKey:@"product_id"];
-    [ADJPackageBuilder parameters:parameters setString:[event.receipt adjEncodeBase64] forKey:@"receipt"];
+    // [ADJPackageBuilder parameters:parameters setString:[event.receipt adjEncodeBase64] forKey:@"receipt"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJAdditions adjEncodeBase64:event.receipt] forKey:@"receipt"];
 
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
@@ -932,7 +935,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setNumber:subscription.price forKey:@"revenue"];
     [ADJPackageBuilder parameters:parameters setString:subscription.currency forKey:@"currency"];
     [ADJPackageBuilder parameters:parameters setString:subscription.transactionId forKey:@"transaction_id"];
-    [ADJPackageBuilder parameters:parameters setString:[subscription.receipt adjEncodeBase64] forKey:@"receipt"];
+    // [ADJPackageBuilder parameters:parameters setString:[subscription.receipt adjEncodeBase64] forKey:@"receipt"];
+    [ADJPackageBuilder parameters:parameters setString:[ADJAdditions adjEncodeBase64:subscription.receipt] forKey:@"receipt"];
     [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
 
