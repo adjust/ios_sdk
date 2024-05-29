@@ -25,6 +25,7 @@ typedef void(^ADJSdkVersionGetterBlock)(NSString * _Nullable sdkVersion);
 typedef void(^ADJLastDeeplinkGetterBlock)(NSURL * _Nullable lastDeeplink);
 typedef void(^ADJAdidGetterBlock)(NSString * _Nullable adid);
 typedef void(^ADJIsEnabledGetterBlock)(BOOL isEnabled);
+typedef void(^ADJVerificationResultBlock)(ADJPurchaseVerificationResult * _Nonnull verificationResult);
 
 /**
  * Constants for our supported tracking environments.
@@ -304,7 +305,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @param completion Callback where verification result will be repoted.
  */
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+         withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
 /**
  * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
@@ -317,7 +318,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)disableCoppaCompliance;
 
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+                 withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
 /**
  * @brief Method used for internal testing only. Don't use it in production.
@@ -404,13 +405,13 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion;
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+         withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
 - (void)enableCoppaCompliance;
 
 - (void)disableCoppaCompliance;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
+                 withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
 @end

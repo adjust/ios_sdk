@@ -279,7 +279,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
+         withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] verifyAppStorePurchase:purchase
                                withCompletionHandler:completion];
@@ -690,7 +690,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
+         withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     if (![self checkActivityHandler]) {
         if (completion != nil) {
             ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
