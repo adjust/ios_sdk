@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,8 +13,6 @@
 		9639094C1BCBFCF300A2E8A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9639094B1BCBFCF300A2E8A4 /* Assets.xcassets */; };
 		9639094F1BCBFCF300A2E8A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9639094D1BCBFCF300A2E8A4 /* LaunchScreen.storyboard */; };
 		963909611BCBFD4200A2E8A4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963909601BCBFD4200A2E8A4 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		9D52A31C2C0715EF00E0AA55 /* AdjustSigSdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52A31B2C0715EF00E0AA55 /* AdjustSigSdk.xcframework */; };
-		9D52A31D2C0715EF00E0AA55 /* AdjustSigSdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52A31B2C0715EF00E0AA55 /* AdjustSigSdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9DAA5C6725AFA4B600C718DD /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAA5C6625AFA4B600C718DD /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DB565D32C072D250004CCAD /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB565862C072D250004CCAD /* ADJActivityHandler.m */; };
 		9DB565D42C072D250004CCAD /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB565882C072D250004CCAD /* ADJActivityKind.m */; };
@@ -58,20 +56,6 @@
 		9DD7199C290A9E8B00762C02 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD7199B290A9E8B00762C02 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D799022C24C093AA00C7D11C /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D799022B24C093AA00C7D11C /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		9D52A31E2C0715EF00E0AA55 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9D52A31D2C0715EF00E0AA55 /* AdjustSigSdk.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9639093C1BCBFCF300A2E8A4 /* AdjustExample-ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,7 +162,6 @@
 				D799022C24C093AA00C7D11C /* AppTrackingTransparency.framework in Frameworks */,
 				9DAA5C6725AFA4B600C718DD /* AdServices.framework in Frameworks */,
 				9DD7199C290A9E8B00762C02 /* StoreKit.framework in Frameworks */,
-				9D52A31C2C0715EF00E0AA55 /* AdjustSigSdk.xcframework in Frameworks */,
 				963909611BCBFD4200A2E8A4 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,7 +336,6 @@
 				963909381BCBFCF300A2E8A4 /* Sources */,
 				963909391BCBFCF300A2E8A4 /* Frameworks */,
 				9639093A1BCBFCF300A2E8A4 /* Resources */,
-				9D52A31E2C0715EF00E0AA55 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
