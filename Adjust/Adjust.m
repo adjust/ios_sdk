@@ -31,7 +31,7 @@ NSString * const ADJEnvironmentProduction = @"production";
 
 @property (nonatomic, strong) ADJSavedPreLaunch *savedPreLaunch;
 
-@property (nonatomic) AdjustResolvedDeeplinkBlock cachedResolvedDeeplinkBlock;
+@property (nonatomic) ADJResolvedDeeplinkBlock cachedResolvedDeeplinkBlock;
 
 @end
 
@@ -115,7 +115,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion {
+            withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] processAndResolveDeeplink:deeplink
                                   withCompletionHandler:completion];
@@ -260,7 +260,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
++ (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] attributionWithCompletionHandler:completion];
     }
@@ -392,7 +392,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion {
+            withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion {
     // if resolution result is not wanted, fallback to default method
     if (completion == nil) {
         [self processDeeplink:deeplink];
@@ -626,7 +626,7 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler trackAdRevenue:adRevenue];
 }
 
-- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
     if (completion == nil) {
         [self.logger error:@"Completion handler for getting attribution can't be null"];
         return;

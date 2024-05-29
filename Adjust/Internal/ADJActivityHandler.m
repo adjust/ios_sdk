@@ -112,7 +112,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, copy) NSString* gdprPath;
 @property (nonatomic, copy) NSString* subscriptionPath;
 @property (nonatomic, copy) NSString* purchaseVerificationPath;
-@property (nonatomic, copy) AdjustResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
+@property (nonatomic, copy) ADJResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
 @property (nonatomic, copy) ADJAttribution *attribution;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
@@ -127,7 +127,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
       savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
-      deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback {
+      deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback {
     self = [super init];
     if (self == nil) return nil;
 
@@ -399,7 +399,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
-            withCompletionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completion {
+            withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
@@ -641,7 +641,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
-- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
 
     if (localAttribution == nil) {
@@ -652,7 +652,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
 
-    __block ADJAttributionCallbackBlock localAttributionCallback = completion;
+    __block ADJAttributionGetterBlock localAttributionCallback = completion;
     [ADJUtil launchInMainThread:^{
         localAttributionCallback(localAttribution);
     }];
@@ -1679,9 +1679,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    for (ADJAttributionCallbackBlock attributionCallback in
+    for (ADJAttributionGetterBlock attributionCallback in
          self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
-        __block ADJAttributionCallbackBlock localAttributionCallback = attributionCallback;
+        __block ADJAttributionGetterBlock localAttributionCallback = attributionCallback;
         [ADJUtil launchInMainThread:^{
             localAttributionCallback(localAttribution);
         }];
