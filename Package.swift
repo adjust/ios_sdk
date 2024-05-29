@@ -18,7 +18,7 @@ let package = Package(
             ],
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("ADJAdditions")
+                .headerSearchPath("Internal")
             ]
         ),
         .target(
@@ -29,6 +29,7 @@ let package = Package(
                 .headerSearchPath(""),
                 .headerSearchPath("WebViewJavascriptBridge"),
                 .headerSearchPath("Adjust"),
+                .headerSearchPath("Adjust/Internal")
             ]
         ),
     ]
