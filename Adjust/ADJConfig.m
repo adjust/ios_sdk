@@ -102,18 +102,18 @@
     _shouldReadDeviceInfoOnce = YES;
 }
 
-- (void)setUrlStrategyDomains:(NSArray * _Nullable)domains
-               withSubdomains:(BOOL)useSubdomains
-              isDataResidency:(BOOL)isDataResidency {
-    if (domains == nil) {
+- (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
+        withSubdomains:(BOOL)useSubdomains
+      andDataResidency:(BOOL)isDataResidency {
+    if (urlStrategyDomains == nil) {
         return;
     }
-    if (domains.count == 0) {
+    if (urlStrategyDomains.count == 0) {
         return;
     }
 
     if (_urlStrategyDomains == nil) {
-        _urlStrategyDomains = [NSArray arrayWithArray:domains];
+        _urlStrategyDomains = [NSArray arrayWithArray:urlStrategyDomains];
     }
 
     _useSubdomains = useSubdomains;

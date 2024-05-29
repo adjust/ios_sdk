@@ -340,7 +340,7 @@ static NSString * fbAppIdStatic = nil;
             this.logLevel = null;
             this.sendInBackground = null;
             this.needsCost = null;
-            this.urlStrategies = [];
+            this.urlStrategyDomains = [];
             this.useSubdomains = null;
             this.isDataResidency = null;
             this.allowAdServicesInfoReading = null;
@@ -455,8 +455,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
             this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
         };
-        AdjustConfig.prototype.setUrlStrategies = function(urlStrategies, useSubdomains, isDataResidency) {
-            this.urlStrategies = urlStrategies;
+        AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomains, isDataResidency) {
+            this.urlStrategyDomains = urlStrategyDomains;
             this.useSubdomains = useSubdomains;
             this.isDataResidency = isDataResidency;
         };

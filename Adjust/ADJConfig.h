@@ -249,8 +249,8 @@
 
 @property (nonatomic, readonly) BOOL isDataResidency;
 
-- (void)setUrlStrategyDomains:(NSArray * _Nullable)domains
-               withSubdomains:(BOOL)useSubdomains
-              isDataResidency:(BOOL)isDataResidency;
+- (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
+        withSubdomains:(BOOL)useSubdomains
+      andDataResidency:(BOOL)isDataResidency;
 
 @end
