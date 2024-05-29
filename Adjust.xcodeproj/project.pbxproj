@@ -640,7 +640,6 @@
 		9DB568EE2C0735250004CCAD /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DB563332C072CB20004CCAD /* ADJUtil.h */; };
 		9DD0E9AE1F44690B00B2A759 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
 		9DD0E9AF1F44690B00B2A759 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
-		9DDF24441F7BE4DF001C1A70 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */; };
 		9DE354D62100726300D211C9 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DE354D42100726300D211C9 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DE7C8FD1AE688DA001556E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE7C8FC1AE688DA001556E5 /* UIKit.framework */; };
 		9DF212D42909E86A0056D579 /* ADJSKAdNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF212D22909E86A0056D579 /* ADJSKAdNetwork.h */; };
@@ -3480,7 +3479,6 @@
 				9DB5636D2C072CB20004CCAD /* ADJActivityState.m in Sources */,
 				9DB5638D2C072CB20004CCAD /* ADJUrlStrategy.m in Sources */,
 				9DB563872C072CB20004CCAD /* ADJSKAdNetwork.m in Sources */,
-				9DDF24441F7BE4DF001C1A70 /* ADJUserDefaults.m in Sources */,
 				9DB563A72C072CB20004CCAD /* ADJPurchaseVerificationResult.m in Sources */,
 				9DB5637F2C072CB20004CCAD /* ADJPurchaseVerificationHandler.m in Sources */,
 				9DB563692C072CB20004CCAD /* ADJActivityKind.m in Sources */,
