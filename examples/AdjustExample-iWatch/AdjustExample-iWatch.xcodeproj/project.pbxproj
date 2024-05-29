@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -53,7 +53,7 @@
 		9DF7AC2C1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9DF7AC2B1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit App.app */; };
 		9DF7AC321CB4FEDB00D3591F /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7AC301CB4FEDB00D3591F /* Interface.storyboard */; };
 		9DF7AC341CB4FEDB00D3591F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7AC331CB4FEDB00D3591F /* Assets.xcassets */; };
-		9DF7AC3B1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9DF7AC3A1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9DF7AC3B1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9DF7AC3A1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9DF7AC411CB4FEDB00D3591F /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC401CB4FEDB00D3591F /* InterfaceController.m */; };
 		9DF7AC441CB4FEDB00D3591F /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF7AC431CB4FEDB00D3591F /* ExtensionDelegate.m */; };
 		9DF7AC461CB4FEDB00D3591F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF7AC451CB4FEDB00D3591F /* Assets.xcassets */; };
@@ -83,15 +83,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9DF7AC4D1CB4FEDB00D3591F /* Embed App Extensions */ = {
+		9DF7AC4D1CB4FEDB00D3591F /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				9DF7AC3B1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex in Embed App Extensions */,
+				9DF7AC3B1CB4FEDB00D3591F /* AdjustExample-iWatch WatchKit Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9DF7AC511CB4FEDB00D3591F /* Embed Watch Content */ = {
@@ -440,7 +440,7 @@
 			buildConfigurationList = 9DF7AC4E1CB4FEDB00D3591F /* Build configuration list for PBXNativeTarget "AdjustExample-iWatch WatchKit App" */;
 			buildPhases = (
 				9DF7AC291CB4FEDB00D3591F /* Resources */,
-				9DF7AC4D1CB4FEDB00D3591F /* Embed App Extensions */,
+				9DF7AC4D1CB4FEDB00D3591F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -475,7 +475,8 @@
 		9DF7AC0C1CB4FEDB00D3591F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1250;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = "Adjust GmbH";
 				TargetAttributes = {
 					9DF7AC131CB4FEDB00D3591F = {
@@ -681,6 +682,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -738,6 +740,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
