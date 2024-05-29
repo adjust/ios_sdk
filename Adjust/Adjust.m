@@ -158,9 +158,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback {
++ (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] sdkVersionWithCallback:sdkVersionCallback];
+        [[Adjust getInstance] sdkVersionWithCompletionHandler:completion];
     }
 }
 
@@ -662,15 +662,16 @@ static dispatch_once_t onceToken = 0;
     return [self.activityHandler adidWithCallback:adidCallback];
 }
 
-- (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback {
-    if (sdkVersionCallback == nil) {
-        [self.logger error:@"Callback for getting SDK version can't be null"];
+- (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting SDK version can't be null"];
         return;
     }
 
     NSString *sdkVersion = [ADJUtil sdkVersion];
+    __block ADJSdkVersionGetterBlock localSdkVersionCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [sdkVersionCallback didReadWithSdkVersion:sdkVersion];
+        localSdkVersionCallback(sdkVersion);
     }];
 }
 
