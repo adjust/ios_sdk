@@ -780,7 +780,8 @@
     ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
                                                                              productId:productId
                                                                             andReceipt:receipt];
-    [Adjust verifyAppStorePurchase:purchase completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+    [Adjust verifyAppStorePurchase:purchase
+             withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
         [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
         [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
@@ -791,7 +792,8 @@
 - (void)processDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    [Adjust processAndResolveDeeplink:deeplink completionHandler:^(NSString * _Nonnull resolvedLink) {
+    [Adjust processAndResolveDeeplink:deeplink
+                withCompletionHandler:^(NSString * _Nonnull resolvedLink) {
         [self.testLibrary addInfoToSend:@"resolved_link" value:resolvedLink];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];

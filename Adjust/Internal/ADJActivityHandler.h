@@ -79,7 +79,7 @@
           withClickTime:(NSDate * _Nullable)clickTime;
 - (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
-                completionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completionHandler;
+            withCompletionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completion;
 - (void)setPushTokenData:(NSData * _Nullable)pushTokenData;
 - (void)setPushTokenString:(NSString * _Nullable)pushTokenString;
 - (void)setGdprForgetMe;
@@ -106,12 +106,12 @@
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 - (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;

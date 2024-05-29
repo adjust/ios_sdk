@@ -115,9 +115,10 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
+            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion {
     @synchronized (self) {
-        [[Adjust getInstance] processAndResolveDeeplink:deeplink completionHandler:completionHandler];
+        [[Adjust getInstance] processAndResolveDeeplink:deeplink
+                                  withCompletionHandler:completion];
     }
 }
 
@@ -244,12 +245,12 @@ static dispatch_once_t onceToken = 0;
 + (void)updateSkanConversionValue:(NSInteger)conversionValue
                       coarseValue:(nullable NSString *)coarseValue
                        lockWindow:(nullable NSNumber *)lockWindow
-                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
+            withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
     @synchronized (self) {
         [[Adjust getInstance] updateSkanConversionValue:conversionValue
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
-                                      completionHandler:completion];
+                                  withCompletionHandler:completion];
     }
 }
 
@@ -278,9 +279,10 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {
-        [[Adjust getInstance] verifyAppStorePurchase:purchase completionHandler:completionHandler];
+        [[Adjust getInstance] verifyAppStorePurchase:purchase
+                               withCompletionHandler:completion];
     }
 }
 
@@ -293,10 +295,10 @@ static dispatch_once_t onceToken = 0;
 }
 
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {
         [[Adjust getInstance] verifyAndTrackAppStorePurchase:event
-                                           completionHandler:completionHandler];
+                                       withCompletionHandler:completion];
     }
 }
 
@@ -390,9 +392,9 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-                completionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completionHandler {
+            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion {
     // if resolution result is not wanted, fallback to default method
-    if (completionHandler == nil) {
+    if (completion == nil) {
         [self processDeeplink:deeplink];
         return;
     }
@@ -401,13 +403,13 @@ static dispatch_once_t onceToken = 0;
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
         [ADJUserDefaults saveDeeplinkUrl:deeplink andClickTime:clickTime];
-        self.cachedResolvedDeeplinkBlock = completionHandler;
+        self.cachedResolvedDeeplinkBlock = completion;
         return;
     }
     // if deep link processing was triggered with SDK being initialized
     [self.activityHandler processAndResolveDeeplink:deeplink
                                           clickTime:clickTime
-                                  completionHandler:completionHandler];
+                              withCompletionHandler:completion];
 }
 
 - (void)setPushToken:(NSData *)pushToken {
@@ -610,12 +612,11 @@ static dispatch_once_t onceToken = 0;
 - (void)updateSkanConversionValue:(NSInteger)conversionValue
                       coarseValue:(nullable NSString *)coarseValue
                        lockWindow:(nullable NSNumber *)lockWindow
-                completionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    
+            withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
     [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
-                                      completionHandler:completion];
+                                  withCompletionHandler:completion];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
@@ -684,18 +685,19 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+         withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     if (![self checkActivityHandler]) {
-        if (completionHandler != nil) {
+        if (completion != nil) {
             ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
             result.verificationStatus = @"not_verified";
             result.code = 100;
             result.message = @"SDK needs to be initialized before making purchase verification request";
-            completionHandler(result);
+            completion(result);
         }
         return;
     }
-    [self.activityHandler verifyAppStorePurchase:purchase completionHandler:completionHandler];
+    [self.activityHandler verifyAppStorePurchase:purchase
+                           withCompletionHandler:completion];
 }
 
 - (void)enableCoppaCompliance {
@@ -725,18 +727,18 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
-                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler {
+                 withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     if (![self checkActivityHandler]) {
-        if (completionHandler != nil) {
+        if (completion != nil) {
             ADJPurchaseVerificationResult *result = [[ADJPurchaseVerificationResult alloc] init];
             result.verificationStatus = @"not_verified";
             result.code = 100;
             result.message = @"SDK needs to be initialized before making purchase verification request";
-            completionHandler(result);
+            completion(result);
         }
         return;
     }
-    [self.activityHandler verifyAndTrackAppStorePurchase:event completionHandler:completionHandler];
+    [self.activityHandler verifyAndTrackAppStorePurchase:event withCompletionHandler:completion];
 }
 
 - (void)teardown {
