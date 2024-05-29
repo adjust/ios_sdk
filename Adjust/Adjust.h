@@ -19,8 +19,8 @@
 
 typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
 typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nonnull attribution);
+typedef void(^ADJIdfaGetterBlock)(NSString * _Nonnull idfa);
 
-@protocol ADJIdfaCallback;
 @protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
@@ -144,9 +144,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Retrieve iOS device IDFA value through a callback.
  *
- * @param idfaCallback Callback to get IDFA value delivered to.
+ * @param completion Completion block to get IDFA value delivered to.
  */
-+ (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback;
++ (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion;
 
 /**
  * @brief Retrieve iOS device IDFV value through a callback.
@@ -377,7 +377,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;;
 
-- (void)idfaWithCallback:(nonnull id<ADJIdfaCallback>)idfaCallback;
+- (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion;
 
 - (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback;
 
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJIdfaCallback <NSObject>
-
-- (void)didReadWithIdfa:(nullable NSString *)idfa;
 
 @end
 

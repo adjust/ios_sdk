@@ -27,12 +27,6 @@
 
 @end
 
-@interface ADJIdfaGetter : NSObject<ADJIdfaCallback>
-
-@property (nonatomic, strong) WVJBResponseCallback callback;
-
-@end
-
 @interface ADJIdfvGetter : NSObject<ADJIdfvCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
@@ -441,9 +435,10 @@
             return;
         }
 
-        ADJIdfaGetter * _Nonnull idfaGetter = [[ADJIdfaGetter alloc] init];
-        idfaGetter.callback = responseCallback;
-        [Adjust idfaWithCallback:idfaGetter];
+        __block WVJBResponseCallback localResponseCallback = responseCallback;
+        [Adjust idfaWithCompletionHandler:^(NSString * _Nonnull idfa) {
+            localResponseCallback(idfa);
+        }];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_idfv" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -765,16 +760,6 @@
     }
     NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
     return [formatString numberFromString:[field description]];
-}
-
-@end
-
-#pragma mark - ADJIdfaCallback protocol
-
-@implementation ADJIdfaGetter
-
-- (void)didReadWithIdfa:(nullable NSString *)idfa {
-    self.callback(idfa);
 }
 
 @end
