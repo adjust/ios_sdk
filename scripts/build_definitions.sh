@@ -144,6 +144,11 @@ Usage: $0 [options]
     XCF_OUTPUT_STATIC_FRMK_FOLDER="frameworks-static"
     XCF_OUTPUT_STATIC_TEST_FRMK_FOLDER="test-static-framework"
 
+    # SDK xcframework folder names
+    XCF_OUTPUT_XCFRMK_IM_FOLDER="AdjustSdk-iMessage-xcframework"
+    XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER="AdjustSdk-iOS-tvOS-xcframework"
+    XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER="AdjustSdk-WebBridge-xcframework"
+
     # SDK Schema names - Dynamic
     SCHEMA_NAME__ADJUST_IOS="AdjustSdk"
     SCHEMA_NAME__ADJUST_TV="AdjustSdkTv"
@@ -158,8 +163,8 @@ Usage: $0 [options]
 
     # SDK frameworks and xcframework names
     XCF_FRM_NAME__ADJUST_IOS="AdjustSdk"
-    XCF_FRM_NAME__ADJUST_TV="AdjustSdkTv"
-    XCF_FRM_NAME__ADJUST_IM="AdjustSdkIm"
+    XCF_FRM_NAME__ADJUST_TV="AdjustSdk"
+    XCF_FRM_NAME__ADJUST_IM="AdjustSdk"
     XCF_FRM_NAME__ADJUST_WEB_BRIDGE="AdjustSdkWebBridge"
 
     # xcode archive names
