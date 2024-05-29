@@ -14,7 +14,7 @@
 #import "ADJThirdPartySharing.h"
 #import "ADJAdRevenue.h"
 #import "ADJLinkResolution.h"
-#import "ADJPurchase.h"
+#import "ADJAppStorePurchase.h"
 #import "ADJPurchaseVerificationResult.h"
 
 typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
@@ -304,8 +304,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @param purchase          Purchase object.
  * @param completionHandler Callback where verification result will be repoted.
  */
-+ (void)verifyPurchase:(nonnull ADJPurchase *)purchase
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
++ (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
+             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 /**
  * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
@@ -404,8 +404,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback;
 
-- (void)verifyPurchase:(nonnull ADJPurchase *)purchase
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+- (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
+             completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 - (void)enableCoppaCompliance;
 

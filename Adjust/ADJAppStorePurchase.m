@@ -6,9 +6,9 @@
 //  Copyright © 2023 Adjust. All rights reserved.
 //
 
-#import "ADJPurchase.h"
+#import "ADJAppStorePurchase.h"
 
-@implementation ADJPurchase
+@implementation ADJAppStorePurchase
 
 - (nullable id)initWithTransactionId:(NSString *)transactionId
                            productId:(NSString *)productId
@@ -26,7 +26,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJPurchase *copy = [[[self class] allocWithZone:zone] init];
+    ADJAppStorePurchase *copy = [[[self class] allocWithZone:zone] init];
 
     if (copy) {
         copy->_transactionId = [self.transactionId copyWithZone:zone];

@@ -72,7 +72,7 @@
 		9DB564E52C072CF00004CCAD /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564B52C072CF00004CCAD /* ADJEventSuccess.m */; };
 		9DB564E62C072CF00004CCAD /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564B72C072CF00004CCAD /* ADJLinkResolution.m */; };
 		9DB564E72C072CF00004CCAD /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564B92C072CF00004CCAD /* ADJLogger.m */; };
-		9DB564E82C072CF00004CCAD /* ADJPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564BB2C072CF00004CCAD /* ADJPurchase.m */; };
+		9DB564E82C072CF00004CCAD /* ADJAppStorePurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564BB2C072CF00004CCAD /* ADJAppStorePurchase.m */; };
 		9DB564E92C072CF00004CCAD /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564BD2C072CF00004CCAD /* ADJPurchaseVerificationResult.m */; };
 		9DB564EA2C072CF00004CCAD /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564BF2C072CF00004CCAD /* ADJSessionFailure.m */; };
 		9DB564EB2C072CF00004CCAD /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB564C12C072CF00004CCAD /* ADJSessionSuccess.m */; };
@@ -208,8 +208,8 @@
 		9DB564B72C072CF00004CCAD /* ADJLinkResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLinkResolution.m; sourceTree = "<group>"; };
 		9DB564B82C072CF00004CCAD /* ADJLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJLogger.h; sourceTree = "<group>"; };
 		9DB564B92C072CF00004CCAD /* ADJLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJLogger.m; sourceTree = "<group>"; };
-		9DB564BA2C072CF00004CCAD /* ADJPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchase.h; sourceTree = "<group>"; };
-		9DB564BB2C072CF00004CCAD /* ADJPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchase.m; sourceTree = "<group>"; };
+		9DB564BA2C072CF00004CCAD /* ADJAppStorePurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJAppStorePurchase.h; sourceTree = "<group>"; };
+		9DB564BB2C072CF00004CCAD /* ADJAppStorePurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAppStorePurchase.m; sourceTree = "<group>"; };
 		9DB564BC2C072CF00004CCAD /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
 		9DB564BD2C072CF00004CCAD /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
 		9DB564BE2C072CF00004CCAD /* ADJSessionFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJSessionFailure.h; sourceTree = "<group>"; };
@@ -407,6 +407,8 @@
 			children = (
 				9DB564A82C072CF00004CCAD /* ADJAdRevenue.h */,
 				9DB564A92C072CF00004CCAD /* ADJAdRevenue.m */,
+				9DB564BA2C072CF00004CCAD /* ADJAppStorePurchase.h */,
+				9DB564BB2C072CF00004CCAD /* ADJAppStorePurchase.m */,
 				9DB564AA2C072CF00004CCAD /* ADJAppStoreSubscription.h */,
 				9DB564AB2C072CF00004CCAD /* ADJAppStoreSubscription.m */,
 				9DB564AC2C072CF00004CCAD /* ADJAttribution.h */,
@@ -423,8 +425,6 @@
 				9DB564B72C072CF00004CCAD /* ADJLinkResolution.m */,
 				9DB564B82C072CF00004CCAD /* ADJLogger.h */,
 				9DB564B92C072CF00004CCAD /* ADJLogger.m */,
-				9DB564BA2C072CF00004CCAD /* ADJPurchase.h */,
-				9DB564BB2C072CF00004CCAD /* ADJPurchase.m */,
 				9DB564BC2C072CF00004CCAD /* ADJPurchaseVerificationResult.h */,
 				9DB564BD2C072CF00004CCAD /* ADJPurchaseVerificationResult.m */,
 				9DB564BE2C072CF00004CCAD /* ADJSessionFailure.h */,
@@ -541,7 +541,7 @@
 				9DB564E62C072CF00004CCAD /* ADJLinkResolution.m in Sources */,
 				9DB564D12C072CF00004CCAD /* ADJGlobalParameters.m in Sources */,
 				9DB564EC2C072CF00004CCAD /* ADJThirdPartySharing.m in Sources */,
-				9DB564E82C072CF00004CCAD /* ADJPurchase.m in Sources */,
+				9DB564E82C072CF00004CCAD /* ADJAppStorePurchase.m in Sources */,
 				9DB564C92C072CF00004CCAD /* ADJActivityHandler.m in Sources */,
 				9DB564D92C072CF00004CCAD /* ADJSKAdNetwork.m in Sources */,
 				9DB564CD2C072CF00004CCAD /* ADJAdditions.m in Sources */,
