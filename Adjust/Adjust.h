@@ -18,8 +18,8 @@
 #import "ADJPurchaseVerificationResult.h"
 
 typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
+typedef void(^ADJAttributionCallbackBlock)(ADJAttribution * _Nonnull attribution);
 
-@protocol ADJAttributionCallback;
 @protocol ADJIdfaCallback;
 @protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;
@@ -171,7 +171,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @note Attribution information is available only after installation has been successfully tracked
  *       and attribution information arrived after that from the backend.
  */
-+ (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
++ (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
 
 /**
  * @brief Get current Adjust SDK version string through a callback.
@@ -383,7 +383,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
-- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJAttributionCallback <NSObject>
-
-- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)adjustAttribution;
 
 @end
 

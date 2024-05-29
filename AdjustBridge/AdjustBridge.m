@@ -27,12 +27,6 @@
 
 @end
 
-@interface ADJAttributionGetter : NSObject<ADJAttributionCallback>
-
-@property (nonatomic, strong) WVJBResponseCallback callback;
-
-@end
-
 @interface ADJIdfaGetter : NSObject<ADJIdfaCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
@@ -510,9 +504,14 @@
             return;
         }
 
-        ADJAttributionGetter * _Nonnull attributionGetter = [[ADJAttributionGetter alloc] init];
-        attributionGetter.callback = responseCallback;
-        [Adjust attributionWithCallback:attributionGetter];
+        __block WVJBResponseCallback localResponseCallback = responseCallback;
+        [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nonnull attribution) {
+            NSDictionary *attributionDictionary = nil;
+            if (attribution != nil) {
+                attributionDictionary = [attribution dictionary];
+            }
+            localResponseCallback(attributionDictionary);
+        }];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_addGlobalCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -766,21 +765,6 @@
     }
     NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
     return [formatString numberFromString:[field description]];
-}
-
-@end
-
-#pragma mark - ADJAttributionCallback protocol
-
-@implementation ADJAttributionGetter
-
-- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)attribution {
-    NSDictionary *attributionDictionary = nil;
-    if (attribution != nil) {
-        attributionDictionary = [attribution dictionary];
-    }
-
-    self.callback(attributionDictionary);
 }
 
 @end

@@ -107,7 +107,7 @@
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback;
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event

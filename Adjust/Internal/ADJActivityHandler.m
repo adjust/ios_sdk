@@ -641,24 +641,20 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
-- (void)attributionWithCallback:(nonnull id<ADJAttributionCallback>)attributionCallback {
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion {
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
 
     if (localAttribution == nil) {
         if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
             self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
         }
-
-        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:attributionCallback];
-
+        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
         return;
     }
 
-    __block id<ADJAttributionCallback>_Nonnull localAttributionCallback =
-        attributionCallback;
-
+    __block ADJAttributionCallbackBlock localAttributionCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [localAttributionCallback didReadWithAdjustAttribution:localAttribution];
+        localAttributionCallback(localAttribution);
     }];
 }
 
@@ -1683,11 +1679,11 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    for (id<ADJAttributionCallback> attributionCallback in
-         self.savedPreLaunch.cachedAttributionReadCallbacksArray)
-    {
+    for (ADJAttributionCallbackBlock attributionCallback in
+         self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
+        __block ADJAttributionCallbackBlock localAttributionCallback = attributionCallback;
         [ADJUtil launchInMainThread:^{
-            [attributionCallback didReadWithAdjustAttribution:localAttribution];
+            localAttributionCallback(localAttribution);
         }];
     }
 

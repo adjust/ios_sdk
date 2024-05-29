@@ -19,11 +19,6 @@
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
-@interface ADJAttributionGetterSendAll : NSObject<ADJAttributionCallback>
-@property (nonatomic, strong) ATLTestLibrary *testLibrary;
-@property (nonatomic, copy) NSString *extraPath;
-@end
-
 @interface ADJLastDeeplinkGetterSendAll : NSObject<ADJLastDeeplinkCallback>
 @property (nonatomic, strong) ATLTestLibrary *testLibrary;
 @property (nonatomic, copy) NSString *extraPath;
@@ -800,12 +795,19 @@
 }
 
 - (void)attributionGetter:(NSDictionary *)parameters {
-    ADJAttributionGetterSendAll *_Nonnull attributionGetter =
-        [[ADJAttributionGetterSendAll alloc] init];
-    attributionGetter.testLibrary = self.testLibrary;
-    attributionGetter.extraPath = self.extraPath;
-
-    [Adjust attributionWithCallback:attributionGetter];
+    [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nonnull attribution) {
+        [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+        [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
+        [self.testLibrary addInfoToSend:@"network" value:attribution.network];
+        [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
+        [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
+        [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
+        [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
+        [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+        [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+        [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
 }
 
 - (void)enableCoppaCompliance:(NSDictionary *)parameters {
@@ -814,25 +816,6 @@
 
 - (void)disableCoppaCompliance:(NSDictionary *)parameters {
     [Adjust disableCoppaCompliance];
-}
-
-@end
-
-@implementation ADJAttributionGetterSendAll
-
-- (void)didReadWithAdjustAttribution:(nonnull ADJAttribution *)attribution {
-    [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
-    [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
-    [self.testLibrary addInfoToSend:@"network" value:attribution.network];
-    [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
-    [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
-    [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
-    [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
-    [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
-    [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
-    [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
-
-    [self.testLibrary sendInfoToServer:self.extraPath];
 }
 
 @end
