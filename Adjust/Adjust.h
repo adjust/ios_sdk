@@ -20,8 +20,8 @@
 typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nullable resolvedLink);
 typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution);
 typedef void(^ADJIdfaGetterBlock)(NSString * _Nullable idfa);
+typedef void(^ADJIdfvGetterBlock)(NSString * _Nullable idfv);
 
-@protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;
 @protocol ADJLastDeeplinkCallback;
 @protocol ADJAdidCallback;
@@ -109,7 +109,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Process the deep link that has opened an app and potentially get a resolved link.
  *
  * @param deeplink URL object which contains info about adjust deep link.
- * @param completion Completion handler where either resolved or echoed deep link will be sent.
+ * @param completion Completion block where either resolved or echoed deep link will be sent.
  */
 + (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
             withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion;
@@ -151,9 +151,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Retrieve iOS device IDFV value through a callback.
  *
- * @param idfvCallback Callback to get the IDFV value delivered to.
+ * @param completion Completion block to get the IDFV value delivered to.
  */
-+ (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback;
++ (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion;
 
 
 /**
@@ -379,7 +379,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion;
 
-- (void)idfvWithCallback:(nonnull id<ADJIdfvCallback>)idfvCallback;
+- (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion;
 
 - (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
@@ -413,12 +413,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-
-@end
-
-@protocol ADJIdfvCallback <NSObject>
-
-- (void)didReadWithIdfv:(nullable NSString *)idfv;
 
 @end
 
