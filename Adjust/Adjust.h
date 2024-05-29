@@ -317,8 +317,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (void)disableCoppaCompliance;
 
-+ (void)verifyAndTrack:(nonnull ADJEvent *)event
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
++ (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 /**
  * @brief Method used for internal testing only. Don't use it in production.
@@ -411,8 +411,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)disableCoppaCompliance;
 
-- (void)verifyAndTrack:(nonnull ADJEvent *)event
-     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
+- (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
+                     completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
 
 @end
 
