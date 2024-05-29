@@ -17,8 +17,8 @@
 #import "ADJAppStorePurchase.h"
 #import "ADJPurchaseVerificationResult.h"
 
-typedef void(^AdjustResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
-typedef void(^ADJAttributionCallbackBlock)(ADJAttribution * _Nonnull attribution);
+typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
+typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nonnull attribution);
 
 @protocol ADJIdfaCallback;
 @protocol ADJIdfvCallback;
@@ -112,7 +112,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @param completion Completion handler where either resolved or echoed deep link will be sent.
  */
 + (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion;
+            withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion;
 
 /**
  * @brief Set the APNs push token.
@@ -171,7 +171,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @note Attribution information is available only after installation has been successfully tracked
  *       and attribution information arrived after that from the backend.
  */
-+ (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
++ (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 
 /**
  * @brief Get current Adjust SDK version string through a callback.
@@ -343,7 +343,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)processDeeplink:(nonnull NSURL *)deeplink;
 
 - (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
-            withCompletionHandler:(void (^_Nonnull)(NSString * _Nonnull resolvedLink))completion;
+            withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion;
 
 - (void)switchToOfflineMode;
 
@@ -383,7 +383,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)sdkVersionWithCallback:(nonnull id<ADJSdkVersionCallback>)sdkVersionCallback;
 
-- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url withScheme:(nonnull NSString *)scheme;
 

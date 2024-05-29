@@ -59,7 +59,7 @@
 
 - (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
                 savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
-    deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
+    deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
 
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
@@ -79,7 +79,7 @@
           withClickTime:(NSDate * _Nullable)clickTime;
 - (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
-            withCompletionHandler:(AdjustResolvedDeeplinkBlock _Nullable)completion;
+            withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion;
 - (void)setPushTokenData:(NSData * _Nullable)pushTokenData;
 - (void)setPushTokenString:(NSString * _Nullable)pushTokenString;
 - (void)setGdprForgetMe;
@@ -107,7 +107,7 @@
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion;
-- (void)attributionWithCompletionHandler:(nonnull ADJAttributionCallbackBlock)completion;
+- (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCallback:(nonnull id<ADJAdidCallback>)adidCallback;
 - (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
@@ -126,7 +126,7 @@
 
 - (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
                 savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
-    deeplinkResolutionCallback:(AdjustResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
+    deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback;
 
 - (void)addGlobalCallbackParameterI:(ADJActivityHandler *_Nonnull)selfI
                               param:(NSString *_Nonnull)param
