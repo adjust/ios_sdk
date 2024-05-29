@@ -57,14 +57,14 @@ then
         ${TV_BCSYMBOLS} \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
         -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ADJUST_TV}.framework.dSYM" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     else
         xcodebuild -create-xcframework \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     fi
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
@@ -75,12 +75,12 @@ then
         ${IOS_BCSYMBOLS} \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
         -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ADJUST_IOS}.framework.dSYM" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     else
         xcodebuild -create-xcframework \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IOS_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IOS}.framework" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
     fi
   elif [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
@@ -91,12 +91,12 @@ then
         ${TV_BCSYMBOLS} \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
         -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ADJUST_TV}.framework.dSYM" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
     else
         xcodebuild -create-xcframework \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
         -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__TV_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_TV}.framework" \
-        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
+        -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
     fi
   fi
 
@@ -121,15 +121,15 @@ then
 
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
-    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
-    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+    codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
+    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
     codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework"
-    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_IOS}.xcframework" "${XCF_FRM_ZIP_NAME__IOS_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   else
     codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework"
-    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_TV}.xcframework" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+    archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER}/${XCF_FRM_NAME__ADJUST_TV}.xcframework" "${XCF_FRM_ZIP_NAME__TV_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
   fi
 
 fi
@@ -158,12 +158,12 @@ then
     ${IM_IOS_BCSYMBOLS} \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IM}.framework" \
     -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ADJUST_IM}.framework.dSYM" \
-    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IM_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
   else
     xcodebuild -create-xcframework \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IM}.framework" \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__IM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_IM}.framework" \
-    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IM_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
   fi
 
   # Cleanup archive files
@@ -173,8 +173,8 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for iOS (iMessage) ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
-  archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_IM}.xcframework" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_IM_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework"
+  archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/" "${XCF_OUTPUT_XCFRMK_IM_FOLDER}/${XCF_FRM_NAME__ADJUST_IM}.xcframework" "${XCF_FRM_ZIP_NAME__IM_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -202,14 +202,14 @@ then
     ${WEB_IOS_BCSYMBOLS} \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.framework" \
     -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.framework.dSYM" \
-    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
 
   else
 
     xcodebuild -create-xcframework \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.framework" \
     -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__WEB_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.framework" \
-    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
 
   fi
 
@@ -220,8 +220,8 @@ then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for iOS (WebBridge) ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
-  archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework"
+  archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}" "${XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER}/${XCF_FRM_NAME__ADJUST_WEB_BRIDGE}.xcframework" "${XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
 fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
