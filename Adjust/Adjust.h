@@ -17,9 +17,9 @@
 #import "ADJAppStorePurchase.h"
 #import "ADJPurchaseVerificationResult.h"
 
-typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nonnull resolvedLink);
-typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nonnull attribution);
-typedef void(^ADJIdfaGetterBlock)(NSString * _Nonnull idfa);
+typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nullable resolvedLink);
+typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution);
+typedef void(^ADJIdfaGetterBlock)(NSString * _Nullable idfa);
 
 @protocol ADJIdfvCallback;
 @protocol ADJSdkVersionCallback;

@@ -436,7 +436,7 @@
         }
 
         __block WVJBResponseCallback localResponseCallback = responseCallback;
-        [Adjust idfaWithCompletionHandler:^(NSString * _Nonnull idfa) {
+        [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
             localResponseCallback(idfa);
         }];
     }];
@@ -500,7 +500,7 @@
         }
 
         __block WVJBResponseCallback localResponseCallback = responseCallback;
-        [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nonnull attribution) {
+        [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
             NSDictionary *attributionDictionary = nil;
             if (attribution != nil) {
                 attributionDictionary = [attribution dictionary];
