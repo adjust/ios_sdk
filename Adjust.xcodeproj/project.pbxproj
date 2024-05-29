@@ -3711,6 +3711,7 @@
 		0AB1CADC27DF671300509231 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = "";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -3726,7 +3727,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = AdjustSdkWebBridge;
 				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkWebBridge;
 				SKIP_INSTALL = YES;
@@ -3737,6 +3739,7 @@
 		0AB1CADD27DF671300509231 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = "";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -3751,7 +3754,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = AdjustSdkWebBridge;
 				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkWebBridge;
 				SKIP_INSTALL = YES;
@@ -3802,7 +3806,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BITCODE_GENERATION_MODE = bitcode;
+				BITCODE_GENERATION_MODE = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3847,7 +3851,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-fembed-bitcode";
+				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
@@ -3857,7 +3861,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BITCODE_GENERATION_MODE = bitcode;
+				BITCODE_GENERATION_MODE = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3896,7 +3900,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				OTHER_CFLAGS = "-fembed-bitcode";
+				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VALIDATE_PRODUCT = YES;
@@ -3906,11 +3910,11 @@
 		9679923118BBAE2800394606 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BITCODE_GENERATION_MODE = bitcode;
+				BITCODE_GENERATION_MODE = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3931,11 +3935,11 @@
 		9679923218BBAE2800394606 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BITCODE_GENERATION_MODE = bitcode;
+				BITCODE_GENERATION_MODE = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				DSTROOT = /tmp/Adjust.dst;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
