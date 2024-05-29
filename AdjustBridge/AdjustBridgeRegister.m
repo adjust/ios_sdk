@@ -79,7 +79,7 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
 
-        // Copied from adjust.js
+        // Adjust
         window.Adjust = {
             initSdk: function(adjustConfig) {
                 if (WebViewJavascriptBridge) {
@@ -218,11 +218,6 @@ static NSString * fbAppIdStatic = nil;
                     WebViewJavascriptBridge.callHandler('adjust_trackMeasurementConsent', consentMeasurement, null);
                 }
             },
-            getLastDeeplink: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_lastDeeplink', null, callback);
-                }
-            },
             fbPixelEvent: function(pixelID, evtName, customData) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
@@ -263,12 +258,11 @@ static NSString * fbAppIdStatic = nil;
             }
         };
 
-        // Copied from adjust_event.js
+        // AdjustEvent
         window.AdjustEvent = function(eventToken) {
             this.eventToken = eventToken;
             this.revenue = null;
             this.currency = null;
-            this.transactionId = null;
             this.deduplicationId = null;
             this.callbackId = null;
             this.callbackParameters = [];
@@ -287,9 +281,6 @@ static NSString * fbAppIdStatic = nil;
             this.revenue = revenue;
             this.currency = currency;
         };
-        AdjustEvent.prototype.setTransactionId = function(transactionId) {
-            this.transactionId = transactionId;
-        };
         AdjustEvent.prototype.setDeduplicationId = function(deduplicationId) {
             this.deduplicationId = deduplicationId;
         };
@@ -297,7 +288,7 @@ static NSString * fbAppIdStatic = nil;
             this.callbackId = callbackId;
         };
 
-        // Adjust Third Party Sharing
+        // AdjustThirdPartySharing
         window.AdjustThirdPartySharing = function(isEnabled) {
             this.isEnabled = isEnabled;
             this.granularOptions = [];
@@ -314,20 +305,20 @@ static NSString * fbAppIdStatic = nil;
             this.partnerSharingSettings.push(value);
         };
 
-        // Copied from adjust_config.js
+        // AdjustConfig
         window.AdjustConfig = function(appToken, environment, legacy) {
             if (arguments.length === 2) {
-                // New format does not require bridge as first parameter.
+                // new format does not require bridge as first parameter
                 this.appToken = appToken;
                 this.environment = environment;
             } else if (arguments.length === 3) {
-                // New format with allowSuppressLogLevel.
+                // new format with allowSuppressLogLevel
                 if (typeof(legacy) == typeof(true)) {
                     this.appToken = appToken;
                     this.environment = environment;
                     this.allowSuppressLogLevel = legacy;
                 } else {
-                    // Old format with first argument being the bridge instance.
+                    // old format with first argument being the bridge instance
                     this.bridge = appToken;
                     this.appToken = environment;
                     this.environment = legacy;

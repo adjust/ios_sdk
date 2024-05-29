@@ -7,10 +7,6 @@
 //
 
 #import "Adjust.h"
-// In case of erroneous import statement try with:
-// #import <AdjustSdk/Adjust.h>
-// (depends how you import the Adjust SDK to your app)
-
 #import "AdjustBridge.h"
 #import "ADJAdjustFactory.h"
 #import "WKWebViewJavascriptBridge.h"
@@ -52,12 +48,6 @@
 @interface ADJSdkVersionGetter : NSObject<ADJSdkVersionCallback>
 
 @property (nonatomic, copy) NSString *sdkPrefix;
-
-@property (nonatomic, strong) WVJBResponseCallback callback;
-
-@end
-
-@interface ADJLastDeeplinkGetter : NSObject<ADJLastDeeplinkCallback>
 
 @property (nonatomic, strong) WVJBResponseCallback callback;
 
@@ -217,7 +207,7 @@
 - (void)loadWKWebViewBridge:(WKWebView *)wkWebView
           wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate {
     if (self.bridgeRegister != nil) {
-        // WebViewBridge already loaded.
+        // WebViewBridge already loaded
         return;
     }
 
@@ -260,7 +250,7 @@
             adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
         }
 
-        // No need to continue if adjust config is not valid.
+        // no need to continue if adjust config is not valid
         if (![adjustConfig isValid]) {
             return;
         }
@@ -332,8 +322,8 @@
             self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
         }
 
-        // Set self as delegate if any callback is configured.
-        // Change to swizzle the methods in the future.
+        // set self as delegate if any callback is configured
+        // change to swizzle the methods in the future
         if (self.attributionCallbackName != nil
             || self.eventSuccessCallbackName != nil
             || self.eventFailureCallbackName != nil
@@ -351,7 +341,7 @@
             [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
         }
 
-        // URL strategies
+        // URL strategy
         if (urlStrategyDomains != nil && [urlStrategyDomains count] > 0) {
             self.urlStrategyDomains = [[NSMutableArray alloc] initWithCapacity:[urlStrategyDomains count]];
             for (int i = 0; i < [urlStrategyDomains count]; i += 1) {
@@ -366,21 +356,19 @@
         }
 
         [Adjust initSdk:adjustConfig];
-        [Adjust trackSubsessionStart];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_trackEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *eventToken = [data objectForKey:@"eventToken"];
         NSString *revenue = [data objectForKey:@"revenue"];
         NSString *currency = [data objectForKey:@"currency"];
-        NSString *transactionId = [data objectForKey:@"transactionId"];
         NSString *deduplicationId = [data objectForKey:@"deduplicationId"];
+        NSString *callbackId = [data objectForKey:@"callbackId"];
         id callbackParameters = [data objectForKey:@"callbackParameters"];
         id partnerParameters = [data objectForKey:@"partnerParameters"];
-        NSString *callbackId = [data objectForKey:@"callbackId"];
 
         ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
-        // No need to continue if adjust event is not valid
+        // no need to continue if adjust event is not valid
         if (![adjustEvent isValid]) {
             return;
         }
@@ -389,11 +377,11 @@
             double revenueValue = [revenue doubleValue];
             [adjustEvent setRevenue:revenueValue currency:currency];
         }
-        if ([self isFieldValid:transactionId]) {
-            [adjustEvent setTransactionId:transactionId];
-        }
         if ([self isFieldValid:deduplicationId]) {
             [adjustEvent setDeduplicationId:deduplicationId];
+        }
+        if ([self isFieldValid:callbackId]) {
+            [adjustEvent setCallbackId:callbackId];
         }
         for (int i = 0; i < [callbackParameters count]; i += 2) {
             NSString *key = [[callbackParameters objectAtIndex:i] description];
@@ -404,9 +392,6 @@
             NSString *key = [[partnerParameters objectAtIndex:i] description];
             NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
             [adjustEvent addPartnerParameter:key value:value];
-        }
-        if ([self isFieldValid:callbackId]) {
-            [adjustEvent setCallbackId:callbackId];
         }
 
         [Adjust trackEvent:adjustEvent];
@@ -602,28 +587,20 @@
         [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
     }];
 
-    [self.bridgeRegister registerHandler:@"adjust_lastDeeplink" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridgeRegister registerHandler:@"adjust_enableCoppaCompliance"
+                                 handler:^(id data, WVJBResponseCallback responseCallback) {
         if (responseCallback == nil) {
             return;
         }
-
-        ADJLastDeeplinkGetter * _Nonnull lastDeeplinkGetter = [[ADJLastDeeplinkGetter alloc] init];
-        lastDeeplinkGetter.callback = responseCallback;
-        [Adjust lastDeeplinkWithCallback:lastDeeplinkGetter];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_enableCoppaCompliance"
-                                 handler:^(id data, WVJBResponseCallback responseCallback)
-     {
-        if (responseCallback == nil) { return; }
 
         [Adjust enableCoppaCompliance];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_disableCoppaCompliance"
-                                 handler:^(id data, WVJBResponseCallback responseCallback)
-     {
-        if (responseCallback == nil) { return; }
+                                 handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (responseCallback == nil) {
+            return;
+        }
 
         [Adjust disableCoppaCompliance];
     }];
@@ -686,7 +663,6 @@
 
         [Adjust setTestOptions:testOptions];
     }];
-
 }
 
 - (void)registerAugmentedView {
@@ -840,17 +816,8 @@
 
 @end
 
-#pragma mark - ADJLastDeeplinkCallback protocol
-
-@implementation ADJLastDeeplinkGetter
-
-- (void)didReadWithLastDeeplink:(NSURL *)lastDeeplink {
-    self.callback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
-}
-
-@end
-
 #pragma mark - ADJAdidCallback protocol
+
 @implementation ADJAdidGetter
 
 - (void)didReadWithAdid:(NSString *)adid {
@@ -860,6 +827,7 @@
 @end
 
 #pragma mark - ADJIsEnabledCallback protocol
+
 @implementation ADJIsEnabledGetter
 
 - (void)didReadWithIsEnabled:(BOOL)isEnabled {
