@@ -272,9 +272,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback {
++ (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion {
     @synchronized (self) {
-        [[Adjust getInstance] lastDeeplinkWithCallback:lastDeeplinkCallback];
+        [[Adjust getInstance] lastDeeplinkWithCompletionHandler:completion];
     }
 }
 
@@ -675,15 +675,16 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
-- (void)lastDeeplinkWithCallback:(nonnull id<ADJLastDeeplinkCallback>)lastDeeplinkCallback {
-    if (lastDeeplinkCallback == nil) {
-        [self.logger error:@"Callback for getting last opened deep link can't be null"];
+- (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting last opened deep link can't be null"];
         return;
     }
 
     NSURL *lastDeeplink = [ADJUserDefaults getCachedDeeplinkUrl];
+    __block ADJLastDeeplinkGetterBlock localLastDeeplinkCallback = completion;
     [ADJUtil launchInMainThread:^{
-        [lastDeeplinkCallback didReadWithLastDeeplink:lastDeeplink];
+        localLastDeeplinkCallback(lastDeeplink);
     }];
 }
 
