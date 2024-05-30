@@ -12,15 +12,21 @@ Pod::Spec.new do |s|
   s.framework               = 'SystemConfiguration'
   s.ios.weak_framework      = 'AdSupport'
   s.tvos.weak_framework     = 'AdSupport'
-  s.default_subspec         = 'Core'
+  s.default_subspec         = 'Adjust'
 
   s.subspec 'Core' do |co|
     co.source_files = 'Adjust/**/*.{h,m}'
     co.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
   end
 
-  s.subspec 'WebBridge' do |wb|
+  s.subspec 'Adjust' do |ads|
+    ads.dependency 'Adjust/Core'
+    ads.dependency 'AdjustSignature', '3.18'
+  end
+
+  s.subspec 'AdjustWebBridge' do |wb|
     wb.dependency 'Adjust/Core'
+    wb.dependency 'AdjustSignature', '3.18'
     wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
     wb.ios.deployment_target = '12.0'
   end
