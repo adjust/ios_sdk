@@ -88,10 +88,10 @@
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Add a key-pair to be fowarded to a partner.
+ * @brief Add a key-pair to be forwarded to a partner.
  *
- * @param key String key to be fowarded to the partner.
- * @param value String value of the key to be fowarded to the partner.
+ * @param key String key to be forwarded to the partner.
+ * @param value String value of the key to be forwarded to the partner.
  */
 - (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
@@ -108,7 +108,7 @@
 - (void)setRevenue:(double)amount currency:(nonnull NSString *)currency;
 
 /**
- * @brief Set the transaction ID of a In-App Purchases to avoid revenue duplications.
+ * @brief Set the transaction ID of an In-App Purchases to avoid revenue duplications.
  *
  * @param transactionId The identifier used to avoid duplicate revenue events.
  */
@@ -118,7 +118,7 @@
  * @brief Set the deduplication ID to avoid events duplications.
  *
  * @note A deduplication ID can be used to avoid duplicate events.
- *       The number of last remembered deduplication identifiers can be set in deduplicationIdsMaxSize of ADJConfig .
+ *       The number of last remembered deduplication identifiers can be set in deduplicationIdsMaxSize of ADJConfig.
  *
  * @param deduplicationId The identifier used to avoid duplicate events.
  */
@@ -135,14 +135,14 @@
 - (void)setCallbackId:(nonnull NSString *)callbackId;
 
 /**
- * @brief Set the product ID of a In-App Purchases to perform IAP verification.
+ * @brief Set the product ID of an In-App Purchases to perform IAP verification.
  *
  * @param productId The product ID of the purchased item.
  */
 - (void)setProductId:(NSString * _Nonnull)productId;
 
 /**
- * @brief Set the receipt of a In-App Purchases to perform IAP verification.
+ * @brief Set the receipt of an In-App Purchases to perform IAP verification.
  *
  * @param receipt The receipt obtained after successful IAP.
  */
