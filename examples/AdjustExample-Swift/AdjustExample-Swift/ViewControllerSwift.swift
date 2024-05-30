@@ -21,6 +21,7 @@ class ViewControllerSwift: UIViewController {
     @IBOutlet weak var btnDisableOfflineMode: UIButton?
     @IBOutlet weak var btnEnableSDK: UIButton?
     @IBOutlet weak var btnDisableSDK: UIButton?
+    @IBOutlet weak var btnIsSDKEnabled: UIButton?
 
     // MARK: - View lifecycle methods
     override func viewDidLoad() {
@@ -80,6 +81,16 @@ class ViewControllerSwift: UIViewController {
 
     @IBAction func btnDisableSDKTapped(_sender: UIButton) {
         Adjust.disable()
+    }
+
+    @IBAction func btnIsSDKEnabledTapped(_sender: UIButton) {
+        Adjust.isEnabled { isSDKEnabled in
+            if (isSDKEnabled) {
+                NSLog("SDK is enabled!");
+            } else {
+                NSLog("SDK is disabled");
+            }
+        }
     }
 }
 
