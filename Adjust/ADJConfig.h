@@ -50,7 +50,7 @@
 - (void)adjustEventTrackingFailed:(nullable ADJEventFailure *)eventFailureResponseData;
 
 /**
- * @brief Optional delegate method that gets called when an session is tracked with success.
+ * @brief Optional delegate method that gets called when a session is tracked with success.
  *
  * @param sessionSuccessResponseData The response information from tracking with success
  *
@@ -59,7 +59,7 @@
 - (void)adjustSessionTrackingSucceeded:(nullable ADJSessionSuccess *)sessionSuccessResponseData;
 
 /**
- * @brief Optional delegate method that gets called when an session is tracked with failure.
+ * @brief Optional delegate method that gets called when a session is tracked with failure.
  *
  * @param sessionFailureResponseData The response information from tracking with failure
  *

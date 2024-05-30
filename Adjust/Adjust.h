@@ -236,7 +236,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)gdprForgetMe;
 
 /**
- * @brief Track third paty sharing with possibility to allow or disallow it.
+ * @brief Track third party sharing with possibility to allow or disallow it.
  *
  * @param thirdPartySharing Third party sharing choice.
  */
@@ -302,7 +302,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Verify in-app-purchase.
  *
  * @param purchase   Purchase object.
- * @param completion Callback where verification result will be repoted.
+ * @param completion Callback where verification result will be reported.
  */
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
