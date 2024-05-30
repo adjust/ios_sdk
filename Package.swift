@@ -8,12 +8,12 @@ let package = Package(
         .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"])
     ],
-//    dependencies: [
-//        .package(
-//            url: "https://github.com/adjust/adjust_signature_sdk.git",
-//            from: "3.18.0"
-//        )
-//    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/adjust/adjust_signature_sdk.git",
+            from: "3.18.0"
+        )
+    ],
     targets: [
         .target(
             name: "AdjustSdk",
