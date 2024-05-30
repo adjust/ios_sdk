@@ -30,11 +30,4 @@
  */
 @property (nonatomic, strong, nullable) NSDictionary *jsonResponse;
 
-/**
- * @brief Initialisation method.
- *
- * @return ADJSessionSuccess instance.
- */
-+ (nullable ADJSessionSuccess *)sessionSuccessResponseData;
-
 @end

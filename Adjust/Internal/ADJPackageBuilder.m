@@ -1043,13 +1043,13 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.isCoppaComplianceEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_coppa"];
     }
-    if (self.adjustConfig.isSkanAttributionHandlingEnabled == NO) {
+    if (self.adjustConfig.isSkanAttributionEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_skadn_disabled"];
     }
-    if (self.adjustConfig.isIdfaReadingAllowed == NO) {
+    if (self.adjustConfig.isIdfaReadingEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
     }
-    if (self.adjustConfig.allowAdServicesInfoReading == NO) {
+    if (self.adjustConfig.isAdServiesEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
     }
 }
@@ -1182,7 +1182,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     // idfa
-    if (!adjConfig.isIdfaReadingAllowed) {
+    if (!adjConfig.isIdfaReadingEnabled) {
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }
@@ -1194,7 +1194,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     __block NSString *idfa = nil;
     [ADJUtil launchSynchronisedWithObject:[ADJPackageBuilder class] block:^{
         // read once && IDFA not cached
-        if (adjConfig.shouldReadDeviceInfoOnce && packageParams.idfaCached != nil) {
+        if (adjConfig.isDeviceIdsReadingOnceEnabled && packageParams.idfaCached != nil) {
             idfa = packageParams.idfaCached;
         } else {
             // read IDFA

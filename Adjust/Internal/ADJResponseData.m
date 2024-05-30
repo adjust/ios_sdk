@@ -102,7 +102,7 @@
 @implementation ADJSessionResponseData
 
 - (ADJSessionSuccess *)successResponseData {
-    ADJSessionSuccess *successResponseData = [ADJSessionSuccess sessionSuccessResponseData];
+    ADJSessionSuccess *successResponseData = [[ADJSessionSuccess alloc] init];
 
     successResponseData.message = self.message;
     successResponseData.timeStamp = self.timeStamp;
@@ -113,7 +113,7 @@
 }
 
 - (ADJSessionFailure *)failureResponseData {
-    ADJSessionFailure *failureResponseData = [ADJSessionFailure sessionFailureResponseData];
+    ADJSessionFailure *failureResponseData = [[ADJSessionFailure alloc] init];
 
     failureResponseData.message = self.message;
     failureResponseData.timeStamp = self.timeStamp;
@@ -157,7 +157,7 @@
 }
 
 - (ADJEventSuccess *)successResponseData {
-    ADJEventSuccess *successResponseData = [ADJEventSuccess eventSuccessResponseData];
+    ADJEventSuccess *successResponseData = [[ADJEventSuccess alloc] init];
 
     successResponseData.message = self.message;
     successResponseData.timeStamp = self.timeStamp;
@@ -170,7 +170,7 @@
 }
 
 - (ADJEventFailure *)failureResponseData {
-    ADJEventFailure *failureResponseData = [ADJEventFailure eventFailureResponseData];
+    ADJEventFailure *failureResponseData = [[ADJEventFailure alloc] init];
 
     failureResponseData.message = self.message;
     failureResponseData.timeStamp = self.timeStamp;

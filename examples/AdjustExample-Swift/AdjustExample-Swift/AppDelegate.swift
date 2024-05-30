@@ -16,16 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment = ADJEnvironmentSandbox
-        let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
+        let adjustConfig = ADJConfig(appToken: appToken, andEnvironment: environment)
 
         // Change the log level.
         adjustConfig?.logLevel = ADJLogLevelVerbose
-
-        // Set default tracker.
-        // adjustConfig?.defaultTracker = "{TrackerToken}"
-
-        // Send in the background.
-        // adjustConfig?.sendInBackground = true
 
         // Set delegate object.
         adjustConfig?.delegate = self
@@ -43,20 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // Remove global partner parameter.
         Adjust.removeGlobalPartnerParameter(forKey: "han")
 
-        // Remove all global callback parameters.
-        // Adjust.removeGlobalCallbackParameters()
-
-        // Remove all global partner parameters.
-        // Adjust.removeGlobalPartnerParameters())
-
         // Initialise the SDK.
         Adjust.initSdk(adjustConfig!)
-
-        // Put the SDK in offline mode.
-        // Adjust.switchToOfflineMode();
-
-        // Disable the SDK
-        // Adjust.disable();
 
         return true
     }
@@ -106,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         NSLog("Session failure data: %@", sessionFailureResponseData ?? "")
     }
 
-    func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
+    func adjustDeferredDeeplinkReceived(_ deeplink: URL?) -> Bool {
         NSLog("Deferred deep link callback called!")
         NSLog("Deferred deep link URL: %@", deeplink?.absoluteString ?? "")
         return true

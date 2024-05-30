@@ -19,19 +19,11 @@
     // Configure Adjust SDK.
     NSString *appToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
+    ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                                   andEnvironment:environment];
 
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-
-    // Set default tracker.
-    // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
-
-    // Send in the background.
-    // [adjustConfig setSendInBackground:YES];
-
-    // Enable LinkMe feature.
-    // [adjustConfig enableLinkMe];
 
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
@@ -50,32 +42,18 @@
     // Remove global partner parameter.
     [Adjust removeGlobalPartnerParameterForKey:@"sp_foo"];
     
-    // Remove all global callback parameters.
-    // [Adjust removeGlobalCallbackParameters];
-
-    // Remove all global partner parameters.
-    // [Adjust removeGlobalPartnerParameters];
-    
     // Initialise the SDK.
     [Adjust initSdk:adjustConfig];
-    
-    // Put the SDK in offline mode.
-    // [Adjust switchToOfflineMode];
-    
-    // Disable the SDK.
-    // [Adjust disable];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"Scheme based deep link opened an app: %@", url);
-    // add your code below to handle deep link
-    // (e.g., open deep link content)
-    // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
     [Adjust processDeeplink:url];
+
     return YES;
 }
 
@@ -85,6 +63,7 @@
         // Pass deep link to Adjust in order to potentially reattribute user.
         [Adjust processDeeplink:[userActivity webpageURL]];
     }
+
     return YES;
 }
 
@@ -113,7 +92,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
 }
 
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     NSLog(@"Deferred deep link callback called!");
     NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
     

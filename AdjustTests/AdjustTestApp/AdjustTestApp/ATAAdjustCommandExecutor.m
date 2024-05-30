@@ -221,7 +221,8 @@
         NSString *environment = [parameters objectForKey:@"environment"][0];
         NSString *appToken = [parameters objectForKey:@"appToken"][0];
 
-        adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
+        adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                            andEnvironment:environment];
         [self.savedConfigs setObject:adjustConfig forKey:configNumber];
     }
     
@@ -271,7 +272,9 @@
 
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
-        [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
+        if ([sendInBackgroundS boolValue] == YES) {
+            [adjustConfig enableSendingInBackground];
+        }
     }
     
     if ([parameters objectForKey:@"allowIdfaReading"]) {
@@ -283,13 +286,15 @@
 
     if ([parameters objectForKey:@"allowAdServicesInfoReading"]) {
         NSString *allowAdServicesInfoReadingS = [parameters objectForKey:@"allowAdServicesInfoReading"][0];
-        [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReadingS boolValue]];
+        if ([allowAdServicesInfoReadingS boolValue] == NO) {
+            [adjustConfig disableAdServies];
+        }
     }
     
     if ([parameters objectForKey:@"allowSkAdNetworkHandling"]) {
         NSString *allowSkAdNetworkHandlingS = [parameters objectForKey:@"allowSkAdNetworkHandling"][0];
         if ([allowSkAdNetworkHandlingS boolValue] == NO) {
-            [adjustConfig disableSkanAttributionHandling];
+            [adjustConfig disableSkanAttribution];
         }
     }
 
@@ -405,7 +410,7 @@
         } else {
             eventToken = [parameters objectForKey:@"eventToken"][0];
         }
-        adjustEvent = [ADJEvent eventWithEventToken:eventToken];
+        adjustEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
 
@@ -598,7 +603,7 @@
     }
 
     ADJThirdPartySharing *adjustThirdPartySharing =
-        [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+        [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
 
     if ([parameters objectForKey:@"granularOptions"]) {
         NSArray *granularOptions = [parameters objectForKey:@"granularOptions"];

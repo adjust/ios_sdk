@@ -14,25 +14,24 @@
 @interface ADJEvent : NSObject<NSCopying>
 
 /**
- * @brief Revenue attached to the event.
- */
-@property (nonatomic, copy, readonly, nonnull) NSNumber *revenue;
-
-/**
  * @brief Event token.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *eventToken;
 
 /**
- * @brief IAP transaction ID.
+ * @brief Revenue attached to the event.
  */
-@property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
+@property (nonatomic, copy, readonly, nonnull) NSNumber *revenue;
+
+/**
+ * @brief Currency value.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *currency;
 
 /**
  * @brief Deduplication ID.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *deduplicationId;
-
 
 /**
  * @brief Custom user defined event ID.
@@ -40,9 +39,14 @@
 @property (nonatomic, copy, readonly, nonnull) NSString *callbackId;
 
 /**
- * @brief Currency value.
+ * @brief IAP transaction ID.
  */
-@property (nonatomic, copy, readonly, nonnull) NSString *currency;
+@property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
+
+/**
+ * @brief IAP product ID.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *productId;
 
 /**
  * @brief IAP receipt.
@@ -60,19 +64,31 @@
 @property (nonatomic, readonly, nonnull) NSDictionary *callbackParameters;
 
 /**
- * @brief IAP product ID.
- */
-@property (nonatomic, copy, readonly, nonnull) NSString *productId;
-
-/**
  * @brief Create Event object with event token.
  *
  * @param eventToken Event token that is created in the dashboard
  *                   at http://adjust.com and should be six characters long.
  */
-+ (nullable ADJEvent *)eventWithEventToken:(nonnull NSString *)eventToken;
-
 - (nullable id)initWithEventToken:(nonnull NSString *)eventToken;
+
+/**
+ * @brief Check if created adjust event object is valid.
+ *
+ * @return Boolean indicating whether the adjust event object is valid or not.
+ */
+- (BOOL)isValid;
+
+/**
+ * @brief Set the revenue and associated currency of the event.
+ *
+ * @param amount The amount in units (example: for 1.50 EUR is 1.5).
+ * @param currency String of the currency with ISO 4217 format.
+ *                 It should be 3 characters long (example: for 1.50 EUR is @"EUR").
+ *
+ * @note The event can contain some revenue. The amount revenue is measured in units.
+ *       It must include a currency in the ISO 4217 format.
+ */
+- (void)setRevenue:(double)amount currency:(nonnull NSString *)currency;
 
 /**
  * @brief Add a key-pair to a callback URL.
@@ -96,25 +112,6 @@
 - (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Set the revenue and associated currency of the event.
- *
- * @param amount The amount in units (example: for 1.50 EUR is 1.5).
- * @param currency String of the currency with ISO 4217 format.
- *                 It should be 3 characters long (example: for 1.50 EUR is @"EUR").
- *
- * @note The event can contain some revenue. The amount revenue is measured in units.
- *       It must include a currency in the ISO 4217 format.
- */
-- (void)setRevenue:(double)amount currency:(nonnull NSString *)currency;
-
-/**
- * @brief Set the transaction ID of an In-App Purchases to avoid revenue duplications.
- *
- * @param transactionId The identifier used to avoid duplicate revenue events.
- */
-- (void)setTransactionId:(nonnull NSString *)transactionId;
-
-/**
  * @brief Set the deduplication ID to avoid events duplications.
  *
  * @note A deduplication ID can be used to avoid duplicate events.
@@ -124,8 +121,6 @@
  */
 - (void)setDeduplicationId:(nonnull NSString *)deduplicationId;
 
-
-
 /**
  * @brief Set the custom user defined ID for the event which will be reported in
  *        success/failure callbacks.
@@ -133,6 +128,13 @@
  * @param callbackId Custom user defined identifier for the event
  */
 - (void)setCallbackId:(nonnull NSString *)callbackId;
+
+/**
+ * @brief Set the transaction ID of an In-App Purchases to avoid revenue duplications.
+ *
+ * @param transactionId The identifier used to avoid duplicate revenue events.
+ */
+- (void)setTransactionId:(nonnull NSString *)transactionId;
 
 /**
  * @brief Set the product ID of an In-App Purchases to perform IAP verification.
@@ -147,12 +149,5 @@
  * @param receipt The receipt obtained after successful IAP.
  */
 - (void)setReceipt:(NSData * _Nonnull)receipt;
-
-/**
- * @brief Check if created adjust event object is valid.
- *
- * @return Boolean indicating whether the adjust event object is valid or not.
- */
-- (BOOL)isValid;
 
 @end
