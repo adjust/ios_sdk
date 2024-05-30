@@ -20,27 +20,16 @@
 
 @implementation ADJConfig
 
-+ (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment {
-    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
-}
-
-+ (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment
-             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
-    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
-}
-
-- (id)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment {
+- (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
+                          andEnvironment:(nonnull NSString *)environment {
     return [self initWithAppToken:appToken
                       environment:environment
-             allowSuppressLogLevel:NO];
+              andSuppressLogLevel:NO];
 }
 
-- (id)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment
-  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
+- (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
+                             environment:(nonnull NSString *)environment
+                     andSuppressLogLevel:(BOOL)allowSuppressLogLevel {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -65,13 +54,13 @@
     _environment = environment;
     
     // default values
-    self.sendInBackground = NO;
-    self.allowAdServicesInfoReading = YES;
+    _isSendingInBackgroundEnabled = NO;
+    _isAdServiesEnabled = YES;
     _isLinkMeEnabled = NO;
-    _isIdfaReadingAllowed = YES;
-    _isSkanAttributionHandlingEnabled = YES;
+    _isIdfaReadingEnabled = YES;
+    _isSkanAttributionEnabled = YES;
     _eventDeduplicationIdsMaxSize = -1;
-    _shouldReadDeviceInfoOnce = NO;
+    _isDeviceIdsReadingOnceEnabled = NO;
 
     return self;
 }
@@ -87,19 +76,27 @@
 }
 
 - (void)disableIdfaReading {
-    _isIdfaReadingAllowed = NO;
+    _isIdfaReadingEnabled = NO;
 }
 
-- (void)disableSkanAttributionHandling {
-    _isSkanAttributionHandlingEnabled = NO;
+- (void)disableSkanAttribution {
+    _isSkanAttributionEnabled = NO;
 }
 
 - (void)enableLinkMe {
     _isLinkMeEnabled = YES;
 }
 
-- (void)readDeviceIdsOnce {
-    _shouldReadDeviceInfoOnce = YES;
+- (void)enableDeviceIdsReadingOnce {
+    _isDeviceIdsReadingOnceEnabled = YES;
+}
+
+- (void)enableSendingInBackground {
+    _isSendingInBackgroundEnabled = YES;
+}
+
+- (void)disableAdServies {
+    _isAdServiesEnabled = NO;
 }
 
 - (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
@@ -134,33 +131,27 @@
         [self.logger debug:@"Delegate implements adjustAttributionChanged:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingFailed:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
         hasResponseDelegate = YES;
     }
-
-    if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
-        [self.logger debug:@"Delegate implements adjustDeeplinkResponse:"];
+    if ([delegate respondsToSelector:@selector(adjustDeferredDeeplinkReceived:)]) {
+        [self.logger debug:@"Delegate implements adjustDeferredDeeplinkReceived:"];
         // does not enable hasDelegate flag
         implementsDeeplinkCallback = YES;
     }
-    
     if ([delegate respondsToSelector:@selector(adjustSkanUpdatedWithConversionData:)]) {
         [self.logger debug:@"Delegate implements adjustSkanUpdatedWithConversionData:"];
         hasResponseDelegate = YES;
@@ -215,20 +206,20 @@
         copy.logLevel = self.logLevel;
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
-        copy.sendInBackground = self.sendInBackground;
-        copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
+        copy->_isSendingInBackgroundEnabled = self.isSendingInBackgroundEnabled;
+        copy->_isAdServiesEnabled = self.isAdServiesEnabled;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
-        copy->_isSkanAttributionHandlingEnabled = self.isSkanAttributionHandlingEnabled;
+        copy->_isSkanAttributionEnabled = self.isSkanAttributionEnabled;
         copy->_urlStrategyDomains = [self.urlStrategyDomains copyWithZone:zone];
         copy->_useSubdomains = self.useSubdomains;
         copy->_isDataResidency = self.isDataResidency;
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
-        copy->_isIdfaReadingAllowed = self.isIdfaReadingAllowed;
-        copy->_shouldReadDeviceInfoOnce = self.shouldReadDeviceInfoOnce;
+        copy->_isIdfaReadingEnabled = self.isIdfaReadingEnabled;
+        copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
-        // adjust delegate not copied
+        // AdjustDelegate not copied
     }
 
     return copy;

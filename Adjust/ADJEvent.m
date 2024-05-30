@@ -13,16 +13,14 @@
 @interface ADJEvent()
 
 @property (nonatomic, weak) id<ADJLogger> logger;
+
 @property (nonatomic, strong) NSMutableDictionary *callbackMutableParameters;
+
 @property (nonatomic, strong) NSMutableDictionary *partnerMutableParameters;
 
 @end
 
 @implementation ADJEvent
-
-+ (ADJEvent *)eventWithEventToken:(NSString *)eventToken {
-    return [[ADJEvent alloc] initWithEventToken:eventToken];
-}
 
 - (id)initWithEventToken:(NSString *)eventToken {
     self = [super init];

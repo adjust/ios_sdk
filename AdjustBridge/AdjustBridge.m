@@ -142,11 +142,15 @@
     [self.bridgeRegister callHandler:self.sessionFailureCallbackName data:sessionFailureResponseDataDictionary];
 }
 
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     if (self.deferredDeeplinkCallbackName) {
         [self.bridgeRegister callHandler:self.deferredDeeplinkCallbackName data:[deeplink absoluteString]];
     }
     return self.openDeferredDeeplink;
+}
+
+- (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
+
 }
 
 #pragma mark - Public methods
@@ -207,9 +211,12 @@
 
         ADJConfig *adjustConfig;
         if ([self isFieldValid:allowSuppressLogLevel]) {
-            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:[allowSuppressLogLevel boolValue]];
+            adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                                   environment:environment
+                                           andSuppressLogLevel:[allowSuppressLogLevel boolValue]];
         } else {
-            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
+            adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                                andEnvironment:environment];
         }
 
         // no need to continue if adjust config is not valid
@@ -230,13 +237,17 @@
             [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
         }
         if ([self isFieldValid:sendInBackground]) {
-            [adjustConfig setSendInBackground:[sendInBackground boolValue]];
+            if ([sendInBackground boolValue] == YES) {
+                [adjustConfig enableSendingInBackground];
+            }
         }
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];
         }
         if ([self isFieldValid:allowAdServicesInfoReading]) {
-            [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
+            if ([allowAdServicesInfoReading boolValue] == NO) {
+                [adjustConfig disableAdServies];
+            }
         }
         if ([self isFieldValid:isIdfaReadingAllowed]) {
             if ([isIdfaReadingAllowed boolValue] == NO) {
@@ -248,7 +259,7 @@
         }
         if ([self isFieldValid:isSkanAttributionHandlingEnabled]) {
             if ([isSkanAttributionHandlingEnabled boolValue] == NO) {
-                [adjustConfig disableSkanAttributionHandling];
+                [adjustConfig disableSkanAttribution];
             }
         }
         if ([self isFieldValid:openDeferredDeeplink]) {
@@ -296,7 +307,7 @@
         }
         if ([self isFieldValid:shouldReadDeviceInfoOnce]) {
             if ([shouldReadDeviceInfoOnce boolValue] == YES) {
-                [adjustConfig readDeviceIdsOnce];
+                [adjustConfig enableDeviceIdsReadingOnce];
             }
         }
         if ([self isFieldValid:eventDeduplicationIdsMaxSize]) {
@@ -329,7 +340,7 @@
         id callbackParameters = [data objectForKey:@"callbackParameters"];
         id partnerParameters = [data objectForKey:@"partnerParameters"];
 
-        ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
+        ADJEvent *adjustEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
         // no need to continue if adjust event is not valid
         if (![adjustEvent isValid]) {
             return;
@@ -535,7 +546,7 @@
             isEnabled = (NSNumber *)isEnabledO;
         }
         ADJThirdPartySharing *adjustThirdPartySharing =
-        [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+        [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
         for (int i = 0; i < [granularOptions count]; i += 3) {
             NSString *partnerName = [[granularOptions objectAtIndex:i] description];
             NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
@@ -655,7 +666,7 @@
             return;
         }
 
-        ADJEvent *fbPixelEvent = [ADJEvent eventWithEventToken:eventToken];
+        ADJEvent *fbPixelEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
         if (![fbPixelEvent isValid]) {
             return;
         }

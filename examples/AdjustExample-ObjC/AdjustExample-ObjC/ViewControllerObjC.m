@@ -35,12 +35,12 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken1];
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken2];
 
     // Add revenue 1 cent of an EURO.
     [event setRevenue:0.01 currency:@"EUR"];
@@ -49,7 +49,7 @@
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken3];
 
     // Add callback parameters to this event.
     [event addCallbackParameter:@"foo" value:@"bar"];
@@ -59,7 +59,7 @@
 }
 
 - (IBAction)clickTrackPartnerEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken4];
 
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];

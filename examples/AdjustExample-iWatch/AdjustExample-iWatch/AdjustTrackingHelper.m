@@ -27,35 +27,27 @@
 - (void)initialize:(NSObject<AdjustDelegate> *)delegate {
     NSString *yourAppToken = @"{YourAppToken}";
     NSString *environment = ADJEnvironmentSandbox;
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-    
+    ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:yourAppToken
+                                                   andEnvironment:environment];
+
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-    
-    // Set default tracker.
-    // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
     
     // Set an attribution delegate.
     [adjustConfig setDelegate:delegate];
     
     [Adjust initSdk:adjustConfig];
-    
-    // Put the SDK in offline mode.
-    // [Adjust switchToOfflineMode];
-    
-    // Disable the SDK.
-    // [Adjust disable];
 }
 
 - (void)trackSimpleEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+
     [Adjust trackEvent:event];
 }
 
 - (void)trackRevenueEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+
     // Add revenue 15 cent of an euro.
     [event setRevenue:0.015 currency:@"EUR"];
     
@@ -63,8 +55,8 @@
 }
 
 - (void)trackCallbackEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+
     // Add callback parameters to this event.
     [event addCallbackParameter:@"key" value:@"value"];
     
@@ -72,8 +64,8 @@
 }
 
 - (void)trackPartnerEvent {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"{YourEventToken}"];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];
     

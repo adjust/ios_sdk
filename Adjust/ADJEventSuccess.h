@@ -40,11 +40,4 @@
  */
 @property (nonatomic, strong) NSDictionary *jsonResponse;
 
-/**
- * @brief Initialisation method.
- *
- * @return ADJEventSuccess instance.
- */
-+ (ADJEventSuccess *)eventSuccessResponseData;
-
 @end
