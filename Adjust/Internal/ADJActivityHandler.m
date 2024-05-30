@@ -1560,7 +1560,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (sdkClickResponseData.resolvedDeeplink != nil) {
         if (selfI.cachedDeeplinkResolutionCallback != nil) {
             NSString *resolvedDeepLink = sdkClickResponseData.resolvedDeeplink;
-            AdjustResolvedDeeplinkBlock callback = selfI.cachedDeeplinkResolutionCallback;
+            ADJResolvedDeeplinkBlock callback = selfI.cachedDeeplinkResolutionCallback;
             [ADJUtil launchInMainThread:^{
                 callback(resolvedDeepLink);
             }];

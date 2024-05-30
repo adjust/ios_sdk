@@ -1024,7 +1024,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 - (void)injectFeatureFlagsWithParameters:(NSMutableDictionary *)parameters {
     [ADJPackageBuilder parameters:parameters
-                          setBool:self.adjustConfig.sendInBackground
+                          setBool:self.adjustConfig.isSendingInBackgroundEnabled
                            forKey:@"send_in_background_enabled"];
     if (self.internalState != nil) {
         [ADJPackageBuilder parameters:parameters 
