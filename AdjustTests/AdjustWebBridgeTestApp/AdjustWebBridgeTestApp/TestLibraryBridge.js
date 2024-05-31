@@ -226,9 +226,11 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
     
     if ('allowAdServicesInfoReading' in params) {
-        var allowAdServicesInfoReadingS = getFirstValue(params, 'allowAdServicesInfoReading');
-        var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
-        adjustConfig.setAllowAdServicesInfoReading(allowAdServicesInfoReading);
+        var isAdServicesEnabledS = getFirstValue(params, 'allowAdServicesInfoReading');
+        var isAdServicesEnabled = isAdServicesEnabledS == 'true';
+        if (isAdServicesEnabled == false) {
+            adjustConfig.disableAdServices();
+        }
     }
     
     if ('allowIdfaReading' in params) {

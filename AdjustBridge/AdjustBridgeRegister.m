@@ -334,7 +334,7 @@ static NSString * fbAppIdStatic = nil;
             this.urlStrategyDomains = [];
             this.useSubdomains = null;
             this.isDataResidency = null;
-            this.allowAdServicesInfoReading = null;
+            this.isAdServicesEnabled = null;
             this.isIdfaReadingAllowed = null;
             this.isSkanAttributionHandlingEnabled = null;
             this.openDeferredDeeplink = null;
@@ -400,8 +400,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setNeedsCost = function(needsCost) {
             this.needsCost = needsCost;
         };
-        AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
-            this.allowAdServicesInfoReading = allowAdServicesInfoReading;
+        AdjustConfig.prototype.disableAdServices = function() {
+            this.isAdServicesEnabled = false;
         };
         AdjustConfig.prototype.disableIdfaReading = function() {
             this.isIdfaReadingAllowed = false;

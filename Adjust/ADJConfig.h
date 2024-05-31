@@ -124,7 +124,7 @@
  *
  * @note It is enabled by default.
  */
-@property (nonatomic, readonly) BOOL isAdServiesEnabled;
+@property (nonatomic, readonly) BOOL isAdServicesEnabled;
 
 /**
  * @brief Indicator of whether reading of IDFA is enabled or not.
@@ -279,9 +279,9 @@
 - (BOOL)isValid;
 
 /**
- * @brief A method for disabling SDK's handling of AdServies.framework.
+ * @brief A method for disabling SDK's handling of AdServices.framework.
  */
-- (void)disableAdServies;
+- (void)disableAdServices;
 
 /**
  * @brief A method for disabling the reading of IDFA parameter.

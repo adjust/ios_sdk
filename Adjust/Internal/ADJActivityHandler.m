@@ -145,7 +145,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (adjustConfig.isIdfaReadingEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
     }
-    if (adjustConfig.isAdServiesEnabled == NO) {
+    if (adjustConfig.isAdServicesEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
     }
 
@@ -1034,7 +1034,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             selfI.activityState.updatePackagesAttData = [selfI.internalState itHasToUpdatePackagesAttData];
         }];
 
-        if (selfI.adjustConfig.isAdServiesEnabled == YES) {
+        if (selfI.adjustConfig.isAdServicesEnabled == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
 
@@ -1779,7 +1779,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         if (pushTokenString != nil && ![selfI.activityState.pushToken isEqualToString:pushTokenString]) {
             [self setPushTokenString:pushTokenString];
         }
-        if (selfI.adjustConfig.isAdServiesEnabled == YES) {
+        if (selfI.adjustConfig.isAdServicesEnabled == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
     }
@@ -1792,7 +1792,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
-    if (selfI.adjustConfig.isAdServiesEnabled == NO) {
+    if (selfI.adjustConfig.isAdServicesEnabled == NO) {
         return NO;
     }
     
