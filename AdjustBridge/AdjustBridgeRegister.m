@@ -330,7 +330,7 @@ static NSString * fbAppIdStatic = nil;
             this.externalDeviceId = null;
             this.logLevel = null;
             this.sendInBackground = null;
-            this.needsCost = null;
+            this.isCostDataInAttributionEnabled = null;
             this.urlStrategyDomains = [];
             this.useSubdomains = null;
             this.isDataResidency = null;
@@ -397,8 +397,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;
         };
-        AdjustConfig.prototype.setNeedsCost = function(needsCost) {
-            this.needsCost = needsCost;
+        AdjustConfig.prototype.enableCostDataInAttribution = function() {
+            this.isCostDataInAttributionEnabled = false;
         };
         AdjustConfig.prototype.disableAdServices = function() {
             this.isAdServicesEnabled = false;

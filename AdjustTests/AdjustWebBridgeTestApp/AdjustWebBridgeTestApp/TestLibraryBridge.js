@@ -220,9 +220,11 @@ AdjustCommandExecutor.prototype.config = function(params) {
     }
     
     if ('needsCost' in params) {
-        var needsCostS = getFirstValue(params, 'needsCost');
-        var needsCost = needsCostS == 'true';
-        adjustConfig.setNeedsCost(needsCost);
+        var isCostDataInAttributionEnabledS = getFirstValue(params, 'needsCost');
+        var isCostDataInAttributionEnabled = isCostDataInAttributionEnabledS == 'true';
+        if (isCostDataInAttributionEnabled == true) {
+            adjustConfig.enableCostDataInAttribution();
+        }
     }
     
     if ('allowAdServicesInfoReading' in params) {

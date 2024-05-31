@@ -61,6 +61,7 @@
     _isSkanAttributionEnabled = YES;
     _eventDeduplicationIdsMaxSize = -1;
     _isDeviceIdsReadingOnceEnabled = NO;
+    _isCostDataInAttributionEnabled = NO;
 
     return self;
 }
@@ -97,6 +98,10 @@
 
 - (void)disableAdServices {
     _isAdServicesEnabled = NO;
+}
+
+- (void)enableCostDataInAttribution {
+    _isCostDataInAttributionEnabled = YES;
 }
 
 - (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
@@ -210,7 +215,7 @@
         copy->_isAdServicesEnabled = self.isAdServicesEnabled;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
-        copy.needsCost = self.needsCost;
+        copy->_isCostDataInAttributionEnabled = self.isCostDataInAttributionEnabled;
         copy->_isSkanAttributionEnabled = self.isSkanAttributionEnabled;
         copy->_urlStrategyDomains = [self.urlStrategyDomains copyWithZone:zone];
         copy->_useSubdomains = self.useSubdomains;
