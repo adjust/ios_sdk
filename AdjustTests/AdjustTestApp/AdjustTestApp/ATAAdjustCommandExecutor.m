@@ -267,7 +267,9 @@
 
     if ([parameters objectForKey:@"needsCost"]) {
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
-        [adjustConfig setNeedsCost:[needsCostS boolValue]];
+        if ([needsCostS boolValue] == YES) {
+            [adjustConfig enableCostDataInAttribution];
+        }
     }
 
     if ([parameters objectForKey:@"sendInBackground"]) {

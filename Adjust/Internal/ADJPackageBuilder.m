@@ -690,8 +690,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                forKey:@"tracking_enabled"];
     }
 
-    if (self.adjustConfig.needsCost) {
-        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.needsCost forKey:@"needs_cost"];
+    if (self.adjustConfig.isCostDataInAttributionEnabled) {
+        [ADJPackageBuilder parameters:parameters setBool:self.adjustConfig.isCostDataInAttributionEnabled forKey:@"needs_cost"];
     }
 
     if (self.activityState != nil) {

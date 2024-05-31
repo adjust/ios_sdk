@@ -141,6 +141,13 @@
 @property (nonatomic, readonly) BOOL isSkanAttributionEnabled;
 
 /**
+ * @brief Set if cost data is needed in attribution response.
+ *
+ * @note It is disabled by default.
+ */
+@property (nonatomic, readonly) BOOL isCostDataInAttributionEnabled;
+
+/**
  * @brief Indicator of whether LinkMe feature is enabled or not.
  *
  * @note It is disabled by defailt.
@@ -218,11 +225,6 @@
  * @brief Define how many seconds to wait for ATT status before sending the first data.
  */
 @property (nonatomic, assign) NSUInteger attConsentWaitingInterval;
-
-/**
- * @brief Set if cost data is needed in attribution response.
- */
-@property (nonatomic, assign) BOOL needsCost;
 
 /**
  * @brief Maximum number of deduplication IDs to be stored by the SDK.
@@ -307,6 +309,11 @@
  * @brief A method to enable reading of the device IDs just once.
  */
 - (void)enableDeviceIdsReadingOnce;
+
+/**
+ * @brief A method to enable obtaining of cost data inside of the attribution callback.
+ */
+- (void)enableCostDataInAttribution;
 
 /**
  * @brief A method to set custom URL strategy.

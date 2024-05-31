@@ -189,7 +189,7 @@
         NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
-        NSNumber *needsCost = [data objectForKey:@"needsCost"];
+        NSNumber *isCostDataInAttributionEnabled = [data objectForKey:@"isCostDataInAttributionEnabled"];
         NSNumber *isAdServicesEnabled = [data objectForKey:@"isAdServicesEnabled"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
         NSNumber *isSkanAttributionHandlingEnabled = [data objectForKey:@"isSkanAttributionHandlingEnabled"];
@@ -241,8 +241,10 @@
                 [adjustConfig enableSendingInBackground];
             }
         }
-        if ([self isFieldValid:needsCost]) {
-            [adjustConfig setNeedsCost:[needsCost boolValue]];
+        if ([self isFieldValid:isCostDataInAttributionEnabled]) {
+            if ([isCostDataInAttributionEnabled boolValue] == YES) {
+                [adjustConfig enableCostDataInAttribution];
+            }
         }
         if ([self isFieldValid:isAdServicesEnabled]) {
             if ([isAdServicesEnabled boolValue] == NO) {
