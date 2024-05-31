@@ -68,6 +68,9 @@
         adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
             console.log('Deferred deeplink:\n' + deferredDeeplink)
         })
+        adjustConfig.setSkanUpdatedCallback(function(skanData) {
+            alert('SKAN: ' + skanData.error);
+        })
 
         Adjust.initSdk(adjustConfig);
 

@@ -21,6 +21,7 @@
 @property (nonatomic, copy) NSString *sessionSuccessCallbackName;
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
+@property (nonatomic, copy) NSString *skanUpdatedCallbackName;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
 @property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) ADJAttribution *attribution;
@@ -49,6 +50,7 @@
     self.sessionSuccessCallbackName = nil;
     self.sessionFailureCallbackName = nil;
     self.deferredDeeplinkCallbackName = nil;
+    self.skanUpdatedCallbackName = nil;
 }
 
 #pragma mark - AdjustDelegate methods
@@ -150,7 +152,17 @@
 }
 
 - (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    if (self.skanUpdatedCallbackName == nil) {
+        return;
+    }
 
+    NSMutableDictionary *skanUpdatedDictionary = [NSMutableDictionary dictionary];
+    [skanUpdatedDictionary setValue:data[@"conversion_value"] forKey:@"conversionValue"];
+    [skanUpdatedDictionary setValue:data[@"coarse_value"] forKey:@"coarseValue"];
+    [skanUpdatedDictionary setValue:data[@"lock_window"] forKey:@"lockWindow"];
+    [skanUpdatedDictionary setValue:data[@"error"] forKey:@"error"];
+
+    [self.bridgeRegister callHandler:self.skanUpdatedCallbackName data:skanUpdatedDictionary];
 }
 
 #pragma mark - Public methods
@@ -202,6 +214,7 @@
         NSString *sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
         NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
         NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
+        NSString *skanUpdatedCallback = [data objectForKey:@"skanUpdatedCallback"];
         NSNumber *shouldReadDeviceInfoOnce = [data objectForKey:@"shouldReadDeviceInfoOnce"];
         NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
         NSNumber *eventDeduplicationIdsMaxSize = [data objectForKey:@"eventDeduplicationIdsMaxSize"];
@@ -296,6 +309,9 @@
         if ([self isFieldValid:deferredDeeplinkCallback]) {
             self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
         }
+        if ([self isFieldValid:skanUpdatedCallback]) {
+            self.skanUpdatedCallbackName = skanUpdatedCallback;
+        }
 
         // set self as delegate if any callback is configured
         // change to swizzle the methods in the future
@@ -304,7 +320,8 @@
             || self.eventFailureCallbackName != nil
             || self.sessionSuccessCallbackName != nil
             || self.sessionFailureCallbackName != nil
-            || self.deferredDeeplinkCallbackName != nil) {
+            || self.deferredDeeplinkCallbackName != nil
+            || self.skanUpdatedCallbackName != nil) {
             [adjustConfig setDelegate:self];
         }
         if ([self isFieldValid:shouldReadDeviceInfoOnce]) {

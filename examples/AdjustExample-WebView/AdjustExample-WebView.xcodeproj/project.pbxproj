@@ -60,6 +60,7 @@
 		9DB5667A2C072D460004CCAD /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB566502C072D460004CCAD /* ADJSessionSuccess.m */; };
 		9DB5667B2C072D460004CCAD /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB566522C072D460004CCAD /* ADJThirdPartySharing.m */; };
 		9DB5667C2C072D460004CCAD /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB566542C072D460004CCAD /* Adjust.m */; };
+		9DCA566E2C09D8F80043C3AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCA566D2C09D8F80043C3AF /* StoreKit.framework */; };
 		D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -166,6 +167,7 @@
 		9DB566522C072D460004CCAD /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJThirdPartySharing.m; sourceTree = "<group>"; };
 		9DB566532C072D460004CCAD /* Adjust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Adjust.h; sourceTree = "<group>"; };
 		9DB566542C072D460004CCAD /* Adjust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Adjust.m; sourceTree = "<group>"; };
+		9DCA566D2C09D8F80043C3AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -175,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */,
+				9DCA566E2C09D8F80043C3AF /* StoreKit.framework in Frameworks */,
 				D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */,
 				9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */,
 				9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */,
@@ -364,6 +367,7 @@
 		D79970F825B05A66008A17E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9DCA566D2C09D8F80043C3AF /* StoreKit.framework */,
 				D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */,
 			);
 			name = Frameworks;
