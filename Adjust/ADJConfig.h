@@ -326,7 +326,7 @@
  *           - {analytics,consent}.adjust.com
  *           - {analytics,consent}.adjust.world
  */
-- (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
+- (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
         withSubdomains:(BOOL)useSubdomains
       andDataResidency:(BOOL)isDataResidency;
 
