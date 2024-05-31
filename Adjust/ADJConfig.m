@@ -104,7 +104,7 @@
     _isCostDataInAttributionEnabled = YES;
 }
 
-- (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
+- (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
         withSubdomains:(BOOL)useSubdomains
       andDataResidency:(BOOL)isDataResidency {
     if (urlStrategyDomains == nil) {
