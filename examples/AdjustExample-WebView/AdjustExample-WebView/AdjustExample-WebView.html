@@ -28,8 +28,6 @@
         let adjustConfig = new AdjustConfig('2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox);
         adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
 
-        adjustConfig.setOpenDeferredDeeplink(true)     // Just for test, is true by default.
-
         adjustConfig.setAttributionCallback(function(attribution) {
             console.log('Tracker token = ' + attribution.trackerToken + '\n' +
                   'Tracker name = ' + attribution.trackerName + '\n' +
