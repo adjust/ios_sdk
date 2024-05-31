@@ -13,7 +13,7 @@
 
 @interface AdjustBridge() <AdjustDelegate>
 
-@property BOOL openDeferredDeeplink;
+@property BOOL isDeferredDeeplinkOpeningEnabled;
 @property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
 @property (nonatomic, copy) NSString *attributionCallbackName;
 @property (nonatomic, copy) NSString *eventSuccessCallbackName;
@@ -39,7 +39,10 @@
     }
 
     _bridgeRegister = nil;
+    self.isDeferredDeeplinkOpeningEnabled = YES;
+
     [self resetAdjustBridge];
+
     return self;
 }
 
@@ -148,7 +151,7 @@
     if (self.deferredDeeplinkCallbackName) {
         [self.bridgeRegister callHandler:self.deferredDeeplinkCallbackName data:[deeplink absoluteString]];
     }
-    return self.openDeferredDeeplink;
+    return self.isDeferredDeeplinkOpeningEnabled;
 }
 
 - (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
@@ -205,7 +208,7 @@
         NSNumber *isAdServicesEnabled = [data objectForKey:@"isAdServicesEnabled"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
         NSNumber *isSkanAttributionHandlingEnabled = [data objectForKey:@"isSkanAttributionHandlingEnabled"];
-        NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
+        NSNumber *isDeferredDeeplinkOpeningEnabled = [data objectForKey:@"isDeferredDeeplinkOpeningEnabled"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
         id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
         NSString *attributionCallback = [data objectForKey:@"attributionCallback"];
@@ -277,8 +280,8 @@
                 [adjustConfig disableSkanAttribution];
             }
         }
-        if ([self isFieldValid:openDeferredDeeplink]) {
-            self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
+        if ([self isFieldValid:isDeferredDeeplinkOpeningEnabled]) {
+            self.isDeferredDeeplinkOpeningEnabled = [isDeferredDeeplinkOpeningEnabled boolValue];
         }
         if ([self isFieldValid:fbPixelDefaultEventToken]) {
             self.fbPixelDefaultEventToken = fbPixelDefaultEventToken;

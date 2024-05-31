@@ -358,12 +358,9 @@ AdjustCommandExecutor.prototype.config = function(params) {
 
     if ('deferredDeeplinkCallback' in params) {
         console.log('AdjustCommandExecutor.prototype.config deferredDeeplinkCallback');
-        var shouldOpenDeeplinkS = getFirstValue(params, 'deferredDeeplinkCallback');
-        if (shouldOpenDeeplinkS === 'true') {
-            adjustConfig.setOpenDeferredDeeplink(true);
-        }
-        if (shouldOpenDeeplinkS === 'false') {
-            adjustConfig.setOpenDeferredDeeplink(false);
+        var isOpeningDeferredDeeplinkEnabledS = getFirstValue(params, 'deferredDeeplinkCallback');
+        if (isOpeningDeferredDeeplinkEnabledS === 'false') {
+            adjustConfig.disableDeferredDeeplinkOpening();
         }
         var extraPath = this.extraPath;
         adjustConfig.setDeferredDeeplinkCallback(

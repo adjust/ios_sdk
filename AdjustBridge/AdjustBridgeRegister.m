@@ -337,7 +337,7 @@ static NSString * fbAppIdStatic = nil;
             this.isAdServicesEnabled = null;
             this.isIdfaReadingAllowed = null;
             this.isSkanAttributionHandlingEnabled = null;
-            this.openDeferredDeeplink = null;
+            this.isDeferredDeeplinkOpeningEnabled = null;
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
             this.attributionCallback = null;
@@ -411,8 +411,8 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
             this.isSkanAttributionHandlingEnabled = false;
         };
-        AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
-            this.openDeferredDeeplink = shouldOpen;
+        AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
+            this.isDeferredDeeplinkOpeningEnabled = false;
         };
         AdjustConfig.prototype.setAttributionCallback = function(callback) {
             this.attributionCallback = callback;
