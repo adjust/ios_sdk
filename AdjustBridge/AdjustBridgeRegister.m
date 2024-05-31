@@ -346,6 +346,7 @@ static NSString * fbAppIdStatic = nil;
             this.sessionSuccessCallback = null;
             this.sessionFailureCallback = null;
             this.deferredDeeplinkCallback = null;
+            this.skanUpdatedCallback = null;
             this.shouldReadDeviceInfoOnce = null;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
@@ -378,6 +379,7 @@ static NSString * fbAppIdStatic = nil;
             registerCallbackHandler.call(this, 'sessionSuccessCallback');
             registerCallbackHandler.call(this, 'sessionFailureCallback');
             registerCallbackHandler.call(this, 'deferredDeeplinkCallback');
+            registerCallbackHandler.call(this, 'skanUpdatedCallback');
         };
         AdjustConfig.prototype.getSdkPrefix = function() {
             return this.sdkPrefix;
@@ -429,6 +431,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
             this.deferredDeeplinkCallback = callback;
+        };
+        AdjustConfig.prototype.setSkanUpdatedCallback = function(callback) {
+            this.skanUpdatedCallback = callback;
         };
         AdjustConfig.prototype.setFbPixelDefaultEventToken = function(fbPixelDefaultEventToken) {
             this.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
