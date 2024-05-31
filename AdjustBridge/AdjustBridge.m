@@ -190,7 +190,7 @@
         NSString *logLevel = [data objectForKey:@"logLevel"];
         NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
         NSNumber *needsCost = [data objectForKey:@"needsCost"];
-        NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
+        NSNumber *isAdServicesEnabled = [data objectForKey:@"isAdServicesEnabled"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
         NSNumber *isSkanAttributionHandlingEnabled = [data objectForKey:@"isSkanAttributionHandlingEnabled"];
         NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
@@ -244,9 +244,9 @@
         if ([self isFieldValid:needsCost]) {
             [adjustConfig setNeedsCost:[needsCost boolValue]];
         }
-        if ([self isFieldValid:allowAdServicesInfoReading]) {
-            if ([allowAdServicesInfoReading boolValue] == NO) {
-                [adjustConfig disableAdServies];
+        if ([self isFieldValid:isAdServicesEnabled]) {
+            if ([isAdServicesEnabled boolValue] == NO) {
+                [adjustConfig disableAdServices];
             }
         }
         if ([self isFieldValid:isIdfaReadingAllowed]) {

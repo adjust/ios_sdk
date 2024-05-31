@@ -1049,7 +1049,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.adjustConfig.isIdfaReadingEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
     }
-    if (self.adjustConfig.isAdServiesEnabled == NO) {
+    if (self.adjustConfig.isAdServicesEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
     }
 }

@@ -55,7 +55,7 @@
     
     // default values
     _isSendingInBackgroundEnabled = NO;
-    _isAdServiesEnabled = YES;
+    _isAdServicesEnabled = YES;
     _isLinkMeEnabled = NO;
     _isIdfaReadingEnabled = YES;
     _isSkanAttributionEnabled = YES;
@@ -95,8 +95,8 @@
     _isSendingInBackgroundEnabled = YES;
 }
 
-- (void)disableAdServies {
-    _isAdServiesEnabled = NO;
+- (void)disableAdServices {
+    _isAdServicesEnabled = NO;
 }
 
 - (void)setUrlStrategy:(NSArray * _Nullable)urlStrategyDomains
@@ -207,7 +207,7 @@
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
         copy->_isSendingInBackgroundEnabled = self.isSendingInBackgroundEnabled;
-        copy->_isAdServiesEnabled = self.isAdServiesEnabled;
+        copy->_isAdServicesEnabled = self.isAdServicesEnabled;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy.needsCost = self.needsCost;
