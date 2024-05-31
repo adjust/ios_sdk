@@ -319,7 +319,7 @@ static dispatch_once_t onceToken = 0;
 #pragma mark - Public instance methods
 
 - (void)initSdk:(ADJConfig *)adjustConfig {
-    if (! [self isSignerPresent]) {
+    if (![self isSignerPresent]) {
         [self.logger error:@"Missing signature library, SDK can't be initialised"];
         return;
     }
