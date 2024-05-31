@@ -319,6 +319,10 @@ static dispatch_once_t onceToken = 0;
 #pragma mark - Public instance methods
 
 - (void)initSdk:(ADJConfig *)adjustConfig {
+    if (! [self isSignerPresent]) {
+        [self.logger error:@"Missing signature library, SDK can't be initialised"];
+        return;
+    }
     if (self.activityHandler != nil) {
         [self.logger error:@"Adjust already initialized"];
         return;
@@ -326,6 +330,15 @@ static dispatch_once_t onceToken = 0;
     self.activityHandler = [[ADJActivityHandler alloc] initWithConfig:adjustConfig
                                                        savedPreLaunch:self.savedPreLaunch
                                            deeplinkResolutionCallback:self.cachedResolvedDeeplinkBlock];
+}
+- (BOOL)isSignerPresent {
+    _Nullable Class signerClass = NSClassFromString(@"ADJSigner");
+    if (signerClass == nil) {
+        return NO;
+    }
+
+    return [signerClass respondsToSelector:
+            NSSelectorFromString(@"sign:withExtraParams:withOutputParams:")];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
