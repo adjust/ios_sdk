@@ -1599,10 +1599,12 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     // check if we got resolved deep link in the response
     if (sdkClickResponseData.resolvedDeeplink != nil) {
         if (selfI.cachedDeeplinkResolutionCallback != nil) {
+            NSString *resolvedDeepLink = sdkClickResponseData.resolvedDeeplink;
+            AdjustResolvedDeeplinkBlock callback = selfI.cachedDeeplinkResolutionCallback;
             [ADJUtil launchInMainThread:^{
-                selfI.cachedDeeplinkResolutionCallback(sdkClickResponseData.resolvedDeeplink);
-                selfI.cachedDeeplinkResolutionCallback = nil;
+                callback(resolvedDeepLink);
             }];
+            selfI.cachedDeeplinkResolutionCallback = nil;
         }
     }
 }

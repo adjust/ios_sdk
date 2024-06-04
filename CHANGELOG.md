@@ -1,3 +1,8 @@
+### Version 4.38.4 (4th June 2024)
+#### Fixed
+- Fixed occasional crashes when processing resolved deep links.
+
+---
 ### Version 4.38.3 (23rd May 2024)
 #### Fixed
 - Added missing `WKNavigationDelegate` methods to the `WebBridge` implementation.
