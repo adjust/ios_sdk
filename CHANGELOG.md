@@ -1,6 +1,6 @@
-### Version 4.38.4 (3rd June 2024)
+### Version 4.38.4 (4th June 2024)
 #### Fixed
-- Fixed crash in deep link processing logic.
+- Fixed occasional crashes when processing resolved deep links.
 
 ---
 ### Version 4.38.3 (23rd May 2024)
