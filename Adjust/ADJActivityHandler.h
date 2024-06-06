@@ -109,7 +109,7 @@
 - (void)removeSessionPartnerParameter:(NSString * _Nullable)key;
 - (void)resetSessionCallbackParameters;
 - (void)resetSessionPartnerParameters;
-- (void)trackAdRevenue:(NSString * _Nullable)soruce
+- (void)trackAdRevenue:(NSString * _Nullable)source
                payload:(NSData * _Nullable)payload;
 - (void)disableThirdPartySharing;
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;

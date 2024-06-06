@@ -296,7 +296,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
 + (void)disableThirdPartySharing;
 
 /**
- * @brief Track third paty sharing with possibility to allow or disallow it.
+ * @brief Track third party sharing with possibility to allow or disallow it.
  *
  * @param thirdPartySharing Third party sharing choice.
  */
@@ -393,7 +393,7 @@ extern NSString * __nonnull const ADJDataResidencyUS;
  * @brief Verify in-app-purchase.
  *
  * @param purchase          Purchase object.
- * @param completionHandler Callback where verification result will be repoted.
+ * @param completionHandler Callback where verification result will be reported.
  */
 + (void)verifyPurchase:(nonnull ADJPurchase *)purchase
      completionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completionHandler;
