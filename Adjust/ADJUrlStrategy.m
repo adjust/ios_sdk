@@ -4,7 +4,7 @@
 //
 //  Created by Pedro S. on 11.08.20.
 //  Copyright © 2020 adjust GmbH. All rights reserved.
-//analytics.adjust.com
+//
 
 
 #import "ADJUrlStrategy.h"
