@@ -1,8 +1,18 @@
 PODS:
+  - Adjust (5.0.0):
+    - Adjust/Adjust (= 5.0.0)
+  - Adjust/Adjust (5.0.0):
+    - Adjust/Core
+    - AdjustSignature (= 3.18)
   - Adjust/Core (5.0.0)
+  - AdjustSignature (3.18.0)
 
 DEPENDENCIES:
-  - Adjust/Core (from `../../`)
+  - Adjust (from `../../`)
+
+SPEC REPOS:
+  trunk:
+    - AdjustSignature
 
 EXTERNAL SOURCES:
   Adjust:
@@ -10,7 +20,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Adjust: 05f362bacfc39b414a35bcecdd6d357f1654edb1
+  AdjustSignature: 07a731fc1b7d61a820c55c014113940ec300a3df
 
-PODFILE CHECKSUM: 77b4adce3bbed3c4411fc62f6790ccba90636b86
+PODFILE CHECKSUM: 887f782ba0b0abe8c4cb015fd44172231ef3ad55
 
 COCOAPODS: 1.12.1

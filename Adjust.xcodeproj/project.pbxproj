@@ -298,7 +298,7 @@
 		96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* ADJUtil.m */; };
 		96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 96FCC5361C186426007BBFE1 /* ADJResponseData.h */; };
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
-		9D0E2E06210B570600133B4F /* AdjustSdkWebBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E04210B570600133B4F /* AdjustSdkWebBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D0E2E06210B570600133B4F /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E04210B570600133B4F /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EAE210B575600133B4F /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5C210B575600133B4F /* AdjustBridge.m */; };
 		9D0E2EAF210B575600133B4F /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D0E2EB0210B575600133B4F /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E2E5F210B575600133B4F /* WebViewJavascriptBridgeBase.m */; };
@@ -932,7 +932,7 @@
 		0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CA6A27DF5D3200509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1CA7127DF5FFE00509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		0AB1CAD527DF671300509231 /* libAdjustSdkWebBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdkWebBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB1CAD527DF671300509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CAD727DF671300509231 /* AdjustSdkWebBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkWebBridge.h; sourceTree = "<group>"; };
 		0AB1CB4427DF6C8E00509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PocketSocket.xcodeproj; path = PocketSocket/PocketSocket.xcodeproj; sourceTree = "<group>"; };
@@ -1014,8 +1014,8 @@
 		96FCC5361C186426007BBFE1 /* ADJResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJResponseData.h; sourceTree = "<group>"; };
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iMessage.xcodeproj"; path = "examples/AdjustExample-iMessage/AdjustExample-iMessage.xcodeproj"; sourceTree = "<group>"; };
-		9D0E2E02210B570600133B4F /* AdjustSdkWebBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdkWebBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D0E2E04210B570600133B4F /* AdjustSdkWebBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkWebBridge.h; sourceTree = "<group>"; };
+		9D0E2E02210B570600133B4F /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D0E2E04210B570600133B4F /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		9D0E2E05210B570600133B4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D0E2E5C210B575600133B4F /* AdjustBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridge.m; sourceTree = "<group>"; };
 		9D0E2E5D210B575600133B4F /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
@@ -1595,11 +1595,11 @@
 				9DFB06101D747070006D48FC /* AdjustSdk.framework */,
 				9D7431E61EB9F9B700969F14 /* AdjustExampleTests.app */,
 				9DE354D22100726300D211C9 /* AdjustSdk.framework */,
-				9D0E2E02210B570600133B4F /* AdjustSdkWebBridge.framework */,
+				9D0E2E02210B570600133B4F /* AdjustSdk.framework */,
 				0AB1C97127DD450D00509231 /* libAdjustSdk.a */,
 				0AB1CA2527DF462200509231 /* libAdjustSdk.a */,
 				0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */,
-				0AB1CAD527DF671300509231 /* libAdjustSdkWebBridge.a */,
+				0AB1CAD527DF671300509231 /* libAdjustSdk.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1681,7 +1681,7 @@
 		9D0E2E03210B570600133B4F /* AdjustSdkWebBridge */ = {
 			isa = PBXGroup;
 			children = (
-				9D0E2E04210B570600133B4F /* AdjustSdkWebBridge.h */,
+				9D0E2E04210B570600133B4F /* AdjustSdk.h */,
 				9DB5640F2C072CD20004CCAD /* Adjust */,
 				9D0E2E5B210B575600133B4F /* AdjustBridge */,
 				9D0E2E05210B570600133B4F /* Info.plist */,
@@ -2268,7 +2268,7 @@
 			files = (
 				9DB5644D2C072CD20004CCAD /* ADJAppStoreSubscription.h in Headers */,
 				9DB564432C072CD20004CCAD /* ADJTimerOnce.h in Headers */,
-				9D0E2E06210B570600133B4F /* AdjustSdkWebBridge.h in Headers */,
+				9D0E2E06210B570600133B4F /* AdjustSdk.h in Headers */,
 				9DB564332C072CD20004CCAD /* ADJPackageHandler.h in Headers */,
 				9DB5641F2C072CD20004CCAD /* ADJActivityHandler.h in Headers */,
 				9DB564312C072CD20004CCAD /* ADJPackageBuilder.h in Headers */,
@@ -2519,7 +2519,7 @@
 			);
 			name = AdjustSdkWebBridgeStatic;
 			productName = AdjustSdkWebBridgeStatic;
-			productReference = 0AB1CAD527DF671300509231 /* libAdjustSdkWebBridge.a */;
+			productReference = 0AB1CAD527DF671300509231 /* libAdjustSdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		9615158E1CD2CB2C0022D336 /* AdjustBridge */ = {
@@ -2592,7 +2592,7 @@
 			);
 			name = AdjustSdkWebBridge;
 			productName = AdjustSdkWebBridge;
-			productReference = 9D0E2E02210B570600133B4F /* AdjustSdkWebBridge.framework */;
+			productReference = 9D0E2E02210B570600133B4F /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		9D7431E51EB9F9B700969F14 /* AdjustExampleTests */ = {
@@ -3729,8 +3729,8 @@
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = AdjustSdkWebBridge;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkWebBridge;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3756,8 +3756,8 @@
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = AdjustSdkWebBridge;
-				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdkWebBridge;
+				PRODUCT_NAME = AdjustSdk;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4046,7 +4046,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkWebBridge;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustSdk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4085,7 +4085,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustSdkWebBridge;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustSdk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
