@@ -170,7 +170,7 @@ Usage: $0 [options]
     XCF_FRM_NAME__ADJUST_IOS="AdjustSdk"
     XCF_FRM_NAME__ADJUST_TV="AdjustSdk"
     XCF_FRM_NAME__ADJUST_IM="AdjustSdk"
-    XCF_FRM_NAME__ADJUST_WEB_BRIDGE="AdjustSdkWebBridge"
+    XCF_FRM_NAME__ADJUST_WEB_BRIDGE="AdjustSdk"
 
     # xcode archive names
     ARCHIVE_NAME__IOS_DEVICE="AdjustSdk-Device"
