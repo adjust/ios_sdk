@@ -169,7 +169,7 @@
 		0AB1CA9F27DF621D00509231 /* ADJAdRevenue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D3A2ABD2625BEB800BD6E44 /* ADJAdRevenue.h */; };
 		0AB1CAA027DF621D00509231 /* ADJLinkResolution.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; };
 		0AB1CAA127DF626000509231 /* ADJAttribution.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 969952D01A01309200928462 /* ADJAttribution.h */; };
-		0AB1CADA27DF671300509231 /* AdjustSdkWebBridge.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CAD727DF671300509231 /* AdjustSdkWebBridge.h */; };
+		0AB1CADA27DF671300509231 /* AdjustSdk.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AB1CAD727DF671300509231 /* AdjustSdk.h */; };
 		0AB1CB0C27DF68C100509231 /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E34D18BBB48A008E7B30 /* Adjust.m */; };
 		0AB1CB0D27DF68C100509231 /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36318BBB48A008E7B30 /* ADJActivityHandler.m */; };
 		0AB1CB0E27DF68C100509231 /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E36518BBB48A008E7B30 /* ADJActivityKind.m */; };
@@ -877,7 +877,7 @@
 			files = (
 				0AB1CB3E27DF69B700509231 /* AdjustBridge.h in CopyFiles */,
 				0AB1CB3F27DF69B700509231 /* AdjustBridgeRegister.h in CopyFiles */,
-				0AB1CADA27DF671300509231 /* AdjustSdkWebBridge.h in CopyFiles */,
+				0AB1CADA27DF671300509231 /* AdjustSdk.h in CopyFiles */,
 				0AB1CB4027DF69B700509231 /* WebViewJavascriptBridge_JS.h in CopyFiles */,
 				0AB1CB4127DF69B700509231 /* WebViewJavascriptBridgeBase.h in CopyFiles */,
 				0AB1CB4227DF69B700509231 /* WKWebViewJavascriptBridge.h in CopyFiles */,
@@ -933,7 +933,7 @@
 		0AB1CA6A27DF5D3200509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1CA7127DF5FFE00509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0AB1CAD527DF671300509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AB1CAD727DF671300509231 /* AdjustSdkWebBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdkWebBridge.h; sourceTree = "<group>"; };
+		0AB1CAD727DF671300509231 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0AB1CB4427DF6C8E00509231 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PocketSocket.xcodeproj; path = PocketSocket/PocketSocket.xcodeproj; sourceTree = "<group>"; };
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
@@ -1491,7 +1491,7 @@
 			isa = PBXGroup;
 			children = (
 				0AB1CB4427DF6C8E00509231 /* module.modulemap */,
-				0AB1CAD727DF671300509231 /* AdjustSdkWebBridge.h */,
+				0AB1CAD727DF671300509231 /* AdjustSdk.h */,
 			);
 			path = AdjustSdkWebBridgeStatic;
 			sourceTree = "<group>";
