@@ -1,5 +1,5 @@
-framework module AdjustSdkWebBridge {
-  umbrella header "AdjustSdkWebBridge.h"
+framework module AdjustSdk {
+  umbrella header "AdjustSdk.h"
 
   export *
   module * { export * }
