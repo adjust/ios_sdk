@@ -37,6 +37,8 @@
         return ADJActivityKindMeasurementConsent;
     } else if ([@"purchase_verification" isEqualToString:activityKindString]) {
         return ADJActivityKindPurchaseVerification;
+    } else if ([@"debug" isEqualToString:activityKindString]) {
+        return ADJActivityKindDebug;
     } else {
         return ADJActivityKindUnknown;
     }
@@ -68,6 +70,8 @@
             return @"measurement_consent";
         case ADJActivityKindPurchaseVerification:
             return @"purchase_verification";
+        case ADJActivityKindDebug:
+            return @"debug";
         default:
             return @"unknown";
     }

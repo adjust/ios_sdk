@@ -2122,20 +2122,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
-                                                                        activityState:selfI.activityState
-                                                                               config:selfI.adjustConfig
-                                                                    sessionParameters:selfI.sessionParameters
-                                                                trackingStatusManager:self.trackingStatusManager
-                                                                            createdAt:now];
+    ADJPackageBuilder *packageBuilder =
+        [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                           activityState:selfI.activityState
+                                                  config:selfI.adjustConfig
+                                       sessionParameters:selfI.sessionParameters
+                                   trackingStatusManager:self.trackingStatusManager
+                                               createdAt:now];
     NSDictionary *skanParameters = [NSMutableDictionary dictionary];
     [skanParameters setValue:conversionValue forKey:@"conversion_value"];
     [skanParameters setValue:coarseValue forKey:@"coarse_value"];
     [skanParameters setValue:lockWindow forKey:@"lock_window"];
     [skanParameters setValue:error forKey:@"error"];
-    infoBuilder.skanParameters = skanParameters;
+    packageBuilder.skanParameters = skanParameters;
 
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"skan-debug"];
+    ADJActivityPackage *infoPackage = [packageBuilder buildDebugPackage:@"skan-debug"];
     [selfI.packageHandler addPackage:infoPackage];
 
     if (selfI.adjustConfig.eventBufferingEnabled) {

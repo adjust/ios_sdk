@@ -49,6 +49,7 @@
                                           isInDelay:(BOOL)isInDelay;
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
+- (ADJActivityPackage * _Nullable)buildDebugPackage:(NSString * _Nullable)infoSource;
 
 - (ADJActivityPackage * _Nullable)buildAdRevenuePackage:(NSString * _Nullable)source
                                                 payload:(NSData * _Nullable)payload;
