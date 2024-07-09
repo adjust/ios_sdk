@@ -1019,6 +1019,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [logger info:@"Cannot read IDFV with COPPA enabled"];
         return;
     }
+    if (self.adjustConfig.isIdfvReadingEnabled == NO) {
+        return;
+    }
     [ADJPackageBuilder parameters:parameters setString:self.packageParams.idfv forKey:@"idfv"];
 }
 
