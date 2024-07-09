@@ -58,6 +58,7 @@
     _isAdServicesEnabled = YES;
     _isLinkMeEnabled = NO;
     _isIdfaReadingEnabled = YES;
+    _isIdfvReadingEnabled = YES;
     _isSkanAttributionEnabled = YES;
     _eventDeduplicationIdsMaxSize = -1;
     _isDeviceIdsReadingOnceEnabled = NO;
@@ -78,6 +79,10 @@
 
 - (void)disableIdfaReading {
     _isIdfaReadingEnabled = NO;
+}
+
+- (void)disableIdfvReading {
+    _isIdfvReadingEnabled = NO;
 }
 
 - (void)disableSkanAttribution {
@@ -222,6 +227,7 @@
         copy->_isDataResidency = self.isDataResidency;
         copy->_isLinkMeEnabled = self.isLinkMeEnabled;
         copy->_isIdfaReadingEnabled = self.isIdfaReadingEnabled;
+        copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         // AdjustDelegate not copied

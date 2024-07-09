@@ -134,6 +134,13 @@
 @property (nonatomic, readonly) BOOL isIdfaReadingEnabled;
 
 /**
+ * @brief Indicator of whether reading of IDFV is enabled or not.
+ *
+ * @note It is enabled by default.
+ */
+@property (nonatomic, readonly) BOOL isIdfvReadingEnabled;
+
+/**
  * @brief Indicator of whether SKAdNetwork (SKAN) attribution is enabled or not.
  *
  * @note It is enabled by default.
@@ -289,6 +296,11 @@
  * @brief A method for disabling the reading of IDFA parameter.
  */
 - (void)disableIdfaReading;
+
+/**
+ * @brief A method for disabling the reading of IDFV parameter.
+ */
+- (void)disableIdfvReading;
 
 /**
  * @brief A method for disabling SKAdNetwork (SKAN) attribution.

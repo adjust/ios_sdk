@@ -141,9 +141,12 @@ const BOOL kSkanRegisterLockWindow = NO;
         return nil;
     }
     
-    // check if ASA and IDFA tracking were switched off and warn just in case
+    // check if ASA and IDFA/IDFV tracking were switched off and warn just in case
     if (adjustConfig.isIdfaReadingEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
+    }
+    if (adjustConfig.isIdfvReadingEnabled == NO) {
+        [ADJAdjustFactory.logger warn:@"IDFV reading has been switched off"];
     }
     if (adjustConfig.isAdServicesEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
