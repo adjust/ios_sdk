@@ -29,7 +29,7 @@
 - (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
                     currency:(nonnull NSString *)currency
                transactionId:(nonnull NSString *)transactionId
-                  andReceipt:(nonnull NSData *)receipt;
+                     receipt:(nonnull NSData *)receipt;
 
 - (void)setTransactionDate:(nonnull NSDate *)transactionDate;
 

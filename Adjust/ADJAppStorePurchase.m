@@ -12,7 +12,7 @@
 
 - (nullable id)initWithTransactionId:(NSString *)transactionId
                            productId:(NSString *)productId
-                          andReceipt:(NSData *)receipt {
+                             receipt:(NSData *)receipt {
     self = [super init];
     if (self == nil) {
         return nil;

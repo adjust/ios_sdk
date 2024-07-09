@@ -25,7 +25,7 @@
 - (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
                     currency:(nonnull NSString *)currency
                transactionId:(nonnull NSString *)transactionId
-                  andReceipt:(nonnull NSData *)receipt {
+                     receipt:(nonnull NSData *)receipt {
     self = [super init];
     if (self == nil) {
         return nil;

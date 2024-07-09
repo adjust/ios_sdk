@@ -21,15 +21,15 @@
 @implementation ADJConfig
 
 - (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
-                          andEnvironment:(nonnull NSString *)environment {
+                             environment:(nonnull NSString *)environment {
     return [self initWithAppToken:appToken
                       environment:environment
-              andSuppressLogLevel:NO];
+                 suppressLogLevel:NO];
 }
 
 - (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
                              environment:(nonnull NSString *)environment
-                     andSuppressLogLevel:(BOOL)allowSuppressLogLevel {
+                        suppressLogLevel:(BOOL)allowSuppressLogLevel {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -110,8 +110,8 @@
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
-        withSubdomains:(BOOL)useSubdomains
-      andDataResidency:(BOOL)isDataResidency {
+         useSubdomains:(BOOL)useSubdomains
+       isDataResidency:(BOOL)isDataResidency {
     if (urlStrategyDomains == nil) {
         return;
     }

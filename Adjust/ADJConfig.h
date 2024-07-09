@@ -257,7 +257,7 @@
  */
 
 - (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
-                          andEnvironment:(nonnull NSString *)environment;
+                             environment:(nonnull NSString *)environment;
 
 /**
  * @brief Configuration object for the initialization of the Adjust SDK.
@@ -276,7 +276,7 @@
  */
 - (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
                              environment:(nonnull NSString *)environment
-                     andSuppressLogLevel:(BOOL)allowSuppressLogLevel;
+                        suppressLogLevel:(BOOL)allowSuppressLogLevel;
 
 #pragma mark - AdjustConfig instance methods
 
@@ -339,7 +339,7 @@
  *           - {analytics,consent}.adjust.world
  */
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
-        withSubdomains:(BOOL)useSubdomains
-      andDataResidency:(BOOL)isDataResidency;
+         useSubdomains:(BOOL)useSubdomains
+       isDataResidency:(BOOL)isDataResidency;
 
 @end
