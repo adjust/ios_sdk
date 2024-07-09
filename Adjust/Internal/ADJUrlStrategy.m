@@ -16,13 +16,6 @@ static NSString * const kGdprUrl = @"https://gdpr.adjust.com";
 static NSString * const kSubscriptionUrl = @"https://subscription.adjust.com";
 static NSString * const kPurchaseVerificationUrl = @"https://ssrv.adjust.com";
 
-static NSString * const kBaseAnalyticsWorldUrl = @"https://analytics.adjust.world";
-static NSString * const kBaseConsentWorldUrl = @"https://consent.adjust.world";
-static NSString * const kGdprWorldUrl = @"https://gdpr.adjust.world";
-static NSString * const kSubscriptionWorldUrl = @"https://subscription.adjust.world";
-static NSString * const kPurchaseVerificationWorldUrl = @"https://ssrv.adjust.world";
-
-// TODO: to be utilized
 static NSString * const kBaseAnalyticsIoUrl = @"https://analytics.adjust.io";
 static NSString * const kBaseConsentIoUrl = @"https://consent.adjust.io";
 static NSString * const kGdprIoUrl = @"https://gdpr.adjust.io";
@@ -119,15 +112,15 @@ static NSString *const testServerAdjustEndPointKey = @"test_server_adjust_end_po
         }
     } else {
         [_baseUrlConsentChoicesArray setArray:@[kBaseConsentUrl,
-                                                kBaseConsentWorldUrl]];
+                                                kBaseConsentIoUrl]];
         [_baseUrlAnalyticsChoicesArray setArray:@[kBaseAnalyticsUrl,
-                                                  kBaseAnalyticsWorldUrl]];
+                                                  kBaseAnalyticsIoUrl]];
         [_gdprUrlChoicesArray setArray:@[kGdprUrl,
-                                         kGdprWorldUrl]];
+                                         kGdprIoUrl]];
         [_subscriptionUrlChoicesArray setArray:@[kSubscriptionUrl,
-                                                 kSubscriptionWorldUrl]];
+                                                 kSubscriptionIoUrl]];
         [_purchaseVerificationUrlChoicesArray setArray:@[kPurchaseVerificationUrl,
-                                                         kPurchaseVerificationWorldUrl]];
+                                                         kPurchaseVerificationIoUrl]];
     }
 
     _testUrlOverwrite = [ADJAdjustFactory testUrlOverwrite];
