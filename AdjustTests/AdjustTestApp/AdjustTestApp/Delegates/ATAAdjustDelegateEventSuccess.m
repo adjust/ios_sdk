@@ -35,7 +35,7 @@
     NSLog(@"Event success data: %@", eventSuccessResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:eventSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventSuccessResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventSuccessResponseData.eventToken];
     [self.testLibrary addInfoToSend:@"callbackId" value:eventSuccessResponseData.callbackId];

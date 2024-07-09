@@ -385,7 +385,7 @@ authorizationHeader:(NSString *)authorizationHeader
 
     NSString *messageResponse = [responseData.jsonResponse objectForKey:@"message"];
     responseData.message = messageResponse;
-    responseData.timeStamp = [responseData.jsonResponse objectForKey:@"timestamp"];
+    responseData.timestamp = [responseData.jsonResponse objectForKey:@"timestamp"];
     responseData.adid = [responseData.jsonResponse objectForKey:@"adid"];
     responseData.continueInMilli = [responseData.jsonResponse objectForKey:@"continue_in"];
     responseData.retryInMilli = [responseData.jsonResponse objectForKey:@"retry_in"];

@@ -73,7 +73,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ success:%d willRetry:%d attribution:%@ trackingState:%d, json:%@",
-            self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.trackingState, self.jsonResponse];
+            self.message, self.timestamp, self.adid, self.success, self.willRetry, self.attribution, self.trackingState, self.jsonResponse];
 }
 
 #pragma mark - NSCopying
@@ -83,7 +83,7 @@
 
     if (copy) {
         copy.message = [self.message copyWithZone:zone];
-        copy.timeStamp = [self.timeStamp copyWithZone:zone];
+        copy.timestamp = [self.timestamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
         copy.continueInMilli = [self.continueInMilli copyWithZone:zone];
         copy.retryInMilli = [self.retryInMilli copyWithZone:zone];
@@ -105,7 +105,7 @@
     ADJSessionSuccess *successResponseData = [[ADJSessionSuccess alloc] init];
 
     successResponseData.message = self.message;
-    successResponseData.timeStamp = self.timeStamp;
+    successResponseData.timestamp = self.timestamp;
     successResponseData.adid = self.adid;
     successResponseData.jsonResponse = self.jsonResponse;
 
@@ -116,7 +116,7 @@
     ADJSessionFailure *failureResponseData = [[ADJSessionFailure alloc] init];
 
     failureResponseData.message = self.message;
-    failureResponseData.timeStamp = self.timeStamp;
+    failureResponseData.timestamp = self.timestamp;
     failureResponseData.adid = self.adid;
     failureResponseData.willRetry = self.willRetry;
     failureResponseData.jsonResponse = self.jsonResponse;
@@ -160,7 +160,7 @@
     ADJEventSuccess *successResponseData = [[ADJEventSuccess alloc] init];
 
     successResponseData.message = self.message;
-    successResponseData.timeStamp = self.timeStamp;
+    successResponseData.timestamp = self.timestamp;
     successResponseData.adid = self.adid;
     successResponseData.eventToken = self.eventToken;
     successResponseData.callbackId = self.callbackId;
@@ -173,7 +173,7 @@
     ADJEventFailure *failureResponseData = [[ADJEventFailure alloc] init];
 
     failureResponseData.message = self.message;
-    failureResponseData.timeStamp = self.timeStamp;
+    failureResponseData.timestamp = self.timestamp;
     failureResponseData.adid = self.adid;
     failureResponseData.eventToken = self.eventToken;
     failureResponseData.callbackId = self.callbackId;
@@ -185,7 +185,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ eventToken:%@ success:%d willRetry:%d attribution:%@ json:%@",
-            self.message, self.timeStamp, self.adid, self.eventToken, self.success, self.willRetry, self.attribution, self.jsonResponse];
+            self.message, self.timestamp, self.adid, self.eventToken, self.success, self.willRetry, self.attribution, self.jsonResponse];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -210,7 +210,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"message:%@ timestamp:%@ adid:%@ success:%d willRetry:%d attribution:%@ deeplink:%@ json:%@",
-            self.message, self.timeStamp, self.adid, self.success, self.willRetry, self.attribution, self.deeplink, self.jsonResponse];
+            self.message, self.timestamp, self.adid, self.success, self.willRetry, self.attribution, self.deeplink, self.jsonResponse];
 }
 
 @end

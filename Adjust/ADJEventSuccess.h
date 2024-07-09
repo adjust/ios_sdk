@@ -18,7 +18,7 @@
 /**
  * @brief Timestamp from the adjust backend.
  */
-@property (nonatomic, copy) NSString *timeStamp;
+@property (nonatomic, copy) NSString *timestamp;
 
 /**
  * @brief Adjust identifier of the device.

@@ -33,7 +33,7 @@
 
     if (copy) {
         copy.message = [self.message copyWithZone:zone];
-        copy.timeStamp = [self.timeStamp copyWithZone:zone];
+        copy.timestamp = [self.timestamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
         copy.eventToken = [self.eventToken copyWithZone:zone];
         copy.callbackId = [self.callbackId copyWithZone:zone];
@@ -48,7 +48,7 @@
 - (NSString *)description {
     return [NSString stringWithFormat: @"Event Success msg:%@ time:%@ adid:%@ event:%@ cid:%@ json:%@",
             self.message,
-            self.timeStamp,
+            self.timestamp,
             self.adid,
             self.eventToken,
             self.callbackId,

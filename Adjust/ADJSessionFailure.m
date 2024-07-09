@@ -33,7 +33,7 @@
 
     if (copy) {
         copy.message = [self.message copyWithZone:zone];
-        copy.timeStamp = [self.timeStamp copyWithZone:zone];
+        copy.timestamp = [self.timestamp copyWithZone:zone];
         copy.adid = [self.adid copyWithZone:zone];
         copy.willRetry = self.willRetry;
         copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
@@ -47,7 +47,7 @@
 - (NSString *)description {
     return [NSString stringWithFormat: @"Session Failure msg:%@ time:%@ adid:%@ retry:%@ json:%@",
             self.message,
-            self.timeStamp,
+            self.timestamp,
             self.adid,
             self.willRetry ? @"YES" : @"NO",
             self.jsonResponse];
