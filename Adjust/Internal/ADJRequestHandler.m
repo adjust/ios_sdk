@@ -425,7 +425,7 @@ authorizationHeader:(NSString *)authorizationHeader
     request.HTTPMethod = @"POST";
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
-    [request setValue:@"1" forHTTPHeaderField:@"Beta-Version"];
+    [request setValue:@"2" forHTTPHeaderField:@"Beta-Version"];
 
     NSMutableArray<NSString *> *kvParameters =
         [NSMutableArray arrayWithCapacity:mergedParameters.count];
