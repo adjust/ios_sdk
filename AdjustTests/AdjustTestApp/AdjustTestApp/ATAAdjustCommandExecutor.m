@@ -222,7 +222,7 @@
         NSString *appToken = [parameters objectForKey:@"appToken"][0];
 
         adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
-                                            andEnvironment:environment];
+                                               environment:environment];
         [self.savedConfigs setObject:adjustConfig forKey:configNumber];
     }
     
@@ -667,7 +667,7 @@
     [[ADJAppStoreSubscription alloc] initWithPrice:price
                                           currency:currency
                                      transactionId:transactionId
-                                        andReceipt:receipt];
+                                           receipt:receipt];
     [subscription setTransactionDate:transactionDate];
     [subscription setSalesRegion:salesRegion];
 
@@ -775,7 +775,7 @@
 
     ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
                                                                              productId:productId
-                                                                            andReceipt:receipt];
+                                                                               receipt:receipt];
     [Adjust verifyAppStorePurchase:purchase
              withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];

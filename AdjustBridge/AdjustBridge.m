@@ -229,10 +229,10 @@
         if ([self isFieldValid:allowSuppressLogLevel]) {
             adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
                                                    environment:environment
-                                           andSuppressLogLevel:[allowSuppressLogLevel boolValue]];
+                                              suppressLogLevel:[allowSuppressLogLevel boolValue]];
         } else {
             adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
-                                                andEnvironment:environment];
+                                                   environment:environment];
         }
 
         // no need to continue if adjust config is not valid
@@ -346,8 +346,8 @@
         }
         if ([self isFieldValid:useSubdomains] && [self isFieldValid:isDataResidency]) {
             [adjustConfig setUrlStrategy:(NSArray *)self.urlStrategyDomains
-                          withSubdomains:[useSubdomains boolValue]
-                        andDataResidency:[isDataResidency boolValue]];
+                           useSubdomains:[useSubdomains boolValue]
+                         isDataResidency:[isDataResidency boolValue]];
         }
 
         [Adjust initSdk:adjustConfig];

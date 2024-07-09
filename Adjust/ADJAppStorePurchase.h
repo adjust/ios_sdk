@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id)initWithTransactionId:(nonnull NSString *)transactionId
                            productId:(nonnull NSString *)productId
-                          andReceipt:(nonnull NSData *)receipt;
+                             receipt:(nonnull NSData *)receipt;
 
 @end
 
