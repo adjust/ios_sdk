@@ -139,12 +139,6 @@
     }
 }
 
-- (void)setReceipt:(NSData *)receipt {
-    @synchronized (self) {
-        _receipt = [receipt copy];
-    }
-}
-
 - (BOOL)checkEventToken:(NSString *)eventToken {
     if ([ADJUtil isNull:eventToken]) {
         [self.logger error:@"Missing Event Token"];
@@ -197,7 +191,6 @@
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
         copy->_deduplicationId = [self.deduplicationId copyWithZone:zone];
-        copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_productId = [self.productId copyWithZone:zone];
     }
 

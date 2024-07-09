@@ -486,12 +486,6 @@
         }
         [adjustEvent setDeduplicationId:deduplicationId];
     }
-
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        NSData *receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-        [adjustEvent setReceipt:receipt];
-    }
 }
 
 - (void)trackEvent:(NSDictionary *)parameters {
@@ -758,14 +752,9 @@
 }
 
 - (void)verifyPurchase:(NSDictionary *)parameters {
-    NSData *receipt;
     NSString *transactionId;
     NSString *productId;
 
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-    }
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
     }
@@ -774,8 +763,7 @@
     }
 
     ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
-                                                                             productId:productId
-                                                                               receipt:receipt];
+                                                                             productId:productId];
     [Adjust verifyAppStorePurchase:purchase
              withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
