@@ -11,8 +11,7 @@
 @implementation ADJAppStorePurchase
 
 - (nullable id)initWithTransactionId:(NSString *)transactionId
-                           productId:(NSString *)productId
-                             receipt:(NSData *)receipt {
+                           productId:(NSString *)productId {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -20,7 +19,6 @@
 
     _transactionId = [transactionId copy];
     _productId = [productId copy];
-    _receipt = [receipt copy];
 
     return self;
 }
@@ -30,7 +28,6 @@
 
     if (copy) {
         copy->_transactionId = [self.transactionId copyWithZone:zone];
-        copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_productId = [self.productId copyWithZone:zone];
     }
 

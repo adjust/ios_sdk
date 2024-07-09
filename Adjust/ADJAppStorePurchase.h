@@ -14,13 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly, nonnull) NSString *transactionId;
 
-@property (nonatomic, copy, readonly, nonnull) NSData *receipt;
-
 @property (nonatomic, copy, readonly, nonnull) NSString *productId;
 
 - (nullable id)initWithTransactionId:(nonnull NSString *)transactionId
-                           productId:(nonnull NSString *)productId
-                             receipt:(nonnull NSData *)receipt;
+                           productId:(nonnull NSString *)productId;
 
 @end
 

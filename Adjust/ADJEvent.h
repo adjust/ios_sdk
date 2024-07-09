@@ -49,11 +49,6 @@
 @property (nonatomic, copy, readonly, nonnull) NSString *productId;
 
 /**
- * @brief IAP receipt.
- */
-@property (nonatomic, copy, readonly, nonnull) NSData *receipt;
-
-/**
  * @brief List of partner parameters.
  */
 @property (nonatomic, readonly, nonnull) NSDictionary *partnerParameters;
@@ -142,12 +137,5 @@
  * @param productId The product ID of the purchased item.
  */
 - (void)setProductId:(NSString * _Nonnull)productId;
-
-/**
- * @brief Set the receipt of an In-App Purchases to perform IAP verification.
- *
- * @param receipt The receipt obtained after successful IAP.
- */
-- (void)setReceipt:(NSData * _Nonnull)receipt;
 
 @end

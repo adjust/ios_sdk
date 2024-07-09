@@ -250,13 +250,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJAppStorePurchase * _Nullable)purchase {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    if (purchase.receipt != nil) {
-        // NSString *receiptBase64 = [purchase.receipt adjEncodeBase64];
-        NSString *receiptBase64 = [ADJAdditions adjEncodeBase64:purchase.receipt];
-        [ADJPackageBuilder parameters:parameters
-                            setString:receiptBase64
-                               forKey:@"receipt"];
-    }
     if (purchase.transactionId != nil) {
         [ADJPackageBuilder parameters:parameters
                             setString:purchase.transactionId
@@ -274,13 +267,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithEvent:(ADJEvent *)event {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    if (event.receipt != nil) {
-        // NSString *receiptBase64 = [event.receipt adjEncodeBase64];
-        NSString *receiptBase64 = [ADJAdditions adjEncodeBase64:event.receipt];
-        [ADJPackageBuilder parameters:parameters
-                            setString:receiptBase64
-                               forKey:@"receipt"];
-    }
     if (event.transactionId != nil) {
         [ADJPackageBuilder parameters:parameters
                             setString:event.transactionId
@@ -414,8 +400,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.transactionId forKey:@"transaction_id"];
     [ADJPackageBuilder parameters:parameters setString:event.deduplicationId forKey:@"deduplication_id"];
     [ADJPackageBuilder parameters:parameters setString:event.productId forKey:@"product_id"];
-    // [ADJPackageBuilder parameters:parameters setString:[event.receipt adjEncodeBase64] forKey:@"receipt"];
-    [ADJPackageBuilder parameters:parameters setString:[ADJAdditions adjEncodeBase64:event.receipt] forKey:@"receipt"];
 
     if ([self.trackingStatusManager canGetAttStatus]) {
         [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
