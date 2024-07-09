@@ -72,7 +72,7 @@
 
     NSMutableDictionary *eventSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.message forKey:@"message"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.timestamp forKey:@"timestamp"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
@@ -93,7 +93,7 @@
 
     NSMutableDictionary *eventFailureResponseDataDictionary = [NSMutableDictionary dictionary];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.message forKey:@"message"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.timestamp forKey:@"timestamp"];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
     [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
@@ -115,7 +115,7 @@
 
     NSMutableDictionary *sessionSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
-    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timestamp forKey:@"timestamp"];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
 
     NSString *jsonResponse = [self convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
@@ -134,7 +134,7 @@
 
     NSMutableDictionary *sessionFailureResponseDataDictionary = [NSMutableDictionary dictionary];
     [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.message forKey:@"message"];
-    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timestamp forKey:@"timestamp"];
     [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
     [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
 

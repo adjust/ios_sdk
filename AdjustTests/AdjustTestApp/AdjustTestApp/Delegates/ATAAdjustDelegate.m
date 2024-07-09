@@ -132,7 +132,7 @@
     NSLog(@"Event success data: %@", eventSuccessResponseData);
 
     [self.testLibrary addInfoToSend:@"message" value:eventSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventSuccessResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventSuccessResponseData.eventToken];
 
@@ -156,7 +156,7 @@
     NSLog(@"Event failure data: %@", eventFailureResponseData);
 
     [self.testLibrary addInfoToSend:@"message" value:eventFailureResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:eventFailureResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:eventFailureResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventFailureResponseData.eventToken];
     [self.testLibrary addInfoToSend:@"willRetry" value:(eventFailureResponseData.willRetry ? @"true" : @"false")];
@@ -181,7 +181,7 @@
     NSLog(@"Session success data: %@", sessionSuccessResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionSuccessResponseData.adid];
     
     NSError *error;
@@ -204,7 +204,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionFailureResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"willRetry" value:(sessionFailureResponseData.willRetry ? @"true" : @"false")];
     

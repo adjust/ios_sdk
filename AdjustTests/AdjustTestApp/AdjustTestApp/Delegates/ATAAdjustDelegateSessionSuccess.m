@@ -35,7 +35,7 @@
     NSLog(@"Session success data: %@", sessionSuccessResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionSuccessResponseData.adid];
     
     NSError *error;

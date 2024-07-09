@@ -25,7 +25,7 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 @property (nonatomic, copy) NSString *message;
 
-@property (nonatomic, copy) NSString *timeStamp;
+@property (nonatomic, copy) NSString *timestamp;
 
 @property (nonatomic, copy) NSString *adid;
 

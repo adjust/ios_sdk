@@ -35,7 +35,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionFailureResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"willRetry" value:(sessionFailureResponseData.willRetry ? @"true" : @"false")];
     
