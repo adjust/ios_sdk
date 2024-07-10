@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment = ADJEnvironmentSandbox
-        let adjustConfig = ADJConfig(appToken: appToken, andEnvironment: environment)
+        let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
 
         // Change the log level.
         adjustConfig?.logLevel = ADJLogLevelVerbose
