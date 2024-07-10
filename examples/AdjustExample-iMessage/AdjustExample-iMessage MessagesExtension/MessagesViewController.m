@@ -26,7 +26,7 @@
         NSString *yourAppToken = @"2fm9gkqubvpc";
         NSString *environment = ADJEnvironmentSandbox;
         ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:yourAppToken
-                                                       andEnvironment:environment];
+                                                          environment:environment];
 
         // Change the log level.
         [adjustConfig setLogLevel:ADJLogLevelVerbose];

@@ -20,7 +20,7 @@
     NSString *appToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
-                                                   andEnvironment:environment];
+                                                      environment:environment];
 
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
