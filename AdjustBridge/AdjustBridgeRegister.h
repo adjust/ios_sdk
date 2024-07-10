@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WKWebViewJavascriptBridge.h"
+#import <WebKit/WebKit.h>
+#import "WebViewJavascriptBridgeBase.h"
 
 @interface AdjustBridgeRegister : NSObject
 

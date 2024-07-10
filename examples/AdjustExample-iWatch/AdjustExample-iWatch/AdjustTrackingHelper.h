@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class AdjustDelegate;
+@protocol AdjustDelegate;
 
 @interface AdjustTrackingHelper : NSObject
 

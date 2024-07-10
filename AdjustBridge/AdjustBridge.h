@@ -6,10 +6,11 @@
 //  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import <Foundation/Foundation.h>
-#import "AdjustBridgeRegister.h"
+
+@class AdjustBridgeRegister;
 
 @interface AdjustBridge : NSObject
 

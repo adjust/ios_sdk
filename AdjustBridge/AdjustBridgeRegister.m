@@ -7,6 +7,7 @@
 //
 
 #import "AdjustBridgeRegister.h"
+#import "WKWebViewJavascriptBridge.h"
 
 static NSString * const kHandlerPrefix = @"adjust_";
 static NSString * fbAppIdStatic = nil;

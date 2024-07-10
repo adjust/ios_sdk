@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ATLTestLibrary.h"
-#import "AdjustBridgeRegister.h"
+#import <AdjustBridge/AdjustBridgeRegister.h>
 
 // simulator
 static NSString * urlOverwrite = @"http://127.0.0.1:8080";

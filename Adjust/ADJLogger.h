@@ -7,7 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, ADJLogLevel) {
     ADJLogLevelVerbose  = 1,
     ADJLogLevelDebug    = 2,
     ADJLogLevelInfo     = 3,
@@ -15,7 +15,7 @@ typedef enum {
     ADJLogLevelError    = 5,
     ADJLogLevelAssert   = 6,
     ADJLogLevelSuppress = 7
-} ADJLogLevel;
+};
 
 /**
  * @brief Adjust logger protocol.

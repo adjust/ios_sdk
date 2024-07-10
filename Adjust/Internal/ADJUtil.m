@@ -24,10 +24,6 @@
 #import "ADJAdjustFactory.h"
 #import "ADJAdditions.h"
 
-#if !ADJUST_NO_IDFA
-#import <AdSupport/ASIdentifierManager.h>
-#endif
-
 static NSRegularExpression *universalLinkRegex = nil;
 static NSNumberFormatter *secondsNumberFormatter = nil;
 static NSRegularExpression *optionalRedirectRegex = nil;

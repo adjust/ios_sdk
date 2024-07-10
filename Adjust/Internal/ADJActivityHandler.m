@@ -24,6 +24,8 @@
 #import "ADJUrlStrategy.h"
 #import "ADJSKAdNetwork.h"
 #import "ADJPurchaseVerificationHandler.h"
+#import "ADJPurchaseVerificationResult.h"
+#import "ADJAdRevenue.h"
 
 NSString * const ADJAdServicesPackageKey = @"apple_ads";
 

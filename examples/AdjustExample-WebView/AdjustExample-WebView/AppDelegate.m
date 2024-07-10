@@ -6,9 +6,9 @@
 //  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
 #import "AppDelegate.h"
 #import "WKWebViewController.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @interface AppDelegate ()
 

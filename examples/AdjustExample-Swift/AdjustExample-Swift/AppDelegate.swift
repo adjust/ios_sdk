@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AdjustSdk
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
@@ -19,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
 
         // Change the log level.
-        adjustConfig?.logLevel = ADJLogLevelVerbose
+        adjustConfig?.logLevel = ADJLogLevel.verbose
 
         // Set delegate object.
         adjustConfig?.delegate = self

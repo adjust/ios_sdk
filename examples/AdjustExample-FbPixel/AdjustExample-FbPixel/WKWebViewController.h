@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
-
-#import "AdjustBridge.h"
+#import <AdjustBridge/AdjustBridge.h>
 
 @interface WKWebViewController : UIViewController
 

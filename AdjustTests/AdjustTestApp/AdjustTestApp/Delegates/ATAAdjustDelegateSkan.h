@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "ATLTestLibrary.h"
 
 @interface ATAAdjustDelegateSkan : NSObject<AdjustDelegate>

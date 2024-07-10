@@ -38,9 +38,7 @@ let package = Package(
             path: "AdjustBridge",
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("WebViewJavascriptBridge"),
-                .headerSearchPath("../Adjust"),
-                .headerSearchPath("../Adjust/Internal")
+                .headerSearchPath("../Adjust/include"),
             ]
         ),
     ]

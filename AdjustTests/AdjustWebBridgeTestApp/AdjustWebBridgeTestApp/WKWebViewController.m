@@ -8,8 +8,7 @@
 
 #import "WKWebViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
-
-#import "AdjustBridge.h"
+#import <AdjustBridge/AdjustBridge.h>
 #import "TestLibraryBridge.h"
 
 

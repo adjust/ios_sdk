@@ -6,7 +6,7 @@
 //  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "Constants.h"
 #import "ViewControllerObjC.h"
 
