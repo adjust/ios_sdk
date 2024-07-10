@@ -349,7 +349,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -480,7 +479,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -556,7 +554,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -617,7 +614,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -789,7 +785,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                            forKey:@"partner_sharing_settings"];
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -855,7 +850,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
@@ -976,7 +970,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
 
     if (self.activityState != nil) {
-        [ADJPackageBuilder parameters:parameters setDuration:self.activityState.lastInterval forKey:@"last_interval"];
         [ADJPackageBuilder parameters:parameters setString:self.activityState.pushToken forKey:@"push_token"];
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.sessionCount forKey:@"session_count"];
         [ADJPackageBuilder parameters:parameters setDuration:self.activityState.sessionLength forKey:@"session_length"];
