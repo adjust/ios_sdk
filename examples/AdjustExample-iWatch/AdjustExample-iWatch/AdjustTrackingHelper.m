@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import "Adjust.h"
 #import "AdjustTrackingHelper.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @implementation AdjustTrackingHelper
 
@@ -25,7 +24,7 @@
 }
 
 - (void)initialize:(NSObject<AdjustDelegate> *)delegate {
-    NSString *yourAppToken = @"{YourAppToken}";
+    NSString *yourAppToken = @"2fm9gkqubvpc";
     NSString *environment = ADJEnvironmentSandbox;
     ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:yourAppToken
                                                       environment:environment];
@@ -40,13 +39,13 @@
 }
 
 - (void)trackSimpleEvent {
-    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"g3mfiw"];
 
     [Adjust trackEvent:event];
 }
 
 - (void)trackRevenueEvent {
-    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"a4fd35"];
 
     // Add revenue 15 cent of an euro.
     [event setRevenue:0.015 currency:@"EUR"];
@@ -55,7 +54,7 @@
 }
 
 - (void)trackCallbackEvent {
-    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"34vgg9"];
 
     // Add callback parameters to this event.
     [event addCallbackParameter:@"key" value:@"value"];
@@ -64,7 +63,7 @@
 }
 
 - (void)trackPartnerEvent {
-    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"{YourEventToken}"];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"w788qs"];
 
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"foo" value:@"bar"];

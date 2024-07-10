@@ -13,6 +13,7 @@
 #import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
 #import "ADJPackageBuilder.h"
+#import "ADJPurchaseVerificationResult.h"
 
 static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQueue";
 

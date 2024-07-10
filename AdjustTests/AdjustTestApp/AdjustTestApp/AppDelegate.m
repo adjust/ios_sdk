@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @interface AppDelegate ()
 

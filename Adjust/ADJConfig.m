@@ -10,7 +10,6 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 #import "ADJUtil.h"
-#import "Adjust.h"
 
 @interface ADJConfig()
 

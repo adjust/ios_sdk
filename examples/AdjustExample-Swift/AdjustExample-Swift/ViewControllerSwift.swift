@@ -8,7 +8,6 @@
 
 import AppTrackingTransparency
 import AdSupport
-import AdjustSdk
 import UIKit
 
 class ViewControllerSwift: UIViewController {

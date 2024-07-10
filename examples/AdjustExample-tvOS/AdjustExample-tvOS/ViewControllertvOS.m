@@ -6,9 +6,9 @@
 //  Copyright © 2015-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
-#import "Constants.h"
 #import "ViewControllertvOS.h"
+#import "Constants.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @interface ViewControllertvOS ()
 
@@ -35,14 +35,12 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken1];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken1];
     [Adjust trackEvent:event];
 }
 
 - (IBAction)clickTrackRevenueEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken2];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken2];
     // Add revenue 1 cent of an euro.
     [event setRevenue:0.01 currency:@"EUR"];
     
@@ -50,8 +48,7 @@
 }
 
 - (IBAction)clickTrackCallbackEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken3];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken3];
     // Add callback parameters to this event.
     [event addCallbackParameter:@"a" value:@"b"];
     [event addCallbackParameter:@"key" value:@"value"];
@@ -61,8 +58,7 @@
 }
 
 - (IBAction)clickTrackPartnerEvent:(UIButton *)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:kEventToken4];
-    
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:kEventToken4];
     // Add partner parameteres to this event.
     [event addPartnerParameter:@"x" value:@"y"];
     [event addPartnerParameter:@"foo" value:@"bar"];

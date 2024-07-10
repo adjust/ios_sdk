@@ -6,8 +6,7 @@
 //  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
-#import "ADJAdjustFactory.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "ATAAdjustDelegate.h"
 #import "ATAAdjustDelegateAttribution.h"
 #import "ATAAdjustDelegateEventFailure.h"

@@ -7,7 +7,6 @@
 //
 
 #import "ADJUrlStrategy.h"
-#import "Adjust.h"
 #import "ADJAdjustFactory.h"
 
 static NSString * const kBaseAnalyticsUrl = @"https://analytics.adjust.com";

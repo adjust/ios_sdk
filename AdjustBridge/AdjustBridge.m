@@ -6,9 +6,9 @@
 //  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
 #import "AdjustBridge.h"
-#import "ADJAdjustFactory.h"
+#import <AdjustSdk/AdjustSdk.h>
+#import "AdjustBridgeRegister.h"
 #import "WKWebViewJavascriptBridge.h"
 
 @interface AdjustBridge() <AdjustDelegate>
@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
 @property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) ADJAttribution *attribution;
+@property (nonatomic, strong) ADJLogger *logger;
 
 @end
 
@@ -40,6 +41,7 @@
 
     _bridgeRegister = nil;
     self.isDeferredDeeplinkOpeningEnabled = YES;
+    _logger = [[ADJLogger alloc] init];
 
     [self resetAdjustBridge];
 
@@ -174,7 +176,7 @@
     NSString *fbAppId = [self getFbAppId];
 
     if (fbAppId == nil) {
-        [[ADJAdjustFactory logger] error:@"FacebookAppID is not correctly configured in the pList"];
+        [self.logger error:@"FacebookAppID is not correctly configured in the pList"];
         return;
     }
     [_bridgeRegister augmentHybridWebView:fbAppId];
@@ -674,17 +676,17 @@
     [self.bridgeRegister registerHandler:@"adjust_fbPixelEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSString *pixelID = [data objectForKey:@"pixelID"];
         if (pixelID == nil) {
-            [[ADJAdjustFactory logger] error:@"Can't bridge an event without a referral Pixel ID. Check your webview Pixel configuration"];
+            [self.logger error:@"Can't bridge an event without a referral Pixel ID. Check your webview Pixel configuration"];
             return;
         }
         NSString *evtName = [data objectForKey:@"evtName"];
         NSString *eventToken = [self getEventTokenFromFbPixelEventName:evtName];
         if (eventToken == nil) {
-            [[ADJAdjustFactory logger] debug:@"No mapping found for the fb pixel event %@, trying to fall back to the default event token", evtName];
+            [self.logger debug:@"No mapping found for the fb pixel event %@, trying to fall back to the default event token", evtName];
             eventToken = self.fbPixelDefaultEventToken;
         }
         if (eventToken == nil) {
-            [[ADJAdjustFactory logger] debug:@"There is not a default event token configured or a mapping found for event named: '%@'. It won't be tracked as an adjust event", evtName];
+            [self.logger  debug:@"There is not a default event token configured or a mapping found for event named: '%@'. It won't be tracked as an adjust event", evtName];
             return;
         }
 

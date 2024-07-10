@@ -13,6 +13,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJActivityHandler.h"
 #import "ADJSKAdNetwork.h"
+#import "ADJPurchaseVerificationResult.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC

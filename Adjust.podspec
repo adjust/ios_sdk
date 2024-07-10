@@ -13,21 +13,22 @@ Pod::Spec.new do |s|
   s.ios.weak_framework      = 'AdSupport'
   s.tvos.weak_framework     = 'AdSupport'
   s.default_subspec         = 'Adjust'
-
-  s.subspec 'Core' do |co|
-    co.source_files = 'Adjust/**/*.{h,m}'
-    co.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
-  end
+  s.module_map              = 'ModuleMap/module.modulemap'
 
   s.subspec 'Adjust' do |ads|
-    ads.dependency 'Adjust/Core'
+    ads.source_files = 'Adjust/**/*.{h,m}'
+    ads.public_header_files = 'Adjust/*.h', 'UmbrellaHeaders/sdk/*.h'
+    ads.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
+    ads.header_dir = 'AdjustSdk'
     ads.dependency 'AdjustSignature', '3.18'
   end
 
   s.subspec 'AdjustWebBridge' do |wb|
-    wb.dependency 'Adjust/Core'
+    wb.source_files = 'Adjust/**/*.{h,m}', 'AdjustBridge/*.{h,m}', 'UmbrellaHeaders/webbridge/*.{h,m}'
+    wb.public_header_files = 'Adjust/*.h', 'AdjustBridge/*.h', 'UmbrellaHeaders/webbridge/*.h'
+    wb.resource_bundle = {'Adjust' => ['Adjust/*.xcprivacy']}
+    wb.header_dir = 'AdjustSdk'
     wb.dependency 'AdjustSignature', '3.18'
-    wb.source_files = 'AdjustBridge/*.{h,m}', 'AdjustBridge/WebViewJavascriptBridge/*.{h,m}'
     wb.ios.deployment_target = '12.0'
   end
 end

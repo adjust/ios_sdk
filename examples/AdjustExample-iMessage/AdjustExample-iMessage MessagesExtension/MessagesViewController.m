@@ -6,7 +6,7 @@
 //  Copyright © 2018-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "MessagesViewController.h"
 
 @interface MessagesViewController ()

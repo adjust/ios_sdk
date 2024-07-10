@@ -15,6 +15,9 @@
 #import "ADJActivityPackage.h"
 #import "ADJAdditions.h"
 #import "ADJUserDefaults.h"
+#import "ADJAdRevenue.h"
+#import "ADJAppStorePurchase.h"
+#import "ADJAppStoreSubscription.h"
 
 NSString * const ADJAttributionTokenParameter = @"attribution_token";
 

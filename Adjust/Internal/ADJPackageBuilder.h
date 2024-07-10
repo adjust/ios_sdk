@@ -5,6 +5,7 @@
 //  Created by Christian Wellenbrock (@wellle) on 3rd July 2013.
 //  Copyright (c) 2013-2018 Adjust GmbH. All rights reserved.
 //
+#import <Foundation/Foundation.h>
 
 #import "ADJEvent.h"
 #import "ADJConfig.h"
@@ -12,7 +13,6 @@
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
 #import "ADJGlobalParameters.h"
-#import <Foundation/Foundation.h>
 #import "ADJActivityHandler.h"
 #import "ADJThirdPartySharing.h"
 

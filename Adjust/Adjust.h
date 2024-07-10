@@ -7,15 +7,17 @@
 //  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
 //
 
-#import "ADJEvent.h"
-#import "ADJConfig.h"
-#import "ADJAttribution.h"
-#import "ADJAppStoreSubscription.h"
-#import "ADJThirdPartySharing.h"
-#import "ADJAdRevenue.h"
-#import "ADJLinkResolution.h"
-#import "ADJAppStorePurchase.h"
-#import "ADJPurchaseVerificationResult.h"
+#import <Foundation/Foundation.h>
+
+@class ADJEvent;
+@class ADJConfig;
+@class ADJAttribution;
+@class ADJAppStoreSubscription;
+@class ADJThirdPartySharing;
+@class ADJAdRevenue;
+@class ADJLinkResolution;
+@class ADJAppStorePurchase;
+@class ADJPurchaseVerificationResult;
 
 typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nullable resolvedLink);
 typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution);
