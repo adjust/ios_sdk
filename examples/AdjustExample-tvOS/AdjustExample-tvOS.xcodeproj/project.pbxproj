@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A584DA62C3EA7AA0071A651 /* libAdjustSdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584DA52C3EA7AA0071A651 /* libAdjustSdk.a */; };
+		0A584DBB2C3FAB1C0071A651 /* AdjustSigSdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584DBA2C3FAB1C0071A651 /* AdjustSigSdk.xcframework */; };
+		0A584DBC2C3FAB1C0071A651 /* AdjustSigSdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584DBA2C3FAB1C0071A651 /* AdjustSigSdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		963909B71BCC0D8300A2E8A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B61BCC0D8300A2E8A4 /* main.m */; };
 		963909BA1BCC0D8300A2E8A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909B91BCC0D8300A2E8A4 /* AppDelegate.m */; };
 		963909BD1BCC0D8300A2E8A4 /* ViewControllertvOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 963909BC1BCC0D8300A2E8A4 /* ViewControllertvOS.m */; };
@@ -25,6 +27,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0A584DBC2C3FAB1C0071A651 /* AdjustSigSdk.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0A584DA52C3EA7AA0071A651 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A584DBA2C3FAB1C0071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdjustSigSdk.xcframework; path = ../../AdjustSignature/AdjustSigSdk.xcframework; sourceTree = "<group>"; };
 		963909B21BCC0D8300A2E8A4 /* AdjustExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		963909B61BCC0D8300A2E8A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		963909B81BCC0D8300A2E8A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 				963909D01BCC0DA600A2E8A4 /* AdSupport.framework in Frameworks */,
 				9D5C9632295D96260021602B /* StoreKit.framework in Frameworks */,
 				0A584DA62C3EA7AA0071A651 /* libAdjustSdk.a in Frameworks */,
+				0A584DBB2C3FAB1C0071A651 /* AdjustSigSdk.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +113,7 @@
 		9D5C9630295D96250021602B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A584DBA2C3FAB1C0071A651 /* AdjustSigSdk.xcframework */,
 				0A584DA52C3EA7AA0071A651 /* libAdjustSdk.a */,
 				9D5C9631295D96260021602B /* StoreKit.framework */,
 			);
