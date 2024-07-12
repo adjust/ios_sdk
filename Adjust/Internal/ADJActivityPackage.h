@@ -7,6 +7,7 @@
 //
 
 #import "ADJActivityKind.h"
+#import "ADJEvent.h"
 
 @interface ADJActivityPackage : NSObject <NSCoding>
 
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) NSDictionary *callbackParameters;
 
 @property (nonatomic, copy) void (^purchaseVerificationCallback)(id);
+
+@property (nonatomic, strong) ADJEvent *event;
 
 @property (nonatomic, assign) NSUInteger errorCount;
 

@@ -1471,8 +1471,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     ADJActivityPackage *purchaseVerificationPackage =
     [purchaseVerificationBuilder buildPurchaseVerificationPackageWithEvent:event];
     purchaseVerificationPackage.purchaseVerificationCallback = completion;
+    purchaseVerificationPackage.event = event;
     [selfI.purchaseVerificationHandler sendPurchaseVerificationPackage:purchaseVerificationPackage];
-    [selfI trackEvent:event];
 }
 
 - (void)launchEventResponseTasksI:(ADJActivityHandler *)selfI
@@ -1603,6 +1603,12 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     verificationResult.code = [(NSNumber *)purchaseVerificationResponseData.jsonResponse[@"code"] intValue];
     verificationResult.message = purchaseVerificationResponseData.jsonResponse[@"message"];
     purchaseVerificationResponseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
+
+    if (purchaseVerificationResponseData.purchaseVerificationPackage &&
+        purchaseVerificationResponseData.purchaseVerificationPackage.event)
+    {
+        [self trackEvent:purchaseVerificationResponseData.purchaseVerificationPackage.event];
+    }
 }
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *)selfI
