@@ -1138,13 +1138,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6F0841FB2007749C00568A31 /* AdjustUnitTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AdjustUnitTests;
-			sourceTree = "<group>";
-		};
 		6F0842192007766700568A31 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1279,7 +1272,6 @@
 				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
 				6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */,
 				6F7AF63F211878BC00F730B2 /* AdjustWebBridgeTestApp.xcodeproj */,
-				6F0841FB2007749C00568A31 /* AdjustUnitTests */,
 			);
 			path = AdjustTests;
 			sourceTree = "<group>";
@@ -3210,7 +3202,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_SIGN_COMPARE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -3235,7 +3227,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AdjustTests/AdjustUnitTests/Adjust-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_SIGN_COMPARE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
