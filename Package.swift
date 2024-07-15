@@ -21,7 +21,6 @@ let package = Package(
                 .product(name: "AdjustSigSdk", package: "adjust_signature_sdk")
             ],
             path: "Adjust",
-            exclude: ["Info.plist"],
             resources: [
                 .copy("PrivacyInfo.xcprivacy"),
             ],
