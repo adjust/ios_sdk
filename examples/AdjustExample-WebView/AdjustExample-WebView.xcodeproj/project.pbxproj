@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -40,7 +40,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdjustSigSdk.xcframework; path = ../../AdjustSignature/AdjustSigSdk.xcframework; sourceTree = "<group>"; };
+		0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; name = AdjustSigSdk.xcframework; path = ../../AdjustSignature/AdjustSigSdk.xcframework; sourceTree = "<group>"; };
 		0A584DA02C3EA6C40071A651 /* libAdjustBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAdjustBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A81CFDAF8E0050568B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };

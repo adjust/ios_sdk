@@ -11,7 +11,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/adjust/adjust_signature_sdk.git",
-            from: "3.18.0"
+            .upToNextMajor(from: "3.18.0") 
         )
     ],
     targets: [
