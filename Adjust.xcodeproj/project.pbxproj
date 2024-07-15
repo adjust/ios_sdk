@@ -886,6 +886,7 @@
 		0A584B982C3E8C9A0071A651 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0A584B992C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0A584B9B2C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
+		0A584DED2C45BD160071A651 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0AB1C97127DD450D00509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CA2527DF462200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1123,6 +1124,7 @@
 		0A584DBD2C40FCA30071A651 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				0A584DED2C45BD160071A651 /* Info.plist */,
 			);
 			path = Info;
 			sourceTree = "<group>";
