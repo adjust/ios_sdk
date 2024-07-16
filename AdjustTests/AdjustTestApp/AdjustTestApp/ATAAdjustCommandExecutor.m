@@ -97,6 +97,8 @@
         [self getLastDeeplink:parameters];
     } else if ([methodName isEqualToString:@"verifyPurchase"]) {
         [self verifyPurchase:parameters];
+    } else if ([methodName isEqualToString:@"verifyTrack"]) {
+        [self verifyTrack:parameters];
     } else if ([methodName isEqualToString:@"processDeeplink"]) {
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
@@ -764,6 +766,28 @@
         [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
+}
+
+- (void)verifyTrack:(NSDictionary *)parameters {
+    [self event:parameters];
+    NSNumber *eventNumber = [NSNumber numberWithInt:0];
+    if ([parameters objectForKey:@"eventName"]) {
+        NSString *eventName = [parameters objectForKey:@"eventName"][0];
+        NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
+        eventNumber = [NSNumber numberWithInt:[eventNumberS intValue]];
+    }
+
+    ADJEvent *adjustEvent = [self.savedEvents objectForKey:eventNumber];
+
+    [Adjust verifyAndTrackAppStorePurchase:adjustEvent
+                     withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+        [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
+        [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
+        [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+
+    [self.savedEvents removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
 - (void)processDeeplink:(NSDictionary *)parameters {
