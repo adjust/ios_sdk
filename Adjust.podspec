@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
   s.subspec 'Adjust' do |adj|
     adj.source_files        = 'Adjust/**/*.{h,m}', 'UmbrellaHeaders/sdk/*.{h,m}'
     adj.public_header_files = 'Adjust/*.h', 'UmbrellaHeaders/sdk/*.h'
+    adj.exclude_files       = 'Adjust/include/**/*.h'
     adj.resource_bundle     = {'Adjust' => ['Adjust/*.xcprivacy']}
     adj.header_dir          = 'AdjustSdk'
     adj.dependency          'AdjustSignature', '~> 3.18'
@@ -26,6 +27,7 @@ Pod::Spec.new do |s|
   s.subspec 'AdjustWebBridge' do |awb|
     awb.source_files          = 'Adjust/**/*.{h,m}', 'AdjustBridge/*.{h,m}', 'UmbrellaHeaders/webbridge/*.{h,m}'
     awb.public_header_files   = 'Adjust/*.h', 'AdjustBridge/*.h', 'UmbrellaHeaders/webbridge/*.h'
+    awb.exclude_files         = 'Adjust/include/**/*.h'
     awb.resource_bundle       = {'Adjust' => ['Adjust/*.xcprivacy']}
     awb.header_dir            = 'AdjustSdk'
     awb.ios.deployment_target = '12.0'
