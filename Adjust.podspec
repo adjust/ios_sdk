@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.module_map              = 'ModuleMap/module.modulemap'
 
   s.subspec 'Adjust' do |adj|
-    adj.source_files        = 'Adjust/**/*.{h,m}'
+    adj.source_files        = 'Adjust/**/*.{h,m}', 'UmbrellaHeaders/sdk/*.{h,m}'
     adj.public_header_files = 'Adjust/*.h', 'UmbrellaHeaders/sdk/*.h'
     adj.resource_bundle     = {'Adjust' => ['Adjust/*.xcprivacy']}
     adj.header_dir          = 'AdjustSdk'
