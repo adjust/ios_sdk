@@ -69,21 +69,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)trackEvent:(nullable ADJEvent *)event;
 
 /**
- * @brief Tell adjust that the application resumed.
- *
- * @note Only necessary if the native notifications can't be used
- *       or if they will happen before call to initSdk: is made.
- */
-+ (void)trackSubsessionStart;
-
-/**
- * @brief Tell adjust that the application paused.
- *
- * @note Only necessary if the native notifications can't be used.
- */
-+ (void)trackSubsessionEnd;
-
-/**
  * @brief Enable Adjust SDK. This setting is saved for future sessions.
  */
 + (void)enable;
@@ -156,7 +141,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @param completion Completion block to get the IDFV value delivered to.
  */
 + (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion;
-
 
 /**
  * @brief Get current adjust identifier for the user through a callback.
@@ -319,17 +303,35 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (void)disableCoppaCompliance;
 
+/**
+ * @brief Verify in-app-purchase and track event upon successfully completed verification.
+ *
+ * @param event      Adjust event to be tracked.
+ * @param completion Callback where verification result will be reported.
+ */
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
-
-/**
- * @brief Method used for internal testing only. Don't use it in production.
- */
-+ (void)setTestOptions:(nullable NSDictionary *)testOptions;
 
 /**
  * Obtain singleton Adjust object.
  */
 + (nullable instancetype)getInstance;
+
+#pragma mark - Methods for testing (do not use in your app)
+
+/**
+ * @brief Method used for internal testing only. Don't use it in your app.
+ */
++ (void)setTestOptions:(nullable NSDictionary *)testOptions;
+
+/**
+ * @brief Method used for internal testing only. Don't use it in your app.
+ */
++ (void)trackSubsessionStart;
+
+/**
+ * @brief Method used for internal testing only. Don't use it in your app.
+ */
++ (void)trackSubsessionEnd;
 
 @end
