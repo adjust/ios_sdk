@@ -70,8 +70,6 @@
  * 
  * @return Adjust attribution object.
  */
-+ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict;
-
 - (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict;
 
 /**

@@ -12,10 +12,6 @@
 
 @implementation ADJAttribution
 
-+ (ADJAttribution *)dataWithJsonDict:(NSDictionary *)jsonDict {
-    return [[ADJAttribution alloc] initWithJsonDict:jsonDict];
-}
-
 - (id)initWithJsonDict:(NSDictionary *)jsonDict {
     self = [super init];
     if (self == nil) {

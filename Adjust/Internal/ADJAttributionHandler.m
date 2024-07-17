@@ -151,7 +151,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     [selfI.activityHandler setAskingAttribution:NO];
 
     NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
-    responseData.attribution = [ADJAttribution dataWithJsonDict:jsonAttribution];
+    responseData.attribution = [[ADJAttribution alloc] initWithJsonDict:jsonAttribution];
 }
 
 - (void)checkDeeplinkI:(ADJAttributionHandler*)selfI
