@@ -727,6 +727,24 @@
 		9D775B642A1F9CCE009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B602A1F9CC5009D0BE8 /* ADJPurchaseVerificationHandler.m */; };
 		9D775B652A1F9CCF009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B602A1F9CC5009D0BE8 /* ADJPurchaseVerificationHandler.m */; };
 		9D775B662A1F9CD0009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D775B602A1F9CC5009D0BE8 /* ADJPurchaseVerificationHandler.m */; };
+		9D7D3DEC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DED2C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DEE2C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DEF2C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF02C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF12C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DF22C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DF32C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF42C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DF52C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF62C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DF72C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF82C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DF92C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DFA2C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DFB2C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
+		9D7D3DFC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D7D3DFD2C49A8B200FACB18 /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */; };
 		9DB561852C072BA10004CCAD /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */; };
 		9DB561862C072BAF0004CCAD /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */; };
 		9DD0E9AE1F44690B00B2A759 /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */; };
@@ -987,6 +1005,8 @@
 		9D775B582A1F7C7A009D0BE8 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
 		9D775B5F2A1F9CC5009D0BE8 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
 		9D775B602A1F9CC5009D0BE8 /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
+		9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJDeeplink.h; sourceTree = "<group>"; };
+		9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJDeeplink.m; sourceTree = "<group>"; };
 		9D9D154D212EB3D00081445E /* AdjustExample-FbPixel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-FbPixel.xcodeproj"; path = "examples/AdjustExample-FbPixel/AdjustExample-FbPixel.xcodeproj"; sourceTree = "<group>"; };
 		9DBE560723054FCC0065E19C /* AdjustExample-ObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-ObjC.xcodeproj"; path = "examples/AdjustExample-ObjC/AdjustExample-ObjC.xcodeproj"; sourceTree = "<group>"; };
 		9DD0E9AC1F44690B00B2A759 /* ADJUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJUserDefaults.h; sourceTree = "<group>"; };
@@ -1241,6 +1261,8 @@
 				969952D11A01309200928462 /* ADJAttribution.m */,
 				960A8BB71A029A8000F2BB95 /* ADJConfig.h */,
 				960A8BB81A029A8000F2BB95 /* ADJConfig.m */,
+				9D7D3DEA2C49A8B200FACB18 /* ADJDeeplink.h */,
+				9D7D3DEB2C49A8B200FACB18 /* ADJDeeplink.m */,
 				9609BC6819EEA55800E02303 /* ADJEvent.h */,
 				9609BC6919EEA55800E02303 /* ADJEvent.m */,
 				9601CAE61C74BAAE00670879 /* ADJEventFailure.h */,
@@ -1430,6 +1452,7 @@
 				0A584CE12C3E95B10071A651 /* ADJEventFailure.h in Headers */,
 				0A584CE22C3E95B10071A651 /* ADJEventSuccess.h in Headers */,
 				0A584CE32C3E95B10071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DF62C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584CE42C3E95B10071A651 /* ADJLogger.h in Headers */,
 				0A584CE52C3E95B10071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584CE62C3E95B10071A651 /* ADJSessionFailure.h in Headers */,
@@ -1475,6 +1498,7 @@
 				0A584D082C3E96250071A651 /* ADJEventFailure.h in Headers */,
 				0A584D092C3E96250071A651 /* ADJEventSuccess.h in Headers */,
 				0A584D0A2C3E96250071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DF92C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584D0B2C3E96250071A651 /* ADJLogger.h in Headers */,
 				0A584D0C2C3E96250071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584D0D2C3E96250071A651 /* ADJSessionFailure.h in Headers */,
@@ -1520,6 +1544,7 @@
 				0A584D2F2C3E968A0071A651 /* ADJEventFailure.h in Headers */,
 				0A584D302C3E968A0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584D312C3E968A0071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DFA2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584D322C3E968A0071A651 /* ADJLogger.h in Headers */,
 				0A584D332C3E968A0071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584D342C3E968A0071A651 /* ADJSessionFailure.h in Headers */,
@@ -1598,6 +1623,7 @@
 				0A584D772C3E97020071A651 /* ADJTimerOnce.h in Headers */,
 				0A584D782C3E97020071A651 /* ADJUrlStrategy.h in Headers */,
 				0A584D792C3E97020071A651 /* ADJUserDefaults.h in Headers */,
+				9D7D3DFC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584D7A2C3E97020071A651 /* ADJUtil.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1615,6 +1641,7 @@
 				9D2F23E22447CE5C00B7CA90 /* ADJAppStoreSubscription.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
 				9D52A3212C071BBC00E0AA55 /* ADJAdditions.h in Headers */,
+				9D7D3DEC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				968173871C3C2D36002AE1DE /* ADJSessionFailure.h in Headers */,
 				968173831C3C2D07002AE1DE /* ADJSessionSuccess.h in Headers */,
 				9DF92D832630ED02000FC3FC /* ADJPackageParams.h in Headers */,
@@ -1693,6 +1720,7 @@
 				0A584CD62C3E95710071A651 /* ADJTimerOnce.h in Headers */,
 				0A584CD72C3E95710071A651 /* ADJUrlStrategy.h in Headers */,
 				0A584CD82C3E95710071A651 /* ADJUserDefaults.h in Headers */,
+				9D7D3DF42C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584CD92C3E95710071A651 /* ADJUtil.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1710,6 +1738,7 @@
 				0A584C1A2C3E94B50071A651 /* ADJEventFailure.h in Headers */,
 				0A584C1B2C3E94B50071A651 /* ADJEventSuccess.h in Headers */,
 				0A584C1C2C3E94B50071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DF12C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584C1D2C3E94B50071A651 /* ADJLogger.h in Headers */,
 				0A584C1E2C3E94B50071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584C1F2C3E94B50071A651 /* ADJSessionFailure.h in Headers */,
@@ -1755,6 +1784,7 @@
 				0A584BCF2C3E944F0071A651 /* ADJEventFailure.h in Headers */,
 				0A584BD02C3E944F0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584BD12C3E944F0071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DEE2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584BD22C3E944F0071A651 /* ADJLogger.h in Headers */,
 				0A584BD32C3E944F0071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584BD42C3E944F0071A651 /* ADJSessionFailure.h in Headers */,
@@ -1800,6 +1830,7 @@
 				0A584C652C3E94FA0071A651 /* ADJEventFailure.h in Headers */,
 				0A584C662C3E94FA0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584C672C3E94FA0071A651 /* ADJLinkResolution.h in Headers */,
+				9D7D3DF22C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584C682C3E94FA0071A651 /* ADJLogger.h in Headers */,
 				0A584C692C3E94FA0071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584C6A2C3E94FA0071A651 /* ADJSessionFailure.h in Headers */,
@@ -2396,6 +2427,7 @@
 				9D4CC6D52C0735B400A1E0C0 /* ADJAdditions.m in Sources */,
 				0AB1C99A27DD4B3100509231 /* Adjust.m in Sources */,
 				0AB1C99B27DD4B3100509231 /* ADJActivityHandler.m in Sources */,
+				9D7D3DF72C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1C99C27DD4B3100509231 /* ADJActivityKind.m in Sources */,
 				0AB1C99D27DD4B3100509231 /* ADJActivityPackage.m in Sources */,
 				0AB1C99E27DD4B3100509231 /* ADJActivityState.m in Sources */,
@@ -2440,6 +2472,7 @@
 				9D4CC6E82C0735BC00A1E0C0 /* ADJAdditions.m in Sources */,
 				0AB1CA3227DF49CB00509231 /* Adjust.m in Sources */,
 				0AB1CA3327DF49CB00509231 /* ADJActivityHandler.m in Sources */,
+				9D7D3DF82C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CA3427DF49CC00509231 /* ADJActivityKind.m in Sources */,
 				0AB1CA3527DF49CC00509231 /* ADJActivityPackage.m in Sources */,
 				0AB1CA3627DF49CC00509231 /* ADJActivityState.m in Sources */,
@@ -2484,6 +2517,7 @@
 				9D4CC6E92C0735C400A1E0C0 /* ADJAdditions.m in Sources */,
 				0AB1CA7527DF61F200509231 /* Adjust.m in Sources */,
 				0AB1CA7627DF61F200509231 /* ADJActivityHandler.m in Sources */,
+				9D7D3DFB2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CA7727DF61F200509231 /* ADJActivityKind.m in Sources */,
 				0AB1CA7827DF61F200509231 /* ADJActivityPackage.m in Sources */,
 				0AB1CA7927DF61F200509231 /* ADJActivityState.m in Sources */,
@@ -2560,6 +2594,7 @@
 				0AB1CB2727DF68C100509231 /* ADJAppStoreSubscription.m in Sources */,
 				0AB1CB2827DF68C100509231 /* ADJUrlStrategy.m in Sources */,
 				0AB1CB2927DF68C100509231 /* ADJThirdPartySharing.m in Sources */,
+				9D7D3DFD2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CB2A27DF68C100509231 /* ADJAdRevenue.m in Sources */,
 				0AB1CB2B27DF68C100509231 /* ADJLinkResolution.m in Sources */,
 				0AB1CB2C27DF68DB00509231 /* AdjustBridge.m in Sources */,
@@ -2589,6 +2624,7 @@
 				9DB561862C072BAF0004CCAD /* ADJUrlStrategy.m in Sources */,
 				9DF92D842630ED02000FC3FC /* ADJPackageParams.m in Sources */,
 				96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */,
+				9D7D3DED2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				96E5E38B18BBB48A008E7B30 /* ADJActivityHandler.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* ADJActivityKind.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* ADJActivityPackage.m in Sources */,
@@ -2665,6 +2701,7 @@
 				0A584CA52C3E952C0071A651 /* ADJTimerCycle.m in Sources */,
 				0A584CA62C3E952C0071A651 /* ADJTimerOnce.m in Sources */,
 				0A584CA72C3E952C0071A651 /* ADJUrlStrategy.m in Sources */,
+				9D7D3DF52C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584CA82C3E952C0071A651 /* ADJUserDefaults.m in Sources */,
 				0A584CA92C3E952C0071A651 /* ADJUtil.m in Sources */,
 				0A584CAA2C3E952C0071A651 /* AdjustBridge.m in Sources */,
@@ -2682,6 +2719,7 @@
 				0A584BEF2C3E949B0071A651 /* ADJAdRevenue.m in Sources */,
 				0A584BF02C3E949B0071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584BF12C3E949B0071A651 /* ADJAppStoreSubscription.m in Sources */,
+				9D7D3DF02C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584BF22C3E949B0071A651 /* ADJAttribution.m in Sources */,
 				0A584BF32C3E949B0071A651 /* ADJConfig.m in Sources */,
 				0A584BF42C3E949B0071A651 /* ADJEvent.m in Sources */,
@@ -2726,6 +2764,7 @@
 				0A584BA42C3E94230071A651 /* ADJAdRevenue.m in Sources */,
 				0A584BA52C3E94230071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584BA62C3E94240071A651 /* ADJAppStoreSubscription.m in Sources */,
+				9D7D3DEF2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584BA72C3E94240071A651 /* ADJAttribution.m in Sources */,
 				0A584BA82C3E94240071A651 /* ADJConfig.m in Sources */,
 				0A584BA92C3E94240071A651 /* ADJEvent.m in Sources */,
@@ -2770,6 +2809,7 @@
 				0A584C3A2C3E94E70071A651 /* ADJAdRevenue.m in Sources */,
 				0A584C3B2C3E94E70071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584C3C2C3E94E70071A651 /* ADJAppStoreSubscription.m in Sources */,
+				9D7D3DF32C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584C3D2C3E94E70071A651 /* ADJAttribution.m in Sources */,
 				0A584C3E2C3E94E70071A651 /* ADJConfig.m in Sources */,
 				0A584C3F2C3E94E70071A651 /* ADJEvent.m in Sources */,

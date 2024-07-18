@@ -23,3 +23,4 @@
 #import <AdjustSdk/ADJLinkResolution.h>
 #import <AdjustSdk/ADJAppStorePurchase.h>
 #import <AdjustSdk/ADJPurchaseVerificationResult.h>
+#import <AdjustSdk/ADJDeeplink.h>

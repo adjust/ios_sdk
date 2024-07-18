@@ -75,9 +75,9 @@
 - (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion;
 - (BOOL)isGdprForgotten;
 
-- (void)processDeeplink:(NSURL * _Nullable)deeplink
+- (void)processDeeplink:(ADJDeeplink * _Nullable)deeplink
           withClickTime:(NSDate * _Nullable)clickTime;
-- (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
+- (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
             withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion;
 - (void)setPushTokenData:(NSData * _Nullable)pushTokenData;

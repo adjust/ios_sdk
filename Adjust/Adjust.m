@@ -14,6 +14,7 @@
 #import "ADJActivityHandler.h"
 #import "ADJSKAdNetwork.h"
 #import "ADJPurchaseVerificationResult.h"
+#import "ADJDeeplink.h"
 
 #if !__has_feature(objc_arc)
 #error Adjust requires ARC
@@ -109,13 +110,13 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)processDeeplink:(NSURL *)deeplink {
++ (void)processDeeplink:(ADJDeeplink *)deeplink {
     @synchronized (self) {
-        [[Adjust getInstance] processDeeplink:[deeplink copy]];
+        [[Adjust getInstance] processDeeplink:deeplink];
     }
 }
 
-+ (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
++ (void)processAndResolveDeeplink:(nonnull ADJDeeplink *)deeplink
             withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] processAndResolveDeeplink:deeplink
@@ -396,17 +397,19 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler isEnabledWithCompletionHandler:completion];
 }
 
-- (void)processDeeplink:(NSURL *)deeplink {
-    [ADJUserDefaults cacheDeeplinkUrl:deeplink];
+- (void)processDeeplink:(ADJDeeplink *)deeplink {
+    [ADJUserDefaults cacheDeeplinkUrl:deeplink.deeplink];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
-        [ADJUserDefaults saveDeeplinkUrl:deeplink andClickTime:clickTime];
+        [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink 
+                             referrerUrl:deeplink.referrer
+                               clickTime:clickTime];
         return;
     }
     [self.activityHandler processDeeplink:deeplink withClickTime:clickTime];
 }
 
-- (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
+- (void)processAndResolveDeeplink:(nonnull ADJDeeplink *)deeplink
             withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion {
     // if resolution result is not wanted, fallback to default method
     if (completion == nil) {
@@ -414,10 +417,12 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     // if deep link processing is triggered prior to SDK being initialized
-    [ADJUserDefaults cacheDeeplinkUrl:deeplink];
+    [ADJUserDefaults cacheDeeplinkUrl:deeplink.deeplink];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
-        [ADJUserDefaults saveDeeplinkUrl:deeplink andClickTime:clickTime];
+        [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink
+                             referrerUrl:deeplink.referrer
+                               clickTime:clickTime];
         self.cachedResolvedDeeplinkBlock = completion;
         return;
     }

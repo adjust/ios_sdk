@@ -18,6 +18,7 @@
 @class ADJLinkResolution;
 @class ADJAppStorePurchase;
 @class ADJPurchaseVerificationResult;
+@class ADJDeeplink;
 
 typedef void(^ADJResolvedDeeplinkBlock)(NSString * _Nullable resolvedLink);
 typedef void(^ADJAttributionGetterBlock)(ADJAttribution * _Nullable attribution);
@@ -88,9 +89,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Read the URL that opened the application to search for an adjust deep link.
  *
- * @param deeplink URL object which contains info about adjust deep link.
+ * @param deeplink Deeplink object which contains info about adjust deep link.
  */
-+ (void)processDeeplink:(nonnull NSURL *)deeplink;
++ (void)processDeeplink:(nonnull ADJDeeplink *)deeplink;
 
 /**
  * @brief Process the deep link that has opened an app and potentially get a resolved link.
@@ -98,7 +99,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @param deeplink URL object which contains info about adjust deep link.
  * @param completion Completion block where either resolved or echoed deep link will be sent.
  */
-+ (void)processAndResolveDeeplink:(nonnull NSURL *)deeplink
++ (void)processAndResolveDeeplink:(nonnull ADJDeeplink *)deeplink
             withCompletionHandler:(nonnull ADJResolvedDeeplinkBlock)completion;
 
 /**
