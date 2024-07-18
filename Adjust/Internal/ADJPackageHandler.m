@@ -328,11 +328,19 @@ startsSending:(BOOL)startsSending
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(waitTime * NSEC_PER_SEC)),
                        self.internalQueue, ^{
             [self.logger verbose:@"Package handler finished waiting to continue"];
-            dispatch_semaphore_signal(self.sendingSemaphore);
+            if (selfI.sendingSemaphore == nil) {
+                [self.logger error:@"Sending semaphore is nil"];
+                return;
+            }
+            dispatch_semaphore_signal(selfI.sendingSemaphore);
             [self sendFirstPackage];
         });
     } else {
         // otherwise just signal and send next
+        if (selfI.sendingSemaphore == nil) {
+            [self.logger error:@"Sending semaphore is nil"];
+            return;
+        }
         dispatch_semaphore_signal(selfI.sendingSemaphore);
         [selfI sendFirstI:selfI];
     }
