@@ -14,6 +14,7 @@ static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 static NSString * const PREFS_KEY_COPPA_COMPLIANCE = @"adj_coppa_compliance";
 static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
+static NSString * const PREFS_KEY_DEEPLINK_REFERRER_URL = @"adj_deeplink_referrer_url";
 static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_time";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
 static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
@@ -21,6 +22,7 @@ static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cached";
 static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_waiting_remaining_seconds";
 static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
+static NSString * const PREFS_KEY_DEEPLINK_REFERRER_URL_CACHED = @"adj_deeplink_referrer_url_cached";
 
 @implementation ADJUserDefaults
 
@@ -78,16 +80,22 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
 
 + (void)removeCoppaCompliance {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_COPPA_COMPLIANCE];
-
 }
 
-+ (void)saveDeeplinkUrl:(NSURL *)deeplink andClickTime:(NSDate *)clickTime {
++ (void)saveDeeplinkUrl:(NSURL *)deeplink
+            referrerUrl:(NSURL *)referrer
+              clickTime:(NSDate *)clickTime {
     [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] setURL:referrer forKey:PREFS_KEY_DEEPLINK_REFERRER_URL];
     [[NSUserDefaults standardUserDefaults] setObject:clickTime forKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
 + (NSURL *)getDeeplinkUrl {
     return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK_URL];
+}
+
++ (NSURL *)getDeeplinkReferrerUrl {
+    return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK_REFERRER_URL];
 }
 
 + (NSDate *)getDeeplinkClickTime {
@@ -96,6 +104,7 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
 
 + (void)removeDeeplink {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_REFERRER_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
@@ -164,6 +173,7 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_COPPA_COMPLIANCE];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_REFERRER_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];

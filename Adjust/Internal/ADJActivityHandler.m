@@ -26,6 +26,7 @@
 #import "ADJPurchaseVerificationHandler.h"
 #import "ADJPurchaseVerificationResult.h"
 #import "ADJAdRevenue.h"
+#import "ADJDeeplink.h"
 
 NSString * const ADJAdServicesPackageKey = @"apple_ads";
 
@@ -394,22 +395,28 @@ const BOOL kSkanRegisterLockWindow = NO;
     return [self isGdprForgottenI:self];
 }
 
-- (void)processDeeplink:(NSURL *)deeplink withClickTime:(NSDate *)clickTime {
+- (void)processDeeplink:(ADJDeeplink *)deeplink withClickTime:(NSDate *)clickTime {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI processDeeplinkI:selfI url:deeplink clickTime:clickTime];
+                         [selfI processDeeplinkI:selfI
+                                             url:deeplink.deeplink
+                                        referrer:deeplink.referrer
+                                       clickTime:clickTime];
                      }];
 }
 
-- (void)processAndResolveDeeplink:(NSURL * _Nullable)deeplink
+- (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
             withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion {
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         selfI.cachedDeeplinkResolutionCallback = completion;
-        [selfI processDeeplinkI:selfI url:deeplink clickTime:clickTime];
+        [selfI processDeeplinkI:selfI
+                            url:deeplink.deeplink
+                       referrer:deeplink.referrer
+                      clickTime:clickTime];
     }];
 }
 
@@ -1161,8 +1168,13 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (cachedDeeplinkClickTime == nil) {
         return;
     }
+    // referrer URL can be nil
+    NSURL *cachedDeeplinkReferrerUrl = [ADJUserDefaults getDeeplinkReferrerUrl];
 
-    [selfI processDeeplinkI:selfI url:cachedDeeplinkUrl clickTime:cachedDeeplinkClickTime];
+    [selfI processDeeplinkI:selfI 
+                        url:cachedDeeplinkUrl
+                   referrer:cachedDeeplinkReferrerUrl
+                  clickTime:cachedDeeplinkClickTime];
     [ADJUserDefaults removeDeeplink];
 }
 
@@ -1912,6 +1924,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)processDeeplinkI:(ADJActivityHandler *)selfI
                      url:(NSURL *)deeplink
+                referrer:(NSURL *)referrer
                clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
@@ -1931,7 +1944,10 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     NSMutableDictionary *adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
     for (NSString *fieldValuePair in queryArray) {
-        [selfI readDeeplinkQueryStringI:selfI queryString:fieldValuePair adjustDeepLinks:adjustDeepLinks attribution:deeplinkAttribution];
+        [selfI readDeeplinkQueryStringI:selfI
+                            queryString:fieldValuePair
+                        adjustDeepLinks:adjustDeepLinks
+                            attribution:deeplinkAttribution];
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -1940,18 +1956,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         double lastInterval = now - selfI.activityState.lastActivity;
         selfI.activityState.lastInterval = lastInterval;
     }];
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithPackageParams:selfI.packageParams
+    ADJPackageBuilder *clickBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       globalParameters:selfI.globalParameters
-                                       trackingStatusManager:self.trackingStatusManager
-                                       createdAt:now];
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:self.trackingStatusManager
+                                           createdAt:now];
     clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
     clickBuilder.deeplink = [deeplink absoluteString];
+    if (referrer != nil) {
+        clickBuilder.deeplinkReferrer = [referrer absoluteString];
+    }
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
