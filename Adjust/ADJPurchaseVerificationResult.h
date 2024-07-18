@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @property   message
  *
- *  @brief      Text message about current state of receipt verification.
+ *  @brief      Text message about current state of purchase verification.
  */
 @property (nonatomic, copy) NSString *message;
 
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @property   verificationStatus
  *
- *  @brief      State of verification (success / failure / unknown / not verified)
+ *  @brief      State of purchase verification (success / failure / unknown / not verified)
  */
 @property (nonatomic, copy) NSString *verificationStatus;
 
