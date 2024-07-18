@@ -632,7 +632,6 @@
     NSDecimalNumber *price;
     NSString *currency;
     NSString *transactionId;
-    NSData *receipt;
     NSDate *transactionDate;
     NSString *salesRegion;
 
@@ -645,10 +644,6 @@
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
     }
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-    }
     if ([parameters objectForKey:@"transactionDate"]) {
         transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
     }
@@ -659,8 +654,7 @@
     ADJAppStoreSubscription *subscription =
     [[ADJAppStoreSubscription alloc] initWithPrice:price
                                           currency:currency
-                                     transactionId:transactionId
-                                           receipt:receipt];
+                                     transactionId:transactionId];
     [subscription setTransactionDate:transactionDate];
     [subscription setSalesRegion:salesRegion];
 

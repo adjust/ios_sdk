@@ -24,8 +24,7 @@
 
 - (nullable id)initWithPrice:(nonnull NSDecimalNumber *)price
                     currency:(nonnull NSString *)currency
-               transactionId:(nonnull NSString *)transactionId
-                     receipt:(nonnull NSData *)receipt {
+               transactionId:(nonnull NSString *)transactionId {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -34,7 +33,6 @@
     _price = [price copy];
     _currency = [currency copy];
     _transactionId = [transactionId copy];
-    _receipt = [receipt copy];
 
     _logger = ADJAdjustFactory.logger;
     
@@ -128,7 +126,6 @@
         copy->_price = [self.price copyWithZone:zone];
         copy->_currency = [self.currency copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
-        copy->_receipt = [self.receipt copyWithZone:zone];
         copy->_transactionDate = [self.transactionDate copyWithZone:zone];
         copy->_salesRegion = [self.salesRegion copyWithZone:zone];
         copy.mutableCallbackParameters = [self.mutableCallbackParameters copyWithZone:zone];
