@@ -26,8 +26,3 @@
 #import <AdjustSdk/ADJDeeplink.h>
 
 #import <AdjustSdk/AdjustBridge.h>
-#import <AdjustSdk/AdjustBridgeRegister.h>
-// Exposing entire WebViewJavascriptBridge framework
-#import <AdjustSdk/WebViewJavascriptBridge_JS.h>
-#import <AdjustSdk/WebViewJavascriptBridgeBase.h>
-#import <AdjustSdk/WKWebViewJavascriptBridge.h>
