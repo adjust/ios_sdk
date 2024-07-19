@@ -1,23 +1,18 @@
 //
 //  AdjustBridge.h
-//  Adjust SDK
+//  Adjust
 //
-//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
-//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
+//  Created by Aditi Agrawal on 14/05/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-
-@class AdjustBridgeRegister;
 
 @interface AdjustBridge : NSObject
 
-@property (nonatomic, strong, readonly) AdjustBridgeRegister *bridgeRegister;
+- (void)augmentHybridWKWebView:(WKWebView *_Nonnull)webView;
 
-- (void)loadWKWebViewBridge:(WKWebView *)wkWebView;
-- (void)loadWKWebViewBridge:(WKWebView *)wkWebView wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate;
-- (void)augmentHybridWebView;
+@property (strong, nonatomic) WKWebView * _Nonnull webView;
 
 @end

@@ -1,0 +1,82 @@
+//
+//  AdjustBridgeConstants.h
+//  Adjust
+//
+//  Created by Aditi Agrawal on 16/05/24.
+//
+
+#import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+FOUNDATION_EXPORT NSString *const ADJWBMethodNameKey;
+FOUNDATION_EXPORT NSString *const ADJWBParametersKey;
+
+FOUNDATION_EXPORT NSString *const ADJWBInitSdkMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBTrackEventMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBProcessDeeplinkMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBTrackThirdPartySharingMethodName;
+
+FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionStartMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionEndMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBTrackMeasurementConsentMethodName;
+
+FOUNDATION_EXPORT NSString *const ADJWBEnableMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBDisableMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSetOfflineModeMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSetOnlineModeMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSendFirstPackagesMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBGdprForgetMeMethodName;
+
+FOUNDATION_EXPORT NSString *const ADJWBAddGlobalCallbackParameterMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalCallbackParameterForKeyMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalCallbackParametersMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBAddGlobalPartnerParameterMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParameterForKeyMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParametersMethodName;
+
+FOUNDATION_EXPORT NSString *const ADJWBGetSdkVersionMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBGetSdkVersionAsyncGetterCallbackKey;
+
+FOUNDATION_EXPORT NSString *const ADJWBAppTokenConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBEnvironmentConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBAllowSuppressLogLevelConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBSdkPrefixConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBDefaultTrackerConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBExternalDeviceIdConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBLogLevelConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBSendInBackgroundConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBNeedsCostConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBAllowAdServicesInfoReadingConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBIsIdfaReadingAllowedConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBIsSkanAttributionHandlingEnabledConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBAttributionCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBEventSuccessCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBEventFailureCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBSessionSuccessCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBSessionFailureCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBDeferredDeeplinkCallbackConfigKey;
+
+FOUNDATION_EXPORT NSString *const ADJWBEventTokenEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBRevenueEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBCurrencyEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBCallbackIdEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBTransactionIdEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBDeduplicationIdEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBCallbackParametersEventKey;
+FOUNDATION_EXPORT NSString *const ADJWBPartnerParametersEventKey;
+
+FOUNDATION_EXPORT NSString *const ADJWBAdjustThirdPartySharingName;
+FOUNDATION_EXPORT NSString *const ADJWBIsEnabledTPSKey;
+FOUNDATION_EXPORT NSString *const ADJWBGranularOptionsTPSKey;
+FOUNDATION_EXPORT NSString *const ADJWBPartnerSharingSettingTPSKey;
+
+FOUNDATION_EXPORT NSString *const ADJWBKvKeyKey;
+FOUNDATION_EXPORT NSString *const ADJWBKvValueKey;
+
+NS_ASSUME_NONNULL_END

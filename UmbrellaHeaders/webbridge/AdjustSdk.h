@@ -26,3 +26,4 @@
 #import <AdjustSdk/ADJDeeplink.h>
 
 #import <AdjustSdk/AdjustBridge.h>
+#import <AdjustSdk/AdjustBridgeConstants.h>
