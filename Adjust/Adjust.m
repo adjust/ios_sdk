@@ -401,8 +401,7 @@ static dispatch_once_t onceToken = 0;
     [ADJUserDefaults cacheDeeplinkUrl:deeplink.deeplink];
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
-        [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink 
-                             referrerUrl:deeplink.referrer
+        [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink
                                clickTime:clickTime];
         return;
     }
@@ -421,7 +420,6 @@ static dispatch_once_t onceToken = 0;
     NSDate *clickTime = [NSDate date];
     if (![self checkActivityHandler]) {
         [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink
-                             referrerUrl:deeplink.referrer
                                clickTime:clickTime];
         self.cachedResolvedDeeplinkBlock = completion;
         return;
