@@ -43,7 +43,7 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-    [Adjust processDeeplink:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
     return YES;
 }
 
