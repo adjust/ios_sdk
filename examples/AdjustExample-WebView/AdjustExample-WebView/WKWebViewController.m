@@ -2,8 +2,8 @@
 //  WKWebViewController.m
 //  AdjustExample-WebView
 //
-//  Created by Uglješa Erceg (@uerceg) on 31st May 2016.
-//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
+//  Created by Aditi Agrawal on 19/07/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
 #import "WKWebViewController.h"
@@ -31,19 +31,25 @@
     webView.navigationDelegate = self;
     webView.UIDelegate = self;
     [self.view addSubview:webView];
-    
+
     _adjustBridge = [[AdjustBridge alloc] init];
-    [_adjustBridge loadWKWebViewBridge:webView wkWebViewDelegate:self];
+    [_adjustBridge augmentHybridWKWebView:webView];
 
     // load remote web page
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://adjustweb.neocities.org"]];
-    [webView loadRequest:request];
+    //    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://adjustweb.neocities.org"]];
+    //    [webView loadRequest:request];
 
     // alternative to load web page from local HTML resource
-    // NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];
-    // NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
-    // NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
-    // [webView loadHTMLString:appHtml baseURL:baseURL];
+    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"AdjustExample-WebView" ofType:@"html"];
+    NSString *appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
+    [webView loadHTMLString:appHtml baseURL:baseURL];
+
+    if (@available(iOS 16.4, *)) {
+        [webView setInspectable:YES];
+    } else {
+        // Fallback on earlier versions
+    }
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
@@ -59,3 +65,5 @@
 }
 
 @end
+
+

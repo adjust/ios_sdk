@@ -1,0 +1,23 @@
+PODS:
+  - Adjust/AdjustWebBridge (5.0.0):
+    - AdjustSignature (~> 3.18)
+  - AdjustSignature (3.18.0)
+
+DEPENDENCIES:
+  - Adjust/AdjustWebBridge (from `../../`)
+
+SPEC REPOS:
+  trunk:
+    - AdjustSignature
+
+EXTERNAL SOURCES:
+  Adjust:
+    :path: "../../"
+
+SPEC CHECKSUMS:
+  Adjust: d8ffc93f5bdb308e8d95c623d6c4de42ccec9d6d
+  AdjustSignature: 07a731fc1b7d61a820c55c014113940ec300a3df
+
+PODFILE CHECKSUM: 323930f4cc059db3baf88d23f3573498160a4668
+
+COCOAPODS: 1.15.2
