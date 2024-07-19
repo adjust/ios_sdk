@@ -37,12 +37,9 @@
 + (void)removeCoppaCompliance;
 
 + (void)saveDeeplinkUrl:(NSURL *)deeplink
-            referrerUrl:(NSURL *)referrer
               clickTime:(NSDate *)clickTime;
 
 + (NSURL *)getDeeplinkUrl;
-
-+ (NSURL *)getDeeplinkReferrerUrl;
 
 + (NSDate *)getDeeplinkClickTime;
 

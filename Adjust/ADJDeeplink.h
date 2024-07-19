@@ -12,8 +12,6 @@
 
 @property (nonatomic, copy, readonly, nonnull) NSURL *deeplink;
 
-@property (nonatomic, copy, nullable) NSURL *referrer;
-
 - (nullable ADJDeeplink *)initWithDeeplink:(nonnull NSURL *)deeplink;
 
 @end

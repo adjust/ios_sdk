@@ -20,8 +20,6 @@
 
 @property (nonatomic, copy) NSString * _Nullable deeplink;
 
-@property (nonatomic, copy) NSString * _Nullable deeplinkReferrer;
-
 @property (nonatomic, copy) NSString * _Nullable reftag;
 
 @property (nonatomic, copy) NSDate * _Nullable clickTime;

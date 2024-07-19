@@ -580,12 +580,8 @@
 
 - (void)openDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
-    NSString *referrerS = [parameters objectForKey:@"referrer"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    NSURL *referrer = [NSURL URLWithString:referrerS];
-    ADJDeeplink *adjustDeeplink = [[ADJDeeplink alloc] initWithDeeplink:deeplink];
-    adjustDeeplink.referrer = referrer;
-    [Adjust processDeeplink:adjustDeeplink];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:deeplink]];
 }
 
 - (void)gdprForgetMe:(NSDictionary *)parameters {
