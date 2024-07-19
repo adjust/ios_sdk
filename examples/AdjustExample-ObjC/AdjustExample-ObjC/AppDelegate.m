@@ -52,7 +52,7 @@
     NSLog(@"Scheme based deep link opened an app: %@", url);
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust processDeeplink:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
 
     return YES;
 }
@@ -61,7 +61,7 @@
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"Universal link opened an app: %@", [userActivity webpageURL]);
         // Pass deep link to Adjust in order to potentially reattribute user.
-        [Adjust processDeeplink:[userActivity webpageURL]];
+        [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:[userActivity webpageURL]]];
     }
 
     return YES;

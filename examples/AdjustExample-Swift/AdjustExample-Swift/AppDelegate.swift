@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // url object contains the deep link
 
         // Call the below method to send deep link to Adjust backend
-        Adjust.processDeeplink(url)
+        Adjust.processDeeplink(ADJDeeplink(deeplink: url)!)
         return true
     }
 
@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
             NSLog("Universal link opened an app: %@", userActivity.webpageURL!.absoluteString)
             // Pass deep link to Adjust in order to potentially reattribute user.
-            Adjust.processDeeplink(userActivity.webpageURL!)
+            Adjust.processDeeplink(ADJDeeplink(deeplink: userActivity.webpageURL!)!)
         }
         return true
     }
