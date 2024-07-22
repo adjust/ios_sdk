@@ -23,9 +23,10 @@ FOUNDATION_EXPORT NSString *const ADJWBTrackMeasurementConsentMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBEnableMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBDisableMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBSetOfflineModeMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBSetOnlineModeMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBSendFirstPackagesMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSwitchToOfflineModeMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSwitchBackToOnlineMode;
+FOUNDATION_EXPORT NSString *const ADJWBEnableCoppaCompliance;
+FOUNDATION_EXPORT NSString *const ADJWBDisableCoppaCompliance;
 FOUNDATION_EXPORT NSString *const ADJWBGdprForgetMeMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBAddGlobalCallbackParameterMethodName;

@@ -21,8 +21,10 @@ NSString *const ADJWBTrackMeasurementConsentMethodName = @"adjust_trackMeasureme
 
 NSString *const ADJWBEnableMethodName = @"adjust_enable";
 NSString *const ADJWBDisableMethodName = @"adjust_disable";
-NSString *const ADJWBSetOfflineModeMethodName = @"adjust_switchToOfflineMode";
-NSString *const ADJWBSetOnlineModeMethodName = @"adjust_switchBackToOnlineMode";
+NSString *const ADJWBSwitchToOfflineModeMethodName = @"adjust_switchToOfflineMode";
+NSString *const ADJWBSwitchBackToOnlineMode = @"adjust_switchBackToOnlineMode";
+NSString *const ADJWBEnableCoppaCompliance = @"adjust_enableCoppaCompliance";
+NSString *const ADJWBDisableCoppaCompliance = @"adjust_disableCoppaCompliance";
 
 NSString *const ADJWBSendFirstPackagesMethodName = @"adjust_sendFirstPackages";
 NSString *const ADJWBGdprForgetMeMethodName = @"adjust_gdprForgetMe";

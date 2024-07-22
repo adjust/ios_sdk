@@ -73,6 +73,14 @@ var Adjust = {
         this._postMessage("adjust_disable");
     },
 
+    switchToOfflineMode: function () {
+        this._postMessage("adjust_switchToOfflineMode");
+    },
+
+    switchBackToOnlineMode: function () {
+        this._postMessage("adjust_switchBackToOnlineMode");
+    },
+
     addGlobalCallbackParameter: function (key, value) {
         this._postMessage("adjust_addGlobalCallbackParameter", {
             _key: key, _keyType: typeof key,
@@ -198,14 +206,14 @@ function AdjustEvent(eventToken) {
     this.partnerParameters = [];
 }
 
-AdjustEvent.prototype.setRevenue = function(revenue, currency) {
+AdjustEvent.prototype.setRevenue = function (revenue, currency) {
     if (revenue != null) {
         this.revenue = revenue.toString();
         this.currency = currency;
     }
 };
 
-AdjustEvent.prototype.addCallbackParameter = function(key, value) {
+AdjustEvent.prototype.addCallbackParameter = function (key, value) {
     if (typeof key !== 'string' || typeof value !== 'string') {
         console.log('Passed key or value is not of string type');
         return;
@@ -214,7 +222,7 @@ AdjustEvent.prototype.addCallbackParameter = function(key, value) {
     this.callbackParameters.push(value);
 };
 
-AdjustEvent.prototype.addPartnerParameter = function(key, value) {
+AdjustEvent.prototype.addPartnerParameter = function (key, value) {
     if (typeof key !== 'string' || typeof value !== 'string') {
         console.log('Passed key or value is not of string type');
         return;
@@ -223,23 +231,23 @@ AdjustEvent.prototype.addPartnerParameter = function(key, value) {
     this.partnerParameters.push(value);
 };
 
-AdjustEvent.prototype.setReceipt = function(receipt) {
+AdjustEvent.prototype.setReceipt = function (receipt) {
     this.receipt = receipt;
 };
 
-AdjustEvent.prototype.setProductId = function(productId) {
+AdjustEvent.prototype.setProductId = function (productId) {
     this.productId = productId;
 };
 
-AdjustEvent.prototype.setTransactionId = function(transactionId) {
+AdjustEvent.prototype.setTransactionId = function (transactionId) {
     this.transactionId = transactionId;
 };
 
-AdjustEvent.prototype.setDeduplicationId = function(deduplicationId) {
+AdjustEvent.prototype.setDeduplicationId = function (deduplicationId) {
     this.deduplicationId = deduplicationId;
 };
 
-AdjustEvent.prototype.setCallbackId = function(callbackId) {
+AdjustEvent.prototype.setCallbackId = function (callbackId) {
     this.callbackId = callbackId;
 };
 
