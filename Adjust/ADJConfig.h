@@ -343,4 +343,10 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency;
 
+
+@property (nonatomic, copy, readonly, nullable) NSString *coppaStatus;
+- (void)setCoppaStatusAsEnabled;
+- (void)setCoppaStatusAsDisabled;
+- (void)setCoppaStatusAsUnknown;
+
 @end

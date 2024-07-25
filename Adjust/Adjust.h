@@ -297,12 +297,12 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
  */
-+ (void)enableCoppaCompliance;
+//+ (void)enableCoppaCompliance;
 
 /**
  * @brief Disable COPPA (Children's Online Privacy Protection Act) compliant for the application.
  */
-+ (void)disableCoppaCompliance;
+//+ (void)disableCoppaCompliance;
 
 /**
  * @brief Verify in-app-purchase and track event upon successfully completed verification.

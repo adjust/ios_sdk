@@ -287,7 +287,7 @@ static dispatch_once_t onceToken = 0;
                                withCompletionHandler:completion];
     }
 }
-
+/*
 + (void)enableCoppaCompliance {
     [[Adjust getInstance] enableCoppaCompliance];
 }
@@ -295,7 +295,7 @@ static dispatch_once_t onceToken = 0;
 + (void)disableCoppaCompliance {
     [[Adjust getInstance] disableCoppaCompliance];
 }
-
+*/
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {
@@ -721,7 +721,7 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler verifyAppStorePurchase:purchase
                            withCompletionHandler:completion];
 }
-
+/*
 - (void)enableCoppaCompliance {
     [ADJUserDefaults saveCoppaComplianceWithValue:YES];
     if ([self checkActivityHandler:@"enable coppa compliance"]) {
@@ -747,7 +747,7 @@ static dispatch_once_t onceToken = 0;
         [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(NO)];
     }
 }
-
+*/
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     if (![self checkActivityHandler]) {

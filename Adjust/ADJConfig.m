@@ -126,6 +126,17 @@
     _isDataResidency = isDataResidency;
 }
 
+- (void)setCoppaStatusAsEnabled {
+    _coppaStatus = @"enabled";
+}
+- (void)setCoppaStatusAsDisabled {
+    _coppaStatus = @"disabled";
+}
+- (void)setCoppaStatusAsUnknown {
+    _coppaStatus = @"unknown";
+}
+
+
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     BOOL hasResponseDelegate = NO;
     BOOL implementsDeeplinkCallback = NO;

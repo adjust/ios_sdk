@@ -109,7 +109,7 @@
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
-- (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
+//- (void)setCoppaCompliance:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
