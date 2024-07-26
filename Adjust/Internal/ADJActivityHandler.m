@@ -944,16 +944,14 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [[NSMutableArray alloc] init];
     }
      */
-    if ([@"enable" isEqual:selfI.adjustConfig.coppaStatus]
+    if ([@"enabled" isEqual:selfI.adjustConfig.coppaStatus]
         || [@"unknown" isEqual:selfI.adjustConfig.coppaStatus])
     {
         [ADJUserDefaults saveCoppaComplianceWithValue:YES];
-        [selfI setCoppaCompliance:YES];
-        //[selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(YES)];
+        [selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(YES)];
     } else if ([@"disabled" isEqual:selfI.adjustConfig.coppaStatus]) {
         [ADJUserDefaults saveCoppaComplianceWithValue:NO];
-        [selfI setCoppaCompliance:NO];
-        //[selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(NO)];
+        [selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:@(NO)];
     }
 
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
