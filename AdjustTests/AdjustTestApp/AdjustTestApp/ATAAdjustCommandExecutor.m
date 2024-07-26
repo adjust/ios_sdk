@@ -103,10 +103,6 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
-    } else if ([methodName isEqualToString:@"enableCoppaCompliance"]) {
-        [self enableCoppaCompliance:parameters];
-    } else if ([methodName isEqualToString:@"disableCoppaCompliance"]) {
-        [self disableCoppaCompliance:parameters];
     }
 }
 
@@ -373,6 +369,19 @@
     if ([parameters objectForKey:@"eventDeduplicationIdsMaxSize"]) {
         NSString *eventDeduplicationIdsMaxSizeS = [parameters objectForKey:@"eventDeduplicationIdsMaxSize"][0];
         [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSizeS intValue]];
+    }
+
+    if ([parameters objectForKey:@"coppaStatus"]) {
+        NSString *coppaStatus = [parameters objectForKey:@"coppaStatus"][0];
+        if ([@"enabled" isEqual:coppaStatus]) {
+            [adjustConfig setCoppaStatusAsEnabled];
+        } else if ([@"disabled" isEqual:coppaStatus]) {
+            [adjustConfig setCoppaStatusAsDisabled];
+        } else if ([@"unknown" isEqual:coppaStatus]) {
+            [adjustConfig setCoppaStatusAsUnknown];
+        } else {
+            NSLog(@"coppaStatus invalid received: %@", coppaStatus);
+        }
     }
 
     [adjustConfig setDelegate:self.adjustDelegate];
@@ -814,14 +823,6 @@
         [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
-}
-
-- (void)enableCoppaCompliance:(NSDictionary *)parameters {
-    [Adjust enableCoppaCompliance];
-}
-
-- (void)disableCoppaCompliance:(NSDictionary *)parameters {
-    [Adjust disableCoppaCompliance];
 }
 
 @end
