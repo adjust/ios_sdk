@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 FOUNDATION_EXPORT NSString *const ADJWBMethodNameKey;
 FOUNDATION_EXPORT NSString *const ADJWBParametersKey;
+FOUNDATION_EXPORT NSString *const ADJWBCallbackIdKey;
 
 FOUNDATION_EXPORT NSString *const ADJWBInitSdkMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackEventMethodName;
@@ -37,7 +38,11 @@ FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParameterForKeyMethodN
 FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParametersMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBGetSdkVersionMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBGetSdkVersionAsyncGetterCallbackKey;
+FOUNDATION_EXPORT NSString *const ADJWBGetIdfaMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBGetIdfvMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBIsEnabledMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBGetAdidMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBGetAttributionMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBAppTokenConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEnvironmentConfigKey;
@@ -56,11 +61,13 @@ FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey;
+
 FOUNDATION_EXPORT NSString *const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventSuccessCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventFailureCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBSessionSuccessCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBSessionFailureCallbackConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBSkanUpdatedCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBDeferredDeeplinkCallbackConfigKey;
 
 FOUNDATION_EXPORT NSString *const ADJWBEventTokenEventKey;

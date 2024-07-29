@@ -9,6 +9,7 @@
 
 NSString *const ADJWBMethodNameKey = @"_methodName";
 NSString *const ADJWBParametersKey = @"_parameters";
+NSString *const ADJWBCallbackIdKey = @"_callbackId";
 
 NSString *const ADJWBInitSdkMethodName = @"adjust_initSdk";
 NSString *const ADJWBTrackEventMethodName = @"adjust_trackEvent";
@@ -36,8 +37,12 @@ NSString *const ADJWBAddGlobalPartnerParameterMethodName = @"adjust_addGlobalPar
 NSString *const ADJWBRemoveGlobalPartnerParameterForKeyMethodName = @"adjust_removeGlobalPartnerParameterForKey";
 NSString *const ADJWBRemoveGlobalPartnerParametersMethodName = @"adjust_removeGlobalPartnerParameters";
 
+NSString *const ADJWBIsEnabledMethodName = @"adjust_isEnabled";
 NSString *const ADJWBGetSdkVersionMethodName = @"adjust_getSdkVersion";
-NSString *const ADJWBGetSdkVersionAsyncGetterCallbackKey = @"getSdkVersionCallback";
+NSString *const ADJWBGetIdfaMethodName = @"adjust_getIdfa";
+NSString *const ADJWBGetIdfvMethodName = @"adjust_getIdfv";
+NSString *const ADJWBGetAdidMethodName = @"adjust_getAdid";
+NSString *const ADJWBGetAttributionMethodName = @"adjust_getAttribution";
 
 NSString *const ADJWBAppTokenConfigKey = @"appToken";
 NSString *const ADJWBEnvironmentConfigKey = @"environment";
@@ -61,6 +66,7 @@ NSString *const ADJWBEventSuccessCallbackConfigKey = @"eventSuccessCallback";
 NSString *const ADJWBEventFailureCallbackConfigKey = @"eventFailureCallback";
 NSString *const ADJWBSessionSuccessCallbackConfigKey = @"sessionSuccessCallback";
 NSString *const ADJWBSessionFailureCallbackConfigKey = @"sessionFailureCallback";
+NSString *const ADJWBSkanUpdatedCallbackConfigKey = @"skanUpdatedCallback";
 NSString *const ADJWBDeferredDeeplinkCallbackConfigKey = @"deferredDeeplinkCallback";
 
 NSString *const ADJWBEventTokenEventKey = @"eventToken";
