@@ -17,10 +17,10 @@ FOUNDATION_EXPORT NSString *const ADJWBInitSdkMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackEventMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBProcessDeeplinkMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackThirdPartySharingMethodName;
-
 FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionStartMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionEndMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackMeasurementConsentMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRequestAppTrackingMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBEnableMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBDisableMethodName;
@@ -61,6 +61,7 @@ FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBFbPixelDefaultEventTokenConfigKey;
 
 FOUNDATION_EXPORT NSString *const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventSuccessCallbackConfigKey;

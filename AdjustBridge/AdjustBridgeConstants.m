@@ -15,10 +15,10 @@ NSString *const ADJWBInitSdkMethodName = @"adjust_initSdk";
 NSString *const ADJWBTrackEventMethodName = @"adjust_trackEvent";
 NSString *const ADJWBProcessDeeplinkMethodName = @"adjust_processDeeplink";
 NSString *const ADJWBTrackThirdPartySharingMethodName = @"adjust_trackThirdPartySharing";
-
 NSString *const ADJWBTrackSubsessionStartMethodName = @"adjust_trackSubsessionStart";
 NSString *const ADJWBTrackSubsessionEndMethodName = @"adjust_trackSubsessionEnd";
 NSString *const ADJWBTrackMeasurementConsentMethodName = @"adjust_trackMeasurementConsent";
+NSString *const ADJWBRequestAppTrackingMethodName = @"adjust_requestAppTrackingAuthorizationWithCompletionHandler";
 
 NSString *const ADJWBEnableMethodName = @"adjust_enable";
 NSString *const ADJWBDisableMethodName = @"adjust_disable";
@@ -60,6 +60,7 @@ NSString *const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey = @"isDeferredDee
 NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey = @"shouldReadDeviceInfoOnce";
 NSString *const ADJWBAttConsentWaitingSecondsConfigKey = @"attConsentWaitingSeconds";
 NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey = @"eventDeduplicationIdsMaxSize";
+NSString *const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventToken";
 
 NSString *const ADJWBAttributionCallbackConfigKey = @"attributionCallback";
 NSString *const ADJWBEventSuccessCallbackConfigKey = @"eventSuccessCallback";

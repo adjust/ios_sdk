@@ -63,4 +63,72 @@
     return messageJSON;
 }
 
++ (NSDictionary *)getTestOptions:(id)data {
+    NSString *urlOverwrite = [data objectForKey:@"urlOverwrite"];
+    NSString *extraPath = [data objectForKey:@"extraPath"];
+    NSNumber *timerIntervalInMilliseconds = [data objectForKey:@"timerIntervalInMilliseconds"];
+    NSNumber *timerStartInMilliseconds = [data objectForKey:@"timerStartInMilliseconds"];
+    NSNumber *sessionIntervalInMilliseconds = [data objectForKey:@"sessionIntervalInMilliseconds"];
+    NSNumber *subsessionIntervalInMilliseconds = [data objectForKey:@"subsessionIntervalInMilliseconds"];
+    NSNumber *teardown = [data objectForKey:@"teardown"];
+    NSNumber *deleteState = [data objectForKey:@"deleteState"];
+    NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
+    NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
+    NSNumber *attStatus = [data objectForKey:@"attStatus"];
+    NSString *idfa = [data objectForKey:@"idfa"];
+
+    NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
+
+    if ([AdjustBridgeHelper isFieldValid:urlOverwrite]) {
+        [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:extraPath]) {
+        [testOptions setObject:extraPath forKey:@"extraPath"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:timerIntervalInMilliseconds]) {
+        [testOptions setObject:timerIntervalInMilliseconds forKey:@"timerIntervalInMilliseconds"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:timerStartInMilliseconds]) {
+        [testOptions setObject:timerStartInMilliseconds forKey:@"timerStartInMilliseconds"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:sessionIntervalInMilliseconds]) {
+        [testOptions setObject:sessionIntervalInMilliseconds forKey:@"sessionIntervalInMilliseconds"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:subsessionIntervalInMilliseconds]) {
+        [testOptions setObject:subsessionIntervalInMilliseconds forKey:@"subsessionIntervalInMilliseconds"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:attStatus]) {
+        [testOptions setObject:attStatus forKey:@"attStatusInt"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:idfa]) {
+        [testOptions setObject:idfa forKey:@"idfa"];
+    }
+   
+    if ([AdjustBridgeHelper isFieldValid:deleteState]) {
+        [testOptions setObject:deleteState forKey:@"deleteState"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:noBackoffWait]) {
+        [testOptions setObject:noBackoffWait forKey:@"noBackoffWait"];
+    }
+    if ([AdjustBridgeHelper isFieldValid:adServicesFrameworkEnabled]) {
+        [testOptions setObject:adServicesFrameworkEnabled forKey:@"adServicesFrameworkEnabled"];
+    }
+
+    return testOptions;
+}
+
++ (NSString *)getFbAppId {
+    NSString *facebookLoggingOverrideAppID = [[self class] 
+                                              getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
+    if (facebookLoggingOverrideAppID != nil) {
+        return facebookLoggingOverrideAppID;
+    }
+
+    return [[self class] getValueFromBundleByKey:@"FacebookAppID"];
+}
+
+- (NSString *)getValueFromBundleByKey:(NSString *)key {
+    return [[[NSBundle mainBundle] objectForInfoDictionaryKey:key] copy];
+}
+
 @end
