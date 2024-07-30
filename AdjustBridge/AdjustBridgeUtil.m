@@ -1,13 +1,14 @@
 //
-//  AdjustBridgeHelper.m
+//  AdjustBridgeUtil.m
 //  Adjust
 //
 //  Created by Aditi Agrawal on 29/07/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
-#import "AdjustBridgeHelper.h"
+#import "AdjustBridgeUtil.h"
 
-@implementation AdjustBridgeHelper
+@implementation AdjustBridgeUtil
 
 #pragma mark - Private & helper methods
 
@@ -22,6 +23,10 @@
         return NO;
     }
     return !!field;
+}
+
++ (void)launchInMainThread:(dispatch_block_t)block {
+    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 + (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary {
@@ -46,21 +51,16 @@
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
                                                        options:0 error:&error];
-    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-}
-
-+ (NSString *)serializeMutuableDictionary:(NSMutableDictionary *)data pretty:(BOOL)pretty {
-    NSString *messageJSON = [self serializeData:data pretty:NO];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\f" withString:@"\\f"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\u2028" withString:@"\\u2028"];
-    messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\u2029" withString:@"\\u2029"];
-    return messageJSON;
+    NSString *jsonString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\f" withString:@"\\f"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\u2028" withString:@"\\u2028"];
+    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\u2029" withString:@"\\u2029"];
+    return jsonString;
 }
 
 + (NSDictionary *)getTestOptions:(id)data {
@@ -119,18 +119,6 @@
     return testOptions;
 }
 
-+ (NSString *)getFbAppId {
-    NSString *facebookLoggingOverrideAppID = [[self class] 
-                                              getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
-    if (facebookLoggingOverrideAppID != nil) {
-        return facebookLoggingOverrideAppID;
-    }
-
-    return [[self class] getValueFromBundleByKey:@"FacebookAppID"];
-}
-
-- (NSString *)getValueFromBundleByKey:(NSString *)key {
-    return [[[NSBundle mainBundle] objectForInfoDictionaryKey:key] copy];
-}
 
 @end
+

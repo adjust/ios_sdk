@@ -1,29 +1,24 @@
 //
-//  AdjustBridgeHelper.h
+//  AdjustBridgeUtil.h
 //  Adjust
 //
 //  Created by Aditi Agrawal on 29/07/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AdjustBridgeHelper : NSObject
+@interface AdjustBridgeUtil : NSObject
 
 #pragma mark - Private & helper methods
 
 + (BOOL)isFieldValid:(NSObject *)field;
-
-+ (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary;
-
-+ (NSString *)serializeData:(id)data pretty:(BOOL)pretty;
-
-+ (NSString *)serializeMutuableDictionary:(NSMutableDictionary *)data pretty:(BOOL)pretty;
-
++ (void)launchInMainThread:(dispatch_block_t)block;
 + (NSDictionary *)getTestOptions:(id)data;
-
-+ (NSString *)getFbAppId;
++ (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary;
++ (NSString *)serializeData:(id)data pretty:(BOOL)pretty;
 
 @end
 

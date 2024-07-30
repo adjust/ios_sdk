@@ -3,6 +3,7 @@
 //  Adjust
 //
 //  Created by Aditi Agrawal on 16/05/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
 #import "AdjustBridgeConstants.h"
@@ -11,14 +12,16 @@ NSString *const ADJWBMethodNameKey = @"_methodName";
 NSString *const ADJWBParametersKey = @"_parameters";
 NSString *const ADJWBCallbackIdKey = @"_callbackId";
 
+//AdjustWebbridge Public APIs method name
 NSString *const ADJWBInitSdkMethodName = @"adjust_initSdk";
 NSString *const ADJWBTrackEventMethodName = @"adjust_trackEvent";
-NSString *const ADJWBProcessDeeplinkMethodName = @"adjust_processDeeplink";
 NSString *const ADJWBTrackThirdPartySharingMethodName = @"adjust_trackThirdPartySharing";
 NSString *const ADJWBTrackSubsessionStartMethodName = @"adjust_trackSubsessionStart";
 NSString *const ADJWBTrackSubsessionEndMethodName = @"adjust_trackSubsessionEnd";
 NSString *const ADJWBTrackMeasurementConsentMethodName = @"adjust_trackMeasurementConsent";
 NSString *const ADJWBRequestAppTrackingMethodName = @"adjust_requestAppTrackingAuthorizationWithCompletionHandler";
+NSString *const ADJWBFBPixelEventMethodName = @"adjust_fbPixelEvent";
+NSString *const ADJWBSetTestOptionsMethodName = @"adjust_setTestOptions";
 
 NSString *const ADJWBEnableMethodName = @"adjust_enable";
 NSString *const ADJWBDisableMethodName = @"adjust_disable";
@@ -26,17 +29,17 @@ NSString *const ADJWBSwitchToOfflineModeMethodName = @"adjust_switchToOfflineMod
 NSString *const ADJWBSwitchBackToOnlineMode = @"adjust_switchBackToOnlineMode";
 NSString *const ADJWBEnableCoppaCompliance = @"adjust_enableCoppaCompliance";
 NSString *const ADJWBDisableCoppaCompliance = @"adjust_disableCoppaCompliance";
-
-NSString *const ADJWBSendFirstPackagesMethodName = @"adjust_sendFirstPackages";
 NSString *const ADJWBGdprForgetMeMethodName = @"adjust_gdprForgetMe";
 
+//AdjustWebbridge Global Callback and Partner method name
 NSString *const ADJWBAddGlobalCallbackParameterMethodName = @"adjust_addGlobalCallbackParameter";
-NSString *const ADJWBRemoveGlobalCallbackParameterForKeyMethodName = @"adjust_removeGlobalCallbackParameterForKey";
+NSString *const ADJWBRemoveGlobalCallbackParameterMethodName = @"adjust_removeGlobalCallbackParameter";
 NSString *const ADJWBRemoveGlobalCallbackParametersMethodName = @"adjust_removeGlobalCallbackParameters";
 NSString *const ADJWBAddGlobalPartnerParameterMethodName = @"adjust_addGlobalPartnerParameter";
-NSString *const ADJWBRemoveGlobalPartnerParameterForKeyMethodName = @"adjust_removeGlobalPartnerParameterForKey";
+NSString *const ADJWBRemoveGlobalPartnerParameterMethodName = @"adjust_removeGlobalPartnerParameter";
 NSString *const ADJWBRemoveGlobalPartnerParametersMethodName = @"adjust_removeGlobalPartnerParameters";
 
+//AdjustWebbridge Getter APIs method name
 NSString *const ADJWBIsEnabledMethodName = @"adjust_isEnabled";
 NSString *const ADJWBGetSdkVersionMethodName = @"adjust_getSdkVersion";
 NSString *const ADJWBGetIdfaMethodName = @"adjust_getIdfa";
@@ -44,6 +47,7 @@ NSString *const ADJWBGetIdfvMethodName = @"adjust_getIdfv";
 NSString *const ADJWBGetAdidMethodName = @"adjust_getAdid";
 NSString *const ADJWBGetAttributionMethodName = @"adjust_getAttribution";
 
+//AdjustWebbridge Config keys
 NSString *const ADJWBAppTokenConfigKey = @"appToken";
 NSString *const ADJWBEnvironmentConfigKey = @"environment";
 NSString *const ADJWBAllowSuppressLogLevelConfigKey = @"allowSuppressLogLevel";
@@ -60,8 +64,12 @@ NSString *const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey = @"isDeferredDee
 NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey = @"shouldReadDeviceInfoOnce";
 NSString *const ADJWBAttConsentWaitingSecondsConfigKey = @"attConsentWaitingSeconds";
 NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey = @"eventDeduplicationIdsMaxSize";
+NSString *const ADJWBUseSubdomainsConfigKey = @"useSubdomains";
+NSString *const ADJWBIsDataResidencyConfigKey = @"isDataResidency";
 NSString *const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventToken";
+NSString *const ADJWBFbPixelMappingConfigKey = @"fbPixelMapping";
 
+//AdjustWebbridge Callbacks method name
 NSString *const ADJWBAttributionCallbackConfigKey = @"attributionCallback";
 NSString *const ADJWBEventSuccessCallbackConfigKey = @"eventSuccessCallback";
 NSString *const ADJWBEventFailureCallbackConfigKey = @"eventFailureCallback";
@@ -70,15 +78,16 @@ NSString *const ADJWBSessionFailureCallbackConfigKey = @"sessionFailureCallback"
 NSString *const ADJWBSkanUpdatedCallbackConfigKey = @"skanUpdatedCallback";
 NSString *const ADJWBDeferredDeeplinkCallbackConfigKey = @"deferredDeeplinkCallback";
 
+//AdjustWebbridge Track Event keys
 NSString *const ADJWBEventTokenEventKey = @"eventToken";
 NSString *const ADJWBRevenueEventKey = @"revenue";
 NSString *const ADJWBCurrencyEventKey = @"currency";
 NSString *const ADJWBCallbackIdEventKey = @"callbackId";
-NSString *const ADJWBTransactionIdEventKey = @"transactionId";
 NSString *const ADJWBDeduplicationIdEventKey = @"deduplicationId";
 NSString *const ADJWBCallbackParametersEventKey = @"callbackParameters";
 NSString *const ADJWBPartnerParametersEventKey = @"partnerParameters";
 
+//AdjustWebbridge TPS keys
 NSString *const ADJWBIsEnabledTPSKey = @"isEnabled";
 NSString *const ADJWBGranularOptionsTPSKey = @"granularOptions";
 NSString *const ADJWBPartnerSharingSettingTPSKey = @"partnerSharingSettings";

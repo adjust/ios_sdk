@@ -3,6 +3,7 @@
 //  Adjust
 //
 //  Created by Aditi Agrawal on 16/05/24.
+//  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -15,12 +16,13 @@ FOUNDATION_EXPORT NSString *const ADJWBCallbackIdKey;
 
 FOUNDATION_EXPORT NSString *const ADJWBInitSdkMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackEventMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBProcessDeeplinkMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackThirdPartySharingMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionStartMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackSubsessionEndMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBTrackMeasurementConsentMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBRequestAppTrackingMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBFBPixelEventMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBSetTestOptionsMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBEnableMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBDisableMethodName;
@@ -31,10 +33,10 @@ FOUNDATION_EXPORT NSString *const ADJWBDisableCoppaCompliance;
 FOUNDATION_EXPORT NSString *const ADJWBGdprForgetMeMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBAddGlobalCallbackParameterMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalCallbackParameterForKeyMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalCallbackParameterMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalCallbackParametersMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBAddGlobalPartnerParameterMethodName;
-FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParameterForKeyMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParameterMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBRemoveGlobalPartnerParametersMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBGetSdkVersionMethodName;
@@ -61,7 +63,10 @@ FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBUseSubdomainsConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBIsDataResidencyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBFbPixelDefaultEventTokenConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBFbPixelMappingConfigKey;
 
 FOUNDATION_EXPORT NSString *const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventSuccessCallbackConfigKey;
@@ -75,7 +80,6 @@ FOUNDATION_EXPORT NSString *const ADJWBEventTokenEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBRevenueEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBCurrencyEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBCallbackIdEventKey;
-FOUNDATION_EXPORT NSString *const ADJWBTransactionIdEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBDeduplicationIdEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBCallbackParametersEventKey;
 FOUNDATION_EXPORT NSString *const ADJWBPartnerParametersEventKey;
