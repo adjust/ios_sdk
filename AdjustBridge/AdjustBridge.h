@@ -11,7 +11,7 @@
 
 @interface AdjustBridge : NSObject
 
-- (void)augmentHybridWKWebView:(WKWebView *_Nonnull)webView;
+- (void)loadWKWebViewBridge:(WKWebView *_Nonnull)webView;
 
 @property (strong, nonatomic) WKWebView * _Nonnull webView;
 
