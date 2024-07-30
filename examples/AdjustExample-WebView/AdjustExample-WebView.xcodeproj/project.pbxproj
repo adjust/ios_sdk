@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07000FDA2C4AA7D600F40775 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000FD92C4AA7D600F40775 /* WKWebViewController.m */; };
-		3DE2E18900F0C3D6A57536A8 /* Pods_AdjustExample_WebView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC1A4ACF7A56B7C4352308D /* Pods_AdjustExample_WebView.framework */; };
+		07D5CB242C57E82700C112DC /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB232C57E82700C112DC /* WKWebViewController.m */; };
+		0A584DA12C3EA6C40071A651 /* AdjustSigSdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */; };
+		0A584DA22C3EA6C40071A651 /* AdjustSigSdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A584DA32C3EA6C40071A651 /* libAdjustBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584DA02C3EA6C40071A651 /* libAdjustBridge.a */; };
 		9D1082A91CFDAF8E0050568B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1082A81CFDAF8E0050568B /* main.m */; };
 		9D1082B41CFDAF8E0050568B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082B31CFDAF8E0050568B /* Assets.xcassets */; };
 		9D1082C51CFDAFDA0050568B /* AdjustExample-WebView.html in Resources */ = {isa = PBXBuildFile; fileRef = 9D1082C41CFDAFDA0050568B /* AdjustExample-WebView.html */; };
@@ -23,11 +25,25 @@
 		D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0A584DA42C3EA6C50071A651 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0A584DA22C3EA6C40071A651 /* AdjustSigSdk.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		07000FD82C4AA7D600F40775 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
-		07000FD92C4AA7D600F40775 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
+		07D5CB222C57E82700C112DC /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
+		07D5CB232C57E82700C112DC /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; name = AdjustSigSdk.xcframework; path = ../../AdjustSignature/AdjustSigSdk.xcframework; sourceTree = "<group>"; };
-		5BB7953E440E4F845B8F3E8D /* Pods-AdjustExample-WebView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdjustExample-WebView.release.xcconfig"; path = "Target Support Files/Pods-AdjustExample-WebView/Pods-AdjustExample-WebView.release.xcconfig"; sourceTree = "<group>"; };
+		0A584DA02C3EA6C40071A651 /* libAdjustBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAdjustBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A41CFDAF8E0050568B /* AdjustExample-WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AdjustExample-WebView.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1082A81CFDAF8E0050568B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D1082B31CFDAF8E0050568B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -43,9 +59,7 @@
 		9D9A99D81D0B699A0022FFCE /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D9A99D91D0B699A0022FFCE /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9DCA566D2C09D8F80043C3AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		CD8506B59A7F1EF8435C33D4 /* Pods-AdjustExample-WebView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdjustExample-WebView.debug.xcconfig"; path = "Target Support Files/Pods-AdjustExample-WebView/Pods-AdjustExample-WebView.debug.xcconfig"; sourceTree = "<group>"; };
 		D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
-		DBC1A4ACF7A56B7C4352308D /* Pods_AdjustExample_WebView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdjustExample_WebView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,12 +69,13 @@
 			files = (
 				9D1082CC1CFDAFFB0050568B /* AdSupport.framework in Frameworks */,
 				9DCA566E2C09D8F80043C3AF /* StoreKit.framework in Frameworks */,
+				0A584DA32C3EA6C40071A651 /* libAdjustBridge.a in Frameworks */,
 				D79970FA25B05A66008A17E1 /* AppTrackingTransparency.framework in Frameworks */,
 				9D1083411CFDE2470050568B /* UIKit.framework in Frameworks */,
 				9D1082C81CFDAFF30050568B /* WebKit.framework in Frameworks */,
 				9D1083431CFDE29A0050568B /* Foundation.framework in Frameworks */,
 				9D10833A1CFDBD9F0050568B /* CoreGraphics.framework in Frameworks */,
-				3DE2E18900F0C3D6A57536A8 /* Pods_AdjustExample_WebView.framework in Frameworks */,
+				0A584DA12C3EA6C40071A651 /* AdjustSigSdk.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +88,6 @@
 				9D1082A61CFDAF8E0050568B /* AdjustExample-WebView */,
 				9D1082A51CFDAF8E0050568B /* Products */,
 				D79970F825B05A66008A17E1 /* Frameworks */,
-				F7B5BD82A94FE0D82575746C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,8 +104,8 @@
 			children = (
 				9D9A99D81D0B699A0022FFCE /* AppDelegate.h */,
 				9D9A99D91D0B699A0022FFCE /* AppDelegate.m */,
-				07000FD82C4AA7D600F40775 /* WKWebViewController.h */,
-				07000FD92C4AA7D600F40775 /* WKWebViewController.m */,
+				07D5CB222C57E82700C112DC /* WKWebViewController.h */,
+				07D5CB232C57E82700C112DC /* WKWebViewController.m */,
 				9D1082B31CFDAF8E0050568B /* Assets.xcassets */,
 				9D1082B81CFDAF8E0050568B /* Info.plist */,
 				9D1082C41CFDAFDA0050568B /* AdjustExample-WebView.html */,
@@ -127,20 +141,11 @@
 			isa = PBXGroup;
 			children = (
 				0A584D9F2C3EA6C40071A651 /* AdjustSigSdk.xcframework */,
+				0A584DA02C3EA6C40071A651 /* libAdjustBridge.a */,
 				9DCA566D2C09D8F80043C3AF /* StoreKit.framework */,
 				D79970F925B05A66008A17E1 /* AppTrackingTransparency.framework */,
-				DBC1A4ACF7A56B7C4352308D /* Pods_AdjustExample_WebView.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F7B5BD82A94FE0D82575746C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				CD8506B59A7F1EF8435C33D4 /* Pods-AdjustExample-WebView.debug.xcconfig */,
-				5BB7953E440E4F845B8F3E8D /* Pods-AdjustExample-WebView.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,11 +155,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D1082BB1CFDAF8E0050568B /* Build configuration list for PBXNativeTarget "AdjustExample-WebView" */;
 			buildPhases = (
-				F49E4A169C5D6EB962791FEB /* [CP] Check Pods Manifest.lock */,
 				9D1082A01CFDAF8E0050568B /* Sources */,
 				9D1082A11CFDAF8E0050568B /* Frameworks */,
 				9D1082A21CFDAF8E0050568B /* Resources */,
-				57690D4F661D22983C102481 /* [CP] Embed Pods Frameworks */,
+				0A584DA42C3EA6C50071A651 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -183,7 +187,7 @@
 				};
 			};
 			buildConfigurationList = 9D10829F1CFDAF8E0050568B /* Build configuration list for PBXProject "AdjustExample-WebView" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -213,48 +217,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		57690D4F661D22983C102481 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AdjustExample-WebView/Pods-AdjustExample-WebView-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AdjustExample-WebView/Pods-AdjustExample-WebView-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AdjustExample-WebView/Pods-AdjustExample-WebView-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F49E4A169C5D6EB962791FEB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AdjustExample-WebView-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		9D1082A01CFDAF8E0050568B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -262,7 +224,7 @@
 			files = (
 				9D9A99DA1D0B699A0022FFCE /* AppDelegate.m in Sources */,
 				9D1082A91CFDAF8E0050568B /* main.m in Sources */,
-				07000FDA2C4AA7D600F40775 /* WKWebViewController.m in Sources */,
+				07D5CB242C57E82700C112DC /* WKWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,11 +342,9 @@
 		};
 		9D1082BC1CFDAF8E0050568B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD8506B59A7F1EF8435C33D4 /* Pods-AdjustExample-WebView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "AdjustExample-WebView/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -401,11 +361,9 @@
 		};
 		9D1082BD1CFDAF8E0050568B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BB7953E440E4F845B8F3E8D /* Pods-AdjustExample-WebView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QGUGW9AUMK;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "AdjustExample-WebView/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

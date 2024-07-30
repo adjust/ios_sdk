@@ -6,42 +6,96 @@
 
     <body style="background-color:#08d1ff; font-size: 20px; ">
         <h2><center>Webview</center></h2><br></br>
-        <button onclick="appDidLaunch()">Initialise Adjust SDK</button><br>
-        <button onclick="getSdkVersion()">Get Adjust SDK version</button><br>
+        <button onclick="initSdk()">Initialize Adjust SDK</button><br>
+        <button onclick="adjustGetters()">Getter API SDK version</button><br>
         <button onclick="trackEvent()">Track Event</button><br>
-        <button onclick="goOffline()">Go Offline</button><br>
-        <button onclick="goOnline()">Go Online</button><br>
-        <button onclick="trackDeeplink()">Track Deeplink</button><br>
+        <button onclick="switchToOfflineMode()">Go Offline</button><br>
+        <button onclick="switchBackToOnlineMode()">Go Online</button><br>
         <button onclick="trackThirdPartySharing()">Track Third party sharing</button><br>
         <button onclick="addGlobalCallbackParameter()">Add Global Callback Parameter</button><br>
         <button onclick="removeGlobalCallbackParameter()">Remove Global Callback Parameter By Key</button><br>
-        <button onclick="clearAllGlobalCallbackParameter()">Remove All Global Callback Parameters</button><br>
+        <button onclick="removeGlobalCallbackParameters()">Remove All Global Callback Parameters</button><br>
         <button onclick="addGlobalPartnerParameter()">Add Global Partner Parameter</button><br>
         <button onclick="removeGlobalPartnerParameter()">Remove Global Partner Parameter By Key</button><br>
-        <button onclick="clearAllGlobalPartnerParameter()">Remove All Global Partner Parameters</button><br>
+        <button onclick="removeGlobalPartnerParameters()">Remove All Global Partner Parameters</button><br>
         <button onclick="gdprForgetMe()">Gdpr Forget Me</button><br>
 
         <p id="demo"> </p>
+
         <script>
 
             window.onload = event => {
-                appDidLaunch();
+                initSdk();
             };
 
-            function appDidLaunch() {
+            function initSdk() {
                 var adjustConfig = new AdjustConfig('2fm9gkqubvpc', AdjustConfig.EnvironmentSandbox);
                 adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+
+                adjustConfig.setAttributionCallback(function(attributionData) {
+                    console.log(attributionData);
+                });
+
+                adjustConfig.setEventSuccessCallback(function(eventSuccessResponseData) {
+                    console.log(eventSuccessResponseData);
+                });
+
+                adjustConfig.setEventFailureCallback(function(eventFailureResponseData) {
+                    console.log(eventFailureResponseData);
+                });
+
+                adjustConfig.setSessionSuccessCallback(function(sessionSuccessResponseData) {
+                    console.log(sessionSuccessResponseData);
+                });
+
+                adjustConfig.setSessionFailureCallback(function(sessionFailureResponseData) {
+                    console.log(sessionFailureResponseData);
+                });
+
+                adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplinkResponseData) {
+                    console.log(deferredDeeplinkResponseData);
+                });
+
+                adjustConfig.setSkanUpdatedCallback(function(skanData) {
+                    console.log(skanData);
+                });
+
                 Adjust.initSdk(adjustConfig);
             }
 
-            function getSdkVersion() {
-                var sdkVersion = Adjust.getSdkVersion();
-                console.log(sdkVersion);
+            function adjustGetters() {
+                Adjust.requestAppTrackingAuthorizationWithCompletionHandler(function(status) {
+                    window.alert('Tracking permission status\n' + status)
+                });
+
+                Adjust.getSdkVersion(function(sdkVersion) {
+                    console.log(sdkVersion);
+                });
+
+                Adjust.getIdfa(function(idfa) {
+                    console.log(idfa);
+                });
+
+                Adjust.getIdfv(function(idfv) {
+                    console.log(idfv);
+                });
+
+                Adjust.getAttribution(function(attributionData) {
+                    console.log(attributionData);
+                });
+
+                Adjust.getAdid(function(adid) {
+                    console.log(adid);
+                });
+
+                Adjust.isEnabled(function(enabled) {
+                    console.log(enabled);
+                });
             }
 
             function trackEvent() {
                 var adjustEvent = new AdjustEvent('g3mfiw');
-                adjustEvent.setRevenue(0.01, 'EUR');
+                adjustEvent.setRevenue(5.01, 'EUR');
                 adjustEvent.addCallbackParameter('key', 'value');
                 adjustEvent.addCallbackParameter('x', 'y');
                 adjustEvent.addCallbackParameter('key', 'lock');
@@ -52,9 +106,6 @@
                 Adjust.trackEvent(adjustEvent);
             }
 
-            function trackDeeplink() {
-                Adjust.processDeeplink("https://www.wired.com/story/fancy-cat-furniture/#intcid=_wired-verso-hp-trending_4cb42ea3-2131-4763-9733-a391e19d84e6_popular4-1")
-            }
             function trackThirdPartySharing() {
                 var adjustThirdPartySharing = new AdjustThirdPartySharing(true);
                 adjustThirdPartySharing.addPartnerSharingSetting("partnerName", "key", true)
@@ -90,16 +141,18 @@
                 Adjust.gdprForgetMe();
             }
 
-            function setOfflineMode() {
-                Adjust.setOfflineMode(true);
+            function switchToOfflineMode() {
+                Adjust.switchToOfflineMode();
             }
 
-            function goOnline() {
-                Adjust.setOfflineMode(false);
+            function switchBackToOnlineMode() {
+                Adjust.switchBackToOnlineMode();
             }
 
         </script>
     </body>
 </html>
+
+
 
 
