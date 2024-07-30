@@ -7,8 +7,12 @@
 //
 
 #import "WKWebViewController.h"
+#import <WebKit/WebKit.h>
+#import <AdjustBridge/AdjustBridge.h>
 
-@interface WKWebViewController ()<WKNavigationDelegate>
+@interface WKWebViewController ()<WKNavigationDelegate, WKUIDelegate>
+
+@property AdjustBridge *adjustBridge;
 
 @end
 
@@ -29,15 +33,36 @@
 - (void)loadWKWebView {
     
     WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:self.view.frame];
+    wkWebView.UIDelegate = self;
     _adjustBridge = [[AdjustBridge alloc] init];
-    [_adjustBridge loadWKWebViewBridge:wkWebView wkWebViewDelegate:self];
     [_adjustBridge augmentHybridWebView];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"AdjustExample-FbPixel" ofType:@"html"];
+    [_adjustBridge loadWKWebViewBridge:wkWebView];
+
+    if (@available(iOS 16.4, *)) {
+        [wkWebView setInspectable:YES];
+    } else {
+        // Fallback on earlier versions
+    }
+
+    NSString *path = [[NSBundle mainBundle] 
+                      pathForResource:@"AdjustExample-FbPixel" ofType:@"html"];
     NSURL *url = [NSURL fileURLWithPath:path];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [wkWebView loadRequest:request];
     [self.view addSubview:wkWebView];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message
+   initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action) {
+        completionHandler();
+    }]];
+    [self presentViewController:alertController animated:YES completion:^{}];
 }
 
 @end

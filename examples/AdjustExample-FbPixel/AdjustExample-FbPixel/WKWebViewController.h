@@ -7,13 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <WebKit/WebKit.h>
-#import <JavaScriptCore/JavaScriptCore.h>
-#import <AdjustBridge/AdjustBridge.h>
 
 @interface WKWebViewController : UIViewController
-
-@property AdjustBridge *adjustBridge;
-@property JSContext *jsContext;
 
 @end
