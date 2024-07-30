@@ -28,11 +28,22 @@
 		07000F952C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
 		07000F962C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
 		07000F972C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
-		07000FC12C4A568200F40775 /* adjust.js in Resources */ = {isa = PBXBuildFile; fileRef = 07000FAE2C4A568200F40775 /* adjust.js */; };
 		071684DE2C0471C800B8B9FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA22A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA32A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA42A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
+		07D5CAC52C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
+		07D5CAC62C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
+		07D5CAC72C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
+		07D5CAC82C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
+		07D5CAC92C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
+		07D5CACA2C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
+		07D5CB0E2C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeHelper.h */; };
+		07D5CB0F2C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeHelper.h */; };
+		07D5CB102C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeHelper.h */; };
+		07D5CB112C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeHelper.m */; };
+		07D5CB122C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeHelper.m */; };
+		07D5CB132C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeHelper.m */; };
 		0A584B9D2C3E937E0071A651 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A584B9B2C3E8CA50071A651 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A584B9F2C3E93EF0071A651 /* AdjustBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9648C5F51CD1770300A3B049 /* AdjustBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A584BA42C3E94230071A651 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */; };
@@ -884,8 +895,11 @@
 /* Begin PBXFileReference section */
 		07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeConstants.h; sourceTree = "<group>"; };
 		07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeConstants.m; sourceTree = "<group>"; };
-		07000FAE2C4A568200F40775 /* adjust.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjust.js; sourceTree = "<group>"; };
 		07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeRegister.h; sourceTree = "<group>"; };
+		07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
+		07D5CAFA2C57DA2400C112DC /* AdjustBridgeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeHelper.h; sourceTree = "<group>"; };
+		07D5CB0D2C57DA2400C112DC /* AdjustBridgeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeHelper.m; sourceTree = "<group>"; };
 		0A584B962C3E8C710071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; path = AdjustSigSdk.xcframework; sourceTree = "<group>"; };
 		0A584B982C3E8C9A0071A651 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0A584B992C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
@@ -1165,11 +1179,14 @@
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
-				07000FAE2C4A568200F40775 /* adjust.js */,
 				9648C5F51CD1770300A3B049 /* AdjustBridge.h */,
 				9648C5F61CD1770300A3B049 /* AdjustBridge.m */,
+				07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */,
+				07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */,
 				07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */,
 				07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */,
+				07D5CAFA2C57DA2400C112DC /* AdjustBridgeHelper.h */,
+				07D5CB0D2C57DA2400C112DC /* AdjustBridgeHelper.m */,
 			);
 			path = AdjustBridge;
 			sourceTree = SOURCE_ROOT;
@@ -1404,7 +1421,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07D5CAC52C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */,
 				07000F922C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */,
+				07D5CB0E2C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */,
 				0A584B9F2C3E93EF0071A651 /* AdjustBridge.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1556,6 +1575,7 @@
 				0A584D522C3E96C70071A651 /* ADJAppStoreSubscription.h in Headers */,
 				0A584D532C3E96C70071A651 /* ADJAttribution.h in Headers */,
 				0A584D542C3E96C70071A651 /* ADJConfig.h in Headers */,
+				07D5CAC72C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */,
 				0A584D552C3E96C70071A651 /* ADJEvent.h in Headers */,
 				0A584D562C3E96C70071A651 /* ADJEventFailure.h in Headers */,
 				0A584D572C3E96C70071A651 /* ADJEventSuccess.h in Headers */,
@@ -1586,6 +1606,7 @@
 				0A584D732C3E97020071A651 /* ADJResponseData.h in Headers */,
 				0A584D742C3E97020071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584D752C3E97020071A651 /* ADJSKAdNetwork.h in Headers */,
+				07D5CB102C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */,
 				0A584D762C3E97020071A651 /* ADJTimerCycle.h in Headers */,
 				0A584D772C3E97020071A651 /* ADJTimerOnce.h in Headers */,
 				0A584D782C3E97020071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1650,6 +1671,7 @@
 				0A584CB12C3E95560071A651 /* ADJAppStoreSubscription.h in Headers */,
 				0A584CB22C3E95560071A651 /* ADJAttribution.h in Headers */,
 				0A584CB32C3E95560071A651 /* ADJConfig.h in Headers */,
+				07D5CAC62C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */,
 				0A584CB42C3E95560071A651 /* ADJEvent.h in Headers */,
 				0A584CB52C3E95560071A651 /* ADJEventFailure.h in Headers */,
 				0A584CB62C3E95560071A651 /* ADJEventSuccess.h in Headers */,
@@ -1680,6 +1702,7 @@
 				0A584CD22C3E95710071A651 /* ADJResponseData.h in Headers */,
 				0A584CD32C3E95710071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584CD42C3E95710071A651 /* ADJSKAdNetwork.h in Headers */,
+				07D5CB0F2C57DA2400C112DC /* AdjustBridgeHelper.h in Headers */,
 				0A584CD52C3E95710071A651 /* ADJTimerCycle.h in Headers */,
 				0A584CD62C3E95710071A651 /* ADJTimerOnce.h in Headers */,
 				0A584CD72C3E95710071A651 /* ADJUrlStrategy.h in Headers */,
@@ -2263,7 +2286,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BFEAA42A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */,
-				07000FC12C4A568200F40775 /* adjust.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2538,6 +2560,7 @@
 				0AB1CB1627DF68C100509231 /* ADJRequestHandler.m in Sources */,
 				0AB1CB1727DF68C100509231 /* ADJUtil.m in Sources */,
 				0AB1CB1827DF68C100509231 /* ADJEvent.m in Sources */,
+				07D5CB132C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */,
 				0AB1CB1927DF68C100509231 /* ADJAttributionHandler.m in Sources */,
 				0AB1CB1A27DF68C100509231 /* ADJAttribution.m in Sources */,
 				0AB1CB1B27DF68C100509231 /* ADJConfig.m in Sources */,
@@ -2554,6 +2577,7 @@
 				9D775B662A1F9CD0009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */,
 				0AB1CB2427DF68C100509231 /* ADJSdkClickHandler.m in Sources */,
 				0A67F1DC2919642000AC684A /* ADJSKAdNetwork.m in Sources */,
+				07D5CACA2C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */,
 				0AB1CB2527DF68C100509231 /* ADJGlobalParameters.m in Sources */,
 				9D775B5E2A1F7C8D009D0BE8 /* ADJPurchaseVerificationResult.m in Sources */,
 				0AB1CB2627DF68C100509231 /* ADJUserDefaults.m in Sources */,
@@ -2572,7 +2596,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				961515A71CD2CBB00022D336 /* AdjustBridge.m in Sources */,
+				07D5CAC82C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */,
 				07000F952C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */,
+				07D5CB112C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2639,6 +2665,7 @@
 				0A584C902C3E952C0071A651 /* ADJSessionFailure.m in Sources */,
 				0A584C912C3E952C0071A651 /* ADJSessionSuccess.m in Sources */,
 				0A584C922C3E952C0071A651 /* ADJThirdPartySharing.m in Sources */,
+				07D5CB122C57DA2400C112DC /* AdjustBridgeHelper.m in Sources */,
 				0A584C932C3E952C0071A651 /* Adjust.m in Sources */,
 				0A584C942C3E952C0071A651 /* ADJActivityHandler.m in Sources */,
 				0A584C952C3E952C0071A651 /* ADJActivityKind.m in Sources */,
@@ -2655,6 +2682,7 @@
 				0A584C9F2C3E952C0071A651 /* ADJPackageParams.m in Sources */,
 				0A584CA02C3E952C0071A651 /* ADJPurchaseVerificationHandler.m in Sources */,
 				0A584CA12C3E952C0071A651 /* ADJRequestHandler.m in Sources */,
+				07D5CAC92C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */,
 				0A584CA22C3E952C0071A651 /* ADJResponseData.m in Sources */,
 				0A584CA32C3E952C0071A651 /* ADJSdkClickHandler.m in Sources */,
 				0A584CA42C3E952C0071A651 /* ADJSKAdNetwork.m in Sources */,

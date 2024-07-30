@@ -79,38 +79,40 @@
 
     NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
 
-    if ([AdjustBridgeHelper isFieldValid:urlOverwrite]) {
+    if ([self isFieldValid:urlOverwrite]) {
         [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
     }
-    if ([AdjustBridgeHelper isFieldValid:extraPath]) {
+    if ([self isFieldValid:extraPath]) {
         [testOptions setObject:extraPath forKey:@"extraPath"];
     }
-    if ([AdjustBridgeHelper isFieldValid:timerIntervalInMilliseconds]) {
+    if ([self isFieldValid:timerIntervalInMilliseconds]) {
         [testOptions setObject:timerIntervalInMilliseconds forKey:@"timerIntervalInMilliseconds"];
     }
-    if ([AdjustBridgeHelper isFieldValid:timerStartInMilliseconds]) {
+    if ([self isFieldValid:timerStartInMilliseconds]) {
         [testOptions setObject:timerStartInMilliseconds forKey:@"timerStartInMilliseconds"];
     }
-    if ([AdjustBridgeHelper isFieldValid:sessionIntervalInMilliseconds]) {
+    if ([self isFieldValid:sessionIntervalInMilliseconds]) {
         [testOptions setObject:sessionIntervalInMilliseconds forKey:@"sessionIntervalInMilliseconds"];
     }
-    if ([AdjustBridgeHelper isFieldValid:subsessionIntervalInMilliseconds]) {
+    if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
         [testOptions setObject:subsessionIntervalInMilliseconds forKey:@"subsessionIntervalInMilliseconds"];
     }
-    if ([AdjustBridgeHelper isFieldValid:attStatus]) {
+    if ([self isFieldValid:attStatus]) {
         [testOptions setObject:attStatus forKey:@"attStatusInt"];
     }
-    if ([AdjustBridgeHelper isFieldValid:idfa]) {
+    if ([self isFieldValid:idfa]) {
         [testOptions setObject:idfa forKey:@"idfa"];
     }
-   
-    if ([AdjustBridgeHelper isFieldValid:deleteState]) {
+    if ([self isFieldValid:teardown]) {
+        [testOptions setObject:teardown forKey:@"teardown"];
+    }
+    if ([self isFieldValid:deleteState]) {
         [testOptions setObject:deleteState forKey:@"deleteState"];
     }
-    if ([AdjustBridgeHelper isFieldValid:noBackoffWait]) {
+    if ([self isFieldValid:noBackoffWait]) {
         [testOptions setObject:noBackoffWait forKey:@"noBackoffWait"];
     }
-    if ([AdjustBridgeHelper isFieldValid:adServicesFrameworkEnabled]) {
+    if ([self isFieldValid:adServicesFrameworkEnabled]) {
         [testOptions setObject:adServicesFrameworkEnabled forKey:@"adServicesFrameworkEnabled"];
     }
 

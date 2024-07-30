@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)AdjustBridge_js;
 
++ (void)augmentHybridWebView:(NSString *)fbAppId;
+
+
 @end
 
 NS_ASSUME_NONNULL_END
