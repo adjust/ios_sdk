@@ -230,16 +230,6 @@ static NSString * fbAppIdStatic = nil;
                                                         null);
                 }
             },
-            enableCoppaCompliance: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_enableCoppaCompliance', null, null);
-                }
-            },
-            disableCoppaCompliance: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_disableCoppaCompliance', null, null);
-                }
-            },
             getSdkVersion: function(callback) {
                 if (WebViewJavascriptBridge != null) {
                     WebViewJavascriptBridge.callHandler('adjust_sdkVersion', this.getSdkPrefix(), callback);
@@ -337,6 +327,7 @@ static NSString * fbAppIdStatic = nil;
             this.isDataResidency = null;
             this.isAdServicesEnabled = null;
             this.isIdfaReadingAllowed = null;
+            this.isCoppaComplianceEnabled = null;
             this.isSkanAttributionHandlingEnabled = null;
             this.isDeferredDeeplinkOpeningEnabled = null;
             this.fbPixelDefaultEventToken = null;
@@ -408,6 +399,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.disableIdfaReading = function() {
             this.isIdfaReadingAllowed = false;
+        };
+        AdjustConfig.prototype.enableCoppaCompliance = function() {
+            this.isCoppaComplianceEnabled = true;
         };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
             this.isSkanAttributionHandlingEnabled = false;

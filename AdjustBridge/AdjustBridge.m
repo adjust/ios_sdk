@@ -209,6 +209,7 @@
         NSNumber *isCostDataInAttributionEnabled = [data objectForKey:@"isCostDataInAttributionEnabled"];
         NSNumber *isAdServicesEnabled = [data objectForKey:@"isAdServicesEnabled"];
         NSNumber *isIdfaReadingAllowed = [data objectForKey:@"isIdfaReadingAllowed"];
+        NSNumber *isCoppaComplianceEnabled = [data objectForKey:@"isCoppaComplianceEnabled"];
         NSNumber *isSkanAttributionHandlingEnabled = [data objectForKey:@"isSkanAttributionHandlingEnabled"];
         NSNumber *isDeferredDeeplinkOpeningEnabled = [data objectForKey:@"isDeferredDeeplinkOpeningEnabled"];
         NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
@@ -272,6 +273,11 @@
         if ([self isFieldValid:isIdfaReadingAllowed]) {
             if ([isIdfaReadingAllowed boolValue] == NO) {
                 [adjustConfig disableIdfaReading];
+            }
+        }
+        if ([self isFieldValid:isCoppaComplianceEnabled]) {
+            if ([isCoppaComplianceEnabled boolValue] == YES) {
+                [adjustConfig enableCoppaCompliance];
             }
         }
         if ([self isFieldValid:attConsentWaitingSeconds]) {
@@ -592,24 +598,6 @@
             return;
         }
         [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_enableCoppaCompliance"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        [Adjust enableCoppaCompliance];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_disableCoppaCompliance"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        [Adjust disableCoppaCompliance];
     }];
 
     [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {

@@ -243,6 +243,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
     
+    if ('coppaCompliant' in params) {
+        var coppaCompliantS = getFirstValue(params, 'coppaCompliant');
+        var coppaCompliant = coppaCompliantS == 'true';
+        if (coppaCompliant == true) {
+            adjustConfig.enableCoppaCompliance();
+        }
+    }
+    
     if ('allowSkAdNetworkHandling' in params) {
         var allowSkAdNetworkHandlingS = getFirstValue(params, 'allowSkAdNetworkHandling');
         var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
@@ -588,14 +596,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
     });
 }
-
-AdjustCommandExecutor.prototype.enableCoppaCompliance = function(params) {
-    Adjust.enableCoppaCompliance();
-};
-
-AdjustCommandExecutor.prototype.disableCoppaCompliance = function(params) {
-    Adjust.disableCoppaCompliance();
-};
 
 // Util
 function getValues(params, key) {
