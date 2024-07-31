@@ -18,7 +18,7 @@ let package = Package(
         .target(
             name: "AdjustSdk",
             dependencies: [
-                .product(name: "AdjustSigSdk", package: "adjust_signature_sdk")
+                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
             ],
             path: "Adjust",
             resources: [
@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "AdjustWebBridge",
             dependencies: [
-                .product(name: "AdjustSigSdk", package: "adjust_signature_sdk")
+                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
             ],
             path: "AdjustBridge",
             cSettings: [
