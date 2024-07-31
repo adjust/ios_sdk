@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 // simulator
-static NSString * urlOverwrite = @"http://127.0.0.1:8080";
-static NSString * controlUrl = @"ws://127.0.0.1:1987";
+//static NSString * urlOverwrite = @"http://127.0.0.1:8080";
+//static NSString * controlUrl = @"ws://127.0.0.1:1987";
 // device
-//static NSString * urlOverwrite = @"http://192.168.86.44:8080";
-//static NSString * controlUrl = @"ws://192.168.86.44:1987";
+static NSString * urlOverwrite = @"http://192.168.8.79:8080";
+static NSString * controlUrl = @"ws://192.168.8.79:1987";
 
 @interface ViewController : UIViewController
 

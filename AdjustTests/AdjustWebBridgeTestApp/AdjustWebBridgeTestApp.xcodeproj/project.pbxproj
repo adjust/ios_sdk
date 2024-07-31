@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07D5CAAD2C50E67400C112DC /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAAC2C50E67400C112DC /* WKWebViewController.m */; };
+		07D5CAB02C50E7BA00C112DC /* TestLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAAF2C50E7BA00C112DC /* TestLibraryBridge.m */; };
 		0A584D852C3EA31B0071A651 /* AdjustSigSdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584D832C3EA31B0071A651 /* AdjustSigSdk.xcframework */; };
 		0A584D862C3EA31B0071A651 /* AdjustSigSdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584D832C3EA31B0071A651 /* AdjustSigSdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A584D872C3EA31B0071A651 /* libAdjustBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A584D842C3EA31B0071A651 /* libAdjustBridge.a */; };
@@ -29,9 +31,7 @@
 		6F7AF633211878BC00F730B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF632211878BC00F730B2 /* Assets.xcassets */; };
 		6F7AF636211878BC00F730B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF634211878BC00F730B2 /* LaunchScreen.storyboard */; };
 		6F7AF639211878BC00F730B2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF638211878BC00F730B2 /* main.m */; };
-		6F7AF78B21187EC500F730B2 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF78A21187EC500F730B2 /* WKWebViewController.m */; };
 		6F7AF78D2118808400F730B2 /* AdjustTestApp-WebView.html in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF78C2118808300F730B2 /* AdjustTestApp-WebView.html */; };
-		6F7AF790211888B500F730B2 /* TestLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */; };
 		6F7AF7B02118949C00F730B2 /* TestLibraryBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */; };
 		6F7AF7BB2118992200F730B2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F7AF7BA2118992200F730B2 /* WebKit.framework */; };
 		6FD0412C211C71D1008D42D0 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD0412B211C71D1008D42D0 /* iAd.framework */; };
@@ -56,6 +56,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		07D5CAAB2C50E67400C112DC /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
+		07D5CAAC2C50E67400C112DC /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
+		07D5CAAE2C50E7BA00C112DC /* TestLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestLibraryBridge.h; sourceTree = "<group>"; };
+		07D5CAAF2C50E7BA00C112DC /* TestLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestLibraryBridge.m; sourceTree = "<group>"; };
 		0A584D832C3EA31B0071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; name = AdjustSigSdk.xcframework; path = ../../AdjustSignature/AdjustSigSdk.xcframework; sourceTree = "<group>"; };
 		0A584D842C3EA31B0071A651 /* libAdjustBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAdjustBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F666C942C00C430005A6D90 /* ATLNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATLNetworking.h; sourceTree = "<group>"; };
@@ -98,11 +102,7 @@
 		6F7AF635211878BC00F730B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F7AF637211878BC00F730B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F7AF638211878BC00F730B2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6F7AF78921187EC500F730B2 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
-		6F7AF78A21187EC500F730B2 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		6F7AF78C2118808300F730B2 /* AdjustTestApp-WebView.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AdjustTestApp-WebView.html"; sourceTree = "<group>"; };
-		6F7AF78E211888B500F730B2 /* TestLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestLibraryBridge.h; sourceTree = "<group>"; };
-		6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestLibraryBridge.m; sourceTree = "<group>"; };
 		6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TestLibraryBridge.js; sourceTree = "<group>"; };
 		6F7AF7BA2118992200F730B2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6FD0412B211C71D1008D42D0 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -202,10 +202,10 @@
 				6F7AF629211878BA00F730B2 /* AppDelegate.h */,
 				6F7AF62A211878BA00F730B2 /* AppDelegate.m */,
 				6F7AF7AF2118949C00F730B2 /* TestLibraryBridge.js */,
-				6F7AF78E211888B500F730B2 /* TestLibraryBridge.h */,
-				6F7AF78F211888B500F730B2 /* TestLibraryBridge.m */,
-				6F7AF78921187EC500F730B2 /* WKWebViewController.h */,
-				6F7AF78A21187EC500F730B2 /* WKWebViewController.m */,
+				07D5CAAE2C50E7BA00C112DC /* TestLibraryBridge.h */,
+				07D5CAAF2C50E7BA00C112DC /* TestLibraryBridge.m */,
+				07D5CAAB2C50E67400C112DC /* WKWebViewController.h */,
+				07D5CAAC2C50E67400C112DC /* WKWebViewController.m */,
 				6F7AF78C2118808300F730B2 /* AdjustTestApp-WebView.html */,
 				6F7AF638211878BC00F730B2 /* main.m */,
 				6F7AF637211878BC00F730B2 /* Info.plist */,
@@ -307,7 +307,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F6F75CC2327C08B00F47E64 /* ATLControlWebSocketClient.m in Sources */,
-				6F7AF790211888B500F730B2 /* TestLibraryBridge.m in Sources */,
 				6F6F75CD2327C08B00F47E64 /* ATLUtil.m in Sources */,
 				6F6F75D22327C08B00F47E64 /* PSWebSocketDriver.m in Sources */,
 				6F6F75D92327C08B00F47E64 /* ATLBlockingQueue.m in Sources */,
@@ -315,9 +314,10 @@
 				6F6F75D42327C08B00F47E64 /* PSWebSocketNetworkThread.m in Sources */,
 				6F6F75D02327C08B00F47E64 /* PSWebSocketDeflater.m in Sources */,
 				6F6F75D62327C08B00F47E64 /* PSWebSocketServer.m in Sources */,
-				6F7AF78B21187EC500F730B2 /* WKWebViewController.m in Sources */,
 				6F6F75CF2327C08B00F47E64 /* PSWebSocketInflater.m in Sources */,
 				6F7AF639211878BC00F730B2 /* main.m in Sources */,
+				07D5CAB02C50E7BA00C112DC /* TestLibraryBridge.m in Sources */,
+				07D5CAAD2C50E67400C112DC /* WKWebViewController.m in Sources */,
 				6F6F75D32327C08B00F47E64 /* PSWebSocketBuffer.m in Sources */,
 				6F6F75D12327C08B00F47E64 /* PSWebSocketUTF8Decoder.m in Sources */,
 				6F666C962C00C430005A6D90 /* ATLNetworking.m in Sources */,
