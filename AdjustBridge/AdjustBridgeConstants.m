@@ -92,9 +92,6 @@ NSString *const ADJWBIsEnabledTPSKey = @"isEnabled";
 NSString *const ADJWBGranularOptionsTPSKey = @"granularOptions";
 NSString *const ADJWBPartnerSharingSettingTPSKey = @"partnerSharingSettings";
 
-NSString *const ADJWBCallbackParameterKeyValueArrayAdRevenueKey = @"callbackParameterKeyValueArray";
-NSString *const ADJWBPartnerParameterKeyValueArrayAdRevenueKey = @"partnerParameterKeyValueArray";
-
 NSString *const ADJWBKvKeyKey = @"_key";
 NSString *const ADJWBKvValueKey = @"_value";
 

@@ -26,7 +26,7 @@
     self.testLibrary = [ATLTestLibrary testLibraryWithBaseUrl:urlOverwrite
                                                 andControlUrl:controlUrl
                                            andCommandDelegate:self];
-    [self augmentedHybridTestWebView:adjustBridge.webView];
+    [self augmentedHybridTestWKWebView:adjustBridge.wkWebView];
     return self;
 }
 
@@ -34,10 +34,10 @@
 
 #pragma mark Set up Test Webview
 
-- (void)augmentedHybridTestWebView:(WKWebView *_Nonnull)webView {
-    if ([webView isKindOfClass:WKWebView.class]) {
-        self.webView = webView;
-        WKUserContentController *controller = webView.configuration.userContentController;
+- (void)augmentedHybridTestWKWebView:(WKWebView *_Nonnull)wkWebView {
+    if ([wkWebView isKindOfClass:WKWebView.class]) {
+        self.webView = wkWebView;
+        WKUserContentController *controller = wkWebView.configuration.userContentController;
         [controller addScriptMessageHandler:self name:@"adjustTest"];
     }
 }
@@ -52,36 +52,27 @@
         NSDictionary *data = [message.body objectForKey:@"data"];
 
         if ([action isEqual:@"adjustTLB_startTestSession"]) {
-
             [self startTestSession:(NSString *)data];
 
         } else if ([action isEqual:@"adjustTLB_sendInfoToServer"]) {
-
             [self sendInfoToServer:(NSString *)data];
 
         } else if ([action isEqual:@"adjustTLB_addInfoToSend"]) {
-
             NSString *key = [data objectForKey:@"key"];
             NSString *value = [data objectForKey:@"value"];
             [self addInfoToSend:key andValue:value];
 
         } else if ([action isEqual:@"adjustTLB_addTest"]) {
-
             [self addTest:(NSString *)data];
 
         } else if ([action isEqual:@"adjustTLB_addTestDirectory"]) {
-
             [self addTestDirectory:(NSString *)data];
 
         } else if ([action isEqual:@"adjustTLB_addToTestOptionsSet"]) {
-
             NSString *key = [data objectForKey:@"key"];
             NSString *value = [data objectForKey:@"value"];
             [self addToTestOptionsSet:key andValue:value];
 
-        } else if ([action isEqual:@"adjustTLB_teardownAndApplyAddedTestOptionsSet"]) {
-
-            [self teardownAndApplyAddedTestOptionsSet];
         }
     }
 }
@@ -108,15 +99,6 @@
 
 - (void)addToTestOptionsSet:(NSString *)key andValue:(NSString *)value {
     [self.testLibrary addInfoToSend:key value:value];
-}
-
-- (void)teardownAndApplyAddedTestOptionsSet {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //        NSString *extraPath = [self.testLibrary resetTestLibrary];
-        //        NSString *javaScript = [NSString stringWithFormat:@"TestLibraryBridge.teardownReturnExtraPath('%@')", extraPath];
-        //            [self.webView evaluateJavaScript:javaScript completionHandler:nil];
-    });
-
 }
 
 #pragma mark - Test cases command handler
