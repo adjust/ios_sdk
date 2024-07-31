@@ -4,7 +4,7 @@
 //
 //  V5.0.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
-//  Copyright (c) 2012-2021 Adjust GmbH. All rights reserved.
+//  Copyright (c) 2012-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -293,16 +293,6 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
-
-/**
- * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application.
- */
-//+ (void)enableCoppaCompliance;
-
-/**
- * @brief Disable COPPA (Children's Online Privacy Protection Act) compliant for the application.
- */
-//+ (void)disableCoppaCompliance;
 
 /**
  * @brief Verify in-app-purchase and track event upon successfully completed verification.

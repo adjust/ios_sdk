@@ -184,6 +184,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, readonly) BOOL isDataResidency;
 
+/**
+ * @brief Indicator of whether SDK should start in COPPA compliant mode or not.
+ */
+@property (nonatomic, readonly) BOOL isCoppaComplianceEnabled;
+
 #pragma mark - AdjustConfig assignable properties
 
 /**
@@ -329,6 +334,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
 - (void)enableCostDataInAttribution;
 
 /**
+ * @brief A method to configure SDK to start in COPPA compliant mode.
+ */
+- (void)enableCoppaCompliance;
+
+/**
  * @brief A method to set custom URL strategy.
  *
  * @param urlStrategyDomains Array of domains to be used as part of the URL strategy.
@@ -342,11 +352,5 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency;
-
-
-@property (nonatomic, copy, readonly, nullable) NSString *coppaStatus;
-- (void)setCoppaStatusAsEnabled;
-- (void)setCoppaStatusAsDisabled;
-- (void)setCoppaStatusAsUnknown;
 
 @end

@@ -12,7 +12,6 @@ static NSString * const PREFS_KEY_PUSH_TOKEN_DATA = @"adj_push_token";
 static NSString * const PREFS_KEY_PUSH_TOKEN_STRING = @"adj_push_token_string";
 static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
-static NSString * const PREFS_KEY_COPPA_COMPLIANCE = @"adj_coppa_compliance";
 static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
 static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_time";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
@@ -65,19 +64,6 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
 
 + (void)removeGdprForgetMe {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
-}
-
-+ (void)saveCoppaComplianceWithValue:(BOOL)isCoppaComplianceEnabled {
-    [[NSUserDefaults standardUserDefaults] setBool:isCoppaComplianceEnabled
-                                            forKey:PREFS_KEY_COPPA_COMPLIANCE];
-}
-
-+ (BOOL)getCoppaCompliance {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_COPPA_COMPLIANCE];
-}
-
-+ (void)removeCoppaCompliance {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_COPPA_COMPLIANCE];
 }
 
 + (void)saveDeeplinkUrl:(NSURL *)deeplink
@@ -161,7 +147,6 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_COPPA_COMPLIANCE];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];

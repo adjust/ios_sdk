@@ -35,8 +35,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 @property (nonatomic, weak) ADJTrackingStatusManager *trackingStatusManager;
 
-@property (nonatomic, assign) BOOL isCoppaComplianceEnabled;
-
 @end
 
 @implementation ADJPackageBuilder
@@ -60,8 +58,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     self.activityState = activityState;
     self.globalParameters = globalParameters;
     self.trackingStatusManager = trackingStatusManager;
-    self.isCoppaComplianceEnabled =
-        [ADJPackageBuilder coalesceIsCoppaComplianceEnabledWithActivityState:activityState];
 
     return self;
 }
@@ -993,7 +989,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
     id<ADJLogger> logger = [ADJAdjustFactory logger];
     
-    if (self.isCoppaComplianceEnabled) {
+    if (self.adjustConfig.isCoppaComplianceEnabled) {
         [logger info:@"Cannot read IDFV with COPPA enabled"];
         return;
     }
@@ -1021,7 +1017,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                    forKey:@"background"];
         }
     }
-    if (self.isCoppaComplianceEnabled == YES) {
+    if (self.adjustConfig.isCoppaComplianceEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_coppa"];
     }
     if (self.adjustConfig.isSkanAttributionEnabled == NO) {
@@ -1167,7 +1163,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
         return;
     }
-    if ([ADJPackageBuilder coalesceIsCoppaComplianceEnabledWithActivityState:activityState]) {
+    if (adjConfig.isCoppaComplianceEnabled) {
         [[ADJAdjustFactory logger] info:@"Cannot read IDFA with COPPA enabled"];
         return;
     }
@@ -1214,14 +1210,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                                     configuration:self.adjustConfig
                                     packageParams:self.packageParams
                                     activityState:self.activityState];
-}
-
-+ (BOOL)coalesceIsCoppaComplianceEnabledWithActivityState:(ADJActivityState *)activityState {
-    if (activityState != nil) {
-        return [activityState isCoppaComplianceEnabled];
-    }
-
-    return [ADJUserDefaults getCoppaCompliance];
 }
 
 @end

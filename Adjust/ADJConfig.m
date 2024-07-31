@@ -62,6 +62,7 @@
     _eventDeduplicationIdsMaxSize = -1;
     _isDeviceIdsReadingOnceEnabled = NO;
     _isCostDataInAttributionEnabled = NO;
+    _isCoppaComplianceEnabled = NO;
 
     return self;
 }
@@ -108,6 +109,10 @@
     _isCostDataInAttributionEnabled = YES;
 }
 
+- (void)enableCoppaCompliance {
+    _isCoppaComplianceEnabled = YES;
+}
+
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency {
@@ -125,17 +130,6 @@
     _useSubdomains = useSubdomains;
     _isDataResidency = isDataResidency;
 }
-
-- (void)setCoppaStatusAsEnabled {
-    _coppaStatus = @"enabled";
-}
-- (void)setCoppaStatusAsDisabled {
-    _coppaStatus = @"disabled";
-}
-- (void)setCoppaStatusAsUnknown {
-    _coppaStatus = @"unknown";
-}
-
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     BOOL hasResponseDelegate = NO;
@@ -231,6 +225,7 @@
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
         copy->_isCostDataInAttributionEnabled = self.isCostDataInAttributionEnabled;
+        copy->_isCoppaComplianceEnabled = self.isCoppaComplianceEnabled;
         copy->_isSkanAttributionEnabled = self.isSkanAttributionEnabled;
         copy->_urlStrategyDomains = [self.urlStrategyDomains copyWithZone:zone];
         copy->_useSubdomains = self.useSubdomains;
@@ -240,7 +235,6 @@
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
-        copy->_coppaStatus = [self.coppaStatus copyWithZone:zone];
         // AdjustDelegate not copied
     }
 

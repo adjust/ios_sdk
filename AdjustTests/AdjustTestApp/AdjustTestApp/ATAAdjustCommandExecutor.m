@@ -371,16 +371,10 @@
         [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSizeS intValue]];
     }
 
-    if ([parameters objectForKey:@"coppaStatus"]) {
-        NSString *coppaStatus = [parameters objectForKey:@"coppaStatus"][0];
-        if ([@"enabled" isEqual:coppaStatus]) {
-            [adjustConfig setCoppaStatusAsEnabled];
-        } else if ([@"disabled" isEqual:coppaStatus]) {
-            [adjustConfig setCoppaStatusAsDisabled];
-        } else if ([@"unknown" isEqual:coppaStatus]) {
-            [adjustConfig setCoppaStatusAsUnknown];
-        } else {
-            NSLog(@"coppaStatus invalid received: %@", coppaStatus);
+    if ([parameters objectForKey:@"coppaCompliant"]) {
+        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
+        if ([coppaCompliantEnabledS boolValue] == YES) {
+            [adjustConfig enableCoppaCompliance];
         }
     }
 

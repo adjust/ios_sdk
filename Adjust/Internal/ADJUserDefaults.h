@@ -30,12 +30,6 @@
 
 + (void)removeGdprForgetMe;
 
-+ (void)saveCoppaComplianceWithValue:(BOOL)isCoppaComplianceEnabled;
-
-+ (BOOL)getCoppaCompliance;
-
-+ (void)removeCoppaCompliance;
-
 + (void)saveDeeplinkUrl:(NSURL *)deeplink
               clickTime:(NSDate *)clickTime;
 
