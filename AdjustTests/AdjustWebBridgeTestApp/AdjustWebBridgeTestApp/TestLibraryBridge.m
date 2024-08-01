@@ -18,7 +18,7 @@
 
 @implementation TestLibraryBridge
 
-- (id)initWithAdjustBridgeRegister:(AdjustBridge *)adjustBridge {
+- (id)initWithAdjustBridge:(AdjustBridge *)adjustBridge {
     self = [super init];
     if (self == nil) {
         return nil;

@@ -20,7 +20,7 @@ static NSString * controlUrl = @"ws://192.168.178.81:1987";
 
 @interface TestLibraryBridge : NSObject<AdjustCommandDelegate>
 
-- (id)initWithAdjustBridgeRegister:(AdjustBridge *)adjustBridge;
+- (id)initWithAdjustBridge:(AdjustBridge *)adjustBridge;
 
 @end
 

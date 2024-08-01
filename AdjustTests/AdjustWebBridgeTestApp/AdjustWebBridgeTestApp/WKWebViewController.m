@@ -42,7 +42,7 @@
     }
 
     self.testLibraryBridge = [[TestLibraryBridge alloc]
-                              initWithAdjustBridgeRegister:self.adjustBridge];
+                              initWithAdjustBridge:self.adjustBridge];
 
     NSString *htmlPath = [[NSBundle mainBundle]
                           pathForResource:@"AdjustTestApp-WebView" ofType:@"html"];
