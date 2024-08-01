@@ -34,3 +34,4 @@ uncrustify.cfg
 
 #SPM
 .swiftpm/
+Package.resolved
