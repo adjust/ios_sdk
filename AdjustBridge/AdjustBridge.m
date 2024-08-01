@@ -139,6 +139,10 @@
             [self execJsCallbackWithId:callbackId callBackData:@(status).description];
         }];
 
+    } else if ([methodName isEqual:ADJWBAppTrackingAuthorizationStatus]) {
+        int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
+        [self execJsCallbackWithId:callbackId callBackData:@(appTrackingAuthorizationStatus).description];
+
     } else if ([methodName isEqual:ADJWBSwitchToOfflineModeMethodName]) {
         [Adjust switchToOfflineMode];
 
@@ -224,7 +228,7 @@
     NSNumber *attConsentWaitingSeconds = [parameters objectForKey:ADJWBAttConsentWaitingSecondsConfigKey];
     NSNumber *eventDeduplicationIdsMaxSize = [parameters objectForKey:ADJWBEventDeduplicationIdsMaxSizeConfigKey];
 
-    id urlStrategyDomains = [parameters objectForKey:@"urlStrategyDomains"];
+    id urlStrategyDomains = [parameters objectForKey:ADJWBUseStrategyDomainsConfigKey];
     NSNumber *useSubdomains = [parameters objectForKey:ADJWBUseSubdomainsConfigKey];
     NSNumber *isDataResidency = [parameters objectForKey:ADJWBIsDataResidencyConfigKey];
 

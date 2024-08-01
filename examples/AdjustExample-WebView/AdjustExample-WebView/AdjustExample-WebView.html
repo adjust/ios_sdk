@@ -68,6 +68,10 @@
                     window.alert('Tracking permission status\n' + status)
                 });
 
+                Adjust.getAppTrackingAuthorizationStatus(function(status) {
+                   console.log(status);
+                });
+
                 Adjust.getSdkVersion(function(sdkVersion) {
                     console.log(sdkVersion);
                 });

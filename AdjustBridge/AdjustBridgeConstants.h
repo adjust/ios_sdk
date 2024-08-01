@@ -43,6 +43,7 @@ FOUNDATION_EXPORT NSString *const ADJWBGetIdfvMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBIsEnabledMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBGetAdidMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBGetAttributionMethodName;
+FOUNDATION_EXPORT NSString *const ADJWBAppTrackingAuthorizationStatus;
 
 FOUNDATION_EXPORT NSString *const ADJWBAppTokenConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEnvironmentConfigKey;
@@ -62,6 +63,7 @@ FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBUseStrategyDomainsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBUseSubdomainsConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBIsDataResidencyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBFbPixelDefaultEventTokenConfigKey;

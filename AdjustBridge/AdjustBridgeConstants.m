@@ -44,6 +44,7 @@ NSString *const ADJWBGetIdfaMethodName = @"adjust_getIdfa";
 NSString *const ADJWBGetIdfvMethodName = @"adjust_getIdfv";
 NSString *const ADJWBGetAdidMethodName = @"adjust_getAdid";
 NSString *const ADJWBGetAttributionMethodName = @"adjust_getAttribution";
+NSString *const ADJWBAppTrackingAuthorizationStatus = @"adjust_appTrackingAuthorizationStatus";
 
 //AdjustWebbridge Config keys
 NSString *const ADJWBAppTokenConfigKey = @"appToken";
@@ -63,6 +64,7 @@ NSString *const ADJWBIsCoppaComplianceEnabledConfigKey = @"isCoppaComplianceEnab
 NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey = @"shouldReadDeviceInfoOnce";
 NSString *const ADJWBAttConsentWaitingSecondsConfigKey = @"attConsentWaitingSeconds";
 NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey = @"eventDeduplicationIdsMaxSize";
+NSString *const ADJWBUseStrategyDomainsConfigKey = @"urlStrategyDomains";
 NSString *const ADJWBUseSubdomainsConfigKey = @"useSubdomains";
 NSString *const ADJWBIsDataResidencyConfigKey = @"isDataResidency";
 NSString *const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventToken";

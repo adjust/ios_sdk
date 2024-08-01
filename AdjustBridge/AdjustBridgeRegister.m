@@ -126,6 +126,12 @@ static NSString * fbAppIdStatic = nil;
             this._postMessage("adjust_requestAppTrackingAuthorizationWithCompletionHandler", null, callbackId);
         },
 
+        getAppTrackingAuthorizationStatus: function(getAppTrackingAuthorizationStatusCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_appTrackingAuthorizationStatus") ;
+            this._handleGetterFromObjC(getAppTrackingAuthorizationStatusCallback, callbackId);
+            this._postMessage("adjust_appTrackingAuthorizationStatus", null, callbackId);
+        },
+
         getSdkVersion: function(getSdkVersionCallback) {
             const callbackId = window.randomCallbackIdWithPrefix("adjust_getSdkVersion") ;
             this._handleGetterFromObjC(getSdkVersionCallback, callbackId);
