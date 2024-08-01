@@ -2,7 +2,7 @@
 //  WKWebViewController.m
 //  AdjustWebBridgeTestApp
 //
-//  Created by Aditi Agrawal on 24/07/24.
+//  Created by Pedro Silva (@nonelse) on 6th August 2018.
 //  Copyright © 2024 Adjust GmbH. All rights reserved.
 //
 
