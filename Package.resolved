@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AdjustSignature",
+        "repositoryURL": "https://github.com/adjust/adjust_signature_sdk.git",
+        "state": {
+          "branch": null,
+          "revision": "cf7f35006fc012e653d193b712d69afb9309fa55",
+          "version": "3.20.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

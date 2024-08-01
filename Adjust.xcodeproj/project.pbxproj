@@ -22,9 +22,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		07000F922C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; };
-		07000F932C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; };
-		07000F942C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; };
+		07000F922C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07000F932C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07000F942C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07000F952C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
 		07000F962C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
 		07000F972C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 07000F912C47BEAF00F40775 /* AdjustBridgeConstants.m */; };
@@ -32,15 +32,15 @@
 		07BFEAA22A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA32A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
 		07BFEAA42A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 07BFEAA12A49E3DA004E29D9 /* PrivacyInfo.xcprivacy */; };
-		07D5CAC52C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
-		07D5CAC62C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
-		07D5CAC72C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; };
+		07D5CAC52C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07D5CAC62C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07D5CAC72C50EF3100C112DC /* AdjustBridgeRegister.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAB12C50EF3100C112DC /* AdjustBridgeRegister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07D5CAC82C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
 		07D5CAC92C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
 		07D5CACA2C50EF3100C112DC /* AdjustBridgeRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */; };
-		07D5CB0E2C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; };
-		07D5CB0F2C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; };
-		07D5CB102C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; };
+		07D5CB0E2C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07D5CB0F2C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07D5CB102C57DA2400C112DC /* AdjustBridgeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07D5CB112C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB122C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB132C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
