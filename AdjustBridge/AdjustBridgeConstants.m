@@ -27,8 +27,6 @@ NSString *const ADJWBEnableMethodName = @"adjust_enable";
 NSString *const ADJWBDisableMethodName = @"adjust_disable";
 NSString *const ADJWBSwitchToOfflineModeMethodName = @"adjust_switchToOfflineMode";
 NSString *const ADJWBSwitchBackToOnlineMode = @"adjust_switchBackToOnlineMode";
-NSString *const ADJWBEnableCoppaCompliance = @"adjust_enableCoppaCompliance";
-NSString *const ADJWBDisableCoppaCompliance = @"adjust_disableCoppaCompliance";
 NSString *const ADJWBGdprForgetMeMethodName = @"adjust_gdprForgetMe";
 
 //AdjustWebbridge Global Callback and Partner method name
@@ -61,6 +59,7 @@ NSString *const ADJWBAllowAdServicesInfoReadingConfigKey = @"isAdServicesEnabled
 NSString *const ADJWBIsIdfaReadingAllowedConfigKey = @"isIdfaReadingAllowed";
 NSString *const ADJWBIsSkanAttributionHandlingEnabledConfigKey = @"isSkanAttributionHandlingEnabled";
 NSString *const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey = @"isDeferredDeeplinkOpeningEnabled";
+NSString *const ADJWBIsCoppaComplianceEnabledConfigKey = @"isCoppaComplianceEnabled";
 NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey = @"shouldReadDeviceInfoOnce";
 NSString *const ADJWBAttConsentWaitingSecondsConfigKey = @"attConsentWaitingSeconds";
 NSString *const ADJWBEventDeduplicationIdsMaxSizeConfigKey = @"eventDeduplicationIdsMaxSize";

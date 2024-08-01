@@ -72,7 +72,6 @@
             NSString *key = [data objectForKey:@"key"];
             NSString *value = [data objectForKey:@"value"];
             [self addToTestOptionsSet:key andValue:value];
-
         }
     }
 }

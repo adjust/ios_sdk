@@ -198,14 +198,6 @@ static NSString * fbAppIdStatic = nil;
             this._postMessage("adjust_switchBackToOnlineMode");
         },
 
-        enableCoppaCompliance: function() {
-            this._postMessage("adjust_enableCoppaCompliance");
-        },
-
-        disableCoppaCompliance: function() {
-            this._postMessage("adjust_disableCoppaCompliance");
-        },
-
         trackSubsessionStart: function() {
             this._postMessage("adjust_trackSubsessionStart");
         },
@@ -336,6 +328,7 @@ static NSString * fbAppIdStatic = nil;
             this.isCostDataInAttributionEnabled = null;
             this.isDeferredDeeplinkOpeningEnabled = null;
             this.isSkanAttributionHandlingEnabled = null;
+            this.isCoppaComplianceEnabled = null;
             this.shouldReadDeviceInfoOnce = null;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
@@ -402,6 +395,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
             this.isDeferredDeeplinkOpeningEnabled = false;
+        };
+        AdjustConfig.prototype.enableCoppaCompliance = function() {
+            this.isCoppaComplianceEnabled = true;
         };
         AdjustConfig.prototype.readDeviceInfoOnce = function() {
             this.shouldReadDeviceInfoOnce = true;

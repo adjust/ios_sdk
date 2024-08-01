@@ -37,14 +37,15 @@ var TestLibraryBridge = {
         console.log('TestLibraryBridge startTestSession');
         console.log('TestLibraryBridge startTestSession callHandler');
         localAdjustCommandExecutor = new AdjustCommandExecutor(urlOverwrite, controlUrl);
-        // pass the sdk version to native side
-        const message = {
-            action: 'adjustTLB_startTestSession',
-            data: 'web-bridge5.0.0@ios5.0.0'
-        };
-        window.webkit.messageHandlers.adjustTest.postMessage(message);
+        Adjust.getSdkVersion(function(sdkVersion) {
+            // pass the sdk version to native side
+            const message = {
+                action: 'adjustTLB_startTestSession',
+                data: sdkVersion
+            };
+            window.webkit.messageHandlers.adjustTest.postMessage(message);
+        });
     },
-
     addTestDirectory: function (directoryName) {
         const message = {
             action: 'adjustTLB_addTestDirectory',
@@ -52,7 +53,6 @@ var TestLibraryBridge = {
         };
         window.webkit.messageHandlers.adjustTest.postMessage(message);
     },
-
     addTest: function (testName) {
         const message = {
             action: 'adjustTLB_addTest',
@@ -60,7 +60,6 @@ var TestLibraryBridge = {
         };
         window.webkit.messageHandlers.adjustTest.postMessage(message);
     },
-
     teardownReturnExtraPath: function (extraPath) {
         this.extraPath = extraPath;
         // TODO - pending implementatio
@@ -244,7 +243,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 logLevel = AdjustConfig.LogLevelSuppress;
                 break;
         }
-
         adjustConfig.setLogLevel(logLevel);
     }
 
@@ -311,6 +309,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var eventDeduplicationIdsMaxSizeS = getFirstValue(params, 'eventDeduplicationIdsMaxSize');
         var eventDeduplicationIdsMaxSize = parseFloat(eventDeduplicationIdsMaxSizeS);
         adjustConfig.setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize);
+    }
+
+    if ('coppaCompliant' in params) {
+        var coppaCompliantS = getFirstValue(params, 'coppaCompliant');
+        var coppaCompliant = coppaCompliantS == 'true';
+        if (coppaCompliant == true) {
+            adjustConfig.enableCoppaCompliance();
+        }
     }
 
     if ('attributionCallbackSendAll' in params) {
@@ -644,14 +650,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         sendInfoToServer(extraPath);
     });
 }
-
-AdjustCommandExecutor.prototype.enableCoppaCompliance = function(params) {
-    Adjust.enableCoppaCompliance();
-};
-
-AdjustCommandExecutor.prototype.disableCoppaCompliance = function(params) {
-    Adjust.disableCoppaCompliance();
-};
 
 // Util
 function getValues(params, key) {

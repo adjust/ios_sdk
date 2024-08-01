@@ -28,8 +28,6 @@ FOUNDATION_EXPORT NSString *const ADJWBEnableMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBDisableMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBSwitchToOfflineModeMethodName;
 FOUNDATION_EXPORT NSString *const ADJWBSwitchBackToOnlineMode;
-FOUNDATION_EXPORT NSString *const ADJWBEnableCoppaCompliance;
-FOUNDATION_EXPORT NSString *const ADJWBDisableCoppaCompliance;
 FOUNDATION_EXPORT NSString *const ADJWBGdprForgetMeMethodName;
 
 FOUNDATION_EXPORT NSString *const ADJWBAddGlobalCallbackParameterMethodName;
@@ -59,6 +57,7 @@ FOUNDATION_EXPORT NSString *const ADJWBAllowAdServicesInfoReadingConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBIsIdfaReadingAllowedConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBIsSkanAttributionHandlingEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey;
+FOUNDATION_EXPORT NSString *const ADJWBIsCoppaComplianceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBUrlStrategyConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBReadDeviceInfoOnceEnabledConfigKey;
 FOUNDATION_EXPORT NSString *const ADJWBAttConsentWaitingSecondsConfigKey;

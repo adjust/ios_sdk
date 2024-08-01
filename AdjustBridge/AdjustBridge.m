@@ -151,12 +151,6 @@
     } else if ([methodName isEqual:ADJWBDisableMethodName]) {
         [Adjust disable];
 
-    } else if ([methodName isEqual:ADJWBEnableCoppaCompliance]) {
-        [Adjust enableCoppaCompliance];
-
-    } else if ([methodName isEqual:ADJWBDisableCoppaCompliance]) {
-        [Adjust disableCoppaCompliance];
-
     } else if ([methodName isEqual:ADJWBTrackSubsessionStartMethodName]) {
         [Adjust trackSubsessionStart];
 
@@ -208,7 +202,6 @@
 
     } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
         [self trackFbPixelEvent:parameters];
-
     }
 }
 
@@ -226,6 +219,7 @@
     NSNumber *isIdfaReadingAllowed = [parameters objectForKey:ADJWBIsIdfaReadingAllowedConfigKey];
     NSNumber *isSkanAttributionHandlingEnabled = [parameters objectForKey:ADJWBIsSkanAttributionHandlingEnabledConfigKey];
     NSNumber *isDeferredDeeplinkOpeningEnabled = [parameters objectForKey:ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey];
+    NSNumber *isCoppaComplianceEnabled = [parameters objectForKey:ADJWBIsCoppaComplianceEnabledConfigKey];
     NSNumber *shouldReadDeviceInfoOnce = [parameters objectForKey:ADJWBReadDeviceInfoOnceEnabledConfigKey];
     NSNumber *attConsentWaitingSeconds = [parameters objectForKey:ADJWBAttConsentWaitingSecondsConfigKey];
     NSNumber *eventDeduplicationIdsMaxSize = [parameters objectForKey:ADJWBEventDeduplicationIdsMaxSizeConfigKey];
@@ -282,13 +276,16 @@
             [adjustConfig enableCostDataInAttribution];
         }
     }
-
     if ([AdjustBridgeUtil isFieldValid:isAdServicesEnabled]) {
         if ([isAdServicesEnabled boolValue] == NO) {
             [adjustConfig disableAdServices];
         }
     }
-
+    if ([AdjustBridgeUtil isFieldValid:isCoppaComplianceEnabled]) {
+        if ([isCoppaComplianceEnabled boolValue] == YES) {
+            [adjustConfig enableCoppaCompliance];
+        }
+    }
     if ([AdjustBridgeUtil isFieldValid:isDeferredDeeplinkOpeningEnabled]) {
         self.isDeferredDeeplinkOpeningEnabled = [isDeferredDeeplinkOpeningEnabled boolValue];
     }
@@ -463,7 +460,6 @@
 
 - (void)execJsCallbackWithId:(NSString *)callbackId callBackData:(id)data {
     NSString *callbackParamString;
-
     if ([data isKindOfClass:[NSMutableDictionary class]] || [data isKindOfClass:[NSDictionary class]]) {
         callbackParamString = [AdjustBridgeUtil serializeData:data pretty:NO];
     }
