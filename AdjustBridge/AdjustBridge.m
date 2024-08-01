@@ -2,8 +2,8 @@
 //  AdjustBridge.m
 //  Adjust
 //
-//  Created by Aditi Agrawal on 14/05/24.
-//  Copyright © 2024 Adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import "AdjustBridge.h"

@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Aditi Agrawal on 29/07/24.
-//  Copyright © 2024 Adjust GmbH. All rights reserved.
+//  Copyright © 2024-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

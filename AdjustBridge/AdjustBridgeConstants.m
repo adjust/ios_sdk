@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Aditi Agrawal on 16/05/24.
-//  Copyright © 2024 Adjust GmbH. All rights reserved.
+//  Copyright © 2024-Present Adjust GmbH. All rights reserved.
 //
 
 #import "AdjustBridgeConstants.h"
