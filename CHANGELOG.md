@@ -1,3 +1,17 @@
+### Version 5.0.0 (2nd August 2024)
+
+We're excited to release our major new SDK version (v5). Among many internal improvements, our spoofing protection solution is now included out of the box, reinforcing our commitment to accurate, actionable, and fraud-free data.
+
+To try out SDK v5 in your app, you can follow our new v4 to v5 [migration guide](https://dev.adjust.com/en/sdk/ios/migration/v4-to-v5).
+
+On [our Signature releases page](https://github.com/adjust/adjust_signature_sdk/releases), you can find the latest version of the Signature library to integrate into your app.
+
+If you are a current Adjust client and have questions about SDK v5, please email [sdk-v5@adjust.com](mailto:sdk-v5@adjust.com).
+
+In case you were using beta version of the SDK v5, please switch to the official v5 release.
+
+---
+
 ### Version 4.38.4 (4th June 2024)
 #### Fixed
 - Fixed occasional crashes when processing resolved deep links.
