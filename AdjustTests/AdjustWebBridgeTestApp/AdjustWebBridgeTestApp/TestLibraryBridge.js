@@ -1,9 +1,9 @@
 // simulator
-var urlOverwrite = 'http://127.0.0.1:8080';
-var controlUrl = 'ws://127.0.0.1:1987';
+//var urlOverwrite = 'http://127.0.0.1:8080';
+//var controlUrl = 'ws://127.0.0.1:1987';
 // device
-// var urlOverwrite = 'http://192.168.86.44:8080';
-// var controlUrl = 'ws://192.168.86.44:1987';
+var urlOverwrite = 'http://192.168.178.81:8080';
+var controlUrl = 'ws://192.168.178.81:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -11,38 +11,63 @@ var controlUrl = 'ws://127.0.0.1:1987';
 var localAdjustCommandExecutor;
 
 var TestLibraryBridge = {
-    adjustCommandExecutor: function(commandRawJson) {
+    adjustCommandExecutor: function (commandRawJson) {
         console.log('TestLibraryBridge adjustCommandExecutor');
         const command = JSON.parse(commandRawJson);
         console.log('className: ' + command.className);
         console.log('functionName: ' + command.functionName);
         console.log('params: ' + JSON.stringify(command.params));
 
+        if (command.className == 'TestOptions') {
+            if (command.functionName != "teardown") {
+                console.log('TestLibraryBridge TestOption only method should be teardown.');
+                return;
+            }
+        }
+
+        if (command.className == 'AdjustV4') {
+            console.log('TestLibraryBridge AdjustV4 is not supported.');
+            return;
+        }
         // reflection based technique to call functions with the same name as the command function
         localAdjustCommandExecutor[command.functionName](command.params);
     },
+
     startTestSession: function () {
         console.log('TestLibraryBridge startTestSession');
-        if (WebViewJavascriptBridge) {
-            console.log('TestLibraryBridge startTestSession callHandler');
-            localAdjustCommandExecutor = new AdjustCommandExecutor(urlOverwrite, controlUrl);
-            // register objc->JS function for commands
-            WebViewJavascriptBridge.registerHandler('adjustJS_commandExecutor', TestLibraryBridge.adjustCommandExecutor);
-            // start test session in obj-c
-            Adjust.getSdkVersion(function(sdkVersion) {
-                WebViewJavascriptBridge.callHandler('adjustTLB_startTestSession', sdkVersion, null);
-            });
-        }
+        console.log('TestLibraryBridge startTestSession callHandler');
+        localAdjustCommandExecutor = new AdjustCommandExecutor(urlOverwrite, controlUrl);
+        Adjust.getSdkVersion(function(sdkVersion) {
+            // pass the sdk version to native side
+            const message = {
+                action: 'adjustTLB_startTestSession',
+                data: sdkVersion
+            };
+            window.webkit.messageHandlers.adjustTest.postMessage(message);
+        });
     },
-    addTestDirectory: function(directoryName) {
-        WebViewJavascriptBridge.callHandler('adjustTLB_addTestDirectory', {directoryName: directoryName}, null);
+    addTestDirectory: function (directoryName) {
+        const message = {
+            action: 'adjustTLB_addTestDirectory',
+            data: directoryName
+        };
+        window.webkit.messageHandlers.adjustTest.postMessage(message);
     },
-    addTest: function(testName) {
-        WebViewJavascriptBridge.callHandler('adjustTLB_addTest', {testName: testName}, null);
-    }
+    addTest: function (testName) {
+        const message = {
+            action: 'adjustTLB_addTest',
+            data: testName
+        };
+        window.webkit.messageHandlers.adjustTest.postMessage(message);
+    },
+    teardownReturnExtraPath: function (extraPath) {
+        this.extraPath = extraPath;
+        // TODO - pending implementatio
+        // Adjust.instance().teardown;
+    },
 };
 
-var AdjustCommandExecutor = function(urlOverwrite, controlUrl) {
+var AdjustCommandExecutor = function (urlOverwrite, controlUrl) {
     this.urlOverwrite = urlOverwrite;
     this.controlUrl = controlUrl;
     this.extraPath = null;
@@ -50,6 +75,24 @@ var AdjustCommandExecutor = function(urlOverwrite, controlUrl) {
     this.savedConfigs = {};
     this.savedCommands = [];
     this.nextToSendCounter = 0;
+};
+
+AdjustCommandExecutor.prototype.teardown = function (params) {
+    console.log('TestLibraryBridge teardown');
+    console.log('params: ' + JSON.stringify(params));
+
+    for (key in params) {
+        for (var i = 0; i < params[key].length; i += 1) {
+            value = params[key][i];
+            // send to test options to native side
+            const message = {
+                action: 'adjustTLB_addToTestOptionsSet',
+                data: { key: key, value: value }
+            };
+
+            window.webkit.messageHandlers.adjustTest.postMessage(message);
+        }
+    }
 };
 
 AdjustCommandExecutor.prototype.testOptions = function(params) {
@@ -200,7 +243,6 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 logLevel = AdjustConfig.LogLevelSuppress;
                 break;
         }
-
         adjustConfig.setLogLevel(logLevel);
     }
 
@@ -213,70 +255,42 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var defaultTracker = getFirstValue(params, 'defaultTracker');
         adjustConfig.setDefaultTracker(defaultTracker);
     }
-    
+
     if ('externalDeviceId' in params) {
         var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         adjustConfig.setExternalDeviceId(externalDeviceId);
     }
 
-    if ('appSecret' in params) {
-        var appSecretArray = getValues(params, 'appSecret');
-        var secretId = appSecretArray[0].toString();
-        var info1    = appSecretArray[1].toString();
-        var info2    = appSecretArray[2].toString();
-        var info3    = appSecretArray[3].toString();
-        var info4    = appSecretArray[4].toString();
-        adjustConfig.setAppSecret(secretId, info1, info2, info3, info4);
-    }
-
-    if ('delayStart' in params) {
-        var delayStartS = getFirstValue(params, 'delayStart');
-        var delayStart = parseFloat(delayStartS);
-        adjustConfig.setDelayStart(delayStart);
-    }
-
-    if ('deviceKnown' in params) {
-        var deviceKnownS = getFirstValue(params, 'deviceKnown');
-        var deviceKnown = deviceKnownS == 'true';
-        adjustConfig.setIsDeviceKnown(deviceKnown);
-    }
-    
     if ('needsCost' in params) {
-        var needsCostS = getFirstValue(params, 'needsCost');
-        var needsCost = needsCostS == 'true';
-        adjustConfig.setNeedsCost(needsCost);
+        var isCostDataInAttributionEnabledS = getFirstValue(params, 'needsCost');
+        var isCostDataInAttributionEnabled = isCostDataInAttributionEnabledS == 'true';
+        if (isCostDataInAttributionEnabled == true) {
+            adjustConfig.enableCostDataInAttribution();
+        }
     }
-    
+
     if ('allowAdServicesInfoReading' in params) {
-        var allowAdServicesInfoReadingS = getFirstValue(params, 'allowAdServicesInfoReading');
-        var allowAdServicesInfoReading = allowAdServicesInfoReadingS == 'true';
-        adjustConfig.setAllowAdServicesInfoReading(allowAdServicesInfoReading);
+        var isAdServicesEnabledS = getFirstValue(params, 'allowAdServicesInfoReading');
+        var isAdServicesEnabled = isAdServicesEnabledS == 'true';
+        if (isAdServicesEnabled == false) {
+            adjustConfig.disableAdServices();
+        }
     }
-    
+
     if ('allowIdfaReading' in params) {
         var allowIdfaReadingS = getFirstValue(params, 'allowIdfaReading');
         var allowIdfaReading = allowIdfaReadingS == 'true';
-        adjustConfig.setAllowIdfaReading(allowIdfaReading);
+        if (allowIdfaReading == false) {
+            adjustConfig.disableIdfaReading();
+        }
     }
-    
+
     if ('allowSkAdNetworkHandling' in params) {
         var allowSkAdNetworkHandlingS = getFirstValue(params, 'allowSkAdNetworkHandling');
         var allowSkAdNetworkHandling = allowSkAdNetworkHandlingS == 'true';
         if (allowSkAdNetworkHandling == false) {
-            adjustConfig.deactivateSkAdNetworkHandling();
+            adjustConfig.disableSkanAttributionHandling();
         }
-    }
-
-    if ('eventBufferingEnabled' in params) {
-        var eventBufferingEnabledS = getFirstValue(params, 'eventBufferingEnabled');
-        var eventBufferingEnabled = eventBufferingEnabledS == 'true';
-        adjustConfig.setEventBufferingEnabled(eventBufferingEnabled);
-    }
-    
-    if ('coppaCompliant' in params) {
-        var coppaCompliantEnabledS = getFirstValue(params, 'coppaCompliant');
-        var coppaCompliantEnabled = coppaCompliantEnabledS == 'true';
-        adjustConfig.setCoppaCompliantEnabled(coppaCompliantEnabled);
     }
 
     if ('sendInBackground' in params) {
@@ -285,15 +299,24 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setSendInBackground(sendInBackground);
     }
 
-    if ('userAgent' in params) {
-        var userAgent = getFirstValue(params, 'userAgent');
-        adjustConfig.setUserAgent(userAgent);
-    }
-
     if ('attConsentWaitingSeconds' in params) {
         var attConsentWaitingSecondsS = getFirstValue(params, 'attConsentWaitingSeconds');
         var attConsentWaitingSeconds = parseFloat(attConsentWaitingSecondsS);
         adjustConfig.setAttConsentWaitingInterval(attConsentWaitingSeconds);
+    }
+
+    if ('eventDeduplicationIdsMaxSize' in params) {
+        var eventDeduplicationIdsMaxSizeS = getFirstValue(params, 'eventDeduplicationIdsMaxSize');
+        var eventDeduplicationIdsMaxSize = parseFloat(eventDeduplicationIdsMaxSizeS);
+        adjustConfig.setEventDeduplicationIdsMaxSize(eventDeduplicationIdsMaxSize);
+    }
+
+    if ('coppaCompliant' in params) {
+        var coppaCompliantS = getFirstValue(params, 'coppaCompliant');
+        var coppaCompliant = coppaCompliantS == 'true';
+        if (coppaCompliant == true) {
+            adjustConfig.enableCoppaCompliance();
+        }
     }
 
     if ('attributionCallbackSendAll' in params) {
@@ -302,18 +325,17 @@ AdjustCommandExecutor.prototype.config = function(params) {
         adjustConfig.setAttributionCallback(
             function(attribution) {
                 console.log('attributionCallback: ' + JSON.stringify(attribution));
-                addInfoToSend('trackerToken', attribution.trackerToken);
-                addInfoToSend('trackerName', attribution.trackerName);
+                addInfoToSend('tracker_token', attribution.trackerToken);
+                addInfoToSend('tracker_name', attribution.trackerName);
                 addInfoToSend('network', attribution.network);
                 addInfoToSend('campaign', attribution.campaign);
                 addInfoToSend('adgroup', attribution.adgroup);
                 addInfoToSend('creative', attribution.creative);
-                addInfoToSend('clickLabel', attribution.click_label);
-                addInfoToSend('adid', attribution.adid);
-                addInfoToSend('costType', attribution.costType);
-                addInfoToSend('costAmount', attribution.costAmount);
-                addInfoToSend('costCurrency', attribution.costCurrency);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                addInfoToSend('click_label', attribution.click_label);
+                addInfoToSend('cost_type', attribution.costType);
+                addInfoToSend('cost_amount', attribution.costAmount);
+                addInfoToSend('cost_currency', attribution.costCurrency);
+                sendInfoToServer(extraPath);
             }
         );
     }
@@ -328,7 +350,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('timestamp', sessionSuccessResponseData.timestamp);
                 addInfoToSend('adid', sessionSuccessResponseData.adid);
                 addInfoToSend('jsonResponse', sessionSuccessResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                sendInfoToServer(extraPath);
             }
         );
     }
@@ -344,7 +366,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('adid', sessionFailureResponseData.adid);
                 addInfoToSend('willRetry', sessionFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', sessionFailureResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                sendInfoToServer(extraPath);
             }
         );
     }
@@ -361,7 +383,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('eventToken', eventSuccessResponseData.eventToken);
                 addInfoToSend('callbackId', eventSuccessResponseData.callbackId);
                 addInfoToSend('jsonResponse', eventSuccessResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                sendInfoToServer(extraPath);
             }
         );
     }
@@ -379,33 +401,42 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('callbackId', eventFailureResponseData.callbackId);
                 addInfoToSend('willRetry', eventFailureResponseData.willRetry ? 'true' : 'false');
                 addInfoToSend('jsonResponse', eventFailureResponseData.jsonResponse);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                sendInfoToServer(extraPath);
             }
         );
     }
 
     if ('deferredDeeplinkCallback' in params) {
         console.log('AdjustCommandExecutor.prototype.config deferredDeeplinkCallback');
-        var shouldOpenDeeplinkS = getFirstValue(params, 'deferredDeeplinkCallback');
-        if (shouldOpenDeeplinkS === 'true') {
-            adjustConfig.setOpenDeferredDeeplink(true);
-        }
-        if (shouldOpenDeeplinkS === 'false') {
-            adjustConfig.setOpenDeferredDeeplink(false);
+        var isOpeningDeferredDeeplinkEnabledS = getFirstValue(params, 'deferredDeeplinkCallback');
+        if (isOpeningDeferredDeeplinkEnabledS === 'false') {
+            adjustConfig.disableDeferredDeeplinkOpening();
         }
         var extraPath = this.extraPath;
         adjustConfig.setDeferredDeeplinkCallback(
             function(deeplink) {
                 console.log('deferredDeeplinkCallback: ' + JSON.stringify(deeplink));
                 addInfoToSend('deeplink', deeplink);
-                WebViewJavascriptBridge.callHandler('adjustTLB_sendInfoToServer', extraPath, null);
+                sendInfoToServer(extraPath);
             }
         );
     }
 };
 
-var addInfoToSend = function(key, value) {
-    WebViewJavascriptBridge.callHandler('adjustTLB_addInfoToSend', {key: key, value: value}, null);
+var addInfoToSend = function (key, value) {
+    const message = {
+        action: 'adjustTLB_addInfoToSend',
+        data: { key: key, value: value }
+    };
+    window.webkit.messageHandlers.adjustTest.postMessage(message);
+};
+
+var sendInfoToServer = function (extraPath) {
+    const message = {
+        action: 'adjustTLB_sendInfoToServer',
+        data: extraPath
+    };
+    window.webkit.messageHandlers.adjustTest.postMessage(message);
 };
 
 AdjustCommandExecutor.prototype.start = function(params) {
@@ -417,7 +448,7 @@ AdjustCommandExecutor.prototype.start = function(params) {
     }
 
     var adjustConfig = this.savedConfigs[configNumber];
-    Adjust.appDidLaunch(adjustConfig);
+    Adjust.initSdk(adjustConfig);
 
     delete this.savedConfigs[0];
 };
@@ -463,14 +494,14 @@ AdjustCommandExecutor.prototype.event = function(params) {
         }
     }
 
-    if ('orderId' in params) {
-        var orderId = getFirstValue(params, 'orderId');
-        adjustEvent.setTransactionId(orderId);
-    }
-
     if ('callbackId' in params) {
         var callbackId = getFirstValue(params, 'callbackId');
         adjustEvent.setCallbackId(callbackId);
+    }
+
+    if ('deduplicationId' in params) {
+        var deduplicationId = getFirstValue(params, 'deduplicationId');
+        adjustEvent.setDeduplicationId(deduplicationId);
     }
 };
 
@@ -498,90 +529,70 @@ AdjustCommandExecutor.prototype.resume = function(params) {
 
 AdjustCommandExecutor.prototype.setEnabled = function(params) {
     var enabled = getFirstValue(params, 'enabled') == 'true';
-    Adjust.setEnabled(enabled);
+    if (enabled == true) {
+        Adjust.enable();
+    } else {
+        Adjust.disable();
+    }
 };
 
 AdjustCommandExecutor.prototype.setOfflineMode = function(params) {
     var enabled = getFirstValue(params, 'enabled') == 'true';
-    Adjust.setOfflineMode(enabled);
-};
-
-AdjustCommandExecutor.prototype.sendFirstPackages = function(params) {
-    Adjust.sendFirstPackages();
+    if (enabled == true) {
+        Adjust.switchToOfflineMode();
+    } else {
+        Adjust.switchBackToOnlineMode();
+    }
 };
 
 AdjustCommandExecutor.prototype.gdprForgetMe = function(params) {
     Adjust.gdprForgetMe();
 };
 
-AdjustCommandExecutor.prototype.addSessionCallbackParameter = function(params) {
+AdjustCommandExecutor.prototype.addGlobalCallbackParameter = function(params) {
     var list = getValues(params, 'KeyValue');
 
     for (var i = 0; i < list.length; i = i+2){
         var key = list[i];
         var value = list[i+1];
-        Adjust.addSessionCallbackParameter(key, value);
+        Adjust.addGlobalCallbackParameter(key, value);
     }
 };
 
-AdjustCommandExecutor.prototype.addSessionPartnerParameter = function(params) {
+AdjustCommandExecutor.prototype.addGlobalPartnerParameter = function(params) {
     var list = getValues(params, 'KeyValue');
 
     for (var i = 0; i < list.length; i = i+2){
         var key = list[i];
         var value = list[i+1];
-        Adjust.addSessionPartnerParameter(key, value);
+        Adjust.addGlobalPartnerParameter(key, value);
     }
 };
 
-AdjustCommandExecutor.prototype.removeSessionCallbackParameter = function(params) {
+AdjustCommandExecutor.prototype.removeGlobalCallbackParameter = function(params) {
     var list = getValues(params, 'key');
 
     for (var i = 0; i < list.length; i++) {
         var key = list[i];
-        Adjust.removeSessionCallbackParameter(key);
+        Adjust.removeGlobalCallbackParameter(key);
     }
 };
 
-AdjustCommandExecutor.prototype.removeSessionPartnerParameter = function(params) {
+AdjustCommandExecutor.prototype.removeGlobalPartnerParameter = function(params) {
     var list = getValues(params, 'key');
 
     for (var i = 0; i < list.length; i++) {
         var key = list[i];
-        Adjust.removeSessionPartnerParameter(key);
+        Adjust.removeGlobalPartnerParameter(key);
     }
 };
 
-AdjustCommandExecutor.prototype.resetSessionCallbackParameters = function(params) {
-    Adjust.resetSessionCallbackParameters();
+AdjustCommandExecutor.prototype.removeGlobalCallbackParameters = function(params) {
+    Adjust.removeGlobalCallbackParameters();
 };
 
-AdjustCommandExecutor.prototype.resetSessionPartnerParameters = function(params) {
-    Adjust.resetSessionPartnerParameters();
-};
-
-AdjustCommandExecutor.prototype.setPushToken = function(params) {
-    var token = getFirstValue(params, 'pushToken');
-    Adjust.setDeviceToken(token);
-};
-
-AdjustCommandExecutor.prototype.openDeeplink = function(params) {
-    var deeplink = getFirstValue(params, 'deeplink');
-    Adjust.appWillOpenUrl(deeplink);
-};
-
-AdjustCommandExecutor.prototype.trackAdRevenue = function(params) {
-    var source = getFirstValue(params, 'adRevenueSource');
-    var payload = getFirstValue(params, 'adRevenueJsonString');
-    if (payload === null) {
-        Adjust.trackAdRevenue(source, '');
-    } else {
-        Adjust.trackAdRevenue(source, payload);
-    }
-};
-
-AdjustCommandExecutor.prototype.disableThirdPartySharing = function(params) {
-    Adjust.disableThirdPartySharing();
+AdjustCommandExecutor.prototype.removeGlobalPartnerParameters = function(params) {
+    Adjust.removeGlobalPartnerParameters();
 };
 
 AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
@@ -623,6 +634,23 @@ AdjustCommandExecutor.prototype.measurementConsent = function(params) {
     Adjust.trackMeasurementConsent(consentMeasurement);
 };
 
+AdjustCommandExecutor.prototype.attributionGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getAttribution(function(attribution) {
+        addInfoToSend('tracker_token', attribution.trackerToken);
+        addInfoToSend('tracker_name', attribution.trackerName);
+        addInfoToSend('network', attribution.network);
+        addInfoToSend('campaign', attribution.campaign);
+        addInfoToSend('adgroup', attribution.adgroup);
+        addInfoToSend('creative', attribution.creative);
+        addInfoToSend('click_label', attribution.click_label);
+        addInfoToSend('cost_type', attribution.costType);
+        addInfoToSend('cost_amount', attribution.costAmount);
+        addInfoToSend('cost_currency', attribution.costCurrency);
+        sendInfoToServer(extraPath);
+    });
+}
+
 // Util
 function getValues(params, key) {
     if (key in params) {
@@ -645,3 +673,4 @@ function getFirstValue(params, key) {
 }
 
 module.exports = TestLibraryBridge;
+

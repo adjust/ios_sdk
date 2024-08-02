@@ -19,75 +19,41 @@
     // Configure Adjust SDK.
     NSString *appToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
-    
+    ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                                      environment:environment];
+
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
 
-    // Enable event buffering.
-    // [adjustConfig setEventBufferingEnabled:YES];
-    
-    // Set default tracker.
-    // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
-    
-    // Send in the background.
-    // [adjustConfig setSendInBackground:YES];
-    
-    // Enable COPPA compliance.
-    // [adjustConfig setCoppaCompliantEnabled:YES];
-    
-    // Enable LinkMe feature.
-    // [adjustConfig setLinkMeEnabled:YES];
-    
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
-    
-    // Delay the first session of the SDK.
-    // [adjustConfig setDelayStart:7];
-    
-    // Add session callback parameters.
-    [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
-    [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-    
-    // Add session partner parameters.
-    [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
-    [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-    
-    // Remove session callback parameter.
-    [Adjust removeSessionCallbackParameter:@"sp_key"];
-    
-    // Remove session partner parameter.
-    [Adjust removeSessionPartnerParameter:@"sp_foo"];
-    
-    // Remove all session callback parameters.
-    // [Adjust resetSessionCallbackParameters];
-    
-    // Remove all session partner parameters.
-    // [Adjust resetSessionPartnerParameters];
+
+    // Add global callback parameters.
+    [Adjust addGlobalCallbackParameter:@"sp_bar" forKey:@"sp_foo"];
+    [Adjust addGlobalCallbackParameter:@"sp_value" forKey:@"sp_key"];
+
+    // Add global partner parameters.
+    [Adjust addGlobalPartnerParameter:@"sp_bar" forKey:@"sp_foo"];
+    [Adjust addGlobalPartnerParameter:@"sp_value" forKey:@"sp_key"];
+
+    // Remove global callback parameter.
+    [Adjust removeGlobalCallbackParameterForKey:@"sp_key"];
+
+    // Remove global partner parameter.
+    [Adjust removeGlobalPartnerParameterForKey:@"sp_foo"];
     
     // Initialise the SDK.
-    [Adjust appDidLaunch:adjustConfig];
-    
-    // Put the SDK in offline mode.
-    // [Adjust setOfflineMode:YES];
-    
-    // Disable the SDK.
-    // [Adjust setEnabled:NO];
-    
-    // Interrupt delayed start set with setDelayStart: method.
-    // [Adjust sendFirstPackages];
+    [Adjust initSdk:adjustConfig];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"Scheme based deep link opened an app: %@", url);
-    // add your code below to handle deep link
-    // (e.g., open deep link content)
-    // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
+
     return YES;
 }
 
@@ -95,8 +61,9 @@
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"Universal link opened an app: %@", [userActivity webpageURL]);
         // Pass deep link to Adjust in order to potentially reattribute user.
-        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+        [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:[userActivity webpageURL]]];
     }
+
     return YES;
 }
 
@@ -125,7 +92,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
 }
 
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     NSLog(@"Deferred deep link callback called!");
     NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
     
@@ -134,9 +101,9 @@
     return YES;
 }
 
-- (void)adjustConversionValueUpdated:(NSNumber *)conversionValue {
+- (void)adjustSkanUpdatedWithConversionData:(NSDictionary<NSString *, NSString *> *)data {
     NSLog(@"Conversion value updated callback called!");
-    NSLog(@"Conversion value: %@", conversionValue);
+    NSLog(@"Conversion value dictionary: \n%@", data.description);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -151,7 +118,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Show ATT dialog.
     if (@available(iOS 14, *)) {
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+        [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
             // Process user's response.
         }];
     }

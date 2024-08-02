@@ -1,49 +1,16 @@
 //
 //  AdjustBridgeRegister.m
-//  Adjust SDK
+//  Adjust
 //
-//  Created by Pedro Filipe (@nonelse) on 10th June 2016.
-//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import "AdjustBridgeRegister.h"
 
-static NSString * const kHandlerPrefix = @"adjust_";
 static NSString * fbAppIdStatic = nil;
 
-@interface AdjustBridgeRegister()
-
-@property (nonatomic, strong) WKWebViewJavascriptBridge *wkwvjb;
-
-@end
-
 @implementation AdjustBridgeRegister
-
-- (id)initWithWKWebView:(WKWebView*)webView {
-    self = [super init];
-    if (self == nil) {
-        return nil;
-    }
-
-    self.wkwvjb = [WKWebViewJavascriptBridge bridgeForWebView:webView];
-    return self;
-}
-
-- (void)setWKWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate {
-    [self.wkwvjb setWebViewDelegate:webViewDelegate];
-}
-
-- (void)callHandler:(NSString *)handlerName data:(id)data {
-    [self.wkwvjb callHandler:handlerName data:data];
-}
-
-- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
-    [self.wkwvjb registerHandler:handlerName handler:handler];
-}
-
-- (void)augmentHybridWebView:(NSString *)fbAppId {
-    fbAppIdStatic = fbAppId;
-}
 
 + (NSString *)AdjustBridge_js {
     if (fbAppIdStatic != nil) {
@@ -55,22 +22,27 @@ static NSString * fbAppIdStatic = nil;
     }
 }
 
-#define __adj_js_func__(x) #x
-// BEGIN preprocessorJSCode
++ (void)augmentHybridWebView:(NSString *)fbAppId {
+    fbAppIdStatic = fbAppId;
+}
 
+#define __adj_js_func__(x) #x
+
+// BEGIN preprocessorJSCode
 + (NSString *)augmented_js {
     return [NSString stringWithFormat:
-        @__adj_js_func__(;(function() {
-            window['fbmq_%@'] = {
-                'getProtocol' : function() {
-                    return 'fbmq-0.1';
-                },
-                'sendEvent': function(pixelID, evtName, customData) {
-                    Adjust.fbPixelEvent(pixelID, evtName, customData);
-                }
-            };
-        })();) // END preprocessorJSCode
-     , fbAppIdStatic];
+            @__adj_js_func__(;(function() {
+        window['fbmq_%@'] = {
+            'getProtocol' : function() {
+                return 'fbmq-0.1';
+            },
+            'sendEvent': function(pixelID, evtName, customData) {
+                Adjust.fbPixelEvent(pixelID, evtName, customData);
+            }
+        };
+    })();) // END preprocessorJSCode
+            , fbAppIdStatic];
+
 }
 
 + (NSString *)adjust_js {
@@ -79,316 +51,311 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
 
-        // Copied from adjust.js
+        // Adjust
         window.Adjust = {
-            appDidLaunch: function(adjustConfig) {
-                if (WebViewJavascriptBridge) {
-                    if (adjustConfig) {
-                        if (!adjustConfig.getSdkPrefix()) {
-                            adjustConfig.setSdkPrefix(this.getSdkPrefix());
+            _postMessage(methodName, parameters = {}, callbackId = "") {
+                if (!this._adjustMessageHandler) {
+                    function canSend(okCheck, errReason) {
+                        if (!okCheck) {
+                            if (errSubscriber) {
+                                errSubscriber("Cannot send message to native sdk ".concat(errReason));
+                            }
                         }
-                        this.sdkPrefix = adjustConfig.getSdkPrefix();
-                        adjustConfig.registerCallbackHandlers();
-                        WebViewJavascriptBridge.callHandler('adjust_appDidLaunch', adjustConfig, null);
+                        return okCheck;
                     }
+                    const canSendSendToNative =
+                    canSend(window, "without valid: 'window'") &&
+                    canSend(window.webkit, "without valid: 'window.webkit'") &&
+                    canSend(window.webkit.messageHandlers,
+                            "without valid: 'window.webkit.messageHandlers'") &&
+                    canSend(window.webkit.messageHandlers.adjust,
+                            "without valid: 'window.webkit.messageHandlers.adjust'") &&
+                    canSend(window.webkit.messageHandlers.adjust.postMessage,
+                            "without valid: 'window.webkit.messageHandlers.adjust.postMessage'") &&
+                    canSend(typeof window.webkit.messageHandlers.adjust.postMessage === "function",
+                            "when 'window.webkit.messageHandlers.adjust.postMessage' is not a function");
+
+                    if (!canSendSendToNative) { return; }
+
+                    this._adjustMessageHandler = window.webkit.messageHandlers.adjust;
                 }
+
+                this._adjustMessageHandler.postMessage({
+                _methodName: methodName,
+                _parameters: parameters,
+                _callbackId: callbackId
+                });
             },
-            trackEvent: function(adjustEvent) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackEvent', adjustEvent, null);
-                }
-            },
-            trackAdRevenue: function(source, payload) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackAdRevenue', {source: source, payload: payload}, null);
-                }
-            },
-            trackSubsessionStart: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackSubsessionStart', null, null);
-                }
-            },
-            trackSubsessionEnd: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackSubsessionEnd', null, null);
-                }
-            },
-            setEnabled: function(enabled) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_setEnabled', enabled, null);
-                }
-            },
-            isEnabled: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_isEnabled', null,
-                                                        function(response) {
-                                                            callback(new Boolean(response));
-                                                        });
-                }
-            },
-            appWillOpenUrl: function(url) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_appWillOpenUrl', url, null);
-                }
-            },
-            setDeviceToken: function(deviceToken) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_setDeviceToken', deviceToken, null);
-                }
-            },
-            setOfflineMode: function(isOffline) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_setOfflineMode', isOffline, null);
-                }
-            },
-            getIdfa: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_idfa', null, callback);
-                }
-            },
-            getIdfv: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_idfv', null, callback);
-                }
-            },
-            requestTrackingAuthorizationWithCompletionHandler: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_requestTrackingAuthorizationWithCompletionHandler', null, callback);
-                }
-            },
-            getAppTrackingAuthorizationStatus: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_appTrackingAuthorizationStatus', null, callback);
-                }
-            },
-            updateConversionValue: function(conversionValue) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValue', conversionValue, null);
-                }
-            },
-            updateConversionValueWithCallback: function(conversionValue, callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCompletionHandler', conversionValue, callback);
-                }
-            },
-            updateConversionValueWithCoarseValueAndCallback: function(conversionValue, coarseValue, callback) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCoarseValueCompletionHandler',
-                                                        {conversionValue: conversionValue, coarseValue: coarseValue},
-                                                        callback);
-                }
-            },
-            updateConversionValueWithCoarseValueLockWindowAndCallback: function(conversionValue, coarseValue, lockWindow, callback) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_updateConversionValueCoarseValueLockWindowCompletionHandler',
-                                                        {conversionValue: conversionValue, coarseValue: coarseValue},
-                                                        callback);
-                }
-            },
-            getAdid: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_adid', null, callback);
-                }
-            },
-            getAttribution: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_attribution', null, callback);
-                }
-            },
-            sendFirstPackages: function() {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_sendFirstPackages', null, null);
-                }
-            },
-            addSessionCallbackParameter: function(key, value) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_addSessionCallbackParameter', {key: key, value: value}, null);
-                }
-            },
-            addSessionPartnerParameter: function(key, value) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_addSessionPartnerParameter', {key: key, value: value}, null);
-                }
-            },
-            removeSessionCallbackParameter: function(key) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_removeSessionCallbackParameter', key, null);
-                }
-            },
-            removeSessionPartnerParameter: function(key) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_removeSessionPartnerParameter', key, null);
-                }
-            },
-            resetSessionCallbackParameters: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_resetSessionCallbackParameters', null, null);
-                }
-            },
-            resetSessionPartnerParameters: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_resetSessionPartnerParameters', null, null);
-                }
-            },
-            gdprForgetMe: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_gdprForgetMe', null, null);
-                }
-            },
-            disableThirdPartySharing: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_disableThirdPartySharing', null, null);
-                }
-            },
-            trackThirdPartySharing: function(adjustThirdPartySharing) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackThirdPartySharing', adjustThirdPartySharing, null);
-                }
-            },
-            trackMeasurementConsent: function(consentMeasurement) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_trackMeasurementConsent', consentMeasurement, null);
-                }
-            },
-            checkForNewAttStatus: function() {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_checkForNewAttStatus', null, null);
-                }
-            },
-            getLastDeeplink: function(callback) {
-                if (WebViewJavascriptBridge) {
-                    WebViewJavascriptBridge.callHandler('adjust_lastDeeplink', null, callback);
-                }
-            },
-            fbPixelEvent: function(pixelID, evtName, customData) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_fbPixelEvent',
-                                                        {
-                                                            pixelID: pixelID,
-                                                            evtName:evtName,
-                                                            customData: customData
-                                                        },
-                                                        null);
-                }
-            },
-            getSdkVersion: function(callback) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_sdkVersion', this.getSdkPrefix(), callback);
-                }
-            },
-            getSdkPrefix: function() {
-                if (this.sdkPrefix) {
-                    return this.sdkPrefix;
+
+        _handleGetterFromObjC: function(callback, callbackId) {
+            window[callbackId] = function(value) {
+                if(callbackId.includes("adjust_getAttribution")) {
+                    const parsedValue = JSON.parse(value);
+                    callback(parsedValue);
                 } else {
-                    return 'web-bridge4.38.4';
+                    callback(value);
                 }
-            },
-            setTestOptions: function(testOptions) {
-                if (WebViewJavascriptBridge != null) {
-                    WebViewJavascriptBridge.callHandler('adjust_setTestOptions', testOptions, null);
+                delete window[callbackId];
+            };
+        },
+
+        _handleCallbackFromObjC: function(callback, callbackId) {
+            window[callbackId] = function(value) {
+                const parsedValue = JSON.parse(value);
+                callback(parsedValue);
+            };
+        },
+
+        initSdk: function(adjustConfig) {
+            if (adjustConfig) {
+                if (!adjustConfig.getSdkPrefix()) {
+                    adjustConfig.setSdkPrefix(this.getSdkPrefix());
                 }
+                adjustConfig.setSdkPrefix(this.getSdkPrefix());
+                this._postMessage("adjust_initSdk", adjustConfig);
             }
+        },
+
+        setTestOptions: function(testOptions) {
+            this._postMessage("adjust_setTestOptions", testOptions);
+        },
+
+        requestAppTrackingAuthorizationWithCompletionHandler: function(attStatusCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_attStatusCallback");
+            this._handleGetterFromObjC(attStatusCallback, callbackId);
+            this._postMessage("adjust_requestAppTrackingAuthorizationWithCompletionHandler", null, callbackId);
+        },
+
+        getAppTrackingAuthorizationStatus: function(getAppTrackingAuthorizationStatusCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_appTrackingAuthorizationStatus") ;
+            this._handleGetterFromObjC(getAppTrackingAuthorizationStatusCallback, callbackId);
+            this._postMessage("adjust_appTrackingAuthorizationStatus", null, callbackId);
+        },
+
+        getSdkVersion: function(getSdkVersionCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_getSdkVersion") ;
+            this._handleGetterFromObjC(getSdkVersionCallback, callbackId);
+            this._postMessage("adjust_getSdkVersion", {sdkPrefix: this.getSdkPrefix()}, callbackId);
+        },
+
+        getIdfa: function(getIdfaCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfa") ;
+            this._handleGetterFromObjC(getIdfaCallback, callbackId);
+            this._postMessage("adjust_getIdfa", null, callbackId);
+        },
+
+        getIdfv: function(getIdfvCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfv") ;
+            this._handleGetterFromObjC(getIdfvCallback, callbackId);
+            this._postMessage("adjust_getIdfv", null, callbackId);
+        },
+
+        getAdid: function(getAdidCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_getAdid") ;
+            this._handleGetterFromObjC(getAdidCallback, callbackId);
+            this._postMessage("adjust_getAdid", null, callbackId);
+        },
+
+        isEnabled: function(isEnabledCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_isEnabled") ;
+            this._handleGetterFromObjC(isEnabledCallback, callbackId);
+            this._postMessage("adjust_isEnabled", null, callbackId);
+        },
+
+        getAttribution: function(getAttributionCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_getAttribution") ;
+            this._handleGetterFromObjC(getAttributionCallback, callbackId);
+            this._postMessage("adjust_getAttribution", null, callbackId);
+        },
+
+        getSdkPrefix: function() {
+            if (this.sdkPrefix) {
+                return this.sdkPrefix;
+            } else {
+                return 'web-bridge5.0.0';
+            }
+        },
+
+        trackEvent: function(adjustEvent) {
+            this._postMessage("adjust_trackEvent", adjustEvent);
+        },
+
+        trackThirdPartySharing: function(adjustThirdPartySharing) {
+            this._postMessage("adjust_trackThirdPartySharing", adjustThirdPartySharing);
+        },
+
+        gdprForgetMe: function() {
+            this._postMessage("adjust_gdprForgetMe");
+        },
+
+        enable: function() {
+            this._postMessage("adjust_enable");
+        },
+
+        disable: function() {
+            this._postMessage("adjust_disable");
+        },
+
+        switchToOfflineMode: function() {
+            this._postMessage("adjust_switchToOfflineMode");
+        },
+
+        switchBackToOnlineMode: function() {
+            this._postMessage("adjust_switchBackToOnlineMode");
+        },
+
+        trackSubsessionStart: function() {
+            this._postMessage("adjust_trackSubsessionStart");
+        },
+
+        trackSubsessionEnd: function() {
+            this._postMessage("adjust_trackSubsessionEnd");
+        },
+
+        trackMeasurementConsent: function(consentMeasurement) {
+            this._postMessage("adjust_trackMeasurementConsent", consentMeasurement);
+        },
+
+        fbPixelEvent: function(pixelID, evtName, customData) {
+            this._postMessage("adjust_fbPixelEvent", {
+                pixelID: pixelID,
+                evtName: evtName,
+                customData: customData
+            });
+        },
+
+        addGlobalCallbackParameter: function(key, value) {
+            this._postMessage("adjust_addGlobalCallbackParameter", {
+                _key: key, _keyType: typeof key,
+                _value: value, _valueType: typeof value
+            });
+        },
+
+        removeGlobalCallbackParameter: function(key) {
+            this._postMessage("adjust_removeGlobalCallbackParameter", { _key: key, _keyType: typeof key });
+        },
+
+        removeGlobalCallbackParameters: function() {
+            this._postMessage("adjust_removeGlobalCallbackParameters");
+        },
+
+        addGlobalPartnerParameter: function(key, value) {
+            this._postMessage("adjust_addGlobalPartnerParameter", {
+                _key: key, _keyType: typeof key,
+                _value: value, _valueType: typeof value
+            });
+        },
+
+        removeGlobalPartnerParameter: function(key) {
+            this._postMessage("adjust_removeGlobalPartnerParameter", { _key: key, _keyType: typeof key });
+        },
+
+        removeGlobalPartnerParameters: function() {
+            this._postMessage("adjust_removeGlobalPartnerParameters");
+        },
+
         };
 
-        // Copied from adjust_event.js
+        // AdjustEvent
         window.AdjustEvent = function(eventToken) {
             this.eventToken = eventToken;
             this.revenue = null;
             this.currency = null;
-            this.transactionId = null;
+            this.deduplicationId = null;
             this.callbackId = null;
             this.callbackParameters = [];
             this.partnerParameters = [];
         };
 
+        AdjustEvent.prototype.setRevenue = function(revenue, currency) {
+            if (revenue != null) {
+                this.revenue = revenue.toString();
+                this.currency = currency;
+            }
+        };
+
         AdjustEvent.prototype.addCallbackParameter = function(key, value) {
+            if (typeof key !== 'string' || typeof value !== 'string') {
+                console.log('Passed key or value is not of string type');
+                return;
+            }
             this.callbackParameters.push(key);
             this.callbackParameters.push(value);
         };
+
         AdjustEvent.prototype.addPartnerParameter = function(key, value) {
+            if (typeof key !== 'string' || typeof value !== 'string') {
+                console.log('Passed key or value is not of string type');
+                return;
+            }
             this.partnerParameters.push(key);
             this.partnerParameters.push(value);
         };
-        AdjustEvent.prototype.setRevenue = function(revenue, currency) {
-            this.revenue = revenue;
-            this.currency = currency;
+
+        AdjustEvent.prototype.setDeduplicationId = function(deduplicationId) {
+            this.deduplicationId = deduplicationId;
         };
-        AdjustEvent.prototype.setTransactionId = function(transactionId) {
-            this.transactionId = transactionId;
-        };
+
         AdjustEvent.prototype.setCallbackId = function(callbackId) {
             this.callbackId = callbackId;
         };
 
-        // Adjust Third Party Sharing
+        // AdjustThirdPartySharing
         window.AdjustThirdPartySharing = function(isEnabled) {
             this.isEnabled = isEnabled;
             this.granularOptions = [];
             this.partnerSharingSettings = [];
         };
+
         AdjustThirdPartySharing.prototype.addGranularOption = function(partnerName, key, value) {
             this.granularOptions.push(partnerName);
             this.granularOptions.push(key);
             this.granularOptions.push(value);
         };
+
         AdjustThirdPartySharing.prototype.addPartnerSharingSetting = function(partnerName, key, value) {
             this.partnerSharingSettings.push(partnerName);
             this.partnerSharingSettings.push(key);
             this.partnerSharingSettings.push(value);
         };
 
-        // Copied from adjust_config.js
-        window.AdjustConfig = function(appToken, environment, legacy) {
-            if (arguments.length === 2) {
-                // New format does not require bridge as first parameter.
-                this.appToken = appToken;
-                this.environment = environment;
-            } else if (arguments.length === 3) {
-                // New format with allowSuppressLogLevel.
-                if (typeof(legacy) == typeof(true)) {
-                    this.appToken = appToken;
-                    this.environment = environment;
-                    this.allowSuppressLogLevel = legacy;
-                } else {
-                    // Old format with first argument being the bridge instance.
-                    this.bridge = appToken;
-                    this.appToken = environment;
-                    this.environment = legacy;
-                }
-            }
-
+        // AdjustConfig
+        window.AdjustConfig = function(appToken, environment) {
+            //config parameters
+            this.appToken = appToken;
+            this.environment = environment;
+            this.logLevel = null;
             this.sdkPrefix = null;
             this.defaultTracker = null;
             this.externalDeviceId = null;
-            this.logLevel = null;
-            this.eventBufferingEnabled = null;
-            this.coppaCompliantEnabled = null;
-            this.linkMeEnabled = null;
             this.sendInBackground = null;
-            this.delayStart = null;
-            this.userAgent = null;
-            this.isDeviceKnown = null;
-            this.needsCost = null;
-            this.allowAdServicesInfoReading = null;
-            this.allowIdfaReading = null;
-            this.allowSkAdNetworkHandling = null;
-            this.secretId = null;
-            this.info1 = null;
-            this.info2 = null;
-            this.info3 = null;
-            this.info4 = null;
-            this.openDeferredDeeplink = null;
-            this.fbPixelDefaultEventToken = null;
-            this.fbPixelMapping = [];
+            this.isAdServicesEnabled = null;
+            this.isIdfaReadingAllowed = null;
+            this.isCostDataInAttributionEnabled = null;
+            this.isDeferredDeeplinkOpeningEnabled = null;
+            this.isSkanAttributionHandlingEnabled = null;
+            this.isCoppaComplianceEnabled = null;
+            this.shouldReadDeviceInfoOnce = null;
+            this.attConsentWaitingSeconds = null;
+            this.eventDeduplicationIdsMaxSize = null;
+
+            //config URL strategy parameters
+            this.urlStrategyDomains = [];
+            this.useSubdomains = null;
+            this.isDataResidency = null;
+
+            //config callbacks
             this.attributionCallback = null;
             this.eventSuccessCallback = null;
             this.eventFailureCallback = null;
             this.sessionSuccessCallback = null;
             this.sessionFailureCallback = null;
+            this.skanUpdatedCallback = null;
             this.deferredDeeplinkCallback = null;
-            this.urlStrategy = null;
-            this.readDeviceInfoOnceEnabled = null;
-            this.attConsentWaitingSeconds = null;
+
+            //fb parameters
+            this.fbPixelDefaultEventToken = null;
+            this.fbPixelMapping = [];
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -402,31 +369,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelAssert = 'ASSERT';
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
 
-        AdjustConfig.UrlStrategyIndia = 'UrlStrategyIndia';
-        AdjustConfig.UrlStrategyChina = 'UrlStrategyChina';
-        AdjustConfig.UrlStrategyCn = 'UrlStrategyCn';
-        AdjustConfig.UrlStrategyCnOnly = 'UrlStrategyCnOnly';
-        AdjustConfig.DataResidencyEU = 'DataResidencyEU';
-        AdjustConfig.DataResidencyTR = 'DataResidencyTR';
-        AdjustConfig.DataResidencyUS = 'DataResidencyUS';
-
-        AdjustConfig.prototype.registerCallbackHandlers = function() {
-            var registerCallbackHandler = function(callbackName) {
-                var callback = this[callbackName];
-                if (!callback) {
-                    return;
-                }
-                var regiteredCallbackName = 'adjustJS_' + callbackName;
-                WebViewJavascriptBridge.registerHandler(regiteredCallbackName, callback);
-                this[callbackName] = regiteredCallbackName;
-            };
-            registerCallbackHandler.call(this, 'attributionCallback');
-            registerCallbackHandler.call(this, 'eventSuccessCallback');
-            registerCallbackHandler.call(this, 'eventFailureCallback');
-            registerCallbackHandler.call(this, 'sessionSuccessCallback');
-            registerCallbackHandler.call(this, 'sessionFailureCallback');
-            registerCallbackHandler.call(this, 'deferredDeeplinkCallback');
-        };
         AdjustConfig.prototype.getSdkPrefix = function() {
             return this.sdkPrefix;
         };
@@ -442,70 +384,45 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.setLogLevel = function(logLevel) {
             this.logLevel = logLevel;
         };
-        AdjustConfig.prototype.setEventBufferingEnabled = function(isEnabled) {
-            this.eventBufferingEnabled = isEnabled;
-        };
-        AdjustConfig.prototype.setCoppaCompliantEnabled = function(isEnabled) {
-            this.coppaCompliantEnabled = isEnabled;
-        };
-        AdjustConfig.prototype.setLinkMeEnabled = function(isEnabled) {
-            this.linkMeEnabled = isEnabled;
-        };
         AdjustConfig.prototype.setSendInBackground = function(isEnabled) {
             this.sendInBackground = isEnabled;
         };
-        AdjustConfig.prototype.setDelayStart = function(delayStartInSeconds) {
-            this.delayStart = delayStartInSeconds;
+        AdjustConfig.prototype.enableCostDataInAttribution = function() {
+            this.isCostDataInAttributionEnabled = true;
         };
-        AdjustConfig.prototype.setUserAgent = function(userAgent) {
-            this.userAgent = userAgent;
+        AdjustConfig.prototype.disableAdServices = function() {
+            this.isAdServicesEnabled = false;
         };
-        AdjustConfig.prototype.setIsDeviceKnown = function(isDeviceKnown) {
-            this.isDeviceKnown = isDeviceKnown;
+        AdjustConfig.prototype.disableIdfaReading = function() {
+            this.isIdfaReadingAllowed = false;
         };
-        AdjustConfig.prototype.setNeedsCost = function(needsCost) {
-            this.needsCost = needsCost;
+        AdjustConfig.prototype.disableSkanAttributionHandling = function() {
+            this.isSkanAttributionHandlingEnabled = false;
         };
-        AdjustConfig.prototype.setAllowiAdInfoReading = function(allowiAdInfoReading) {
-            // Apple has official sunset support for Apple Search Ads attribution via iAd.framework as of February 7th 2023
+        AdjustConfig.prototype.disableDeferredDeeplinkOpening = function() {
+            this.isDeferredDeeplinkOpeningEnabled = false;
         };
-        AdjustConfig.prototype.setAllowAdServicesInfoReading = function(allowAdServicesInfoReading) {
-            this.allowAdServicesInfoReading = allowAdServicesInfoReading;
+        AdjustConfig.prototype.enableCoppaCompliance = function() {
+            this.isCoppaComplianceEnabled = true;
         };
-        AdjustConfig.prototype.setAllowIdfaReading = function(allowIdfaReading) {
-            this.allowIdfaReading = allowIdfaReading;
+        AdjustConfig.prototype.readDeviceInfoOnce = function() {
+            this.shouldReadDeviceInfoOnce = true;
         };
-        AdjustConfig.prototype.deactivateSkAdNetworkHandling = function() {
-            this.allowSkAdNetworkHandling = false;
+        AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingSeconds) {
+            this.attConsentWaitingSeconds = attConsentWaitingSeconds;
         };
-        AdjustConfig.prototype.setAppSecret = function(secretId, info1, info2, info3, info4) {
-            this.secretId = secretId;
-            this.info1 = info1;
-            this.info2 = info2;
-            this.info3 = info3;
-            this.info4 = info4;
+        AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
+            this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
         };
-        AdjustConfig.prototype.setOpenDeferredDeeplink = function(shouldOpen) {
-            this.openDeferredDeeplink = shouldOpen;
+
+        //URL strategy
+        AdjustConfig.prototype.setUrlStrategy = function(urlStrategyDomains, useSubdomains, isDataResidency) {
+            this.urlStrategyDomains = urlStrategyDomains;
+            this.useSubdomains = useSubdomains;
+            this.isDataResidency = isDataResidency;
         };
-        AdjustConfig.prototype.setAttributionCallback = function(callback) {
-            this.attributionCallback = callback;
-        };
-        AdjustConfig.prototype.setEventSuccessCallback = function(callback) {
-            this.eventSuccessCallback = callback;
-        };
-        AdjustConfig.prototype.setEventFailureCallback = function(callback) {
-            this.eventFailureCallback = callback;
-        };
-        AdjustConfig.prototype.setSessionSuccessCallback = function(callback) {
-            this.sessionSuccessCallback = callback;
-        };
-        AdjustConfig.prototype.setSessionFailureCallback = function(callback) {
-            this.sessionFailureCallback = callback;
-        };
-        AdjustConfig.prototype.setDeferredDeeplinkCallback = function(callback) {
-            this.deferredDeeplinkCallback = callback;
-        };
+
+        //FB Pixel event config
         AdjustConfig.prototype.setFbPixelDefaultEventToken = function(fbPixelDefaultEventToken) {
             this.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
         };
@@ -513,15 +430,56 @@ static NSString * fbAppIdStatic = nil;
             this.fbPixelMapping.push(fbEventNameKey);
             this.fbPixelMapping.push(adjEventTokenValue);
         };
-        AdjustConfig.prototype.setUrlStrategy = function(urlStrategy) {
-            this.urlStrategy = urlStrategy;
+
+        //AdjustConfig's callback
+        AdjustConfig.prototype.setAttributionCallback = function(attributionCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_attributionCallback");
+            Adjust._handleCallbackFromObjC(attributionCallback, callbackId);
+            this.attributionCallback = callbackId;
         };
-        AdjustConfig.prototype.setReadDeviceInfoOnceEnabled = function(readDeviceInfoOnceEnabled) {
-            this.readDeviceInfoOnceEnabled = readDeviceInfoOnceEnabled;
+
+        AdjustConfig.prototype.setEventSuccessCallback = function(eventSuccessCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_eventSuccessCallback");
+            Adjust._handleCallbackFromObjC(eventSuccessCallback, callbackId);
+            this.eventSuccessCallback = callbackId;
         };
-        AdjustConfig.prototype.setAttConsentWaitingInterval = function(attConsentWaitingSeconds) {
-            this.attConsentWaitingSeconds = attConsentWaitingSeconds;
+
+        AdjustConfig.prototype.setEventFailureCallback = function(eventFailureCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_eventFailureCallback");
+            Adjust._handleCallbackFromObjC(eventFailureCallback, callbackId);
+            this.eventFailureCallback = callbackId;
         };
+
+        AdjustConfig.prototype.setSessionSuccessCallback = function(sessionSuccessCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_sessionSuccessCallback");
+            Adjust._handleCallbackFromObjC(sessionSuccessCallback, callbackId);
+            this.sessionSuccessCallback = callbackId;
+        };
+
+        AdjustConfig.prototype.setSessionFailureCallback = function(sessionFailureCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_sessionFailureCallback");
+            Adjust._handleCallbackFromObjC(sessionFailureCallback, callbackId);
+            this.sessionFailureCallback = callbackId;
+        };
+
+        AdjustConfig.prototype.setDeferredDeeplinkCallback = function(deferredDeeplinkCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_deferredDeeplinkCallback");
+            Adjust._handleCallbackFromObjC(deferredDeeplinkCallback, callbackId);
+            this.deferredDeeplinkCallback = callbackId;
+        };
+
+        AdjustConfig.prototype.setSkanUpdatedCallback = function(skanUpdatedCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_skanUpdatedCallback");
+            Adjust._handleCallbackFromObjC(skanUpdatedCallback, callbackId);
+            this.skanUpdatedCallback = callbackId;
+        };
+
+        // Generate random callback id
+        window.randomCallbackIdWithPrefix = function(prefix) {
+            const randomString = (Math.random() + 1).toString(36).substring(7);
+            return prefix + "_" + randomString;
+        };
+
     })();); // END preprocessorJSCode
     //, augmentedSection];
 #undef __adj_js_func__
@@ -529,3 +487,6 @@ static NSString * fbAppIdStatic = nil;
 }
 
 @end
+
+
+

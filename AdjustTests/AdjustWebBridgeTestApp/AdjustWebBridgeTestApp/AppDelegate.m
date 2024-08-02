@@ -3,7 +3,7 @@
 //  AdjustWebBridgeTestApp
 //
 //  Created by Pedro Silva (@nonelse) on 6th August 2018.
-//  Copyright © 2018 Adjust GmbH. All rights reserved.
+//  Copyright © 2018-Present Adjust GmbH. All rights reserved.
 //
 
 #import "AppDelegate.h"

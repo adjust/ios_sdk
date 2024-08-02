@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "ATLTestLibrary.h"
 
 @interface ATAAdjustDelegate : NSObject<AdjustDelegate>
@@ -18,5 +18,6 @@
             eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
                eventFailedCallback:(BOOL)swizzleEventFailedCallback
           sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
-             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback;
+             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
+                      skanCallback:(BOOL)swizzleSkanCallback;
 @end

@@ -6,7 +6,7 @@
 //  Copyright © 2018-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "MessagesViewController.h"
 
 @interface MessagesViewController ()
@@ -25,27 +25,28 @@
         // Configure adjust SDK.
         NSString *yourAppToken = @"2fm9gkqubvpc";
         NSString *environment = ADJEnvironmentSandbox;
-        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-        
+        ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:yourAppToken
+                                                          environment:environment];
+
         // Change the log level.
         [adjustConfig setLogLevel:ADJLogLevelVerbose];
         
-        // Add session callback parameters.
-        [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
-        [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-        
-        // Add session partner parameters.
-        [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
-        [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-        
-        // Remove session callback parameter.
-        [Adjust removeSessionCallbackParameter:@"sp_key"];
-        
-        // Remove session partner parameter.
-        [Adjust removeSessionPartnerParameter:@"sp_foo"];
-        
+        // Add global callback parameters.
+        [Adjust addGlobalCallbackParameter:@"sp_bar" forKey:@"sp_foo"];
+        [Adjust addGlobalCallbackParameter:@"sp_value" forKey:@"sp_key"];
+
+        // Add global partner parameters.
+        [Adjust addGlobalPartnerParameter:@"sp_bar" forKey:@"sp_foo"];
+        [Adjust addGlobalPartnerParameter:@"sp_value" forKey:@"sp_key"];
+
+        // Remove global callback parameter.
+        [Adjust removeGlobalCallbackParameterForKey:@"sp_key"];
+
+        // Remove global partner parameter.
+        [Adjust removeGlobalPartnerParameterForKey:@"sp_foo"];
+
         // Initialise the SDK.
-        [Adjust appDidLaunch:adjustConfig];
+        [Adjust initSdk:adjustConfig];
     });
 }
 
@@ -106,7 +107,7 @@
 }
 
 - (IBAction)clickTrackSimpleEvent:(id)sender {
-    ADJEvent *event = [ADJEvent eventWithEventToken:@"g3mfiw"];
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"g3mfiw"];
     [Adjust trackEvent:event];
 }
 

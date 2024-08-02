@@ -3,66 +3,43 @@
 import PackageDescription
 
 let package = Package(
-    name: "Adjust",
+    name: "AdjustSdk",
     products: [
-        .library(name: "Adjust", targets: ["Adjust"]),
-        .library(name: "Sociomantic", targets: ["Sociomantic", "Adjust"]),
-        .library(name: "Criteo", targets: ["Criteo", "Adjust"]),
-        .library(name: "Trademob", targets: ["Trademob", "Adjust"]),
-        .library(name: "WebBridge", targets: ["WebBridge", "Adjust"])
+        .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
+        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"])
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/adjust/adjust_signature_sdk.git",
+            .upToNextMajor(from: "3.18.0") 
+        )
     ],
     targets: [
         .target(
-            name: "Adjust",
+            name: "AdjustSdk",
+            dependencies: [
+                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
+            ],
             path: "Adjust",
-            exclude: ["Info.plist"],
             resources: [
                 .copy("PrivacyInfo.xcprivacy"),
             ],
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("ADJAdditions")
+                .headerSearchPath("Internal")
             ]
         ),
         .target(
-            name: "Sociomantic",
-            path: "plugin/Sociomantic",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "Criteo",
-            path: "plugin/Criteo",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "Trademob",
-            path: "plugin/Trademob",
-            exclude: ["Adjust"],
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
-            ]
-        ),
-        .target(
-            name: "WebBridge",
+            name: "AdjustWebBridge",
+            dependencies: [
+                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
+            ],
             path: "AdjustBridge",
-            exclude: ["Adjust"],
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("WebViewJavascriptBridge"),
-                .headerSearchPath("Adjust"),
+                .headerSearchPath("../Adjust/include"),
             ]
         ),
     ]
 )
+

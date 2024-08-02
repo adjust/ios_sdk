@@ -1,0 +1,6 @@
+framework module AdjustSigSdk {
+  umbrella header "ADJSigner.h"
+
+  export *
+  module * { export * }
+}

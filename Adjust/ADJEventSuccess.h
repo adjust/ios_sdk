@@ -18,7 +18,7 @@
 /**
  * @brief Timestamp from the adjust backend.
  */
-@property (nonatomic, copy) NSString *timeStamp;
+@property (nonatomic, copy) NSString *timestamp;
 
 /**
  * @brief Adjust identifier of the device.
@@ -39,12 +39,5 @@
  * @brief Backend response in JSON format.
  */
 @property (nonatomic, strong) NSDictionary *jsonResponse;
-
-/**
- * @brief Initialisation method.
- *
- * @return ADJEventSuccess instance.
- */
-+ (ADJEventSuccess *)eventSuccessResponseData;
 
 @end

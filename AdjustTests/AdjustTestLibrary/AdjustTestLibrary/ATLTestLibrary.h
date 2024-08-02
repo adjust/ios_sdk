@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ATLUtilNetworking.h"
+#import "ATLNetworking.h"
 #import "ATLBlockingQueue.h"
 
 @protocol AdjustCommandDelegate <NSObject>
@@ -28,10 +28,6 @@
 - (NSString *)currentBasePath;
 
 - (ATLBlockingQueue *)waitControlQueue;
-
-- (id)initWithBaseUrl:(NSString *)baseUrl
-        andControlUrl:(NSString *)controlUrl
-   andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
 
 - (void)addTest:(NSString *)testName;
 
@@ -57,7 +53,4 @@
 + (ATLTestLibrary *)testLibraryWithBaseUrl:(NSString *)baseUrl
                              andControlUrl:(NSString *)controlUrl
                         andCommandDelegate:(NSObject<AdjustCommandDelegate> *)commandDelegate;
-
-+ (NSURL *)baseUrl;
-
 @end

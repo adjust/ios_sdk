@@ -6,10 +6,9 @@
 //  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
 #import "ViewController.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "ATLTestLibrary.h"
-#import "ADJAdjustFactory.h"
 #import "ATAAdjustCommandExecutor.h"
 
 @interface ViewController ()
@@ -38,7 +37,9 @@
 }
 
 - (void)startTestSession {
-    [self.testLibrary startTestSession:[Adjust sdkVersion]];
+    [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+        [self.testLibrary startTestSession:sdkVersion];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

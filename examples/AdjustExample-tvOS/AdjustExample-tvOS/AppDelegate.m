@@ -19,77 +19,55 @@
     // Configure adjust SDK.
     NSString *yourAppToken = kAppToken;
     NSString *environment = ADJEnvironmentSandbox;
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:environment];
-    
+    ADJConfig *adjustConfig = [[ADJConfig alloc] initWithAppToken:yourAppToken
+                                                      environment:environment];
+
     // Change the log level.
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-    
-    // Enable event buffering.
-    // [adjustConfig setEventBufferingEnabled:YES];
     
     // Set default tracker.
     // [adjustConfig setDefaultTracker:@"{TrackerToken}"];
     
     // Send in the background.
-    [adjustConfig setSendInBackground:YES];
-    
-    // Add session callback parameters.
-    [Adjust addSessionCallbackParameter:@"sp_foo" value:@"sp_bar"];
-    [Adjust addSessionCallbackParameter:@"sp_key" value:@"sp_value"];
-    
-    // Add session partner parameters.
-    [Adjust addSessionPartnerParameter:@"sp_foo" value:@"sp_bar"];
-    [Adjust addSessionPartnerParameter:@"sp_key" value:@"sp_value"];
-    
-    // Remove session callback parameter.
-    [Adjust removeSessionCallbackParameter:@"sp_key"];
-    
-    // Remove session partner parameter.
-    [Adjust removeSessionPartnerParameter:@"sp_foo"];
-    
-    // Remove all session callback parameters.
-    // [Adjust resetSessionCallbackParameters];
-    
-    // Remove all session partner parameters.
-    // [Adjust resetSessionPartnerParameters];
-    
+    [adjustConfig enableSendingInBackground];
+
+    // Add global callback parameters.
+    [Adjust addGlobalCallbackParameter:@"sp_bar" forKey:@"sp_foo"];
+    [Adjust addGlobalCallbackParameter:@"sp_value" forKey:@"sp_key"];
+
+    // Add global partner parameters.
+    [Adjust addGlobalPartnerParameter:@"sp_bar" forKey:@"sp_foo"];
+    [Adjust addGlobalPartnerParameter:@"sp_value" forKey:@"sp_key"];
+
+    // Remove global callback parameter.
+    [Adjust removeGlobalCallbackParameterForKey:@"sp_key"];
+
+    // Remove global partner parameter.
+    [Adjust removeGlobalPartnerParameterForKey:@"sp_foo"];
+
     // Set an attribution delegate.
     [adjustConfig setDelegate:self];
     
-    // Delay the first session of the SDK.
-    // [adjustConfig setDelayStart:7];
-    
     // Initialise the SDK.
-    [Adjust appDidLaunch:adjustConfig];
-    
-    // Put the SDK in offline mode.
-    // [Adjust setOfflineMode:YES];
-    
-    // Disable the SDK.
-    // [Adjust setEnabled:NO];
-    
-    // Interrupt delayed start set with setDelayStart: method.
-    // [Adjust sendFirstPackages];
+    [Adjust initSdk:adjustConfig];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"Scheme based deep link opened an app: %@", url);
-    // add your code below to handle deep link
-    // (e.g., open deep link content)
-    // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
+
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSLog(@"continueUserActivity method called with URL: %@", [userActivity webpageURL]);
-        [Adjust convertUniversalLink:[userActivity webpageURL] scheme:@"adjustExample"];
-        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+        [Adjust convertUniversalLink:[userActivity webpageURL] withScheme:@"adjustExample"];
+        [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:[userActivity webpageURL]]];
     }
     
     return YES;
@@ -121,7 +99,7 @@
 }
 
 // Evaluate deeplink to be launched.
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     NSLog(@"Deferred deep link callback called!");
     NSLog(@"Deferred deep link URL: %@", [deeplink absoluteString]);
     

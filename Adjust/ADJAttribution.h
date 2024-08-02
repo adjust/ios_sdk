@@ -49,11 +49,6 @@
 @property (nonatomic, copy, nullable) NSString *clickLabel;
 
 /**
- * @brief Adjust identifier value.
- */
-@property (nonatomic, copy, nullable) NSString *adid;
-
-/**
  * @brief Cost type.
  */
 @property (nonatomic, copy, nullable) NSString *costType;
@@ -72,13 +67,10 @@
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.
- * @param adid Adjust identifier value.
  * 
  * @return Adjust attribution object.
  */
-+ (nullable ADJAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
-
-- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
+- (nullable id)initWithJsonDict:(nonnull NSDictionary *)jsonDict;
 
 /**
  * @brief Check if given attribution equals current one.

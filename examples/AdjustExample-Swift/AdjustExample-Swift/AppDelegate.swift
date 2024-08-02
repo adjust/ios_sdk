@@ -7,70 +7,38 @@
 //
 
 import UIKit
-import Adjust
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
     var window: UIWindow?
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let appToken = "2fm9gkqubvpc"
         let environment = ADJEnvironmentSandbox
         let adjustConfig = ADJConfig(appToken: appToken, environment: environment)
-        
+
         // Change the log level.
-        adjustConfig?.logLevel = ADJLogLevelVerbose
-        
-        // Enable event buffering.
-        // adjustConfig?.eventBufferingEnabled = true
-        
-        // Set default tracker.
-        // adjustConfig?.defaultTracker = "{TrackerToken}"
-        
-        // Send in the background.
-        // adjustConfig?.sendInBackground = true
-        
-        // Enable COPPA compliance
-        // adjustConfig?.coppaCompliantEnabled = true
-        
+        adjustConfig?.logLevel = ADJLogLevel.verbose
+
         // Set delegate object.
         adjustConfig?.delegate = self
-        
-        // Delay the first session of the SDK.
-        // adjustConfig?.delayStart = 7
-        
-        // Add session callback parameters.
-        Adjust.addSessionCallbackParameter("obi", value: "wan")
-        Adjust.addSessionCallbackParameter("master", value: "yoda")
-        
-        // Add session partner parameters.
-        Adjust.addSessionPartnerParameter("darth", value: "vader")
-        Adjust.addSessionPartnerParameter("han", value: "solo")
-        
-        // Remove session callback parameter.
-        Adjust.removeSessionCallbackParameter("obi")
-        
-        // Remove session partner parameter.
-        Adjust.removeSessionPartnerParameter("han")
-        
-        // Remove all session callback parameters.
-        // Adjust.resetSessionCallbackParameters()
-        
-        // Remove all session partner parameters.
-        // Adjust.resetSessionPartnerParameters()
-        
+
+        // Add global callback parameters.
+        Adjust.addGlobalCallbackParameter("wan", forKey: "obi")
+        Adjust.addGlobalCallbackParameter("yoda", forKey: "master")
+
+        // Add global partner parameters.
+        Adjust.addGlobalPartnerParameter("vader", forKey: "darth")
+        Adjust.addGlobalPartnerParameter("solo", forKey: "han")
+
+        // Remove global callback parameter.
+        Adjust.removeGlobalCallbackParameter(forKey: "obi")
+        // Remove global partner parameter.
+        Adjust.removeGlobalPartnerParameter(forKey: "han")
+
         // Initialise the SDK.
-        Adjust.appDidLaunch(adjustConfig!)
-        
-        // Put the SDK in offline mode.
-        // Adjust.setOfflineMode(true);
-        
-        // Disable the SDK
-        // Adjust.setEnabled(false);
-        
-        // Interrupt delayed start set with setDelayStart: method.
-        // Adjust.sendFirstPackages()
-        
+        Adjust.initSdk(adjustConfig!)
+
         return true
     }
 
@@ -81,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         // url object contains the deep link
 
         // Call the below method to send deep link to Adjust backend
-        Adjust.appWillOpen(url)
+        Adjust.processDeeplink(ADJDeeplink(deeplink: url)!)
         return true
     }
 
@@ -89,54 +57,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
         if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
             NSLog("Universal link opened an app: %@", userActivity.webpageURL!.absoluteString)
             // Pass deep link to Adjust in order to potentially reattribute user.
-            Adjust.appWillOpen(userActivity.webpageURL!)
+            Adjust.processDeeplink(ADJDeeplink(deeplink: userActivity.webpageURL!)!)
         }
         return true
     }
-    
+
     func adjustAttributionChanged(_ attribution: ADJAttribution?) {
         NSLog("Attribution callback called!")
         NSLog("Attribution: %@", attribution ?? "")
     }
-    
+
     func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?) {
         NSLog("Event success callback called!")
         NSLog("Event success data: %@", eventSuccessResponseData ?? "")
     }
-    
+
     func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?) {
         NSLog("Event failure callback called!")
         NSLog("Event failure data: %@", eventFailureResponseData ?? "")
     }
-    
+
     func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?) {
         NSLog("Session success callback called!")
         NSLog("Session success data: %@", sessionSuccessResponseData ?? "")
     }
-    
+
     func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?) {
         NSLog("Session failure callback called!");
         NSLog("Session failure data: %@", sessionFailureResponseData ?? "")
     }
-    
-    func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool {
+
+    func adjustDeferredDeeplinkReceived(_ deeplink: URL?) -> Bool {
         NSLog("Deferred deep link callback called!")
         NSLog("Deferred deep link URL: %@", deeplink?.absoluteString ?? "")
         return true
     }
-    
+
     func applicationWillResignActive(_ application: UIApplication) {
     }
-    
+
     func applicationDidEnterBackground(_ application: UIApplication) {
     }
-    
+
     func applicationWillEnterForeground(_ application: UIApplication) {
     }
-    
+
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Show ATT dialog.
-        Adjust.requestTrackingAuthorization { status in
+        Adjust.requestAppTrackingAuthorization { status in
             switch status {
             case 0:
                 // ATTrackingManagerAuthorizationStatusNotDetermined case
@@ -155,7 +123,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AdjustDelegate {
             }
         }
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
     }
 }
+

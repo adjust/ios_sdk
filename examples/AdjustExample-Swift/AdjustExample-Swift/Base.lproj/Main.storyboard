@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -102,14 +102,14 @@
                                             <action selector="btnDisableSDKTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kwk-dJ-Nxd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8c-fJ-GFW" userLabel="Button Is SDK Enabled">
+                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6A-3g-JWP" userLabel="Button Disable SDK">
                                         <rect key="frame" x="0.0" y="418.5" width="232" height="36.5"/>
                                         <state key="normal" title="Is SDK Enabled?" backgroundImage="button_background">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnIsSDKEnabledTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7w0-kd-Fyb"/>
+                                            <action selector="btnIsSDKEnabledTappedWith_sender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zeJ-Qs-lK7"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -128,7 +128,6 @@
                         <outlet property="btnDisableSDK" destination="bpZ-9j-r3g" id="SOw-07-cdY"/>
                         <outlet property="btnEnableOfflineMode" destination="UYh-Ox-dBr" id="Ikw-xf-2kd"/>
                         <outlet property="btnEnableSDK" destination="ltr-fW-v4T" id="flp-m6-LV0"/>
-                        <outlet property="btnIsSDKEnabled" destination="W8c-fJ-GFW" id="K3V-vR-GnF"/>
                         <outlet property="btnTrackEventCallback" destination="efq-q3-ru1" id="ahX-71-SiZ"/>
                         <outlet property="btnTrackEventPartner" destination="eR0-I3-hc9" id="Oul-1y-lva"/>
                         <outlet property="btnTrackEventRevenue" destination="cbz-nV-DP7" id="2y9-y2-NGS"/>

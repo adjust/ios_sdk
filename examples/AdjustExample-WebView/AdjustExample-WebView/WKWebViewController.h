@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+#import <AdjustBridge/AdjustBridge.h>
 
-#import "AdjustBridge.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @interface WKWebViewController : UINavigationController<WKNavigationDelegate, WKUIDelegate>
 
 @property AdjustBridge *adjustBridge;
 
 @end
+
+NS_ASSUME_NONNULL_END

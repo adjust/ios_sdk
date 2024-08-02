@@ -1,0 +1,1 @@
+../../../UmbrellaHeaders/sdk/AdjustSdk.h

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "Adjust.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @interface AppDelegate ()
 
@@ -43,7 +43,7 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
     return YES;
 }
 

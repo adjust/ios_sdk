@@ -18,7 +18,7 @@
 /**
  * @brief Timestamp from the adjust backend.
  */
-@property (nonatomic, copy, nullable) NSString *timeStamp;
+@property (nonatomic, copy, nullable) NSString *timestamp;
 
 /**
  * @brief Adjust identifier of the device.
@@ -34,12 +34,5 @@
  * @brief Backend response in JSON format.
  */
 @property (nonatomic, strong, nullable) NSDictionary *jsonResponse;
-
-/**
- * @brief Initialisation method.
- *
- * @return ADJSessionFailure instance.
- */
-+ (nullable ADJSessionFailure *)sessionFailureResponseData;
 
 @end

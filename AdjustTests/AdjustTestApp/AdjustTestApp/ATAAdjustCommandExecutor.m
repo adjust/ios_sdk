@@ -6,8 +6,7 @@
 //  Copyright © 2017-2018 Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
-#import "ADJAdjustFactory.h"
+#import <AdjustSdk/AdjustSdk.h>
 #import "ATAAdjustDelegate.h"
 #import "ATAAdjustDelegateAttribution.h"
 #import "ATAAdjustDelegateEventFailure.h"
@@ -15,6 +14,7 @@
 #import "ATAAdjustDelegateSessionSuccess.h"
 #import "ATAAdjustDelegateSessionFailure.h"
 #import "ATAAdjustDelegateDeferredDeeplink.h"
+#import "ATAAdjustDelegateSkan.h"
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
@@ -67,106 +67,93 @@
         [self setEnabled:parameters];
     } else if ([methodName isEqualToString:@"setOfflineMode"]) {
         [self setOfflineMode:parameters];
-    } else if ([methodName isEqualToString:@"sendFirstPackages"]) {
-        [self sendFirstPackages:parameters];
-    } else if ([methodName isEqualToString:@"addSessionCallbackParameter"]) {
-        [self addSessionCallbackParameter:parameters];
-    } else if ([methodName isEqualToString:@"addSessionPartnerParameter"]) {
-        [self addSessionPartnerParameter:parameters];
-    } else if ([methodName isEqualToString:@"removeSessionCallbackParameter"]) {
-        [self removeSessionCallbackParameter:parameters];
-    } else if ([methodName isEqualToString:@"removeSessionPartnerParameter"]) {
-        [self removeSessionPartnerParameter:parameters];
-    } else if ([methodName isEqualToString:@"resetSessionCallbackParameters"]) {
-        [self resetSessionCallbackParameters:parameters];
-    } else if ([methodName isEqualToString:@"resetSessionPartnerParameters"]) {
-        [self resetSessionPartnerParameters:parameters];
+    } else if ([methodName isEqualToString:@"addGlobalCallbackParameter"]) {
+        [self addGlobalCallbackParameter:parameters];
+    } else if ([methodName isEqualToString:@"addGlobalPartnerParameter"]) {
+        [self addGlobalPartnerParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalCallbackParameter"]) {
+        [self removeGlobalCallbackParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalPartnerParameter"]) {
+        [self removeGlobalPartnerParameter:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalCallbackParameters"]) {
+        [self removeGlobalCallbackParameters:parameters];
+    } else if ([methodName isEqualToString:@"removeGlobalPartnerParameters"]) {
+        [self removeGlobalPartnerParameters:parameters];
     } else if ([methodName isEqualToString:@"setPushToken"]) {
         [self setPushToken:parameters];
     } else if ([methodName isEqualToString:@"openDeeplink"]) {
         [self openDeeplink:parameters];
     } else if ([methodName isEqualToString:@"gdprForgetMe"]) {
         [self gdprForgetMe:parameters];
-    } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
-        [self trackAdRevenue:parameters];
-    } else if ([methodName isEqualToString:@"disableThirdPartySharing"]) {
-        [self disableThirdPartySharing:parameters];
     } else if ([methodName isEqualToString:@"thirdPartySharing"]) {
         [self thirdPartySharing:parameters];
     } else if ([methodName isEqualToString:@"measurementConsent"]) {
         [self measurementConsent:parameters];
     } else if ([methodName isEqualToString:@"trackSubscription"]) {
-        [self trackSubscription:parameters];
-    } else if ([methodName isEqualToString:@"trackAdRevenueV2"]) {
-        [self trackAdRevenueV2:parameters];
+        [self trackAppStoreSubscription:parameters];
+    } else if ([methodName isEqualToString:@"trackAdRevenue"]) {
+        [self trackAdRevenue:parameters];
     } else if ([methodName isEqualToString:@"getLastDeeplink"]) {
         [self getLastDeeplink:parameters];
     } else if ([methodName isEqualToString:@"verifyPurchase"]) {
         [self verifyPurchase:parameters];
+    } else if ([methodName isEqualToString:@"verifyTrack"]) {
+        [self verifyTrack:parameters];
     } else if ([methodName isEqualToString:@"processDeeplink"]) {
         [self processDeeplink:parameters];
+    } else if ([methodName isEqualToString:@"attributionGetter"]) {
+        [self attributionGetter:parameters];
     }
 }
 
 - (void)testOptions:(NSDictionary *)parameters {
-    AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-    testOptions.urlOverwrite = urlOverwrite;
+    NSMutableDictionary *testOptions = [NSMutableDictionary dictionary];
+    [testOptions setObject:urlOverwrite forKey:@"testUrlOverwrite"];
 
     if ([parameters objectForKey:@"basePath"]) {
         self.extraPath = [parameters objectForKey:@"basePath"][0];
     }
     if ([parameters objectForKey:@"timerInterval"]) {
         NSString *timerIntervalMilliS = [parameters objectForKey:@"timerInterval"][0];
-        testOptions.timerIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:timerIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:timerIntervalMilliS]
+                        forKey:@"timerIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"timerStart"]) {
         NSString *timerStartMilliS = [parameters objectForKey:@"timerStart"][0];
-        testOptions.timerStartInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:timerStartMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:timerStartMilliS]
+                        forKey:@"timerStartInMilliseconds"];
     }
     if ([parameters objectForKey:@"sessionInterval"]) {
         NSString *sessionIntervalMilliS = [parameters objectForKey:@"sessionInterval"][0];
-        testOptions.sessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:sessionIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:sessionIntervalMilliS]
+                        forKey:@"sessionIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"subsessionInterval"]) {
         NSString *subsessionIntervalMilliS = [parameters objectForKey:@"subsessionInterval"][0];
-        testOptions.subsessionIntervalInMilliseconds = [ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS];
+        [testOptions setObject:[ATAAdjustCommandExecutor convertMilliStringToNumber:subsessionIntervalMilliS]
+                        forKey:@"subsessionIntervalInMilliseconds"];
     }
     if ([parameters objectForKey:@"attStatus"]) {
         NSString *attStatusS = [parameters objectForKey:@"attStatus"][0];
         NSNumber *attStatusN = [NSNumber numberWithInt:[attStatusS intValue]];
-
-        testOptions.attStatusInt = attStatusN;
+        [testOptions setObject:attStatusN forKey:@"attStatusInt"];
     }
     if ([parameters objectForKey:@"idfa"]) {
         NSString *idfa = [parameters objectForKey:@"idfa"][0];
-        testOptions.idfa = idfa;
+        [testOptions setObject:idfa forKey:@"idfa"];
     }
     if ([parameters objectForKey:@"noBackoffWait"]) {
         NSString *noBackoffWaitStr = [parameters objectForKey:@"noBackoffWait"][0];
-        testOptions.noBackoffWait = NO;
+        [testOptions setObject:@NO forKey:@"noBackoffWait"];
         if ([noBackoffWaitStr isEqualToString:@"true"]) {
-            testOptions.noBackoffWait = YES;
+            [testOptions setObject:@YES forKey:@"noBackoffWait"];
         }
     }
-    testOptions.adServicesFrameworkEnabled = NO; // default value -> NO - AdServices will not be used in test app by default
+    [testOptions setObject:@NO forKey:@"adServicesFrameworkEnabled"]; // default value -> NO - AdServices will not be used in test app by default
     if ([parameters objectForKey:@"adServicesFrameworkEnabled"]) {
         NSString *adServicesFrameworkEnabledStr = [parameters objectForKey:@"adServicesFrameworkEnabled"][0];
         if ([adServicesFrameworkEnabledStr isEqualToString:@"true"]) {
-            testOptions.adServicesFrameworkEnabled = YES;
-        }
-    }
-    if ([parameters objectForKey:@"enableSigning"]) {
-        NSString *enableSigningStr = [parameters objectForKey:@"enableSigning"][0];
-        testOptions.enableSigning = NO;
-        if ([enableSigningStr isEqualToString:@"true"]) {
-            testOptions.enableSigning = YES;
-        }
-    }
-    if ([parameters objectForKey:@"disableSigning"]) {
-        NSString *disableSigningStr = [parameters objectForKey:@"disableSigning"][0];
-        testOptions.disableSigning = NO;
-        if ([disableSigningStr isEqualToString:@"true"]) {
-            testOptions.disableSigning = YES;
+            [testOptions setObject:@YES forKey:@"adServicesFrameworkEnabled"];
         }
     }
     if ([parameters objectForKey:@"teardown"]) {
@@ -174,34 +161,34 @@
         for (int i = 0; i < teardownOptions.count; i = i + 1) {
             NSString *teardownOption = teardownOptions[i];
             if ([teardownOption isEqualToString:@"resetSdk"]) {
-                testOptions.teardown = YES;
-                testOptions.extraPath = self.extraPath;
+                [testOptions setObject:@YES forKey:@"teardown"];
+                [testOptions setObject:self.extraPath forKey:@"extraPath"];
             }
             if ([teardownOption isEqualToString:@"deleteState"]) {
-                testOptions.deleteState = YES;
+                [testOptions setObject:@YES forKey:@"deleteState"];
             }
             if ([teardownOption isEqualToString:@"resetTest"]) {
                 self.savedConfigs = [NSMutableDictionary dictionary];
                 self.savedEvents = [NSMutableDictionary dictionary];
                 self.adjustDelegate = nil;
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerStartInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"sessionIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"subsessionIntervalInMilliseconds"];
             }
             if ([teardownOption isEqualToString:@"sdk"]) {
-                testOptions.teardown = YES;
-                testOptions.extraPath = nil;
+                [testOptions setObject:@YES forKey:@"teardown"];
+                [testOptions removeObjectForKey:@"extraPath"];
             }
             if ([teardownOption isEqualToString:@"test"]) {
                 self.savedConfigs = nil;
                 self.savedEvents = nil;
                 self.adjustDelegate = nil;
                 self.extraPath = nil;
-                testOptions.timerIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.timerStartInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.sessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
-                testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithInt:-1000];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"timerStartInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"sessionIntervalInMilliseconds"];
+                [testOptions setObject:[NSNumber numberWithInt:-1000] forKey:@"subsessionIntervalInMilliseconds"];
             }
         }
     }
@@ -231,7 +218,8 @@
         NSString *environment = [parameters objectForKey:@"environment"][0];
         NSString *appToken = [parameters objectForKey:@"appToken"][0];
 
-        adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
+        adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                               environment:environment];
         [self.savedConfigs setObject:adjustConfig forKey:configNumber];
     }
     
@@ -274,75 +262,39 @@
         [adjustConfig setDefaultTracker:defaultTracker];
     }
 
-    if ([parameters objectForKey:@"appSecret"]) {
-        NSArray *appSecretList = [parameters objectForKey:@"appSecret"];
-        if ([appSecretList count] == 5 &&
-            [appSecretList[0] length] > 0 &&
-            [appSecretList[1] length] > 0 &&
-            [appSecretList[2] length] > 0 &&
-            [appSecretList[3] length] > 0 &&
-            [appSecretList[4] length] > 0) {
-            NSUInteger secretId = [appSecretList[0] integerValue];
-            NSUInteger part1 = [appSecretList[1] integerValue];
-            NSUInteger part2 = [appSecretList[2] integerValue];
-            NSUInteger part3 = [appSecretList[3] integerValue];
-            NSUInteger part4 = [appSecretList[4] integerValue];
-
-            [adjustConfig setAppSecret:secretId info1:part1 info2:part2 info3:part3 info4:part4];
-        }
-    }
-
-    if ([parameters objectForKey:@"delayStart"]) {
-        NSString *delayStartS = [parameters objectForKey:@"delayStart"][0];
-        double delayStart = [delayStartS doubleValue];
-        [adjustConfig setDelayStart:delayStart];
-    }
-
-    if ([parameters objectForKey:@"deviceKnown"]) {
-        NSString *deviceKnownS = [parameters objectForKey:@"deviceKnown"][0];
-        [adjustConfig setIsDeviceKnown:[deviceKnownS boolValue]];
-    }
-    
     if ([parameters objectForKey:@"needsCost"]) {
         NSString *needsCostS = [parameters objectForKey:@"needsCost"][0];
-        [adjustConfig setNeedsCost:[needsCostS boolValue]];
-    }
-
-    if ([parameters objectForKey:@"eventBufferingEnabled"]) {
-        NSString *eventBufferingEnabledS = [parameters objectForKey:@"eventBufferingEnabled"][0];
-        [adjustConfig setEventBufferingEnabled:[eventBufferingEnabledS boolValue]];
-    }
-    
-    if ([parameters objectForKey:@"coppaCompliant"]) {
-        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
-        [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabledS boolValue]];
+        if ([needsCostS boolValue] == YES) {
+            [adjustConfig enableCostDataInAttribution];
+        }
     }
 
     if ([parameters objectForKey:@"sendInBackground"]) {
         NSString *sendInBackgroundS = [parameters objectForKey:@"sendInBackground"][0];
-        [adjustConfig setSendInBackground:[sendInBackgroundS boolValue]];
+        if ([sendInBackgroundS boolValue] == YES) {
+            [adjustConfig enableSendingInBackground];
+        }
     }
     
     if ([parameters objectForKey:@"allowIdfaReading"]) {
         NSString *allowIdfaReadingS = [parameters objectForKey:@"allowIdfaReading"][0];
-        [adjustConfig setAllowIdfaReading:[allowIdfaReadingS boolValue]];
+        if ([allowIdfaReadingS boolValue] == NO) {
+            [adjustConfig disableIdfaReading];
+        }
     }
 
     if ([parameters objectForKey:@"allowAdServicesInfoReading"]) {
         NSString *allowAdServicesInfoReadingS = [parameters objectForKey:@"allowAdServicesInfoReading"][0];
-        [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReadingS boolValue]];
+        if ([allowAdServicesInfoReadingS boolValue] == NO) {
+            [adjustConfig disableAdServices];
+        }
     }
     
     if ([parameters objectForKey:@"allowSkAdNetworkHandling"]) {
         NSString *allowSkAdNetworkHandlingS = [parameters objectForKey:@"allowSkAdNetworkHandling"][0];
         if ([allowSkAdNetworkHandlingS boolValue] == NO) {
-            [adjustConfig deactivateSKAdNetworkHandling];
+            [adjustConfig disableSkanAttribution];
         }
-    }
-
-    if ([parameters objectForKey:@"userAgent"]) {
-        NSString *userAgent = [parameters objectForKey:@"userAgent"][0];
-        [adjustConfig setUserAgent:userAgent];
     }
 
     if ([parameters objectForKey:@"externalDeviceId"]) {
@@ -352,7 +304,9 @@
     
     if ([parameters objectForKey:@"checkPasteboard"]) {
         NSString *checkPasteboardS = [parameters objectForKey:@"checkPasteboard"][0];
-        [adjustConfig setLinkMeEnabled:[checkPasteboardS boolValue]];
+        if ([checkPasteboardS boolValue] == YES) {
+            [adjustConfig enableLinkMe];
+        }
     }
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
@@ -400,9 +354,28 @@
                 andReturnValue:[shouldOpenDeeplinkS boolValue]];
     }
 
+    if ([parameters objectForKey:@"skanCallback"]) {
+        NSLog(@"skanCallback detected");
+        self.adjustDelegate =
+            [[ATAAdjustDelegateSkan alloc] initWithTestLibrary:self.testLibrary
+                                                  andExtraPath:self.extraPath];
+    }
+
     if ([parameters objectForKey:@"attConsentWaitingSeconds"]) {
         NSString *attConsentWaitingSecondsS = [parameters objectForKey:@"attConsentWaitingSeconds"][0];
         [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSecondsS intValue]];
+    }
+
+    if ([parameters objectForKey:@"eventDeduplicationIdsMaxSize"]) {
+        NSString *eventDeduplicationIdsMaxSizeS = [parameters objectForKey:@"eventDeduplicationIdsMaxSize"][0];
+        [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSizeS intValue]];
+    }
+
+    if ([parameters objectForKey:@"coppaCompliant"]) {
+        NSString *coppaCompliantEnabledS = [parameters objectForKey:@"coppaCompliant"][0];
+        if ([coppaCompliantEnabledS boolValue] == YES) {
+            [adjustConfig enableCoppaCompliance];
+        }
     }
 
     [adjustConfig setDelegate:self.adjustDelegate];
@@ -420,7 +393,7 @@
 
     ADJConfig *adjustConfig = [self.savedConfigs objectForKey:configNumber];
     [adjustConfig setLogLevel:ADJLogLevelVerbose];
-    [Adjust appDidLaunch:adjustConfig];
+    [Adjust initSdk:adjustConfig];
     [self.savedConfigs removeObjectForKey:[NSNumber numberWithInt:0]];
 }
 
@@ -443,7 +416,7 @@
         } else {
             eventToken = [parameters objectForKey:@"eventToken"][0];
         }
-        adjustEvent = [ADJEvent eventWithEventToken:eventToken];
+        adjustEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
         [self.savedEvents setObject:adjustEvent forKey:eventNumber];
     }
 
@@ -509,10 +482,13 @@
         [adjustEvent setTransactionId:transactionId];
     }
 
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        NSData *receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-        [adjustEvent setReceipt:receipt];
+    if ([parameters objectForKey:@"deduplicationId"] &&
+        [[parameters objectForKey:@"deduplicationId"] count] > 0) {
+        NSString *deduplicationId = [parameters objectForKey:@"deduplicationId"][0];
+        if (deduplicationId == (id)[NSNull null]) {
+            deduplicationId = nil;
+        }
+        [adjustEvent setDeduplicationId:deduplicationId];
     }
 }
 
@@ -541,85 +517,78 @@
 
 - (void)setEnabled:(NSDictionary *)parameters {
     NSString *enabledS = [parameters objectForKey:@"enabled"][0];
-    [Adjust setEnabled:[enabledS boolValue]];
+    if ([enabledS boolValue] == YES) {
+        [Adjust enable];
+    } else {
+        [Adjust disable];
+    }
 }
 
 - (void)setOfflineMode:(NSDictionary *)parameters {
     NSString *enabledS = [parameters objectForKey:@"enabled"][0];
-    [Adjust setOfflineMode:[enabledS boolValue]];
+    if ([enabledS boolValue] == YES) {
+        [Adjust switchToOfflineMode];
+    } else {
+        [Adjust switchBackToOnlineMode];
+    }
 }
 
-- (void)sendFirstPackages:(NSDictionary *)parameters {
-    [Adjust sendFirstPackages];
-}
-
-- (void)addSessionCallbackParameter:(NSDictionary *)parameters {
+- (void)addGlobalCallbackParameter:(NSDictionary *)parameters {
     NSArray *keyValuesPairs = [parameters objectForKey:@"KeyValue"];
     for (int i = 0; i < keyValuesPairs.count; i = i + 2) {
         NSString *key = keyValuesPairs[i];
         NSString *value = keyValuesPairs[i + 1];
-        [Adjust addSessionCallbackParameter:key value:value];
+        [Adjust addGlobalCallbackParameter:value forKey:key];
     }
 }
 
-- (void)addSessionPartnerParameter:(NSDictionary *)parameters {
+- (void)addGlobalPartnerParameter:(NSDictionary *)parameters {
     NSArray *keyValuesPairs = [parameters objectForKey:@"KeyValue"];
     for (int i = 0; i < keyValuesPairs.count; i = i + 2) {
         NSString *key = keyValuesPairs[i];
         NSString *value = keyValuesPairs[i + 1];
-        [Adjust addSessionPartnerParameter:key value:value];
+        [Adjust addGlobalPartnerParameter:value forKey:key];
     }
 }
 
-- (void)removeSessionCallbackParameter:(NSDictionary *)parameters {
+- (void)removeGlobalCallbackParameter:(NSDictionary *)parameters {
     NSArray *keys = [parameters objectForKey:@"key"];
     for (int i = 0; i < keys.count; i = i + 1) {
         NSString *key = keys[i];
-        [Adjust removeSessionCallbackParameter:key];
+        [Adjust removeGlobalCallbackParameterForKey:key];
     }
 }
 
-- (void)removeSessionPartnerParameter:(NSDictionary *)parameters {
+- (void)removeGlobalPartnerParameter:(NSDictionary *)parameters {
     NSArray *keys = [parameters objectForKey:@"key"];
     for (int i = 0; i < keys.count; i = i + 1) {
         NSString *key = keys[i];
-        [Adjust removeSessionPartnerParameter:key];
+        [Adjust removeGlobalPartnerParameterForKey:key];
     }
 }
 
-- (void)resetSessionCallbackParameters:(NSDictionary *)parameters {
-    [Adjust resetSessionCallbackParameters];
+- (void)removeGlobalCallbackParameters:(NSDictionary *)parameters {
+    [Adjust removeGlobalCallbackParameters];
 }
 
-- (void)resetSessionPartnerParameters:(NSDictionary *)parameters {
-    [Adjust resetSessionPartnerParameters];
+- (void)removeGlobalPartnerParameters:(NSDictionary *)parameters {
+    [Adjust removeGlobalPartnerParameters];
 }
 
 - (void)setPushToken:(NSDictionary *)parameters {
-    NSString *deviceTokenS = [parameters objectForKey:@"pushToken"][0];
-    NSData *deviceToken = [deviceTokenS dataUsingEncoding:NSUTF8StringEncoding];
-    [Adjust setDeviceToken:deviceToken];
+    NSString *pushTokenS = [parameters objectForKey:@"pushToken"][0];
+    NSData *pushToken = [pushTokenS dataUsingEncoding:NSUTF8StringEncoding];
+    [Adjust setPushToken:pushToken];
 }
 
 - (void)openDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    [Adjust appWillOpenUrl:deeplink];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:deeplink]];
 }
 
 - (void)gdprForgetMe:(NSDictionary *)parameters {
     [Adjust gdprForgetMe];
-}
-
-- (void)trackAdRevenue:(NSDictionary *)parameters {
-    NSString *sourceS = [parameters objectForKey:@"adRevenueSource"][0];
-    NSString *payloadS = [parameters objectForKey:@"adRevenueJsonString"][0];
-    NSData *payload = [payloadS dataUsingEncoding:NSUTF8StringEncoding];
-    [Adjust trackAdRevenue:sourceS payload:payload];
-}
-
-- (void)disableThirdPartySharing:(NSDictionary *)parameters {
-    [Adjust disableThirdPartySharing];
 }
 
 - (void)thirdPartySharing:(NSDictionary *)parameters {
@@ -634,7 +603,7 @@
     }
 
     ADJThirdPartySharing *adjustThirdPartySharing =
-        [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
+        [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
 
     if ([parameters objectForKey:@"granularOptions"]) {
         NSArray *granularOptions = [parameters objectForKey:@"granularOptions"];
@@ -664,11 +633,10 @@
     [Adjust trackMeasurementConsent:[isEnabledS boolValue]];
 }
 
-- (void)trackSubscription:(NSDictionary *)parameters {
+- (void)trackAppStoreSubscription:(NSDictionary *)parameters {
     NSDecimalNumber *price;
     NSString *currency;
     NSString *transactionId;
-    NSData *receipt;
     NSDate *transactionDate;
     NSString *salesRegion;
 
@@ -681,10 +649,6 @@
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
     }
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-    }
     if ([parameters objectForKey:@"transactionDate"]) {
         transactionDate = [NSDate dateWithTimeIntervalSince1970:[[parameters objectForKey:@"transactionDate"][0] doubleValue]];
     }
@@ -692,10 +656,10 @@
         salesRegion = [parameters objectForKey:@"salesRegion"][0];
     }
 
-    ADJSubscription *subscription = [[ADJSubscription alloc] initWithPrice:price
-                                                                  currency:currency
-                                                             transactionId:transactionId
-                                                                andReceipt:receipt];
+    ADJAppStoreSubscription *subscription =
+    [[ADJAppStoreSubscription alloc] initWithPrice:price
+                                          currency:currency
+                                     transactionId:transactionId];
     [subscription setTransactionDate:transactionDate];
     [subscription setSalesRegion:salesRegion];
 
@@ -717,10 +681,10 @@
         }
     }
 
-    [Adjust trackSubscription:subscription];
+    [Adjust trackAppStoreSubscription:subscription];
 }
 
-- (void)trackAdRevenueV2:(NSDictionary *)parameters {
+- (void)trackAdRevenue:(NSDictionary *)parameters {
     NSString *source = nil;
     if ([parameters objectForKey:@"adRevenueSource"]) {
         if ([[parameters objectForKey:@"adRevenueSource"] count] > 0) {
@@ -778,21 +742,17 @@
 }
 
 - (void)getLastDeeplink:(NSDictionary *)parameters {
-    NSURL *lastDeeplink = [Adjust lastDeeplink];
-    NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
-    [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
-    [self.testLibrary sendInfoToServer:self.extraPath];
+    [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
+        NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
+        [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
 }
 
 - (void)verifyPurchase:(NSDictionary *)parameters {
-    NSData *receipt;
     NSString *transactionId;
     NSString *productId;
 
-    if ([parameters objectForKey:@"receipt"]) {
-        NSString *receiptString = [parameters objectForKey:@"receipt"][0];
-        receipt = [receiptString dataUsingEncoding:NSUTF8StringEncoding];
-    }
     if ([parameters objectForKey:@"transactionId"]) {
         transactionId = [parameters objectForKey:@"transactionId"][0];
     }
@@ -800,10 +760,10 @@
         productId = [parameters objectForKey:@"productId"][0];
     }
 
-    ADJPurchase *purchase = [[ADJPurchase alloc] initWithTransactionId:transactionId
-                                                             productId:productId
-                                                            andReceipt:receipt];
-    [Adjust verifyPurchase:purchase completionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+    ADJAppStorePurchase *purchase = [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
+                                                                             productId:productId];
+    [Adjust verifyAppStorePurchase:purchase
+             withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
         [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
         [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
         [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
@@ -811,11 +771,50 @@
     }];
 }
 
+- (void)verifyTrack:(NSDictionary *)parameters {
+    [self event:parameters];
+    NSNumber *eventNumber = [NSNumber numberWithInt:0];
+    if ([parameters objectForKey:@"eventName"]) {
+        NSString *eventName = [parameters objectForKey:@"eventName"][0];
+        NSString *eventNumberS = [eventName substringFromIndex:[eventName length] - 1];
+        eventNumber = [NSNumber numberWithInt:[eventNumberS intValue]];
+    }
+
+    ADJEvent *adjustEvent = [self.savedEvents objectForKey:eventNumber];
+
+    [Adjust verifyAndTrackAppStorePurchase:adjustEvent
+                     withCompletionHandler:^(ADJPurchaseVerificationResult * _Nonnull verificationResult) {
+        [self.testLibrary addInfoToSend:@"verification_status" value:verificationResult.verificationStatus];
+        [self.testLibrary addInfoToSend:@"code" value:[NSString stringWithFormat:@"%d", verificationResult.code]];
+        [self.testLibrary addInfoToSend:@"message" value:verificationResult.message];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+
+    [self.savedEvents removeObjectForKey:[NSNumber numberWithInt:0]];
+}
+
 - (void)processDeeplink:(NSDictionary *)parameters {
     NSString *deeplinkS = [parameters objectForKey:@"deeplink"][0];
     NSURL *deeplink = [NSURL URLWithString:deeplinkS];
-    [Adjust processDeeplink:deeplink completionHandler:^(NSString * _Nonnull resolvedLink) {
+    [Adjust processAndResolveDeeplink:[[ADJDeeplink alloc] initWithDeeplink:deeplink]
+                withCompletionHandler:^(NSString * _Nullable resolvedLink) {
         [self.testLibrary addInfoToSend:@"resolved_link" value:resolvedLink];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)attributionGetter:(NSDictionary *)parameters {
+    [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
+        [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+        [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
+        [self.testLibrary addInfoToSend:@"network" value:attribution.network];
+        [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
+        [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
+        [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
+        [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
+        [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+        [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+        [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }

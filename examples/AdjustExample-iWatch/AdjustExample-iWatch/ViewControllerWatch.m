@@ -6,7 +6,6 @@
 //  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
 #import "ViewControllerWatch.h"
 #import "AdjustTrackingHelper.h"
 

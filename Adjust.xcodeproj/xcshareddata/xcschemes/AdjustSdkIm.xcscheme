@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9DE354D12100726300D211C9"
-               BuildableName = "AdjustSdkIm.framework"
+               BuildableName = "AdjustSdk.framework"
                BlueprintName = "AdjustSdkIm"
                ReferencedContainer = "container:Adjust.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9DE354D12100726300D211C9"
-            BuildableName = "AdjustSdkIm.framework"
+            BuildableName = "AdjustSdk.framework"
             BlueprintName = "AdjustSdkIm"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>
@@ -60,7 +60,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9DE354D12100726300D211C9"
-            BuildableName = "AdjustSdkIm.framework"
+            BuildableName = "AdjustSdk.framework"
             BlueprintName = "AdjustSdkIm"
             ReferencedContainer = "container:Adjust.xcodeproj">
          </BuildableReference>

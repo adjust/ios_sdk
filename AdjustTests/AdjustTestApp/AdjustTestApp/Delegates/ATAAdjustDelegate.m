@@ -43,6 +43,9 @@
     [self swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                swizzledSelector:@selector(adjustSessionTrackingFailedWananbeEmpty:)];
 
+    [self swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
+               swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabeEmpty:)];
+
     return self;
 }
 
@@ -50,7 +53,8 @@
             eventSucceededCallback:(BOOL)swizzleEventSucceededCallback
                eventFailedCallback:(BOOL)swizzleEventFailedCallback
           sessionSucceededCallback:(BOOL)swizzleSessionSucceededCallback
-             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback {
+             sessionFailedCallback:(BOOL)swizzleSessionFailedCallback
+                      skanCallback:(BOOL)swizzleSkanCallback {
     // Do the swizzling where and if needed.
     if (swizzleAttributionCallback) {
         [self swizzleCallbackMethod:@selector(adjustAttributionChanged:)
@@ -75,6 +79,11 @@
     if (swizzleSessionFailedCallback) {
         [self swizzleCallbackMethod:@selector(adjustSessionTrackingFailed:)
                    swizzledSelector:@selector(adjustSessionTrackingFailedWananbe:)];
+    }
+
+    if (swizzleSkanCallback) {
+        [self swizzleCallbackMethod:@selector(adjustSkanUpdatedWithConversionData:)
+                   swizzledSelector:@selector(adjustSkanUpdatedWithConversionDataWannabe:)];
     }
 }
 
@@ -104,15 +113,17 @@
     NSLog(@"Attribution callback called!");
     NSLog(@"Attribution: %@", attribution);
     
-    [self.testLibrary addInfoToSend:@"trackerToken" value:attribution.trackerToken];
-    [self.testLibrary addInfoToSend:@"trackerName" value:attribution.trackerName];
+    [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+    [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
     [self.testLibrary addInfoToSend:@"network" value:attribution.network];
     [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
     [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
     [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
-    [self.testLibrary addInfoToSend:@"clickLabel" value:attribution.clickLabel];
-    [self.testLibrary addInfoToSend:@"adid" value:attribution.adid];
-    
+    [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
+    [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+    [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+    [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
+
     [self.testLibrary sendInfoToServer:self.basePath];
 }
 
@@ -121,7 +132,7 @@
     NSLog(@"Event success data: %@", eventSuccessResponseData);
 
     [self.testLibrary addInfoToSend:@"message" value:eventSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:eventSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventSuccessResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventSuccessResponseData.eventToken];
 
@@ -145,7 +156,7 @@
     NSLog(@"Event failure data: %@", eventFailureResponseData);
 
     [self.testLibrary addInfoToSend:@"message" value:eventFailureResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:eventFailureResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:eventFailureResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:eventFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"eventToken" value:eventFailureResponseData.eventToken];
     [self.testLibrary addInfoToSend:@"willRetry" value:(eventFailureResponseData.willRetry ? @"true" : @"false")];
@@ -170,7 +181,7 @@
     NSLog(@"Session success data: %@", sessionSuccessResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionSuccessResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionSuccessResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionSuccessResponseData.adid];
     
     NSError *error;
@@ -193,7 +204,7 @@
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
     
     [self.testLibrary addInfoToSend:@"message" value:sessionFailureResponseData.message];
-    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timeStamp];
+    [self.testLibrary addInfoToSend:@"timestamp" value:sessionFailureResponseData.timestamp];
     [self.testLibrary addInfoToSend:@"adid" value:sessionFailureResponseData.adid];
     [self.testLibrary addInfoToSend:@"willRetry" value:(sessionFailureResponseData.willRetry ? @"true" : @"false")];
     
@@ -209,6 +220,16 @@
         [self.testLibrary addInfoToSend:@"jsonResponse" value:jsonString];
     }
     
+    [self.testLibrary sendInfoToServer:self.basePath];
+}
+
+- (void)adjustSkanUpdatedWithConversionDataWannabe:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    NSLog(@"SKAN callback called!");
+
+    for (NSString *key in data) {
+        [self.testLibrary addInfoToSend:key value:[data objectForKey:key]];
+    }
+
     [self.testLibrary sendInfoToServer:self.basePath];
 }
 
@@ -235,6 +256,11 @@
 - (void)adjustSessionTrackingFailedWananbeEmpty:(ADJSessionFailure *)sessionFailureResponseData {
     NSLog(@"Session failure callback called!");
     NSLog(@"Session failure data: %@", sessionFailureResponseData);
+}
+
+- (void)adjustSkanUpdatedWithConversionDataWannabeEmpty:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    NSLog(@"SKAN callback called!");
+    NSLog(@"SKAN stuff: %@", data);
 }
 
 @end

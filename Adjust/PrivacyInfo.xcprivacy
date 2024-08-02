@@ -7,6 +7,7 @@
 	<key>NSPrivacyTrackingDomains</key>
 	<array>
 		<string>https://consent.adjust.com</string>
+		<string>https://consent.adjust.io</string>
 		<string>https://consent.adjust.net.in</string>
 		<string>https://consent.adjust.world</string>
 		<string>https://consent.adjust.cn</string>

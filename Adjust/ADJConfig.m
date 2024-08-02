@@ -10,7 +10,6 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 #import "ADJUtil.h"
-#import "Adjust.h"
 
 @interface ADJConfig()
 
@@ -20,27 +19,16 @@
 
 @implementation ADJConfig
 
-+ (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment {
-    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
-}
-
-+ (ADJConfig *)configWithAppToken:(NSString *)appToken
-                      environment:(NSString *)environment
-             allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
-    return [[ADJConfig alloc] initWithAppToken:appToken environment:environment allowSuppressLogLevel:allowSuppressLogLevel];
-}
-
-- (id)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment {
+- (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
+                             environment:(nonnull NSString *)environment {
     return [self initWithAppToken:appToken
                       environment:environment
-             allowSuppressLogLevel:NO];
+                 suppressLogLevel:NO];
 }
 
-- (id)initWithAppToken:(NSString *)appToken
-           environment:(NSString *)environment
-  allowSuppressLogLevel:(BOOL)allowSuppressLogLevel {
+- (nullable ADJConfig *)initWithAppToken:(nonnull NSString *)appToken
+                             environment:(nonnull NSString *)environment
+                        suppressLogLevel:(BOOL)allowSuppressLogLevel {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -65,13 +53,16 @@
     _environment = environment;
     
     // default values
-    self.sendInBackground = NO;
-    self.eventBufferingEnabled = NO;
-    self.coppaCompliantEnabled = NO;
-    self.allowIdfaReading = YES;
-    self.allowAdServicesInfoReading = YES;
-    self.linkMeEnabled = NO;
-    _isSKAdNetworkHandlingActive = YES;
+    _isSendingInBackgroundEnabled = NO;
+    _isAdServicesEnabled = YES;
+    _isLinkMeEnabled = NO;
+    _isIdfaReadingEnabled = YES;
+    _isIdfvReadingEnabled = YES;
+    _isSkanAttributionEnabled = YES;
+    _eventDeduplicationIdsMaxSize = -1;
+    _isDeviceIdsReadingOnceEnabled = NO;
+    _isCostDataInAttributionEnabled = NO;
+    _isCoppaComplianceEnabled = NO;
 
     return self;
 }
@@ -86,8 +77,58 @@
      isProductionEnvironment:[ADJEnvironmentProduction isEqualToString:environment]];
 }
 
-- (void)deactivateSKAdNetworkHandling {
-    _isSKAdNetworkHandlingActive = NO;
+- (void)disableIdfaReading {
+    _isIdfaReadingEnabled = NO;
+}
+
+- (void)disableIdfvReading {
+    _isIdfvReadingEnabled = NO;
+}
+
+- (void)disableSkanAttribution {
+    _isSkanAttributionEnabled = NO;
+}
+
+- (void)enableLinkMe {
+    _isLinkMeEnabled = YES;
+}
+
+- (void)enableDeviceIdsReadingOnce {
+    _isDeviceIdsReadingOnceEnabled = YES;
+}
+
+- (void)enableSendingInBackground {
+    _isSendingInBackgroundEnabled = YES;
+}
+
+- (void)disableAdServices {
+    _isAdServicesEnabled = NO;
+}
+
+- (void)enableCostDataInAttribution {
+    _isCostDataInAttributionEnabled = YES;
+}
+
+- (void)enableCoppaCompliance {
+    _isCoppaComplianceEnabled = YES;
+}
+
+- (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
+         useSubdomains:(BOOL)useSubdomains
+       isDataResidency:(BOOL)isDataResidency {
+    if (urlStrategyDomains == nil) {
+        return;
+    }
+    if (urlStrategyDomains.count == 0) {
+        return;
+    }
+
+    if (_urlStrategyDomains == nil) {
+        _urlStrategyDomains = [NSArray arrayWithArray:urlStrategyDomains];
+    }
+
+    _useSubdomains = useSubdomains;
+    _isDataResidency = isDataResidency;
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
@@ -104,35 +145,29 @@
         [self.logger debug:@"Delegate implements adjustAttributionChanged:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustEventTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingSucceeded:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustEventTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustEventTrackingFailed:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingSucceeded:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingSucceeded:"];
         hasResponseDelegate = YES;
     }
-
     if ([delegate respondsToSelector:@selector(adjustSessionTrackingFailed:)]) {
         [self.logger debug:@"Delegate implements adjustSessionTrackingFailed:"];
         hasResponseDelegate = YES;
     }
-
-    if ([delegate respondsToSelector:@selector(adjustDeeplinkResponse:)]) {
-        [self.logger debug:@"Delegate implements adjustDeeplinkResponse:"];
+    if ([delegate respondsToSelector:@selector(adjustDeferredDeeplinkReceived:)]) {
+        [self.logger debug:@"Delegate implements adjustDeferredDeeplinkReceived:"];
         // does not enable hasDelegate flag
         implementsDeeplinkCallback = YES;
     }
-    
-    if ([delegate respondsToSelector:@selector(adjustConversionValueUpdated:)]) {
-        [self.logger debug:@"Delegate implements adjustConversionValueUpdated:"];
+    if ([delegate respondsToSelector:@selector(adjustSkanUpdatedWithConversionData:)]) {
+        [self.logger debug:@"Delegate implements adjustSkanUpdatedWithConversionData:"];
         hasResponseDelegate = YES;
     }
 
@@ -177,19 +212,6 @@
     return self.appToken != nil;
 }
 
-- (void)setAppSecret:(NSUInteger)secretId
-               info1:(NSUInteger)info1
-               info2:(NSUInteger)info2
-               info3:(NSUInteger)info3
-               info4:(NSUInteger)info4 {
-    _secretId = [NSString stringWithFormat:@"%lu", (unsigned long)secretId];
-    _appSecret = [NSString stringWithFormat:@"%lu%lu%lu%lu",
-                   (unsigned long)info1,
-                   (unsigned long)info2,
-                   (unsigned long)info3,
-                   (unsigned long)info4];
-}
-
 - (id)copyWithZone:(NSZone *)zone {
     ADJConfig *copy = [[[self class] allocWithZone:zone] init];
     if (copy) {
@@ -198,24 +220,22 @@
         copy.logLevel = self.logLevel;
         copy.sdkPrefix = [self.sdkPrefix copyWithZone:zone];
         copy.defaultTracker = [self.defaultTracker copyWithZone:zone];
-        copy.eventBufferingEnabled = self.eventBufferingEnabled;
-        copy.sendInBackground = self.sendInBackground;
-        copy.allowIdfaReading = self.allowIdfaReading;
-        copy.allowAdServicesInfoReading = self.allowAdServicesInfoReading;
-        copy.delayStart = self.delayStart;
+        copy->_isSendingInBackgroundEnabled = self.isSendingInBackgroundEnabled;
+        copy->_isAdServicesEnabled = self.isAdServicesEnabled;
         copy.attConsentWaitingInterval = self.attConsentWaitingInterval;
-        copy.coppaCompliantEnabled = self.coppaCompliantEnabled;
-        copy.userAgent = [self.userAgent copyWithZone:zone];
         copy.externalDeviceId = [self.externalDeviceId copyWithZone:zone];
-        copy.isDeviceKnown = self.isDeviceKnown;
-        copy.needsCost = self.needsCost;
-        copy->_secretId = [self.secretId copyWithZone:zone];
-        copy->_appSecret = [self.appSecret copyWithZone:zone];
-        copy->_isSKAdNetworkHandlingActive = self.isSKAdNetworkHandlingActive;
-        copy->_urlStrategy = [self.urlStrategy copyWithZone:zone];
-        copy.linkMeEnabled = self.linkMeEnabled;
-        copy.readDeviceInfoOnceEnabled = self.readDeviceInfoOnceEnabled;
-        // adjust delegate not copied
+        copy->_isCostDataInAttributionEnabled = self.isCostDataInAttributionEnabled;
+        copy->_isCoppaComplianceEnabled = self.isCoppaComplianceEnabled;
+        copy->_isSkanAttributionEnabled = self.isSkanAttributionEnabled;
+        copy->_urlStrategyDomains = [self.urlStrategyDomains copyWithZone:zone];
+        copy->_useSubdomains = self.useSubdomains;
+        copy->_isDataResidency = self.isDataResidency;
+        copy->_isLinkMeEnabled = self.isLinkMeEnabled;
+        copy->_isIdfaReadingEnabled = self.isIdfaReadingEnabled;
+        copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
+        copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
+        copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
+        // AdjustDelegate not copied
     }
 
     return copy;

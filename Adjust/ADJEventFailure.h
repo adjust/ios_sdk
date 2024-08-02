@@ -13,22 +13,22 @@
 /**
  * @brief Message from the adjust backend.
  */
-@property (nonatomic, copy) NSString * message;
+@property (nonatomic, copy) NSString *message;
 
 /**
  * @brief Timestamp from the adjust backend.
  */
-@property (nonatomic, copy) NSString * timeStamp;
+@property (nonatomic, copy) NSString *timestamp;
 
 /**
  * @brief Adjust identifier of the device.
  */
-@property (nonatomic, copy) NSString * adid;
+@property (nonatomic, copy) NSString *adid;
 
 /**
  * @brief Event token value.
  */
-@property (nonatomic, copy) NSString * eventToken;
+@property (nonatomic, copy) NSString *eventToken;
 
 /**
  * @brief Event callback ID.
@@ -44,12 +44,5 @@
  * @brief Backend response in JSON format.
  */
 @property (nonatomic, strong) NSDictionary *jsonResponse;
-
-/**
- * @brief Initialisation method.
- *
- * @return ADJEventFailure instance.
- */
-+ (ADJEventFailure *)eventFailureResponseData;
 
 @end

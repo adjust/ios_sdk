@@ -1,22 +1,20 @@
 //
-//  AdjustWebViewJSBridge.h
-//  Adjust SDK
+//  AdjustBridgeRegister.h
+//  Adjust
 //
-//  Created by Pedro Filipe (@nonelse) on 10th June 2016.
-//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
+//  Created by Pedro Filipe (@nonelse) on 27th April 2016.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "WKWebViewJavascriptBridge.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface AdjustBridgeRegister : NSObject
 
 + (NSString *)AdjustBridge_js;
-
-- (id)initWithWKWebView:(WKWebView*)webView;
-- (void)setWKWebViewDelegate:(id<WKNavigationDelegate>)webViewDelegate;
-- (void)callHandler:(NSString *)handlerName data:(id)data;
-- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler;
-- (void)augmentHybridWebView:(NSString *)fbAppId;
++ (void)augmentHybridWebView:(NSString *)fbAppId;
 
 @end
+
+NS_ASSUME_NONNULL_END

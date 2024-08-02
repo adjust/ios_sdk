@@ -6,9 +6,9 @@
 //  Copyright © 2018-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
 #import "AppDelegate.h"
 #import "WKWebViewController.h"
+#import <AdjustSdk/AdjustSdk.h>
 
 @interface AppDelegate ()
 
@@ -29,13 +29,13 @@
     // url object contains the deep link
 
     // Call the below method to send deep link to Adjust backend
-    [Adjust appWillOpenUrl:url];
+    [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:url]];
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        [Adjust appWillOpenUrl:[userActivity webpageURL]];
+        [Adjust processDeeplink:[[ADJDeeplink alloc] initWithDeeplink:[userActivity webpageURL]]];
     }
     return YES;
 }

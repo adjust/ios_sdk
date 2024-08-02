@@ -1,45 +1,47 @@
 //
 //  AdjustBridge.m
-//  Adjust SDK
+//  Adjust
 //
 //  Created by Pedro Filipe (@nonelse) on 27th April 2016.
-//  Copyright © 2016-2018 Adjust GmbH. All rights reserved.
+//  Copyright © 2016-Present Adjust GmbH. All rights reserved.
 //
 
-#import "Adjust.h"
-// In case of erroneous import statement try with:
-// #import <AdjustSdk/Adjust.h>
-// (depends how you import the Adjust SDK to your app)
-
 #import "AdjustBridge.h"
-#import "ADJAdjustFactory.h"
-#import "WKWebViewJavascriptBridge.h"
+#import "AdjustBridgeConstants.h"
+#import "AdjustBridgeRegister.h"
+#import "AdjustBridgeUtil.h"
 
-@interface AdjustBridge() <AdjustDelegate>
+#import <AdjustSdk/AdjustSdk.h>
 
-@property BOOL openDeferredDeeplink;
-@property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
+@interface AdjustBridge() <WKScriptMessageHandler, AdjustDelegate>
+
+@property BOOL isDeferredDeeplinkOpeningEnabled;
 @property (nonatomic, copy) NSString *attributionCallbackName;
 @property (nonatomic, copy) NSString *eventSuccessCallbackName;
 @property (nonatomic, copy) NSString *eventFailureCallbackName;
 @property (nonatomic, copy) NSString *sessionSuccessCallbackName;
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
+@property (nonatomic, copy) NSString *skanUpdatedCallbackName;
+@property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
+@property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
+
+@property (nonatomic, strong) ADJLogger *logger;
 
 @end
 
 @implementation AdjustBridge
 
-#pragma mark - Object lifecycle
+#pragma mark - Init WKWebView
 
 - (id)init {
     self = [super init];
     if (self == nil) {
         return nil;
     }
-
-    _bridgeRegister = nil;
+    self.isDeferredDeeplinkOpeningEnabled = YES;
+    _logger = [[ADJLogger alloc] init];
     [self resetAdjustBridge];
     return self;
 }
@@ -51,6 +53,431 @@
     self.sessionSuccessCallbackName = nil;
     self.sessionFailureCallbackName = nil;
     self.deferredDeeplinkCallbackName = nil;
+    self.skanUpdatedCallbackName = nil;
+}
+
+#pragma mark - Public Methods
+
+- (void)loadWKWebViewBridge:(WKWebView *_Nonnull)wkWebView {
+    if ([wkWebView isKindOfClass:WKWebView.class]) {
+        self.wkWebView = wkWebView;
+        WKUserContentController *controller = wkWebView.configuration.userContentController;
+        NSString *adjust_js = [AdjustBridgeRegister AdjustBridge_js];
+        [controller addUserScript:[[WKUserScript.class alloc]
+                                   initWithSource:adjust_js
+                                   injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                                   forMainFrameOnly:NO]];
+        [controller addScriptMessageHandler:self name:@"adjust"];
+    }
+}
+
+- (void)augmentHybridWebView {
+    NSString *fbAppId = [self getFbAppId];
+    if (fbAppId == nil) {
+        [self.logger error:@"FacebookAppID is not correctly configured in the pList"];
+        return;
+    }
+    [AdjustBridgeRegister augmentHybridWebView:fbAppId];
+}
+
+#pragma mark - WKWebView Delegate
+
+- (void)userContentController:(nonnull WKUserContentController *)userContentController
+      didReceiveScriptMessage:(nonnull WKScriptMessage *)message {
+    if ([message.body isKindOfClass:[NSDictionary class]]) {
+        [self handleMessageFromWebview:message.body];
+    }
+}
+
+#pragma mark - Handling Message from WKwebview
+
+- (void)handleMessageFromWebview:(NSDictionary<NSString *,id> *)message {
+    NSString *methodName = [message objectForKey:ADJWBMethodNameKey];
+    NSString *callbackId = [message objectForKey:ADJWBCallbackIdKey];
+    id parameters = [message objectForKey:ADJWBParametersKey];
+
+    if ([methodName isEqual:ADJWBInitSdkMethodName]) {
+        [self initSdk:parameters];
+
+    } else if ([methodName isEqual:ADJWBTrackEventMethodName]) {
+        [self trackEvent:parameters];
+
+    } else if ([methodName isEqual:ADJWBGetSdkVersionMethodName]) {
+        __block NSString *_Nullable localSdkPrefix = [parameters objectForKey:@"sdkPrefix"];
+        [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+            NSString *joinedSdkVersion = [NSString stringWithFormat:@"%@@%@", localSdkPrefix, sdkVersion];
+            [self execJsCallbackWithId:callbackId callBackData:joinedSdkVersion];
+        }];
+
+    } else if ([methodName isEqual:ADJWBGetIdfaMethodName]) {
+        [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
+            [self execJsCallbackWithId:callbackId callBackData:idfa];
+        }];
+
+    }  else if ([methodName isEqual:ADJWBGetIdfvMethodName]) {
+        [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+            [self execJsCallbackWithId:callbackId callBackData:idfv];
+        }];
+
+    } else if ([methodName isEqual:ADJWBGetAdidMethodName]) {
+        [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
+            [self execJsCallbackWithId:callbackId callBackData:adid];
+        }];
+
+    } else if ([methodName isEqual:ADJWBGetAttributionMethodName]) {
+        [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
+            [self execJsCallbackWithId:callbackId callBackData:[attribution dictionary]];
+        }];
+
+    } else if ([methodName isEqual:ADJWBIsEnabledMethodName]) {
+        [Adjust isEnabledWithCompletionHandler:^(BOOL isEnabled) {
+            [self execJsCallbackWithId:callbackId callBackData:@(isEnabled).description];
+        }];
+
+    } else if ([methodName isEqual:ADJWBRequestAppTrackingMethodName]) {
+        [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            [self execJsCallbackWithId:callbackId callBackData:@(status).description];
+        }];
+
+    } else if ([methodName isEqual:ADJWBAppTrackingAuthorizationStatus]) {
+        int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
+        [self execJsCallbackWithId:callbackId callBackData:@(appTrackingAuthorizationStatus).description];
+
+    } else if ([methodName isEqual:ADJWBSwitchToOfflineModeMethodName]) {
+        [Adjust switchToOfflineMode];
+
+    } else if ([methodName isEqual:ADJWBSwitchBackToOnlineMode]) {
+        [Adjust switchBackToOnlineMode];
+
+    } else if ([methodName isEqual:ADJWBEnableMethodName]) {
+        [Adjust enable];
+
+    } else if ([methodName isEqual:ADJWBDisableMethodName]) {
+        [Adjust disable];
+
+    } else if ([methodName isEqual:ADJWBTrackSubsessionStartMethodName]) {
+        [Adjust trackSubsessionStart];
+
+    } else if ([methodName isEqual:ADJWBTrackSubsessionEndMethodName]) {
+        [Adjust trackSubsessionEnd];
+
+    } else if ([methodName isEqual:ADJWBTrackMeasurementConsentMethodName]) {
+        if (![parameters isKindOfClass:[NSNumber class]]) {
+            return;
+        }
+        [Adjust trackMeasurementConsent:[(NSNumber *)parameters boolValue]];
+
+    } else if ([methodName isEqual:ADJWBAddGlobalCallbackParameterMethodName]) {
+        NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
+        NSString *value = [parameters objectForKey:ADJWBKvValueKey];
+        [Adjust addGlobalCallbackParameter:value forKey:key];
+
+    } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParameterMethodName]) {
+        if (![parameters isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust removeGlobalCallbackParameterForKey:(NSString *)parameters];
+
+    } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParametersMethodName]) {
+        [Adjust removeGlobalCallbackParameters];
+
+    } else if ([methodName isEqual:ADJWBAddGlobalPartnerParameterMethodName]) {
+        NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
+        NSString *value = [parameters objectForKey:ADJWBKvValueKey];
+        [Adjust addGlobalPartnerParameter:value forKey:key];
+
+    } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParameterMethodName]) {
+        if (![parameters isKindOfClass:[NSString class]]) {
+            return;
+        }
+        [Adjust removeGlobalPartnerParameterForKey:(NSString *)parameters];
+
+    } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParametersMethodName]) {
+        [Adjust removeGlobalPartnerParameters];
+
+    } else if ([methodName isEqual:ADJWBGdprForgetMeMethodName]) {
+        [Adjust gdprForgetMe];
+
+    } else if ([methodName isEqual:ADJWBTrackThirdPartySharingMethodName]) {
+        [self trackThirdPartySharing:parameters];
+
+    } else if ([methodName isEqual:ADJWBSetTestOptionsMethodName]) {
+        [self setTestOptions:parameters];
+
+    } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
+        [self trackFbPixelEvent:parameters];
+    }
+}
+
+- (void)initSdk:(id)parameters {
+    NSString *appToken = [parameters objectForKey:ADJWBAppTokenConfigKey];
+    NSString *environment = [parameters objectForKey:ADJWBEnvironmentConfigKey];
+    NSString *allowSuppressLogLevel = [parameters objectForKey:ADJWBAllowSuppressLogLevelConfigKey];
+    NSString *sdkPrefix = [parameters objectForKey:ADJWBSdkPrefixConfigKey];
+    NSString *defaultTracker = [parameters objectForKey:ADJWBDefaultTrackerConfigKey];
+    NSString *externalDeviceId = [parameters objectForKey:ADJWBExternalDeviceIdConfigKey];
+    NSString *logLevel = [parameters objectForKey:ADJWBLogLevelConfigKey];
+    NSNumber *sendInBackground = [parameters objectForKey:ADJWBSendInBackgroundConfigKey];
+    NSNumber *isCostDataInAttributionEnabled = [parameters objectForKey:ADJWBNeedsCostConfigKey];
+    NSNumber *isAdServicesEnabled = [parameters objectForKey:ADJWBAllowAdServicesInfoReadingConfigKey];
+    NSNumber *isIdfaReadingAllowed = [parameters objectForKey:ADJWBIsIdfaReadingAllowedConfigKey];
+    NSNumber *isSkanAttributionHandlingEnabled = [parameters objectForKey:ADJWBIsSkanAttributionHandlingEnabledConfigKey];
+    NSNumber *isDeferredDeeplinkOpeningEnabled = [parameters objectForKey:ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey];
+    NSNumber *isCoppaComplianceEnabled = [parameters objectForKey:ADJWBIsCoppaComplianceEnabledConfigKey];
+    NSNumber *shouldReadDeviceInfoOnce = [parameters objectForKey:ADJWBReadDeviceInfoOnceEnabledConfigKey];
+    NSNumber *attConsentWaitingSeconds = [parameters objectForKey:ADJWBAttConsentWaitingSecondsConfigKey];
+    NSNumber *eventDeduplicationIdsMaxSize = [parameters objectForKey:ADJWBEventDeduplicationIdsMaxSizeConfigKey];
+
+    id urlStrategyDomains = [parameters objectForKey:ADJWBUseStrategyDomainsConfigKey];
+    NSNumber *useSubdomains = [parameters objectForKey:ADJWBUseSubdomainsConfigKey];
+    NSNumber *isDataResidency = [parameters objectForKey:ADJWBIsDataResidencyConfigKey];
+
+    //Adjust's callbacks
+    NSString *attributionCallback = [parameters objectForKey:ADJWBAttributionCallbackConfigKey];
+    NSString *eventSuccessCallback = [parameters objectForKey:ADJWBEventSuccessCallbackConfigKey];
+    NSString *eventFailureCallback = [parameters objectForKey:ADJWBEventFailureCallbackConfigKey];
+    NSString *sessionSuccessCallback = [parameters objectForKey:ADJWBSessionSuccessCallbackConfigKey];
+    NSString *sessionFailureCallback = [parameters objectForKey:ADJWBSessionFailureCallbackConfigKey];
+    NSString *skanUpdatedCallback = [parameters objectForKey:ADJWBSkanUpdatedCallbackConfigKey];
+    NSString *deferredDeeplinkCallback = [parameters objectForKey:ADJWBDeferredDeeplinkCallbackConfigKey];
+
+    //Fb parameters
+    NSString *fbPixelDefaultEventToken = [parameters objectForKey:ADJWBFbPixelDefaultEventTokenConfigKey];
+    id fbPixelMapping = [parameters objectForKey:ADJWBFbPixelMappingConfigKey];
+
+    ADJConfig *adjustConfig;
+    if ([AdjustBridgeUtil isFieldValid:allowSuppressLogLevel]) {
+        adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
+                                               environment:environment
+                                          suppressLogLevel:[allowSuppressLogLevel boolValue]];
+    } else {
+        adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
+    }
+
+    if (![adjustConfig isValid]) {
+        return;
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:sdkPrefix]) {
+        [adjustConfig setSdkPrefix:sdkPrefix];
+    }
+    if ([AdjustBridgeUtil isFieldValid:defaultTracker]) {
+        [adjustConfig setDefaultTracker:defaultTracker];
+    }
+    if ([AdjustBridgeUtil isFieldValid:externalDeviceId]) {
+        [adjustConfig setExternalDeviceId:externalDeviceId];
+    }
+    if ([AdjustBridgeUtil isFieldValid:logLevel]) {
+        [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
+    }
+    if ([AdjustBridgeUtil isFieldValid:sendInBackground]) {
+        if ([sendInBackground boolValue] == YES) {
+            [adjustConfig enableSendingInBackground];
+        }
+    }
+    if ([AdjustBridgeUtil isFieldValid:isCostDataInAttributionEnabled]) {
+        if ([isCostDataInAttributionEnabled boolValue] == YES) {
+            [adjustConfig enableCostDataInAttribution];
+        }
+    }
+    if ([AdjustBridgeUtil isFieldValid:isAdServicesEnabled]) {
+        if ([isAdServicesEnabled boolValue] == NO) {
+            [adjustConfig disableAdServices];
+        }
+    }
+    if ([AdjustBridgeUtil isFieldValid:isCoppaComplianceEnabled]) {
+        if ([isCoppaComplianceEnabled boolValue] == YES) {
+            [adjustConfig enableCoppaCompliance];
+        }
+    }
+    if ([AdjustBridgeUtil isFieldValid:isDeferredDeeplinkOpeningEnabled]) {
+        self.isDeferredDeeplinkOpeningEnabled = [isDeferredDeeplinkOpeningEnabled boolValue];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:isIdfaReadingAllowed]) {
+        if ([isIdfaReadingAllowed boolValue] == NO) {
+            [adjustConfig disableIdfaReading];
+        }
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:attConsentWaitingSeconds]) {
+        [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:isSkanAttributionHandlingEnabled]) {
+        if ([isSkanAttributionHandlingEnabled boolValue] == NO) {
+            [adjustConfig disableSkanAttribution];
+        }
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:shouldReadDeviceInfoOnce]) {
+        if ([shouldReadDeviceInfoOnce boolValue] == YES) {
+            [adjustConfig enableDeviceIdsReadingOnce];
+        }
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:eventDeduplicationIdsMaxSize]) {
+        [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
+    }
+
+    //fb parameters handling
+    if ([AdjustBridgeUtil isFieldValid:fbPixelDefaultEventToken]) {
+        self.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
+    }
+
+    if ([fbPixelMapping count] > 0) {
+        self.fbPixelMapping = [[NSMutableDictionary alloc] initWithCapacity:[fbPixelMapping count] / 2];
+    }
+
+    for (int i = 0; i < [fbPixelMapping count]; i += 2) {
+        NSString *key = [[fbPixelMapping objectAtIndex:i] description];
+        NSString *value = [[fbPixelMapping objectAtIndex:(i + 1)] description];
+        [self.fbPixelMapping setObject:value forKey:key];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:attributionCallback]) {
+        self.attributionCallbackName = attributionCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:eventSuccessCallback]) {
+        self.eventSuccessCallbackName = eventSuccessCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:eventFailureCallback]) {
+        self.eventFailureCallbackName = eventFailureCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:sessionSuccessCallback]) {
+        self.sessionSuccessCallbackName = sessionSuccessCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:sessionFailureCallback]) {
+        self.sessionFailureCallbackName = sessionFailureCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:deferredDeeplinkCallback]) {
+        self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
+    }
+    if ([AdjustBridgeUtil isFieldValid:skanUpdatedCallback]) {
+        self.skanUpdatedCallbackName = skanUpdatedCallback;
+    }
+
+    // set self as delegate if any callback is configured
+    // change to swizzle the methods in the future
+    if (self.attributionCallbackName != nil
+        || self.eventSuccessCallbackName != nil
+        || self.eventFailureCallbackName != nil
+        || self.sessionSuccessCallbackName != nil
+        || self.sessionFailureCallbackName != nil
+        || self.deferredDeeplinkCallbackName != nil
+        || self.skanUpdatedCallbackName != nil) {
+        [adjustConfig setDelegate:self];
+    }
+
+    // URL strategy
+    if (urlStrategyDomains != nil && [urlStrategyDomains count] > 0) {
+        self.urlStrategyDomains = [[NSMutableArray alloc] initWithCapacity:[urlStrategyDomains count]];
+        for (int i = 0; i < [urlStrategyDomains count]; i += 1) {
+            NSString *domain = [[urlStrategyDomains objectAtIndex:i] description];
+            [self.urlStrategyDomains addObject:domain];
+        }
+    }
+    if ([AdjustBridgeUtil isFieldValid:useSubdomains] && [AdjustBridgeUtil isFieldValid:isDataResidency]) {
+        [adjustConfig setUrlStrategy:(NSArray *)self.urlStrategyDomains
+                       useSubdomains:[useSubdomains boolValue]
+                     isDataResidency:[isDataResidency boolValue]];
+    }
+
+    [Adjust initSdk:adjustConfig];
+}
+
+- (void)trackEvent:(NSDictionary *)parameters {
+    NSString *eventToken = [parameters objectForKey:ADJWBEventTokenEventKey];
+    NSString *revenue = [parameters objectForKey:ADJWBRevenueEventKey];
+    NSString *currency = [parameters objectForKey:ADJWBCurrencyEventKey];
+    NSString *deduplicationId = [parameters objectForKey:ADJWBDeduplicationIdEventKey];
+    NSString *callbackId = [parameters objectForKey:ADJWBCallbackIdEventKey];
+    id callbackParameters = [parameters objectForKey:ADJWBCallbackParametersEventKey];
+    id partnerParameters = [parameters objectForKey:ADJWBPartnerParametersEventKey];
+
+    ADJEvent *_Nonnull adjEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
+
+    if ([AdjustBridgeUtil isFieldValid:callbackId]) {
+        [adjEvent setCallbackId:callbackId];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:deduplicationId]) {
+        [adjEvent setDeduplicationId:deduplicationId];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:revenue] && [AdjustBridgeUtil isFieldValid:currency]) {
+        double revenueValue = [revenue doubleValue];
+        [adjEvent setRevenue:revenueValue currency:currency];
+    }
+    for (int i = 0; i < [callbackParameters count]; i += 2) {
+        NSString *key = [[callbackParameters objectAtIndex:i] description];
+        NSString *value = [[callbackParameters objectAtIndex:(i + 1)] description];
+        [adjEvent addCallbackParameter:key value:value];
+    }
+    for (int i = 0; i < [partnerParameters count]; i += 2) {
+        NSString *key = [[partnerParameters objectAtIndex:i] description];
+        NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
+        [adjEvent addPartnerParameter:key value:value];
+    }
+
+    [Adjust trackEvent:adjEvent];
+}
+
+- (void)trackThirdPartySharing:(NSDictionary *)parameters {
+    id isEnabledO = [parameters objectForKey:ADJWBIsEnabledTPSKey];
+    id granularOptions = [parameters objectForKey:ADJWBGranularOptionsTPSKey];
+    id partnerSharingSettings = [parameters objectForKey:ADJWBPartnerSharingSettingTPSKey];
+
+    NSNumber *isEnabled = nil;
+    if ([isEnabledO isKindOfClass:[NSNumber class]]) {
+        isEnabled = (NSNumber *)isEnabledO;
+    }
+
+    ADJThirdPartySharing *adjustThirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabled:isEnabled];
+
+    for (int i = 0; i < [granularOptions count]; i += 3) {
+        NSString *partnerName = [[granularOptions objectAtIndex:i] description];
+        NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
+        NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
+        [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
+    }
+    for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
+        NSString *partnerName = [[partnerSharingSettings objectAtIndex:i] description];
+        NSString *key = [[partnerSharingSettings objectAtIndex:(i + 1)] description];
+        BOOL value = [[partnerSharingSettings objectAtIndex:(i + 2)] boolValue];
+        [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:value];
+    }
+
+    [Adjust trackThirdPartySharing:adjustThirdPartySharing];
+}
+
+- (void)setTestOptions:(NSDictionary *)data {
+    [Adjust setTestOptions:[AdjustBridgeUtil getTestOptions:data]];
+
+    NSNumber *teardown = [data objectForKey:@"teardown"];
+    if ([AdjustBridgeUtil isFieldValid:teardown] && [teardown boolValue] == YES) {
+        [self resetAdjustBridge];
+    }
+}
+
+#pragma mark - Native to Javascript Callback Handling
+
+- (void)execJsCallbackWithId:(NSString *)callbackId callBackData:(id)data {
+    NSString *callbackParamString;
+    if ([data isKindOfClass:[NSMutableDictionary class]] || [data isKindOfClass:[NSDictionary class]]) {
+        callbackParamString = [AdjustBridgeUtil serializeData:data pretty:NO];
+    }
+
+    if ([data isKindOfClass:[NSString class]]){
+        callbackParamString = data;
+    }
+
+    NSString *jsExecCommand = [NSString stringWithFormat:@"%@('%@')", callbackId,
+                               callbackParamString];
+
+    [AdjustBridgeUtil launchInMainThread:^{
+        [self.wkWebView evaluateJavaScript:jsExecCommand completionHandler:nil];
+    }];
 }
 
 #pragma mark - AdjustDelegate methods
@@ -59,7 +486,8 @@
     if (self.attributionCallbackName == nil) {
         return;
     }
-    [self.bridgeRegister callHandler:self.attributionCallbackName data:[attribution dictionary]];
+    [self execJsCallbackWithId:self.attributionCallbackName
+                  callBackData:[attribution dictionary]];
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
@@ -68,19 +496,26 @@
     }
 
     NSMutableDictionary *eventSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.message forKey:@"message"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.timeStamp forKey:@"timestamp"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.adid forKey:@"adid"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken forKey:@"eventToken"];
-    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId forKey:@"callbackId"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.message
+                                          forKey:@"message"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.timestamp
+                                          forKey:@"timestamp"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.adid
+                                          forKey:@"adid"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.eventToken
+                                          forKey:@"eventToken"];
+    [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId
+                                          forKey:@"callbackId"];
 
-    NSString *jsonResponse = [self convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
+    NSString *jsonResponse = [AdjustBridgeUtil
+                              convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
     [eventSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
-    [self.bridgeRegister callHandler:self.eventSuccessCallbackName data:eventSuccessResponseDataDictionary];
+    [self execJsCallbackWithId:self.eventSuccessCallbackName
+                  callBackData:eventSuccessResponseDataDictionary];
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
@@ -89,20 +524,28 @@
     }
 
     NSMutableDictionary *eventFailureResponseDataDictionary = [NSMutableDictionary dictionary];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.message forKey:@"message"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.timeStamp forKey:@"timestamp"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.adid forKey:@"adid"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.eventToken forKey:@"eventToken"];
-    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId forKey:@"callbackId"];
-    [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry] forKey:@"willRetry"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.message
+                                          forKey:@"message"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.timestamp
+                                          forKey:@"timestamp"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.adid
+                                          forKey:@"adid"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.eventToken
+                                          forKey:@"eventToken"];
+    [eventFailureResponseDataDictionary setValue:eventFailureResponseData.callbackId
+                                          forKey:@"callbackId"];
+    [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry]
+                                          forKey:@"willRetry"];
 
-    NSString *jsonResponse = [self convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
+    NSString *jsonResponse = [AdjustBridgeUtil
+                              convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
     [eventFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
-    [self.bridgeRegister callHandler:self.eventFailureCallbackName data:eventFailureResponseDataDictionary];
+    [self execJsCallbackWithId:self.eventFailureCallbackName
+                  callBackData:eventFailureResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -111,17 +554,22 @@
     }
 
     NSMutableDictionary *sessionSuccessResponseDataDictionary = [NSMutableDictionary dictionary];
-    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.message forKey:@"message"];
-    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timeStamp forKey:@"timestamp"];
-    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid forKey:@"adid"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.message
+                                            forKey:@"message"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.timestamp
+                                            forKey:@"timestamp"];
+    [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid
+                                            forKey:@"adid"];
 
-    NSString *jsonResponse = [self convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
+    NSString *jsonResponse = [AdjustBridgeUtil
+                              convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
     [sessionSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
-    [self.bridgeRegister callHandler:self.sessionSuccessCallbackName data:sessionSuccessResponseDataDictionary];
+    [self execJsCallbackWithId:self.sessionSuccessCallbackName
+                  callBackData:sessionSuccessResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
@@ -130,631 +578,104 @@
     }
 
     NSMutableDictionary *sessionFailureResponseDataDictionary = [NSMutableDictionary dictionary];
-    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.message forKey:@"message"];
-    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timeStamp forKey:@"timestamp"];
-    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid forKey:@"adid"];
-    [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry] forKey:@"willRetry"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.message
+                                            forKey:@"message"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.timestamp
+                                            forKey:@"timestamp"];
+    [sessionFailureResponseDataDictionary setValue:sessionFailureResponseData.adid
+                                            forKey:@"adid"];
+    [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry]
+                                            forKey:@"willRetry"];
 
-    NSString *jsonResponse = [self convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
+    NSString *jsonResponse = [AdjustBridgeUtil
+                              convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
         jsonResponse = @"{}";
     }
     [sessionFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
-    [self.bridgeRegister callHandler:self.sessionFailureCallbackName data:sessionFailureResponseDataDictionary];
+    [self execJsCallbackWithId:self.sessionFailureCallbackName
+                  callBackData:sessionFailureResponseDataDictionary];
 }
 
-- (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     if (self.deferredDeeplinkCallbackName) {
-        [self.bridgeRegister callHandler:self.deferredDeeplinkCallbackName data:[deeplink absoluteString]];
+        [self execJsCallbackWithId:self.deferredDeeplinkCallbackName
+                      callBackData:[deeplink absoluteString]];
     }
-    return self.openDeferredDeeplink;
+    return self.isDeferredDeeplinkOpeningEnabled;
 }
 
-#pragma mark - Public methods
-
-- (void)augmentHybridWebView {
-    NSString *fbAppId = [self getFbAppId];
-
-    if (fbAppId == nil) {
-        [[ADJAdjustFactory logger] error:@"FacebookAppID is not correctly configured in the pList"];
-        return;
-    }
-    [_bridgeRegister augmentHybridWebView:fbAppId];
-    [self registerAugmentedView];
-}
-
-- (void)loadWKWebViewBridge:(WKWebView *)wkWebView {
-    [self loadWKWebViewBridge:wkWebView wkWebViewDelegate:nil];
-}
-
-- (void)loadWKWebViewBridge:(WKWebView *)wkWebView
-          wkWebViewDelegate:(id<WKNavigationDelegate>)wkWebViewDelegate {
-    if (self.bridgeRegister != nil) {
-        // WebViewBridge already loaded.
+- (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data {
+    if (self.skanUpdatedCallbackName == nil) {
         return;
     }
 
-    _bridgeRegister = [[AdjustBridgeRegister alloc] initWithWKWebView:wkWebView];
-    [self.bridgeRegister setWKWebViewDelegate:wkWebViewDelegate];
+    NSMutableDictionary *skanUpdatedDictionary = [NSMutableDictionary dictionary];
+    [skanUpdatedDictionary setValue:data[@"conversion_value"] forKey:@"conversionValue"];
+    [skanUpdatedDictionary setValue:data[@"coarse_value"] forKey:@"coarseValue"];
+    [skanUpdatedDictionary setValue:data[@"lock_window"] forKey:@"lockWindow"];
+    [skanUpdatedDictionary setValue:data[@"error"] forKey:@"error"];
 
-    [self.bridgeRegister registerHandler:@"adjust_appDidLaunch" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *appToken = [data objectForKey:@"appToken"];
-        NSString *environment = [data objectForKey:@"environment"];
-        NSString *allowSuppressLogLevel = [data objectForKey:@"allowSuppressLogLevel"];
-        NSString *sdkPrefix = [data objectForKey:@"sdkPrefix"];
-        NSString *defaultTracker = [data objectForKey:@"defaultTracker"];
-        NSString *externalDeviceId = [data objectForKey:@"externalDeviceId"];
-        NSString *logLevel = [data objectForKey:@"logLevel"];
-        NSNumber *eventBufferingEnabled = [data objectForKey:@"eventBufferingEnabled"];
-        NSNumber *coppaCompliantEnabled = [data objectForKey:@"coppaCompliantEnabled"];
-        NSNumber *linkMeEnabled = [data objectForKey:@"linkMeEnabled"];
-        NSNumber *sendInBackground = [data objectForKey:@"sendInBackground"];
-        NSNumber *delayStart = [data objectForKey:@"delayStart"];
-        NSString *userAgent = [data objectForKey:@"userAgent"];
-        NSNumber *isDeviceKnown = [data objectForKey:@"isDeviceKnown"];
-        NSNumber *needsCost = [data objectForKey:@"needsCost"];
-        NSNumber *allowAdServicesInfoReading = [data objectForKey:@"allowAdServicesInfoReading"];
-        NSNumber *allowIdfaReading = [data objectForKey:@"allowIdfaReading"];
-        NSNumber *allowSkAdNetworkHandling = [data objectForKey:@"allowSkAdNetworkHandling"];
-        NSNumber *secretId = [data objectForKey:@"secretId"];
-        NSString *info1 = [data objectForKey:@"info1"];
-        NSString *info2 = [data objectForKey:@"info2"];
-        NSString *info3 = [data objectForKey:@"info3"];
-        NSString *info4 = [data objectForKey:@"info4"];
-        NSNumber *openDeferredDeeplink = [data objectForKey:@"openDeferredDeeplink"];
-        NSString *fbPixelDefaultEventToken = [data objectForKey:@"fbPixelDefaultEventToken"];
-        id fbPixelMapping = [data objectForKey:@"fbPixelMapping"];
-        NSString *attributionCallback = [data objectForKey:@"attributionCallback"];
-        NSString *eventSuccessCallback = [data objectForKey:@"eventSuccessCallback"];
-        NSString *eventFailureCallback = [data objectForKey:@"eventFailureCallback"];
-        NSString *sessionSuccessCallback = [data objectForKey:@"sessionSuccessCallback"];
-        NSString *sessionFailureCallback = [data objectForKey:@"sessionFailureCallback"];
-        NSString *deferredDeeplinkCallback = [data objectForKey:@"deferredDeeplinkCallback"];
-        NSString *urlStrategy = [data objectForKey:@"urlStrategy"];
-        NSNumber *readDeviceInfoOnceEnabled = [data objectForKey:@"readDeviceInfoOnceEnabled"];
-        NSNumber *attConsentWaitingSeconds = [data objectForKey:@"attConsentWaitingSeconds"];
-
-        ADJConfig *adjustConfig;
-        if ([self isFieldValid:allowSuppressLogLevel]) {
-            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment allowSuppressLogLevel:[allowSuppressLogLevel boolValue]];
-        } else {
-            adjustConfig = [ADJConfig configWithAppToken:appToken environment:environment];
-        }
-
-        // No need to continue if adjust config is not valid.
-        if (![adjustConfig isValid]) {
-            return;
-        }
-
-        if ([self isFieldValid:sdkPrefix]) {
-            [adjustConfig setSdkPrefix:sdkPrefix];
-        }
-        if ([self isFieldValid:defaultTracker]) {
-            [adjustConfig setDefaultTracker:defaultTracker];
-        }
-        if ([self isFieldValid:externalDeviceId]) {
-            [adjustConfig setExternalDeviceId:externalDeviceId];
-        }
-        if ([self isFieldValid:logLevel]) {
-            [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
-        }
-        if ([self isFieldValid:eventBufferingEnabled]) {
-            [adjustConfig setEventBufferingEnabled:[eventBufferingEnabled boolValue]];
-        }
-        if ([self isFieldValid:coppaCompliantEnabled]) {
-            [adjustConfig setCoppaCompliantEnabled:[coppaCompliantEnabled boolValue]];
-        }
-        if ([self isFieldValid:linkMeEnabled]) {
-            [adjustConfig setLinkMeEnabled:[linkMeEnabled boolValue]];
-        }
-        if ([self isFieldValid:sendInBackground]) {
-            [adjustConfig setSendInBackground:[sendInBackground boolValue]];
-        }
-        if ([self isFieldValid:delayStart]) {
-            [adjustConfig setDelayStart:[delayStart doubleValue]];
-        }
-        if ([self isFieldValid:userAgent]) {
-            [adjustConfig setUserAgent:userAgent];
-        }
-        if ([self isFieldValid:isDeviceKnown]) {
-            [adjustConfig setIsDeviceKnown:[isDeviceKnown boolValue]];
-        }
-        if ([self isFieldValid:needsCost]) {
-            [adjustConfig setNeedsCost:[needsCost boolValue]];
-        }
-        if ([self isFieldValid:allowAdServicesInfoReading]) {
-            [adjustConfig setAllowAdServicesInfoReading:[allowAdServicesInfoReading boolValue]];
-        }
-        if ([self isFieldValid:allowIdfaReading]) {
-            [adjustConfig setAllowIdfaReading:[allowIdfaReading boolValue]];
-        }
-        if ([self isFieldValid:attConsentWaitingSeconds]) {
-            [adjustConfig setAttConsentWaitingInterval:[attConsentWaitingSeconds doubleValue]];
-        }
-        if ([self isFieldValid:allowSkAdNetworkHandling]) {
-            if ([allowSkAdNetworkHandling boolValue] == NO) {
-                [adjustConfig deactivateSKAdNetworkHandling];
-            }
-        }
-        BOOL isAppSecretDefined = [self isFieldValid:secretId]
-        && [self isFieldValid:info1]
-        && [self isFieldValid:info2]
-        && [self isFieldValid:info3]
-        && [self isFieldValid:info4];
-        if (isAppSecretDefined) {
-            [adjustConfig setAppSecret:[[self fieldToNSNumber:secretId] unsignedIntegerValue]
-                                 info1:[[self fieldToNSNumber:info1] unsignedIntegerValue]
-                                 info2:[[self fieldToNSNumber:info2] unsignedIntegerValue]
-                                 info3:[[self fieldToNSNumber:info3] unsignedIntegerValue]
-                                 info4:[[self fieldToNSNumber:info4] unsignedIntegerValue]];
-        }
-        if ([self isFieldValid:openDeferredDeeplink]) {
-            self.openDeferredDeeplink = [openDeferredDeeplink boolValue];
-        }
-        if ([self isFieldValid:fbPixelDefaultEventToken]) {
-            self.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
-        }
-        if ([fbPixelMapping count] > 0) {
-            self.fbPixelMapping = [[NSMutableDictionary alloc] initWithCapacity:[fbPixelMapping count] / 2];
-        }
-        for (int i = 0; i < [fbPixelMapping count]; i += 2) {
-            NSString *key = [[fbPixelMapping objectAtIndex:i] description];
-            NSString *value = [[fbPixelMapping objectAtIndex:(i + 1)] description];
-            [self.fbPixelMapping setObject:value forKey:key];
-        }
-        if ([self isFieldValid:attributionCallback]) {
-            self.attributionCallbackName = attributionCallback;
-        }
-        if ([self isFieldValid:eventSuccessCallback]) {
-            self.eventSuccessCallbackName = eventSuccessCallback;
-        }
-        if ([self isFieldValid:eventFailureCallback]) {
-            self.eventFailureCallbackName = eventFailureCallback;
-        }
-        if ([self isFieldValid:sessionSuccessCallback]) {
-            self.sessionSuccessCallbackName = sessionSuccessCallback;
-        }
-        if ([self isFieldValid:sessionFailureCallback]) {
-            self.sessionFailureCallbackName = sessionFailureCallback;
-        }
-        if ([self isFieldValid:deferredDeeplinkCallback]) {
-            self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
-        }
-
-        // Set self as delegate if any callback is configured.
-        // Change to swizzle the methods in the future.
-        if (self.attributionCallbackName != nil
-            || self.eventSuccessCallbackName != nil
-            || self.eventFailureCallbackName != nil
-            || self.sessionSuccessCallbackName != nil
-            || self.sessionFailureCallbackName != nil
-            || self.deferredDeeplinkCallbackName != nil) {
-            [adjustConfig setDelegate:self];
-        }
-        if ([self isFieldValid:urlStrategy]) {
-            [adjustConfig setUrlStrategy:urlStrategy];
-        }
-        if ([self isFieldValid:readDeviceInfoOnceEnabled]) {
-            [adjustConfig setReadDeviceInfoOnceEnabled:[readDeviceInfoOnceEnabled boolValue]];
-        }
-
-        [Adjust appDidLaunch:adjustConfig];
-        [Adjust trackSubsessionStart];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_trackEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *eventToken = [data objectForKey:@"eventToken"];
-        NSString *revenue = [data objectForKey:@"revenue"];
-        NSString *currency = [data objectForKey:@"currency"];
-        NSString *transactionId = [data objectForKey:@"transactionId"];
-        id callbackParameters = [data objectForKey:@"callbackParameters"];
-        id partnerParameters = [data objectForKey:@"partnerParameters"];
-        NSString *callbackId = [data objectForKey:@"callbackId"];
-
-        ADJEvent *adjustEvent = [ADJEvent eventWithEventToken:eventToken];
-        // No need to continue if adjust event is not valid
-        if (![adjustEvent isValid]) {
-            return;
-        }
-
-        if ([self isFieldValid:revenue] && [self isFieldValid:currency]) {
-            double revenueValue = [revenue doubleValue];
-            [adjustEvent setRevenue:revenueValue currency:currency];
-        }
-        if ([self isFieldValid:transactionId]) {
-            [adjustEvent setTransactionId:transactionId];
-        }
-        for (int i = 0; i < [callbackParameters count]; i += 2) {
-            NSString *key = [[callbackParameters objectAtIndex:i] description];
-            NSString *value = [[callbackParameters objectAtIndex:(i + 1)] description];
-            [adjustEvent addCallbackParameter:key value:value];
-        }
-        for (int i = 0; i < [partnerParameters count]; i += 2) {
-            NSString *key = [[partnerParameters objectAtIndex:i] description];
-            NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
-            [adjustEvent addPartnerParameter:key value:value];
-        }
-        if ([self isFieldValid:callbackId]) {
-            [adjustEvent setCallbackId:callbackId];
-        }
-
-        [Adjust trackEvent:adjustEvent];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_trackSubsessionStart" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust trackSubsessionStart];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_trackSubsessionEnd" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust trackSubsessionEnd];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_setEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust setEnabled:[(NSNumber *)data boolValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_isEnabled" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        responseCallback([NSNumber numberWithBool:[Adjust isEnabled]]);
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_appWillOpenUrl" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust appWillOpenUrl:[NSURL URLWithString:data]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_setDeviceToken" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust setPushToken:(NSString *)data];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_setOfflineMode" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust setOfflineMode:[(NSNumber *)data boolValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_sdkVersion" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        NSString *sdkPrefix = (NSString *)data;
-        NSString *sdkVersion = [NSString stringWithFormat:@"%@@%@", sdkPrefix, [Adjust sdkVersion]];
-        responseCallback(sdkVersion);
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_idfa" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        responseCallback([Adjust idfa]);
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_idfv" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        responseCallback([Adjust idfv]);
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_requestTrackingAuthorizationWithCompletionHandler" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        
-        [Adjust requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-            responseCallback([NSNumber numberWithUnsignedInteger:status]);
-        }];
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_appTrackingAuthorizationStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        
-        responseCallback([NSNumber numberWithInt:[Adjust appTrackingAuthorizationStatus]]);
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValue" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust updateConversionValue:[(NSNumber *)data integerValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCompletionHandler"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust updatePostbackConversionValue:[(NSNumber *)data integerValue]
-                            completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                responseCallback([NSString stringWithFormat:@"%@", error]);
-            }
-        }];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCoarseValueCompletionHandler"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSNumber *conversionValue = [data objectForKey:@"conversionValue"];
-        NSString *coarseValue = [data objectForKey:@"coarseValue"];
-        [Adjust updatePostbackConversionValue:[conversionValue integerValue]
-                                  coarseValue:coarseValue
-                            completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                responseCallback([NSString stringWithFormat:@"%@", error]);
-            }
-        }];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_updateConversionValueCoarseValueLockWindowCompletionHandler"
-                                 handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSNumber *conversionValue = [data objectForKey:@"conversionValue"];
-        NSString *coarseValue = [data objectForKey:@"coarseValue"];
-        NSNumber *lockWindow = [data objectForKey:@"lockWindow"];
-        [Adjust updatePostbackConversionValue:[conversionValue integerValue]
-                                  coarseValue:coarseValue
-                                   lockWindow:[lockWindow boolValue]
-                            completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                responseCallback([NSString stringWithFormat:@"%@", error]);
-            }
-        }];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_adid" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        responseCallback([Adjust adid]);
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_attribution" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-
-        ADJAttribution *attribution = [Adjust attribution];
-        NSDictionary *attributionDictionary = nil;
-        if (attribution != nil) {
-            attributionDictionary = [attribution dictionary];
-        }
-
-        responseCallback(attributionDictionary);
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_sendFirstPackages" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust sendFirstPackages];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_addSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *key = [data objectForKey:@"key"];
-        NSString *value = [data objectForKey:@"value"];
-        [Adjust addSessionCallbackParameter:key value:value];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_addSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *key = [data objectForKey:@"key"];
-        NSString *value = [data objectForKey:@"value"];
-        [Adjust addSessionPartnerParameter:key value:value];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_removeSessionCallbackParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust removeSessionCallbackParameter:(NSString *)data];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_removeSessionPartnerParameter" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust removeSessionPartnerParameter:(NSString *)data];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_resetSessionCallbackParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust resetSessionCallbackParameters];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_resetSessionPartnerParameters" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust resetSessionPartnerParameters];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_gdprForgetMe" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust gdprForgetMe];
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_trackAdRevenue" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *source = [data objectForKey:@"source"];
-        NSString *payload = [data objectForKey:@"payload"];
-        NSData *dataPayload = [payload dataUsingEncoding:NSUTF8StringEncoding];
-        [Adjust trackAdRevenue:source payload:dataPayload];
-    }];
-    
-    [self.bridgeRegister registerHandler:@"adjust_disableThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust disableThirdPartySharing];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_trackThirdPartySharing" handler:^(id data, WVJBResponseCallback responseCallback) {
-        id isEnabledO = [data objectForKey:@"isEnabled"];
-        id granularOptions = [data objectForKey:@"granularOptions"];
-        id partnerSharingSettings = [data objectForKey:@"partnerSharingSettings"];
-
-        NSNumber *isEnabled = nil;
-        if ([isEnabledO isKindOfClass:[NSNumber class]]) {
-            isEnabled = (NSNumber *)isEnabledO;
-        }
-        ADJThirdPartySharing *adjustThirdPartySharing =
-            [[ADJThirdPartySharing alloc] initWithIsEnabledNumberBool:isEnabled];
-        for (int i = 0; i < [granularOptions count]; i += 3) {
-            NSString *partnerName = [[granularOptions objectAtIndex:i] description];
-            NSString *key = [[granularOptions objectAtIndex:(i + 1)] description];
-            NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
-            [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
-        }
-        for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
-            NSString *partnerName = [[partnerSharingSettings objectAtIndex:i] description];
-            NSString *key = [[partnerSharingSettings objectAtIndex:(i + 1)] description];
-            BOOL value = [[partnerSharingSettings objectAtIndex:(i + 2)] boolValue];
-            [adjustThirdPartySharing addPartnerSharingSetting:partnerName key:key value:value];
-        }
-
-        [Adjust trackThirdPartySharing:adjustThirdPartySharing];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_trackMeasurementConsent" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (![data isKindOfClass:[NSNumber class]]) {
-            return;
-        }
-        [Adjust trackMeasurementConsent:[(NSNumber *)data boolValue]];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_checkForNewAttStatus" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [Adjust checkForNewAttStatus];
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_lastDeeplink" handler:^(id data, WVJBResponseCallback responseCallback) {
-        if (responseCallback == nil) {
-            return;
-        }
-        NSURL *lastDeeplink = [Adjust lastDeeplink];
-        responseCallback(lastDeeplink != nil ? [lastDeeplink absoluteString] : nil);
-    }];
-
-    [self.bridgeRegister registerHandler:@"adjust_setTestOptions" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *urlOverwrite = [data objectForKey:@"urlOverwrite"];
-        NSString *extraPath = [data objectForKey:@"extraPath"];
-        NSNumber *timerIntervalInMilliseconds = [data objectForKey:@"timerIntervalInMilliseconds"];
-        NSNumber *timerStartInMilliseconds = [data objectForKey:@"timerStartInMilliseconds"];
-        NSNumber *sessionIntervalInMilliseconds = [data objectForKey:@"sessionIntervalInMilliseconds"];
-        NSNumber *subsessionIntervalInMilliseconds = [data objectForKey:@"subsessionIntervalInMilliseconds"];
-        NSNumber *teardown = [data objectForKey:@"teardown"];
-        NSNumber *deleteState = [data objectForKey:@"deleteState"];
-        NSNumber *noBackoffWait = [data objectForKey:@"noBackoffWait"];
-        NSNumber *adServicesFrameworkEnabled = [data objectForKey:@"adServicesFrameworkEnabled"];
-        NSNumber *attStatus = [data objectForKey:@"attStatus"];
-        NSString *idfa = [data objectForKey:@"idfa"];
-
-        AdjustTestOptions *testOptions = [[AdjustTestOptions alloc] init];
-
-        if ([self isFieldValid:urlOverwrite]) {
-            testOptions.urlOverwrite = urlOverwrite;
-        }
-        if ([self isFieldValid:extraPath]) {
-            testOptions.extraPath = extraPath;
-        }
-        if ([self isFieldValid:timerIntervalInMilliseconds]) {
-            testOptions.timerIntervalInMilliseconds = timerIntervalInMilliseconds;
-        }
-        if ([self isFieldValid:timerStartInMilliseconds]) {
-            testOptions.timerStartInMilliseconds = timerStartInMilliseconds;
-        }
-        if ([self isFieldValid:sessionIntervalInMilliseconds]) {
-            testOptions.sessionIntervalInMilliseconds = sessionIntervalInMilliseconds;
-        }
-        if ([self isFieldValid:subsessionIntervalInMilliseconds]) {
-            testOptions.subsessionIntervalInMilliseconds = subsessionIntervalInMilliseconds;
-        }
-        if ([self isFieldValid:attStatus]) {
-            testOptions.attStatusInt = attStatus;
-        }
-        if ([self isFieldValid:idfa]) {
-            testOptions.idfa = idfa;
-        }
-        if ([self isFieldValid:teardown]) {
-            testOptions.teardown = [teardown boolValue];
-            if (testOptions.teardown) {
-                [self resetAdjustBridge];
-            }
-        }
-        if ([self isFieldValid:deleteState]) {
-            testOptions.deleteState = [deleteState boolValue];
-        }
-        if ([self isFieldValid:noBackoffWait]) {
-            testOptions.noBackoffWait = [noBackoffWait boolValue];
-        }
-        if ([self isFieldValid:adServicesFrameworkEnabled]) {
-            testOptions.adServicesFrameworkEnabled = [adServicesFrameworkEnabled boolValue];
-        }
-
-        [Adjust setTestOptions:testOptions];
-    }];
-
+    [self execJsCallbackWithId:self.skanUpdatedCallbackName
+                  callBackData:skanUpdatedDictionary];
 }
 
-- (void)registerAugmentedView {
-    [self.bridgeRegister registerHandler:@"adjust_fbPixelEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *pixelID = [data objectForKey:@"pixelID"];
-        if (pixelID == nil) {
-            [[ADJAdjustFactory logger] error:@"Can't bridge an event without a referral Pixel ID. Check your webview Pixel configuration"];
-            return;
-        }
-        NSString *evtName = [data objectForKey:@"evtName"];
-        NSString *eventToken = [self getEventTokenFromFbPixelEventName:evtName];
-        if (eventToken == nil) {
-            [[ADJAdjustFactory logger] debug:@"No mapping found for the fb pixel event %@, trying to fall back to the default event token", evtName];
-            eventToken = self.fbPixelDefaultEventToken;
-        }
-        if (eventToken == nil) {
-            [[ADJAdjustFactory logger] debug:@"There is not a default event token configured or a mapping found for event named: '%@'. It won't be tracked as an adjust event", evtName];
-            return;
-        }
+#pragma mark - FB Pixel event handling
 
-        ADJEvent *fbPixelEvent = [ADJEvent eventWithEventToken:eventToken];
-        if (![fbPixelEvent isValid]) {
-            return;
-        }
+- (void)trackFbPixelEvent:(id)data {
+    NSString *pixelID = [data objectForKey:@"pixelID"];
+    if (pixelID == nil) {
+        [self.logger error:@"Can't bridge an event without a referral Pixel ID. Check your webview Pixel configuration"];
+        return;
+    }
+    NSString *evtName = [data objectForKey:@"evtName"];
+    NSString *eventToken = [self getEventTokenFromFbPixelEventName:evtName];
+    if (eventToken == nil) {
+        [self.logger debug:@"No mapping found for the fb pixel event %@, trying to fall back to the default event token", evtName];
+        eventToken = self.fbPixelDefaultEventToken;
+    }
+    if (eventToken == nil) {
+        [self.logger  debug:@"There is not a default event token configured or a mapping found for event named: '%@'. It won't be tracked as an adjust event", evtName];
+        return;
+    }
 
-        id customData = [data objectForKey:@"customData"];
-        [fbPixelEvent addPartnerParameter:@"_fb_pixel_referral_id" value:pixelID];
-        // [fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
-        if ([customData isKindOfClass:[NSString class]]) {
-            NSError *jsonParseError = nil;
-            NSDictionary *params = [NSJSONSerialization JSONObjectWithData:[customData dataUsingEncoding:NSUTF8StringEncoding]
-                                                                   options:NSJSONReadingMutableContainers
-                                                                     error:&jsonParseError];
-            [params enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                NSString *keyS = [key description];
-                NSString *valueS = [obj description];
-                [fbPixelEvent addPartnerParameter:keyS value:valueS];
-            }];
-        }
-        [Adjust trackEvent:fbPixelEvent];
-    }];
+    ADJEvent *fbPixelEvent = [[ADJEvent alloc] initWithEventToken:eventToken];
+    if (![fbPixelEvent isValid]) {
+        return;
+    }
+
+    id customData = [data objectForKey:@"customData"];
+    [fbPixelEvent addPartnerParameter:@"_fb_pixel_referral_id" value:pixelID];
+    // [fbPixelEvent addPartnerParameter:@"_eventName" value:evtName];
+    if ([customData isKindOfClass:[NSString class]]) {
+        NSError *jsonParseError = nil;
+        NSDictionary *params = [NSJSONSerialization JSONObjectWithData:[customData dataUsingEncoding:NSUTF8StringEncoding]
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&jsonParseError];
+        [params enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            NSString *keyS = [key description];
+            NSString *valueS = [obj description];
+            [fbPixelEvent addPartnerParameter:keyS value:valueS];
+        }];
+    }
+
+    [Adjust trackEvent:fbPixelEvent];
 }
 
-#pragma mark - Private & helper methods
-
-- (BOOL)isFieldValid:(NSObject *)field {
-    if (field == nil) {
-        return NO;
+- (NSString *)getEventTokenFromFbPixelEventName:(NSString *)fbPixelEventName {
+    if (self.fbPixelMapping == nil) {
+        return nil;
     }
-    if ([field isKindOfClass:[NSNull class]]) {
-        return NO;
-    }
-    if ([[field description] length] == 0) {
-        return NO;
-    }
-    return !!field;
+    return [self.fbPixelMapping objectForKey:fbPixelEventName];
 }
 
 - (NSString *)getFbAppId {
-    NSString *facebookLoggingOverrideAppID = [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
+    NSString *facebookLoggingOverrideAppID =
+    [self getValueFromBundleByKey:@"FacebookLoggingOverrideAppID"];
     if (facebookLoggingOverrideAppID != nil) {
         return facebookLoggingOverrideAppID;
     }
-
     return [self getValueFromBundleByKey:@"FacebookAppID"];
 }
 
@@ -762,38 +683,7 @@
     return [[[NSBundle mainBundle] objectForInfoDictionaryKey:key] copy];
 }
 
-- (NSString *)getEventTokenFromFbPixelEventName:(NSString *)fbPixelEventName {
-    if (self.fbPixelMapping == nil) {
-        return nil;
-    }
-
-    return [self.fbPixelMapping objectForKey:fbPixelEventName];
-}
-
-- (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary {
-    if (jsonDictionary == nil) {
-        return nil;
-    }
-
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
-    if (!jsonData) {
-        NSLog(@"Unable to conver NSDictionary with JSON response to JSON string: %@", error);
-        return nil;
-    }
-
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    return jsonString;
-}
-
-- (NSNumber *)fieldToNSNumber:(NSObject *)field {
-    if (![self isFieldValid:field]) {
-        return nil;
-    }
-    NSNumberFormatter *formatString = [[NSNumberFormatter alloc] init];
-    return [formatString numberFromString:[field description]];
-}
 
 @end
+
+
