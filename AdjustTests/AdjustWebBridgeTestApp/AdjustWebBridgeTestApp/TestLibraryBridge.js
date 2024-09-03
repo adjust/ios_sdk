@@ -621,7 +621,7 @@ AdjustCommandExecutor.prototype.thirdPartySharing = function(params) {
         for (var i = 0; i < partnerSharingSettings.length; i = i + 3) {
             var partnerName = partnerSharingSettings[i];
             var key = partnerSharingSettings[i + 1];
-            var value = partnerSharingSettings[i + 2];
+            var value = partnerSharingSettings[i + 2] == 'true';
             adjustThirdPartySharing.addPartnerSharingSetting(partnerName, key, value);
         }
     }
