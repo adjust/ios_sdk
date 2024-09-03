@@ -173,10 +173,8 @@
         [Adjust addGlobalCallbackParameter:value forKey:key];
 
     } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParameterMethodName]) {
-        if (![parameters isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust removeGlobalCallbackParameterForKey:(NSString *)parameters];
+        NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
+        [Adjust removeGlobalCallbackParameterForKey:key];
 
     } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParametersMethodName]) {
         [Adjust removeGlobalCallbackParameters];
@@ -187,10 +185,8 @@
         [Adjust addGlobalPartnerParameter:value forKey:key];
 
     } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParameterMethodName]) {
-        if (![parameters isKindOfClass:[NSString class]]) {
-            return;
-        }
-        [Adjust removeGlobalPartnerParameterForKey:(NSString *)parameters];
+        NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
+        [Adjust removeGlobalPartnerParameterForKey:key];
 
     } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParametersMethodName]) {
         [Adjust removeGlobalPartnerParameters];
