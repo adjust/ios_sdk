@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
   s.ios.weak_framework      = 'AdSupport'
   s.tvos.weak_framework     = 'AdSupport'
   s.default_subspec         = 'Adjust'
-  s.module_map              = 'ModuleMap/module.modulemap'
 
   s.subspec 'Adjust' do |adj|
     adj.source_files        = 'Adjust/**/*.{h,m}', 'UmbrellaHeaders/sdk/*.{h,m}'
