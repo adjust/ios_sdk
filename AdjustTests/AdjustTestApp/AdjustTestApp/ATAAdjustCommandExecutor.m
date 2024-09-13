@@ -347,11 +347,11 @@
     if ([parameters objectForKey:@"deferredDeeplinkCallback"]) {
         NSLog(@"deferredDeeplinkCallback detected");
         NSString *shouldOpenDeeplinkS = [parameters objectForKey:@"deferredDeeplinkCallback"][0];
+        BOOL shouldOpenDeeplink = [shouldOpenDeeplinkS boolValue];
         self.adjustDelegate =
-            [[ATAAdjustDelegateDeferredDeeplink alloc]
-                initWithTestLibrary:self.testLibrary
-                extraPath:self.extraPath
-                andReturnValue:[shouldOpenDeeplinkS boolValue]];
+            [[ATAAdjustDelegateDeferredDeeplink alloc] initWithTestLibrary:self.testLibrary
+                                                                 extraPath:self.extraPath
+                                                            andReturnValue:shouldOpenDeeplink];
     }
 
     if ([parameters objectForKey:@"skanCallback"]) {
