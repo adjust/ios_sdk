@@ -1,5 +1,6 @@
-### Version 5.0.1 (4th September 2024)
+### Version 5.0.1 (13th September 2024)
 #### Fixed
+- Fixed `Adjust.modulemap not found` error in certain CocoaPods integration cases.
 - Fixed `removeGlobalCallbackParameter` and `removeGlobalPartnerParameter` web bridge methods.
 
 #### Changed
