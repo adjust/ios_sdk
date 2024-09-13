@@ -101,8 +101,12 @@ static NSString * fbAppIdStatic = nil;
 
         _handleCallbackFromObjC: function(callback, callbackId) {
             window[callbackId] = function(value) {
-                const parsedValue = JSON.parse(value);
-                callback(parsedValue);
+                if(callbackId.includes("adjust_deferredDeeplinkCallback")) {
+                    callback(value);
+                } else {
+                    const parsedValue = JSON.parse(value);
+                    callback(parsedValue);
+                }
             };
         },
 
