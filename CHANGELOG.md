@@ -1,7 +1,8 @@
-### Version 5.0.1 (13th September 2024)
+### Version 5.0.1 (14th September 2024)
 #### Fixed
 - Fixed `Adjust.modulemap not found` error in certain CocoaPods integration cases.
 - Fixed `removeGlobalCallbackParameter` and `removeGlobalPartnerParameter` web bridge methods.
+- Fixed deferred deep link callback not getting triggered issue in the web bridge.
 
 #### Changed
 - Added validation when passing callback / partner parameters and third party sharing granular options / partner sharing setting parameters in web bridge.
