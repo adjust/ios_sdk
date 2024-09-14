@@ -101,8 +101,12 @@ static NSString * fbAppIdStatic = nil;
 
         _handleCallbackFromObjC: function(callback, callbackId) {
             window[callbackId] = function(value) {
-                const parsedValue = JSON.parse(value);
-                callback(parsedValue);
+                if(callbackId.includes("adjust_deferredDeeplinkCallback")) {
+                    callback(value);
+                } else {
+                    const parsedValue = JSON.parse(value);
+                    callback(parsedValue);
+                }
             };
         },
 
@@ -172,7 +176,7 @@ static NSString * fbAppIdStatic = nil;
             if (this.sdkPrefix) {
                 return this.sdkPrefix;
             } else {
-                return 'web-bridge5.0.0';
+                return 'web-bridge5.0.1';
             }
         },
 
@@ -225,6 +229,10 @@ static NSString * fbAppIdStatic = nil;
         },
 
         addGlobalCallbackParameter: function(key, value) {
+            if (typeof key !== 'string' || typeof value !== 'string') {
+                console.log('Passed key or value is not of string type');
+                return;
+            }
             this._postMessage("adjust_addGlobalCallbackParameter", {
                 _key: key, _keyType: typeof key,
                 _value: value, _valueType: typeof value
@@ -232,6 +240,10 @@ static NSString * fbAppIdStatic = nil;
         },
 
         removeGlobalCallbackParameter: function(key) {
+            if (typeof key !== 'string') {
+                console.log('Passed key is not of string type');
+                return;
+            }
             this._postMessage("adjust_removeGlobalCallbackParameter", { _key: key, _keyType: typeof key });
         },
 
@@ -240,6 +252,10 @@ static NSString * fbAppIdStatic = nil;
         },
 
         addGlobalPartnerParameter: function(key, value) {
+            if (typeof key !== 'string' || typeof value !== 'string') {
+                console.log('Passed key or value is not of string type');
+                return;
+            }
             this._postMessage("adjust_addGlobalPartnerParameter", {
                 _key: key, _keyType: typeof key,
                 _value: value, _valueType: typeof value
@@ -247,6 +263,10 @@ static NSString * fbAppIdStatic = nil;
         },
 
         removeGlobalPartnerParameter: function(key) {
+            if (typeof key !== 'string') {
+                console.log('Passed key is not of string type');
+                return;
+            }
             this._postMessage("adjust_removeGlobalPartnerParameter", { _key: key, _keyType: typeof key });
         },
 
@@ -308,12 +328,20 @@ static NSString * fbAppIdStatic = nil;
         };
 
         AdjustThirdPartySharing.prototype.addGranularOption = function(partnerName, key, value) {
+            if (typeof partnerName !== 'string' || typeof key !== 'string' || typeof value !== 'string') {
+                console.log('Passed partnerName, key or value is not of string type');
+                return;
+            }
             this.granularOptions.push(partnerName);
             this.granularOptions.push(key);
             this.granularOptions.push(value);
         };
 
         AdjustThirdPartySharing.prototype.addPartnerSharingSetting = function(partnerName, key, value) {
+            if (typeof partnerName !== 'string' || typeof key !== 'string' || typeof value !== 'boolean') {
+                console.log('Passed partnerName or key is not of string type or value is not of boolean type');
+                return;
+            }
             this.partnerSharingSettings.push(partnerName);
             this.partnerSharingSettings.push(key);
             this.partnerSharingSettings.push(value);

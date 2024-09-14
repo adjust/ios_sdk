@@ -1,3 +1,14 @@
+### Version 5.0.1 (14th September 2024)
+#### Fixed
+- Fixed `Adjust.modulemap not found` error in certain CocoaPods integration cases.
+- Fixed `removeGlobalCallbackParameter` and `removeGlobalPartnerParameter` web bridge methods.
+- Fixed deferred deep link callback not getting triggered issue in the web bridge.
+
+#### Changed
+- Added validation when passing callback / partner parameters and third party sharing granular options / partner sharing setting parameters in web bridge.
+
+---
+
 ### Version 5.0.0 (2nd August 2024)
 
 We're excited to release our major new SDK version (v5). Among many internal improvements, our spoofing protection solution is now included out of the box, reinforcing our commitment to accurate, actionable, and fraud-free data.
@@ -17,6 +28,7 @@ In case you were using beta version of the SDK v5, please switch to the official
 - Fixed occasional crashes when processing resolved deep links.
 
 ---
+
 ### Version 4.38.3 (23rd May 2024)
 #### Fixed
 - Added missing `WKNavigationDelegate` methods to the `WebBridge` implementation.

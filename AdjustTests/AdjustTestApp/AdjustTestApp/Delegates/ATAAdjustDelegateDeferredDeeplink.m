@@ -32,7 +32,7 @@
     return self;
 }
 
-- (BOOL)adjustDeeplinkResponse:(nullable NSURL *)deeplink {
+- (BOOL)adjustDeferredDeeplinkReceived:(nullable NSURL *)deeplink {
     NSLog(@"Deferred deep link callback called!");
     NSLog(@"Deep link: %@", deeplink);
 

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                    = "Adjust"
   s.module_name             = "AdjustSdk"
-  s.version                 = "5.0.0"
+  s.version                 = "5.0.1"
   s.summary                 = "This is the iOS SDK of Adjust. You can read more about it at https://adjust.com."
   s.homepage                = "https://github.com/adjust/ios_sdk"
   s.license                 = { :type => 'MIT', :file => 'LICENSE' }
@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
   s.ios.weak_framework      = 'AdSupport'
   s.tvos.weak_framework     = 'AdSupport'
   s.default_subspec         = 'Adjust'
-  s.module_map              = 'ModuleMap/module.modulemap'
 
   s.subspec 'Adjust' do |adj|
     adj.source_files        = 'Adjust/**/*.{h,m}', 'UmbrellaHeaders/sdk/*.{h,m}'
