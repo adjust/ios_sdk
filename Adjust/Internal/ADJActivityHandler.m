@@ -249,41 +249,19 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)applicationDidBecomeActive {
-    self.internalState.background = NO;
-
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-
-                        [selfI activateWaitingForAttStatusI:selfI];
-
-                        [selfI stopBackgroundTimerI:selfI];
-
-                        [selfI startForegroundTimerI:selfI];
-
-                        [selfI.logger verbose:@"Subsession start"];
-
-                        [selfI startI:selfI];
-                     }];
+        [selfI handleAppForegroundI:selfI];
+    }];
 }
 
 - (void)applicationWillResignActive {
-    self.internalState.background = YES;
-
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-
-                        [selfI pauseWaitingForAttStatusI:selfI];
-
-                        [selfI stopForegroundTimerI:selfI];
-
-                        [selfI startBackgroundTimerI:selfI];
-
-                        [selfI.logger verbose:@"Subsession end"];
-
-                        [selfI endI:selfI];
-                     }];
+        [selfI handleAppBackgroundI:selfI];
+    }];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -710,22 +688,6 @@ const BOOL kSkanRegisterLockWindow = NO;
                         [selfI trackAttStatusUpdateI:selfI];
                      }];
 }
-- (void)trackAttStatusUpdateI:(ADJActivityHandler *)selfI {
-    double now = [NSDate.date timeIntervalSince1970];
-
-    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      globalParameters:selfI.globalParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      createdAt:now];
-    infoBuilder.internalState = selfI.internalState;
-
-    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
-    [selfI.packageHandler addPackage:infoPackage];
-    [selfI.packageHandler sendFirstPackage];
-}
 
 - (NSString *)getBasePath {
     return _basePath;
@@ -933,13 +895,34 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
             if (!isInactive) {
                 [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
-                selfI.internalState.background = NO;
-                [selfI startI:selfI];
+                [selfI handleAppForegroundI:selfI];
             } else {
                 [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
             }
         }];
     }];
+}
+
+- (void)handleAppForegroundI:(ADJActivityHandler *)selfI {
+    if (selfI.internalState.background == NO)
+        return;
+
+    selfI.internalState.background = NO;
+    [selfI activateWaitingForAttStatusI:selfI];
+    [selfI stopBackgroundTimerI:selfI];
+    [selfI startForegroundTimerI:selfI];
+    [selfI.logger verbose:@"Subsession start"];
+    [selfI startI:selfI];
+}
+
+- (void)handleAppBackgroundI:(ADJActivityHandler *)selfI {
+
+    selfI.internalState.background = YES;
+    [selfI pauseWaitingForAttStatusI:selfI];
+    [selfI stopForegroundTimerI:selfI];
+    [selfI startBackgroundTimerI:selfI];
+    [selfI.logger verbose:@"Subsession end"];
+    [selfI endI:selfI];
 }
 
 - (void)startI:(ADJActivityHandler *)selfI {
@@ -1131,6 +1114,23 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI.attributionHandler getAttribution];
 }
 
+- (void)trackAttStatusUpdateI:(ADJActivityHandler *)selfI {
+    double now = [NSDate.date timeIntervalSince1970];
+
+    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
+                                      initWithPackageParams:selfI.packageParams
+                                      activityState:selfI.activityState
+                                      config:selfI.adjustConfig
+                                      globalParameters:selfI.globalParameters
+                                      trackingStatusManager:self.trackingStatusManager
+                                      createdAt:now];
+    infoBuilder.internalState = selfI.internalState;
+
+    ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
+    [selfI.packageHandler addPackage:infoPackage];
+    [selfI.packageHandler sendFirstPackage];
+}
+
 - (void)processCachedDeeplinkI:(ADJActivityHandler *)selfI {
     if (![selfI checkActivityStateI:selfI]) return;
 
@@ -1278,15 +1278,15 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     double now = [NSDate.date timeIntervalSince1970];
 
     // build package
-    ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
-                                     initWithPackageParams:selfI.packageParams
-                                     activityState:selfI.activityState
-                                     config:selfI.adjustConfig
-                                     globalParameters:selfI.globalParameters
-                                     trackingStatusManager:self.trackingStatusManager
-                                     createdAt:now];
-    tpsBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *mcPackage = [tpsBuilder buildMeasurementConsentPackage:enabled];
+    ADJPackageBuilder *mcBuilder = [[ADJPackageBuilder alloc]
+                                    initWithPackageParams:selfI.packageParams
+                                    activityState:selfI.activityState
+                                    config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                                    trackingStatusManager:self.trackingStatusManager
+                                    createdAt:now];
+    mcBuilder.internalState = selfI.internalState;
+    ADJActivityPackage *mcPackage = [mcBuilder buildMeasurementConsentPackage:enabled];
 
     [selfI.packageHandler addPackage:mcPackage];
     [selfI.packageHandler sendFirstPackage];
