@@ -367,9 +367,7 @@ static dispatch_once_t onceToken = 0;
 - (void)enable {
     self.savedPreLaunch.enabled = @YES;
 
-    if ([self checkActivityHandler:YES
-                       trueMessage:@"enabled mode"
-                      falseMessage:@"disabled mode"]) {
+    if ([self checkActivityHandler:@"enable SDK"]) {
         [self.activityHandler setEnabled:YES];
     }
 }
@@ -377,9 +375,7 @@ static dispatch_once_t onceToken = 0;
 - (void)disable {
     self.savedPreLaunch.enabled = @NO;
 
-    if ([self checkActivityHandler:NO
-                       trueMessage:@"enabled mode"
-                      falseMessage:@"disabled mode"]) {
+    if ([self checkActivityHandler:@"disable SDK"]) {
         [self.activityHandler setEnabled:NO];
     }
 }
@@ -400,7 +396,7 @@ static dispatch_once_t onceToken = 0;
 - (void)processDeeplink:(ADJDeeplink *)deeplink {
     [ADJUserDefaults cacheDeeplinkUrl:deeplink.deeplink];
     NSDate *clickTime = [NSDate date];
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"process deep link"]) {
         [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink
                                clickTime:clickTime];
         return;
@@ -418,7 +414,7 @@ static dispatch_once_t onceToken = 0;
     // if deep link processing is triggered prior to SDK being initialized
     [ADJUserDefaults cacheDeeplinkUrl:deeplink.deeplink];
     NSDate *clickTime = [NSDate date];
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"process and resolve deep link"]) {
         [ADJUserDefaults saveDeeplinkUrl:deeplink.deeplink
                                clickTime:clickTime];
         self.cachedResolvedDeeplinkBlock = completion;
@@ -447,9 +443,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)switchToOfflineMode {
-    if (![self checkActivityHandler:YES
-                        trueMessage:@"offline mode"
-                       falseMessage:@"online mode"]) {
+    if (![self checkActivityHandler:@"switch to offline mode"]) {
         self.savedPreLaunch.offline = YES;
     } else {
         [self.activityHandler setOfflineMode:YES];
@@ -457,9 +451,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)switchBackToOnlineMode {
-    if (![self checkActivityHandler:NO
-                        trueMessage:@"offline mode"
-                       falseMessage:@"online mode"]) {
+    if (![self checkActivityHandler:@"switch back to online mode"]) {
         self.savedPreLaunch.offline = NO;
     } else {
         [self.activityHandler setOfflineMode:NO];
@@ -587,7 +579,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"track third party sharing"]) {
         if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
             self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
                 [[NSMutableArray alloc] init];
@@ -599,7 +591,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"track measurement consent"]) {
         self.savedPreLaunch.lastMeasurementConsentTracked = [NSNumber numberWithBool:enabled];
         return;
     }
@@ -652,7 +644,7 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"read attribution request"]) {
         if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
             self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
         }
@@ -669,7 +661,7 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
-    if (![self checkActivityHandler]) {
+    if (![self checkActivityHandler:@"read adid request"]) {
         if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
             self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
         }
@@ -787,16 +779,6 @@ static dispatch_once_t onceToken = 0;
 
 - (BOOL)checkActivityHandler {
     return [self checkActivityHandler:nil];
-}
-
-- (BOOL)checkActivityHandler:(BOOL)status
-                 trueMessage:(NSString *)trueMessage
-                falseMessage:(NSString *)falseMessage {
-    if (status) {
-        return [self checkActivityHandler:trueMessage];
-    } else {
-        return [self checkActivityHandler:falseMessage];
-    }
 }
 
 - (BOOL)checkActivityHandler:(NSString *)savedForLaunchWarningSuffixMessage {
