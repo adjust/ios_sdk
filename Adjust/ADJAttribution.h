@@ -11,7 +11,7 @@
 /**
  * @brief Adjust attribution object.
  */
-@interface ADJAttribution : NSObject <NSCoding, NSCopying>
+@interface ADJAttribution : NSObject <NSSecureCoding, NSCopying>
 
 /**
  * @brief Tracker token.

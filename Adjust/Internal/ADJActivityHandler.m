@@ -2278,18 +2278,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
         [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
         self.activityState = [ADJUtil readObject:kActivityStateFilename
                                       objectName:@"Activity state"
-                                           class:[ADJActivityState class]
+                                         classes:allowedClasses
                                       syncObject:[ADJActivityState class]];
     }];
 }
 
 - (void)readAttribution {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJAttribution class], nil];
     self.attribution = [ADJUtil readObject:kAttributionFilename
                                 objectName:@"Attribution"
-                                     class:[ADJAttribution class]
+                                   classes:allowedClasses
                                 syncObject:[ADJAttribution class]];
+
 }
 
 - (void)writeGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
@@ -2328,16 +2331,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
     selfI.globalParameters.callbackParameters = [ADJUtil readObject:kGlobalCallbackParametersFilename
                                                          objectName:@"Global Callback parameters"
-                                                              class:[NSDictionary class]
+                                                            classes:allowedClasses
                                                          syncObject:[ADJGlobalParameters class]];
 }
 
 - (void)readGlobalPartnerParametersI:(ADJActivityHandler *)selfI {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
     selfI.globalParameters.partnerParameters = [ADJUtil readObject:kGlobalPartnerParametersFilename
                                                         objectName:@"Global Partner parameters"
-                                                             class:[NSDictionary class]
+                                                           classes:allowedClasses
                                                         syncObject:[ADJGlobalParameters class]];
 }
 

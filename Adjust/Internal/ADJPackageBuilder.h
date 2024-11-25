@@ -28,8 +28,6 @@
 
 @property (nonatomic, copy) NSDate * _Nullable purchaseTime;
 
-@property (nonatomic, strong) NSDictionary * _Nullable attributionDetails;
-
 @property (nonatomic, strong) NSDictionary * _Nullable deeplinkParameters;
 
 @property (nonatomic, copy) ADJAttribution * _Nullable attribution;

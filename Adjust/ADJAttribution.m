@@ -12,6 +12,10 @@
 
 @implementation ADJAttribution
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 - (id)initWithJsonDict:(NSDictionary *)jsonDict {
     self = [super init];
     if (self == nil) {
