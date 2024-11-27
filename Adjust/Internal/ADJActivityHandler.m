@@ -2292,7 +2292,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                 objectName:@"Attribution"
                                    classes:allowedClasses
                                 syncObject:[ADJAttribution class]];
-
 }
 
 - (void)writeGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
@@ -2331,7 +2330,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
-    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSMutableDictionary class], [NSString class], nil];
     selfI.globalParameters.callbackParameters = [ADJUtil readObject:kGlobalCallbackParametersFilename
                                                          objectName:@"Global Callback parameters"
                                                             classes:allowedClasses
@@ -2339,7 +2338,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readGlobalPartnerParametersI:(ADJActivityHandler *)selfI {
-    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSMutableDictionary class], [NSString class], nil];
     selfI.globalParameters.partnerParameters = [ADJUtil readObject:kGlobalPartnerParametersFilename
                                                         objectName:@"Global Partner parameters"
                                                            classes:allowedClasses
