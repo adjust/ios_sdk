@@ -13,11 +13,19 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 
+static const char * const kInternalQueueName = "io.adjust.SKAdNetworkQueue";
+
 @interface ADJSKAdNetwork()
-
 @property (nonatomic, weak) id<ADJLogger> logger;
-
+@property (nonatomic, strong) dispatch_queue_t internalQueue;
 @end
+
+static NSString * const ADJSKAdNetworkDomain = @"com.adjust.sdk.skadnetwork";
+typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
+    ADJSKAdNetworkErrorOsNotSupported       = -100,
+    ADJSKAdNetworkErrorFrameworkNotFound    = -101,
+    ADJSKAdNetworkErrorApiNotAvailable      = -102
+};
 
 @implementation ADJSKAdNetwork
 
@@ -39,108 +47,117 @@
     }
 
     self.logger = [ADJAdjustFactory logger];
+    self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
     return self;
 }
 
 #pragma mark - SKAdNetwork API
 
-- (void)registerAppForAdNetworkAttribution {
+- (void)registerAppForAdNetworkAttributionWithCompletionHandler:(void (^)(NSError *error))completion {
+
+    NSError *error = [self checkSKAdNetworkMethodAvailability:@"registerAppForAdNetworkAttribution"];
+    if (error != nil) {
+        [self asyncSendResultError:error toCompletionHandler:completion];
+        return;
+    }
+
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"registerAppForAdNetworkAttribution");
-    if (@available(iOS 14.0, *)) {
-        if ([self isApiAvailableForClass:class andSelector:selector]) {
-            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:selector];
-            [invocation setTarget:class];
-            [invocation invoke];
-            [self.logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
-        }
-    } else {
-        [self.logger warn:@"SKAdNetwork's registerAppForAdNetworkAttribution method not available for this operating system version"];
-    }
+    NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setSelector:selector];
+    [invocation setTarget:class];
+    [invocation invoke];
+    [self.logger verbose:@"Call to SKAdNetwork's registerAppForAdNetworkAttribution method made"];
+    [self asyncSendResultError:error toCompletionHandler:completion];
 }
 
-- (void)updateConversionValue:(NSInteger)conversionValue {
+- (void)updateConversionValue:(NSInteger)conversionValue
+        withCompletionHandler:(void (^)(NSError *error))completion {
+
+    NSError *error = [self checkSKAdNetworkMethodAvailability:@"updateConversionValue:"];
+    if (error != nil) {
+        [self asyncSendResultError:error toCompletionHandler:completion];
+        return;
+    }
+
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updateConversionValue:");
-    if (@available(iOS 14.0, *)) {
-        if ([self isApiAvailableForClass:class andSelector:selector]) {
-            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:selector];
-            [invocation setTarget:class];
-            [invocation setArgument:&conversionValue atIndex:2];
-            [invocation invoke];
-            [self.logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", conversionValue];
-        }
-    } else {
-        [self.logger warn:@"SKAdNetwork's updateConversionValue: method not available for this operating system version"];
-    }
+    NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setSelector:selector];
+    [invocation setTarget:class];
+    [invocation setArgument:&conversionValue atIndex:2];
+    [invocation invoke];
+    [self.logger verbose:@"Call to SKAdNetwork's updateConversionValue: method made with value %d", conversionValue];
+    [self asyncSendResultError:error toCompletionHandler:completion];
 }
 
 - (void)updatePostbackConversionValue:(NSInteger)conversionValue
                 withCompletionHandler:(void (^)(NSError *error))completion {
+
+    NSError *error = [self checkSKAdNetworkMethodAvailability:@"updatePostbackConversionValue:completionHandler:"];
+    if (error != nil) {
+        [self asyncSendResultError:error toCompletionHandler:completion];
+        return;
+    }
+
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:completionHandler:");
-    if (@available(iOS 15.4, *)) {
-        if ([self isApiAvailableForClass:class andSelector:selector]) {
-            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:selector];
-            [invocation setTarget:class];
-            [invocation setArgument:&conversionValue atIndex:2];
-            [invocation setArgument:&completion atIndex:3];
-            [invocation invoke];
-        }
-    } else {
-        [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:completionHandler: method not available for this operating system version"];
-    }
+    NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setSelector:selector];
+    [invocation setTarget:class];
+    [invocation setArgument:&conversionValue atIndex:2];
+    [invocation setArgument:&completion atIndex:3];
+    [invocation invoke];
 }
 
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                 withCompletionHandler:(void (^)(NSError *error))completion {
+
+    NSError *error = [self checkSKAdNetworkMethodAvailability:@"updatePostbackConversionValue:coarseValue:completionHandler:"];
+    if (error != nil) {
+        [self asyncSendResultError:error toCompletionHandler:completion];
+        return;
+    }
+
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:completionHandler:");
-    if (@available(iOS 16.1, *)) {
-        if ([self isApiAvailableForClass:class andSelector:selector]) {
-            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:selector];
-            [invocation setTarget:class];
-            [invocation setArgument:&fineValue atIndex:2];
-            [invocation setArgument:&coarseValue atIndex:3];
-            [invocation setArgument:&completion atIndex:4];
-            [invocation invoke];
-        }
-    } else {
-        [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method not available for this operating system version"];
-    }
+    NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setSelector:selector];
+    [invocation setTarget:class];
+    [invocation setArgument:&fineValue atIndex:2];
+    [invocation setArgument:&coarseValue atIndex:3];
+    [invocation setArgument:&completion atIndex:4];
+    [invocation invoke];
 }
 
 - (void)updatePostbackConversionValue:(NSInteger)fineValue
                           coarseValue:(NSString *)coarseValue
                            lockWindow:(BOOL)lockWindow
                 withCompletionHandler:(void (^)(NSError *error))completion {
+
+    NSError *error = [self checkSKAdNetworkMethodAvailability:@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:"];
+    if (error != nil) {
+        [self asyncSendResultError:error toCompletionHandler:completion];
+        return;
+    }
+
     Class class = NSClassFromString(@"SKAdNetwork");
     SEL selector = NSSelectorFromString(@"updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:");
-    if (@available(iOS 16.1, *)) {
-        if ([self isApiAvailableForClass:class andSelector:selector]) {
-            NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-            [invocation setSelector:selector];
-            [invocation setTarget:class];
-            [invocation setArgument:&fineValue atIndex:2];
-            [invocation setArgument:&coarseValue atIndex:3];
-            [invocation setArgument:&lockWindow atIndex:4];
-            [invocation setArgument:&completion atIndex:5];
-            [invocation invoke];
-        }
-    } else {
-        [self.logger warn:@"SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method not available for this operating system version"];
-    }
+    NSMethodSignature *methodSignature = [class methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setSelector:selector];
+    [invocation setTarget:class];
+    [invocation setArgument:&fineValue atIndex:2];
+    [invocation setArgument:&coarseValue atIndex:3];
+    [invocation setArgument:&lockWindow atIndex:4];
+    [invocation setArgument:&completion atIndex:5];
+    [invocation invoke];
 }
 
 #pragma mark - Adjust helper methods
@@ -149,13 +166,12 @@
                         coarseValue:(nonnull NSString *)coarseValue
                          lockWindow:(nonnull NSNumber *)lockWindow
               withCompletionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion {
-    if (NSClassFromString(@"SKAdNetwork") == nil) {
-        [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
-        return;
-    }
-    if ([ADJUserDefaults getSkadRegisterCallTimestamp] != nil) {
-        [self.logger debug:@"Call to register app with SKAdNetwork already made for this install"];
-        completion(nil);
+
+    NSError *error = nil;
+    // Check iOS 14.0+ / NON-tvOS / SKAdNetwork framework available
+    if (![self checkSKAdNetworkFrameworkAvailability:&error]) {
+        [self.logger debug:error.localizedDescription];
+        [self asyncSendResultError:error toCompletionHandler:completion];
         return;
     }
 
@@ -164,31 +180,45 @@
                                 coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                  lockWindow:lockWindow
                       withCompletionHandler:^(NSError * _Nullable error) {
-            completion(error);
+            if (error == nil) {
+                [self writeSkAdNetworkRegisterCallTimestamp];
+            }
+            if (completion != nil) {
+                completion(error);
+            }
         }];
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:conversionValue
                       withCompletionHandler:^(NSError * _Nullable error) {
-            completion(error);
+            if (error == nil) {
+                [self writeSkAdNetworkRegisterCallTimestamp];
+            }
+            if (completion != nil) {
+                completion(error);
+            }
         }];
-    } else if (@available(iOS 14.0, *)) {
-        [self registerAppForAdNetworkAttribution];
-        completion(nil);
-    } else {
-        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        completion(nil);
-        return;
+    } else { // if (@available(iOS 14.0, *)) { already checked in 'checkSKAdNetworkFrameworkAvailability'
+        [self registerAppForAdNetworkAttributionWithCompletionHandler:^(NSError *error) {
+            if (error == nil) {
+                [self writeSkAdNetworkRegisterCallTimestamp];
+            }
+            if (completion != nil) {
+                completion(error);
+            }
+        }];
     }
-
-    [self writeSkAdNetworkRegisterCallTimestamp];
 }
 
 - (void)updateConversionValue:(NSInteger)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
         withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    if (NSClassFromString(@"SKAdNetwork") == nil) {
-        [self.logger debug:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
+
+    NSError *error = nil;
+    // Check iOS 14.0+ / NON-tvOS / SKAdNetwork available
+    if (![self checkSKAdNetworkFrameworkAvailability:&error]) {
+        [self.logger debug:error.localizedDescription];
+        [self asyncSendResultError:error toCompletionHandler:completion];
         return;
     }
 
@@ -252,40 +282,70 @@
                 completion(error);
             }
         }];
-    } else if (@available(iOS 14.0, *)) {
-        [self updateConversionValue:conversionValue];
-        if (completion != nil) {
-            completion(nil);
-        }
-    } else {
-        [self.logger error:@"SKAdNetwork API not available on this iOS version"];
-        if (completion != nil) {
-            completion(nil);
-        }
+    } else { //if (@available(iOS 14.0, *)) { already checked in 'checkSKAdNetworkFrameworkAvailability'
+        [self updateConversionValue:conversionValue withCompletionHandler:^(NSError *error) {
+            if (error) {
+                [self.logger error:@"Call to SKAdNetwork's updateConversionValue: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+            } else {
+                [self.logger debug:@"Called SKAdNetwork's updateConversionValue: method with conversion value: %d", conversionValue];
+            }
+            if (completion != nil) {
+                completion(error);
+            }
+        }];
     }
 }
 
 #pragma mark - Private
 
-- (BOOL)isApiAvailableForClass:(Class)class andSelector:(SEL)selector {
+- (BOOL)checkSKAdNetworkFrameworkAvailability:(NSError **)error {
 #if !(TARGET_OS_TV)
-    if (class == nil) {
-        [self.logger warn:@"StoreKit.framework not found in the app (SKAdNetwork class not found)"];
+    if (@available(iOS 14.0, *)) {
+        if (NSClassFromString(@"SKAdNetwork") == nil) {
+            NSString *strError = @"SKAdNetwork class not found. Check StoreKit.framework availability.";
+            *error = [NSError errorWithDomain:ADJSKAdNetworkDomain
+                                         code:ADJSKAdNetworkErrorFrameworkNotFound
+                                     userInfo:@{ NSLocalizedDescriptionKey: strError }];
+            return NO;
+        }
+        return YES;
+    } else {
+        NSString *strError = @"SKAdNetwork API not available on this iOS version";
+        *error = [NSError errorWithDomain:ADJSKAdNetworkDomain
+                                     code:ADJSKAdNetworkErrorOsNotSupported
+                                 userInfo:@{ NSLocalizedDescriptionKey: strError }];
         return NO;
     }
-    if (!selector) {
-        [self.logger warn:@"Selector for given method was not found"];
-        return NO;
-    }
-    if ([class respondsToSelector:selector] == NO) {
-        [self.logger warn:@"%@ method implementation not found", NSStringFromSelector(selector)];
-        return NO;
-    }
-    return YES;
 #else
-    [self.logger debug:@"%@ method implementation not available for tvOS platform", NSStringFromSelector(selector)];
+    NSString *strError = @"SKAdNetwork is not supported on tvOS";
+    *error = [NSError errorWithDomain:ADJSKAdNetworkDomain
+                                 code:ADJSKAdNetworkErrorOsNotSupported
+                             userInfo:@{ NSLocalizedDescriptionKey: strError }];
     return NO;
 #endif
+}
+
+- (NSError *)checkSKAdNetworkMethodAvailability:(NSString *)methodName {
+    Class class = NSClassFromString(@"SKAdNetwork");
+    SEL selector = NSSelectorFromString(methodName);
+
+    if ([class respondsToSelector:selector] == NO) {
+        NSString *strError = [NSString stringWithFormat:@"Implementation of %@ not found in SKAdNetwork", methodName];
+        NSError *error = [NSError errorWithDomain:ADJSKAdNetworkDomain
+                                             code:ADJSKAdNetworkErrorApiNotAvailable
+                                         userInfo:@{ NSLocalizedDescriptionKey: strError }];
+        return error;
+    }
+    return nil;
+}
+
+- (void)asyncSendResultError:(NSError *_Nullable)error
+         toCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
+    dispatch_async(self.internalQueue, ^{
+        if (completion != nil) {
+            completion(error);
+        }
+    });
 }
 
 - (void)writeSkAdNetworkRegisterCallTimestamp {
@@ -294,7 +354,6 @@
 }
 
 - (NSString *)getSkAdNetworkCoarseConversionValue:(NSString *)adjustCoarseValue {
-#if !(TARGET_OS_TV)
     if (@available(iOS 16.1, *)) {
         if ([adjustCoarseValue isEqualToString:@"low"]) {
             NSString * __autoreleasing *lowValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueLow");
@@ -311,9 +370,6 @@
     } else {
         return nil;
     }
-#else
-    return nil;
-#endif
 }
 
 @end
