@@ -12,20 +12,25 @@
 #import "ADJUserDefaults.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
+#import "ADJUtil.h"
 
 static const char * const kInternalQueueName = "io.adjust.SKAdNetworkQueue";
-
-@interface ADJSKAdNetwork()
-@property (nonatomic, weak) id<ADJLogger> logger;
-@property (nonatomic, strong) dispatch_queue_t internalQueue;
-@end
-
 static NSString * const ADJSKAdNetworkDomain = @"com.adjust.sdk.skadnetwork";
 typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
     ADJSKAdNetworkErrorOsNotSupported       = -100,
     ADJSKAdNetworkErrorFrameworkNotFound    = -101,
     ADJSKAdNetworkErrorApiNotAvailable      = -102
 };
+
+NSString * const ADJSKAdNetworkCallSourceSdk = @"sdk";
+NSString * const ADJSKAdNetworkCallSourceBackend = @"backend";
+NSString * const ADJSKAdNetworkCallSourceClient = @"client";
+
+@interface ADJSKAdNetwork()
+@property (nonatomic, weak) id<ADJLogger> logger;
+@property (nonatomic, strong) dispatch_queue_t internalQueue;
+@end
+
 
 @implementation ADJSKAdNetwork
 
@@ -167,6 +172,13 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                          lockWindow:(nonnull NSNumber *)lockWindow
               withCompletionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion {
 
+
+    NSDate *skanRegisterDate = [self skadNetworkRegisterCallTimestamp];
+    if (skanRegisterDate != nil) {
+        [self.logger debug:@"Call to register app with SKAdNetwork already made for this install"];
+        return;
+    }
+
     NSError *error = nil;
     // Check iOS 14.0+ / NON-tvOS / SKAdNetwork framework available
     if (![self checkSKAdNetworkFrameworkAvailability:&error]) {
@@ -177,7 +189,7 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
 
     if (@available(iOS 16.1, *)) {
         [self updatePostbackConversionValue:conversionValue
-                                coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
                                  lockWindow:lockWindow
                       withCompletionHandler:^(NSError * _Nullable error) {
             if (error) {
@@ -187,7 +199,12 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
             }
 
             if (error == nil) {
-                [self writeSkAdNetworkRegisterCallTimestamp];
+                [self writeSKAdNetworkRegisterCallTimestamp];
+                [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                    coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
+                                                     lockWindow:lockWindow
+                                                      timestamp:[NSDate date]
+                                                         source:ADJSKAdNetworkCallSourceSdk];
             }
             if (completion != nil) {
                 completion(error);
@@ -202,7 +219,12 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                 [self.logger debug:@"Registration: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
             }
             if (error == nil) {
-                [self writeSkAdNetworkRegisterCallTimestamp];
+                [self writeSKAdNetworkRegisterCallTimestamp];
+                [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                    coarseValue:nil
+                                                     lockWindow:nil
+                                                      timestamp:[NSDate date]
+                                                         source:ADJSKAdNetworkCallSourceSdk];
             }
             if (completion != nil) {
                 completion(error);
@@ -216,7 +238,12 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                 [self.logger debug:@"Registration: called SKAdNetwork's registerAppForAdNetworkAttribution method"];
             }
             if (error == nil) {
-                [self writeSkAdNetworkRegisterCallTimestamp];
+                [self writeSKAdNetworkRegisterCallTimestamp];
+                [self writeLastSKAdNetworkUpdateConversionValue:nil
+                                                    coarseValue:nil
+                                                     lockWindow:nil
+                                                      timestamp:[NSDate date]
+                                                         source:ADJSKAdNetworkCallSourceSdk];
             }
             if (completion != nil) {
                 completion(error);
@@ -228,6 +255,7 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
 - (void)updateConversionValue:(NSInteger)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
+                       source:(nonnull NSString *)source
         withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
 
     NSError *error = nil;
@@ -244,13 +272,18 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
             if (lockWindow != nil) {
                 // they do both
                 [self updatePostbackConversionValue:conversionValue
-                                        coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                        coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
                                          lockWindow:[lockWindow boolValue]
                               withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
                         [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
                     } else {
                         [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
+                        [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                            coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
+                                                             lockWindow:lockWindow
+                                                              timestamp:[NSDate date]
+                                                                 source:source];
                     }
                     if (completion != nil) {
                         completion(error);
@@ -259,12 +292,17 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
             } else {
                 // Only coarse value is received
                 [self updatePostbackConversionValue:conversionValue
-                                        coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
+                                        coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
                               withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
                         [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@ failed\nDescription: %@", conversionValue, coarseValue, error.localizedDescription];
                     } else {
                         [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
+                        [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                            coarseValue:[self getSKAdNetworkCoarseConversionValue:coarseValue]
+                                                             lockWindow:nil
+                                                              timestamp:[NSDate date]
+                                                                 source:source];
                     }
                     if (completion != nil) {
                         completion(error);
@@ -280,6 +318,11 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                     [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
                 } else {
                     [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                    [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                        coarseValue:nil
+                                                         lockWindow:nil
+                                                          timestamp:[NSDate date]
+                                                             source:source];
                 }
                 if (completion != nil) {
                     completion(error);
@@ -293,6 +336,11 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                 [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
             } else {
                 [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                    coarseValue:nil
+                                                     lockWindow:nil
+                                                      timestamp:[NSDate date]
+                                                         source:source];
             }
             if (completion != nil) {
                 completion(error);
@@ -304,6 +352,11 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                 [self.logger error:@"Update CV: call to SKAdNetwork's updateConversionValue: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
             } else {
                 [self.logger debug:@"Update CV: called SKAdNetwork's updateConversionValue: method with conversion value: %d", conversionValue];
+                [self writeLastSKAdNetworkUpdateConversionValue:[NSNumber numberWithInteger:conversionValue]
+                                                    coarseValue:nil
+                                                     lockWindow:nil
+                                                      timestamp:[NSDate date]
+                                                         source:source];
             }
             if (completion != nil) {
                 completion(error);
@@ -364,12 +417,42 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
     });
 }
 
-- (void)writeSkAdNetworkRegisterCallTimestamp {
+- (void)writeSKAdNetworkRegisterCallTimestamp {
     NSDate *callTime = [NSDate date];
     [ADJUserDefaults saveSkadRegisterCallTimestamp:callTime];
 }
 
-- (NSString *)getSkAdNetworkCoarseConversionValue:(NSString *)adjustCoarseValue {
+- (NSDate *)skadNetworkRegisterCallTimestamp {
+    return [ADJUserDefaults getSkadRegisterCallTimestamp];
+}
+
+- (void)writeLastSKAdNetworkUpdateConversionValue:(NSNumber * _Nullable)conversionValue
+                                      coarseValue:(NSString * _Nullable)coarseValue
+                                       lockWindow:(NSNumber * _Nullable)lockWindow
+                                        timestamp:(NSDate * _Nonnull)timestamp
+                                           source:(NSString * _Nonnull)source {
+
+    NSMutableDictionary *skanUpdateData = [NSMutableDictionary dictionary];
+    if (conversionValue != nil) {
+        [skanUpdateData setObject:conversionValue forKey:@"conv"];
+    }
+    if (coarseValue != nil) {
+        [skanUpdateData setObject:coarseValue forKey:@"coav"];
+    }
+    if (lockWindow != nil) {
+        [skanUpdateData setObject:lockWindow forKey:@"lw"];
+    }
+    [skanUpdateData setObject:[ADJUtil formatDate:timestamp] forKey:@"ts"];
+    [skanUpdateData setObject:source forKey:@"source"];
+
+    [ADJUserDefaults saveLastSkanUpdateData:skanUpdateData];
+}
+
+- (NSDictionary *)lastSKAdNetworkUpdateData {
+    return [ADJUserDefaults getLastSkanUpdateData];
+}
+
+- (NSString *)getSKAdNetworkCoarseConversionValue:(NSString *)adjustCoarseValue {
     if (@available(iOS 16.1, *)) {
         if ([adjustCoarseValue isEqualToString:@"low"]) {
             NSString * __autoreleasing *lowValue = (NSString * __autoreleasing *)dlsym(RTLD_DEFAULT, "SKAdNetworkCoarseConversionValueLow");

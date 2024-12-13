@@ -10,6 +10,10 @@
 
 @interface ADJSKAdNetwork : NSObject
 
+extern NSString * _Nonnull const ADJSKAdNetworkCallSourceSdk;
+extern NSString * _Nonnull const ADJSKAdNetworkCallSourceBackend;
+extern NSString * _Nonnull const ADJSKAdNetworkCallSourceClient;
+
 + (nullable instancetype)getInstance;
 
 - (void)registerWithConversionValue:(NSInteger)conversionValue
@@ -20,6 +24,8 @@
 - (void)updateConversionValue:(NSInteger)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
+                       source:(nonnull NSString *)source
         withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
 
+- (NSDictionary * _Nullable)lastSKAdNetworkUpdateData;
 @end

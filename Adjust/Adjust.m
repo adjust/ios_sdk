@@ -628,6 +628,7 @@ static dispatch_once_t onceToken = 0;
     [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
+                                                 source:ADJSKAdNetworkCallSourceClient
                                   withCompletionHandler:completion];
 }
 

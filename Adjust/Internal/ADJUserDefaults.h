@@ -69,4 +69,10 @@
 
 + (NSDictionary *)getControlParams;
 
++ (void)saveLastSkanUpdateData:(NSDictionary *)skanData;
+
++ (NSDictionary *)getLastSkanUpdateData;
+
+
+
 @end

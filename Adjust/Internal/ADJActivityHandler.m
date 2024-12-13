@@ -182,14 +182,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self readAttribution];
     [self readActivityState];
     
-
-    NSDate *skanRegisterDate = [ADJUserDefaults getSkadRegisterCallTimestamp];
-    if (skanRegisterDate != nil) {
-        [self.logger debug:@"Call to register app with SKAdNetwork already made for this install"];
-    }
-
     // register SKAdNetwork attribution if we haven't already
-    if (self.adjustConfig.isSkanAttributionEnabled && !skanRegisterDate) {
+    if (self.adjustConfig.isSkanAttributionEnabled) {
         NSNumber *numConversionValue = [NSNumber numberWithInteger:kSkanRegisterConversionValue];
         NSNumber *numLockWindow = [NSNumber numberWithBool:kSkanRegisterLockWindow];
 
@@ -2782,6 +2776,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [[ADJSKAdNetwork getInstance] updateConversionValue:[conversionValue intValue]
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
+                                                 source:ADJSKAdNetworkCallSourceBackend
                                   withCompletionHandler:^(NSError *error) {
         [self notifySkanCallbackWithConversionValue:conversionValue
                                         coarseValue:coarseValue
