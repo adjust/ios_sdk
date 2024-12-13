@@ -180,6 +180,12 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                                 coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                                  lockWindow:lockWindow
                       withCompletionHandler:^(NSError * _Nullable error) {
+            if (error) {
+                [self.logger error:@"Registration: call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
+            } else {
+                [self.logger debug:@"Registration: called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
+            }
+
             if (error == nil) {
                 [self writeSkAdNetworkRegisterCallTimestamp];
             }
@@ -190,6 +196,11 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
     } else if (@available(iOS 15.4, *)) {
         [self updatePostbackConversionValue:conversionValue
                       withCompletionHandler:^(NSError * _Nullable error) {
+            if (error) {
+                [self.logger error:@"Registration: call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+            } else {
+                [self.logger debug:@"Registration: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+            }
             if (error == nil) {
                 [self writeSkAdNetworkRegisterCallTimestamp];
             }
@@ -199,6 +210,11 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
         }];
     } else { // if (@available(iOS 14.0, *)) { already checked in 'checkSKAdNetworkFrameworkAvailability'
         [self registerAppForAdNetworkAttributionWithCompletionHandler:^(NSError *error) {
+            if (error) {
+                [self.logger error:@"Registration: call to SKAdNetwork's registerAppForAdNetworkAttribution method failed\nDescription: %@", error.localizedDescription];
+            } else {
+                [self.logger debug:@"Registration: called SKAdNetwork's registerAppForAdNetworkAttribution method"];
+            }
             if (error == nil) {
                 [self writeSkAdNetworkRegisterCallTimestamp];
             }
@@ -232,9 +248,9 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                                          lockWindow:[lockWindow boolValue]
                               withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
-                        [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
+                        [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d failed\nDescription: %@", conversionValue, coarseValue, [lockWindow boolValue], error.localizedDescription];
                     } else {
-                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
+                        [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:coarseValue:lockWindow:completionHandler: method with conversion value: %d, coarse value: %@, lock window: %d", conversionValue, coarseValue, [lockWindow boolValue]];
                     }
                     if (completion != nil) {
                         completion(error);
@@ -246,9 +262,9 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
                                         coarseValue:[self getSkAdNetworkCoarseConversionValue:coarseValue]
                               withCompletionHandler:^(NSError * _Nullable error) {
                     if (error) {
-                        [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@ failed\nDescription: %@", conversionValue, coarseValue, error.localizedDescription];
+                        [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@ failed\nDescription: %@", conversionValue, coarseValue, error.localizedDescription];
                     } else {
-                        [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
+                        [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:coarseValue:completionHandler: method with conversion value: %d, coarse value: %@", conversionValue, coarseValue];
                     }
                     if (completion != nil) {
                         completion(error);
@@ -261,9 +277,9 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
             [self updatePostbackConversionValue:conversionValue
                           withCompletionHandler:^(NSError * _Nullable error) {
                 if (error) {
-                    [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                    [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
                 } else {
-                    [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                    [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
                 }
                 if (completion != nil) {
                     completion(error);
@@ -274,9 +290,9 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
         [self updatePostbackConversionValue:conversionValue
                       withCompletionHandler:^(NSError * _Nullable error) {
             if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                [self.logger error:@"Update CV: call to SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
             } else {
-                [self.logger debug:@"Called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
+                [self.logger debug:@"Update CV: called SKAdNetwork's updatePostbackConversionValue:completionHandler: method with conversion value: %d", conversionValue];
             }
             if (completion != nil) {
                 completion(error);
@@ -285,9 +301,9 @@ typedef NS_ENUM(NSInteger, ADJSKAdNetworkError) {
     } else { //if (@available(iOS 14.0, *)) { already checked in 'checkSKAdNetworkFrameworkAvailability'
         [self updateConversionValue:conversionValue withCompletionHandler:^(NSError *error) {
             if (error) {
-                [self.logger error:@"Call to SKAdNetwork's updateConversionValue: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
+                [self.logger error:@"Update CV: call to SKAdNetwork's updateConversionValue: method with conversion value: %d failed\nDescription: %@", conversionValue, error.localizedDescription];
             } else {
-                [self.logger debug:@"Called SKAdNetwork's updateConversionValue: method with conversion value: %d", conversionValue];
+                [self.logger debug:@"Update CV: called SKAdNetwork's updateConversionValue: method with conversion value: %d", conversionValue];
             }
             if (completion != nil) {
                 completion(error);
