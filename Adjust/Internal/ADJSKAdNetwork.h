@@ -13,19 +13,21 @@
 extern NSString * _Nonnull const ADJSKAdNetworkCallSourceSdk;
 extern NSString * _Nonnull const ADJSKAdNetworkCallSourceBackend;
 extern NSString * _Nonnull const ADJSKAdNetworkCallSourceClient;
+extern NSString * _Nonnull const ADJSKAdNetworkCallActualConversionParamsKey;
+extern NSString * _Nonnull const ADJSKAdNetworkCallErrorKey;
 
 + (nullable instancetype)getInstance;
 
-- (void)registerWithConversionValue:(NSInteger)conversionValue
+- (void)registerWithConversionValue:(nonnull NSNumber *)conversionValue
                         coarseValue:(nonnull NSString *)coarseValue
                          lockWindow:(nonnull NSNumber *)lockWindow
-              withCompletionHandler:(void (^_Nonnull)(NSError *_Nullable error))completion;
+              withCompletionHandler:(void (^_Nonnull)(NSDictionary *_Nonnull result))completion;
 
-- (void)updateConversionValue:(NSInteger)conversionValue
+- (void)updateConversionValue:(nonnull NSNumber *)conversionValue
                   coarseValue:(nullable NSString *)coarseValue
                    lockWindow:(nullable NSNumber *)lockWindow
                        source:(nonnull NSString *)source
-        withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion;
+        withCompletionHandler:(void (^_Nonnull)(NSDictionary *_Nonnull result))completion;
 
 - (NSDictionary * _Nullable)lastSKAdNetworkUpdateData;
 @end

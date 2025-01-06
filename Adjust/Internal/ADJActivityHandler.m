@@ -44,10 +44,6 @@ static NSString   * const kBackgroundTimerName                  = @"Background t
 static NSString   * const kSkanConversionValueResponseKey       = @"skadn_conv_value";
 static NSString   * const kSkanCoarseValueResponseKey           = @"skadn_coarse_value";
 static NSString   * const kSkanLockWindowResponseKey            = @"skadn_lock_window";
-static NSString   * const kSkanConversionValueCallbackKey       = @"conversion_value";
-static NSString   * const kSkanCoarseValueCallbackKey           = @"coarse_value";
-static NSString   * const kSkanLockWindowCallbackKey            = @"lock_window";
-static NSString   * const kSkanErrorCallbackKey                 = @"error";
 
 static NSTimeInterval kForegroundTimerInterval;
 static NSTimeInterval kForegroundTimerStart;
@@ -187,15 +183,11 @@ const BOOL kSkanRegisterLockWindow = NO;
         NSNumber *numConversionValue = [NSNumber numberWithInteger:kSkanRegisterConversionValue];
         NSNumber *numLockWindow = [NSNumber numberWithBool:kSkanRegisterLockWindow];
 
-        [[ADJSKAdNetwork getInstance] registerWithConversionValue:kSkanRegisterConversionValue
+        [[ADJSKAdNetwork getInstance] registerWithConversionValue:numConversionValue
                                                       coarseValue:kSkanRegisterCoarseValue
                                                        lockWindow:numLockWindow
-                                            withCompletionHandler:^(NSError * _Nonnull error) {
-
-            [self notifySkanCallbackWithConversionValue:numConversionValue
-                                            coarseValue:kSkanRegisterCoarseValue
-                                             lockWindow:numLockWindow
-                                     apiInvocationError:error];
+                                            withCompletionHandler:^(NSDictionary * _Nonnull result) {
+            [self invokeClientSkanUpdateCallbackWithResult:result];
         }];
     }
 
@@ -2773,22 +2765,18 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     NSString *coarseValue = [responseData.jsonResponse objectForKey:kSkanCoarseValueResponseKey];
     NSNumber *lockWindow = [responseData.jsonResponse objectForKey:kSkanLockWindowResponseKey];
 
-    [[ADJSKAdNetwork getInstance] updateConversionValue:[conversionValue intValue]
+    [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
                                                  source:ADJSKAdNetworkCallSourceBackend
-                                  withCompletionHandler:^(NSError *error) {
-        [self notifySkanCallbackWithConversionValue:conversionValue
-                                        coarseValue:coarseValue
-                                         lockWindow:lockWindow
-                                 apiInvocationError:error];
+                                  withCompletionHandler:^(NSDictionary * _Nonnull result) {
+        [self invokeClientSkanUpdateCallbackWithResult:result];
     }];
 }
 
 - (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
     [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
 }
-
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
     if (!selfI.adjustConfig.isCoppaComplianceEnabled) {
@@ -2858,26 +2846,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return !selfI.activityState.isThirdPartySharingDisabledForCoppa;
 }
 
-#pragma mark Utils
-
-- (void)notifySkanCallbackWithConversionValue:(nonnull NSNumber *)conversionValue
-                                  coarseValue:(nullable NSString *)coarseValue
-                                   lockWindow:(nullable NSNumber *)lockWindow
-                           apiInvocationError:(nullable NSError *)error {
-    // Create updated conversion data dictionary
-    NSMutableDictionary<NSString *, NSString *> *conversionParams = [[NSMutableDictionary alloc] init];
-    [conversionParams setObject:conversionValue.stringValue forKey:kSkanConversionValueCallbackKey];
-    if (coarseValue != nil) {
-        [conversionParams setObject:coarseValue forKey:kSkanCoarseValueCallbackKey];
-    }
-    if (lockWindow != nil) {
-        NSString *val = (lockWindow.boolValue) ? @"true" : @"false";
-        [conversionParams setObject:val forKey:kSkanLockWindowCallbackKey];
-    }
-    if (error != nil) {
-        [conversionParams setObject:error.localizedDescription forKey:kSkanErrorCallbackKey];
-    }
-
+- (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result {
+    NSDictionary *conversionParams = [result objectForKey:ADJSKAdNetworkCallActualConversionParamsKey];
     // Ping the callback method if implemented
     if ([self.adjustDelegate respondsToSelector:@selector(adjustSkanUpdatedWithConversionData:)]) {
         [self.logger debug:@"Launching delegate's method adjustSkanUpdatedWithConversionData:"];

@@ -625,11 +625,19 @@ static dispatch_once_t onceToken = 0;
                       coarseValue:(nullable NSString *)coarseValue
                        lockWindow:(nullable NSNumber *)lockWindow
             withCompletionHandler:(void (^_Nullable)(NSError *_Nullable error))completion {
-    [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
+    
+    [[ADJSKAdNetwork getInstance] updateConversionValue:[NSNumber numberWithInteger:conversionValue]
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
                                                  source:ADJSKAdNetworkCallSourceClient
-                                  withCompletionHandler:completion];
+                                  withCompletionHandler:^(NSDictionary * _Nonnull result) {
+        if ([self checkActivityHandler]) {
+            [self.activityHandler invokeClientSkanUpdateCallbackWithResult:result];
+        }
+        if (completion != nil) {
+            completion([result objectForKey:ADJSKAdNetworkCallErrorKey]);
+        }
+    }];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {

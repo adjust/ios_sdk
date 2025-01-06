@@ -111,6 +111,7 @@
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
+- (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
