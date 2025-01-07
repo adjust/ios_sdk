@@ -540,16 +540,16 @@ static NSString   * const kSkanErrorCallbackKey = @"error";
 
     NSMutableDictionary *skanUpdateData = [NSMutableDictionary dictionary];
     if (conversionValue != nil) {
-        [skanUpdateData setObject:conversionValue forKey:@"conv"];
+        [skanUpdateData setObject:conversionValue forKey:kSkanConversionValueCallbackKey];
     }
     if (coarseValue != nil) {
-        [skanUpdateData setObject:coarseValue forKey:@"coav"];
+        [skanUpdateData setObject:coarseValue forKey:kSkanCoarseValueCallbackKey];
     }
     if (lockWindow != nil) {
-        [skanUpdateData setObject:lockWindow forKey:@"lw"];
+        [skanUpdateData setObject:lockWindow forKey:kSkanLockWindowCallbackKey];
     }
-    [skanUpdateData setObject:[ADJUtil formatDate:timestamp] forKey:@"ts"];
-    [skanUpdateData setObject:source forKey:@"src"];
+    [skanUpdateData setObject:[ADJUtil formatDate:timestamp] forKey:@"timestamp"];
+    [skanUpdateData setObject:source forKey:@"source"];
 
     [ADJUserDefaults saveLastSkanUpdateData:skanUpdateData];
 }
