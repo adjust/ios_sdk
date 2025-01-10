@@ -131,6 +131,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
 - (void)sendNextPurchaseVerificationPackageI:(ADJPurchaseVerificationHandler *)selfI {
     if (selfI.paused) {
+        [selfI.logger debug:@"Purchase verification handler is paused"];
         return;
     }
     NSUInteger queueSize = selfI.packageQueue.count;

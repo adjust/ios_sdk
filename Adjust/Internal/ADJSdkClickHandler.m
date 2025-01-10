@@ -134,6 +134,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
 - (void)sendNextSdkClickI:(ADJSdkClickHandler *)selfI {
     if (selfI.paused) {
+        [selfI.logger debug:@"Click handler is paused"];
         return;
     }
     NSUInteger queueSize = selfI.packageQueue.count;

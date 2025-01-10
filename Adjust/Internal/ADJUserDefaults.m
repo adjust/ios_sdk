@@ -20,6 +20,7 @@ static NSString * const PREFS_KEY_LINK_ME_CHECKED = @"adj_link_me_checked";
 static NSString * const PREFS_KEY_DEEPLINK_URL_CACHED = @"adj_deeplink_url_cached";
 static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_waiting_remaining_seconds";
 static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
+static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update";
 
 @implementation ADJUserDefaults
 
@@ -143,6 +144,14 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:PREFS_KEY_CONTROL_PARAMS];
 }
 
++ (void)saveLastSkanUpdateData:(NSDictionary *)skanUpdateData {
+    [[NSUserDefaults standardUserDefaults] setObject:skanUpdateData forKey:PREFS_KEY_LAST_SKAN_UPDATE_DATA];
+}
+
++ (NSDictionary *)getLastSkanUpdateData {
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:PREFS_KEY_LAST_SKAN_UPDATE_DATA];
+}
+
 + (void)clearAdjustStuff {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_PUSH_TOKEN_STRING];
@@ -156,6 +165,7 @@ static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL_CACHED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ATT_WAITING_REMAINING_SECONDS];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_CONTROL_PARAMS];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LAST_SKAN_UPDATE_DATA];
 }
 
 @end

@@ -18,6 +18,7 @@
 #import "ADJAdRevenue.h"
 #import "ADJAppStorePurchase.h"
 #import "ADJAppStoreSubscription.h"
+#import "ADJSKAdNetwork.h"
 
 NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
@@ -366,6 +367,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -433,6 +435,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindEvent];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -500,6 +503,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindInfo];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -568,6 +572,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAdRevenue];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -635,6 +640,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindClick];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -684,6 +690,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAttribution];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -728,6 +735,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindGdpr];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -799,6 +807,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindThirdPartySharing];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -864,6 +873,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindMeasurementConsent];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -928,6 +938,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSubscription];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
@@ -982,17 +993,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindPurchaseVerification];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
+    [self injectLastSkanUpdateWithParameters:parameters];
 
     return parameters;
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    
-    if (self.adjustConfig.isCoppaComplianceEnabled) {
-        [logger info:@"Cannot read IDFV with COPPA enabled"];
-        return;
-    }
     if (self.adjustConfig.isIdfvReadingEnabled == NO) {
         return;
     }
@@ -1028,6 +1034,13 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
     if (self.adjustConfig.isAdServicesEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
+}
+
+- (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {
+    NSDictionary *lastSkanUpdateData = [[ADJSKAdNetwork getInstance] lastSkanUpdateData];
+    if (lastSkanUpdateData != nil) {
+        [ADJPackageBuilder parameters:parameters setDictionaryJson:lastSkanUpdateData forKey:@"last_skan_update"];
     }
 }
 

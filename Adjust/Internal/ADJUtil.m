@@ -31,7 +31,7 @@ static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *goLinkUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios5.0.1";
+static NSString * const kClientSdk                  = @"ios5.0.2";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
