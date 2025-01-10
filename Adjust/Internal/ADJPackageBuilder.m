@@ -1040,7 +1040,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {
-    NSDictionary *lastSkanUpdateData = [[ADJSKAdNetwork getInstance] lastSKAdNetworkUpdateData];
+    NSDictionary *lastSkanUpdateData = [[ADJSKAdNetwork getInstance] lastSkanUpdateData];
     if (lastSkanUpdateData != nil) {
         [ADJPackageBuilder parameters:parameters setDictionaryJson:lastSkanUpdateData forKey:@"last_skan_update"];
     }

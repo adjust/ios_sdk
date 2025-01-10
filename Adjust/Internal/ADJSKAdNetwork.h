@@ -10,11 +10,11 @@
 
 @interface ADJSKAdNetwork : NSObject
 
-extern NSString * _Nonnull const ADJSKAdNetworkCallSourceSdk;
-extern NSString * _Nonnull const ADJSKAdNetworkCallSourceBackend;
-extern NSString * _Nonnull const ADJSKAdNetworkCallSourceClient;
-extern NSString * _Nonnull const ADJSKAdNetworkCallActualConversionParamsKey;
-extern NSString * _Nonnull const ADJSKAdNetworkCallErrorKey;
+extern NSString * _Nonnull const ADJSkanSourceSdk;
+extern NSString * _Nonnull const ADJSkanSourceBackend;
+extern NSString * _Nonnull const ADJSkanSourceClient;
+extern NSString * _Nonnull const ADJSkanClientCallbackParamsKey;
+extern NSString * _Nonnull const ADJSkanClientCompletionErrorKey;
 
 + (nullable instancetype)getInstance;
 
@@ -29,5 +29,6 @@ extern NSString * _Nonnull const ADJSKAdNetworkCallErrorKey;
                        source:(nonnull NSString *)source
         withCompletionHandler:(void (^_Nonnull)(NSDictionary *_Nonnull result))completion;
 
-- (NSDictionary * _Nullable)lastSKAdNetworkUpdateData;
+- (NSDictionary * _Nullable)lastSkanUpdateData;
+
 @end

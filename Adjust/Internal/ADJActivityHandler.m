@@ -2768,7 +2768,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     [[ADJSKAdNetwork getInstance] updateConversionValue:conversionValue
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
-                                                 source:ADJSKAdNetworkCallSourceBackend
+                                                 source:ADJSkanSourceBackend
                                   withCompletionHandler:^(NSDictionary * _Nonnull result) {
         [self invokeClientSkanUpdateCallbackWithResult:result];
     }];
@@ -2847,7 +2847,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result {
-    NSDictionary *conversionParams = [result objectForKey:ADJSKAdNetworkCallActualConversionParamsKey];
+    NSDictionary *conversionParams = [result objectForKey:ADJSkanClientCallbackParamsKey];
     // Ping the callback method if implemented
     if ([self.adjustDelegate respondsToSelector:@selector(adjustSkanUpdatedWithConversionData:)]) {
         [self.logger debug:@"Launching delegate's method adjustSkanUpdatedWithConversionData:"];
