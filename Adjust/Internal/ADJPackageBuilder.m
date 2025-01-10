@@ -999,8 +999,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 - (void)addIdfvIfPossibleToParameters:(NSMutableDictionary *)parameters {
-    id<ADJLogger> logger = [ADJAdjustFactory logger];
-    
     if (self.adjustConfig.isIdfvReadingEnabled == NO) {
         return;
     }
