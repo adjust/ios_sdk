@@ -64,6 +64,11 @@
 @property (nonatomic, copy, nullable) NSString *costCurrency;
 
 /**
+ * @brief All attribution fileds from backend's attribution JSON response.
+ */
+@property (nonatomic, strong, nullable) NSDictionary *jsonResponse;
+
+/**
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.

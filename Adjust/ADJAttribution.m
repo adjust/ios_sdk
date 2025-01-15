@@ -31,6 +31,7 @@
     self.costType = [jsonDict objectForKey:@"cost_type"];
     self.costAmount = [jsonDict objectForKey:@"cost_amount"];
     self.costCurrency = [jsonDict objectForKey:@"cost_currency"];
+    self.jsonResponse = jsonDict;
 
     return self;
 }
@@ -106,6 +107,7 @@
     if (self.costCurrency != nil) {
         [responseDataDic setObject:self.costCurrency forKey:@"costCurrency"];
     }
+    // TODO: potentially create a JSON string out of jsonResponse field and put it in
 
     return responseDataDic;
 }
@@ -151,6 +153,7 @@
         copy.costType = [self.costType copyWithZone:zone];
         copy.costAmount = [self.costAmount copyWithZone:zone];
         copy.costCurrency = [self.costCurrency copyWithZone:zone];
+        copy.jsonResponse = [self.jsonResponse copyWithZone:zone];
     }
 
     return copy;
@@ -175,6 +178,7 @@
     self.costType = [decoder decodeObjectForKey:@"costType"];
     self.costAmount = [decoder decodeObjectForKey:@"costAmount"];
     self.costCurrency = [decoder decodeObjectForKey:@"costCurrency"];
+    self.jsonResponse = [decoder decodeObjectForKey:@"jsonResponse"];
 
     return self;
 }
@@ -190,6 +194,7 @@
     [encoder encodeObject:self.costType forKey:@"costType"];
     [encoder encodeObject:self.costAmount forKey:@"costAmount"];
     [encoder encodeObject:self.costCurrency forKey:@"costCurrency"];
+    [encoder encodeObject:self.jsonResponse forKey:@"jsonResponse"];
 }
 
 @end
