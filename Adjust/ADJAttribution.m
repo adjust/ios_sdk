@@ -107,6 +107,9 @@
     if (self.costCurrency != nil) {
         [responseDataDic setObject:self.costCurrency forKey:@"costCurrency"];
     }
+    if (self.jsonResponse != nil) {
+        [responseDataDic setObject:self.jsonResponse forKey:@"jsonResponse"];
+    }
 
     return responseDataDic;
 }
