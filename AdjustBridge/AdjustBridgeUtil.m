@@ -47,11 +47,11 @@
     return jsonString;
 }
 
-+ (NSString *)serializeData:(id)data pretty:(BOOL)pretty {
-    NSError *error;
++ (NSString *)serializeData:(id)data {
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
-                                                       options:0 error:&error];
-    NSString *jsonString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                                       options:0
+                                                         error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
     jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
@@ -119,6 +119,4 @@
     return testOptions;
 }
 
-
 @end
-

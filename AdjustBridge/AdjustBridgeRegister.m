@@ -515,6 +515,3 @@ static NSString * fbAppIdStatic = nil;
 }
 
 @end
-
-
-

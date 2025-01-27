@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)launchInMainThread:(dispatch_block_t)block;
 + (NSDictionary *)getTestOptions:(id)data;
 + (NSString *)convertJsonDictionaryToNSString:(NSDictionary *)jsonDictionary;
-+ (NSString *)serializeData:(id)data pretty:(BOOL)pretty;
++ (NSString *)serializeData:(id)data;
 
 @end
 
