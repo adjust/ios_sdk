@@ -107,7 +107,6 @@
     if (self.costCurrency != nil) {
         [responseDataDic setObject:self.costCurrency forKey:@"costCurrency"];
     }
-    // TODO: potentially create a JSON string out of jsonResponse field and put it in
 
     return responseDataDic;
 }
