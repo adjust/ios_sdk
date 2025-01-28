@@ -26,7 +26,6 @@
 @property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
 @property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
-
 @property (nonatomic, strong) ADJLogger *logger;
 
 @end
@@ -98,108 +97,82 @@
 
     if ([methodName isEqual:ADJWBInitSdkMethodName]) {
         [self initSdk:parameters];
-
     } else if ([methodName isEqual:ADJWBTrackEventMethodName]) {
         [self trackEvent:parameters];
-
     } else if ([methodName isEqual:ADJWBGetSdkVersionMethodName]) {
         __block NSString *_Nullable localSdkPrefix = [parameters objectForKey:@"sdkPrefix"];
         [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
             NSString *joinedSdkVersion = [NSString stringWithFormat:@"%@@%@", localSdkPrefix, sdkVersion];
-            [self execJsCallbackWithId:callbackId callBackData:joinedSdkVersion];
+            [self execJsCallbackWithId:callbackId callbackData:joinedSdkVersion];
         }];
-
     } else if ([methodName isEqual:ADJWBGetIdfaMethodName]) {
         [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
-            [self execJsCallbackWithId:callbackId callBackData:idfa];
+            [self execJsCallbackWithId:callbackId callbackData:idfa];
         }];
-
     }  else if ([methodName isEqual:ADJWBGetIdfvMethodName]) {
         [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
-            [self execJsCallbackWithId:callbackId callBackData:idfv];
+            [self execJsCallbackWithId:callbackId callbackData:idfv];
         }];
-
     } else if ([methodName isEqual:ADJWBGetAdidMethodName]) {
         [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
-            [self execJsCallbackWithId:callbackId callBackData:adid];
+            [self execJsCallbackWithId:callbackId callbackData:adid];
         }];
-
     } else if ([methodName isEqual:ADJWBGetAttributionMethodName]) {
         [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
-            [self execJsCallbackWithId:callbackId callBackData:[attribution dictionary]];
+            [self execJsCallbackWithId:callbackId callbackData:[attribution dictionary]];
         }];
-
     } else if ([methodName isEqual:ADJWBIsEnabledMethodName]) {
         [Adjust isEnabledWithCompletionHandler:^(BOOL isEnabled) {
-            [self execJsCallbackWithId:callbackId callBackData:@(isEnabled).description];
+            [self execJsCallbackWithId:callbackId callbackData:@(isEnabled).description];
         }];
-
     } else if ([methodName isEqual:ADJWBRequestAppTrackingMethodName]) {
         [Adjust requestAppTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
-            [self execJsCallbackWithId:callbackId callBackData:@(status).description];
+            [self execJsCallbackWithId:callbackId callbackData:@(status).description];
         }];
-
     } else if ([methodName isEqual:ADJWBAppTrackingAuthorizationStatus]) {
         int appTrackingAuthorizationStatus = [Adjust appTrackingAuthorizationStatus];
-        [self execJsCallbackWithId:callbackId callBackData:@(appTrackingAuthorizationStatus).description];
-
+        [self execJsCallbackWithId:callbackId callbackData:@(appTrackingAuthorizationStatus).description];
     } else if ([methodName isEqual:ADJWBSwitchToOfflineModeMethodName]) {
         [Adjust switchToOfflineMode];
-
     } else if ([methodName isEqual:ADJWBSwitchBackToOnlineMode]) {
         [Adjust switchBackToOnlineMode];
-
     } else if ([methodName isEqual:ADJWBEnableMethodName]) {
         [Adjust enable];
-
     } else if ([methodName isEqual:ADJWBDisableMethodName]) {
         [Adjust disable];
-
     } else if ([methodName isEqual:ADJWBTrackSubsessionStartMethodName]) {
         [Adjust trackSubsessionStart];
-
     } else if ([methodName isEqual:ADJWBTrackSubsessionEndMethodName]) {
         [Adjust trackSubsessionEnd];
-
     } else if ([methodName isEqual:ADJWBTrackMeasurementConsentMethodName]) {
         if (![parameters isKindOfClass:[NSNumber class]]) {
             return;
         }
         [Adjust trackMeasurementConsent:[(NSNumber *)parameters boolValue]];
-
     } else if ([methodName isEqual:ADJWBAddGlobalCallbackParameterMethodName]) {
         NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
         NSString *value = [parameters objectForKey:ADJWBKvValueKey];
         [Adjust addGlobalCallbackParameter:value forKey:key];
-
     } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParameterMethodName]) {
         NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
         [Adjust removeGlobalCallbackParameterForKey:key];
-
     } else if ([methodName isEqual:ADJWBRemoveGlobalCallbackParametersMethodName]) {
         [Adjust removeGlobalCallbackParameters];
-
     } else if ([methodName isEqual:ADJWBAddGlobalPartnerParameterMethodName]) {
         NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
         NSString *value = [parameters objectForKey:ADJWBKvValueKey];
         [Adjust addGlobalPartnerParameter:value forKey:key];
-
     } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParameterMethodName]) {
         NSString *key = [parameters objectForKey:ADJWBKvKeyKey];
         [Adjust removeGlobalPartnerParameterForKey:key];
-
     } else if ([methodName isEqual:ADJWBRemoveGlobalPartnerParametersMethodName]) {
         [Adjust removeGlobalPartnerParameters];
-
     } else if ([methodName isEqual:ADJWBGdprForgetMeMethodName]) {
         [Adjust gdprForgetMe];
-
     } else if ([methodName isEqual:ADJWBTrackThirdPartySharingMethodName]) {
         [self trackThirdPartySharing:parameters];
-
     } else if ([methodName isEqual:ADJWBSetTestOptionsMethodName]) {
         [self setTestOptions:parameters];
-
     } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
         [self trackFbPixelEvent:parameters];
     }
@@ -250,42 +223,46 @@
         adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken environment:environment];
     }
 
-    if (![adjustConfig isValid]) {
-        return;
-    }
-
     if ([AdjustBridgeUtil isFieldValid:sdkPrefix]) {
         [adjustConfig setSdkPrefix:sdkPrefix];
     }
+
     if ([AdjustBridgeUtil isFieldValid:defaultTracker]) {
         [adjustConfig setDefaultTracker:defaultTracker];
     }
+
     if ([AdjustBridgeUtil isFieldValid:externalDeviceId]) {
         [adjustConfig setExternalDeviceId:externalDeviceId];
     }
+
     if ([AdjustBridgeUtil isFieldValid:logLevel]) {
         [adjustConfig setLogLevel:[ADJLogger logLevelFromString:[logLevel lowercaseString]]];
     }
+
     if ([AdjustBridgeUtil isFieldValid:sendInBackground]) {
         if ([sendInBackground boolValue] == YES) {
             [adjustConfig enableSendingInBackground];
         }
     }
+
     if ([AdjustBridgeUtil isFieldValid:isCostDataInAttributionEnabled]) {
         if ([isCostDataInAttributionEnabled boolValue] == YES) {
             [adjustConfig enableCostDataInAttribution];
         }
     }
+
     if ([AdjustBridgeUtil isFieldValid:isAdServicesEnabled]) {
         if ([isAdServicesEnabled boolValue] == NO) {
             [adjustConfig disableAdServices];
         }
     }
+
     if ([AdjustBridgeUtil isFieldValid:isCoppaComplianceEnabled]) {
         if ([isCoppaComplianceEnabled boolValue] == YES) {
             [adjustConfig enableCoppaCompliance];
         }
     }
+
     if ([AdjustBridgeUtil isFieldValid:isDeferredDeeplinkOpeningEnabled]) {
         self.isDeferredDeeplinkOpeningEnabled = [isDeferredDeeplinkOpeningEnabled boolValue];
     }
@@ -316,7 +293,7 @@
         [adjustConfig setEventDeduplicationIdsMaxSize:[eventDeduplicationIdsMaxSize integerValue]];
     }
 
-    //fb parameters handling
+    // fb parameters handling
     if ([AdjustBridgeUtil isFieldValid:fbPixelDefaultEventToken]) {
         self.fbPixelDefaultEventToken = fbPixelDefaultEventToken;
     }
@@ -405,11 +382,13 @@
         double revenueValue = [revenue doubleValue];
         [adjEvent setRevenue:revenueValue currency:currency];
     }
+
     for (int i = 0; i < [callbackParameters count]; i += 2) {
         NSString *key = [[callbackParameters objectAtIndex:i] description];
         NSString *value = [[callbackParameters objectAtIndex:(i + 1)] description];
         [adjEvent addCallbackParameter:key value:value];
     }
+
     for (int i = 0; i < [partnerParameters count]; i += 2) {
         NSString *key = [[partnerParameters objectAtIndex:i] description];
         NSString *value = [[partnerParameters objectAtIndex:(i + 1)] description];
@@ -437,6 +416,7 @@
         NSString *value = [[granularOptions objectAtIndex:(i + 2)] description];
         [adjustThirdPartySharing addGranularOption:partnerName key:key value:value];
     }
+
     for (int i = 0; i < [partnerSharingSettings count]; i += 3) {
         NSString *partnerName = [[partnerSharingSettings objectAtIndex:i] description];
         NSString *key = [[partnerSharingSettings objectAtIndex:(i + 1)] description];
@@ -458,18 +438,17 @@
 
 #pragma mark - Native to Javascript Callback Handling
 
-- (void)execJsCallbackWithId:(NSString *)callbackId callBackData:(id)data {
+- (void)execJsCallbackWithId:(NSString *)callbackId callbackData:(id)data {
     NSString *callbackParamString;
     if ([data isKindOfClass:[NSMutableDictionary class]] || [data isKindOfClass:[NSDictionary class]]) {
-        callbackParamString = [AdjustBridgeUtil serializeData:data pretty:NO];
+        callbackParamString = [AdjustBridgeUtil serializeData:data];
     }
 
     if ([data isKindOfClass:[NSString class]]){
         callbackParamString = data;
     }
 
-    NSString *jsExecCommand = [NSString stringWithFormat:@"%@('%@')", callbackId,
-                               callbackParamString];
+    NSString *jsExecCommand = [NSString stringWithFormat:@"%@('%@')", callbackId, callbackParamString];
 
     [AdjustBridgeUtil launchInMainThread:^{
         [self.wkWebView evaluateJavaScript:jsExecCommand completionHandler:nil];
@@ -483,7 +462,7 @@
         return;
     }
     [self execJsCallbackWithId:self.attributionCallbackName
-                  callBackData:[attribution dictionary]];
+                  callbackData:[attribution dictionary]];
 }
 
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
@@ -502,7 +481,6 @@
                                           forKey:@"eventToken"];
     [eventSuccessResponseDataDictionary setValue:eventSuccessResponseData.callbackId
                                           forKey:@"callbackId"];
-
     NSString *jsonResponse = [AdjustBridgeUtil
                               convertJsonDictionaryToNSString:eventSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
@@ -511,7 +489,7 @@
     [eventSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self execJsCallbackWithId:self.eventSuccessCallbackName
-                  callBackData:eventSuccessResponseDataDictionary];
+                  callbackData:eventSuccessResponseDataDictionary];
 }
 
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
@@ -532,7 +510,6 @@
                                           forKey:@"callbackId"];
     [eventFailureResponseDataDictionary setValue:[NSNumber numberWithBool:eventFailureResponseData.willRetry]
                                           forKey:@"willRetry"];
-
     NSString *jsonResponse = [AdjustBridgeUtil
                               convertJsonDictionaryToNSString:eventFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
@@ -541,7 +518,7 @@
     [eventFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self execJsCallbackWithId:self.eventFailureCallbackName
-                  callBackData:eventFailureResponseDataDictionary];
+                  callbackData:eventFailureResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingSucceeded:(ADJSessionSuccess *)sessionSuccessResponseData {
@@ -556,7 +533,6 @@
                                             forKey:@"timestamp"];
     [sessionSuccessResponseDataDictionary setValue:sessionSuccessResponseData.adid
                                             forKey:@"adid"];
-
     NSString *jsonResponse = [AdjustBridgeUtil
                               convertJsonDictionaryToNSString:sessionSuccessResponseData.jsonResponse];
     if (jsonResponse == nil) {
@@ -565,7 +541,7 @@
     [sessionSuccessResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self execJsCallbackWithId:self.sessionSuccessCallbackName
-                  callBackData:sessionSuccessResponseDataDictionary];
+                  callbackData:sessionSuccessResponseDataDictionary];
 }
 
 - (void)adjustSessionTrackingFailed:(ADJSessionFailure *)sessionFailureResponseData {
@@ -582,7 +558,6 @@
                                             forKey:@"adid"];
     [sessionFailureResponseDataDictionary setValue:[NSNumber numberWithBool:sessionFailureResponseData.willRetry]
                                             forKey:@"willRetry"];
-
     NSString *jsonResponse = [AdjustBridgeUtil
                               convertJsonDictionaryToNSString:sessionFailureResponseData.jsonResponse];
     if (jsonResponse == nil) {
@@ -591,13 +566,13 @@
     [sessionFailureResponseDataDictionary setValue:jsonResponse forKey:@"jsonResponse"];
 
     [self execJsCallbackWithId:self.sessionFailureCallbackName
-                  callBackData:sessionFailureResponseDataDictionary];
+                  callbackData:sessionFailureResponseDataDictionary];
 }
 
 - (BOOL)adjustDeferredDeeplinkReceived:(NSURL *)deeplink {
     if (self.deferredDeeplinkCallbackName) {
         [self execJsCallbackWithId:self.deferredDeeplinkCallbackName
-                      callBackData:[deeplink absoluteString]];
+                      callbackData:[deeplink absoluteString]];
     }
     return self.isDeferredDeeplinkOpeningEnabled;
 }
@@ -614,7 +589,7 @@
     [skanUpdatedDictionary setValue:data[@"error"] forKey:@"error"];
 
     [self execJsCallbackWithId:self.skanUpdatedCallbackName
-                  callBackData:skanUpdatedDictionary];
+                  callbackData:skanUpdatedDictionary];
 }
 
 #pragma mark - FB Pixel event handling
@@ -679,7 +654,4 @@
     return [[[NSBundle mainBundle] objectForInfoDictionaryKey:key] copy];
 }
 
-
 @end
-
-

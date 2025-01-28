@@ -150,7 +150,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
     [selfI.activityHandler setAskingAttribution:NO];
 
-    NSDictionary * jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
+    NSDictionary *jsonAttribution = [responseData.jsonResponse objectForKey:@"attribution"];
     responseData.attribution = [[ADJAttribution alloc] initWithJsonDict:jsonAttribution];
 }
 
