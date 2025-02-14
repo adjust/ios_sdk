@@ -174,18 +174,17 @@
         return nil;
     }
 
-    self.trackerToken = [decoder decodeObjectForKey:@"trackerToken"];
-    self.trackerName = [decoder decodeObjectForKey:@"trackerName"];
-    self.network = [decoder decodeObjectForKey:@"network"];
-    self.campaign = [decoder decodeObjectForKey:@"campaign"];
-    self.adgroup = [decoder decodeObjectForKey:@"adgroup"];
-    self.creative = [decoder decodeObjectForKey:@"creative"];
-    self.clickLabel = [decoder decodeObjectForKey:@"click_label"];
-    self.costType = [decoder decodeObjectForKey:@"costType"];
-    self.costAmount = [decoder decodeObjectForKey:@"costAmount"];
-    self.costCurrency = [decoder decodeObjectForKey:@"costCurrency"];
-    self.jsonResponse = [decoder decodeObjectForKey:@"jsonResponse"];
-
+    self.trackerToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"trackerToken"];
+    self.trackerName = [decoder decodeObjectOfClass:[NSString class] forKey:@"trackerName"];
+    self.network = [decoder decodeObjectOfClass:[NSString class] forKey:@"network"];
+    self.campaign = [decoder decodeObjectOfClass:[NSString class] forKey:@"campaign"];
+    self.adgroup = [decoder decodeObjectOfClass:[NSString class] forKey:@"adgroup"];
+    self.creative = [decoder decodeObjectOfClass:[NSString class] forKey:@"creative"];
+    self.clickLabel = [decoder decodeObjectOfClass:[NSString class] forKey:@"click_label"];
+    self.costType = [decoder decodeObjectOfClass:[NSString class] forKey:@"costType"];
+    self.costAmount = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"costAmount"];
+    self.costCurrency = [decoder decodeObjectOfClass:[NSString class] forKey:@"costCurrency"];
+    self.jsonResponse = [decoder decodeObjectOfClass:[NSDictionary class] forKey:@"jsonResponse"];
     return self;
 }
 
