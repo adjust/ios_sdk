@@ -1,5 +1,10 @@
-### Version 5.1.0 (28th January 2025)
+### Version 5.1.1 (25th February 2025)
+#### Changed
+- Syncrhonized resuming and pausing in all the handlers (internal changes).
 
+---
+
+### Version 5.1.0 (28th January 2025)
 #### Added
 - Added `jsonResponse` field (`NSDictionary`) to `ADJAttribution` where every key-value pair sent by the backend as part of the attribution response can be found. Equivalently, one can also find `jsonResponse` map being part of the attribution instance in the web bridge API.
 
