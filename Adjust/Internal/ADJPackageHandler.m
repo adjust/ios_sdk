@@ -173,11 +173,19 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (void)pauseSending {
-    self.paused = YES;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPackageHandler* selfI) {
+        selfI.paused = YES;
+    }];
 }
 
 - (void)resumeSending {
-    self.paused = NO;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPackageHandler* selfI) {
+        selfI.paused = NO;
+    }];
 }
 
 - (void)updatePackagesWithAttStatus:(int)attStatus {

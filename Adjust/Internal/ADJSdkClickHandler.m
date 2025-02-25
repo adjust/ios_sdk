@@ -66,12 +66,20 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
 }
 
 - (void)pauseSending {
-    self.paused = YES;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJSdkClickHandler *selfI) {
+        selfI.paused = YES;
+    }];
 }
 
 - (void)resumeSending {
-    self.paused = NO;
-    [self sendNextSdkClick];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJSdkClickHandler *selfI) {
+        selfI.paused = NO;
+        [selfI sendNextSdkClick];
+    }];
 }
 
 - (void)sendSdkClick:(ADJActivityPackage *)sdkClickPackage {

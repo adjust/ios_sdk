@@ -99,11 +99,19 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 }
 
 - (void)pauseSending {
-    self.paused = YES;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJAttributionHandler* selfI) {
+        selfI.paused = YES;
+    }];
 }
 
 - (void)resumeSending {
-    self.paused = NO;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJAttributionHandler* selfI) {
+        selfI.paused = NO;
+    }];
 }
 
 #pragma mark - internal

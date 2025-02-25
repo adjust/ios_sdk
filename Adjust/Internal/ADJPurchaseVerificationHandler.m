@@ -63,12 +63,20 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 }
 
 - (void)pauseSending {
-    self.paused = YES;
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
+        selfI.paused = YES;
+    }];
 }
 
 - (void)resumeSending {
-    self.paused = NO;
-    [self sendNextPurchaseVerificationPackage];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJPurchaseVerificationHandler *selfI) {
+        selfI.paused = NO;
+        [selfI sendNextPurchaseVerificationPackage];
+    }];
 }
 
 - (void)sendPurchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage {
