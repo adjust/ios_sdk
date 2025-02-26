@@ -1428,32 +1428,22 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return deepCopy;
 }
 
-+ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind {
++ (BOOL)isAppTrackingTransparencySupported {
     if (@available(iOS 14.0, tvOS 14.0, *)) {
-        if (activityKind == ADJActivityKindGdpr ||
-            activityKind == ADJActivityKindSubscription ||
-            activityKind == ADJActivityKindPurchaseVerification) {
-            return NO;
-        }
-
-        int attStatus = [ADJUtil attStatus];
-        return attStatus == 3;
-    } else {
-        // if iOS lower than 14 can assume consent
         return YES;
     }
+    return NO;
 }
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
-                                 andAttStatus:(nullable NSString *)attStatusString {
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
+                                 andAttStatus:(int)attStatus {
+    if ([self isAppTrackingTransparencySupported]) {
         if (activityKind == ADJActivityKindGdpr ||
             activityKind == ADJActivityKindSubscription ||
             activityKind == ADJActivityKindPurchaseVerification) {
             return NO;
         }
-
-        return [@"3" isEqualToString:attStatusString];
+        return (attStatus == 3);
     } else {
         // if iOS lower than 14 can assume consent
         return YES;

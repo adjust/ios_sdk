@@ -189,6 +189,12 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, readonly) BOOL isCoppaComplianceEnabled;
 
+/**
+ * @brief Indicator of whether SDK should use AppTrackingTransparency framework
+ */
+@property (nonatomic, readonly) BOOL isAppTrackingTransparencyUsageEnabled;
+
+
 #pragma mark - AdjustConfig assignable properties
 
 /**
@@ -337,6 +343,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  * @brief A method to configure SDK to start in COPPA compliant mode.
  */
 - (void)enableCoppaCompliance;
+
+/**
+ * @brief A method to configure SDK avoid any call to AppTrackingTransparency framework.
+ */
+- (void)disableAppTrackingTransparencyUsage;
 
 /**
  * @brief A method to set custom URL strategy.

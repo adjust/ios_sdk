@@ -611,7 +611,7 @@ static dispatch_once_t onceToken = 0;
         if (![self checkActivityHandler:@"request Tracking Authorization"]) {
             return;
         }
-        [self.activityHandler updateAttStatusFromUserCallback:(int)status];
+        [self.activityHandler updateAndTrackAttStatusFromUserCallback:(int)status];
     }];
 }
 

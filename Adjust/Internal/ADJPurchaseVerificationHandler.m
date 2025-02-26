@@ -52,7 +52,8 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 
     self.requestHandler = [[ADJRequestHandler alloc] initWithResponseCallback:self
                                                                   urlStrategy:urlStrategy
-                                                               requestTimeout:[ADJAdjustFactory requestTimeout]];
+                                                               requestTimeout:[ADJAdjustFactory requestTimeout]
+                                                          adjustConfiguration:activityHandler.adjustConfig];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -211,7 +212,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
         [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
                                       forActivityKind:activityPackage.activityKind
-                                        withAttStatus:[activityPackage.parameters objectForKey:@"att_status"]
+                                        withAttStatus:attStatus
                                         configuration:selfI.activityHandler.adjustConfig
                                         packageParams:selfI.activityHandler.packageParams
                                         activityState:selfI.activityHandler.activityState];

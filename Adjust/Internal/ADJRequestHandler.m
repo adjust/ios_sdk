@@ -24,6 +24,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 @property (nonatomic, strong) ADJUrlStrategy *urlStrategy;
 @property (nonatomic, assign) double requestTimeout;
 @property (nonatomic, weak) id<ADJResponseCallback> responseCallback;
+@property (nonatomic, strong) ADJConfig *adjustConfig;
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 
@@ -40,6 +41,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
                 requestTimeout:(double)requestTimeout
+           adjustConfiguration:(ADJConfig *)adjustConfig
 {
     self = [super init];
     
@@ -49,6 +51,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     self.urlStrategy = urlStrategy;
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
+    self.adjustConfig = adjustConfig;
 
     self.logger = ADJAdjustFactory.logger;
     self.defaultSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -74,12 +77,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    NSDictionary *updatedSendingParameters =
-         [self updateSendingParameters:sendingParameters];
-
-    ADJResponseData *responseData =
-        [ADJResponseData buildResponseData:activityPackage];
-
+    NSDictionary *updatedSendingParameters = [self updateSendingParameters:sendingParameters];
+    ADJResponseData *responseData = [ADJResponseData buildResponseData:activityPackage];
     NSString *urlHostString = [self urlWithParams:parameters
                                     sendingParams:updatedSendingParameters
                                      responseData:responseData];
@@ -129,12 +128,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    NSDictionary *updatedSendingParameters =
-         [self updateSendingParameters:sendingParameters];
-
-    ADJResponseData *responseData =
-        [ADJResponseData buildResponseData:activityPackage];
-
+    NSDictionary *updatedSendingParameters = [self updateSendingParameters:sendingParameters];
+    ADJResponseData *responseData = [ADJResponseData buildResponseData:activityPackage];
     NSString *urlHostString = [self urlWithParams:parameters
                                     sendingParams:updatedSendingParameters
                                      responseData:responseData];
@@ -190,22 +185,33 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (nonnull NSString *)urlWithParams:(nonnull NSMutableDictionary *)params
                       sendingParams:(NSDictionary *)sendingParams
                        responseData:(nonnull ADJResponseData *)responseData {
-    NSMutableDictionary * sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
+    NSMutableDictionary *sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
 
+    // checking consent related parameters at the package creation moment
     NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
-    BOOL wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
-                                                                   andAttStatus:attStatusString];
-    BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind];
-    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
+    BOOL wasConsentWhenCreated = NO;
+    if (attStatusString != nil) {
+        wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                                                       andAttStatus:attStatusString.intValue];
+    }
 
+    // checking consent related parameters at the package sending moment
+    int attStatus = -1;
+    if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
+        attStatus = [ADJUtil attStatus];
+    }
+    BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                                                  andAttStatus:attStatus];
+    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
     if (!doesConsentDataExist) {
         [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
     // if att_status was part of the payload at all
     // make sure to have up to date value before sending
+    // or remove it in case attStatus is -1 (isAppTrackingTransparencyUsageEnabled == NO)
     if (attStatusString != nil) {
-        [ADJPackageBuilder updateAttStatusInParameters:params];
+        [ADJPackageBuilder updateAttStatus:attStatus inParameters:params];
     }
 
     NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
@@ -215,7 +221,6 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     responseData.sendingParameters = [[NSDictionary alloc]
                                       initWithDictionary:sendingParamsCopy
                                       copyItems:YES];
-
     return urlHostString;
 }
 

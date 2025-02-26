@@ -63,6 +63,7 @@
     _isDeviceIdsReadingOnceEnabled = NO;
     _isCostDataInAttributionEnabled = NO;
     _isCoppaComplianceEnabled = NO;
+    _isAppTrackingTransparencyUsageEnabled = YES;
 
     return self;
 }
@@ -111,6 +112,10 @@
 
 - (void)enableCoppaCompliance {
     _isCoppaComplianceEnabled = YES;
+}
+
+- (void)disableAppTrackingTransparencyUsage {
+    _isAppTrackingTransparencyUsageEnabled = NO;
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains

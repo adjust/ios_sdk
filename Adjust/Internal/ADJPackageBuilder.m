@@ -346,11 +346,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -370,7 +374,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.callbackParameters copy] forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -407,13 +411,18 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:event.deduplicationId forKey:@"deduplication_id"];
     [ADJPackageBuilder parameters:parameters setString:event.productId forKey:@"product_id"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
+
 
     if (self.activityState != nil) {
         [ADJPackageBuilder parameters:parameters setInt:self.activityState.eventCount forKey:@"event_count"];
@@ -438,7 +447,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindEvent];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -477,11 +486,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -505,7 +518,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindInfo];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -544,11 +557,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenueUnit forKey:@"ad_revenue_unit"];
     [ADJPackageBuilder parameters:parameters setString:adRevenue.adRevenuePlacement forKey:@"ad_revenue_placement"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -574,7 +591,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAdRevenue];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -614,11 +631,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -642,7 +663,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindClick];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -672,11 +693,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -692,7 +717,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindAttribution];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -721,11 +746,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -737,7 +766,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindGdpr];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -775,11 +804,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -808,7 +841,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindThirdPartySharing];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -852,11 +885,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                         setString:enableValue
                            forKey:@"measurement"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -873,7 +910,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindMeasurementConsent];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -902,11 +939,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -938,7 +979,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:subscription.transactionDate forKey:@"transaction_date"];
     [ADJPackageBuilder parameters:parameters setString:subscription.salesRegion forKey:@"sales_region"];
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSubscription];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -971,11 +1012,15 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
 
-    if ([self.trackingStatusManager canGetAttStatus]) {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.attStatus
-                               forKey:@"att_status"];
+    int attStatus = -1;
+    if ([self.trackingStatusManager isAttSupported]) {
+        attStatus = [self.trackingStatusManager updateAndGetAttStatus];
+        if (attStatus >= 0) {
+            [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+        }
     } else {
-        [ADJPackageBuilder parameters:parameters setInt:self.trackingStatusManager.trackingEnabled
+        [ADJPackageBuilder parameters:parameters
+                               setInt:[self.trackingStatusManager isTrackingEnabled] ? 1 : 0
                                forKey:@"tracking_enabled"];
     }
 
@@ -992,7 +1037,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         }
     }
 
-    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindPurchaseVerification];
+    [self addConsentToParameters:parameters forActivityKind:ADJActivityKindSession currentAttStatus:attStatus];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
@@ -1036,6 +1081,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     }
     if (self.adjustConfig.isAdServicesEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
+    }
+    if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_att_disabled"];
     }
 }
 
@@ -1195,14 +1243,14 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
-                     withAttStatus:(NSString * _Nullable)attStatusString
+                     withAttStatus:(int)attStatus
                      configuration:(ADJConfig * _Nullable)adjConfig
                      packageParams:(ADJPackageParams * _Nullable)packageParams
                      activityState:(ADJActivityState *_Nullable)activityState
 {
 
     if (![ADJUtil shouldUseConsentParamsForActivityKind:activityKind
-                                       andAttStatus:attStatusString]) {
+                                       andAttStatus:attStatus]) {
         return;
     }
 
@@ -1246,15 +1294,21 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [parameters removeObjectForKey:@"idfa"];
 }
 
-+ (void)updateAttStatusInParameters:(nonnull NSMutableDictionary *)parameters {
-    [ADJPackageBuilder parameters:parameters setInt:[ADJUtil attStatus] forKey:@"att_status"];
++ (void)updateAttStatus:(int)attStatus
+           inParameters:(nonnull NSMutableDictionary *)parameters {
+    if (attStatus == -1) {
+        [parameters removeObjectForKey:@"att_status"];
+    } else {
+        [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+    }
 }
 
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters
-               forActivityKind:(ADJActivityKind)activityKind {
+               forActivityKind:(ADJActivityKind)activityKind
+              currentAttStatus:(int)attStatus {
     [ADJPackageBuilder addConsentDataToParameters:parameters
                                   forActivityKind:activityKind
-                                    withAttStatus:[parameters objectForKey:@"att_status"]
+                                    withAttStatus:attStatus
                                     configuration:self.adjustConfig
                                     packageParams:self.packageParams
                                     activityState:self.activityState];

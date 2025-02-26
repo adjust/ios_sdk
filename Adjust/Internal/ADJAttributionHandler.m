@@ -42,7 +42,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.requestHandler = [[ADJRequestHandler alloc]
                                 initWithResponseCallback:self
                                 urlStrategy:urlStrategy
-                                requestTimeout:[ADJAdjustFactory requestTimeout]];
+                                requestTimeout:[ADJAdjustFactory requestTimeout]
+                           adjustConfiguration:activityHandler.adjustConfig];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.paused = !startsSending;

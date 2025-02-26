@@ -876,7 +876,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     [selfI checkLinkMeI:selfI];
-    [selfI.trackingStatusManager checkForNewAttStatus];
+    [selfI.trackingStatusManager updateAndTrackAttStatus];
 
     [selfI preLaunchActionsI:selfI
        preLaunchActionsArray:preLaunchActions.preLaunchActionsArray];
@@ -2454,7 +2454,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [selfI writeActivityStateI:selfI];
     }
 
-    [selfI.trackingStatusManager checkForNewAttStatus];
+    [selfI.trackingStatusManager updateAndTrackAttStatus];
 }
 
 - (void)startBackgroundTimerI:(ADJActivityHandler *)selfI {
@@ -2515,9 +2515,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
-    // update activity packages
-    int attStatus = [ADJUtil attStatus];
-    if (attStatus != 0) {
+
+    // Only in case ATT status is accessible (ADJCOnfig's isAppTrackingTransparencyUsageEnabled)
+    // and not ATTrackingManagerAuthorizationStatusNotDetermined (0), update it in packages.
+    int attStatus = [selfI.trackingStatusManager attStatus];
+    if (attStatus > 0) {
         [selfI.packageHandler updatePackagesWithAttStatus:attStatus];
         [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus];
         [selfI.purchaseVerificationHandler updatePackagesWithAttStatus:attStatus];
@@ -2786,8 +2788,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }];
 }
 
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
+- (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser {
+    [self.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
 }
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
@@ -2887,63 +2889,29 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     return self;
 }
+
 // public api
-- (BOOL)canGetAttStatus {
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        return YES;
-    }
-    return NO;
+- (BOOL)isAttSupported {
+    return [ADJUtil isAppTrackingTransparencySupported];
 }
 
-- (BOOL)trackingEnabled {
+- (BOOL)isTrackingEnabled {
     return [ADJUtil trackingEnabled];
 }
 
-- (int)attStatus {
-    int readAttStatus = [ADJUtil attStatus];
-    [self updateAttStatus:readAttStatus];
-    return readAttStatus;
+- (int)updateAndGetAttStatus {
+    int attStatus = [self attStatus];
+    [self updateAttStatus:attStatus];
+    return attStatus;
 }
 
-- (void)checkForNewAttStatus {
-    int readAttStatus = [ADJUtil attStatus];
-    [self updateAttStatusWithStatus:readAttStatus];
+- (void)updateAndTrackAttStatus {
+    [self updateAndTrackAttStatusWithStatus:[self attStatus]];
 }
 
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self updateAttStatusWithStatus:newAttStatusFromUser];
+- (void)updateAndTrackAttStatusFromUserCallback:(int)attStatusFromUser {
+    [self updateAndTrackAttStatusWithStatus:attStatusFromUser];
 }
-
-- (void)updateAttStatusWithStatus:(int)status {
-    BOOL statusHasBeenUpdated = [self updateAttStatus:status];
-    if (statusHasBeenUpdated) {
-        [self.activityHandler trackAttStatusUpdate];
-    }
-}
-
-// internal methods
-- (BOOL)updateAttStatus:(int)readAttStatus {
-    if (readAttStatus < 0) {
-        return NO;
-    }
-
-    if (self.activityHandler == nil || self.activityHandler.activityState == nil) {
-        return NO;
-    }
-
-    if (readAttStatus == self.activityHandler.activityState.trackingManagerAuthorizationStatus) {
-        return NO;
-    }
-
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        self.activityHandler.activityState.trackingManagerAuthorizationStatus = readAttStatus;
-    }];
-    [self.activityHandler writeActivityState];
-
-    return YES;
-}
-
 
 - (void)setAppInActiveState:(BOOL)activeState {
     dispatch_async(self.waitingForAttQueue, ^{
@@ -2959,12 +2927,15 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (BOOL)shouldWaitForAttStatus {
-    if (![self canGetAttStatus]) {
+    if (![ADJUtil isAppTrackingTransparencySupported]) {
         return NO;
     }
 
     // check current ATT status
-    int attStatus = [ADJUtil attStatus];
+    int attStatus = [self attStatus];
+    if (attStatus == -1) {
+        return NO;
+    }
 
     // return if the status is not ATTrackingManagerAuthorizationStatusNotDetermined
     if (attStatus != 0) {
@@ -3007,6 +2978,44 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return YES;
 }
 
+// internal methods
+- (int)attStatus {
+    int attStatus = -1;
+    if (self.activityHandler.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
+        attStatus = [ADJUtil attStatus];
+    }
+    return attStatus;
+}
+
+- (void)updateAndTrackAttStatusWithStatus:(int)status {
+    BOOL statusHasBeenUpdated = [self updateAttStatus:status];
+    if (statusHasBeenUpdated) {
+        [self.activityHandler trackAttStatusUpdate];
+    }
+}
+
+- (BOOL)updateAttStatus:(int)readAttStatus {
+    if (readAttStatus < 0) {
+        return NO;
+    }
+
+    if (self.activityHandler.activityState == nil) {
+        return NO;
+    }
+
+    if (readAttStatus == self.activityHandler.activityState.trackingManagerAuthorizationStatus) {
+        return NO;
+    }
+
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        self.activityHandler.activityState.trackingManagerAuthorizationStatus = readAttStatus;
+    }];
+    [self.activityHandler writeActivityState];
+
+    return YES;
+}
+
 - (void)startWaitingForAttStatus {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), self.waitingForAttQueue, ^{
         [self checkAttStatusPeriodic];
@@ -3017,10 +3026,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (!self.activeState) {
         return;
     }
+
     // check current ATT status
-    int attStatus = [ADJUtil attStatus];
+    int attStatus = [self attStatus];
     if (attStatus != 0) {
-        [self.activityHandler.logger info:@"ATT consent status udated to: %d", attStatus];
+        [self.activityHandler.logger info:@"ATT consent status updated to: %d", attStatus];
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;

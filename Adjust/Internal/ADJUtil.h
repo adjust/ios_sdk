@@ -141,10 +141,10 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
 
-+ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind;
++ (BOOL)isAppTrackingTransparencySupported;
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
-                                 andAttStatus:(NSString *)attStatusString;
+                                 andAttStatus:(int)attStatus;
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion;
 

@@ -103,7 +103,7 @@
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing;
 - (void)trackMeasurementConsent:(BOOL)enabled;
 - (void)trackAppStoreSubscription:(ADJAppStoreSubscription * _Nullable)subscription;
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
+- (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser;
 - (void)trackAdRevenue:(ADJAdRevenue * _Nullable)adRevenue;
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
@@ -144,13 +144,13 @@
 
 @interface ADJTrackingStatusManager : NSObject
 
-@property (nonatomic, readonly, assign) BOOL trackingEnabled;
-@property (nonatomic, readonly, assign) int attStatus;
-
 - (instancetype _Nullable)initWithActivityHandler:(ADJActivityHandler * _Nullable)activityHandler;
-- (void)checkForNewAttStatus;
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser;
-- (BOOL)canGetAttStatus;
+- (BOOL)isAttSupported;
+- (int)attStatus;
+- (int)updateAndGetAttStatus;
+- (BOOL)isTrackingEnabled;
+- (void)updateAndTrackAttStatus;
+- (void)updateAndTrackAttStatusFromUserCallback:(int)attStatusFromUser;
 - (void)setAppInActiveState:(BOOL)activeState;
 - (BOOL)shouldWaitForAttStatus;
 
