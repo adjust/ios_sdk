@@ -69,6 +69,9 @@ NSString * const ADJWBUseSubdomainsConfigKey = @"useSubdomains";
 NSString * const ADJWBIsDataResidencyConfigKey = @"isDataResidency";
 NSString * const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventToken";
 NSString * const ADJWBFbPixelMappingConfigKey = @"fbPixelMapping";
+NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey = @"isAppTrackingTransparencyUsageEnabled";
+
+
 
 // AdjustWebbridge Callbacks method name
 NSString * const ADJWBAttributionCallbackConfigKey = @"attributionCallback";

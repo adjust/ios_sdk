@@ -196,6 +196,7 @@
     NSNumber *shouldReadDeviceInfoOnce = [parameters objectForKey:ADJWBReadDeviceInfoOnceEnabledConfigKey];
     NSNumber *attConsentWaitingSeconds = [parameters objectForKey:ADJWBAttConsentWaitingSecondsConfigKey];
     NSNumber *eventDeduplicationIdsMaxSize = [parameters objectForKey:ADJWBEventDeduplicationIdsMaxSizeConfigKey];
+    NSNumber *isAppTrackingTransparencyUsageEnabled = [parameters objectForKey:ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey];
 
     id urlStrategyDomains = [parameters objectForKey:ADJWBUseStrategyDomainsConfigKey];
     NSNumber *useSubdomains = [parameters objectForKey:ADJWBUseSubdomainsConfigKey];
@@ -306,6 +307,12 @@
         NSString *key = [[fbPixelMapping objectAtIndex:i] description];
         NSString *value = [[fbPixelMapping objectAtIndex:(i + 1)] description];
         [self.fbPixelMapping setObject:value forKey:key];
+    }
+
+    if ([AdjustBridgeUtil isFieldValid:isAppTrackingTransparencyUsageEnabled]) {
+        if ([isAppTrackingTransparencyUsageEnabled boolValue] == NO) {
+            [adjustConfig disableAppTrackingTransparencyUsage];
+        }
     }
 
     if ([AdjustBridgeUtil isFieldValid:attributionCallback]) {
