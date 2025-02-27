@@ -240,6 +240,7 @@
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
+        copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         // AdjustDelegate not copied
     }
 
