@@ -2516,7 +2516,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 - (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
 
-    // Only in case ATT status is accessible (ADJCOnfig's isAppTrackingTransparencyUsageEnabled)
+    // Only in case ATT status is accessible (ADJConfig's isAppTrackingTransparencyUsageEnabled)
     // and not ATTrackingManagerAuthorizationStatusNotDetermined (0), update it in packages.
     int attStatus = [selfI.trackingStatusManager attStatus];
     if (attStatus > 0) {

@@ -1294,13 +1294,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [parameters removeObjectForKey:@"idfa"];
 }
 
-+ (void)updateAttStatus:(int)attStatus
-           inParameters:(nonnull NSMutableDictionary *)parameters {
-    if (attStatus == -1) {
-        [parameters removeObjectForKey:@"att_status"];
-    } else {
-        [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
-    }
++ (void)updateAttStatus:(int)attStatus inParameters:(nonnull NSMutableDictionary *)parameters {
+    [ADJPackageBuilder parameters:parameters setInt:attStatus forKey:@"att_status"];
+}
+
++ (void)removeAttStatusFromParameters:(nonnull NSMutableDictionary *)parameters {
+    [parameters removeObjectForKey:@"att_status"];
 }
 
 - (void)addConsentToParameters:(NSMutableDictionary *)parameters

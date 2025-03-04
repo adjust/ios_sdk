@@ -110,6 +110,9 @@ setNumberWithoutRounding:(NSNumber * _Nullable)value
 + (void)updateAttStatus:(int)attStatus
            inParameters:(nonnull NSMutableDictionary *)parameters;
 
++ (void)removeAttStatusFromParameters:(nonnull NSMutableDictionary *)parameters;
+
+
 @end
 // TODO change to ADJ...
 extern NSString * _Nullable const ADJAttributionTokenParameter;

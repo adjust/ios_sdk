@@ -207,17 +207,19 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
         [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
-    // if att_status was part of the payload at all
-    // make sure to have up to date value before sending
+    // if att_status was part of the payload at all, make sure to have up to date value before sending
     // or remove it in case attStatus is -1 (isAppTrackingTransparencyUsageEnabled == NO)
     if (attStatusString != nil) {
-        [ADJPackageBuilder updateAttStatus:attStatus inParameters:params];
+        if (attStatus == -1) {
+            [ADJPackageBuilder removeAttStatusFromParameters:params];
+        } else {
+            [ADJPackageBuilder updateAttStatus:attStatus inParameters:params];
+        }
     }
 
     NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
                                                      isConsentGiven:isConsentWhenSending
                                                   withSendingParams:sendingParamsCopy];
-
     responseData.sendingParameters = [[NSDictionary alloc]
                                       initWithDictionary:sendingParamsCopy
                                       copyItems:YES];
