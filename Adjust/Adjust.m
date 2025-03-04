@@ -287,15 +287,7 @@ static dispatch_once_t onceToken = 0;
                                withCompletionHandler:completion];
     }
 }
-/*
-+ (void)enableCoppaCompliance {
-    [[Adjust getInstance] enableCoppaCompliance];
-}
 
-+ (void)disableCoppaCompliance {
-    [[Adjust getInstance] disableCoppaCompliance];
-}
-*/
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {

@@ -378,6 +378,13 @@
         }
     }
 
+    if ([parameters objectForKey:@"allowAttUsage"]) {
+        NSString *attUsageS = [parameters objectForKey:@"allowAttUsage"][0];
+        if ([attUsageS boolValue] == NO) {
+            [adjustConfig disableAppTrackingTransparencyUsage];
+        }
+    }
+
     [adjustConfig setDelegate:self.adjustDelegate];
 }
 

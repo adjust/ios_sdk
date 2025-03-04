@@ -319,6 +319,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         }
     }
 
+    if ('allowAttUsage' in params) {
+        var allowaAttUsageS = getFirstValue(params, 'allowAttUsage');
+        var allowaAttUsage = allowaAttUsageS == 'true';
+        if (allowaAttUsage == false) {
+            adjustConfig.disableAppTrackingTransparencyUsage();
+        }
+    }
+
     if ('attributionCallbackSendAll' in params) {
         console.log('AdjustCommandExecutor.prototype.config attributionCallbackSendAll');
         var extraPath = this.extraPath;
