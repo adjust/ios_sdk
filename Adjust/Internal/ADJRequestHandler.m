@@ -460,6 +460,8 @@ authorizationHeader:(NSString *)authorizationHeader
     [self injectParameters:mergedParameters kvArray:kvParameters];
 
     NSString *bodyString = [kvParameters componentsJoinedByString:@"&"];
+    [self.logger verbose:@"Body (String) to send: [%@]", bodyString];
+
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     [request setHTTPBody:body];
     return request;

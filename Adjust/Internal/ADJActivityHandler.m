@@ -157,6 +157,10 @@ const BOOL kSkanRegisterLockWindow = NO;
          adjustConfig.attConsentWaitingInterval];
     }
 
+    if (adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
+        [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
+    }
+
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
@@ -2933,7 +2937,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // check current ATT status
     int attStatus = [self attStatus];
+    // App Tracking Transparency framework usage is disabled
     if (attStatus == -1) {
+        // Just in case it's there from the previous init where
+        // App Tracking Transparency framework usage was enabled,
+        // remove ATT Waiting related stuff.
+        [ADJUserDefaults removeAttWaitingRemainingSeconds];
         return NO;
     }
 
