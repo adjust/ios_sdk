@@ -637,6 +637,10 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
     }
 
+    if (self.referrer != nil) {
+        [ADJPackageBuilder parameters:parameters setString:self.referrer forKey:@"referrer"];
+    }
+
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindClick];
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];

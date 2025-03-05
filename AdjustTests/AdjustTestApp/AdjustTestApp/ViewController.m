@@ -29,7 +29,7 @@
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-    // [self.testLibrary addTestDirectory:@"event-callbacks"];
+//     [self.testLibrary addTestDirectory:@"deeplink"];
     // [self.testLibrary addTest:@"Test_PurchaseVerification_ios_after_install"];
 
     // [self.testLibrary doNotExitAfterEnd];

@@ -372,6 +372,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                      block:^(ADJActivityHandler * selfI) {
                          [selfI processDeeplinkI:selfI
                                              url:deeplink.deeplink
+                                        referrer:deeplink.referrer
                                        clickTime:clickTime];
                      }];
 }
@@ -385,6 +386,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         selfI.cachedDeeplinkResolutionCallback = completion;
         [selfI processDeeplinkI:selfI
                             url:deeplink.deeplink
+                       referrer:deeplink.referrer
                       clickTime:clickTime];
     }];
 }
@@ -1135,9 +1137,11 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (cachedDeeplinkClickTime == nil) {
         return;
     }
-
+    NSURL *cachedDeeplinkReferrer = [ADJUserDefaults getDeeplinkReferrer];
+   
     [selfI processDeeplinkI:selfI 
                         url:cachedDeeplinkUrl
+                   referrer:cachedDeeplinkReferrer
                   clickTime:cachedDeeplinkClickTime];
     [ADJUserDefaults removeDeeplink];
 }
@@ -1864,6 +1868,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)processDeeplinkI:(ADJActivityHandler *)selfI
                      url:(NSURL *)deeplink
+                referrer:(NSURL *)referrer
                clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
@@ -1907,6 +1912,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
     clickBuilder.deeplink = [deeplink absoluteString];
+    clickBuilder.referrer = [referrer absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];

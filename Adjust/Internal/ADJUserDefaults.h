@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ADJDeeplink.h"
 
 @interface ADJUserDefaults : NSObject
 
@@ -30,10 +31,12 @@
 
 + (void)removeGdprForgetMe;
 
-+ (void)saveDeeplinkUrl:(NSURL *)deeplink
++ (void)saveDeeplink:(ADJDeeplink *)deeplink
               clickTime:(NSDate *)clickTime;
 
 + (NSURL *)getDeeplinkUrl;
+
++ (NSURL *)getDeeplinkReferrer;
 
 + (NSDate *)getDeeplinkClickTime;
 
