@@ -118,6 +118,10 @@
     _isAppTrackingTransparencyUsageEnabled = NO;
 }
 
+- (void)setFirstSessionWaitingIntervalWithSeconds:(NSUInteger)seconds {
+    _firstSessionWaitingIntervalSeconds = @(seconds);
+}
+
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency {

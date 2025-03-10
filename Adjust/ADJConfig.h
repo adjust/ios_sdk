@@ -194,6 +194,7 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, readonly) BOOL isAppTrackingTransparencyUsageEnabled;
 
+@property (nonatomic, copy, readonly, nonnull) NSNumber *firstSessionWaitingIntervalSeconds;
 
 #pragma mark - AdjustConfig assignable properties
 
@@ -344,6 +345,7 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 - (void)enableCoppaCompliance;
 
+- (void)setFirstSessionWaitingIntervalWithSeconds:(NSUInteger)seconds;
 /**
  * @brief A method to configure SDK avoid any call to AppTrackingTransparency framework.
  */
