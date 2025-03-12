@@ -13,7 +13,6 @@
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
 #import "ADJGlobalParameters.h"
-#import "ADJActivityHandler.h"
 #import "ADJThirdPartySharing.h"
 #import "ADJStoreInfo.h"
 

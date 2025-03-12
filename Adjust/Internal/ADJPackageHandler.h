@@ -20,7 +20,6 @@
 - (id)initWithActivityHandler:(id<ADJActivityHandler>)activityHandler
                 startsSending:(BOOL)startsSending
                   urlStrategy:(ADJUrlStrategy *)urlStrategy;
-                    //extraPath:(NSString *)extraPath;
 
 - (void)addPackage:(ADJActivityPackage *)package;
 - (void)sendFirstPackage;

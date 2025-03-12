@@ -846,7 +846,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     selfI.packageHandler = [[ADJPackageHandler alloc]
                                 initWithActivityHandler:selfI
                                 startsSending:
-                                    [selfI toSendI:selfI sdkClickHandlerOnly:NO]
+                                    [selfI toSendI:selfI]
                                 urlStrategy:packageHandlerUrlStrategy];
 
     ADJUrlStrategy *attributionHandlerUrlStrategy =
@@ -857,7 +857,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     selfI.attributionHandler = [[ADJAttributionHandler alloc]
                                     initWithActivityHandler:selfI
                                     startsSending:
-                                        [selfI toSendI:selfI sdkClickHandlerOnly:NO]
+                                        [selfI toSendI:selfI]
                                     urlStrategy:attributionHandlerUrlStrategy];
 
     ADJUrlStrategy *sdkClickHandlerUrlStrategy =
@@ -867,11 +867,11 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     selfI.sdkClickHandler = [[ADJSdkClickHandler alloc]
                              initWithActivityHandler:selfI
-                             startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
+                             startsSending:[selfI toSendI:selfI]
                              urlStrategy:sdkClickHandlerUrlStrategy];
     selfI.purchaseVerificationHandler = [[ADJPurchaseVerificationHandler alloc]
                                          initWithActivityHandler:selfI
-                                         startsSending:[selfI toSendI:selfI sdkClickHandlerOnly:YES]
+                                         startsSending:[selfI toSendI:selfI]
                                          urlStrategy:sdkClickHandlerUrlStrategy];
 
     // Update ATT status and IDFA, if necessary, in packages and sdk_click/verify packages queues.
@@ -1873,14 +1873,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [selfI.logger info:pausingMessage];
     }
     // check if it's remaining in a pause state
-    else if ([selfI pausedI:selfI sdkClickHandlerOnly:NO]) {
-        // including the sdk click handler
-        if ([selfI pausedI:selfI sdkClickHandlerOnly:YES]) {
-            [selfI.logger info:remainsPausedMessage];
-        } else {
-            // or except it
-            [selfI.logger info:[remainsPausedMessage stringByAppendingString:@", except the Sdk Click Handler"]];
-        }
+    else if ([selfI pausedI:selfI]) {
+        [selfI.logger info:remainsPausedMessage];
     } else {
         // it is changing from a pause state to an active state
         [selfI.logger info:unPausingMessage];
@@ -2403,7 +2397,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI.packageHandler pauseSending];
     // the conditions to pause the sdk click handler are less restrictive
     // it's possible for the sdk click handler to be active while others are paused
-    if (![selfI toSendI:selfI sdkClickHandlerOnly:YES]) {
+    if (![selfI toSendI:selfI]) {
         [selfI.sdkClickHandler pauseSending];
         [selfI.purchaseVerificationHandler pauseSending];
     } else {
@@ -2419,28 +2413,15 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [selfI.purchaseVerificationHandler resumeSending];
 }
 
-- (BOOL)pausedI:(ADJActivityHandler *)selfI sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly {
-    if (sdkClickHandlerOnly) {
-        // sdk click handler is paused if either:
-        return [selfI.internalState isOffline]              // it's offline
-        || ![selfI isEnabledI:selfI]                        // is disabled
-        || [selfI.internalState isWaitingForAttStatus];     // Waiting for ATT status
-    }
-    // other handlers are paused if either:
+- (BOOL)pausedI:(ADJActivityHandler *)selfI {
     return [selfI.internalState isOffline]                  // it's offline
     || ![selfI isEnabledI:selfI]                            // is disabled
     || [selfI.internalState isWaitingForAttStatus];         // Waiting for ATT status
 }
 
 - (BOOL)toSendI:(ADJActivityHandler *)selfI {
-    return [selfI toSendI:selfI sdkClickHandlerOnly:NO];
-}
-
-- (BOOL)toSendI:(ADJActivityHandler *)selfI
-sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
-{
     // don't send when it's paused
-    if ([selfI pausedI:selfI sdkClickHandlerOnly:sdkClickHandlerOnly]) {
+    if ([selfI pausedI:selfI]) {
         return NO;
     }
 
