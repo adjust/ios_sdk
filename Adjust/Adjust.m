@@ -448,6 +448,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
+// TOCHK
 - (void)idfaWithCompletionHandler:(nonnull ADJIdfaGetterBlock)completion {
     if (completion == nil) {
         [self.logger error:@"Completion block for getting IDFA can't be null"];
@@ -461,6 +462,7 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
+// TOCHK
 - (void)idfvWithCompletionHandler:(nonnull ADJIdfvGetterBlock)completion {
     if (completion == nil) {
         [self.logger error:@"Completion block for getting IDFV can't be null"];
@@ -474,6 +476,7 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
+// TOCHK
 - (NSURL *)convertUniversalLink:(NSURL *)url withScheme:(NSString *)scheme {
     return [ADJUtil convertUniversalLink:url withScheme:scheme];
 }
@@ -534,7 +537,6 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)removeGlobalCallbackParameters {
-
     if ([self checkActivityHandler:@"removing all global callback parameters"]) {
         [self.activityHandler removeGlobalCallbackParameters];
         return;
@@ -570,11 +572,13 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     if (![self checkActivityHandler:@"track third party sharing"]) {
-        if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
-            self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
+        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+            self.savedPreLaunch.preLaunchActionsArray =
                 [[NSMutableArray alloc] init];
         }
-        [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:thirdPartySharing];
+        [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
+            [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
+        }];
         return;
     }
     [self.activityHandler trackThirdPartySharing:thirdPartySharing];
@@ -582,7 +586,13 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
     if (![self checkActivityHandler:@"track measurement consent"]) {
-        self.savedPreLaunch.lastMeasurementConsentTracked = [NSNumber numberWithBool:enabled];
+        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+            self.savedPreLaunch.preLaunchActionsArray =
+                [[NSMutableArray alloc] init];
+        }
+        [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
+            [activityHandler tryTrackMeasurementConsentI:enabled];
+        }];
         return;
     }
     [self.activityHandler trackMeasurementConsent:enabled];
@@ -603,10 +613,12 @@ static dispatch_once_t onceToken = 0;
         if (![self checkActivityHandler:@"request Tracking Authorization"]) {
             return;
         }
+        // TOCHK
         [self.activityHandler updateAndTrackAttStatusFromUserCallback:(int)status];
     }];
 }
 
+// TOCHK
 - (int)appTrackingAuthorizationStatus {
     return [ADJUtil attStatus];
 }
@@ -620,6 +632,7 @@ static dispatch_once_t onceToken = 0;
                                              lockWindow:lockWindow
                                                  source:ADJSkanSourceClient
                                   withCompletionHandler:^(NSDictionary * _Nonnull result) {
+        // TOCHK
         if ([self checkActivityHandler]) {
             [self.activityHandler invokeClientSkanUpdateCallbackWithResult:result];
         }
@@ -670,6 +683,7 @@ static dispatch_once_t onceToken = 0;
     return [self.activityHandler adidWithCompletionHandler:completion];
 }
 
+// TOCHK
 - (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {
     if (completion == nil) {
         [self.logger error:@"Completion block for getting SDK version can't be null"];
@@ -683,6 +697,7 @@ static dispatch_once_t onceToken = 0;
     }];
 }
 
+// TOCHK
 - (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion {
     if (completion == nil) {
         [self.logger error:@"Completion block for getting last opened deep link can't be null"];

@@ -40,16 +40,16 @@
 @interface ADJSavedPreLaunch : NSObject
 
 @property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
+/*
+@property (nonatomic, strong) NSMutableArray * _Nullable preLaunchAdjustThirdPartySharingArray;
+@property (nonatomic, copy) NSNumber *_Nullable lastMeasurementConsentTracked;
+*/
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
-
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
-
-@property (nonatomic, strong) NSMutableArray *_Nullable preLaunchAdjustThirdPartySharingArray;
 
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *_Nullable extraPath;
-@property (nonatomic, copy) NSNumber *_Nullable lastMeasurementConsentTracked;
 
 - (nonnull id)init;
 
@@ -144,6 +144,9 @@
                                forKey:(NSString *_Nonnull)key;
 - (void)removeGlobalCallbackParametersI:(ADJActivityHandler *_Nonnull)selfI;
 - (void)removeGlobalPartnerParametersI:(ADJActivityHandler *_Nonnull)selfI;
+
+- (void)tryTrackThirdPartySharingI:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+- (void)tryTrackMeasurementConsentI:(BOOL)enabled;
 @end
 
 
@@ -151,9 +154,9 @@
 
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
 
-- (void)delayOrInitWithBlock:(selfInjectedBlock)initBlock;
-- (void)regularAPIWithBlock:(selfInjectedBlock)block;
-- (void)priorityAPIWithBlock:(selfInjectedBlock)block;
+- (void)delayOrInitWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+- (void)regularAPIWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+- (void)priorityAPIWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
 
 @end
 

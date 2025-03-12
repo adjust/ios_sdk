@@ -103,6 +103,10 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJPackageParams *packageParams;
 @property (nonatomic, strong) ADJGlobalParameters *globalParameters;
 @property (nonatomic, strong) ADJFirstSessionDelayManager *firstSessionDelayManager;
+@property (nonatomic, strong) NSMutableArray<ADJThirdPartySharing *> *cachedAdjustThirdPartySharingArray;
+@property (nonatomic, copy) NSNumber *_Nullable cachedLastMeasurementConsentTrack;
+
+
 // weak for object that Activity Handler does not "own"
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) NSObject<AdjustDelegate> *adjustDelegate;
@@ -395,11 +399,9 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)setGdprForgetMe {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI setGdprForgetMeI:selfI];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI setGdprForgetMeI:selfI];
+    }];
 }
 
 - (void)setTrackingStateOptedOut {
@@ -507,106 +509,69 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)addGlobalCallbackParameter:(NSString *)param
                             forKey:(NSString *)key {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
+    }];
 }
 
 - (void)addGlobalPartnerParameter:(NSString *)param
                            forKey:(NSString *)key {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
+    }];
 }
 
 - (void)removeGlobalCallbackParameterForKey:(NSString *)key {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI removeGlobalCallbackParameterI:selfI forKey:key];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI removeGlobalCallbackParameterI:selfI forKey:key];
+    }];
 }
 
 - (void)removeGlobalPartnerParameterForKey:(NSString *)key {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI removeGlobalPartnerParameterI:selfI forKey:key];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI removeGlobalPartnerParameterI:selfI forKey:key];
+    }];
 }
 
 - (void)removeGlobalCallbackParameters {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI removeGlobalCallbackParametersI:selfI];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI removeGlobalCallbackParametersI:selfI];
+    }];
 }
 
 - (void)removeGlobalPartnerParameters {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-                         [selfI removeGlobalPartnerParametersI:selfI];
-                     }];
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI removeGlobalPartnerParametersI:selfI];
+    }];
 }
 
 - (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAppStoreSubscriptionI:selfI subscription:subscription];
     }];
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-        BOOL tracked =
-            [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
-        if (! tracked) {
-            if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
-                self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
-                    [[NSMutableArray alloc] init];
-            }
-
-            [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray
-                addObject:thirdPartySharing];
-        }
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI tryTrackThirdPartySharingI:thirdPartySharing];
     }];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-        BOOL tracked =
-            [selfI trackMeasurementConsentI:selfI enabled:enabled];
-        if (! tracked) {
-            selfI.savedPreLaunch.lastMeasurementConsentTracked =
-                [NSNumber numberWithBool:enabled];
-        }
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI tryTrackMeasurementConsentI:enabled];
     }];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAdRevenueI:selfI adRevenue:adRevenue];
     }];
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAppStorePurchaseI:selfI purchase:purchase withCompletionHandler:completion];
     }];
 }
@@ -648,9 +613,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager regularAPIWithBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAndTrackAppStorePurchaseI:selfI event:event withCompletionHandler:completion];
     }];
 }
@@ -947,27 +910,27 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
                 [selfI setGdprForgetMeI:selfI];
             } else {
                 [selfI processCoppaComplianceI:selfI];
-                if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+
+                if (selfI.cachedAdjustThirdPartySharingArray != nil) {
                     for (ADJThirdPartySharing *thirdPartySharing
-                         in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray) {
-                        [selfI trackThirdPartySharingI:selfI
-                                     thirdPartySharing:thirdPartySharing];
+                         in selfI.cachedAdjustThirdPartySharingArray)
+                    {
+                        [selfI trackThirdPartySharingI:thirdPartySharing];
                     }
-
-                    selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
                 }
-                if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
-                    [selfI
-                        trackMeasurementConsentI:selfI
-                        enabled:[selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+                selfI.cachedAdjustThirdPartySharingArray = nil;
 
-                    selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
+                if (selfI.cachedLastMeasurementConsentTrack != nil) {
+                    [selfI trackMeasurementConsentI:
+                     [selfI.cachedLastMeasurementConsentTrack boolValue]];
                 }
+                selfI.cachedLastMeasurementConsentTrack = nil;
 
                 [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                                 block:^{
                     selfI.activityState.sessionCount = 1; // this is the first session
                 }];
+
                 [selfI transferSessionPackageI:selfI now:now];
             }
         }
@@ -988,22 +951,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
         return;
     } else {
-        if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+        if (selfI.cachedAdjustThirdPartySharingArray != nil) {
             for (ADJThirdPartySharing *thirdPartySharing
-                 in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray) {
-                [selfI trackThirdPartySharingI:selfI
-                             thirdPartySharing:thirdPartySharing];
+                 in selfI.cachedAdjustThirdPartySharingArray)
+            {
+                [selfI trackThirdPartySharingI:thirdPartySharing];
             }
-
-            selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
         }
-        if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
-            [selfI
-                trackMeasurementConsentI:selfI
-                enabled:[selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+        selfI.cachedAdjustThirdPartySharingArray = nil;
 
-            selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
+        if (selfI.cachedLastMeasurementConsentTrack != nil) {
+            [selfI trackMeasurementConsentI:
+             [selfI.cachedLastMeasurementConsentTrack boolValue]];
+
         }
+        selfI.cachedLastMeasurementConsentTrack = nil;
     }
 
     double lastInterval = now - selfI.activityState.lastActivity;
@@ -1215,74 +1177,95 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI.packageHandler sendFirstPackage];
 }
 
-- (BOOL)trackThirdPartySharingI:(ADJActivityHandler *)selfI
-                thirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing
-{
-    if (!selfI.activityState) {
-        return NO;
-    }
-    if (![selfI isEnabledI:selfI]) {
-        return NO;
-    }
-    if (selfI.activityState.isGdprForgotten) {
-        return NO;
-    }
-    if (selfI.adjustConfig.isCoppaComplianceEnabled) {
-        [selfI.logger warn:@"Calling third party sharing API not allowed when COPPA compliance is enabled"];
-        return NO;
+- (void)tryTrackThirdPartySharingI:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    if ([self canTrackThirdPartySharing]) {
+        [self trackThirdPartySharingI:thirdPartySharing];
+        return;
     }
 
+    if (self.cachedAdjustThirdPartySharingArray == nil) {
+        self.cachedAdjustThirdPartySharingArray = [[NSMutableArray alloc] init];
+    }
+
+    [self.cachedAdjustThirdPartySharingArray addObject:thirdPartySharing];
+}
+
+- (void)trackThirdPartySharingI:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     double now = [NSDate.date timeIntervalSince1970];
 
     // build package
     ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
-                                     initWithPackageParams:selfI.packageParams
-                                     activityState:selfI.activityState
-                                     config:selfI.adjustConfig
-                                     globalParameters:selfI.globalParameters
+                                     initWithPackageParams:self.packageParams
+                                     activityState:self.activityState
+                                     config:self.adjustConfig
+                                     globalParameters:self.globalParameters
                                      trackingStatusManager:self.trackingStatusManager
                                      createdAt:now];
-    tpsBuilder.internalState = selfI.internalState;
+    tpsBuilder.internalState = self.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
 
-    [selfI.packageHandler addPackage:dtpsPackage];
-    [selfI.packageHandler sendFirstPackage];
+    [self.packageHandler addPackage:dtpsPackage];
+    [self.packageHandler sendFirstPackage];
+}
+
+- (BOOL)canTrackThirdPartySharing {
+    if (!self.activityState) {
+        return NO;
+    }
+    if (![self isEnabledI:self]) {
+        return NO;
+    }
+    if (self.activityState.isGdprForgotten) {
+        return NO;
+    }
+    if (self.adjustConfig.isCoppaComplianceEnabled) {
+        [self.logger warn:@"Calling third party sharing API not allowed when COPPA compliance is enabled"];
+        return NO;
+    }
 
     return YES;
 }
 
-- (BOOL)trackMeasurementConsentI:(ADJActivityHandler *)selfI
-                         enabled:(BOOL)enabled
-{
-    if (!selfI.activityState) {
-        return NO;
-    }
-    if (![selfI isEnabledI:selfI]) {
-        return NO;
-    }
-    if (selfI.activityState.isGdprForgotten) {
-        return NO;
+- (void)tryTrackMeasurementConsentI:(BOOL)enabled {
+    if (![self canTrackMeasurementConsent] ) {
+        self.cachedLastMeasurementConsentTrack = @(enabled);
+        return;
     }
 
+    [self trackMeasurementConsentI:enabled];
+}
+
+- (void)trackMeasurementConsentI:(BOOL)enabled {
     double now = [NSDate.date timeIntervalSince1970];
 
     // build package
     ADJPackageBuilder *mcBuilder = [[ADJPackageBuilder alloc]
-                                    initWithPackageParams:selfI.packageParams
-                                    activityState:selfI.activityState
-                                    config:selfI.adjustConfig
-                                    globalParameters:selfI.globalParameters
+                                    initWithPackageParams:self.packageParams
+                                    activityState:self.activityState
+                                    config:self.adjustConfig
+                                    globalParameters:self.globalParameters
                                     trackingStatusManager:self.trackingStatusManager
                                     createdAt:now];
-    mcBuilder.internalState = selfI.internalState;
+    mcBuilder.internalState = self.internalState;
     ADJActivityPackage *mcPackage = [mcBuilder buildMeasurementConsentPackage:enabled];
 
-    [selfI.packageHandler addPackage:mcPackage];
-    [selfI.packageHandler sendFirstPackage];
+    [self.packageHandler addPackage:mcPackage];
+    [self.packageHandler sendFirstPackage];
+}
+
+-(BOOL)canTrackMeasurementConsent{
+    if (!self.activityState) {
+        return NO;
+    }
+    if (![self isEnabledI:self]) {
+        return NO;
+    }
+    if (self.activityState.isGdprForgotten) {
+        return NO;
+    }
 
     return YES;
 }
-
 - (void)trackAdRevenueI:(ADJActivityHandler *)selfI
               adRevenue:(ADJAdRevenue *)adRevenue
 {
@@ -1706,22 +1689,21 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             [selfI setGdprForgetMe];
         } else {
             [selfI processCoppaComplianceI:selfI];
-            if (selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray != nil) {
+            if (selfI.cachedAdjustThirdPartySharingArray != nil) {
                 for (ADJThirdPartySharing *thirdPartySharing
-                     in selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray)
+                     in selfI.cachedAdjustThirdPartySharingArray)
                 {
-                    [selfI trackThirdPartySharingI:selfI thirdPartySharing:thirdPartySharing];
+                    [selfI trackThirdPartySharingI:thirdPartySharing];
                 }
-
-                selfI.savedPreLaunch.preLaunchAdjustThirdPartySharingArray = nil;
             }
-            if (selfI.savedPreLaunch.lastMeasurementConsentTracked != nil) {
-                [selfI
-                    trackMeasurementConsent:
-                        [selfI.savedPreLaunch.lastMeasurementConsentTracked boolValue]];
+            selfI.cachedAdjustThirdPartySharingArray = nil;
 
-                selfI.savedPreLaunch.lastMeasurementConsentTracked = nil;
+            if (selfI.cachedLastMeasurementConsentTrack != nil) {
+                [selfI trackMeasurementConsent:
+                 [selfI.cachedLastMeasurementConsentTrack boolValue]];
+
             }
+            selfI.cachedLastMeasurementConsentTrack = nil;
 
             [selfI checkLinkMeI:selfI];
         }
@@ -2899,7 +2881,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)firstSessionTimerFiredIWithInitBlock:(selfInjectedBlock)block {
-
+    // TODO
 }
 
 
