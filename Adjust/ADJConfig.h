@@ -14,6 +14,7 @@
 @class ADJEventFailure;
 @class ADJSessionSuccess;
 @class ADJSessionFailure;
+@class ADJStoreInfo;
 typedef NS_ENUM(NSUInteger, ADJLogLevel);
 
 #pragma mark - AdjustDelegate methods
@@ -256,6 +257,8 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
 
+@property (nonatomic, copy, nullable) ADJStoreInfo *storeInfo;
+
 # pragma mark - AdjustConfig construtors
 
 /**
@@ -371,5 +374,7 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency;
+
+- (void)setStoreInfo:(nonnull ADJStoreInfo *)storeInfo;
 
 @end

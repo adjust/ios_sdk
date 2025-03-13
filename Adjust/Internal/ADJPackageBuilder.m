@@ -370,6 +370,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [self addIdfvIfPossibleToParameters:parameters];
     [self injectFeatureFlagsWithParameters:parameters];
     [self injectLastSkanUpdateWithParameters:parameters];
+    [self injectStoreInfoToParameters:parameters];
 
     return parameters;
 }
@@ -975,6 +976,17 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     NSDictionary *lastSkanUpdateData = [[ADJSKAdNetwork getInstance] lastSkanUpdateData];
     if (lastSkanUpdateData != nil) {
         [ADJPackageBuilder parameters:parameters setDictionaryJson:lastSkanUpdateData forKey:@"last_skan_update"];
+    }
+}
+
+- (void)injectStoreInfoToParameters:(NSMutableDictionary *)parameters {
+    if (self.adjustConfig.storeInfo != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:self.adjustConfig.storeInfo.storeType
+                               forKey:@"store_api"];
+        [ADJPackageBuilder parameters:parameters
+                            setString:self.adjustConfig.storeInfo.appId
+                               forKey:@"app_id_api"];
     }
 }
 

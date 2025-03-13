@@ -15,6 +15,7 @@
 #import "ADJGlobalParameters.h"
 #import "ADJActivityHandler.h"
 #import "ADJThirdPartySharing.h"
+#import "ADJStoreInfo.h"
 
 @interface ADJPackageBuilder : NSObject
 
