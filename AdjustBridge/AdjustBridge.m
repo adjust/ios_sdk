@@ -225,6 +225,10 @@
     NSString *fbPixelDefaultEventToken = [parameters objectForKey:ADJWBFbPixelDefaultEventTokenConfigKey];
     id fbPixelMapping = [parameters objectForKey:ADJWBFbPixelMappingConfigKey];
 
+    //Store parameters
+    NSString *storeInfoType = [parameters objectForKey:ADJWBStoreInfoTypeConfigKey];
+    NSString *storeInfoAppId = [parameters objectForKey:ADJWBStoreInfoAppIdConfigKey];
+
     ADJConfig *adjustConfig;
     if ([AdjustBridgeUtil isFieldValid:allowSuppressLogLevel]) {
         adjustConfig = [[ADJConfig alloc] initWithAppToken:appToken
@@ -329,6 +333,14 @@
         if ([isFirstSessionDelayEnabled boolValue] == YES) {
             [adjustConfig enableFirstSessionDelay];
         }
+    }
+    
+    // store parameters handling
+    if ([AdjustBridgeUtil isFieldValid:storeInfoType] || [AdjustBridgeUtil isFieldValid:storeInfoAppId]) {
+
+        ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreInfoType:storeInfoType
+                                                                          storeInfoAppId:storeInfoAppId];
+        [adjustConfig setStoreInfo:storeInfo];
     }
 
     if ([AdjustBridgeUtil isFieldValid:attributionCallback]) {

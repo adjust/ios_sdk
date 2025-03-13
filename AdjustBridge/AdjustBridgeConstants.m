@@ -75,6 +75,8 @@ NSString * const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventT
 NSString * const ADJWBFbPixelMappingConfigKey = @"fbPixelMapping";
 NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey = @"isAppTrackingTransparencyUsageEnabled";
 NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey = @"isFirstSessionDelayEnabled";
+NSString * const ADJWBStoreInfoTypeConfigKey = @"storeInfoType";
+NSString * const ADJWBStoreInfoAppIdConfigKey = @"storeInfoAppId";
 
 // AdjustWebbridge Callbacks method name
 NSString * const ADJWBAttributionCallbackConfigKey = @"attributionCallback";

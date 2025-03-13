@@ -74,6 +74,8 @@ FOUNDATION_EXPORT NSString * const ADJWBFbPixelDefaultEventTokenConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBFbPixelMappingConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBStoreInfoTypeConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBStoreInfoAppIdConfigKey;
 
 FOUNDATION_EXPORT NSString * const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBEventSuccessCallbackConfigKey;

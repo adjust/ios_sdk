@@ -401,6 +401,10 @@ static NSString * fbAppIdStatic = nil;
             //fb parameters
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
+
+            //store parameters
+            this.storeInfoType = null;
+            this.storeInfoAppId = null;
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -480,6 +484,12 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.addFbPixelMapping = function(fbEventNameKey, adjEventTokenValue) {
             this.fbPixelMapping.push(fbEventNameKey);
             this.fbPixelMapping.push(adjEventTokenValue);
+        };
+
+        //Store info
+        AdjustConfig.prototype.setStoreInfo = function(storeInfoType, storeInfoAppId) {
+            this.storeInfoType = storeInfoType;
+            this.storeInfoAppId = storeInfoAppId;
         };
 
         //AdjustConfig's callback
