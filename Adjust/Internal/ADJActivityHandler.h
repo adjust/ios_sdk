@@ -155,8 +155,7 @@
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
 
 - (void)delayOrInitWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
-- (void)regularAPIWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
-- (void)priorityAPIWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+- (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
 
 @end
 

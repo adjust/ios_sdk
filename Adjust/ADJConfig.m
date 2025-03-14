@@ -118,8 +118,8 @@
     _isAppTrackingTransparencyUsageEnabled = NO;
 }
 
-- (void)setFirstSessionWaitingIntervalWithSeconds:(NSUInteger)seconds {
-    _firstSessionWaitingIntervalSeconds = @(seconds);
+- (void)enableFirstSessionDelay {
+    _isFirstSessionDelayEnabled = YES;
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
