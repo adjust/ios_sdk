@@ -2842,6 +2842,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 }
 
+- (void)stopFirstSessionDelay {
+    [self.firstSessionDelayManager stopFirstSessionDelay];
+}
+
 @end
 
 @interface ADJFirstSessionDelayManager ()
@@ -2877,7 +2881,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return self;
 }
 
-- (void)firstSessionDelayStop {
+- (void)stopFirstSessionDelay {
     if (! [@"started" isEqualToString:self.delayStatus]) {
         return;
     }

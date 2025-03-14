@@ -117,6 +117,8 @@
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result;
 
+- (void)stopFirstSessionDelay;
+
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
 - (ADJConfig * _Nullable)adjustConfig;
@@ -154,6 +156,7 @@
 
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
 
+- (void)stopFirstSessionDelay;
 - (void)delayOrInitWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
 - (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
 

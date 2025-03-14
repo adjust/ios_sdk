@@ -303,6 +303,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
++ (void)stopFirstSessionDelay;
+
 /**
  * Obtain singleton Adjust object.
  */

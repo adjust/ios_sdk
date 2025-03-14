@@ -296,6 +296,13 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)stopFirstSessionDelay {
+    @synchronized (self) {
+        [[Adjust getInstance] stopFirstSessionDelay];
+    }
+}
+
+
 + (void)setTestOptions:(NSDictionary *)testOptions {
     @synchronized (self) {
         if ([testOptions[@"teardown"] boolValue]) {
@@ -740,6 +747,14 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     [self.activityHandler verifyAndTrackAppStorePurchase:event withCompletionHandler:completion];
+}
+
+- (void)stopFirstSessionDelay {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler stopFirstSessionDelay];
 }
 
 - (void)teardown {
