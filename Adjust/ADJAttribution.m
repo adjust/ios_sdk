@@ -184,7 +184,9 @@
     self.costType = [decoder decodeObjectOfClass:[NSString class] forKey:@"costType"];
     self.costAmount = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"costAmount"];
     self.costCurrency = [decoder decodeObjectOfClass:[NSString class] forKey:@"costCurrency"];
-    self.jsonResponse = [decoder decodeObjectOfClass:[NSDictionary class] forKey:@"jsonResponse"];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class],
+                                    [NSString class], [NSNumber class], nil];
+    self.jsonResponse = [decoder decodeObjectOfClasses:allowedClasses forKey:@"jsonResponse"];
     return self;
 }
 

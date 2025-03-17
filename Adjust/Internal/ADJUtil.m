@@ -233,6 +233,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             [ADJUtil deleteFileInPath:documentsFilePath];
         } else {
             // If in here, for some reason, reading of file from Application Support folder failed.
+            [[ADJAdjustFactory logger] debug:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
             // Let's check the Documents folder.
             resObject = [ADJUtil readObjectWithFileName:fileName
                                              objectName:objectName
@@ -240,8 +241,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                                  atPath:documentsFilePath];
             if (resObject) {
                 // Do the file migration.
-                [[ADJAdjustFactory logger] verbose:@"Migrating [%@] file from Documents to \"Application Support/Adjust\" folder", fileName];
+                [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
                 [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
+            } else {
+                [[ADJAdjustFactory logger] debug:@"File %@ not found in Documents folder", fileName];
             }
         }
 
@@ -262,35 +265,29 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                               options:0
                                                 error:&error];
         if (data == nil || error != nil) {
-            [[ADJAdjustFactory logger] debug:@"Failed to read data for object [%@] in file [%@] at path [%@]. Error: [%@]",
-             objectName, fileName, filePath, error.localizedDescription];
             return nil;
         }
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
                                                                                     error:&error];
         if (error != nil) {
-            [[ADJAdjustFactory logger] debug:@"Failed to read object [%@] with error: [%@]",
-             objectName, error.localizedDescription];
             return nil;
         }
         [unarchiver setRequiresSecureCoding:YES];
         resObject = [unarchiver decodeObjectOfClasses:allowedClasses
                                                forKey:NSKeyedArchiveRootObjectKey];
         if (resObject == nil) {
-            [[ADJAdjustFactory logger] debug:@"Decoding of object [%@] in a file [%@] failed.", objectName, fileName];
             return nil;
         }
         // Successfully read object from Application Support folder, return it.
         if ([resObject isKindOfClass:[NSArray class]]) {
             [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [resObject count]];
         } else {
-            [[ADJAdjustFactory logger] debug:@"Read [%@] at [%@]", objectName, resObject];
+            [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, resObject];
         }
         return resObject;
 
     } @catch (NSException *ex) {
-        // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
-        [[ADJAdjustFactory logger] error:@"Failed to read [%@] file from \"Application Support/Adjust\" folder. Exception: (%@)", fileName, ex];
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"%@\" folder. Exception: (%@)", fileName, filePath, ex];
     }
 }
 
