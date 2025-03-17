@@ -181,13 +181,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
 
     dispatch_block_t work = ^{
-        NSDictionary *sendingParameters = @{
-            @"sent_at": [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
-        };
-
         [selfI.requestHandler sendPackageByPOST:sdkClickPackage
-                              sendingParameters:sendingParameters];
-
+                              sendingParameters:nil];
         [selfI sendNextSdkClick];
     };
 

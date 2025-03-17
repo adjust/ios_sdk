@@ -288,9 +288,6 @@ startsSending:(BOOL)startsSending
                                setInt:(int)queueSize - 1
                                forKey:@"queue_size"];
     }
-    [ADJPackageBuilder parameters:sendingParameters
-                        setString:[ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
-                           forKey:@"sent_at"];
 
     [ADJPackageBuilder parameters:sendingParameters
                            setInt:(int)activityPackage.errorCount

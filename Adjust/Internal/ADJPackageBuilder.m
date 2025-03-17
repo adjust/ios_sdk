@@ -297,6 +297,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionary:(NSDictionary *)dictionary forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (dictionary == nil) {
         return;
     }
@@ -309,6 +312,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setString:(NSString *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil || [value isEqualToString:@""]) {
         return;
     }
@@ -1060,6 +1066,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setInt:(int)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value < 0) {
         return;
     }
@@ -1068,6 +1077,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDouble:(double)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value <= 0.0) {
         return;
     }
@@ -1076,6 +1088,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDate1970:(double)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value < 0) {
         return;
     }
@@ -1084,6 +1099,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDate:(NSDate *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil) {
         return;
     }
@@ -1092,6 +1110,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDuration:(double)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value < 0) {
         return;
     }
@@ -1100,6 +1121,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setDictionaryJson:(NSDictionary *)dictionary forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (dictionary == nil) {
         return;
     }
@@ -1116,11 +1140,17 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setBool:(BOOL)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     int valueInt = [[NSNumber numberWithBool:value] intValue];
     [ADJPackageBuilder parameters:parameters setInt:valueInt forKey:key];
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setNumber:(NSNumber *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil) {
         return;
     }
@@ -1129,6 +1159,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setNumberWithoutRounding:(NSNumber *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil) {
         return;
     }
@@ -1137,6 +1170,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setNumberInt:(NSNumber *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil) {
         return;
     }
@@ -1144,6 +1180,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 }
 
 + (void)parameters:(NSMutableDictionary *)parameters setData:(NSData *)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
     if (value == nil) {
         return;
     }

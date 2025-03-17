@@ -74,11 +74,14 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
+    NSDictionary *updatedSendingParameters =
+         [self updateSendingParameters:sendingParameters];
+
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
 
     NSString *urlHostString = [self urlWithParams:parameters
-                                    sendingParams:sendingParameters
+                                    sendingParams:updatedSendingParameters
                                      responseData:responseData];
 
     NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
@@ -115,6 +118,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
          responseData:responseData
        methodTypeInfo:ADJMethodPOST];
 }
+
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
@@ -125,11 +129,14 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
+    NSDictionary *updatedSendingParameters =
+         [self updateSendingParameters:sendingParameters];
+
     ADJResponseData *responseData =
         [ADJResponseData buildResponseData:activityPackage];
 
     NSString *urlHostString = [self urlWithParams:parameters
-                                    sendingParams:sendingParameters
+                                    sendingParams:updatedSendingParameters
                                      responseData:responseData];
 
     NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
@@ -167,7 +174,19 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
        methodTypeInfo:ADJMethodGET];
 }
 
-#pragma mark Internal methods
+#pragma mark - Internal methods
+- (NSDictionary *)updateSendingParameters:(NSDictionary *)sendingParameters {
+    NSMutableDictionary *updatedSendingParameters = [sendingParameters mutableCopy];
+    if (updatedSendingParameters == nil) {
+        updatedSendingParameters = [[NSMutableDictionary alloc] init];
+    }
+
+    NSString *dateString = [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]];
+    [updatedSendingParameters setValue:dateString forKey:@"sent_at"];
+    
+    return [updatedSendingParameters copy];
+}
+
 - (nonnull NSString *)urlWithParams:(nonnull NSMutableDictionary *)params
                       sendingParams:(NSDictionary *)sendingParams
                        responseData:(nonnull ADJResponseData *)responseData {
