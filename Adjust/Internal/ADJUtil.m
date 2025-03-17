@@ -224,20 +224,20 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
         // Try to read from Application Support directory first.
-        id resObject = [ADJUtil readObjectI:fileName
-                                 objectName:objectName
-                                    classes:allowedClasses
-                                     atPath:appSupportFilePath];
+        id resObject = [ADJUtil readObjectWithFileName:fileName
+                                            objectName:objectName
+                                        allowedClasses:allowedClasses
+                                                atPath:appSupportFilePath];
         if (resObject != nil) {
             // Just in case check if old file exists in Documents folder and if yes, remove it.
             [ADJUtil deleteFileInPath:documentsFilePath];
         } else {
             // If in here, for some reason, reading of file from Application Support folder failed.
             // Let's check the Documents folder.
-            resObject = [ADJUtil readObjectI:fileName
-                                  objectName:objectName
-                                     classes:allowedClasses
-                                      atPath:documentsFilePath];
+            resObject = [ADJUtil readObjectWithFileName:fileName
+                                             objectName:objectName
+                                         allowedClasses:allowedClasses
+                                                 atPath:documentsFilePath];
             if (resObject) {
                 // Do the file migration.
                 [[ADJAdjustFactory logger] verbose:@"Migrating [%@] file from Documents to \"Application Support/Adjust\" folder", fileName];
@@ -250,10 +250,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 #endif
 }
 
-+ (id)readObjectI:(NSString *)fileName
-       objectName:(NSString *)objectName
-          classes:(NSSet<Class> *)allowedClasses
-           atPath:(NSString *)filePath {
++ (id)readObjectWithFileName:(NSString *)fileName
+                  objectName:(NSString *)objectName
+              allowedClasses:(NSSet<Class> *)allowedClasses
+                      atPath:(NSString *)filePath {
 
     @try {
         id resObject = nil;
