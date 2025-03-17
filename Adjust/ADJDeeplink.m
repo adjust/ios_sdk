@@ -16,7 +16,7 @@
         return nil;
     }
 
-    _deeplink = deeplink;
+    _deeplink = [deeplink copy];
 
     return self;
 }

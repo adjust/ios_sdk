@@ -605,6 +605,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     [ADJPackageBuilder parameters:parameters setDictionary:self.deeplinkParameters forKey:@"params"];
     [ADJPackageBuilder parameters:parameters setDictionary:[self.globalParameters.partnerParameters copy] forKey:@"partner_params"];
     [ADJPackageBuilder parameters:parameters setDate:self.purchaseTime forKey:@"purchase_time"];
+    [ADJPackageBuilder parameters:parameters setString:self.referrer forKey:@"referrer"];
     [ADJPackageBuilder parameters:parameters setDate:[ADJUserDefaults getSkadRegisterCallTimestamp] forKey:@"skadn_registered_at"];
     [ADJPackageBuilder parameters:parameters setString:source forKey:@"source"];
     [ADJPackageBuilder parameters:parameters setDate1970:(double)self.packageParams.startedAt forKey:@"started_at"];
@@ -635,10 +636,6 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         [ADJPackageBuilder parameters:parameters setString:self.attribution.campaign forKey:@"campaign"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.creative forKey:@"creative"];
         [ADJPackageBuilder parameters:parameters setString:self.attribution.trackerName forKey:@"tracker"];
-    }
-
-    if (self.referrer != nil) {
-        [ADJPackageBuilder parameters:parameters setString:self.referrer forKey:@"referrer"];
     }
 
     [self addConsentToParameters:parameters forActivityKind:ADJActivityKindClick];

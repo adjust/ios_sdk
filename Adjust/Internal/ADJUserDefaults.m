@@ -69,7 +69,7 @@ static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update
 }
 
 + (void)saveDeeplink:(ADJDeeplink *)deeplink
-              clickTime:(NSDate *)clickTime {
+           clickTime:(NSDate *)clickTime {
     [[NSUserDefaults standardUserDefaults] setURL:deeplink.deeplink forKey:PREFS_KEY_DEEPLINK_URL];
     [[NSUserDefaults standardUserDefaults] setURL:deeplink.referrer forKey:PREFS_KEY_DEEPLINK_REFERRER];
     [[NSUserDefaults standardUserDefaults] setObject:clickTime forKey:PREFS_KEY_DEEPLINK_CLICK_TIME];

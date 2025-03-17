@@ -1125,8 +1125,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)processCachedDeeplinkI:(ADJActivityHandler *)selfI {
-    if (![selfI checkActivityStateI:selfI]) return;
-
+    if (![selfI checkActivityStateI:selfI]) {
+        return;
+    }
     NSURL *cachedDeeplinkUrl = [ADJUserDefaults getDeeplinkUrl];
     if (cachedDeeplinkUrl == nil) {
         return;
@@ -1135,8 +1136,8 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     if (cachedDeeplinkClickTime == nil) {
         return;
     }
-    NSURL *cachedDeeplinkReferrer = [ADJUserDefaults getDeeplinkReferrer];
 
+    NSURL *cachedDeeplinkReferrer = [ADJUserDefaults getDeeplinkReferrer];
     ADJDeeplink *deeplink = [[ADJDeeplink alloc] initWithDeeplink:cachedDeeplinkUrl];
     if (cachedDeeplinkReferrer != nil) {
         [deeplink setReferrer:cachedDeeplinkReferrer];
@@ -1869,7 +1870,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)processDeeplinkI:(ADJActivityHandler *)selfI
-                     deeplink:(ADJDeeplink *)deeplink
+                deeplink:(ADJDeeplink *)deeplink
                clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
