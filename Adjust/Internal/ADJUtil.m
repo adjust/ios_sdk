@@ -261,8 +261,8 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSData *data = [NSData dataWithContentsOfFile:filePath
                                               options:0
                                                 error:&error];
-        if (data == nil) {
-            [[ADJAdjustFactory logger] debug:@"Data for object [%@] in file [%@] at path [%@] not found. Error: [%@]",
+        if (data == nil || error != nil) {
+            [[ADJAdjustFactory logger] debug:@"Failed to read data for object [%@] in file [%@] at path [%@]. Error: [%@]",
              objectName, fileName, filePath, error.localizedDescription];
             return nil;
         }
