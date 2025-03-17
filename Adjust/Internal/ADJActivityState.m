@@ -149,7 +149,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
-        NSSet *allowedClasses = [NSSet setWithObjects:[NSMutableArray class], [NSString class], nil];
+        NSSet *allowedClasses = [NSSet setWithObjects:[NSArray class], [NSString class], nil];
         self.eventDeduplicationIds = [decoder decodeObjectOfClasses:allowedClasses forKey:@"transactionIds"];
     }
 

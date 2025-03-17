@@ -383,7 +383,7 @@ startsSending:(BOOL)startsSending
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
     [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
-    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSMutableArray class], [ADJActivityPackage class], nil];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSArray class], [ADJActivityPackage class], nil];
     id object = [ADJUtil readObject:kPackageQueueFilename
                          objectName:@"Package queue"
                             classes:allowedClasses

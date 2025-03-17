@@ -85,7 +85,7 @@
     self.suffix = [decoder decodeObjectOfClass:[NSString class] forKey:@"suffix"];
     self.clientSdk = [decoder decodeObjectOfClass:[NSString class] forKey:@"clientSdk"];
 
-    NSSet *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSMutableDictionary class], [NSString class], nil];
+    NSSet *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
     self.parameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"parameters"];
     self.partnerParameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"partnerParameters"];
     self.callbackParameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"callbackParameters"];
