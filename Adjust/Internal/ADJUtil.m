@@ -303,7 +303,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
             BOOL result;
             NSString *filePath = [ADJUtil getFilePathInAppSupportDir:fileName];
             if (!filePath) {
-                [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: [%@], to write [%@] file", fileName, objectName];
+                [[ADJAdjustFactory logger] error:@"Cannot get filepath from filename: %@, to write %@ file", fileName, objectName];
                 return;
             }
 
@@ -323,13 +323,13 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 if ([object isKindOfClass:[NSArray class]]) {
                     [[ADJAdjustFactory logger] debug:@"Package handler wrote %d packages", [object count]];
                 } else {
-                    [[ADJAdjustFactory logger] debug:@"Wrote [%@]: [%@]", objectName, object];
+                    [[ADJAdjustFactory logger] debug:@"Wrote %@: %@", objectName, object];
                 }
             } else {
-                [[ADJAdjustFactory logger] error:@"Failed to write [%@] file", objectName];
+                [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
             }
         } @catch (NSException *exception) {
-            [[ADJAdjustFactory logger] error:@"Failed to write [%@] file. Exception: (%@)", objectName, exception];
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file. Exception: (%@)", objectName, exception];
         }
     }
 #endif
