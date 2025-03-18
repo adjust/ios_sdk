@@ -2875,18 +2875,21 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 @property (nonatomic, readonly, weak) ADJActivityHandler *activityHandler;
 @property (nonatomic, strong) NSString *delayStatus;
 
-@property (nonatomic, strong) NSMutableArray<selfInjectedBlock> *apiActions;
+@property (nonatomic, nonnull, strong) NSMutableArray<selfInjectedBlock> *apiActions;
 @property (nonatomic, copy) void (^initBlock)(ADJActivityHandler * selfI, BOOL isInactive);
 
 @end
 
-@implementation ADJFirstSessionDelayManager
+@implementation ADJFirstSessionDelayManager {
+    volatile BOOL _isWaitingForMainThread;
+}
 
 // constructors
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler {
     self = [super init];
 
     _activityHandler = activityHandler;
+    _isWaitingForMainThread = NO;
 
     BOOL delayFirstSession =
         activityHandler.internalState.isFirstLaunch &&
@@ -2914,11 +2917,15 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
+    _isWaitingForMainThread = YES;
+
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
                          block:^(ADJActivityHandler * selfI)
         {
+            self->_isWaitingForMainThread = NO;
+
             self.initBlock(selfI, isInactive);
 
             for (selfInjectedBlock apiAction in self.apiActions) {
@@ -2958,12 +2965,21 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     if ([@"notSet" isEqualToString:self.delayStatus]) {
+
+        _isWaitingForMainThread = YES;
+
         [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
             [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                         selfInject:strongActivityHandler
                              block:^(ADJActivityHandler * selfI)
             {
+                self->_isWaitingForMainThread = NO;
+
                 initBlock(selfI, isInactive);
+
+                for (selfInjectedBlock apiAction in self.apiActions) {
+                    apiAction(selfI);
+                }
             }];
         }];
 
@@ -2994,8 +3010,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-    if (self.apiActions != nil && [@"started" isEqualToString:self.delayStatus]) {
+    if ([@"started" isEqualToString:self.delayStatus]) {
         [self.apiActions addObject:block];
+    } else if (_isWaitingForMainThread) {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:^(ADJActivityHandler *activityHandler)
+         {
+            if (self->_isWaitingForMainThread) {
+                [self.apiActions addObject:block];
+            } else {
+                block(activityHandler);
+            }
+        }];
     } else {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
@@ -3009,8 +3036,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-    if (self.apiActions != nil && [@"started" isEqualToString:self.delayStatus]) {
+    if ([@"started" isEqualToString:self.delayStatus]) {
         [strongActivityHandler.savedPreLaunch.preLaunchActionsArray addObject:block];
+    } else if (_isWaitingForMainThread) {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:^(ADJActivityHandler *activityHandler)
+         {
+            if (self->_isWaitingForMainThread) {
+                [self.apiActions addObject:block];
+            } else {
+                block(activityHandler);
+            }
+        }];
     } else {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
