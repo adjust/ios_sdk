@@ -103,6 +103,8 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
+    } else if ([methodName isEqualToString:@"stopFirstSessionDelay"]) {
+        [self stopFirstSessionDelay:parameters];
     }
 }
 
@@ -382,6 +384,13 @@
         NSString *attUsageS = [parameters objectForKey:@"allowAttUsage"][0];
         if ([attUsageS boolValue] == NO) {
             [adjustConfig disableAppTrackingTransparencyUsage];
+        }
+    }
+
+    if ([parameters objectForKey:@"firstSessionDelayEnabled"]) {
+        NSString *firstSessionDelayEnabledS = [parameters objectForKey:@"firstSessionDelayEnabled"][0];
+        if ([firstSessionDelayEnabledS boolValue] == YES) {
+            [adjustConfig enableFirstSessionDelay];
         }
     }
 
@@ -841,6 +850,11 @@
         [self.testLibrary addInfoToSend:@"json_response" value:jsonString];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
+}
+
+
+- (void)stopFirstSessionDelay:(NSDictionary *)parameters {
+    [Adjust stopFirstSessionDelay];
 }
 
 @end
