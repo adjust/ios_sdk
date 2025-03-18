@@ -157,9 +157,9 @@
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
 
 - (void)stopFirstSessionDelay;
-- (void)delayOrInitWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+- (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
 - (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
-
+- (void)preLaunchActionWithBlock:(void (^_Nonnull)(_Nonnull id))block;
 @end
 
 @interface ADJTrackingStatusManager : NSObject

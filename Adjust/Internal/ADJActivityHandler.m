@@ -132,7 +132,9 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
       savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
-      deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback {
+      deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback
+
+{
     self = [super init];
     if (self == nil) return nil;
 
@@ -243,8 +245,9 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.firstSessionDelayManager =
         [[ADJFirstSessionDelayManager alloc] initWithActivityHandler:self];
 
-    [self.firstSessionDelayManager delayOrInitWithBlock:^(ADJActivityHandler * selfI) {
-        [selfI initI:selfI preLaunchActions:savedPreLaunch];
+    [self.firstSessionDelayManager delayOrInitWithBlock:
+     ^(ADJActivityHandler * _Nonnull selfI, BOOL isInactive) {
+        [selfI initI:selfI isInactive:isInactive];
     }];
 
     [self addNotificationObserver];
@@ -253,19 +256,29 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)applicationDidBecomeActive {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI handleAppForegroundI:selfI];
+    }];
+    /*
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         [selfI handleAppForegroundI:selfI];
     }];
+     */
 }
 
 - (void)applicationWillResignActive {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI handleAppBackgroundI:selfI];
+    }];
+    /*
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         [selfI handleAppBackgroundI:selfI];
     }];
+     */
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -509,38 +522,38 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)addGlobalCallbackParameter:(NSString *)param
                             forKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
     }];
 }
 
 - (void)addGlobalPartnerParameter:(NSString *)param
                            forKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
     }];
 }
 
 - (void)removeGlobalCallbackParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParameterI:selfI forKey:key];
     }];
 }
 
 - (void)removeGlobalPartnerParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParameterI:selfI forKey:key];
     }];
 }
 
 - (void)removeGlobalCallbackParameters {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParametersI:selfI];
     }];
 }
 
 - (void)removeGlobalPartnerParameters {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParametersI:selfI];
     }];
 }
@@ -552,13 +565,13 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackThirdPartySharingI:thirdPartySharing];
     }];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackMeasurementConsentI:enabled];
     }];
 }
@@ -718,7 +731,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 #pragma mark - internal
 - (void)initI:(ADJActivityHandler *)selfI
-preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
+   isInactive:(BOOL)isInactive
 {
     // get session values
     kSessionInterval = ADJAdjustFactory.sessionInterval;
@@ -775,7 +788,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     ADJUrlStrategy *packageHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:preLaunchActions.extraPath
+                                             extraPath:self.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.packageHandler = [[ADJPackageHandler alloc]
@@ -786,7 +799,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     ADJUrlStrategy *attributionHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:preLaunchActions.extraPath
+                                             extraPath:self.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.attributionHandler = [[ADJAttributionHandler alloc]
@@ -797,7 +810,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 
     ADJUrlStrategy *sdkClickHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:preLaunchActions.extraPath
+                                             extraPath:self.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.sdkClickHandler = [[ADJSdkClickHandler alloc]
@@ -831,11 +844,19 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     [selfI.trackingStatusManager updateAndTrackAttStatus];
 
     [selfI preLaunchActionsI:selfI
-       preLaunchActionsArray:preLaunchActions.preLaunchActionsArray];
+       preLaunchActionsArray:self.savedPreLaunch.preLaunchActionsArray];
 
     [selfI processCachedAttributionReadCallback];
     [selfI processCachedAdidReadCallback];
 
+    if (!isInactive) {
+        [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
+        [selfI handleAppForegroundI:selfI];
+    } else {
+        [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
+    }
+
+/*
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
         [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
             if (!isInactive) {
@@ -846,6 +867,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
             }
         }];
     }];
+ */
 }
 
 - (void)handleAppForegroundI:(ADJActivityHandler *)selfI {
@@ -2854,7 +2876,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 @property (nonatomic, strong) NSString *delayStatus;
 
 @property (nonatomic, strong) NSMutableArray<selfInjectedBlock> *apiActions;
-@property (nonatomic, copy) selfInjectedBlock initBlock;
+@property (nonatomic, copy) void (^initBlock)(ADJActivityHandler * selfI, BOOL isInactive);
 
 @end
 
@@ -2892,29 +2914,70 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
+    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:^(ADJActivityHandler * selfI)
+        {
+            self.initBlock(selfI, isInactive);
+
+            for (selfInjectedBlock apiAction in self.apiActions) {
+                apiAction(selfI);
+            }
+        }];
+    }];
+
+    return;
+/*
     [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                 selfInject:strongActivityHandler
                      block:^(ADJActivityHandler *activityHandler)
      {
-        self.initBlock(activityHandler);
+        self.initBlock(activityHandler, isInactive);
 
         for (selfInjectedBlock apiAction in self.apiActions) {
             apiAction(activityHandler);
         }
     }];
+ */
 }
 
-- (void)delayOrInitWithBlock:(selfInjectedBlock)initBlock {
+- (void)
+    delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
+    //isInactive:(BOOL)isInactive
+{
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
         return;
     }
 
+    if ([@"notStarted" isEqualToString:self.delayStatus]) {
+        self.initBlock = initBlock;
+        self.delayStatus = @"started";
+        return;
+    }
+
+    if ([@"notSet" isEqualToString:self.delayStatus]) {
+        [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+            [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                        selfInject:strongActivityHandler
+                             block:^(ADJActivityHandler * selfI)
+            {
+                initBlock(selfI, isInactive);
+            }];
+        }];
+
+        return;
+    }
+
+/*
     if ([@"notSet" isEqualToString:self.delayStatus]) {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
-                         block:initBlock];
-
+                         block:^(ADJActivityHandler * selfI)
+        {
+            initBlock(selfI, isInactive);
+        }];
         return;
     }
     if ([@"notStarted" isEqualToString:self.delayStatus]) {
@@ -2922,6 +2985,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         self.delayStatus = @"started";
         return;
     }
+ */
 }
 
 - (void)apiActionWithBlock:(selfInjectedBlock)block {
@@ -2932,6 +2996,21 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     if (self.apiActions != nil && [@"started" isEqualToString:self.delayStatus]) {
         [self.apiActions addObject:block];
+    } else {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:block];
+    }
+}
+
+- (void)preLaunchActionWithBlock:(selfInjectedBlock)block {
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
+        return;
+    }
+
+    if (self.apiActions != nil && [@"started" isEqualToString:self.delayStatus]) {
+        [strongActivityHandler.savedPreLaunch.preLaunchActionsArray addObject:block];
     } else {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
