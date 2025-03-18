@@ -245,6 +245,7 @@
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
+        copy->_isFirstSessionDelayEnabled = self.isFirstSessionDelayEnabled;
         // AdjustDelegate not copied
     }
 
