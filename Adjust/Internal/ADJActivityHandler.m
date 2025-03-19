@@ -2731,7 +2731,9 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+        [selfI.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
+    }];
 }
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
