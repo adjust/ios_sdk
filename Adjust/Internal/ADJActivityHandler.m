@@ -133,7 +133,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
       savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
       deeplinkResolutionCallback:(ADJResolvedDeeplinkBlock _Nullable)deepLinkResolutionCallback
-
 {
     self = [super init];
     if (self == nil) return nil;
@@ -259,26 +258,12 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI handleAppForegroundI:selfI];
     }];
-    /*
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-        [selfI handleAppForegroundI:selfI];
-    }];
-     */
 }
 
 - (void)applicationWillResignActive {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI handleAppBackgroundI:selfI];
     }];
-    /*
-    [ADJUtil launchInQueue:self.internalQueue
-                selfInject:self
-                     block:^(ADJActivityHandler * selfI) {
-        [selfI handleAppBackgroundI:selfI];
-    }];
-     */
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -855,19 +840,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     } else {
         [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
     }
-
-/*
-    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
-        [ADJUtil launchInQueue:self.internalQueue selfInject:self block:^(ADJActivityHandler * selfI) {
-            if (!isInactive) {
-                [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
-                [selfI handleAppForegroundI:selfI];
-            } else {
-                [selfI.logger debug:@"Wait for the app to go to the foreground to start the sdk"];
-            }
-        }];
-    }];
- */
 }
 
 - (void)handleAppForegroundI:(ADJActivityHandler *)selfI {
@@ -933,20 +905,7 @@ const BOOL kSkanRegisterLockWindow = NO;
             } else {
                 [selfI processCoppaComplianceI:selfI];
 
-                if (selfI.cachedAdjustThirdPartySharingArray != nil) {
-                    for (ADJThirdPartySharing *thirdPartySharing
-                         in selfI.cachedAdjustThirdPartySharingArray)
-                    {
-                        [selfI trackThirdPartySharingI:thirdPartySharing];
-                    }
-                }
-                selfI.cachedAdjustThirdPartySharingArray = nil;
-
-                if (selfI.cachedLastMeasurementConsentTrack != nil) {
-                    [selfI trackMeasurementConsentI:
-                     [selfI.cachedLastMeasurementConsentTrack boolValue]];
-                }
-                selfI.cachedLastMeasurementConsentTrack = nil;
+                [selfI processPreLaunchArraysI:selfI];
 
                 [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                                 block:^{
@@ -973,21 +932,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
         return;
     } else {
-        if (selfI.cachedAdjustThirdPartySharingArray != nil) {
-            for (ADJThirdPartySharing *thirdPartySharing
-                 in selfI.cachedAdjustThirdPartySharingArray)
-            {
-                [selfI trackThirdPartySharingI:thirdPartySharing];
-            }
-        }
-        selfI.cachedAdjustThirdPartySharingArray = nil;
-
-        if (selfI.cachedLastMeasurementConsentTrack != nil) {
-            [selfI trackMeasurementConsentI:
-             [selfI.cachedLastMeasurementConsentTrack boolValue]];
-
-        }
-        selfI.cachedLastMeasurementConsentTrack = nil;
+        [selfI processPreLaunchArraysI:selfI];
     }
 
     double lastInterval = now - selfI.activityState.lastActivity;
@@ -1711,21 +1656,8 @@ const BOOL kSkanRegisterLockWindow = NO;
             [selfI setGdprForgetMe];
         } else {
             [selfI processCoppaComplianceI:selfI];
-            if (selfI.cachedAdjustThirdPartySharingArray != nil) {
-                for (ADJThirdPartySharing *thirdPartySharing
-                     in selfI.cachedAdjustThirdPartySharingArray)
-                {
-                    [selfI trackThirdPartySharingI:thirdPartySharing];
-                }
-            }
-            selfI.cachedAdjustThirdPartySharingArray = nil;
 
-            if (selfI.cachedLastMeasurementConsentTrack != nil) {
-                [selfI trackMeasurementConsent:
-                 [selfI.cachedLastMeasurementConsentTrack boolValue]];
-
-            }
-            selfI.cachedLastMeasurementConsentTrack = nil;
+            [selfI processPreLaunchArraysI:selfI];
 
             [selfI checkLinkMeI:selfI];
         }
@@ -1752,6 +1684,23 @@ const BOOL kSkanRegisterLockWindow = NO;
           pausingMessage:@"Pausing handlers due to SDK being disabled"
     remainsPausedMessage:@"Handlers remain paused"
         unPausingMessage:@"Resuming handlers due to SDK being enabled"];
+}
+
+- (void)processPreLaunchArraysI:(ADJActivityHandler *)selfI {
+    if (selfI.cachedAdjustThirdPartySharingArray != nil) {
+        for (ADJThirdPartySharing *thirdPartySharing
+             in selfI.cachedAdjustThirdPartySharingArray)
+        {
+            [selfI trackThirdPartySharingI:thirdPartySharing];
+        }
+    }
+    selfI.cachedAdjustThirdPartySharingArray = nil;
+
+    if (selfI.cachedLastMeasurementConsentTrack != nil) {
+        [selfI trackMeasurementConsentI:
+         [selfI.cachedLastMeasurementConsentTrack boolValue]];
+    }
+    selfI.cachedLastMeasurementConsentTrack = nil;
 }
 
 - (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
