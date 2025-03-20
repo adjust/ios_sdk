@@ -981,11 +981,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 - (void)injectStoreInfoToParameters:(NSMutableDictionary *)parameters {
     if (self.adjustConfig.storeInfo != nil) {
-        [ADJPackageBuilder parameters:parameters
-                            setString:self.adjustConfig.storeInfo.storeType
+        [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.storeInfo.storeType
                                forKey:@"store_api"];
-        [ADJPackageBuilder parameters:parameters
-                            setString:self.adjustConfig.storeInfo.appId
+        [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.storeInfo.appId
                                forKey:@"app_id_api"];
     }
 }

@@ -339,7 +339,7 @@
     if ([AdjustBridgeUtil isFieldValid:storeInfoType] || [AdjustBridgeUtil isFieldValid:storeInfoAppId]) {
 
         ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreInfoType:storeInfoType
-                                                                          storeInfoAppId:storeInfoAppId];
+                                                               storeInfoAppId:storeInfoAppId];
         [adjustConfig setStoreInfo:storeInfo];
     }
 

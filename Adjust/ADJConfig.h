@@ -257,7 +257,10 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
 
-@property (nonatomic, copy, nullable) ADJStoreInfo *storeInfo;
+/**
+ * @brief The store information associated with this object.
+ */
+@property (nonatomic, copy, nonnull) ADJStoreInfo *storeInfo;
 
 # pragma mark - AdjustConfig construtors
 
@@ -375,6 +378,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency;
 
+/**
+ * @brief Sets the store information for this object.
+ *
+ * @param storeInfo The store information to set. Must not be nil.
+ */
 - (void)setStoreInfo:(nonnull ADJStoreInfo *)storeInfo;
 
 @end
