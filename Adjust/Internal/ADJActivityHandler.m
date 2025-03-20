@@ -2937,16 +2937,13 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     // check current ATT status
     int attStatus = [self attStatus];
-    // App Tracking Transparency framework usage is disabled
-    if (attStatus == -1) {
-        // Just in case it's there from the previous init where
-        // App Tracking Transparency framework usage was enabled,
-        // remove ATT Waiting related stuff.
-        [ADJUserDefaults removeAttWaitingRemainingSeconds];
-        return NO;
-    }
-
-    // return if the status is not ATTrackingManagerAuthorizationStatusNotDetermined
+    // if attStatus is !=0 means:
+    // - consent changed from ATTrackingManagerAuthorizationStatusNotDetermined ( attStatus > 0 )
+    // or
+    // - App Tracking Transparency framework usage is disabled ( attStatus == -1 )
+    // In these cases:
+    // 1. NO returned
+    // 2. ATT Waiting related stuff is removed from UserDefaults as irrelevant.
     if (attStatus != 0) {
         // Delete att_waiting_seconds key from UserDefaults.
         [ADJUserDefaults removeAttWaitingRemainingSeconds];

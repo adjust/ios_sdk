@@ -189,11 +189,9 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     // checking consent related parameters at the package creation moment
     NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
-    BOOL wasConsentWhenCreated = NO;
-    if (attStatusString != nil) {
-        wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
-                                                                       andAttStatus:attStatusString.intValue];
-    }
+    int paramsAttStatus = (attStatusString != nil) ? attStatusString.intValue : -1;
+    BOOL wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                                                   andAttStatus:paramsAttStatus];
 
     // checking consent related parameters at the package sending moment
     int attStatus = -1;
@@ -460,8 +458,6 @@ authorizationHeader:(NSString *)authorizationHeader
     [self injectParameters:mergedParameters kvArray:kvParameters];
 
     NSString *bodyString = [kvParameters componentsJoinedByString:@"&"];
-    [self.logger verbose:@"Body (String) to send: [%@]", bodyString];
-
     NSData *body = [NSData dataWithBytes:bodyString.UTF8String length:bodyString.length];
     [request setHTTPBody:body];
     return request;
