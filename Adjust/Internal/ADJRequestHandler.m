@@ -188,31 +188,26 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSMutableDictionary *sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
 
     // checking consent related parameters at the package creation moment
-    NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
-    int paramsAttStatus = (attStatusString != nil) ? attStatusString.intValue : -1;
+    NSString *paramsAttStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
+    int paramsAttStatusInt = (paramsAttStatusString != nil) ? paramsAttStatusString.intValue : -1;
     BOOL wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
-                                                                   andAttStatus:paramsAttStatus];
+                                                                   andAttStatus:paramsAttStatusInt];
 
     // checking consent related parameters at the package sending moment
-    int attStatus = -1;
+    int currentAttStatus = -1;
     if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
-        attStatus = [ADJUtil attStatus];
+        currentAttStatus = [ADJUtil attStatus];
     }
     BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
-                                                                  andAttStatus:attStatus];
+                                                                  andAttStatus:currentAttStatus];
     BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
     if (!doesConsentDataExist) {
         [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
     // if att_status was part of the payload at all, make sure to have up to date value before sending
-    // or remove it in case attStatus is -1 (isAppTrackingTransparencyUsageEnabled == NO)
-    if (attStatusString != nil) {
-        if (attStatus == -1) {
-            [ADJPackageBuilder removeAttStatusFromParameters:params];
-        } else {
-            [ADJPackageBuilder updateAttStatus:attStatus inParameters:params];
-        }
+    if (paramsAttStatusString != nil && currentAttStatus > -1) {
+        [ADJPackageBuilder updateAttStatus:currentAttStatus inParameters:params];
     }
 
     NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
