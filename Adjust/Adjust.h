@@ -286,6 +286,16 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion;
 
 /**
+ * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application when is in first session delay
+ */
++ (void)enableCoppaComplianceInDelay;
+
+/**
+ * @brief Disable COPPA (Children's Online Privacy Protection Act) compliant for the application when is in first session delay
+ */
++ (void)disableCoppaComplianceInDelay;
+
+/**
  * @brief Verify in-app-purchase.
  *
  * @param purchase   Purchase object.

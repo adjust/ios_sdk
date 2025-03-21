@@ -187,7 +187,7 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
 /**
  * @brief Indicator of whether SDK should start in COPPA compliant mode or not.
  */
-@property (nonatomic, readonly) BOOL isCoppaComplianceEnabled;
+@property (nonatomic) BOOL isCoppaComplianceEnabled;
 
 /**
  * @brief Indicator of whether SDK should use AppTrackingTransparency framework

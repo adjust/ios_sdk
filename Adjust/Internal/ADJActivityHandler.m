@@ -609,6 +609,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
+    [self.firstSessionDelayManager setCoppaComplianceInDelay:isCoppaComplianceEnabled];
+}
+
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
@@ -2953,6 +2957,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
  */
+}
+
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
+        return;
+    }
+
+    if (![@"started" isEqualToString:self.delayStatus]) {
+        return;
+    }
+
+    strongActivityHandler.adjustConfig.isCoppaComplianceEnabled = isCoppaComplianceEnabled;
 }
 
 - (void)apiActionWithBlock:(selfInjectedBlock)block {

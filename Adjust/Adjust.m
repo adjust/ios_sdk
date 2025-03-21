@@ -288,6 +288,14 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
+ + (void)enableCoppaComplianceInDelay {
+     [[Adjust getInstance] enableCoppaComplianceInDelay];
+ }
+
+ + (void)disableCoppaComplianceInDelay {
+     [[Adjust getInstance] disableCoppaComplianceInDelay];
+ }
+
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {
@@ -725,6 +733,22 @@ static dispatch_once_t onceToken = 0;
     }
     [self.activityHandler verifyAppStorePurchase:purchase
                            withCompletionHandler:completion];
+}
+
+- (void)enableCoppaComplianceInDelay {
+    if (![self checkActivityHandler:@"enable coppa compliance in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setCoppaComplianceInDelay:YES];
+}
+
+- (void)disableCoppaComplianceInDelay {
+    if (![self checkActivityHandler:@"disable coppa compliance in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setCoppaComplianceInDelay:NO];
 }
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event

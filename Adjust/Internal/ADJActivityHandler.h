@@ -113,6 +113,7 @@
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result;
@@ -158,6 +159,7 @@
 
 - (void)stopFirstSessionDelay;
 - (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
 - (void)preLaunchActionWithBlock:(void (^_Nonnull)(_Nonnull id))block;
 @end
