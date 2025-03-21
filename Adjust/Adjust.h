@@ -296,6 +296,13 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)disableCoppaComplianceInDelay;
 
 /**
+ * @brief Custom defined unique device ID (optional) when is in first session delay.
+ *
+ * @note Make sure to have a UNIQUE external ID for each user / device.
+ */
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
+
+/**
  * @brief Verify in-app-purchase.
  *
  * @param purchase   Purchase object.

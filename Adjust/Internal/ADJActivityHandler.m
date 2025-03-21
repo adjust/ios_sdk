@@ -613,6 +613,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self.firstSessionDelayManager setCoppaComplianceInDelay:isCoppaComplianceEnabled];
 }
 
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    [self.firstSessionDelayManager setExternalDeviceIdInDelay:externalDeviceId];
+}
+
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
@@ -2890,23 +2894,10 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }];
 
     return;
-/*
-    [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                selfInject:strongActivityHandler
-                     block:^(ADJActivityHandler *activityHandler)
-     {
-        self.initBlock(activityHandler, isInactive);
-
-        for (selfInjectedBlock apiAction in self.apiActions) {
-            apiAction(activityHandler);
-        }
-    }];
- */
 }
 
-- (void)
-    delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
-    //isInactive:(BOOL)isInactive
+- (void)delayOrInitWithBlock:
+    (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
 {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
@@ -2941,24 +2932,6 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-/*
-    if ([@"notSet" isEqualToString:self.delayStatus]) {
-        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                    selfInject:strongActivityHandler
-                         block:^(ADJActivityHandler * selfI)
-        {
-            initBlock(selfI, isInactive);
-        }];
-        return;
-    }
-    if ([@"notStarted" isEqualToString:self.delayStatus]) {
-        self.initBlock = initBlock;
-        self.delayStatus = @"started";
-        return;
-    }
- */
-}
-
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
@@ -2970,6 +2943,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 
     strongActivityHandler.adjustConfig.isCoppaComplianceEnabled = isCoppaComplianceEnabled;
+}
+
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
+        return;
+    }
+
+    if (![@"started" isEqualToString:self.delayStatus]) {
+        return;
+    }
+
+    strongActivityHandler.adjustConfig.externalDeviceId = externalDeviceId;
 }
 
 - (void)apiActionWithBlock:(selfInjectedBlock)block {

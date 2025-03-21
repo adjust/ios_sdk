@@ -751,6 +751,14 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler setCoppaComplianceInDelay:NO];
 }
 
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    if (![self checkActivityHandler:@"set external device id in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setExternalDeviceIdInDelay:externalDeviceId];
+}
+
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     if (![self checkActivityHandler]) {
