@@ -105,6 +105,10 @@
         [self attributionGetter:parameters];
     } else if ([methodName isEqualToString:@"stopFirstSessionDelay"]) {
         [self stopFirstSessionDelay:parameters];
+    } else if ([methodName isEqualToString:@"coppaComplianceInDelay"]) {
+        [self coppaComplianceInDelay:parameters];
+    } else if ([methodName isEqualToString:@"externalDeviceIdInDelay"]) {
+        [self externalDeviceIdInDelay:parameters];
     }
 }
 
@@ -855,6 +859,21 @@
 
 - (void)stopFirstSessionDelay:(NSDictionary *)parameters {
     [Adjust stopFirstSessionDelay];
+}
+
+- (void)coppaComplianceInDelay:(NSDictionary *)parameters {
+    NSString *isEnabledS = [parameters objectForKey:@"isEnabled"][0];
+    if ([isEnabledS isEqualToString:@"true"]) {
+        [Adjust enableCoppaComplianceInDelay];
+    }
+    if ([isEnabledS isEqualToString:@"false"]) {
+        [Adjust disableCoppaComplianceInDelay];
+    }
+}
+
+- (void)externalDeviceIdInDelay:(NSDictionary *)parameters {
+    NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
+    [Adjust setExternalDeviceIdInDelay:externalDeviceId];
 }
 
 @end
