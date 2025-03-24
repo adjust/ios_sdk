@@ -296,6 +296,10 @@ static dispatch_once_t onceToken = 0;
      [[Adjust getInstance] disableCoppaComplianceInDelay];
  }
 
++ (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    [[Adjust getInstance] setExternalDeviceIdInDelay:externalDeviceId];
+}
+
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {

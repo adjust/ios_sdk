@@ -300,7 +300,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  *
  * @note Make sure to have a UNIQUE external ID for each user / device.
  */
-- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
++ (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
 
 /**
  * @brief Verify in-app-purchase.
