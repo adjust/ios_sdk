@@ -1695,7 +1695,9 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)processPreLaunchArraysI:(ADJActivityHandler *)selfI {
-    if (selfI.cachedAdjustThirdPartySharingArray != nil) {
+    if (selfI.cachedAdjustThirdPartySharingArray != nil
+        && [selfI canTrackThirdPartySharing])
+    {
         for (ADJThirdPartySharing *thirdPartySharing
              in selfI.cachedAdjustThirdPartySharingArray)
         {
@@ -1704,7 +1706,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     selfI.cachedAdjustThirdPartySharingArray = nil;
 
-    if (selfI.cachedLastMeasurementConsentTrack != nil) {
+    if (selfI.cachedLastMeasurementConsentTrack != nil && [self canTrackMeasurementConsent]) {
         [selfI trackMeasurementConsentI:
          [selfI.cachedLastMeasurementConsentTrack boolValue]];
     }
@@ -2749,11 +2751,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [self resetThirdPartySharingCoppaActivityStateI:selfI];
         return;
     }
-    
-    [self disableThirdPartySharingForCoppaEnabledI:selfI];
-}
 
-- (void)disableThirdPartySharingForCoppaEnabledI:(ADJActivityHandler *)selfI {
     if (![selfI shouldDisableThirdPartySharingWhenCoppaEnabled:selfI]) {
         return;
     }
