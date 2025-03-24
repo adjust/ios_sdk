@@ -176,7 +176,7 @@ static NSString * fbAppIdStatic = nil;
             if (this.sdkPrefix) {
                 return this.sdkPrefix;
             } else {
-                return 'web-bridge5.1.1';
+                return 'web-bridge5.2.0';
             }
         },
 
@@ -366,6 +366,7 @@ static NSString * fbAppIdStatic = nil;
             this.shouldReadDeviceInfoOnce = null;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
+            this.isAppTrackingTransparencyUsageEnabled = null;
 
             //config URL strategy parameters
             this.urlStrategyDomains = [];
@@ -441,6 +442,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.setEventDeduplicationIdsMaxSize = function(eventDeduplicationIdsMaxSize) {
             this.eventDeduplicationIdsMaxSize = eventDeduplicationIdsMaxSize;
+        };
+        AdjustConfig.prototype.disableAppTrackingTransparencyUsage = function() {
+            this.isAppTrackingTransparencyUsageEnabled = false;
         };
 
         //URL strategy

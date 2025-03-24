@@ -24,6 +24,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 @property (nonatomic, strong) ADJUrlStrategy *urlStrategy;
 @property (nonatomic, assign) double requestTimeout;
 @property (nonatomic, weak) id<ADJResponseCallback> responseCallback;
+@property (nonatomic, strong) ADJConfig *adjustConfig;
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 
@@ -40,6 +41,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
                 requestTimeout:(double)requestTimeout
+           adjustConfiguration:(ADJConfig *)adjustConfig
 {
     self = [super init];
     
@@ -49,6 +51,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     self.urlStrategy = urlStrategy;
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
+    self.adjustConfig = adjustConfig;
 
     self.logger = ADJAdjustFactory.logger;
     self.defaultSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -74,11 +77,10 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    ADJResponseData *responseData =
-        [ADJResponseData buildResponseData:activityPackage];
-
+    NSDictionary *updatedSendingParameters = [self updateSendingParameters:sendingParameters];
+    ADJResponseData *responseData = [ADJResponseData buildResponseData:activityPackage];
     NSString *urlHostString = [self urlWithParams:parameters
-                                    sendingParams:sendingParameters
+                                    sendingParams:updatedSendingParameters
                                      responseData:responseData];
 
     NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
@@ -115,6 +117,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
          responseData:responseData
        methodTypeInfo:ADJMethodPOST];
 }
+
 - (void)sendPackageByGET:(ADJActivityPackage *)activityPackage
        sendingParameters:(NSDictionary *)sendingParameters
 {
@@ -125,11 +128,10 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     NSString *clientSdk = [activityPackage.clientSdk copy];
     ADJActivityKind activityKind = activityPackage.activityKind;
 
-    ADJResponseData *responseData =
-        [ADJResponseData buildResponseData:activityPackage];
-
+    NSDictionary *updatedSendingParameters = [self updateSendingParameters:sendingParameters];
+    ADJResponseData *responseData = [ADJResponseData buildResponseData:activityPackage];
     NSString *urlHostString = [self urlWithParams:parameters
-                                    sendingParams:sendingParameters
+                                    sendingParams:updatedSendingParameters
                                      responseData:responseData];
 
     NSMutableDictionary *mergedParameters = [[NSMutableDictionary alloc]
@@ -167,36 +169,53 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
        methodTypeInfo:ADJMethodGET];
 }
 
-#pragma mark Internal methods
+#pragma mark - Internal methods
+- (NSDictionary *)updateSendingParameters:(NSDictionary *)sendingParameters {
+    NSMutableDictionary *updatedSendingParameters = [sendingParameters mutableCopy];
+    if (updatedSendingParameters == nil) {
+        updatedSendingParameters = [[NSMutableDictionary alloc] init];
+    }
+
+    NSString *dateString = [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]];
+    [updatedSendingParameters setValue:dateString forKey:@"sent_at"];
+    
+    return [updatedSendingParameters copy];
+}
+
 - (nonnull NSString *)urlWithParams:(nonnull NSMutableDictionary *)params
                       sendingParams:(NSDictionary *)sendingParams
                        responseData:(nonnull ADJResponseData *)responseData {
-    NSMutableDictionary * sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
+    NSMutableDictionary *sendingParamsCopy =  [NSMutableDictionary dictionaryWithDictionary:sendingParams];
 
-    NSString *attStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
+    // checking consent related parameters at the package creation moment
+    NSString *paramsAttStatusString = [responseData.sdkPackage.parameters objectForKey:@"att_status"];
+    int paramsAttStatusInt = (paramsAttStatusString != nil) ? paramsAttStatusString.intValue : -1;
     BOOL wasConsentWhenCreated = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
-                                                                   andAttStatus:attStatusString];
-    BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind];
-    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
+                                                                   andAttStatus:paramsAttStatusInt];
 
+    // checking consent related parameters at the package sending moment
+    int currentAttStatus = -1;
+    if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
+        currentAttStatus = [ADJUtil attStatus];
+    }
+    BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
+                                                                  andAttStatus:currentAttStatus];
+    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
     if (!doesConsentDataExist) {
         [ADJPackageBuilder removeConsentDataFromParameters:params];
     }
 
-    // if att_status was part of the payload at all
-    // make sure to have up to date value before sending
-    if (attStatusString != nil) {
-        [ADJPackageBuilder updateAttStatusInParameters:params];
+    // if att_status was part of the payload at all, make sure to have up to date value before sending
+    if (paramsAttStatusString != nil && currentAttStatus > -1) {
+        [ADJPackageBuilder updateAttStatus:currentAttStatus inParameters:params];
     }
 
     NSString *urlHostString =  [self.urlStrategy urlForActivityKind:responseData.activityKind
                                                      isConsentGiven:isConsentWhenSending
                                                   withSendingParams:sendingParamsCopy];
-
     responseData.sendingParameters = [[NSDictionary alloc]
                                       initWithDictionary:sendingParamsCopy
                                       copyItems:YES];
-
     return urlHostString;
 }
 

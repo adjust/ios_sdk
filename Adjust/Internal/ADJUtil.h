@@ -26,7 +26,7 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class)classToRead
+         classes:(NSSet<Class> *)allowedClasses
       syncObject:(id)syncObject;
 
 + (void)excludeFromBackup:(NSString *)filename;
@@ -141,10 +141,10 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
 
-+ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind;
++ (BOOL)isAppTrackingTransparencySupported;
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
-                                 andAttStatus:(NSString *)attStatusString;
+                                 andAttStatus:(int)attStatus;
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion;
 

@@ -31,7 +31,7 @@ static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *goLinkUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios5.1.1";
+static NSString * const kClientSdk                  = @"ios5.2.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -213,8 +213,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (id)readObject:(NSString *)fileName
       objectName:(NSString *)objectName
-           class:(Class)classToRead
+         classes:(NSSet<Class> *)allowedClasses
       syncObject:(id)syncObject {
+
 #if TARGET_OS_TV
     return nil;
 #else
@@ -223,104 +224,71 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         NSString *appSupportFilePath = [ADJUtil getFilePathInAppSupportDir:fileName];
 
         // Try to read from Application Support directory first.
-        @try {
-            id appSupportObject;
-            if (@available(iOS 11.0, tvOS 11.0, *)) {
-                NSData *data = [NSData dataWithContentsOfFile:appSupportFilePath];
-                // API introduced in iOS 11.
-                NSError *errorUnarchiver = nil;
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
-                                                                                            error:&errorUnarchiver];
-                if (errorUnarchiver == nil) {
-                    [unarchiver setRequiresSecureCoding:NO];
-                    appSupportObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
-                } else {
-                    // TODO: try to make this error fit the logging flow; if not, remove it
-                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
-                }
-            } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                // API_DEPRECATED [2.0-12.0]
-                // "Use +unarchivedObjectOfClass:fromData:error: instead"
-                appSupportObject = [NSKeyedUnarchiver unarchiveObjectWithFile:appSupportFilePath];
-#pragma clang diagnostic pop
-            }
-
-            if (appSupportObject != nil) {
-                if ([appSupportObject isKindOfClass:classToRead]) {
-                    // Successfully read object from Application Support folder, return it.
-                    if ([appSupportObject isKindOfClass:[NSArray class]]) {
-                        [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [appSupportObject count]];
-                    } else {
-                        [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, appSupportObject];
-                    }
-
-                    // Just in case check if old file exists in Documents folder and if yes, remove it.
-                    [ADJUtil deleteFileInPath:documentsFilePath];
-
-                    return appSupportObject;
-                }
-            } else {
-                // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", appSupportFilePath];
-                [[ADJAdjustFactory logger] debug:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
-            }
-        } @catch (NSException *ex) {
-            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file  (%@)", appSupportFilePath, ex];
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"Application Support/Adjust\" folder (%@)", fileName, ex];
-        }
-
-        // If in here, for some reason, reading of file from Application Support folder failed.
-        // Let's check the Documents folder.
-        @try {
-            id documentsObject;
-            if (@available(iOS 11.0, tvOS 11.0, *)) {
-                NSData *data = [NSData dataWithContentsOfFile:documentsFilePath];
-                // API introduced in iOS 11.
-                NSError *errorUnarchiver = nil;
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
-                                                                                            error:&errorUnarchiver];
-                if (errorUnarchiver == nil) {
-                    [unarchiver setRequiresSecureCoding:NO];
-                    documentsObject = [unarchiver decodeObjectOfClass:classToRead forKey:NSKeyedArchiveRootObjectKey];
-                } else {
-                    // TODO: try to make this error fit the logging flow; if not, remove it
-                    // [[ADJAdjustFactory logger] debug:@"Failed to read %@ with error: %@", objectName, errorUnarchiver.localizedDescription];
-                }
-            } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                // API_DEPRECATED [2.0-12.0]
-                // "Use +unarchivedObjectOfClass:fromData:error: instead"
-                documentsObject = [NSKeyedUnarchiver unarchiveObjectWithFile:documentsFilePath];
-#pragma clang diagnostic pop
-            }
-
-            if (documentsObject != nil) {
-                // Successfully read object from Documents folder.
-                if ([documentsObject isKindOfClass:[NSArray class]]) {
-                    [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [documentsObject count]];
-                } else {
-                    [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, documentsObject];
-                }
-
+        id resObject = [ADJUtil readObjectWithFileName:fileName
+                                            objectName:objectName
+                                        allowedClasses:allowedClasses
+                                                atPath:appSupportFilePath];
+        if (resObject != nil) {
+            // Just in case check if old file exists in Documents folder and if yes, remove it.
+            [ADJUtil deleteFileInPath:documentsFilePath];
+        } else {
+            // If in here, for some reason, reading of file from Application Support folder failed.
+            [[ADJAdjustFactory logger] debug:@"File %@ not found in \"Application Support/Adjust\" folder", fileName];
+            // Let's check the Documents folder.
+            resObject = [ADJUtil readObjectWithFileName:fileName
+                                             objectName:objectName
+                                         allowedClasses:allowedClasses
+                                                 atPath:documentsFilePath];
+            if (resObject) {
                 // Do the file migration.
                 [[ADJAdjustFactory logger] verbose:@"Migrating %@ file from Documents to \"Application Support/Adjust\" folder", fileName];
                 [ADJUtil migrateFileFromPath:documentsFilePath toPath:appSupportFilePath];
-
-                return documentsObject;
             } else {
-                // [[ADJAdjustFactory logger] error:@"Failed to read %@ file", documentsFilePath];
                 [[ADJAdjustFactory logger] debug:@"File %@ not found in Documents folder", fileName];
             }
-        } @catch (NSException *ex) {
-            // [[ADJAdjustFactory logger] error:@"Failed to read %@ file (%@)", documentsFilePath, ex];
-            [[ADJAdjustFactory logger] error:@"Failed to read %@ file from Documents folder (%@)", fileName, ex];
         }
 
-        return nil;
+        return resObject;
     }
 #endif
+}
+
++ (id)readObjectWithFileName:(NSString *)fileName
+                  objectName:(NSString *)objectName
+              allowedClasses:(NSSet<Class> *)allowedClasses
+                      atPath:(NSString *)filePath {
+
+    @try {
+        id resObject = nil;
+        NSError *error = nil;
+        NSData *data = [NSData dataWithContentsOfFile:filePath
+                                              options:0
+                                                error:&error];
+        if (data == nil || error != nil) {
+            return nil;
+        }
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data
+                                                                                    error:&error];
+        if (error != nil) {
+            return nil;
+        }
+        [unarchiver setRequiresSecureCoding:YES];
+        resObject = [unarchiver decodeObjectOfClasses:allowedClasses
+                                               forKey:NSKeyedArchiveRootObjectKey];
+        if (resObject == nil) {
+            return nil;
+        }
+        // Successfully read object from Application Support folder, return it.
+        if ([resObject isKindOfClass:[NSArray class]]) {
+            [[ADJAdjustFactory logger] debug:@"Package handler read %d packages", [resObject count]];
+        } else {
+            [[ADJAdjustFactory logger] debug:@"Read %@: %@", objectName, resObject];
+        }
+        return resObject;
+
+    } @catch (NSException *ex) {
+        [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"%@\" folder. Exception: (%@)", fileName, filePath, ex];
+    }
 }
 
 + (void)writeObject:(id)object
@@ -339,27 +307,17 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 return;
             }
 
-            if (@available(iOS 11.0, tvOS 11.0, *)) {
-                @autoreleasepool {
-                    NSError *errorArchiving = nil;
-                    // API introduced in iOS 11.
-                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:NO error:&errorArchiving];
-                    if (data && errorArchiving == nil) {
-                        NSError *errorWriting = nil;
-                        result = [data writeToFile:filePath options:NSDataWritingAtomic error:&errorWriting];
-                        result = result && (errorWriting == nil);
-                    } else {
-                        result = NO;
-                    }
+            @autoreleasepool {
+                NSError *error = nil;
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:YES error:&error];
+                if (data && error == nil) {
+                    result = [data writeToFile:filePath options:NSDataWritingAtomic error:&error];
+                    result = result && (error == nil);
+                } else {
+                    result = NO;
                 }
-            } else {
-                // API_DEPRECATED [2.0-12.0]
-                // Use +archivedDataWithRootObject:requiringSecureCoding:error: and -writeToURL:options:error: instead
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                result = [NSKeyedArchiver archiveRootObject:object toFile:filePath];
-#pragma clang diagnostic pop
             }
+
             if (result == YES) {
                 [ADJUtil excludeFromBackup:filePath];
                 if ([object isKindOfClass:[NSArray class]]) {
@@ -371,7 +329,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                 [[ADJAdjustFactory logger] error:@"Failed to write %@ file", objectName];
             }
         } @catch (NSException *exception) {
-            [[ADJAdjustFactory logger] error:@"Failed to write %@ file (%@)", objectName, exception];
+            [[ADJAdjustFactory logger] error:@"Failed to write %@ file. Exception: (%@)", objectName, exception];
         }
     }
 #endif
@@ -1470,32 +1428,22 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     return deepCopy;
 }
 
-+ (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind {
++ (BOOL)isAppTrackingTransparencySupported {
     if (@available(iOS 14.0, tvOS 14.0, *)) {
-        if (activityKind == ADJActivityKindGdpr ||
-            activityKind == ADJActivityKindSubscription ||
-            activityKind == ADJActivityKindPurchaseVerification) {
-            return NO;
-        }
-
-        int attStatus = [ADJUtil attStatus];
-        return attStatus == 3;
-    } else {
-        // if iOS lower than 14 can assume consent
         return YES;
     }
+    return NO;
 }
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
-                                 andAttStatus:(nullable NSString *)attStatusString {
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
+                                 andAttStatus:(int)attStatus {
+    if ([self isAppTrackingTransparencySupported]) {
         if (activityKind == ADJActivityKindGdpr ||
             activityKind == ADJActivityKindSubscription ||
             activityKind == ADJActivityKindPurchaseVerification) {
             return NO;
         }
-
-        return [@"3" isEqualToString:attStatusString];
+        return (attStatus == 3);
     } else {
         // if iOS lower than 14 can assume consent
         return YES;
@@ -1507,9 +1455,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                         block:^{
             [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+            NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
             ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
                                                        objectName:@"Activity state"
-                                                            class:[ADJActivityState class]
+                                                          classes:allowedClasses
                                                        syncObject:[ADJActivityState class]];
             if (activityState == nil) {
                 completion(YES);

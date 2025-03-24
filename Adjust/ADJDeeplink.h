@@ -10,8 +10,29 @@
 
 @interface ADJDeeplink : NSObject
 
+/**
+ * @brief Deeplink value.
+ */
 @property (nonatomic, copy, readonly, nonnull) NSURL *deeplink;
 
+/**
+ * @brief Referrer value.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSURL *referrer;
+
+/**
+ * @brief Initializes a Deeplink object with the provided deeplink URL.
+ *
+ * @param deeplink The URL representing the deeplink.
+ * @return An instance of ADJDeeplink, or nil if initialization fails.
+ */
 - (nullable ADJDeeplink *)initWithDeeplink:(nonnull NSURL *)deeplink;
+
+/**
+ * @brief Sets the referrer URL for the Deeplink object.
+ *
+ * @param referrer The URL that refers the user to the deeplink, typically from an organic search.
+ */
+- (void)setReferrer:(nonnull NSURL *)referrer;
 
 @end

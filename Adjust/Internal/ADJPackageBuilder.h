@@ -20,13 +20,13 @@
 
 @property (nonatomic, copy) NSString * _Nullable deeplink;
 
+@property (nonatomic, copy) NSString * _Nullable referrer;
+
 @property (nonatomic, copy) NSString * _Nullable reftag;
 
 @property (nonatomic, copy) NSDate * _Nullable clickTime;
 
 @property (nonatomic, copy) NSDate * _Nullable purchaseTime;
-
-@property (nonatomic, strong) NSDictionary * _Nullable attributionDetails;
 
 @property (nonatomic, strong) NSDictionary * _Nullable deeplinkParameters;
 
@@ -100,14 +100,18 @@ setNumberWithoutRounding:(NSNumber * _Nullable)value
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
-                     withAttStatus:(NSString * _Nullable)attStatusString
+                     withAttStatus:(int)attStatus
                      configuration:(ADJConfig * _Nullable)adjConfig
                      packageParams:(ADJPackageParams * _Nullable)packageParams
                      activityState:(ADJActivityState *_Nullable)activityState;
 
 + (void)removeConsentDataFromParameters:(nonnull NSMutableDictionary *)parameters;
 
-+ (void)updateAttStatusInParameters:(nonnull NSMutableDictionary *)parameters;
++ (void)updateAttStatus:(int)attStatus
+           inParameters:(nonnull NSMutableDictionary *)parameters;
+
++ (void)removeAttStatusFromParameters:(nonnull NSMutableDictionary *)parameters;
+
 
 @end
 // TODO change to ADJ...

@@ -236,7 +236,8 @@ startsSending:(BOOL)startsSending
     selfI.requestHandler = [[ADJRequestHandler alloc]
                             initWithResponseCallback:self
                             urlStrategy:urlStrategy
-                            requestTimeout:[ADJAdjustFactory requestTimeout]];
+                            requestTimeout:[ADJAdjustFactory requestTimeout]
+                            adjustConfiguration:activityHandler.adjustConfig];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];
@@ -288,9 +289,6 @@ startsSending:(BOOL)startsSending
                                setInt:(int)queueSize - 1
                                forKey:@"queue_size"];
     }
-    [ADJPackageBuilder parameters:sendingParameters
-                        setString:[ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
-                           forKey:@"sent_at"];
 
     [ADJPackageBuilder parameters:sendingParameters
                            setInt:(int)activityPackage.errorCount
@@ -362,10 +360,9 @@ startsSending:(BOOL)startsSending
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
         [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
-
         [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
                                       forActivityKind:activityPackage.activityKind
-                                        withAttStatus:[activityPackage.parameters objectForKey:@"att_status"]
+                                        withAttStatus:attStatus
                                         configuration:selfI.activityHandler.adjustConfig
                                         packageParams:selfI.activityHandler.packageParams
                                         activityState:selfI.activityHandler.activityState];
@@ -386,18 +383,16 @@ startsSending:(BOOL)startsSending
 #pragma mark - private
 - (void)readPackageQueueI:(ADJPackageHandler *)selfI {
     [NSKeyedUnarchiver setClass:[ADJActivityPackage class] forClassName:@"AIActivityPackage"];
-    
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSArray class], [ADJActivityPackage class], nil];
     id object = [ADJUtil readObject:kPackageQueueFilename
                          objectName:@"Package queue"
-                              class:[NSArray class]
+                            classes:allowedClasses
                          syncObject:[ADJPackageHandler class]];
-    
     if (object != nil) {
         selfI.packageQueue = object;
     } else {
         selfI.packageQueue = [NSMutableArray array];
     }
-
 }
 
 - (void)writePackageQueueS:(ADJPackageHandler *)selfS {

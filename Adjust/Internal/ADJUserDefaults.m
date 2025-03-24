@@ -13,6 +13,7 @@ static NSString * const PREFS_KEY_PUSH_TOKEN_STRING = @"adj_push_token_string";
 static NSString * const PREFS_KEY_GDPR_FORGET_ME = @"adj_gdpr_forget_me";
 static NSString * const PREFS_KEY_INSTALL_TRACKED = @"adj_install_tracked";
 static NSString * const PREFS_KEY_DEEPLINK_URL = @"adj_deeplink_url";
+static NSString * const PREFS_KEY_DEEPLINK_REFERRER = @"adj_deeplink_referrer";
 static NSString * const PREFS_KEY_DEEPLINK_CLICK_TIME = @"adj_deeplink_click_time";
 static NSString * const PREFS_KEY_ADSERVICES_TRACKED = @"adj_adservices_tracked";
 static NSString * const PREFS_KEY_SKAD_REGISTER_CALL_TIME = @"adj_skad_register_call_time";
@@ -67,14 +68,19 @@ static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
 }
 
-+ (void)saveDeeplinkUrl:(NSURL *)deeplink
-              clickTime:(NSDate *)clickTime {
-    [[NSUserDefaults standardUserDefaults] setURL:deeplink forKey:PREFS_KEY_DEEPLINK_URL];
++ (void)saveDeeplink:(ADJDeeplink *)deeplink
+           clickTime:(NSDate *)clickTime {
+    [[NSUserDefaults standardUserDefaults] setURL:deeplink.deeplink forKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] setURL:deeplink.referrer forKey:PREFS_KEY_DEEPLINK_REFERRER];
     [[NSUserDefaults standardUserDefaults] setObject:clickTime forKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
 + (NSURL *)getDeeplinkUrl {
     return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK_URL];
+}
+
++ (NSURL *)getDeeplinkReferrer {
+    return [[NSUserDefaults standardUserDefaults] URLForKey:PREFS_KEY_DEEPLINK_REFERRER];
 }
 
 + (NSDate *)getDeeplinkClickTime {
@@ -83,6 +89,7 @@ static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update
 
 + (void)removeDeeplink {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_REFERRER];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
 }
 
@@ -158,6 +165,7 @@ static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_INSTALL_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GDPR_FORGET_ME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_URL];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_REFERRER];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_DEEPLINK_CLICK_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];

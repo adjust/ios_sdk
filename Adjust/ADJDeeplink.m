@@ -16,9 +16,15 @@
         return nil;
     }
 
-    _deeplink = deeplink;
+    _deeplink = [deeplink copy];
 
     return self;
+}
+
+- (void)setReferrer:(nonnull NSURL *)referrer {
+    @synchronized (self) {
+        _referrer = [referrer copy];
+    }
 }
 
 @end

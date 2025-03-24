@@ -42,7 +42,8 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     self.requestHandler = [[ADJRequestHandler alloc]
                                 initWithResponseCallback:self
                                 urlStrategy:urlStrategy
-                                requestTimeout:[ADJAdjustFactory requestTimeout]];
+                                requestTimeout:[ADJAdjustFactory requestTimeout]
+                           adjustConfiguration:activityHandler.adjustConfig];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.paused = !startsSending;
@@ -195,12 +196,8 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
 
     [selfI.logger verbose:@"%@", attributionPackage.extendedString];
 
-    NSDictionary *sendingParameters = @{
-        @"sent_at": [ADJUtil formatSeconds1970:[NSDate.date timeIntervalSince1970]]
-    };
-
     [selfI.requestHandler sendPackageByGET:attributionPackage
-                        sendingParameters:sendingParameters];
+                         sendingParameters:nil];
 }
 
 - (void)responseCallback:(ADJResponseData *)responseData {

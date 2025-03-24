@@ -1,3 +1,12 @@
+
+### Version 5.2.0 (24th March 2025)
+#### Added
+- Added ability to send organic search referrer together with deep link.
+- Added ability to disable SDK's interaction with `AppTrackingTransparency.framework` API.
+- Added support for `NSSecureCoding` protocol.
+
+---
+
 ### Version 5.1.1 (25th February 2025)
 #### Changed
 - Syncrhonized resuming and pausing in all the handlers (internal changes).

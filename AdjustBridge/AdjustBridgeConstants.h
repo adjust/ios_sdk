@@ -68,6 +68,7 @@ FOUNDATION_EXPORT NSString * const ADJWBUseSubdomainsConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsDataResidencyConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBFbPixelDefaultEventTokenConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBFbPixelMappingConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey;
 
 FOUNDATION_EXPORT NSString * const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBEventSuccessCallbackConfigKey;

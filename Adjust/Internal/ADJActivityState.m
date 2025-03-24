@@ -16,6 +16,10 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 
 @implementation ADJActivityState
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 #pragma mark - Object lifecycle methods
 
 - (id)init {
@@ -138,14 +142,15 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     
     // Default values for migrating devices.
     if ([decoder containsValueForKey:@"uuid"]) {
-        [self assignRandomToken:[decoder decodeObjectForKey:@"uuid"]];
+        [self assignRandomToken:[decoder decodeObjectOfClass:[NSString class] forKey:@"uuid"]];
     }
     if (self.dedupeToken == nil) {
         [self assignRandomToken:[ADJUtil generateRandomUuid]];
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
-        self.eventDeduplicationIds = [decoder decodeObjectForKey:@"transactionIds"];
+        NSSet *allowedClasses = [NSSet setWithObjects:[NSArray class], [NSString class], nil];
+        self.eventDeduplicationIds = [decoder decodeObjectOfClasses:allowedClasses forKey:@"transactionIds"];
     }
 
     if (self.eventDeduplicationIds == nil) {
@@ -181,7 +186,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     if ([decoder containsValueForKey:@"deviceToken"]) {
-        self.pushToken = [decoder decodeObjectForKey:@"deviceToken"];
+        self.pushToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"deviceToken"];
     }
 
     if ([decoder containsValueForKey:@"updatePackagesAttData"]) {
@@ -191,11 +196,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     if ([decoder containsValueForKey:@"adid"]) {
-        self.adid = [decoder decodeObjectForKey:@"adid"];
-    }
-
-    if ([decoder containsValueForKey:@"attributionDetails"]) {
-        self.attributionDetails = [decoder decodeObjectForKey:@"attributionDetails"];
+        self.adid = [decoder decodeObjectOfClass:[NSString class] forKey:@"adid"];
     }
 
     if ([decoder containsValueForKey:@"trackingManagerAuthorizationStatus"]) {
@@ -226,7 +227,6 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     [encoder encodeObject:self.pushToken forKey:@"deviceToken"];
     [encoder encodeBool:self.updatePackagesAttData forKey:@"updatePackagesAttData"];
     [encoder encodeObject:self.adid forKey:@"adid"];
-    [encoder encodeObject:self.attributionDetails forKey:@"attributionDetails"];
     [encoder encodeInt:self.trackingManagerAuthorizationStatus
                    forKey:@"trackingManagerAuthorizationStatus"];
 }
@@ -257,5 +257,4 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     
     return copy;
 }
-
 @end

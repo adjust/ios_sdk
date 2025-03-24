@@ -157,6 +157,10 @@ const BOOL kSkanRegisterLockWindow = NO;
          adjustConfig.attConsentWaitingInterval];
     }
 
+    if (adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
+        [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
+    }
+
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
@@ -370,10 +374,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
-                         [selfI processDeeplinkI:selfI
-                                             url:deeplink.deeplink
-                                       clickTime:clickTime];
-                     }];
+        [selfI processDeeplinkI:selfI
+                       deeplink:deeplink
+                      clickTime:clickTime];
+    }];
 }
 
 - (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
@@ -384,7 +388,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                      block:^(ADJActivityHandler * selfI) {
         selfI.cachedDeeplinkResolutionCallback = completion;
         [selfI processDeeplinkI:selfI
-                            url:deeplink.deeplink
+                       deeplink:deeplink
                       clickTime:clickTime];
     }];
 }
@@ -876,7 +880,7 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
     }
 
     [selfI checkLinkMeI:selfI];
-    [selfI.trackingStatusManager checkForNewAttStatus];
+    [selfI.trackingStatusManager updateAndTrackAttStatus];
 
     [selfI preLaunchActionsI:selfI
        preLaunchActionsArray:preLaunchActions.preLaunchActionsArray];
@@ -1125,8 +1129,9 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
 }
 
 - (void)processCachedDeeplinkI:(ADJActivityHandler *)selfI {
-    if (![selfI checkActivityStateI:selfI]) return;
-
+    if (![selfI checkActivityStateI:selfI]) {
+        return;
+    }
     NSURL *cachedDeeplinkUrl = [ADJUserDefaults getDeeplinkUrl];
     if (cachedDeeplinkUrl == nil) {
         return;
@@ -1136,8 +1141,14 @@ preLaunchActions:(ADJSavedPreLaunch*)preLaunchActions
         return;
     }
 
-    [selfI processDeeplinkI:selfI 
-                        url:cachedDeeplinkUrl
+    NSURL *cachedDeeplinkReferrer = [ADJUserDefaults getDeeplinkReferrer];
+    ADJDeeplink *deeplink = [[ADJDeeplink alloc] initWithDeeplink:cachedDeeplinkUrl];
+    if (cachedDeeplinkReferrer != nil) {
+        [deeplink setReferrer:cachedDeeplinkReferrer];
+    }
+
+    [selfI processDeeplinkI:selfI
+                   deeplink:deeplink
                   clickTime:cachedDeeplinkClickTime];
     [ADJUserDefaults removeDeeplink];
 }
@@ -1863,7 +1874,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)processDeeplinkI:(ADJActivityHandler *)selfI
-                     url:(NSURL *)deeplink
+                deeplink:(ADJDeeplink *)deeplink
                clickTime:(NSDate *)clickTime {
     if (![selfI isEnabledI:selfI]) {
         return;
@@ -1871,11 +1882,11 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     if ([ADJUtil isNull:deeplink]) {
         return;
     }
-    if (![ADJUtil isDeeplinkValid:deeplink]) {
+    if (![ADJUtil isDeeplinkValid:deeplink.deeplink]) {
         return;
     }
 
-    NSArray *queryArray = [deeplink.query componentsSeparatedByString:@"&"];
+    NSArray *queryArray = [deeplink.deeplink.query componentsSeparatedByString:@"&"];
     if (queryArray == nil) {
         queryArray = @[];
     }
@@ -1906,7 +1917,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
     clickBuilder.clickTime = clickTime;
-    clickBuilder.deeplink = [deeplink absoluteString];
+    clickBuilder.deeplink = [deeplink.deeplink absoluteString];
+    clickBuilder.referrer = [deeplink.referrer absoluteString];
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
@@ -2270,17 +2282,19 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
         [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
         self.activityState = [ADJUtil readObject:kActivityStateFilename
                                       objectName:@"Activity state"
-                                           class:[ADJActivityState class]
+                                         classes:allowedClasses
                                       syncObject:[ADJActivityState class]];
     }];
 }
 
 - (void)readAttribution {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJAttribution class], nil];
     self.attribution = [ADJUtil readObject:kAttributionFilename
                                 objectName:@"Attribution"
-                                     class:[ADJAttribution class]
+                                   classes:allowedClasses
                                 syncObject:[ADJAttribution class]];
 }
 
@@ -2320,16 +2334,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
     selfI.globalParameters.callbackParameters = [ADJUtil readObject:kGlobalCallbackParametersFilename
                                                          objectName:@"Global Callback parameters"
-                                                              class:[NSDictionary class]
+                                                            classes:allowedClasses
                                                          syncObject:[ADJGlobalParameters class]];
 }
 
 - (void)readGlobalPartnerParametersI:(ADJActivityHandler *)selfI {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
     selfI.globalParameters.partnerParameters = [ADJUtil readObject:kGlobalPartnerParametersFilename
                                                         objectName:@"Global Partner parameters"
-                                                             class:[NSDictionary class]
+                                                           classes:allowedClasses
                                                         syncObject:[ADJGlobalParameters class]];
 }
 
@@ -2442,7 +2458,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         [selfI writeActivityStateI:selfI];
     }
 
-    [selfI.trackingStatusManager checkForNewAttStatus];
+    [selfI.trackingStatusManager updateAndTrackAttStatus];
 }
 
 - (void)startBackgroundTimerI:(ADJActivityHandler *)selfI {
@@ -2503,9 +2519,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
-    // update activity packages
-    int attStatus = [ADJUtil attStatus];
-    if (attStatus != 0) {
+
+    // Only in case ATT status is accessible (ADJConfig's isAppTrackingTransparencyUsageEnabled)
+    // and not ATTrackingManagerAuthorizationStatusNotDetermined (0), update it in packages.
+    int attStatus = [selfI.trackingStatusManager attStatus];
+    if (attStatus > 0) {
         [selfI.packageHandler updatePackagesWithAttStatus:attStatus];
         [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus];
         [selfI.purchaseVerificationHandler updatePackagesWithAttStatus:attStatus];
@@ -2774,8 +2792,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }];
 }
 
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self.trackingStatusManager updateAttStatusFromUserCallback:newAttStatusFromUser];
+- (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser {
+    [self.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
 }
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
@@ -2875,63 +2893,29 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
     return self;
 }
+
 // public api
-- (BOOL)canGetAttStatus {
-    if (@available(iOS 14.0, tvOS 14.0, *)) {
-        return YES;
-    }
-    return NO;
+- (BOOL)isAttSupported {
+    return [ADJUtil isAppTrackingTransparencySupported];
 }
 
-- (BOOL)trackingEnabled {
+- (BOOL)isTrackingEnabled {
     return [ADJUtil trackingEnabled];
 }
 
-- (int)attStatus {
-    int readAttStatus = [ADJUtil attStatus];
-    [self updateAttStatus:readAttStatus];
-    return readAttStatus;
+- (int)updateAndGetAttStatus {
+    int attStatus = [self attStatus];
+    [self updateAttStatus:attStatus];
+    return attStatus;
 }
 
-- (void)checkForNewAttStatus {
-    int readAttStatus = [ADJUtil attStatus];
-    [self updateAttStatusWithStatus:readAttStatus];
+- (void)updateAndTrackAttStatus {
+    [self updateAndTrackAttStatusWithStatus:[self attStatus]];
 }
 
-- (void)updateAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self updateAttStatusWithStatus:newAttStatusFromUser];
+- (void)updateAndTrackAttStatusFromUserCallback:(int)attStatusFromUser {
+    [self updateAndTrackAttStatusWithStatus:attStatusFromUser];
 }
-
-- (void)updateAttStatusWithStatus:(int)status {
-    BOOL statusHasBeenUpdated = [self updateAttStatus:status];
-    if (statusHasBeenUpdated) {
-        [self.activityHandler trackAttStatusUpdate];
-    }
-}
-
-// internal methods
-- (BOOL)updateAttStatus:(int)readAttStatus {
-    if (readAttStatus < 0) {
-        return NO;
-    }
-
-    if (self.activityHandler == nil || self.activityHandler.activityState == nil) {
-        return NO;
-    }
-
-    if (readAttStatus == self.activityHandler.activityState.trackingManagerAuthorizationStatus) {
-        return NO;
-    }
-
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        self.activityHandler.activityState.trackingManagerAuthorizationStatus = readAttStatus;
-    }];
-    [self.activityHandler writeActivityState];
-
-    return YES;
-}
-
 
 - (void)setAppInActiveState:(BOOL)activeState {
     dispatch_async(self.waitingForAttQueue, ^{
@@ -2947,14 +2931,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (BOOL)shouldWaitForAttStatus {
-    if (![self canGetAttStatus]) {
+    if (![ADJUtil isAppTrackingTransparencySupported]) {
         return NO;
     }
 
     // check current ATT status
-    int attStatus = [ADJUtil attStatus];
-
-    // return if the status is not ATTrackingManagerAuthorizationStatusNotDetermined
+    int attStatus = [self attStatus];
+    // if attStatus is !=0 means:
+    // - consent changed from ATTrackingManagerAuthorizationStatusNotDetermined ( attStatus > 0 )
+    // or
+    // - App Tracking Transparency framework usage is disabled ( attStatus == -1 )
+    // In these cases:
+    // 1. NO returned
+    // 2. ATT Waiting related stuff is removed from UserDefaults as irrelevant.
     if (attStatus != 0) {
         // Delete att_waiting_seconds key from UserDefaults.
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
@@ -2995,6 +2984,44 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return YES;
 }
 
+// internal methods
+- (int)attStatus {
+    int attStatus = -1;
+    if (self.activityHandler.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
+        attStatus = [ADJUtil attStatus];
+    }
+    return attStatus;
+}
+
+- (void)updateAndTrackAttStatusWithStatus:(int)status {
+    BOOL statusHasBeenUpdated = [self updateAttStatus:status];
+    if (statusHasBeenUpdated) {
+        [self.activityHandler trackAttStatusUpdate];
+    }
+}
+
+- (BOOL)updateAttStatus:(int)readAttStatus {
+    if (readAttStatus < 0) {
+        return NO;
+    }
+
+    if (self.activityHandler.activityState == nil) {
+        return NO;
+    }
+
+    if (readAttStatus == self.activityHandler.activityState.trackingManagerAuthorizationStatus) {
+        return NO;
+    }
+
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        self.activityHandler.activityState.trackingManagerAuthorizationStatus = readAttStatus;
+    }];
+    [self.activityHandler writeActivityState];
+
+    return YES;
+}
+
 - (void)startWaitingForAttStatus {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), self.waitingForAttQueue, ^{
         [self checkAttStatusPeriodic];
@@ -3005,10 +3032,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if (!self.activeState) {
         return;
     }
+
     // check current ATT status
-    int attStatus = [ADJUtil attStatus];
+    int attStatus = [self attStatus];
     if (attStatus != 0) {
-        [self.activityHandler.logger info:@"ATT consent status udated to: %d", attStatus];
+        [self.activityHandler.logger info:@"ATT consent status updated to: %d", attStatus];
         [ADJUserDefaults removeAttWaitingRemainingSeconds];
         [self.activityHandler resumeActivityFromWaitingForAttStatus];
         return;

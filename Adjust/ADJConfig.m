@@ -63,6 +63,7 @@
     _isDeviceIdsReadingOnceEnabled = NO;
     _isCostDataInAttributionEnabled = NO;
     _isCoppaComplianceEnabled = NO;
+    _isAppTrackingTransparencyUsageEnabled = YES;
 
     return self;
 }
@@ -111,6 +112,10 @@
 
 - (void)enableCoppaCompliance {
     _isCoppaComplianceEnabled = YES;
+}
+
+- (void)disableAppTrackingTransparencyUsage {
+    _isAppTrackingTransparencyUsageEnabled = NO;
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
@@ -235,6 +240,7 @@
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
+        copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         // AdjustDelegate not copied
     }
 

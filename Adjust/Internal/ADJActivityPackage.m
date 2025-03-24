@@ -12,6 +12,9 @@
 @implementation ADJActivityPackage
 
 #pragma mark - Public methods
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 - (NSString *)extendedString {
     NSMutableString *builder = [NSMutableString string];
@@ -30,7 +33,7 @@
         NSUInteger keyCount = [sortedKeys count];
 
         [builder appendFormat:@"Parameters:"];
-        
+
         for (NSUInteger i = 0; i < keyCount; i++) {
             NSString *key = (NSString *)[sortedKeys objectAtIndex:i];
 
@@ -39,7 +42,7 @@
             }
 
             NSString *value = [self.parameters objectForKey:key];
-            
+
             [builder appendFormat:@"\n\t\t%-22s %@", [key UTF8String], value];
         }
     }
@@ -78,24 +81,27 @@
         return self;
     }
 
-    self.path = [decoder decodeObjectForKey:@"path"];
-    self.suffix = [decoder decodeObjectForKey:@"suffix"];
-    self.clientSdk = [decoder decodeObjectForKey:@"clientSdk"];
-    self.parameters = [decoder decodeObjectForKey:@"parameters"];
-    self.partnerParameters = [decoder decodeObjectForKey:@"partnerParameters"];
-    self.callbackParameters = [decoder decodeObjectForKey:@"callbackParameters"];
+    self.path = [decoder decodeObjectOfClass:[NSString class] forKey:@"path"];
+    self.suffix = [decoder decodeObjectOfClass:[NSString class] forKey:@"suffix"];
+    self.clientSdk = [decoder decodeObjectOfClass:[NSString class] forKey:@"clientSdk"];
 
-    NSString *kindString = [decoder decodeObjectForKey:@"kind"];
+    NSSet *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
+    self.parameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"parameters"];
+    self.partnerParameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"partnerParameters"];
+    self.callbackParameters = [decoder decodeObjectOfClasses:allowedClasses forKey:@"callbackParameters"];
+
+    NSString *kindString = [decoder decodeObjectOfClass:[NSString class] forKey:@"kind"];
     self.activityKind = [ADJActivityKindUtil activityKindFromString:kindString];
 
-    id errorCountObject = [decoder decodeObjectForKey:@"errorCount"];
-    if (errorCountObject != nil && [errorCountObject isKindOfClass:[NSNumber class]]) {
+    id errorCountObject = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"errorCount"];
+    if (errorCountObject != nil) {
         self.errorCount = ((NSNumber *)errorCountObject).unsignedIntegerValue;
     }
-    self.firstErrorCode = [decoder decodeObjectForKey:@"firstErrorCode"];
-    self.lastErrorCode = [decoder decodeObjectForKey:@"lastErrorCode"];
-    id waitBeforeSendObject = [decoder decodeObjectForKey:@"waitBeforeSend"];
-    if (waitBeforeSendObject != nil && [waitBeforeSendObject isKindOfClass:[NSNumber class]]) {
+    self.firstErrorCode = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"firstErrorCode"];
+    self.lastErrorCode = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"lastErrorCode"];
+
+    id waitBeforeSendObject = [decoder decodeObjectOfClass:[NSNumber class] forKey:@"waitBeforeSend"];
+    if (waitBeforeSendObject != nil) {
         self.waitBeforeSend = ((NSNumber *)waitBeforeSendObject).doubleValue;
     }
 
