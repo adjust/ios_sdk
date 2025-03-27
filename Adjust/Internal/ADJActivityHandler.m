@@ -256,13 +256,13 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (void)applicationDidBecomeActive {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI handleAppForegroundI:selfI];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)applicationWillResignActive {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI handleAppBackgroundI:selfI];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)trackEvent:(ADJEvent *)event {
@@ -272,7 +272,7 @@ const BOOL kSkanRegisterLockWindow = NO;
             [selfI startI:selfI];
         }
         [selfI eventI:selfI event:event];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
@@ -347,19 +347,19 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (void)setEnabled:(BOOL)enabled {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI setEnabledI:selfI enabled:enabled];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI setOfflineModeI:selfI offline:offline];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI isEnabledI:selfI withCompletionHandler:completion];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (BOOL)isGdprForgotten {
@@ -369,7 +369,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (void)processDeeplink:(ADJDeeplink *)deeplink withClickTime:(NSDate *)clickTime {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI processDeeplinkI:selfI deeplink:deeplink clickTime:clickTime];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
@@ -380,25 +380,25 @@ const BOOL kSkanRegisterLockWindow = NO;
         [selfI processDeeplinkI:selfI
                        deeplink:deeplink
                       clickTime:clickTime];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)setPushTokenData:(NSData *)pushTokenData {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI setPushTokenI:selfI pushTokenData:pushTokenData];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)setPushTokenString:(NSString *)pushTokenString {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI setPushTokenI:selfI pushTokenString:pushTokenString];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)setGdprForgetMe {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI setGdprForgetMeI:selfI];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)setTrackingStateOptedOut {
@@ -506,71 +506,71 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)addGlobalCallbackParameter:(NSString *)param
                             forKey:(NSString *)key {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)addGlobalPartnerParameter:(NSString *)param
                            forKey:(NSString *)key {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)removeGlobalCallbackParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParameterI:selfI forKey:key];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)removeGlobalPartnerParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParameterI:selfI forKey:key];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)removeGlobalCallbackParameters {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParametersI:selfI];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)removeGlobalPartnerParameters {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParametersI:selfI];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAppStoreSubscriptionI:selfI subscription:subscription];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackThirdPartySharingI:thirdPartySharing];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
-    [self.firstSessionDelayManager preLaunchActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackMeasurementConsentI:enabled];
-    }];
+    } isPreLaunch:YES];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAdRevenueI:selfI adRevenue:adRevenue];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAppStorePurchaseI:selfI purchase:purchase withCompletionHandler:completion];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
@@ -620,7 +620,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAndTrackAppStorePurchaseI:selfI event:event withCompletionHandler:completion];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)writeActivityState {
@@ -2742,7 +2742,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 - (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser {
     [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
         [selfI.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
-    }];
+    } isPreLaunch:NO];
 }
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
@@ -2955,40 +2955,19 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     strongActivityHandler.adjustConfig.externalDeviceId = externalDeviceId;
 }
 
-- (void)apiActionWithBlock:(selfInjectedBlock)block {
+- (void)apiActionWithBlock:(selfInjectedBlock)block
+               isPreLaunch:(BOOL)isPreLaunch {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
         return;
     }
 
     if ([@"started" isEqualToString:self.delayStatus]) {
-        [self.apiActions addObject:block];
-    } else if (_isWaitingForMainThread) {
-        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                    selfInject:strongActivityHandler
-                         block:^(ADJActivityHandler *activityHandler)
-         {
-            if (self->_isWaitingForMainThread) {
-                [self.apiActions addObject:block];
-            } else {
-                block(activityHandler);
-            }
-        }];
-    } else {
-        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                    selfInject:strongActivityHandler
-                         block:block];
-    }
-}
-
-- (void)preLaunchActionWithBlock:(selfInjectedBlock)block {
-    ADJActivityHandler *strongActivityHandler = self.activityHandler;
-    if (strongActivityHandler == nil) {
-        return;
-    }
-
-    if ([@"started" isEqualToString:self.delayStatus]) {
-        [strongActivityHandler.savedPreLaunch.preLaunchActionsArray addObject:block];
+        if (isPreLaunch) {
+            [strongActivityHandler.savedPreLaunch.preLaunchActionsArray addObject:block];
+        } else {
+            [self.apiActions addObject:block];
+        }
     } else if (_isWaitingForMainThread) {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
