@@ -320,6 +320,9 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
+/**
+ * @brief End the first session delay that can be configured on ADJConfig instance.
+ */
 + (void)endFirstSessionDelay;
 
 /**
