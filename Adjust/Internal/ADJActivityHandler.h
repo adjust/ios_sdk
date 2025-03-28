@@ -119,7 +119,7 @@
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result;
 
-- (void)stopFirstSessionDelay;
+- (void)endFirstSessionDelay;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
@@ -158,7 +158,7 @@
 
 - (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
 
-- (void)stopFirstSessionDelay;
+- (void)endFirstSessionDelay;
 - (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;

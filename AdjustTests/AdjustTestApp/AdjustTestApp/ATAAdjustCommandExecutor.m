@@ -103,8 +103,8 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
-    } else if ([methodName isEqualToString:@"stopFirstSessionDelay"]) {
-        [self stopFirstSessionDelay:parameters];
+    } else if ([methodName isEqualToString:@"endFirstSessionDelay"]) {
+        [self endFirstSessionDelay:parameters];
     } else if ([methodName isEqualToString:@"coppaComplianceInDelay"]) {
         [self coppaComplianceInDelay:parameters];
     } else if ([methodName isEqualToString:@"externalDeviceIdInDelay"]) {
@@ -857,8 +857,8 @@
 }
 
 
-- (void)stopFirstSessionDelay:(NSDictionary *)parameters {
-    [Adjust stopFirstSessionDelay];
+- (void)endFirstSessionDelay:(NSDictionary *)parameters {
+    [Adjust endFirstSessionDelay];
 }
 
 - (void)coppaComplianceInDelay:(NSDictionary *)parameters {

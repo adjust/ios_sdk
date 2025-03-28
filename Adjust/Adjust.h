@@ -320,7 +320,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 
-+ (void)stopFirstSessionDelay;
++ (void)endFirstSessionDelay;
 
 /**
  * Obtain singleton Adjust object.

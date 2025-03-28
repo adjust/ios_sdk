@@ -2820,8 +2820,8 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     }
 }
 
-- (void)stopFirstSessionDelay {
-    [self.firstSessionDelayManager stopFirstSessionDelay];
+- (void)endFirstSessionDelay {
+    [self.firstSessionDelayManager endFirstSessionDelay];
 }
 
 @end
@@ -2862,7 +2862,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     return self;
 }
 
-- (void)stopFirstSessionDelay {
+- (void)endFirstSessionDelay {
     if (! [@"started" isEqualToString:self.delayStatus]) {
         return;
     }

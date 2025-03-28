@@ -308,9 +308,9 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)stopFirstSessionDelay {
++ (void)endFirstSessionDelay {
     @synchronized (self) {
-        [[Adjust getInstance] stopFirstSessionDelay];
+        [[Adjust getInstance] endFirstSessionDelay];
     }
 }
 
@@ -778,12 +778,12 @@ static dispatch_once_t onceToken = 0;
     [self.activityHandler verifyAndTrackAppStorePurchase:event withCompletionHandler:completion];
 }
 
-- (void)stopFirstSessionDelay {
+- (void)endFirstSessionDelay {
     if (![self checkActivityHandler]) {
         return;
     }
 
-    [self.activityHandler stopFirstSessionDelay];
+    [self.activityHandler endFirstSessionDelay];
 }
 
 - (void)teardown {
