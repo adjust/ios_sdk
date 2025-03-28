@@ -2915,7 +2915,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
             [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                         selfInject:strongActivityHandler
                              block:^(ADJActivityHandler * selfI)
-            {
+             {
                 self->_isWaitingForMainThread = NO;
 
                 initBlock(selfI, isInactive);
@@ -2928,6 +2928,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
         return;
     }
+}
 
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
