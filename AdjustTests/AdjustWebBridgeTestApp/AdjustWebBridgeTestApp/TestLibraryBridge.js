@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.86.82:8080';
-var controlUrl = 'ws://192.168.86.82:1987';
+var urlOverwrite = 'http://192.168.86.187:8080';
+var controlUrl = 'ws://192.168.86.187:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -324,6 +324,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var allowaAttUsage = allowaAttUsageS == 'true';
         if (allowaAttUsage == false) {
             adjustConfig.disableAppTrackingTransparencyUsage();
+        }
+    }
+    
+    if ('firstSessionDelayEnabled' in params) {
+        var firstSessionDelayEnabledS = getFirstValue(params, 'firstSessionDelayEnabled');
+        var firstSessionDelayEnabled = firstSessionDelayEnabledS == 'true';
+        if (firstSessionDelayEnabled == true) {
+            adjustConfig.enableFirstSessionDelay();
         }
     }
 
@@ -670,6 +678,27 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         sendInfoToServer(extraPath);
     });
 }
+
+AdjustCommandExecutor.prototype.endFirstSessionDelay = function(params) {
+    Adjust.endFirstSessionDelay();
+};
+
+AdjustCommandExecutor.prototype.coppaComplianceInDelay = function(params) {
+    var coppaCompliantS = getFirstValue(params, 'isEnabled');
+    var coppaCompliant = coppaCompliantS == 'true';
+    if (coppaCompliant == true) {
+        Adjust.enableCoppaComplianceInDelay();
+    } else {
+        Adjust.disableCoppaComplianceInDelay();
+    }
+};
+
+AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
+    if ('externalDeviceId' in params) {
+        var externalDeviceId = getFirstValue(params, 'externalDeviceId');
+        Adjust.setExternalDeviceIdInDelay(externalDeviceId);
+    }
+};
 
 // Util
 function getValues(params, key) {

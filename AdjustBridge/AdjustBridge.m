@@ -171,6 +171,15 @@
         [Adjust gdprForgetMe];
     } else if ([methodName isEqual:ADJWBTrackThirdPartySharingMethodName]) {
         [self trackThirdPartySharing:parameters];
+    } else if ([methodName isEqual:ADJWBEndFirstSessionDelayMethodName]) {
+        [Adjust endFirstSessionDelay];
+    } else if ([methodName isEqual:ADJWBEnableCoppaComplianceInDelayMethodName]) {
+        [Adjust enableCoppaComplianceInDelay];
+    } else if ([methodName isEqual:ADJWBDisableCoppaComplianceInDelayMethodName]) {
+        [Adjust disableCoppaComplianceInDelay];
+    } else if ([methodName isEqual:ADJWBSetExternalDeviceIdInDelayMethodName]) {
+        NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"];
+        [Adjust setExternalDeviceIdInDelay:externalDeviceId];
     } else if ([methodName isEqual:ADJWBSetTestOptionsMethodName]) {
         [self setTestOptions:parameters];
     } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
@@ -197,6 +206,7 @@
     NSNumber *attConsentWaitingSeconds = [parameters objectForKey:ADJWBAttConsentWaitingSecondsConfigKey];
     NSNumber *eventDeduplicationIdsMaxSize = [parameters objectForKey:ADJWBEventDeduplicationIdsMaxSizeConfigKey];
     NSNumber *isAppTrackingTransparencyUsageEnabled = [parameters objectForKey:ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey];
+    NSNumber *isFirstSessionDelayEnabled = [parameters objectForKey:ADJWBIsFirstSessionDelayEnabledConfigKey];
 
     id urlStrategyDomains = [parameters objectForKey:ADJWBUseStrategyDomainsConfigKey];
     NSNumber *useSubdomains = [parameters objectForKey:ADJWBUseSubdomainsConfigKey];
@@ -312,6 +322,12 @@
     if ([AdjustBridgeUtil isFieldValid:isAppTrackingTransparencyUsageEnabled]) {
         if ([isAppTrackingTransparencyUsageEnabled boolValue] == NO) {
             [adjustConfig disableAppTrackingTransparencyUsage];
+        }
+    }
+    
+    if ([AdjustBridgeUtil isFieldValid:isFirstSessionDelayEnabled]) {
+        if ([isFirstSessionDelayEnabled boolValue] == YES) {
+            [adjustConfig enableFirstSessionDelay];
         }
     }
 

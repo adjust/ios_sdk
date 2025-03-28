@@ -28,6 +28,10 @@ NSString * const ADJWBDisableMethodName = @"adjust_disable";
 NSString * const ADJWBSwitchToOfflineModeMethodName = @"adjust_switchToOfflineMode";
 NSString * const ADJWBSwitchBackToOnlineMode = @"adjust_switchBackToOnlineMode";
 NSString * const ADJWBGdprForgetMeMethodName = @"adjust_gdprForgetMe";
+NSString * const ADJWBEndFirstSessionDelayMethodName = @"adjust_endFirstSessionDelay";
+NSString * const ADJWBEnableCoppaComplianceInDelayMethodName = @"adjust_enableCoppaComplianceInDelay";
+NSString * const ADJWBDisableCoppaComplianceInDelayMethodName = @"adjust_disableCoppaComplianceInDelay";
+NSString * const ADJWBSetExternalDeviceIdInDelayMethodName = @"adjust_setExternalDeviceIdInDelay";
 
 // AdjustWebbridge Global Callback and Partner method name
 NSString * const ADJWBAddGlobalCallbackParameterMethodName = @"adjust_addGlobalCallbackParameter";
@@ -70,8 +74,7 @@ NSString * const ADJWBIsDataResidencyConfigKey = @"isDataResidency";
 NSString * const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventToken";
 NSString * const ADJWBFbPixelMappingConfigKey = @"fbPixelMapping";
 NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey = @"isAppTrackingTransparencyUsageEnabled";
-
-
+NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey = @"isFirstSessionDelayEnabled";
 
 // AdjustWebbridge Callbacks method name
 NSString * const ADJWBAttributionCallbackConfigKey = @"attributionCallback";
@@ -98,4 +101,3 @@ NSString * const ADJWBPartnerSharingSettingTPSKey = @"partnerSharingSettings";
 
 NSString * const ADJWBKvKeyKey = @"_key";
 NSString * const ADJWBKvValueKey = @"_value";
-
