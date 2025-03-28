@@ -41,7 +41,6 @@ static const char * const kInternalQueueName                    = "io.adjust.Act
 static const char * const kWaitingForAttQueueName               = "io.adjust.WaitingForAttQueue";
 static NSString   * const kForegroundTimerName                  = @"Foreground timer";
 static NSString   * const kBackgroundTimerName                  = @"Background timer";
-static NSString   * const kFirstSessionTimerName                = @"First session timer";
 static NSString   * const kSkanConversionValueResponseKey       = @"skadn_conv_value";
 static NSString   * const kSkanCoarseValueResponseKey           = @"skadn_coarse_value";
 static NSString   * const kSkanLockWindowResponseKey            = @"skadn_lock_window";
