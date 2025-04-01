@@ -76,6 +76,8 @@ FOUNDATION_EXPORT NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledCon
 FOUNDATION_EXPORT NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBStoreInfoTypeConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBStoreInfoAppIdConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBStoreNameConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBStoreAppIdConfigKey;
 
 FOUNDATION_EXPORT NSString * const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBEventSuccessCallbackConfigKey;

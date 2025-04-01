@@ -77,6 +77,8 @@ NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey = @"isAppTr
 NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey = @"isFirstSessionDelayEnabled";
 NSString * const ADJWBStoreInfoTypeConfigKey = @"storeInfoType";
 NSString * const ADJWBStoreInfoAppIdConfigKey = @"storeInfoAppId";
+NSString * const ADJWBStoreNameConfigKey = @"storeName";
+NSString * const ADJWBStoreAppIdConfigKey = @"storeAppId";
 
 // AdjustWebbridge Callbacks method name
 NSString * const ADJWBAttributionCallbackConfigKey = @"attributionCallback";

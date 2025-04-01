@@ -226,8 +226,8 @@
     id fbPixelMapping = [parameters objectForKey:ADJWBFbPixelMappingConfigKey];
 
     //Store parameters
-    NSString *storeInfoType = [parameters objectForKey:ADJWBStoreInfoTypeConfigKey];
-    NSString *storeInfoAppId = [parameters objectForKey:ADJWBStoreInfoAppIdConfigKey];
+    NSString *storeName = [parameters objectForKey:ADJWBStoreNameConfigKey];
+    NSString *storeAppId = [parameters objectForKey:ADJWBStoreAppIdConfigKey];
 
     ADJConfig *adjustConfig;
     if ([AdjustBridgeUtil isFieldValid:allowSuppressLogLevel]) {
@@ -338,8 +338,12 @@
     // store parameters handling
     if ([AdjustBridgeUtil isFieldValid:storeInfoType] || [AdjustBridgeUtil isFieldValid:storeInfoAppId]) {
 
-        ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreInfoType:storeInfoType
-                                                               storeInfoAppId:storeInfoAppId];
+    // store parameters handling
+    if ([AdjustBridgeUtil isFieldValid:storeName]) {
+        ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
+        if ([AdjustBridgeUtil isFieldValid:storeAppId]) {
+            [storeInfo setStoreAppId:storeAppId];
+        }
         [adjustConfig setStoreInfo:storeInfo];
     }
 

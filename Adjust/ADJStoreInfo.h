@@ -11,28 +11,33 @@
 @interface ADJStoreInfo : NSObject <NSCopying>
 
 /**
- * @brief StoreType.
+ * @brief StoreName.
  */
-@property (nonatomic, copy, readonly, nonnull) NSString *storeType;
+@property (nonatomic, copy, readonly, nonnull) NSString *storeName;
 
 /**
  * @brief StoreAppId.
  */
-@property (nonatomic, copy, readonly, nonnull) NSString *appId;
+@property (nonatomic, copy, readonly, nonnull) NSString *storeAppId;
 
 /**
- * @brief Initializes a new instance of ADJStoreInfo with the given store type and app Id.
+ * @brief Initializes a new instance of ADJStoreInfo with the given store name.
  *
- * @param storeType The type of the store.
- * @param appId The application identifier.
+ * @param storeName The name of the store.
  *
  * @return A newly-initialized ADJStoreInfo instance, or nil if initialization fails.
  */
-- (nullable id)initWithStoreInfoType:(nonnull NSString *)storeType
-                  storeInfoAppId:(nonnull NSString *)appId;
+- (nullable id)initWithStoreName:(nonnull NSString *)storeName;
 
 /**
- * @brief Unavailable. Use initWithStoreInfoType:storeInfoAppId: instead.
+ * @brief Sets the application identifier for the store.
+ *
+ * @param storeAppId The application identifier to set.
+ */
+- (void)setStoreAppId:(nonnull NSString *)storeAppId;
+
+/**
+ * @brief Unavailable. Use initWithStoreName: instead.
  */
 - (nullable id)init NS_UNAVAILABLE;
 
