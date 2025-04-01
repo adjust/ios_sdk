@@ -29,8 +29,12 @@
 #import "ADJDeeplink.h"
 #import <stdatomic.h>
 #import <stdbool.h>
+#import "ADJOdmPlugin.h"
 
-NSString * const ADJAdServicesPackageKey = @"apple_ads";
+NSString * const ADJClickSourceAdServices = @"apple_ads";
+NSString * const ADJClickSourceDeepLink = @"deeplink";
+NSString * const ADJClickSourceLinkMe = @"linkme";
+NSString * const ADJClickSourceGoogleOdm = @"google_odm";
 
 typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
@@ -120,6 +124,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, copy) NSString* purchaseVerificationPath;
 @property (nonatomic, copy) ADJResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
 @property (nonatomic, copy) ADJAttribution *attribution;
+@property (nonatomic, strong) ADJOdmPlugin *odmPlugin;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
@@ -173,6 +178,9 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
     }
+    if (adjustConfig.isOnDeviceMeasurementEnabled == YES) {
+        [ADJAdjustFactory.logger info:@"Google's On Device Measurement (ODM) has been switched on"];
+    }
 
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
@@ -206,6 +214,10 @@ const BOOL kSkanRegisterLockWindow = NO;
                                             withCompletionHandler:^(NSDictionary * _Nonnull result) {
             [self invokeClientSkanUpdateCallbackWithResult:result];
         }];
+    }
+
+    if (self.adjustConfig.isOnDeviceMeasurementEnabled) {
+        self.odmPlugin = [[ADJOdmPlugin alloc] initWithAppLaunchTimestamp:[NSDate date]];
     }
 
     self.internalState = [[ADJInternalState alloc] init];
@@ -301,9 +313,13 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
 
-    // redirect sdk_click responses to attribution handler to check for attribution information
+    // check if it's a sdk click response
     if ([responseData isKindOfClass:[ADJSdkClickResponseData class]]) {
+        // redirect sdk_click responses to attribution handler to check for attribution information
         [self.attributionHandler checkSdkClickResponse:(ADJSdkClickResponseData*)responseData];
+
+        // Update Google Odm Info processing state
+        [self updateGoogleOdmInfoProcessedState:responseData];
         return;
     }
 
@@ -494,17 +510,28 @@ const BOOL kSkanRegisterLockWindow = NO;
                                         initWithPackageParams:selfI.packageParams
                                         activityState:selfI.activityState
                                         config:selfI.adjustConfig
-                                        globalParameters:self.globalParameters
-                                        trackingStatusManager:self.trackingStatusManager
-                                        firstSessionDelayManager:self.firstSessionDelayManager
+                                        globalParameters:selfI.globalParameters
+                                        trackingStatusManager:selfI.trackingStatusManager
+                                        firstSessionDelayManager:selfI.firstSessionDelayManager
                                         createdAt:now];
      clickBuilder.internalState = selfI.internalState;
 
      ADJActivityPackage *clickPackage =
-        [clickBuilder buildClickPackage:ADJAdServicesPackageKey
+        [clickBuilder buildClickPackage:ADJClickSourceAdServices
                                   token:token
                         errorCodeNumber:errorCodeNumber];
      [selfI.sdkClickHandler sendSdkClick:clickPackage];
+}
+
+- (void)sendGoogleOdmInfo:(NSString *)odmInfo
+                    error:(NSError *)error {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI sendGoogleOdmInfoI:selfI
+                          odmInfo:odmInfo
+                            error:error];
+    }];
 }
 
 - (void)setAskingAttribution:(BOOL)askingAttribution {
@@ -845,8 +872,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     selfI.packageHandler = [[ADJPackageHandler alloc]
                                 initWithActivityHandler:selfI
-                                startsSending:
-                                    [selfI toSendI:selfI]
+                                startsSending:[selfI toSendI:selfI]
                                 urlStrategy:packageHandlerUrlStrategy];
 
     ADJUrlStrategy *attributionHandlerUrlStrategy =
@@ -856,8 +882,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     selfI.attributionHandler = [[ADJAttributionHandler alloc]
                                     initWithActivityHandler:selfI
-                                    startsSending:
-                                        [selfI toSendI:selfI]
+                                    startsSending:[selfI toSendI:selfI]
                                     urlStrategy:attributionHandlerUrlStrategy];
 
     ADJUrlStrategy *sdkClickHandlerUrlStrategy =
@@ -994,6 +1019,8 @@ const BOOL kSkanRegisterLockWindow = NO;
             [selfI checkForAdServicesAttributionI:selfI];
         }
 
+        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
+
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
 
@@ -1015,7 +1042,8 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     // new session
     if (lastInterval > kSessionInterval) {
-        [self trackNewSessionI:now withActivityHandler:selfI];
+        [selfI trackNewSessionI:now withActivityHandler:selfI];
+        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
         return;
     }
 
@@ -1065,8 +1093,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                          activityState:selfI.activityState
                                          config:selfI.adjustConfig
                                          globalParameters:selfI.globalParameters
-                                         trackingStatusManager:self.trackingStatusManager
-                                         firstSessionDelayManager:self.firstSessionDelayManager
+                                         trackingStatusManager:selfI.trackingStatusManager
+                                         firstSessionDelayManager:selfI.firstSessionDelayManager
                                          createdAt:now];
     sessionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
@@ -1101,8 +1129,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                       activityState:selfI.activityState
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      firstSessionDelayManager:self.firstSessionDelayManager
+                                      trackingStatusManager:selfI.trackingStatusManager
+                                      firstSessionDelayManager:selfI.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
 
@@ -1169,8 +1197,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        activityState:selfI.activityState
                                        config:selfI.adjustConfig
                                        globalParameters:selfI.globalParameters
-                                       trackingStatusManager:self.trackingStatusManager
-                                       firstSessionDelayManager:self.firstSessionDelayManager
+                                       trackingStatusManager:selfI.trackingStatusManager
+                                       firstSessionDelayManager:selfI.firstSessionDelayManager
                                        createdAt:now];
     eventBuilder.internalState = selfI.internalState;
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
@@ -1205,8 +1233,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                               activityState:selfI.activityState
                                               config:selfI.adjustConfig
                                               globalParameters:selfI.globalParameters
-                                              trackingStatusManager:self.trackingStatusManager
-                                              firstSessionDelayManager:self.firstSessionDelayManager
+                                              trackingStatusManager:selfI.trackingStatusManager
+                                              firstSessionDelayManager:selfI.firstSessionDelayManager
                                               createdAt:now];
     subscriptionBuilder.internalState = selfI.internalState;
 
@@ -1329,8 +1357,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                                                              activityState:selfI.activityState
                                                                                     config:selfI.adjustConfig
                                                                           globalParameters:selfI.globalParameters
-                                                                     trackingStatusManager:self.trackingStatusManager
-                                                                  firstSessionDelayManager:self.firstSessionDelayManager
+                                                                     trackingStatusManager:selfI.trackingStatusManager
+                                                                  firstSessionDelayManager:selfI.firstSessionDelayManager
                                                                                  createdAt:now];
     adRevenueBuilder.internalState = selfI.internalState;
 
@@ -1381,8 +1409,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        activityState:selfI.activityState
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
-                               trackingStatusManager:self.trackingStatusManager
-                            firstSessionDelayManager:self.firstSessionDelayManager
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now];
     purchaseVerificationBuilder.internalState = selfI.internalState;
 
@@ -1433,8 +1461,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        activityState:selfI.activityState
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
-                               trackingStatusManager:self.trackingStatusManager
-                            firstSessionDelayManager:self.firstSessionDelayManager
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now];
 
     ADJActivityPackage *purchaseVerificationPackage =
@@ -1753,6 +1781,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
+        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
     }
 
     [selfI checkStatusI:selfI
@@ -1923,8 +1952,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                        activityState:selfI.activityState
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
-                               trackingStatusManager:self.trackingStatusManager
-                            firstSessionDelayManager:self.firstSessionDelayManager
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now];
     clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
@@ -1933,7 +1962,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     clickBuilder.deeplink = [deeplink.deeplink absoluteString];
     clickBuilder.referrer = [deeplink.referrer absoluteString];
 
-    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
+    ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJClickSourceDeepLink];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
 
     if (isLinkAlreadyResolved && selfI.cachedDeeplinkResolutionCallback != nil) {
@@ -2042,8 +2071,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       activityState:selfI.activityState
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      firstSessionDelayManager:self.firstSessionDelayManager
+                                      trackingStatusManager:selfI.trackingStatusManager
+                                      firstSessionDelayManager:selfI.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
@@ -2086,8 +2115,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       activityState:selfI.activityState
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      firstSessionDelayManager:self.firstSessionDelayManager
+                                      trackingStatusManager:selfI.trackingStatusManager
+                                      firstSessionDelayManager:selfI.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
@@ -2123,8 +2152,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       activityState:selfI.activityState
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
-                                      trackingStatusManager:self.trackingStatusManager
-                                      firstSessionDelayManager:self.firstSessionDelayManager
+                                      trackingStatusManager:selfI.trackingStatusManager
+                                      firstSessionDelayManager:selfI.firstSessionDelayManager
                                       createdAt:now];
     gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
@@ -2191,12 +2220,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                              activityState:selfI.activityState
                                                                                     config:selfI.adjustConfig
                                                                           globalParameters:selfI.globalParameters
-                                                                     trackingStatusManager:self.trackingStatusManager
-                                                                  firstSessionDelayManager:self.firstSessionDelayManager
+                                                                     trackingStatusManager:selfI.trackingStatusManager
+                                                                  firstSessionDelayManager:selfI.firstSessionDelayManager
                                                                                  createdAt:now];
         clickBuilder.internalState = selfI.internalState;
         clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
-        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"linkme" linkMeUrl:pasteboardUrlString];
+        ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJClickSourceLinkMe
+                                                                 linkMeUrl:pasteboardUrlString];
         [selfI.sdkClickHandler sendSdkClick:clickPackage];
         
         [ADJUserDefaults setLinkMeChecked];
@@ -2205,6 +2235,43 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 #endif
 }
+
+- (void)sendGoogleOdmInfoI:(ADJActivityHandler *)selfI
+                   odmInfo:(NSString *)odmInfo
+                     error:(NSError *)error {
+
+    BOOL bContinue = YES;
+
+    if (![selfI isEnabledI:selfI]) {
+        bContinue = NO;
+    }
+    if (!selfI.activityState) {
+        bContinue = NO;
+    }
+    if (selfI.activityState.isGdprForgotten) {
+        bContinue = NO;
+    }
+
+    if (!bContinue) {
+        [selfI.odmPlugin onBackendProcessedGoogleOdmInfoWithSuccess:NO];
+        return;
+    }
+
+    double now = [NSDate.date timeIntervalSince1970];
+    ADJPackageBuilder *cb = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                                               activityState:selfI.activityState
+                                                                      config:selfI.adjustConfig
+                                                            globalParameters:selfI.globalParameters
+                                                       trackingStatusManager:selfI.trackingStatusManager
+                                                    firstSessionDelayManager:selfI.firstSessionDelayManager
+                                                                   createdAt:now];
+    cb.internalState = selfI.internalState;
+    ADJActivityPackage *clickPackage = [cb buildClickPackage:ADJClickSourceGoogleOdm
+                                                     odmInfo:odmInfo
+                                                       error:error];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
+}
+
 
 #pragma mark - private
 
@@ -2894,6 +2961,33 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)endFirstSessionDelay {
     [self.firstSessionDelayManager endFirstSessionDelay];
+}
+
+- (void)fetchAndProcessGoogleOdmInfoI:(ADJActivityHandler *)selfI {
+    if (!selfI.adjustConfig.isOnDeviceMeasurementEnabled) {
+        return;
+    }
+
+    [selfI.odmPlugin fetchGoogleOdmInfoWithCompletionHandler:^(NSString * _Nullable odmInfo,
+                                                                NSError * _Nullable error) {
+        [selfI sendGoogleOdmInfo:odmInfo error:error];
+    }];
+}
+
+- (void)updateGoogleOdmInfoProcessedState:(ADJResponseData *)responseData {
+    if (!self.adjustConfig.isOnDeviceMeasurementEnabled) {
+        return;
+    }
+
+    if (responseData.sdkClickPackage == nil) {
+        [self.logger verbose:@"Cannot update Google ODM Info processing state - no sdkClickObject is found in responseData."];
+        return;
+    }
+
+    NSString *source = responseData.sdkClickPackage.parameters[@"source"];
+    if ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceGoogleOdm]) {
+        [self.odmPlugin onBackendProcessedGoogleOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
+    }
 }
 
 @end

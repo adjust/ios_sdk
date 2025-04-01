@@ -200,6 +200,13 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, readonly) BOOL isFirstSessionDelayEnabled;
 
+/**
+ * @brief Indicator of whether Google ODM integration is enabled or not.
+ *
+ * @note It is disabled by defailt.
+ */
+@property (nonatomic, readonly) BOOL isOnDeviceMeasurementEnabled;
+
 #pragma mark - AdjustConfig assignable properties
 
 /**
@@ -362,6 +369,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  * @brief A method to configure SDK avoid any call to AppTrackingTransparency framework.
  */
 - (void)disableAppTrackingTransparencyUsage;
+
+/**
+ * @brief A method to enable Google ODM integration.
+ */
+- (void)enableOnDeviceMeasurement;
 
 /**
  * @brief A method to set custom URL strategy.

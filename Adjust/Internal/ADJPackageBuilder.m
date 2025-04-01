@@ -21,6 +21,7 @@
 #import "ADJSKAdNetwork.h"
 
 NSString * const ADJAttributionTokenParameter = @"attribution_token";
+NSString * const ADJOdmInfoParameter = @"odm_info";
 
 @interface ADJPackageBuilder()
 
@@ -231,6 +232,26 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (errorCodeNumber != nil) {
         [ADJPackageBuilder parameters:parameters
                                setInt:errorCodeNumber.intValue
+                               forKey:@"error_code"];
+    }
+
+    return [self buildClickPackage:clickSource extraParameters:parameters];
+}
+
+
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                  odmInfo:(NSString *)odmInfo
+                                    error:(NSError *)error {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    if (odmInfo != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:odmInfo
+                               forKey:ADJOdmInfoParameter];
+    }
+    if (error != nil) {
+        [ADJPackageBuilder parameters:parameters
+                               setInt:(int)error.code
                                forKey:@"error_code"];
     }
 
@@ -970,6 +991,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if ([self.firstSessionDelayManager wasSet]) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
     }
+    if (self.adjustConfig.isOnDeviceMeasurementEnabled == YES) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
+    }
 }
 
 - (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {
@@ -1130,7 +1154,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage {
     NSString *source = activityPackage.parameters[@"source"];
-    return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
+    return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceAdServices]);
 }
 
 #pragma mark - Consent params

@@ -181,4 +181,6 @@
 
 @end
 
-extern NSString * _Nullable const ADJAdServicesPackageKey;
+extern NSString * _Nullable const ADJClickSourceAdServices;
+extern NSString * _Nullable const ADJClickSourceGoogleOdm;
+

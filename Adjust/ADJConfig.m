@@ -65,6 +65,7 @@
     _isCostDataInAttributionEnabled = NO;
     _isCoppaComplianceEnabled = NO;
     _isAppTrackingTransparencyUsageEnabled = YES;
+    _isOnDeviceMeasurementEnabled = NO;
 
     return self;
 }
@@ -121,6 +122,10 @@
 
 - (void)enableFirstSessionDelay {
     _isFirstSessionDelayEnabled = YES;
+}
+
+- (void)enableOnDeviceMeasurement {
+    _isOnDeviceMeasurementEnabled = YES;
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
@@ -251,6 +256,7 @@
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy->_storeInfo = [self.storeInfo copyWithZone:zone];
+        copy->_isOnDeviceMeasurementEnabled = self.isOnDeviceMeasurementEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         copy->_isFirstSessionDelayEnabled = self.isFirstSessionDelayEnabled;

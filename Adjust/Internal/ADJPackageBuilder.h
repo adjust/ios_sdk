@@ -57,6 +57,10 @@
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
                                           linkMeUrl:(NSString * _Nullable)linkMeUrl;
 
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
+                                            odmInfo:(NSString * _Nullable)odmInfo
+                                              error:(NSError * _Nullable)error;
+
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJAppStorePurchase * _Nullable)purchase;
 
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithEvent:(ADJEvent * _Nullable)event;

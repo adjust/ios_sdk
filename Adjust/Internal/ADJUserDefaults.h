@@ -76,6 +76,17 @@
 
 + (NSDictionary *)getLastSkanUpdateData;
 
++ (void)saveGoogleOdmInitTimestamp:(NSDate *)initTime;
+
++ (NSDate *)getGoogleOdmInitTimestamp;
+
++ (void)setGoogleOdmInfo:(NSString *)conversionInfo;
+
++ (NSString *)getGoogleOdmInfo;
+
++ (void)setGoogleOdmInfoProcessed;
+
++ (BOOL)getGoogleOdmInfoProcessed;
 
 
 @end
