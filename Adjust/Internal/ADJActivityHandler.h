@@ -163,7 +163,9 @@
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
 - (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock
-               isPreLaunch:(BOOL)isPreLaunch;
+               isPreLaunch:(BOOL)isPreLaunch
+                actionName:(NSString * _Nonnull)actionName;
+                
 @end
 
 @interface ADJTrackingStatusManager : NSObject
