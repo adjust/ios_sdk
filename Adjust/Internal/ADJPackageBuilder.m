@@ -963,6 +963,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_att_disabled"];
     }
+    if (self.activityState.wasFirstSessionDelayStarted) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
+    }
 }
 
 - (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {

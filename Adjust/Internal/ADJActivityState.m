@@ -37,6 +37,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.timeSpent = -1;
     self.lastActivity = -1;
     self.lastInterval = -1;
+    self.wasFirstSessionDelayStarted = NO;
     self.enabled = YES;
     self.isGdprForgotten = NO;
     self.askingAttribution = NO;
@@ -71,6 +72,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.sessionLength = 0;
     self.timeSpent = 0;
     self.lastInterval = -1;
+    self.wasFirstSessionDelayStarted = NO;
     self.lastActivity = now;
 }
 
@@ -207,6 +209,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     self.lastInterval = -1;
+    self.wasFirstSessionDelayStarted = NO;
 
     return self;
 }
@@ -244,6 +247,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         copy.timeSpent = self.timeSpent;
         copy.dedupeToken = [self.dedupeToken copyWithZone:zone];
         copy.lastInterval = self.lastInterval;
+        copy.wasFirstSessionDelayStarted = self.wasFirstSessionDelayStarted;
         copy.eventCount = self.eventCount;
         copy.enabled = self.enabled;
         copy.isGdprForgotten = self.isGdprForgotten;

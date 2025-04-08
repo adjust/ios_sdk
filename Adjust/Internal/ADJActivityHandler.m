@@ -2909,6 +2909,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     if ([@"notStarted" isEqualToString:self.delayStatus]) {
         self.initBlock = initBlock;
         self.delayStatus = @"started";
+        strongActivityHandler.activityState.wasFirstSessionDelayStarted = YES;
         return;
     }
 

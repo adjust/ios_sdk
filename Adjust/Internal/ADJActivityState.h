@@ -41,6 +41,7 @@
 // Not persisted, only injected
 @property (nonatomic, assign) BOOL isPersisted;
 @property (nonatomic, assign) double lastInterval;
+@property (nonatomic, assign) BOOL wasFirstSessionDelayStarted;
 
 - (void)resetSessionAttributes:(double)now;
 
