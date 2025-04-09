@@ -289,15 +289,21 @@ static dispatch_once_t onceToken = 0;
 }
 
  + (void)enableCoppaComplianceInDelay {
-     [[Adjust getInstance] enableCoppaComplianceInDelay];
+     @synchronized (self) {
+         [[Adjust getInstance] enableCoppaComplianceInDelay];
+     }
  }
 
  + (void)disableCoppaComplianceInDelay {
-     [[Adjust getInstance] disableCoppaComplianceInDelay];
+     @synchronized (self) {
+         [[Adjust getInstance] disableCoppaComplianceInDelay];
+     }
  }
 
 + (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
-    [[Adjust getInstance] setExternalDeviceIdInDelay:externalDeviceId];
+    @synchronized (self) {
+        [[Adjust getInstance] setExternalDeviceIdInDelay:externalDeviceId];
+    }
 }
 
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
