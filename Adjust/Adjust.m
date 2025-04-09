@@ -595,8 +595,7 @@ static dispatch_once_t onceToken = 0;
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     if (![self checkActivityHandler:@"track third party sharing"]) {
         if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-            self.savedPreLaunch.preLaunchActionsArray =
-                [[NSMutableArray alloc] init];
+            self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
         }
         [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
             [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
