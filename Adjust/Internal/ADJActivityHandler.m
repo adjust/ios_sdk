@@ -3048,6 +3048,10 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 }
 
 - (BOOL)shouldWaitForAttStatus {
+    if (self.activityHandler.adjustConfig.isFirstSessionDelayEnabled) {
+        return NO;
+    }
+
     if (![ADJUtil isAppTrackingTransparencySupported]) {
         return NO;
     }
