@@ -160,7 +160,9 @@
 - (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock
                isPreLaunch:(BOOL)isPreLaunch
                 actionName:(NSString * _Nonnull)actionName;
-                
+
+- (BOOL)wasSet;
+
 @end
 
 @interface ADJTrackingStatusManager : NSObject

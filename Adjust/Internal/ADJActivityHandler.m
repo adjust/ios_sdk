@@ -466,6 +466,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                         config:selfI.adjustConfig
                                         globalParameters:self.globalParameters
                                         trackingStatusManager:self.trackingStatusManager
+                                        firstSessionDelayManager:self.firstSessionDelayManager
                                         createdAt:now];
      clickBuilder.internalState = selfI.internalState;
 
@@ -1011,6 +1012,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                          config:selfI.adjustConfig
                                          globalParameters:selfI.globalParameters
                                          trackingStatusManager:self.trackingStatusManager
+                                         firstSessionDelayManager:self.firstSessionDelayManager
                                          createdAt:now];
     sessionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
@@ -1046,6 +1048,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:self.trackingStatusManager
+                                      firstSessionDelayManager:self.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
 
@@ -1113,6 +1116,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        config:selfI.adjustConfig
                                        globalParameters:selfI.globalParameters
                                        trackingStatusManager:self.trackingStatusManager
+                                       firstSessionDelayManager:self.firstSessionDelayManager
                                        createdAt:now];
     eventBuilder.internalState = selfI.internalState;
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
@@ -1148,6 +1152,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                               config:selfI.adjustConfig
                                               globalParameters:selfI.globalParameters
                                               trackingStatusManager:self.trackingStatusManager
+                                              firstSessionDelayManager:self.firstSessionDelayManager
                                               createdAt:now];
     subscriptionBuilder.internalState = selfI.internalState;
 
@@ -1179,6 +1184,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                      config:self.adjustConfig
                                      globalParameters:self.globalParameters
                                      trackingStatusManager:self.trackingStatusManager
+                                     firstSessionDelayManager:self.firstSessionDelayManager
                                      createdAt:now];
     tpsBuilder.internalState = self.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
@@ -1224,6 +1230,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                     config:self.adjustConfig
                                     globalParameters:self.globalParameters
                                     trackingStatusManager:self.trackingStatusManager
+                                    firstSessionDelayManager:self.firstSessionDelayManager
                                     createdAt:now];
     mcBuilder.internalState = self.internalState;
     ADJActivityPackage *mcPackage = [mcBuilder buildMeasurementConsentPackage:enabled];
@@ -1269,6 +1276,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                                                                     config:selfI.adjustConfig
                                                                           globalParameters:selfI.globalParameters
                                                                      trackingStatusManager:self.trackingStatusManager
+                                                                  firstSessionDelayManager:self.firstSessionDelayManager
                                                                                  createdAt:now];
     adRevenueBuilder.internalState = selfI.internalState;
 
@@ -1320,6 +1328,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:self.trackingStatusManager
+                            firstSessionDelayManager:self.firstSessionDelayManager
                                            createdAt:now];
     purchaseVerificationBuilder.internalState = selfI.internalState;
 
@@ -1371,6 +1380,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:self.trackingStatusManager
+                            firstSessionDelayManager:self.firstSessionDelayManager
                                            createdAt:now];
 
     ADJActivityPackage *purchaseVerificationPackage =
@@ -1864,6 +1874,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:self.trackingStatusManager
+                            firstSessionDelayManager:self.firstSessionDelayManager
                                            createdAt:now];
     clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
@@ -1970,6 +1981,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:self.trackingStatusManager
+                                      firstSessionDelayManager:self.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
@@ -2013,6 +2025,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:self.trackingStatusManager
+                                      firstSessionDelayManager:self.firstSessionDelayManager
                                       createdAt:now];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
@@ -2049,6 +2062,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       config:selfI.adjustConfig
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:self.trackingStatusManager
+                                      firstSessionDelayManager:self.firstSessionDelayManager
                                       createdAt:now];
     gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
@@ -2116,6 +2130,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                                     config:selfI.adjustConfig
                                                                           globalParameters:selfI.globalParameters
                                                                      trackingStatusManager:self.trackingStatusManager
+                                                                  firstSessionDelayManager:self.firstSessionDelayManager
                                                                                  createdAt:now];
         clickBuilder.internalState = selfI.internalState;
         clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
@@ -2778,6 +2793,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
                                               config:selfI.adjustConfig
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now];
     tpsBuilder.internalState = selfI.internalState;
 
@@ -2883,7 +2899,6 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     if (self.delayState == ADJDelayStateNotStarted) {
         self.initBlock = initBlock;
         self.delayState = ADJDelayStateStarted;
-        strongActivityHandler.activityState.wasFirstSessionDelayStarted = YES;
         return;
     }
 
@@ -2967,6 +2982,10 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
                     selfInject:strongActivityHandler
                          block:block];
     }
+}
+
+- (BOOL)wasSet {
+    return self.delayState != ADJDelayStateNotSet;
 }
 
 - (void)initSdkBlock:

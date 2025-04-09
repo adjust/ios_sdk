@@ -36,6 +36,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 @property (nonatomic, weak) ADJTrackingStatusManager *trackingStatusManager;
 
+@property (nonatomic, weak) ADJFirstSessionDelayManager *firstSessionDelayManager;
 @end
 
 @implementation ADJPackageBuilder
@@ -47,6 +48,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
                      config:(ADJConfig * _Nullable)adjustConfig
            globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
       trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
+   firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
                   createdAt:(double)createdAt {
     self = [super init];
     if (self == nil) {
@@ -58,6 +60,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     self.adjustConfig = adjustConfig;
     self.activityState = activityState;
     self.globalParameters = globalParameters;
+    self.firstSessionDelayManager = firstSessionDelayManager;
     self.trackingStatusManager = trackingStatusManager;
 
     return self;
@@ -963,7 +966,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_att_disabled"];
     }
-    if (self.activityState.wasFirstSessionDelayStarted) {
+    if ([self.firstSessionDelayManager wasSet]) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
     }
 }

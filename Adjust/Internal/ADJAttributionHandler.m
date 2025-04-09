@@ -247,6 +247,7 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
                                              config:selfI.activityHandler.adjustConfig
                                              globalParameters:selfI.activityHandler.globalParameters
                                              trackingStatusManager:selfI.activityHandler.trackingStatusManager
+                                             firstSessionDelayManager:nil
                                              createdAt:now];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];
 
