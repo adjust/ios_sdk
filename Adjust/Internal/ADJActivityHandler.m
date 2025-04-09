@@ -2872,22 +2872,6 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     return self;
 }
 
-- (void)endFirstSessionDelay {
-    if (self.delayState != ADJDelayStateStarted) {
-        return;
-    }
-    self.delayState = ADJDelayStateEnded;
-
-    ADJActivityHandler *strongActivityHandler = self.activityHandler;
-    if (strongActivityHandler == nil) {
-        return;
-    }
-
-    [self initSdkBlock:self.initBlock strongActivityHandler:strongActivityHandler];
-
-    return;
-}
-
 - (void)delayOrInitWithBlock:
     (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
 {
@@ -2909,26 +2893,20 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     }
 }
 
-- (void)initSdkBlock:
-    (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
-    strongActivityHandler:(ADJActivityHandler *)strongActivityHandler
-{
-    _isWaitingForMainThread = YES;
+- (void)endFirstSessionDelay {
+    if (self.delayState != ADJDelayStateStarted) {
+        return;
+    }
+    self.delayState = ADJDelayStateEnded;
 
-    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
-        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                    selfInject:strongActivityHandler
-                         block:^(ADJActivityHandler * selfI)
-        {
-            self->_isWaitingForMainThread = NO;
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
+        return;
+    }
 
-            initBlock(selfI, isInactive);
+    [self initSdkBlock:self.initBlock strongActivityHandler:strongActivityHandler];
 
-            for (selfInjectedBlock apiAction in self.apiActions) {
-                apiAction(selfI);
-            }
-        }];
-    }];
+    return;
 }
 
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
@@ -2989,6 +2967,28 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
                     selfInject:strongActivityHandler
                          block:block];
     }
+}
+
+- (void)initSdkBlock:
+    (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
+    strongActivityHandler:(ADJActivityHandler *)strongActivityHandler
+{
+    _isWaitingForMainThread = YES;
+
+    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:^(ADJActivityHandler * selfI)
+        {
+            self->_isWaitingForMainThread = NO;
+
+            initBlock(selfI, isInactive);
+
+            for (selfInjectedBlock apiAction in self.apiActions) {
+                apiAction(selfI);
+            }
+        }];
+    }];
 }
 
 @end
