@@ -2883,22 +2883,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
         return;
     }
 
-    _isWaitingForMainThread = YES;
-
-    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
-        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                    selfInject:strongActivityHandler
-                         block:^(ADJActivityHandler * selfI)
-        {
-            self->_isWaitingForMainThread = NO;
-
-            self.initBlock(selfI, isInactive);
-
-            for (selfInjectedBlock apiAction in self.apiActions) {
-                apiAction(selfI);
-            }
-        }];
-    }];
+    [self initSdkBlock:self.initBlock strongActivityHandler:strongActivityHandler];
 
     return;
 }
@@ -2919,25 +2904,31 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     }
 
     if (self.delayState == ADJDelayStateNotSet) {
-        _isWaitingForMainThread = YES;
-
-        [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
-            [ADJUtil launchInQueue:strongActivityHandler.internalQueue
-                        selfInject:strongActivityHandler
-                             block:^(ADJActivityHandler * selfI)
-             {
-                self->_isWaitingForMainThread = NO;
-
-                initBlock(selfI, isInactive);
-
-                for (selfInjectedBlock apiAction in self.apiActions) {
-                    apiAction(selfI);
-                }
-            }];
-        }];
-
+        [self initSdkBlock:initBlock strongActivityHandler:strongActivityHandler];
         return;
     }
+}
+
+- (void)initSdkBlock:
+    (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
+    strongActivityHandler:(ADJActivityHandler *)strongActivityHandler
+{
+    _isWaitingForMainThread = YES;
+
+    [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
+        [ADJUtil launchInQueue:strongActivityHandler.internalQueue
+                    selfInject:strongActivityHandler
+                         block:^(ADJActivityHandler * selfI)
+        {
+            self->_isWaitingForMainThread = NO;
+
+            initBlock(selfI, isInactive);
+
+            for (selfInjectedBlock apiAction in self.apiActions) {
+                apiAction(selfI);
+            }
+        }];
+    }];
 }
 
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
