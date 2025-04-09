@@ -12,7 +12,6 @@
 #import "ADJPackageParams.h"
 #import "ADJGlobalParameters.h"
 #import "ADJThirdPartySharing.h"
-#import "ADJUtil.h"
 
 @interface ADJInternalState : NSObject
 
