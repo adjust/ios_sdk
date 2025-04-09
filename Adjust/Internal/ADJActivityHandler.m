@@ -2831,10 +2831,17 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 
 @end
 
+typedef NS_ENUM(NSUInteger, ADJDelayState) {
+    ADJDelayStateNotStarted = 0,
+    ADJDelayStateNotSet = 1,
+    ADJDelayStateStarted = 2,
+    ADJDelayStateEnded = 3
+};
+
 @interface ADJFirstSessionDelayManager ()
 
 @property (nonatomic, readonly, weak) ADJActivityHandler *activityHandler;
-@property (nonatomic, strong) NSString *delayStatus;
+@property (nonatomic, assign) ADJDelayState delayState;
 
 @property (nonatomic, nonnull, strong) NSMutableArray<selfInjectedBlock> *apiActions;
 @property (nonatomic, copy) void (^initBlock)(ADJActivityHandler * selfI, BOOL isInactive);
@@ -2852,26 +2859,24 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
     _activityHandler = activityHandler;
     _isWaitingForMainThread = NO;
 
-    BOOL delayFirstSession =
-        activityHandler.internalState.isFirstLaunch &&
-        activityHandler.adjustConfig.isFirstSessionDelayEnabled;
-
     _apiActions = [NSMutableArray new];
 
-    if (delayFirstSession) {
-        _delayStatus = @"notStarted";
+    if (activityHandler.internalState.isFirstLaunch &&
+        activityHandler.adjustConfig.isFirstSessionDelayEnabled)
+    {
+        _delayState = ADJDelayStateNotStarted;
     } else {
-        _delayStatus = @"notSet";
+        _delayState = ADJDelayStateNotSet;
     }
 
     return self;
 }
 
 - (void)endFirstSessionDelay {
-    if (! [@"started" isEqualToString:self.delayStatus]) {
+    if (self.delayState != ADJDelayStateStarted) {
         return;
     }
-    self.delayStatus = @"stopped";
+    self.delayState = ADJDelayStateEnded;
 
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
@@ -2906,15 +2911,14 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-    if ([@"notStarted" isEqualToString:self.delayStatus]) {
+    if (self.delayState == ADJDelayStateNotStarted) {
         self.initBlock = initBlock;
-        self.delayStatus = @"started";
+        self.delayState = ADJDelayStateStarted;
         strongActivityHandler.activityState.wasFirstSessionDelayStarted = YES;
         return;
     }
 
-    if ([@"notSet" isEqualToString:self.delayStatus]) {
-
+    if (self.delayState == ADJDelayStateNotSet) {
         _isWaitingForMainThread = YES;
 
         [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
@@ -2937,12 +2941,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled {
-    ADJActivityHandler *strongActivityHandler = self.activityHandler;
-    if (strongActivityHandler == nil) {
+    if (self.delayState != ADJDelayStateStarted) {
         return;
     }
 
-    if (![@"started" isEqualToString:self.delayStatus]) {
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
         return;
     }
 
@@ -2950,12 +2954,12 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
-    ADJActivityHandler *strongActivityHandler = self.activityHandler;
-    if (strongActivityHandler == nil) {
+    if (self.delayState != ADJDelayStateStarted) {
         return;
     }
 
-    if (![@"started" isEqualToString:self.delayStatus]) {
+    ADJActivityHandler *strongActivityHandler = self.activityHandler;
+    if (strongActivityHandler == nil) {
         return;
     }
 
@@ -2970,7 +2974,7 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
         return;
     }
 
-    if ([@"started" isEqualToString:self.delayStatus]) {
+    if (self.delayState == ADJDelayStateStarted) {
         [strongActivityHandler.logger debug:
          @"Enqueuing \"%@\" action to be executed after first session delay ends", actionName];
         if (isPreLaunch) {
