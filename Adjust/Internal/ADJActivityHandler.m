@@ -27,6 +27,8 @@
 #import "ADJPurchaseVerificationResult.h"
 #import "ADJAdRevenue.h"
 #import "ADJDeeplink.h"
+#import <stdatomic.h>
+#import <stdbool.h>
 
 NSString * const ADJAdServicesPackageKey = @"apple_ads";
 
@@ -2865,7 +2867,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 @end
 
 @implementation ADJFirstSessionDelayManager {
-    volatile BOOL _isWaitingForMainThread;
+    volatile atomic_bool _isWaitingForMainThread;
 }
 
 // constructors
@@ -2873,7 +2875,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     self = [super init];
 
     _activityHandler = activityHandler;
-    _isWaitingForMainThread = NO;
+    atomic_init(&_isWaitingForMainThread, false);
 
     _apiActions = [NSMutableArray new];
 
@@ -2966,12 +2968,12 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
         } else {
             [self.apiActions addObject:block];
         }
-    } else if (_isWaitingForMainThread) {
+    } else if (atomic_load_explicit(&_isWaitingForMainThread, __ATOMIC_ACQUIRE)) {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
                          block:^(ADJActivityHandler *activityHandler)
          {
-            if (self->_isWaitingForMainThread) {
+            if (atomic_load_explicit(&self->_isWaitingForMainThread, __ATOMIC_ACQUIRE)) {
                 [self.apiActions addObject:block];
             } else {
                 block(activityHandler);
@@ -2992,14 +2994,14 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
     strongActivityHandler:(ADJActivityHandler *)strongActivityHandler
 {
-    _isWaitingForMainThread = YES;
+    atomic_store_explicit(&_isWaitingForMainThread, true, __ATOMIC_RELEASE);
 
     [ADJUtil launchInMainThreadWithInactive:^(BOOL isInactive) {
         [ADJUtil launchInQueue:strongActivityHandler.internalQueue
                     selfInject:strongActivityHandler
                          block:^(ADJActivityHandler * selfI)
         {
-            self->_isWaitingForMainThread = NO;
+            atomic_store_explicit(&self->_isWaitingForMainThread, false, __ATOMIC_RELEASE);
 
             initBlock(selfI, isInactive);
 
