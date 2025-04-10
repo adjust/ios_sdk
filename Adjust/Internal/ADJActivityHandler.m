@@ -261,15 +261,19 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)applicationDidBecomeActive {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
-        [selfI handleAppForegroundI:selfI];
-    } isPreLaunch:NO actionName:@"application became active"];
+    @synchronized ([Adjust class]) {
+        [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+            [selfI handleAppForegroundI:selfI];
+        } isPreLaunch:NO actionName:@"application became active"];
+    }
 }
 
-- (void)applicationWillResignActive {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
-        [selfI handleAppBackgroundI:selfI];
-    } isPreLaunch:NO actionName:@"application became inactive"];
+- (void)pplicationWillResignActive {
+    @synchronized ([Adjust class]) {
+        [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+            [selfI handleAppBackgroundI:selfI];
+        } isPreLaunch:NO actionName:@"application became inactive"];
+    }
 }
 
 - (void)trackEvent:(ADJEvent *)event {
