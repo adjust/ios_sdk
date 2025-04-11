@@ -250,7 +250,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.firstSessionDelayManager =
         [[ADJFirstSessionDelayManager alloc] initWithActivityHandler:self];
 
-    [self.firstSessionDelayManager delayOrInitWithBlock:
+    [self.firstSessionDelayManager initWhenReadyWithBlock:
      ^(ADJActivityHandler * _Nonnull selfI, BOOL isInactive) {
         [selfI initI:selfI isInactive:isInactive];
     }];
@@ -262,28 +262,34 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)applicationDidBecomeActive {
     @synchronized ([Adjust class]) {
-        [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+        [self.firstSessionDelayManager processApiAction:@"application became active"
+                                            isPreLaunch:NO
+                                              withBlock:^(ADJActivityHandler * selfI) {
             [selfI handleAppForegroundI:selfI];
-        } isPreLaunch:NO actionName:@"application became active"];
+        }];
     }
 }
 
-- (void)pplicationWillResignActive {
+- (void)applicationWillResignActive {
     @synchronized ([Adjust class]) {
-        [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+        [self.firstSessionDelayManager processApiAction:@"application became inactive"
+                                            isPreLaunch:NO
+                                              withBlock:^(ADJActivityHandler * selfI) {
             [selfI handleAppBackgroundI:selfI];
-        } isPreLaunch:NO actionName:@"application became inactive"];
+        }];
     }
 }
 
 - (void)trackEvent:(ADJEvent *)event {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"track event"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         // track event called before app started
         if (selfI.activityState == nil) {
             [selfI startI:selfI];
         }
         [selfI eventI:selfI event:event];
-    } isPreLaunch:NO actionName:@"track event"];
+    }];
 }
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
@@ -356,21 +362,29 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:(enabled ? @"enable SDK" : @"disable SDK")
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI setEnabledI:selfI enabled:enabled];
-    } isPreLaunch:NO actionName:(enabled ? @"enable SDK" : @"disable SDK")];
+    }];
 }
 
 - (void)setOfflineMode:(BOOL)offline {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:(offline ?
+                                                     @"put SDK to offline mode" :
+                                                     @"put SDK back to online mode")
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI setOfflineModeI:selfI offline:offline];
-    } isPreLaunch:NO actionName:(offline ? @"put SDK to offline mode" : @"put SDK back to online mode")];
+    }];
 }
 
 - (void)isEnabledWithCompletionHandler:(nonnull ADJIsEnabledGetterBlock)completion {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"is SDK enabled"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI isEnabledI:selfI withCompletionHandler:completion];
-    } isPreLaunch:NO actionName:@"is SDK enabled"];
+    }];
 }
 
 - (BOOL)isGdprForgotten {
@@ -378,38 +392,48 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)processDeeplink:(ADJDeeplink *)deeplink withClickTime:(NSDate *)clickTime {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"process deeplink"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI processDeeplinkI:selfI deeplink:deeplink clickTime:clickTime];
-    } isPreLaunch:NO actionName:@"process deeplink"];
+    }];
 }
 
 - (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
             withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"process and resolve deeplink"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         selfI.cachedDeeplinkResolutionCallback = completion;
         [selfI processDeeplinkI:selfI
                        deeplink:deeplink
                       clickTime:clickTime];
-    } isPreLaunch:NO actionName:@"process and resolve deeplink"];
+    }];
 }
 
 - (void)setPushTokenData:(NSData *)pushTokenData {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"set push token"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI setPushTokenI:selfI pushTokenData:pushTokenData];
-    } isPreLaunch:NO actionName:@"set push token"];
+    }];
 }
 
 - (void)setPushTokenString:(NSString *)pushTokenString {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"set push token"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI setPushTokenI:selfI pushTokenString:pushTokenString];
-    } isPreLaunch:NO actionName:@"set push token"];
+    }];
 }
 
 - (void)setGdprForgetMe {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"GDPR forget device"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI setGdprForgetMeI:selfI];
-    } isPreLaunch:NO actionName:@"GDPR forget device"];
+    }];
 }
 
 - (void)setTrackingStateOptedOut {
@@ -518,71 +542,93 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)addGlobalCallbackParameter:(NSString *)param
                             forKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"add global callback parameter"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
-    } isPreLaunch:YES actionName:@"add global callback parameter"];
+    }];
 }
 
 - (void)addGlobalPartnerParameter:(NSString *)param
                            forKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"add global partner parameter"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
-    } isPreLaunch:YES actionName:@"add global partner parameter"];
+    }];
 }
 
 - (void)removeGlobalCallbackParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"remove global callback parameter"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParameterI:selfI forKey:key];
-    } isPreLaunch:YES actionName:@"remove global callback parameter"];
+    }];
 }
 
 - (void)removeGlobalPartnerParameterForKey:(NSString *)key {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"remove global partner parameter"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParameterI:selfI forKey:key];
-    } isPreLaunch:YES actionName:@"remove global partner parameter"];
+    }];
 }
 
 - (void)removeGlobalCallbackParameters {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"remove global callback parameters"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalCallbackParametersI:selfI];
-    } isPreLaunch:YES actionName:@"remove global callback parameters"];
+    }];
 }
 
 - (void)removeGlobalPartnerParameters {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"remove global partner parameters"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI removeGlobalPartnerParametersI:selfI];
-    } isPreLaunch:YES actionName:@"remove global partner parameters"];
+    }];
 }
 
 - (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"track app store subscription"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAppStoreSubscriptionI:selfI subscription:subscription];
-    } isPreLaunch:NO actionName:@"track app store subscription"];
+    }];
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"track third party sharing"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackThirdPartySharingI:thirdPartySharing];
-    } isPreLaunch:YES actionName:@"track third party sharing"];
+    }];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"track measurement consent"
+                                        isPreLaunch:YES
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI tryTrackMeasurementConsentI:enabled];
-    } isPreLaunch:YES actionName:@"track measurement consent"];
+    }];
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"track ad revenue"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI trackAdRevenueI:selfI adRevenue:adRevenue];
-    } isPreLaunch:NO actionName:@"track ad revenue"];
+    }];
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"verify app store purchase"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAppStorePurchaseI:selfI purchase:purchase withCompletionHandler:completion];
-    } isPreLaunch:NO actionName:@"verify app store purchase"];
+    }];
 }
 
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
@@ -630,9 +676,11 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"verify and track app store purchase"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI verifyAndTrackAppStorePurchaseI:selfI event:event withCompletionHandler:completion];
-    } isPreLaunch:NO actionName:@"verify and track app store purchase"];
+    }];
 }
 
 - (void)writeActivityState {
@@ -2766,9 +2814,11 @@ sdkClickHandlerOnly:(BOOL)sdkClickHandlerOnly
 }
 
 - (void)updateAndTrackAttStatusFromUserCallback:(int)newAttStatusFromUser {
-    [self.firstSessionDelayManager apiActionWithBlock:^(ADJActivityHandler * selfI) {
+    [self.firstSessionDelayManager processApiAction:@"request app tracking authorization"
+                                        isPreLaunch:NO
+                                          withBlock:^(ADJActivityHandler * selfI) {
         [selfI.trackingStatusManager updateAndTrackAttStatusFromUserCallback:newAttStatusFromUser];
-    } isPreLaunch:NO actionName:@"request app tracking authorization"];
+    }];
 }
 
 - (void)processCoppaComplianceI:(ADJActivityHandler *)selfI {
@@ -2894,7 +2944,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     return self;
 }
 
-- (void)delayOrInitWithBlock:
+- (void)initWhenReadyWithBlock:
     (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
 {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
@@ -2956,9 +3006,9 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     strongActivityHandler.adjustConfig.externalDeviceId = externalDeviceId;
 }
 
-- (void)apiActionWithBlock:(selfInjectedBlock)block
-               isPreLaunch:(BOOL)isPreLaunch
-                actionName:(NSString *)actionName {
+- (void)processApiAction:(NSString *)actionName
+             isPreLaunch:(BOOL)isPreLaunch
+               withBlock:(selfInjectedBlock)block {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
     if (strongActivityHandler == nil) {
         return;

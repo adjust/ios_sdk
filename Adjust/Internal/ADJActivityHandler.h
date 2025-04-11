@@ -151,15 +151,17 @@
 
 @interface ADJFirstSessionDelayManager : NSObject
 
-- (nonnull instancetype)initWithActivityHandler:(nonnull ADJActivityHandler *)activityHandler;
+- (nonnull instancetype)initWithActivityHandler:(ADJActivityHandler * _Nonnull)activityHandler;
 
+- (void)initWhenReadyWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
 - (void)endFirstSessionDelay;
-- (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
-- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
-- (void)apiActionWithBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock
-               isPreLaunch:(BOOL)isPreLaunch
-                actionName:(NSString * _Nonnull)actionName;
+- (void)setExternalDeviceIdInDelay:(NSString * _Nullable)externalDeviceId;
+- (void)processApiAction:(NSString * _Nonnull)actionName
+             isPreLaunch:(BOOL)isPreLaunch
+               withBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+
+
 
 - (BOOL)wasSet;
 
