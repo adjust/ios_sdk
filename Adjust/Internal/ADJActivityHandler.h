@@ -153,7 +153,7 @@
 
 - (nonnull instancetype)initWithActivityHandler:(ADJActivityHandler * _Nonnull)activityHandler;
 
-- (void)initWhenReadyWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
+- (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
 - (void)endFirstSessionDelay;
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)setExternalDeviceIdInDelay:(NSString * _Nullable)externalDeviceId;

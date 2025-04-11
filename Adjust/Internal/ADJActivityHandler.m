@@ -250,7 +250,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.firstSessionDelayManager =
         [[ADJFirstSessionDelayManager alloc] initWithActivityHandler:self];
 
-    [self.firstSessionDelayManager initWhenReadyWithBlock:
+    [self.firstSessionDelayManager delayOrInitWithBlock:
      ^(ADJActivityHandler * _Nonnull selfI, BOOL isInactive) {
         [selfI initI:selfI isInactive:isInactive];
     }];
@@ -2921,7 +2921,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 @end
 
 @implementation ADJFirstSessionDelayManager {
-    volatile atomic_bool _isWaitingForMainThread;
+    atomic_bool _isWaitingForMainThread;
 }
 
 // constructors
@@ -2944,7 +2944,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     return self;
 }
 
-- (void)initWhenReadyWithBlock:
+- (void)delayOrInitWithBlock:
     (void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock
 {
     ADJActivityHandler *strongActivityHandler = self.activityHandler;
