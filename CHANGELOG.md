@@ -1,8 +1,13 @@
+### Version 5.3.0 (15th April 2025)
+#### Added
+- Added ability to initialize the SDK for the first session in delayed mode. You can start the SDK in the delayed mode by calling the `enableFirstSessionDelay` method on your `ADJConfig` instance. To end the delay, make sure to call `endFirstSessionDelay` method of `Adjust` instance.
+
+---
 
 ### Version 5.2.0 (24th March 2025)
 #### Added
-- Added ability to send organic search referrer together with deep link.
-- Added ability to disable SDK's interaction with `AppTrackingTransparency.framework` API.
+- Added ability to send organic search referrer together with deep link. You can pass it by setting the `referrer` property of your `ADJDeeplink` instance.
+- Added ability to disable SDK's interaction with `AppTrackingTransparency.framework` API. You can disable it by calling the `disableAppTrackingTransparencyUsage` method on your `ADJConfig` instance.
 - Added support for `NSSecureCoding` protocol.
 
 ---
