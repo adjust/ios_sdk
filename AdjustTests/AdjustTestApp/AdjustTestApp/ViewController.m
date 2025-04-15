@@ -30,7 +30,6 @@
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
     // [self.testLibrary addTestDirectory:@"deeplink"];
-     [self.testLibrary addTest:@"Test_MeasurementConsent_second_start_new_session"];
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];
 }

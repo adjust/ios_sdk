@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.86.187:8080';
-var controlUrl = 'ws://192.168.86.187:1987';
+var urlOverwrite = 'http://192.168.1.121:8080';
+var controlUrl = 'ws://192.168.1.121:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
