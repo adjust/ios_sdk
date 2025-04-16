@@ -1,6 +1,6 @@
 ### Version 5.3.0 (16th April 2025)
 #### Added
-- Added ability to initialize the SDK for the first session in delayed mode. You can start the SDK in the delayed mode by calling the `enableFirstSessionDelay` method on your `ADJConfig` instance. To end the delay, make sure to call `endFirstSessionDelay` method of `Adjust` instance.
+- Added ability to initialize the SDK for the first session in delayed mode. You can start the SDK in the delayed mode by calling the `enableFirstSessionDelay` method on your `ADJConfig` instance. To end the delay, make sure to call `endFirstSessionDelay` method of `Adjust` instance. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/ios/features/first-session-delay).
 
 ---
 
