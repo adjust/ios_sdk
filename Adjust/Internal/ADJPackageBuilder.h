@@ -39,6 +39,7 @@
                                config:(ADJConfig * _Nullable)adjustConfig
                      globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
+             firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
                             createdAt:(double)createdAt;
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage;

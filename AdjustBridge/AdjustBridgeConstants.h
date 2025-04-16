@@ -29,6 +29,10 @@ FOUNDATION_EXPORT NSString * const ADJWBDisableMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBSwitchToOfflineModeMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBSwitchBackToOnlineMode;
 FOUNDATION_EXPORT NSString * const ADJWBGdprForgetMeMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBEndFirstSessionDelayMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBEnableCoppaComplianceInDelayMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBDisableCoppaComplianceInDelayMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBSetExternalDeviceIdInDelayMethodName;
 
 FOUNDATION_EXPORT NSString * const ADJWBAddGlobalCallbackParameterMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBRemoveGlobalCallbackParameterMethodName;
@@ -69,6 +73,7 @@ FOUNDATION_EXPORT NSString * const ADJWBIsDataResidencyConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBFbPixelDefaultEventTokenConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBFbPixelMappingConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey;
 
 FOUNDATION_EXPORT NSString * const ADJWBAttributionCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBEventSuccessCallbackConfigKey;

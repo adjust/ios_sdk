@@ -87,193 +87,208 @@ static NSString * fbAppIdStatic = nil;
                 });
             },
 
-        _handleGetterFromObjC: function(callback, callbackId) {
-            window[callbackId] = function(value) {
-                if(callbackId.includes("adjust_getAttribution")) {
-                    const parsedValue = JSON.parse(value);
-                    callback(parsedValue);
-                } else {
-                    callback(value);
-                }
-                delete window[callbackId];
-            };
-        },
+            _handleGetterFromObjC: function(callback, callbackId) {
+                window[callbackId] = function(value) {
+                    if(callbackId.includes("adjust_getAttribution")) {
+                        const parsedValue = JSON.parse(value);
+                        callback(parsedValue);
+                    } else {
+                        callback(value);
+                    }
+                    delete window[callbackId];
+                };
+            },
 
-        _handleCallbackFromObjC: function(callback, callbackId) {
-            window[callbackId] = function(value) {
-                if(callbackId.includes("adjust_deferredDeeplinkCallback")) {
-                    callback(value);
-                } else {
-                    const parsedValue = JSON.parse(value);
-                    callback(parsedValue);
-                }
-            };
-        },
+            _handleCallbackFromObjC: function(callback, callbackId) {
+                window[callbackId] = function(value) {
+                    if(callbackId.includes("adjust_deferredDeeplinkCallback")) {
+                        callback(value);
+                    } else {
+                        const parsedValue = JSON.parse(value);
+                        callback(parsedValue);
+                    }
+                };
+            },
 
-        initSdk: function(adjustConfig) {
-            if (adjustConfig) {
-                if (!adjustConfig.getSdkPrefix()) {
+            initSdk: function(adjustConfig) {
+                if (adjustConfig) {
+                    if (!adjustConfig.getSdkPrefix()) {
+                        adjustConfig.setSdkPrefix(this.getSdkPrefix());
+                    }
                     adjustConfig.setSdkPrefix(this.getSdkPrefix());
+                    this._postMessage("adjust_initSdk", adjustConfig);
                 }
-                adjustConfig.setSdkPrefix(this.getSdkPrefix());
-                this._postMessage("adjust_initSdk", adjustConfig);
-            }
-        },
+            },
 
-        setTestOptions: function(testOptions) {
-            this._postMessage("adjust_setTestOptions", testOptions);
-        },
+            setTestOptions: function(testOptions) {
+                this._postMessage("adjust_setTestOptions", testOptions);
+            },
 
-        requestAppTrackingAuthorizationWithCompletionHandler: function(attStatusCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_attStatusCallback");
-            this._handleGetterFromObjC(attStatusCallback, callbackId);
-            this._postMessage("adjust_requestAppTrackingAuthorizationWithCompletionHandler", null, callbackId);
-        },
+            requestAppTrackingAuthorizationWithCompletionHandler: function(attStatusCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_attStatusCallback");
+                this._handleGetterFromObjC(attStatusCallback, callbackId);
+                this._postMessage("adjust_requestAppTrackingAuthorizationWithCompletionHandler", null, callbackId);
+            },
 
-        getAppTrackingAuthorizationStatus: function(getAppTrackingAuthorizationStatusCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_appTrackingAuthorizationStatus") ;
-            this._handleGetterFromObjC(getAppTrackingAuthorizationStatusCallback, callbackId);
-            this._postMessage("adjust_appTrackingAuthorizationStatus", null, callbackId);
-        },
+            getAppTrackingAuthorizationStatus: function(getAppTrackingAuthorizationStatusCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_appTrackingAuthorizationStatus") ;
+                this._handleGetterFromObjC(getAppTrackingAuthorizationStatusCallback, callbackId);
+                this._postMessage("adjust_appTrackingAuthorizationStatus", null, callbackId);
+            },
 
-        getSdkVersion: function(getSdkVersionCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_getSdkVersion") ;
-            this._handleGetterFromObjC(getSdkVersionCallback, callbackId);
-            this._postMessage("adjust_getSdkVersion", {sdkPrefix: this.getSdkPrefix()}, callbackId);
-        },
+            getSdkVersion: function(getSdkVersionCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getSdkVersion") ;
+                this._handleGetterFromObjC(getSdkVersionCallback, callbackId);
+                this._postMessage("adjust_getSdkVersion", {sdkPrefix: this.getSdkPrefix()}, callbackId);
+            },
 
-        getIdfa: function(getIdfaCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfa") ;
-            this._handleGetterFromObjC(getIdfaCallback, callbackId);
-            this._postMessage("adjust_getIdfa", null, callbackId);
-        },
+            getIdfa: function(getIdfaCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfa") ;
+                this._handleGetterFromObjC(getIdfaCallback, callbackId);
+                this._postMessage("adjust_getIdfa", null, callbackId);
+            },
 
-        getIdfv: function(getIdfvCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfv") ;
-            this._handleGetterFromObjC(getIdfvCallback, callbackId);
-            this._postMessage("adjust_getIdfv", null, callbackId);
-        },
+            getIdfv: function(getIdfvCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getIdfv") ;
+                this._handleGetterFromObjC(getIdfvCallback, callbackId);
+                this._postMessage("adjust_getIdfv", null, callbackId);
+            },
 
-        getAdid: function(getAdidCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_getAdid") ;
-            this._handleGetterFromObjC(getAdidCallback, callbackId);
-            this._postMessage("adjust_getAdid", null, callbackId);
-        },
+            getAdid: function(getAdidCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getAdid") ;
+                this._handleGetterFromObjC(getAdidCallback, callbackId);
+                this._postMessage("adjust_getAdid", null, callbackId);
+            },
 
-        isEnabled: function(isEnabledCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_isEnabled") ;
-            this._handleGetterFromObjC(isEnabledCallback, callbackId);
-            this._postMessage("adjust_isEnabled", null, callbackId);
-        },
+            isEnabled: function(isEnabledCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_isEnabled") ;
+                this._handleGetterFromObjC(isEnabledCallback, callbackId);
+                this._postMessage("adjust_isEnabled", null, callbackId);
+            },
 
-        getAttribution: function(getAttributionCallback) {
-            const callbackId = window.randomCallbackIdWithPrefix("adjust_getAttribution") ;
-            this._handleGetterFromObjC(getAttributionCallback, callbackId);
-            this._postMessage("adjust_getAttribution", null, callbackId);
-        },
+            getAttribution: function(getAttributionCallback) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getAttribution") ;
+                this._handleGetterFromObjC(getAttributionCallback, callbackId);
+                this._postMessage("adjust_getAttribution", null, callbackId);
+            },
 
-        getSdkPrefix: function() {
-            if (this.sdkPrefix) {
-                return this.sdkPrefix;
-            } else {
-                return 'web-bridge5.2.0';
-            }
-        },
+            getSdkPrefix: function() {
+                if (this.sdkPrefix) {
+                    return this.sdkPrefix;
+                } else {
+                    return 'web-bridge5.3.0';
+                }
+            },
 
-        trackEvent: function(adjustEvent) {
-            this._postMessage("adjust_trackEvent", adjustEvent);
-        },
+            trackEvent: function(adjustEvent) {
+                this._postMessage("adjust_trackEvent", adjustEvent);
+            },
 
-        trackThirdPartySharing: function(adjustThirdPartySharing) {
-            this._postMessage("adjust_trackThirdPartySharing", adjustThirdPartySharing);
-        },
+            trackThirdPartySharing: function(adjustThirdPartySharing) {
+                this._postMessage("adjust_trackThirdPartySharing", adjustThirdPartySharing);
+            },
 
-        gdprForgetMe: function() {
-            this._postMessage("adjust_gdprForgetMe");
-        },
+            gdprForgetMe: function() {
+                this._postMessage("adjust_gdprForgetMe");
+            },
 
-        enable: function() {
-            this._postMessage("adjust_enable");
-        },
+            enable: function() {
+                this._postMessage("adjust_enable");
+            },
 
-        disable: function() {
-            this._postMessage("adjust_disable");
-        },
+            disable: function() {
+                this._postMessage("adjust_disable");
+            },
 
-        switchToOfflineMode: function() {
-            this._postMessage("adjust_switchToOfflineMode");
-        },
+            switchToOfflineMode: function() {
+                this._postMessage("adjust_switchToOfflineMode");
+            },
 
-        switchBackToOnlineMode: function() {
-            this._postMessage("adjust_switchBackToOnlineMode");
-        },
+            switchBackToOnlineMode: function() {
+                this._postMessage("adjust_switchBackToOnlineMode");
+            },
 
-        trackSubsessionStart: function() {
-            this._postMessage("adjust_trackSubsessionStart");
-        },
+            trackSubsessionStart: function() {
+                this._postMessage("adjust_trackSubsessionStart");
+            },
 
-        trackSubsessionEnd: function() {
-            this._postMessage("adjust_trackSubsessionEnd");
-        },
+            trackSubsessionEnd: function() {
+                this._postMessage("adjust_trackSubsessionEnd");
+            },
 
-        trackMeasurementConsent: function(consentMeasurement) {
-            this._postMessage("adjust_trackMeasurementConsent", consentMeasurement);
-        },
+            trackMeasurementConsent: function(consentMeasurement) {
+                this._postMessage("adjust_trackMeasurementConsent", consentMeasurement);
+            },
 
-        fbPixelEvent: function(pixelID, evtName, customData) {
-            this._postMessage("adjust_fbPixelEvent", {
-                pixelID: pixelID,
-                evtName: evtName,
-                customData: customData
-            });
-        },
+            fbPixelEvent: function(pixelID, evtName, customData) {
+                this._postMessage("adjust_fbPixelEvent", {
+                    pixelID: pixelID,
+                    evtName: evtName,
+                    customData: customData
+                });
+            },
 
-        addGlobalCallbackParameter: function(key, value) {
-            if (typeof key !== 'string' || typeof value !== 'string') {
-                console.log('Passed key or value is not of string type');
-                return;
-            }
-            this._postMessage("adjust_addGlobalCallbackParameter", {
-                _key: key, _keyType: typeof key,
-                _value: value, _valueType: typeof value
-            });
-        },
+            addGlobalCallbackParameter: function(key, value) {
+                if (typeof key !== 'string' || typeof value !== 'string') {
+                    console.log('Passed key or value is not of string type');
+                    return;
+                }
+                this._postMessage("adjust_addGlobalCallbackParameter", {
+                    _key: key, _keyType: typeof key,
+                    _value: value, _valueType: typeof value
+                });
+            },
 
-        removeGlobalCallbackParameter: function(key) {
-            if (typeof key !== 'string') {
-                console.log('Passed key is not of string type');
-                return;
-            }
-            this._postMessage("adjust_removeGlobalCallbackParameter", { _key: key, _keyType: typeof key });
-        },
+            removeGlobalCallbackParameter: function(key) {
+                if (typeof key !== 'string') {
+                    console.log('Passed key is not of string type');
+                    return;
+                }
+                this._postMessage("adjust_removeGlobalCallbackParameter", { _key: key, _keyType: typeof key });
+            },
 
-        removeGlobalCallbackParameters: function() {
-            this._postMessage("adjust_removeGlobalCallbackParameters");
-        },
+            removeGlobalCallbackParameters: function() {
+                this._postMessage("adjust_removeGlobalCallbackParameters");
+            },
 
-        addGlobalPartnerParameter: function(key, value) {
-            if (typeof key !== 'string' || typeof value !== 'string') {
-                console.log('Passed key or value is not of string type');
-                return;
-            }
-            this._postMessage("adjust_addGlobalPartnerParameter", {
-                _key: key, _keyType: typeof key,
-                _value: value, _valueType: typeof value
-            });
-        },
+            addGlobalPartnerParameter: function(key, value) {
+                if (typeof key !== 'string' || typeof value !== 'string') {
+                    console.log('Passed key or value is not of string type');
+                    return;
+                }
+                this._postMessage("adjust_addGlobalPartnerParameter", {
+                    _key: key, _keyType: typeof key,
+                    _value: value, _valueType: typeof value
+                });
+            },
 
-        removeGlobalPartnerParameter: function(key) {
-            if (typeof key !== 'string') {
-                console.log('Passed key is not of string type');
-                return;
-            }
-            this._postMessage("adjust_removeGlobalPartnerParameter", { _key: key, _keyType: typeof key });
-        },
+            removeGlobalPartnerParameter: function(key) {
+                if (typeof key !== 'string') {
+                    console.log('Passed key is not of string type');
+                    return;
+                }
+                this._postMessage("adjust_removeGlobalPartnerParameter", { _key: key, _keyType: typeof key });
+            },
 
-        removeGlobalPartnerParameters: function() {
-            this._postMessage("adjust_removeGlobalPartnerParameters");
-        },
+            removeGlobalPartnerParameters: function() {
+                this._postMessage("adjust_removeGlobalPartnerParameters");
+            },
 
+            endFirstSessionDelay: function() {
+                this._postMessage("adjust_endFirstSessionDelay");
+            },
+
+            enableCoppaComplianceInDelay: function() {
+                this._postMessage("adjust_enableCoppaComplianceInDelay");
+            },
+
+            disableCoppaComplianceInDelay: function() {
+                this._postMessage("adjust_disableCoppaComplianceInDelay");
+            },
+
+            setExternalDeviceIdInDelay: function(externalDeviceId) {
+                this._postMessage("adjust_setExternalDeviceIdInDelay", { "externalDeviceId" : externalDeviceId });
+            },
         };
 
         // AdjustEvent
@@ -367,6 +382,7 @@ static NSString * fbAppIdStatic = nil;
             this.attConsentWaitingSeconds = null;
             this.eventDeduplicationIdsMaxSize = null;
             this.isAppTrackingTransparencyUsageEnabled = null;
+            this.isFirstSessionDelayEnabled = null;
 
             //config URL strategy parameters
             this.urlStrategyDomains = [];
@@ -445,6 +461,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.disableAppTrackingTransparencyUsage = function() {
             this.isAppTrackingTransparencyUsageEnabled = false;
+        };
+        AdjustConfig.prototype.enableFirstSessionDelay = function() {
+            this.isFirstSessionDelayEnabled = true;
         };
 
         //URL strategy

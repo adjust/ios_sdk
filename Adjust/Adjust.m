@@ -288,6 +288,24 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
+ + (void)enableCoppaComplianceInDelay {
+     @synchronized (self) {
+         [[Adjust getInstance] enableCoppaComplianceInDelay];
+     }
+ }
+
+ + (void)disableCoppaComplianceInDelay {
+     @synchronized (self) {
+         [[Adjust getInstance] disableCoppaComplianceInDelay];
+     }
+ }
+
++ (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    @synchronized (self) {
+        [[Adjust getInstance] setExternalDeviceIdInDelay:externalDeviceId];
+    }
+}
+
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     @synchronized (self) {
@@ -295,6 +313,13 @@ static dispatch_once_t onceToken = 0;
                                        withCompletionHandler:completion];
     }
 }
+
++ (void)endFirstSessionDelay {
+    @synchronized (self) {
+        [[Adjust getInstance] endFirstSessionDelay];
+    }
+}
+
 
 + (void)setTestOptions:(NSDictionary *)testOptions {
     @synchronized (self) {
@@ -534,7 +559,6 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)removeGlobalCallbackParameters {
-
     if ([self checkActivityHandler:@"removing all global callback parameters"]) {
         [self.activityHandler removeGlobalCallbackParameters];
         return;
@@ -570,11 +594,12 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
     if (![self checkActivityHandler:@"track third party sharing"]) {
-        if (self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray == nil) {
-            self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray =
-                [[NSMutableArray alloc] init];
+        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+            self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
         }
-        [self.savedPreLaunch.preLaunchAdjustThirdPartySharingArray addObject:thirdPartySharing];
+        [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
+            [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
+        }];
         return;
     }
     [self.activityHandler trackThirdPartySharing:thirdPartySharing];
@@ -582,7 +607,13 @@ static dispatch_once_t onceToken = 0;
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
     if (![self checkActivityHandler:@"track measurement consent"]) {
-        self.savedPreLaunch.lastMeasurementConsentTracked = [NSNumber numberWithBool:enabled];
+        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
+            self.savedPreLaunch.preLaunchActionsArray =
+                [[NSMutableArray alloc] init];
+        }
+        [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
+            [activityHandler tryTrackMeasurementConsentI:enabled];
+        }];
         return;
     }
     [self.activityHandler trackMeasurementConsent:enabled];
@@ -619,7 +650,8 @@ static dispatch_once_t onceToken = 0;
                                             coarseValue:coarseValue
                                              lockWindow:lockWindow
                                                  source:ADJSkanSourceClient
-                                  withCompletionHandler:^(NSDictionary * _Nonnull result) {
+                                  withCompletionHandler:^(NSDictionary * _Nonnull result)
+     {
         if ([self checkActivityHandler]) {
             [self.activityHandler invokeClientSkanUpdateCallbackWithResult:result];
         }
@@ -712,6 +744,30 @@ static dispatch_once_t onceToken = 0;
                            withCompletionHandler:completion];
 }
 
+- (void)enableCoppaComplianceInDelay {
+    if (![self checkActivityHandler:@"enable coppa compliance in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setCoppaComplianceInDelay:YES];
+}
+
+- (void)disableCoppaComplianceInDelay {
+    if (![self checkActivityHandler:@"disable coppa compliance in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setCoppaComplianceInDelay:NO];
+}
+
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
+    if (![self checkActivityHandler:@"set external device id in delay"]) {
+        return;
+    }
+
+    [self.activityHandler setExternalDeviceIdInDelay:externalDeviceId];
+}
+
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(void (^_Nonnull)(ADJPurchaseVerificationResult * _Nonnull verificationResult))completion {
     if (![self checkActivityHandler]) {
@@ -725,6 +781,14 @@ static dispatch_once_t onceToken = 0;
         return;
     }
     [self.activityHandler verifyAndTrackAppStorePurchase:event withCompletionHandler:completion];
+}
+
+- (void)endFirstSessionDelay {
+    if (![self checkActivityHandler]) {
+        return;
+    }
+
+    [self.activityHandler endFirstSessionDelay];
 }
 
 - (void)teardown {

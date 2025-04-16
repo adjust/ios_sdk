@@ -41,11 +41,10 @@
 @property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
+
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, copy) NSString *_Nullable extraPath;
-@property (nonatomic, strong) NSMutableArray *_Nullable preLaunchAdjustThirdPartySharingArray;
-@property (nonatomic, copy) NSNumber *_Nullable lastMeasurementConsentTracked;
 
 - (nonnull id)init;
 
@@ -109,9 +108,13 @@
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
+- (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)invokeClientSkanUpdateCallbackWithResult:(NSDictionary * _Nonnull)result;
+
+- (void)endFirstSessionDelay;
 
 - (ADJPackageParams * _Nullable)packageParams;
 - (ADJActivityState * _Nullable)activityState;
@@ -140,6 +143,28 @@
                                forKey:(NSString *_Nonnull)key;
 - (void)removeGlobalCallbackParametersI:(ADJActivityHandler *_Nonnull)selfI;
 - (void)removeGlobalPartnerParametersI:(ADJActivityHandler *_Nonnull)selfI;
+
+- (void)tryTrackThirdPartySharingI:(nonnull ADJThirdPartySharing *)thirdPartySharing;
+- (void)tryTrackMeasurementConsentI:(BOOL)enabled;
+@end
+
+
+@interface ADJFirstSessionDelayManager : NSObject
+
+- (nonnull instancetype)initWithActivityHandler:(ADJActivityHandler * _Nonnull)activityHandler;
+
+- (void)delayOrInitWithBlock:(void (^_Nonnull)(ADJActivityHandler *_Nonnull selfI, BOOL isInactive))initBlock;
+- (void)endFirstSessionDelay;
+- (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
+- (void)setExternalDeviceIdInDelay:(NSString * _Nullable)externalDeviceId;
+- (void)processApiAction:(NSString * _Nonnull)actionName
+             isPreLaunch:(BOOL)isPreLaunch
+               withBlock:(void (^_Nonnull)(_Nonnull id))selfInjectedBlock;
+
+
+
+- (BOOL)wasSet;
+
 @end
 
 @interface ADJTrackingStatusManager : NSObject

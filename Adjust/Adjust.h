@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V5.2.0
+//  V5.3.0
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-Present Adjust GmbH. All rights reserved.
 //
@@ -286,6 +286,23 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)lastDeeplinkWithCompletionHandler:(nonnull ADJLastDeeplinkGetterBlock)completion;
 
 /**
+ * @brief Enable COPPA (Children's Online Privacy Protection Act) compliant for the application when is in first session delay
+ */
++ (void)enableCoppaComplianceInDelay;
+
+/**
+ * @brief Disable COPPA (Children's Online Privacy Protection Act) compliant for the application when is in first session delay
+ */
++ (void)disableCoppaComplianceInDelay;
+
+/**
+ * @brief Custom defined unique device ID (optional) when is in first session delay.
+ *
+ * @note Make sure to have a UNIQUE external ID for each user / device.
+ */
++ (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
+
+/**
  * @brief Verify in-app-purchase.
  *
  * @param purchase   Purchase object.
@@ -302,6 +319,11 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  */
 + (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
+
+/**
+ * @brief End the first session delay that can be configured on ADJConfig instance.
+ */
++ (void)endFirstSessionDelay;
 
 /**
  * Obtain singleton Adjust object.

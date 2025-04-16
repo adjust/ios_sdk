@@ -30,7 +30,6 @@
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
     // [self.testLibrary addTestDirectory:@"deeplink"];
-    // [self.testLibrary addTest:@"Test_PurchaseVerification_ios_after_install"];
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];
 }

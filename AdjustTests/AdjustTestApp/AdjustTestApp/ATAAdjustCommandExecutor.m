@@ -103,6 +103,12 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
+    } else if ([methodName isEqualToString:@"endFirstSessionDelay"]) {
+        [self endFirstSessionDelay:parameters];
+    } else if ([methodName isEqualToString:@"coppaComplianceInDelay"]) {
+        [self coppaComplianceInDelay:parameters];
+    } else if ([methodName isEqualToString:@"externalDeviceIdInDelay"]) {
+        [self externalDeviceIdInDelay:parameters];
     }
 }
 
@@ -382,6 +388,13 @@
         NSString *attUsageS = [parameters objectForKey:@"allowAttUsage"][0];
         if ([attUsageS boolValue] == NO) {
             [adjustConfig disableAppTrackingTransparencyUsage];
+        }
+    }
+
+    if ([parameters objectForKey:@"firstSessionDelayEnabled"]) {
+        NSString *firstSessionDelayEnabledS = [parameters objectForKey:@"firstSessionDelayEnabled"][0];
+        if ([firstSessionDelayEnabledS boolValue] == YES) {
+            [adjustConfig enableFirstSessionDelay];
         }
     }
 
@@ -841,6 +854,26 @@
         [self.testLibrary addInfoToSend:@"json_response" value:jsonString];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
+}
+
+
+- (void)endFirstSessionDelay:(NSDictionary *)parameters {
+    [Adjust endFirstSessionDelay];
+}
+
+- (void)coppaComplianceInDelay:(NSDictionary *)parameters {
+    NSString *isEnabledS = [parameters objectForKey:@"isEnabled"][0];
+    if ([isEnabledS isEqualToString:@"true"]) {
+        [Adjust enableCoppaComplianceInDelay];
+    }
+    if ([isEnabledS isEqualToString:@"false"]) {
+        [Adjust disableCoppaComplianceInDelay];
+    }
+}
+
+- (void)externalDeviceIdInDelay:(NSDictionary *)parameters {
+    NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
+    [Adjust setExternalDeviceIdInDelay:externalDeviceId];
 }
 
 @end
