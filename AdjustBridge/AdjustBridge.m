@@ -226,8 +226,9 @@
     id fbPixelMapping = [parameters objectForKey:ADJWBFbPixelMappingConfigKey];
 
     //Store parameters
-    NSString *storeName = [parameters objectForKey:ADJWBStoreNameConfigKey];
-    NSString *storeAppId = [parameters objectForKey:ADJWBStoreAppIdConfigKey];
+    NSDictionary *adjustStoreInfo = [parameters objectForKey:ADJWBStoreInfoConfigKey];
+    NSString *storeName = [adjustStoreInfo objectForKey:ADJWBStoreNameConfigKey];
+    NSString *storeAppId = [adjustStoreInfo objectForKey:ADJWBStoreAppIdConfigKey];
 
     ADJConfig *adjustConfig;
     if ([AdjustBridgeUtil isFieldValid:allowSuppressLogLevel]) {
@@ -334,12 +335,9 @@
             [adjustConfig enableFirstSessionDelay];
         }
     }
-    
-    // store parameters handling
-    if ([AdjustBridgeUtil isFieldValid:storeInfoType] || [AdjustBridgeUtil isFieldValid:storeInfoAppId]) {
 
     // store parameters handling
-    if ([AdjustBridgeUtil isFieldValid:storeName]) {
+    if ([AdjustBridgeUtil isFieldValid:adjustStoreInfo]) {
         ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
         if ([AdjustBridgeUtil isFieldValid:storeAppId]) {
             [storeInfo setStoreAppId:storeAppId];

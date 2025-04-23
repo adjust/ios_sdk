@@ -75,8 +75,7 @@ NSString * const ADJWBFbPixelDefaultEventTokenConfigKey = @"fbPixelDefaultEventT
 NSString * const ADJWBFbPixelMappingConfigKey = @"fbPixelMapping";
 NSString * const ADJWBIsAppTrackingTransparencyUsageEnabledConfigKey = @"isAppTrackingTransparencyUsageEnabled";
 NSString * const ADJWBIsFirstSessionDelayEnabledConfigKey = @"isFirstSessionDelayEnabled";
-NSString * const ADJWBStoreInfoTypeConfigKey = @"storeInfoType";
-NSString * const ADJWBStoreInfoAppIdConfigKey = @"storeInfoAppId";
+NSString * const ADJWBStoreInfoConfigKey = @"adjustStoreInfo";
 NSString * const ADJWBStoreNameConfigKey = @"storeName";
 NSString * const ADJWBStoreAppIdConfigKey = @"storeAppId";
 
