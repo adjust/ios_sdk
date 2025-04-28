@@ -403,7 +403,7 @@ static NSString * fbAppIdStatic = nil;
             this.fbPixelMapping = [];
 
             //store parameters
-            this.adjustStoreInfo = null;
+            this.storeInfo = null;
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -486,8 +486,8 @@ static NSString * fbAppIdStatic = nil;
         };
 
         //Store info
-        AdjustConfig.prototype.setStoreInfo = function(adjustStoreInfo) {
-            this.adjustStoreInfo = adjustStoreInfo;
+        AdjustConfig.prototype.setStoreInfo = function(storeInfo) {
+            this.storeInfo = storeInfo;
         };
 
         //AdjustConfig's callback
@@ -533,7 +533,7 @@ static NSString * fbAppIdStatic = nil;
             this.skanUpdatedCallback = callbackId;
         };
 
-        // AdjustStoreIndo
+        // AdjustStoreInfo
         window.AdjustStoreInfo = function(storeName) {
             this.storeName = storeName;
             this.storeAppId = null;
