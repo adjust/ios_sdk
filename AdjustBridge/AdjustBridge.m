@@ -225,10 +225,8 @@
     NSString *fbPixelDefaultEventToken = [parameters objectForKey:ADJWBFbPixelDefaultEventTokenConfigKey];
     id fbPixelMapping = [parameters objectForKey:ADJWBFbPixelMappingConfigKey];
 
-    //Store parameters
-    NSDictionary *adjustStoreInfo = [parameters objectForKey:ADJWBStoreInfoConfigKey];
-    NSString *storeName = [adjustStoreInfo objectForKey:ADJWBStoreNameConfigKey];
-    NSString *storeAppId = [adjustStoreInfo objectForKey:ADJWBStoreAppIdConfigKey];
+    //Store info
+    id storeInfo = [parameters objectForKey:ADJWBStoreInfoConfigKey];
 
     ADJConfig *adjustConfig;
     if ([AdjustBridgeUtil isFieldValid:allowSuppressLogLevel]) {
@@ -337,10 +335,15 @@
     }
 
     // store parameters handling
-    if ([AdjustBridgeUtil isFieldValid:adjustStoreInfo]) {
-        ADJStoreInfo *storeInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
-        if ([AdjustBridgeUtil isFieldValid:storeAppId]) {
-            [storeInfo setStoreAppId:storeAppId];
+    if ([AdjustBridgeUtil isFieldValid:storeInfo]) {
+        NSString *storeName = [storeInfo objectForKey:ADJWBStoreNameConfigKey];
+        NSString *storeAppId = [storeInfo objectForKey:ADJWBStoreAppIdConfigKey];
+        ADJStoreInfo *storeInfo;
+        if ([AdjustBridgeUtil isFieldValid:storeName]) {
+            storeInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
+            if ([AdjustBridgeUtil isFieldValid:storeAppId]) {
+                [storeInfo setStoreAppId:storeAppId];
+            }
         }
         [adjustConfig setStoreInfo:storeInfo];
     }
