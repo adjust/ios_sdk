@@ -26,7 +26,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 @end
 
 @implementation ADJOdmPlugin
-- (id _Nullable)initWithAppLaunchTimestamp:(NSDate * _Nonnull)launchTimestamp {
+- (id _Nullable)init {
 
     self = [super init];
     if (self == nil) return nil;
@@ -37,12 +37,12 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     _odmFrameworkAvailable = [ADJOdmPlugin isFrameworkAvailable];
     _odmInfoHasBeenProcessed = [ADJUserDefaults getGoogleOdmInfoProcessed];
 
-    if (_odmInfoHasBeenProcessed) {
-        [_logger verbose:@"Google ODM Info has been already processed. Skipping ODM initialization..."];
-    }
-
     if (!_odmFrameworkAvailable) {
         [_logger verbose:@"Google ODM framework is not available. Skipping ODM initialization..."];
+    }
+
+    if (_odmInfoHasBeenProcessed) {
+        [_logger verbose:@"Google ODM Info has been already processed. Skipping ODM initialization..."];
     }
 
     if (_odmFrameworkAvailable && !_odmInfoHasBeenProcessed) {
@@ -51,8 +51,15 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 
         if ([ADJUserDefaults getGoogleOdmInitTimestamp] == nil) {
             [_logger verbose:@"Calling Google ODM's setFirstLaunchTime: method..."];
-            [ADJOdmPlugin setOdmLaunchTimestamp:launchTimestamp];
-            [ADJUserDefaults saveGoogleOdmInitTimestamp:launchTimestamp];
+
+            NSDate *firstAppLaunch = [ADJUserDefaults getAppFirstLaunchTimestamp];
+            if (firstAppLaunch == nil) {
+                firstAppLaunch = [NSDate date];
+                [ADJUserDefaults saveAppFirstLaunchTimestamp:firstAppLaunch];
+            }
+
+            [ADJOdmPlugin setOdmFirstAppLaunchTimestamp:firstAppLaunch];
+            [ADJUserDefaults saveGoogleOdmInitTimestamp:[NSDate date]];
         }
 
         // fetch odm Info only in case it hasn't been already fetched and stored.
@@ -188,7 +195,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     return YES;
 }
 
-+ (void)setOdmLaunchTimestamp:(NSDate *)time {
++ (void)setOdmFirstAppLaunchTimestamp:(NSDate *)time {
     Class odmClass = NSClassFromString(@"ODCConversionManager");
     SEL selSharedInstance = NSSelectorFromString(@"sharedInstance");
 

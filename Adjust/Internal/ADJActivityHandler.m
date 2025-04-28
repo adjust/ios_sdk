@@ -217,7 +217,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     if (self.adjustConfig.isOnDeviceMeasurementEnabled) {
-        self.odmPlugin = [[ADJOdmPlugin alloc] initWithAppLaunchTimestamp:[NSDate date]];
+        self.odmPlugin = [[ADJOdmPlugin alloc] init];
     }
 
     self.internalState = [[ADJInternalState alloc] init];

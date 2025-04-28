@@ -11,7 +11,6 @@
 typedef void(^ADJFetchGoogleOdmInfoBlock)(NSString * _Nullable odmInfo, NSError * _Nullable error);
 
 @interface ADJOdmPlugin : NSObject
-- (id _Nullable)initWithAppLaunchTimestamp:(NSDate * _Nonnull)launchTimestamp;
 - (void)fetchGoogleOdmInfoWithCompletionHandler:(nonnull ADJFetchGoogleOdmInfoBlock)completion;
 - (void)onBackendProcessedGoogleOdmInfoWithSuccess:(BOOL)success;
 @end

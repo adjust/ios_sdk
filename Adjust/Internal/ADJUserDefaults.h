@@ -76,6 +76,10 @@
 
 + (NSDictionary *)getLastSkanUpdateData;
 
++ (void)saveAppFirstLaunchTimestamp:(NSDate *)initTime;
+
++ (NSDate *)getAppFirstLaunchTimestamp;
+
 + (void)saveGoogleOdmInitTimestamp:(NSDate *)initTime;
 
 + (NSDate *)getGoogleOdmInitTimestamp;

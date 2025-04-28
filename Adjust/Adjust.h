@@ -326,6 +326,16 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)endFirstSessionDelay;
 
 /**
+ * @brief Sets the application launch timestamp .
+ *
+ * @note In case this method cannot be called upon application launch, pass here previoulsy saved app launch timestamp object.
+ *       In case this method is called upon application launch, nil can be passed.
+ *
+ * @param event      Application launch timestamp.
+ */
++ (void)setAppLaunchTimestamp:(nullable NSDate *)launchTimestamp;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable instancetype)getInstance;
