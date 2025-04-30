@@ -18,7 +18,7 @@
 /**
  * @brief StoreAppId.
  */
-@property (nonatomic, copy, readonly, nonnull) NSString *storeAppId;
+@property (nonatomic, copy, nonnull) NSString *storeAppId;
 
 /**
  * @brief Initializes a new instance of ADJStoreInfo with the given store name.
@@ -28,13 +28,6 @@
  * @return A newly-initialized ADJStoreInfo instance, or nil if initialization fails.
  */
 - (nullable id)initWithStoreName:(nonnull NSString *)storeName;
-
-/**
- * @brief Sets the application identifier for the store.
- *
- * @param storeAppId The application identifier to set.
- */
-- (void)setStoreAppId:(nonnull NSString *)storeAppId;
 
 /**
  * @brief Unavailable. Use initWithStoreName: instead.
