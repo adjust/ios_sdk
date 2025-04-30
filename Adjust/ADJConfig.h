@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ADJStoreInfo.h"
 
 @class ADJLogger;
 @class ADJAttribution;
@@ -14,7 +15,6 @@
 @class ADJEventFailure;
 @class ADJSessionSuccess;
 @class ADJSessionFailure;
-@class ADJStoreInfo;
 typedef NS_ENUM(NSUInteger, ADJLogLevel);
 
 #pragma mark - AdjustDelegate methods

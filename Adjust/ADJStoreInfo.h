@@ -39,6 +39,6 @@
 /**
  * @brief Unavailable. Use initWithStoreName: instead.
  */
-- (nullable id)init NS_UNAVAILABLE;
+- (nonnull id)init NS_UNAVAILABLE;
 
 @end

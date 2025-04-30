@@ -141,10 +141,9 @@
 }
 
 - (void)setStoreInfo:(ADJStoreInfo *)storeInfo {
-    if (storeInfo == nil) {
-        return;
+    @synchronized (self) {
+        _storeInfo = [storeInfo copy];
     }
-    _storeInfo = storeInfo;
 }
 
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
