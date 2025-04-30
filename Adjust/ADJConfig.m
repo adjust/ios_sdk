@@ -250,7 +250,7 @@
         copy->_isIdfaReadingEnabled = self.isIdfaReadingEnabled;
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
-        copy->_storeInfo = self.storeInfo;
+        copy->_storeInfo = [self.storeInfo copyWithZone:zone];
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         copy->_isFirstSessionDelayEnabled = self.isFirstSessionDelayEnabled;
