@@ -378,11 +378,4 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
          useSubdomains:(BOOL)useSubdomains
        isDataResidency:(BOOL)isDataResidency;
 
-/**
- * @brief Sets the store information for this object.
- *
- * @param storeInfo The store information to set. Must not be nil.
- */
-- (void)setStoreInfo:(nonnull ADJStoreInfo *)storeInfo;
-
 @end
