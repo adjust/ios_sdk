@@ -176,7 +176,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge5.3.0';
+                    return 'web-bridge5.4.0';
                 }
             },
 
@@ -401,6 +401,9 @@ static NSString * fbAppIdStatic = nil;
             //fb parameters
             this.fbPixelDefaultEventToken = null;
             this.fbPixelMapping = [];
+
+            //store parameters
+            this.storeInfo = null;
         };
 
         AdjustConfig.EnvironmentSandbox = 'sandbox';
@@ -482,6 +485,11 @@ static NSString * fbAppIdStatic = nil;
             this.fbPixelMapping.push(adjEventTokenValue);
         };
 
+        //Store info
+        AdjustConfig.prototype.setStoreInfo = function(storeInfo) {
+            this.storeInfo = storeInfo;
+        };
+
         //AdjustConfig's callback
         AdjustConfig.prototype.setAttributionCallback = function(attributionCallback) {
             const callbackId = window.randomCallbackIdWithPrefix("adjust_attributionCallback");
@@ -523,6 +531,16 @@ static NSString * fbAppIdStatic = nil;
             const callbackId = window.randomCallbackIdWithPrefix("adjust_skanUpdatedCallback");
             Adjust._handleCallbackFromObjC(skanUpdatedCallback, callbackId);
             this.skanUpdatedCallback = callbackId;
+        };
+
+        // AdjustStoreInfo
+        window.AdjustStoreInfo = function(storeName) {
+            this.storeName = storeName;
+            this.storeAppId = null;
+        };
+
+        AdjustStoreInfo.prototype.setStoreAppId = function(storeAppId) {
+            this.storeAppId = storeAppId;
         };
 
         // Generate random callback id

@@ -334,6 +334,18 @@ AdjustCommandExecutor.prototype.config = function(params) {
             adjustConfig.enableFirstSessionDelay();
         }
     }
+    
+    if ('storeName' in params) {
+        var storeInfo;
+        var storeName = getFirstValue(params, 'storeName');
+        storeInfo = new AdjustStoreInfo(storeName);
+
+        if ('storeAppId' in params) {
+            var storeAppId = getFirstValue(params, 'storeAppId');
+            storeInfo.setStoreAppId(storeAppId);
+        }
+        adjustConfig.setStoreInfo(storeInfo);
+    }
 
     if ('attributionCallbackSendAll' in params) {
         console.log('AdjustCommandExecutor.prototype.config attributionCallbackSendAll');

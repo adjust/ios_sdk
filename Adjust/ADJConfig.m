@@ -10,6 +10,7 @@
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 #import "ADJUtil.h"
+#import "ADJStoreInfo.h"
 
 @interface ADJConfig()
 
@@ -140,6 +141,12 @@
     _isDataResidency = isDataResidency;
 }
 
+- (void)setStoreInfo:(ADJStoreInfo *)storeInfo {
+    @synchronized (self) {
+        _storeInfo = [storeInfo copy];
+    }
+}
+
 - (void)setDelegate:(NSObject<AdjustDelegate> *)delegate {
     BOOL hasResponseDelegate = NO;
     BOOL implementsDeeplinkCallback = NO;
@@ -243,6 +250,7 @@
         copy->_isIdfaReadingEnabled = self.isIdfaReadingEnabled;
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
+        copy->_storeInfo = [self.storeInfo copyWithZone:zone];
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         copy->_isFirstSessionDelayEnabled = self.isFirstSessionDelayEnabled;

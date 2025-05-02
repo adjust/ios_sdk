@@ -314,6 +314,34 @@
             [adjustConfig enableLinkMe];
         }
     }
+    
+    if ([parameters objectForKey:@"storeName"]) {
+        ADJStoreInfo *storeInfo = nil;
+        NSString *storeName;
+        if ([[parameters objectForKey:@"storeName"] count] == 0) {
+            storeName = nil;
+        } else {
+            storeName = [parameters objectForKey:@"storeName"][0];
+            if (storeName == (id)[NSNull null]) {
+                storeName = nil;
+            }
+        }
+        storeInfo = [[ADJStoreInfo alloc] initWithStoreName:storeName];
+        
+        if ([parameters objectForKey:@"storeAppId"]) {
+            NSString *storeAppId;
+            if ([[parameters objectForKey:@"storeAppId"] count] == 0) {
+                storeAppId = nil;
+            } else {
+                storeAppId = [parameters objectForKey:@"storeAppId"][0];
+                if (storeAppId == (id)[NSNull null]) {
+                    storeAppId = nil;
+                }
+            }
+            [storeInfo setStoreAppId:storeAppId];
+        }
+        [adjustConfig setStoreInfo:storeInfo];
+    }
 
     if ([parameters objectForKey:@"attributionCallbackSendAll"]) {
         NSLog(@"attributionCallbackSendAll detected");

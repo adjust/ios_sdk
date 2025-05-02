@@ -14,6 +14,7 @@
 @class ADJEventFailure;
 @class ADJSessionSuccess;
 @class ADJSessionFailure;
+@class ADJStoreInfo;
 typedef NS_ENUM(NSUInteger, ADJLogLevel);
 
 #pragma mark - AdjustDelegate methods
@@ -255,6 +256,11 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  * @note If not set, maximum is 10.
  */
 @property (nonatomic, assign) NSInteger eventDeduplicationIdsMaxSize;
+
+/**
+ * @brief The store information associated with this object.
+ */
+@property (nonatomic, copy, nonnull) ADJStoreInfo *storeInfo;
 
 # pragma mark - AdjustConfig construtors
 

@@ -6,6 +6,12 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic Frameworks build - START... ${N
 
 # ======================================== #
 
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Renaming Carthage to CarthageTemp ... ${NC}"
+mv Carthage CarthageTemp
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
+
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Removing framework targets folders ... ${NC}"
 rm -rf Carthage
 rm -rf "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMK_FOLDER}"
@@ -144,6 +150,11 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
 
 # ======================================== #
 
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Remove Carthage if exist and Renaming CarthageTemp back to Carthage ... ${NC}"
+rm -rf Carthage
+mv CarthageTemp Carthage
+echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Done! ${NC}"
+
+# ======================================== #
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic Frameworks build - END... ${NC}"
-
