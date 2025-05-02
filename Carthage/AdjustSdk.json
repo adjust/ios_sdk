@@ -1,4 +1,6 @@
 {
+  "5.4.0": "https://github.com/adjust/ios_sdk/releases/download/v5.4.0/AdjustSdk-iOS-tvOS-Dynamic-5.4.0.xcframework.zip",
+  "5.3.0": "https://github.com/adjust/ios_sdk/releases/download/v5.3.0/AdjustSdk-iOS-tvOS-Dynamic-5.3.0.xcframework.zip",
   "5.2.0": "https://github.com/adjust/ios_sdk/releases/download/v5.2.0/AdjustSdk-iOS-tvOS-Dynamic-5.2.0.xcframework.zip",
   "5.1.1": "https://github.com/adjust/ios_sdk/releases/download/v5.1.1/AdjustSdk-iOS-tvOS-Dynamic-5.1.1.xcframework.zip",
   "5.1.0": "https://github.com/adjust/ios_sdk/releases/download/v5.1.0/AdjustSdk-iOS-tvOS-Dynamic-5.1.0.xcframework.zip",
