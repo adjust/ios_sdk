@@ -449,7 +449,7 @@ authorizationHeader:(NSString *)authorizationHeader
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
     // in case of beta release, specify build version here
-    // [request setValue:@"2" forHTTPHeaderField:@"Beta-Version"];
+    [request setValue:@"1" forHTTPHeaderField:@"Beta-Version"];
 
     NSMutableArray<NSString *> *kvParameters =
         [NSMutableArray arrayWithCapacity:mergedParameters.count];
