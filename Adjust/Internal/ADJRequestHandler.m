@@ -492,7 +492,7 @@ authorizationHeader:(NSString *)authorizationHeader
     request.HTTPMethod = @"GET";
     [request setValue:clientSdk forHTTPHeaderField:@"Client-Sdk"];
     // in case of beta release, specify build version here
-    // [request setValue:@"2" forHTTPHeaderField:@"Beta-Version"];
+    [request setValue:@"1" forHTTPHeaderField:@"Beta-Version"];
     return request;
 }
 
