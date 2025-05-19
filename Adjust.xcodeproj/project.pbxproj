@@ -652,24 +652,24 @@
 		0AB1CB2A27DF68C100509231 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */; };
 		0AB1CB2B27DF68C100509231 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB784B2636DC0E00773869 /* ADJLinkResolution.m */; };
 		0AB1CB2C27DF68DB00509231 /* AdjustBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9648C5F61CD1770300A3B049 /* AdjustBridge.m */; };
-		0AEB8A202D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A212D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A222D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A232D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A242D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A252D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A262D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A272D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A282D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A292D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A2A2D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A2B2D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A2C2D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A2D2D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A2E2D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A2F2D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
-		0AEB8A302D8457E50089F15C /* ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */; };
-		0AEB8A312D8457E50089F15C /* ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */; };
+		0AEB8A202D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A212D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A222D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A232D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A242D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A252D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A262D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A272D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A282D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A292D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A2A2D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A2B2D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A2C2D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A2D2D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A2E2D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A2F2D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		0AEB8A302D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
+		0AEB8A312D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
 		6FAB784C2636DC0E00773869 /* ADJLinkResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FAB784D2636DC0E00773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB784B2636DC0E00773869 /* ADJLinkResolution.m */; };
 		9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 9601CAE21C74B70600670879 /* ADJEventSuccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -947,8 +947,8 @@
 		0AB1CA2527DF462200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB1CAD527DF671300509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJOdmPlugin.h; sourceTree = "<group>"; };
-		0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJOdmPlugin.m; sourceTree = "<group>"; };
+		0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJOdmManager.h; sourceTree = "<group>"; };
+		0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJOdmManager.m; sourceTree = "<group>"; };
 		52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PocketSocket.xcodeproj; path = PocketSocket/PocketSocket.xcodeproj; sourceTree = "<group>"; };
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
@@ -1444,8 +1444,8 @@
 				9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */,
 				96E5E37F18BBB48A008E7B30 /* ADJUtil.h */,
 				96E5E38018BBB48A008E7B30 /* ADJUtil.m */,
-				0AEB8A1E2D8457E50089F15C /* ADJOdmPlugin.h */,
-				0AEB8A1F2D8457E50089F15C /* ADJOdmPlugin.m */,
+				0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */,
+				0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -1511,7 +1511,7 @@
 				0A584CF92C3E95BF0071A651 /* ADJResponseData.h in Headers */,
 				0A584CFA2C3E95BF0071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584CFB2C3E95BF0071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A242D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A242D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584CFC2C3E95BF0071A651 /* ADJTimerCycle.h in Headers */,
 				0A584CFD2C3E95BF0071A651 /* ADJTimerOnce.h in Headers */,
 				0A584CFE2C3E95BF0071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1559,7 +1559,7 @@
 				0A584D202C3E96390071A651 /* ADJResponseData.h in Headers */,
 				0A584D212C3E96390071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584D222C3E96390071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A202D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A202D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584D232C3E96390071A651 /* ADJTimerCycle.h in Headers */,
 				0A584D242C3E96390071A651 /* ADJTimerOnce.h in Headers */,
 				0A584D252C3E96390071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1607,7 +1607,7 @@
 				0A584D472C3E96960071A651 /* ADJResponseData.h in Headers */,
 				0A584D482C3E96960071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584D492C3E96960071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A262D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A262D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584D4A2C3E96960071A651 /* ADJTimerCycle.h in Headers */,
 				0A584D4B2C3E96960071A651 /* ADJTimerOnce.h in Headers */,
 				0A584D4C2C3E96960071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1634,7 +1634,7 @@
 				0A584D5A2C3E96C70071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584D5B2C3E96C70071A651 /* ADJSessionFailure.h in Headers */,
 				0A584D5C2C3E96C70071A651 /* ADJSessionSuccess.h in Headers */,
-				0AEB8A2E2D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A2E2D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584D5D2C3E96C70071A651 /* ADJThirdPartySharing.h in Headers */,
 				0A584D5E2C3E96C70071A651 /* Adjust.h in Headers */,
 				0A584D602C3E96E20071A651 /* AdjustBridge.h in Headers */,
@@ -1707,7 +1707,7 @@
 				96BCFBE01AC9936C005A65C5 /* ADJAttributionHandler.h in Headers */,
 				96854A591B1F2779002B2874 /* ADJTimerOnce.h in Headers */,
 				96854A5F1B1F278C002B2874 /* ADJTimerCycle.h in Headers */,
-				0AEB8A232D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A232D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */,
 				965B7F301CC78F6600098639 /* ADJBackoffStrategy.h in Headers */,
 				96164D721CC8FA73009431AB /* ADJSdkClickHandler.h in Headers */,
@@ -1734,7 +1734,7 @@
 				0A584CB92C3E95570071A651 /* ADJPurchaseVerificationResult.h in Headers */,
 				0A584CBA2C3E95570071A651 /* ADJSessionFailure.h in Headers */,
 				0A584CBB2C3E95570071A651 /* ADJSessionSuccess.h in Headers */,
-				0AEB8A292D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A292D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584CBC2C3E95570071A651 /* ADJThirdPartySharing.h in Headers */,
 				0A584CBD2C3E95570071A651 /* Adjust.h in Headers */,
 				0A584CBE2C3E95570071A651 /* AdjustBridge.h in Headers */,
@@ -1807,7 +1807,7 @@
 				0A584C322C3E94C80071A651 /* ADJResponseData.h in Headers */,
 				0A584C332C3E94C80071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584C342C3E94C80071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A302D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A302D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584C352C3E94C80071A651 /* ADJTimerCycle.h in Headers */,
 				0A584C362C3E94C80071A651 /* ADJTimerOnce.h in Headers */,
 				0A584C372C3E94C80071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1855,7 +1855,7 @@
 				0A584BE72C3E945D0071A651 /* ADJResponseData.h in Headers */,
 				0A584BE82C3E945D0071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584BE92C3E945D0071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A2C2D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A2C2D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584BEA2C3E945D0071A651 /* ADJTimerCycle.h in Headers */,
 				0A584BEB2C3E945D0071A651 /* ADJTimerOnce.h in Headers */,
 				0A584BEC2C3E945D0071A651 /* ADJUrlStrategy.h in Headers */,
@@ -1903,7 +1903,7 @@
 				0A584C7D2C3E950B0071A651 /* ADJResponseData.h in Headers */,
 				0A584C7E2C3E950B0071A651 /* ADJSdkClickHandler.h in Headers */,
 				0A584C7F2C3E950B0071A651 /* ADJSKAdNetwork.h in Headers */,
-				0AEB8A2A2D8457E50089F15C /* ADJOdmPlugin.h in Headers */,
+				0AEB8A2A2D8457E50089F15C /* ADJOdmManager.h in Headers */,
 				0A584C802C3E950B0071A651 /* ADJTimerCycle.h in Headers */,
 				0A584C812C3E950B0071A651 /* ADJTimerOnce.h in Headers */,
 				0A584C822C3E950B0071A651 /* ADJUrlStrategy.h in Headers */,
@@ -2480,7 +2480,7 @@
 				9D7D3DF72C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1C99C27DD4B3100509231 /* ADJActivityKind.m in Sources */,
 				0AB1C99D27DD4B3100509231 /* ADJActivityPackage.m in Sources */,
-				0AEB8A252D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A252D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0AB1C99E27DD4B3100509231 /* ADJActivityState.m in Sources */,
 				0AB1C99F27DD4B3100509231 /* ADJAdjustFactory.m in Sources */,
 				9D775B632A1F9CCE009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */,
@@ -2527,7 +2527,7 @@
 				9D7D3DF82C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CA3427DF49CC00509231 /* ADJActivityKind.m in Sources */,
 				0AB1CA3527DF49CC00509231 /* ADJActivityPackage.m in Sources */,
-				0AEB8A212D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A212D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0AB1CA3627DF49CC00509231 /* ADJActivityState.m in Sources */,
 				0AB1CA3727DF49CC00509231 /* ADJAdjustFactory.m in Sources */,
 				9D775B642A1F9CCE009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */,
@@ -2574,7 +2574,7 @@
 				9D7D3DFB2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CA7727DF61F200509231 /* ADJActivityKind.m in Sources */,
 				0AB1CA7827DF61F200509231 /* ADJActivityPackage.m in Sources */,
-				0AEB8A272D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A272D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0AB1CA7927DF61F200509231 /* ADJActivityState.m in Sources */,
 				0AB1CA7A27DF61F200509231 /* ADJAdjustFactory.m in Sources */,
 				9D775B652A1F9CCF009D0BE8 /* ADJPurchaseVerificationHandler.m in Sources */,
@@ -2653,7 +2653,7 @@
 				0AB1CB2727DF68C100509231 /* ADJAppStoreSubscription.m in Sources */,
 				0AB1CB2827DF68C100509231 /* ADJUrlStrategy.m in Sources */,
 				0AB1CB2927DF68C100509231 /* ADJThirdPartySharing.m in Sources */,
-				0AEB8A2F2D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A2F2D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				9D7D3DFD2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0AB1CB2A27DF68C100509231 /* ADJAdRevenue.m in Sources */,
 				0AB1CB2B27DF68C100509231 /* ADJLinkResolution.m in Sources */,
@@ -2683,7 +2683,7 @@
 				9D7D3DED2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				96E5E38B18BBB48A008E7B30 /* ADJActivityHandler.m in Sources */,
 				96E5E38C18BBB48A008E7B30 /* ADJActivityKind.m in Sources */,
-				0AEB8A222D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A222D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				96E5E38D18BBB48A008E7B30 /* ADJActivityPackage.m in Sources */,
 				96E5E38E18BBB48A008E7B30 /* ADJActivityState.m in Sources */,
 				96E5E39218BBB48A008E7B30 /* ADJAdjustFactory.m in Sources */,
@@ -2762,7 +2762,7 @@
 				0A584CA52C3E952C0071A651 /* ADJTimerCycle.m in Sources */,
 				0A584CA62C3E952C0071A651 /* ADJTimerOnce.m in Sources */,
 				0A584CA72C3E952C0071A651 /* ADJUrlStrategy.m in Sources */,
-				0AEB8A282D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A282D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				9D7D3DF52C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584CA82C3E952C0071A651 /* ADJUserDefaults.m in Sources */,
 				0A584CA92C3E952C0071A651 /* ADJUtil.m in Sources */,
@@ -2781,7 +2781,7 @@
 				9D7D3DF02C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584BF22C3E949B0071A651 /* ADJAttribution.m in Sources */,
 				0A584BF32C3E949B0071A651 /* ADJConfig.m in Sources */,
-				0AEB8A312D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A312D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0A584BF42C3E949B0071A651 /* ADJEvent.m in Sources */,
 				0A584BF52C3E949B0071A651 /* ADJEventFailure.m in Sources */,
 				0A584BF62C3E949B0071A651 /* ADJEventSuccess.m in Sources */,
@@ -2828,7 +2828,7 @@
 				9D7D3DEF2C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584BA72C3E94240071A651 /* ADJAttribution.m in Sources */,
 				0A584BA82C3E94240071A651 /* ADJConfig.m in Sources */,
-				0AEB8A2D2D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A2D2D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0A584BA92C3E94240071A651 /* ADJEvent.m in Sources */,
 				0A584BAA2C3E94240071A651 /* ADJEventFailure.m in Sources */,
 				0A584BAB2C3E94240071A651 /* ADJEventSuccess.m in Sources */,
@@ -2875,7 +2875,7 @@
 				9D7D3DF32C49A8B200FACB18 /* ADJDeeplink.m in Sources */,
 				0A584C3D2C3E94E70071A651 /* ADJAttribution.m in Sources */,
 				0A584C3E2C3E94E70071A651 /* ADJConfig.m in Sources */,
-				0AEB8A2B2D8457E50089F15C /* ADJOdmPlugin.m in Sources */,
+				0AEB8A2B2D8457E50089F15C /* ADJOdmManager.m in Sources */,
 				0A584C3F2C3E94E70071A651 /* ADJEvent.m in Sources */,
 				0A584C402C3E94E70071A651 /* ADJEventFailure.m in Sources */,
 				0A584C412C3E94E70071A651 /* ADJEventSuccess.m in Sources */,

@@ -331,7 +331,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @note In case this method cannot be called upon application launch, pass here previoulsy saved app launch timestamp object.
  *       In case this method is called upon application launch, nil can be passed.
  *
- * @param event      Application launch timestamp.
+ * @param launchTimestamp      Application launch timestamp.
  */
 + (void)setAppLaunchTimestamp:(nullable NSDate *)launchTimestamp;
 

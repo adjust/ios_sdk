@@ -29,7 +29,7 @@
 #import "ADJDeeplink.h"
 #import <stdatomic.h>
 #import <stdbool.h>
-#import "ADJOdmPlugin.h"
+#import "ADJOdmManager.h"
 
 NSString * const ADJClickSourceAdServices = @"apple_ads";
 NSString * const ADJClickSourceDeepLink = @"deeplink";
@@ -124,7 +124,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, copy) NSString* purchaseVerificationPath;
 @property (nonatomic, copy) ADJResolvedDeeplinkBlock cachedDeeplinkResolutionCallback;
 @property (nonatomic, copy) ADJAttribution *attribution;
-@property (nonatomic, strong) ADJOdmPlugin *odmPlugin;
+@property (nonatomic, strong) ADJOdmManager *odmManager;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
@@ -217,7 +217,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     if (self.adjustConfig.isOnDeviceMeasurementEnabled) {
-        self.odmPlugin = [[ADJOdmPlugin alloc] init];
+        self.odmManager = [[ADJOdmManager alloc] init];
     }
 
     self.internalState = [[ADJInternalState alloc] init];
@@ -2253,7 +2253,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     if (!bContinue) {
-        [selfI.odmPlugin onBackendProcessedGoogleOdmInfoWithSuccess:NO];
+        [selfI.odmManager onBackendProcessedGoogleOdmInfoWithSuccess:NO];
         return;
     }
 
@@ -2968,7 +2968,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [selfI.odmPlugin fetchGoogleOdmInfoWithCompletionHandler:^(NSString * _Nullable odmInfo,
+    [selfI.odmManager fetchGoogleOdmInfoWithCompletionHandler:^(NSString * _Nullable odmInfo,
                                                                 NSError * _Nullable error) {
         [selfI sendGoogleOdmInfo:odmInfo error:error];
     }];
@@ -2986,7 +2986,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSString *source = responseData.sdkClickPackage.parameters[@"source"];
     if ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceGoogleOdm]) {
-        [self.odmPlugin onBackendProcessedGoogleOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
+        [self.odmManager onBackendProcessedGoogleOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
     }
 }
 
