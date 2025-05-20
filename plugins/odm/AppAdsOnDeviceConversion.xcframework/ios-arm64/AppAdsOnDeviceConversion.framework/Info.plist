@@ -13,9 +13,9 @@
   <key>CFBundlePackageType</key>
   <string>FMWK</string>
   <key>CFBundleVersion</key>
-  <string>0.8.21</string>
+  <string>0.9.11</string>
   <key>CFBundleShortVersionString</key>
-  <string>0.8.21</string>
+  <string>0.9.11</string>
   <key>DTSDKName</key>
   <string>iphonesimulator11.2</string>
   <key>MinimumOSVersion</key>
