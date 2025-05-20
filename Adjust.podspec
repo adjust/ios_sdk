@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     awb.dependency            'AdjustSignature', '3.35.2'
   end
 
-  s.subspec 'ODM' do |odm|
+  s.subspec 'GoogleOdm' do |odm|
     odm.ios.deployment_target   = '12.0'
     odm.source_files            = 'plugins/odm/*.{h,m}'
     odm.dependency              'Adjust/Adjust'
@@ -41,9 +41,6 @@ Pod::Spec.new do |s|
     odm.dependency              'GoogleUtilities'
     odm.ios.vendored_frameworks = 'plugins/odm/AppAdsOnDeviceConversion.xcframework'
     odm.preserve_paths          = 'plugins/odm/AppAdsOnDeviceConversion.xcframework'
-    # odm.xcconfig = {
-    #   'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/plugins/odm"',
-    # }
   end
 
 end
