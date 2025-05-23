@@ -1909,11 +1909,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSMutableDictionary *adjustDeepLinks = [NSMutableDictionary dictionary];
     ADJAttribution *deeplinkAttribution = [[ADJAttribution alloc] init];
+    BOOL isLinkAlreadyResolved = NO;
+    int isAdjustTrackerParam = 0;
     for (NSString *fieldValuePair in queryArray) {
         [selfI readDeeplinkQueryStringI:selfI
                             queryString:fieldValuePair
                         adjustDeepLinks:adjustDeepLinks
-                            attribution:deeplinkAttribution];
+                            attribution:deeplinkAttribution
+                   isAdjustTrackerParam:&isAdjustTrackerParam];
+        if (isAdjustTrackerParam) {
+            isLinkAlreadyResolved = YES;
+        }
+        isAdjustTrackerParam = 0;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
@@ -1939,26 +1946,38 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:@"deeplink"];
     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+
+    if (isLinkAlreadyResolved && selfI.cachedDeeplinkResolutionCallback != nil) {
+        ADJResolvedDeeplinkBlock callback = selfI.cachedDeeplinkResolutionCallback;
+        [ADJUtil launchInMainThread:^{
+            callback(deeplink.deeplink.absoluteString);
+        }];
+        selfI.cachedDeeplinkResolutionCallback = nil;
+    }
 }
 
 - (BOOL)readDeeplinkQueryStringI:(ADJActivityHandler *)selfI
                      queryString:(NSString *)queryString
                  adjustDeepLinks:(NSMutableDictionary*)adjustDeepLinks
                      attribution:(ADJAttribution *)deeplinkAttribution
+            isAdjustTrackerParam:(int *)isAdjustTrackerParam
 {
     NSArray* pairComponents = [queryString componentsSeparatedByString:@"="];
     if (pairComponents.count != 2) return NO;
 
     NSString* key = [pairComponents objectAtIndex:0];
+    if ([key isEqualToString:@"adjust_t"] ||
+        [key isEqualToString:@"adj_t"]) {
+        *isAdjustTrackerParam = 1;
+    }
+
     if (![key hasPrefix:kAdjustPrefix]) return NO;
 
-    // NSString* keyDecoded = [key adjUrlDecode];
     NSString *keyDecoded = [ADJAdditions adjUrlDecode:key];
 
     NSString* value = [pairComponents objectAtIndex:1];
     if (value.length == 0) return NO;
 
-    // NSString* valueDecoded = [value adjUrlDecode];
     NSString *valueDecoded = [ADJAdditions adjUrlDecode:value];
     if (!valueDecoded) return NO;
 
