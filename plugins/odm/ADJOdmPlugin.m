@@ -9,9 +9,9 @@
 #import "ADJOdmPlugin.h"
 
 #if __has_feature(modules)
-@import AppAdsOnDeviceConversion;
+@import GoogleAdsOnDeviceConversion;
 #else
-#import <AppAdsOnDeviceConversion/AppAdsOnDeviceConversion.h>
+#import <GoogleAdsOnDeviceConversion/GoogleAdsOnDeviceConversion.h>
 #endif
 
 
