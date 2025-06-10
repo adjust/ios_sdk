@@ -35,12 +35,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'GoogleOdm' do |odm|
     odm.ios.deployment_target   = '12.0'
-    odm.source_files            = 'plugins/odm/*.{h,m}'
+    odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
     odm.dependency              'Adjust/Adjust'
-    odm.dependency              'nanopb'
-    odm.dependency              'GoogleUtilities'
-    odm.ios.vendored_frameworks = 'plugins/odm/AppAdsOnDeviceConversion.xcframework'
-    odm.preserve_paths          = 'plugins/odm/AppAdsOnDeviceConversion.xcframework'
   end
 
 end

@@ -12,11 +12,12 @@
 #import "ADJLogger.h"
 
 static const char * const kInternalQueueName = "io.adjust.OdmQueue";
+static const NSString * const kSupportedOdmVersion = @"2.0.0";
 
 @interface ADJOdmManager ()
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
-@property (nonatomic, assign) BOOL odmPluginAvailable;
+@property (nonatomic, assign) BOOL isOdmAvailable;
 @property (nonatomic, assign) BOOL odmInfoFetched;
 @property (nonatomic, assign) BOOL odmInfoSendingInProcess;
 @property (nonatomic, assign) BOOL odmInfoHasBeenProcessed;
@@ -33,18 +34,30 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 
     _logger = [ADJAdjustFactory logger];
     _internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    _odmPluginAvailable = [ADJOdmManager isOdmPluginAvailable];
+    _isOdmAvailable = NO;
+
+    if ([ADJOdmManager isOdmPluginAvailable]) {
+        NSString *error = nil;
+        if ([ADJOdmManager isOdmFrameworkAvailableWithError:&error]) {
+            NSString *odmVersion = [ADJOdmManager odmFrameworkVersion];
+            if ([kSupportedOdmVersion isEqualToString:odmVersion]) {
+                _isOdmAvailable = YES;
+            } else {
+                [_logger warn:@"Google ODM Framework version %@ is not supported. Skipping ODM initialization...", odmVersion];
+            }
+        } else {
+            [_logger warn:@"Google ODM Framework error - %@. Skipping ODM initialization...", error];
+        }
+    } else {
+        [_logger warn:@"Adjust Plugin for Google ODM SDK is not found. Skipping ODM initialization..."];
+    }
+
     _odmInfoHasBeenProcessed = [ADJUserDefaults getGoogleOdmInfoProcessed];
-
-    if (!_odmPluginAvailable) {
-        [_logger verbose:@"Adjust Plugin for Google ODM SDK is not found. Skipping ODM initialization..."];
-    }
-
     if (_odmInfoHasBeenProcessed) {
-        [_logger verbose:@"Google ODM Info has been already processed. Skipping ODM initialization..."];
+        [_logger info:@"Google ODM Info has been already processed. Skipping ODM initialization..."];
     }
 
-    if (_odmPluginAvailable && !_odmInfoHasBeenProcessed) {
+    if (_isOdmAvailable && !_odmInfoHasBeenProcessed) {
         // set App Launch Timestamp to ODM SDK and save it for a future check.
         // we should call it only once in an app lifetime.
 
@@ -97,7 +110,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 }
 
 - (void)fetchGoogleOdmInfoWithCompletionHandler:(ADJFetchGoogleOdmInfoBlock)completion {
-    if (!self.odmPluginAvailable) {
+    if (!self.isOdmAvailable) {
         return;
     }
 
@@ -138,7 +151,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 }
 
 - (void)onBackendProcessedGoogleOdmInfoWithSuccess:(BOOL)success {
-    if (!self.odmPluginAvailable) {
+    if (!self.isOdmAvailable) {
         return;
     }
 
@@ -166,19 +179,60 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
         return NO;
     }
 
+    SEL selIsFrameworkAvailable = NSSelectorFromString(@"isOdmFrameworkAvailableWithError:");
+    if (![odmPluginClass respondsToSelector:selIsFrameworkAvailable]) {
+        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'isOdmFrameworkAvailableWithError:' is not found in ADJOdmPlugin class."];
+        return NO;
+    }
+
+    SEL selOdmFrameworkVersion = NSSelectorFromString(@"odmFrameworkVersion");
+    if (![odmPluginClass respondsToSelector:selOdmFrameworkVersion]) {
+        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'odmFrameworkVersion' is not found in ADJOdmPlugin class."];
+        return NO;
+    }
+
     SEL selSetLaunchTime = NSSelectorFromString(@"setOdmAppFirstLaunchTimestamp:");
     if (![odmPluginClass respondsToSelector:selSetLaunchTime]) {
-        [[ADJAdjustFactory logger] error:@"Method 'setOdmAppFirstLaunchTimestamp:' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'setOdmAppFirstLaunchTimestamp:' is not found in ADJOdmPlugin class."];
         return NO;
     }
 
     SEL selFetchInfo = NSSelectorFromString(@"fetchOdmInfoWithCompletion:");
     if (![odmPluginClass respondsToSelector:selFetchInfo]) {
-        [[ADJAdjustFactory logger] error:@"Method 'fetchOdmInfoWithCompletion' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'fetchOdmInfoWithCompletion' is not found in ADJOdmPlugin class."];
         return NO;
     }
 
     return YES;
+}
+
++ (BOOL)isOdmFrameworkAvailableWithError:(NSString **)error {
+    Class odmClass = NSClassFromString(@"ADJOdmPlugin");
+    SEL sel = NSSelectorFromString(@"isOdmFrameworkAvailableWithError:");
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:
+                         [odmClass methodSignatureForSelector:sel]];
+    __autoreleasing NSString **errorPointer = error;
+    [inv setSelector:sel];
+    [inv setTarget:odmClass];
+    [inv setArgument:&errorPointer atIndex:2];
+    [inv invoke];
+    BOOL bResult = NO;
+    [inv getReturnValue:&bResult];
+    return bResult;
+}
+
++ (nullable NSString *)odmFrameworkVersion {
+    Class odmClass = NSClassFromString(@"ADJOdmPlugin");
+    SEL sel = NSSelectorFromString(@"odmFrameworkVersion");
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:
+                         [odmClass methodSignatureForSelector:sel]];
+    [inv setSelector:sel];
+    [inv setTarget:odmClass];
+    [inv invoke];
+    NSString * __unsafe_unretained tmpVersion = nil;
+    [inv getReturnValue:&tmpVersion];
+    NSString *version = tmpVersion;
+    return version;
 }
 
 + (void)setOdmAppFirstLaunchTimestamp:(NSDate *)time {

@@ -12,15 +12,11 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/adjust/adjust_signature_sdk.git",
-            .exact("3.35.2") 
+            .exact("3.35.2")
         ),
         .package(
-            url: "https://github.com/google/GoogleUtilities.git",
-            .exact("8.1.0") 
-        ),
-        .package(
-            url: "https://github.com/nanopb/nanopb.git",
-            revision: "b7e1104502eca3a213b46303391ca4d3bc8ddec1"
+            url: "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk.git",
+            .exact("2.0.0")
         )
     ],
     targets: [
@@ -49,24 +45,14 @@ let package = Package(
                 .headerSearchPath("../Adjust/include"),
             ]
         ),
-        .binaryTarget(
-            name: "AppAdsOnDeviceConversion",
-            path: "plugins/odm/AppAdsOnDeviceConversion.xcframework"
-        ),
         .target(
             name: "GoogleOdm",
             dependencies: [
-                "AppAdsOnDeviceConversion",
-                .product(name: "GULLogger", package: "GoogleUtilities"),
-                .product(name: "GULNetwork", package: "GoogleUtilities"),
-                .product(name: "nanopb", package: "nanopb") 
+                .product(name: "GoogleAdsOnDeviceConversion", package: "google-ads-on-device-conversion-ios-sdk") 
             ],
             path: "plugins/odm",
-            publicHeadersPath: "",
-            cSettings: [
-                .headerSearchPath("Adjust"),
-                .headerSearchPath("Adjust/ADJAdditions")
-            ]
+            sources: [ "headers", "sources/spm"],
+            publicHeadersPath: "headers"
         )
     ]
 )
