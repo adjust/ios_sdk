@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     awb.dependency            'AdjustSignature', '3.35.2'
   end
 
-  s.subspec 'GoogleOdm' do |odm|
+  s.subspec 'AdjustSdkGoogleAdsOnDeviceConversion' do |odm|
     odm.ios.deployment_target   = '12.0'
     odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
     odm.dependency              'Adjust/Adjust'

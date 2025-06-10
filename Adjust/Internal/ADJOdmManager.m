@@ -43,18 +43,19 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
             if ([kSupportedOdmVersion isEqualToString:odmVersion]) {
                 _isOdmAvailable = YES;
             } else {
-                [_logger warn:@"Google ODM Framework version %@ is not supported. Skipping ODM initialization...", odmVersion];
+                [_logger warn:@"GoogleAdsOnDeviceConversion current %@ and supported %@ versions differ. Skipping plugin initialization...",
+                 odmVersion, kSupportedOdmVersion];
             }
         } else {
-            [_logger warn:@"Google ODM Framework error - %@. Skipping ODM initialization...", error];
+            [_logger warn:@"GoogleAdsOnDeviceConversion framework error - %@. Skipping plugin initialization...", error];
         }
     } else {
-        [_logger warn:@"Adjust Plugin for Google ODM SDK is not found. Skipping ODM initialization..."];
+        [_logger warn:@"Adjust Plugin for GoogleAdsOnDeviceConversion is not found. Skipping plugin initialization..."];
     }
 
     _odmInfoHasBeenProcessed = [ADJUserDefaults getGoogleOdmInfoProcessed];
     if (_odmInfoHasBeenProcessed) {
-        [_logger info:@"Google ODM Info has been already processed. Skipping ODM initialization..."];
+        [_logger info:@"GoogleAdsOnDeviceConversion Info has been already processed. Skipping plugin initialization..."];
     }
 
     if (_isOdmAvailable && !_odmInfoHasBeenProcessed) {
@@ -62,7 +63,7 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
         // we should call it only once in an app lifetime.
 
         if ([ADJUserDefaults getGoogleOdmInitTimestamp] == nil) {
-            [_logger verbose:@"Calling Google ODM's setFirstLaunchTime: method..."];
+            [_logger verbose:@"Calling GoogleAdsOnDeviceConversion's setFirstLaunchTime: method..."];
 
             NSDate *firstAppLaunch = [ADJUserDefaults getAppFirstLaunchTimestamp];
             if (firstAppLaunch == nil) {
@@ -86,12 +87,12 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
                     if (odmInfo != nil && error == nil) {
                         [ADJUserDefaults setGoogleOdmInfo:odmInfo];
                     } else {
-                        [self.logger verbose:@"Google ODM's fetchAggregateConversionInfoForInteraction:completion: failed. Conversion Info: %@, Error: %@",
+                        [self.logger verbose:@"GoogleAdsOnDeviceConversion's fetchAggregateConversionInfoForInteraction:completion: failed. Conversion Info: %@, Error: %@",
                          odmInfo, error];
                         if (error == nil) {
                             self.odmInfoFetchError = [NSError errorWithDomain:@"com.adjust.sdk.googleOdm"
                                                                          code:100
-                                                                     userInfo:@{@"Error reason": @"Odm Info and Error are nil"}];
+                                                                     userInfo:@{@"Error reason": @"GoogleAdsOnDeviceConversion Info and Error are nil"}];
                         }
                     }
                     // if a block for handling odm info already set
@@ -116,26 +117,26 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 
     dispatch_async(self.internalQueue, ^{
         if(self.odmInfoHasBeenProcessed) {
-            [self.logger verbose:@"Fetch Google ODM Info: it has been already processed. Skipping..."];
+            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: it has been already processed. Skipping..."];
             return;
         }
 
         // Handle the case when a one fetch call is already received and is being executed now
         // and second call to this method is done.
         if (self.odmInfoSendingInProcess) {
-            [self.logger verbose:@"Fetch Google ODM Info: sending is already in process. Skipping..."];
+            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: sending is already in process. Skipping..."];
             return;
         }
 
         if (completion == nil) {
-            [self.logger verbose:@"Fetch Google ODM Info: completion block parameter is nil. Skipping..."];
+            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: completion block parameter is nil. Skipping..."];
             return;
         }
 
         // Handle the case when a one fetch call is already received
         // and the second call to this method is done.
         if (self.fetchOdmInfoBlock){
-            [self.logger verbose:@"Fetch Google ODM Info: completion block is already set. Skipping..."];
+            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: completion block is already set. Skipping..."];
             return;
         }
 
@@ -159,7 +160,7 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
         self.odmInfoSendingInProcess = NO;
 
         if(self.odmInfoHasBeenProcessed) {
-            [self.logger verbose:@"Set Google ODM Info Processed: it has been already set. Skipping..."];
+            [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: it has been already set. Skipping..."];
             return;
         }
 
@@ -181,25 +182,25 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 
     SEL selIsFrameworkAvailable = NSSelectorFromString(@"isOdmFrameworkAvailableWithError:");
     if (![odmPluginClass respondsToSelector:selIsFrameworkAvailable]) {
-        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'isOdmFrameworkAvailableWithError:' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"GoogleAdsOnDeviceConversion Plugin error - method 'isOdmFrameworkAvailableWithError:' is not found in ADJOdmPlugin class."];
         return NO;
     }
 
     SEL selOdmFrameworkVersion = NSSelectorFromString(@"odmFrameworkVersion");
     if (![odmPluginClass respondsToSelector:selOdmFrameworkVersion]) {
-        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'odmFrameworkVersion' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"GoogleAdsOnDeviceConversion Plugin error - method 'odmFrameworkVersion' is not found in ADJOdmPlugin class."];
         return NO;
     }
 
     SEL selSetLaunchTime = NSSelectorFromString(@"setOdmAppFirstLaunchTimestamp:");
     if (![odmPluginClass respondsToSelector:selSetLaunchTime]) {
-        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'setOdmAppFirstLaunchTimestamp:' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"GoogleAdsOnDeviceConversion Plugin error - method 'setOdmAppFirstLaunchTimestamp:' is not found in ADJOdmPlugin class."];
         return NO;
     }
 
     SEL selFetchInfo = NSSelectorFromString(@"fetchOdmInfoWithCompletion:");
     if (![odmPluginClass respondsToSelector:selFetchInfo]) {
-        [[ADJAdjustFactory logger] error:@"ODM Plugin error - method 'fetchOdmInfoWithCompletion' is not found in ADJOdmPlugin class."];
+        [[ADJAdjustFactory logger] error:@"GoogleAdsOnDeviceConversion Plugin error - method 'fetchOdmInfoWithCompletion' is not found in ADJOdmPlugin class."];
         return NO;
     }
 

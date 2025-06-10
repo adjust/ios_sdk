@@ -178,8 +178,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
     }
-    if (adjustConfig.isOnDeviceMeasurementEnabled == YES) {
-        [ADJAdjustFactory.logger info:@"Google's On Device Measurement (ODM) has been switched on"];
+    if (adjustConfig.isGoogleAdsOnDeviceConversionEnabled == YES) {
+        [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion has been switched on"];
     }
 
     self.adjustConfig = adjustConfig;
@@ -216,7 +216,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         }];
     }
 
-    if (self.adjustConfig.isOnDeviceMeasurementEnabled) {
+    if (self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
         self.odmManager = [[ADJOdmManager alloc] init];
     }
 
@@ -2964,7 +2964,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)fetchAndProcessGoogleOdmInfoI:(ADJActivityHandler *)selfI {
-    if (!selfI.adjustConfig.isOnDeviceMeasurementEnabled) {
+    if (!selfI.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
         return;
     }
 
@@ -2975,7 +2975,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)updateGoogleOdmInfoProcessedState:(ADJResponseData *)responseData {
-    if (!self.adjustConfig.isOnDeviceMeasurementEnabled) {
+    if (!self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
         return;
     }
 

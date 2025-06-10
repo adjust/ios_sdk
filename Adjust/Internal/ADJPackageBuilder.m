@@ -991,7 +991,7 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     if ([self.firstSessionDelayManager wasSet]) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
     }
-    if (self.adjustConfig.isOnDeviceMeasurementEnabled == YES) {
+    if (self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
     }
 }

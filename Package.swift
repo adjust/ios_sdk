@@ -7,7 +7,7 @@ let package = Package(
     products: [
         .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
-        .library(name: "GoogleOdm", targets: ["GoogleOdm", "AdjustSdk"])
+        .library(name: "AdjustSdkGoogleAdsOnDeviceConversion", targets: ["AdjustSdkGoogleAdsOnDeviceConversion", "AdjustSdk"])
     ],
     dependencies: [
         .package(
@@ -46,7 +46,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "GoogleOdm",
+            name: "AdjustSdkGoogleAdsOnDeviceConversion",
             dependencies: [
                 .product(name: "GoogleAdsOnDeviceConversion", package: "google-ads-on-device-conversion-ios-sdk") 
             ],

@@ -65,7 +65,7 @@
     _isCostDataInAttributionEnabled = NO;
     _isCoppaComplianceEnabled = NO;
     _isAppTrackingTransparencyUsageEnabled = YES;
-    _isOnDeviceMeasurementEnabled = NO;
+    _isGoogleAdsOnDeviceConversionEnabled = NO;
 
     return self;
 }
@@ -124,8 +124,8 @@
     _isFirstSessionDelayEnabled = YES;
 }
 
-- (void)enableOnDeviceMeasurement {
-    _isOnDeviceMeasurementEnabled = YES;
+- (void)enableGoogleAdsOnDeviceConversion {
+    _isGoogleAdsOnDeviceConversionEnabled = YES;
 }
 
 - (void)setUrlStrategy:(nullable NSArray *)urlStrategyDomains
@@ -256,7 +256,7 @@
         copy->_isIdfvReadingEnabled = self.isIdfvReadingEnabled;
         copy->_isDeviceIdsReadingOnceEnabled = self.isDeviceIdsReadingOnceEnabled;
         copy->_storeInfo = [self.storeInfo copyWithZone:zone];
-        copy->_isOnDeviceMeasurementEnabled = self.isOnDeviceMeasurementEnabled;
+        copy->_isGoogleAdsOnDeviceConversionEnabled = self.isGoogleAdsOnDeviceConversionEnabled;
         copy.eventDeduplicationIdsMaxSize = self.eventDeduplicationIdsMaxSize;
         copy->_isAppTrackingTransparencyUsageEnabled = self.isAppTrackingTransparencyUsageEnabled;
         copy->_isFirstSessionDelayEnabled = self.isFirstSessionDelayEnabled;
