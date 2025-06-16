@@ -153,15 +153,15 @@ const BOOL kSkanRegisterLockWindow = NO;
         return nil;
     }
     
-    // check if ASA and IDFA/IDFV tracking were switched off and warn just in case
+    // check if ASA and IDFA/IDFV tracking were disabled by config and warn just in case
     if (adjustConfig.isIdfaReadingEnabled == NO) {
-        [ADJAdjustFactory.logger warn:@"IDFA reading has been switched off"];
+        [ADJAdjustFactory.logger warn:@"IDFA reading is disabled by configuration"];
     }
     if (adjustConfig.isIdfvReadingEnabled == NO) {
-        [ADJAdjustFactory.logger warn:@"IDFV reading has been switched off"];
+        [ADJAdjustFactory.logger warn:@"IDFV reading is disabled by configuration"];
     }
     if (adjustConfig.isAdServicesEnabled == NO) {
-        [ADJAdjustFactory.logger warn:@"AdServices info reading has been switched off"];
+        [ADJAdjustFactory.logger warn:@"AdServices info reading is disabled by configuration"];
     }
 
     // check if ATT consent delay has been configured
@@ -215,7 +215,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     self.odmManager = [[ADJOdmManager alloc] initIfPluginAvailbleAndFetchOdmData];
     if (self.odmManager != nil) {
-        [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion has been switched on"];
+        [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion is enabled"];
     }
 
     self.internalState = [[ADJInternalState alloc] init];
