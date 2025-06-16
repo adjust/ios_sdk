@@ -12,7 +12,6 @@
 #import "ADJLogger.h"
 
 static const char * const kInternalQueueName = "io.adjust.OdmQueue";
-static const NSString * const kSupportedOdmVersion = @"2.0.0";
 
 @interface ADJOdmManager ()
 @property (nonatomic, weak) id<ADJLogger> logger;
@@ -37,13 +36,8 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
     if ([ADJOdmManager isOdmPluginAvailable]) {
         NSString *error = nil;
         if ([ADJOdmManager isOdmFrameworkAvailableWithError:&error]) {
-            NSString *odmVersion = [ADJOdmManager odmFrameworkVersion];
-            if ([kSupportedOdmVersion isEqualToString:odmVersion]) {
-                isOdmAvailable = YES;
-            } else {
-                [_logger warn:@"GoogleAdsOnDeviceConversion current %@ and supported %@ versions differ. Skipping plugin initialization...",
-                 odmVersion, kSupportedOdmVersion];
-            }
+            [_logger verbose:@"Found GoogleAdsOnDeviceConversion version %@.", [ADJOdmManager odmFrameworkVersion]];
+            isOdmAvailable = YES;
         } else {
             [_logger warn:@"GoogleAdsOnDeviceConversion framework error - %@. Skipping plugin initialization...", error];
         }
