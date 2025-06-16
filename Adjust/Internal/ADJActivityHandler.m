@@ -917,6 +917,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     [selfI checkLinkMeI:selfI];
+    [selfI fetchAndProcessGoogleOdmInfoI:selfI];
+
     [selfI.trackingStatusManager updateAndTrackAttStatus];
 
     [selfI preLaunchActionsI:selfI
@@ -1018,8 +1020,6 @@ const BOOL kSkanRegisterLockWindow = NO;
             [selfI checkForAdServicesAttributionI:selfI];
         }
 
-        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
-
         [selfI writeActivityStateI:selfI];
         [ADJUserDefaults removePushToken];
 
@@ -1042,7 +1042,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     // new session
     if (lastInterval > kSessionInterval) {
         [selfI trackNewSessionI:now withActivityHandler:selfI];
-        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
         return;
     }
 
@@ -1772,6 +1771,8 @@ const BOOL kSkanRegisterLockWindow = NO;
             [selfI processPreLaunchArraysI:selfI];
 
             [selfI checkLinkMeI:selfI];
+
+            [selfI fetchAndProcessGoogleOdmInfoI:selfI];
         }
 
         if (![ADJUserDefaults getInstallTracked]) {
@@ -1789,7 +1790,6 @@ const BOOL kSkanRegisterLockWindow = NO;
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
             [selfI checkForAdServicesAttributionI:selfI];
         }
-        [selfI fetchAndProcessGoogleOdmInfoI:selfI];
     }
 
     [selfI checkStatusI:selfI
