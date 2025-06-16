@@ -2266,7 +2266,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     if (!bContinue) {
-        [selfI.odmManager onBackendProcessedGoogleOdmInfoWithSuccess:NO];
+        [selfI.odmManager onBackendProcessedOdmInfoWithSuccess:NO];
         return;
     }
 
@@ -2988,8 +2988,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [selfI.odmManager fetchGoogleOdmInfoWithCompletionHandler:^(NSString * _Nullable odmInfo,
-                                                                NSError * _Nullable error) {
+    [selfI.odmManager handleFetchedOdmInfoWithCompletionHandler:^(NSString * _Nullable odmInfo,
+                                                                  NSError * _Nullable error) {
         [selfI sendGoogleOdmInfo:odmInfo error:error];
     }];
 }
@@ -3006,7 +3006,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSString *source = responseData.sdkClickPackage.parameters[@"source"];
     if ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceGoogleOdm]) {
-        [self.odmManager onBackendProcessedGoogleOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
+        [self.odmManager onBackendProcessedOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
     }
 }
 

@@ -111,7 +111,7 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
     return self;
 }
 
-- (void)fetchGoogleOdmInfoWithCompletionHandler:(ADJFetchGoogleOdmInfoBlock)completion {
+- (void)handleFetchedOdmInfoWithCompletionHandler:(ADJFetchGoogleOdmInfoBlock)completion {
     // Since odmInfoHasBeenProcessed can change from false to true only,
     // we are checking here in a not-synchronised way - in order to avoid
     // the unnecessary dispatch_async below, when the value is already `YES`.
@@ -157,7 +157,7 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
     });
 }
 
-- (void)onBackendProcessedGoogleOdmInfoWithSuccess:(BOOL)success {
+- (void)onBackendProcessedOdmInfoWithSuccess:(BOOL)success {
     // Since odmInfoHasBeenProcessed can change from false to true only,
     // we are checking here in a not-synchronised way - in order to avoid
     // the unnecessary dispatch_async below, when the value is already `YES`.
