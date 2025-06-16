@@ -320,7 +320,7 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-+ (void)setAppLaunchTimestamp:(nullable NSDate *)launchTimestamp {
++ (void)setOdmAppLaunchTimestamp:(nullable NSDate *)launchTimestamp {
     @synchronized (self) {
         NSDate *ts = [ADJUserDefaults getAppFirstLaunchTimestamp];
         if (ts == nil) {
