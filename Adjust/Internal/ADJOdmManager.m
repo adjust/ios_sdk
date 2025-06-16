@@ -17,7 +17,6 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 @interface ADJOdmManager ()
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
-@property (nonatomic, assign) BOOL isOdmAvailable;
 @property (nonatomic, assign) BOOL odmInfoFetched;
 @property (nonatomic, assign) BOOL odmInfoSendingInProcess;
 @property (nonatomic, assign) BOOL odmInfoHasBeenProcessed;
@@ -27,21 +26,20 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 @end
 
 @implementation ADJOdmManager
-- (id _Nullable)init {
+- (id _Nullable)initIfPluginAvailbleAndFetchOdmData {
 
     self = [super init];
     if (self == nil) return nil;
 
     _logger = [ADJAdjustFactory logger];
-    _internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    _isOdmAvailable = NO;
+    BOOL isOdmAvailable = NO;
 
     if ([ADJOdmManager isOdmPluginAvailable]) {
         NSString *error = nil;
         if ([ADJOdmManager isOdmFrameworkAvailableWithError:&error]) {
             NSString *odmVersion = [ADJOdmManager odmFrameworkVersion];
             if ([kSupportedOdmVersion isEqualToString:odmVersion]) {
-                _isOdmAvailable = YES;
+                isOdmAvailable = YES;
             } else {
                 [_logger warn:@"GoogleAdsOnDeviceConversion current %@ and supported %@ versions differ. Skipping plugin initialization...",
                  odmVersion, kSupportedOdmVersion];
@@ -53,12 +51,15 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
         [_logger warn:@"Adjust Plugin for GoogleAdsOnDeviceConversion is not found. Skipping plugin initialization..."];
     }
 
+    if (!isOdmAvailable) {
+        return nil;
+    }
+
+    _internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     _odmInfoHasBeenProcessed = [ADJUserDefaults getGoogleOdmInfoProcessed];
     if (_odmInfoHasBeenProcessed) {
         [_logger info:@"GoogleAdsOnDeviceConversion Info has been already processed. Skipping plugin initialization..."];
-    }
-
-    if (_isOdmAvailable && !_odmInfoHasBeenProcessed) {
+    } else {
         // set App Launch Timestamp to ODM SDK and save it for a future check.
         // we should call it only once in an app lifetime.
 
@@ -111,7 +112,12 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 }
 
 - (void)fetchGoogleOdmInfoWithCompletionHandler:(ADJFetchGoogleOdmInfoBlock)completion {
-    if (!self.isOdmAvailable) {
+    // Since odmInfoHasBeenProcessed can change from false to true only,
+    // we are checking here in a not-synchronised way - in order to avoid
+    // the unnecessary dispatch_async below, when the value is already `YES`.
+    // All that in addition to the same check (synchronised) below when the value here is NO.
+    if(self.odmInfoHasBeenProcessed) {
+        [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: it has been already processed. Skipping..."];
         return;
     }
 
@@ -152,18 +158,21 @@ static const NSString * const kSupportedOdmVersion = @"2.0.0";
 }
 
 - (void)onBackendProcessedGoogleOdmInfoWithSuccess:(BOOL)success {
-    if (!self.isOdmAvailable) {
+    // Since odmInfoHasBeenProcessed can change from false to true only,
+    // we are checking here in a not-synchronised way - in order to avoid
+    // the unnecessary dispatch_async below, when the value is already `YES`.
+    // All that in addition to the same check (synchronised) below when the value here is NO.
+    if(self.odmInfoHasBeenProcessed) {
+        [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: it has been already set. Skipping..."];
         return;
     }
 
     dispatch_async(self.internalQueue, ^{
-        self.odmInfoSendingInProcess = NO;
-
         if(self.odmInfoHasBeenProcessed) {
             [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: it has been already set. Skipping..."];
             return;
         }
-
+        self.odmInfoSendingInProcess = NO;
         self.odmInfoHasBeenProcessed = success;
         // Update UserDefaults in case odmInfo was processed successfully.
         if (success) {

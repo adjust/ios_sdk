@@ -178,9 +178,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (adjustConfig.isAppTrackingTransparencyUsageEnabled == NO) {
         [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
     }
-    if (adjustConfig.isGoogleAdsOnDeviceConversionEnabled == YES) {
-        [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion has been switched on"];
-    }
 
     self.adjustConfig = adjustConfig;
     self.savedPreLaunch = savedPreLaunch;
@@ -216,8 +213,9 @@ const BOOL kSkanRegisterLockWindow = NO;
         }];
     }
 
-    if (self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
-        self.odmManager = [[ADJOdmManager alloc] init];
+    self.odmManager = [[ADJOdmManager alloc] initIfPluginAvailbleAndFetchOdmData];
+    if (self.odmManager != nil) {
+        [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion has been switched on"];
     }
 
     self.internalState = [[ADJInternalState alloc] init];
@@ -513,7 +511,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                         globalParameters:selfI.globalParameters
                                         trackingStatusManager:selfI.trackingStatusManager
                                         firstSessionDelayManager:selfI.firstSessionDelayManager
-                                        createdAt:now];
+                                        createdAt:now
+                                        odmEnabled:selfI.isOdmEnabled];
      clickBuilder.internalState = selfI.internalState;
 
      ADJActivityPackage *clickPackage =
@@ -1095,7 +1094,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                          globalParameters:selfI.globalParameters
                                          trackingStatusManager:selfI.trackingStatusManager
                                          firstSessionDelayManager:selfI.firstSessionDelayManager
-                                         createdAt:now];
+                                         createdAt:now
+                                         odmEnabled:selfI.isOdmEnabled];
     sessionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [selfI.packageHandler addPackage:sessionPackage];
@@ -1131,7 +1131,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:selfI.trackingStatusManager
                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now];
+                                      createdAt:now
+                                      odmEnabled:selfI.isOdmEnabled];
     infoBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
@@ -1199,7 +1200,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        globalParameters:selfI.globalParameters
                                        trackingStatusManager:selfI.trackingStatusManager
                                        firstSessionDelayManager:selfI.firstSessionDelayManager
-                                       createdAt:now];
+                                       createdAt:now
+                                       odmEnabled:selfI.isOdmEnabled];
     eventBuilder.internalState = selfI.internalState;
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
     [selfI.packageHandler addPackage:eventPackage];
@@ -1235,7 +1237,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                               globalParameters:selfI.globalParameters
                                               trackingStatusManager:selfI.trackingStatusManager
                                               firstSessionDelayManager:selfI.firstSessionDelayManager
-                                              createdAt:now];
+                                              createdAt:now
+                                              odmEnabled:selfI.isOdmEnabled];
     subscriptionBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription];
@@ -1267,7 +1270,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                      globalParameters:self.globalParameters
                                      trackingStatusManager:self.trackingStatusManager
                                      firstSessionDelayManager:self.firstSessionDelayManager
-                                     createdAt:now];
+                                     createdAt:now
+                                     odmEnabled:self.isOdmEnabled];
     tpsBuilder.internalState = self.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
 
@@ -1313,7 +1317,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                     globalParameters:self.globalParameters
                                     trackingStatusManager:self.trackingStatusManager
                                     firstSessionDelayManager:self.firstSessionDelayManager
-                                    createdAt:now];
+                                    createdAt:now
+                                    odmEnabled:self.isOdmEnabled];
     mcBuilder.internalState = self.internalState;
     ADJActivityPackage *mcPackage = [mcBuilder buildMeasurementConsentPackage:enabled];
 
@@ -1359,7 +1364,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                                                           globalParameters:selfI.globalParameters
                                                                      trackingStatusManager:selfI.trackingStatusManager
                                                                   firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                                 createdAt:now];
+                                                                                 createdAt:now
+                                                                                odmEnabled:selfI.isOdmEnabled];
     adRevenueBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue];
@@ -1411,7 +1417,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
-                                           createdAt:now];
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled];
     purchaseVerificationBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *purchaseVerificationPackage = 
@@ -1463,7 +1470,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
-                                           createdAt:now];
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled];
 
     ADJActivityPackage *purchaseVerificationPackage =
     [purchaseVerificationBuilder buildPurchaseVerificationPackageWithEvent:event];
@@ -1954,7 +1962,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
-                                           createdAt:now];
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled];
     clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
@@ -2073,7 +2082,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:selfI.trackingStatusManager
                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now];
+                                      createdAt:now
+                                      odmEnabled:selfI.isOdmEnabled];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
@@ -2117,7 +2127,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:selfI.trackingStatusManager
                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now];
+                                      createdAt:now
+                                      odmEnabled:selfI.isOdmEnabled];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
@@ -2154,7 +2165,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                       globalParameters:selfI.globalParameters
                                       trackingStatusManager:selfI.trackingStatusManager
                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now];
+                                      createdAt:now
+                                      odmEnabled:selfI.isOdmEnabled];
     gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
     [selfI.packageHandler addPackage:gdprPackage];
@@ -2222,7 +2234,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                                           globalParameters:selfI.globalParameters
                                                                      trackingStatusManager:selfI.trackingStatusManager
                                                                   firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                                 createdAt:now];
+                                                                                 createdAt:now
+                                                                                odmEnabled:selfI.isOdmEnabled];
         clickBuilder.internalState = selfI.internalState;
         clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJClickSourceLinkMe
@@ -2264,7 +2277,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                                             globalParameters:selfI.globalParameters
                                                        trackingStatusManager:selfI.trackingStatusManager
                                                     firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                   createdAt:now];
+                                                                   createdAt:now
+                                                                  odmEnabled:selfI.isOdmEnabled];
     cb.internalState = selfI.internalState;
     ADJActivityPackage *clickPackage = [cb buildClickPackage:ADJClickSourceGoogleOdm
                                                      odmInfo:odmInfo
@@ -2912,7 +2926,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                     globalParameters:selfI.globalParameters
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
-                                           createdAt:now];
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled];
     tpsBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
@@ -2963,8 +2978,13 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     [self.firstSessionDelayManager endFirstSessionDelay];
 }
 
+- (BOOL)isOdmEnabled { 
+    return (self.odmManager != nil);
+}
+
+
 - (void)fetchAndProcessGoogleOdmInfoI:(ADJActivityHandler *)selfI {
-    if (!selfI.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
+    if (!selfI.isOdmEnabled) {
         return;
     }
 
@@ -2975,7 +2995,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)updateGoogleOdmInfoProcessedState:(ADJResponseData *)responseData {
-    if (!self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled) {
+    if (!self.isOdmEnabled) {
         return;
     }
 

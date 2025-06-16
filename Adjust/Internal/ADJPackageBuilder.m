@@ -38,6 +38,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
 @property (nonatomic, weak) ADJTrackingStatusManager *trackingStatusManager;
 
 @property (nonatomic, weak) ADJFirstSessionDelayManager *firstSessionDelayManager;
+
+@property (nonatomic, assign) BOOL odmEnabled;
 @end
 
 @implementation ADJPackageBuilder
@@ -50,7 +52,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
            globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
       trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
    firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
-                  createdAt:(double)createdAt {
+                  createdAt:(double)createdAt
+                 odmEnabled:(BOOL)odmEnabled {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -63,6 +66,7 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     self.globalParameters = globalParameters;
     self.firstSessionDelayManager = firstSessionDelayManager;
     self.trackingStatusManager = trackingStatusManager;
+    self.odmEnabled = odmEnabled;
 
     return self;
 }
@@ -991,7 +995,7 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     if ([self.firstSessionDelayManager wasSet]) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
     }
-    if (self.adjustConfig.isGoogleAdsOnDeviceConversionEnabled == YES) {
+    if (self.odmEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
     }
 }

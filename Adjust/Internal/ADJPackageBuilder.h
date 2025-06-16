@@ -40,7 +40,8 @@
                      globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
              firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
-                            createdAt:(double)createdAt;
+                            createdAt:(double)createdAt
+                           odmEnabled:(BOOL)odmEnabled;
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage;
 

@@ -120,6 +120,7 @@
 - (ADJActivityState * _Nullable)activityState;
 - (ADJConfig * _Nullable)adjustConfig;
 - (ADJGlobalParameters * _Nullable)globalParameters;
+- (BOOL)isOdmEnabled;
 
 - (void)teardown;
 + (void)deleteState;
