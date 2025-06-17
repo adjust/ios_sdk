@@ -1136,6 +1136,27 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 #pragma mark - Consent params
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                     configuration:(ADJConfig * _Nullable)adjConfig
+{
+    // idfa
+    if (!adjConfig.isIdfaReadingEnabled) {
+        [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
+        return;
+    }
+    if (adjConfig.isCoppaComplianceEnabled) {
+        [[ADJAdjustFactory logger] info:@"Cannot read IDFA with COPPA enabled"];
+        return;
+    }
+
+    NSString *idfa = [ADJUtil idfa];
+
+    if (idfa != nil) {
+        // add IDFA to payload
+        [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
+    }
+}
+
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
                      withAttStatus:(int)attStatus
                      configuration:(ADJConfig * _Nullable)adjConfig

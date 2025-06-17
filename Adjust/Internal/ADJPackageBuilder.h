@@ -101,6 +101,9 @@ setNumberWithoutRounding:(NSNumber * _Nullable)value
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                     configuration:(ADJConfig * _Nullable)adjConfig;
+
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
                      withAttStatus:(int)attStatus
                      configuration:(ADJConfig * _Nullable)adjConfig

@@ -200,9 +200,13 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     }
     BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
                                                                   andAttStatus:currentAttStatus];
-    BOOL doesConsentDataExist = wasConsentWhenCreated && isConsentWhenSending;
-    if (!doesConsentDataExist) {
-        [ADJPackageBuilder removeConsentDataFromParameters:params];
+    if (wasConsentWhenCreated != isConsentWhenSending) {
+        if (isConsentWhenSending) {
+            [ADJPackageBuilder addConsentDataToParameters:params
+                                            configuration:self.adjustConfig];
+        } else {
+            [ADJPackageBuilder removeConsentDataFromParameters:params];
+        }
     }
 
     // if att_status was part of the payload at all, make sure to have up to date value before sending
