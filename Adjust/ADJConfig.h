@@ -262,6 +262,19 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  */
 @property (nonatomic, copy, nonnull) ADJStoreInfo *storeInfo;
 
+/**
+ * @brief Sets the application launch timestamp to a Google ODM if applicable.
+ *
+ * @note This timestamp is used by Google ODM only for a precise conversion measurement.
+ *       This setter should be used only in case Adjust SDK cannot be initialize in '\application:didFinishLaunchingWithOptions' method.
+ *       In case this method cannot be called upon application launch, pass here previously saved app launch timestamp object.
+ *       In case this method is called upon application launch, pass nil..
+ *
+ * @param launchTimestamp      Application launch timestamp.
+ */
+@property (nonatomic, copy, nonnull) NSDate *odmLaunchTimestamp;
+
+
 # pragma mark - AdjustConfig construtors
 
 /**

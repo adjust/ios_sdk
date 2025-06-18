@@ -25,7 +25,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 @end
 
 @implementation ADJOdmManager
-- (id _Nullable)initIfPluginAvailbleAndFetchOdmData {
+- (id _Nullable)initIfPluginAvailbleAndFetchOdmData:(NSDate *)odmLaunchTimestamp {
 
     self = [super init];
     if (self == nil) return nil;
@@ -54,24 +54,12 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     if (_odmInfoHasBeenProcessed) {
         [_logger info:@"GoogleAdsOnDeviceConversion Info has been already processed. Skipping plugin initialization..."];
     } else {
-        // set App Launch Timestamp to ODM SDK and save it for a future check.
-        // we should call it only once in an app lifetime.
-
-        if ([ADJUserDefaults getGoogleOdmInitTimestamp] == nil) {
-            [_logger verbose:@"Calling GoogleAdsOnDeviceConversion's setFirstLaunchTime: method..."];
-
-            NSDate *firstAppLaunch = [ADJUserDefaults getAppFirstLaunchTimestamp];
-            if (firstAppLaunch == nil) {
-                firstAppLaunch = [NSDate date];
-                [ADJUserDefaults saveAppFirstLaunchTimestamp:firstAppLaunch];
-            }
-
-            [ADJOdmManager setOdmAppFirstLaunchTimestamp:firstAppLaunch];
-            [ADJUserDefaults saveGoogleOdmInitTimestamp:[NSDate date]];
-        }
-
         // fetch odm Info only in case it hasn't been already fetched and stored.
         if (![ADJUserDefaults getGoogleOdmInfo]) {
+            [_logger verbose:@"Calling GoogleAdsOnDeviceConversion's setFirstLaunchTime: method..."];
+
+            [ADJOdmManager setOdmAppFirstLaunchTimestamp:odmLaunchTimestamp ?: [NSDate date]];
+
             [ADJOdmManager fetchOdmInfoWithCompletion:^(NSString * _Nullable odmInfo, NSError * _Nullable error) {
                 dispatch_async(self.internalQueue, ^{
                     self.odmInfoFetched = YES;
