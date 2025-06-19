@@ -171,14 +171,6 @@ static NSString * const PREFS_KEY_GOOGLE_ODM_INFO_PROCESSED = @"adj_google_odm_i
     return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_APP_FIRST_LAUNCH_TIME];
 }
 
-+ (void)saveGoogleOdmInitTimestamp:(NSDate *)initTime {
-    [[NSUserDefaults standardUserDefaults] setObject:initTime forKey:PREFS_KEY_GOOGLE_ODM_INIT_TIME];
-}
-
-+ (NSDate *)getGoogleOdmInitTimestamp {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_KEY_GOOGLE_ODM_INIT_TIME];
-}
-
 + (void)setGoogleOdmInfo:(NSString *)odmInfo {
     [[NSUserDefaults standardUserDefaults] setObject:odmInfo forKey:PREFS_KEY_GOOGLE_ODM_INFO];
 }

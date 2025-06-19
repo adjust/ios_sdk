@@ -54,24 +54,18 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     if (_odmInfoHasBeenProcessed) {
         [_logger info:@"GoogleAdsOnDeviceConversion Info has been already processed. Skipping plugin initialization..."];
     } else {
-        // set App Launch Timestamp to ODM SDK and save it for a future check.
-        // we should call it only once in an app lifetime.
-
-        if ([ADJUserDefaults getGoogleOdmInitTimestamp] == nil) {
+        // Set App Launch Timestamp to ODM SDK and save it for a future check.
+        // we should call this ODM method only once in an app lifetime.
+        if ([ADJUserDefaults getAppFirstLaunchTimestamp] == nil) {
             [_logger verbose:@"Calling GoogleAdsOnDeviceConversion's setFirstLaunchTime: method..."];
-
-            NSDate *firstAppLaunch = [ADJUserDefaults getAppFirstLaunchTimestamp];
-            if (firstAppLaunch == nil) {
-                firstAppLaunch = [NSDate date];
-                [ADJUserDefaults saveAppFirstLaunchTimestamp:firstAppLaunch];
-            }
-
+            NSDate *firstAppLaunch = [NSDate date];
+            [ADJUserDefaults saveAppFirstLaunchTimestamp:firstAppLaunch];
             [ADJOdmManager setOdmAppFirstLaunchTimestamp:firstAppLaunch];
-            [ADJUserDefaults saveGoogleOdmInitTimestamp:[NSDate date]];
         }
 
         // fetch odm Info only in case it hasn't been already fetched and stored.
         if (![ADJUserDefaults getGoogleOdmInfo]) {
+            [_logger verbose:@"Calling GoogleAdsOnDeviceConversion's fetchAggregateConversionInfoForInteraction:completion: method..."];
             [ADJOdmManager fetchOdmInfoWithCompletion:^(NSString * _Nullable odmInfo, NSError * _Nullable error) {
                 dispatch_async(self.internalQueue, ^{
                     self.odmInfoFetched = YES;
@@ -80,9 +74,11 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 
                     // Stor ODM Info only in case it's not nil and error is nill.
                     if (odmInfo != nil && error == nil) {
+                        [self.logger verbose:@"GoogleAdsOnDeviceConversion's fetchAggregateConversionInfoForInteraction:completion: succeeded. Conversion Info: %@, Error: %@",
+                         odmInfo, error];
                         [ADJUserDefaults setGoogleOdmInfo:odmInfo];
                     } else {
-                        [self.logger verbose:@"GoogleAdsOnDeviceConversion's fetchAggregateConversionInfoForInteraction:completion: failed. Conversion Info: %@, Error: %@",
+                        [self.logger error:@"GoogleAdsOnDeviceConversion's fetchAggregateConversionInfoForInteraction:completion: failed. Conversion Info: %@, Error: %@",
                          odmInfo, error];
                         if (error == nil) {
                             self.odmInfoFetchError = [NSError errorWithDomain:@"com.adjust.sdk.googleOdm"
@@ -111,32 +107,32 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     // the unnecessary dispatch_async below, when the value is already `YES`.
     // All that in addition to the same check (synchronised) below when the value here is NO.
     if(self.odmInfoHasBeenProcessed) {
-        [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: it has been already processed. Skipping..."];
+        [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: already processed. Skipping..."];
         return;
     }
 
     dispatch_async(self.internalQueue, ^{
         if(self.odmInfoHasBeenProcessed) {
-            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: it has been already processed. Skipping..."];
+            [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: already processed. Skipping..."];
             return;
         }
 
         // Handle the case when a one fetch call is already received and is being executed now
         // and second call to this method is done.
         if (self.odmInfoSendingInProcess) {
-            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: sending is already in process. Skipping..."];
+            [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: sending in process. Skipping..."];
             return;
         }
 
         if (completion == nil) {
-            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: completion block parameter is nil. Skipping..."];
+            [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: completion block parameter is nil. Skipping..."];
             return;
         }
 
         // Handle the case when a one fetch call is already received
         // and the second call to this method is done.
         if (self.fetchOdmInfoBlock){
-            [self.logger verbose:@"Fetch GoogleAdsOnDeviceConversion Info: completion block is already set. Skipping..."];
+            [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: completion block is already set. Skipping..."];
             return;
         }
 
@@ -157,13 +153,13 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     // the unnecessary dispatch_async below, when the value is already `YES`.
     // All that in addition to the same check (synchronised) below when the value here is NO.
     if(self.odmInfoHasBeenProcessed) {
-        [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: it has been already set. Skipping..."];
+        [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: already set. Skipping..."];
         return;
     }
 
     dispatch_async(self.internalQueue, ^{
         if(self.odmInfoHasBeenProcessed) {
-            [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: it has been already set. Skipping..."];
+            [self.logger verbose:@"Set GoogleAdsOnDeviceConversion Info Processed: already set. Skipping..."];
             return;
         }
         self.odmInfoSendingInProcess = NO;

@@ -35,6 +35,8 @@ NSString * const ADJEnvironmentProduction = @"production";
 
 @property (nonatomic) ADJResolvedDeeplinkBlock cachedResolvedDeeplinkBlock;
 
+@property (nonatomic, assign) NSDate *appLaunchTime;
+
 @end
 
 @implementation Adjust
@@ -317,16 +319,6 @@ static dispatch_once_t onceToken = 0;
 + (void)endFirstSessionDelay {
     @synchronized (self) {
         [[Adjust getInstance] endFirstSessionDelay];
-    }
-}
-
-+ (void)setOdmAppLaunchTimestamp:(nullable NSDate *)launchTimestamp {
-    @synchronized (self) {
-        NSDate *ts = [ADJUserDefaults getAppFirstLaunchTimestamp];
-        if (ts == nil) {
-            ts = (launchTimestamp) ?: [NSDate date];
-            [ADJUserDefaults saveAppFirstLaunchTimestamp:ts];
-        }
     }
 }
 
