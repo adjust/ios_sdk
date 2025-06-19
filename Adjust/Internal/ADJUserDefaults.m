@@ -23,7 +23,6 @@ static NSString * const PREFS_KEY_ATT_WAITING_REMAINING_SECONDS = @"adj_att_wait
 static NSString * const PREFS_KEY_CONTROL_PARAMS = @"adj_control_params";
 static NSString * const PREFS_KEY_LAST_SKAN_UPDATE_DATA = @"adj_last_skan_update";
 static NSString * const PREFS_KEY_APP_FIRST_LAUNCH_TIME = @"adj_app_first_launch_time";
-static NSString * const PREFS_KEY_GOOGLE_ODM_INIT_TIME = @"adj_google_odm_init_time";
 static NSString * const PREFS_KEY_GOOGLE_ODM_INFO = @"adj_google_odm_info";
 static NSString * const PREFS_KEY_GOOGLE_ODM_INFO_PROCESSED = @"adj_google_odm_info_processed";
 
@@ -203,7 +202,6 @@ static NSString * const PREFS_KEY_GOOGLE_ODM_INFO_PROCESSED = @"adj_google_odm_i
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_CONTROL_PARAMS];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_LAST_SKAN_UPDATE_DATA];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_APP_FIRST_LAUNCH_TIME];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GOOGLE_ODM_INIT_TIME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GOOGLE_ODM_INFO];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_GOOGLE_ODM_INFO_PROCESSED];
 }
