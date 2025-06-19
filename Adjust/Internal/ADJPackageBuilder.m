@@ -1135,6 +1135,12 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 #pragma mark - Consent params
 
++ (BOOL)isValidIdfa:(NSString *)idfa {
+    return (idfa != nil)
+     && (idfa.length > 0)
+     && (! [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]);
+}
+
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                      configuration:(ADJConfig * _Nullable)adjConfig
 {
@@ -1150,7 +1156,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
     NSString *idfa = [ADJUtil idfa];
 
-    if (idfa != nil) {
+    if ([self isValidIdfa:idfa]) {
         // add IDFA to payload
         [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
     }
@@ -1187,10 +1193,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         } else {
             // read IDFA
             idfa = [ADJUtil idfa];
-            if (idfa == nil ||
-                idfa.length == 0 ||
-                [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
-            {
+            if (! [self isValidIdfa:idfa]) {
                 idfa = nil;
             } else {
                 // cache IDFA
