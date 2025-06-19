@@ -13,13 +13,13 @@
 + (BOOL)isOdmFrameworkAvailableWithError:(NSString **)error {
     Class odmClass = NSClassFromString(@"ODCConversionManager");
     if (odmClass == nil) {
-        *error = @"ODCConversionManager class is not found.";
+        *error = @"ODCConversionManager class not found";
         return NO;
     }
 
     SEL selSharedInstance = NSSelectorFromString(@"sharedInstance");
     if (![odmClass respondsToSelector:selSharedInstance]) {
-        *error = @"'sharedInstance' method is not found in ODCConversionManager class.";
+        *error = @"sharedInstance method not found in ODCConversionManager class";
         return NO;
     }
 
@@ -30,19 +30,19 @@
 
     SEL selVersionString = NSSelectorFromString(@"versionString");
     if (![sharedInstance respondsToSelector:selVersionString]) {
-        *error = @"'versionString:' method is not found in ODCConversionManager's sharedInstance.";
+        *error = @"versionString: method not found in ODCConversionManager class";
         return NO;
     }
 
     SEL selSetLaunchTime = NSSelectorFromString(@"setFirstLaunchTime:");
     if (![sharedInstance respondsToSelector:selSetLaunchTime]) {
-        *error = @"'setFirstLaunchTime:' method is not found in ODCConversionManager's sharedInstance.";
+        *error = @"setFirstLaunchTime: method not found in ODCConversionManager class";
         return NO;
     }
 
     SEL selFetchConversionInfo = NSSelectorFromString(@"fetchAggregateConversionInfoForInteraction:completion:");
     if (![sharedInstance respondsToSelector:selFetchConversionInfo]) {
-        *error = @"'fetchAggregateConversionInfoForInteraction:completion:' method is not found in ODCConversionManager's sharedInstance.";
+        *error = @"fetchAggregateConversionInfoForInteraction:completion: method not found in ODCConversionManager class";
         return NO;
     }
 
