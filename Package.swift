@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/adjust/adjust_signature_sdk.git",
-            .exact("3.35.2")
+            .exact("3.47.0")
         ),
         .package(
             url: "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk.git",
