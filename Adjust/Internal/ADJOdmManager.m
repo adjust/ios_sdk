@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Genady Buchatsky on 14.03.25.
-//  Copyright © 2025 Adjust GmbH. All rights reserved.
+//  Copyright © 2025-Present Adjust GmbH. All rights reserved.
 //
 
 #import "ADJOdmManager.h"
@@ -14,6 +14,7 @@
 static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 
 @interface ADJOdmManager ()
+
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) dispatch_queue_t internalQueue;
 @property (nonatomic, assign) BOOL odmInfoFetched;
@@ -22,11 +23,12 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 @property (nonatomic, strong) NSString *odmInfo;
 @property (nonatomic, strong) NSError *odmInfoFetchError;
 @property (nonatomic, strong) ADJFetchGoogleOdmInfoBlock fetchOdmInfoBlock;
+
 @end
 
 @implementation ADJOdmManager
-- (id _Nullable)initIfPluginAvailbleAndFetchOdmData {
 
+- (id _Nullable)initIfPluginAvailbleAndFetchOdmData {
     self = [super init];
     if (self == nil) return nil;
 
@@ -102,6 +104,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
             }];
         }
     }
+
     return self;
 }
 
@@ -250,7 +253,6 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 }
 
 + (void)fetchOdmInfoWithCompletion:(void (^)(NSString * _Nullable odmInfo, NSError * _Nullable error))completion {
-
     Class odmClass = NSClassFromString(@"ADJOdmPlugin");
     SEL selFetchInfo = NSSelectorFromString(@"fetchOdmInfoWithCompletion:");
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:

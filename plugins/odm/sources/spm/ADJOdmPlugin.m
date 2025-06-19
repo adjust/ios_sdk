@@ -3,7 +3,7 @@
 //  Adjust
 //
 //  Created by Genady Buchatsky on 13.05.25.
-//  Copyright © 2025 Adjust GmbH. All rights reserved.
+//  Copyright © 2025-Present Adjust GmbH. All rights reserved.
 //
 
 #import "ADJOdmPlugin.h"
