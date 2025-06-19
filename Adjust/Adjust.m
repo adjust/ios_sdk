@@ -320,6 +320,16 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)setOdmAppLaunchTimestamp:(nullable NSDate *)launchTimestamp {
+    @synchronized (self) {
+        NSDate *ts = [ADJUserDefaults getAppFirstLaunchTimestamp];
+        if (ts == nil) {
+            ts = (launchTimestamp) ?: [NSDate date];
+            [ADJUserDefaults saveAppFirstLaunchTimestamp:ts];
+        }
+    }
+}
+
 + (void)setTestOptions:(NSDictionary *)testOptions {
     @synchronized (self) {
         if ([testOptions[@"teardown"] boolValue]) {

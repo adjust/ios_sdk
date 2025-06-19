@@ -213,8 +213,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         }];
     }
 
-    self.odmManager = [[ADJOdmManager alloc] initIfPluginAvailbleAndFetchOdmData:
-                       self.adjustConfig.odmLaunchTimestamp];
+    self.odmManager = [[ADJOdmManager alloc] initIfPluginAvailbleAndFetchOdmData];
     if (self.odmManager != nil) {
         [ADJAdjustFactory.logger info:@"GoogleAdsOnDeviceConversion is enabled"];
     }

@@ -326,6 +326,18 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)endFirstSessionDelay;
 
 /**
+ * @brief Sets the application launch timestamp to a Google ODM.
+ *
+ * @note This timestamp is used by Google ODM only for a precise conversion measurement.
+ *       This setter should be used only in case Adjust SDK cannot be initialize in '\application:didFinishLaunchingWithOptions' method.
+ *       In case this method cannot be called upon application launch, pass here previously saved app launch timestamp object.
+ *       In case this method is called upon application launch, pass nil..
+ *
+ * @param launchTimestamp      Application launch timestamp.
+ */
++ (void)setOdmAppLaunchTimestamp:(nullable NSDate *)launchTimestamp;
+
+/**
  * Obtain singleton Adjust object.
  */
 + (nullable instancetype)getInstance;
