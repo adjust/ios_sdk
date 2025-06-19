@@ -35,8 +35,6 @@ NSString * const ADJEnvironmentProduction = @"production";
 
 @property (nonatomic) ADJResolvedDeeplinkBlock cachedResolvedDeeplinkBlock;
 
-@property (nonatomic, assign) NSDate *appLaunchTime;
-
 @end
 
 @implementation Adjust
