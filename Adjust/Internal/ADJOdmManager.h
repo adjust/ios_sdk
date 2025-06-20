@@ -13,6 +13,6 @@ typedef void(^ADJFetchGoogleOdmInfoBlock)(NSString * _Nullable odmInfo, NSError 
 @interface ADJOdmManager : NSObject
 - (id _Nullable)initIfPluginAvailbleAndFetchOdmData;
 - (void)handleFetchedOdmInfoWithCompletionHandler:(nonnull ADJFetchGoogleOdmInfoBlock)completion;
-- (void)onBackendProcessedOdmInfoWithSuccess:(BOOL)success;
+- (void)completeProcessingOdmInfoWithSuccess:(BOOL)success;
 @end
 

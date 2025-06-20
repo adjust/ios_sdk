@@ -124,11 +124,6 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
             return;
         }
 
-        if (completion == nil) {
-            [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion Info: completion block parameter is nil. Skipping..."];
-            return;
-        }
-
         // Handle the case when a one fetch call is already received
         // and the second call to this method is done.
         if (self.fetchOdmInfoBlock){
@@ -147,7 +142,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
     });
 }
 
-- (void)onBackendProcessedOdmInfoWithSuccess:(BOOL)success {
+- (void)completeProcessingOdmInfoWithSuccess:(BOOL)success {
     // Since odmInfoHasBeenProcessed can change from false to true only,
     // we are checking here in a not-synchronised way - in order to avoid
     // the unnecessary dispatch_async below, when the value is already `YES`.

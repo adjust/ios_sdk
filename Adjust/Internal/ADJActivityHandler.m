@@ -2266,7 +2266,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     if (!bContinue) {
-        [selfI.odmManager onBackendProcessedOdmInfoWithSuccess:NO];
+        [selfI.odmManager completeProcessingOdmInfoWithSuccess:NO];
         return;
     }
 
@@ -3006,7 +3006,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     NSString *source = responseData.sdkClickPackage.parameters[@"source"];
     if ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceGoogleOdm]) {
-        [self.odmManager onBackendProcessedOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
+        [self.odmManager completeProcessingOdmInfoWithSuccess:(responseData.jsonResponse != nil)];
     }
 }
 
