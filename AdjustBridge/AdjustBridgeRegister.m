@@ -176,7 +176,7 @@ static NSString * fbAppIdStatic = nil;
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge5.4.0';
+                    return 'web-bridge5.4.1';
                 }
             },
 
