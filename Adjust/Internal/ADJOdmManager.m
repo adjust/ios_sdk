@@ -171,7 +171,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
         // Update UserDefaults in case odmInfo was processed successfully.
         if (success) {
             [ADJUserDefaults setGoogleOdmInfoProcessed];
-            [self.logger warn:@"GoogleAdsOnDeviceConversion info successfully processed"];
+            [self.logger warn:@"GoogleAdsOnDeviceConversion info has been processed"];
         }
     });
 }
