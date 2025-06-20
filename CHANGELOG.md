@@ -1,3 +1,13 @@
+### Version 5.4.1 (20th June 2025)
+#### Added
+- Added support for Google On-Device-Measurement. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/ios/plugins/google-odm).
+- Optimized the logic behind the `processAndResolveDeeplink:` method to immediately return links that have already been resolved.
+
+#### Changed
+- Updated the Adjust Signature library version to 3.47.0.
+
+---
+
 ### Version 5.4.0 (2nd May 2025)
 #### Added
 - Added support for configuring store information via the `ADJStoreInfo` object. You can now specify the store name and store app ID using `setStoreInfo` method on your `ADJConfig` instance. This enables the SDK to record the intended app store source during initialization.

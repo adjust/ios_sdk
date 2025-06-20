@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                    = "Adjust"
   s.module_name             = "AdjustSdk"
-  s.version                 = "5.4.0"
+  s.version                 = "5.4.1"
   s.summary                 = "This is the iOS SDK of Adjust. You can read more about it at https://adjust.com."
   s.homepage                = "https://github.com/adjust/ios_sdk"
   s.license                 = { :type => 'MIT', :file => 'LICENSE' }
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     adj.exclude_files       = 'Adjust/include/**/*.h'
     adj.resource_bundle     = {'Adjust' => ['Adjust/*.xcprivacy']}
     adj.header_dir          = 'AdjustSdk'
-    adj.dependency          'AdjustSignature', '3.35.2'
+    adj.dependency          'AdjustSignature', '3.47.0'
   end
 
   s.subspec 'AdjustWebBridge' do |awb|
@@ -30,6 +30,13 @@ Pod::Spec.new do |s|
     awb.resource_bundle       = {'Adjust' => ['Adjust/*.xcprivacy']}
     awb.header_dir            = 'AdjustSdk'
     awb.ios.deployment_target = '12.0'
-    awb.dependency            'AdjustSignature', '3.35.2'
+    awb.dependency            'AdjustSignature', '3.47.0'
   end
+
+  s.subspec 'AdjustGoogleOdm' do |odm|
+    odm.ios.deployment_target   = '12.0'
+    odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
+    odm.dependency              'Adjust/Adjust'
+  end
+
 end

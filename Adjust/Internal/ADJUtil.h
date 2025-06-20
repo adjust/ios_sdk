@@ -14,7 +14,6 @@
 #import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJBackoffStrategy.h"
-#import "ADJActivityHandler.h"
 
 typedef void (^selfInjectedBlock)(id);
 typedef void (^synchronisedBlock)(void);

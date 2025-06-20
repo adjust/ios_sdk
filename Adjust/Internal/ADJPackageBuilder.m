@@ -21,6 +21,7 @@
 #import "ADJSKAdNetwork.h"
 
 NSString * const ADJAttributionTokenParameter = @"attribution_token";
+NSString * const ADJOdmInfoParameter = @"odm_info";
 
 @interface ADJPackageBuilder()
 
@@ -37,6 +38,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 @property (nonatomic, weak) ADJTrackingStatusManager *trackingStatusManager;
 
 @property (nonatomic, weak) ADJFirstSessionDelayManager *firstSessionDelayManager;
+
+@property (nonatomic, assign) BOOL odmEnabled;
 @end
 
 @implementation ADJPackageBuilder
@@ -49,7 +52,8 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
            globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
       trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
    firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
-                  createdAt:(double)createdAt {
+                  createdAt:(double)createdAt
+                 odmEnabled:(BOOL)odmEnabled {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -62,6 +66,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     self.globalParameters = globalParameters;
     self.firstSessionDelayManager = firstSessionDelayManager;
     self.trackingStatusManager = trackingStatusManager;
+    self.odmEnabled = odmEnabled;
 
     return self;
 }
@@ -231,6 +236,26 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if (errorCodeNumber != nil) {
         [ADJPackageBuilder parameters:parameters
                                setInt:errorCodeNumber.intValue
+                               forKey:@"error_code"];
+    }
+
+    return [self buildClickPackage:clickSource extraParameters:parameters];
+}
+
+
+- (ADJActivityPackage *)buildClickPackage:(NSString *)clickSource
+                                  odmInfo:(NSString *)odmInfo
+                                    error:(NSError *)error {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    if (odmInfo != nil) {
+        [ADJPackageBuilder parameters:parameters
+                            setString:odmInfo
+                               forKey:ADJOdmInfoParameter];
+    }
+    if (error != nil) {
+        [ADJPackageBuilder parameters:parameters
+                               setInt:(int)error.code
                                forKey:@"error_code"];
     }
 
@@ -970,6 +995,9 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
     if ([self.firstSessionDelayManager wasSet]) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_first_session_delay"];
     }
+    if (self.odmEnabled == YES) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
+    }
 }
 
 - (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {
@@ -1130,10 +1158,37 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage *)activityPackage {
     NSString *source = activityPackage.parameters[@"source"];
-    return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJAdServicesPackageKey]);
+    return ([ADJUtil isNotNull:source] && [source isEqualToString:ADJClickSourceAdServices]);
 }
 
 #pragma mark - Consent params
+
++ (BOOL)isValidIdfa:(NSString *)idfa {
+    return (idfa != nil)
+     && (idfa.length > 0)
+     && (! [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]);
+}
+
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                     configuration:(ADJConfig * _Nullable)adjConfig
+{
+    // idfa
+    if (!adjConfig.isIdfaReadingEnabled) {
+        [[ADJAdjustFactory logger] info:@"Cannot read IDFA because it's forbidden by ADJConfig setting"];
+        return;
+    }
+    if (adjConfig.isCoppaComplianceEnabled) {
+        [[ADJAdjustFactory logger] info:@"Cannot read IDFA with COPPA enabled"];
+        return;
+    }
+
+    NSString *idfa = [ADJUtil idfa];
+
+    if ([self isValidIdfa:idfa]) {
+        // add IDFA to payload
+        [ADJPackageBuilder parameters:parameters setString:idfa forKey:@"idfa"];
+    }
+}
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
@@ -1166,10 +1221,7 @@ NSString * const ADJAttributionTokenParameter = @"attribution_token";
         } else {
             // read IDFA
             idfa = [ADJUtil idfa];
-            if (idfa == nil ||
-                idfa.length == 0 ||
-                [idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"])
-            {
+            if (! [self isValidIdfa:idfa]) {
                 idfa = nil;
             } else {
                 // cache IDFA

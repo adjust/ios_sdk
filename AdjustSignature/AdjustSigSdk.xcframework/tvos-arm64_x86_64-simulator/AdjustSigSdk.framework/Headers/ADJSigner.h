@@ -10,21 +10,23 @@
 
 #import <Foundation/Foundation.h>
 
+__attribute__((visibility("default")))
 @interface ADJSigner : NSObject
 
-+(nonnull NSString *)getVersion;
++ (nonnull NSString*)getVersion;
 
-+ (void)sign:(nonnull NSMutableDictionary *)packageDict
- withActivityKind:(nonnull const char *)activityKind
- withSdkVersion:(nonnull const char *)sdkVersion;
++ (void)sign:(nonnull NSMutableDictionary*)packageDict
+  withActivityKind:(nonnull const char*)activityKind
+    withSdkVersion:(nonnull const char*)sdkVersion;
 
-+ (void)sign:(nonnull NSDictionary *)packageParamsDict
- withExtraParams:(nonnull NSDictionary *)extraParamsDict
- withOutputParams:(nonnull NSMutableDictionary *)outputParamsDict;
++ (void)sign:(nonnull NSDictionary*)packageParamsDict
+   withExtraParams:(nonnull NSDictionary*)extraParamsDict
+  withOutputParams:(nonnull NSMutableDictionary*)outputParamsDict;
 
 @end
 
 // Trampoline from C to ObjC
-void _ADJSigner_sign(size_t argc, void **args);
+void
+_ADJSigner_sign(size_t argc, void** args);
 
 #endif /* ADJSigner_h */

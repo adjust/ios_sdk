@@ -9,7 +9,6 @@
 #import "ADJAttributionHandler.h"
 #import "ADJAdjustFactory.h"
 #import "ADJUtil.h"
-#import "ADJActivityHandler.h"
 #import "ADJAdditions.h"
 #import "ADJTimerOnce.h"
 #import "ADJPackageBuilder.h"
@@ -248,7 +247,8 @@ attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
                                              globalParameters:selfI.activityHandler.globalParameters
                                              trackingStatusManager:selfI.activityHandler.trackingStatusManager
                                              firstSessionDelayManager:nil
-                                             createdAt:now];
+                                             createdAt:now
+                                             odmEnabled:selfI.activityHandler.isOdmEnabled];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];
 
     selfI.lastInitiatedBy = nil;

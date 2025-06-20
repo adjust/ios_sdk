@@ -320,7 +320,6 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-
 + (void)setTestOptions:(NSDictionary *)testOptions {
     @synchronized (self) {
         if ([testOptions[@"teardown"] boolValue]) {

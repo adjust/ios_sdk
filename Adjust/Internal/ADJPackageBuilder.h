@@ -13,7 +13,6 @@
 #import "ADJActivityState.h"
 #import "ADJActivityPackage.h"
 #import "ADJGlobalParameters.h"
-#import "ADJActivityHandler.h"
 #import "ADJThirdPartySharing.h"
 #import "ADJStoreInfo.h"
 
@@ -41,7 +40,8 @@
                      globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
              firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
-                            createdAt:(double)createdAt;
+                            createdAt:(double)createdAt
+                           odmEnabled:(BOOL)odmEnabled;
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage;
 
@@ -57,6 +57,10 @@
 
 - (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
                                           linkMeUrl:(NSString * _Nullable)linkMeUrl;
+
+- (ADJActivityPackage * _Nullable)buildClickPackage:(NSString * _Nullable)clickSource
+                                            odmInfo:(NSString * _Nullable)odmInfo
+                                              error:(NSError * _Nullable)error;
 
 - (ADJActivityPackage * _Nullable)buildPurchaseVerificationPackageWithPurchase:(ADJAppStorePurchase * _Nullable)purchase;
 
@@ -99,6 +103,9 @@ setNumberWithoutRounding:(NSNumber * _Nullable)value
             forKey:(NSString * _Nullable)key;
 
 + (BOOL)isAdServicesPackage:(ADJActivityPackage * _Nullable)activityPackage;
+
++ (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
+                     configuration:(ADJConfig * _Nullable)adjConfig;
 
 + (void)addConsentDataToParameters:(NSMutableDictionary * _Nullable)parameters
                    forActivityKind:(ADJActivityKind)activityKind
