@@ -84,9 +84,9 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
                         [self.logger verbose:@"GoogleAdsOnDeviceConversion fetchAggregateConversionInfoForInteraction:completion: succeeded"];
                         [ADJUserDefaults setGoogleOdmInfo:odmInfo];
                     } else {
-                        [self.logger error:@"GoogleAdsOnDeviceConversion fetchAggregateConversionInfoForInteraction:completion: failed: %@", error];
+                        NSString *strErr = [NSString stringWithFormat:@"GoogleAdsOnDeviceConversion fetchAggregateConversionInfoForInteraction:completion: failed with error: %@ and ODM info: %@", error, odmInfo];
+                        [self.logger error:strErr];
                         if (error == nil) {
-                            NSString *strErr = [NSString stringWithFormat:@"GoogleAdsOnDeviceConversion Info: %@ and Error: nil", odmInfo];
                             self.odmInfoFetchError = [NSError errorWithDomain:@"com.adjust.sdk.googleOdm"
                                                                          code:100
                                                                      userInfo:@{@"Error reason": strErr}];
