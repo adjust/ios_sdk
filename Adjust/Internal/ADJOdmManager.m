@@ -41,11 +41,8 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
             [_logger verbose:@"GoogleAdsOnDeviceConversion framework version %@ successfully found in the app", [ADJOdmManager odmFrameworkVersion]];
             isOdmAvailable = YES;
         } else {
-            [_logger warn:@"%@", error];
-            [_logger warn:@"ADJOdmPlugin can not be initialized"];
+            [_logger error:@"ADJOdmPlugin can not be initialized. Error: %@", error];
         }
-    } else {
-        [_logger warn:@"ADJOdmPlugin can not be initialized"];
     }
 
     if (!isOdmAvailable) {
@@ -171,7 +168,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
         // Update UserDefaults in case odmInfo was processed successfully.
         if (success) {
             [ADJUserDefaults setGoogleOdmInfoProcessed];
-            [self.logger warn:@"GoogleAdsOnDeviceConversion info has been processed"];
+            [self.logger verbose:@"GoogleAdsOnDeviceConversion info has been processed"];
         }
     });
 }
@@ -181,7 +178,6 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 + (BOOL)isOdmPluginAvailable {
     Class odmPluginClass = NSClassFromString(@"ADJOdmPlugin");
     if (odmPluginClass == nil) {
-        [[ADJAdjustFactory logger] error:@"ADJOdmPlugin class not found"];
         return NO;
     }
 
