@@ -206,10 +206,12 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 }
 
 - (void)responseCallback:(ADJResponseData *)responseData {
+    // reset flag to indicate we're done processing this package
+    self.isSendingPurchaseVerificationPackage = NO;
+
     // check if any package response contains information that user has opted out.
     // if yes, disable SDK and flush any potentially stored packages that happened afterwards.
     if (responseData.trackingState == ADJTrackingStateOptedOut) {
-        self.isSendingPurchaseVerificationPackage = NO;
         [self.activityHandler setTrackingStateOptedOut];
         return;
     }
@@ -220,8 +222,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
          [responseData.retryInMilli intValue]];
         
-        // package stays in queue - just reset flag and schedule retry
-        self.isSendingPurchaseVerificationPackage = NO;
+        // package stays in queue - schedule retry
         [self sendNextPurchaseVerificationPackage];
         return;
     }
@@ -243,9 +244,6 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     if (self.packageQueue.count > 0) {
         [self.packageQueue removeObjectAtIndex:0];
     }
-
-    // reset flag to indicate we're done processing this package
-    self.isSendingPurchaseVerificationPackage = NO;
 
     // finish package tracking without retrying / backoff
     [self.activityHandler finishedTracking:responseData];
