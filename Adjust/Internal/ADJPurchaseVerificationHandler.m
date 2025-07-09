@@ -47,10 +47,11 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.logger = ADJAdjustFactory.logger;
 
-    self.requestHandler = [[ADJRequestHandler alloc] initWithResponseCallback:self
-                                                                  urlStrategy:urlStrategy
-                                                               requestTimeout:[ADJAdjustFactory requestTimeout]
-                                                          adjustConfiguration:activityHandler.adjustConfig];
+    self.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory verifyRequestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
