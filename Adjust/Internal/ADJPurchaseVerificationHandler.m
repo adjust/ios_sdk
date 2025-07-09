@@ -28,6 +28,8 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 
+@property (nonatomic, strong) NSNumber *lastPackageRetryInMilli;
+
 @end
 
 @implementation ADJPurchaseVerificationHandler
@@ -64,6 +66,7 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
                      block:^(ADJPurchaseVerificationHandler *selfI) {
         selfI.paused = YES;
         selfI.isSendingPurchaseVerificationPackage = NO;
+        selfI.lastPackageRetryInMilli = nil;
     }];
 }
 
@@ -113,6 +116,7 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
     self.packageQueue = nil;
     self.activityHandler = nil;
     self.isSendingPurchaseVerificationPackage = NO;
+    self.lastPackageRetryInMilli = nil;
 }
 
 #pragma mark - Private & helper methods
@@ -123,6 +127,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
     selfI.isSendingPurchaseVerificationPackage = NO;
+    selfI.lastPackageRetryInMilli = nil;
     selfI.packageQueue = [NSMutableArray array];
 }
 
@@ -143,8 +148,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [selfI.logger debug:@"Purchase verification handler is already sending a package"];
         return;
     }
-    NSUInteger queueSize = selfI.packageQueue.count;
-    if (queueSize == 0) {
+    if (selfI.packageQueue.count == 0) {
         return;
     }
     if ([selfI.activityHandler isGdprForgotten]) {
@@ -152,17 +156,31 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         return;
     }
 
+    // check if we need to wait for backend-requested retry_in delay
+    NSNumber *waitTime = [selfI waitTimeTimeInterval];
+    if (waitTime != nil) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([waitTime doubleValue] * NSEC_PER_SEC)), 
+                       selfI.internalQueue, ^{
+            // clear the retry delay after waiting
+            selfI.lastPackageRetryInMilli = nil;
+            [selfI sendNextPurchaseVerificationPackage];
+        });
+        return;
+    }
+
+    // get the package but keep it in the queue until processing is complete
     ADJActivityPackage *purchaseVerificationPackage = [self.packageQueue objectAtIndex:0];
-    [self.packageQueue removeObjectAtIndex:0];
 
     if (![purchaseVerificationPackage isKindOfClass:[ADJActivityPackage class]]) {
         [selfI.logger error:@"Failed to read purchase_verification package"];
+        // remove the bad package to prevent infinite loop
+        [selfI.packageQueue removeObjectAtIndex:0];
         selfI.isSendingPurchaseVerificationPackage = NO;
         [selfI sendNextPurchaseVerificationPackage];
         return;
     }
 
-    // Set flag to indicate we're sending a package
+    // set flag to indicate we're sending a package
     selfI.isSendingPurchaseVerificationPackage = YES;
 
     dispatch_block_t work = ^{
@@ -199,6 +217,21 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         return;
     }
 
+    // check if backend requested retry_in delay
+    if (responseData.retryInMilli != nil) {
+        self.lastPackageRetryInMilli = responseData.retryInMilli;
+        [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
+         [responseData.retryInMilli intValue]];
+        
+        // package stays in queue - just reset flag and schedule retry
+        self.isSendingPurchaseVerificationPackage = NO;
+        [self sendNextPurchaseVerificationPackage];
+        return;
+    }
+
+    // reset retry counter after successful response
+    self.lastPackageRetryInMilli = nil;
+
     if (!responseData.jsonResponse) {
         [self.logger error:
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
@@ -209,6 +242,11 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         ((ADJPurchaseVerificationResponseData *)responseData).error = verificationResult;
     }
 
+    // processing is complete - remove the package from queue
+    if (self.packageQueue.count > 0) {
+        [self.packageQueue removeObjectAtIndex:0];
+    }
+
     // reset flag to indicate we're done processing this package
     self.isSendingPurchaseVerificationPackage = NO;
 
@@ -217,6 +255,21 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     
     // process next package in queue if any
     [self sendNextPurchaseVerificationPackage];
+}
+
+- (NSNumber *)waitTimeTimeInterval {
+    // handle backend-requested retry_in delay
+    if (self.lastPackageRetryInMilli != nil) {
+        NSTimeInterval waitTime = [self.lastPackageRetryInMilli intValue] / 1000.0;
+
+        [self.logger verbose:
+         @"Waiting for %@ seconds before retrying purchase_verification with retry_in",
+         [ADJUtil secondsNumberFormat:waitTime]];
+
+        return @(waitTime);
+    }
+
+    return nil;
 }
 
 @end
