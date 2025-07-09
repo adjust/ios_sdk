@@ -184,12 +184,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     // set flag to indicate we're sending a package
     selfI.isSendingPurchaseVerificationPackage = YES;
 
-    dispatch_block_t work = ^{
-        [selfI.requestHandler sendPackageByPOST:purchaseVerificationPackage
-                              sendingParameters:nil];
-    };
-
-    work();
+    [selfI.requestHandler sendPackageByPOST:purchaseVerificationPackage
+                          sendingParameters:nil];
 }
 
 - (void)updatePackagesTrackingI:(ADJPurchaseVerificationHandler *)selfI
