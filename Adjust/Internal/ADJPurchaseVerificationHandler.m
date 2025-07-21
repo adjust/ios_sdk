@@ -208,28 +208,7 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 - (void)responseCallback:(ADJResponseData *)responseData {
     // reset flag to indicate we're done processing this package
     self.isSendingPurchaseVerificationPackage = NO;
-
-    // check if any package response contains information that user has opted out.
-    // if yes, disable SDK and flush any potentially stored packages that happened afterwards.
-    if (responseData.trackingState == ADJTrackingStateOptedOut) {
-        [self.activityHandler setTrackingStateOptedOut];
-        return;
-    }
-
-    // check if backend requested retry_in delay
-    if (responseData.retryInMilli != nil) {
-        self.lastPackageRetryInMilli = responseData.retryInMilli;
-        [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
-         [responseData.retryInMilli intValue]];
-        
-        // package stays in queue - schedule retry
-        [self sendNextPurchaseVerificationPackage];
-        return;
-    }
-
-    // reset retry counter after successful response
-    self.lastPackageRetryInMilli = nil;
-
+    
     if (!responseData.jsonResponse) {
         [self.logger error:
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
@@ -238,6 +217,27 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         verificationResult.code = 102;
         verificationResult.message = responseData.message;
         ((ADJPurchaseVerificationResponseData *)responseData).error = verificationResult;
+    } else {
+        // check if any package response contains information that user has opted out.
+        // if yes, disable SDK and flush any potentially stored packages that happened afterwards.
+        if (responseData.trackingState == ADJTrackingStateOptedOut) {
+            [self.activityHandler setTrackingStateOptedOut];
+            return;
+        }
+
+        // check if backend requested retry_in delay
+        if (responseData.retryInMilli != nil) {
+            self.lastPackageRetryInMilli = responseData.retryInMilli;
+            [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
+             [responseData.retryInMilli intValue]];
+            
+            // package stays in queue - schedule retry
+            [self sendNextPurchaseVerificationPackage];
+            return;
+        }
+
+        // reset retry counter after successful response
+        self.lastPackageRetryInMilli = nil;
     }
 
     // processing is complete - remove the package from queue
