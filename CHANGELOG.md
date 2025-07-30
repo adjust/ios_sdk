@@ -1,4 +1,4 @@
-### Version 5.4.2 (- July 2025)
+### Version 5.4.2 (30th July 2025)
 #### Fixed
 - Updated Swift Package Manager dependency constraint for `GoogleAdsOnDeviceConversion`, ensuring compatibility with Swift Package Manager resolution (https://github.com/adjust/ios_sdk/issues/765).
 
