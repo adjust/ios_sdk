@@ -10,7 +10,6 @@
 #import "ADJUtil.h"
 #import "ADJLogger.h"
 #import "ADJAdjustFactory.h"
-#import "ADJBackoffStrategy.h"
 #import "ADJUserDefaults.h"
 #import "ADJPackageBuilder.h"
 #import "ADJPurchaseVerificationResult.h"
@@ -24,12 +23,11 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 @property (nonatomic, strong) ADJRequestHandler *requestHandler;
 
 @property (nonatomic, assign) BOOL paused;
-@property (nonatomic, strong) ADJBackoffStrategy *backoffStrategy;
+@property (nonatomic, assign) BOOL isSendingPurchaseVerificationPackage;
 
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
 
-@property (nonatomic, assign) NSInteger lastPackageRetriesCount;
 @property (nonatomic, strong) NSNumber *lastPackageRetryInMilli;
 
 @end
@@ -48,12 +46,12 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
     self.logger = ADJAdjustFactory.logger;
-    self.lastPackageRetriesCount = 0;
 
-    self.requestHandler = [[ADJRequestHandler alloc] initWithResponseCallback:self
-                                                                  urlStrategy:urlStrategy
-                                                               requestTimeout:[ADJAdjustFactory requestTimeout]
-                                                          adjustConfiguration:activityHandler.adjustConfig];
+    self.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory verifyRequestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
@@ -68,6 +66,8 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
                 selfInject:self
                      block:^(ADJPurchaseVerificationHandler *selfI) {
         selfI.paused = YES;
+        selfI.isSendingPurchaseVerificationPackage = NO;
+        selfI.lastPackageRetryInMilli = nil;
     }];
 }
 
@@ -114,9 +114,10 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
 
     self.internalQueue = nil;
     self.logger = nil;
-    self.backoffStrategy = nil;
     self.packageQueue = nil;
     self.activityHandler = nil;
+    self.isSendingPurchaseVerificationPackage = NO;
+    self.lastPackageRetryInMilli = nil;
 }
 
 #pragma mark - Private & helper methods
@@ -126,7 +127,8 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
   startsSending:(BOOL)startsSending {
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
-    selfI.backoffStrategy = [ADJAdjustFactory sdkClickHandlerBackoffStrategy];
+    selfI.isSendingPurchaseVerificationPackage = NO;
+    selfI.lastPackageRetryInMilli = nil;
     selfI.packageQueue = [NSMutableArray array];
 }
 
@@ -143,63 +145,47 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         [selfI.logger debug:@"Purchase verification handler is paused"];
         return;
     }
-    NSUInteger queueSize = selfI.packageQueue.count;
-    if (queueSize == 0) {
+    if (selfI.isSendingPurchaseVerificationPackage) {
+        [selfI.logger debug:@"Purchase verification handler is already sending a package"];
+        return;
+    }
+    if (selfI.packageQueue.count == 0) {
         return;
     }
     if ([selfI.activityHandler isGdprForgotten]) {
-        [selfI.logger debug:@"purchase_verification request won't be fired for forgotten user"];
+        [selfI.logger debug:@"purchase_verification request won't be sent for GDPR forgotten user"];
         return;
     }
 
+    // check if we need to wait for backend-requested retry_in delay
+    NSNumber *waitTime = [selfI waitTimeTimeInterval];
+    if (waitTime != nil) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([waitTime doubleValue] * NSEC_PER_SEC)), 
+                       selfI.internalQueue, ^{
+            // clear the retry delay after waiting
+            selfI.lastPackageRetryInMilli = nil;
+            [selfI sendNextPurchaseVerificationPackage];
+        });
+        return;
+    }
+
+    // get the package but keep it in the queue until processing is complete
     ADJActivityPackage *purchaseVerificationPackage = [self.packageQueue objectAtIndex:0];
-    [self.packageQueue removeObjectAtIndex:0];
 
     if (![purchaseVerificationPackage isKindOfClass:[ADJActivityPackage class]]) {
         [selfI.logger error:@"Failed to read purchase_verification package"];
+        // remove the bad package to prevent infinite loop
+        [selfI.packageQueue removeObjectAtIndex:0];
+        selfI.isSendingPurchaseVerificationPackage = NO;
         [selfI sendNextPurchaseVerificationPackage];
         return;
     }
 
-    dispatch_block_t work = ^{
-        [selfI.requestHandler sendPackageByPOST:purchaseVerificationPackage
-                              sendingParameters:nil];
-        [selfI sendNextPurchaseVerificationPackage];
-    };
+    // set flag to indicate we're sending a package
+    selfI.isSendingPurchaseVerificationPackage = YES;
 
-    NSNumber *waitTimeSecondsDouble = [selfI waitTimeTimeInterval];
-
-    if (waitTimeSecondsDouble != nil) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                     (int64_t)(waitTimeSecondsDouble.doubleValue * NSEC_PER_SEC)),
-                       self.internalQueue, work);
-    } else {
-        work();
-    }
-}
-- (NSNumber *)waitTimeTimeInterval {
-    if (self.lastPackageRetriesCount > 0) {
-        NSTimeInterval waitTime = [ADJUtil waitingTime:self.lastPackageRetriesCount
-                                       backoffStrategy:self.backoffStrategy];
-
-        [self.logger verbose:
-         @"Waiting for %@ seconds before retrying purchase_verification for the %d time",
-         [ADJUtil secondsNumberFormat:waitTime], self.lastPackageRetriesCount];
-
-        return @(waitTime);
-    }
-
-    if (self.lastPackageRetryInMilli != nil) {
-        NSTimeInterval waitTime = [self.lastPackageRetryInMilli intValue] / 1000.0;
-
-        [self.logger verbose:
-         @"Waiting for %@ seconds before retrying purchase_verification with retry_in",
-         [ADJUtil secondsNumberFormat:waitTime]];
-
-        return @(waitTime);
-    }
-
-    return nil;
+    [selfI.requestHandler sendPackageByPOST:purchaseVerificationPackage
+                          sendingParameters:nil];
 }
 
 - (void)updatePackagesTrackingI:(ADJPurchaseVerificationHandler *)selfI
@@ -220,6 +206,9 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 }
 
 - (void)responseCallback:(ADJResponseData *)responseData {
+    // reset flag to indicate we're done processing this package
+    self.isSendingPurchaseVerificationPackage = NO;
+    
     if (!responseData.jsonResponse) {
         [self.logger error:
             @"Could not get purchase_verification JSON response with message: %@", responseData.message];
@@ -227,43 +216,55 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
         verificationResult.verificationStatus = @"not_verified";
         verificationResult.code = 102;
         verificationResult.message = responseData.message;
-        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
-    }
-    // Check if any package response contains information that user has opted out.
-    // If yes, disable SDK and flush any potentially stored packages that happened afterwards.
-    if (responseData.trackingState == ADJTrackingStateOptedOut) {
-        self.lastPackageRetriesCount = 0;
+        ((ADJPurchaseVerificationResponseData *)responseData).error = verificationResult;
+    } else {
+        // check if any package response contains information that user has opted out.
+        // if yes, disable SDK and flush any potentially stored packages that happened afterwards.
+        if (responseData.trackingState == ADJTrackingStateOptedOut) {
+            [self.activityHandler setTrackingStateOptedOut];
+            return;
+        }
+
+        // check if backend requested retry_in delay
+        if (responseData.retryInMilli != nil) {
+            self.lastPackageRetryInMilli = responseData.retryInMilli;
+            [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
+             [responseData.retryInMilli intValue]];
+            
+            // package stays in queue - schedule retry
+            [self sendNextPurchaseVerificationPackage];
+            return;
+        }
+
+        // reset retry counter after successful response
         self.lastPackageRetryInMilli = nil;
-        [self.activityHandler setTrackingStateOptedOut];
-        return;
     }
 
-    if ([self retryPackageWithResponse:responseData]) {
-        [self sendPurchaseVerificationPackage:responseData.purchaseVerificationPackage];
-        return;
+    // processing is complete - remove the package from queue
+    if (self.packageQueue.count > 0) {
+        [self.packageQueue removeObjectAtIndex:0];
     }
 
-    self.lastPackageRetriesCount = 0;
-    self.lastPackageRetryInMilli = nil;
+    // finish package tracking without retrying / backoff
     [self.activityHandler finishedTracking:responseData];
+    
+    // process next package in queue if any
+    [self sendNextPurchaseVerificationPackage];
 }
 
-- (BOOL)retryPackageWithResponse:(ADJResponseData *)responseData {
-    if (responseData.jsonResponse == nil) {
-        self.lastPackageRetriesCount++;
-        [self.logger error:@"Retrying purchase_verification package for the %d time",
-         self.lastPackageRetriesCount];
-        return YES;
+- (NSNumber *)waitTimeTimeInterval {
+    // handle backend-requested retry_in delay
+    if (self.lastPackageRetryInMilli != nil) {
+        NSTimeInterval waitTime = [self.lastPackageRetryInMilli intValue] / 1000.0;
+
+        [self.logger verbose:
+         @"Waiting for %@ seconds before retrying purchase_verification with retry_in",
+         [ADJUtil secondsNumberFormat:waitTime]];
+
+        return @(waitTime);
     }
 
-    if (responseData.retryInMilli != nil) {
-        self.lastPackageRetryInMilli = responseData.retryInMilli;
-        [self.logger error:@"Retrying purchase_verification package with retry in %d ms",
-         [responseData.retryInMilli intValue]];
-        return YES;
-    }
-
-    return NO;
+    return nil;
 }
 
 @end

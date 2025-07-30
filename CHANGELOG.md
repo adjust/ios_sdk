@@ -1,3 +1,10 @@
+### Version 5.4.2 (30th July 2025)
+#### Fixed
+- Updated Swift Package Manager dependency constraint for `GoogleAdsOnDeviceConversion`, ensuring compatibility with Swift Package Manager resolution (https://github.com/adjust/ios_sdk/issues/765).
+
+
+---
+
 ### Version 5.4.1 (20th June 2025)
 #### Added
 - Added support for Google On-Device-Measurement. For more details about this feature, refer to the [official documentation](https://dev.adjust.com/en/sdk/ios/plugins/google-odm).

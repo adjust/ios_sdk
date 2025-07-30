@@ -1599,19 +1599,21 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)launchPurchaseVerificationResponseTasksI:(ADJActivityHandler *)selfI
-                purchaseVerificationResponseData:(ADJPurchaseVerificationResponseData *)purchaseVerificationResponseData {
+                purchaseVerificationResponseData:(ADJPurchaseVerificationResponseData *)responseData {
     [selfI.logger debug:
-        @"Got purchase_verification JSON response with message: %@", purchaseVerificationResponseData.message];
-    ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
-    verificationResult.verificationStatus = purchaseVerificationResponseData.jsonResponse[@"verification_status"];
-    verificationResult.code = [(NSNumber *)purchaseVerificationResponseData.jsonResponse[@"code"] intValue];
-    verificationResult.message = purchaseVerificationResponseData.jsonResponse[@"message"];
-    purchaseVerificationResponseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
+        @"Got purchase_verification JSON response with message: %@", responseData.message];
+    if (responseData.error == nil) {
+        ADJPurchaseVerificationResult *verificationResult = [[ADJPurchaseVerificationResult alloc] init];
+        verificationResult.verificationStatus = responseData.jsonResponse[@"verification_status"];
+        verificationResult.code = [(NSNumber *)responseData.jsonResponse[@"code"] intValue];
+        verificationResult.message = responseData.jsonResponse[@"message"];
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(verificationResult);
+    } else {
+        responseData.purchaseVerificationPackage.purchaseVerificationCallback(responseData.error);
+    }
 
-    if (purchaseVerificationResponseData.purchaseVerificationPackage &&
-        purchaseVerificationResponseData.purchaseVerificationPackage.event)
-    {
-        [self trackEvent:purchaseVerificationResponseData.purchaseVerificationPackage.event];
+    if (responseData.purchaseVerificationPackage && responseData.purchaseVerificationPackage.event) {
+        [self trackEvent:responseData.purchaseVerificationPackage.event];
     }
 }
 

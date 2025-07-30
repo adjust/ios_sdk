@@ -16,7 +16,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk.git",
-            .exact("2.0.0")
+            from: "2.0.0"
         )
     ],
     targets: [
@@ -48,7 +48,7 @@ let package = Package(
         .target(
             name: "AdjustGoogleOdm",
             dependencies: [
-                .product(name: "GoogleAdsOnDeviceConversion", package: "google-ads-on-device-conversion-ios-sdk") 
+                .product(name: "GoogleAdsOnDeviceConversion", package: "google-ads-on-device-conversion-ios-sdk")
             ],
             path: "plugins/odm",
             sources: [ "headers", "sources/spm"],
