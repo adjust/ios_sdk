@@ -38,7 +38,7 @@
 
 @interface ADJSavedPreLaunch : NSObject
 
-@property (nonatomic, strong) NSMutableArray * _Nullable preLaunchActionsArray;
+@property (nonatomic, strong) NSMutableArray * _Nonnull preLaunchActionsArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
 

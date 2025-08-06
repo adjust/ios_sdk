@@ -507,9 +507,6 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler addGlobalCallbackParameter:param forKey:key];
         return;
     }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
-    }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler addGlobalCallbackParameterI:activityHandler param:param forKey:key];
     }];
@@ -519,9 +516,6 @@ static dispatch_once_t onceToken = 0;
     if ([self checkActivityHandler:@"adding global partner parameter"]) {
         [self.activityHandler addGlobalPartnerParameter:param forKey:key];
         return;
-    }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler addGlobalPartnerParameterI:activityHandler param:param forKey:key];
@@ -534,9 +528,6 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler removeGlobalCallbackParameterForKey:key];
         return;
     }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
-    }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeGlobalCallbackParameterI:activityHandler forKey:key];
     }];
@@ -547,9 +538,6 @@ static dispatch_once_t onceToken = 0;
     if ([self checkActivityHandler:@"removing global partner parameter"]) {
         [self.activityHandler removeGlobalPartnerParameterForKey:key];
         return;
-    }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeGlobalPartnerParameterI:activityHandler forKey:key];
@@ -562,9 +550,6 @@ static dispatch_once_t onceToken = 0;
         [self.activityHandler removeGlobalCallbackParameters];
         return;
     }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
-    }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeGlobalCallbackParametersI:activityHandler];
     }];
@@ -575,9 +560,6 @@ static dispatch_once_t onceToken = 0;
     if ([self checkActivityHandler:@"removing all global partner parameters"]) {
         [self.activityHandler removeGlobalPartnerParameters];
         return;
-    }
-    if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-        self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
         [activityHandler removeGlobalPartnerParametersI:activityHandler];
@@ -592,24 +574,17 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
-    if (![self checkActivityHandler:@"track third party sharing"]) {
-        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-            self.savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
-        }
-        [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-            [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
-        }];
+    if ([self checkActivityHandler:@"track third party sharing"]) {
+        [self.activityHandler trackThirdPartySharing:thirdPartySharing];
         return;
     }
-    [self.activityHandler trackThirdPartySharing:thirdPartySharing];
+    [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
+        [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
+    }];
 }
 
 - (void)trackMeasurementConsent:(BOOL)enabled {
     if (![self checkActivityHandler:@"track measurement consent"]) {
-        if (self.savedPreLaunch.preLaunchActionsArray == nil) {
-            self.savedPreLaunch.preLaunchActionsArray =
-                [[NSMutableArray alloc] init];
-        }
         [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
             [activityHandler tryTrackMeasurementConsentI:enabled];
         }];
