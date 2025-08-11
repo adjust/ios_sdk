@@ -86,6 +86,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (self) {
         // online by default
         self.offline = NO;
+
+        self.preLaunchActionsArray = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -221,10 +223,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.internalState = [[ADJInternalState alloc] init];
 
     if (savedPreLaunch.enabled != nil) {
-        if (savedPreLaunch.preLaunchActionsArray == nil) {
-            savedPreLaunch.preLaunchActionsArray = [[NSMutableArray alloc] init];
-        }
-
         BOOL newEnabled = [savedPreLaunch.enabled boolValue];
         [savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler * activityHandler){
             [activityHandler setEnabledI:activityHandler enabled:newEnabled];
@@ -2773,9 +2771,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)preLaunchActionsI:(ADJActivityHandler *)selfI
     preLaunchActionsArray:(NSArray*)preLaunchActionsArray
 {
-    if (preLaunchActionsArray == nil) {
-        return;
-    }
     for (activityHandlerBlockI activityHandlerActionI in preLaunchActionsArray) {
         activityHandlerActionI(selfI);
     }

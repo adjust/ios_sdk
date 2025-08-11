@@ -1,4 +1,5 @@
 {
+  "5.4.3": "https://github.com/adjust/ios_sdk/releases/download/v5.4.3/AdjustSdk-WebBridge-Dynamic-5.4.3.xcframework.zip",
   "5.4.2": "https://github.com/adjust/ios_sdk/releases/download/v5.4.2/AdjustSdk-WebBridge-Dynamic-5.4.2.xcframework.zip",
   "5.4.1": "https://github.com/adjust/ios_sdk/releases/download/v5.4.1/AdjustSdk-WebBridge-Dynamic-5.4.1.xcframework.zip",
   "5.4.0": "https://github.com/adjust/ios_sdk/releases/download/v5.4.0/AdjustSdk-WebBridge-Dynamic-5.4.0.xcframework.zip",
