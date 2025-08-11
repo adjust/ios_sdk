@@ -1,7 +1,12 @@
+### Version 5.4.3 (11th August 2025)
+#### Fixed
+- Fixed first session delay pre-init actions array lazy initialization.
+
+---
+
 ### Version 5.4.2 (30th July 2025)
 #### Fixed
 - Updated Swift Package Manager dependency constraint for `GoogleAdsOnDeviceConversion`, ensuring compatibility with Swift Package Manager resolution (https://github.com/adjust/ios_sdk/issues/765).
-
 
 ---
 
