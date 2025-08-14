@@ -129,7 +129,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJOdmManager *odmManager;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
-            responseData:(ADJAttributionResponseData *_Nullable)attributionResponseData NS_EXTENSION_UNAVAILABLE_IOS("");
+            deeplink:(NSURL *_Nullable)deeplink NS_EXTENSION_UNAVAILABLE_IOS("");
 
 @end
 
@@ -1546,6 +1546,10 @@ const BOOL kSkanRegisterLockWindow = NO;
         [selfI.attributionHandler getAttribution];
     }
 
+    if (sessionResponseData) {
+        [selfI prepareDeeplinkI:selfI deeplink:sessionResponseData.deeplink];
+    }
+
     selfI.internalState.sessionResponseProcessed = YES;
 }
 
@@ -1593,7 +1597,10 @@ const BOOL kSkanRegisterLockWindow = NO;
                          withObject:attributionResponseData.attribution];
     }
 
-    [selfI prepareDeeplinkI:selfI responseData:attributionResponseData];
+    if (attributionResponseData) {
+        [selfI prepareDeeplinkI:selfI deeplink:attributionResponseData.deeplink];
+    }
+
 }
 
 - (void)launchPurchaseVerificationResponseTasksI:(ADJActivityHandler *)selfI
@@ -1616,27 +1623,24 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *)selfI
-            responseData:(ADJAttributionResponseData *)attributionResponseData {
-    if (attributionResponseData == nil) {
+                deeplink:(NSURL *)deeplink {
+
+    if (deeplink == nil) {
         return;
     }
 
-    if (attributionResponseData.deeplink == nil) {
-        return;
-    }
-
-    [selfI.logger info:@"Open deep link (%@)", attributionResponseData.deeplink.absoluteString];
+    [selfI.logger info:@"Open deep link (%@)", deeplink.absoluteString];
 
     [ADJUtil launchInMainThread:^{
         BOOL toLaunchDeeplink = YES;
 
         if ([selfI.adjustDelegate respondsToSelector:@selector(adjustDeferredDeeplinkReceived:)]) {
             toLaunchDeeplink = [selfI.adjustDelegate
-                                adjustDeferredDeeplinkReceived:attributionResponseData.deeplink];
+                                adjustDeferredDeeplinkReceived:deeplink];
         }
 
         if (toLaunchDeeplink) {
-            [ADJUtil launchDeepLinkMain:attributionResponseData.deeplink];
+            [ADJUtil launchDeepLinkMain:deeplink];
         }
     }];
 }

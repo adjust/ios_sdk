@@ -118,7 +118,9 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 - (void)checkSessionResponseI:(ADJAttributionHandler*)selfI
           sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
     [selfI checkAttributionI:selfI responseData:sessionResponseData];
-    
+
+    [selfI checkDeeplinkInSessionResponseI:selfI sessionResponseData:sessionResponseData];
+
     [selfI.activityHandler launchSessionResponseTasks:sessionResponseData];
 }
 
@@ -133,7 +135,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
                   attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     [selfI checkAttributionI:selfI responseData:attributionResponseData];
 
-    [selfI checkDeeplinkI:selfI attributionResponseData:attributionResponseData];
+    [selfI checkDeeplinkInAttributionResponseI:selfI attributionResponseData:attributionResponseData];
     
     [selfI.activityHandler launchAttributionResponseTasks:attributionResponseData];
 }
@@ -162,23 +164,37 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     responseData.attribution = [[ADJAttribution alloc] initWithJsonDict:jsonAttribution];
 }
 
-- (void)checkDeeplinkI:(ADJAttributionHandler*)selfI
-attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
+- (void)checkDeeplinkInAttributionResponseI:(ADJAttributionHandler*)selfI
+                    attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     if (attributionResponseData.jsonResponse == nil) {
         return;
     }
 
-    NSDictionary * jsonAttribution = [attributionResponseData.jsonResponse objectForKey:@"attribution"];
+    NSDictionary *jsonAttribution = [attributionResponseData.jsonResponse objectForKey:@"attribution"];
     if (jsonAttribution == nil) {
         return;
     }
 
-    NSString *deepLink = [jsonAttribution objectForKey:@"deeplink"];
-    if (deepLink == nil) {
+    NSString *deeplink = [jsonAttribution objectForKey:@"deeplink"];
+    if (deeplink == nil) {
         return;
     }
 
-    attributionResponseData.deeplink = [NSURL URLWithString:deepLink];
+    attributionResponseData.deeplink = [NSURL URLWithString:deeplink];
+}
+
+- (void)checkDeeplinkInSessionResponseI:(ADJAttributionHandler*)selfI
+                    sessionResponseData:(ADJSessionResponseData *)sessionResponseData {
+    if (sessionResponseData.jsonResponse == nil) {
+        return;
+    }
+
+    NSString *deeplink = [sessionResponseData.jsonResponse objectForKey:@"deeplink"];
+    if (deeplink == nil) {
+        return;
+    }
+
+    sessionResponseData.deeplink = [NSURL URLWithString:deeplink];
 }
 
 - (void)requestAttributionI:(ADJAttributionHandler*)selfI {
