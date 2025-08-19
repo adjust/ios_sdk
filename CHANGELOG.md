@@ -1,3 +1,9 @@
+### Version 5.4.4 (21st August 2025)
+#### #### Changed
+- Optimized the logic behind the deferred deep link to immediately return link if available.
+
+---
+
 ### Version 5.4.3 (11th August 2025)
 #### Fixed
 - Fixed first session delay pre-init actions array lazy initialization.
