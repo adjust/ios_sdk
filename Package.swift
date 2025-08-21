@@ -4,10 +4,17 @@ import PackageDescription
 
 let package = Package(
     name: "AdjustSdk",
+    platforms: [
+        .iOS(.v12),
+        .tvOS(.v12)
+    ],
     products: [
-        .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
-        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
-        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"])
+        .library(name: "AdjustSdk", targets: ["AdjustSdk", "AdjustSdkSigned"]),
+        .library(name: "AdjustSdkUnsigned", targets: ["AdjustSdk"]),
+        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk", "AdjustSdkSigned"]),
+        .library(name: "AdjustWebBridgeUnsigned", targets: ["AdjustWebBridge", "AdjustSdk"]),
+        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk", "AdjustSdkSigned"]),
+        .library(name: "AdjustGoogleOdmUnsigned", targets: ["AdjustGoogleOdm", "AdjustSdk"])
     ],
     dependencies: [
         .package(
@@ -21,24 +28,31 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "AdjustSdk",
+            name: "AdjustSdkSigned",
             dependencies: [
+                .target(name: "AdjustSdk"),
                 .product(name: "AdjustSignature", package: "adjust_signature_sdk")
             ],
+            path: "Wrappers/AdjustSdkSigned",
+            sources: ["Wrapper.swift"]
+        ),
+        .target(
+            name: "AdjustSdk",
+            dependencies: [],
             path: "Adjust",
             resources: [
                 .copy("PrivacyInfo.xcprivacy"),
             ],
+            publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("Internal")
+                .headerSearchPath("Internal"),
+                .headerSearchPath("include")
             ]
         ),
         .target(
             name: "AdjustWebBridge",
-            dependencies: [
-                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
-            ],
+            dependencies: [],
             path: "AdjustBridge",
             cSettings: [
                 .headerSearchPath(""),
