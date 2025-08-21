@@ -41,26 +41,9 @@ Pod::Spec.new do |s|
     awb.dependency            'AdjustSignature', '3.61.0'
   end
 
-  s.subspec 'AdjustWebBridgeUnsigned' do |awb|
-    awb.source_files          = 'Adjust/**/*.{h,m}', 'AdjustBridge/*.{h,m}', 'UmbrellaHeaders/webbridge/*.{h,m}'
-    awb.public_header_files   = 'Adjust/*.h', 'AdjustBridge/*.h', 'UmbrellaHeaders/webbridge/*.h'
-    awb.exclude_files         = ['Adjust/include/**/*.h', 'AdjustBridge/include/**/*.h']
-    awb.resource_bundle       = {'Adjust' => ['Adjust/*.xcprivacy']}
-    awb.header_dir            = 'AdjustSdk'
-    awb.ios.deployment_target = '12.0'
-  end
-
   s.subspec 'AdjustGoogleOdm' do |odm|
     odm.ios.deployment_target   = '12.0'
     odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
     odm.dependency              'Adjust/Adjust'
   end
-
-  s.subspec 'AdjustGoogleOdmUnsigned' do |odm|
-    odm.ios.deployment_target   = '12.0'
-    odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
-    odm.dependency              'Adjust/AdjustUnsigned'
-  end
-
-
 end

@@ -12,9 +12,7 @@ let package = Package(
         .library(name: "AdjustSdk", targets: ["AdjustSdk", "AdjustSdkSigned"]),
         .library(name: "AdjustSdkUnsigned", targets: ["AdjustSdk"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk", "AdjustSdkSigned"]),
-        .library(name: "AdjustWebBridgeUnsigned", targets: ["AdjustWebBridge", "AdjustSdk"]),
         .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk", "AdjustSdkSigned"]),
-        .library(name: "AdjustGoogleOdmUnsigned", targets: ["AdjustGoogleOdm", "AdjustSdk"])
     ],
     dependencies: [
         .package(
