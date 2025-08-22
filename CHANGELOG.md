@@ -1,6 +1,6 @@
-### Version 5.4.4 (21st August 2025)
-#### #### Changed
-- Optimized the logic behind the deferred deep link to immediately return link if available.
+### Version 5.4.4 (22nd August 2025)
+#### Changed
+- Added support for processing deferred deep links in session responses.
 
 ---
 
