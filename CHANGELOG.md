@@ -1,5 +1,5 @@
 ### Version 5.4.4 (22nd August 2025)
-#### Changed
+#### Added
 - Added support for processing deferred deep links in session responses.
 
 ---
@@ -48,7 +48,7 @@
 
 ### Version 5.1.1 (25th February 2025)
 #### Changed
-- Syncrhonized resuming and pausing in all the handlers (internal changes).
+- Synchronized resuming and pausing in all the handlers (internal changes).
 
 ---
 
