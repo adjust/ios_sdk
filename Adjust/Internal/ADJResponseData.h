@@ -65,6 +65,8 @@ typedef NS_ENUM(int, ADJTrackingState) {
 
 - (ADJSessionFailure *)failureResponseData;
 
+@property (nonatomic, strong) NSURL *deeplink;
+
 @end
 
 @interface ADJSdkClickResponseData : ADJResponseData

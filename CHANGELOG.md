@@ -1,3 +1,9 @@
+### Version 5.4.4 (25th August 2025)
+#### Added
+- Added support for processing deferred deep links in session responses.
+
+---
+
 ### Version 5.4.3 (11th August 2025)
 #### Fixed
 - Fixed first session delay pre-init actions array lazy initialization.
@@ -42,7 +48,7 @@
 
 ### Version 5.1.1 (25th February 2025)
 #### Changed
-- Syncrhonized resuming and pausing in all the handlers (internal changes).
+- Synchronized resuming and pausing in all the handlers (internal changes).
 
 ---
 
