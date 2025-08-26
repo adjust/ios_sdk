@@ -10,9 +10,9 @@ let package = Package(
     ],
     products: [
         .library(name: "AdjustSdk", targets: ["AdjustSdk", "AdjustSdkSigned"]),
-        .library(name: "AdjustSdkUnsigned", targets: ["AdjustSdk"]),
-        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk", "AdjustSdkSigned"]),
-        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk", "AdjustSdkSigned"]),
+        .library(name: "AdjustUnsigned", targets: ["AdjustSdk"]),
+        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdkSigned"]),
+        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdkSigned"])
     ],
     dependencies: [
         .package(
@@ -36,7 +36,6 @@ let package = Package(
         ),
         .target(
             name: "AdjustSdk",
-            dependencies: [],
             path: "Adjust",
             resources: [
                 .copy("PrivacyInfo.xcprivacy"),
@@ -50,7 +49,6 @@ let package = Package(
         ),
         .target(
             name: "AdjustWebBridge",
-            dependencies: [],
             path: "AdjustBridge",
             cSettings: [
                 .headerSearchPath(""),
