@@ -178,6 +178,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 + (BOOL)isOdmPluginAvailable {
     Class odmPluginClass = NSClassFromString(@"ADJOdmPlugin");
     if (odmPluginClass == nil) {
+        [[ADJAdjustFactory logger] verbose:@"ADJOdmPlugin class not found"];
         return NO;
     }
 
