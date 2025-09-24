@@ -9,7 +9,7 @@ let package = Package(
         .tvOS(.v12)
     ],
     products: [
-        .library(name: "AdjustSdk", targets: ["AdjustSdk", "AdjustSdkSigned"]),
+        .library(name: "AdjustSdk", targets: ["AdjustSdkSigned"]),
         .library(name: "AdjustUnsigned", targets: ["AdjustSdk"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdkSigned"]),
         .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdkSigned"])
