@@ -16,6 +16,11 @@ echo "EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x8
 echo 'EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64__XCODE_'${CURRENT_XCODE_VERSION}' = $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64__XCODE_$(XCODE_VERSION_MAJOR)__BUILD_$(XCODE_PRODUCT_BUILD_VERSION))' >> $xcconfig
 echo 'EXCLUDED_ARCHS = $(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT)__XCODE_$(XCODE_VERSION_MAJOR))' >> $xcconfig
 
+# Generic fallbacks to handle newer Xcode versions.
+# Always exclude arm64 from simulator SDKs to avoid fat binary conflicts when merging device (arm64) and simulator slices.
+echo 'EXCLUDED_ARCHS[sdk=iphonesimulator*] = $(inherited) arm64' >> $xcconfig
+echo 'EXCLUDED_ARCHS[sdk=appletvsimulator*] = $(inherited) arm64' >> $xcconfig
+
 export XCODE_XCCONFIG_FILE="$xcconfig"
 carthage "$@"
 
