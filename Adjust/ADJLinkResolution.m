@@ -154,11 +154,8 @@ static NSUInteger kMaxRecursions = 10;
         return;
     }
 
-    // only stop on a terminal host if there was no redirect in this hop
-    // this allows further intra-domain redirects (e.g., go.link/123 -> go.link/app/search)
-    // TODO: I don't know if our short links are simple 3XX redirects and whether this works, to be tested
-    if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host] &&
-        [responseUrl isEqual:previousUrl]) {
+    // return found url with expected host
+    if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host]) {
         callback(responseUrl);
         return;
     }
