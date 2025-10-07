@@ -36,11 +36,25 @@
 
 @end
 
+@interface ADJTimeoutCallback : NSObject
+
+@property (nonatomic, strong) ADJAttributionGetterBlock _Nullable attributionCallback;
+@property (nonatomic, strong) ADJAdidGetterBlock _Nullable adidCallback;
+@property (nonatomic, assign) NSInteger timeoutMs;
+@property (nonatomic, strong) dispatch_block_t _Nullable timeoutBlock;
+
+- (instancetype _Nonnull)initWithAttributionCallback:(ADJAttributionGetterBlock _Nonnull)attributionCallback timeoutMs:(NSInteger)timeoutMs;
+- (instancetype _Nonnull)initWithAdidCallback:(ADJAdidGetterBlock _Nonnull)adidCallback timeoutMs:(NSInteger)timeoutMs;
+
+@end
+
 @interface ADJSavedPreLaunch : NSObject
 
 @property (nonatomic, strong) NSMutableArray * _Nonnull preLaunchActionsArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
 @property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionTimeoutCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidTimeoutCallbacksArray;
 
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
@@ -107,7 +121,11 @@
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
+- (void)attributionWithTimeout:(NSInteger)timeoutMs
+             completionHandler:(nonnull ADJAttributionGetterBlock)completion;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
+- (void)adidWithTimeout:(NSInteger)timeoutMs
+      completionHandler:(nonnull ADJAdidGetterBlock)completion;
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event

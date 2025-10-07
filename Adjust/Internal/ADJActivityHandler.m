@@ -134,6 +134,32 @@ const BOOL kSkanRegisterLockWindow = NO;
 @end
 
 #pragma mark -
+@implementation ADJTimeoutCallback
+
+- (instancetype)initWithAttributionCallback:(ADJAttributionGetterBlock)attributionCallback timeoutMs:(NSInteger)timeoutMs {
+    self = [super init];
+    if (self) {
+        _attributionCallback = attributionCallback;
+        _adidCallback = nil;
+        _timeoutMs = timeoutMs;
+        _timeoutBlock = nil;
+    }
+    return self;
+}
+
+- (instancetype)initWithAdidCallback:(ADJAdidGetterBlock)adidCallback timeoutMs:(NSInteger)timeoutMs {
+    self = [super init];
+    if (self) {
+        _attributionCallback = nil;
+        _adidCallback = adidCallback;
+        _timeoutMs = timeoutMs;
+        _timeoutBlock = nil;
+    }
+    return self;
+}
+
+@end
+
 @implementation ADJActivityHandler
 
 @synthesize trackingStatusManager = _trackingStatusManager;
@@ -672,6 +698,47 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
+- (void)attributionWithTimeout:(NSInteger)timeoutMs
+             completionHandler:(nonnull ADJAttributionGetterBlock)completion {
+    __block ADJAttribution *_Nullable localAttribution = self.attribution;
+
+    if (localAttribution == nil) {
+        // Store timeout callback for later processing
+        if (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray == nil) {
+            self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray = [NSMutableArray array];
+        }
+        
+        ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
+                                                                                            timeoutMs:timeoutMs];
+        
+        // Set up timeout timer
+        __weak typeof(self) weakSelf = self;
+        dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf != nil) {
+                // Remove from array and call callback with nil
+                [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:timeoutCallback];
+                __block ADJAttributionGetterBlock localAttributionCallback = completion;
+                [ADJUtil launchInMainThread:^{
+                    localAttributionCallback(nil);
+                }];
+            }
+        });
+        timeoutCallback.timeoutBlock = timeoutBlock;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)), 
+                      dispatch_get_main_queue(), timeoutBlock);
+        
+        [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+        return;
+    }
+
+    __block ADJAttributionGetterBlock localAttributionCallback = completion;
+    [ADJUtil launchInMainThread:^{
+        localAttributionCallback(localAttribution);
+    }];
+}
+
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
     __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
 
@@ -681,6 +748,47 @@ const BOOL kSkanRegisterLockWindow = NO;
         }
 
         [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
+        return;
+    }
+
+    __block ADJAdidGetterBlock localAdidCallback = completion;
+    [ADJUtil launchInMainThread:^{
+        localAdidCallback(localAdid);
+    }];
+}
+
+- (void)adidWithTimeout:(NSInteger)timeoutMs
+      completionHandler:(nonnull ADJAdidGetterBlock)completion {
+    __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
+
+    if (localAdid == nil) {
+        // store timeout callback for later processing
+        if (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray == nil) {
+            self.savedPreLaunch.cachedAdidTimeoutCallbacksArray = [NSMutableArray array];
+        }
+        
+        ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
+                                                                                     timeoutMs:timeoutMs];
+        
+        // Set up timeout timer
+        __weak typeof(self) weakSelf = self;
+        dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf != nil) {
+                // Remove from array and call callback with nil
+                [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:timeoutCallback];
+                __block ADJAdidGetterBlock localAdidCallback = completion;
+                [ADJUtil launchInMainThread:^{
+                    localAdidCallback(nil);
+                }];
+            }
+        });
+        timeoutCallback.timeoutBlock = timeoutBlock;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)), 
+                      dispatch_get_main_queue(), timeoutBlock);
+        
+        [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
         return;
     }
 
@@ -1694,19 +1802,35 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (localAttribution == nil) {
         return;
     }
-    if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
-        return;
+    
+    // Process regular attribution callbacks
+    if (self.savedPreLaunch.cachedAttributionReadCallbacksArray != nil) {
+        for (ADJAttributionGetterBlock attributionCallback in
+             self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
+            __block ADJAttributionGetterBlock localAttributionCallback = attributionCallback;
+            [ADJUtil launchInMainThread:^{
+                localAttributionCallback(localAttribution);
+            }];
+        }
+        [self.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
     }
-
-    for (ADJAttributionGetterBlock attributionCallback in
-         self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
-        __block ADJAttributionGetterBlock localAttributionCallback = attributionCallback;
-        [ADJUtil launchInMainThread:^{
-            localAttributionCallback(localAttribution);
-        }];
+    
+    // Process timeout attribution callbacks
+    if (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray != nil) {
+        for (ADJTimeoutCallback *timeoutCallback in
+             self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+            // Cancel any pending timeout
+            if (timeoutCallback.timeoutBlock != nil) {
+                dispatch_block_cancel(timeoutCallback.timeoutBlock);
+            }
+            
+            __block ADJAttributionGetterBlock localAttributionCallback = timeoutCallback.attributionCallback;
+            [ADJUtil launchInMainThread:^{
+                localAttributionCallback(localAttribution);
+            }];
+        }
+        [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeAllObjects];
     }
-
-    [self.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
 }
 
 - (void)processCachedAdidReadCallback {
@@ -1714,19 +1838,36 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (localAdid == nil) {
         return;
     }
-    if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
-        return;
+    
+    // Process regular adid callbacks
+    if (self.savedPreLaunch.cachedAdidReadCallbacksArray != nil) {
+        for (ADJAdidGetterBlock adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
+            __block ADJAdidGetterBlock localAdidCallback = adidCallback;
+            [ADJUtil launchInMainThread:^{
+                localAdidCallback(localAdid);
+            }];
+        }
+        [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
     }
-
-    for (ADJAdidGetterBlock adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
-        __block ADJAdidGetterBlock localAdidCallback = adidCallback;
-        [ADJUtil launchInMainThread:^{
-            localAdidCallback(localAdid);
-        }];
+    
+    // Process timeout adid callbacks
+    if (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray != nil) {
+        for (ADJTimeoutCallback *timeoutCallback in
+             self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+            // Cancel any pending timeout
+            if (timeoutCallback.timeoutBlock != nil) {
+                dispatch_block_cancel(timeoutCallback.timeoutBlock);
+            }
+            
+            __block ADJAdidGetterBlock localAdidCallback = timeoutCallback.adidCallback;
+            [ADJUtil launchInMainThread:^{
+                localAdidCallback(localAdid);
+            }];
+        }
+        [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeAllObjects];
     }
-
-    [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
 }
+
 
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
     // compare with the saved or internal state
