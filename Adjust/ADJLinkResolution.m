@@ -10,6 +10,12 @@
 
 static NSUInteger kMaxRecursions = 10;
 
+@interface ADJLinkResolution (Private)
+
++ (BOOL)isTerminalUrlWithHost:(nullable NSString *)urlHost;
+
+@end
+
 @interface ADJLinkResolutionDelegate : NSObject<NSURLSessionTaskDelegate>
 
 + (nonnull ADJLinkResolutionDelegate *)sharedInstance;
@@ -40,6 +46,13 @@ static NSUInteger kMaxRecursions = 10;
                                      newRequest:(NSURLRequest *)request
                               completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
 {
+    // if we're already at a terminal host (adjust.com / adj.st / go.link),
+    // stop auto-following to preserve the terminal URL (avoid jumping to App Store links)
+    if ([ADJLinkResolution isTerminalUrlWithHost:response.URL.host]) {
+        completionHandler(nil);
+        return;
+    }
+
     NSURL *_Nullable convertedUrl = [ADJLinkResolutionDelegate convertUrlToHttps:request.URL];
 
     if (request.URL != nil && convertedUrl != nil && ! [request.URL isEqual:convertedUrl]) {
@@ -141,8 +154,11 @@ static NSUInteger kMaxRecursions = 10;
         return;
     }
 
-    // return found url with expected host
-    if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host]) {
+    // only stop on a terminal host if there was no redirect in this hop
+    // this allows further intra-domain redirects (e.g., go.link/123 -> go.link/app/search)
+    // TODO: I don't know if our short links are simple 3XX redirects and whether this works, to be tested
+    if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host] &&
+        [responseUrl isEqual:previousUrl]) {
         callback(responseUrl);
         return;
     }
