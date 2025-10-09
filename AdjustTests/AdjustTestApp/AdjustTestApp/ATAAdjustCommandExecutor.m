@@ -105,6 +105,16 @@
         [self attributionGetter:parameters];
     } else if ([methodName isEqualToString:@"attributionGetterWithTimeout"]) {
         [self attributionGetterWithTimeout:parameters];
+    } else if ([methodName isEqualToString:@"adidGetter"]) {
+        [self adidGetter:parameters];
+    } else if ([methodName isEqualToString:@"adidGetterWithTimeout"]) {
+        [self adidGetterWithTimeout:parameters];
+    } else if ([methodName isEqualToString:@"idfaGetter"]) {
+        [self idfaGetter:parameters];
+    } else if ([methodName isEqualToString:@"idfvGetter"]) {
+        [self idfvGetter:parameters];
+    } else if ([methodName isEqualToString:@"sdkVersionGetter"]) {
+        [self sdkVersionGetter:parameters];
     } else if ([methodName isEqualToString:@"endFirstSessionDelay"]) {
         [self endFirstSessionDelay:parameters];
     } else if ([methodName isEqualToString:@"coppaComplianceInDelay"]) {
@@ -927,6 +937,48 @@
         } else {
             [self.testLibrary addInfoToSend:@"attribution" value:@"nil"];
         }
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)adidGetter:(NSDictionary *)parameters {
+    [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
+        [self.testLibrary addInfoToSend:@"adid" value:adid];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)adidGetterWithTimeout:(NSDictionary *)parameters {
+    NSString *timeoutS = [parameters objectForKey:@"timeout"][0];
+    int timeout = [timeoutS intValue];
+
+    [Adjust adidWithTimeout:timeout completionHandler:^(NSString * _Nullable adid) {
+        if (adid != nil) {
+            [self.testLibrary addInfoToSend:@"adid" value:adid];
+        } else {
+            [self.testLibrary addInfoToSend:@"adid" value:@"nil"];
+        }
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)idfaGetter:(NSDictionary *)parameters {
+    [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
+        [self.testLibrary addInfoToSend:@"idfa" value:idfa];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)idfvGetter:(NSDictionary *)parameters {
+    [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+        [self.testLibrary addInfoToSend:@"idfv" value:idfv];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)sdkVersionGetter:(NSDictionary *)parameters {
+    [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+        [self.testLibrary addInfoToSend:@"sdk_version" value:sdkVersion];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
