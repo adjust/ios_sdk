@@ -190,7 +190,7 @@ static NSUInteger kMaxRecursions = 10;
     }
 
     NSArray<NSString *> *_Nonnull terminalUrlHostSuffixArray =
-        @[@"adjust.com", @"adj.st", @"go.link", @"adjust.cn", @"adjust.net.in", @"adjust.world"];
+        @[@"adjust.com", @"adj.st", @"go.link", @"adjust.cn", @"adjust.net.in", @"adjust.world", @"adjust.io"];
 
     return [ADJLinkResolution urlMatchesSuffixWithHost:urlHost
                                            suffixArray:terminalUrlHostSuffixArray];
