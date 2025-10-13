@@ -703,8 +703,9 @@ static dispatch_once_t onceToken = 0;
                     self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray = [NSMutableArray array];
                 }
 
-                ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
-                                                                                                    timeoutMs:timeoutMs];
+                ADJTimeoutCallback *timeoutCallback =
+                [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
+                                                              timeoutMs:timeoutMs];
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -781,8 +782,9 @@ static dispatch_once_t onceToken = 0;
                     self.savedPreLaunch.cachedAdidTimeoutCallbacksArray = [NSMutableArray array];
                 }
 
-                ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
-                                                                                             timeoutMs:timeoutMs];
+                ADJTimeoutCallback *timeoutCallback =
+                [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
+                                                       timeoutMs:timeoutMs];
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -811,7 +813,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     return [self.activityHandler adidWithTimeout:timeoutMs
-                                completionHandler:completion];
+                               completionHandler:completion];
 }
 
 - (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {
