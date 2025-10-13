@@ -1469,4 +1469,33 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     });
 }
 
++ (void)adidFromActivityStateFile:(void (^)(NSString * _Nullable))completion {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+            NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
+            ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
+                                                       objectName:@"Activity state"
+                                                          classes:allowedClasses
+                                                       syncObject:[ADJActivityState class]];
+            completion(activityState.adid);
+        }];
+    });
+}
+
++ (void)attributionFromAttributionFile:(void (^)(ADJAttribution * _Nullable))completion {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [ADJUtil launchSynchronisedWithObject:[ADJAttribution class]
+                                        block:^{
+            NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJAttribution class], nil];
+            ADJAttribution *attribution = [ADJUtil readObject:@"AdjustIoAttribution"
+                                                  objectName:@"Attribution"
+                                                     classes:allowedClasses
+                                                  syncObject:[ADJAttribution class]];
+            completion(attribution);
+        }];
+    });
+}
+
 @end
