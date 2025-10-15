@@ -1824,10 +1824,15 @@ const BOOL kSkanRegisterLockWindow = NO;
                 dispatch_block_cancel(timeoutCallback.timeoutBlock);
             }
             
-            __block ADJAttributionGetterBlock localAttributionCallback = timeoutCallback.attributionCallback;
-            [ADJUtil launchInMainThread:^{
-                localAttributionCallback(localAttribution);
-            }];
+            // only call callback if it hasn't been called yet (prevent race condition)
+            if (timeoutCallback.attributionCallback != nil) {
+                __block ADJAttributionGetterBlock localAttributionCallback = timeoutCallback.attributionCallback;
+                // clear the callback to prevent double execution
+                timeoutCallback.attributionCallback = nil;
+                [ADJUtil launchInMainThread:^{
+                    localAttributionCallback(localAttribution);
+                }];
+            }
         }
         [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeAllObjects];
     }
@@ -1859,10 +1864,15 @@ const BOOL kSkanRegisterLockWindow = NO;
                 dispatch_block_cancel(timeoutCallback.timeoutBlock);
             }
             
-            __block ADJAdidGetterBlock localAdidCallback = timeoutCallback.adidCallback;
-            [ADJUtil launchInMainThread:^{
-                localAdidCallback(localAdid);
-            }];
+            // only call callback if it hasn't been called yet (prevent race condition)
+            if (timeoutCallback.adidCallback != nil) {
+                __block ADJAdidGetterBlock localAdidCallback = timeoutCallback.adidCallback;
+                // clear the callback to prevent double execution
+                timeoutCallback.adidCallback = nil;
+                [ADJUtil launchInMainThread:^{
+                    localAdidCallback(localAdid);
+                }];
+            }
         }
         [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeAllObjects];
     }

@@ -726,8 +726,11 @@ static dispatch_once_t onceToken = 0;
                         // remove from array and call callback with nil
                         [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:blockTimeoutCallback];
                         [ADJUtil launchInMainThread:^{
-                            // if timer elapses, return nil
-                            blockTimeoutCallback.attributionCallback(nil);
+                            // if timer elapses, return nil (only if callback still exists)
+                            if (blockTimeoutCallback.attributionCallback != nil) {
+                                blockTimeoutCallback.attributionCallback(nil);
+                                blockTimeoutCallback.attributionCallback = nil;
+                            }
                         }];
                     }
                 });
@@ -813,8 +816,11 @@ static dispatch_once_t onceToken = 0;
                         // remove from array and call callback with nil
                         [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:blockTimeoutCallback];
                         [ADJUtil launchInMainThread:^{
-                            // if timer elapses, return nil
-                            blockTimeoutCallback.adidCallback(nil);
+                            // if timer elapses, return nil (only if callback still exists)
+                            if (blockTimeoutCallback.adidCallback != nil) {
+                                blockTimeoutCallback.adidCallback(nil);
+                                blockTimeoutCallback.adidCallback = nil;
+                            }
                         }];
                     }
                 });
