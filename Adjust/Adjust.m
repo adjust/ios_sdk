@@ -691,14 +691,21 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
+    if (timeoutMs < 0) {
+        [self.logger error:@"Timeout value for getting attribution can't be negative"];
+        return;
+    }
+
     if (![self checkActivityHandler:@"read attribution request"]) {
         [ADJUtil attributionFromAttributionFile:^(ADJAttribution * _Nullable attribution) {
             if (attribution != nil) {
+                // attribution found locally, return immediately
                 __block ADJAttributionGetterBlock localAttributionCallback = completion;
                 [ADJUtil launchInMainThread:^{
                     localAttributionCallback(attribution);
                 }];
             } else {
+                // attribution not found locally
                 if (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray == nil) {
                     self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray = [NSMutableArray array];
                 }
@@ -706,6 +713,9 @@ static dispatch_once_t onceToken = 0;
                 ADJTimeoutCallback *timeoutCallback =
                 [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
                                                               timeoutMs:timeoutMs];
+
+                // cache the callback before starting the timer
+                [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -726,8 +736,6 @@ static dispatch_once_t onceToken = 0;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
                                dispatch_get_main_queue(),
                                timeoutBlock);
-
-                [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
             }
         }];
         return;
@@ -770,14 +778,21 @@ static dispatch_once_t onceToken = 0;
         return;
     }
 
+    if (timeoutMs < 0) {
+        [self.logger error:@"Timeout value for getting adid can't be negative"];
+        return;
+    }
+
     if (![self checkActivityHandler:@"read adid request"]) {
         [ADJUtil adidFromActivityStateFile:^(NSString * _Nullable adid) {
             if (adid != nil) {
+                // adid found locally, return immediately
                 __block ADJAdidGetterBlock localAdidCallback = completion;
                 [ADJUtil launchInMainThread:^{
                     localAdidCallback(adid);
                 }];
             } else {
+                // adid not found locally
                 if (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray == nil) {
                     self.savedPreLaunch.cachedAdidTimeoutCallbacksArray = [NSMutableArray array];
                 }
@@ -785,6 +800,9 @@ static dispatch_once_t onceToken = 0;
                 ADJTimeoutCallback *timeoutCallback =
                 [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
                                                        timeoutMs:timeoutMs];
+
+                // cache the callback before starting the timer
+                [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -805,8 +823,6 @@ static dispatch_once_t onceToken = 0;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
                                dispatch_get_main_queue(),
                                timeoutBlock);
-
-                [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
             }
         }];
         return;

@@ -1803,7 +1803,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
     
-    // Process regular attribution callbacks
+    // process regular attribution callbacks
     if (self.savedPreLaunch.cachedAttributionReadCallbacksArray != nil) {
         for (ADJAttributionGetterBlock attributionCallback in
              self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
@@ -1815,11 +1815,11 @@ const BOOL kSkanRegisterLockWindow = NO;
         [self.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
     }
     
-    // Process timeout attribution callbacks
+    // process timeout attribution callbacks
     if (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray != nil) {
         for (ADJTimeoutCallback *timeoutCallback in
              self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
-            // Cancel any pending timeout
+            // cancel any pending timeout
             if (timeoutCallback.timeoutBlock != nil) {
                 dispatch_block_cancel(timeoutCallback.timeoutBlock);
             }
@@ -1839,7 +1839,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
     
-    // Process regular adid callbacks
+    // process regular adid callbacks
     if (self.savedPreLaunch.cachedAdidReadCallbacksArray != nil) {
         for (ADJAdidGetterBlock adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
             __block ADJAdidGetterBlock localAdidCallback = adidCallback;
@@ -1850,11 +1850,11 @@ const BOOL kSkanRegisterLockWindow = NO;
         [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
     }
     
-    // Process timeout adid callbacks
+    // process timeout adid callbacks
     if (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray != nil) {
         for (ADJTimeoutCallback *timeoutCallback in
              self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
-            // Cancel any pending timeout
+            // cancel any pending timeout
             if (timeoutCallback.timeoutBlock != nil) {
                 dispatch_block_cancel(timeoutCallback.timeoutBlock);
             }
