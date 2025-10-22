@@ -672,7 +672,9 @@ static dispatch_once_t onceToken = 0;
                     localAttributionCallback(attribution);
                 }];
             } else {
-                [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
+                @synchronized (self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
+                    [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
+                }
             }
         }];
         return;
@@ -708,7 +710,9 @@ static dispatch_once_t onceToken = 0;
                                                               timeoutMs:timeoutMs];
 
                 // cache the callback before starting the timer
-                [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+                @synchronized (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+                    [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+                }
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -717,7 +721,9 @@ static dispatch_once_t onceToken = 0;
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if (strongSelf != nil && blockTimeoutCallback.attributionCallback != nil) {
                         // remove from array and call callback with nil
-                        [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+                        @synchronized (strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+                            [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+                        }
                         [ADJUtil launchInMainThread:^{
                             // if timer elapses, return nil (only if callback still exists)
                             if (blockTimeoutCallback.attributionCallback != nil) {
@@ -755,7 +761,9 @@ static dispatch_once_t onceToken = 0;
                     localAdidCallback(adid);
                 }];
             } else {
-                [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
+                @synchronized (self.savedPreLaunch.cachedAdidReadCallbacksArray) {
+                    [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
+                }
             }
         }];
         return;
@@ -791,7 +799,9 @@ static dispatch_once_t onceToken = 0;
                                                        timeoutMs:timeoutMs];
 
                 // cache the callback before starting the timer
-                [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+                @synchronized (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+                    [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+                }
 
                 // set up timeout timer immediately
                 __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
@@ -800,7 +810,9 @@ static dispatch_once_t onceToken = 0;
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if (strongSelf != nil && blockTimeoutCallback.adidCallback != nil) {
                         // remove from array and call callback with nil
-                        [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+                        @synchronized (strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+                            [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+                        }
                         [ADJUtil launchInMainThread:^{
                             // if timer elapses, return nil (only if callback still exists)
                             if (blockTimeoutCallback.adidCallback != nil) {
