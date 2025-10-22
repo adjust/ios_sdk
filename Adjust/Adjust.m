@@ -706,8 +706,8 @@ static dispatch_once_t onceToken = 0;
             } else {
                 // attribution not found locally
                 ADJTimeoutCallback *timeoutCallback =
-                [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
-                                                              timeoutMs:timeoutMs];
+                    [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
+                                                                  timeoutMs:timeoutMs];
 
                 // cache the callback before starting the timer
                 @synchronized (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
@@ -728,8 +728,9 @@ static dispatch_once_t onceToken = 0;
                             // if timer elapses, return nil (only if callback still exists)
                             if (blockTimeoutCallback.attributionCallback != nil) {
                                 blockTimeoutCallback.attributionCallback(nil);
-                                blockTimeoutCallback.attributionCallback = nil;
                             }
+                            // null callback to call it only once
+                            blockTimeoutCallback.attributionCallback = nil;
                         }];
                     }
                 });
@@ -795,8 +796,8 @@ static dispatch_once_t onceToken = 0;
             } else {
                 // adid not found locally
                 ADJTimeoutCallback *timeoutCallback =
-                [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
-                                                       timeoutMs:timeoutMs];
+                    [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
+                                                           timeoutMs:timeoutMs];
 
                 // cache the callback before starting the timer
                 @synchronized (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
@@ -817,8 +818,9 @@ static dispatch_once_t onceToken = 0;
                             // if timer elapses, return nil (only if callback still exists)
                             if (blockTimeoutCallback.adidCallback != nil) {
                                 blockTimeoutCallback.adidCallback(nil);
-                                blockTimeoutCallback.adidCallback = nil;
                             }
+                            // null callback to call it only once
+                            blockTimeoutCallback.adidCallback = nil;
                         }];
                     }
                 });

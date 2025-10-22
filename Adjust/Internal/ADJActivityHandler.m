@@ -710,8 +710,9 @@ const BOOL kSkanRegisterLockWindow = NO;
         // Store timeout callback for later processing
         ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
                                                                                             timeoutMs:timeoutMs];
-        
+
         // Set up timeout timer
+        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
         __weak typeof(self) weakSelf = self;
         dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
             __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -720,9 +721,13 @@ const BOOL kSkanRegisterLockWindow = NO;
                 @synchronized (strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
                     [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:timeoutCallback];
                 }
-                __block ADJAttributionGetterBlock localAttributionCallback = completion;
                 [ADJUtil launchInMainThread:^{
-                    localAttributionCallback(nil);
+                    // if timer elapses, return nil (only if callback still exists)
+                    if (blockTimeoutCallback.attributionCallback != nil) {
+                        blockTimeoutCallback.attributionCallback(nil);
+                    }
+                    // null callback to call it only once
+                    blockTimeoutCallback.attributionCallback = nil;
                 }];
             }
         });
@@ -770,6 +775,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                                                                      timeoutMs:timeoutMs];
         
         // Set up timeout timer
+        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
         __weak typeof(self) weakSelf = self;
         dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
             __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -778,9 +784,13 @@ const BOOL kSkanRegisterLockWindow = NO;
                 @synchronized (strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
                     [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:timeoutCallback];
                 }
-                __block ADJAdidGetterBlock localAdidCallback = completion;
                 [ADJUtil launchInMainThread:^{
-                    localAdidCallback(nil);
+                    // if timer elapses, return nil (only if callback still exists)
+                    if (blockTimeoutCallback.adidCallback != nil) {
+                        blockTimeoutCallback.adidCallback(nil);
+                    }
+                    // null callback to call it only once
+                    blockTimeoutCallback.adidCallback = nil;
                 }];
             }
         });
@@ -1832,15 +1842,14 @@ const BOOL kSkanRegisterLockWindow = NO;
             dispatch_block_cancel(timeoutCallback.timeoutBlock);
         }
 
-        // only call callback if it hasn't been called yet (prevent race condition)
-        if (timeoutCallback.attributionCallback != nil) {
-            __block ADJAttributionGetterBlock localAttributionCallback = timeoutCallback.attributionCallback;
-            // clear the callback to prevent double execution
-            timeoutCallback.attributionCallback = nil;
-            [ADJUtil launchInMainThread:^{
-                localAttributionCallback(localAttribution);
-            }];
-        }
+        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
+        [ADJUtil launchInMainThread:^{
+            if (blockTimeoutCallback.attributionCallback != nil) {
+                blockTimeoutCallback.attributionCallback(localAttribution);
+            }
+            // null callback to call it only once
+            blockTimeoutCallback.attributionCallback = nil;
+        }];
     }
 }
 
@@ -1875,17 +1884,15 @@ const BOOL kSkanRegisterLockWindow = NO;
             dispatch_block_cancel(timeoutCallback.timeoutBlock);
         }
 
-        // only call callback if it hasn't been called yet (prevent race condition)
-        if (timeoutCallback.adidCallback != nil) {
-            __block ADJAdidGetterBlock localAdidCallback = timeoutCallback.adidCallback;
-            // clear the callback to prevent double execution
-            timeoutCallback.adidCallback = nil;
-            [ADJUtil launchInMainThread:^{
-                localAdidCallback(localAdid);
-            }];
-        }
+        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
+        [ADJUtil launchInMainThread:^{
+            if (blockTimeoutCallback.adidCallback != nil) {
+                blockTimeoutCallback.adidCallback(localAdid);
+            }
+            // null callback to call it only once
+            blockTimeoutCallback.adidCallback = nil;
+        }];
     }
-
 }
 
 
