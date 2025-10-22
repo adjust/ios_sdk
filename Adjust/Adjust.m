@@ -672,9 +672,6 @@ static dispatch_once_t onceToken = 0;
                     localAttributionCallback(attribution);
                 }];
             } else {
-                if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
-                    self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
-                }
                 [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
             }
         }];
@@ -706,10 +703,6 @@ static dispatch_once_t onceToken = 0;
                 }];
             } else {
                 // attribution not found locally
-                if (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray == nil) {
-                    self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray = [NSMutableArray array];
-                }
-
                 ADJTimeoutCallback *timeoutCallback =
                 [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
                                                               timeoutMs:timeoutMs];
@@ -762,9 +755,6 @@ static dispatch_once_t onceToken = 0;
                     localAdidCallback(adid);
                 }];
             } else {
-                if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
-                    self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
-                }
                 [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
             }
         }];
@@ -796,10 +786,6 @@ static dispatch_once_t onceToken = 0;
                 }];
             } else {
                 // adid not found locally
-                if (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray == nil) {
-                    self.savedPreLaunch.cachedAdidTimeoutCallbacksArray = [NSMutableArray array];
-                }
-
                 ADJTimeoutCallback *timeoutCallback =
                 [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
                                                        timeoutMs:timeoutMs];

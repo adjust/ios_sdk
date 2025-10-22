@@ -51,10 +51,10 @@
 @interface ADJSavedPreLaunch : NSObject
 
 @property (nonatomic, strong) NSMutableArray * _Nonnull preLaunchActionsArray;
-@property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionReadCallbacksArray;
-@property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidReadCallbacksArray;
-@property (nonatomic, strong) NSMutableArray * _Nullable cachedAttributionTimeoutCallbacksArray;
-@property (nonatomic, strong) NSMutableArray * _Nullable cachedAdidTimeoutCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nonnull cachedAttributionReadCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nonnull cachedAdidReadCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nonnull cachedAttributionTimeoutCallbacksArray;
+@property (nonatomic, strong) NSMutableArray * _Nonnull cachedAdidTimeoutCallbacksArray;
 
 @property (nonatomic, copy) NSNumber *_Nullable enabled;
 @property (nonatomic, assign) BOOL offline;
