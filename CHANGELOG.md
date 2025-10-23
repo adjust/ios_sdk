@@ -1,7 +1,7 @@
 ### Version 5.4.6 (23rd October 2025)
 #### Changed
 - Updated the Adjust Signature library version to 3.61.0.
-- Updated link resolution logic to correctly identify and resolve deep links at the terminal Adjust domains.
+- Updated link resolution logic to include new Adjust domains where link resolution ends.
 
 ---
 
