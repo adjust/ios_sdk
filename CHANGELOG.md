@@ -1,6 +1,7 @@
-### Version 5.4.6 (8th October 2025)
+### Version 5.4.6 (23rd October 2025)
 #### Changed
 - Updated the Adjust Signature library version to 3.61.0.
+- Updated link resolution logic to correctly identify and resolve deep links at the terminal Adjust domains.
 
 ---
 
@@ -1486,4 +1487,5 @@ In case you were using beta version of the SDK v5, please switch to the official
 ### Version 1.0.0 (30th July 2012)
 #### Added
 - Initial release of the adjust SDK for iOS.
+
 
