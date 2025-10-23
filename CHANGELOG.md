@@ -1,3 +1,10 @@
+### Version 5.4.6 (23rd October 2025)
+#### Changed
+- Updated the Adjust Signature library version to 3.61.0.
+- Updated link resolution logic to include new Adjust domains where link resolution ends.
+
+---
+
 ### Version 5.4.5 (26th September 2025)
 #### Fixed
 - Updated the Swift Package Manager dependency constraint for `GoogleAdsOnDeviceConversion` to ensure compatibility with version 3.x.x (https://github.com/adjust/ios_sdk/issues/773).
@@ -1480,4 +1487,5 @@ In case you were using beta version of the SDK v5, please switch to the official
 ### Version 1.0.0 (30th July 2012)
 #### Added
 - Initial release of the adjust SDK for iOS.
+
 
