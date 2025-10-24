@@ -31,8 +31,9 @@ let package = Package(
                 .target(name: "AdjustSdk"),
                 .product(name: "AdjustSignature", package: "adjust_signature_sdk")
             ],
-            path: "Wrappers/AdjustSdkSigned",
-            sources: ["Wrapper.swift"]
+            path: "AdjustSdkSigned",
+            sources: ["AdjustSdkSigned.m"],
+            publicHeadersPath: "include"
         ),
         .target(
             name: "AdjustSdk",
@@ -43,8 +44,7 @@ let package = Package(
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath(""),
-                .headerSearchPath("Internal"),
-                .headerSearchPath("include")
+                .headerSearchPath("Internal")
             ]
         ),
         .target(
