@@ -939,7 +939,6 @@
 		07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeUtil.h; sourceTree = "<group>"; };
 		07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeUtil.m; sourceTree = "<group>"; };
 		0A584B962C3E8C710071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; path = AdjustSigSdk.xcframework; sourceTree = "<group>"; };
-		0A584B982C3E8C9A0071A651 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0A584B992C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0A584B9B2C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0A584DED2C45BD160071A651 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -949,6 +948,7 @@
 		0AB1CAD527DF671300509231 /* libAdjustSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJOdmManager.h; sourceTree = "<group>"; };
 		0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJOdmManager.m; sourceTree = "<group>"; };
+		0AF801082EAA82A9003F6A58 /* AdjustSdk.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = AdjustSdk.modulemap; sourceTree = "<group>"; };
 		52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PocketSocket.xcodeproj; path = PocketSocket/PocketSocket.xcodeproj; sourceTree = "<group>"; };
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
@@ -1135,7 +1135,7 @@
 		0A584B922C3E8B320071A651 /* ModuleMap */ = {
 			isa = PBXGroup;
 			children = (
-				0A584B982C3E8C9A0071A651 /* module.modulemap */,
+				0AF801082EAA82A9003F6A58 /* AdjustSdk.modulemap */,
 			);
 			path = ModuleMap;
 			sourceTree = "<group>";
