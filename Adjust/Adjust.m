@@ -272,7 +272,7 @@ static dispatch_once_t onceToken = 0;
              completionHandler:(nonnull ADJAttributionGetterBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] attributionWithTimeout:timeoutMs
-                                    completionHandler:completion];
+                                   completionHandler:completion];
     }
 }
 
@@ -286,7 +286,7 @@ static dispatch_once_t onceToken = 0;
       completionHandler:(nonnull ADJAdidGetterBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] adidWithTimeout:timeoutMs
-                             completionHandler:completion];
+                            completionHandler:completion];
     }
 }
 
