@@ -73,7 +73,7 @@ fi
 
 # ======================================== #
 
-if [[ $BUILD_TEST_FRAMEWORK -eq 1 ]]
+if [[ $BUILD_TEST_FRAMEWORK -eq 1 ]] || [[ $BUILD_TEST_FRAMEWORK_SIM -eq 1 ]]
 then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Building Test Framework... ${NC}"
   source ./scripts/build_test_framework.sh

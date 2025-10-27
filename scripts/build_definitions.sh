@@ -44,7 +44,8 @@ Usage: $0 [options]
 
 * For a Test Framework, specify the following argument:
 
-    [-test]            Test Framework
+    [-test]            Test Framework for iOS Device Only
+    [-test-sim]        Test Framework for iOS Simulator Only
 
 * Examples:
 
@@ -71,6 +72,7 @@ Usage: $0 [options]
     BUILD_TARGET_IM=0
     BUILD_TARGET_WEB_BRIDGE=0
     BUILD_TEST_FRAMEWORK=0
+    BUILD_TEST_FRAMEWORK_SIM=0
     BUILD_ALL=0
 
     for an_arg in "$@" ; do
@@ -93,6 +95,8 @@ Usage: $0 [options]
            ;;
          '-test') BUILD_TEST_FRAMEWORK=1
            ;;
+         '-test-sim') BUILD_TEST_FRAMEWORK_SIM=1
+           ;;
          '-all') BUILD_ALL=1
            ;;
        esac
@@ -109,9 +113,10 @@ Usage: $0 [options]
         BUILD_TARGET_IM=1
         BUILD_TARGET_WEB_BRIDGE=1
         BUILD_TEST_FRAMEWORK=1
+        BUILD_TEST_FRAMEWORK_SIM=1
     fi
 
-    if [[ $BUILD_DYNAMIC_FRAMEWORK -eq 0 ]] && [[ $BUILD_STATIC_FRAMEWORK -eq 0 ]] && [[ $BUILD_DYNAMIC_XCFRAMEWORK -eq 0 ]] && [[ $BUILD_STATIC_XCFRAMEWORK -eq 0 ]] && [[ $BUILD_TEST_FRAMEWORK -eq 0 ]]
+    if [[ $BUILD_DYNAMIC_FRAMEWORK -eq 0 ]] && [[ $BUILD_STATIC_FRAMEWORK -eq 0 ]] && [[ $BUILD_DYNAMIC_XCFRAMEWORK -eq 0 ]] && [[ $BUILD_STATIC_XCFRAMEWORK -eq 0 ]] && [[ $BUILD_TEST_FRAMEWORK -eq 0 ]] && [[ $BUILD_TEST_FRAMEWORK_SIM -eq 0 ]]
     then
         usage
     fi
@@ -134,6 +139,7 @@ Usage: $0 [options]
     echo "BUILD_TARGET_IM: $BUILD_TARGET_IM";
     echo "BUILD_TARGET_WEB_BRIDGE: $BUILD_TARGET_WEB_BRIDGE";
     echo "BUILD_TEST_FRAMEWORK: $BUILD_TEST_FRAMEWORK";
+    echo "BUILD_TEST_FRAMEWORK_SIM: $BUILD_TEST_FRAMEWORK_SIM";
 
 
     # Output folder for frameworks and xcframeworks
