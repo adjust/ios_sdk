@@ -90,14 +90,14 @@ static NSString * fbAppIdStatic = nil;
             _handleGetterFromObjC: function(callback, callbackId) {
                 window[callbackId] = function(value) {
                     if(callbackId.includes("adjust_getAttribution")) {
-                        if (value === "(null)" || value === null) {
+                        if (value == "(null)" || value == null) {
                             callback(null);
                         } else {
                             const parsedValue = JSON.parse(value);
                             callback(parsedValue);
                         }
                     } else {
-                        const sanitizedValue = (value === "(null)") ? null : value;
+                        const sanitizedValue = (value == "(null)") ? null : value;
                         callback(sanitizedValue);
                     }
                     delete window[callbackId];

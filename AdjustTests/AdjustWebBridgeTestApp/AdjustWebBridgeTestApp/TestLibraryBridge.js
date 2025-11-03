@@ -699,6 +699,83 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
     });
 }
 
+AdjustCommandExecutor.prototype.idfaGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getIdfa(function(idfa) {
+        addInfoToSend('idfa', idfa);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.idfvGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getIdfv(function(idfv) {
+        addInfoToSend('idfv', idfv);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getSdkVersion(function(sdkVersion) {
+        addInfoToSend('sdk_version', sdkVersion);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) {
+    var extraPath = this.extraPath;
+    var timeoutS = getFirstValue(params, 'timeout');
+    var timeout = parseInt(timeoutS);
+
+    Adjust.getAttributionWithTimeout(timeout, function(attribution) {
+        if (attribution != null) {
+            addInfoToSend('tracker_token', attribution.trackerToken);
+            addInfoToSend('tracker_name', attribution.trackerName);
+            addInfoToSend('network', attribution.network);
+            addInfoToSend('campaign', attribution.campaign);
+            addInfoToSend('adgroup', attribution.adgroup);
+            addInfoToSend('creative', attribution.creative);
+            addInfoToSend('click_label', attribution.click_label);
+            addInfoToSend('cost_type', attribution.costType);
+            addInfoToSend('cost_amount', attribution.costAmount);
+            addInfoToSend('cost_currency', attribution.costCurrency);
+            const jsonResponseWithoutFbInstallReferrer = { ...attribution.jsonResponse };
+            if (jsonResponseWithoutFbInstallReferrer.cost_amount !== undefined) {
+                jsonResponseWithoutFbInstallReferrer.cost_amount = parseFloat(jsonResponseWithoutFbInstallReferrer.cost_amount).toFixed(2);
+            }
+            delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
+            addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+        } else {
+            addInfoToSend('attribution', 'nil');
+        }
+        sendInfoToServer(extraPath);
+    });
+}
+
+AdjustCommandExecutor.prototype.adidGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getAdid(function(adid) {
+        addInfoToSend('adid', adid);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
+    var extraPath = this.extraPath;
+    var timeoutS = getFirstValue(params, 'timeout');
+    var timeout = parseInt(timeoutS);
+
+    Adjust.getAdidWithTimeout(timeout, function(adid) {
+        if (adid != null) {
+            addInfoToSend('adid', adid);
+        } else {
+            addInfoToSend('adid', 'nil');
+        }
+        sendInfoToServer(extraPath);
+    });
+};
+
 AdjustCommandExecutor.prototype.endFirstSessionDelay = function(params) {
     Adjust.endFirstSessionDelay();
 };
