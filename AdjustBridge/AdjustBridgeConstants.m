@@ -48,6 +48,8 @@ NSString * const ADJWBGetIdfaMethodName = @"adjust_getIdfa";
 NSString * const ADJWBGetIdfvMethodName = @"adjust_getIdfv";
 NSString * const ADJWBGetAdidMethodName = @"adjust_getAdid";
 NSString * const ADJWBGetAttributionMethodName = @"adjust_getAttribution";
+NSString * const ADJWBGetAdidWithTimeoutMethodName = @"adjust_getAdidWithTimeout";
+NSString * const ADJWBGetAttributionWithTimeoutMethodName = @"adjust_getAttributionWithTimeout";
 NSString * const ADJWBAppTrackingAuthorizationStatus = @"adjust_appTrackingAuthorizationStatus";
 
 // AdjustWebbridge Config keys

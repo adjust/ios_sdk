@@ -117,8 +117,18 @@
         [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
             [self execJsCallbackWithId:callbackId callbackData:adid];
         }];
+    } else if ([methodName isEqual:ADJWBGetAdidWithTimeoutMethodName]) {
+        NSNumber *timeoutMs = [parameters objectForKey:@"timeoutMs"];
+        [Adjust adidWithTimeout:[timeoutMs integerValue] completionHandler:^(NSString * _Nullable adid) {
+            [self execJsCallbackWithId:callbackId callbackData:adid];
+        }];
     } else if ([methodName isEqual:ADJWBGetAttributionMethodName]) {
         [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
+            [self execJsCallbackWithId:callbackId callbackData:[attribution dictionary]];
+        }];
+    } else if ([methodName isEqual:ADJWBGetAttributionWithTimeoutMethodName]) {
+        NSNumber *timeoutMs = [parameters objectForKey:@"timeoutMs"];
+        [Adjust attributionWithTimeout:[timeoutMs integerValue] completionHandler:^(ADJAttribution * _Nullable attribution) {
             [self execJsCallbackWithId:callbackId callbackData:[attribution dictionary]];
         }];
     } else if ([methodName isEqual:ADJWBIsEnabledMethodName]) {
