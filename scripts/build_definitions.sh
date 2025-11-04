@@ -121,14 +121,19 @@ Usage: $0 [options]
         usage
     fi
 
-    if [[ $BUILD_TARGET_IOS -eq 0 ]] && [[ $BUILD_TARGET_TVOS -eq 0 ]] && [[ $BUILD_TARGET_IM -eq 0 ]] && [[ $BUILD_TARGET_WEB_BRIDGE -eq 0 ]]
+    if [[ $BUILD_DYNAMIC_FRAMEWORK -eq 1 ]] || [[ $BUILD_STATIC_FRAMEWORK -eq 1 ]] || [[ $BUILD_DYNAMIC_XCFRAMEWORK -eq 1 ]] || [[ $BUILD_STATIC_XCFRAMEWORK -eq 1 ]]
     then
-        # If no platform variant is provided, all platform variants will be built.
-        BUILD_TARGET_IOS=1
-        BUILD_TARGET_TVOS=1
-        BUILD_TARGET_IM=1
-        BUILD_TARGET_WEB_BRIDGE=1
-    fi
+      if [[ $BUILD_TARGET_IOS -eq 0 ]] && [[ $BUILD_TARGET_TVOS -eq 0 ]] && [[ $BUILD_TARGET_IM -eq 0 ]] && [[ $BUILD_TARGET_WEB_BRIDGE -eq 0 ]]
+      then
+          # If no platform variant is provided for one of the framework build targets, all platform variants will be built.
+          BUILD_TARGET_IOS=1
+          BUILD_TARGET_TVOS=1
+          BUILD_TARGET_IM=1
+          BUILD_TARGET_WEB_BRIDGE=1
+      fi
+    fi        
+
+
 
     echo "BUILD_DYNAMIC_FRAMEWORK: $BUILD_DYNAMIC_FRAMEWORK";
     echo "BUILD_STATIC_FRAMEWORK: $BUILD_STATIC_FRAMEWORK";
