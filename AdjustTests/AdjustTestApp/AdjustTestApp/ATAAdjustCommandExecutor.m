@@ -289,6 +289,13 @@
         }
     }
 
+    if ([parameters objectForKey:@"allowIdfvReading"]) {
+        NSString *allowIdfvReadingS = [parameters objectForKey:@"allowIdfvReading"][0];
+        if ([allowIdfvReadingS boolValue] == NO) {
+            [adjustConfig disableIdfvReading];
+        }
+    }
+
     if ([parameters objectForKey:@"allowAdServicesInfoReading"]) {
         NSString *allowAdServicesInfoReadingS = [parameters objectForKey:@"allowAdServicesInfoReading"][0];
         if ([allowAdServicesInfoReadingS boolValue] == NO) {
