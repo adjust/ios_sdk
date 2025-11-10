@@ -60,6 +60,7 @@ FOUNDATION_EXPORT NSString * const ADJWBSendInBackgroundConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBNeedsCostConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBAllowAdServicesInfoReadingConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsIdfaReadingAllowedConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBIsIdfvReadingAllowedConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsSkanAttributionHandlingEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsCoppaComplianceEnabledConfigKey;

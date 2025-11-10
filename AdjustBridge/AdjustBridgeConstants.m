@@ -62,6 +62,7 @@ NSString * const ADJWBSendInBackgroundConfigKey = @"sendInBackground";
 NSString * const ADJWBNeedsCostConfigKey = @"isCostDataInAttributionEnabled";
 NSString * const ADJWBAllowAdServicesInfoReadingConfigKey = @"isAdServicesEnabled";
 NSString * const ADJWBIsIdfaReadingAllowedConfigKey = @"isIdfaReadingAllowed";
+NSString * const ADJWBIsIdfvReadingAllowedConfigKey = @"isIdfvReadingAllowed";
 NSString * const ADJWBIsSkanAttributionHandlingEnabledConfigKey = @"isSkanAttributionHandlingEnabled";
 NSString * const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey = @"isDeferredDeeplinkOpeningEnabled";
 NSString * const ADJWBIsCoppaComplianceEnabledConfigKey = @"isCoppaComplianceEnabled";

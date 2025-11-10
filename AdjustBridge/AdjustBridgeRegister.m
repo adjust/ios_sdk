@@ -374,6 +374,7 @@ static NSString * fbAppIdStatic = nil;
             this.sendInBackground = null;
             this.isAdServicesEnabled = null;
             this.isIdfaReadingAllowed = null;
+            this.isIdfvReadingAllowed = null;
             this.isCostDataInAttributionEnabled = null;
             this.isDeferredDeeplinkOpeningEnabled = null;
             this.isSkanAttributionHandlingEnabled = null;
@@ -443,6 +444,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.disableIdfaReading = function() {
             this.isIdfaReadingAllowed = false;
+        };
+        AdjustConfig.prototype.disableIdfvReading = function() {
+            this.isIdfvReadingAllowed = false;
         };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
             this.isSkanAttributionHandlingEnabled = false;
