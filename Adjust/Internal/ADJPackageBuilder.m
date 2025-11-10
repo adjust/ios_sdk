@@ -986,6 +986,9 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     if (self.adjustConfig.isIdfaReadingEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfa_disabled"];
     }
+    if (self.adjustConfig.isIdfvReadingEnabled == NO) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_idfv_disabled"];
+    }
     if (self.adjustConfig.isAdServicesEnabled == NO) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_adserv_disabled"];
     }
