@@ -9,10 +9,10 @@ let package = Package(
         .tvOS(.v12)
     ],
     products: [
-        .library(name: "AdjustSdk", targets: ["AdjustSdkSigned"]),
-        .library(name: "AdjustUnsigned", targets: ["AdjustSdk"]),
-        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdkSigned"]),
-        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdkSigned"])
+        .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
+        .library(name: "AdjustUnsigned", targets: ["AdjustUnsigned"]),
+        .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
+        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"])
     ],
     dependencies: [
         .package(
@@ -26,22 +26,25 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "AdjustSdkSigned",
+            name: "AdjustSdk",
             dependencies: [
-                .target(name: "AdjustSdk"),
                 .product(name: "AdjustSignature", package: "adjust_signature_sdk")
             ],
-            path: "AdjustSdkSigned",
-            sources: ["AdjustSdkSigned.m"],
-            publicHeadersPath: "include"
-        ),
-        .target(
-            name: "AdjustSdk",
             path: "Adjust",
             resources: [
                 .copy("PrivacyInfo.xcprivacy"),
             ],
-            publicHeadersPath: "include",
+            cSettings: [
+                .headerSearchPath(""),
+                .headerSearchPath("Internal")
+            ]
+        ),
+        .target(
+            name: "AdjustUnsigned",
+            path: "AdjustUnsigned",
+            resources: [
+                .copy("PrivacyInfo.xcprivacy"),
+            ],
             cSettings: [
                 .headerSearchPath(""),
                 .headerSearchPath("Internal")
