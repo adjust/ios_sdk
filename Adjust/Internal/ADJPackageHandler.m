@@ -121,6 +121,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     [self.activityHandler finishedTracking:responseData];
 
+    if (!self.isRetrying) {
+        self.isRetrying = YES;
+        self.retryStartedAt = [[NSDate date] timeIntervalSince1970];
+    }
+
     self.lastPackageRetriesCount++;
 
     [ADJUtil launchInQueue:self.internalQueue
