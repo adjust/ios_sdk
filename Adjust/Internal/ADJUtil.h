@@ -147,8 +147,8 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion;
 
-+ (void)adidFromActivityStateFile:(void (^)(NSString * _Nullable))completion;
++ (void)adidFromActivityStateFile:(void (^)(NSString *))completion;
 
-+ (void)attributionFromAttributionFile:(void (^)(ADJAttribution * _Nullable))completion;
++ (void)attributionFromAttributionFile:(void (^)(ADJAttribution *))completion;
 
 @end

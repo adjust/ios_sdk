@@ -665,7 +665,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read attribution request"]) {
-        [ADJUtil attributionFromAttributionFile:^(ADJAttribution * _Nullable attribution) {
+        [ADJUtil attributionFromAttributionFile:^(ADJAttribution * attribution) {
             if (attribution != nil) {
                 __block ADJAttributionGetterBlock localAttributionCallback = completion;
                 [ADJUtil launchInMainThread:^{
@@ -696,7 +696,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read attribution request"]) {
-        [ADJUtil attributionFromAttributionFile:^(ADJAttribution * _Nullable attribution) {
+        [ADJUtil attributionFromAttributionFile:^(ADJAttribution * attribution) {
             if (attribution != nil) {
                 // attribution found locally, return immediately
                 __block ADJAttributionGetterBlock localAttributionCallback = completion;
@@ -724,7 +724,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read adid request"]) {
-        [ADJUtil adidFromActivityStateFile:^(NSString * _Nullable adid) {
+        [ADJUtil adidFromActivityStateFile:^(NSString *adid) {
             if (adid != nil) {
                 __block ADJAdidGetterBlock localAdidCallback = completion;
                 [ADJUtil launchInMainThread:^{
@@ -755,7 +755,7 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read adid request"]) {
-        [ADJUtil adidFromActivityStateFile:^(NSString * _Nullable adid) {
+        [ADJUtil adidFromActivityStateFile:^(NSString *adid) {
             if (adid != nil) {
                 // adid found locally, return immediately
                 __block ADJAdidGetterBlock localAdidCallback = completion;

@@ -1466,7 +1466,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     });
 }
 
-+ (void)adidFromActivityStateFile:(void (^)(NSString * _Nullable))completion {
++ (void)adidFromActivityStateFile:(void (^)(NSString *))completion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
         NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
@@ -1478,7 +1478,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     });
 }
 
-+ (void)attributionFromAttributionFile:(void (^)(ADJAttribution * _Nullable))completion {
++ (void)attributionFromAttributionFile:(void (^)(ADJAttribution *))completion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJAttribution class], nil];
         ADJAttribution *attribution = [ADJUtil readObject:@"AdjustIoAttribution"
