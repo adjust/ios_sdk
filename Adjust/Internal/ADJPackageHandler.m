@@ -158,8 +158,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (NSTimeInterval)retryPackageUsingBackoffWithResponse:(ADJResponseData *)responseData {
-    self.lastPackageRetriesCount++;
-
     NSTimeInterval waitTime;
     if (responseData.activityKind == ADJActivityKindSession
         && [ADJUserDefaults getInstallTracked] == NO)
