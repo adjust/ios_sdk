@@ -1068,8 +1068,8 @@ cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallb
     [selfI preLaunchActionsI:selfI
        preLaunchActionsArray:self.savedPreLaunch.preLaunchActionsArray];
 
-    [selfI processCachedAttributionReadCallback];
-    [selfI processCachedAdidReadCallback];
+    [selfI processCachedAttributionReadCallbackI];
+    [selfI processCachedAdidReadCallbackI];
 
     if (!isInactive) {
         [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
@@ -1806,7 +1806,7 @@ cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallb
         selfI.activityState.adid = adid;
     }];
     [selfI writeActivityStateI:selfI];
-    [selfI processCachedAdidReadCallback];
+    [selfI processCachedAdidReadCallbackI];
 }
 
 - (BOOL)updateAttributionI:(ADJActivityHandler *)selfI
@@ -1822,7 +1822,7 @@ cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallb
     selfI.attribution = attribution;
     [selfI writeAttributionI:selfI];
 
-    [selfI processCachedAttributionReadCallback];
+    [selfI processCachedAttributionReadCallbackI];
 
     if (selfI.adjustDelegate == nil) {
         return NO;
@@ -1835,7 +1835,7 @@ cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallb
     return YES;
 }
 
-- (void)processCachedAttributionReadCallback {
+- (void)processCachedAttributionReadCallbackI {
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
     if (localAttribution == nil) {
         return;
@@ -1879,7 +1879,7 @@ cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallb
     }
 }
 
-- (void)processCachedAdidReadCallback {
+- (void)processCachedAdidReadCallbackI {
     __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
     if (localAdid == nil) {
         return;
