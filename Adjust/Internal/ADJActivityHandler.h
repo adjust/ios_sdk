@@ -140,6 +140,14 @@
 - (ADJGlobalParameters * _Nullable)globalParameters;
 - (BOOL)isOdmEnabled;
 
++ (void)queueAttributionWithTimeout:(NSInteger)timeoutMs
+                  completionHandler:(nonnull ADJAttributionGetterBlock)completion
+cachedAttributionTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAttributionTimeoutCallbacksArray;
+
++ (void)queueAdidWithTimeout:(NSInteger)timeoutMs
+           completionHandler:(nonnull ADJAdidGetterBlock)completion
+cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallbacksArray;
+
 - (void)teardown;
 + (void)deleteState;
 @end

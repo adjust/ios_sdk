@@ -704,45 +704,54 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
++ (void)queueAttributionWithTimeout:(NSInteger)timeoutMs
+                  completionHandler:(nonnull ADJAttributionGetterBlock)completion
+cachedAttributionTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAttributionTimeoutCallbacksArray
+{
+    // attribution not found locally
+    ADJTimeoutCallback *timeoutCallback =
+        [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
+                                                      timeoutMs:timeoutMs];
+
+    // cache the callback before starting the timer
+    @synchronized (cachedAttributionTimeoutCallbacksArray) {
+        [cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+    }
+
+    // set up timeout timer immediately
+    __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
+    __block NSMutableArray * blockCachedAttributionTimeoutCallbacksArray = cachedAttributionTimeoutCallbacksArray;
+    dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+        if (blockTimeoutCallback.attributionCallback != nil) {
+            // remove from array and call callback with nil
+            @synchronized (blockCachedAttributionTimeoutCallbacksArray) {
+                [blockCachedAttributionTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+            }
+            [ADJUtil launchInMainThread:^{
+                // if timer elapses, return nil (only if callback still exists)
+                if (blockTimeoutCallback.attributionCallback != nil) {
+                    blockTimeoutCallback.attributionCallback(nil);
+                }
+                // null callback to call it only once
+                blockTimeoutCallback.attributionCallback = nil;
+            }];
+        }
+    });
+    timeoutCallback.timeoutBlock = timeoutBlock;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
+                   dispatch_get_main_queue(),
+                   timeoutBlock);
+}
+
 - (void)attributionWithTimeout:(NSInteger)timeoutMs
              completionHandler:(nonnull ADJAttributionGetterBlock)completion {
     __block ADJAttribution *_Nullable localAttribution = self.attribution;
 
     if (localAttribution == nil) {
-        // store timeout callback for later processing
-        ADJTimeoutCallback *timeoutCallback =
-            [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
-                                                          timeoutMs:timeoutMs];
-
-        // set up timeout timer
-        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
-        __weak typeof(self) weakSelf = self;
-        dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf != nil) {
-                // remove from array and call callback with nil
-                @synchronized (strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
-                    [strongSelf.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeObject:timeoutCallback];
-                }
-                [ADJUtil launchInMainThread:^{
-                    // if timer elapses, return nil (only if callback still exists)
-                    if (blockTimeoutCallback.attributionCallback != nil) {
-                        blockTimeoutCallback.attributionCallback(nil);
-                    }
-                    // null callback to call it only once
-                    blockTimeoutCallback.attributionCallback = nil;
-                }];
-            }
-        });
-        timeoutCallback.timeoutBlock = timeoutBlock;
-        
-        @synchronized (self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
-            [self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
-        }
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
-                       dispatch_get_main_queue(),
-                       timeoutBlock);
+        [ADJActivityHandler queueAttributionWithTimeout:timeoutMs
+                                      completionHandler:completion
+                 cachedAttributionTimeoutCallbacksArray:self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray];
 
         return;
     }
@@ -769,46 +778,55 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
 }
 
++ (void)queueAdidWithTimeout:(NSInteger)timeoutMs
+           completionHandler:(nonnull ADJAdidGetterBlock)completion
+cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallbacksArray
+{
+    ADJTimeoutCallback *timeoutCallback =
+        [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
+                                               timeoutMs:timeoutMs];
+
+    // cache the callback before starting the timer
+    @synchronized (cachedAdidTimeoutCallbacksArray) {
+        [cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+    }
+
+    // set up timeout timer immediately
+    __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
+    __block NSMutableArray * blockCachedAdidTimeoutCallbacksArray = cachedAdidTimeoutCallbacksArray;
+
+    dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+        if (blockTimeoutCallback.adidCallback != nil) {
+            // remove from array and call callback with nil
+            @synchronized (blockCachedAdidTimeoutCallbacksArray) {
+                [blockCachedAdidTimeoutCallbacksArray removeObject:blockTimeoutCallback];
+            }
+            [ADJUtil launchInMainThread:^{
+                // if timer elapses, return nil (only if callback still exists)
+                if (blockTimeoutCallback.adidCallback != nil) {
+                    blockTimeoutCallback.adidCallback(nil);
+                }
+                // null callback to call it only once
+                blockTimeoutCallback.adidCallback = nil;
+            }];
+        }
+    });
+    timeoutCallback.timeoutBlock = timeoutBlock;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
+                   dispatch_get_main_queue(),
+                   timeoutBlock);
+}
+
 - (void)adidWithTimeout:(NSInteger)timeoutMs
       completionHandler:(nonnull ADJAdidGetterBlock)completion {
     __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
 
     if (localAdid == nil) {
         // store timeout callback for later processing
-        ADJTimeoutCallback *timeoutCallback =
-            [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
-                                                   timeoutMs:timeoutMs];
-        
-        // set up timeout timer
-        __block ADJTimeoutCallback *blockTimeoutCallback = timeoutCallback;
-        __weak typeof(self) weakSelf = self;
-        dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (strongSelf != nil) {
-                // remove from array and call callback with nil
-                @synchronized (strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
-                    [strongSelf.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeObject:timeoutCallback];
-                }
-                [ADJUtil launchInMainThread:^{
-                    // if timer elapses, return nil (only if callback still exists)
-                    if (blockTimeoutCallback.adidCallback != nil) {
-                        blockTimeoutCallback.adidCallback(nil);
-                    }
-                    // null callback to call it only once
-                    blockTimeoutCallback.adidCallback = nil;
-                }];
-            }
-        });
-        timeoutCallback.timeoutBlock = timeoutBlock;
-
-        @synchronized (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
-            [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
-        }
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
-                       dispatch_get_main_queue(),
-                       timeoutBlock);
-
+        [ADJActivityHandler queueAdidWithTimeout:timeoutMs
+                               completionHandler:completion
+                 cachedAdidTimeoutCallbacksArray:self.savedPreLaunch.cachedAdidTimeoutCallbacksArray];
         return;
     }
 
