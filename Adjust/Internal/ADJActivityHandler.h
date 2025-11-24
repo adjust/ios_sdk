@@ -43,8 +43,10 @@
 @property (nonatomic, assign) NSInteger timeoutMs;
 @property (nonatomic, strong) dispatch_block_t _Nullable timeoutBlock;
 
-- (instancetype _Nonnull)initWithAttributionCallback:(ADJAttributionGetterBlock _Nonnull)attributionCallback timeoutMs:(NSInteger)timeoutMs;
-- (instancetype _Nonnull)initWithAdidCallback:(ADJAdidGetterBlock _Nonnull)adidCallback timeoutMs:(NSInteger)timeoutMs;
+- (instancetype _Nonnull)initWithAttributionCallback:(ADJAttributionGetterBlock _Nonnull)attributionCallback
+                                           timeoutMs:(NSInteger)timeoutMs;
+- (instancetype _Nonnull)initWithAdidCallback:(ADJAdidGetterBlock _Nonnull)adidCallback
+                                    timeoutMs:(NSInteger)timeoutMs;
 
 @end
 
@@ -121,11 +123,9 @@
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion;
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion;
-- (void)attributionWithTimeout:(NSInteger)timeoutMs
-             completionHandler:(nonnull ADJAttributionGetterBlock)completion;
+- (void)attributionWithTimeoutCallback:(nonnull ADJTimeoutCallback *)timeoutCallback;
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion;
-- (void)adidWithTimeout:(NSInteger)timeoutMs
-      completionHandler:(nonnull ADJAdidGetterBlock)completion;
+- (void)adidWithTimeoutCallback:(nonnull ADJTimeoutCallback *)timeoutCallback;
 - (void)setCoppaComplianceInDelay:(BOOL)isCoppaComplianceEnabled;
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId;
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
@@ -139,15 +139,6 @@
 - (ADJConfig * _Nullable)adjustConfig;
 - (ADJGlobalParameters * _Nullable)globalParameters;
 - (BOOL)isOdmEnabled;
-
-+ (void)queueAttributionWithTimeout:(NSInteger)timeoutMs
-                  completionHandler:(nonnull ADJAttributionGetterBlock)completion
-cachedAttributionTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAttributionTimeoutCallbacksArray;
-
-+ (void)queueAdidWithTimeout:(NSInteger)timeoutMs
-           completionHandler:(nonnull ADJAdidGetterBlock)completion
-cachedAdidTimeoutCallbacksArray:(nonnull NSMutableArray *)cachedAdidTimeoutCallbacksArray;
-
 - (void)teardown;
 + (void)deleteState;
 @end
