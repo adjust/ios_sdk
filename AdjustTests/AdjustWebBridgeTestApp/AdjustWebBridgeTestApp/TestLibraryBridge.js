@@ -699,30 +699,6 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
     });
 }
 
-AdjustCommandExecutor.prototype.idfaGetter = function(params) {
-    var extraPath = this.extraPath;
-    Adjust.getIdfa(function(idfa) {
-        addInfoToSend('idfa', idfa);
-        sendInfoToServer(extraPath);
-    });
-};
-
-AdjustCommandExecutor.prototype.idfvGetter = function(params) {
-    var extraPath = this.extraPath;
-    Adjust.getIdfv(function(idfv) {
-        addInfoToSend('idfv', idfv);
-        sendInfoToServer(extraPath);
-    });
-};
-
-AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
-    var extraPath = this.extraPath;
-    Adjust.getSdkVersion(function(sdkVersion) {
-        addInfoToSend('sdk_version', sdkVersion);
-        sendInfoToServer(extraPath);
-    });
-};
-
 AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) {
     var extraPath = this.extraPath;
     var timeoutS = getFirstValue(params, 'timeout');
