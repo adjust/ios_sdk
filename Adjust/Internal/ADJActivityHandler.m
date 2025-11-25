@@ -1802,14 +1802,14 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)processCachedAdidReadCallbackI:(ADJActivityHandler *)selfI {
-    NSString *localAdid = (self.activityState == nil) ? nil : self.activityState.adid;
+    NSString *localAdid = (selfI.activityState == nil) ? nil : selfI.activityState.adid;
     if (localAdid == nil) {
         return;
     }
 
     // we don't have to sync the access to this array - once ActivityHandler is created, this array
     // is accessed from the internal queue only.
-    NSArray *adidCallbacksCopy = [self.savedPreLaunch.cachedAdidReadCallbacksArray copy];
+    NSArray *adidCallbacksCopy = [selfI.savedPreLaunch.cachedAdidReadCallbacksArray copy];
     [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
 
     // process regular adid callbacks
@@ -1822,9 +1822,9 @@ const BOOL kSkanRegisterLockWindow = NO;
     // process timeout adid callbacks
     NSArray *adidTimeoutCallbacksCopy = nil;
     // we have to sync the array altering here due to the fact it's accessed from different queues
-    @synchronized (self.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
-        adidTimeoutCallbacksCopy = [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray copy];
-        [self.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeAllObjects];
+    @synchronized (selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+        adidTimeoutCallbacksCopy = [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray copy];
+        [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeAllObjects];
     }
 
     for (ADJTimeoutCallback *timeoutCallback in adidTimeoutCallbacksCopy) {
