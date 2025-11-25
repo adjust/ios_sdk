@@ -165,10 +165,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     return self;
 }
 
-- (void)dealloc {
-    NSLog(@"\n* * * * * * * * * *\n* * * * * DEALLOC * * * *\n* * * * * * * * * *");
-}
-
 @end
 
 @implementation ADJActivityHandler
