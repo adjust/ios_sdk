@@ -714,7 +714,9 @@ const BOOL kSkanRegisterLockWindow = NO;
                 }
             }];
         } else {
-            [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+            @synchronized (selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+                [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+            }
             // dispatch callback's timeout block
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutCallback.timeoutMs * NSEC_PER_MSEC)),
                            dispatch_get_main_queue(),
@@ -751,7 +753,9 @@ const BOOL kSkanRegisterLockWindow = NO;
                 }
             }];
         } else {
-            [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+            @synchronized (selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+                [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+            }
             // dispatch callback's timeout block
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutCallback.timeoutMs * NSEC_PER_MSEC)),
                            dispatch_get_main_queue(),
