@@ -109,6 +109,12 @@
         [self coppaComplianceInDelay:parameters];
     } else if ([methodName isEqualToString:@"externalDeviceIdInDelay"]) {
         [self externalDeviceIdInDelay:parameters];
+    } else if ([methodName isEqualToString:@"idfaGetter"]) {
+        [self idfaGetter:parameters];
+    } else if ([methodName isEqualToString:@"idfvGetter"]) {
+        [self idfvGetter:parameters];
+    } else if ([methodName isEqualToString:@"sdkVersionGetter"]) {
+        [self sdkVersionGetter:parameters];
     }
 }
 
@@ -909,6 +915,27 @@
 - (void)externalDeviceIdInDelay:(NSDictionary *)parameters {
     NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
     [Adjust setExternalDeviceIdInDelay:externalDeviceId];
+}
+
+- (void)idfaGetter:(NSDictionary *)parameters {
+    [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
+        [self.testLibrary addInfoToSend:@"idfa" value:idfa];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)idfvGetter:(NSDictionary *)parameters {
+    [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+        [self.testLibrary addInfoToSend:@"idfv" value:idfv];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)sdkVersionGetter:(NSDictionary *)parameters {
+    [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+        [self.testLibrary addInfoToSend:@"sdk_version" value:sdkVersion];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
 }
 
 @end

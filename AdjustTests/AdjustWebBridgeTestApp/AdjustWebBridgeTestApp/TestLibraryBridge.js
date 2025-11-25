@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.21.90:8080';
-var controlUrl = 'ws://192.168.21.90:1987';
+var urlOverwrite = 'http://192.168.86.241:8080';
+var controlUrl = 'ws://192.168.86.241:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -718,6 +718,30 @@ AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
         var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         Adjust.setExternalDeviceIdInDelay(externalDeviceId);
     }
+};
+
+AdjustCommandExecutor.prototype.idfaGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getIdfa(function(idfa) {
+        addInfoToSend('idfa', idfa);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.idfvGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getIdfv(function(idfv) {
+        addInfoToSend('idfv', idfv);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
+    var extraPath = this.extraPath;
+    Adjust.getSdkVersion(function(sdkVersion) {
+        addInfoToSend('sdk_version', sdkVersion);
+        sendInfoToServer(extraPath);
+    });
 };
 
 // Util

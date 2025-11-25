@@ -15,8 +15,8 @@
 //static NSString * controlUrl = @"ws://127.0.0.1:1987";
 
 // device
-static NSString * urlOverwrite = @"http://192.168.21.90:8080";
-static NSString * controlUrl = @"ws://192.168.21.90:1987";
+static NSString * urlOverwrite = @"http://192.168.86.241:8080";
+static NSString * controlUrl = @"ws://192.168.86.241:1987";
 
 @interface TestLibraryBridge : NSObject<AdjustCommandDelegate>
 
