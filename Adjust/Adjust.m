@@ -694,13 +694,15 @@ static dispatch_once_t onceToken = 0;
     // if there is still no ActivityHandler and stored Attribution is availble,
     // launch the completion handler.
     BOOL bActivityHandlerAvailable = [self checkActivityHandler:@"read attribution request with timmeout"];
-    ADJAttribution *attribution = [ADJUtil attributionFromAttributionFile];
-    if (!bActivityHandlerAvailable && attribution != nil) {
-        // attribution found locally, return immediately
-        [ADJUtil launchInMainThread:^{
-            completion(attribution);
-        }];
-        return;
+    if (!bActivityHandlerAvailable) {
+        ADJAttribution *attribution = [ADJUtil attributionFromAttributionFile];
+        if (attribution != nil) {
+            // attribution found locally, return immediately
+            [ADJUtil launchInMainThread:^{
+                completion(attribution);
+            }];
+            return;
+        }
     }
 
     // No attribution found - creating a timeout callback object with timeout code block
@@ -780,13 +782,15 @@ static dispatch_once_t onceToken = 0;
     // if there is still no ActivityHandler and stored adid is availble,
     // launch the completion handler.
     BOOL bActivityHandlerAvailable = [self checkActivityHandler:@"read adid request with timmeout"];
-    NSString *adid = [ADJUtil adidFromActivityStateFile];
-    if (!bActivityHandlerAvailable && adid != nil) {
-        // adid found locally, return immediately
-        [ADJUtil launchInMainThread:^{
-            completion(adid);
-        }];
-        return;
+    if (!bActivityHandlerAvailable) {
+        NSString *adid = [ADJUtil adidFromActivityStateFile];
+        if (adid != nil) {
+            // adid found locally, return immediately
+            [ADJUtil launchInMainThread:^{
+                completion(adid);
+            }];
+            return;
+        }
     }
 
     // No adid found - creating a timeout callback object with timeout code block
