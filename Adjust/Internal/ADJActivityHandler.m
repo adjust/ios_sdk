@@ -710,10 +710,11 @@ const BOOL kSkanRegisterLockWindow = NO;
                      block:^(ADJActivityHandler * selfI) {
         if (selfI.attribution != nil) {
             [ADJUtil launchInMainThread:^{
-                if (timeoutCallback.attributionCallback != nil) {
-                    timeoutCallback.attributionCallback(selfI.attribution);
-                    timeoutCallback.timeoutBlock = nil;
-                }
+                // calling cllback block (client's completion handler) immediately.
+                // attributionCallback should be nonnull here.
+                timeoutCallback.attributionCallback(selfI.attribution);
+                timeoutCallback.attributionCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
             }];
         } else {
             // we should sync the addObject call below, becasue this array is accessed and altered
@@ -753,10 +754,11 @@ const BOOL kSkanRegisterLockWindow = NO;
         NSString *localAdid = (selfI.activityState == nil) ? nil : selfI.activityState.adid;
         if (localAdid != nil) {
             [ADJUtil launchInMainThread:^{
-                if (timeoutCallback.adidCallback != nil) {
-                    timeoutCallback.adidCallback(localAdid);
-                    timeoutCallback.timeoutBlock = nil;
-                }
+                // calling cllback block (client's completion handler) immediately.
+                // adidCallback should be nonnull here.
+                timeoutCallback.adidCallback(localAdid);
+                timeoutCallback.adidCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
             }];
         } else {
             // we should sync the addObject call below, becasue this array is accessed and altered
