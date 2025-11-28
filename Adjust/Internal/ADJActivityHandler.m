@@ -697,6 +697,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                 completion(selfI.attribution);
             }];
         } else {
+            // we don't have to sync the access to this array - once ActivityHandler is created, this array
+            // is accessed from the internal queue only.
             [selfI.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
         }
     }];
@@ -714,6 +716,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                 }
             }];
         } else {
+            // we should sync the addObject call below, becasue this array is accessed and altered
+            // from ActivityHandler's internal queue and from the main queue (where timeout block is scheduled to run).
             @synchronized (selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
                 [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
             }
@@ -735,6 +739,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                 completion(adid);
             }];
         } else {
+            // we don't have to sync the access to this array - once ActivityHandler is created, this array
+            // is accessed from the internal queue only.
             [selfI.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
         }
     }];
@@ -753,6 +759,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                 }
             }];
         } else {
+            // we should sync the addObject call below, becasue this array is accessed and altered
+            // from ActivityHandler's internal queue and from the main queue (where timeout block is scheduled to run).
             @synchronized (selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
                 [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
             }
@@ -1814,7 +1822,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     // we don't have to sync the access to this array - once ActivityHandler is created, this array
     // is accessed from the internal queue only.
     NSArray *adidCallbacksCopy = [selfI.savedPreLaunch.cachedAdidReadCallbacksArray copy];
-    [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
+    [selfI.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
 
     // process regular adid callbacks
     for (ADJAdidGetterBlock adidCallback in adidCallbacksCopy) {
