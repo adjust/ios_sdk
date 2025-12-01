@@ -30,6 +30,7 @@
 #import <stdatomic.h>
 #import <stdbool.h>
 #import "ADJOdmManager.h"
+#import "ADJEventMetaData.h"
 
 NSString * const ADJClickSourceAdServices = @"apple_ads";
 NSString * const ADJClickSourceDeepLink = @"deeplink";
@@ -40,6 +41,7 @@ typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename                = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename                  = @"AdjustIoAttribution";
+static NSString   * const kEventMetaDataFilename                = @"AdjustEventMetadata";
 static NSString   * const kGlobalCallbackParametersFilename     = @"AdjustSessionCallbackParameters";
 static NSString   * const kGlobalPartnerParametersFilename      = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix                         = @"adjust_";
@@ -108,6 +110,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJSdkClickHandler *sdkClickHandler;
 @property (nonatomic, strong) ADJPurchaseVerificationHandler *purchaseVerificationHandler;
 @property (nonatomic, strong) ADJActivityState *activityState;
+@property (nonatomic, strong) ADJEventMetaData *eventsMetaData;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
@@ -234,7 +237,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     // read files to have sync values available
     [self readAttribution];
     [self readActivityState];
-    
+    [self readEventsMetaData];
+
     // register SKAdNetwork attribution if we haven't already
     if (self.adjustConfig.isSkanAttributionEnabled) {
         NSNumber *numConversionValue = [NSNumber numberWithInteger:kSkanRegisterConversionValue];
@@ -881,6 +885,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil deleteFileWithName:kAttributionFilename];
 }
 
++ (void)deletEventsMetaData {
+    [ADJUtil deleteFileWithName:kEventMetaDataFilename];
+}
+
 + (void)deleteGlobalCallbackParameters {
     [ADJUtil deleteFileWithName:kGlobalCallbackParametersFilename];
 }
@@ -1273,6 +1281,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
     [selfI updateActivityStateI:selfI now:now];
 
+    NSUInteger eventSequence = [selfI.eventsMetaData incrementedSequenceForEventToken:event.eventToken];
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
                                        initWithPackageParams:selfI.packageParams
@@ -1284,7 +1293,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        createdAt:now
                                        odmEnabled:selfI.isOdmEnabled];
     eventBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
+                                                     withEventSequence:eventSequence];
     [selfI.packageHandler addPackage:eventPackage];
     [selfI.packageHandler sendFirstPackage];
 
@@ -1294,6 +1304,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     [selfI writeActivityStateI:selfI];
+    [selfI writeEventsMetaDataI:selfI];
 }
 
 - (void)trackAppStoreSubscriptionI:(ADJActivityHandler *)selfI
@@ -2513,6 +2524,18 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)writeEventsMetaDataI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJEventMetaData class]) {
+        if (selfI.eventsMetaData == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.eventsMetaData
+                    fileName:kEventMetaDataFilename
+                  objectName:@"Event metadata"
+                  syncObject:[ADJEventMetaData class]];
+    }
+}
+
 - (void)teardownAttributionS
 {
     @synchronized ([ADJAttribution class]) {
@@ -2541,6 +2564,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                 objectName:@"Attribution"
                                    classes:allowedClasses
                                 syncObject:[ADJAttribution class]];
+}
+
+- (void)readEventsMetaData {
+    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                    block:^{
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJEventMetaData class], nil];
+        self.eventsMetaData = [ADJUtil readObject:kEventMetaDataFilename
+                                       objectName:@"Event metadata"
+                                          classes:allowedClasses
+                                       syncObject:[ADJEventMetaData class]];
+        if (self.eventsMetaData == nil) {
+            self.eventsMetaData = [[ADJEventMetaData alloc] init];
+        }
+    }];
 }
 
 - (void)writeGlobalCallbackParametersI:(ADJActivityHandler *)selfI {

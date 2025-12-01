@@ -85,8 +85,10 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     return sessionPackage;
 }
 
-- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event {
-    NSMutableDictionary *parameters = [self getEventParameters:event];
+- (ADJActivityPackage *)buildEventPackage:(ADJEvent *)event
+                        withEventSequence:(NSUInteger)eventSequence {
+    NSMutableDictionary *parameters = [self getEventParameters:event
+                                             withEventSequence:eventSequence];
     ADJActivityPackage *eventPackage = [self defaultActivityPackage];
     eventPackage.path = @"/event";
     eventPackage.activityKind = ADJActivityKindEvent;
@@ -400,7 +402,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     return parameters;
 }
 
-- (NSMutableDictionary *)getEventParameters:(ADJEvent *)event {
+- (NSMutableDictionary *)getEventParameters:(ADJEvent *)event
+                          withEventSequence:(NSUInteger)eventSequence {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     [ADJPackageBuilder parameters:parameters setString:self.adjustConfig.appToken forKey:@"app_token"];
@@ -451,6 +454,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
                                                        parameterName:@"Partner"];
     [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
+    [ADJPackageBuilder parameters:parameters setUInteger:eventSequence forKey:@"seq"];
+
 
     [self addTrackingDataToParameters:parameters];
     [self addConsentDataToParameters:parameters forActivityKind:ADJActivityKindEvent];
@@ -1043,6 +1048,15 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     NSString *valueString = [NSString stringWithFormat:@"%d", value];
     [ADJPackageBuilder parameters:parameters setString:valueString forKey:key];
 }
+
++ (void)parameters:(NSMutableDictionary *)parameters setUInteger:(NSUInteger)value forKey:(NSString *)key {
+    if (parameters == nil) {
+        return;
+    }
+    NSString *valueString = [NSString stringWithFormat:@"%lu", value];
+    [ADJPackageBuilder parameters:parameters setString:valueString forKey:key];
+}
+
 
 + (void)parameters:(NSMutableDictionary *)parameters setDouble:(double)value forKey:(NSString *)key {
     if (parameters == nil) {

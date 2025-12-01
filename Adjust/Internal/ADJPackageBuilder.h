@@ -45,7 +45,8 @@
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage;
 
-- (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event;
+- (ADJActivityPackage * _Nullable)buildEventPackage:(ADJEvent * _Nullable)event
+                                  withEventSequence:(NSUInteger)eventSequence;
 
 - (ADJActivityPackage * _Nullable)buildInfoPackage:(NSString * _Nullable)infoSource;
 
@@ -88,6 +89,10 @@
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
             setInt:(int)value
+            forKey:(NSString * _Nullable)key;
+
++ (void)parameters:(NSMutableDictionary * _Nullable)parameters
+       setUInteger:(NSUInteger)value
             forKey:(NSString * _Nullable)key;
 
 + (void)parameters:(NSMutableDictionary * _Nullable)parameters
