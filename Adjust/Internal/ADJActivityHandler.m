@@ -851,6 +851,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     [self teardownActivityStateS];
     [self teardownAttributionS];
+    [self teardownEventsMetaDataS];
     [self teardownAllGlobalParametersS];
 
     [ADJUtil teardown];
@@ -872,6 +873,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 + (void)deleteState {
     [ADJActivityHandler deleteActivityState];
     [ADJActivityHandler deleteAttribution];
+    [ADJActivityHandler deletEventsMetaData];
     [ADJActivityHandler deleteGlobalCallbackParameters];
     [ADJActivityHandler deleteGlobalPartnerParameters];
     [ADJUserDefaults clearAdjustStuff];
@@ -2524,6 +2526,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)teardownAttributionS
+{
+    @synchronized ([ADJAttribution class]) {
+        if (self.attribution == nil) {
+            return;
+        }
+        self.attribution = nil;
+    }
+}
+
 - (void)writeEventsMetaDataI:(ADJActivityHandler *)selfI {
     @synchronized ([ADJEventMetaData class]) {
         if (selfI.eventsMetaData == nil) {
@@ -2536,15 +2548,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)teardownAttributionS
+- (void)teardownEventsMetaDataS
 {
-    @synchronized ([ADJAttribution class]) {
-        if (self.attribution == nil) {
+    @synchronized ([ADJEventMetaData class]) {
+        if (self.eventsMetaData == nil) {
             return;
         }
-        self.attribution = nil;
+        self.eventsMetaData = nil;
     }
 }
+
 
 - (void)readActivityState {
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
