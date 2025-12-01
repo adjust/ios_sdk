@@ -1444,6 +1444,8 @@
 				969952CE1A012F5300928462 /* ADJAttributionHandler.m */,
 				965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */,
 				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
+				0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */,
+				0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */,
 				96B6710E1D788EEC0090A023 /* ADJGlobalParameters.h */,
 				96B6710F1D788EEC0090A023 /* ADJGlobalParameters.m */,
 				0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */,
@@ -1474,8 +1476,6 @@
 				9DD0E9AD1F44690B00B2A759 /* ADJUserDefaults.m */,
 				96E5E37F18BBB48A008E7B30 /* ADJUtil.h */,
 				96E5E38018BBB48A008E7B30 /* ADJUtil.m */,
-				0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */,
-				0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
