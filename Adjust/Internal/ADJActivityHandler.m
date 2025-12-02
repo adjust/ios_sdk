@@ -873,7 +873,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 + (void)deleteState {
     [ADJActivityHandler deleteActivityState];
     [ADJActivityHandler deleteAttribution];
-    [ADJActivityHandler deletEventsMetaData];
+    [ADJActivityHandler deleteEventsMetaData];
     [ADJActivityHandler deleteGlobalCallbackParameters];
     [ADJActivityHandler deleteGlobalPartnerParameters];
     [ADJUserDefaults clearAdjustStuff];
@@ -887,7 +887,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil deleteFileWithName:kAttributionFilename];
 }
 
-+ (void)deletEventsMetaData {
++ (void)deleteEventsMetaData {
     [ADJUtil deleteFileWithName:kEventMetaDataFilename];
 }
 
