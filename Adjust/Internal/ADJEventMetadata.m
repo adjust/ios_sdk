@@ -1,22 +1,22 @@
 //
-//  ADJEventMetaData.m
+//  ADJEventMetadata.m
 //  Adjust
 //
 //  Created by Genady Buchatsky on 27.11.25.
 //  Copyright © 2025 Adjust GmbH. All rights reserved.
 //
 
-#import "ADJEventMetaData.h"
+#import "ADJEventMetadata.h"
 #import "ADJAdjustFactory.h"
 #import "ADJLogger.h"
 #import "ADJUtil.h"
 
-@interface ADJEventMetaData ()
+@interface ADJEventMetadata ()
 @property (nonatomic, weak) id<ADJLogger> logger;
 @property (nonatomic, strong) NSMutableDictionary *eventSequence;
 @end
 
-@implementation ADJEventMetaData
+@implementation ADJEventMetadata
 
 + (BOOL)supportsSecureCoding {
     return YES;

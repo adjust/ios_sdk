@@ -1,5 +1,5 @@
 //
-//  ADJEventMetaData.h
+//  ADJEventMetadata.h
 //  Adjust
 //
 //  Created by Genady Buchatsky on 27.11.25.
@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJEventMetaData : NSObject <NSSecureCoding>
+@interface ADJEventMetadata : NSObject <NSSecureCoding>
 - (NSUInteger)incrementedSequenceForEventToken:(NSString *)token;
 @end

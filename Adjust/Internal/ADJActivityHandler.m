@@ -30,7 +30,7 @@
 #import <stdatomic.h>
 #import <stdbool.h>
 #import "ADJOdmManager.h"
-#import "ADJEventMetaData.h"
+#import "ADJEventMetadata.h"
 
 NSString * const ADJClickSourceAdServices = @"apple_ads";
 NSString * const ADJClickSourceDeepLink = @"deeplink";
@@ -41,7 +41,7 @@ typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename                = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename                  = @"AdjustIoAttribution";
-static NSString   * const kEventMetaDataFilename                = @"AdjustEventMetadata";
+static NSString   * const kEventMetadataFilename                = @"AdjustEventMetadata";
 static NSString   * const kGlobalCallbackParametersFilename     = @"AdjustSessionCallbackParameters";
 static NSString   * const kGlobalPartnerParametersFilename      = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix                         = @"adjust_";
@@ -110,7 +110,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJSdkClickHandler *sdkClickHandler;
 @property (nonatomic, strong) ADJPurchaseVerificationHandler *purchaseVerificationHandler;
 @property (nonatomic, strong) ADJActivityState *activityState;
-@property (nonatomic, strong) ADJEventMetaData *eventsMetaData;
+@property (nonatomic, strong) ADJEventMetadata *eventsMetadata;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
@@ -237,7 +237,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     // read files to have sync values available
     [self readAttribution];
     [self readActivityState];
-    [self readEventsMetaData];
+    [self readEventsMetadata];
 
     // register SKAdNetwork attribution if we haven't already
     if (self.adjustConfig.isSkanAttributionEnabled) {
@@ -851,7 +851,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     [self teardownActivityStateS];
     [self teardownAttributionS];
-    [self teardownEventsMetaDataS];
+    [self teardownEventsMetadataS];
     [self teardownAllGlobalParametersS];
 
     [ADJUtil teardown];
@@ -873,7 +873,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 + (void)deleteState {
     [ADJActivityHandler deleteActivityState];
     [ADJActivityHandler deleteAttribution];
-    [ADJActivityHandler deleteEventsMetaData];
+    [ADJActivityHandler deleteEventsMetadata];
     [ADJActivityHandler deleteGlobalCallbackParameters];
     [ADJActivityHandler deleteGlobalPartnerParameters];
     [ADJUserDefaults clearAdjustStuff];
@@ -887,8 +887,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     [ADJUtil deleteFileWithName:kAttributionFilename];
 }
 
-+ (void)deleteEventsMetaData {
-    [ADJUtil deleteFileWithName:kEventMetaDataFilename];
++ (void)deleteEventsMetadata {
+    [ADJUtil deleteFileWithName:kEventMetadataFilename];
 }
 
 + (void)deleteGlobalCallbackParameters {
@@ -1283,7 +1283,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
     [selfI updateActivityStateI:selfI now:now];
 
-    NSUInteger eventSequence = [selfI.eventsMetaData incrementedSequenceForEventToken:event.eventToken];
+    NSUInteger eventSequence = [selfI.eventsMetadata incrementedSequenceForEventToken:event.eventToken];
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
                                        initWithPackageParams:selfI.packageParams
@@ -1306,7 +1306,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     [selfI writeActivityStateI:selfI];
-    [selfI writeEventsMetaDataI:selfI];
+    [selfI writeEventsMetadataI:selfI];
 }
 
 - (void)trackAppStoreSubscriptionI:(ADJActivityHandler *)selfI
@@ -2536,25 +2536,25 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
-- (void)writeEventsMetaDataI:(ADJActivityHandler *)selfI {
-    @synchronized ([ADJEventMetaData class]) {
-        if (selfI.eventsMetaData == nil) {
+- (void)writeEventsMetadataI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJEventMetadata class]) {
+        if (selfI.eventsMetadata == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.eventsMetaData
-                    fileName:kEventMetaDataFilename
+        [ADJUtil writeObject:selfI.eventsMetadata
+                    fileName:kEventMetadataFilename
                   objectName:@"Event metadata"
-                  syncObject:[ADJEventMetaData class]];
+                  syncObject:[ADJEventMetadata class]];
     }
 }
 
-- (void)teardownEventsMetaDataS
+- (void)teardownEventsMetadataS
 {
-    @synchronized ([ADJEventMetaData class]) {
-        if (self.eventsMetaData == nil) {
+    @synchronized ([ADJEventMetadata class]) {
+        if (self.eventsMetadata == nil) {
             return;
         }
-        self.eventsMetaData = nil;
+        self.eventsMetadata = nil;
     }
 }
 
@@ -2579,16 +2579,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                 syncObject:[ADJAttribution class]];
 }
 
-- (void)readEventsMetaData {
+- (void)readEventsMetadata {
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
-        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJEventMetaData class], nil];
-        self.eventsMetaData = [ADJUtil readObject:kEventMetaDataFilename
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJEventMetadata class], nil];
+        self.eventsMetadata = [ADJUtil readObject:kEventMetadataFilename
                                        objectName:@"Event metadata"
                                           classes:allowedClasses
-                                       syncObject:[ADJEventMetaData class]];
-        if (self.eventsMetaData == nil) {
-            self.eventsMetaData = [[ADJEventMetaData alloc] init];
+                                       syncObject:[ADJEventMetadata class]];
+        if (self.eventsMetadata == nil) {
+            self.eventsMetadata = [[ADJEventMetadata alloc] init];
         }
     }];
 }

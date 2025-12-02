@@ -62,24 +62,24 @@
 		07D5CB112C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB122C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB132C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
-		0A4EBA6E2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA6F2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA702ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA712ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA722ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA732ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA742ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA752ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA762ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA772ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA782ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA792ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA7A2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA7B2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA7C2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
-		0A4EBA7D2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA7E2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */; };
-		0A4EBA7F2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */; };
+		0A4EBA6E2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA6F2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA702ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA712ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA722ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA732ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA742ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA752ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA762ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA772ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA782ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA792ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA7A2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA7B2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA7C2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
+		0A4EBA7D2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA7E2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
+		0A4EBA7F2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
 		0A584B9D2C3E937E0071A651 /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A584B9B2C3E8CA50071A651 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A584B9F2C3E93EF0071A651 /* AdjustBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9648C5F51CD1770300A3B049 /* AdjustBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A584BA42C3E94230071A651 /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */; };
@@ -963,8 +963,8 @@
 		07D5CAC42C50EF3100C112DC /* AdjustBridgeRegister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeRegister.m; sourceTree = "<group>"; };
 		07D5CAFA2C57DA2400C112DC /* AdjustBridgeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustBridgeUtil.h; sourceTree = "<group>"; };
 		07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustBridgeUtil.m; sourceTree = "<group>"; };
-		0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJEventMetaData.h; sourceTree = "<group>"; };
-		0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJEventMetaData.m; sourceTree = "<group>"; };
+		0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJEventMetadata.h; sourceTree = "<group>"; };
+		0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJEventMetadata.m; sourceTree = "<group>"; };
 		0A584B962C3E8C710071A651 /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QGUGW9AUMK:adeven GmbH"; lastKnownFileType = wrapper.xcframework; path = AdjustSigSdk.xcframework; sourceTree = "<group>"; };
 		0A584B992C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
 		0A584B9B2C3E8CA50071A651 /* AdjustSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdjustSdk.h; sourceTree = "<group>"; };
@@ -1444,8 +1444,8 @@
 				969952CE1A012F5300928462 /* ADJAttributionHandler.m */,
 				965B7F2E1CC78F6600098639 /* ADJBackoffStrategy.h */,
 				965B7F2F1CC78F6600098639 /* ADJBackoffStrategy.m */,
-				0A4EBA6C2ED8BE0700286E99 /* ADJEventMetaData.h */,
-				0A4EBA6D2ED8BE0700286E99 /* ADJEventMetaData.m */,
+				0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */,
+				0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */,
 				96B6710E1D788EEC0090A023 /* ADJGlobalParameters.h */,
 				96B6710F1D788EEC0090A023 /* ADJGlobalParameters.m */,
 				0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */,
@@ -1514,7 +1514,7 @@
 				0A584CDF2C3E95B10071A651 /* ADJConfig.h in Headers */,
 				0A584CE02C3E95B10071A651 /* ADJEvent.h in Headers */,
 				0A584CE12C3E95B10071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA6F2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA6F2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584CE22C3E95B10071A651 /* ADJEventSuccess.h in Headers */,
 				0A584CE32C3E95B10071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DF62C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1563,7 +1563,7 @@
 				0A584D062C3E96250071A651 /* ADJConfig.h in Headers */,
 				0A584D072C3E96250071A651 /* ADJEvent.h in Headers */,
 				0A584D082C3E96250071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA7E2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA7E2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584D092C3E96250071A651 /* ADJEventSuccess.h in Headers */,
 				0A584D0A2C3E96250071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DF92C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1612,7 +1612,7 @@
 				0A584D2D2C3E968A0071A651 /* ADJConfig.h in Headers */,
 				0A584D2E2C3E968A0071A651 /* ADJEvent.h in Headers */,
 				0A584D2F2C3E968A0071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA762ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA762ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584D302C3E968A0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584D312C3E968A0071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DFA2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1665,7 +1665,7 @@
 				0A584D582C3E96C70071A651 /* ADJLinkResolution.h in Headers */,
 				0A584D592C3E96C70071A651 /* ADJLogger.h in Headers */,
 				0A584D5A2C3E96C70071A651 /* ADJPurchaseVerificationResult.h in Headers */,
-				0A4EBA702ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA702ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584D5B2C3E96C70071A651 /* ADJSessionFailure.h in Headers */,
 				0A584D5C2C3E96C70071A651 /* ADJSessionSuccess.h in Headers */,
 				0AEB8A2E2D8457E50089F15C /* ADJOdmManager.h in Headers */,
@@ -1714,7 +1714,7 @@
 				96BCFBD11AC99246005A65C5 /* ADJAttribution.h in Headers */,
 				9DF212D42909E86A0056D579 /* ADJSKAdNetwork.h in Headers */,
 				9D2F23E22447CE5C00B7CA90 /* ADJAppStoreSubscription.h in Headers */,
-				0A4EBA7A2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA7A2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */,
 				9D52A3212C071BBC00E0AA55 /* ADJAdditions.h in Headers */,
 				9D7D3DEC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1767,7 +1767,7 @@
 				0A584CB72C3E95570071A651 /* ADJLinkResolution.h in Headers */,
 				0A584CB82C3E95570071A651 /* ADJLogger.h in Headers */,
 				0A584CB92C3E95570071A651 /* ADJPurchaseVerificationResult.h in Headers */,
-				0A4EBA7D2ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA7D2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584CBA2C3E95570071A651 /* ADJSessionFailure.h in Headers */,
 				0A584CBB2C3E95570071A651 /* ADJSessionSuccess.h in Headers */,
 				0AEB8A292D8457E50089F15C /* ADJOdmManager.h in Headers */,
@@ -1816,7 +1816,7 @@
 				0A584C182C3E94B50071A651 /* ADJConfig.h in Headers */,
 				0A584C192C3E94B50071A651 /* ADJEvent.h in Headers */,
 				0A584C1A2C3E94B50071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA722ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA722ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584C1B2C3E94B50071A651 /* ADJEventSuccess.h in Headers */,
 				0A584C1C2C3E94B50071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DF12C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1865,7 +1865,7 @@
 				0A584BCD2C3E944F0071A651 /* ADJConfig.h in Headers */,
 				0A584BCE2C3E944F0071A651 /* ADJEvent.h in Headers */,
 				0A584BCF2C3E944F0071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA752ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA752ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584BD02C3E944F0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584BD12C3E944F0071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DEE2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -1914,7 +1914,7 @@
 				0A584C632C3E94FA0071A651 /* ADJConfig.h in Headers */,
 				0A584C642C3E94FA0071A651 /* ADJEvent.h in Headers */,
 				0A584C652C3E94FA0071A651 /* ADJEventFailure.h in Headers */,
-				0A4EBA792ED8BE0700286E99 /* ADJEventMetaData.h in Headers */,
+				0A4EBA792ED8BE0700286E99 /* ADJEventMetadata.h in Headers */,
 				0A584C662C3E94FA0071A651 /* ADJEventSuccess.h in Headers */,
 				0A584C672C3E94FA0071A651 /* ADJLinkResolution.h in Headers */,
 				9D7D3DF22C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
@@ -2520,7 +2520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D4CC6D52C0735B400A1E0C0 /* ADJAdditions.m in Sources */,
-				0A4EBA6E2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA6E2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0AB1C99A27DD4B3100509231 /* Adjust.m in Sources */,
 				0AB1C99B27DD4B3100509231 /* ADJActivityHandler.m in Sources */,
 				07BC5A9A2D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2568,7 +2568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D4CC6E82C0735BC00A1E0C0 /* ADJAdditions.m in Sources */,
-				0A4EBA7F2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA7F2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0AB1CA3227DF49CB00509231 /* Adjust.m in Sources */,
 				0AB1CA3327DF49CB00509231 /* ADJActivityHandler.m in Sources */,
 				07BC5A9C2D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2616,7 +2616,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D4CC6E92C0735C400A1E0C0 /* ADJAdditions.m in Sources */,
-				0A4EBA772ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA772ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0AB1CA7527DF61F200509231 /* Adjust.m in Sources */,
 				0AB1CA7627DF61F200509231 /* ADJActivityHandler.m in Sources */,
 				07BC5AA12D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2687,7 +2687,7 @@
 				0AB1CB1D27DF68C100509231 /* ADJTimerCycle.m in Sources */,
 				07000F972C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */,
 				0AB1CB1E27DF68C100509231 /* ADJResponseData.m in Sources */,
-				0A4EBA712ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA712ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0AB1CB1F27DF68C100509231 /* ADJSessionSuccess.m in Sources */,
 				0AB1CB2027DF68C100509231 /* ADJSessionFailure.m in Sources */,
 				0AB1CB2127DF68C100509231 /* ADJEventSuccess.m in Sources */,
@@ -2727,7 +2727,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DB561862C072BAF0004CCAD /* ADJUrlStrategy.m in Sources */,
-				0A4EBA7B2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA7B2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				9DF92D842630ED02000FC3FC /* ADJPackageParams.m in Sources */,
 				96E5E38118BBB48A008E7B30 /* Adjust.m in Sources */,
 				07BC5AA52D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2798,7 +2798,7 @@
 				0A584C982C3E952C0071A651 /* ADJAdditions.m in Sources */,
 				07000F962C47BEAF00F40775 /* AdjustBridgeConstants.m in Sources */,
 				0A584C992C3E952C0071A651 /* ADJAdjustFactory.m in Sources */,
-				0A4EBA7C2ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA7C2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0A584C9A2C3E952C0071A651 /* ADJAttributionHandler.m in Sources */,
 				0A584C9B2C3E952C0071A651 /* ADJBackoffStrategy.m in Sources */,
 				0A584C9C2C3E952C0071A651 /* ADJGlobalParameters.m in Sources */,
@@ -2827,7 +2827,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A584BEF2C3E949B0071A651 /* ADJAdRevenue.m in Sources */,
-				0A4EBA732ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA732ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0A584BF02C3E949B0071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584BF12C3E949B0071A651 /* ADJAppStoreSubscription.m in Sources */,
 				07BC5A9E2D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2875,7 +2875,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A584BA42C3E94230071A651 /* ADJAdRevenue.m in Sources */,
-				0A4EBA742ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA742ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0A584BA52C3E94230071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584BA62C3E94240071A651 /* ADJAppStoreSubscription.m in Sources */,
 				07BC5AA32D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
@@ -2923,7 +2923,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A584C3A2C3E94E70071A651 /* ADJAdRevenue.m in Sources */,
-				0A4EBA782ED8BE0700286E99 /* ADJEventMetaData.m in Sources */,
+				0A4EBA782ED8BE0700286E99 /* ADJEventMetadata.m in Sources */,
 				0A584C3B2C3E94E70071A651 /* ADJAppStorePurchase.m in Sources */,
 				0A584C3C2C3E94E70071A651 /* ADJAppStoreSubscription.m in Sources */,
 				07BC5AA92D79DCE9006CC345 /* ADJStoreInfo.m in Sources */,
