@@ -15,6 +15,7 @@
 @class ADJSessionSuccess;
 @class ADJSessionFailure;
 @class ADJStoreInfo;
+@class ADJRemoteTrigger;
 typedef NS_ENUM(NSUInteger, ADJLogLevel);
 
 #pragma mark - AdjustDelegate methods
@@ -94,6 +95,17 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
  * @param data Conversion parameters set by Adjust SDK.
  */
 - (void)adjustSkanUpdatedWithConversionData:(nonnull NSDictionary<NSString *, NSString *> *)data;
+
+/**
+ * @brief Optional delegate method that gets called when a remote trigger is received from the backend.
+ *        Remote triggers can arrive on any response from the backend and will be processed immediately.
+ *        The SDK triggers one callback per item in the remote_triggers array, in the order received.
+ *
+ * @param remoteTrigger The remote trigger object containing label and payload.
+ *
+ * @note See ADJRemoteTrigger for details.
+ */
+- (void)adjustRemoteTriggerReceived:(nonnull ADJRemoteTrigger *)remoteTrigger;
 
 @end
 

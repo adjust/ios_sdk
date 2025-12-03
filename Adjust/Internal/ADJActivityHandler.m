@@ -33,6 +33,7 @@
 #import <stdbool.h>
 #import "ADJOdmManager.h"
 #import "ADJEventMetadata.h"
+#import "ADJRemoteTrigger.h"
 
 NSString * const ADJClickSourceAdServices = @"apple_ads";
 NSString * const ADJClickSourceDeepLink = @"deeplink";
@@ -451,6 +452,9 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)finishedTracking:(ADJResponseData *)responseData {
     [self checkConversionValue:responseData];
+
+    // process remote triggers from any response
+    [self processRemoteTriggers:responseData];
 
     // redirect session responses to attribution handler to check for attribution information
     if ([responseData isKindOfClass:[ADJSessionResponseData class]]) {
@@ -1791,6 +1795,58 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     if (responseData.purchaseVerificationPackage && responseData.purchaseVerificationPackage.event) {
         [self trackEvent:responseData.purchaseVerificationPackage.event];
+    }
+}
+
+- (void)processRemoteTriggers:(ADJResponseData *)responseData {
+    // process remote triggers independently from other response processing
+    if (responseData.jsonResponse == nil) {
+        return;
+    }
+    
+    NSArray *remoteTriggerss = [responseData.jsonResponse objectForKey:@"remote_triggers"];
+    if (remoteTriggerss == nil || ![remoteTriggerss isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    
+    if (remoteTriggerss.count == 0) {
+        return;
+    }
+    
+    // check if the delegate implements remote trigger callback
+    if (self.adjustDelegate == nil) {
+        return;
+    }
+    
+    if (![self.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]) {
+        return;
+    }
+    
+    // process each remote trigger in order
+    for (NSDictionary *callbackDict in remoteTriggerss) {
+        if (![callbackDict isKindOfClass:[NSDictionary class]]) {
+            [self.logger warn:@"Invalid remote trigger item, skipping"];
+            continue;
+        }
+        
+        NSString *label = [callbackDict objectForKey:@"label"];
+        NSDictionary *payload = [callbackDict objectForKey:@"payload"];
+        
+        if (label == nil || ![label isKindOfClass:[NSString class]]) {
+            [self.logger warn:@"Remote trigger missing or invalid label, skipping"];
+            continue;
+        }
+        
+        if (payload == nil || ![payload isKindOfClass:[NSDictionary class]]) {
+            [self.logger warn:@"Remote trigger missing or invalid payload, skipping"];
+            continue;
+        }
+        
+        ADJRemoteTrigger *remoteTrigger = [[ADJRemoteTrigger alloc] initWithLabel:label
+                                                                          payload:payload];
+        [ADJUtil launchInMainThread:self.adjustDelegate
+                           selector:@selector(adjustRemoteTriggerReceived:)
+                         withObject:remoteTrigger];
     }
 }
 
