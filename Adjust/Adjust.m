@@ -989,8 +989,4 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
-- (BOOL)isInstanceEnabled {
-    return self.savedPreLaunch.enabled == nil || self.savedPreLaunch.enabled;
-}
-
 @end
