@@ -454,7 +454,9 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
                                                        parameterName:@"Partner"];
     [ADJPackageBuilder parameters:parameters setDictionary:mergedCallbackParameters forKey:@"callback_params"];
     [ADJPackageBuilder parameters:parameters setDictionary:mergedPartnerParameters forKey:@"partner_params"];
-    [ADJPackageBuilder parameters:parameters setUInteger:eventSequence forKey:@"seq"];
+    if (eventSequence != 0) {
+        [ADJPackageBuilder parameters:parameters setUInteger:eventSequence forKey:@"seq"];
+    }
 
 
     [self addTrackingDataToParameters:parameters];

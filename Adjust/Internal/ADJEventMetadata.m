@@ -32,6 +32,10 @@
 }
 
 - (NSUInteger)incrementedSequenceForEventToken:(NSString *)token {
+    if (token == nil || token.length == 0) {
+        return 0;
+    }
+
     NSUInteger retVal = 0;
     NSNumber *eventCounter = [self.eventSequence objectForKey:token];
     if (eventCounter != nil) {

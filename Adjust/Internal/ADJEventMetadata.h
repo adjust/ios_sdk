@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface ADJEventMetadata : NSObject <NSSecureCoding>
-- (NSUInteger)incrementedSequenceForEventToken:(NSString *)token;
+- (NSUInteger)incrementedSequenceForEventToken:(NSString * _Nonnull)token;
 @end
