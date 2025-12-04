@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0A57BDB12EAFD6E2003F4FC7"
-               BuildableName = "libAdjustTestLibrarySimulatorOnly.a"
+               BuildableName = "libAdjustTestLibrary.a"
                BlueprintName = "AdjustTestLibrarySimulatorOnly"
                ReferencedContainer = "container:AdjustTestLibrary.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0A57BDB12EAFD6E2003F4FC7"
-            BuildableName = "libAdjustTestLibrarySimulatorOnly.a"
+            BuildableName = "libAdjustTestLibrary.a"
             BlueprintName = "AdjustTestLibrarySimulatorOnly"
             ReferencedContainer = "container:AdjustTestLibrary.xcodeproj">
          </BuildableReference>
