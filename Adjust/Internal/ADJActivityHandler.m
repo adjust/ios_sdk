@@ -2580,7 +2580,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readEventsMetadata {
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+    [ADJUtil launchSynchronisedWithObject:[ADJEventMetadata class]
                                     block:^{
         NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJEventMetadata class], nil];
         self.eventsMetadata = [ADJUtil readObject:kEventMetadataFilename
