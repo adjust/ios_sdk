@@ -817,9 +817,12 @@
 }
 
 - (void)getLastDeeplink:(NSDictionary *)parameters {
+    NSString *testId = [parameters objectForKey:@"id"][0];
+
     [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
         NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
         [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+        [self.testLibrary addInfoToSend:@"id" value:testId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
