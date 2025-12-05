@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     adj.exclude_files       = 'Adjust/include/**/*.h'
     adj.resource_bundle     = {'Adjust' => ['Adjust/*.xcprivacy']}
     adj.header_dir          = 'AdjustSdk'
-    adj.dependency          'AdjustSignature', '3.61.0'
+    adj.dependency          'AdjustSignature', '3.62.0'
   end
 
   s.subspec 'AdjustUnsigned' do |adj|
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
     awb.resource_bundle       = {'Adjust' => ['Adjust/*.xcprivacy']}
     awb.header_dir            = 'AdjustSdk'
     awb.ios.deployment_target = '12.0'
-    awb.dependency            'AdjustSignature', '3.61.0'
+    awb.dependency            'AdjustSignature', '3.62.0'
   end
 
   s.subspec 'AdjustGoogleOdm' do |odm|
