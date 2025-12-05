@@ -1,4 +1,4 @@
-### Version 5.5.0 (6th December 2025)
+### Version 5.5.0 (5th December 2025)
 #### Added
 - Added `getAdidWithTimeout` method to the `Adjust` API to allow retrieving the ADID with a specified timeout. If the value is not obtained in time, nil is returned.
 - Added `getAttributionWithTimeout` method to the `Adjust` API to allow retrieving the current attribution information with a specified timeout. If the value is not obtained in time, nil is returned.
