@@ -14,6 +14,7 @@
 #import "ADJResponseData.h"
 #import "ADJActivityPackage.h"
 #import "ADJBackoffStrategy.h"
+#import "ADJAttribution.h"
 
 typedef void (^selfInjectedBlock)(id);
 typedef void (^synchronisedBlock)(void);
@@ -146,5 +147,9 @@ typedef void (^isInactiveInjected)(BOOL);
                                  andAttStatus:(int)attStatus;
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion;
+
++ (NSString *)adidFromActivityStateFile;
+
++ (ADJAttribution *)attributionFromAttributionFile;
 
 @end

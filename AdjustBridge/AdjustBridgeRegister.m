@@ -90,10 +90,15 @@ static NSString * fbAppIdStatic = nil;
             _handleGetterFromObjC: function(callback, callbackId) {
                 window[callbackId] = function(value) {
                     if(callbackId.includes("adjust_getAttribution")) {
-                        const parsedValue = JSON.parse(value);
-                        callback(parsedValue);
+                        if (value == "(null)" || value == null) {
+                            callback(null);
+                        } else {
+                            const parsedValue = JSON.parse(value);
+                            callback(parsedValue);
+                        }
                     } else {
-                        callback(value);
+                        const sanitizedValue = (value == "(null)") ? null : value;
+                        callback(sanitizedValue);
                     }
                     delete window[callbackId];
                 };
@@ -160,6 +165,12 @@ static NSString * fbAppIdStatic = nil;
                 this._postMessage("adjust_getAdid", null, callbackId);
             },
 
+            getAdidWithTimeout: function(timeoutMs, getAdidCallbackWithTimeout) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getAdidWithTimeout");
+                this._handleGetterFromObjC(getAdidCallbackWithTimeout, callbackId);
+                this._postMessage("adjust_getAdidWithTimeout", { timeoutMs: timeoutMs }, callbackId);
+            },
+
             isEnabled: function(isEnabledCallback) {
                 const callbackId = window.randomCallbackIdWithPrefix("adjust_isEnabled") ;
                 this._handleGetterFromObjC(isEnabledCallback, callbackId);
@@ -172,11 +183,17 @@ static NSString * fbAppIdStatic = nil;
                 this._postMessage("adjust_getAttribution", null, callbackId);
             },
 
+            getAttributionWithTimeout: function(timeoutMs, getAttributionCallbackWithTimeout) {
+                const callbackId = window.randomCallbackIdWithPrefix("adjust_getAttributionWithTimeout");
+                this._handleGetterFromObjC(getAttributionCallbackWithTimeout, callbackId);
+                this._postMessage("adjust_getAttributionWithTimeout", { timeoutMs: timeoutMs }, callbackId);
+            },
+
             getSdkPrefix: function() {
                 if (this.sdkPrefix) {
                     return this.sdkPrefix;
                 } else {
-                    return 'web-bridge5.4.6';
+                    return 'web-bridge5.5.0';
                 }
             },
 
@@ -374,6 +391,7 @@ static NSString * fbAppIdStatic = nil;
             this.sendInBackground = null;
             this.isAdServicesEnabled = null;
             this.isIdfaReadingAllowed = null;
+            this.isIdfvReadingAllowed = null;
             this.isCostDataInAttributionEnabled = null;
             this.isDeferredDeeplinkOpeningEnabled = null;
             this.isSkanAttributionHandlingEnabled = null;
@@ -443,6 +461,9 @@ static NSString * fbAppIdStatic = nil;
         };
         AdjustConfig.prototype.disableIdfaReading = function() {
             this.isIdfaReadingAllowed = false;
+        };
+        AdjustConfig.prototype.disableIdfvReading = function() {
+            this.isIdfvReadingAllowed = false;
         };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
             this.isSkanAttributionHandlingEnabled = false;

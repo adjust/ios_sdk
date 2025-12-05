@@ -31,7 +31,7 @@ static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *goLinkUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios5.4.6";
+static NSString * const kClientSdk                  = @"ios5.5.0";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -1452,21 +1452,38 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
-            NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
-            ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
-                                                       objectName:@"Activity state"
-                                                          classes:allowedClasses
-                                                       syncObject:[ADJActivityState class]];
-            if (activityState == nil) {
-                completion(YES);
-            } else {
-                completion(activityState.enabled);
-            }
-        }];
+        [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
+        ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
+                                                   objectName:@"Activity state"
+                                                      classes:allowedClasses
+                                                   syncObject:[ADJActivityState class]];
+        if (activityState == nil) {
+            completion(YES);
+        } else {
+            completion(activityState.enabled);
+        }
     });
 }
+
++ (NSString *)adidFromActivityStateFile{
+    [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
+    ADJActivityState *activityState = [ADJUtil readObject:@"AdjustIoActivityState"
+                                               objectName:@"Activity state"
+                                                  classes:allowedClasses
+                                               syncObject:[ADJActivityState class]];
+    return activityState.adid;
+}
+
++ (ADJAttribution *)attributionFromAttributionFile {
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJAttribution class], nil];
+    ADJAttribution *attribution = [ADJUtil readObject:@"AdjustIoAttribution"
+                                           objectName:@"Attribution"
+                                              classes:allowedClasses
+                                           syncObject:[ADJAttribution class]];
+    return attribution;
+}
+
 
 @end

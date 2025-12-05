@@ -4,15 +4,20 @@ import PackageDescription
 
 let package = Package(
     name: "AdjustSdk",
+    platforms: [
+        .iOS(.v12),
+        .tvOS(.v12)
+    ],
     products: [
         .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
+        .library(name: "AdjustUnsigned", targets: ["AdjustUnsigned"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
         .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"])
     ],
     dependencies: [
         .package(
             url: "https://github.com/adjust/adjust_signature_sdk.git",
-            .exact("3.61.0")
+            .exact("3.62.0")
         ),
         .package(
             url: "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk.git",
@@ -35,10 +40,18 @@ let package = Package(
             ]
         ),
         .target(
-            name: "AdjustWebBridge",
-            dependencies: [
-                .product(name: "AdjustSignature", package: "adjust_signature_sdk")
+            name: "AdjustUnsigned",
+            path: "AdjustUnsigned",
+            resources: [
+                .copy("PrivacyInfo.xcprivacy"),
             ],
+            cSettings: [
+                .headerSearchPath(""),
+                .headerSearchPath("Internal")
+            ]
+        ),
+        .target(
+            name: "AdjustWebBridge",
             path: "AdjustBridge",
             cSettings: [
                 .headerSearchPath(""),

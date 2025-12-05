@@ -103,12 +103,24 @@
         [self processDeeplink:parameters];
     } else if ([methodName isEqualToString:@"attributionGetter"]) {
         [self attributionGetter:parameters];
+    } else if ([methodName isEqualToString:@"attributionGetterWithTimeout"]) {
+        [self attributionGetterWithTimeout:parameters];
+    } else if ([methodName isEqualToString:@"adidGetter"]) {
+        [self adidGetter:parameters];
+    } else if ([methodName isEqualToString:@"adidGetterWithTimeout"]) {
+        [self adidGetterWithTimeout:parameters];
     } else if ([methodName isEqualToString:@"endFirstSessionDelay"]) {
         [self endFirstSessionDelay:parameters];
     } else if ([methodName isEqualToString:@"coppaComplianceInDelay"]) {
         [self coppaComplianceInDelay:parameters];
     } else if ([methodName isEqualToString:@"externalDeviceIdInDelay"]) {
         [self externalDeviceIdInDelay:parameters];
+    } else if ([methodName isEqualToString:@"idfaGetter"]) {
+        [self idfaGetter:parameters];
+    } else if ([methodName isEqualToString:@"idfvGetter"]) {
+        [self idfvGetter:parameters];
+    } else if ([methodName isEqualToString:@"sdkVersionGetter"]) {
+        [self sdkVersionGetter:parameters];
     }
 }
 
@@ -286,6 +298,13 @@
         NSString *allowIdfaReadingS = [parameters objectForKey:@"allowIdfaReading"][0];
         if ([allowIdfaReadingS boolValue] == NO) {
             [adjustConfig disableIdfaReading];
+        }
+    }
+
+    if ([parameters objectForKey:@"allowIdfvReading"]) {
+        NSString *allowIdfvReadingS = [parameters objectForKey:@"allowIdfvReading"][0];
+        if ([allowIdfvReadingS boolValue] == NO) {
+            [adjustConfig disableIdfvReading];
         }
     }
 
@@ -798,9 +817,12 @@
 }
 
 - (void)getLastDeeplink:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
     [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
         NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
         [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
@@ -860,6 +882,8 @@
 }
 
 - (void)attributionGetter:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
         [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
         [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
@@ -880,10 +904,70 @@
                                                              error:nil];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [self.testLibrary addInfoToSend:@"json_response" value:jsonString];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
 
+- (void)attributionGetterWithTimeout:(NSDictionary *)parameters {
+    NSString *timeoutS = [parameters objectForKey:@"timeout"][0];
+    int timeout = [timeoutS intValue];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust attributionWithTimeout:timeout completionHandler:^(ADJAttribution * _Nullable attribution) {
+        if (attribution != nil) {
+            [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
+            [self.testLibrary addInfoToSend:@"tracker_name" value:attribution.trackerName];
+            [self.testLibrary addInfoToSend:@"network" value:attribution.network];
+            [self.testLibrary addInfoToSend:@"campaign" value:attribution.campaign];
+            [self.testLibrary addInfoToSend:@"adgroup" value:attribution.adgroup];
+            [self.testLibrary addInfoToSend:@"creative" value:attribution.creative];
+            [self.testLibrary addInfoToSend:@"click_label" value:attribution.clickLabel];
+            [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
+            [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
+            [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
+            NSMutableDictionary *jsonResponseCopy = [attribution.jsonResponse mutableCopy];
+            [jsonResponseCopy removeObjectForKey:@"fb_install_referrer"];
+            [jsonResponseCopy setObject:[NSString stringWithFormat:@"%.2f", [jsonResponseCopy[@"cost_amount"] doubleValue]]
+                                 forKey:@"cost_amount"];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonResponseCopy
+                                                               options:0
+                                                                 error:nil];
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            [self.testLibrary addInfoToSend:@"json_response" value:jsonString];
+        } else {
+            [self.testLibrary addInfoToSend:@"attribution" value:@"nil"];
+        }
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)adidGetter:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
+        [self.testLibrary addInfoToSend:@"adid" value:adid];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)adidGetterWithTimeout:(NSDictionary *)parameters {
+    NSString *timeoutS = [parameters objectForKey:@"timeout"][0];
+    int timeout = [timeoutS intValue];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust adidWithTimeout:timeout completionHandler:^(NSString * _Nullable adid) {
+        if (adid != nil) {
+            [self.testLibrary addInfoToSend:@"adid" value:adid];
+        } else {
+            [self.testLibrary addInfoToSend:@"adid" value:@"nil"];
+        }
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
 
 - (void)endFirstSessionDelay:(NSDictionary *)parameters {
     [Adjust endFirstSessionDelay];
@@ -902,6 +986,36 @@
 - (void)externalDeviceIdInDelay:(NSDictionary *)parameters {
     NSString *externalDeviceId = [parameters objectForKey:@"externalDeviceId"][0];
     [Adjust setExternalDeviceIdInDelay:externalDeviceId];
+}
+
+- (void)idfaGetter:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
+        [self.testLibrary addInfoToSend:@"idfa" value:idfa];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)idfvGetter:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
+        [self.testLibrary addInfoToSend:@"idfv" value:idfv];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
+}
+
+- (void)sdkVersionGetter:(NSDictionary *)parameters {
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
+
+    [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
+        [self.testLibrary addInfoToSend:@"sdk_version" value:sdkVersion];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
+        [self.testLibrary sendInfoToServer:self.extraPath];
+    }];
 }
 
 @end

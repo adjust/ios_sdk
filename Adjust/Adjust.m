@@ -268,9 +268,25 @@ static dispatch_once_t onceToken = 0;
     }
 }
 
++ (void)attributionWithTimeout:(NSInteger)timeoutMs
+             completionHandler:(nonnull ADJAttributionGetterBlock)completion {
+    @synchronized (self) {
+        [[Adjust getInstance] attributionWithTimeout:timeoutMs
+                                   completionHandler:completion];
+    }
+}
+
 + (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
     @synchronized (self) {
         [[Adjust getInstance] adidWithCompletionHandler:completion];
+    }
+}
+
++ (void)adidWithTimeout:(NSInteger)timeoutMs
+      completionHandler:(nonnull ADJAdidGetterBlock)completion {
+    @synchronized (self) {
+        [[Adjust getInstance] adidWithTimeout:timeoutMs
+                            completionHandler:completion];
     }
 }
 
@@ -649,14 +665,86 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read attribution request"]) {
-        if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
-            self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
+        ADJAttribution *attribution = [ADJUtil attributionFromAttributionFile];
+        if (attribution != nil) {
+            // attribution found locally, return immediately
+            [ADJUtil launchInMainThread:^{
+                completion(attribution);
+            }];
+        } else {
+            [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
         }
+    } else {
+        [self.activityHandler attributionWithCompletionHandler:completion];
+    }
+}
 
-        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
+- (void)attributionWithTimeout:(NSInteger)timeoutMs
+             completionHandler:(nonnull ADJAttributionGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting attribution can't be null"];
         return;
     }
-    return [self.activityHandler attributionWithCompletionHandler:completion];
+
+    if (timeoutMs < 0) {
+        [self.logger error:@"Timeout value for getting attribution can't be negative"];
+        return;
+    }
+
+    // if there is still no ActivityHandler and stored Attribution is availble,
+    // launch the completion handler.
+    BOOL bActivityHandlerAvailable = [self checkActivityHandler:@"read attribution request with timmeout"];
+    if (!bActivityHandlerAvailable) {
+        ADJAttribution *attribution = [ADJUtil attributionFromAttributionFile];
+        if (attribution != nil) {
+            // attribution found locally, return immediately
+            [ADJUtil launchInMainThread:^{
+                completion(attribution);
+            }];
+            return;
+        }
+    }
+
+    // No attribution found - creating a timeout callback object with timeout code block
+    ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAttributionCallback:completion
+                                                                                        timeoutMs:timeoutMs];
+    NSMutableArray *timeoutCallbacksArray = self.savedPreLaunch.cachedAttributionTimeoutCallbacksArray;
+    dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+        if (timeoutCallback.attributionCallback != nil) {
+            // remove from array and call callback with nil if it still exists
+            BOOL bExecuteCallback = NO;
+            @synchronized (timeoutCallbacksArray) {
+                if ([timeoutCallbacksArray containsObject:timeoutCallback]) {
+                    [timeoutCallbacksArray removeObject:timeoutCallback];
+                    bExecuteCallback = YES;
+                }
+            }
+            if (bExecuteCallback) {
+                [ADJUtil launchInMainThread:^{
+                    // if timer elapses, return nil (only if callback still exists)
+                    if (timeoutCallback.attributionCallback != nil) {
+                        timeoutCallback.attributionCallback(nil);
+                        // null callback to call it only once
+                        timeoutCallback.attributionCallback = nil;
+                        timeoutCallback.timeoutBlock = nil;
+                    }
+                }];
+            }
+        }
+    });
+    timeoutCallback.timeoutBlock = timeoutBlock;
+
+    if (!bActivityHandlerAvailable) {
+        // cache the callback immediately, before starting the timer
+        [timeoutCallbacksArray addObject:timeoutCallback];
+        // dispatch callback's timeout block
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
+                       dispatch_get_main_queue(),
+                       timeoutBlock);
+    } else {
+        // pass the block to Activity handler
+        [self.activityHandler attributionWithTimeoutCallback:timeoutCallback];
+    }
 }
 
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
@@ -666,14 +754,85 @@ static dispatch_once_t onceToken = 0;
     }
 
     if (![self checkActivityHandler:@"read adid request"]) {
-        if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
-            self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
+        NSString *adid = [ADJUtil adidFromActivityStateFile];
+        if (adid != nil) {
+            [ADJUtil launchInMainThread:^{
+                completion(adid);
+            }];
+        } else {
+            [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
         }
+    } else {
+        [self.activityHandler adidWithCompletionHandler:completion];
+    }
+}
 
-        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
+- (void)adidWithTimeout:(NSInteger)timeoutMs
+      completionHandler:(nonnull ADJAdidGetterBlock)completion {
+    if (completion == nil) {
+        [self.logger error:@"Completion block for getting adid can't be null"];
         return;
     }
-    return [self.activityHandler adidWithCompletionHandler:completion];
+
+    if (timeoutMs < 0) {
+        [self.logger error:@"Timeout value for getting adid can't be negative"];
+        return;
+    }
+
+    // if there is still no ActivityHandler and stored adid is availble,
+    // launch the completion handler.
+    BOOL bActivityHandlerAvailable = [self checkActivityHandler:@"read adid request with timmeout"];
+    if (!bActivityHandlerAvailable) {
+        NSString *adid = [ADJUtil adidFromActivityStateFile];
+        if (adid != nil) {
+            // adid found locally, return immediately
+            [ADJUtil launchInMainThread:^{
+                completion(adid);
+            }];
+            return;
+        }
+    }
+
+    // No adid found - creating a timeout callback object with timeout code block
+    ADJTimeoutCallback *timeoutCallback = [[ADJTimeoutCallback alloc] initWithAdidCallback:completion
+                                                                                 timeoutMs:timeoutMs];
+    NSMutableArray *timeoutCallbacksArray = self.savedPreLaunch.cachedAdidTimeoutCallbacksArray;
+    dispatch_block_t timeoutBlock = dispatch_block_create(0, ^{
+        if (timeoutCallback.adidCallback != nil) {
+            // remove from array and call callback with nil if it still exists
+            BOOL bExecuteCallback = NO;
+            @synchronized (timeoutCallbacksArray) {
+                if ([timeoutCallbacksArray containsObject:timeoutCallback]) {
+                    [timeoutCallbacksArray removeObject:timeoutCallback];
+                    bExecuteCallback = YES;
+                }
+            }
+            if (bExecuteCallback) {
+                [ADJUtil launchInMainThread:^{
+                    // if timer elapses, return nil (only if callback still exists)
+                    if (timeoutCallback.adidCallback != nil) {
+                        timeoutCallback.adidCallback(nil);
+                        // null callback to call it only once
+                        timeoutCallback.adidCallback = nil;
+                        timeoutCallback.timeoutBlock = nil;
+                    }
+                }];
+            }
+        }
+    });
+    timeoutCallback.timeoutBlock = timeoutBlock;
+
+    if (!bActivityHandlerAvailable) {
+        // cache the callback immediately, before starting the timer
+        [timeoutCallbacksArray addObject:timeoutCallback];
+        // dispatch callback's timeout block
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutMs * NSEC_PER_MSEC)),
+                       dispatch_get_main_queue(),
+                       timeoutBlock);
+    } else {
+        // pass the block to Activity handler
+        [self.activityHandler adidWithTimeoutCallback:timeoutCallback];
+    }
 }
 
 - (void)sdkVersionWithCompletionHandler:(nonnull ADJSdkVersionGetterBlock)completion {
@@ -828,10 +987,6 @@ static dispatch_once_t onceToken = 0;
     } else {
         return YES;
     }
-}
-
-- (BOOL)isInstanceEnabled {
-    return self.savedPreLaunch.enabled == nil || self.savedPreLaunch.enabled;
 }
 
 @end

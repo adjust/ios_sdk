@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.1.121:8080';
-var controlUrl = 'ws://192.168.1.121:1987';
+var urlOverwrite = 'http://192.168.21.151:8080';
+var controlUrl = 'ws://192.168.21.151:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -282,6 +282,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var allowIdfaReading = allowIdfaReadingS == 'true';
         if (allowIdfaReading == false) {
             adjustConfig.disableIdfaReading();
+        }
+    }
+
+    if ('allowIdfvReading' in params) {
+        var allowIdfvReadingS = getFirstValue(params, 'allowIdfvReading');
+        var allowIdfvReading = allowIdfvReadingS == 'true';
+        if (allowIdfvReading == false) {
+            adjustConfig.disableIdfvReading();
         }
     }
 
@@ -670,6 +678,8 @@ AdjustCommandExecutor.prototype.measurementConsent = function(params) {
 
 AdjustCommandExecutor.prototype.attributionGetter = function(params) {
     var extraPath = this.extraPath;
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
     Adjust.getAttribution(function(attribution) {
         addInfoToSend('tracker_token', attribution.trackerToken);
         addInfoToSend('tracker_name', attribution.trackerName);
@@ -687,9 +697,70 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         }
         delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
         addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 }
+
+AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) {
+    var extraPath = this.extraPath;
+    var timeoutS = getFirstValue(params, 'timeout');
+    var timeout = parseInt(timeoutS);
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getAttributionWithTimeout(timeout, function(attribution) {
+        if (attribution != null) {
+            addInfoToSend('tracker_token', attribution.trackerToken);
+            addInfoToSend('tracker_name', attribution.trackerName);
+            addInfoToSend('network', attribution.network);
+            addInfoToSend('campaign', attribution.campaign);
+            addInfoToSend('adgroup', attribution.adgroup);
+            addInfoToSend('creative', attribution.creative);
+            addInfoToSend('click_label', attribution.click_label);
+            addInfoToSend('cost_type', attribution.costType);
+            addInfoToSend('cost_amount', attribution.costAmount);
+            addInfoToSend('cost_currency', attribution.costCurrency);
+            const jsonResponseWithoutFbInstallReferrer = { ...attribution.jsonResponse };
+            if (jsonResponseWithoutFbInstallReferrer.cost_amount !== undefined) {
+                jsonResponseWithoutFbInstallReferrer.cost_amount = parseFloat(jsonResponseWithoutFbInstallReferrer.cost_amount).toFixed(2);
+            }
+            delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
+            addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+        } else {
+            addInfoToSend('attribution', 'nil');
+        }
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
+}
+
+AdjustCommandExecutor.prototype.adidGetter = function(params) {
+    var extraPath = this.extraPath;
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getAdid(function(adid) {
+        addInfoToSend('adid', adid);
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
+    var extraPath = this.extraPath;
+    var timeoutS = getFirstValue(params, 'timeout');
+    var timeout = parseInt(timeoutS);
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getAdidWithTimeout(timeout, function(adid) {
+        if (adid != null) {
+            addInfoToSend('adid', adid);
+        } else {
+            addInfoToSend('adid', 'nil');
+        }
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
+};
 
 AdjustCommandExecutor.prototype.endFirstSessionDelay = function(params) {
     Adjust.endFirstSessionDelay();
@@ -710,6 +781,39 @@ AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
         var externalDeviceId = getFirstValue(params, 'externalDeviceId');
         Adjust.setExternalDeviceIdInDelay(externalDeviceId);
     }
+};
+
+AdjustCommandExecutor.prototype.idfaGetter = function(params) {
+    var extraPath = this.extraPath;
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getIdfa(function(idfa) {
+        addInfoToSend('idfa', idfa);
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.idfvGetter = function(params) {
+    var extraPath = this.extraPath;
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getIdfv(function(idfv) {
+        addInfoToSend('idfv', idfv);
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
+};
+
+AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
+    var extraPath = this.extraPath;
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
+
+    Adjust.getSdkVersion(function(sdkVersion) {
+        addInfoToSend('sdk_version', sdkVersion);
+        addInfoToSend('test_callback_id', testCallbackId);
+        sendInfoToServer(extraPath);
+    });
 };
 
 // Util

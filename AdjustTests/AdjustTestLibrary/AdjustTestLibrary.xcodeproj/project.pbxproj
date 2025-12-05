@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		0A6162DD2EAFE4D600F83C44 /* AdjustTestLibraryStaticSimulatorOnly */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 0A6162E12EAFE4D600F83C44 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStaticSimulatorOnly" */;
+			buildPhases = (
+				0A6162E02EAFE4D600F83C44 /* Multiplatform Build */,
+			);
+			dependencies = (
+				0A6162E52EAFE4F100F83C44 /* PBXTargetDependency */,
+			);
+			name = AdjustTestLibraryStaticSimulatorOnly;
+			productName = UniversalLib;
+		};
 		20E71745203B162B0073AC91 /* AdjustTestLibraryStatic */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 20E71748203B162B0073AC91 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStatic" */;
@@ -22,6 +34,38 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0A57BDB32EAFD6E2003F4FC7 /* ATLTestLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08424F2007782500568A31 /* ATLTestLibrary.m */; };
+		0A57BDB42EAFD6E2003F4FC7 /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B28221C4B2E00F24F12 /* PSWebSocketUTF8Decoder.m */; };
+		0A57BDB52EAFD6E2003F4FC7 /* ATLNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F666C912C00B058005A6D90 /* ATLNetworking.m */; };
+		0A57BDB62EAFD6E2003F4FC7 /* PSWebSocketDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2F221C4B2F00F24F12 /* PSWebSocketDriver.m */; };
+		0A57BDB72EAFD6E2003F4FC7 /* PSWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2C221C4B2F00F24F12 /* PSWebSocketServer.m */; };
+		0A57BDB82EAFD6E2003F4FC7 /* PSWebSocketBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B37221C4B3000F24F12 /* PSWebSocketBuffer.m */; };
+		0A57BDB92EAFD6E2003F4FC7 /* PSWebSocketNetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B31221C4B2F00F24F12 /* PSWebSocketNetworkThread.m */; };
+		0A57BDBA2EAFD6E2003F4FC7 /* PSWebSocketDeflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B30221C4B2F00F24F12 /* PSWebSocketDeflater.m */; };
+		0A57BDBB2EAFD6E2003F4FC7 /* PSWebSocketInflater.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B2B221C4B2F00F24F12 /* PSWebSocketInflater.m */; };
+		0A57BDBC2EAFD6E2003F4FC7 /* ATLControlWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */; };
+		0A57BDBD2EAFD6E2003F4FC7 /* ATLBlockingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFCFE742007AE0000467F01 /* ATLBlockingQueue.m */; };
+		0A57BDBE2EAFD6E2003F4FC7 /* ATLControlSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BACB6221D5A3600624F6C /* ATLControlSignal.m */; };
+		0A57BDBF2EAFD6E2003F4FC7 /* PSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 52836B27221C4B2E00F24F12 /* PSWebSocket.m */; };
+		0A57BDC02EAFD6E2003F4FC7 /* ATLUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0842562007782500568A31 /* ATLUtil.m */; };
+		0A57BDC42EAFD6E2003F4FC7 /* ATLControlSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 524BACB5221D5A3600624F6C /* ATLControlSignal.h */; };
+		0A57BDC52EAFD6E2003F4FC7 /* PSWebSocketDeflater.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B36221C4B3000F24F12 /* PSWebSocketDeflater.h */; };
+		0A57BDC62EAFD6E2003F4FC7 /* PSWebSocketNetworkThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2A221C4B2F00F24F12 /* PSWebSocketNetworkThread.h */; };
+		0A57BDC72EAFD6E2003F4FC7 /* PSWebSocketTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B33221C4B3000F24F12 /* PSWebSocketTypes.h */; };
+		0A57BDC82EAFD6E2003F4FC7 /* ATLTestLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842572007782600568A31 /* ATLTestLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDC92EAFD6E2003F4FC7 /* ATLNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F666C902C00B058005A6D90 /* ATLNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDCA2EAFD6E2003F4FC7 /* PocketSocket-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 52836B26221C4B2E00F24F12 /* PocketSocket-Prefix.pch */; };
+		0A57BDCB2EAFD6E2003F4FC7 /* PSWebSocketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B29221C4B2E00F24F12 /* PSWebSocketBuffer.h */; };
+		0A57BDCC2EAFD6E2003F4FC7 /* ATLControlWebSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 524BACAC221D529900624F6C /* ATLControlWebSocketClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDCD2EAFD6E2003F4FC7 /* PSWebSocketUTF8Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B38221C4B3000F24F12 /* PSWebSocketUTF8Decoder.h */; };
+		0A57BDCE2EAFD6E2003F4FC7 /* ATLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842592007782600568A31 /* ATLConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDCF2EAFD6E2003F4FC7 /* PSWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B34221C4B3000F24F12 /* PSWebSocket.h */; };
+		0A57BDD02EAFD6E2003F4FC7 /* PSWebSocketDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2E221C4B2F00F24F12 /* PSWebSocketDriver.h */; };
+		0A57BDD12EAFD6E2003F4FC7 /* PSWebSocketServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B32221C4B3000F24F12 /* PSWebSocketServer.h */; };
+		0A57BDD22EAFD6E2003F4FC7 /* ATLBlockingQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FFCFE732007AE0000467F01 /* ATLBlockingQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDD32EAFD6E2003F4FC7 /* PSWebSocketInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B2D221C4B2F00F24F12 /* PSWebSocketInternal.h */; };
+		0A57BDD42EAFD6E2003F4FC7 /* ATLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842542007782500568A31 /* ATLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A57BDD52EAFD6E2003F4FC7 /* PSWebSocketInflater.h in Headers */ = {isa = PBXBuildFile; fileRef = 52836B35221C4B3000F24F12 /* PSWebSocketInflater.h */; };
 		20412650203FF86300CC40DB /* ATLUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842542007782500568A31 /* ATLUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC303F203C205B00CD9DA8 /* ATLTestLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842572007782600568A31 /* ATLTestLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20AC3042203C206300CD9DA8 /* ATLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0842592007782600568A31 /* ATLConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -57,6 +101,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0A6162E42EAFE4F100F83C44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F0842042007766700568A31 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A57BDB12EAFD6E2003F4FC7;
+			remoteInfo = AdjustTestLibrarySimulatorOnly;
+		};
 		9D8AB2BE203F24360015DA32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6F0842042007766700568A31 /* Project object */;
@@ -67,6 +118,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0A57BDC22EAFD6E2003F4FC7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F08420A2007766700568A31 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -79,6 +139,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A57BDDA2EAFD6E2003F4FC7 /* libAdjustTestLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustTestLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		524BACAC221D529900624F6C /* ATLControlWebSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATLControlWebSocketClient.h; sourceTree = "<group>"; };
 		524BACAD221D529900624F6C /* ATLControlWebSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATLControlWebSocketClient.m; sourceTree = "<group>"; };
 		524BACB5221D5A3600624F6C /* ATLControlSignal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATLControlSignal.h; sourceTree = "<group>"; };
@@ -115,6 +176,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0A57BDC12EAFD6E2003F4FC7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0842092007766700568A31 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -163,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				6F08420C2007766700568A31 /* libAdjustTestLibrary.a */,
+				0A57BDDA2EAFD6E2003F4FC7 /* libAdjustTestLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,6 +260,31 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0A57BDC32EAFD6E2003F4FC7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A57BDC42EAFD6E2003F4FC7 /* ATLControlSignal.h in Headers */,
+				0A57BDC52EAFD6E2003F4FC7 /* PSWebSocketDeflater.h in Headers */,
+				0A57BDC62EAFD6E2003F4FC7 /* PSWebSocketNetworkThread.h in Headers */,
+				0A57BDC72EAFD6E2003F4FC7 /* PSWebSocketTypes.h in Headers */,
+				0A57BDC82EAFD6E2003F4FC7 /* ATLTestLibrary.h in Headers */,
+				0A57BDC92EAFD6E2003F4FC7 /* ATLNetworking.h in Headers */,
+				0A57BDCA2EAFD6E2003F4FC7 /* PocketSocket-Prefix.pch in Headers */,
+				0A57BDCB2EAFD6E2003F4FC7 /* PSWebSocketBuffer.h in Headers */,
+				0A57BDCC2EAFD6E2003F4FC7 /* ATLControlWebSocketClient.h in Headers */,
+				0A57BDCD2EAFD6E2003F4FC7 /* PSWebSocketUTF8Decoder.h in Headers */,
+				0A57BDCE2EAFD6E2003F4FC7 /* ATLConstants.h in Headers */,
+				0A57BDCF2EAFD6E2003F4FC7 /* PSWebSocket.h in Headers */,
+				0A57BDD02EAFD6E2003F4FC7 /* PSWebSocketDriver.h in Headers */,
+				0A57BDD12EAFD6E2003F4FC7 /* PSWebSocketServer.h in Headers */,
+				0A57BDD22EAFD6E2003F4FC7 /* ATLBlockingQueue.h in Headers */,
+				0A57BDD32EAFD6E2003F4FC7 /* PSWebSocketInternal.h in Headers */,
+				0A57BDD42EAFD6E2003F4FC7 /* ATLUtil.h in Headers */,
+				0A57BDD52EAFD6E2003F4FC7 /* PSWebSocketInflater.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20AC303E203C204600CD9DA8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -219,6 +313,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0A57BDB12EAFD6E2003F4FC7 /* AdjustTestLibrarySimulatorOnly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A57BDD72EAFD6E2003F4FC7 /* Build configuration list for PBXNativeTarget "AdjustTestLibrarySimulatorOnly" */;
+			buildPhases = (
+				0A57BDB22EAFD6E2003F4FC7 /* Sources */,
+				0A57BDC12EAFD6E2003F4FC7 /* Frameworks */,
+				0A57BDC22EAFD6E2003F4FC7 /* CopyFiles */,
+				0A57BDC32EAFD6E2003F4FC7 /* Headers */,
+				0A57BDD62EAFD6E2003F4FC7 /* Build Framework */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdjustTestLibrarySimulatorOnly;
+			productName = AdjustTestLibrary;
+			productReference = 0A57BDDA2EAFD6E2003F4FC7 /* libAdjustTestLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		6F08420B2007766700568A31 /* AdjustTestLibrary */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F0842152007766700568A31 /* Build configuration list for PBXNativeTarget "AdjustTestLibrary" */;
@@ -273,11 +386,41 @@
 			targets = (
 				6F08420B2007766700568A31 /* AdjustTestLibrary */,
 				20E71745203B162B0073AC91 /* AdjustTestLibraryStatic */,
+				0A57BDB12EAFD6E2003F4FC7 /* AdjustTestLibrarySimulatorOnly */,
+				0A6162DD2EAFE4D600F83C44 /* AdjustTestLibraryStaticSimulatorOnly */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0A57BDD62EAFD6E2003F4FC7 /* Build Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/Static/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Copy the framework to the project directory\nditto \"${FRAMEWORK_LOCN}\" \"${SRCROOT}/../../Frameworks/static-simulator/${PRODUCT_NAME}.framework\"\n";
+		};
+		0A6162E02EAFE4D600F83C44 /* Multiplatform Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Multiplatform Build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    echo \"1\"\n    echo \"${BUILD_DIR}\"\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}/DependantBuilds\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    \n    if [ ! -f \"${1}\" ]; then\n        cp -a \"${2}\" \"${3}\"\n    elif [ ! -f \"${2}\" ]; then\n        cp -a \"${1}\" \"${3}\"\n    else\n        xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n    fi\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\necho \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\"\necho \"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\"\necho \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Copy the framework to the project directory (for nonnative script)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../Frameworks/static-simulator/${RW_FRAMEWORK_NAME}.framework\"\n\n\n# Copy the framework to the project directory (for SDK distribution)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../sdk_distribution/test-static-framework-simulator/${RW_FRAMEWORK_NAME}.framework\"\n";
+		};
 		20E71749203B163A0073AC91 /* Multiplatform Build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,7 +433,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    echo \"1\"\n    echo \"${BUILD_DIR}\"\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}/DependantBuilds\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Copy the framework to the project directory (for nonnative script)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../Frameworks/static/${RW_FRAMEWORK_NAME}.framework\"\n\n\n# Copy the framework to the project directory (for SDK distribution)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../sdk_distribution/test-static-framework/${RW_FRAMEWORK_NAME}.framework\"\n";
+			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework\"\n\necho \"${RW_FRAMEWORK_NAME}\"\necho \"${RW_INPUT_STATIC_LIB}\"\necho \"${RW_FRAMEWORK_LOCATION}\"\n\nfunction build_static_library {\n    echo \"1\"\n    echo \"${BUILD_DIR}\"\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}/DependantBuilds\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}.framework/Versions/A/${RW_FRAMEWORK_NAME}\"\n\n# Copy the framework to the project directory (for nonnative script)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../Frameworks/static-device/${RW_FRAMEWORK_NAME}.framework\"\n\n\n# Copy the framework to the project directory (for SDK distribution)\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/../../sdk_distribution/test-static-framework-device/${RW_FRAMEWORK_NAME}.framework\"\n";
 		};
 		9D8AB2B6203F202B0015DA32 /* Build Framework */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -304,11 +447,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/Static/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Copy the framework to the project directory\nditto \"${FRAMEWORK_LOCN}\" \"${SRCROOT}/../../Frameworks/static/${PRODUCT_NAME}.framework\"\n";
+			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/Static/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Copy the framework to the project directory\nditto \"${FRAMEWORK_LOCN}\" \"${SRCROOT}/../../Frameworks/static-device/${PRODUCT_NAME}.framework\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0A57BDB22EAFD6E2003F4FC7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A57BDB32EAFD6E2003F4FC7 /* ATLTestLibrary.m in Sources */,
+				0A57BDB42EAFD6E2003F4FC7 /* PSWebSocketUTF8Decoder.m in Sources */,
+				0A57BDB52EAFD6E2003F4FC7 /* ATLNetworking.m in Sources */,
+				0A57BDB62EAFD6E2003F4FC7 /* PSWebSocketDriver.m in Sources */,
+				0A57BDB72EAFD6E2003F4FC7 /* PSWebSocketServer.m in Sources */,
+				0A57BDB82EAFD6E2003F4FC7 /* PSWebSocketBuffer.m in Sources */,
+				0A57BDB92EAFD6E2003F4FC7 /* PSWebSocketNetworkThread.m in Sources */,
+				0A57BDBA2EAFD6E2003F4FC7 /* PSWebSocketDeflater.m in Sources */,
+				0A57BDBB2EAFD6E2003F4FC7 /* PSWebSocketInflater.m in Sources */,
+				0A57BDBC2EAFD6E2003F4FC7 /* ATLControlWebSocketClient.m in Sources */,
+				0A57BDBD2EAFD6E2003F4FC7 /* ATLBlockingQueue.m in Sources */,
+				0A57BDBE2EAFD6E2003F4FC7 /* ATLControlSignal.m in Sources */,
+				0A57BDBF2EAFD6E2003F4FC7 /* PSWebSocket.m in Sources */,
+				0A57BDC02EAFD6E2003F4FC7 /* ATLUtil.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0842082007766700568A31 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -333,6 +497,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A6162E52EAFE4F100F83C44 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A57BDB12EAFD6E2003F4FC7 /* AdjustTestLibrarySimulatorOnly */;
+			targetProxy = 0A6162E42EAFE4F100F83C44 /* PBXContainerItemProxy */;
+		};
 		9D8AB2BF203F24360015DA32 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6F08420B2007766700568A31 /* AdjustTestLibrary */;
@@ -341,6 +510,60 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0A57BDD82EAFD6E2003F4FC7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = arm64;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = AdjustTestLibrary;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0A57BDD92EAFD6E2003F4FC7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = arm64;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = AdjustTestLibrary;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0A6162E22EAFE4D600F83C44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0A6162E32EAFE4D600F83C44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		20E71746203B162B0073AC91 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -511,6 +734,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0A57BDD72EAFD6E2003F4FC7 /* Build configuration list for PBXNativeTarget "AdjustTestLibrarySimulatorOnly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A57BDD82EAFD6E2003F4FC7 /* Debug */,
+				0A57BDD92EAFD6E2003F4FC7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A6162E12EAFE4D600F83C44 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStaticSimulatorOnly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A6162E22EAFE4D600F83C44 /* Debug */,
+				0A6162E32EAFE4D600F83C44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		20E71748203B162B0073AC91 /* Build configuration list for PBXAggregateTarget "AdjustTestLibraryStatic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

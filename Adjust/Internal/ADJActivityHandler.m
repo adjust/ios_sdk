@@ -30,6 +30,7 @@
 #import <stdatomic.h>
 #import <stdbool.h>
 #import "ADJOdmManager.h"
+#import "ADJEventMetadata.h"
 
 NSString * const ADJClickSourceAdServices = @"apple_ads";
 NSString * const ADJClickSourceDeepLink = @"deeplink";
@@ -40,6 +41,7 @@ typedef void (^activityHandlerBlockI)(ADJActivityHandler * activityHandler);
 
 static NSString   * const kActivityStateFilename                = @"AdjustIoActivityState";
 static NSString   * const kAttributionFilename                  = @"AdjustIoAttribution";
+static NSString   * const kEventMetadataFilename                = @"AdjustEventMetadata";
 static NSString   * const kGlobalCallbackParametersFilename     = @"AdjustSessionCallbackParameters";
 static NSString   * const kGlobalPartnerParametersFilename      = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix                         = @"adjust_";
@@ -88,6 +90,11 @@ const BOOL kSkanRegisterLockWindow = NO;
         self.offline = NO;
 
         self.preLaunchActionsArray = [[NSMutableArray alloc] init];
+        self.cachedAttributionReadCallbacksArray = [[NSMutableArray alloc] init];
+        self.cachedAdidReadCallbacksArray = [[NSMutableArray alloc] init];
+        self.cachedAttributionTimeoutCallbacksArray = [[NSMutableArray alloc] init];
+        self.cachedAdidTimeoutCallbacksArray = [[NSMutableArray alloc] init];
+
     }
     return self;
 }
@@ -103,6 +110,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJSdkClickHandler *sdkClickHandler;
 @property (nonatomic, strong) ADJPurchaseVerificationHandler *purchaseVerificationHandler;
 @property (nonatomic, strong) ADJActivityState *activityState;
+@property (nonatomic, strong) ADJEventMetadata *eventsMetadata;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
@@ -134,6 +142,34 @@ const BOOL kSkanRegisterLockWindow = NO;
 @end
 
 #pragma mark -
+@implementation ADJTimeoutCallback
+
+- (instancetype)initWithAttributionCallback:(ADJAttributionGetterBlock)attributionCallback
+                                  timeoutMs:(NSInteger)timeoutMs {
+    self = [super init];
+    if (self) {
+        _attributionCallback = attributionCallback;
+        _adidCallback = nil;
+        _timeoutMs = timeoutMs;
+        _timeoutBlock = nil;
+    }
+    return self;
+}
+
+- (instancetype)initWithAdidCallback:(ADJAdidGetterBlock)adidCallback
+                           timeoutMs:(NSInteger)timeoutMs {
+    self = [super init];
+    if (self) {
+        _attributionCallback = nil;
+        _adidCallback = adidCallback;
+        _timeoutMs = timeoutMs;
+        _timeoutBlock = nil;
+    }
+    return self;
+}
+
+@end
+
 @implementation ADJActivityHandler
 
 @synthesize trackingStatusManager = _trackingStatusManager;
@@ -201,7 +237,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     // read files to have sync values available
     [self readAttribution];
     [self readActivityState];
-    
+    [self readEventsMetadata];
+
     // register SKAdNetwork attribution if we haven't already
     if (self.adjustConfig.isSkanAttributionEnabled) {
         NSNumber *numConversionValue = [NSNumber numberWithInteger:kSkanRegisterConversionValue];
@@ -656,37 +693,88 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)attributionWithCompletionHandler:(nonnull ADJAttributionGetterBlock)completion {
-    __block ADJAttribution *_Nullable localAttribution = self.attribution;
-
-    if (localAttribution == nil) {
-        if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
-            self.savedPreLaunch.cachedAttributionReadCallbacksArray = [NSMutableArray array];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        if (selfI.attribution != nil) {
+            [ADJUtil launchInMainThread:^{
+                completion(selfI.attribution);
+            }];
+        } else {
+            // we don't have to sync the access to this array - once ActivityHandler is created, this array
+            // is accessed from the internal queue only.
+            [selfI.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
         }
-        [self.savedPreLaunch.cachedAttributionReadCallbacksArray addObject:completion];
-        return;
-    }
+    }];
+}
 
-    __block ADJAttributionGetterBlock localAttributionCallback = completion;
-    [ADJUtil launchInMainThread:^{
-        localAttributionCallback(localAttribution);
+- (void)attributionWithTimeoutCallback:(nonnull ADJTimeoutCallback *)timeoutCallback {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        if (selfI.attribution != nil) {
+            [ADJUtil launchInMainThread:^{
+                // calling cllback block (client's completion handler) immediately.
+                // attributionCallback should be nonnull here.
+                timeoutCallback.attributionCallback(selfI.attribution);
+                timeoutCallback.attributionCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
+            }];
+        } else {
+            // we should sync the addObject call below, becasue this array is accessed and altered
+            // from ActivityHandler's internal queue and from the main queue (where timeout block is scheduled to run).
+            @synchronized (selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+                [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray addObject:timeoutCallback];
+            }
+            // dispatch callback's timeout block
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutCallback.timeoutMs * NSEC_PER_MSEC)),
+                           dispatch_get_main_queue(),
+                           timeoutCallback.timeoutBlock);
+        }
     }];
 }
 
 - (void)adidWithCompletionHandler:(nonnull ADJAdidGetterBlock)completion {
-    __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
-
-    if (localAdid == nil) {
-        if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
-            self.savedPreLaunch.cachedAdidReadCallbacksArray = [NSMutableArray array];
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        NSString *adid = (selfI.activityState == nil) ? nil : selfI.activityState.adid;
+        if (adid != nil) {
+            [ADJUtil launchInMainThread:^{
+                completion(adid);
+            }];
+        } else {
+            // we don't have to sync the access to this array - once ActivityHandler is created, this array
+            // is accessed from the internal queue only.
+            [selfI.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
         }
+    }];
+}
 
-        [self.savedPreLaunch.cachedAdidReadCallbacksArray addObject:completion];
-        return;
-    }
-
-    __block ADJAdidGetterBlock localAdidCallback = completion;
-    [ADJUtil launchInMainThread:^{
-        localAdidCallback(localAdid);
+- (void)adidWithTimeoutCallback:(nonnull ADJTimeoutCallback *)timeoutCallback {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        NSString *localAdid = (selfI.activityState == nil) ? nil : selfI.activityState.adid;
+        if (localAdid != nil) {
+            [ADJUtil launchInMainThread:^{
+                // calling cllback block (client's completion handler) immediately.
+                // adidCallback should be nonnull here.
+                timeoutCallback.adidCallback(localAdid);
+                timeoutCallback.adidCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
+            }];
+        } else {
+            // we should sync the addObject call below, becasue this array is accessed and altered
+            // from ActivityHandler's internal queue and from the main queue (where timeout block is scheduled to run).
+            @synchronized (selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+                [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray addObject:timeoutCallback];
+            }
+            // dispatch callback's timeout block
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeoutCallback.timeoutMs * NSEC_PER_MSEC)),
+                           dispatch_get_main_queue(),
+                           timeoutCallback.timeoutBlock);
+        }
     }];
 }
 
@@ -763,6 +851,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     [self teardownActivityStateS];
     [self teardownAttributionS];
+    [self teardownEventsMetadataS];
     [self teardownAllGlobalParametersS];
 
     [ADJUtil teardown];
@@ -784,6 +873,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 + (void)deleteState {
     [ADJActivityHandler deleteActivityState];
     [ADJActivityHandler deleteAttribution];
+    [ADJActivityHandler deleteEventsMetadata];
     [ADJActivityHandler deleteGlobalCallbackParameters];
     [ADJActivityHandler deleteGlobalPartnerParameters];
     [ADJUserDefaults clearAdjustStuff];
@@ -795,6 +885,10 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 + (void)deleteAttribution {
     [ADJUtil deleteFileWithName:kAttributionFilename];
+}
+
++ (void)deleteEventsMetadata {
+    [ADJUtil deleteFileWithName:kEventMetadataFilename];
 }
 
 + (void)deleteGlobalCallbackParameters {
@@ -864,7 +958,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     ADJUrlStrategy *packageHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:self.savedPreLaunch.extraPath
+                                             extraPath:selfI.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.packageHandler = [[ADJPackageHandler alloc]
@@ -874,7 +968,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     ADJUrlStrategy *attributionHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:self.savedPreLaunch.extraPath
+                                             extraPath:selfI.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.attributionHandler = [[ADJAttributionHandler alloc]
@@ -884,7 +978,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     ADJUrlStrategy *sdkClickHandlerUrlStrategy =
     [[ADJUrlStrategy alloc] initWithUrlStrategyDomains:selfI.adjustConfig.urlStrategyDomains
-                                             extraPath:self.savedPreLaunch.extraPath
+                                             extraPath:selfI.savedPreLaunch.extraPath
                                          useSubdomains:selfI.adjustConfig.useSubdomains];
 
     selfI.sdkClickHandler = [[ADJSdkClickHandler alloc]
@@ -920,10 +1014,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     [selfI.trackingStatusManager updateAndTrackAttStatus];
 
     [selfI preLaunchActionsI:selfI
-       preLaunchActionsArray:self.savedPreLaunch.preLaunchActionsArray];
+       preLaunchActionsArray:selfI.savedPreLaunch.preLaunchActionsArray];
 
-    [selfI processCachedAttributionReadCallback];
-    [selfI processCachedAdidReadCallback];
+    [selfI processCachedAttributionReadCallbackI:selfI];
+    [selfI processCachedAdidReadCallbackI:selfI];
 
     if (!isInactive) {
         [selfI.logger debug:@"Start sdk, since the app is already in the foreground"];
@@ -1189,6 +1283,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }];
     [selfI updateActivityStateI:selfI now:now];
 
+    NSUInteger eventSequence = [selfI.eventsMetadata incrementedSequenceForEventToken:event.eventToken];
     // create and populate event package
     ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
                                        initWithPackageParams:selfI.packageParams
@@ -1200,7 +1295,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                        createdAt:now
                                        odmEnabled:selfI.isOdmEnabled];
     eventBuilder.internalState = selfI.internalState;
-    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event];
+    ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
+                                                     withEventSequence:eventSequence];
     [selfI.packageHandler addPackage:eventPackage];
     [selfI.packageHandler sendFirstPackage];
 
@@ -1210,6 +1306,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     [selfI writeActivityStateI:selfI];
+    [selfI writeEventsMetadataI:selfI];
 }
 
 - (void)trackAppStoreSubscriptionI:(ADJActivityHandler *)selfI
@@ -1660,7 +1757,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         selfI.activityState.adid = adid;
     }];
     [selfI writeActivityStateI:selfI];
-    [selfI processCachedAdidReadCallback];
+    [selfI processCachedAdidReadCallbackI:selfI];
 }
 
 - (BOOL)updateAttributionI:(ADJActivityHandler *)selfI
@@ -1676,7 +1773,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     selfI.attribution = attribution;
     [selfI writeAttributionI:selfI];
 
-    [selfI processCachedAttributionReadCallback];
+    [selfI processCachedAttributionReadCallbackI:selfI];
 
     if (selfI.adjustDelegate == nil) {
         return NO;
@@ -1689,44 +1786,91 @@ const BOOL kSkanRegisterLockWindow = NO;
     return YES;
 }
 
-- (void)processCachedAttributionReadCallback {
-    __block ADJAttribution *_Nullable localAttribution = self.attribution;
-    if (localAttribution == nil) {
-        return;
-    }
-    if (self.savedPreLaunch.cachedAttributionReadCallbacksArray == nil) {
+- (void)processCachedAttributionReadCallbackI:(ADJActivityHandler *)selfI {
+    if (selfI.attribution == nil) {
         return;
     }
 
-    for (ADJAttributionGetterBlock attributionCallback in
-         self.savedPreLaunch.cachedAttributionReadCallbacksArray) {
-        __block ADJAttributionGetterBlock localAttributionCallback = attributionCallback;
+    // we don't have to sync the access to this array - once ActivityHandler is created, this array
+    // is accessed from the internal queue only.
+    NSArray *attributionCallbacksCopy = [selfI.savedPreLaunch.cachedAttributionReadCallbacksArray copy];
+    [selfI.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
+
+    // process regular attribution callbacks
+    for (ADJAttributionGetterBlock attributionCallback in attributionCallbacksCopy) {
         [ADJUtil launchInMainThread:^{
-            localAttributionCallback(localAttribution);
+            attributionCallback(selfI.attribution);
         }];
     }
 
-    [self.savedPreLaunch.cachedAttributionReadCallbacksArray removeAllObjects];
+    // process timeout attribution callbacks
+    NSArray *attributionTimeoutCallbacksCopy = nil;
+    // we have to sync the array altering here due to the fact it's accessed from different queues
+    @synchronized (selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray) {
+        attributionTimeoutCallbacksCopy = [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray copy];
+        [selfI.savedPreLaunch.cachedAttributionTimeoutCallbacksArray removeAllObjects];
+    }
+
+    for (ADJTimeoutCallback *timeoutCallback in attributionTimeoutCallbacksCopy) {
+        [ADJUtil launchInMainThread:^{
+            // cancel any pending timeout
+            if (timeoutCallback.timeoutBlock != nil) {
+                dispatch_block_cancel(timeoutCallback.timeoutBlock);
+            }
+
+            if (timeoutCallback.attributionCallback != nil) {
+                timeoutCallback.attributionCallback(selfI.attribution);
+                // null callback to call it only once
+                timeoutCallback.attributionCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
+            }
+        }];
+    }
 }
 
-- (void)processCachedAdidReadCallback {
-    __block NSString *_Nullable localAdid = self.activityState == nil ? nil : self.activityState.adid;
+- (void)processCachedAdidReadCallbackI:(ADJActivityHandler *)selfI {
+    NSString *localAdid = (selfI.activityState == nil) ? nil : selfI.activityState.adid;
     if (localAdid == nil) {
         return;
     }
-    if (self.savedPreLaunch.cachedAdidReadCallbacksArray == nil) {
-        return;
-    }
 
-    for (ADJAdidGetterBlock adidCallback in self.savedPreLaunch.cachedAdidReadCallbacksArray) {
-        __block ADJAdidGetterBlock localAdidCallback = adidCallback;
+    // we don't have to sync the access to this array - once ActivityHandler is created, this array
+    // is accessed from the internal queue only.
+    NSArray *adidCallbacksCopy = [selfI.savedPreLaunch.cachedAdidReadCallbacksArray copy];
+    [selfI.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
+
+    // process regular adid callbacks
+    for (ADJAdidGetterBlock adidCallback in adidCallbacksCopy) {
         [ADJUtil launchInMainThread:^{
-            localAdidCallback(localAdid);
+            adidCallback(localAdid);
         }];
     }
 
-    [self.savedPreLaunch.cachedAdidReadCallbacksArray removeAllObjects];
+    // process timeout adid callbacks
+    NSArray *adidTimeoutCallbacksCopy = nil;
+    // we have to sync the array altering here due to the fact it's accessed from different queues
+    @synchronized (selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray) {
+        adidTimeoutCallbacksCopy = [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray copy];
+        [selfI.savedPreLaunch.cachedAdidTimeoutCallbacksArray removeAllObjects];
+    }
+
+    for (ADJTimeoutCallback *timeoutCallback in adidTimeoutCallbacksCopy) {
+        [ADJUtil launchInMainThread:^{
+            // cancel any pending timeout
+            if (timeoutCallback.timeoutBlock != nil) {
+                dispatch_block_cancel(timeoutCallback.timeoutBlock);
+            }
+
+            if (timeoutCallback.adidCallback != nil) {
+                timeoutCallback.adidCallback(localAdid);
+                // null callback to call it only once
+                timeoutCallback.adidCallback = nil;
+                timeoutCallback.timeoutBlock = nil;
+            }
+        }];
+    }
 }
+
 
 - (void)setEnabledI:(ADJActivityHandler *)selfI enabled:(BOOL)enabled {
     // compare with the saved or internal state
@@ -2392,6 +2536,29 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 }
 
+- (void)writeEventsMetadataI:(ADJActivityHandler *)selfI {
+    @synchronized ([ADJEventMetadata class]) {
+        if (selfI.eventsMetadata == nil) {
+            return;
+        }
+        [ADJUtil writeObject:selfI.eventsMetadata
+                    fileName:kEventMetadataFilename
+                  objectName:@"Event metadata"
+                  syncObject:[ADJEventMetadata class]];
+    }
+}
+
+- (void)teardownEventsMetadataS
+{
+    @synchronized ([ADJEventMetadata class]) {
+        if (self.eventsMetadata == nil) {
+            return;
+        }
+        self.eventsMetadata = nil;
+    }
+}
+
+
 - (void)readActivityState {
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
                                     block:^{
@@ -2410,6 +2577,20 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                 objectName:@"Attribution"
                                    classes:allowedClasses
                                 syncObject:[ADJAttribution class]];
+}
+
+- (void)readEventsMetadata {
+    [ADJUtil launchSynchronisedWithObject:[ADJEventMetadata class]
+                                    block:^{
+        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJEventMetadata class], nil];
+        self.eventsMetadata = [ADJUtil readObject:kEventMetadataFilename
+                                       objectName:@"Event metadata"
+                                          classes:allowedClasses
+                                       syncObject:[ADJEventMetadata class]];
+        if (self.eventsMetadata == nil) {
+            self.eventsMetadata = [[ADJEventMetadata alloc] init];
+        }
+    }];
 }
 
 - (void)writeGlobalCallbackParametersI:(ADJActivityHandler *)selfI {

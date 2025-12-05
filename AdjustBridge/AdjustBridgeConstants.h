@@ -47,6 +47,8 @@ FOUNDATION_EXPORT NSString * const ADJWBGetIdfvMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBIsEnabledMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBGetAdidMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBGetAttributionMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBGetAdidWithTimeoutMethodName;
+FOUNDATION_EXPORT NSString * const ADJWBGetAttributionWithTimeoutMethodName;
 FOUNDATION_EXPORT NSString * const ADJWBAppTrackingAuthorizationStatus;
 
 FOUNDATION_EXPORT NSString * const ADJWBAppTokenConfigKey;
@@ -60,6 +62,7 @@ FOUNDATION_EXPORT NSString * const ADJWBSendInBackgroundConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBNeedsCostConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBAllowAdServicesInfoReadingConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsIdfaReadingAllowedConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBIsIdfvReadingAllowedConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsSkanAttributionHandlingEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsDeferredDeeplinkOpeningEnabledConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBIsCoppaComplianceEnabledConfigKey;
