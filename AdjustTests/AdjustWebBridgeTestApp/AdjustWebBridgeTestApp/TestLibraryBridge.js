@@ -678,7 +678,7 @@ AdjustCommandExecutor.prototype.measurementConsent = function(params) {
 
 AdjustCommandExecutor.prototype.attributionGetter = function(params) {
     var extraPath = this.extraPath;
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getAttribution(function(attribution) {
         addInfoToSend('tracker_token', attribution.trackerToken);
@@ -697,7 +697,7 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         }
         delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
         addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 }
@@ -706,7 +706,7 @@ AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) 
     var extraPath = this.extraPath;
     var timeoutS = getFirstValue(params, 'timeout');
     var timeout = parseInt(timeoutS);
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getAttributionWithTimeout(timeout, function(attribution) {
         if (attribution != null) {
@@ -729,18 +729,18 @@ AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) 
         } else {
             addInfoToSend('attribution', 'nil');
         }
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 }
 
 AdjustCommandExecutor.prototype.adidGetter = function(params) {
     var extraPath = this.extraPath;
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getAdid(function(adid) {
         addInfoToSend('adid', adid);
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 };
@@ -749,7 +749,7 @@ AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
     var extraPath = this.extraPath;
     var timeoutS = getFirstValue(params, 'timeout');
     var timeout = parseInt(timeoutS);
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getAdidWithTimeout(timeout, function(adid) {
         if (adid != null) {
@@ -757,7 +757,7 @@ AdjustCommandExecutor.prototype.adidGetterWithTimeout = function(params) {
         } else {
             addInfoToSend('adid', 'nil');
         }
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 };
@@ -785,33 +785,33 @@ AdjustCommandExecutor.prototype.externalDeviceIdInDelay = function(params) {
 
 AdjustCommandExecutor.prototype.idfaGetter = function(params) {
     var extraPath = this.extraPath;
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getIdfa(function(idfa) {
         addInfoToSend('idfa', idfa);
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 };
 
 AdjustCommandExecutor.prototype.idfvGetter = function(params) {
     var extraPath = this.extraPath;
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getIdfv(function(idfv) {
         addInfoToSend('idfv', idfv);
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 };
 
 AdjustCommandExecutor.prototype.sdkVersionGetter = function(params) {
     var extraPath = this.extraPath;
-    var testId = getFirstValue(params, 'id');
+    var testCallbackId = getFirstValue(params, 'testCallbackId');
 
     Adjust.getSdkVersion(function(sdkVersion) {
         addInfoToSend('sdk_version', sdkVersion);
-        addInfoToSend('id', testId);
+        addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
 };

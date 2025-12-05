@@ -817,12 +817,12 @@
 }
 
 - (void)getLastDeeplink:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust lastDeeplinkWithCompletionHandler:^(NSURL * _Nullable lastDeeplink) {
         NSString *lastDeeplinkString = lastDeeplink == nil ? @"" : [lastDeeplink absoluteString];
         [self.testLibrary addInfoToSend:@"last_deeplink" value:lastDeeplinkString];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
@@ -882,7 +882,7 @@
 }
 
 - (void)attributionGetter:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust attributionWithCompletionHandler:^(ADJAttribution * _Nullable attribution) {
         [self.testLibrary addInfoToSend:@"tracker_token" value:attribution.trackerToken];
@@ -904,7 +904,7 @@
                                                              error:nil];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [self.testLibrary addInfoToSend:@"json_response" value:jsonString];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
@@ -912,7 +912,7 @@
 - (void)attributionGetterWithTimeout:(NSDictionary *)parameters {
     NSString *timeoutS = [parameters objectForKey:@"timeout"][0];
     int timeout = [timeoutS intValue];
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust attributionWithTimeout:timeout completionHandler:^(ADJAttribution * _Nullable attribution) {
         if (attribution != nil) {
@@ -938,17 +938,17 @@
         } else {
             [self.testLibrary addInfoToSend:@"attribution" value:@"nil"];
         }
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
 
 - (void)adidGetter:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust adidWithCompletionHandler:^(NSString * _Nullable adid) {
         [self.testLibrary addInfoToSend:@"adid" value:adid];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
@@ -956,7 +956,7 @@
 - (void)adidGetterWithTimeout:(NSDictionary *)parameters {
     NSString *timeoutS = [parameters objectForKey:@"timeout"][0];
     int timeout = [timeoutS intValue];
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust adidWithTimeout:timeout completionHandler:^(NSString * _Nullable adid) {
         if (adid != nil) {
@@ -964,7 +964,7 @@
         } else {
             [self.testLibrary addInfoToSend:@"adid" value:@"nil"];
         }
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
@@ -989,31 +989,31 @@
 }
 
 - (void)idfaGetter:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust idfaWithCompletionHandler:^(NSString * _Nullable idfa) {
         [self.testLibrary addInfoToSend:@"idfa" value:idfa];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
 
 - (void)idfvGetter:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust idfvWithCompletionHandler:^(NSString * _Nullable idfv) {
         [self.testLibrary addInfoToSend:@"idfv" value:idfv];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
 
 - (void)sdkVersionGetter:(NSDictionary *)parameters {
-    NSString *testId = [parameters objectForKey:@"id"][0];
+    NSString *testCallbackId = [parameters objectForKey:@"testCallbackId"][0];
 
     [Adjust sdkVersionWithCompletionHandler:^(NSString * _Nullable sdkVersion) {
         [self.testLibrary addInfoToSend:@"sdk_version" value:sdkVersion];
-        [self.testLibrary addInfoToSend:@"id" value:testId];
+        [self.testLibrary addInfoToSend:@"test_callback_id" value:testCallbackId];
         [self.testLibrary sendInfoToServer:self.extraPath];
     }];
 }
