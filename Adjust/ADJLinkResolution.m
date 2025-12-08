@@ -47,8 +47,7 @@ static NSUInteger kMaxRecursions = 10;
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
                      willPerformHTTPRedirection:(NSHTTPURLResponse *)response
                                      newRequest:(NSURLRequest *)request
-                              completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
-{
+                              completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
     // if we're already at a terminal host (adjust.com / adj.st / go.link),
     // stop auto-following to preserve the terminal URL (avoid jumping to App Store links)
     if ([ADJLinkResolution isTerminalUrlWithHost:response.URL.host]) {
@@ -103,9 +102,8 @@ static NSUInteger kMaxRecursions = 10;
     }
 
     // if suffix array is provided and URL doesn't match, return URL unchanged
-    if (resolveUrlSuffixArray != nil &&
-        resolveUrlSuffixArray.count > 0 &&
-        ![ADJLinkResolution urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
+    if (![ADJLinkResolution urlMatchesSuffixWithHost:url.host
+                                         suffixArray:resolveUrlSuffixArray]) {
         [ADJUtil launchInMainThread:^{
             callback(url);
         }];
@@ -207,13 +205,22 @@ static NSUInteger kMaxRecursions = 10;
                                            suffixArray:terminalUrlHostSuffixArray];
 }
 
-+ (BOOL)urlMatchesSuffixWithHost:(nonnull NSString *)urlHost
-                     suffixArray:(nonnull NSArray<NSString *> *)suffixArray {
++ (BOOL)urlMatchesSuffixWithHost:(nullable NSString *)urlHost
+                     suffixArray:(nullable NSArray<NSString *> *)suffixArray {
+    if (urlHost == nil) {
+        return NO;
+    }
+
+    if (suffixArray == nil) {
+        return NO;
+    }
+
     for (NSString *_Nonnull expectedHostSuffix in suffixArray) {
         if ([urlHost hasSuffix:expectedHostSuffix]) {
             return YES;
         }
     }
+
     return NO;
 }
 
