@@ -1,3 +1,9 @@
+### Version 5.5.1 (8th December 2025)
+#### Fixed
+- Fixed infinite recursion issue in `ADJLinkResolution` where link resolution would continue making unnecessary network requests when the URL stopped changing between redirects. The resolution now stops immediately when the URL remains unchanged, preventing delays in certain scenarios.
+
+---
+
 ### Version 5.5.0 (5th December 2025)
 #### Added
 - Added `getAdidWithTimeout` method to the `Adjust` API to allow retrieving the ADID with a specified timeout. If the value is not obtained in time, nil is returned.
