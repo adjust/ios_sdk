@@ -38,11 +38,12 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     if (self == nil) return nil;
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
-    self.requestHandler = [[ADJRequestHandler alloc]
-                                initWithResponseCallback:self
-                                urlStrategy:urlStrategy
-                                requestTimeout:[ADJAdjustFactory requestTimeout]
-                           adjustConfiguration:activityHandler.adjustConfig];
+    self.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory requestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig
+                                        activityHandler:activityHandler];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
     self.paused = !startsSending;

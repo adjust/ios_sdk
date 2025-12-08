@@ -104,6 +104,10 @@ static NSString * const PREFS_KEY_GOOGLE_ODM_INFO_PROCESSED = @"adj_google_odm_i
     return [[NSUserDefaults standardUserDefaults] boolForKey:PREFS_KEY_ADSERVICES_TRACKED];
 }
 
++ (void)removeAdServicesTracked {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PREFS_KEY_ADSERVICES_TRACKED];
+}
+
 + (void)saveSkadRegisterCallTimestamp:(NSDate *)callTime {
     [[NSUserDefaults standardUserDefaults] setObject:callTime forKey:PREFS_KEY_SKAD_REGISTER_CALL_TIME];
 }

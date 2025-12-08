@@ -497,7 +497,7 @@ const BOOL kSkanRegisterLockWindow = NO;
                                 error:(NSError *)error {
     if (![ADJUtil isNull:error]) {
         [self.logger warn:@"Unable to read AdServices details"];
-        
+
         // 3 == platform not supported
         if (error.code != 3 && self.adServicesRetriesLeft > 0) {
             self.adServicesRetriesLeft = self.adServicesRetriesLeft - 1;
@@ -516,6 +516,14 @@ const BOOL kSkanRegisterLockWindow = NO;
                                   token:token
                         errorCodeNumber:nil];
     }
+}
+
+- (void)forceRecheckAdServicesAttribution {
+    [ADJUtil launchInQueue:self.internalQueue
+                selfInject:self
+                     block:^(ADJActivityHandler * selfI) {
+        [selfI forceRecheckAdServicesAttributionI:selfI];
+    }];
 }
 
 - (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
@@ -1990,6 +1998,17 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 }
 
+- (void)forceRecheckAdServicesAttributionI:(ADJActivityHandler *)selfI {
+    if (@available(iOS 14.3, tvOS 14.3, *)) {
+        if (selfI.adjustConfig.isAdServicesEnabled == YES) {
+            // clear the tracked flag to force re-reading
+            [ADJUserDefaults removeAdServicesTracked];
+            // now call the regular check which will proceed since the flag is cleared
+            [selfI checkForAdServicesAttributionI:selfI];
+        }
+    }
+}
+
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI
                 offline:(BOOL)offline {
     // compare with the internal state
@@ -2801,7 +2820,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
-
     // Only in case ATT status is accessible (ADJConfig's isAppTrackingTransparencyUsageEnabled)
     // and not ATTrackingManagerAuthorizationStatusNotDetermined (0), update it in packages.
     int attStatus = [selfI.trackingStatusManager attStatus];
@@ -2809,6 +2827,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [selfI.packageHandler updatePackagesWithAttStatus:attStatus];
         [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus];
         [selfI.purchaseVerificationHandler updatePackagesWithAttStatus:attStatus];
+        
+        // change happend from non-3 to 3
+        if (attStatus == 3) {
+            [self.logger debug:@"ATT status changed from 0 to 3, triggering AdServices re-check"];
+            [selfI forceRecheckAdServicesAttributionI:selfI];
+        }
     }
 
     selfI.internalState.updatePackagesAttData = NO;

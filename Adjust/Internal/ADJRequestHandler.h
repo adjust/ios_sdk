@@ -14,12 +14,15 @@
 - (void)responseCallback:(ADJResponseData *)responseData;
 @end
 
+@protocol ADJActivityHandler;
+
 @interface ADJRequestHandler : NSObject
 
 - (id)initWithResponseCallback:(id<ADJResponseCallback>)responseCallback
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
                 requestTimeout:(double)requestTimeout
-           adjustConfiguration:(ADJConfig *)adjustConfig;
+           adjustConfiguration:(ADJConfig *)adjustConfig
+               activityHandler:(id<ADJActivityHandler>)activityHandler;
 
 - (void)sendPackageByPOST:(ADJActivityPackage *)activityPackage
         sendingParameters:(NSDictionary *)sendingParameters;

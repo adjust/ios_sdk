@@ -233,11 +233,12 @@ startsSending:(BOOL)startsSending
 
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
-    selfI.requestHandler = [[ADJRequestHandler alloc]
-                            initWithResponseCallback:self
-                            urlStrategy:urlStrategy
-                            requestTimeout:[ADJAdjustFactory requestTimeout]
-                            adjustConfiguration:activityHandler.adjustConfig];
+    selfI.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory requestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig
+                                        activityHandler:activityHandler];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];

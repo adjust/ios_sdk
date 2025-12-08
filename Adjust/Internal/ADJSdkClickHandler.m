@@ -50,11 +50,12 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
     self.logger = ADJAdjustFactory.logger;
     self.lastPackageRetriesCount = 0;
 
-    self.requestHandler = [[ADJRequestHandler alloc]
-                           initWithResponseCallback:self
-                           urlStrategy:urlStrategy
-                           requestTimeout:[ADJAdjustFactory requestTimeout]
-                           adjustConfiguration:activityHandler.adjustConfig];
+    self.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory requestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig
+                                        activityHandler:activityHandler];
 
     [ADJUtil launchInQueue:self.internalQueue
                 selfInject:self
