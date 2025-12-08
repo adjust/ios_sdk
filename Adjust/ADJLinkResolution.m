@@ -7,6 +7,7 @@
 //
 
 #import "ADJLinkResolution.h"
+#import "ADJUtil.h"
 
 static NSUInteger kMaxRecursions = 10;
 
@@ -95,7 +96,9 @@ static NSUInteger kMaxRecursions = 10;
         return;
     }
     if (url == nil || url.host == nil || url.host.length == 0) {
-        callback(url);
+        [ADJUtil launchInMainThread:^{
+            callback(url);
+        }];
         return;
     }
 
@@ -103,7 +106,9 @@ static NSUInteger kMaxRecursions = 10;
     if (resolveUrlSuffixArray != nil &&
         resolveUrlSuffixArray.count > 0 &&
         ![ADJLinkResolution urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
-        callback(url);
+        [ADJUtil launchInMainThread:^{
+            callback(url);
+        }];
         return;
     }
 
@@ -141,23 +146,31 @@ static NSUInteger kMaxRecursions = 10;
                           callback:(nonnull void (^)(NSURL *_Nullable resolvedLink))callback {
     // return (possible nil) previous url when the current one does not exist
     if (responseUrl == nil) {
-        callback(previousUrl);
+        [ADJUtil launchInMainThread:^{
+            callback(previousUrl);
+        }];
         return;
     }
     // stop recursion when URL stops changing (prevents infinite loops)
     if (previousUrl != nil && [responseUrl isEqual:previousUrl]) {
-        callback(responseUrl);
+        [ADJUtil launchInMainThread:^{
+            callback(responseUrl);
+        }];
         return;
     }
     // return found url with expected host (Adjust terminal domains)
     // these are domains where we stop to avoid redirecting to App Store
     if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host]) {
-        callback(responseUrl);
+        [ADJUtil launchInMainThread:^{
+            callback(responseUrl);
+        }];
         return;
     }
     // return current url when it reached the max number of recursive tries
     if (recursionNumber >= kMaxRecursions) {
-        callback(responseUrl);
+        [ADJUtil launchInMainThread:^{
+            callback(responseUrl);
+        }];
         return;
     }
 
