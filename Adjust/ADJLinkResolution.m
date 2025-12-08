@@ -154,6 +154,12 @@ static NSUInteger kMaxRecursions = 10;
         return;
     }
 
+    // stop recursion when URL stops changing
+    if (previousUrl != nil && [responseUrl isEqual:previousUrl]) {
+        callback(responseUrl);
+        return;
+    }
+
     // return found url with expected host
     if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host]) {
         callback(responseUrl);
