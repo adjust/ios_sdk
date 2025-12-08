@@ -94,15 +94,15 @@ static NSUInteger kMaxRecursions = 10;
     if (callback == nil) {
         return;
     }
-    if (url == nil) {
-        callback(nil);
+    if (url == nil || url.host == nil || url.host.length == 0) {
+        callback(url);
         return;
     }
 
     // if suffix array is provided and URL doesn't match, return URL unchanged
     if (resolveUrlSuffixArray != nil &&
-        ![ADJLinkResolution urlMatchesSuffixWithHost:url.host
-                                         suffixArray:resolveUrlSuffixArray]) {
+        resolveUrlSuffixArray.count > 0 &&
+        ![ADJLinkResolution urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
         callback(url);
         return;
     }
@@ -194,22 +194,13 @@ static NSUInteger kMaxRecursions = 10;
                                            suffixArray:terminalUrlHostSuffixArray];
 }
 
-+ (BOOL)urlMatchesSuffixWithHost:(nullable NSString *)urlHost
-                     suffixArray:(nullable NSArray<NSString *> *)suffixArray {
-    if (urlHost == nil) {
-        return NO;
-    }
-
-    if (suffixArray == nil) {
-        return NO;
-    }
-
++ (BOOL)urlMatchesSuffixWithHost:(nonnull NSString *)urlHost
+                     suffixArray:(nonnull NSArray<NSString *> *)suffixArray {
     for (NSString *_Nonnull expectedHostSuffix in suffixArray) {
         if ([urlHost hasSuffix:expectedHostSuffix]) {
             return YES;
         }
     }
-
     return NO;
 }
 
