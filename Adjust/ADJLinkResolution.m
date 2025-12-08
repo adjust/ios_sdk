@@ -120,20 +120,17 @@ static NSUInteger kMaxRecursions = 10;
     });
 
     NSURL *_Nullable httpsUrl = [ADJLinkResolutionDelegate convertUrlToHttps:url];
-    NSURLSessionDataTask *task =
-        [sharedSession
-            dataTaskWithURL:httpsUrl
-            completionHandler:
-                ^(NSData * _Nullable data,
-                  NSURLResponse * _Nullable response,
-                  NSError * _Nullable error) {
-                // bootstrap the recursion of resolving the link
-                [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
-                                                  previousUrl:httpsUrl
-                                              recursionNumber:0
-                                                      session:sharedSession
-                                                     callback:callback];
-            }];
+    NSURLSessionDataTask *task = [sharedSession dataTaskWithURL:httpsUrl
+                                              completionHandler:^(NSData * _Nullable data,
+                                                                  NSURLResponse * _Nullable response,
+                                                                  NSError * _Nullable error) {
+        // bootstrap the recursion of resolving the link
+        [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
+                                          previousUrl:httpsUrl
+                                      recursionNumber:0
+                                              session:sharedSession
+                                             callback:callback];
+    }];
     [task resume];
 }
 
@@ -165,19 +162,16 @@ static NSUInteger kMaxRecursions = 10;
     }
 
     // when found a non expected url host, use it to recursively resolve the link
-    NSURLSessionDataTask *task =
-        [session
-            dataTaskWithURL:responseUrl
-            completionHandler:
-                ^(NSData * _Nullable data,
-                  NSURLResponse * _Nullable response,
-                  NSError * _Nullable error) {
-            [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
-                                              previousUrl:responseUrl
-                                          recursionNumber:(recursionNumber + 1)
-                                                  session:session
-                                                 callback:callback];
-        }];
+    NSURLSessionDataTask *task = [session dataTaskWithURL:responseUrl
+                                        completionHandler:^(NSData * _Nullable data,
+                                                            NSURLResponse * _Nullable response,
+                                                            NSError * _Nullable error) {
+        [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
+                                          previousUrl:responseUrl
+                                      recursionNumber:(recursionNumber + 1)
+                                              session:session
+                                             callback:callback];
+    }];
     [task resume];
 }
 
@@ -188,14 +182,13 @@ static NSUInteger kMaxRecursions = 10;
 
     // check hardcoded Adjust terminal domains
     // these are domains where we stop recursion to avoid redirecting to App Store
-    NSArray<NSString *> *_Nonnull terminalUrlHostSuffixArray =
-        @[@"adjust.com",
-          @"adj.st",
-          @"go.link",
-          @"adjust.cn",
-          @"adjust.net.in",
-          @"adjust.world",
-          @"adjust.io"];
+    NSArray<NSString *> *_Nonnull terminalUrlHostSuffixArray = @[@"adjust.com",
+                                                                 @"adj.st",
+                                                                 @"go.link",
+                                                                 @"adjust.cn",
+                                                                 @"adjust.net.in",
+                                                                 @"adjust.world",
+                                                                 @"adjust.io"];
 
     return [ADJLinkResolution urlMatchesSuffixWithHost:urlHost
                                            suffixArray:terminalUrlHostSuffixArray];
