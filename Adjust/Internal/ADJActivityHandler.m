@@ -3508,6 +3508,11 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     BOOL statusHasBeenUpdated = [self updateAttStatus:status];
     if (statusHasBeenUpdated) {
         [self.activityHandler trackAttStatusUpdate];
+        
+        // if status has changed to 3, re-fetch ASA token
+        if (status == 3) {
+            [self.activityHandler forceRecheckAdServicesAttribution];
+        }
     }
 }
 
