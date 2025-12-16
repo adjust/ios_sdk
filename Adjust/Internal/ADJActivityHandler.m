@@ -114,6 +114,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
 @property (nonatomic, assign) NSInteger adServicesRetriesLeft;
+@property (nonatomic, assign) BOOL isRecheckingAdServicesAttribution;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJPackageParams *packageParams;
 @property (nonatomic, strong) ADJGlobalParameters *globalParameters;
@@ -287,6 +288,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.internalState.sessionResponseProcessed = NO;
 
     self.adServicesRetriesLeft = kAdServicesdRetriesCount;
+    self.isRecheckingAdServicesAttribution = NO;
 
     self.trackingStatusManager = [[ADJTrackingStatusManager alloc] initWithActivityHandler:self];
 
@@ -507,11 +509,15 @@ const BOOL kSkanRegisterLockWindow = NO;
                 [self checkForAdServicesAttributionI:self];
             });
         } else {
+            // reset the recheck flag when operation completes (no more retries)
+            self.isRecheckingAdServicesAttribution = NO;
             [self sendAdServicesClickPackage:self
                                       token:nil
                             errorCodeNumber:[NSNumber numberWithInteger:error.code]];
         }
     } else {
+        // reset the recheck flag when operation completes successfully
+        self.isRecheckingAdServicesAttribution = NO;
         [self sendAdServicesClickPackage:self
                                   token:token
                         errorCodeNumber:nil];
@@ -1994,13 +2000,31 @@ const BOOL kSkanRegisterLockWindow = NO;
                 NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
                 [selfI setAdServicesAttributionToken:token error:error];
             });
+        } else {
+            // if async operation doesn't start (shouldFetchAdServicesI returned NO),
+            // reset the recheck flag if it was set
+            if (selfI.isRecheckingAdServicesAttribution) {
+                selfI.isRecheckingAdServicesAttribution = NO;
+            }
+        }
+    } else {
+        // if iOS version doesn't support AdServices, reset the flag if it was set
+        if (selfI.isRecheckingAdServicesAttribution) {
+            selfI.isRecheckingAdServicesAttribution = NO;
         }
     }
 }
 
 - (void)forceRecheckAdServicesAttributionI:(ADJActivityHandler *)selfI {
+    // guard against concurrent execution - if already rechecking, skip this call
+    if (selfI.isRecheckingAdServicesAttribution) {
+        return;
+    }
+    
     if (@available(iOS 14.3, tvOS 14.3, *)) {
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
+            // mark that we're starting a recheck
+            selfI.isRecheckingAdServicesAttribution = YES;
             // clear the tracked flag to force re-reading
             [ADJUserDefaults removeAdServicesTracked];
             // now call the regular check which will proceed since the flag is cleared
