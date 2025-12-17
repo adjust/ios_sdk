@@ -105,8 +105,6 @@
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler> _Nullable)selfI
                attribution:(ADJAttribution * _Nullable)attribution;
-- (void)setAdServicesAttributionToken:(NSString * _Nullable)token
-                                error:(NSError * _Nullable)error;
 - (void)forceRecheckAdServicesAttribution;
 
 - (void)setOfflineMode:(BOOL)offline;
