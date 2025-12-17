@@ -3610,7 +3610,7 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
                       activityHandler:(ADJActivityHandler *)selfI {
     if (![ADJUtil isNull:error]) {
         [selfI.logger warn:@"Unable to read AdServices details"];
-
+        
         // 3 == platform not supported
         if (error.code != 3 && self.retriesLeft > 0) {
             self.retriesLeft = self.retriesLeft - 1;
@@ -3624,16 +3624,16 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
             self.isRechecking = NO;
             self.retriesLeft = kAdServicesdRetriesCount;
             [selfI sendAdServicesClickPackage:selfI
-                                      token:nil
-                            errorCodeNumber:[NSNumber numberWithInteger:error.code]];
+                                        token:nil
+                              errorCodeNumber:[NSNumber numberWithInteger:error.code]];
         }
     } else {
         // reset the recheck flag when operation completes successfully
         self.isRechecking = NO;
         self.retriesLeft = kAdServicesdRetriesCount;
         [selfI sendAdServicesClickPackage:selfI
-                                  token:token
-                        errorCodeNumber:nil];
+                                    token:token
+                          errorCodeNumber:nil];
     }
 }
 
