@@ -96,19 +96,6 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     [self logLevel:@"a" format:format parameters:parameters];
 }
 
-/*
-// private implementation
-- (void)logLevel:(NSString *)logLevel format:(NSString *)format parameters:(va_list)parameters {
-    NSString *string = [[NSString alloc] initWithFormat:format arguments:parameters];
-    va_end(parameters);
-
-    NSArray *lines = [string componentsSeparatedByString:@"\n"];
-    for (NSString *line in lines) {
-        NSLog(@"\t[%@]%@: %@", kLogTag, logLevel, line);
-    }
-}
-*/
-
 + (void)initialize {
     if (self == [ADJLogger self]) {
         AdjustLog = os_log_create("com.adjust.sdk", "Adjust");
