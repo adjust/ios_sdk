@@ -497,11 +497,11 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self.adServicesManager forceRecheckAdServicesAttribution];
 }
 
-- (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
-                             token:(NSString *)token
-                   errorCodeNumber:(NSNumber *)errorCodeNumber
- {
-     if (![selfI isEnabledI:selfI]) {
+- (void)sendAdServicesClickPackageI:(ADJActivityHandler *)selfI
+                              token:(NSString *)token
+                    errorCodeNumber:(NSNumber *)errorCodeNumber {
+
+    if (![selfI isEnabledI:selfI]) {
          return;
      }
 
@@ -3518,7 +3518,10 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 
 - (instancetype)initWithActivityHandler:(ADJActivityHandler *)activityHandler {
     self = [super init];
-    
+    if (self == nil) {
+        return nil;
+    }
+
     _activityHandler = activityHandler;
     _retriesLeft = kAdServicesdRetriesCount;
     _isRechecking = NO;
@@ -3555,11 +3558,13 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
         if ([self shouldFetchAdServicesI:selfI]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [ADJUtil launchInQueue:selfI.internalQueue
+                        selfInject:selfI
+                             block:^(ADJActivityHandler * selfI) {
                 NSError *error = nil;
                 NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
-                [self setAdServicesAttributionToken:token error:error activityHandler:selfI];
-            });
+                [self setAdServicesAttributionTokenI:token error:error activityHandler:selfI];
+            }];
         } else {
             // if async operation doesn't start (shouldFetchAdServicesI returned NO),
             // reset the recheck flag if it was set
@@ -3605,36 +3610,36 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
 }
 
-- (void)setAdServicesAttributionToken:(NSString *)token
-                                error:(NSError *)error
-                      activityHandler:(ADJActivityHandler *)selfI {
+- (void)setAdServicesAttributionTokenI:(NSString *)token
+                                 error:(NSError *)error
+                       activityHandler:(ADJActivityHandler *)selfI {
+
+    NSString *tokenToSend = token;
+    NSNumber *errorToSend = (error != nil) ? [NSNumber numberWithInteger:error.code] : nil;
     if (![ADJUtil isNull:error]) {
         [selfI.logger warn:@"Unable to read AdServices details"];
-        
+
         // 3 == platform not supported
         if (error.code != 3 && self.retriesLeft > 0) {
             self.retriesLeft = self.retriesLeft - 1;
             // retry after 5 seconds
             dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
-            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_after(retryTime, selfI.internalQueue, ^{
                 [self checkForAdServicesAttributionI:selfI];
             });
-        } else {
-            // reset the recheck flag when operation completes (no more retries)
-            self.isRechecking = NO;
-            self.retriesLeft = kAdServicesdRetriesCount;
-            [selfI sendAdServicesClickPackage:selfI
-                                        token:nil
-                              errorCodeNumber:[NSNumber numberWithInteger:error.code]];
+            return;
         }
-    } else {
-        // reset the recheck flag when operation completes successfully
-        self.isRechecking = NO;
-        self.retriesLeft = kAdServicesdRetriesCount;
-        [selfI sendAdServicesClickPackage:selfI
-                                    token:token
-                          errorCodeNumber:nil];
+
+        // we get a critical error
+        tokenToSend = nil;
     }
+
+    // reset the recheck flag when operation completes (success or no more retries)
+    self.isRechecking = NO;
+    self.retriesLeft = kAdServicesdRetriesCount;
+    [selfI sendAdServicesClickPackageI:selfI
+                                 token:tokenToSend
+                       errorCodeNumber:errorToSend];
 }
 
 @end
