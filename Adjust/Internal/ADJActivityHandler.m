@@ -502,38 +502,38 @@ const BOOL kSkanRegisterLockWindow = NO;
                     errorCodeNumber:(NSNumber *)errorCodeNumber {
 
     if (![selfI isEnabledI:selfI]) {
-         return;
-     }
+        return;
+    }
 
-     if (ADJAdjustFactory.adServicesFrameworkEnabled == NO) {
-         [self.logger verbose:@"Sending AdServices attribution to server suppressed."];
-         return;
-     }
+    if (ADJAdjustFactory.adServicesFrameworkEnabled == NO) {
+        [self.logger verbose:@"Sending AdServices attribution to server suppressed."];
+        return;
+    }
 
-     double now = [NSDate.date timeIntervalSince1970];
-     if (selfI.activityState != nil) {
-         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                         block:^{
-             double lastInterval = now - selfI.activityState.lastActivity;
-             selfI.activityState.lastInterval = lastInterval;
-         }];
-     }
-     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithPackageParams:selfI.packageParams
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        globalParameters:selfI.globalParameters
-                                        trackingStatusManager:selfI.trackingStatusManager
-                                        firstSessionDelayManager:selfI.firstSessionDelayManager
-                                        createdAt:now
-                                        odmEnabled:selfI.isOdmEnabled];
-     clickBuilder.internalState = selfI.internalState;
+    double now = [NSDate.date timeIntervalSince1970];
+    if (selfI.activityState != nil) {
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            double lastInterval = now - selfI.activityState.lastActivity;
+            selfI.activityState.lastInterval = lastInterval;
+        }];
+    }
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
+                                       globalParameters:selfI.globalParameters
+                                       trackingStatusManager:selfI.trackingStatusManager
+                                       firstSessionDelayManager:selfI.firstSessionDelayManager
+                                       createdAt:now
+                                       odmEnabled:selfI.isOdmEnabled];
+    clickBuilder.internalState = selfI.internalState;
 
-     ADJActivityPackage *clickPackage =
-        [clickBuilder buildClickPackage:ADJClickSourceAdServices
-                                  token:token
-                        errorCodeNumber:errorCodeNumber];
-     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+    ADJActivityPackage *clickPackage =
+    [clickBuilder buildClickPackage:ADJClickSourceAdServices
+                              token:token
+                    errorCodeNumber:errorCodeNumber];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)sendGoogleOdmInfo:(NSString *)odmInfo
