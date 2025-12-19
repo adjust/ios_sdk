@@ -3558,25 +3558,25 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 - (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
     if (@available(iOS 14.3, tvOS 14.3, *)) {
         if ([self shouldFetchAdServicesI:selfI]) {
-            [ADJUtil launchInQueue:selfI.internalQueue
-                        selfInject:selfI
-                             block:^(ADJActivityHandler * selfI) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSError *error = nil;
                 NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
-                [self setAdServicesAttributionTokenI:token error:error activityHandler:selfI];
-            }];
-        } else {
-            // if async operation doesn't start (shouldFetchAdServicesI returned NO),
-            // reset the recheck flag if it was set
-            if (self.isRechecking) {
-                self.isRechecking = NO;
-            }
+                [ADJUtil launchInQueue:selfI.internalQueue
+                            selfInject:selfI
+                                 block:^(ADJActivityHandler * selfI) {
+                    [self setAdServicesAttributionTokenI:token error:error activityHandler:selfI];
+                }];
+            });
+            return;
         }
-    } else {
-        // if iOS version doesn't support AdServices, reset the flag if it was set
-        if (self.isRechecking) {
-            self.isRechecking = NO;
-        }
+    }
+
+    // if async operation doesn't start (shouldFetchAdServicesI returned NO),
+    // OR
+    // if iOS version doesn't support AdServices,
+    // reset the recheck flag if it was set
+    if (self.isRechecking) {
+        self.isRechecking = NO;
     }
 }
 
@@ -3604,10 +3604,11 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     }
     
     // Fetch if no attribution OR not sent to backend yet
-    if ([ADJUserDefaults getAdServicesTracked]) {
-        [selfI.logger debug:@"AdServices attribution info already read"];
+    BOOL isAdServicesAlreadyTracked = [ADJUserDefaults getAdServicesTracked];
+    if (isAdServicesAlreadyTracked) {
+        [selfI.logger debug:@"AdServices attribution info already fetched and tracked"];
     }
-    return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
+    return (selfI.attribution == nil || !isAdServicesAlreadyTracked);
 }
 
 - (void)setAdServicesAttributionTokenI:(NSString *)token
