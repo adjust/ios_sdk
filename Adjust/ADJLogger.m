@@ -103,8 +103,20 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     va_end(parameters);
 
     NSArray *lines = [string componentsSeparatedByString:@"\n"];
+
+    os_log_type_t osLogType = OS_LOG_TYPE_DEFAULT;
+      if ([logLevel isEqualToString:@"v"] || [logLevel isEqualToString:@"d"]) {
+          osLogType = OS_LOG_TYPE_DEBUG;
+      } else if ([logLevel isEqualToString:@"i"] || [logLevel isEqualToString:@"w"]) {
+          osLogType = OS_LOG_TYPE_INFO;
+      } else if ([logLevel isEqualToString:@"e"]) {
+          osLogType = OS_LOG_TYPE_ERROR;
+      } else if ([logLevel isEqualToString:@"a"]) {
+          osLogType = OS_LOG_TYPE_FAULT;
+      }
+
     for (NSString *line in lines) {
-        os_log_with_type(self.osLogLogger, OS_LOG_TYPE_DEFAULT,
+        os_log_with_type(self.osLogLogger, osLogType,
                          "\t[%{public}@]%{public}@: %{public}@",
                          kLogTag, logLevel, line);
     }
