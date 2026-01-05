@@ -67,10 +67,12 @@
 @end
 
 @class ADJTrackingStatusManager;
+@class ADJAdServicesManager;
 
 @protocol ADJActivityHandler <NSObject>
 
 @property (nonatomic, strong) ADJTrackingStatusManager * _Nullable trackingStatusManager;
+@property (nonatomic, strong) ADJAdServicesManager * _Nullable adServicesManager;
 
 - (id _Nullable)initWithConfig:(ADJConfig *_Nullable)adjustConfig
                 savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
@@ -103,8 +105,7 @@
 
 - (BOOL)updateAttributionI:(id<ADJActivityHandler> _Nullable)selfI
                attribution:(ADJAttribution * _Nullable)attribution;
-- (void)setAdServicesAttributionToken:(NSString * _Nullable)token
-                                error:(NSError * _Nullable)error;
+- (void)forceRecheckAdServicesAttribution;
 
 - (void)setOfflineMode:(BOOL)offline;
 
@@ -196,6 +197,14 @@
 - (void)updateAndTrackAttStatusFromUserCallback:(int)attStatusFromUser;
 - (void)setAppInActiveState:(BOOL)activeState;
 - (BOOL)shouldWaitForAttStatus;
+
+@end
+
+@interface ADJAdServicesManager : NSObject
+
+- (instancetype _Nullable)initWithActivityHandler:(ADJActivityHandler * _Nullable)activityHandler;
+- (void)checkForAdServicesAttribution;
+- (void)forceRecheckAdServicesAttribution;
 
 @end
 

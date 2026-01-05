@@ -14,6 +14,7 @@
 #import "ADJActivityPackage.h"
 #import "ADJAdditions.h"
 #import "ADJUserDefaults.h"
+#import "ADJActivityHandler.h"
 #include <stdlib.h>
 
 static NSString * const ADJMethodGET = @"MethodGET";
@@ -32,6 +33,8 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
 @property (nonatomic, strong) NSHashTable<NSString *> *exceptionKeys;
 
+@property (nonatomic, weak) id<ADJActivityHandler> activityHandler;
+
 @end
 
 @implementation ADJRequestHandler
@@ -42,6 +45,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                    urlStrategy:(ADJUrlStrategy *)urlStrategy
                 requestTimeout:(double)requestTimeout
            adjustConfiguration:(ADJConfig *)adjustConfig
+               activityHandler:(id<ADJActivityHandler>)activityHandler
 {
     self = [super init];
     
@@ -52,6 +56,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     self.requestTimeout = requestTimeout;
     self.responseCallback = responseCallback;
     self.adjustConfig = adjustConfig;
+    self.activityHandler = activityHandler;
 
     self.logger = ADJAdjustFactory.logger;
     self.defaultSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -206,6 +211,15 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                             configuration:self.adjustConfig];
         } else {
             [ADJPackageBuilder removeConsentDataFromParameters:params];
+        }
+        
+        // check if ATT status changed from non-3 to 3 (user authorized tracking)
+        // this requires re-reading the ASA token as it can change when ATT status becomes 3
+        if (paramsAttStatusInt != 3 && currentAttStatus == 3) {
+            if (self.activityHandler != nil) {
+                [self.logger debug:@"ATT status changed from %d to 3, triggering AdServices re-check", paramsAttStatusInt];
+                [self.activityHandler forceRecheckAdServicesAttribution];
+            }
         }
     }
 

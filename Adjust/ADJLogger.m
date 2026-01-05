@@ -7,6 +7,7 @@
 //
 
 #import "ADJLogger.h"
+#import <os/log.h>
 
 static NSString * const kLogTag = @"Adjust";
 
@@ -15,6 +16,7 @@ static NSString * const kLogTag = @"Adjust";
 @property (nonatomic, assign) ADJLogLevel loglevel;
 @property (nonatomic, assign) BOOL logLevelLocked;
 @property (nonatomic, assign) BOOL isProductionEnvironment;
+@property (nonatomic, strong) os_log_t osLogLogger;
 
 @end
 
@@ -29,6 +31,7 @@ static NSString * const kLogTag = @"Adjust";
     _loglevel = ADJLogLevelInfo;
     self.logLevelLocked = NO;
     self.isProductionEnvironment = NO;
+    self.osLogLogger = os_log_create("com.adjust.sdk", "Adjust");
 
     return self;
 }
@@ -100,8 +103,18 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     va_end(parameters);
 
     NSArray *lines = [string componentsSeparatedByString:@"\n"];
+
+    os_log_type_t osLogType = OS_LOG_TYPE_DEFAULT;
+    if ([logLevel isEqualToString:@"e"] || [logLevel isEqualToString:@"w"]) {
+        osLogType = OS_LOG_TYPE_ERROR;
+    } else if ([logLevel isEqualToString:@"a"]) {
+        osLogType = OS_LOG_TYPE_FAULT;
+    }
+
     for (NSString *line in lines) {
-        NSLog(@"\t[%@]%@: %@", kLogTag, logLevel, line);
+        os_log_with_type(self.osLogLogger, osLogType,
+                         "\t[%{public}@]%{public}@: %{public}@",
+                         kLogTag, logLevel, line);
     }
 }
 

@@ -113,7 +113,6 @@ const BOOL kSkanRegisterLockWindow = NO;
 @property (nonatomic, strong) ADJEventMetadata *eventsMetadata;
 @property (nonatomic, strong) ADJTimerCycle *foregroundTimer;
 @property (nonatomic, strong) ADJTimerOnce *backgroundTimer;
-@property (nonatomic, assign) NSInteger adServicesRetriesLeft;
 @property (nonatomic, strong) ADJInternalState *internalState;
 @property (nonatomic, strong) ADJPackageParams *packageParams;
 @property (nonatomic, strong) ADJGlobalParameters *globalParameters;
@@ -173,6 +172,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 @implementation ADJActivityHandler
 
 @synthesize trackingStatusManager = _trackingStatusManager;
+@synthesize adServicesManager = _adServicesManager;
 
 - (id)initWithConfig:(ADJConfig *_Nullable)adjustConfig
       savedPreLaunch:(ADJSavedPreLaunch * _Nullable)savedPreLaunch
@@ -286,9 +286,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     // does not have the session response by default
     self.internalState.sessionResponseProcessed = NO;
 
-    self.adServicesRetriesLeft = kAdServicesdRetriesCount;
-
     self.trackingStatusManager = [[ADJTrackingStatusManager alloc] initWithActivityHandler:self];
+    self.adServicesManager = [[ADJAdServicesManager alloc] initWithActivityHandler:self];
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
 
@@ -493,68 +492,48 @@ const BOOL kSkanRegisterLockWindow = NO;
                      }];
 }
 
-- (void)setAdServicesAttributionToken:(NSString *)token
-                                error:(NSError *)error {
-    if (![ADJUtil isNull:error]) {
-        [self.logger warn:@"Unable to read AdServices details"];
-        
-        // 3 == platform not supported
-        if (error.code != 3 && self.adServicesRetriesLeft > 0) {
-            self.adServicesRetriesLeft = self.adServicesRetriesLeft - 1;
-            // retry after 5 seconds
-            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
-            dispatch_after(retryTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self checkForAdServicesAttributionI:self];
-            });
-        } else {
-            [self sendAdServicesClickPackage:self
-                                      token:nil
-                            errorCodeNumber:[NSNumber numberWithInteger:error.code]];
-        }
-    } else {
-        [self sendAdServicesClickPackage:self
-                                  token:token
-                        errorCodeNumber:nil];
-    }
+
+- (void)forceRecheckAdServicesAttribution {
+    [self.adServicesManager forceRecheckAdServicesAttribution];
 }
 
-- (void)sendAdServicesClickPackage:(ADJActivityHandler *)selfI
-                             token:(NSString *)token
-                   errorCodeNumber:(NSNumber *)errorCodeNumber
- {
-     if (![selfI isEnabledI:selfI]) {
-         return;
-     }
+- (void)sendAdServicesClickPackageI:(ADJActivityHandler *)selfI
+                              token:(NSString *)token
+                    errorCodeNumber:(NSNumber *)errorCodeNumber {
 
-     if (ADJAdjustFactory.adServicesFrameworkEnabled == NO) {
-         [self.logger verbose:@"Sending AdServices attribution to server suppressed."];
-         return;
-     }
+    if (![selfI isEnabledI:selfI]) {
+        return;
+    }
 
-     double now = [NSDate.date timeIntervalSince1970];
-     if (selfI.activityState != nil) {
-         [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                         block:^{
-             double lastInterval = now - selfI.activityState.lastActivity;
-             selfI.activityState.lastInterval = lastInterval;
-         }];
-     }
-     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                        initWithPackageParams:selfI.packageParams
-                                        activityState:selfI.activityState
-                                        config:selfI.adjustConfig
-                                        globalParameters:selfI.globalParameters
-                                        trackingStatusManager:selfI.trackingStatusManager
-                                        firstSessionDelayManager:selfI.firstSessionDelayManager
-                                        createdAt:now
-                                        odmEnabled:selfI.isOdmEnabled];
-     clickBuilder.internalState = selfI.internalState;
+    if (ADJAdjustFactory.adServicesFrameworkEnabled == NO) {
+        [self.logger verbose:@"Sending AdServices attribution to server suppressed."];
+        return;
+    }
 
-     ADJActivityPackage *clickPackage =
-        [clickBuilder buildClickPackage:ADJClickSourceAdServices
-                                  token:token
-                        errorCodeNumber:errorCodeNumber];
-     [selfI.sdkClickHandler sendSdkClick:clickPackage];
+    double now = [NSDate.date timeIntervalSince1970];
+    if (selfI.activityState != nil) {
+        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
+                                        block:^{
+            double lastInterval = now - selfI.activityState.lastActivity;
+            selfI.activityState.lastInterval = lastInterval;
+        }];
+    }
+    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
+                                       initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                       config:selfI.adjustConfig
+                                       globalParameters:selfI.globalParameters
+                                       trackingStatusManager:selfI.trackingStatusManager
+                                       firstSessionDelayManager:selfI.firstSessionDelayManager
+                                       createdAt:now
+                                       odmEnabled:selfI.isOdmEnabled];
+    clickBuilder.internalState = selfI.internalState;
+
+    ADJActivityPackage *clickPackage =
+    [clickBuilder buildClickPackage:ADJClickSourceAdServices
+                              token:token
+                    errorCodeNumber:errorCodeNumber];
+    [selfI.sdkClickHandler sendSdkClick:clickPackage];
 }
 
 - (void)sendGoogleOdmInfo:(NSString *)odmInfo
@@ -1109,7 +1088,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         }];
 
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
-            [selfI checkForAdServicesAttributionI:selfI];
+            [selfI.adServicesManager checkForAdServicesAttribution];
         }
 
         [selfI writeActivityStateI:selfI];
@@ -1160,7 +1139,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
 
-    [selfI checkForAdServicesAttributionI:selfI];
+    [selfI.adServicesManager checkForAdServicesAttribution];
 
     double lastInterval = now - selfI.activityState.lastActivity;
     [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
@@ -1936,7 +1915,7 @@ const BOOL kSkanRegisterLockWindow = NO;
             [self setPushTokenString:pushTokenString];
         }
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
-            [selfI checkForAdServicesAttributionI:selfI];
+            [selfI.adServicesManager checkForAdServicesAttribution];
         }
     }
 
@@ -1966,29 +1945,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     selfI.cachedLastMeasurementConsentTrack = nil;
 }
 
-- (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
-    if (selfI.adjustConfig.isAdServicesEnabled == NO) {
-        return NO;
-    }
-    
-    // Fetch if no attribution OR not sent to backend yet
-    if ([ADJUserDefaults getAdServicesTracked]) {
-        [selfI.logger debug:@"AdServices attribution info already read"];
-    }
-    return (selfI.attribution == nil || ![ADJUserDefaults getAdServicesTracked]);
-}
-
-- (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
-    if (@available(iOS 14.3, tvOS 14.3, *)) {
-        if ([selfI shouldFetchAdServicesI:selfI]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSError *error = nil;
-                NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
-                [selfI setAdServicesAttributionToken:token error:error];
-            });
-        }
-    }
-}
 
 - (void)setOfflineModeI:(ADJActivityHandler *)selfI
                 offline:(BOOL)offline {
@@ -2801,7 +2757,6 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)updatePackagesAttStatusAndIdfaI:(ADJActivityHandler *)selfI {
-
     // Only in case ATT status is accessible (ADJConfig's isAppTrackingTransparencyUsageEnabled)
     // and not ATTrackingManagerAuthorizationStatusNotDetermined (0), update it in packages.
     int attStatus = [selfI.trackingStatusManager attStatus];
@@ -2809,6 +2764,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         [selfI.packageHandler updatePackagesWithAttStatus:attStatus];
         [selfI.sdkClickHandler updatePackagesWithAttStatus:attStatus];
         [selfI.purchaseVerificationHandler updatePackagesWithAttStatus:attStatus];
+        
+        // change happend from non-3 to 3
+        if (attStatus == 3) {
+            [self.logger debug:@"ATT status changed from 0 to 3, triggering AdServices re-check"];
+            [selfI.adServicesManager forceRecheckAdServicesAttribution];
+        }
     }
 
     selfI.internalState.updatePackagesAttData = NO;
@@ -3484,6 +3445,11 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
     BOOL statusHasBeenUpdated = [self updateAttStatus:status];
     if (statusHasBeenUpdated) {
         [self.activityHandler trackAttStatusUpdate];
+        
+        // if status has changed to 3, re-fetch ASA token
+        if (status == 3) {
+            [self.activityHandler forceRecheckAdServicesAttribution];
+        }
     }
 }
 
@@ -3538,6 +3504,143 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
 
     [ADJUserDefaults setAttWaitingRemainingSeconds:(seconds-1)];
     [self startWaitingForAttStatus];
+}
+
+@end
+
+@interface ADJAdServicesManager ()
+@property (nonatomic, readonly, weak) ADJActivityHandler *activityHandler;
+@property (nonatomic, assign) NSInteger retriesLeft;
+@property (nonatomic, assign) BOOL isRechecking;
+@end
+
+@implementation ADJAdServicesManager
+
+- (instancetype)initWithActivityHandler:(ADJActivityHandler *)activityHandler {
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+
+    _activityHandler = activityHandler;
+    _retriesLeft = kAdServicesdRetriesCount;
+    _isRechecking = NO;
+    
+    return self;
+}
+
+- (void)checkForAdServicesAttribution {
+    ADJActivityHandler *activityHandler = self.activityHandler;
+    if (activityHandler == nil) {
+        return;
+    }
+    
+    [ADJUtil launchInQueue:activityHandler.internalQueue
+                selfInject:activityHandler
+                     block:^(ADJActivityHandler * selfI) {
+        [self checkForAdServicesAttributionI:selfI];
+    }];
+}
+
+- (void)forceRecheckAdServicesAttribution {
+    ADJActivityHandler *activityHandler = self.activityHandler;
+    if (activityHandler == nil) {
+        return;
+    }
+    
+    [ADJUtil launchInQueue:activityHandler.internalQueue
+                selfInject:activityHandler
+                     block:^(ADJActivityHandler * selfI) {
+        [self forceRecheckAdServicesAttributionI:selfI];
+    }];
+}
+
+- (void)checkForAdServicesAttributionI:(ADJActivityHandler *)selfI {
+    if (@available(iOS 14.3, tvOS 14.3, *)) {
+        if ([self shouldFetchAdServicesI:selfI]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSError *error = nil;
+                NSString *token = [ADJUtil fetchAdServicesAttribution:&error];
+                [ADJUtil launchInQueue:selfI.internalQueue
+                            selfInject:selfI
+                                 block:^(ADJActivityHandler * selfI) {
+                    [self setAdServicesAttributionTokenI:token error:error activityHandler:selfI];
+                }];
+            });
+            return;
+        }
+    }
+
+    // if async operation doesn't start (shouldFetchAdServicesI returned NO),
+    // OR
+    // if iOS version doesn't support AdServices,
+    // reset the recheck flag if it was set
+    if (self.isRechecking) {
+        self.isRechecking = NO;
+    }
+}
+
+- (void)forceRecheckAdServicesAttributionI:(ADJActivityHandler *)selfI {
+    // guard against concurrent execution - if already rechecking, skip this call
+    if (self.isRechecking) {
+        return;
+    }
+    
+    if (@available(iOS 14.3, tvOS 14.3, *)) {
+        if (selfI.adjustConfig.isAdServicesEnabled == YES) {
+            // mark that we're starting a recheck
+            self.isRechecking = YES;
+            // clear the tracked flag to force re-reading
+            [ADJUserDefaults removeAdServicesTracked];
+            // now call the regular check which will proceed since the flag is cleared
+            [self checkForAdServicesAttributionI:selfI];
+        }
+    }
+}
+
+- (BOOL)shouldFetchAdServicesI:(ADJActivityHandler *)selfI {
+    if (selfI.adjustConfig.isAdServicesEnabled == NO) {
+        return NO;
+    }
+    
+    // Fetch if no attribution OR not sent to backend yet
+    BOOL isAdServicesAlreadyTracked = [ADJUserDefaults getAdServicesTracked];
+    if (isAdServicesAlreadyTracked) {
+        [selfI.logger debug:@"AdServices attribution info already fetched and tracked"];
+    }
+    return (selfI.attribution == nil || !isAdServicesAlreadyTracked);
+}
+
+- (void)setAdServicesAttributionTokenI:(NSString *)token
+                                 error:(NSError *)error
+                       activityHandler:(ADJActivityHandler *)selfI {
+
+    NSString *tokenToSend = token;
+    NSNumber *errorToSend = (error != nil) ? [NSNumber numberWithInteger:error.code] : nil;
+    if (![ADJUtil isNull:error]) {
+        [selfI.logger warn:@"Unable to read AdServices details"];
+
+        // 3 == platform not supported
+        if (error.code != 3 && self.retriesLeft > 0) {
+            self.retriesLeft = self.retriesLeft - 1;
+            // retry after 5 seconds
+            dispatch_time_t retryTime = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+            dispatch_after(retryTime, selfI.internalQueue, ^{
+                [self checkForAdServicesAttributionI:selfI];
+            });
+            return;
+        }
+
+        // we get a critical error
+        tokenToSend = nil;
+    }
+
+    // reset the recheck flag when operation completes (success or no more retries)
+    self.isRechecking = NO;
+    self.retriesLeft = kAdServicesdRetriesCount;
+    [selfI sendAdServicesClickPackageI:selfI
+                                 token:tokenToSend
+                       errorCodeNumber:errorToSend];
 }
 
 @end

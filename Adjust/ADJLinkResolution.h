@@ -2,8 +2,8 @@
 //  ADJLinkResolution.h
 //  Adjust
 //
-//  Created by Pedro S. on 26.04.21.
-//  Copyright © 2021 adjust GmbH. All rights reserved.
+//  Created by Pedro Silva (@nonelse) on 26th April 2021.
+//  Copyright © 2021-Present Adjust GmbH. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

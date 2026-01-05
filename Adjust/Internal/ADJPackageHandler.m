@@ -121,6 +121,11 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 
     [self.activityHandler finishedTracking:responseData];
 
+    if (!self.isRetrying) {
+        self.isRetrying = YES;
+        self.retryStartedAt = [[NSDate date] timeIntervalSince1970];
+    }
+
     self.lastPackageRetriesCount++;
 
     [ADJUtil launchInQueue:self.internalQueue
@@ -153,8 +158,6 @@ static const char * const kInternalQueueName    = "io.adjust.PackageQueue";
 }
 
 - (NSTimeInterval)retryPackageUsingBackoffWithResponse:(ADJResponseData *)responseData {
-    self.lastPackageRetriesCount++;
-
     NSTimeInterval waitTime;
     if (responseData.activityKind == ADJActivityKindSession
         && [ADJUserDefaults getInstallTracked] == NO)
@@ -233,11 +236,12 @@ startsSending:(BOOL)startsSending
 
     selfI.activityHandler = activityHandler;
     selfI.paused = !startsSending;
-    selfI.requestHandler = [[ADJRequestHandler alloc]
-                            initWithResponseCallback:self
-                            urlStrategy:urlStrategy
-                            requestTimeout:[ADJAdjustFactory requestTimeout]
-                            adjustConfiguration:activityHandler.adjustConfig];
+    selfI.requestHandler =
+    [[ADJRequestHandler alloc] initWithResponseCallback:self
+                                            urlStrategy:urlStrategy
+                                         requestTimeout:[ADJAdjustFactory requestTimeout]
+                                    adjustConfiguration:activityHandler.adjustConfig
+                                        activityHandler:activityHandler];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
     [selfI readPackageQueueI:selfI];

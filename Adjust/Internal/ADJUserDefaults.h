@@ -48,6 +48,8 @@
 
 + (BOOL)getAdServicesTracked;
 
++ (void)removeAdServicesTracked;
+
 + (void)saveSkadRegisterCallTimestamp:(NSDate *)callTime;
 
 + (NSDate *)getSkadRegisterCallTimestamp;

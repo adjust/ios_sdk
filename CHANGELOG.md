@@ -1,3 +1,13 @@
+### Version 5.5.1 (5th January 2026)
+#### Fixed
+- Fixed infinite recursion issue in `ADJLinkResolution` where link resolution would continue making unnecessary network requests when the URL stopped changing between redirects. The resolution now stops immediately when the URL remains unchanged, preventing delays in certain scenarios.
+
+#### Changed
+- Replaced `NSLog` with Unified Logging (`os_log`) for SDK log output.
+- Improved backoff strategy and Apple Ads flows.
+
+---
+
 ### Version 5.5.0 (5th December 2025)
 #### Added
 - Added `getAdidWithTimeout` method to the `Adjust` API to allow retrieving the ADID with a specified timeout. If the value is not obtained in time, nil is returned.
