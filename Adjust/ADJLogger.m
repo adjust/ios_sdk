@@ -105,7 +105,7 @@ isProductionEnvironment:(BOOL)isProductionEnvironment
     NSArray *lines = [string componentsSeparatedByString:@"\n"];
 
     os_log_type_t osLogType = OS_LOG_TYPE_DEFAULT;
-    if ([logLevel isEqualToString:@"e"]) {
+    if ([logLevel isEqualToString:@"e"] || [logLevel isEqualToString:@"w"]) {
         osLogType = OS_LOG_TYPE_ERROR;
     } else if ([logLevel isEqualToString:@"a"]) {
         osLogType = OS_LOG_TYPE_FAULT;
