@@ -1,6 +1,10 @@
-### Version 5.5.1 (8th December 2025)
+### Version 5.5.1 (5th January 2026)
 #### Fixed
 - Fixed infinite recursion issue in `ADJLinkResolution` where link resolution would continue making unnecessary network requests when the URL stopped changing between redirects. The resolution now stops immediately when the URL remains unchanged, preventing delays in certain scenarios.
+
+#### Changed
+- Replaced `NSLog` with Unified Logging (`os_log`) for SDK log output.
+- Improved backoff strategy and Apple Ads flows.
 
 ---
 
