@@ -48,8 +48,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'AdjustGoogleOdm' do |odm|
     odm.ios.deployment_target   = '12.0'
+    odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
     odm.dependency              'Adjust/Adjust'
-    odm.dependency              'Adjust/AdjustGoogleOdmPlugin'
   end
   
 end
