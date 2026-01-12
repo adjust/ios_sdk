@@ -8,32 +8,23 @@
 
 #import "ADJLinkResolution.h"
 #import "ADJUtil.h"
+#import <objc/runtime.h>
 
 static NSUInteger kMaxRecursions = 10;
+static char kRedirectCountKey;
 
+// forward declaration for private methods
 @interface ADJLinkResolution (Private)
-
 + (BOOL)isTerminalUrlWithHost:(nullable NSString *)urlHost;
-
++ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url;
 @end
 
+// delegate to handle redirects
 @interface ADJLinkResolutionDelegate : NSObject<NSURLSessionTaskDelegate>
-
 + (nonnull ADJLinkResolutionDelegate *)sharedInstance;
-
-+ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url;
-
-+ (NSURLRequest *)replaceUrlWithRequest:(NSURLRequest *)request
-                           urlToReplace:(nonnull NSURL *)urlToReplace;
-
 @end
 
 @implementation ADJLinkResolutionDelegate
-
-- (nonnull instancetype)init {
-    self = [super init];
-    return self;
-}
 
 + (nonnull ADJLinkResolutionDelegate *)sharedInstance {
     static ADJLinkResolutionDelegate *sharedInstance = nil;
@@ -48,40 +39,32 @@ static NSUInteger kMaxRecursions = 10;
                      willPerformHTTPRedirection:(NSHTTPURLResponse *)response
                                      newRequest:(NSURLRequest *)request
                               completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
-    // if we're already at a terminal host (adjust.com / adj.st / go.link),
-    // stop auto-following to preserve the terminal URL (avoid jumping to App Store links)
+    // track redirect count using associated object (thread safe)
+    NSNumber *count = objc_getAssociatedObject(task, &kRedirectCountKey);
+    NSUInteger redirectCount = count ? [count unsignedIntegerValue] + 1 : 1;
+    objc_setAssociatedObject(task, &kRedirectCountKey, @(redirectCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    // stop if exceeded max redirects
+    if (redirectCount > kMaxRecursions) {
+        completionHandler(nil);
+        return;
+    }
+
+    // stop at terminal domains
     if ([ADJLinkResolution isTerminalUrlWithHost:response.URL.host]) {
         completionHandler(nil);
         return;
     }
 
-    NSURL *_Nullable convertedUrl = [ADJLinkResolutionDelegate convertUrlToHttps:request.URL];
-
-    if (request.URL != nil && convertedUrl != nil && ![request.URL isEqual:convertedUrl]) {
-        completionHandler([ADJLinkResolutionDelegate replaceUrlWithRequest:request
-                                                              urlToReplace:convertedUrl]);
+    // convert HTTP to HTTPS in redirect URLs
+    NSURL *convertedUrl = [ADJLinkResolution convertUrlToHttps:request.URL];
+    if (convertedUrl && ![request.URL isEqual:convertedUrl]) {
+        NSMutableURLRequest *mutableRequest = [request mutableCopy];
+        mutableRequest.URL = convertedUrl;
+        completionHandler([mutableRequest copy]);
     } else {
         completionHandler(request);
     }
-}
-
-+ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url {
-    if (url == nil) {
-        return nil;
-    }
-    if (![url.absoluteString hasPrefix:@"http:"]) {
-        return url;
-    }
-
-    NSString *_Nonnull urlStringWithoutPrefix = [url.absoluteString substringFromIndex:5];
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https:%@", urlStringWithoutPrefix]];
-}
-
-+ (NSURLRequest *)replaceUrlWithRequest:(NSURLRequest *)request
-                           urlToReplace:(nonnull NSURL *)urlToReplace {
-    NSMutableURLRequest *mutableRequest = [request mutableCopy];
-    [mutableRequest setURL:urlToReplace];
-    return [mutableRequest copy];
 }
 
 @end
@@ -91,132 +74,100 @@ static NSUInteger kMaxRecursions = 10;
 + (void)resolveLinkWithUrl:(nonnull NSURL *)url
      resolveUrlSuffixArray:(nullable NSArray<NSString *> *)resolveUrlSuffixArray
                   callback:(nonnull void (^)(NSURL *_Nullable resolvedLink))callback {
-    if (callback == nil) {
+    // ignore if callback is not provided
+    if (!callback) {
         return;
     }
-    if (url == nil || url.host == nil || url.host.length == 0) {
+
+    // early returns for invalid URLs
+    if (!url || !url.host || url.host.length == 0) {
         [ADJUtil launchInMainThread:^{
             callback(url);
         }];
         return;
     }
 
-    // if suffix array is provided and URL doesn't match, return URL unchanged
-    if (![ADJLinkResolution urlMatchesSuffixWithHost:url.host
-                                         suffixArray:resolveUrlSuffixArray]) {
+    // check if URL matches suffix array
+    if (resolveUrlSuffixArray && ![self urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
         [ADJUtil launchInMainThread:^{
             callback(url);
         }];
         return;
     }
 
-    ADJLinkResolutionDelegate *_Nonnull linkResolutionDelegate = [ADJLinkResolutionDelegate sharedInstance];
-
-    // reuse shared session for better performance
+    // create/retrieve shared session
     static NSURLSession *sharedSession = nil;
     static dispatch_once_t sessionOnceToken;
     dispatch_once(&sessionOnceToken, ^{
-        sharedSession =
-        [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration
-                                      delegate:linkResolutionDelegate
-                                 delegateQueue:nil];
-    });
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        config.timeoutIntervalForRequest = 3.0;
+        config.timeoutIntervalForResource = 8.0;
+        config.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+        config.URLCache = nil;
 
-    NSURL *_Nullable httpsUrl = [ADJLinkResolutionDelegate convertUrlToHttps:url];
-    NSURLSessionDataTask *task = [sharedSession dataTaskWithURL:httpsUrl
-                                              completionHandler:^(NSData * _Nullable data,
-                                                                  NSURLResponse * _Nullable response,
-                                                                  NSError * _Nullable error) {
-        // bootstrap the recursion of resolving the link
-        [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
-                                          previousUrl:httpsUrl
-                                      recursionNumber:0
-                                              session:sharedSession
-                                             callback:callback];
+        NSOperationQueue *delegateQueue = [[NSOperationQueue alloc] init];
+        delegateQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+        delegateQueue.name = @"com.adjust.linkresolution.delegate";
+
+        sharedSession = [NSURLSession sessionWithConfiguration:config
+                                                      delegate:[ADJLinkResolutionDelegate sharedInstance]
+                                                 delegateQueue:delegateQueue];
+    });
+    
+    // convert HTTP to HTTPS for initial URL
+    NSURL *httpsUrl = [self convertUrlToHttps:url];
+
+    // make GET request; NSURLSession automatically follows redirects
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:httpsUrl];
+    request.HTTPMethod = @"GET";
+
+    __block NSURLSessionDataTask *task =
+    [sharedSession dataTaskWithRequest:request
+                     completionHandler:^(NSData * _Nullable data,
+                                         NSURLResponse * _Nullable response,
+                                         NSError * _Nullable error) {
+        NSURL *finalUrl = response.URL ?: (error ? task.currentRequest.URL : httpsUrl) ?: httpsUrl;
+        [ADJUtil launchInMainThread:^{
+            callback(finalUrl);
+        }];
     }];
     [task resume];
 }
 
-+ (void)resolveLinkWithResponseUrl:(nullable NSURL *)responseUrl
-                       previousUrl:(nullable NSURL *)previousUrl
-                   recursionNumber:(NSUInteger)recursionNumber
-                           session:(nonnull NSURLSession *)session
-                          callback:(nonnull void (^)(NSURL *_Nullable resolvedLink))callback {
-    // return (possible nil) previous url when the current one does not exist
-    if (responseUrl == nil) {
-        [ADJUtil launchInMainThread:^{
-            callback(previousUrl);
-        }];
-        return;
++ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url {
+    if (!url || ![url.absoluteString hasPrefix:@"http:"]) {
+        return url;
     }
-    // stop recursion when URL stops changing (prevents infinite loops)
-    if (previousUrl != nil && [responseUrl isEqual:previousUrl]) {
-        [ADJUtil launchInMainThread:^{
-            callback(responseUrl);
-        }];
-        return;
-    }
-    // return found url with expected host (Adjust terminal domains)
-    // these are domains where we stop to avoid redirecting to App Store
-    if ([ADJLinkResolution isTerminalUrlWithHost:responseUrl.host]) {
-        [ADJUtil launchInMainThread:^{
-            callback(responseUrl);
-        }];
-        return;
-    }
-    // return current url when it reached the max number of recursive tries
-    if (recursionNumber >= kMaxRecursions) {
-        [ADJUtil launchInMainThread:^{
-            callback(responseUrl);
-        }];
-        return;
-    }
-
-    // when found a non expected url host, use it to recursively resolve the link
-    NSURLSessionDataTask *task = [session dataTaskWithURL:responseUrl
-                                        completionHandler:^(NSData * _Nullable data,
-                                                            NSURLResponse * _Nullable response,
-                                                            NSError * _Nullable error) {
-        [ADJLinkResolution resolveLinkWithResponseUrl:response != nil ? response.URL : nil
-                                          previousUrl:responseUrl
-                                      recursionNumber:(recursionNumber + 1)
-                                              session:session
-                                             callback:callback];
-    }];
-    [task resume];
+    return [NSURL URLWithString:[url.absoluteString stringByReplacingOccurrencesOfString:@"http:"
+                                                                              withString:@"https:"
+                                                                                 options:0
+                                                                                   range:NSMakeRange(0, 5)]];
 }
 
 + (BOOL)isTerminalUrlWithHost:(nullable NSString *)urlHost {
-    if (urlHost == nil) {
+    if (!urlHost) {
         return NO;
     }
 
-    // check hardcoded Adjust terminal domains
-    // these are domains where we stop recursion to avoid redirecting to App Store
-    NSArray<NSString *> *_Nonnull terminalUrlHostSuffixArray = @[@"adjust.com",
-                                                                 @"adj.st",
-                                                                 @"go.link",
-                                                                 @"adjust.cn",
-                                                                 @"adjust.net.in",
-                                                                 @"adjust.world",
-                                                                 @"adjust.io"];
+    NSArray<NSString *> *terminalSuffixes =
+    @[@"adjust.com", @"adj.st", @"go.link", @"adjust.cn", @"adjust.net.in", @"adjust.world", @"adjust.io"];
+    for (NSString *suffix in terminalSuffixes) {
+        if ([urlHost hasSuffix:suffix]) {
+            return YES;
+        }
+    }
 
-    return [ADJLinkResolution urlMatchesSuffixWithHost:urlHost
-                                           suffixArray:terminalUrlHostSuffixArray];
+    return NO;
 }
 
 + (BOOL)urlMatchesSuffixWithHost:(nullable NSString *)urlHost
                      suffixArray:(nullable NSArray<NSString *> *)suffixArray {
-    if (urlHost == nil) {
+    if (!urlHost || !suffixArray) {
         return NO;
     }
 
-    if (suffixArray == nil) {
-        return NO;
-    }
-
-    for (NSString *_Nonnull expectedHostSuffix in suffixArray) {
-        if ([urlHost hasSuffix:expectedHostSuffix]) {
+    for (NSString *suffix in suffixArray) {
+        if ([urlHost hasSuffix:suffix]) {
             return YES;
         }
     }
