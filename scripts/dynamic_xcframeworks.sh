@@ -226,4 +226,51 @@ fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+if [[ $BUILD_ODM_FRAMEWORK -eq 1 ]] && [[ $BUILD_TARGET_IOS -eq 1 ]]
+then
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Xcode archives for iOS (ODM Plugin) ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  build_archive "${SCHEMA_NAME__ODM_DYNAMIC}" "iphoneos" "generic/platform=iOS" "${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_DEVICE}"
+  build_archive "${SCHEMA_NAME__ODM_DYNAMIC}" "iphonesimulator" "generic/platform=iOS Simulator" "${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_SIMULATOR}"
+
+  ODM_IOS_BCSYMBOLS=$(generate_bcsymbols_command_parameter "${ARCHIVE_NAME__ODM_DEVICE}" "${XCF_OUTPUT_FOLDER}")
+
+  # Create XCFramework
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Creating Dynamic XCFramework for iOS (ODM Plugin) ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  mkdir -p "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}"
+
+  if [[ $XCODE12PLUS > 0 ]]; then
+    xcodebuild -create-xcframework \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ODM}.framework" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_DEVICE}.xcarchive/dSYMs/${XCF_FRM_NAME__ODM}.framework.dSYM" \
+    ${ODM_IOS_BCSYMBOLS} \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ODM}.framework" \
+    -debug-symbols "$(pwd -P)/${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_SIMULATOR}.xcarchive/dSYMs/${XCF_FRM_NAME__ODM}.framework.dSYM" \
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework"
+  else
+    xcodebuild -create-xcframework \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_DEVICE}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ODM}.framework" \
+    -framework "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_SIMULATOR}.xcarchive/Products/Library/Frameworks/${XCF_FRM_NAME__ODM}.framework" \
+    -output "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework"
+  fi
+
+  # Cleanup archive files
+  rm -rf "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_DEVICE}.xcarchive"
+  rm -rf "./${XCF_OUTPUT_FOLDER}/${ARCHIVE_NAME__ODM_SIMULATOR}.xcarchive"
+
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Dynamic XCFramework for iOS (ODM Plugin) ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework"
+  archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_DYNAMIC_XCFRMK_FOLDER}/" "${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework" "${XCF_FRM_ZIP_NAME__ODM_DYNAMIC}-"${SDK_VERSION}".xcframework.zip"
+elif [[ $BUILD_ODM_FRAMEWORK -eq 1 ]]
+then
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping ODM plugin dynamic XCFramework build (iOS target not selected) ... ${NC}"
+fi
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic XCFrameworks build - END... ${NC}"

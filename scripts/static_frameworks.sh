@@ -9,6 +9,7 @@ mkdir -p "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STA
 mkdir -p "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_TV_FOLDER}"
 mkdir -p "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_IM_FOLDER}"
 mkdir -p "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_WEB_BRIDGE_FOLDER}"
+mkdir -p "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_ODM_FOLDER}"
 
 if [[ $BUILD_TARGET_IOS -eq 1 ]]
 then
@@ -50,6 +51,16 @@ else
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping iOS (WebBridge) SDK framework build ... ${NC}"
 fi
 
+if [[ $BUILD_ODM_FRAMEWORK -eq 1 ]] && [[ $BUILD_TARGET_IOS -eq 1 ]]
+then
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building static Frameworks for iOS (ODM Plugin)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
+  build_static_fat_framework "${SCHEMA_NAME__ODM_STATIC}" "ios" "${XCF_FRM_NAME__ODM}" "${XCF_OUTPUT_FOLDER}" "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_FOLDER}/${XCF_OUTPUT_STATIC_FRMK_ODM_FOLDER}" "${XCF_FRM_ZIP_NAME__ODM_STATIC}-"${SDK_VERSION}".framework.zip"
+elif [[ $BUILD_ODM_FRAMEWORK -eq 1 ]]
+then
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping ODM plugin framework build (iOS target not selected) ... ${NC}"
+fi
+
 
 echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Static Frameworks build - END... ${NC}"
-

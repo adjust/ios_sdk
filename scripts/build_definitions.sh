@@ -39,6 +39,7 @@ Usage: $0 [options]
     [-tv]           tvOS platform target
     [-im]           iMessaging platform target
     [-web]          Web-Bridge platform target
+    [-odm]          Build ODM plugin framework (iOS only)
 
 * If none of Platform Target arguments is specified, all Platform Targets are built.
 
@@ -71,6 +72,7 @@ Usage: $0 [options]
     BUILD_TARGET_TVOS=0
     BUILD_TARGET_IM=0
     BUILD_TARGET_WEB_BRIDGE=0
+    BUILD_ODM_FRAMEWORK=0
     BUILD_TEST_FRAMEWORK=0
     BUILD_TEST_FRAMEWORK_SIM=0
     BUILD_ALL=0
@@ -93,6 +95,8 @@ Usage: $0 [options]
            ;;
          '-web') BUILD_TARGET_WEB_BRIDGE=1
            ;;
+         '-odm') BUILD_ODM_FRAMEWORK=1
+           ;;
          '-test') BUILD_TEST_FRAMEWORK=1
            ;;
          '-test-sim') BUILD_TEST_FRAMEWORK_SIM=1
@@ -112,6 +116,7 @@ Usage: $0 [options]
         BUILD_TARGET_TVOS=1
         BUILD_TARGET_IM=1
         BUILD_TARGET_WEB_BRIDGE=1
+        BUILD_ODM_FRAMEWORK=1
         BUILD_TEST_FRAMEWORK=1
         BUILD_TEST_FRAMEWORK_SIM=1
     fi
@@ -143,6 +148,7 @@ Usage: $0 [options]
     echo "BUILD_TARGET_TVOS: $BUILD_TARGET_TVOS";
     echo "BUILD_TARGET_IM: $BUILD_TARGET_IM";
     echo "BUILD_TARGET_WEB_BRIDGE: $BUILD_TARGET_WEB_BRIDGE";
+    echo "BUILD_ODM_FRAMEWORK: $BUILD_ODM_FRAMEWORK";
     echo "BUILD_TEST_FRAMEWORK: $BUILD_TEST_FRAMEWORK";
     echo "BUILD_TEST_FRAMEWORK_SIM: $BUILD_TEST_FRAMEWORK_SIM";
 
@@ -160,28 +166,33 @@ Usage: $0 [options]
     XCF_OUTPUT_STATIC_FRMK_TV_FOLDER="AdjustSdk-tvOS-Static"
     XCF_OUTPUT_STATIC_FRMK_IM_FOLDER="AdjustSdk-iMessage-Static"
     XCF_OUTPUT_STATIC_FRMK_WEB_BRIDGE_FOLDER="AdjustSdk-WebBridge-Static"
+    XCF_OUTPUT_STATIC_FRMK_ODM_FOLDER="AdjustOdmPlugin-Static"
 
     XCF_OUTPUT_XCFRMK_IOS_TVOS_FOLDER="AdjustSdk-iOS-tvOS-xcframework"
     XCF_OUTPUT_XCFRMK_IM_FOLDER="AdjustSdk-iMessage-xcframework"
     XCF_OUTPUT_XCFRMK_WEB_BRIDGE_FOLDER="AdjustSdk-WebBridge-xcframework"
+    XCF_OUTPUT_XCFRMK_ODM_FOLDER="AdjustOdmPlugin-xcframework"
 
     # SDK Schema names - Dynamic
     SCHEMA_NAME__ADJUST_IOS="AdjustSdk"
     SCHEMA_NAME__ADJUST_TV="AdjustSdkTv"
     SCHEMA_NAME__ADJUST_IM="AdjustSdkIm"
     SCHEMA_NAME__ADJUST_WEB_BRIDGE="AdjustSdkWebBridge"
+    SCHEMA_NAME__ODM_DYNAMIC="AdjustOdmPlugin"
 
     # SDK Schema names - Static
     SCHEMA_NAME__ADJUST_IOS_STATIC="AdjustSdkStatic"
     SCHEMA_NAME__ADJUST_TV_STATIC="AdjustSdkTvStatic"
     SCHEMA_NAME__ADJUST_IM_STATIC="AdjustSdkImStatic"
     SCHEMA_NAME__ADJUST_WEB_BRIDGE_STATIC="AdjustSdkWebBridgeStatic"
+    SCHEMA_NAME__ODM_STATIC="AdjustOdmPluginStatic"
 
     # SDK frameworks and xcframework names
     XCF_FRM_NAME__ADJUST_IOS="AdjustSdk"
     XCF_FRM_NAME__ADJUST_TV="AdjustSdk"
     XCF_FRM_NAME__ADJUST_IM="AdjustSdk"
     XCF_FRM_NAME__ADJUST_WEB_BRIDGE="AdjustSdk"
+    XCF_FRM_NAME__ODM="AdjustOdmPlugin"
 
     # xcode archive names
     ARCHIVE_NAME__IOS_DEVICE="AdjustSdk-Device"
@@ -192,6 +203,8 @@ Usage: $0 [options]
     ARCHIVE_NAME__IM_SIMULATOR="AdjustSdkIm-Simulator"
     ARCHIVE_NAME__WEB_DEVICE="AdjustSdkWebBridge-Device"
     ARCHIVE_NAME__WEB_SIMULATOR="AdjustSdkWebBridge-Simulator"
+    ARCHIVE_NAME__ODM_DEVICE="AdjustOdmPlugin-Device"
+    ARCHIVE_NAME__ODM_SIMULATOR="AdjustOdmPlugin-Simulator"
 
     # XCFrameworks and Frameworks archive (ZIP) names
     XCF_FRM_ZIP_NAME__IOS_TV_DYNAMIC="AdjustSdk-iOS-tvOS-Dynamic"
@@ -204,6 +217,8 @@ Usage: $0 [options]
     XCF_FRM_ZIP_NAME__IM_STATIC="AdjustSdk-iMessage-Static"
     XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
     XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-Static"
+    XCF_FRM_ZIP_NAME__ODM_DYNAMIC="AdjustOdmPlugin-iOS-Dynamic"
+    XCF_FRM_ZIP_NAME__ODM_STATIC="AdjustOdmPlugin-iOS-Static"
 
     # Xcode version impacts the way we build frameworks
     XCODE12PLUS=0
@@ -388,4 +403,3 @@ else
   echo -e "${CYAN}[ADJUST][BUILD]:${YELLOW} The definitions script has been already executed. Skipping it... ${NC}"
 
 fi
-
