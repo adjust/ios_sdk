@@ -279,6 +279,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method of ATTrackingManager.
  *
  * @param completion Block which value of tracking authorization status will be delivered to.
+ *                   For devices without ATT support, the callback is invoked with NSUIntegerMax.
  */
 + (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 

@@ -1244,6 +1244,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 + (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion {
     Class appTrackingClass = [self appTrackingManager];
     if (appTrackingClass == nil) {
+        if (completion) {
+            completion(NSUIntegerMax);
+        }
         return;
     }
     NSString *requestAuthorization = [ADJAdditions adjJoin:
@@ -1255,6 +1258,9 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
                                       @"handler:", nil];
     SEL selRequestAuthorization = NSSelectorFromString(requestAuthorization);
     if (![appTrackingClass respondsToSelector:selRequestAuthorization]) {
+        if (completion) {
+            completion(NSUIntegerMax);
+        }
         return;
     }
 #pragma clang diagnostic push
