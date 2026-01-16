@@ -8,15 +8,17 @@
 
 #import "ADJLinkResolution.h"
 #import "ADJUtil.h"
-#import <objc/runtime.h>
-
 static NSUInteger kMaxRecursions = 10;
-static char kRedirectCountKey;
 
 // forward declaration for private methods
 @interface ADJLinkResolution (Private)
 + (BOOL)isTerminalUrlWithHost:(nullable NSString *)urlHost;
 + (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url;
++ (nullable NSString *)locationHeaderFromResponse:(nonnull NSHTTPURLResponse *)response;
++ (nonnull NSURLSession *)linkResolutionSession;
++ (void)requestAndResolveUrl:(nonnull NSURL *)url
+                   recursion:(NSUInteger)recursionNumber
+                    callback:(nonnull void (^)(NSURL *_Nullable resolvedLink))callback;
 @end
 
 // delegate to handle redirects
@@ -39,32 +41,8 @@ static char kRedirectCountKey;
                      willPerformHTTPRedirection:(NSHTTPURLResponse *)response
                                      newRequest:(NSURLRequest *)request
                               completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
-    // track redirect count using associated object (thread safe)
-    NSNumber *count = objc_getAssociatedObject(task, &kRedirectCountKey);
-    NSUInteger redirectCount = count ? [count unsignedIntegerValue] + 1 : 1;
-    objc_setAssociatedObject(task, &kRedirectCountKey, @(redirectCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-    // stop if exceeded max redirects
-    if (redirectCount > kMaxRecursions) {
-        completionHandler(nil);
-        return;
-    }
-
-    // stop at terminal domains
-    if ([ADJLinkResolution isTerminalUrlWithHost:response.URL.host]) {
-        completionHandler(nil);
-        return;
-    }
-
-    // convert HTTP to HTTPS in redirect URLs
-    NSURL *convertedUrl = [ADJLinkResolution convertUrlToHttps:request.URL];
-    if (convertedUrl && ![request.URL isEqual:convertedUrl]) {
-        NSMutableURLRequest *mutableRequest = [request mutableCopy];
-        mutableRequest.URL = convertedUrl;
-        completionHandler([mutableRequest copy]);
-    } else {
-        completionHandler(request);
-    }
+    // prevent automatic redirects so we can resolve manually
+    completionHandler(nil);
 }
 
 @end
@@ -88,14 +66,45 @@ static char kRedirectCountKey;
     }
 
     // only resolve when suffix array is provided and matches
-    if (!resolveUrlSuffixArray || ![self urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
+    if (!resolveUrlSuffixArray || ![self urlMatchesSuffixWithHost:url.host
+                                                      suffixArray:resolveUrlSuffixArray]) {
         [ADJUtil launchInMainThread:^{
             callback(url);
         }];
         return;
     }
 
-    // create/retrieve shared session
+    // convert HTTP to HTTPS for initial URL
+    NSURL *httpsUrl = [self convertUrlToHttps:url];
+
+    [self requestAndResolveUrl:httpsUrl
+                     recursion:0
+                       callback:callback];
+}
+
++ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url {
+    if (!url || ![url.absoluteString hasPrefix:@"http:"]) {
+        return url;
+    }
+    return [NSURL URLWithString:[url.absoluteString stringByReplacingOccurrencesOfString:@"http:"
+                                                                              withString:@"https:"
+                                                                                 options:0
+                                                                                   range:NSMakeRange(0, 5)]];
+}
+
++ (nullable NSString *)locationHeaderFromResponse:(nonnull NSHTTPURLResponse *)response {
+    NSDictionary *headers = response.allHeaderFields;
+    for (id key in headers) {
+        if ([key isKindOfClass:[NSString class]] &&
+            [(NSString *)key caseInsensitiveCompare:@"Location"] == NSOrderedSame) {
+            id value = headers[key];
+            return [value isKindOfClass:[NSString class]] ? value : nil;
+        }
+    }
+    return nil;
+}
+
++ (nonnull NSURLSession *)linkResolutionSession {
     static NSURLSession *sharedSession = nil;
     static dispatch_once_t sessionOnceToken;
     dispatch_once(&sessionOnceToken, ^{
@@ -109,35 +118,76 @@ static char kRedirectCountKey;
                                                       delegate:[ADJLinkResolutionDelegate sharedInstance]
                                                  delegateQueue:nil];
     });
-    
-    // convert HTTP to HTTPS for initial URL
-    NSURL *httpsUrl = [self convertUrlToHttps:url];
+    return sharedSession;
+}
 
-    // make GET request; NSURLSession automatically follows redirects
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:httpsUrl];
++ (void)requestAndResolveUrl:(nonnull NSURL *)url
+                   recursion:(NSUInteger)recursionNumber
+                    callback:(nonnull void (^)(NSURL *_Nullable resolvedLink))callback {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"GET";
 
+    NSURLSession *session = [self linkResolutionSession];
     __block NSURLSessionDataTask *task =
-    [sharedSession dataTaskWithRequest:request
-                     completionHandler:^(NSData * _Nullable data,
-                                         NSURLResponse * _Nullable response,
-                                         NSError * _Nullable error) {
-        NSURL *finalUrl = response.URL ?: (error ? task.currentRequest.URL : httpsUrl) ?: httpsUrl;
+    [session dataTaskWithRequest:request
+               completionHandler:^(NSData * _Nullable data,
+                                   NSURLResponse * _Nullable response,
+                                   NSError * _Nullable error) {
+        NSURL *finalUrl = response.URL ?: (error ? task.currentRequest.URL : url) ?: url;
+        if (error != nil) {
+            [ADJUtil launchInMainThread:^{
+                callback(finalUrl);
+            }];
+            return;
+        }
+
+        NSHTTPURLResponse *httpResponse = [response isKindOfClass:[NSHTTPURLResponse class]]
+            ? (NSHTTPURLResponse *)response
+            : nil;
+        if (httpResponse == nil) {
+            [ADJUtil launchInMainThread:^{
+                callback(finalUrl);
+            }];
+            return;
+        }
+
+        NSString *location = [self locationHeaderFromResponse:httpResponse];
+        if (location.length > 0) {
+            NSURL *redirectUrl = [NSURL URLWithString:location relativeToURL:finalUrl];
+            redirectUrl = [self convertUrlToHttps:redirectUrl.absoluteURL];
+
+            if (redirectUrl == nil) {
+                [ADJUtil launchInMainThread:^{
+                    callback(finalUrl);
+                }];
+                return;
+            }
+
+            if ([self isTerminalUrlWithHost:redirectUrl.host]) {
+                [ADJUtil launchInMainThread:^{
+                    callback(redirectUrl);
+                }];
+                return;
+            }
+
+            if (recursionNumber + 1 > kMaxRecursions) {
+                [ADJUtil launchInMainThread:^{
+                    callback(redirectUrl);
+                }];
+                return;
+            }
+
+            [self requestAndResolveUrl:redirectUrl
+                             recursion:recursionNumber + 1
+                              callback:callback];
+            return;
+        }
+
         [ADJUtil launchInMainThread:^{
             callback(finalUrl);
         }];
     }];
     [task resume];
-}
-
-+ (nullable NSURL *)convertUrlToHttps:(nullable NSURL *)url {
-    if (!url || ![url.absoluteString hasPrefix:@"http:"]) {
-        return url;
-    }
-    return [NSURL URLWithString:[url.absoluteString stringByReplacingOccurrencesOfString:@"http:"
-                                                                              withString:@"https:"
-                                                                                 options:0
-                                                                                   range:NSMakeRange(0, 5)]];
 }
 
 + (BOOL)isTerminalUrlWithHost:(nullable NSString *)urlHost {
