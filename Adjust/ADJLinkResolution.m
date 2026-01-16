@@ -87,8 +87,8 @@ static char kRedirectCountKey;
         return;
     }
 
-    // check if URL matches suffix array
-    if (resolveUrlSuffixArray && ![self urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
+    // only resolve when suffix array is provided and matches
+    if (!resolveUrlSuffixArray || ![self urlMatchesSuffixWithHost:url.host suffixArray:resolveUrlSuffixArray]) {
         [ADJUtil launchInMainThread:^{
             callback(url);
         }];
