@@ -105,13 +105,9 @@ static char kRedirectCountKey;
         config.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
         config.URLCache = nil;
 
-        NSOperationQueue *delegateQueue = [[NSOperationQueue alloc] init];
-        delegateQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
-        delegateQueue.name = @"com.adjust.linkresolution.delegate";
-
         sharedSession = [NSURLSession sessionWithConfiguration:config
                                                       delegate:[ADJLinkResolutionDelegate sharedInstance]
-                                                 delegateQueue:delegateQueue];
+                                                 delegateQueue:nil];
     });
     
     // convert HTTP to HTTPS for initial URL
