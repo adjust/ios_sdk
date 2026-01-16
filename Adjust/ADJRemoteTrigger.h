@@ -11,7 +11,7 @@
 /**
  * @brief Remote trigger object containing label and payload from backend.
  */
-@interface ADJRemoteTrigger : NSObject
+@interface ADJRemoteTrigger : NSObject<NSCopying>
 
 /**
  * @brief Label identifying the type of remote trigger.
@@ -35,4 +35,3 @@
                                payload:(nonnull NSDictionary *)payload;
 
 @end
-
