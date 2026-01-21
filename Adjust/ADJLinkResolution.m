@@ -177,6 +177,14 @@ static NSUInteger kMaxRecursions = 10;
                 return;
             }
 
+            // stop recursion when redirect doesn't change the URL
+            if ([redirectUrl isEqual:finalUrl]) {
+                [ADJUtil launchInMainThread:^{
+                    callback(finalUrl);
+                }];
+                return;
+            }
+
             [self requestAndResolveUrl:redirectUrl
                              recursion:recursionNumber + 1
                               callback:callback];
