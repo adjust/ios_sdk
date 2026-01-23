@@ -1,3 +1,13 @@
+### Version 5.5.2 (23rd January 2026)
+#### Added
+- Added `AdjustGoogleOdmPlugin` subspec which does not depend on the main `Adjust` subspec.
+
+#### Changed
+- Updated `resolveLinkWithUrl:resolveUrlSuffixArray:callback:` flow to speed up link resolution.
+- Updated `requestAppTrackingAuthorizationWithCompletionHandler:` to return `NSUIntegerMax` as an error indicator when the device doesn't support `AppTrackingTransparency.framework` or when the framework isn't linked.
+
+---
+
 ### Version 5.5.1 (5th January 2026)
 #### Fixed
 - Fixed infinite recursion issue in `ADJLinkResolution` where link resolution would continue making unnecessary network requests when the URL stopped changing between redirects. The resolution now stops immediately when the URL remains unchanged, preventing delays in certain scenarios.

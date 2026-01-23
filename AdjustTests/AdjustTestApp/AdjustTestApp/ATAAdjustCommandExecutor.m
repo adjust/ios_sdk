@@ -895,11 +895,7 @@
         [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
         [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
         [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
-        NSMutableDictionary *jsonResponseCopy = [attribution.jsonResponse mutableCopy];
-        [jsonResponseCopy removeObjectForKey:@"fb_install_referrer"];
-        [jsonResponseCopy setObject:[NSString stringWithFormat:@"%.2f", [jsonResponseCopy[@"cost_amount"] doubleValue]]
-                             forKey:@"cost_amount"];
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonResponseCopy
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
                                                            options:0
                                                              error:nil];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -926,11 +922,7 @@
             [self.testLibrary addInfoToSend:@"cost_type" value:attribution.costType];
             [self.testLibrary addInfoToSend:@"cost_amount" value:[attribution.costAmount stringValue]];
             [self.testLibrary addInfoToSend:@"cost_currency" value:attribution.costCurrency];
-            NSMutableDictionary *jsonResponseCopy = [attribution.jsonResponse mutableCopy];
-            [jsonResponseCopy removeObjectForKey:@"fb_install_referrer"];
-            [jsonResponseCopy setObject:[NSString stringWithFormat:@"%.2f", [jsonResponseCopy[@"cost_amount"] doubleValue]]
-                                 forKey:@"cost_amount"];
-            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonResponseCopy
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:attribution.jsonResponse
                                                                options:0
                                                                  error:nil];
             NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];

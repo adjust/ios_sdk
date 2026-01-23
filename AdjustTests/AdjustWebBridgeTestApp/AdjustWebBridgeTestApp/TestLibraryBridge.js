@@ -371,12 +371,7 @@ AdjustCommandExecutor.prototype.config = function(params) {
                 addInfoToSend('cost_type', attribution.costType);
                 addInfoToSend('cost_amount', attribution.costAmount);
                 addInfoToSend('cost_currency', attribution.costCurrency);
-                const jsonResponseWithoutFbInstallReferrer = { ...attribution.jsonResponse };
-                if (jsonResponseWithoutFbInstallReferrer.cost_amount !== undefined) {
-                    jsonResponseWithoutFbInstallReferrer.cost_amount = parseFloat(jsonResponseWithoutFbInstallReferrer.cost_amount).toFixed(2);
-                }
-                delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
-                addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+                addInfoToSend('json_response', JSON.stringify(attribution.jsonResponse));
                 sendInfoToServer(extraPath);
             }
         );
@@ -691,12 +686,7 @@ AdjustCommandExecutor.prototype.attributionGetter = function(params) {
         addInfoToSend('cost_type', attribution.costType);
         addInfoToSend('cost_amount', attribution.costAmount);
         addInfoToSend('cost_currency', attribution.costCurrency);
-        const jsonResponseWithoutFbInstallReferrer = { ...attribution.jsonResponse };
-        if (jsonResponseWithoutFbInstallReferrer.cost_amount !== undefined) {
-            jsonResponseWithoutFbInstallReferrer.cost_amount = parseFloat(jsonResponseWithoutFbInstallReferrer.cost_amount).toFixed(2);
-        }
-        delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
-        addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+        addInfoToSend('json_response', JSON.stringify(attribution.jsonResponse));
         addInfoToSend('test_callback_id', testCallbackId);
         sendInfoToServer(extraPath);
     });
@@ -720,12 +710,7 @@ AdjustCommandExecutor.prototype.attributionGetterWithTimeout = function(params) 
             addInfoToSend('cost_type', attribution.costType);
             addInfoToSend('cost_amount', attribution.costAmount);
             addInfoToSend('cost_currency', attribution.costCurrency);
-            const jsonResponseWithoutFbInstallReferrer = { ...attribution.jsonResponse };
-            if (jsonResponseWithoutFbInstallReferrer.cost_amount !== undefined) {
-                jsonResponseWithoutFbInstallReferrer.cost_amount = parseFloat(jsonResponseWithoutFbInstallReferrer.cost_amount).toFixed(2);
-            }
-            delete jsonResponseWithoutFbInstallReferrer.fb_install_referrer;
-            addInfoToSend('json_response', JSON.stringify(jsonResponseWithoutFbInstallReferrer));
+            addInfoToSend('json_response', JSON.stringify(attribution.jsonResponse));
         } else {
             addInfoToSend('attribution', 'nil');
         }

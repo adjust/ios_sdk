@@ -2,7 +2,7 @@
 //  Adjust.h
 //  Adjust SDK
 //
-//  V5.5.1
+//  V5.5.2
 //  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
 //  Copyright (c) 2012-Present Adjust GmbH. All rights reserved.
 //
@@ -279,6 +279,7 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
  * @brief Adjust wrapper for requestTrackingAuthorizationWithCompletionHandler: method of ATTrackingManager.
  *
  * @param completion Block which value of tracking authorization status will be delivered to.
+ *                   For devices without ATT support, the callback is invoked with NSUIntegerMax.
  */
 + (void)requestAppTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
 
