@@ -1,4 +1,4 @@
-### Version 5.5.2 (22nd January 2026)
+### Version 5.5.2 (23rd January 2026)
 #### Added
 - Added `AdjustGoogleOdmPlugin` subspec which does not depend on the main `Adjust` subspec.
 
