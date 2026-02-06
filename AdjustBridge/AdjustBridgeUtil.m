@@ -47,20 +47,21 @@
     return jsonString;
 }
 
-+ (NSString *)serializeData:(id)data {
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
++ (nullable NSString *)serializeObjectToJsonString:(id)object {
+    if (object == nil || object == [NSNull null]) {
+        return @"null";
+    }
+
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object
                                                        options:0
-                                                         error:nil];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\f" withString:@"\\f"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\u2028" withString:@"\\u2028"];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\u2029" withString:@"\\u2029"];
-    return jsonString;
+                                                         error:&error];
+    if (jsonData == nil || error != nil) {
+        NSLog(@"Unable to serialize JSON object for bridge callback: %@", error);
+        return nil;
+    }
+
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 + (NSDictionary *)getTestOptions:(id)data {

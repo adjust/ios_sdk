@@ -553,16 +553,23 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
 }
 
 - (void)execJsCallbackWithId:(NSString *)callbackId callbackData:(id)data {
-    NSString *callbackParamString;
-    if ([data isKindOfClass:[NSMutableDictionary class]] || [data isKindOfClass:[NSDictionary class]]) {
-        callbackParamString = [AdjustBridgeUtil serializeData:data];
+    NSString *validatedCallbackId = [self validatedCallbackId:callbackId];
+    if (validatedCallbackId == nil || self.wkWebView == nil) {
+        return;
     }
 
-    if ([data isKindOfClass:[NSString class]]){
-        callbackParamString = data;
+    NSDictionary *callbackPayload = @{
+        @"callbackId": validatedCallbackId,
+        @"data": data == nil ? [NSNull null] : data
+    };
+    NSString *serializedPayload = [AdjustBridgeUtil serializeObjectToJsonString:callbackPayload];
+    if (serializedPayload == nil) {
+        return;
     }
 
-    NSString *jsExecCommand = [NSString stringWithFormat:@"%@('%@')", callbackId, callbackParamString];
+    NSString *jsExecCommand =
+        [NSString stringWithFormat:@"if (window.Adjust && typeof Adjust._nativeCallback === 'function') { "
+         "Adjust._nativeCallback(%@); }", serializedPayload];
 
     [AdjustBridgeUtil launchInMainThread:^{
         [self.wkWebView evaluateJavaScript:jsExecCommand completionHandler:nil];
