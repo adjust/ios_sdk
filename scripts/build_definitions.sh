@@ -16,7 +16,7 @@ if [ -z ${XCF_OUTPUT_FOLDER+x} ]; then
 
     function usage(){
 
-        echo -e "${RED}[ADJUST][BUILD]:${GREEN}
+        echo -e "${RED}[ADJUST][BUILD]: Missing parameters!${GREEN}
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Usage: $0 [options]
 
@@ -39,7 +39,7 @@ Usage: $0 [options]
     [-tv]           tvOS platform target
     [-im]           iMessaging platform target
     [-web]          Web-Bridge platform target
-    [-odm]          Build ODM plugin framework (iOS only)
+    [-odm]          Build ODM plugin framework
 
 * If none of Platform Target arguments is specified, all Platform Targets are built.
 
@@ -72,7 +72,7 @@ Usage: $0 [options]
     BUILD_TARGET_TVOS=0
     BUILD_TARGET_IM=0
     BUILD_TARGET_WEB_BRIDGE=0
-    BUILD_ODM_FRAMEWORK=0
+    BUILD_TARGET_ODM_FRAMEWORK=0
     BUILD_TEST_FRAMEWORK=0
     BUILD_TEST_FRAMEWORK_SIM=0
     BUILD_ALL=0
@@ -95,7 +95,7 @@ Usage: $0 [options]
            ;;
          '-web') BUILD_TARGET_WEB_BRIDGE=1
            ;;
-         '-odm') BUILD_ODM_FRAMEWORK=1
+         '-odm') BUILD_TARGET_ODM_FRAMEWORK=1
            ;;
          '-test') BUILD_TEST_FRAMEWORK=1
            ;;
@@ -116,7 +116,7 @@ Usage: $0 [options]
         BUILD_TARGET_TVOS=1
         BUILD_TARGET_IM=1
         BUILD_TARGET_WEB_BRIDGE=1
-        BUILD_ODM_FRAMEWORK=1
+        BUILD_TARGET_ODM_FRAMEWORK=1
         BUILD_TEST_FRAMEWORK=1
         BUILD_TEST_FRAMEWORK_SIM=1
     fi
@@ -128,13 +128,14 @@ Usage: $0 [options]
 
     if [[ $BUILD_DYNAMIC_FRAMEWORK -eq 1 ]] || [[ $BUILD_STATIC_FRAMEWORK -eq 1 ]] || [[ $BUILD_DYNAMIC_XCFRAMEWORK -eq 1 ]] || [[ $BUILD_STATIC_XCFRAMEWORK -eq 1 ]]
     then
-      if [[ $BUILD_TARGET_IOS -eq 0 ]] && [[ $BUILD_TARGET_TVOS -eq 0 ]] && [[ $BUILD_TARGET_IM -eq 0 ]] && [[ $BUILD_TARGET_WEB_BRIDGE -eq 0 ]]
+      if [[ $BUILD_TARGET_IOS -eq 0 ]] && [[ $BUILD_TARGET_TVOS -eq 0 ]] && [[ $BUILD_TARGET_IM -eq 0 ]] && [[ $BUILD_TARGET_WEB_BRIDGE -eq 0 ]] && [[ $BUILD_TARGET_ODM_FRAMEWORK -eq 0 ]]
       then
           # If no platform variant is provided for one of the framework build targets, all platform variants will be built.
           BUILD_TARGET_IOS=1
           BUILD_TARGET_TVOS=1
           BUILD_TARGET_IM=1
           BUILD_TARGET_WEB_BRIDGE=1
+          BUILD_TARGET_ODM_FRAMEWORK=1
       fi
     fi        
 
@@ -148,7 +149,7 @@ Usage: $0 [options]
     echo "BUILD_TARGET_TVOS: $BUILD_TARGET_TVOS";
     echo "BUILD_TARGET_IM: $BUILD_TARGET_IM";
     echo "BUILD_TARGET_WEB_BRIDGE: $BUILD_TARGET_WEB_BRIDGE";
-    echo "BUILD_ODM_FRAMEWORK: $BUILD_ODM_FRAMEWORK";
+    echo "BUILD_TARGET_ODM_FRAMEWORK: $BUILD_TARGET_ODM_FRAMEWORK";
     echo "BUILD_TEST_FRAMEWORK: $BUILD_TEST_FRAMEWORK";
     echo "BUILD_TEST_FRAMEWORK_SIM: $BUILD_TEST_FRAMEWORK_SIM";
 
@@ -217,8 +218,8 @@ Usage: $0 [options]
     XCF_FRM_ZIP_NAME__IM_STATIC="AdjustSdk-iMessage-Static"
     XCF_FRM_ZIP_NAME__WEB_BRIDGE_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
     XCF_FRM_ZIP_NAME__WEB_BRIDGE_STATIC="AdjustSdk-WebBridge-Static"
-    XCF_FRM_ZIP_NAME__ODM_DYNAMIC="AdjustOdmPlugin-iOS-Dynamic"
-    XCF_FRM_ZIP_NAME__ODM_STATIC="AdjustOdmPlugin-iOS-Static"
+    XCF_FRM_ZIP_NAME__ODM_DYNAMIC="AdjustOdmPlugin-Dynamic"
+    XCF_FRM_ZIP_NAME__ODM_STATIC="AdjustOdmPlugin-Static"
 
     # Xcode version impacts the way we build frameworks
     XCODE12PLUS=0

@@ -180,10 +180,10 @@ fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-if [[ $BUILD_ODM_FRAMEWORK -eq 1 ]] && [[ $BUILD_TARGET_IOS -eq 1 ]]
+if [[ $BUILD_TARGET_ODM_FRAMEWORK -eq 1 ]]
 then
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for iOS (ODM Plugin)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ODM Plugin...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   mkdir -p "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}"
@@ -209,13 +209,10 @@ then
   rm -rf "./${XCF_OUTPUT_FOLDER}/${SCHEMA_NAME__ODM_STATIC}"
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for iOS (ODM Plugin)...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for ODM Plugin...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "./${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}/${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework"
   archive_framework "${XCF_OUTPUT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMK_FOLDER}" "${XCF_OUTPUT_XCFRMK_ODM_FOLDER}/${XCF_FRM_NAME__ODM}.xcframework" "${XCF_FRM_ZIP_NAME__ODM_STATIC}-"${SDK_VERSION}".xcframework.zip"
-elif [[ $BUILD_ODM_FRAMEWORK -eq 1 ]]
-then
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Skipping ODM plugin XCFramework build (iOS target not selected) ... ${NC}"
 fi
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
