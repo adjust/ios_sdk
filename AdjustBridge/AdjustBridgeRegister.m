@@ -50,6 +50,8 @@ static NSString * fbAppIdStatic = nil;
         if (window.Adjust) {
             return;
         }
+        
+        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.5.2';
 
         // Adjust
         window.Adjust = {
@@ -61,9 +63,14 @@ static NSString * fbAppIdStatic = nil;
                     return;
                 }
                 if (!this._adjustMessageHandler) {
+                    const errSubscriber = function(message) {
+                        if (typeof console !== "undefined") {
+                            console.log(message);
+                        }
+                    };
                     function canSend(okCheck, errReason) {
                         if (!okCheck) {
-                            if (errSubscriber) {
+                            if (typeof errSubscriber === "function") {
                                 errSubscriber("Cannot send message to native sdk ".concat(errReason));
                             }
                         }
@@ -136,10 +143,6 @@ static NSString * fbAppIdStatic = nil;
 
             initSdk: function(adjustConfig) {
                 if (adjustConfig) {
-                    if (!adjustConfig.getSdkPrefix()) {
-                        adjustConfig.setSdkPrefix(this.getSdkPrefix());
-                    }
-                    adjustConfig.setSdkPrefix(this.getSdkPrefix());
                     this._postMessage("adjust_initSdk", adjustConfig);
                 }
             },
@@ -163,7 +166,7 @@ static NSString * fbAppIdStatic = nil;
             getSdkVersion: function(getSdkVersionCallback) {
                 const callbackId = window.randomCallbackIdWithPrefix("adjust_getSdkVersion") ;
                 this._handleGetterFromObjC(getSdkVersionCallback, callbackId);
-                this._postMessage("adjust_getSdkVersion", {sdkPrefix: this.getSdkPrefix()}, callbackId);
+                this._postMessage("adjust_getSdkVersion", {sdkPrefix: ADJUST_WEB_BRIDGE_SDK_PREFIX}, callbackId);
             },
 
             getIdfa: function(getIdfaCallback) {
@@ -206,14 +209,6 @@ static NSString * fbAppIdStatic = nil;
                 const callbackId = window.randomCallbackIdWithPrefix("adjust_getAttributionWithTimeout");
                 this._handleGetterFromObjC(getAttributionCallbackWithTimeout, callbackId);
                 this._postMessage("adjust_getAttributionWithTimeout", { timeoutMs: timeoutMs }, callbackId);
-            },
-
-            getSdkPrefix: function() {
-                if (this.sdkPrefix) {
-                    return this.sdkPrefix;
-                } else {
-                    return 'web-bridge5.5.2';
-                }
             },
 
             trackEvent: function(adjustEvent) {
@@ -404,7 +399,7 @@ static NSString * fbAppIdStatic = nil;
             this.appToken = appToken;
             this.environment = environment;
             this.logLevel = null;
-            this.sdkPrefix = null;
+            this.sdkPrefix = ADJUST_WEB_BRIDGE_SDK_PREFIX;
             this.defaultTracker = null;
             this.externalDeviceId = null;
             this.sendInBackground = null;
@@ -454,12 +449,6 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.LogLevelAssert = 'ASSERT';
         AdjustConfig.LogLevelSuppress = 'SUPPRESS';
 
-        AdjustConfig.prototype.getSdkPrefix = function() {
-            return this.sdkPrefix;
-        };
-        AdjustConfig.prototype.setSdkPrefix = function(sdkPrefix) {
-            this.sdkPrefix = sdkPrefix;
-        };
         AdjustConfig.prototype.setDefaultTracker = function(defaultTracker) {
             this.defaultTracker = defaultTracker;
         };
