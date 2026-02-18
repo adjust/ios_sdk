@@ -212,6 +212,8 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
         [self setTestOptions:parameters];
     } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
         [self trackFbPixelEvent:parameters];
+    } else {
+        [self.logger warn:@"Ignoring unknown bridge method: %@", methodName];
     }
 }
 
