@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJPackageParams : NSObject
+@interface ADJPackageParams : NSObject <NSCopying>
 
 @property (nonatomic, copy) NSString *fbAnonymousId;
 @property (nonatomic, copy) NSString *idfv;

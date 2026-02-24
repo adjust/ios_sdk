@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSMutableDictionary* callbackParameters;
 @property (nonatomic, strong) NSMutableDictionary* partnerParameters;
 
+- (ADJGlobalParameters *)deepCopy;
+
 @end

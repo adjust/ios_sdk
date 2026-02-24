@@ -14,6 +14,12 @@
 static NSString *appToken = nil;
 static NSUInteger eventDeduplicationIdsArraySize = 10;
 
+@interface ADJActivityState ()
+
+- (instancetype)initForCopying;
+
+@end
+
 @implementation ADJActivityState
 
 + (BOOL)supportsSecureCoding {
@@ -23,28 +29,12 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 #pragma mark - Object lifecycle methods
 
 - (id)init {
-    self = [super init];
+    self = [self initForCopying];
     if (self == nil) {
         return nil;
     }
 
     [self assignRandomToken:[ADJUtil generateRandomUuid]];
-
-    self.eventCount = 0;
-    self.sessionCount = 0;
-    self.subsessionCount = -1;   // -1 means unknown
-    self.sessionLength = -1;
-    self.timeSpent = -1;
-    self.lastActivity = -1;
-    self.lastInterval = -1;
-    self.enabled = YES;
-    self.isGdprForgotten = NO;
-    self.askingAttribution = NO;
-    self.isThirdPartySharingDisabledForCoppa = NO;
-    self.pushToken = nil;
-    self.eventDeduplicationIds = [NSMutableArray array];
-    self.updatePackagesAttData = NO;
-    self.trackingManagerAuthorizationStatus = -1;
 
     return self;
 }
@@ -100,6 +90,29 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     self.isThirdPartySharingDisabledForCoppa = isCoppaComplianceEnabled;
 }
 
+- (ADJActivityState *)deepCopy {
+    ADJActivityState *copy = [[ADJActivityState alloc] initForCopying];
+    copy.enabled = self.enabled;
+    copy.isGdprForgotten = self.isGdprForgotten;
+    copy.askingAttribution = self.askingAttribution;
+    copy.isThirdPartySharingDisabledForCoppa = self.isThirdPartySharingDisabledForCoppa;
+    copy.dedupeToken = [self.dedupeToken copy];
+    copy.pushToken = [self.pushToken copy];
+    copy.updatePackagesAttData = self.updatePackagesAttData;
+    copy.adid = [self.adid copy];
+    copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
+    copy.eventCount = self.eventCount;
+    copy.sessionCount = self.sessionCount;
+    copy.subsessionCount = self.subsessionCount;
+    copy.timeSpent = self.timeSpent;
+    copy.lastActivity = self.lastActivity;
+    copy.sessionLength = self.sessionLength;
+    copy.eventDeduplicationIds = [self.eventDeduplicationIds mutableCopy];
+    copy.lastInterval = self.lastInterval;
+    copy.isPersisted = self.isPersisted;
+    return copy;
+}
+
 #pragma mark - Private & helper methods
 
 - (void)assignRandomToken:(NSString *)randomToken {
@@ -149,8 +162,9 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
     }
 
     if ([decoder containsValueForKey:@"transactionIds"]) {
-        NSSet *allowedClasses = [NSSet setWithObjects:[NSArray class], [NSString class], nil];
-        self.eventDeduplicationIds = [decoder decodeObjectOfClasses:allowedClasses forKey:@"transactionIds"];
+        NSSet *allowedClasses = [NSSet setWithObjects:[NSArray class], [NSMutableArray class], [NSString class], nil];
+        NSArray *decodedIds = [decoder decodeObjectOfClasses:allowedClasses forKey:@"transactionIds"];
+        self.eventDeduplicationIds = decodedIds != nil ? [decodedIds mutableCopy] : [NSMutableArray array];
     }
 
     if (self.eventDeduplicationIds == nil) {
@@ -234,7 +248,7 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
 #pragma mark - NSCopying protocol methods
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJActivityState *copy = [[[self class] allocWithZone:zone] init];
+    ADJActivityState *copy = [[[self class] allocWithZone:zone] initForCopying];
 
     // Copy only values used by package builder.
     if (copy) {
@@ -253,8 +267,34 @@ static NSUInteger eventDeduplicationIdsArraySize = 10;
         copy.pushToken = [self.pushToken copyWithZone:zone];
         copy.updatePackagesAttData = self.updatePackagesAttData;
         copy.trackingManagerAuthorizationStatus = self.trackingManagerAuthorizationStatus;
+        copy.isPersisted = self.isPersisted;
     }
     
     return copy;
+}
+
+- (instancetype)initForCopying {
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+
+    self.eventCount = 0;
+    self.sessionCount = 0;
+    self.subsessionCount = -1;   // -1 means unknown
+    self.sessionLength = -1;
+    self.timeSpent = -1;
+    self.lastActivity = -1;
+    self.lastInterval = -1;
+    self.enabled = YES;
+    self.isGdprForgotten = NO;
+    self.askingAttribution = NO;
+    self.isThirdPartySharingDisabledForCoppa = NO;
+    self.pushToken = nil;
+    self.eventDeduplicationIds = [NSMutableArray array];
+    self.updatePackagesAttData = NO;
+    self.trackingManagerAuthorizationStatus = -1;
+
+    return self;
 }
 @end

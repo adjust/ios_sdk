@@ -43,4 +43,24 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    ADJPackageParams *copy = [[[self class] allocWithZone:zone] init];
+    if (copy) {
+        copy.fbAnonymousId = [self.fbAnonymousId copyWithZone:zone];
+        copy.idfv = [self.idfv copyWithZone:zone];
+        copy.clientSdk = [self.clientSdk copyWithZone:zone];
+        copy.bundleIdentifier = [self.bundleIdentifier copyWithZone:zone];
+        copy.buildNumber = [self.buildNumber copyWithZone:zone];
+        copy.versionNumber = [self.versionNumber copyWithZone:zone];
+        copy.deviceType = [self.deviceType copyWithZone:zone];
+        copy.deviceName = [self.deviceName copyWithZone:zone];
+        copy.osName = [self.osName copyWithZone:zone];
+        copy.osVersion = [self.osVersion copyWithZone:zone];
+        copy.installedAt = [self.installedAt copyWithZone:zone];
+        copy.startedAt = self.startedAt;
+        copy.idfaCached = [self.idfaCached copyWithZone:zone];
+    }
+    return copy;
+}
+
 @end

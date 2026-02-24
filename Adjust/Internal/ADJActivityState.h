@@ -51,6 +51,7 @@
 - (BOOL)eventDeduplicationIdExists:(NSString *)deduplicationId;
 - (void)addEventDeduplicationId:(NSString *)deduplicationId;
 
+- (ADJActivityState *)deepCopy;
 
 - (BOOL)isCoppaComplianceEnabled;
 - (void)setCoppaComplianceWithIsEnabled:(BOOL)isCoppaComplianceEnabled;

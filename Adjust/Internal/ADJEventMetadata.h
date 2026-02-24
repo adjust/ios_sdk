@@ -10,4 +10,5 @@
 
 @interface ADJEventMetadata : NSObject <NSSecureCoding>
 - (NSUInteger)incrementedSequenceForEventToken:(NSString * _Nonnull)token;
+- (nonnull ADJEventMetadata *)deepCopy;
 @end
