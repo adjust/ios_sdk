@@ -748,6 +748,8 @@
 		96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* ADJUtil.m */; };
 		96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 96FCC5361C186426007BBFE1 /* ADJResponseData.h */; };
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
+		9D1AE8C42F471FCC006A30A6 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
+		9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */; };
 		9D2F23E22447CE5C00B7CA90 /* ADJAppStoreSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D2F23E32447CE5C00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -878,6 +880,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9D01676F20FF812B0029CFFF;
 			remoteInfo = "AdjustExample-iMessage MessagesExtension";
+		};
+		9D1AE8C52F471FCC006A30A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9679920518BBAE2800394606 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9679920C18BBAE2800394606;
+			remoteInfo = Adjust;
 		};
 		9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1055,6 +1064,8 @@
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iMessage.xcodeproj"; path = "examples/AdjustExample-iMessage/AdjustExample-iMessage.xcodeproj"; sourceTree = "<group>"; };
 		9D0E2E02210B570600133B4F /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJTestsMutability.m; sourceTree = "<group>"; };
 		9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
 		9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
@@ -1141,6 +1152,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D1AE8BD2F471FCC006A30A6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D1AE8C42F471FCC006A30A6 /* libAdjust.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,6 +1342,7 @@
 				0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */,
 				0AB1CAD527DF671300509231 /* libAdjustSdk.a */,
 				2CC38746B563E8CCDF2C380F /* libAdjustOdmPlugin.a */,
+				9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1387,6 +1407,7 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
+				9D1AE8FE2F47218B006A30A6 /* AdjustUnitTests */,
 				52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */,
 				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
 				6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */,
@@ -1402,6 +1423,14 @@
 				9D01680620FF88DE0029CFFF /* AdjustExample-iMessage MessagesExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9D1AE8FE2F47218B006A30A6 /* AdjustUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */,
+			);
+			path = AdjustUnitTests;
 			sourceTree = "<group>";
 		};
 		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
@@ -2159,6 +2188,26 @@
 			productReference = 9D0E2E02210B570600133B4F /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		9D1AE8BF2F471FCC006A30A6 /* AdjustUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D1AE8DD2F471FCC006A30A6 /* Build configuration list for PBXNativeTarget "AdjustUnitTests" */;
+			buildPhases = (
+				9D1AE8BC2F471FCC006A30A6 /* Sources */,
+				9D1AE8BD2F471FCC006A30A6 /* Frameworks */,
+				9D1AE8BE2F471FCC006A30A6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9D1AE8C62F471FCC006A30A6 /* PBXTargetDependency */,
+			);
+			name = AdjustUnitTests;
+			packageProductDependencies = (
+			);
+			productName = AdjustUnitTests;
+			productReference = 9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		9DE354D12100726300D211C9 /* AdjustSdkIm */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9DE354E52100726300D211C9 /* Build configuration list for PBXNativeTarget "AdjustSdkIm" */;
@@ -2261,6 +2310,9 @@
 						CreatedOnToolsVersion = 9.4.1;
 						ProvisioningStyle = Manual;
 					};
+					9D1AE8BF2F471FCC006A30A6 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					9DE354D12100726300D211C9 = {
 						CreatedOnToolsVersion = 9.4.1;
 						ProvisioningStyle = Manual;
@@ -2345,6 +2397,7 @@
 				0AB1CA6727DF5D3200509231 /* AdjustSdkImStatic */,
 				0AB1CAD427DF671300509231 /* AdjustSdkWebBridgeStatic */,
 				5202D93F935ABF24263B79A4 /* AdjustOdmPluginStatic */,
+				9D1AE8BF2F471FCC006A30A6 /* AdjustUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2492,6 +2545,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BFEAA42A49E3DA004E29D9 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D1AE8BE2F471FCC006A30A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2945,6 +3005,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9D1AE8BC2F471FCC006A30A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9DE354CD2100726300D211C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3100,6 +3168,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9D1AE8C62F471FCC006A30A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9679920C18BBAE2800394606 /* Adjust */;
+			targetProxy = 9D1AE8C52F471FCC006A30A6 /* PBXContainerItemProxy */;
+		};
 		9DE7C9001AE68EF1001556E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9679920C18BBAE2800394606 /* Adjust */;
@@ -3649,6 +3722,69 @@
 			};
 			name = Release;
 		};
+		9D1AE8C72F471FCC006A30A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9D1AE8C82F471FCC006A30A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9DE354D72100726300D211C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4090,6 +4226,15 @@
 			buildConfigurations = (
 				9D0E2E07210B570600133B4F /* Debug */,
 				9D0E2E08210B570600133B4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D1AE8DD2F471FCC006A30A6 /* Build configuration list for PBXNativeTarget "AdjustUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D1AE8C72F471FCC006A30A6 /* Debug */,
+				9D1AE8C82F471FCC006A30A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
