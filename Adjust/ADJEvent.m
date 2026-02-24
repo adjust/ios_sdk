@@ -123,13 +123,13 @@
 
 - (NSDictionary *)callbackParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.callbackMutableParameters;
+        return [self.callbackMutableParameters copy];
     }
 }
 
 - (NSDictionary *)partnerParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.partnerMutableParameters;
+        return [self.partnerMutableParameters copy];
     }
 }
 
