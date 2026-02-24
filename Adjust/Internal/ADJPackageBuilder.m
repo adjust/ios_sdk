@@ -80,7 +80,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     sessionPackage.activityKind = ADJActivityKindSession;
     sessionPackage.suffix = @"";
     sessionPackage.parameters = parameters;
-    sessionPackage.parameters = [ADJUtil deepCopyOfDictionary:sessionPackage.parameters];
 
     return sessionPackage;
 }
@@ -94,9 +93,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     eventPackage.activityKind = ADJActivityKindEvent;
     eventPackage.suffix = [self eventSuffix:event];
     eventPackage.parameters = parameters;
-    eventPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:event.callbackParameters];
-    eventPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:event.partnerParameters];
-    eventPackage.parameters = [ADJUtil deepCopyOfDictionary:eventPackage.parameters];
+    eventPackage.callbackParameters = event.callbackParameters;
+    eventPackage.partnerParameters = event.partnerParameters;
 
     return eventPackage;
 }
@@ -108,7 +106,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     infoPackage.activityKind = ADJActivityKindInfo;
     infoPackage.suffix = @"";
     infoPackage.parameters = parameters;
-    infoPackage.parameters = [ADJUtil deepCopyOfDictionary:infoPackage.parameters];
 
     return infoPackage;
 }
@@ -120,9 +117,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     adRevenuePackage.activityKind = ADJActivityKindAdRevenue;
     adRevenuePackage.suffix = @"";
     adRevenuePackage.parameters = parameters;
-    adRevenuePackage.callbackParameters = [ADJUtil deepCopyOfDictionary:adRevenue.callbackParameters];
-    adRevenuePackage.partnerParameters = [ADJUtil deepCopyOfDictionary:adRevenue.partnerParameters];
-    adRevenuePackage.parameters = [ADJUtil deepCopyOfDictionary:adRevenuePackage.parameters];
+    adRevenuePackage.callbackParameters = adRevenue.callbackParameters;
+    adRevenuePackage.partnerParameters = adRevenue.partnerParameters;
 
     return adRevenuePackage;
 }
@@ -138,7 +134,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     clickPackage.activityKind = ADJActivityKindClick;
     clickPackage.suffix = @"";
     clickPackage.parameters = parameters;
-    clickPackage.parameters = [ADJUtil deepCopyOfDictionary:clickPackage.parameters];
 
     return clickPackage;
 }
@@ -150,7 +145,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     attributionPackage.activityKind = ADJActivityKindAttribution;
     attributionPackage.suffix = @"";
     attributionPackage.parameters = parameters;
-    attributionPackage.parameters = [ADJUtil deepCopyOfDictionary:attributionPackage.parameters];
 
     return attributionPackage;
 }
@@ -162,7 +156,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     gdprPackage.activityKind = ADJActivityKindGdpr;
     gdprPackage.suffix = @"";
     gdprPackage.parameters = parameters;
-    gdprPackage.parameters = [ADJUtil deepCopyOfDictionary:gdprPackage.parameters];
 
     return gdprPackage;
 }
@@ -174,7 +167,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     tpsPackage.activityKind = ADJActivityKindThirdPartySharing;
     tpsPackage.suffix = @"";
     tpsPackage.parameters = parameters;
-    tpsPackage.parameters = [ADJUtil deepCopyOfDictionary:tpsPackage.parameters];
 
     return tpsPackage;
 }
@@ -186,7 +178,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     mcPackage.activityKind = ADJActivityKindMeasurementConsent;
     mcPackage.suffix = @"";
     mcPackage.parameters = parameters;
-    mcPackage.parameters = [ADJUtil deepCopyOfDictionary:mcPackage.parameters];
 
     return mcPackage;
 }
@@ -198,9 +189,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     subscriptionPackage.activityKind = ADJActivityKindSubscription;
     subscriptionPackage.suffix = @"";
     subscriptionPackage.parameters = parameters;
-    subscriptionPackage.callbackParameters = [ADJUtil deepCopyOfDictionary:subscription.callbackParameters];
-    subscriptionPackage.partnerParameters = [ADJUtil deepCopyOfDictionary:subscription.partnerParameters];
-    subscriptionPackage.parameters = [ADJUtil deepCopyOfDictionary:subscriptionPackage.parameters];
+    subscriptionPackage.callbackParameters = subscription.callbackParameters;
+    subscriptionPackage.partnerParameters = subscription.partnerParameters;
 
     return subscriptionPackage;
 }
@@ -216,7 +206,6 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     purchaseVerificationPackage.activityKind = ADJActivityKindPurchaseVerification;
     purchaseVerificationPackage.suffix = @"";
     purchaseVerificationPackage.parameters = parameters;
-    purchaseVerificationPackage.parameters = [ADJUtil deepCopyOfDictionary:purchaseVerificationPackage.parameters];
 
     return purchaseVerificationPackage;
 }

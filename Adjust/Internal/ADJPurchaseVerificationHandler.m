@@ -51,7 +51,7 @@ static const char * const kInternalQueueName = "com.adjust.PurchaseVerificationQ
     [[ADJRequestHandler alloc] initWithResponseCallback:self
                                             urlStrategy:urlStrategy
                                          requestTimeout:[ADJAdjustFactory verifyRequestTimeout]
-                                    adjustConfiguration:activityHandler.adjustConfig
+                                    adjustConfiguration:activityHandler.adjustConfigCopy
                                         activityHandler:activityHandler];
 
     [ADJUtil launchInQueue:self.internalQueue
@@ -135,9 +135,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
 - (void)sendPurchaseVerificationPackageI:(ADJPurchaseVerificationHandler *)selfI
              purchaseVerificationPackage:(ADJActivityPackage *)purchaseVerificationPackage {
-    [selfI.packageQueue addObject:purchaseVerificationPackage];
+    ADJActivityPackage *queuedPackage = [purchaseVerificationPackage deepCopy];
+    [selfI.packageQueue addObject:queuedPackage];
     [selfI.logger debug:@"Added purchase_verification %d", selfI.packageQueue.count];
-    [selfI.logger verbose:@"%@", purchaseVerificationPackage.extendedString];
+    [selfI.logger verbose:@"%@", queuedPackage.extendedString];
     [selfI sendNextPurchaseVerificationPackage];
 }
 
@@ -192,17 +193,24 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 - (void)updatePackagesTrackingI:(ADJPurchaseVerificationHandler *)selfI
                       attStatus:(int)attStatus {
     [selfI.logger debug:@"Updating purchase_verification queue with idfa and att_status: %d", attStatus];
+    ADJActivityState *activityStateSnapshot = [selfI.activityHandler activityStateCopy];
+    ADJPackageParams *packageParamsShared = [selfI.activityHandler packageParamsForIdfaCache];
+    ADJConfig *configSnapshot = [selfI.activityHandler adjustConfigCopy];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
-        [ADJPackageBuilder parameters:activityPackage.parameters
+        NSMutableDictionary *mutableParameters = activityPackage.parameters != nil
+            ? [activityPackage.parameters mutableCopy]
+            : [NSMutableDictionary dictionary];
+        [ADJPackageBuilder parameters:mutableParameters
                                setInt:attStatus
                                forKey:@"att_status"];
 
-        [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
+        [ADJPackageBuilder addConsentDataToParameters:mutableParameters
                                       forActivityKind:activityPackage.activityKind
                                         withAttStatus:attStatus
-                                        configuration:selfI.activityHandler.adjustConfig
-                                        packageParams:selfI.activityHandler.packageParams
-                                        activityState:selfI.activityHandler.activityState];
+                                        configuration:configSnapshot
+                                        packageParams:packageParamsShared
+                                        activityState:activityStateSnapshot];
+        activityPackage.parameters = mutableParameters;
     }
 }
 

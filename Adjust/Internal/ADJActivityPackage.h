@@ -36,6 +36,7 @@
 @property (nonatomic, assign) double waitBeforeSend;
 
 - (void)addError:(NSNumber *)errorCode;
+- (ADJActivityPackage *)deepCopy;
 
 // Logs
 

@@ -42,7 +42,7 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
     [[ADJRequestHandler alloc] initWithResponseCallback:self
                                             urlStrategy:urlStrategy
                                          requestTimeout:[ADJAdjustFactory requestTimeout]
-                                    adjustConfiguration:activityHandler.adjustConfig
+                                    adjustConfiguration:activityHandler.adjustConfigCopy
                                         activityHandler:activityHandler];
     self.activityHandler = activityHandler;
     self.logger = ADJAdjustFactory.logger;
@@ -256,12 +256,16 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 - (ADJActivityPackage *)buildAndGetAttributionPackageI:(ADJAttributionHandler*)selfI
 {
     double now = [NSDate.date timeIntervalSince1970];
+    ADJActivityState *activityStateSnapshot = [selfI.activityHandler activityStateCopy];
+    ADJGlobalParameters *globalParametersSnapshot = [selfI.activityHandler globalParametersCopy];
+    ADJPackageParams *packageParamsSnapshot = [selfI.activityHandler packageParamsCopy];
+    ADJConfig *configSnapshot = [selfI.activityHandler adjustConfigCopy];
 
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
-                                             initWithPackageParams:selfI.activityHandler.packageParams
-                                             activityState:selfI.activityHandler.activityState
-                                             config:selfI.activityHandler.adjustConfig
-                                             globalParameters:selfI.activityHandler.globalParameters
+                                             initWithPackageParams:packageParamsSnapshot
+                                             activityState:activityStateSnapshot
+                                             config:configSnapshot
+                                             globalParameters:globalParametersSnapshot
                                              trackingStatusManager:selfI.activityHandler.trackingStatusManager
                                              firstSessionDelayManager:nil
                                              createdAt:now

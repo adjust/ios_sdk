@@ -135,10 +135,11 @@
 
 - (void)endFirstSessionDelay;
 
-- (ADJPackageParams * _Nullable)packageParams;
-- (ADJActivityState * _Nullable)activityState;
-- (ADJConfig * _Nullable)adjustConfig;
-- (ADJGlobalParameters * _Nullable)globalParameters;
+- (ADJPackageParams * _Nullable)packageParamsCopy;
+- (ADJPackageParams * _Nullable)packageParamsForIdfaCache;
+- (ADJActivityState * _Nullable)activityStateCopy;
+- (ADJConfig * _Nullable)adjustConfigCopy;
+- (ADJGlobalParameters * _Nullable)globalParametersCopy;
 - (BOOL)isOdmEnabled;
 - (void)teardown;
 + (void)deleteState;
@@ -210,4 +211,3 @@
 
 extern NSString * _Nullable const ADJClickSourceAdServices;
 extern NSString * _Nullable const ADJClickSourceGoogleOdm;
-

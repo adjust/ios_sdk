@@ -240,7 +240,7 @@ startsSending:(BOOL)startsSending
     [[ADJRequestHandler alloc] initWithResponseCallback:self
                                             urlStrategy:urlStrategy
                                          requestTimeout:[ADJAdjustFactory requestTimeout]
-                                    adjustConfiguration:activityHandler.adjustConfig
+                                    adjustConfiguration:activityHandler.adjustConfigCopy
                                         activityHandler:activityHandler];
     selfI.logger = ADJAdjustFactory.logger;
     selfI.sendingSemaphore = dispatch_semaphore_create(1);
@@ -254,13 +254,20 @@ startsSending:(BOOL)startsSending
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
         newPackage.waitBeforeSend = self.totalWaitTime - (now - self.retryStartedAt);
     }
-    [ADJPackageBuilder parameters:newPackage.parameters
+
+    NSMutableDictionary *mutableParameters = newPackage.parameters != nil
+        ? [newPackage.parameters mutableCopy]
+        : [NSMutableDictionary dictionary];
+    [ADJPackageBuilder parameters:mutableParameters
                            setInt:(int)selfI.packageQueue.count
                            forKey:@"enqueue_size"];
-    [selfI.packageQueue addObject:newPackage];
+    newPackage.parameters = mutableParameters;
 
-    [selfI.logger debug:@"Added package %d (%@)", selfI.packageQueue.count, newPackage];
-    [selfI.logger verbose:@"%@", newPackage.extendedString];
+    ADJActivityPackage *queuedPackage = [newPackage deepCopy];
+    [selfI.packageQueue addObject:queuedPackage];
+
+    [selfI.logger debug:@"Added package %d (%@)", selfI.packageQueue.count, queuedPackage];
+    [selfI.logger verbose:@"%@", queuedPackage.extendedString];
 
     [selfI writePackageQueueS:selfI];
 }
@@ -361,15 +368,22 @@ startsSending:(BOOL)startsSending
     [selfI.logger debug:@"Updating package queue with idfa and att_status: %d", (long)attStatus];
     // create package queue copy for new state of array
     NSMutableArray *packageQueueCopy = [NSMutableArray array];
+    ADJActivityState *activityStateSnapshot = [selfI.activityHandler activityStateCopy];
+    ADJPackageParams *packageParamsShared = [selfI.activityHandler packageParamsForIdfaCache];
+    ADJConfig *configSnapshot = [selfI.activityHandler adjustConfigCopy];
 
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
-        [ADJPackageBuilder parameters:activityPackage.parameters setInt:attStatus forKey:@"att_status"];
-        [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
+        NSMutableDictionary *mutableParameters = activityPackage.parameters != nil
+            ? [activityPackage.parameters mutableCopy]
+            : [NSMutableDictionary dictionary];
+        [ADJPackageBuilder parameters:mutableParameters setInt:attStatus forKey:@"att_status"];
+        [ADJPackageBuilder addConsentDataToParameters:mutableParameters
                                       forActivityKind:activityPackage.activityKind
                                         withAttStatus:attStatus
-                                        configuration:selfI.activityHandler.adjustConfig
-                                        packageParams:selfI.activityHandler.packageParams
-                                        activityState:selfI.activityHandler.activityState];
+                                        configuration:configSnapshot
+                                        packageParams:packageParamsShared
+                                        activityState:activityStateSnapshot];
+        activityPackage.parameters = mutableParameters;
         // add to copy queue
         [packageQueueCopy addObject:activityPackage];
     }
@@ -403,8 +417,16 @@ startsSending:(BOOL)startsSending
     if (selfS.packageQueue == nil) {
         return;
     }
-    
-    [ADJUtil writeObject:selfS.packageQueue
+
+    NSMutableArray *queueSnapshot = [NSMutableArray arrayWithCapacity:selfS.packageQueue.count];
+    for (ADJActivityPackage *activityPackage in selfS.packageQueue) {
+        if (![activityPackage isKindOfClass:[ADJActivityPackage class]]) {
+            continue;
+        }
+        [queueSnapshot addObject:[activityPackage deepCopy]];
+    }
+
+    [ADJUtil writeObject:queueSnapshot
                 fileName:kPackageQueueFilename
               objectName:@"Package queue"
               syncObject:[ADJPackageHandler class]];
