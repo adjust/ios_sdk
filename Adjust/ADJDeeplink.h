@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJDeeplink : NSObject
+@interface ADJDeeplink : NSObject<NSCopying>
 
 /**
  * @brief Deeplink value.

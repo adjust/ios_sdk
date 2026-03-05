@@ -81,7 +81,7 @@
     copy.partnerParameters = [ADJUtil dictionaryDeepCopy:self.partnerParameters];
     copy.callbackParameters = [ADJUtil dictionaryDeepCopy:self.callbackParameters];
     copy.purchaseVerificationCallback = self.purchaseVerificationCallback;
-    copy.event = self.event;
+    copy.event = [self.event copy];
     copy.errorCount = self.errorCount;
     copy.firstErrorCode = [self.firstErrorCode copy];
     copy.lastErrorCode = [self.lastErrorCode copy];

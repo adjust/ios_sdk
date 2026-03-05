@@ -590,12 +590,13 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    ADJThirdPartySharing *thirdPartySharingSnapshot = [thirdPartySharing copy];
     if ([self checkActivityHandler:@"track third party sharing"]) {
-        [self.activityHandler trackThirdPartySharing:thirdPartySharing];
+        [self.activityHandler trackThirdPartySharing:thirdPartySharingSnapshot];
         return;
     }
     [self.savedPreLaunch.preLaunchActionsArray addObject:^(ADJActivityHandler *activityHandler) {
-        [activityHandler tryTrackThirdPartySharingI:thirdPartySharing];
+        [activityHandler tryTrackThirdPartySharingI:thirdPartySharingSnapshot];
     }];
 }
 

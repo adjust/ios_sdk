@@ -10,6 +10,51 @@
 #import "ADJAdjustFactory.h"
 #import "ADJUtil.h"
 
+static NSMutableDictionary *ADJDeepMutableCopyTwoLevelDictionary(NSDictionary *dictionary) {
+    NSMutableDictionary *copy = [[NSMutableDictionary alloc] init];
+    if (dictionary == nil) {
+        return copy;
+    }
+
+    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL * _Nonnull stop) {
+        if (key == nil || value == nil || value == [NSNull null]) {
+            return;
+        }
+
+        id keyCopy = [key conformsToProtocol:@protocol(NSCopying)] ? [key copy] : [key description];
+        if (keyCopy == nil) {
+            return;
+        }
+
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *innerCopy = [[NSMutableDictionary alloc] init];
+            [(NSDictionary *)value enumerateKeysAndObjectsUsingBlock:^(id innerKey, id innerValue, BOOL * _Nonnull stop) {
+                if (innerKey == nil || innerValue == nil || innerValue == [NSNull null]) {
+                    return;
+                }
+                id innerKeyCopy =
+                    [innerKey conformsToProtocol:@protocol(NSCopying)] ? [innerKey copy] : [innerKey description];
+                id innerValueCopy =
+                    [innerValue conformsToProtocol:@protocol(NSCopying)] ? [innerValue copy] : [innerValue description];
+                if (innerKeyCopy == nil || innerValueCopy == nil) {
+                    return;
+                }
+                [innerCopy setObject:innerValueCopy forKey:innerKeyCopy];
+            }];
+            [copy setObject:innerCopy forKey:keyCopy];
+            return;
+        }
+
+        id valueCopy = [value conformsToProtocol:@protocol(NSCopying)] ? [value copy] : [value description];
+        if (valueCopy == nil) {
+            return;
+        }
+        [copy setObject:valueCopy forKey:keyCopy];
+    }];
+
+    return copy;
+}
+
 @implementation ADJThirdPartySharing
 
 - (nullable id)initWithIsEnabled:(nullable NSNumber *)isEnabled {
@@ -57,6 +102,20 @@
     }
     
     [partnerSharingSetting setObject:[NSNumber numberWithBool:value] forKey:key];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    ADJThirdPartySharing *copy =
+        [[[self class] allocWithZone:zone] initWithIsEnabled:[self.enabled copyWithZone:zone]];
+
+    if (copy == nil) {
+        return nil;
+    }
+
+    copy->_granularOptions = ADJDeepMutableCopyTwoLevelDictionary(self.granularOptions);
+    copy->_partnerSharingSettings = ADJDeepMutableCopyTwoLevelDictionary(self.partnerSharingSettings);
+
+    return copy;
 }
 
 @end

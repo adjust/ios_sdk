@@ -191,6 +191,7 @@
         copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
         copy->_transactionId = [self.transactionId copyWithZone:zone];
         copy->_deduplicationId = [self.deduplicationId copyWithZone:zone];
+        copy->_callbackId = [self.callbackId copyWithZone:zone];
         copy->_productId = [self.productId copyWithZone:zone];
     }
 
