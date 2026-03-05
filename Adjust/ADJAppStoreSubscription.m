@@ -112,27 +112,33 @@
 }
 
 - (nonnull NSDictionary *)callbackParameters {
-    return [self.mutableCallbackParameters copy];
+    @synchronized (self) {
+        return [self.mutableCallbackParameters copy];
+    }
 }
 
 - (nonnull NSDictionary *)partnerParameters {
-    return [self.mutablePartnerParameters copy];
+    @synchronized (self) {
+        return [self.mutablePartnerParameters copy];
+    }
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJAppStoreSubscription *copy = [[[self class] allocWithZone:zone] init];
+    @synchronized (self) {
+        ADJAppStoreSubscription *copy = [[[self class] allocWithZone:zone] init];
 
-    if (copy) {
-        copy->_price = [self.price copyWithZone:zone];
-        copy->_currency = [self.currency copyWithZone:zone];
-        copy->_transactionId = [self.transactionId copyWithZone:zone];
-        copy->_transactionDate = [self.transactionDate copyWithZone:zone];
-        copy->_salesRegion = [self.salesRegion copyWithZone:zone];
-        copy.mutableCallbackParameters = [self.mutableCallbackParameters copyWithZone:zone];
-        copy.mutablePartnerParameters = [self.mutablePartnerParameters copyWithZone:zone];
+        if (copy) {
+            copy->_price = [_price copyWithZone:zone];
+            copy->_currency = [_currency copyWithZone:zone];
+            copy->_transactionId = [_transactionId copyWithZone:zone];
+            copy->_transactionDate = [_transactionDate copyWithZone:zone];
+            copy->_salesRegion = [_salesRegion copyWithZone:zone];
+            copy.mutableCallbackParameters = [_mutableCallbackParameters mutableCopy];
+            copy.mutablePartnerParameters = [_mutablePartnerParameters mutableCopy];
+        }
+
+        return copy;
     }
-
-    return copy;
 }
 
 @end
