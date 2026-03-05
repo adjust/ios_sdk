@@ -57,17 +57,33 @@ static NSMutableDictionary *ADJDeepMutableCopyTwoLevelDictionary(NSDictionary *d
 
 @implementation ADJThirdPartySharing
 
+@synthesize enabled = _enabled;
+@synthesize granularOptions = _granularOptions;
+@synthesize partnerSharingSettings = _partnerSharingSettings;
+
 - (nullable id)initWithIsEnabled:(nullable NSNumber *)isEnabled {
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
-    _enabled = isEnabled;
+    _enabled = [isEnabled copy];
     _granularOptions = [[NSMutableDictionary alloc] init];
     _partnerSharingSettings = [[NSMutableDictionary alloc] init];
 
     return self;
+}
+
+- (NSMutableDictionary *)granularOptions {
+    @synchronized (self) {
+        return [_granularOptions mutableCopy];
+    }
+}
+
+- (NSMutableDictionary *)partnerSharingSettings {
+    @synchronized (self) {
+        return [_partnerSharingSettings mutableCopy];
+    }
 }
 
 - (void)addGranularOption:(nonnull NSString *)partnerName
@@ -78,13 +94,15 @@ static NSMutableDictionary *ADJDeepMutableCopyTwoLevelDictionary(NSDictionary *d
         return;
     }
 
-    NSMutableDictionary *partnerOptions = [self.granularOptions objectForKey:partnerName];
-    if (partnerOptions == nil) {
-        partnerOptions = [[NSMutableDictionary alloc] init];
-        [self.granularOptions setObject:partnerOptions forKey:partnerName];
-    }
+    @synchronized (self) {
+        NSMutableDictionary *partnerOptions = [_granularOptions objectForKey:partnerName];
+        if (partnerOptions == nil) {
+            partnerOptions = [[NSMutableDictionary alloc] init];
+            [_granularOptions setObject:partnerOptions forKey:partnerName];
+        }
 
-    [partnerOptions setObject:value forKey:key];
+        [partnerOptions setObject:[value copy] forKey:[key copy]];
+    }
 }
 
 - (void)addPartnerSharingSetting:(nonnull NSString *)partnerName
@@ -95,27 +113,31 @@ static NSMutableDictionary *ADJDeepMutableCopyTwoLevelDictionary(NSDictionary *d
         return;
     }
 
-    NSMutableDictionary *partnerSharingSetting = [self.partnerSharingSettings objectForKey:partnerName];
-    if (partnerSharingSetting == nil) {
-        partnerSharingSetting = [[NSMutableDictionary alloc] init];
-        [self.partnerSharingSettings setObject:partnerSharingSetting forKey:partnerName];
+    @synchronized (self) {
+        NSMutableDictionary *partnerSharingSetting = [_partnerSharingSettings objectForKey:partnerName];
+        if (partnerSharingSetting == nil) {
+            partnerSharingSetting = [[NSMutableDictionary alloc] init];
+            [_partnerSharingSettings setObject:partnerSharingSetting forKey:partnerName];
+        }
+        
+        [partnerSharingSetting setObject:[NSNumber numberWithBool:value] forKey:[key copy]];
     }
-    
-    [partnerSharingSetting setObject:[NSNumber numberWithBool:value] forKey:key];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJThirdPartySharing *copy =
-        [[[self class] allocWithZone:zone] initWithIsEnabled:[self.enabled copyWithZone:zone]];
+    @synchronized (self) {
+        ADJThirdPartySharing *copy =
+            [[[self class] allocWithZone:zone] initWithIsEnabled:[_enabled copyWithZone:zone]];
 
-    if (copy == nil) {
-        return nil;
+        if (copy == nil) {
+            return nil;
+        }
+
+        copy->_granularOptions = ADJDeepMutableCopyTwoLevelDictionary(_granularOptions);
+        copy->_partnerSharingSettings = ADJDeepMutableCopyTwoLevelDictionary(_partnerSharingSettings);
+
+        return copy;
     }
-
-    copy->_granularOptions = ADJDeepMutableCopyTwoLevelDictionary(self.granularOptions);
-    copy->_partnerSharingSettings = ADJDeepMutableCopyTwoLevelDictionary(self.partnerSharingSettings);
-
-    return copy;
 }
 
 @end
