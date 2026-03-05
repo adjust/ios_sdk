@@ -9,6 +9,12 @@
 #import <XCTest/XCTest.h>
 
 #import "../../Adjust/Adjust.h"
+#import "../../Adjust/ADJAdRevenue.h"
+#import "../../Adjust/ADJAppStorePurchase.h"
+#import "../../Adjust/ADJAppStoreSubscription.h"
+#import "../../Adjust/ADJDeeplink.h"
+#import "../../Adjust/ADJEvent.h"
+#import "../../Adjust/ADJThirdPartySharing.h"
 #import "../../Adjust/Internal/ADJActivityPackage.h"
 #import "../../Adjust/Internal/ADJActivityState.h"
 #import "../../Adjust/Internal/ADJEventMetadata.h"
@@ -637,6 +643,190 @@ static NSString * const kPackageQueueFilename = @"AdjustIoPackageQueue";
     XCTAssertNil(caughtException);
 }
 */
+
+- (void)testEventCopyStressSnapshotIsolation {
+    ADJEvent *event = [[ADJEvent alloc] initWithEventToken:@"ev1234"];
+    XCTAssertNotNil(event);
+
+    for (NSUInteger i = 0; i < 750; i++) {
+        @autoreleasepool {
+            NSString *callbackId = [NSString stringWithFormat:@"cb_%lu", (unsigned long)i];
+            NSString *dedupeId = [NSString stringWithFormat:@"dd_%lu", (unsigned long)i];
+            NSString *transactionId = [NSString stringWithFormat:@"tx_%lu", (unsigned long)i];
+            NSString *productId = [NSString stringWithFormat:@"prd_%lu", (unsigned long)i];
+            NSString *callbackValue = [NSString stringWithFormat:@"c_%lu", (unsigned long)i];
+            NSString *partnerValue = [NSString stringWithFormat:@"p_%lu", (unsigned long)i];
+
+            [event setRevenue:((double)i + 1.0) currency:@"EUR"];
+            [event setCallbackId:callbackId];
+            [event setDeduplicationId:dedupeId];
+            [event setTransactionId:transactionId];
+            [event setProductId:productId];
+            [event addCallbackParameter:@"cb_key" value:callbackValue];
+            [event addPartnerParameter:@"pt_key" value:partnerValue];
+
+            ADJEvent *snapshot = [event copy];
+            XCTAssertNotNil(snapshot);
+
+            [event setCallbackId:@"changed_after_copy"];
+            [event addCallbackParameter:@"cb_key" value:@"changed_after_copy"];
+            [event addPartnerParameter:@"pt_key" value:@"changed_after_copy"];
+
+            XCTAssertEqualObjects(snapshot.callbackId, callbackId);
+            XCTAssertEqualObjects(snapshot.deduplicationId, dedupeId);
+            XCTAssertEqualObjects(snapshot.transactionId, transactionId);
+            XCTAssertEqualObjects(snapshot.productId, productId);
+            XCTAssertEqualObjects(snapshot.callbackParameters[@"cb_key"], callbackValue);
+            XCTAssertEqualObjects(snapshot.partnerParameters[@"pt_key"], partnerValue);
+        }
+    }
+}
+
+- (void)testAdRevenueCopyStressSnapshotIsolation {
+    ADJAdRevenue *adRevenue = [[ADJAdRevenue alloc] initWithSource:@"admob"];
+    XCTAssertNotNil(adRevenue);
+
+    for (NSUInteger i = 0; i < 750; i++) {
+        @autoreleasepool {
+            NSString *callbackValue = [NSString stringWithFormat:@"c_%lu", (unsigned long)i];
+            NSString *partnerValue = [NSString stringWithFormat:@"p_%lu", (unsigned long)i];
+            NSString *network = [NSString stringWithFormat:@"net_%lu", (unsigned long)i];
+            NSString *unit = [NSString stringWithFormat:@"unit_%lu", (unsigned long)i];
+            NSString *placement = [NSString stringWithFormat:@"placement_%lu", (unsigned long)i];
+            NSNumber *impressions = @((int)i);
+
+            [adRevenue setRevenue:((double)i + 0.55) currency:@"USD"];
+            [adRevenue setAdImpressionsCount:(int)i];
+            [adRevenue setAdRevenueNetwork:network];
+            [adRevenue setAdRevenueUnit:unit];
+            [adRevenue setAdRevenuePlacement:placement];
+            [adRevenue addCallbackParameter:@"cb_key" value:callbackValue];
+            [adRevenue addPartnerParameter:@"pt_key" value:partnerValue];
+
+            ADJAdRevenue *snapshot = [adRevenue copy];
+            XCTAssertNotNil(snapshot);
+
+            [adRevenue setAdRevenueNetwork:@"changed_after_copy"];
+            [adRevenue addCallbackParameter:@"cb_key" value:@"changed_after_copy"];
+            [adRevenue addPartnerParameter:@"pt_key" value:@"changed_after_copy"];
+
+            XCTAssertEqualObjects(snapshot.callbackParameters[@"cb_key"], callbackValue);
+            XCTAssertEqualObjects(snapshot.partnerParameters[@"pt_key"], partnerValue);
+            XCTAssertEqualObjects(snapshot.adRevenueNetwork, network);
+            XCTAssertEqualObjects(snapshot.adRevenueUnit, unit);
+            XCTAssertEqualObjects(snapshot.adRevenuePlacement, placement);
+            XCTAssertEqualObjects(snapshot.adImpressionsCount, impressions);
+        }
+    }
+}
+
+- (void)testAppStoreSubscriptionCopyStressSnapshotIsolation {
+    ADJAppStoreSubscription *subscription =
+        [[ADJAppStoreSubscription alloc] initWithPrice:[NSDecimalNumber decimalNumberWithString:@"9.99"]
+                                              currency:@"EUR"
+                                         transactionId:@"tx_base"];
+    XCTAssertNotNil(subscription);
+
+    for (NSUInteger i = 0; i < 750; i++) {
+        @autoreleasepool {
+            NSDate *transactionDate = [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)(1700000000 + i)];
+            NSString *salesRegion = [NSString stringWithFormat:@"R%lu", (unsigned long)i];
+            NSString *callbackValue = [NSString stringWithFormat:@"c_%lu", (unsigned long)i];
+            NSString *partnerValue = [NSString stringWithFormat:@"p_%lu", (unsigned long)i];
+
+            [subscription setTransactionDate:transactionDate];
+            [subscription setSalesRegion:salesRegion];
+            [subscription addCallbackParameter:@"cb_key" value:callbackValue];
+            [subscription addPartnerParameter:@"pt_key" value:partnerValue];
+
+            ADJAppStoreSubscription *snapshot = [subscription copy];
+            XCTAssertNotNil(snapshot);
+
+            [subscription setSalesRegion:@"changed_after_copy"];
+            [subscription addCallbackParameter:@"cb_key" value:@"changed_after_copy"];
+            [subscription addPartnerParameter:@"pt_key" value:@"changed_after_copy"];
+
+            XCTAssertEqualObjects(snapshot.transactionDate, transactionDate);
+            XCTAssertEqualObjects(snapshot.salesRegion, salesRegion);
+            XCTAssertEqualObjects(snapshot.callbackParameters[@"cb_key"], callbackValue);
+            XCTAssertEqualObjects(snapshot.partnerParameters[@"pt_key"], partnerValue);
+        }
+    }
+}
+
+- (void)testAppStorePurchaseCopyStressCopiesAllFields {
+    for (NSUInteger i = 0; i < 2500; i++) {
+        @autoreleasepool {
+            NSString *transactionId = [NSString stringWithFormat:@"tx_%lu", (unsigned long)i];
+            NSString *productId = [NSString stringWithFormat:@"prd_%lu", (unsigned long)i];
+
+            ADJAppStorePurchase *purchase =
+                [[ADJAppStorePurchase alloc] initWithTransactionId:transactionId
+                                                          productId:productId];
+            XCTAssertNotNil(purchase);
+
+            ADJAppStorePurchase *snapshot = [purchase copy];
+            XCTAssertNotNil(snapshot);
+            XCTAssertNotEqual(purchase, snapshot);
+            XCTAssertEqualObjects(snapshot.transactionId, transactionId);
+            XCTAssertEqualObjects(snapshot.productId, productId);
+        }
+    }
+}
+
+- (void)testThirdPartySharingCopyStressSnapshotIsolation {
+    ADJThirdPartySharing *thirdPartySharing = [[ADJThirdPartySharing alloc] initWithIsEnabled:@YES];
+    XCTAssertNotNil(thirdPartySharing);
+
+    for (NSUInteger i = 0; i < 500; i++) {
+        @autoreleasepool {
+            NSString *key = [NSString stringWithFormat:@"k_%lu", (unsigned long)i];
+            NSString *value = [NSString stringWithFormat:@"v_%lu", (unsigned long)i];
+            BOOL enabled = ((i % 2) == 0);
+
+            [thirdPartySharing addGranularOption:@"partner_a" key:key value:value];
+            [thirdPartySharing addPartnerSharingSetting:@"partner_a" key:key value:enabled];
+
+            ADJThirdPartySharing *snapshot = [thirdPartySharing copy];
+            XCTAssertNotNil(snapshot);
+
+            [thirdPartySharing addGranularOption:@"partner_a" key:key value:@"changed_after_copy"];
+            [thirdPartySharing addPartnerSharingSetting:@"partner_a" key:key value:!enabled];
+
+            NSDictionary *snapshotGranularPartner = snapshot.granularOptions[@"partner_a"];
+            NSDictionary *snapshotPartnerSettings = snapshot.partnerSharingSettings[@"partner_a"];
+            XCTAssertEqualObjects(snapshotGranularPartner[key], value);
+            XCTAssertEqualObjects(snapshotPartnerSettings[key], @(enabled));
+
+            [snapshot addGranularOption:@"partner_a" key:@"copy_only" value:@"yes"];
+            NSDictionary *sourceGranularPartner = thirdPartySharing.granularOptions[@"partner_a"];
+            XCTAssertNil(sourceGranularPartner[@"copy_only"]);
+        }
+    }
+}
+
+- (void)testDeeplinkCopyStressSnapshotIsolation {
+    ADJDeeplink *deeplink = [[ADJDeeplink alloc] initWithDeeplink:[NSURL URLWithString:@"adjust-test://open"]];
+    XCTAssertNotNil(deeplink);
+
+    for (NSUInteger i = 0; i < 1000; i++) {
+        @autoreleasepool {
+            NSString *referrerString = [NSString stringWithFormat:@"https://example.com/ref/%lu", (unsigned long)i];
+            NSString *changedReferrerString = [NSString stringWithFormat:@"https://example.com/changed/%lu", (unsigned long)i];
+            NSURL *referrer = [NSURL URLWithString:referrerString];
+            NSURL *changedReferrer = [NSURL URLWithString:changedReferrerString];
+
+            [deeplink setReferrer:referrer];
+            ADJDeeplink *snapshot = [deeplink copy];
+            XCTAssertNotNil(snapshot);
+
+            [deeplink setReferrer:changedReferrer];
+
+            XCTAssertEqualObjects(snapshot.deeplink.absoluteString, @"adjust-test://open");
+            XCTAssertEqualObjects(snapshot.referrer.absoluteString, referrerString);
+        }
+    }
+}
 
 - (void)testDictionaryDeepCopyReturnsIndependentData {
     NSMutableDictionary *nestedSource = [@{@"inner": @"value"} mutableCopy];
