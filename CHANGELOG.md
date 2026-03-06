@@ -1,3 +1,10 @@
+### Version 5.5.3 (6th March 2026)
+#### Fixed
+- Web view bridge security hardening
+
+#### Changed
+- Drop support for embedded iframe for security reasons
+
 ### Version 5.5.2 (23rd January 2026)
 #### Added
 - Added `AdjustGoogleOdmPlugin` subspec which does not depend on the main `Adjust` subspec.
