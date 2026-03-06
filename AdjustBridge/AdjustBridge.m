@@ -13,6 +13,8 @@
 
 #import <AdjustSdk/AdjustSdk.h>
 
+static NSUInteger const kADJWBMaxCallbackIdLength = 128;
+
 @interface AdjustBridge() <WKScriptMessageHandler, AdjustDelegate>
 
 @property BOOL isDeferredDeeplinkOpeningEnabled;
@@ -65,7 +67,7 @@
         [controller addUserScript:[[WKUserScript.class alloc]
                                    initWithSource:adjust_js
                                    injectionTime:WKUserScriptInjectionTimeAtDocumentStart
-                                   forMainFrameOnly:NO]];
+                                   forMainFrameOnly:YES]];
         [controller addScriptMessageHandler:self name:@"adjust"];
     }
 }
@@ -83,6 +85,13 @@
 
 - (void)userContentController:(nonnull WKUserContentController *)userContentController
       didReceiveScriptMessage:(nonnull WKScriptMessage *)message {
+    if (![message.name isEqualToString:@"adjust"]) {
+        return;
+    }
+    if (message.frameInfo != nil && !message.frameInfo.isMainFrame) {
+        [self.logger warn:@"Ignoring bridge call from non-main frame"];
+        return;
+    }
     if ([message.body isKindOfClass:[NSDictionary class]]) {
         [self handleMessageFromWebview:message.body];
     }
@@ -92,8 +101,17 @@
 
 - (void)handleMessageFromWebview:(NSDictionary<NSString *,id> *)message {
     NSString *methodName = [message objectForKey:ADJWBMethodNameKey];
-    NSString *callbackId = [message objectForKey:ADJWBCallbackIdKey];
+    NSString *callbackId = [self validatedCallbackId:[message objectForKey:ADJWBCallbackIdKey]];
     id parameters = [message objectForKey:ADJWBParametersKey];
+
+    if (![methodName isKindOfClass:[NSString class]] || methodName.length == 0) {
+        [self.logger warn:@"Ignoring bridge call without valid method name"];
+        return;
+    }
+    if ([self methodRequiresCallbackId:methodName] && callbackId == nil) {
+        [self.logger warn:@"Ignoring %@ call with invalid callbackId", methodName];
+        return;
+    }
 
     if ([methodName isEqual:ADJWBInitSdkMethodName]) {
         [self initSdk:parameters];
@@ -194,6 +212,8 @@
         [self setTestOptions:parameters];
     } else if ([methodName isEqual:ADJWBFBPixelEventMethodName]) {
         [self trackFbPixelEvent:parameters];
+    } else {
+        [self.logger warn:@"Ignoring unknown bridge method: %@", methodName];
     }
 }
 
@@ -366,25 +386,25 @@
     }
 
     if ([AdjustBridgeUtil isFieldValid:attributionCallback]) {
-        self.attributionCallbackName = attributionCallback;
+        self.attributionCallbackName = [self validatedCallbackId:attributionCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:eventSuccessCallback]) {
-        self.eventSuccessCallbackName = eventSuccessCallback;
+        self.eventSuccessCallbackName = [self validatedCallbackId:eventSuccessCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:eventFailureCallback]) {
-        self.eventFailureCallbackName = eventFailureCallback;
+        self.eventFailureCallbackName = [self validatedCallbackId:eventFailureCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:sessionSuccessCallback]) {
-        self.sessionSuccessCallbackName = sessionSuccessCallback;
+        self.sessionSuccessCallbackName = [self validatedCallbackId:sessionSuccessCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:sessionFailureCallback]) {
-        self.sessionFailureCallbackName = sessionFailureCallback;
+        self.sessionFailureCallbackName = [self validatedCallbackId:sessionFailureCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:deferredDeeplinkCallback]) {
-        self.deferredDeeplinkCallbackName = deferredDeeplinkCallback;
+        self.deferredDeeplinkCallbackName = [self validatedCallbackId:deferredDeeplinkCallback];
     }
     if ([AdjustBridgeUtil isFieldValid:skanUpdatedCallback]) {
-        self.skanUpdatedCallbackName = skanUpdatedCallback;
+        self.skanUpdatedCallbackName = [self validatedCallbackId:skanUpdatedCallback];
     }
 
     // set self as delegate if any callback is configured
@@ -495,17 +515,63 @@
 
 #pragma mark - Native to Javascript Callback Handling
 
+- (BOOL)methodRequiresCallbackId:(NSString *)methodName {
+    return [methodName isEqual:ADJWBGetSdkVersionMethodName]
+        || [methodName isEqual:ADJWBGetIdfaMethodName]
+        || [methodName isEqual:ADJWBGetIdfvMethodName]
+        || [methodName isEqual:ADJWBGetAdidMethodName]
+        || [methodName isEqual:ADJWBGetAdidWithTimeoutMethodName]
+        || [methodName isEqual:ADJWBGetAttributionMethodName]
+        || [methodName isEqual:ADJWBGetAttributionWithTimeoutMethodName]
+        || [methodName isEqual:ADJWBIsEnabledMethodName]
+        || [methodName isEqual:ADJWBRequestAppTrackingMethodName]
+        || [methodName isEqual:ADJWBAppTrackingAuthorizationStatus];
+}
+
+- (nullable NSString *)validatedCallbackId:(id)callbackId {
+    if (![callbackId isKindOfClass:[NSString class]]) {
+        return nil;
+    }
+
+    NSString *callbackIdString = (NSString *)callbackId;
+    if (callbackIdString.length == 0 || callbackIdString.length > kADJWBMaxCallbackIdLength) {
+        return nil;
+    }
+
+    static NSRegularExpression *callbackIdRegex = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        callbackIdRegex = [NSRegularExpression regularExpressionWithPattern:@"^adjust_[A-Za-z0-9_]+$"
+                                                                    options:0
+                                                                      error:nil];
+    });
+    if (callbackIdRegex == nil) {
+        return nil;
+    }
+
+    NSRange fullRange = NSMakeRange(0, callbackIdString.length);
+    NSUInteger matches = [callbackIdRegex numberOfMatchesInString:callbackIdString options:0 range:fullRange];
+    return matches == 1 ? callbackIdString : nil;
+}
+
 - (void)execJsCallbackWithId:(NSString *)callbackId callbackData:(id)data {
-    NSString *callbackParamString;
-    if ([data isKindOfClass:[NSMutableDictionary class]] || [data isKindOfClass:[NSDictionary class]]) {
-        callbackParamString = [AdjustBridgeUtil serializeData:data];
+    NSString *validatedCallbackId = [self validatedCallbackId:callbackId];
+    if (validatedCallbackId == nil || self.wkWebView == nil) {
+        return;
     }
 
-    if ([data isKindOfClass:[NSString class]]){
-        callbackParamString = data;
+    NSDictionary *callbackPayload = @{
+        @"callbackId": validatedCallbackId,
+        @"data": data == nil ? [NSNull null] : data
+    };
+    NSString *serializedPayload = [AdjustBridgeUtil serializeObjectToJsonString:callbackPayload];
+    if (serializedPayload == nil) {
+        return;
     }
 
-    NSString *jsExecCommand = [NSString stringWithFormat:@"%@('%@')", callbackId, callbackParamString];
+    NSString *jsExecCommand =
+        [NSString stringWithFormat:@"if (window.Adjust && typeof Adjust._nativeCallback === 'function') { "
+         "Adjust._nativeCallback(%@); }", serializedPayload];
 
     [AdjustBridgeUtil launchInMainThread:^{
         [self.wkWebView evaluateJavaScript:jsExecCommand completionHandler:nil];
