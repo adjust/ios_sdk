@@ -200,8 +200,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
 
     // checking consent related parameters at the package sending moment
     ADJConfig *configSnapshot = self.adjustConfig;
-    if (self.activityHandler != nil
-        && [self.activityHandler respondsToSelector:@selector(adjustConfigCopy)]) {
+    if (self.activityHandler != nil) {
         ADJConfig *activityConfig = [self.activityHandler adjustConfigCopy];
         if (activityConfig != nil) {
             configSnapshot = activityConfig;

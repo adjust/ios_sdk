@@ -272,9 +272,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         if (error != nil) {
             return nil;
         }
-        if ([unarchiver respondsToSelector:@selector(setDecodingFailurePolicy:)]) {
-            unarchiver.decodingFailurePolicy = NSDecodingFailurePolicySetErrorAndReturn;
-        }
+        unarchiver.decodingFailurePolicy = NSDecodingFailurePolicySetErrorAndReturn;
         [unarchiver setRequiresSecureCoding:YES];
         resObject = [unarchiver decodeObjectOfClasses:allowedClasses
                                                forKey:NSKeyedArchiveRootObjectKey];
