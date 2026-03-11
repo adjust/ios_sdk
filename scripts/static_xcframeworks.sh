@@ -9,20 +9,20 @@ ARCHIVE_LOCATION_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_STATIC_XCFRMKS_F
 if [[ $BUILD_TARGET_IOS -eq 1 ]] || [[ $BUILD_TARGET_TVOS -eq 1 ]]
 then
 
-  TRAGET_PLATFORM_DESCRIPTION=""
+  TARGET_PLATFORM_DESCRIPTION=""
   if [[ $BUILD_TARGET_IOS -eq 1 ]] && [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
-    TRAGET_PLATFORM_DESCRIPTION="iOS and tvOS"
+    TARGET_PLATFORM_DESCRIPTION="iOS and tvOS"
   elif [[ $BUILD_TARGET_IOS -eq 1 ]]
   then
-    TRAGET_PLATFORM_DESCRIPTION="iOS"
+    TARGET_PLATFORM_DESCRIPTION="iOS"
   elif [[ $BUILD_TARGET_TVOS -eq 1 ]]
   then
-    TRAGET_PLATFORM_DESCRIPTION="tvOS"
+    TARGET_PLATFORM_DESCRIPTION="tvOS"
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TARGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   xcodebuild clean
@@ -56,7 +56,7 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Static XCFramework for ${TARGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   ARCHIVE_FRAMEWORK_PATH_WITH_PARENT_FOLDER=""
@@ -111,7 +111,7 @@ then
   fi
 
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
-  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for ${TRAGET_PLATFORM_DESCRIPTION} ...${NC}"
+  echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Signing and Archiving (ZIP) Static XCFramework for ${TARGET_PLATFORM_DESCRIPTION} ...${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
 
   codesign -s "$SDK_CODE_SIGN_IDENTITY" -f --timestamp "${XCFRAMEWORK_OUTPUT_PATH}"
