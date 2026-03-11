@@ -173,20 +173,20 @@ Usage: $0 [options]
     XCF_OUTPUT_STATIC_FRMKS_FOLDER="frameworks-static"
 
     # Static 
-    XCF_OUTPUT_FRMK_IOS_TV_FOLDER_STATIC="AdjustSdk-iOS-tvOS-static"
-    XCF_OUTPUT_FRMK_IOS_FOLDER_STATIC="AdjustSdk-iOS-static"
-    XCF_OUTPUT_FRMK_TV_FOLDER_STATIC="AdjustSdk-tvOS-static"
-    XCF_OUTPUT_FRMK_IM_FOLDER_STATIC="AdjustSdk-iMessage-static"
-    XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_STATIC="AdjustSdk-WebBridge-static"
-    XCF_OUTPUT_FRMK_ODM_FOLDER_STATIC="AdjustOdmPlugin-static"
+    XCF_OUTPUT_FRMK_IOS_TV_FOLDER_STATIC="AdjustSdk-iOS-tvOS-Static"
+    XCF_OUTPUT_FRMK_IOS_FOLDER_STATIC="AdjustSdk-iOS-Static"
+    XCF_OUTPUT_FRMK_TV_FOLDER_STATIC="AdjustSdk-tvOS-Static"
+    XCF_OUTPUT_FRMK_IM_FOLDER_STATIC="AdjustSdk-iMessage-Static"
+    XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_STATIC="AdjustSdk-WebBridge-Static"
+    XCF_OUTPUT_FRMK_ODM_FOLDER_STATIC="AdjustOdmPlugin-Static"
 
     # Dynamic
-    XCF_OUTPUT_FRMK_IOS_TV_FOLDER_DYNAMIC="AdjustSdk-iOS-tvOS-dynamic"
-    XCF_OUTPUT_FRMK_IOS_FOLDER_DYNAMIC="AdjustSdk-iOS-dynamic"
-    XCF_OUTPUT_FRMK_TV_FOLDER_DYNAMIC="AdjustSdk-tvOS-dynamic"
-    XCF_OUTPUT_FRMK_IM_FOLDER_DYNAMIC="AdjustSdk-iMessage-dynamic"
-    XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_DYNAMIC="AdjustSdk-WebBridge-dynamic"
-    XCF_OUTPUT_FRMK_ODM_FOLDER_DYNAMIC="AdjustOdmPlugin-dynamic"
+    XCF_OUTPUT_FRMK_IOS_TV_FOLDER_DYNAMIC="AdjustSdk-iOS-tvOS-Dynamic"
+    XCF_OUTPUT_FRMK_IOS_FOLDER_DYNAMIC="AdjustSdk-iOS-Dynamic"
+    XCF_OUTPUT_FRMK_TV_FOLDER_DYNAMIC="AdjustSdk-tvOS-Dynamic"
+    XCF_OUTPUT_FRMK_IM_FOLDER_DYNAMIC="AdjustSdk-iMessage-Dynamic"
+    XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_DYNAMIC="AdjustSdk-WebBridge-Dynamic"
+    XCF_OUTPUT_FRMK_ODM_FOLDER_DYNAMIC="AdjustOdmPlugin-Dynamic"
 
     # SDK Schema names - Dynamic
     SCHEMA_NAME__ADJUST_IOS="AdjustSdk"
