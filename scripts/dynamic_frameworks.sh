@@ -9,7 +9,7 @@ echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} Dynamic Frameworks build - START... ${N
 if [[ $BUILD_TARGET_IOS -eq 1 ]]
 then
   TEMP_OUTPUT_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMKS_FOLDER}/${XCF_OUTPUT_FRMK_IOS_FOLDER_DYNAMIC}-framework"
-  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_IOS_FOLDER_DYNAMIC}-framework-${SDK_VERSION}.zip"
+  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_IOS_FOLDER_DYNAMIC}-${SDK_VERSION}.framework.zip"
   mkdir -p "${TEMP_OUTPUT_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Dynamic Frameworks for iOS...${NC}"
@@ -25,7 +25,7 @@ fi
 if [[ $BUILD_TARGET_TVOS -eq 1 ]]
 then
   TEMP_OUTPUT_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMKS_FOLDER}/${XCF_OUTPUT_FRMK_TV_FOLDER_DYNAMIC}-framework"
-  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_TV_FOLDER_DYNAMIC}-framework-${SDK_VERSION}.zip"
+  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_TV_FOLDER_DYNAMIC}-${SDK_VERSION}.framework.zip"
   mkdir -p "${TEMP_OUTPUT_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Dynamic Frameworks for tvOS...${NC}"
@@ -40,7 +40,7 @@ fi
 if [[ $BUILD_TARGET_IM -eq 1 ]]
 then
   TEMP_OUTPUT_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMKS_FOLDER}/${XCF_OUTPUT_FRMK_IM_FOLDER_DYNAMIC}-framework"
-  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_IM_FOLDER_DYNAMIC}-framework-${SDK_VERSION}.zip"
+  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_IM_FOLDER_DYNAMIC}-${SDK_VERSION}.framework.zip"
   mkdir -p "${TEMP_OUTPUT_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Dynamic Frameworks for iOS (iMessage)...${NC}"
@@ -55,7 +55,7 @@ fi
 if [[ $BUILD_TARGET_WEB_BRIDGE -eq 1 ]]
 then
   TEMP_OUTPUT_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMKS_FOLDER}/${XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_DYNAMIC}-framework"
-  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_DYNAMIC}-framework-${SDK_VERSION}.zip"
+  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_WEB_BRIDGE_FOLDER_DYNAMIC}-${SDK_VERSION}.framework.zip"
   mkdir -p "${TEMP_OUTPUT_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Dynamic Frameworks for iOS (WebBridge)...${NC}"
@@ -71,7 +71,7 @@ fi
 if [[ $BUILD_TARGET_ODM_FRAMEWORK -eq 1 ]]
 then
   TEMP_OUTPUT_FOLDER="${XCF_OUTPUT_ROOT_FOLDER}/${XCF_OUTPUT_DYNAMIC_FRMKS_FOLDER}/${XCF_OUTPUT_FRMK_ODM_FOLDER_DYNAMIC}-framework"
-  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_ODM_FOLDER_DYNAMIC}-framework-${SDK_VERSION}.zip"
+  ARCHIVE_FILE_NAME="${XCF_OUTPUT_FRMK_ODM_FOLDER_DYNAMIC}-${SDK_VERSION}.framework.zip"
   mkdir -p "${TEMP_OUTPUT_FOLDER}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =${NC}"
   echo -e "${CYAN}[ADJUST][BUILD]:${GREEN} XCFramework: Building Dynamic Frameworks for ODM Plugin...${NC}"
