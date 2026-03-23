@@ -199,8 +199,16 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
                                                                    andAttStatus:paramsAttStatusInt];
 
     // checking consent related parameters at the package sending moment
+    ADJConfig *configSnapshot = self.adjustConfig;
+    if (self.activityHandler != nil) {
+        ADJConfig *activityConfig = [self.activityHandler adjustConfigCopy];
+        if (activityConfig != nil) {
+            configSnapshot = activityConfig;
+        }
+    }
+
     int currentAttStatus = -1;
-    if (self.adjustConfig.isAppTrackingTransparencyUsageEnabled) {
+    if (configSnapshot.isAppTrackingTransparencyUsageEnabled) {
         currentAttStatus = [ADJUtil attStatus];
     }
     BOOL isConsentWhenSending = [ADJUtil shouldUseConsentParamsForActivityKind:responseData.activityKind
@@ -208,7 +216,7 @@ static NSString * const ADJMethodPOST = @"MethodPOST";
     if (wasConsentWhenCreated != isConsentWhenSending) {
         if (isConsentWhenSending) {
             [ADJPackageBuilder addConsentDataToParameters:params
-                                            configuration:self.adjustConfig];
+                                            configuration:configSnapshot];
         } else {
             [ADJPackageBuilder removeConsentDataFromParameters:params];
         }

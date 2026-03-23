@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ADJThirdPartySharing : NSObject
+@interface ADJThirdPartySharing : NSObject<NSCopying>
 
 @property (nonatomic, nullable, readonly, strong) NSNumber *enabled;
 
@@ -27,4 +27,3 @@
                            value:(BOOL)value;
 
 @end
-

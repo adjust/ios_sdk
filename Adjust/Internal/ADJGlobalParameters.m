@@ -7,6 +7,7 @@
 //
 
 #import "ADJGlobalParameters.h"
+#import "ADJUtil.h"
 
 @implementation ADJGlobalParameters
 
@@ -18,6 +19,17 @@
     }
 
     return self;
+}
+
+- (ADJGlobalParameters *)deepCopy {
+    ADJGlobalParameters *copy = [[ADJGlobalParameters alloc] init];
+    copy.callbackParameters = self.callbackParameters != nil
+        ? [[ADJUtil dictionaryDeepCopy:self.callbackParameters] mutableCopy]
+        : nil;
+    copy.partnerParameters = self.partnerParameters != nil
+        ? [[ADJUtil dictionaryDeepCopy:self.partnerParameters] mutableCopy]
+        : nil;
+    return copy;
 }
 
 #pragma mark - NSCopying

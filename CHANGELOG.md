@@ -1,9 +1,20 @@
+### Version 5.5.4 (23rd March 2026)
+#### Added
+- Added dedicated ODM plugin framework targets.
+
+#### Changed
+- Hardened SDK persistence and asynchronous processing against crashes caused by concurrent mutation of shared state and API objects.
+
+---
+
 ### Version 5.5.3 (6th March 2026)
 #### Fixed
 - Web view bridge security hardening
 
 #### Changed
 - Drop support for embedded iframe for security reasons
+
+---
 
 ### Version 5.5.2 (23rd January 2026)
 #### Added

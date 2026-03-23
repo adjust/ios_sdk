@@ -1,0 +1,6 @@
+framework module AdjustOdmPlugin {
+  umbrella header "ADJOdmPlugin.h"
+
+  export *
+  module * { export * }
+}

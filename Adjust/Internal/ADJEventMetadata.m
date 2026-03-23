@@ -48,6 +48,12 @@
     return retVal;
 }
 
+- (ADJEventMetadata *)deepCopy {
+    ADJEventMetadata *copy = [[ADJEventMetadata alloc] init];
+    copy.eventSequence = [[ADJUtil dictionaryDeepCopy:self.eventSequence] mutableCopy];
+    return copy;
+}
+
 #pragma mark - NSCoding protocol methods
 
 - (id)initWithCoder:(NSCoder *)decoder {

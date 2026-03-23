@@ -37,15 +37,17 @@
 - (void)setRevenue:(double)amount currency:(NSString *)currency {
     NSNumber *revenue = [NSNumber numberWithDouble:amount];
 
-    _revenue = revenue;
     @synchronized (self) {
+        _revenue = revenue;
         _currency = [currency copy];
     }
 }
 
 - (void)setAdImpressionsCount:(int)adImpressionsCount {
     NSNumber *nAdImpressionsCount = [NSNumber numberWithInt:adImpressionsCount];
-    _adImpressionsCount = nAdImpressionsCount;
+    @synchronized (self) {
+        _adImpressionsCount = nAdImpressionsCount;
+    }
 }
 
 - (void)setAdRevenueNetwork:(nonnull NSString *)adRevenueNetwork {
@@ -128,13 +130,13 @@
 
 - (NSDictionary *)callbackParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.mutableCallbackParameters;
+        return [self.mutableCallbackParameters copy];
     }
 }
 
 - (NSDictionary *)partnerParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.mutablePartnerParameters;
+        return [self.mutablePartnerParameters copy];
     }
 }
 
@@ -143,21 +145,23 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJAdRevenue *copy = [[[self class] allocWithZone:zone] init];
+    @synchronized (self) {
+        ADJAdRevenue *copy = [[[self class] allocWithZone:zone] init];
 
-    if (copy) {
-        copy->_source = [self.source copyWithZone:zone];
-        copy->_revenue = [self.revenue copyWithZone:zone];
-        copy->_currency = [self.currency copyWithZone:zone];
-        copy.mutableCallbackParameters = [self.mutableCallbackParameters copyWithZone:zone];
-        copy.mutablePartnerParameters = [self.mutablePartnerParameters copyWithZone:zone];
-        copy->_adImpressionsCount = [self.adImpressionsCount copyWithZone:zone];
-        copy->_adRevenueUnit = [self.adRevenueUnit copyWithZone:zone];
-        copy->_adRevenueNetwork = [self.adRevenueNetwork copyWithZone:zone];
-        copy->_adRevenuePlacement = [self.adRevenuePlacement copyWithZone:zone];
+        if (copy) {
+            copy->_source = [_source copyWithZone:zone];
+            copy->_revenue = [_revenue copyWithZone:zone];
+            copy->_currency = [_currency copyWithZone:zone];
+            copy.mutableCallbackParameters = [_mutableCallbackParameters mutableCopy];
+            copy.mutablePartnerParameters = [_mutablePartnerParameters mutableCopy];
+            copy->_adImpressionsCount = [_adImpressionsCount copyWithZone:zone];
+            copy->_adRevenueUnit = [_adRevenueUnit copyWithZone:zone];
+            copy->_adRevenueNetwork = [_adRevenueNetwork copyWithZone:zone];
+            copy->_adRevenuePlacement = [_adRevenuePlacement copyWithZone:zone];
+        }
+
+        return copy;
     }
-
-    return copy;
 }
 
 @end

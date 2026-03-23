@@ -13,35 +13,36 @@
 
 // Data
 
-@property (nonatomic, copy) NSString *path;
+@property (atomic, copy) NSString *path;
 
-@property (nonatomic, copy) NSString *clientSdk;
+@property (atomic, copy) NSString *clientSdk;
 
-@property (nonatomic, strong) NSMutableDictionary *parameters;
+@property (atomic, copy) NSDictionary *parameters;
 
-@property (nonatomic, strong) NSDictionary *partnerParameters;
+@property (atomic, copy) NSDictionary *partnerParameters;
 
-@property (nonatomic, strong) NSDictionary *callbackParameters;
+@property (atomic, copy) NSDictionary *callbackParameters;
 
-@property (nonatomic, copy) void (^purchaseVerificationCallback)(id);
+@property (atomic, copy) void (^purchaseVerificationCallback)(id);
 
-@property (nonatomic, strong) ADJEvent *event;
+@property (atomic, strong) ADJEvent *event;
 
-@property (nonatomic, assign) NSUInteger errorCount;
+@property (atomic, assign) NSUInteger errorCount;
 
-@property (nonatomic, copy) NSNumber *firstErrorCode;
+@property (atomic, copy) NSNumber *firstErrorCode;
 
-@property (nonatomic, copy) NSNumber *lastErrorCode;
+@property (atomic, copy) NSNumber *lastErrorCode;
 
-@property (nonatomic, assign) double waitBeforeSend;
+@property (atomic, assign) double waitBeforeSend;
 
 - (void)addError:(NSNumber *)errorCode;
+- (ADJActivityPackage *)deepCopy;
 
 // Logs
 
-@property (nonatomic, copy) NSString *suffix;
+@property (atomic, copy) NSString *suffix;
 
-@property (nonatomic, assign) ADJActivityKind activityKind;
+@property (atomic, assign) ADJActivityKind activityKind;
 
 - (NSString *)extendedString;
 

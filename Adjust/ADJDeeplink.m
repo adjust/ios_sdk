@@ -27,4 +27,21 @@
     }
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    ADJDeeplink *copy = [[[self class] allocWithZone:zone] initWithDeeplink:[self.deeplink copyWithZone:zone]];
+    if (copy == nil) {
+        return nil;
+    }
+
+    NSURL *referrerSnapshot = nil;
+    @synchronized (self) {
+        referrerSnapshot = [self.referrer copyWithZone:zone];
+    }
+    if (referrerSnapshot != nil) {
+        [copy setReferrer:referrerSnapshot];
+    }
+
+    return copy;
+}
+
 @end

@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		04D4FCD9462729168F7CD183 /* headers/ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D9FBCE11CA9846259EBFF1A /* headers/ADJOdmPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07000F922C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07000F932C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07000F942C47BEAF00F40775 /* AdjustBridgeConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 07000F902C47BEAF00F40775 /* AdjustBridgeConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -62,6 +63,7 @@
 		07D5CB112C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB122C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
 		07D5CB132C57DA2400C112DC /* AdjustBridgeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D5CB0D2C57DA2400C112DC /* AdjustBridgeUtil.m */; };
+		07E205CB122C59D094F99462 /* sources/cocoapods/ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CC466E23719620DCF7C57 /* sources/cocoapods/ADJOdmPlugin.m */; };
 		0A4EBA6E2ED8BE0700286E99 /* ADJEventMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EBA6D2ED8BE0700286E99 /* ADJEventMetadata.m */; };
 		0A4EBA6F2ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
 		0A4EBA702ED8BE0700286E99 /* ADJEventMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A4EBA6C2ED8BE0700286E99 /* ADJEventMetadata.h */; };
@@ -688,8 +690,10 @@
 		0AEB8A2F2D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
 		0AEB8A302D8457E50089F15C /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */; };
 		0AEB8A312D8457E50089F15C /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */; };
+		6D4BDAF32E7FAFBBA21B23D5 /* sources/cocoapods/ADJOdmPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CC466E23719620DCF7C57 /* sources/cocoapods/ADJOdmPlugin.m */; };
 		6FAB784C2636DC0E00773869 /* ADJLinkResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FAB784A2636DC0E00773869 /* ADJLinkResolution.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FAB784D2636DC0E00773869 /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB784B2636DC0E00773869 /* ADJLinkResolution.m */; };
+		932DD85E3085B2ECD91BC79C /* headers/ADJOdmPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D9FBCE11CA9846259EBFF1A /* headers/ADJOdmPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9601CAE41C74B70600670879 /* ADJEventSuccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 9601CAE21C74B70600670879 /* ADJEventSuccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9601CAE51C74B70600670879 /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 9601CAE31C74B70600670879 /* ADJEventSuccess.m */; };
 		9601CAE81C74BAAE00670879 /* ADJEventFailure.h in Headers */ = {isa = PBXBuildFile; fileRef = 9601CAE61C74BAAE00670879 /* ADJEventFailure.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -744,6 +748,8 @@
 		96E5E39918BBB48A008E7B30 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E5E38018BBB48A008E7B30 /* ADJUtil.m */; };
 		96FCC53A1C186426007BBFE1 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = 96FCC5361C186426007BBFE1 /* ADJResponseData.h */; };
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
+		9D1AE8C42F471FCC006A30A6 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
+		9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */; };
 		9D2F23E22447CE5C00B7CA90 /* ADJAppStoreSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D2F23E32447CE5C00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -875,6 +881,13 @@
 			remoteGlobalIDString = 9D01676F20FF812B0029CFFF;
 			remoteInfo = "AdjustExample-iMessage MessagesExtension";
 		};
+		9D1AE8C52F471FCC006A30A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9679920518BBAE2800394606 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9679920C18BBAE2800394606;
+			remoteInfo = Adjust;
+		};
 		9D449DB91E6ED23400E7E80B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D449DB31E6ED23400E7E80B /* AdjustExample-iWatch.xcodeproj */;
@@ -976,6 +989,9 @@
 		0AEB8A1E2D8457E50089F15C /* ADJOdmManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJOdmManager.h; sourceTree = "<group>"; };
 		0AEB8A1F2D8457E50089F15C /* ADJOdmManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJOdmManager.m; sourceTree = "<group>"; };
 		0AF801082EAA82A9003F6A58 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		2CC38746B563E8CCDF2C380F /* libAdjustOdmPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdjustOdmPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3243A15A40CDCF6F3CDC1D4F /* ADJOdmPlugin.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = ADJOdmPlugin.modulemap; sourceTree = "<group>"; };
+		3D9FBCE11CA9846259EBFF1A /* headers/ADJOdmPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = headers/ADJOdmPlugin.h; sourceTree = "<group>"; };
 		52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PocketSocket.xcodeproj; path = PocketSocket/PocketSocket.xcodeproj; sourceTree = "<group>"; };
 		6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestLibrary.xcodeproj; path = AdjustTestLibrary/AdjustTestLibrary.xcodeproj; sourceTree = "<group>"; };
 		6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AdjustTestApp.xcodeproj; path = AdjustTestApp/AdjustTestApp.xcodeproj; sourceTree = "<group>"; };
@@ -984,6 +1000,8 @@
 		6FAB784B2636DC0E00773869 /* ADJLinkResolution.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJLinkResolution.m; sourceTree = "<group>"; };
 		6FBEE8F124E2C26F00FEF3F1 /* ADJUrlStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJUrlStrategy.h; sourceTree = "<group>"; };
 		6FBEE8F224E2C26F00FEF3F1 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJUrlStrategy.m; sourceTree = "<group>"; };
+		80DE5A0D5323F8CDDB2A89AD /* AdjustOdmPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustOdmPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C2CC466E23719620DCF7C57 /* sources/cocoapods/ADJOdmPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sources/cocoapods/ADJOdmPlugin.m; sourceTree = "<group>"; };
 		9601C19C1A31DD7F00A9AE21 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		9601C1A11A31DE0300A9AE21 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9601CAE21C74B70600670879 /* ADJEventSuccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADJEventSuccess.h; sourceTree = "<group>"; };
@@ -1046,6 +1064,8 @@
 		96FCC5371C186426007BBFE1 /* ADJResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJResponseData.m; sourceTree = "<group>"; };
 		9D0167FE20FF88DE0029CFFF /* AdjustExample-iMessage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AdjustExample-iMessage.xcodeproj"; path = "examples/AdjustExample-iMessage/AdjustExample-iMessage.xcodeproj"; sourceTree = "<group>"; };
 		9D0E2E02210B570600133B4F /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJTestsMutability.m; sourceTree = "<group>"; };
 		9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
 		9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
@@ -1135,6 +1155,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9D1AE8BD2F471FCC006A30A6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D1AE8C42F471FCC006A30A6 /* libAdjust.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9DE354CE2100726300D211C9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1156,12 +1184,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E8FFD8455C76319C6A42B09A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9B32D663BE1262761C85216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0A584B922C3E8B320071A651 /* ModuleMap */ = {
 			isa = PBXGroup;
 			children = (
+				3243A15A40CDCF6F3CDC1D4F /* ADJOdmPlugin.modulemap */,
 				0AF801082EAA82A9003F6A58 /* module.modulemap */,
 			);
 			path = ModuleMap;
@@ -1244,6 +1287,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8FDCD8586558938E38D2B2AD /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				FE27616E46A58A4CC875301D /* ODM */,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
 		9648C5E41CD1765E00A3B049 /* AdjustBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -1269,6 +1320,7 @@
 				0A584B932C3E8B5D0071A651 /* AdjustSignature */,
 				0A584DBD2C40FCA30071A651 /* Info */,
 				0A584B922C3E8B320071A651 /* ModuleMap */,
+				8FDCD8586558938E38D2B2AD /* Plugins */,
 				9679920F18BBAE2800394606 /* Frameworks */,
 				0A584B952C3E8B8D0071A651 /* UmbrellaHeaders */,
 				9679920E18BBAE2800394606 /* Products */,
@@ -1284,10 +1336,13 @@
 				9DFB06101D747070006D48FC /* AdjustSdk.framework */,
 				9DE354D22100726300D211C9 /* AdjustSdk.framework */,
 				9D0E2E02210B570600133B4F /* AdjustSdk.framework */,
+				80DE5A0D5323F8CDDB2A89AD /* AdjustOdmPlugin.framework */,
 				0AB1C97127DD450D00509231 /* libAdjustSdk.a */,
 				0AB1CA2527DF462200509231 /* libAdjustSdk.a */,
 				0AB1CA6827DF5D3200509231 /* libAdjustSdk.a */,
 				0AB1CAD527DF671300509231 /* libAdjustSdk.a */,
+				2CC38746B563E8CCDF2C380F /* libAdjustOdmPlugin.a */,
+				9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1352,6 +1407,7 @@
 		96E5E39A18BBB49E008E7B30 /* AdjustTests */ = {
 			isa = PBXGroup;
 			children = (
+				9D1AE8FE2F47218B006A30A6 /* AdjustUnitTests */,
 				52BD7374221C3EDB004F2E87 /* PocketSocket.xcodeproj */,
 				6F0842182007766700568A31 /* AdjustTestLibrary.xcodeproj */,
 				6F084240200776A000568A31 /* AdjustTestApp.xcodeproj */,
@@ -1367,6 +1423,14 @@
 				9D01680620FF88DE0029CFFF /* AdjustExample-iMessage MessagesExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9D1AE8FE2F47218B006A30A6 /* AdjustUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */,
+			);
+			path = AdjustUnitTests;
 			sourceTree = "<group>";
 		};
 		9D449DAC1E6ED20400E7E80B /* Example Apps */ = {
@@ -1487,6 +1551,16 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		FE27616E46A58A4CC875301D /* ODM */ = {
+			isa = PBXGroup;
+			children = (
+				3D9FBCE11CA9846259EBFF1A /* headers/ADJOdmPlugin.h */,
+				8C2CC466E23719620DCF7C57 /* sources/cocoapods/ADJOdmPlugin.m */,
+			);
+			name = ODM;
+			path = plugins/odm;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -1699,6 +1773,14 @@
 				0A584D792C3E97020071A651 /* ADJUserDefaults.h in Headers */,
 				9D7D3DFC2C49A8B200FACB18 /* ADJDeeplink.h in Headers */,
 				0A584D7A2C3E97020071A651 /* ADJUtil.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8F7CE9AAC81F9741850FE09B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				932DD85E3085B2ECD91BC79C /* headers/ADJOdmPlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1951,6 +2033,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F0541EBE5BD1F0A8CAAA7FE5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04D4FCD9462729168F7CD183 /* headers/ADJOdmPlugin.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -2026,6 +2116,24 @@
 			productReference = 0AB1CAD527DF671300509231 /* libAdjustSdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		5202D93F935ABF24263B79A4 /* AdjustOdmPluginStatic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3EEBD0F40E8A974F811A33B4 /* Build configuration list for PBXNativeTarget "AdjustOdmPluginStatic" */;
+			buildPhases = (
+				F0541EBE5BD1F0A8CAAA7FE5 /* Headers */,
+				A9653DD00DF506BCAF5A7401 /* Sources */,
+				E8FFD8455C76319C6A42B09A /* Frameworks */,
+				F71884CFD9665BDA6CD2576F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdjustOdmPluginStatic;
+			productName = AdjustOdmPlugin;
+			productReference = 2CC38746B563E8CCDF2C380F /* libAdjustOdmPlugin.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		9615158E1CD2CB2C0022D336 /* AdjustBridge */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9615159E1CD2CB2C0022D336 /* Build configuration list for PBXNativeTarget "AdjustBridge" */;
@@ -2079,6 +2187,26 @@
 			productName = AdjustSdkWebBridge;
 			productReference = 9D0E2E02210B570600133B4F /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		9D1AE8BF2F471FCC006A30A6 /* AdjustUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D1AE8DD2F471FCC006A30A6 /* Build configuration list for PBXNativeTarget "AdjustUnitTests" */;
+			buildPhases = (
+				9D1AE8BC2F471FCC006A30A6 /* Sources */,
+				9D1AE8BD2F471FCC006A30A6 /* Frameworks */,
+				9D1AE8BE2F471FCC006A30A6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9D1AE8C62F471FCC006A30A6 /* PBXTargetDependency */,
+			);
+			name = AdjustUnitTests;
+			packageProductDependencies = (
+			);
+			productName = AdjustUnitTests;
+			productReference = 9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		9DE354D12100726300D211C9 /* AdjustSdkIm */ = {
 			isa = PBXNativeTarget;
@@ -2134,6 +2262,23 @@
 			productReference = 9DFB06101D747070006D48FC /* AdjustSdk.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		C8A70423C2FDEBC9270FBA7B /* AdjustOdmPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8872F55EF071F4044B7C4E58 /* Build configuration list for PBXNativeTarget "AdjustOdmPlugin" */;
+			buildPhases = (
+				86F308B11B5DAD9C076F37BE /* Sources */,
+				F9B32D663BE1262761C85216 /* Frameworks */,
+				8F7CE9AAC81F9741850FE09B /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdjustOdmPlugin;
+			productName = AdjustOdmPlugin;
+			productReference = 80DE5A0D5323F8CDDB2A89AD /* AdjustOdmPlugin.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2164,6 +2309,9 @@
 					9D0E2E01210B570600133B4F = {
 						CreatedOnToolsVersion = 9.4.1;
 						ProvisioningStyle = Manual;
+					};
+					9D1AE8BF2F471FCC006A30A6 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 					9DE354D12100726300D211C9 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -2243,10 +2391,13 @@
 				9DE354D12100726300D211C9 /* AdjustSdkIm */,
 				9DFB060F1D747070006D48FC /* AdjustSdkTv */,
 				9D0E2E01210B570600133B4F /* AdjustSdkWebBridge */,
+				C8A70423C2FDEBC9270FBA7B /* AdjustOdmPlugin */,
 				0AB1C97027DD450D00509231 /* AdjustSdkStatic */,
 				0AB1CA2427DF462200509231 /* AdjustSdkTvStatic */,
 				0AB1CA6727DF5D3200509231 /* AdjustSdkImStatic */,
 				0AB1CAD427DF671300509231 /* AdjustSdkWebBridgeStatic */,
+				5202D93F935ABF24263B79A4 /* AdjustOdmPluginStatic */,
+				9D1AE8BF2F471FCC006A30A6 /* AdjustUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2397,6 +2548,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9D1AE8BE2F471FCC006A30A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9DE354D02100726300D211C9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2511,6 +2669,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$RW_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport RW_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nRW_FRAMEWORK_NAME=${PROJECT_NAME}\nRW_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nRW_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}Sdk.framework\"\n\nfunction build_static_library {\n    echo \"1\"\n    echo \"${BUILD_DIR}\"\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}/DependantBuilds\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${RW_INPUT_STATIC_LIB}\" \\\n\"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}Sdk\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${RW_FRAMEWORK_LOCATION}/Versions/A/${RW_FRAMEWORK_NAME}Sdk\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/static/${RW_FRAMEWORK_NAME}Sdk.framework/Versions/A/${RW_FRAMEWORK_NAME}Sdk\"\n\n# Copy the framework to the project directory\nditto \"${RW_FRAMEWORK_LOCATION}\" \"${SRCROOT}/Frameworks/static/${RW_FRAMEWORK_NAME}Sdk.framework\"\n\n# Add module.modulemap to static framework to make Swift users happy.\nmkdir -p \"${SRCROOT}/Frameworks/static/${RW_FRAMEWORK_NAME}Sdk.framework/Modules\"\ncp -a \"${SRCROOT}/ModuleMap/module.modulemap\" \"${SRCROOT}/Frameworks/static/${RW_FRAMEWORK_NAME}Sdk.framework/Modules/module.modulemap\"\n";
+		};
+		F71884CFD9665BDA6CD2576F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/static_framework/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n\n# Copy the static library into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/lib${PRODUCT_NAME}.a\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/${PRODUCT_NAME}\"\n\n# Add modulemap for ADJOdmPlugin to make Swift users happy.\nmkdir -p \"${FRAMEWORK_LOCN}/Modules\"\ncp -a \"${SRCROOT}/ModuleMap/ADJOdmPlugin.modulemap\" \"${FRAMEWORK_LOCN}/Modules/module.modulemap\"\n\n# Copy Resulting framework\nmkdir -p \"${SOURCE_ROOT}/sdk_distribution/${TARGET_NAME}/${PLATFORM_NAME}\"\nditto \"${FRAMEWORK_LOCN}\" \"${SOURCE_ROOT}/sdk_distribution/${TARGET_NAME}/${PLATFORM_NAME}/${PRODUCT_NAME}.framework\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2711,6 +2886,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		86F308B11B5DAD9C076F37BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D4BDAF32E7FAFBBA21B23D5 /* sources/cocoapods/ADJOdmPlugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9615158B1CD2CB2C0022D336 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2819,6 +3002,14 @@
 				0A584CA82C3E952C0071A651 /* ADJUserDefaults.m in Sources */,
 				0A584CA92C3E952C0071A651 /* ADJUtil.m in Sources */,
 				0A584CAA2C3E952C0071A651 /* AdjustBridge.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D1AE8BC2F471FCC006A30A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2966,9 +3157,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9653DD00DF506BCAF5A7401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E205CB122C59D094F99462 /* sources/cocoapods/ADJOdmPlugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9D1AE8C62F471FCC006A30A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9679920C18BBAE2800394606 /* Adjust */;
+			targetProxy = 9D1AE8C52F471FCC006A30A6 /* PBXContainerItemProxy */;
+		};
 		9DE7C9001AE68EF1001556E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9679920C18BBAE2800394606 /* Adjust */;
@@ -3198,6 +3402,32 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = AdjustSdk;
 				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustSdk;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4AC9D5CF658E49E460731F94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustOdmPlugin;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustOdmPlugin;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3492,6 +3722,69 @@
 			};
 			name = Release;
 		};
+		9D1AE8C72F471FCC006A30A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9D1AE8C82F471FCC006A30A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9DE354D72100726300D211C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3730,6 +4023,111 @@
 			};
 			name = Release;
 		};
+		C0C346CBE1BB7F21EE8EFE4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = AdjustOdmPlugin;
+				PUBLIC_HEADERS_FOLDER_PATH = include/AdjustOdmPlugin;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D874AD3015C17270539BA5D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Info/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustOdmPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E110785AF38144FBE9F34700 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = QGUGW9AUMK;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Info/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adjust.AdjustOdmPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3765,6 +4163,24 @@
 			buildConfigurations = (
 				0AB1CADC27DF671300509231 /* Debug */,
 				0AB1CADD27DF671300509231 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3EEBD0F40E8A974F811A33B4 /* Build configuration list for PBXNativeTarget "AdjustOdmPluginStatic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0C346CBE1BB7F21EE8EFE4C /* Debug */,
+				4AC9D5CF658E49E460731F94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8872F55EF071F4044B7C4E58 /* Build configuration list for PBXNativeTarget "AdjustOdmPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D874AD3015C17270539BA5D1 /* Debug */,
+				E110785AF38144FBE9F34700 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3810,6 +4226,15 @@
 			buildConfigurations = (
 				9D0E2E07210B570600133B4F /* Debug */,
 				9D0E2E08210B570600133B4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D1AE8DD2F471FCC006A30A6 /* Build configuration list for PBXNativeTarget "AdjustUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D1AE8C72F471FCC006A30A6 /* Debug */,
+				9D1AE8C82F471FCC006A30A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

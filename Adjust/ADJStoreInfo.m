@@ -30,14 +30,16 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJStoreInfo *copy = [[[self class] allocWithZone:zone] init];
+    @synchronized (self) {
+        ADJStoreInfo *copy = [[[self class] allocWithZone:zone] init];
 
-    if (copy) {
-        copy->_storeName = [self.storeName copyWithZone:zone];
-        copy->_storeAppId = [self.storeAppId copyWithZone:zone];
+        if (copy) {
+            copy->_storeName = [_storeName copyWithZone:zone];
+            copy->_storeAppId = [_storeAppId copyWithZone:zone];
+        }
+
+        return copy;
     }
-
-    return copy;
 }
 
 @end

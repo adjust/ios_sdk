@@ -26,6 +26,8 @@
 #import "ADJPurchaseVerificationHandler.h"
 #import "ADJPurchaseVerificationResult.h"
 #import "ADJAdRevenue.h"
+#import "ADJAppStorePurchase.h"
+#import "ADJAppStoreSubscription.h"
 #import "ADJDeeplink.h"
 #import <stdatomic.h>
 #import <stdbool.h>
@@ -46,6 +48,7 @@ static NSString   * const kGlobalCallbackParametersFilename     = @"AdjustSessio
 static NSString   * const kGlobalPartnerParametersFilename      = @"AdjustSessionPartnerParameters";
 static NSString   * const kAdjustPrefix                         = @"adjust_";
 static const char * const kInternalQueueName                    = "io.adjust.ActivityQueue";
+static const void * const kInternalQueueKey                     = &kInternalQueueKey;
 static const char * const kWaitingForAttQueueName               = "io.adjust.WaitingForAttQueue";
 static NSString   * const kForegroundTimerName                  = @"Foreground timer";
 static NSString   * const kBackgroundTimerName                  = @"Background timer";
@@ -137,6 +140,12 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)prepareDeeplinkI:(ADJActivityHandler *_Nullable)selfI
             deeplink:(NSURL *_Nullable)deeplink NS_EXTENSION_UNAVAILABLE_IOS("");
+- (BOOL)isInternalQueue;
+- (ADJActivityState *_Nullable)activityStateCopy;
+- (ADJGlobalParameters *_Nullable)globalParametersCopy;
+- (ADJPackageParams *_Nullable)packageParamsCopy;
+- (ADJConfig *_Nullable)adjustConfigCopy;
+- (void)updateActivityStateWithBlock:(void (^_Nonnull)(ADJActivityState * _Nonnull activityState))block;
 
 @end
 
@@ -217,7 +226,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         [ADJAdjustFactory.logger warn:@"App Tracking Transparency framework usage has been disabled"];
     }
 
-    self.adjustConfig = adjustConfig;
+    self.adjustConfig = [adjustConfig copy];
     self.savedPreLaunch = savedPreLaunch;
     self.adjustDelegate = adjustConfig.delegate;
     self.cachedDeeplinkResolutionCallback = deepLinkResolutionCallback;
@@ -228,11 +237,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self.logger lockLogLevel];
 
     // inject app token be available in activity state
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        [ADJActivityState saveAppToken:adjustConfig.appToken];
-        [ADJActivityState setEventDeduplicationIdsArraySize:adjustConfig.eventDeduplicationIdsMaxSize];
-    }];
+    [ADJActivityState saveAppToken:self.adjustConfig.appToken];
+    [ADJActivityState setEventDeduplicationIdsArraySize:self.adjustConfig.eventDeduplicationIdsMaxSize];
 
     // read files to have sync values available
     [self readAttribution];
@@ -290,6 +296,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     self.adServicesManager = [[ADJAdServicesManager alloc] initWithActivityHandler:self];
 
     self.internalQueue = dispatch_queue_create(kInternalQueueName, DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_set_specific(self.internalQueue, kInternalQueueKey, (void *)kInternalQueueKey, NULL);
 
     self.firstSessionDelayManager =
         [[ADJFirstSessionDelayManager alloc] initWithActivityHandler:self];
@@ -302,6 +309,111 @@ const BOOL kSkanRegisterLockWindow = NO;
     [self addNotificationObserver];
 
     return self;
+}
+
+- (BOOL)isInternalQueue {
+    return dispatch_get_specific(kInternalQueueKey) == kInternalQueueKey;
+}
+
+- (ADJActivityState *)activityStateCopy {
+    if (self.activityState == nil) {
+        return nil;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        return [self.activityState deepCopy];
+    }
+
+    __block ADJActivityState *snapshot = nil;
+    dispatch_sync(self.internalQueue, ^{
+        if (self.activityState != nil) {
+            snapshot = [self.activityState deepCopy];
+        }
+    });
+    return snapshot;
+}
+
+- (ADJGlobalParameters *)globalParametersCopy {
+    if (self.globalParameters == nil) {
+        return nil;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        return [self.globalParameters deepCopy];
+    }
+
+    __block ADJGlobalParameters *snapshot = nil;
+    dispatch_sync(self.internalQueue, ^{
+        if (self.globalParameters != nil) {
+            snapshot = [self.globalParameters deepCopy];
+        }
+    });
+    return snapshot;
+}
+
+- (ADJPackageParams *)packageParamsCopy {
+    if (self.packageParams == nil) {
+        return nil;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        return [self.packageParams copy];
+    }
+
+    __block ADJPackageParams *snapshot = nil;
+    dispatch_sync(self.internalQueue, ^{
+        if (self.packageParams != nil) {
+            snapshot = [self.packageParams copy];
+        }
+    });
+    return snapshot;
+}
+
+- (ADJPackageParams *)packageParamsForIdfaCache {
+    if (self.packageParams == nil) {
+        return nil;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        return self.packageParams;
+    }
+
+    __block ADJPackageParams *params = nil;
+    dispatch_sync(self.internalQueue, ^{
+        params = self.packageParams;
+    });
+    return params;
+}
+
+- (ADJConfig *)adjustConfigCopy {
+    if (self.adjustConfig == nil) {
+        return nil;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        return [self.adjustConfig copy];
+    }
+
+    __block ADJConfig *snapshot = nil;
+    dispatch_sync(self.internalQueue, ^{
+        if (self.adjustConfig != nil) {
+            snapshot = [self.adjustConfig copy];
+        }
+    });
+    return snapshot;
+}
+
+- (void)updateActivityStateWithBlock:(void (^)(ADJActivityState *activityState))block {
+    if (block == nil) {
+        return;
+    }
+    if (self.internalQueue == nil || [self isInternalQueue]) {
+        if (self.activityState != nil) {
+            block(self.activityState);
+        }
+        return;
+    }
+
+    dispatch_sync(self.internalQueue, ^{
+        if (self.activityState != nil) {
+            block(self.activityState);
+        }
+    });
 }
 
 - (void)applicationDidBecomeActive {
@@ -325,6 +437,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)trackEvent:(ADJEvent *)event {
+    ADJEvent *eventSnapshot = [event copy];
     [self.firstSessionDelayManager processApiAction:@"track event"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
@@ -332,7 +445,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         if (selfI.activityState == nil) {
             [selfI startI:selfI];
         }
-        [selfI eventI:selfI event:event];
+        [selfI eventI:selfI event:eventSnapshot];
     }];
 }
 
@@ -440,39 +553,45 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)processDeeplink:(ADJDeeplink *)deeplink withClickTime:(NSDate *)clickTime {
+    ADJDeeplink *deeplinkSnapshot = [deeplink copy];
+    NSDate *clickTimeSnapshot = [clickTime copy];
     [self.firstSessionDelayManager processApiAction:@"process deeplink"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI processDeeplinkI:selfI deeplink:deeplink clickTime:clickTime];
+        [selfI processDeeplinkI:selfI deeplink:deeplinkSnapshot clickTime:clickTimeSnapshot];
     }];
 }
 
 - (void)processAndResolveDeeplink:(ADJDeeplink * _Nullable)deeplink
                         clickTime:(NSDate * _Nullable)clickTime
             withCompletionHandler:(ADJResolvedDeeplinkBlock _Nullable)completion {
+    ADJDeeplink *deeplinkSnapshot = [deeplink copy];
+    NSDate *clickTimeSnapshot = [clickTime copy];
     [self.firstSessionDelayManager processApiAction:@"process and resolve deeplink"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
         selfI.cachedDeeplinkResolutionCallback = completion;
         [selfI processDeeplinkI:selfI
-                       deeplink:deeplink
-                      clickTime:clickTime];
+                       deeplink:deeplinkSnapshot
+                      clickTime:clickTimeSnapshot];
     }];
 }
 
 - (void)setPushTokenData:(NSData *)pushTokenData {
+    NSData *pushTokenDataSnapshot = [pushTokenData copy];
     [self.firstSessionDelayManager processApiAction:@"set push token"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI setPushTokenI:selfI pushTokenData:pushTokenData];
+        [selfI setPushTokenI:selfI pushTokenData:pushTokenDataSnapshot];
     }];
 }
 
 - (void)setPushTokenString:(NSString *)pushTokenString {
+    NSString *pushTokenStringSnapshot = [pushTokenString copy];
     [self.firstSessionDelayManager processApiAction:@"set push token"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI setPushTokenI:selfI pushTokenString:pushTokenString];
+        [selfI setPushTokenI:selfI pushTokenString:pushTokenStringSnapshot];
     }];
 }
 
@@ -512,11 +631,8 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     double now = [NSDate.date timeIntervalSince1970];
     if (selfI.activityState != nil) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            double lastInterval = now - selfI.activityState.lastActivity;
-            selfI.activityState.lastInterval = lastInterval;
-        }];
+        double lastInterval = now - selfI.activityState.lastActivity;
+        selfI.activityState.lastInterval = lastInterval;
     }
     ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
                                        initWithPackageParams:selfI.packageParams
@@ -582,35 +698,41 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)addGlobalCallbackParameter:(NSString *)param
                             forKey:(NSString *)key {
+    NSString *paramSnapshot = [param copy];
+    NSString *keySnapshot = [key copy];
     [self.firstSessionDelayManager processApiAction:@"add global callback parameter"
                                         isPreLaunch:YES
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI addGlobalCallbackParameterI:selfI param:param forKey:key];
+        [selfI addGlobalCallbackParameterI:selfI param:paramSnapshot forKey:keySnapshot];
     }];
 }
 
 - (void)addGlobalPartnerParameter:(NSString *)param
                            forKey:(NSString *)key {
+    NSString *paramSnapshot = [param copy];
+    NSString *keySnapshot = [key copy];
     [self.firstSessionDelayManager processApiAction:@"add global partner parameter"
                                         isPreLaunch:YES
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI addGlobalPartnerParameterI:selfI param:param forKey:key];
+        [selfI addGlobalPartnerParameterI:selfI param:paramSnapshot forKey:keySnapshot];
     }];
 }
 
 - (void)removeGlobalCallbackParameterForKey:(NSString *)key {
+    NSString *keySnapshot = [key copy];
     [self.firstSessionDelayManager processApiAction:@"remove global callback parameter"
                                         isPreLaunch:YES
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI removeGlobalCallbackParameterI:selfI forKey:key];
+        [selfI removeGlobalCallbackParameterI:selfI forKey:keySnapshot];
     }];
 }
 
 - (void)removeGlobalPartnerParameterForKey:(NSString *)key {
+    NSString *keySnapshot = [key copy];
     [self.firstSessionDelayManager processApiAction:@"remove global partner parameter"
                                         isPreLaunch:YES
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI removeGlobalPartnerParameterI:selfI forKey:key];
+        [selfI removeGlobalPartnerParameterI:selfI forKey:keySnapshot];
     }];
 }
 
@@ -631,18 +753,20 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)trackAppStoreSubscription:(ADJAppStoreSubscription *)subscription {
+    ADJAppStoreSubscription *subscriptionSnapshot = [subscription copy];
     [self.firstSessionDelayManager processApiAction:@"track app store subscription"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI trackAppStoreSubscriptionI:selfI subscription:subscription];
+        [selfI trackAppStoreSubscriptionI:selfI subscription:subscriptionSnapshot];
     }];
 }
 
 - (void)trackThirdPartySharing:(nonnull ADJThirdPartySharing *)thirdPartySharing {
+    ADJThirdPartySharing *thirdPartySharingSnapshot = [thirdPartySharing copy];
     [self.firstSessionDelayManager processApiAction:@"track third party sharing"
                                         isPreLaunch:YES
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI tryTrackThirdPartySharingI:thirdPartySharing];
+        [selfI tryTrackThirdPartySharingI:thirdPartySharingSnapshot];
     }];
 }
 
@@ -655,19 +779,21 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)trackAdRevenue:(ADJAdRevenue *)adRevenue {
+    ADJAdRevenue *adRevenueSnapshot = [adRevenue copy];
     [self.firstSessionDelayManager processApiAction:@"track ad revenue"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI trackAdRevenueI:selfI adRevenue:adRevenue];
+        [selfI trackAdRevenueI:selfI adRevenue:adRevenueSnapshot];
     }];
 }
 
 - (void)verifyAppStorePurchase:(nonnull ADJAppStorePurchase *)purchase
          withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
+    ADJAppStorePurchase *purchaseSnapshot = [purchase copy];
     [self.firstSessionDelayManager processApiAction:@"verify app store purchase"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI verifyAppStorePurchaseI:selfI purchase:purchase withCompletionHandler:completion];
+        [selfI verifyAppStorePurchaseI:selfI purchase:purchaseSnapshot withCompletionHandler:completion];
     }];
 }
 
@@ -676,8 +802,9 @@ const BOOL kSkanRegisterLockWindow = NO;
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         if (selfI.attribution != nil) {
+            ADJAttribution *attributionSnapshot = [selfI.attribution copy];
             [ADJUtil launchInMainThread:^{
-                completion(selfI.attribution);
+                completion(attributionSnapshot);
             }];
         } else {
             // we don't have to sync the access to this array - once ActivityHandler is created, this array
@@ -692,10 +819,11 @@ const BOOL kSkanRegisterLockWindow = NO;
                 selfInject:self
                      block:^(ADJActivityHandler * selfI) {
         if (selfI.attribution != nil) {
+            ADJAttribution *attributionSnapshot = [selfI.attribution copy];
             [ADJUtil launchInMainThread:^{
                 // calling cllback block (client's completion handler) immediately.
                 // attributionCallback should be nonnull here.
-                timeoutCallback.attributionCallback(selfI.attribution);
+                timeoutCallback.attributionCallback(attributionSnapshot);
                 timeoutCallback.attributionCallback = nil;
                 timeoutCallback.timeoutBlock = nil;
             }];
@@ -762,15 +890,16 @@ const BOOL kSkanRegisterLockWindow = NO;
 }
 
 - (void)setExternalDeviceIdInDelay:(nullable NSString *)externalDeviceId {
-    [self.firstSessionDelayManager setExternalDeviceIdInDelay:externalDeviceId];
+    [self.firstSessionDelayManager setExternalDeviceIdInDelay:[externalDeviceId copy]];
 }
 
 - (void)verifyAndTrackAppStorePurchase:(nonnull ADJEvent *)event
                  withCompletionHandler:(nonnull ADJVerificationResultBlock)completion {
+    ADJEvent *eventSnapshot = [event copy];
     [self.firstSessionDelayManager processApiAction:@"verify and track app store purchase"
                                         isPreLaunch:NO
                                           withBlock:^(ADJActivityHandler * selfI) {
-        [selfI verifyAndTrackAppStorePurchaseI:selfI event:event withCompletionHandler:completion];
+        [selfI verifyAndTrackAppStorePurchaseI:selfI event:eventSnapshot withCompletionHandler:completion];
     }];
 }
 
@@ -974,10 +1103,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (selfI.internalState.waitingForAttStatus) {
         selfI.internalState.updatePackagesAttData = YES;
         if (selfI.activityState != nil) {
-            [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                            block:^{
-                selfI.activityState.updatePackagesAttData = YES;
-            }];
+            selfI.activityState.updatePackagesAttData = YES;
             [selfI writeActivityStateI:selfI];
         }
     } else {
@@ -1056,10 +1182,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         NSData *pushTokenData = [ADJUserDefaults getPushTokenData];
         NSString *pushTokenDataAsString = [ADJUtil pushTokenDataAsString:pushTokenData];
         NSString *pushTokenString = [ADJUserDefaults getPushTokenString];
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.pushToken = pushTokenDataAsString != nil ? pushTokenDataAsString : pushTokenString;
-        }];
+        selfI.activityState.pushToken = pushTokenDataAsString != nil ? pushTokenDataAsString : pushTokenString;
 
         // track the first session package only if it's enabled
         if ([selfI.internalState isEnabled]) {
@@ -1071,21 +1194,15 @@ const BOOL kSkanRegisterLockWindow = NO;
 
                 [selfI processPreLaunchArraysI:selfI];
 
-                [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                                block:^{
-                    selfI.activityState.sessionCount = 1; // this is the first session
-                }];
+                selfI.activityState.sessionCount = 1; // this is the first session
 
                 [selfI transferSessionPackageI:selfI now:now];
             }
         }
 
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            [selfI.activityState resetSessionAttributes:now];
-            selfI.activityState.enabled = [selfI.internalState isEnabled];
-            selfI.activityState.updatePackagesAttData = [selfI.internalState itHasToUpdatePackagesAttData];
-        }];
+        [selfI.activityState resetSessionAttributes:now];
+        selfI.activityState.enabled = [selfI.internalState isEnabled];
+        selfI.activityState.updatePackagesAttData = [selfI.internalState itHasToUpdatePackagesAttData];
 
         if (selfI.adjustConfig.isAdServicesEnabled == YES) {
             [selfI.adServicesManager checkForAdServicesAttribution];
@@ -1102,10 +1219,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     double lastInterval = now - selfI.activityState.lastActivity;
     if (lastInterval < 0) {
         [selfI.logger error:@"Time travel!"];
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.lastActivity = now;
-        }];
+        selfI.activityState.lastActivity = now;
         [selfI writeActivityStateI:selfI];
         return;
     }
@@ -1118,12 +1232,9 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     // new subsession
     if (lastInterval > kSubSessionInterval) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.subsessionCount++;
-            selfI.activityState.sessionLength += lastInterval;
-            selfI.activityState.lastActivity = now;
-        }];
+        selfI.activityState.subsessionCount++;
+        selfI.activityState.sessionLength += lastInterval;
+        selfI.activityState.lastActivity = now;
         [selfI.logger verbose:@"Started subsession %d of session %d",
          selfI.activityState.subsessionCount,
          selfI.activityState.sessionCount];
@@ -1142,16 +1253,10 @@ const BOOL kSkanRegisterLockWindow = NO;
     [selfI.adServicesManager checkForAdServicesAttribution];
 
     double lastInterval = now - selfI.activityState.lastActivity;
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.sessionCount++;
-        selfI.activityState.lastInterval = lastInterval;
-    }];
+    selfI.activityState.sessionCount++;
+    selfI.activityState.lastInterval = lastInterval;
     [selfI transferSessionPackageI:selfI now:now];
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        [selfI.activityState resetSessionAttributes:now];
-    }];
+    [selfI.activityState resetSessionAttributes:now];
     [selfI writeActivityStateI:selfI];
 }
 
@@ -1256,10 +1361,7 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     double now = [NSDate.date timeIntervalSince1970];
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.eventCount++;
-    }];
+    selfI.activityState.eventCount++;
     [selfI updateActivityStateI:selfI now:now];
 
     NSUInteger eventSequence = [selfI.eventsMetadata incrementedSequenceForEventToken:event.eventToken];
@@ -1477,11 +1579,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        double lastInterval = now - selfI.activityState.lastActivity;
-        selfI.activityState.lastInterval = lastInterval;
-    }];
+    double lastInterval = now - selfI.activityState.lastActivity;
+    selfI.activityState.lastInterval = lastInterval;
 
     ADJPackageBuilder *purchaseVerificationBuilder = 
     [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
@@ -1531,11 +1630,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        double lastInterval = now - selfI.activityState.lastActivity;
-        selfI.activityState.lastInterval = lastInterval;
-    }];
+    double lastInterval = now - selfI.activityState.lastActivity;
+    selfI.activityState.lastInterval = lastInterval;
     ADJPackageBuilder *purchaseVerificationBuilder =
     [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
@@ -1731,10 +1827,7 @@ const BOOL kSkanRegisterLockWindow = NO;
         return;
     }
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.adid = adid;
-    }];
+    selfI.activityState.adid = adid;
     [selfI writeActivityStateI:selfI];
     [selfI processCachedAdidReadCallbackI:selfI];
 }
@@ -1749,7 +1842,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
     // copy attribution property
     //  to avoid using the same object for the delegate
-    selfI.attribution = attribution;
+    selfI.attribution = [attribution copy];
     [selfI writeAttributionI:selfI];
 
     [selfI processCachedAttributionReadCallbackI:selfI];
@@ -1769,6 +1862,9 @@ const BOOL kSkanRegisterLockWindow = NO;
     if (selfI.attribution == nil) {
         return;
     }
+    
+    // get attribution copy
+    ADJAttribution *attributionSnapshot = [selfI.attribution copy];
 
     // we don't have to sync the access to this array - once ActivityHandler is created, this array
     // is accessed from the internal queue only.
@@ -1778,7 +1874,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     // process regular attribution callbacks
     for (ADJAttributionGetterBlock attributionCallback in attributionCallbacksCopy) {
         [ADJUtil launchInMainThread:^{
-            attributionCallback(selfI.attribution);
+            attributionCallback(attributionSnapshot);
         }];
     }
 
@@ -1798,7 +1894,7 @@ const BOOL kSkanRegisterLockWindow = NO;
             }
 
             if (timeoutCallback.attributionCallback != nil) {
-                timeoutCallback.attributionCallback(selfI.attribution);
+                timeoutCallback.attributionCallback(attributionSnapshot);
                 // null callback to call it only once
                 timeoutCallback.attributionCallback = nil;
                 timeoutCallback.timeoutBlock = nil;
@@ -1882,10 +1978,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     // Save new enabled state in activity state.
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.enabled = enabled;
-    }];
+    selfI.activityState.enabled = enabled;
     [selfI writeActivityStateI:selfI];
 
     // Check if upon enabling install has been tracked.
@@ -2054,11 +2147,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        double lastInterval = now - selfI.activityState.lastActivity;
-        selfI.activityState.lastInterval = lastInterval;
-    }];
+    double lastInterval = now - selfI.activityState.lastActivity;
+    selfI.activityState.lastInterval = lastInterval;
     ADJPackageBuilder *clickBuilder =
     [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
@@ -2171,10 +2261,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // save new push token
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.pushToken = pushTokenDataAsString;
-    }];
+    selfI.activityState.pushToken = pushTokenDataAsString;
     [selfI writeActivityStateI:selfI];
 
     // send info package
@@ -2216,10 +2303,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     // save new push token
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.pushToken = pushTokenString;
-    }];
+    selfI.activityState.pushToken = pushTokenString;
     [selfI writeActivityStateI:selfI];
 
     // send info package
@@ -2254,10 +2338,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.isGdprForgotten = YES;
-    }];
+    selfI.activityState.isGdprForgotten = YES;
     [selfI writeActivityStateI:selfI];
 
     // Send GDPR package
@@ -2282,10 +2363,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)setTrackingStateOptedOutI:(ADJActivityHandler *)selfI {
     // In case of web opt out, once response from backend arrives isGdprForgotten field in this moment defaults to NO.
     // Set it to YES regardless of state, since at this moment it should be YES.
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.isGdprForgotten = YES;
-    }];
+    selfI.activityState.isGdprForgotten = YES;
     [selfI writeActivityStateI:selfI];
 
     [selfI setEnabled:NO];
@@ -2427,20 +2505,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     // ignore late updates
     if (lastInterval > kSessionInterval) return NO;
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.lastActivity = now;
-    }];
+    selfI.activityState.lastActivity = now;
 
     if (lastInterval < 0) {
         [selfI.logger error:@"Time travel!"];
         return YES;
     } else {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.sessionLength += lastInterval;
-            selfI.activityState.timeSpent += lastInterval;
-        }];
+        selfI.activityState.sessionLength += lastInterval;
+        selfI.activityState.timeSpent += lastInterval;
     }
 
     return YES;
@@ -2448,16 +2520,14 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 - (void)writeActivityStateI:(ADJActivityHandler *)selfI
 {
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        if (selfI.activityState == nil) {
-            return;
-        }
-        [ADJUtil writeObject:selfI.activityState
-                    fileName:kActivityStateFilename
-                  objectName:@"Activity state"
-                  syncObject:[ADJActivityState class]];
-    }];
+    if (selfI.activityState == nil) {
+        return;
+    }
+    ADJActivityState *activityStateSnapshot = [selfI.activityState deepCopy];
+    [ADJUtil writeObject:activityStateSnapshot
+                fileName:kActivityStateFilename
+              objectName:@"Activity state"
+              syncObject:[ADJActivityState class]];
 }
 
 - (void)teardownActivityStateS
@@ -2475,7 +2545,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.attribution == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.attribution
+        ADJAttribution *attributionSnapshot = [selfI.attribution copy];
+        [ADJUtil writeObject:attributionSnapshot
                     fileName:kAttributionFilename
                   objectName:@"Attribution"
                   syncObject:[ADJAttribution class]];
@@ -2497,7 +2568,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.eventsMetadata == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.eventsMetadata
+        ADJEventMetadata *eventsMetadataSnapshot = [selfI.eventsMetadata deepCopy];
+        [ADJUtil writeObject:eventsMetadataSnapshot
                     fileName:kEventMetadataFilename
                   objectName:@"Event metadata"
                   syncObject:[ADJEventMetadata class]];
@@ -2516,15 +2588,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
 
 - (void)readActivityState {
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
-        NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
-        self.activityState = [ADJUtil readObject:kActivityStateFilename
-                                      objectName:@"Activity state"
-                                         classes:allowedClasses
-                                      syncObject:[ADJActivityState class]];
-    }];
+    [NSKeyedUnarchiver setClass:[ADJActivityState class] forClassName:@"AIActivityState"];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[ADJActivityState class], nil];
+    self.activityState = [ADJUtil readObject:kActivityStateFilename
+                                  objectName:@"Activity state"
+                                     classes:allowedClasses
+                                  syncObject:[ADJActivityState class]];
 }
 
 - (void)readAttribution {
@@ -2554,7 +2623,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.globalParameters == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.globalParameters.callbackParameters
+        NSDictionary *callbackParametersSnapshot =
+            [ADJUtil dictionaryDeepCopy:selfI.globalParameters.callbackParameters];
+        [ADJUtil writeObject:callbackParametersSnapshot
                     fileName:kGlobalCallbackParametersFilename
                   objectName:@"Global Callback parameters"
                   syncObject:[ADJGlobalParameters class]];
@@ -2566,7 +2637,9 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.globalParameters == nil) {
             return;
         }
-        [ADJUtil writeObject:selfI.globalParameters.partnerParameters
+        NSDictionary *partnerParametersSnapshot =
+            [ADJUtil dictionaryDeepCopy:selfI.globalParameters.partnerParameters];
+        [ADJUtil writeObject:partnerParametersSnapshot
                     fileName:kGlobalPartnerParametersFilename
                   objectName:@"Global Partner parameters"
                   syncObject:[ADJGlobalParameters class]];
@@ -2585,19 +2658,21 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 }
 
 - (void)readGlobalCallbackParametersI:(ADJActivityHandler *)selfI {
-    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
-    selfI.globalParameters.callbackParameters = [ADJUtil readObject:kGlobalCallbackParametersFilename
-                                                         objectName:@"Global Callback parameters"
-                                                            classes:allowedClasses
-                                                         syncObject:[ADJGlobalParameters class]];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSMutableDictionary class], [NSString class], nil];
+    NSDictionary *callbackParameters = [ADJUtil readObject:kGlobalCallbackParametersFilename
+                                                objectName:@"Global Callback parameters"
+                                                   classes:allowedClasses
+                                                syncObject:[ADJGlobalParameters class]];
+    selfI.globalParameters.callbackParameters = callbackParameters != nil ? [callbackParameters mutableCopy] : nil;
 }
 
 - (void)readGlobalPartnerParametersI:(ADJActivityHandler *)selfI {
-    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSString class], nil];
-    selfI.globalParameters.partnerParameters = [ADJUtil readObject:kGlobalPartnerParametersFilename
-                                                        objectName:@"Global Partner parameters"
-                                                           classes:allowedClasses
-                                                        syncObject:[ADJGlobalParameters class]];
+    NSSet<Class> *allowedClasses = [NSSet setWithObjects:[NSDictionary class], [NSMutableDictionary class], [NSString class], nil];
+    NSDictionary *partnerParameters = [ADJUtil readObject:kGlobalPartnerParametersFilename
+                                               objectName:@"Global Partner parameters"
+                                                  classes:allowedClasses
+                                               syncObject:[ADJGlobalParameters class]];
+    selfI.globalParameters.partnerParameters = partnerParameters != nil ? [partnerParameters mutableCopy] : nil;
 }
 
 # pragma mark - handlers status
@@ -2659,10 +2734,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 - (void)setAskingAttributionI:(ADJActivityHandler *)selfI
             askingAttribution:(BOOL)askingAttribution
 {
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.askingAttribution = askingAttribution;
-    }];
+    selfI.activityState.askingAttribution = askingAttribution;
     [selfI writeActivityStateI:selfI];
 }
 
@@ -2774,10 +2846,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     selfI.internalState.updatePackagesAttData = NO;
     if (selfI.activityState != nil) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.updatePackagesAttData = NO;
-        }];
+        selfI.activityState.updatePackagesAttData = NO;
         [selfI writeActivityStateI:selfI];
     }
 }
@@ -3050,10 +3119,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         return;
     }
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        selfI.activityState.isThirdPartySharingDisabledForCoppa = YES;
-    }];
+    selfI.activityState.isThirdPartySharingDisabledForCoppa = YES;
     [selfI writeActivityStateI:selfI];
     
     ADJThirdPartySharing *thirdPartySharing =
@@ -3084,10 +3150,7 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
     
     if(selfI.activityState.isThirdPartySharingDisabledForCoppa) {
-        [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                        block:^{
-            selfI.activityState.isThirdPartySharingDisabledForCoppa = NO;
-        }];
+        selfI.activityState.isThirdPartySharingDisabledForCoppa = NO;
         [selfI writeActivityStateI:selfI];
     }
 }
@@ -3458,17 +3521,17 @@ typedef NS_ENUM(NSUInteger, ADJDelayState) {
         return NO;
     }
 
-    if (self.activityHandler.activityState == nil) {
+    ADJActivityState *activityStateSnapshot = [self.activityHandler activityStateCopy];
+    if (activityStateSnapshot == nil) {
         return NO;
     }
 
-    if (readAttStatus == self.activityHandler.activityState.trackingManagerAuthorizationStatus) {
+    if (readAttStatus == activityStateSnapshot.trackingManagerAuthorizationStatus) {
         return NO;
     }
 
-    [ADJUtil launchSynchronisedWithObject:[ADJActivityState class]
-                                    block:^{
-        self.activityHandler.activityState.trackingManagerAuthorizationStatus = readAttStatus;
+    [self.activityHandler updateActivityStateWithBlock:^(ADJActivityState *activityState) {
+        activityState.trackingManagerAuthorizationStatus = readAttStatus;
     }];
     [self.activityHandler writeActivityState];
 

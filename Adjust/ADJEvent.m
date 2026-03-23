@@ -97,8 +97,8 @@
         return;
     }
 
-    _revenue = revenue;
     @synchronized (self) {
+        _revenue = revenue;
         _currency = [currency copy];
     }
 }
@@ -123,13 +123,13 @@
 
 - (NSDictionary *)callbackParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.callbackMutableParameters;
+        return [self.callbackMutableParameters copy];
     }
 }
 
 - (NSDictionary *)partnerParameters {
     @synchronized (self) {
-        return (NSDictionary *)self.partnerMutableParameters;
+        return [self.partnerMutableParameters copy];
     }
 }
 
@@ -181,20 +181,23 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    ADJEvent *copy = [[[self class] allocWithZone:zone] init];
+    @synchronized (self) {
+        ADJEvent *copy = [[[self class] allocWithZone:zone] init];
 
-    if (copy) {
-        copy->_eventToken = [self.eventToken copyWithZone:zone];
-        copy->_revenue = [self.revenue copyWithZone:zone];
-        copy->_currency = [self.currency copyWithZone:zone];
-        copy.callbackMutableParameters = [self.callbackMutableParameters copyWithZone:zone];
-        copy.partnerMutableParameters = [self.partnerMutableParameters copyWithZone:zone];
-        copy->_transactionId = [self.transactionId copyWithZone:zone];
-        copy->_deduplicationId = [self.deduplicationId copyWithZone:zone];
-        copy->_productId = [self.productId copyWithZone:zone];
+        if (copy) {
+            copy->_eventToken = [_eventToken copyWithZone:zone];
+            copy->_revenue = [_revenue copyWithZone:zone];
+            copy->_currency = [_currency copyWithZone:zone];
+            copy.callbackMutableParameters = [_callbackMutableParameters mutableCopy];
+            copy.partnerMutableParameters = [_partnerMutableParameters mutableCopy];
+            copy->_transactionId = [_transactionId copyWithZone:zone];
+            copy->_deduplicationId = [_deduplicationId copyWithZone:zone];
+            copy->_callbackId = [_callbackId copyWithZone:zone];
+            copy->_productId = [_productId copyWithZone:zone];
+        }
+
+        return copy;
     }
-
-    return copy;
 }
 
 @end

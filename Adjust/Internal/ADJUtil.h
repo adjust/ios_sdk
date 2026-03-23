@@ -139,12 +139,13 @@ typedef void (^isInactiveInjected)(BOOL);
 
 + (BOOL)setPersistedRandomToken:(NSString *)randomToken;
 
-+ (NSMutableDictionary *)deepCopyOfDictionary:(NSDictionary *)dictionary;
 
 + (BOOL)isAppTrackingTransparencySupported;
 
 + (BOOL)shouldUseConsentParamsForActivityKind:(ADJActivityKind)activityKind
                                  andAttStatus:(int)attStatus;
+
++ (NSDictionary *)dictionaryDeepCopy:(NSDictionary *)dictionary;
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion;
 

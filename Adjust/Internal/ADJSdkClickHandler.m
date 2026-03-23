@@ -54,7 +54,7 @@ static const char * const kInternalQueueName = "com.adjust.SdkClickQueue";
     [[ADJRequestHandler alloc] initWithResponseCallback:self
                                             urlStrategy:urlStrategy
                                          requestTimeout:[ADJAdjustFactory requestTimeout]
-                                    adjustConfiguration:activityHandler.adjustConfig
+                                    adjustConfiguration:activityHandler.adjustConfigCopy
                                         activityHandler:activityHandler];
 
     [ADJUtil launchInQueue:self.internalQueue
@@ -136,9 +136,10 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 
 - (void)sendSdkClickI:(ADJSdkClickHandler *)selfI
       sdkClickPackage:(ADJActivityPackage *)sdkClickPackage {
-    [selfI.packageQueue addObject:sdkClickPackage];
+    ADJActivityPackage *queuedPackage = [sdkClickPackage deepCopy];
+    [selfI.packageQueue addObject:queuedPackage];
     [selfI.logger debug:@"Added sdk_click %d", selfI.packageQueue.count];
-    [selfI.logger verbose:@"%@", sdkClickPackage.extendedString];
+    [selfI.logger verbose:@"%@", queuedPackage.extendedString];
     [selfI sendNextSdkClick];
 }
 
@@ -166,20 +167,24 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
     }
     
     if ([ADJPackageBuilder isAdServicesPackage:sdkClickPackage]) {
+        NSMutableDictionary *mutableParameters = sdkClickPackage.parameters != nil
+            ? [sdkClickPackage.parameters mutableCopy]
+            : [NSMutableDictionary dictionary];
         // refresh token
         NSString *token = [ADJUtil fetchAdServicesAttribution:nil];
         
-        if (token != nil && ![sdkClickPackage.parameters[ADJAttributionTokenParameter] isEqualToString:token]) {
+        if (token != nil && ![mutableParameters[ADJAttributionTokenParameter] isEqualToString:token]) {
             // update token
-            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+            [ADJPackageBuilder parameters:mutableParameters
                                 setString:token
                                    forKey:ADJAttributionTokenParameter];
             
             // update created_at
-            [ADJPackageBuilder parameters:sdkClickPackage.parameters
+            [ADJPackageBuilder parameters:mutableParameters
                               setDate1970:[NSDate.date timeIntervalSince1970]
                                    forKey:@"created_at"];
         }
+        sdkClickPackage.parameters = mutableParameters;
     }
 
     dispatch_block_t work = ^{
@@ -225,17 +230,24 @@ activityHandler:(id<ADJActivityHandler>)activityHandler
 - (void)updatePackagesTrackingI:(ADJSdkClickHandler *)selfI
                       attStatus:(int)attStatus {
     [selfI.logger debug:@"Updating sdk_click queue with idfa and att_status: %d", attStatus];
+    ADJActivityState *activityStateSnapshot = [selfI.activityHandler activityStateCopy];
+    ADJPackageParams *packageParamsShared = [selfI.activityHandler packageParamsForIdfaCache];
+    ADJConfig *configSnapshot = [selfI.activityHandler adjustConfigCopy];
     for (ADJActivityPackage *activityPackage in selfI.packageQueue) {
-        [ADJPackageBuilder parameters:activityPackage.parameters
+        NSMutableDictionary *mutableParameters = activityPackage.parameters != nil
+            ? [activityPackage.parameters mutableCopy]
+            : [NSMutableDictionary dictionary];
+        [ADJPackageBuilder parameters:mutableParameters
                                setInt:attStatus
                                forKey:@"att_status"];
 
-        [ADJPackageBuilder addConsentDataToParameters:activityPackage.parameters
+        [ADJPackageBuilder addConsentDataToParameters:mutableParameters
                                       forActivityKind:activityPackage.activityKind
                                         withAttStatus:attStatus
-                                        configuration:selfI.activityHandler.adjustConfig
-                                        packageParams:selfI.activityHandler.packageParams
-                                        activityState:selfI.activityHandler.activityState];
+                                        configuration:configSnapshot
+                                        packageParams:packageParamsShared
+                                        activityState:activityStateSnapshot];
+        activityPackage.parameters = mutableParameters;
     }
 }
 

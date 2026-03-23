@@ -31,7 +31,7 @@ static NSRegularExpression *shortUniversalLinkRegex = nil;
 static NSRegularExpression *goLinkUniversalLinkRegex = nil;
 static NSRegularExpression *excludedDeeplinkRegex = nil;
 
-static NSString * const kClientSdk                  = @"ios5.5.3";
+static NSString * const kClientSdk                  = @"ios5.5.4";
 static NSString * const kDeeplinkParam              = @"deep_link=";
 static NSString * const kSchemeDelimiter            = @"://";
 static NSString * const kDefaultScheme              = @"AdjustUniversalScheme";
@@ -272,6 +272,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         if (error != nil) {
             return nil;
         }
+        unarchiver.decodingFailurePolicy = NSDecodingFailurePolicySetErrorAndReturn;
         [unarchiver setRequiresSecureCoding:YES];
         resObject = [unarchiver decodeObjectOfClasses:allowedClasses
                                                forKey:NSKeyedArchiveRootObjectKey];
@@ -288,6 +289,7 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
 
     } @catch (NSException *ex) {
         [[ADJAdjustFactory logger] error:@"Failed to read %@ file from \"%@\" folder. Exception: (%@)", fileName, filePath, ex];
+        return nil;
     }
 }
 
@@ -739,6 +741,10 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
            parameterName:(NSString *)parameterName {
     if ([ADJUtil isNull:attribute]) {
         [ADJAdjustFactory.logger error:@"%@ parameter %@ is missing", parameterName, attributeType];
+        return NO;
+    }
+    if (![attribute isKindOfClass:[NSString class]]) {
+        [ADJAdjustFactory.logger error:@"%@ parameter %@ is not a string", parameterName, attributeType];
         return NO;
     }
     if ([attribute isEqualToString:@""]) {
@@ -1422,18 +1428,6 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
     }
 }
 
-+ (NSMutableDictionary *)deepCopyOfDictionary:(NSMutableDictionary *)dictionary {
-    if (dictionary == nil) {
-        return nil;
-    }
-
-    NSMutableDictionary *deepCopy =
-    (NSMutableDictionary *)CFBridgingRelease(CFPropertyListCreateDeepCopy(kCFAllocatorDefault,
-                                                                          (CFDictionaryRef)dictionary,
-                                                                          kCFPropertyListMutableContainersAndLeaves));
-    return deepCopy;
-}
-
 + (BOOL)isAppTrackingTransparencySupported {
     if (@available(iOS 14.0, tvOS 14.0, *)) {
         return YES;
@@ -1454,6 +1448,39 @@ static NSString * const kDateFormat                 = @"yyyy-MM-dd'T'HH:mm:ss.SS
         // if iOS lower than 14 can assume consent
         return YES;
     }
+}
+
++ (NSDictionary *)dictionaryDeepCopy:(NSDictionary *)dictionary {
+    if (dictionary == nil) {
+        return nil;
+    }
+
+    NSMutableDictionary *copy = [NSMutableDictionary dictionaryWithCapacity:dictionary.count];
+    for (id key in dictionary) {
+        id value = dictionary[key];
+        if (value == nil || value == [NSNull null]) {
+            continue;
+        }
+        NSString *keyString = [key isKindOfClass:[NSString class]] ? key : [key description];
+        id valueCopy = nil;
+        CFPropertyListRef propertyListCopy = CFPropertyListCreateDeepCopy(
+            kCFAllocatorDefault,
+            (__bridge CFPropertyListRef)value,
+            kCFPropertyListImmutable);
+        if (propertyListCopy != NULL) {
+            valueCopy = CFBridgingRelease(propertyListCopy);
+        } else if ([value conformsToProtocol:@protocol(NSCopying)]) {
+            valueCopy = [value copy];
+        } else {
+            valueCopy = [value description];
+        }
+        if (keyString == nil || valueCopy == nil) {
+            continue;
+        }
+        copy[keyString] = valueCopy;
+    }
+
+    return [copy copy];
 }
 
 + (void)isEnabledFromActivityStateFile:(void (^)(BOOL))completion {

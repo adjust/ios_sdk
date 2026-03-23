@@ -8,6 +8,7 @@
 
 #import "ADJActivityKind.h"
 #import "ADJActivityPackage.h"
+#import "ADJUtil.h"
 
 @implementation ADJActivityPackage
 
@@ -70,6 +71,24 @@
     } else {
         self.lastErrorCode = errorCode;
     }
+}
+
+- (ADJActivityPackage *)deepCopy {
+    ADJActivityPackage *copy = [[ADJActivityPackage alloc] init];
+    copy.path = [self.path copy];
+    copy.clientSdk = [self.clientSdk copy];
+    copy.parameters = [ADJUtil dictionaryDeepCopy:self.parameters];
+    copy.partnerParameters = [ADJUtil dictionaryDeepCopy:self.partnerParameters];
+    copy.callbackParameters = [ADJUtil dictionaryDeepCopy:self.callbackParameters];
+    copy.purchaseVerificationCallback = self.purchaseVerificationCallback;
+    copy.event = [self.event copy];
+    copy.errorCount = self.errorCount;
+    copy.firstErrorCode = [self.firstErrorCode copy];
+    copy.lastErrorCode = [self.lastErrorCode copy];
+    copy.waitBeforeSend = self.waitBeforeSend;
+    copy.suffix = [self.suffix copy];
+    copy.activityKind = self.activityKind;
+    return copy;
 }
 
 #pragma mark - NSCoding protocol methods
