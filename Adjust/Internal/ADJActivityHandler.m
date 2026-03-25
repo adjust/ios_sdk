@@ -1760,6 +1760,9 @@ const BOOL kSkanRegisterLockWindow = NO;
                 attributionResponseData:(ADJAttributionResponseData *)attributionResponseData {
     [selfI checkConversionValue:attributionResponseData];
 
+    // process remote triggers from attribution responses
+    [selfI processRemoteTriggers:attributionResponseData];
+
     [selfI updateAdidI:selfI adid:attributionResponseData.adid];
 
     BOOL toLaunchAttributionDelegate = [selfI updateAttributionI:selfI
