@@ -997,6 +997,9 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     if (self.odmEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
     }
+    if ([self.adjustConfig.delegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_remote_triggers_callback"];
+    }
 }
 
 - (void)injectLastSkanUpdateWithParameters:(NSMutableDictionary *)parameters {
