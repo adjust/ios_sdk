@@ -25,6 +25,7 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
 @property (nonatomic, copy) NSString *sessionFailureCallbackName;
 @property (nonatomic, copy) NSString *deferredDeeplinkCallbackName;
 @property (nonatomic, copy) NSString *skanUpdatedCallbackName;
+@property (nonatomic, copy) NSString *remoteTriggerCallbackName;
 @property (nonatomic, copy) NSString *fbPixelDefaultEventToken;
 @property (nonatomic, strong) NSMutableArray *urlStrategyDomains;
 @property (nonatomic, strong) NSMutableDictionary *fbPixelMapping;
@@ -55,6 +56,7 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
     self.sessionFailureCallbackName = nil;
     self.deferredDeeplinkCallbackName = nil;
     self.skanUpdatedCallbackName = nil;
+    self.remoteTriggerCallbackName = nil;
 }
 
 #pragma mark - Public Methods
@@ -251,6 +253,7 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
     NSString *sessionFailureCallback = [parameters objectForKey:ADJWBSessionFailureCallbackConfigKey];
     NSString *skanUpdatedCallback = [parameters objectForKey:ADJWBSkanUpdatedCallbackConfigKey];
     NSString *deferredDeeplinkCallback = [parameters objectForKey:ADJWBDeferredDeeplinkCallbackConfigKey];
+    NSString *remoteTriggerCallback = [parameters objectForKey:ADJWBRemoteTriggerCallbackConfigKey];
 
     //Fb parameters
     NSString *fbPixelDefaultEventToken = [parameters objectForKey:ADJWBFbPixelDefaultEventTokenConfigKey];
@@ -406,6 +409,9 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
     if ([AdjustBridgeUtil isFieldValid:skanUpdatedCallback]) {
         self.skanUpdatedCallbackName = [self validatedCallbackId:skanUpdatedCallback];
     }
+    if ([AdjustBridgeUtil isFieldValid:remoteTriggerCallback]) {
+        self.remoteTriggerCallbackName = [self validatedCallbackId:remoteTriggerCallback];
+    }
 
     // set self as delegate if any callback is configured
     // change to swizzle the methods in the future
@@ -415,7 +421,8 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
         || self.sessionSuccessCallbackName != nil
         || self.sessionFailureCallbackName != nil
         || self.deferredDeeplinkCallbackName != nil
-        || self.skanUpdatedCallbackName != nil) {
+        || self.skanUpdatedCallbackName != nil
+        || self.remoteTriggerCallbackName != nil) {
         [adjustConfig setDelegate:self];
     }
 
@@ -713,6 +720,20 @@ static NSUInteger const kADJWBMaxCallbackIdLength = 128;
 
     [self execJsCallbackWithId:self.skanUpdatedCallbackName
                   callbackData:skanUpdatedDictionary];
+}
+
+- (void)adjustRemoteTriggerReceived:(ADJRemoteTrigger *)remoteTrigger {
+    if (self.remoteTriggerCallbackName == nil) {
+        return;
+    }
+
+    NSDictionary *remoteTriggerDictionary = @{
+        @"label": remoteTrigger.label == nil ? [NSNull null] : remoteTrigger.label,
+        @"payload": remoteTrigger.payload == nil ? [NSNull null] : remoteTrigger.payload
+    };
+
+    [self execJsCallbackWithId:self.remoteTriggerCallbackName
+                  callbackData:remoteTriggerDictionary];
 }
 
 #pragma mark - FB Pixel event handling

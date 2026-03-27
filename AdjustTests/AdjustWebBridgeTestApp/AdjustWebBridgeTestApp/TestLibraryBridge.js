@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.21.151:8080';
-var controlUrl = 'ws://192.168.21.151:1987';
+var urlOverwrite = 'http://192.168.86.245:8080';
+var controlUrl = 'ws://192.168.86.245:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -458,6 +458,19 @@ AdjustCommandExecutor.prototype.config = function(params) {
             }
         );
     }
+
+    if ('remoteTriggerCallback' in params) {
+        console.log('AdjustCommandExecutor.prototype.config remoteTriggerCallback');
+        var extraPath = this.extraPath;
+        adjustConfig.setRemoteTriggerCallback(
+            function(remoteTrigger) {
+                console.log('remoteTriggerCallback: ' + JSON.stringify(remoteTrigger));
+                addInfoToSend('label', remoteTrigger.label);
+                addInfoToSend('payload', JSON.stringify(remoteTrigger.payload));
+                sendInfoToServer(extraPath);
+            }
+        );
+    }
 };
 
 var addInfoToSend = function (key, value) {
@@ -823,4 +836,3 @@ function getFirstValue(params, key) {
 }
 
 module.exports = TestLibraryBridge;
-

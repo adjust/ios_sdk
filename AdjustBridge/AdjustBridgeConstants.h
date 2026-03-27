@@ -88,6 +88,7 @@ FOUNDATION_EXPORT NSString * const ADJWBSessionSuccessCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBSessionFailureCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBSkanUpdatedCallbackConfigKey;
 FOUNDATION_EXPORT NSString * const ADJWBDeferredDeeplinkCallbackConfigKey;
+FOUNDATION_EXPORT NSString * const ADJWBRemoteTriggerCallbackConfigKey;
 
 FOUNDATION_EXPORT NSString * const ADJWBEventTokenEventKey;
 FOUNDATION_EXPORT NSString * const ADJWBRevenueEventKey;
