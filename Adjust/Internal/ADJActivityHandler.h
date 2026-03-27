@@ -141,6 +141,7 @@
 - (ADJConfig * _Nullable)adjustConfigCopy;
 - (ADJGlobalParameters * _Nullable)globalParametersCopy;
 - (BOOL)isOdmEnabled;
+- (BOOL)isRemoteTriggerCallbackImplemented;
 - (void)teardown;
 + (void)deleteState;
 @end

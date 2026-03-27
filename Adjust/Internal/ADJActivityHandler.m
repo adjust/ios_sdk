@@ -638,15 +638,16 @@ const BOOL kSkanRegisterLockWindow = NO;
         double lastInterval = now - selfI.activityState.lastActivity;
         selfI.activityState.lastInterval = lastInterval;
     }
-    ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc]
-                                       initWithPackageParams:selfI.packageParams
+    ADJPackageBuilder *clickBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       globalParameters:selfI.globalParameters
-                                       trackingStatusManager:selfI.trackingStatusManager
-                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                       createdAt:now
-                                       odmEnabled:selfI.isOdmEnabled];
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     clickBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *clickPackage =
@@ -1266,15 +1267,16 @@ const BOOL kSkanRegisterLockWindow = NO;
 
 - (void)transferSessionPackageI:(ADJActivityHandler *)selfI
                             now:(double)now {
-    ADJPackageBuilder *sessionBuilder = [[ADJPackageBuilder alloc]
-                                         initWithPackageParams:selfI.packageParams
-                                         activityState:selfI.activityState
-                                         config:selfI.adjustConfig
-                                         globalParameters:selfI.globalParameters
-                                         trackingStatusManager:selfI.trackingStatusManager
-                                         firstSessionDelayManager:selfI.firstSessionDelayManager
-                                         createdAt:now
-                                         odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *sessionBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     sessionBuilder.internalState = selfI.internalState;
     ADJActivityPackage *sessionPackage = [sessionBuilder buildSessionPackage];
     [selfI.packageHandler addPackage:sessionPackage];
@@ -1303,15 +1305,16 @@ const BOOL kSkanRegisterLockWindow = NO;
 - (void)trackAttStatusUpdateI:(ADJActivityHandler *)selfI {
     double now = [NSDate.date timeIntervalSince1970];
 
-    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      globalParameters:selfI.globalParameters
-                                      trackingStatusManager:selfI.trackingStatusManager
-                                      firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now
-                                      odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *infoBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     infoBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"att"];
@@ -1370,15 +1373,16 @@ const BOOL kSkanRegisterLockWindow = NO;
 
     NSUInteger eventSequence = [selfI.eventsMetadata incrementedSequenceForEventToken:event.eventToken];
     // create and populate event package
-    ADJPackageBuilder *eventBuilder = [[ADJPackageBuilder alloc]
-                                       initWithPackageParams:selfI.packageParams
+    ADJPackageBuilder *eventBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
-                                       config:selfI.adjustConfig
-                                       globalParameters:selfI.globalParameters
-                                       trackingStatusManager:selfI.trackingStatusManager
-                                       firstSessionDelayManager:selfI.firstSessionDelayManager
-                                       createdAt:now
-                                       odmEnabled:selfI.isOdmEnabled];
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     eventBuilder.internalState = selfI.internalState;
     ADJActivityPackage *eventPackage = [eventBuilder buildEventPackage:event
                                                      withEventSequence:eventSequence];
@@ -1409,15 +1413,16 @@ const BOOL kSkanRegisterLockWindow = NO;
     double now = [NSDate.date timeIntervalSince1970];
 
     // Create and submit ad revenue package.
-    ADJPackageBuilder *subscriptionBuilder = [[ADJPackageBuilder alloc]
-                                              initWithPackageParams:selfI.packageParams
-                                              activityState:selfI.activityState
+    ADJPackageBuilder *subscriptionBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
                                               config:selfI.adjustConfig
-                                              globalParameters:selfI.globalParameters
-                                              trackingStatusManager:selfI.trackingStatusManager
-                                              firstSessionDelayManager:selfI.firstSessionDelayManager
-                                              createdAt:now
-                                              odmEnabled:selfI.isOdmEnabled];
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     subscriptionBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *subscriptionPackage = [subscriptionBuilder buildSubscriptionPackage:subscription];
@@ -1442,15 +1447,16 @@ const BOOL kSkanRegisterLockWindow = NO;
     double now = [NSDate.date timeIntervalSince1970];
 
     // build package
-    ADJPackageBuilder *tpsBuilder = [[ADJPackageBuilder alloc]
-                                     initWithPackageParams:self.packageParams
-                                     activityState:self.activityState
-                                     config:self.adjustConfig
-                                     globalParameters:self.globalParameters
-                                     trackingStatusManager:self.trackingStatusManager
-                                     firstSessionDelayManager:self.firstSessionDelayManager
-                                     createdAt:now
-                                     odmEnabled:self.isOdmEnabled];
+    ADJPackageBuilder *tpsBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:self.packageParams
+                                       activityState:self.activityState
+                                              config:self.adjustConfig
+                                    globalParameters:self.globalParameters
+                               trackingStatusManager:self.trackingStatusManager
+                            firstSessionDelayManager:self.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:self.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[self.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     tpsBuilder.internalState = self.internalState;
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];
 
@@ -1489,20 +1495,25 @@ const BOOL kSkanRegisterLockWindow = NO;
     double now = [NSDate.date timeIntervalSince1970];
 
     // build package
-    ADJPackageBuilder *mcBuilder = [[ADJPackageBuilder alloc]
-                                    initWithPackageParams:self.packageParams
-                                    activityState:self.activityState
-                                    config:self.adjustConfig
+    ADJPackageBuilder *mcBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:self.packageParams
+                                       activityState:self.activityState
+                                              config:self.adjustConfig
                                     globalParameters:self.globalParameters
-                                    trackingStatusManager:self.trackingStatusManager
-                                    firstSessionDelayManager:self.firstSessionDelayManager
-                                    createdAt:now
-                                    odmEnabled:self.isOdmEnabled];
+                               trackingStatusManager:self.trackingStatusManager
+                            firstSessionDelayManager:self.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:self.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[self.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     mcBuilder.internalState = self.internalState;
     ADJActivityPackage *mcPackage = [mcBuilder buildMeasurementConsentPackage:enabled];
 
     [self.packageHandler addPackage:mcPackage];
     [self.packageHandler sendFirstPackage];
+}
+
+- (BOOL)isRemoteTriggerCallbackImplemented {
+    return [self.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)];
 }
 
 -(BOOL)canTrackMeasurementConsent{
@@ -1537,14 +1548,16 @@ const BOOL kSkanRegisterLockWindow = NO;
     double now = [NSDate.date timeIntervalSince1970];
 
     // Create and submit ad revenue package.
-    ADJPackageBuilder *adRevenueBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
-                                                                             activityState:selfI.activityState
-                                                                                    config:selfI.adjustConfig
-                                                                          globalParameters:selfI.globalParameters
-                                                                     trackingStatusManager:selfI.trackingStatusManager
-                                                                  firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                                 createdAt:now
-                                                                                odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *adRevenueBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     adRevenueBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *adRevenuePackage = [adRevenueBuilder buildAdRevenuePackage:adRevenue];
@@ -1586,7 +1599,7 @@ const BOOL kSkanRegisterLockWindow = NO;
     double lastInterval = now - selfI.activityState.lastActivity;
     selfI.activityState.lastInterval = lastInterval;
 
-    ADJPackageBuilder *purchaseVerificationBuilder = 
+    ADJPackageBuilder *purchaseVerificationBuilder =
     [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
                                        activityState:selfI.activityState
                                               config:selfI.adjustConfig
@@ -1594,7 +1607,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now
-                                          odmEnabled:selfI.isOdmEnabled];
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     purchaseVerificationBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *purchaseVerificationPackage = 
@@ -1644,7 +1658,8 @@ const BOOL kSkanRegisterLockWindow = NO;
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now
-                                          odmEnabled:selfI.isOdmEnabled];
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
 
     ADJActivityPackage *purchaseVerificationPackage =
     [purchaseVerificationBuilder buildPurchaseVerificationPackageWithEvent:event];
@@ -2216,7 +2231,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now
-                                          odmEnabled:selfI.isOdmEnabled];
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     clickBuilder.internalState = selfI.internalState;
     clickBuilder.deeplinkParameters = [adjustDeepLinks copy];
     clickBuilder.attribution = deeplinkAttribution;
@@ -2325,15 +2341,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      globalParameters:selfI.globalParameters
-                                      trackingStatusManager:selfI.trackingStatusManager
-                                      firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now
-                                      odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *infoBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
@@ -2367,15 +2384,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     // send info package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *infoBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      globalParameters:selfI.globalParameters
-                                      trackingStatusManager:selfI.trackingStatusManager
-                                      firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now
-                                      odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *infoBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     infoBuilder.internalState = selfI.internalState;
     ADJActivityPackage *infoPackage = [infoBuilder buildInfoPackage:@"push"];
     [selfI.packageHandler addPackage:infoPackage];
@@ -2402,15 +2420,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
 
     // Send GDPR package
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *gdprBuilder = [[ADJPackageBuilder alloc]
-                                      initWithPackageParams:selfI.packageParams
-                                      activityState:selfI.activityState
-                                      config:selfI.adjustConfig
-                                      globalParameters:selfI.globalParameters
-                                      trackingStatusManager:selfI.trackingStatusManager
-                                      firstSessionDelayManager:selfI.firstSessionDelayManager
-                                      createdAt:now
-                                      odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *gdprBuilder =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     gdprBuilder.internalState = selfI.internalState;
     ADJActivityPackage *gdprPackage = [gdprBuilder buildGdprPackage];
     [selfI.packageHandler addPackage:gdprPackage];
@@ -2469,14 +2488,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         
         // send sdk_click
         double now = [NSDate.date timeIntervalSince1970];
-        ADJPackageBuilder *clickBuilder = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
-                                                                             activityState:selfI.activityState
-                                                                                    config:selfI.adjustConfig
-                                                                          globalParameters:selfI.globalParameters
-                                                                     trackingStatusManager:selfI.trackingStatusManager
-                                                                  firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                                 createdAt:now
-                                                                                odmEnabled:selfI.isOdmEnabled];
+        ADJPackageBuilder *clickBuilder =
+        [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                           activityState:selfI.activityState
+                                                  config:selfI.adjustConfig
+                                        globalParameters:selfI.globalParameters
+                                   trackingStatusManager:selfI.trackingStatusManager
+                                firstSessionDelayManager:selfI.firstSessionDelayManager
+                                               createdAt:now
+                                              odmEnabled:selfI.isOdmEnabled
+                        remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
         clickBuilder.internalState = selfI.internalState;
         clickBuilder.clickTime = [NSDate dateWithTimeIntervalSince1970:now];
         ADJActivityPackage *clickPackage = [clickBuilder buildClickPackage:ADJClickSourceLinkMe
@@ -2512,14 +2533,16 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
     }
 
     double now = [NSDate.date timeIntervalSince1970];
-    ADJPackageBuilder *cb = [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
-                                                               activityState:selfI.activityState
-                                                                      config:selfI.adjustConfig
-                                                            globalParameters:selfI.globalParameters
-                                                       trackingStatusManager:selfI.trackingStatusManager
-                                                    firstSessionDelayManager:selfI.firstSessionDelayManager
-                                                                   createdAt:now
-                                                                  odmEnabled:selfI.isOdmEnabled];
+    ADJPackageBuilder *cb =
+    [[ADJPackageBuilder alloc] initWithPackageParams:selfI.packageParams
+                                       activityState:selfI.activityState
+                                              config:selfI.adjustConfig
+                                    globalParameters:selfI.globalParameters
+                               trackingStatusManager:selfI.trackingStatusManager
+                            firstSessionDelayManager:selfI.firstSessionDelayManager
+                                           createdAt:now
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     cb.internalState = selfI.internalState;
     ADJActivityPackage *clickPackage = [cb buildClickPackage:ADJClickSourceGoogleOdm
                                                      odmInfo:odmInfo
@@ -3195,7 +3218,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
                                trackingStatusManager:selfI.trackingStatusManager
                             firstSessionDelayManager:selfI.firstSessionDelayManager
                                            createdAt:now
-                                          odmEnabled:selfI.isOdmEnabled];
+                                          odmEnabled:selfI.isOdmEnabled
+                    remoteTriggerCallbackImplemented:[selfI.adjustDelegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]];
     tpsBuilder.internalState = selfI.internalState;
 
     ADJActivityPackage *dtpsPackage = [tpsBuilder buildThirdPartySharingPackage:thirdPartySharing];

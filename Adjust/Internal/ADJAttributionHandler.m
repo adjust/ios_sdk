@@ -263,13 +263,14 @@ static NSString   * const kAttributionTimerName   = @"Attribution timer";
 
     ADJPackageBuilder *attributionBuilder = [[ADJPackageBuilder alloc]
                                              initWithPackageParams:packageParamsSnapshot
-                                             activityState:activityStateSnapshot
-                                             config:configSnapshot
-                                             globalParameters:globalParametersSnapshot
-                                             trackingStatusManager:selfI.activityHandler.trackingStatusManager
-                                             firstSessionDelayManager:nil
-                                             createdAt:now
-                                             odmEnabled:selfI.activityHandler.isOdmEnabled];
+                                                      activityState:activityStateSnapshot
+                                                             config:configSnapshot
+                                                   globalParameters:globalParametersSnapshot
+                                              trackingStatusManager:selfI.activityHandler.trackingStatusManager
+                                           firstSessionDelayManager:nil
+                                                          createdAt:now
+                                                         odmEnabled:selfI.activityHandler.isOdmEnabled
+                                   remoteTriggerCallbackImplemented:[selfI.activityHandler isRemoteTriggerCallbackImplemented]];
     ADJActivityPackage *attributionPackage = [attributionBuilder buildAttributionPackage:selfI.lastInitiatedBy];
 
     selfI.lastInitiatedBy = nil;
