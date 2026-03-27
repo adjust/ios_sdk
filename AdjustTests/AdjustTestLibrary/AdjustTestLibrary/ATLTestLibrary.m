@@ -23,7 +23,7 @@
 @property (nonatomic, copy) NSString *currentBasePath;
 @property (nonatomic, copy) NSString *currentTestName;
 @property (nonatomic, strong) NSMutableString *testNames;
-@property (nonatomic, strong) NSMutableDictionary *infoToServer;
+@property (nonatomic, strong) NSMutableDictionary *infoToServerMap;
 @property (nonatomic, assign) BOOL exitAfterEnd;
 
 @end
@@ -113,7 +113,7 @@
         [self.waitControlQueue teardown];
     }
     self.waitControlQueue = nil;
-    self.infoToServer = nil;
+    self.infoToServerMap = nil;
 }
 
 - (void) initTestLibrary {
@@ -139,11 +139,11 @@
     if (key == nil || value == nil) {
         return;
     }
-    if (self.infoToServer == nil) {
-        self.infoToServer = [[NSMutableDictionary alloc] init];
-    }
 
-    [self.infoToServer setObject:value forKey:key];
+    @synchronized(self) {
+        NSMutableDictionary *infoToServer = [self infoToServerForCurrentThread];
+        [infoToServer setObject:value forKey:key];
+    }
 }
 
 - (void)signalEndWaitWithReason:(NSString *)reason {
@@ -174,8 +174,9 @@
                                             initWithPath:@"/test_info"
                                             base:basePath];
 
-    if (self.infoToServer != nil) {
-        requestData.bodyString = [ATLUtil queryString:self.infoToServer];
+    NSDictionary *infoToServer = [self consumeInfoToServerForCurrentThread];
+    if (infoToServer != nil) {
+        requestData.bodyString = [ATLUtil queryString:infoToServer];
     }
     __typeof(self) __weak weakSelf = self;
     [self.networking sendPostRequestWithData:requestData
@@ -185,9 +186,40 @@
         __typeof(weakSelf) __strong strongSelf = weakSelf;
         if (strongSelf == nil) { return; }
 
-        strongSelf.infoToServer = nil;
         [strongSelf readResponse:httpResponse];
     }];
+}
+
+- (NSMutableDictionary *)infoToServerForCurrentThread {
+    if (self.infoToServerMap == nil) {
+        self.infoToServerMap = [[NSMutableDictionary alloc] init];
+    }
+
+    NSString *threadKey = [self infoToServerThreadKey];
+    NSMutableDictionary *infoToServer = [self.infoToServerMap objectForKey:threadKey];
+    if (infoToServer == nil) {
+        infoToServer = [[NSMutableDictionary alloc] init];
+        [self.infoToServerMap setObject:infoToServer forKey:threadKey];
+    }
+
+    return infoToServer;
+}
+
+- (NSDictionary *)consumeInfoToServerForCurrentThread {
+    @synchronized(self) {
+        if (self.infoToServerMap == nil) {
+            return nil;
+        }
+
+        NSString *threadKey = [self infoToServerThreadKey];
+        NSDictionary *infoToServer = [[self.infoToServerMap objectForKey:threadKey] copy];
+        [self.infoToServerMap removeObjectForKey:threadKey];
+        return infoToServer;
+    }
+}
+
+- (NSString *)infoToServerThreadKey {
+    return [NSString stringWithFormat:@"%p", [NSThread currentThread]];
 }
 
 - (void)sendTestSessionI:(NSString *)clientSdk {
