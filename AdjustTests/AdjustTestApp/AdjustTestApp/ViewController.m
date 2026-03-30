@@ -29,7 +29,7 @@
                                            andCommandDelegate:self.adjustCommandExecutor];
     [self.adjustCommandExecutor setTestLibrary:self.testLibrary];
 
-    // [self.testLibrary addTestDirectory:@"deeplink-deferred"];
+    // [self.testLibrary addTestDirectory:@"remote-triggers"];
     // [self.testLibrary doNotExitAfterEnd];
     [self startTestSession];
 }

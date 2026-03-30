@@ -107,14 +107,15 @@ static NSString * const kPackageQueueFilename = @"AdjustIoPackageQueue";
     globalParameters.partnerParameters = [NSMutableDictionary dictionary];
 
     ADJPackageBuilder *builder = [[ADJPackageBuilder alloc]
-        initWithPackageParams:packageParams
-                activityState:activityState
-                       config:config
-             globalParameters:globalParameters
-        trackingStatusManager:nil
-     firstSessionDelayManager:nil
-                    createdAt:1700000000.0
-                   odmEnabled:NO];
+                                  initWithPackageParams:packageParams
+                                          activityState:activityState
+                                                 config:config
+                                       globalParameters:globalParameters
+                                  trackingStatusManager:nil
+                               firstSessionDelayManager:nil
+                                              createdAt:1700000000.0
+                                             odmEnabled:NO
+                       remoteTriggerCallbackImplemented:NO];
 
     return [builder buildSessionPackage];
 }

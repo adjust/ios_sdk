@@ -90,6 +90,7 @@ NSString * const ADJWBSessionSuccessCallbackConfigKey = @"sessionSuccessCallback
 NSString * const ADJWBSessionFailureCallbackConfigKey = @"sessionFailureCallback";
 NSString * const ADJWBSkanUpdatedCallbackConfigKey = @"skanUpdatedCallback";
 NSString * const ADJWBDeferredDeeplinkCallbackConfigKey = @"deferredDeeplinkCallback";
+NSString * const ADJWBRemoteTriggerCallbackConfigKey = @"remoteTriggerCallback";
 
 // AdjustWebbridge Track Event keys
 NSString * const ADJWBEventTokenEventKey = @"eventToken";

@@ -15,6 +15,7 @@
 #import "ATAAdjustDelegateSessionFailure.h"
 #import "ATAAdjustDelegateDeferredDeeplink.h"
 #import "ATAAdjustDelegateSkan.h"
+#import "ATAAdjustDelegateRemoteTrigger.h"
 #import "ATAAdjustCommandExecutor.h"
 #import "ViewController.h"
 
@@ -412,6 +413,13 @@
         self.adjustDelegate =
             [[ATAAdjustDelegateSkan alloc] initWithTestLibrary:self.testLibrary
                                                   andExtraPath:self.extraPath];
+    }
+
+    if ([parameters objectForKey:@"remoteTriggerCallback"]) {
+        NSLog(@"remoteTriggerCallback detected");
+        self.adjustDelegate =
+            [[ATAAdjustDelegateRemoteTrigger alloc] initWithTestLibrary:self.testLibrary
+                                                           andExtraPath:self.extraPath];
     }
 
     if ([parameters objectForKey:@"attConsentWaitingSeconds"]) {

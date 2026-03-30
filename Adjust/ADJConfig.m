@@ -186,6 +186,10 @@
         [self.logger debug:@"Delegate implements adjustSkanUpdatedWithConversionData:"];
         hasResponseDelegate = YES;
     }
+    if ([delegate respondsToSelector:@selector(adjustRemoteTriggerReceived:)]) {
+        [self.logger debug:@"Delegate implements adjustRemoteTriggerReceived:"];
+        hasResponseDelegate = YES;
+    }
 
     if (!(hasResponseDelegate || implementsDeeplinkCallback)) {
         [self.logger error:@"Delegate does not implement any optional method"];

@@ -40,6 +40,8 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
 @property (nonatomic, weak) ADJFirstSessionDelayManager *firstSessionDelayManager;
 
 @property (nonatomic, assign) BOOL odmEnabled;
+
+@property (nonatomic, assign) BOOL remoteTriggerCallbackImplemented;
 @end
 
 @implementation ADJPackageBuilder
@@ -47,13 +49,14 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
 #pragma mark - Object lifecycle methods
 
 - (id)initWithPackageParams:(ADJPackageParams * _Nullable)packageParams
-              activityState:(ADJActivityState * _Nullable)activityState
-                     config:(ADJConfig * _Nullable)adjustConfig
-           globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
-      trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
-   firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
-                  createdAt:(double)createdAt
-                 odmEnabled:(BOOL)odmEnabled {
+                        activityState:(ADJActivityState * _Nullable)activityState
+                               config:(ADJConfig * _Nullable)adjustConfig
+                     globalParameters:(ADJGlobalParameters * _Nullable)globalParameters
+                trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
+             firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
+                            createdAt:(double)createdAt
+                           odmEnabled:(BOOL)odmEnabled
+     remoteTriggerCallbackImplemented:(BOOL)remoteTriggerCallbackImplemented {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -67,6 +70,7 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     self.firstSessionDelayManager = firstSessionDelayManager;
     self.trackingStatusManager = trackingStatusManager;
     self.odmEnabled = odmEnabled;
+    self.remoteTriggerCallbackImplemented = remoteTriggerCallbackImplemented;
 
     return self;
 }
@@ -996,6 +1000,9 @@ NSString * const ADJOdmInfoParameter = @"odm_info";
     }
     if (self.odmEnabled == YES) {
         [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_odm_enabled"];
+    }
+    if (self.remoteTriggerCallbackImplemented) {
+        [ADJPackageBuilder parameters:parameters setBool:YES forKey:@"ff_remote_triggers_callback"];
     }
 }
 

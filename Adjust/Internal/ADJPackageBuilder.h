@@ -41,7 +41,8 @@
                 trackingStatusManager:(ADJTrackingStatusManager * _Nullable)trackingStatusManager
              firstSessionDelayManager:(ADJFirstSessionDelayManager * _Nullable)firstSessionDelayManager
                             createdAt:(double)createdAt
-                           odmEnabled:(BOOL)odmEnabled;
+                           odmEnabled:(BOOL)odmEnabled
+     remoteTriggerCallbackImplemented:(BOOL)remoteTriggerCallbackImplemented;
 
 - (ADJActivityPackage * _Nullable)buildSessionPackage;
 

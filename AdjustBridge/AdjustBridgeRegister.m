@@ -51,7 +51,7 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
         
-        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.5.4';
+        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.6.0';
 
         // Adjust
         window.Adjust = {
@@ -429,6 +429,7 @@ static NSString * fbAppIdStatic = nil;
             this.sessionFailureCallback = null;
             this.skanUpdatedCallback = null;
             this.deferredDeeplinkCallback = null;
+            this.remoteTriggerCallback = null;
 
             //fb parameters
             this.fbPixelDefaultEventToken = null;
@@ -560,6 +561,12 @@ static NSString * fbAppIdStatic = nil;
             const callbackId = window.randomCallbackIdWithPrefix("adjust_skanUpdatedCallback");
             Adjust._handleCallbackFromObjC(skanUpdatedCallback, callbackId);
             this.skanUpdatedCallback = callbackId;
+        };
+
+        AdjustConfig.prototype.setRemoteTriggerCallback = function(remoteTriggerCallback) {
+            const callbackId = window.randomCallbackIdWithPrefix("adjust_remoteTriggerCallback");
+            Adjust._handleCallbackFromObjC(remoteTriggerCallback, callbackId);
+            this.remoteTriggerCallback = callbackId;
         };
 
         // AdjustStoreInfo
