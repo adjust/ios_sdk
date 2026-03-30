@@ -19,19 +19,19 @@
 @property (nonatomic, copy, readonly, nonnull) NSString *label;
 
 /**
- * @brief Payload data in JSON format (NSDictionary).
+ * @brief Payload data as a JSON object with string keys.
  */
-@property (nonatomic, strong, readonly, nonnull) NSDictionary *payload;
+@property (nonatomic, copy, readonly, nonnull) NSDictionary<NSString *, id> *payload;
 
 /**
  * @brief Initializes a remote trigger object.
  *
  * @param label The label identifying the trigger type.
- * @param payload The payload data as a dictionary.
+ * @param payload The payload data as a JSON object dictionary.
  *
  * @returns Initialized remote trigger object.
  */
 - (nonnull instancetype)initWithLabel:(nonnull NSString *)label
-                               payload:(nonnull NSDictionary *)payload;
+                               payload:(nonnull NSDictionary<NSString *, id> *)payload;
 
 @end

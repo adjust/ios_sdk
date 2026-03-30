@@ -11,7 +11,7 @@
 @implementation ADJRemoteTrigger
 
 - (nonnull instancetype)initWithLabel:(nonnull NSString *)label
-                               payload:(nonnull NSDictionary *)payload {
+                               payload:(nonnull NSDictionary<NSString *, id> *)payload {
     self = [super init];
     
     if (self == nil) {
@@ -46,4 +46,3 @@
 }
 
 @end
-
