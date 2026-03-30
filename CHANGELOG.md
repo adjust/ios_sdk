@@ -1,3 +1,9 @@
+### Version 5.6.0 (30th March 2026)
+#### Added
+- Added ability to get informed about remote triggers from backend.
+
+---
+
 ### Version 5.5.4 (23rd March 2026)
 #### Added
 - Added dedicated ODM plugin framework targets.
