@@ -1119,7 +1119,6 @@ const BOOL kSkanRegisterLockWindow = NO;
     }
 
     [selfI checkLinkMeI:selfI];
-    [selfI fetchAndProcessGoogleOdmInfoI:selfI];
 
     [selfI.trackingStatusManager updateAndTrackAttStatus];
 
@@ -1171,6 +1170,8 @@ const BOOL kSkanRegisterLockWindow = NO;
     [selfI processCoppaComplianceI:selfI];
 
     [selfI processSessionI:selfI];
+
+    [selfI fetchAndProcessGoogleOdmInfoI:selfI];
 
     [selfI checkAttributionStateI:selfI];
 
