@@ -146,6 +146,23 @@
     }
 }
 
+- (void)setInfoToSend:(NSDictionary<NSString *, NSString *> *)info
+{
+    @synchronized(self) {
+        if (self.infoToServerMap == nil) {
+            self.infoToServerMap = [[NSMutableDictionary alloc] init];
+        }
+
+        NSString *threadKey = [self infoToServerThreadKey];
+        if (info == nil || [info count] == 0) {
+            [self.infoToServerMap removeObjectForKey:threadKey];
+            return;
+        }
+
+        [self.infoToServerMap setObject:[info mutableCopy] forKey:threadKey];
+    }
+}
+
 - (void)signalEndWaitWithReason:(NSString *)reason {
     [[self waitControlQueue] enqueue:reason];
 }

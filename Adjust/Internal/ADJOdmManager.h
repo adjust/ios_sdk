@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^ADJFetchGoogleOdmInfoBlock)(NSString * _Nullable odmInfo, NSError * _Nullable error);
+typedef void(^ADJHandleGoogleOdmInfoBlock)(NSString * _Nullable odmInfo, NSError * _Nullable error);
 
 @interface ADJOdmManager : NSObject
 
 - (id _Nullable)initIfPluginAvailbleAndFetchOdmData;
-- (void)handleFetchedOdmInfoWithCompletionHandler:(nonnull ADJFetchGoogleOdmInfoBlock)completion;
+- (void)handleFetchedOdmInfoWithCompletionHandler:(nonnull ADJHandleGoogleOdmInfoBlock)completion;
 - (void)completeProcessingOdmInfoWithSuccess:(BOOL)success;
 
 @end

@@ -22,7 +22,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
 @property (nonatomic, assign) BOOL odmInfoHasBeenProcessed;
 @property (nonatomic, strong) NSString *odmInfo;
 @property (nonatomic, strong) NSError *odmInfoFetchError;
-@property (nonatomic, strong) ADJFetchGoogleOdmInfoBlock fetchOdmInfoBlock;
+@property (nonatomic, strong) ADJHandleGoogleOdmInfoBlock handleOdmInfoBlock;
 
 @end
 
@@ -67,8 +67,10 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
             [ADJOdmManager setOdmAppFirstLaunchTimestamp:firstAppLaunch];
         }
 
-        // fetch odm Info only in case it hasn't been already fetched and stored.
-        if (![ADJUserDefaults getGoogleOdmInfo]) {
+        // Fetch odm Info ONLY in case it hasn't been already fetched and stored.
+        // Otherwise, make it ready for processing or process it, if handling block is already available.
+        self.odmInfo = [ADJUserDefaults getGoogleOdmInfo];
+        if (!self.odmInfo) {
             [_logger verbose:@"Calling GoogleAdsOnDeviceConversion fetchAggregateConversionInfoForInteraction:completion: method"];
             [ADJOdmManager fetchOdmInfoWithCompletion:^(NSString * _Nullable odmInfo, NSError * _Nullable error) {
                 dispatch_async(self.internalQueue, ^{
@@ -92,20 +94,33 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
                     // if a block for handling odm info already set
                     // (while ODM SDK has been processing fetch request),
                     // invoke it and reset after the invocation.
-                    if (self.fetchOdmInfoBlock) {
-                        self.fetchOdmInfoBlock(self.odmInfo, self.odmInfoFetchError);
-                        self.fetchOdmInfoBlock = nil;
+                    if (self.handleOdmInfoBlock) {
+                        self.handleOdmInfoBlock(self.odmInfo, self.odmInfoFetchError);
+                        self.handleOdmInfoBlock = nil;
                         self.odmInfoSendingInProcess = YES;
                     }
                 });
             }];
+        } else {
+            // We have successfully fetched ODM Info but for some reason didn't handle it.
+            [_logger verbose:@"GoogleAdsOnDeviceConversion ODM Info was fetched but still not processed."];
+            dispatch_async(self.internalQueue, ^{
+                self.odmInfoFetched = YES;
+                // if a block for handling odm info already set
+                // invoke it and reset after the invocation.
+                if (self.handleOdmInfoBlock) {
+                    self.handleOdmInfoBlock(self.odmInfo, self.odmInfoFetchError);
+                    self.handleOdmInfoBlock = nil;
+                    self.odmInfoSendingInProcess = YES;
+                }
+            });
         }
     }
 
     return self;
 }
 
-- (void)handleFetchedOdmInfoWithCompletionHandler:(ADJFetchGoogleOdmInfoBlock)completion {
+- (void)handleFetchedOdmInfoWithCompletionHandler:(ADJHandleGoogleOdmInfoBlock)completion {
     [self.logger verbose:@"Processing fetched GoogleAdsOnDeviceConversion info"];
     // Since odmInfoHasBeenProcessed can change from false to true only,
     // we are checking here in a not-synchronised way - in order to avoid
@@ -122,16 +137,16 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
             return;
         }
 
-        // Handle the case when a one fetch call is already received and is being executed now
-        // and second call to this method is done.
+        // Handle the case when a call to this method has been already made and it is being executed now
+        // and second call to this method has been made again.
         if (self.odmInfoSendingInProcess) {
             [self.logger verbose:@"GoogleAdsOnDeviceConversion is being sent"];
             return;
         }
 
-        // Handle the case when a one fetch call is already received
-        // and the second call to this method is done.
-        if (self.fetchOdmInfoBlock){
+        // Handle the case when a call to this method has been already made
+        // and the second call is made again prior to fetched ODM Info.
+        if (self.handleOdmInfoBlock){
             [self.logger warn:@"Completion block has already been set"];
             return;
         }
@@ -142,7 +157,7 @@ static const char * const kInternalQueueName = "io.adjust.OdmQueue";
         } else {
             // Store completion object if odmInfo is still not available.
             // It will be called after odmInfo fetch is completed.
-            self.fetchOdmInfoBlock = completion;
+            self.handleOdmInfoBlock = completion;
         }
     });
 }

@@ -42,6 +42,8 @@
 - (void)addInfoToSend:(NSString *)key
                 value:(NSString *)value;
 
+- (void)setInfoToSend:(NSDictionary<NSString *, NSString *> *)info;
+
 - (void)sendInfoToServer:(NSString *)basePath;
 
 - (void)signalEndWaitWithReason:(NSString *)reason;
