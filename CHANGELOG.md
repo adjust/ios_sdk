@@ -1,3 +1,9 @@
+### Version 5.6.2 (17th April 2026)
+#### Changed
+- Updated the Adjust Signature library version to 3.67.0.
+
+---
+
 ### Version 5.6.1 (2nd April 2026)
 #### Fixed
 - Added handling for certain edge cases in which ODM info was not being sent.
