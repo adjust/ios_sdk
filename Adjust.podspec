@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license                 = { :type => 'MIT', :file => 'LICENSE' }
   s.author                  = { "Adjust" => "sdk@adjust.com" }
   s.source                  = { :git => "https://github.com/adjust/ios_sdk.git", :tag => "v#{s.version}" }
-  s.ios.deployment_target   = '12.0'
+  s.ios.deployment_target   = '15.0'
   s.tvos.deployment_target  = '12.0'
   s.framework               = 'SystemConfiguration'
   s.ios.weak_framework      = 'AdSupport'
@@ -37,17 +37,17 @@ Pod::Spec.new do |s|
     awb.exclude_files         = ['Adjust/include/**/*.h', 'AdjustBridge/include/**/*.h']
     awb.resource_bundle       = {'Adjust' => ['Adjust/*.xcprivacy']}
     awb.header_dir            = 'AdjustSdk'
-    awb.ios.deployment_target = '12.0'
+    awb.ios.deployment_target = '15.0'
     awb.dependency            'AdjustSignature', '3.67.0'
   end
 
   s.subspec 'AdjustGoogleOdmPlugin' do |odm|
-    odm.ios.deployment_target   = '12.0'
+    odm.ios.deployment_target   = '15.0'
     odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
   end
 
   s.subspec 'AdjustGoogleOdm' do |odm|
-    odm.ios.deployment_target   = '12.0'
+    odm.ios.deployment_target   = '15.0'
     odm.source_files            = 'plugins/odm/headers/*.{h,m}', 'plugins/odm/sources/cocoapods/*.{h,m}'
     odm.dependency              'Adjust/Adjust'
   end
