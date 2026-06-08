@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "AdjustSdk",
     platforms: [
-        .iOS(.v12),
+        .iOS(.v15),
         .tvOS(.v12)
     ],
     products: [
