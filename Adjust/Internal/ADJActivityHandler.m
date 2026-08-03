@@ -2867,8 +2867,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.globalParameters == nil) {
             return;
         }
-        NSDictionary *callbackParametersSnapshot =
-            [ADJUtil dictionaryDeepCopy:selfI.globalParameters.callbackParameters];
+        NSMutableDictionary *callbackParametersSnapshot =
+            [[ADJUtil dictionaryDeepCopy:selfI.globalParameters.callbackParameters] mutableCopy];
         [ADJUtil writeObject:callbackParametersSnapshot
                     fileName:kGlobalCallbackParametersFilename
                   objectName:@"Global Callback parameters"
@@ -2881,8 +2881,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (selfI.globalParameters == nil) {
             return;
         }
-        NSDictionary *partnerParametersSnapshot =
-            [ADJUtil dictionaryDeepCopy:selfI.globalParameters.partnerParameters];
+        NSMutableDictionary *partnerParametersSnapshot =
+            [[ADJUtil dictionaryDeepCopy:selfI.globalParameters.partnerParameters] mutableCopy];
         [ADJUtil writeObject:partnerParametersSnapshot
                     fileName:kGlobalPartnerParametersFilename
                   objectName:@"Global Partner parameters"
@@ -2895,8 +2895,12 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (self.globalParameters == nil) {
             return;
         }
-        [self.globalParameters.callbackParameters removeAllObjects];
-        [self.globalParameters.partnerParameters removeAllObjects];
+        if ([self.globalParameters.callbackParameters isKindOfClass:[NSMutableDictionary class]]) {
+            [self.globalParameters.callbackParameters removeAllObjects];
+        }
+        if ([self.globalParameters.partnerParameters isKindOfClass:[NSMutableDictionary class]]) {
+            [self.globalParameters.partnerParameters removeAllObjects];
+        }
         self.globalParameters = nil;
     }
 }
