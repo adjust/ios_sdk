@@ -1,3 +1,12 @@
+### Version 5.8.0 (6th August 2026)
+#### Added
+- Added `disableDeviceIdsReading` method to `ADJConfig` as an umbrella method alternative to invoking individual device ID disabling methods.
+
+#### Changed
+- Updated the Adjust Signature library version to 5.0.0.
+
+---
+
 ### Version 5.7.0 (28th May 2026)
 #### Added
 - Added `thirdPartySharingSettingsWithTimeout:completionHandler:` to the `Adjust` API and `adjustThirdPartySharingSettingsChanged:` to `AdjustDelegate` for reading current third-party-sharing settings from the Adjust backend and receiving updates when they change.

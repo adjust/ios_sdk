@@ -359,6 +359,14 @@ typedef NS_ENUM(NSUInteger, ADJLogLevel);
 - (void)disableFbIdReading;
 
 /**
+ * @brief A method for disabling the reading of all the device IDs read by the SDK.
+ *
+ * @note Convenience method with the same effect as invoking disableIdfaReading,
+ *       disableIdfvReading and disableFbIdReading.
+ */
+- (void)disableDeviceIdsReading;
+
+/**
  * @brief A method for disabling SKAdNetwork (SKAN) attribution.
  */
 - (void)disableSkanAttribution;

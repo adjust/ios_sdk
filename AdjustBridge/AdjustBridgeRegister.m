@@ -51,7 +51,7 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
         
-        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.7.0';
+        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.8.0';
 
         // Adjust
         window.Adjust = {
@@ -483,6 +483,11 @@ static NSString * fbAppIdStatic = nil;
             this.isIdfvReadingAllowed = false;
         };
         AdjustConfig.prototype.disableFbIdReading = function() {
+            this.isFbIdReadingEnabled = false;
+        };
+        AdjustConfig.prototype.disableDeviceIdsReading = function() {
+            this.isIdfaReadingAllowed = false;
+            this.isIdfvReadingAllowed = false;
             this.isFbIdReadingEnabled = false;
         };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
