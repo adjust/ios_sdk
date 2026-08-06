@@ -92,6 +92,12 @@
     _isFbIdReadingEnabled = NO;
 }
 
+- (void)disableDeviceIdsReading {
+    _isIdfaReadingEnabled = NO;
+    _isIdfvReadingEnabled = NO;
+    _isFbIdReadingEnabled = NO;
+}
+
 - (void)disableSkanAttribution {
     _isSkanAttributionEnabled = NO;
 }

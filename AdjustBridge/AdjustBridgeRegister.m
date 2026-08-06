@@ -485,6 +485,11 @@ static NSString * fbAppIdStatic = nil;
         AdjustConfig.prototype.disableFbIdReading = function() {
             this.isFbIdReadingEnabled = false;
         };
+        AdjustConfig.prototype.disableDeviceIdsReading = function() {
+            this.isIdfaReadingAllowed = false;
+            this.isIdfvReadingAllowed = false;
+            this.isFbIdReadingEnabled = false;
+        };
         AdjustConfig.prototype.disableSkanAttributionHandling = function() {
             this.isSkanAttributionHandlingEnabled = false;
         };

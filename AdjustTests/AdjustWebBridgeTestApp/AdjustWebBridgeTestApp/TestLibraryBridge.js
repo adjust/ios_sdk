@@ -2,8 +2,8 @@
 //var urlOverwrite = 'http://127.0.0.1:8080';
 //var controlUrl = 'ws://127.0.0.1:1987';
 // device
-var urlOverwrite = 'http://192.168.86.245:8080';
-var controlUrl = 'ws://192.168.86.245:1987';
+var urlOverwrite = 'http://192.168.5.214:8080';
+var controlUrl = 'ws://192.168.5.214:1987';
 
 // local reference of the command executor
 // originally it was this.adjustCommandExecutor of TestLibraryBridge var
@@ -298,6 +298,14 @@ AdjustCommandExecutor.prototype.config = function(params) {
         var fbIdReadingEnabled = fbIdReadingEnabledS == 'true';
         if (fbIdReadingEnabled == false) {
             adjustConfig.disableFbIdReading();
+        }
+    }
+
+    if ('deviceIdsReadingEnabled' in params) {
+        var deviceIdsReadingEnabledS = getFirstValue(params, 'deviceIdsReadingEnabled');
+        var deviceIdsReadingEnabled = deviceIdsReadingEnabledS == 'true';
+        if (deviceIdsReadingEnabled == false) {
+            adjustConfig.disableDeviceIdsReading();
         }
     }
 
