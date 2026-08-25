@@ -973,45 +973,67 @@ static NSString * const kPackageQueueFilename = @"AdjustIoPackageQueue";
     XCTAssertEqual(source.activityKind, ADJActivityKindSession);
 }
 
-- (void)testPackageQueueWriteAndTeardownUnderConcurrentAccess {
+- (void)testPackageQueueWriteAndClearUnderConcurrentAccess {
     __block NSException *caughtException = nil;
+    __block NSArray<NSString *> *caughtExceptionCallStack = nil;
 
     NSUInteger iterationCount = 200;
     dispatch_group_t group = dispatch_group_create();
     dispatch_queue_t writerQueue =
-        dispatch_queue_create("io.adjust.tests.packagequeue.write-teardown.writer", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_queue_t teardownQueue =
-        dispatch_queue_create("io.adjust.tests.packagequeue.write-teardown.teardown", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_queue_create("io.adjust.tests.packagequeue.write-clear.writer", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_queue_t clearQueue =
+        dispatch_queue_create("io.adjust.tests.packagequeue.write-clear.clear", DISPATCH_QUEUE_CONCURRENT);
 
     for (NSUInteger i = 0; i < iterationCount; i++) {
         ADJPackageHandler *writer = [[ADJPackageHandler alloc] init];
-        writer.packageQueue = [NSMutableArray arrayWithObjects:
-            [self buildQueuePackageWithIndex:i],
-            [self buildQueuePackageWithIndex:i + 1000],
-            nil];
+        writer.packageQueue = [NSMutableArray array];
+        for (NSUInteger packageIndex = 0; packageIndex < 250; packageIndex++) {
+            [writer.packageQueue addObject:[self buildQueuePackageWithIndex:i + packageIndex]];
+        }
 
         dispatch_group_async(group, writerQueue, ^{
             @autoreleasepool {
                 @try {
+                    @synchronized (self) {
+                        if (caughtException != nil) {
+                            return;
+                        }
+                    }
                     [writer writePackageQueueS:writer];
                 } @catch (NSException *exception) {
                     @synchronized (self) {
                         if (caughtException == nil) {
                             caughtException = exception;
+                            caughtExceptionCallStack = [exception.callStackSymbols copy];
                         }
                     }
                 }
             }
         });
 
-        dispatch_group_async(group, teardownQueue, ^{
+        dispatch_group_async(group, clearQueue, ^{
             @autoreleasepool {
                 @try {
-                    [writer teardown];
+                    for (NSUInteger mutationIndex = 0; mutationIndex < 25; mutationIndex++) {
+                        @synchronized (self) {
+                            if (caughtException != nil) {
+                                return;
+                            }
+                        }
+                        @synchronized ([ADJPackageHandler class]) {
+                            if (writer.packageQueue == nil) {
+                                return;
+                            }
+                            [writer.packageQueue removeAllObjects];
+                            [writer.packageQueue addObject:
+                                [self buildQueuePackageWithIndex:i + 1000 + mutationIndex]];
+                        }
+                    }
                 } @catch (NSException *exception) {
                     @synchronized (self) {
                         if (caughtException == nil) {
                             caughtException = exception;
+                            caughtExceptionCallStack = [exception.callStackSymbols copy];
                         }
                     }
                 }
@@ -1020,7 +1042,11 @@ static NSString * const kPackageQueueFilename = @"AdjustIoPackageQueue";
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    XCTAssertNil(caughtException);
+    if (caughtException != nil) {
+        XCTFail(@"Package queue write/clear race raised exception: %@\nStack:\n%@",
+                caughtException,
+                [caughtExceptionCallStack componentsJoinedByString:@"\n"]);
+    }
 }
 
 @end
