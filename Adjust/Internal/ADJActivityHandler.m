@@ -2895,12 +2895,8 @@ remainsPausedMessage:(NSString *)remainsPausedMessage
         if (self.globalParameters == nil) {
             return;
         }
-        if ([self.globalParameters.callbackParameters isKindOfClass:[NSMutableDictionary class]]) {
-            [self.globalParameters.callbackParameters removeAllObjects];
-        }
-        if ([self.globalParameters.partnerParameters isKindOfClass:[NSMutableDictionary class]]) {
-            [self.globalParameters.partnerParameters removeAllObjects];
-        }
+        [self.globalParameters.callbackParameters removeAllObjects];
+        [self.globalParameters.partnerParameters removeAllObjects];
         self.globalParameters = nil;
     }
 }
