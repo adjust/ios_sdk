@@ -1,3 +1,9 @@
+### Version 5.8.1 (23rd October 2026)
+#### Changed
+- Updated the Adjust Signature library version to 5.8.0.
+
+---
+
 ### Version 5.8.0 (6th August 2026)
 #### Added
 - Added `disableDeviceIdsReading` method to `ADJConfig` as an umbrella method alternative to invoking individual device ID disabling methods.
