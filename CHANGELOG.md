@@ -1,4 +1,7 @@
 ### Version 5.8.1 (23rd October 2026)
+#### Fixed
+- Fixed a crash that could occur after downgrading the SDK when global callback or partner parameters were persisted.
+  
 #### Changed
 - Updated the Adjust Signature library version to 5.8.0.
 
