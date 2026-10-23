@@ -51,7 +51,7 @@ static NSString * fbAppIdStatic = nil;
             return;
         }
         
-        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.8.0';
+        const ADJUST_WEB_BRIDGE_SDK_PREFIX = 'web-bridge5.8.1';
 
         // Adjust
         window.Adjust = {
