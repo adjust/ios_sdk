@@ -12,7 +12,8 @@ let package = Package(
         .library(name: "AdjustSdk", targets: ["AdjustSdk"]),
         .library(name: "AdjustUnsigned", targets: ["AdjustUnsigned"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
-        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"])
+        .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"]),
+        .library(name: "AdjustGoogleOdmPlugin", targets: ["AdjustGoogleOdmPlugin"])
     ],
     dependencies: [
         .package(
@@ -65,6 +66,12 @@ let package = Package(
             ],
             path: "plugins/odm",
             sources: [ "headers", "sources/spm"],
+            publicHeadersPath: "headers"
+        ),
+        .target(
+            name: "AdjustGoogleOdmPlugin",
+            path: "plugins/odm",
+            sources: [ "headers", "sources/cocoapods"],
             publicHeadersPath: "headers"
         )
     ]
