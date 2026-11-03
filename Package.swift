@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "AdjustUnsigned", targets: ["AdjustUnsigned"]),
         .library(name: "AdjustWebBridge", targets: ["AdjustWebBridge", "AdjustSdk"]),
         .library(name: "AdjustGoogleOdm", targets: ["AdjustGoogleOdm", "AdjustSdk"]),
-        .library(name: "AdjustGoogleOdmPlugin", targets: ["AdjustGoogleOdmPlugin", "AdjustSdk"])
+        .library(name: "AdjustGoogleOdmPlugin", targets: ["AdjustGoogleOdmPlugin"])
     ],
     dependencies: [
         .package(
