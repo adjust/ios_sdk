@@ -768,7 +768,7 @@
 		96FCC53B1C186426007BBFE1 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FCC5371C186426007BBFE1 /* ADJResponseData.m */; };
 		9D1AE8C42F471FCC006A30A6 /* libAdjust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679920D18BBAE2800394606 /* libAdjust.a */; };
 		9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */; };
-		9D1AE9032F5A0001006A30A6 /* ADJTestsLoggerThreadSafety.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AE9022F5A0001006A30A6 /* ADJTestsLoggerThreadSafety.m */; };
+		9D1AE9032F5A0001006A30A6 /* ADJAdjustFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AE9022F5A0001006A30A6 /* ADJAdjustFactoryTests.m */; };
 		9D2F23E22447CE5C00B7CA90 /* ADJAppStoreSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D2F23E32447CE5C00B7CA90 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */; };
 		9D363AC31BDA50FA00B47FE9 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E5E37318BBB48A008E7B30 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1105,7 +1105,7 @@
 		9D0E2E02210B570600133B4F /* AdjustSdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1AE8C02F471FCC006A30A6 /* AdjustUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdjustUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJTestsMutability.m; sourceTree = "<group>"; };
-		9D1AE9022F5A0001006A30A6 /* ADJTestsLoggerThreadSafety.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJTestsLoggerThreadSafety.m; sourceTree = "<group>"; };
+		9D1AE9022F5A0001006A30A6 /* ADJAdjustFactoryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJAdjustFactoryTests.m; sourceTree = "<group>"; };
 		9D2F23E02447CE5C00B7CA90 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADJAppStoreSubscription.h; sourceTree = "<group>"; };
 		9D2F23E12447CE5C00B7CA90 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADJAppStoreSubscription.m; sourceTree = "<group>"; };
 		9D3A2AAA2625BEB800BD6E44 /* ADJAdRevenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADJAdRevenue.m; sourceTree = "<group>"; };
@@ -1475,7 +1475,7 @@
 			isa = PBXGroup;
 			children = (
 				9D1AE9002F472326006A30A6 /* ADJTestsMutability.m */,
-				9D1AE9022F5A0001006A30A6 /* ADJTestsLoggerThreadSafety.m */,
+				9D1AE9022F5A0001006A30A6 /* ADJAdjustFactoryTests.m */,
 			);
 			path = AdjustUnitTests;
 			sourceTree = "<group>";
@@ -3087,7 +3087,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D1AE9012F472326006A30A6 /* ADJTestsMutability.m in Sources */,
-				9D1AE9032F5A0001006A30A6 /* ADJTestsLoggerThreadSafety.m in Sources */,
+				9D1AE9032F5A0001006A30A6 /* ADJAdjustFactoryTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

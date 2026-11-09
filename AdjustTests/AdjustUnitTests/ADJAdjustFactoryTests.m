@@ -1,5 +1,5 @@
 //
-//  ADJTestsLoggerThreadSafety.m
+//  ADJAdjustFactoryTests.m
 //  AdjustUnitTests
 //
 //  Copyright © 2026-Present Adjust GmbH. All rights reserved.
@@ -10,10 +10,10 @@
 #import "../../Adjust/ADJLogger.h"
 #import "../../Adjust/Internal/ADJAdjustFactory.h"
 
-@interface ADJTestsLoggerThreadSafety : XCTestCase
+@interface ADJAdjustFactoryTests : XCTestCase
 @end
 
-@implementation ADJTestsLoggerThreadSafety
+@implementation ADJAdjustFactoryTests
 
 - (void)setUp {
     [super setUp];
