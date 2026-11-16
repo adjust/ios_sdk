@@ -30,11 +30,13 @@ static NSString * internalTestUrlOverwrite = nil;
 @implementation ADJAdjustFactory
 
 + (id<ADJLogger>)logger {
-    if (internalLogger == nil) {
-        //  same instance of logger
-        internalLogger = [[ADJLogger alloc] init];
+    @synchronized (self) {
+        if (internalLogger == nil) {
+            //  same instance of logger
+            internalLogger = [[ADJLogger alloc] init];
+        }
+        return internalLogger;
     }
-    return internalLogger;
 }
 
 + (double)sessionInterval {
@@ -121,7 +123,9 @@ static NSString * internalTestUrlOverwrite = nil;
 }
 
 + (void)setLogger:(id<ADJLogger>)logger {
-    internalLogger = logger;
+    @synchronized (self) {
+        internalLogger = logger;
+    }
 }
 
 + (void)setSessionInterval:(double)sessionInterval {
