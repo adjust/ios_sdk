@@ -1,3 +1,9 @@
+### Version 5.8.2 (16th November 2026)
+#### Added
+- Added `AdjustGoogleOdmPlugin` Swift Package Manager package.
+
+---
+
 ### Version 5.8.1 (23rd October 2026)
 #### Fixed
 - Fixed a crash that could occur after downgrading the SDK when global callback or partner parameters were persisted.
